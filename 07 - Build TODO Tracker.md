@@ -15,6 +15,7 @@ tags: [tasks, tracker]
 First implementation pass complete — full driver + UI stack written and verified compiling
 for both the real-hardware and Wokwi simulation environments. See `Firmware/` and its
 README. Real hardware still needs on-device validation once parts arrive.
+
 - [x] Bootloader + display/touch driver bring-up on devkit — LovyanGFX + LVGL glue;
       touch is a real CST816 I2C driver; display panel is a generic ILI9341 PLACEHOLDER
       standing in for the RM69090 AMOLED until it is sourced
