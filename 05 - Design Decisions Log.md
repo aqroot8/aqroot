@@ -83,7 +83,31 @@ tags: [decisions, log]
 - App packaging v1: simple flashable .bin menu, not a full manifest/icon launcher (that's
   later-stage scope).
 - Radio driver: built on RadioLib rather than from-scratch register-level SX1262 code.
-- Version control: git repo initialized as part of initial project setup.
+- Version control: git repo initialized as part of initial project setup. Now pushed to a
+  public GitHub repo at https://github.com/aqroot8/aqroot (account aqroot8).
+
+### First implementation pass (full driver + UI stack)
+- Framework: switched the driver/app layer from ESP-IDF to the **Arduino core for
+  ESP32-S3**. Reason: mature drop-in libraries (LVGL, LovyanGFX, RadioLib, Adafruit PN532,
+  I2S) instead of hand-rolled register code. FreeRTOS/ESP-IDF still run underneath — the
+  Arduino core sits on top of ESP-IDF, so nothing in the layered architecture is lost.
+- PlatformIO platform pinned to **espressif32@6.9.0** (Arduino 2.0.x / IDF 4.4). The 7.x
+  line (Arduino 3.x / IDF 5.x) removed the legacy `driver/i2s.h` API the audio driver uses.
+  Treat this as a deliberate bump-when-ready pin, not an accident.
+- Display driver: **LovyanGFX** with a **generic ILI9341 SPI config as a deliberate
+  placeholder** for the RM69090 AMOLED (still unsourced — see Open items). The UI is
+  written resolution-independently, so swapping in the AMOLED is a driver-only change. The
+  same ILI9341 config doubles as the Wokwi simulation panel.
+- IMU driver: implemented as a **generic MPU-style I2C read with no external dependency**,
+  rather than committing to a BMI270 library now. The exact part (BMI270 vs ICM-42670) is
+  not locked, and a non-resolvable library dependency would break the build. Add the
+  part-specific library and register map once the IMU is chosen.
+- IR: deferred. The Infrared tile is a working UI shell only; a real RMT-based IR TX/RX
+  driver is a follow-up (there is no `drivers/ir.*` yet).
+- Simulation: added a **Wokwi target** gated by a `SIMULATION_MODE` compile flag. In that
+  build, radio/NFC/audio return realistic mock data and four physical buttons stand in for
+  the CST816 touchscreen (Wokwi has no CST816 model), so the entire UI is testable with no
+  hardware. Both build environments (`esp32-s3-aqroot`, `wokwi`) are verified compiling.
 
 ## Licensing
 - Firmware: MIT license.

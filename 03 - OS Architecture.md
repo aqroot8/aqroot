@@ -20,11 +20,19 @@ Use RadioLib (actively maintained, explicit SX1262 support) as the base for the 
 driver rather than writing LoRa/FSK/OOK register-level code from scratch.
 
 ## Build order
-1. Bootloader + display/touch driver (get something on screen first)
-2. App-launcher shell
-3. Radio (SX1262) driver via RadioLib
-4. NFC driver (starting on breakout, later bare IC)
-5. Sensors/audio driver (lowest architectural risk, do last)
+1. Bootloader + display/touch driver (get something on screen first) — **implemented**
+2. App-launcher shell — **implemented**
+3. Radio (SX1262) driver via RadioLib — **implemented** (LoRa + raw sub-GHz FSK)
+4. NFC driver (starting on breakout, later bare IC) — **implemented** (PN532 read + write)
+5. Sensors/audio driver (lowest architectural risk, do last) — **implemented**
+
+## Implementation status
+All five driver layers plus the LVGL UI shell have a first working implementation, on the
+**Arduino core for ESP32-S3** (ESP-IDF/FreeRTOS still underneath). Verified compiling for
+real hardware and for a Wokwi simulation build; on-device validation pending hardware. See
+`Firmware/` and `Firmware/README.md`. Final vs placeholder parts, and a `SIMULATION_MODE`
+that mocks radio/NFC/audio for hardware-free testing, are documented there and in the
+Design Decisions Log. Not yet built: an IR driver (the Infrared UI tile is a shell for now).
 
 ## File system
 LittleFS on internal flash, or FAT on microSD (microSD is kept in the core build).
