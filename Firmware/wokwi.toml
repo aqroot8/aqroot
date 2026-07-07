@@ -1,0 +1,15 @@
+# Wokwi simulation config for AQROOT.
+#
+# Points Wokwi at the firmware built by the `wokwi` PlatformIO environment (the one that
+# defines SIMULATION_MODE). Build it first with:
+#
+#     pio run -e wokwi
+#
+# then start the simulation (VS Code: "Wokwi: Start Simulator", or the Wokwi CLI).
+#
+# What is real vs mocked in simulation is documented in README.md.
+
+[wokwi]
+version = 1
+firmware = ".pio/build/wokwi/firmware.bin"
+elf = ".pio/build/wokwi/firmware.elf"

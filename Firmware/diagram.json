@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "author": "AQROOT",
+  "editor": "wokwi",
+  "_comment": "SIMULATION WIRING. The ILI9341 is a STAND-IN for the real 2.13in RM69090 AMOLED (not modeled by Wokwi). The four pushbuttons stand in for the CST816 touchscreen (also not modeled). Radio (SX1262), NFC (PN532), IMU and I2S audio have no Wokwi models and are mocked in firmware via SIMULATION_MODE. All display/button pins below match Firmware/src/config.h.",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": { "psramSize": "8", "flashSize": "16" }
+    },
+    {
+      "type": "wokwi-ili9341",
+      "id": "lcd",
+      "top": -120,
+      "left": 200,
+      "attrs": {}
+    },
+    { "type": "wokwi-pushbutton", "id": "btnPrev",  "top": 150, "left": -180, "attrs": { "color": "green", "label": "PREV" } },
+    { "type": "wokwi-pushbutton", "id": "btnNext",  "top": 220, "left": -180, "attrs": { "color": "green", "label": "NEXT" } },
+    { "type": "wokwi-pushbutton", "id": "btnEnter", "top": 150, "left": 40,   "attrs": { "color": "blue",  "label": "ENTER" } },
+    { "type": "wokwi-pushbutton", "id": "btnBack",  "top": 220, "left": 40,   "attrs": { "color": "red",   "label": "BACK" } }
+  ],
+  "connections": [
+    [ "esp:5V", "lcd:VCC", "red", [ "v0" ] ],
+    [ "esp:GND.1", "lcd:GND", "black", [ "v0" ] ],
+    [ "lcd:LED", "esp:21", "orange", [ "v0" ] ],
+
+    [ "lcd:SCK", "esp:12", "yellow", [ "v0" ] ],
+    [ "lcd:MOSI", "esp:11", "green", [ "v0" ] ],
+    [ "lcd:MISO", "esp:13", "blue", [ "v0" ] ],
+    [ "lcd:CS", "esp:10", "cyan", [ "v0" ] ],
+    [ "lcd:DC", "esp:9", "magenta", [ "v0" ] ],
+    [ "lcd:RST", "esp:14", "white", [ "v0" ] ],
+
+    [ "btnPrev:1.l", "esp:GND.2", "black", [ "v0" ] ],
+    [ "btnPrev:2.l", "esp:4", "green", [ "v0" ] ],
+    [ "btnNext:1.l", "esp:GND.2", "black", [ "v0" ] ],
+    [ "btnNext:2.l", "esp:5", "green", [ "v0" ] ],
+    [ "btnEnter:1.l", "esp:GND.3", "black", [ "v0" ] ],
+    [ "btnEnter:2.l", "esp:6", "blue", [ "v0" ] ],
+    [ "btnBack:1.l", "esp:GND.3", "black", [ "v0" ] ],
+    [ "btnBack:2.l", "esp:7", "red", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
