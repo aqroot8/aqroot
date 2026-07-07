@@ -1,0 +1,8 @@
+# PlatformIO / ESP-IDF build artifacts
+.pio/
+build/
+*.o
+*.bin
+
+# Editor / IDE
+.vscode/
