@@ -1,6 +1,6 @@
 CERN Open Hardware Licence Version 2 - Strongly Reciprocal
 
-Copyright (c) 2026 [YOUR NAME]
+Copyright (c) 2026 AQROOT
 
 This source describes Open Hardware and is licensed under the CERN-OHL-S v2.
 
@@ -11,7 +11,7 @@ This source is distributed WITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING
 OF MERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.
 Please see the CERN-OHL-S v2 for applicable conditions.
 
-Source location: [YOUR PROJECT URL]
+Source location: TBD - add GitHub repo URL once created
 
 As per CERN-OHL-S v2 section 4, should You produce hardware based on this
 source, You must where practicable maintain the Source Location visible on the
