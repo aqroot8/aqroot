@@ -44,7 +44,7 @@ Target board: **ESP32-S3-DevKitC-1 N16R8** (bare module WROOM-1 in Beta).
 | MISO | GPIO6 | CC1101 MISO + SX1262 MISO |
 | CC1101 CS | GPIO7 | CC1101 CSN |
 | CC1101 GDO0 | GPIO15 | CC1101 GDO0 (data/IRQ) |
-| CC1101 GDO2 | GPIO16 | CC1101 GDO2 (optional) |
+| CC1101 GDO2 | — (not connected on Alpha) | GPIO16 reassigned to NFC MOSI; GDO0 alone is sufficient |
 | SX1262 CS | GPIO17 | SX1262 NSS |
 | SX1262 DIO1 | GPIO18 | SX1262 DIO1 (IRQ) |
 | SX1262 BUSY | GPIO8 | SX1262 BUSY |
@@ -57,14 +57,14 @@ Add 4.7kOhm pull-ups on SDA and SCL (once, near the ESP32).
 | SDA | GPIO1 | Touch SDA + BMI270 SDA |
 | SCL | GPIO2 | Touch SCL + BMI270 SCL |
 | Touch INT | GPIO42 | Capacitive touch interrupt |
-| IMU INT | GPIO41 | BMI270 interrupt (optional) |
+| IMU INT | — (not connected on Alpha) | GPIO41 reassigned to NFC MISO; poll BMI270 over I2C instead |
 
 ## NFC — ST25R3916 (X-NUCLEO-NFC06A1), own SPI
 | Signal | ESP32-S3 GPIO | Goes to |
 |---|---|---|
 | SCLK | GPIO9 | X-NUCLEO SCK |
-| MOSI | GPIO46 | X-NUCLEO MOSI |
-| MISO | GPIO45 | X-NUCLEO MISO |
+| MOSI | GPIO16 | X-NUCLEO MOSI |
+| MISO | GPIO41 | X-NUCLEO MISO |
 | NFC CS | GPIO40 | X-NUCLEO CS |
 | NFC IRQ | GPIO39 | X-NUCLEO IRQ |
 
@@ -84,8 +84,9 @@ Add 4.7kOhm pull-ups on SDA and SCL (once, near the ESP32).
 ## Notes
 - Wire in staged bring-up order, not all at once: DevKitC alone -> display -> touch ->
   radios -> NFC -> IR. Isolate each subsystem so any fault is traceable.
-- This map is tight but fits with GPIO 26-37 excluded. No headroom for an expansion
-  connector on Alpha — that is a Beta feature.
+- This map is tight but fits with GPIO 26-37 excluded. Keeping strapping pins GPIO 45/46
+  free cost the two optional signals (CC1101 GDO2, IMU INT) — their GPIOs now carry NFC
+  MOSI/MISO. No headroom for an expansion connector on Alpha — that is a Beta feature.
 - Antennas: CC1101 ships with one; Core1262 (SX1262) uses a U.FL antenna (from the
   Heltec kit spare or a separate 915MHz U.FL). NEVER power/transmit a radio with no
   antenna attached — it can destroy the chip.
