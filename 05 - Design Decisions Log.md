@@ -42,6 +42,11 @@ tags: [decisions, log]
   Kickstarter backers). Note: modifying a certified module's RF section (antenna, output
   power) can void that certification — check the module's certification conditions before
   shipping units externally.
+- **Alpha update (July 2026):** the Alpha bench prototype wires BOTH a CC1101 and an
+  SX1262 on a shared SPI bus (see [[09 - Alpha Pin Bus Map]]), with a firmware radio
+  manager guaranteeing only one radio transmits at a time. This supersedes the
+  "replaced with SX1262" line above for the Alpha build; whether both chips ship in the
+  final design is still open.
 
 ## Core vs add-on philosophy
 - Original plan pulled CC1101 out to add-on status for regional/antenna flexibility.
@@ -56,6 +61,10 @@ tags: [decisions, log]
 - PN532: bare IC + tuned antenna matching network for final design. Prototype first on a
   proven breakout board (Elechouse/Adafruit-style) to validate firmware before taking on
   the antenna-matching design risk.
+- **Alpha update (July 2026):** the Alpha bench prototype instead uses an ST25R3916
+  (X-NUCLEO-NFC06A1 eval board) on its own SPI bus — see [[09 - Alpha Pin Bus Map]].
+  This differs from the PN532 plan above AND from the current firmware NFC driver
+  (Adafruit_PN532 over I2C); reconcile the driver before NFC bring-up.
 
 ## Sensors
 - IMU: 6-axis (accel + gyro, e.g. BMI270) instead of true 9-axis. No magnetometer —

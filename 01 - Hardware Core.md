@@ -23,6 +23,12 @@ tags: [hardware, core-components]
 | Storage | microSD slot | — | — | Kept in core — cheap, small, genuinely useful for capture/log storage |
 | Expansion | GPIO header | 12 pins, 3.3V logic only | — | No 5V passthrough — most connected modules run 3.3V natively |
 
+> [!note] Alpha bench prototype deviations (July 2026)
+> The Alpha bench build deviates from this table in two places — see
+> [[09 - Alpha Pin Bus Map]]: NFC is prototyped on an ST25R3916 (X-NUCLEO-NFC06A1
+> eval board, own SPI bus) instead of a PN532 breakout, and a CC1101 is wired
+> alongside the SX1262 for sub-GHz work (shared SPI, one-TX-at-a-time radio manager).
+
 ## Antenna placement
 - SX1262: external stub via SMA connector
 - PN532 (NFC): internal flat coil, read window on the BACK face of the device

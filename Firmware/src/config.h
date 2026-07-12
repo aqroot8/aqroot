@@ -9,6 +9,12 @@
 // PCB pinout once the board is routed. They are grouped so the swap is mechanical. The
 // values were chosen to (a) be valid GPIOs on the ESP32-S3-WROOM-1 N16R8 module and
 // (b) avoid the pins the N16R8 reserves for its octal flash/PSRAM (GPIO26–GPIO37).
+//
+// ALPHA WIRING: the Alpha bench prototype wiring is documented in "09 - Alpha Pin Bus
+// Map.md" at the repo root and does NOT match these placeholders yet — pins differ
+// throughout, NFC there is an ST25R3916 on SPI (here: PN532 on I2C), and a CC1101 sits
+// alongside the SX1262. Do not change the pins below casually: the Wokwi simulation
+// (diagram.json) is wired to match them. Reconcile at real-hardware bring-up.
 
 // ---------------------------------------------------------------------------------------
 // Display resolution

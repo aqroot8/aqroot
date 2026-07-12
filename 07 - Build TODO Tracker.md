@@ -31,7 +31,10 @@ README. Real hardware still needs on-device validation once parts arrive.
 - [ ] Lock the IMU part (BMI270 vs ICM-42670), add its library to platformio.ini, and swap
       the generic register map in sensors.cpp
 - [ ] Add a real IR driver (RMT-based TX/RX) — ir_screen is currently a UI shell only
-- [ ] Reconcile all placeholder pins in Firmware/src/config.h with the final PCB pinout
+- [ ] Reconcile Firmware/src/config.h with [[09 - Alpha Pin Bus Map]] before real-hardware
+      bring-up: placeholder pins differ throughout, firmware NFC is PN532/I2C while the
+      Alpha map uses ST25R3916/SPI, and the CC1101 has no driver yet (radio manager must
+      enforce one-TX-at-a-time across CC1101 + SX1262). Final PCB pinout reconciles later.
 - [ ] On-device validation of every driver once prototype hardware is assembled
 
 ## Hardware
