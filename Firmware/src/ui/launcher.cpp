@@ -36,6 +36,16 @@ static void tile_event_cb(lv_event_t *e) {
     if (fn) fn();
 }
 
+#ifdef SIMULATION_MODE
+// Simulation diagnostics: trace keypad focus/click delivery in the serial monitor.
+static void tile_trace_cb(lv_event_t *e) {
+    const char *title = (const char *)lv_event_get_user_data(e);
+    const char *what  = (lv_event_get_code(e) == LV_EVENT_FOCUSED) ? "focused" : "clicked";
+    Serial.printf("[sim-ui] tile %s: %s\n", what, title);
+    Serial0.printf("[sim-ui] tile %s: %s\n", what, title);
+}
+#endif
+
 static lv_obj_t *make_tile(lv_obj_t *parent, const char *icon, const char *title,
                            const char *subtitle, uint32_t color, open_fn_t fn) {
     lv_obj_t *tile = lv_btn_create(parent);
@@ -48,6 +58,10 @@ static lv_obj_t *make_tile(lv_obj_t *parent, const char *icon, const char *title
     lv_obj_set_style_radius(tile, 8, LV_PART_MAIN);
     lv_obj_set_style_pad_all(tile, 4, LV_PART_MAIN);
     lv_obj_add_event_cb(tile, tile_event_cb, LV_EVENT_CLICKED, (void *)fn);
+#ifdef SIMULATION_MODE
+    lv_obj_add_event_cb(tile, tile_trace_cb, LV_EVENT_FOCUSED, (void *)title);
+    lv_obj_add_event_cb(tile, tile_trace_cb, LV_EVENT_CLICKED, (void *)title);
+#endif
     lv_group_add_obj(s_group, tile);   // explicit: only tiles are keypad-navigable
 
     lv_obj_set_flex_flow(tile, LV_FLEX_FLOW_COLUMN);

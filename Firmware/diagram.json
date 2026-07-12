@@ -32,7 +32,7 @@
     [ "lcd:MOSI", "esp:11", "green", [ "v0" ] ],
     [ "lcd:MISO", "esp:13", "blue", [ "v0" ] ],
     [ "lcd:CS", "esp:10", "cyan", [ "v0" ] ],
-    [ "lcd:DC", "esp:9", "magenta", [ "v0" ] ],
+    [ "lcd:D/C", "esp:9", "magenta", [ "v0" ] ],
     [ "lcd:RST", "esp:14", "white", [ "v0" ] ],
 
     [ "btnPrev:1.l", "esp:GND.2", "black", [ "v0" ] ],

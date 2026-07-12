@@ -59,10 +59,14 @@ Then either:
 - **CLI:** `wokwi-cli .` from the `Firmware` folder.
 
 ### Using the simulation
-- The **ILI9341** panel shows the live LVGL dashboard.
-- **PREV / NEXT** buttons move the tile selection; **ENTER** opens the selected tool;
-  **BACK** returns to the dashboard. (These stand in for the CST816 touchscreen, which
-  Wokwi cannot model.)
+- The **ILI9341** panel shows the live LVGL dashboard. It is **display-only** — Wokwi has
+  no touch model, so clicking the rendered screen does nothing. All input goes through
+  the four pushbutton parts next to the board.
+- **PREV / NEXT** buttons move the tile selection (a focus outline shows the selected
+  tile); **ENTER** opens the selected tool; **BACK** returns to the dashboard. (These
+  stand in for the CST816 touchscreen, which Wokwi cannot model.) Button presses are
+  latched by GPIO interrupts, so a quick click registers even though the simulation runs
+  slower than real time.
 - The **Signal Monitor** and **Scan** screen show a wandering RSSI around −67 dBm at
   915.2 MHz; the **NFC** screen and NFC panel show UID `04 A2 3B 7C 9D 11 22` — all mock
   data from the simulation build.
