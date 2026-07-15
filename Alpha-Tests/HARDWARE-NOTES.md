@@ -46,6 +46,23 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   to transmit); the RX480E is the receiver. Not needed for this test since a car fob
   worked, but available for future capture/replay work.
 
+## SX1262 LoRa radio + DUAL-RADIO coexistence (PASSED - MAJOR MILESTONE)
+- Module: Waveshare Core1262 (SX1262 LoRa Node HF, 850-930MHz, 22dBm, U.FL antenna).
+- MUST attach U.FL antenna before powering/transmitting.
+- Pins (shared SPI bus 2): CLK=4, MOSI=5, MISO=6 (SHARED with CC1101),
+  CS=17, DIO1=18, BUSY=8, RESET=3. VCC=3V3, GND=GND.
+- GOTCHA 1: MOSI/MISO were swapped at first -> code -2. Verify orientation.
+- GOTCHA 2 (CRITICAL for Beta firmware): on the shared bus, the idle radio's CS
+  MUST be driven HIGH (deselected) while the other radio is active. A floating CS
+  on the idle radio corrupts shared MISO and causes -2. This is the core rule the
+  Beta "radio manager" must enforce: only one radio selected at a time.
+- BUSY pin reads 0 when the SX1262 is powered and idle (useful alive-check).
+- RESET on GPIO3 (a strapping pin) works fine for the SX1262 - no issue observed.
+- DUAL-RADIO TEST PASSED: both CC1101 and SX1262 init successfully on the same
+  shared SPI bus in one program, with CS discipline. THE TWO-RADIO ARCHITECTURE
+  IS VALIDATED ON HARDWARE. This was the biggest engineering risk in the project.
+
 ## Status
-- PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception).
-- NEXT: SX1262/LoRa, then NFC, IR, microSD, IMU, power.
+- PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception),
+  SX1262/LoRa, dual-radio coexistence on shared SPI bus.
+- NEXT: NFC, IR, microSD, IMU, power.
