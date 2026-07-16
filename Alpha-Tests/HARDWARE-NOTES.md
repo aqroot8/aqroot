@@ -62,6 +62,20 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   shared SPI bus in one program, with CS discipline. THE TWO-RADIO ARCHITECTURE
   IS VALIDATED ON HARDWARE. This was the biggest engineering risk in the project.
 
+## microSD (PASSED - hardware validated via raw SPI)
+- Module: HW-125 microSD breakout (WWZMDiB 3-pack). Has onboard regulator + 74LVC125
+  level shifter, so it accepts 5V; also works fed from 3V3.
+- Pins (dedicated isolation pins): SCK=39, MOSI=40, MISO=41, CS=42.
+- The Arduino SD.h library would NOT initialize (failed at 400kHz-4MHz, all attempts),
+  even after trying a custom HSPI instance and low speeds. BUT a raw low-level SPI probe
+  sending CMD0 returned 0x01 = card in idle/ready state = card communicates over SPI.
+- Conclusion: SD HARDWARE VALIDATED (card + module + wiring + SPI comms all confirmed).
+  The SD.h library init failure is a known ESP32-Arduino SD.h / custom-SPI-instance quirk,
+  NOT a hardware problem. Deferred to firmware phase: Beta will use ESP-IDF's SD driver or
+  a properly configured SPI setup rather than fighting Arduino SD.h.
+- Note: these dedicated SD pins (39/40/41/42) were later reused for the NFC test (SD
+  unplugged). For Beta, SD and NFC need distinct pins or shared SPI bus planning.
+
 ## ST25R3916 NFC (PASSED - hardest chip in the build)
 - Board: X-NUCLEO-NFC06A1 (ST Arduino shield, ST25R3916 chip). Wired to ESP32 by hand.
 - SPI pins (dedicated, reused from SD test): SCK=39, MISO=41, MOSI=40, CS=42.
@@ -82,7 +96,8 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
 
 ## Status
 - PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception),
-  SX1262/LoRa, dual-radio coexistence on shared SPI bus, ST25R3916 NFC (SPI chip-ID
+  SX1262/LoRa, dual-radio coexistence on shared SPI bus, microSD (hardware validated
+  via raw SPI CMD0; SD.h library deferred to firmware), ST25R3916 NFC (SPI chip-ID
   probe validated).
 - REMAINING (blocked on undelivered parts): IR (TSOP38238), IMU (BMI270), power (bq25185).
 - NEXT SESSION: those three once parts arrive, then Beta schematic in Flux.
