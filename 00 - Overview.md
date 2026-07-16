@@ -28,6 +28,7 @@ Target scale: roughly 75x45x16mm (Kode Dot scale), pocket-tool sized, not PDA-si
 - [[07 - Build TODO Tracker]]
 - [[08 - Kickstarter and Review Strategy]]
 - [[09 - Alpha Pin Bus Map]]
+- [[10 - Beta Pin Map]]
 - [[Alpha-Tests/HARDWARE-NOTES]]
 
 ## First design concept
