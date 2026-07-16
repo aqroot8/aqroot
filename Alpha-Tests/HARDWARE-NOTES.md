@@ -62,7 +62,27 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   shared SPI bus in one program, with CS discipline. THE TWO-RADIO ARCHITECTURE
   IS VALIDATED ON HARDWARE. This was the biggest engineering risk in the project.
 
+## ST25R3916 NFC (PASSED - hardest chip in the build)
+- Board: X-NUCLEO-NFC06A1 (ST Arduino shield, ST25R3916 chip). Wired to ESP32 by hand.
+- SPI pins (dedicated, reused from SD test): SCK=39, MISO=41, MOSI=40, CS=42.
+- Pin finding via ST manual UM2615 Table 2 + multimeter verification:
+  CN5 GND = the hole with 3 pins to the board edge and 6 pins toward CN9.
+  From GND toward CN9: SCK, MISO, MOSI, CS (CN5 pins 6,5,4,3 = D13,D12,D11,D10).
+  CN6 power: 3V3 = 4th from left (lights PWR LED), 5V = 5th from left.
+- POWER FINDING (important for Beta): board needs BOTH 3V3 and 5V. The ESP32-S3 devkit
+  "5Vin" pin is input-only (measured 0.75V, not 5V) even though USB delivers 5V. Fed the
+  NFC 5V pin from 3V3 instead; chip communicates fine over SPI at 3.3V. Full RF transmit
+  power needs real 5V -> BETA POWER SYSTEM MUST INCLUDE A 5V BOOST for NFC RF. bq25185
+  only outputs 3.3V.
+- Validation: raw SPI read of IC Identity reg (0x3F) returned 0x2A. IC-type field = 0x05
+  = ST25R3916 confirmed. SPI communication VALIDATED. (Full tag reading needs the ST rfal
+  library port + 5V, deferred to firmware/Beta phase - same pattern as SD card.)
+- Also a general pin-contention note for Beta: display + SD + 2 radios + NFC all want SPI.
+  Beta pin map must plan shared SPI buses (dual-radio shared bus already proven to work).
+
 ## Status
 - PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception),
-  SX1262/LoRa, dual-radio coexistence on shared SPI bus.
-- NEXT: NFC, IR, microSD, IMU, power.
+  SX1262/LoRa, dual-radio coexistence on shared SPI bus, ST25R3916 NFC (SPI chip-ID
+  probe validated).
+- REMAINING (blocked on undelivered parts): IR (TSOP38238), IMU (BMI270), power (bq25185).
+- NEXT SESSION: those three once parts arrive, then Beta schematic in Flux.
