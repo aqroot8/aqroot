@@ -129,3 +129,11 @@ tags: [decisions, log]
   MOQ, single-unit availability).
 - Prototype budget ceiling: not yet set — see Kickstarter and Review Strategy note.
 - Final enclosure shape: refined slab vs PCB-as-badge vs current rendered concept.
+
+## Display: ILI9341 SPI for Beta, AMOLED as stretch goal
+Decided to ship Beta on the Alpha-validated ILI9341 2.4-2.8in IPS cap-touch (standard SPI,
+FT6236 touch @ 0x38). AMOLED dropped to a Kickstarter stretch goal ('premium AMOLED
+upgrade' - a board revision funded if the campaign hits ~$1M, NOT a drop-in swap since
+AMOLED is QSPI). Rationale: removes the biggest technical risk (QSPI AMOLED bring-up),
+saves ~$25/unit, uses proven parts, and turns a cost into a marketing asset. The dual
+radios (not the screen) are the real differentiator.

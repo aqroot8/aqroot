@@ -22,3 +22,9 @@ materials. Label anything unfinished as "in development."
   (~$65-130 each at Stage 1 dev-board cost — see BOM and Cost Tracker).
 - Check the SX1262 module's certification conditions before shipping units externally —
   modifying the RF section can void FCC/CE certification.
+
+## Stretch goal: premium AMOLED display upgrade (~$1M)
+Baseline units ship with a color IPS cap-touch LCD (ILI9341). If the campaign hits the
+AMOLED stretch target, units upgrade to a premium AMOLED. Phrase honestly as a hardware
+revision (AMOLED is a different QSPI interface), not a trivial swap - deliverable because
+the raised funds cover the added board revision + cost.

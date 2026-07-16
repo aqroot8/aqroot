@@ -3,6 +3,9 @@ tags: [hardware, beta, pinmap, schematic]
 status: beta-planning
 ---
 
+> **SUPERSEDED by [[11 - Beta Pin Map v0.2]]** (three-way review corrections + ILI9341
+> display decision). Kept for history.
+
 # AQROOT Beta — Master Pin Map
 
 The complete, conflict-free pin allocation for the Beta PCB. Every subsystem has a
