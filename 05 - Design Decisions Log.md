@@ -30,6 +30,9 @@ tags: [decisions, log]
   is a genuinely open item — no mainstream hobbyist breakout was found during research;
   likely needs direct sourcing from a display manufacturer/distributor. Flagged as a task
   in the Build TODO Tracker.
+> UPDATED: superseded by the 'Display: ILI9341 SPI for Beta, AMOLED as stretch goal'
+> decision below. The 2.13 AMOLED is now a Kickstarter stretch goal, not the baseline
+> Beta display.
 
 ## Radio
 - Considered: CC1101 (sub-GHz only), either core or add-on.
@@ -103,10 +106,10 @@ tags: [decisions, log]
 - PlatformIO platform pinned to **espressif32@6.9.0** (Arduino 2.0.x / IDF 4.4). The 7.x
   line (Arduino 3.x / IDF 5.x) removed the legacy `driver/i2s.h` API the audio driver uses.
   Treat this as a deliberate bump-when-ready pin, not an accident.
-- Display driver: **LovyanGFX** with a **generic ILI9341 SPI config as a deliberate
-  placeholder** for the RM69090 AMOLED (still unsourced — see Open items). The UI is
-  written resolution-independently, so swapping in the AMOLED is a driver-only change. The
-  same ILI9341 config doubles as the Wokwi simulation panel.
+- Display driver: **LovyanGFX** with a **generic ILI9341 SPI config as the actual Beta
+  display driver (ILI9341 is now the baseline part; AMOLED/RM69090 is a stretch-goal board
+  revision)**. The UI is written resolution-independently, so swapping in the AMOLED later
+  is a driver-only change. The same ILI9341 config doubles as the Wokwi simulation panel.
 - IMU driver: implemented as a **generic MPU-style I2C read with no external dependency**,
   rather than committing to a BMI270 library now. The exact part (BMI270 vs ICM-42670) is
   not locked, and a non-resolvable library dependency would break the build. Add the
@@ -127,6 +130,9 @@ tags: [decisions, log]
 ## Open items to revisit
 - 2.13" AMOLED touch module: needs real sourcing research (manufacturer/distributor,
   MOQ, single-unit availability).
+> UPDATED: superseded by the 'Display: ILI9341 SPI for Beta, AMOLED as stretch goal'
+> decision below. The 2.13 AMOLED is now a Kickstarter stretch goal, not the baseline
+> Beta display.
 - Prototype budget ceiling: not yet set — see Kickstarter and Review Strategy note.
 - Final enclosure shape: refined slab vs PCB-as-badge vs current rendered concept.
 
