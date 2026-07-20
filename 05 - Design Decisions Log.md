@@ -162,3 +162,31 @@ Support components (spec exactly at schematic time from TI datasheet): 1-1.5uH i
 3.3V - OR use a fixed-3.3V sibling (e.g. TPS630250) to drop the setpoint resistors.
 Prototyping: cheap TPS63020 3.3V breakout modules exist (~$10 on Amazon) for future
 bench validation of the power tree.
+
+## RF/antenna architecture + coexistence
+Per-radio antenna architecture (see 12 - RF and Antenna Plan v0.1): WiFi = ESP32 module
+onboard antenna (keep-out only, easiest); NFC = rear PCB/flex loop, no metal behind;
+LoRa 915 = internal FPC on upper sidewall; Sub-GHz 433 = electrically-shortened antenna
+in RF crown (hardest, range compromise). COEXISTENCE: only ONE radio transmits at a time
+(firmware-enforced) + individual radio power-gating for battery life; multiple radios may
+RX at once. Implies a 4-layer PCB for a clean ground plane. Final antenna tuning + exact
+sizes are a POST-PCB step (measured on real hardware); professional RF review required
+before PCB fab.
+
+## 433 MHz antenna: external screw-on + integrated side-holder
+Default: internal compromised 433 antenna (modest range, fully pocketable). Max range:
+a screw-on external high-gain whip via a U.FL/SMA connector (Flipper-style). Stowage: an
+integrated holder/channel on the SIDE of the device holds the external antenna when not
+in use (never lost, distinctive design feature). Target antenna size ~8-14cm class; EXACT
+size decided POST-PCB by measuring candidate antennas on real hardware. Cert caveat: a
+user-swappable antenna may launch as an advanced accessory pending FCC review. Keep
+magnets away from the NFC coil if a magnetic retention is considered.
+
+## Power incident + reverse-polarity Beta requirement
+During bench testing, a reverse-wired LiPo JST connector destroyed a bq25185 charger board
+(isolated damage; battery unharmed; no validated work affected). Battery connector was
+re-pinned and verified at +3.7V correct polarity. LESSON -> Beta MUST include
+reverse-polarity protection at the battery input + a standardized/keyed battery connector
+polarity + a battery tray that doesn't invite reversed insertion. Also validated: bq25185
+board 3.3V buck output = 3.3V, power-path out = 4.6V (both measured correct before the
+incident).

@@ -30,6 +30,7 @@ Target scale: roughly 75x45x16mm (Kode Dot scale), pocket-tool sized, not PDA-si
 - [[09 - Alpha Pin Bus Map]]
 - [[10 - Beta Pin Map]]
 - [[11 - Beta Pin Map v0.2]]
+- [[12 - RF and Antenna Plan v0.1]]
 - [[Alpha-Tests/HARDWARE-NOTES]]
 
 ## First design concept

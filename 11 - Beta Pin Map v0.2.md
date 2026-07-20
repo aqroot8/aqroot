@@ -247,12 +247,13 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
 **Validated in Alpha (SPI/electrical communication only):**
 - ESP32 flashing + PSRAM config; ILI9341 display + FT6236 touch; CC1101 SPI + basic RF RX;
   SX1262 init; dual-radio shared-SPI operation + CS discipline; microSD CMD0 (0x01); NFC SPI
-  chip-ID (0x2A / IC-type 0x05).
+  chip-ID (0x2A / IC-type 0x05); BMI270 IMU (I2C 0x68, accel/gyro functional — accel -1.00g
+  gravity, gyro responds to rotation; multi-device I2C coexistence with touch validated).
 
 **NOT yet validated (product function):**
-- microSD filesystem read/write under load; NFC tag read/write + RF range; IR; IMU; charger
+- microSD filesystem read/write under load; NFC tag read/write + RF range; IR; charger
   + power path; battery runtime; audio; RF performance in an enclosure; SD-on-shared-bus;
-  NFC-as-3rd-SPI-device. (IR/IMU/power parts not yet delivered.)
+  NFC-as-3rd-SPI-device. (IR/power parts not yet delivered.)
 
 ---
 
@@ -273,9 +274,8 @@ Still blocking (must resolve before freeze):
 - [ ] Select exact ILI9341 module P/N (confirm touch controller = FT6236 @ 0x38).
 - [ ] Compute full system power budget + battery capacity/runtime target.
 - [ ] Design the RootProbe board-to-board electrical interface.
-- [ ] Complete antenna/RF plan (4 RF systems: 2.4GHz WiFi, 433 CC1101, 915 SX1262, 13.56 NFC)
-      — antenna types, dimensions, keep-outs, ground plane, coexistence, enclosure spacing.
-      TREATED AS A BLOCKING GATE before PCB layout.
+- [~] RF/antenna ARCHITECTURE done -> see [[12 - RF and Antenna Plan v0.1]]; remaining:
+      select antenna parts + matching networks + professional RF review before PCB fab.
 - [ ] ESD / external-header protection.
 
 Validate on Beta hardware (new configs not proven in Alpha):
