@@ -217,3 +217,26 @@ touch modules use RESISTIVE touch (XPT2046, SPI) or a DIFFERENT capacitive chip 
 possibly different address) - must source a capacitive FT6236 @ 0x38 module, or accept a
 documented alternative + adjust the touch driver. Reference modules: Elecrow / LCDwiki-class
 2.8" IPS ILI9341 capacitive SPI.
+
+## Alpha validation parts - ordered (2026-07-20)
+Ordered the remaining breakouts to finish Alpha validation of the last untested subsystems:
+- ICS-43434 I2S mic (audio input)
+- MAX98357A I2S amp (audio output) + small 4/8ohm speaker
+- MCP23017 I2C GPIO expander (0x20) - designed into Beta, not yet bench-tested
+- TPS63020 buck-boost breakout (3.3V output) - validate the main 3.3V logic rail before PCB
+Deferred (not needed yet): MAX17048 fuel gauge (battery-% monitoring is a convenience
+feature, low-risk to validate later on the Beta board).
+
+Already arriving separately:
+- IR: Bridgold TSOP38238 (RX) + TSAL6200 (TX 940nm) - arrives ~2026-07-21
+- Power: 2x bq25185 charger boards (replacements after the reverse-polarity incident) - few days
+
+## Alpha validation status (remaining)
+Once all parts arrive, the remaining Alpha validations are:
+- IR (TSOP38238 + TSAL6200) on native RMT pins 43/44, 38kHz carrier - NEXT (parts tomorrow)
+- Audio (ICS-43434 + MAX98357A + speaker) on I2S pins 39/40/41/42 - needs a test sketch
+- MCP23017 expander on I2C - verify GPIO in/out + interrupt
+- TPS63020 3.3V rail - bench-test clean 3.3V under load
+- Power charging path (bq25185) - measure outputs, confirm polarity, test charging (few days)
+After these, Alpha is complete for all subsystems -> ready to start the KiCad schematic on
+fully-validated parts.
