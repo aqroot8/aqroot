@@ -204,7 +204,7 @@ USB-C 5V
         |
         +-- SYS (~4.5V, battery-tracking — NOT a clean 3.3V)
              |
-             +-- 3.3V BUCK-BOOST regulator (SEPARATE PART - required)
+             +-- 3.3V BUCK-BOOST regulator (SEPARATE PART - required) -> SELECTED: TI TPS63020 (buck-boost, 3.3V @ up to 2A). See Decisions Log.
              |     +-- ESP32-S3, CC1101, SX1262, display logic,
              |     +-- I2C devices, audio logic, NFC VDD_IO
              |
@@ -268,7 +268,7 @@ Resolved by this revision:
 - [x] RootProbe re-architected (coprocessor).
 
 Still blocking (must resolve before freeze):
-- [ ] Select exact 3.3V buck-boost regulator part.
+- [x] Select exact 3.3V buck-boost regulator part -> TI TPS63020.
 - [ ] Select exact I2S mic + amp/codec (may add enable/mode pins to the expander).
 - [ ] Select exact ILI9341 module P/N (confirm touch controller = FT6236 @ 0x38).
 - [ ] Compute full system power budget + battery capacity/runtime target.

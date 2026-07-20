@@ -143,3 +143,22 @@ upgrade' - a board revision funded if the campaign hits ~$1M, NOT a drop-in swap
 AMOLED is QSPI). Rationale: removes the biggest technical risk (QSPI AMOLED bring-up),
 saves ~$25/unit, uses proven parts, and turns a cost into a marketing asset. The dual
 radios (not the screen) are the real differentiator.
+
+## 3.3V rail regulator: TI TPS63020 buck-boost
+Selected the Texas Instruments TPS63020 as the main 3.3V logic-rail regulator, fed from the
+bq25185 charger's SYS output (~3.0-4.5V, battery-tracking). Rationale:
+- Buck-boost (required): holds a steady 3.3V whether the LiPo is above 3.3V (full, ~4.2V) or
+  below it (near-empty, ~3.0V). A plain buck would brown out with charge still in the battery.
+- Capacity: delivers up to 2A continuous at 3.3V (4A switch limit) - ~2x headroom over the
+  estimated worst-case continuous draw (~1A), so it's never run at its limit.
+- Efficiency up to 96%, most efficient when Vin is near Vout (our ~3.7V->3.3V case) = max
+  battery runtime + low heat in a sealed enclosure.
+- Low quiescent current (~25uA in power-save) = minimal idle battery drain.
+- Input range 1.8-5.5V; can discharge the LiPo below 2V for maximum runtime.
+- Has EN (enable) and PS/SYNC (power-save select) pins - useful for firmware power control.
+- Proven, well-documented TI part with reference designs + WEBENCH; good for open-hardware.
+Support components (spec exactly at schematic time from TI datasheet): 1-1.5uH inductor,
+2x10uF input caps, 3x22uF output caps, and (for adjustable variant) R1=180k/R3=1M to set
+3.3V - OR use a fixed-3.3V sibling (e.g. TPS630250) to drop the setpoint resistors.
+Prototyping: cheap TPS63020 3.3V breakout modules exist (~$10 on Amazon) for future
+bench validation of the power tree.
