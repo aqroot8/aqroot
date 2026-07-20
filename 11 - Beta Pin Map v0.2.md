@@ -180,6 +180,9 @@ on its own pins). CS rule generalizes, but validate on Beta.
 | GPB0-GPB6 | Low-speed expansion GPIO | community add-on header |
 | GPB7 | Spare output-only control | OUTPUT-ONLY pin |
 
+**Audio amp note:** the MAX98357A audio-amp shutdown/enable (+ optional gain) pin(s) live
+here as slow enables (GPA3 above) — power-gate the amp when audio is idle.
+
 **MCP23017 reality:** it has 14 bidirectional + 2 output-only pins (GPA7, GPB7), NOT 16
 bidirectional. After internal control signals, the community expansion header is ~7 slow
 GPIO, not 12. Recount the marketing claim accordingly.
@@ -270,8 +273,10 @@ Resolved by this revision:
 
 Still blocking (must resolve before freeze):
 - [x] Select exact 3.3V buck-boost regulator part -> TI TPS63020.
-- [ ] Select exact I2S mic + amp/codec (may add enable/mode pins to the expander).
-- [ ] Select exact ILI9341 module P/N (confirm touch controller = FT6236 @ 0x38).
+- [x] Select I2S audio parts -> ICS-43434 mic + MAX98357A amp (bench validation pending;
+      amp shutdown pin on MCP23017).
+- [~] Display = 2.8in IPS ILI9341 capacitive SPI (matches Alpha). VERIFY exact module
+      touch = FT6236 @ 0x38 before Beta order.
 - [ ] Compute full system power budget + battery capacity/runtime target.
 - [ ] Design the RootProbe board-to-board electrical interface.
 - [~] RF/antenna ARCHITECTURE done -> see [[12 - RF and Antenna Plan v0.1]]; remaining:

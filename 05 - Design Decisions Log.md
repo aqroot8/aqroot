@@ -190,3 +190,30 @@ reverse-polarity protection at the battery input + a standardized/keyed battery 
 polarity + a battery tray that doesn't invite reversed insertion. Also validated: bq25185
 board 3.3V buck output = 3.3V, power-path out = 4.6V (both measured correct before the
 incident).
+
+## Audio parts: ICS-43434 mic + MAX98357A amp
+Selected the I2S audio parts (were "planned, unspecified"):
+- Speaker amp: MAX98357A - I2S Class-D mono amp, all-in-one (I2S in -> amplified speaker out,
+  no separate DAC). Up to 3.2W into 4ohm (far more than needed; run below max). 2.7-5.5V,
+  efficient Class-D. Has a SHUTDOWN/mode pin -> power-gate the amp when audio idle (goes on
+  the MCP23017 expander as a slow enable). Gain pin-settable (3-15dB). No I2C config needed.
+- Microphone: ICS-43434 - I2S MEMS mic. IMPORTANT: chosen over the popular INMP441 because
+  the INMP441 is DISCONTINUED / not recommended for new designs. The ICS-43434 is the
+  current-gen InvenSense replacement (drop-in, better power + audio). Picking the
+  in-production part now avoids a production sourcing surprise.
+- Speaker: small 4ohm or 8ohm, ~1-2W; exact speaker chosen at enclosure CAD time (size +
+  acoustic mounting depend on the shell).
+- Shares the reserved I2S pins (BCLK=39, LRCLK=40, DOUT=41 speaker, DIN=42 mic).
+- STILL NEEDS BENCH VALIDATION (audio is the one untested subsystem). Buy ICS-43434 +
+  MAX98357A breakouts (~$5-8 each) to validate on the Alpha board when ready.
+- Expander addition: MAX98357A SD/shutdown (+ optional gain) pin(s) on the MCP23017.
+
+## Display module: 2.8" IPS ILI9341 capacitive SPI (verify touch = FT6236 @ 0x38)
+Beta display = 2.8" IPS, ILI9341 driver, 240x320, 4-wire SPI, CAPACITIVE touch - matches the
+Alpha-validated config (same driver, same LovyanGFX setup, real backlight pin confirms BL on
+GPIO47). VERIFICATION REQUIRED before ordering Beta qty: confirm the exact module's touch
+controller is FT6236-family at I2C 0x38 (matches Alpha code). CAUTION: many cheap ILI9341
+touch modules use RESISTIVE touch (XPT2046, SPI) or a DIFFERENT capacitive chip (FT6336/GT911,
+possibly different address) - must source a capacitive FT6236 @ 0x38 module, or accept a
+documented alternative + adjust the touch driver. Reference modules: Elecrow / LCDwiki-class
+2.8" IPS ILI9341 capacitive SPI.
