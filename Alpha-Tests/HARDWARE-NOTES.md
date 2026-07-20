@@ -94,10 +94,23 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
 - Also a general pin-contention note for Beta: display + SD + 2 radios + NFC all want SPI.
   Beta pin map must plan shared SPI buses (dual-radio shared bus already proven to work).
 
+## BMI270 IMU (PASSED)
+- Module: SparkFun BMI270 Qwiic breakout, wired via jumpers to the shared I2C bus.
+- I2C address 0x68 (confirmed via scanner). Config in 11_bmi270_imu_test.ino.
+- Pins: SDA=GPIO1, SCL=GPIO2 (SHARED with the FT6236 touch controller @ 0x38),
+  3V3->3V3, GND->GND. CS/ADR left unconnected.
+- MULTI-DEVICE I2C COEXISTENCE VALIDATED: BMI270 (0x68) and FT6236 touch (0x38) live
+  on the same SDA=1/SCL=2 bus together with no contention. Good for the Beta pin map.
+- Library: needs the "SparkFun BMI270 Arduino Library" - it handles the config-blob
+  upload the BMI270 requires before accel/gyro data works (raw register poking alone
+  won't return motion data).
+- Validation: accel reads -1.00g on the down axis (perfect gravity), gyro ~0 at rest
+  and spikes on rotation. IMU detected AND functional reading real motion.
+
 ## Status
 - PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception),
   SX1262/LoRa, dual-radio coexistence on shared SPI bus, microSD (hardware validated
   via raw SPI CMD0; SD.h library deferred to firmware), ST25R3916 NFC (SPI chip-ID
-  probe validated).
-- REMAINING (blocked on undelivered parts): IR (TSOP38238), IMU (BMI270), power (bq25185).
-- NEXT SESSION: those three once parts arrive, then Beta schematic in Flux.
+  probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence).
+- REMAINING (blocked on undelivered parts): IR (TSOP38238), power (bq25185).
+- NEXT SESSION: those two once parts arrive, then Beta schematic in Flux.
