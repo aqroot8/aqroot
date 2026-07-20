@@ -277,8 +277,12 @@ Still blocking (must resolve before freeze):
       amp shutdown pin on MCP23017).
 - [~] Display = 2.8in IPS ILI9341 capacitive SPI (matches Alpha). VERIFY exact module
       touch = FT6236 @ 0x38 before Beta order.
-- [ ] Compute full system power budget + battery capacity/runtime target.
-- [ ] Design the RootProbe board-to-board electrical interface.
+- [x] Power budget + runtime done -> see [[13 - Power Budget and Battery Runtime v0.1]].
+      2000mAh = ~12-15hr active, ~2wk standby. Backlight timeout = top optimization.
+      Battery could go 2500-3000mAh if enclosure allows.
+- [~] RootProbe interface spec'd -> see [[14 - RootProbe Interface v0.1]]. ~16-18 pin
+      connector, coprocessor (RP2040-class) over SPI+I2C+IRQ. Reserve connector footprint
+      on main board; finalize exact host pins when RootProbe is built (Phase 2).
 - [~] RF/antenna ARCHITECTURE done -> see [[12 - RF and Antenna Plan v0.1]]; remaining:
       select antenna parts + matching networks + professional RF review before PCB fab.
 - [ ] ESD / external-header protection.

@@ -31,6 +31,8 @@ Target scale: roughly 75x45x16mm (Kode Dot scale), pocket-tool sized, not PDA-si
 - [[10 - Beta Pin Map]]
 - [[11 - Beta Pin Map v0.2]]
 - [[12 - RF and Antenna Plan v0.1]]
+- [[13 - Power Budget and Battery Runtime v0.1]]
+- [[14 - RootProbe Interface v0.1]]
 - [[Alpha-Tests/HARDWARE-NOTES]]
 
 ## First design concept
