@@ -16,23 +16,36 @@ Layered stack, bottom to top:
    filesystem-based app-launcher with manifests/icons is a later-stage goal, not v1 scope.
 
 ## Radio driver
-Use RadioLib (actively maintained, explicit SX1262 support) as the base for the radio
-driver rather than writing LoRa/FSK/OOK register-level code from scratch.
+Use RadioLib (actively maintained, explicit SX1262 AND CC1101 support) as the base for the
+radio driver rather than writing LoRa/FSK/OOK register-level code from scratch.
+
+AQROOT is a DUAL-RADIO device (CC1101 + SX1262, both core). The driver layer must therefore
+present a radio manager above the two chips that: shares SPI Bus B with strict CS discipline
+(a floating CS on the idle radio corrupts shared MISO — validated in Alpha), and enforces
+that only ONE radio TRANSMITS at a time (multiple may receive). Currently only the SX1262
+half is implemented.
 
 ## Build order
 1. Bootloader + display/touch driver (get something on screen first) — **implemented**
 2. App-launcher shell — **implemented**
-3. Radio (SX1262) driver via RadioLib — **implemented** (LoRa + raw sub-GHz FSK)
-4. NFC driver (starting on breakout, later bare IC) — **implemented** (PN532 read + write)
+3. Radio driver via RadioLib — **partially implemented**: SX1262 done (LoRa + raw sub-GHz
+   FSK); CC1101 driver and the dual-radio manager are outstanding
+4. NFC driver — **needs rewrite**: implemented against PN532/I2C, but the locked part is
+   the ST25R3916 over SPI (wrong chip and wrong bus)
 5. Sensors/audio driver (lowest architectural risk, do last) — **implemented**
 
 ## Implementation status
 All five driver layers plus the LVGL UI shell have a first working implementation, on the
 **Arduino core for ESP32-S3** (ESP-IDF/FreeRTOS still underneath). Verified compiling for
 real hardware and for a Wokwi simulation build; on-device validation pending hardware. See
-`Firmware/` and `Firmware/README.md`. Final vs placeholder parts, and a `SIMULATION_MODE`
-that mocks radio/NFC/audio for hardware-free testing, are documented there and in the
-Design Decisions Log. Not yet built: an IR driver (the Infrared UI tile is a shell for now).
+`Firmware/` and `Firmware/README.md`. A `SIMULATION_MODE` mocks radio/NFC/audio for
+hardware-free testing.
+
+**Known gap between firmware and the locked Beta design** (tracked in
+[[07 - Build TODO Tracker]]): the NFC driver targets the wrong chip and bus (PN532/I2C vs
+the locked ST25R3916/SPI); there is no CC1101 driver or dual-radio manager; there is no IR
+driver (the Infrared tile is a UI shell); and config.h pin assignments are still placeholder
+wiring matched to the Wokwi diagram rather than [[11 - Beta Pin Map v0.2]].
 
 ## File system
 LittleFS on internal flash, or FAT on microSD (microSD is kept in the core build).

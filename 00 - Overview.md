@@ -10,13 +10,15 @@ status: concept
 - Query: read, inspect, test, debug, scan
 - Root: operates at the low-level hardware/system layer
 
-Open-source, pocket-sized handheld device combining radio tools (NFC, LoRa, sub-GHz, IR)
-with a touch AMOLED UI, built on a custom ESP32-S3 firmware/OS. Positioned as a
+Open-source handheld device combining radio tools (NFC, DUAL sub-GHz/LoRa radios, IR) with
+a 2.8in IPS touch UI (ILI9341), built on a custom ESP32-S3 firmware/OS. Positioned as a
 differentiator against Flipper Zero (radio-only, no touch/WiFi) and Kode Dot (touch/AI-first,
 radio features sold as paid add-ons) by shipping ALL of these built-in, no paid modules
-required, fully open-source hardware and firmware.
+required, fully open-source hardware and firmware. The built-in dual-radio base (CC1101 +
+SX1262) is the core competitive wedge.
 
-Target scale: roughly 75x45x16mm (Kode Dot scale), pocket-tool sized, not PDA-sized.
+Target scale: ~122x61x23.5mm ("Field Slate" v3 enclosure), 135-165g — a field tool, not a
+keyfob. See [[15 - Enclosure Field Slate v3]].
 
 ## Links
 - [[01 - Hardware Core]]

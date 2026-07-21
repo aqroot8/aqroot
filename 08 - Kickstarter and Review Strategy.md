@@ -19,7 +19,7 @@ materials. Label anything unfinished as "in development."
 - Prepare a short press kit: spec sheet, competitive positioning vs Flipper Zero/Kode Dot,
   a few good product photos.
 - Budget for 2-4 prototype units if seeding multiple reviewers around the same time
-  (~$65-130 each at Stage 1 dev-board cost — see BOM and Cost Tracker).
+  (~$110-200 each at Stage 1 dev-board cost — see BOM and Cost Tracker).
 - Check the SX1262 module's certification conditions before shipping units externally —
   modifying the RF section can void FCC/CE certification.
 
