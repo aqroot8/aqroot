@@ -2,7 +2,7 @@
   "version": 1,
   "author": "AQROOT",
   "editor": "wokwi",
-  "_comment": "SIMULATION WIRING. The ILI9341 is a STAND-IN for the real 2.13in RM69090 AMOLED (not modeled by Wokwi). The four pushbuttons stand in for the CST816 touchscreen (also not modeled). Radio (SX1262), NFC (PN532), IMU and I2S audio have no Wokwi models and are mocked in firmware via SIMULATION_MODE. All display/button pins below match Firmware/src/config.h.",
+  "_comment": "SIMULATION WIRING. The ILI9341 here matches the REAL Beta panel (2.8in IPS, 240x320) - it is not a stand-in. The four pushbuttons DO stand in for the FT6236 touchscreen, which Wokwi cannot model. Radios (CC1101 + SX1262), NFC (ST25R3916), IMU (BMI270) and I2S audio have no Wokwi models and are mocked in firmware via SIMULATION_MODE. All display/button pins below match Firmware/src/config.h.",
   "parts": [
     {
       "type": "board-esp32-s3-devkitc-1",

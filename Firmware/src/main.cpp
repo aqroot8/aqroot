@@ -147,7 +147,7 @@ void setup(void) {
 
     // 2) Radios and sensors.
     radio_init();     // SX1262 via RadioLib: LoRa + sub-GHz
-    nfc_init();       // PN532
+    nfc_init();       // PN532 — WRONG PART, pending ST25R3916/SPI rewrite
     sensors_init();   // 6-axis IMU
     audio_init();     // I2S mic + speaker
 

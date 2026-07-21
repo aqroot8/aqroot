@@ -1,5 +1,6 @@
 #pragma once
-// Display driver interface — 2.13" AMOLED (RM69090 driver over SPI)
+// Display driver interface — 2.8" IPS ILI9341, 240x320, 4-wire SPI (the real Beta panel).
+// A 2.13" RM69090 AMOLED is a Kickstarter stretch-goal board revision, not the baseline.
 // Apps and the UI shell call only these functions, never touch registers directly.
 
 void display_init(void);

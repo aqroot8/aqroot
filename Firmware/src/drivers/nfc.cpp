@@ -1,9 +1,19 @@
 // AQROOT — NFC driver (PN532 via Adafruit_PN532).
 //
-// The PN532 is the confirmed part (breakout for prototype, bare IC + matching network for
-// the final PCB — see "01 - Hardware Core.md"), so this is a real implementation. It runs
-// the PN532 in I2C mode; the IRQ/RESET pins in config.h are PLACEHOLDER wiring pending the
-// final board.
+// ############################ WRONG PART — PENDING REWRITE ############################
+// The PN532 is NOT the AQROOT NFC part. The locked front-end is the ST25R3916 (validated
+// on Alpha over SPI: IC Identity reg 0x3F returned 0x2A, IC-type field 0x05). This file
+// targets the wrong chip AND the wrong bus (PN532/I2C vs ST25R3916/SPI), and the
+// `adafruit/Adafruit PN532` dependency in platformio.ini goes with it.
+//
+// Kept as-is deliberately: replacing it is real engineering work (the ST RFAL library port
+// is the substantial piece), not documentation cleanup, and the current code at least keeps
+// the build and the NFC UI screens alive in the meantime. The Alpha raw-SPI probe in
+// Alpha-Tests/09_nfc_st25r3916_probe.ino is the foundation to build the real driver on.
+//
+// Tracked in "07 - Build TODO Tracker.md". See "05 - Design Decisions Log.md" for the
+// decision. Do not treat anything below as reflecting the AQROOT hardware design.
+// ######################################################################################
 //
 // SIMULATION_MODE: Wokwi has no PN532 model, so the library calls are compiled out and the
 // functions return realistic mock data — a fixed 7-byte UID matching the dashboard concept

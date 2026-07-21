@@ -1,5 +1,5 @@
 // NFC screen.
-// Polls the PN532 driver for a tag UID and shows it live; a Write button performs a raw
+// Polls the NFC driver for a tag UID and shows it live; a Write button performs a raw
 // block write. In SIMULATION_MODE the NFC driver returns a fixed mock UID so the readout
 // and write flow can be exercised without hardware.
 

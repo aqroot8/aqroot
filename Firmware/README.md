@@ -15,7 +15,7 @@ rewriting the UI.
 Firmware/
   platformio.ini        two envs: esp32-s3-aqroot (hardware) and wokwi (SIMULATION_MODE)
   wokwi.toml            points Wokwi at the wokwi-env build artifacts
-  diagram.json          sim wiring: ESP32-S3 + ILI9341 (AMOLED stand-in) + 4 nav buttons
+  diagram.json          sim wiring: ESP32-S3 + ILI9341 (the real panel) + 4 nav buttons
   include/lv_conf.h     LVGL 8.3 configuration
   src/
     config.h            ALL pin assignments + display geometry (one source of truth)
@@ -64,7 +64,7 @@ Then either:
   the four pushbutton parts next to the board.
 - **PREV / NEXT** buttons move the tile selection (a focus outline shows the selected
   tile); **ENTER** opens the selected tool; **BACK** returns to the dashboard. (These
-  stand in for the CST816 touchscreen, which Wokwi cannot model.) Button presses are
+  stand in for the FT6236 touchscreen, which Wokwi cannot model.) Button presses are
   latched by GPIO interrupts, so a quick click registers even though the simulation runs
   slower than real time.
 - The **Signal Monitor** and **Scan** screen show a wandering RSSI around −67 dBm at
@@ -75,34 +75,49 @@ Then either:
 
 | Subsystem | In `SIMULATION_MODE` | On real hardware |
 |---|---|---|
-| Display  | ILI9341 stand-in, real LVGL rendering | LovyanGFX to placeholder ILI9341 config |
-| Touch    | 4 physical buttons (keypad nav)       | real CST816 I2C touch |
-| Radio    | mock RSSI/frames                      | real RadioLib SX1262 (LoRa + FSK) |
-| NFC      | fixed mock UID + fake write ok        | real Adafruit_PN532 read + block write |
-| IMU      | mock motion data                      | real generic I2C IMU read |
+| Display  | ILI9341 (the real panel), real LVGL rendering | LovyanGFX ILI9341 config |
+| Touch    | 4 physical buttons (keypad nav)       | FT6236 I2C touch @ 0x38 |
+| Radio    | mock RSSI/frames                      | RadioLib SX1262 only — no CC1101 yet |
+| NFC      | fixed mock UID + fake write ok        | Adafruit_PN532 — **wrong part**, see below |
+| IMU      | mock motion data                      | generic I2C read — insufficient for BMI270 |
 | Audio    | silent / timed                        | real ESP32 I2S tone + mic capture |
 
-## Driver status: final vs placeholder
+## Driver status vs the locked Beta design
 
-**Final choices (real implementations, only wiring is TBD):**
-- **Touch — CST816-series** (`touch.cpp`): confirmed final part, real I2C driver.
-- **Radio — SX1262 via RadioLib** (`radio.cpp`): confirmed certified module; both LoRa
-  and raw sub-GHz FSK/OOK modes implemented.
-- **NFC — PN532 via Adafruit_PN532** (`nfc.cpp`): confirmed part; real tag read + Mifare
-  Classic block write.
+**Matches the locked design:**
+- **Display — ILI9341** (`display.cpp`): the 2.8″ IPS ILI9341 (240×320) **is** the Beta
+  panel, Alpha-validated. It is not a stand-in. (A 2.13″ RM69090 AMOLED is a Kickstarter
+  stretch-goal board revision; the resolution-independent UI means that swap stays a
+  driver-only change if it is ever funded.)
+- **Touch — FT6236 @ 0x38** (`touch.cpp`): correct part and address. Register layout at
+  0x02 is shared with the CST816 this was originally written against, so the read logic is
+  unchanged. **Missing:** the CTP_RST low→high pulse the FT6236 needs before it will
+  respond at all.
+- **Audio — I2S** (`audio.cpp`): correct interface for the locked ICS-43434 mic +
+  MAX98357A amp.
 
-**Placeholder / pending hardware sourcing:**
-- **Display panel config** (`display.cpp`): a generic **ILI9341** LovyanGFX config stands
-  in for the unsourced 2.13″ **RM69090** AMOLED (502×410). Swap the panel class + geometry
-  when the AMOLED arrives; the resolution-independent UI needs no change.
-- **IMU part** (`sensors.cpp`): the exact 6-axis IMU (BMI270 vs ICM-42670) is not locked,
-  so a **generic MPU-style I2C read** is used with **no external dependency**. When the
-  part is chosen, add its library to `platformio.ini` (candidate lines are already noted
-  there) and swap the register map / init.
+**Does NOT match the locked design — outstanding engineering work:**
+- **NFC — PN532 via Adafruit_PN532** (`nfc.cpp`): **wrong chip and wrong bus.** The locked
+  front-end is the **ST25R3916 over SPI** (Alpha-validated, IC-ID `0x2A`). Needs a full
+  driver rewrite plus the ST RFAL port; the `Adafruit PN532` dependency goes with it.
+- **Radio — SX1262 only** (`radio.cpp`): AQROOT is a **dual-radio** device. There is no
+  CC1101 driver and no radio manager to enforce one-TX-at-a-time + CS discipline across
+  both chips on shared SPI Bus B.
+- **IMU** (`sensors.cpp`): the part **is** locked (BMI270 @ 0x68, Alpha-validated), but a
+  generic MPU-style register read will not return motion data from a BMI270 — it needs a
+  multi-KB config blob uploaded at init. Add the SparkFun BMI270 library and swap the
+  register map.
 - **Infrared** (`ui/screens/ir_screen.cpp`): UI shell only — there is no `drivers/ir.*`
-  yet. IR TX/RX should become an RMT-based driver following the same interface pattern.
-- **All pins in `config.h`**: provisional; reconcile with the final PCB pinout. The Wokwi
-  `diagram.json` mirrors the display + button pins so the sim and firmware stay in sync.
+  yet. IR TX/RX should become an RMT-based driver (native pins 43/44, 38 kHz carrier)
+  following the same interface pattern.
+
+- **All pins in `config.h`**: still provisional and currently differ from
+  `11 - Beta Pin Map v0.2.md` on every bus (display DC/RST, I2C on 17/18 vs 1/2, radio
+  sharing the display bus, I2S on the wrong pins). The Wokwi `diagram.json` mirrors the
+  display + button pins, so the sim and firmware stay in sync with each other.
+
+All of the above are tracked in `07 - Build TODO Tracker.md`. They are deliberate,
+scheduled work — not oversights.
 
 ## Licensing
 Firmware is MIT (`../LICENSE-FIRMWARE.md`); hardware design files are CERN-OHL-S v2
