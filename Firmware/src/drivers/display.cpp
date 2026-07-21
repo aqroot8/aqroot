@@ -1,16 +1,21 @@
 // AQROOT — display driver (LovyanGFX) + LVGL glue.
 //
-// ============================ PLACEHOLDER PANEL CONFIG ============================
-// The LGFX config below drives a GENERIC ILI9341 SPI panel. This is a STAND-IN for the
-// final 2.13" RM69090-based AMOLED (502x410), which is not yet sourced. When the AMOLED
-// arrives, replace the Panel_ILI9341 instance + its config block with the RM69090 init
-// sequence (a QSPI/SPI AMOLED panel class, its own gamma/brightness registers, and
-// 502x410 geometry). Everything above this driver — LVGL, the launcher, every screen —
-// is resolution-independent and needs no change.
+// ============================== PANEL CONFIG (REAL PART) ==============================
+// The LGFX config below drives an ILI9341 SPI panel. This IS the Beta display — a 2.8"
+// IPS ILI9341, 240x320, 4-wire SPI, Alpha-validated (see "05 - Design Decisions Log.md").
+// It is NOT a stand-in.
+//
+// A 2.13" RM69090 AMOLED (502x410) is a Kickstarter STRETCH-GOAL board revision, funded
+// only if the campaign hits its stretch target — and it is a board revision, not a drop-in
+// swap, because that panel is QSPI. If it is ever funded, replace the Panel_ILI9341
+// instance + its config block with the RM69090 init sequence (QSPI AMOLED panel class, its
+// own gamma/brightness registers, 502x410 geometry). Everything above this driver — LVGL,
+// the launcher, every screen — is resolution-independent and needs no change, which is
+// what keeps that swap driver-only.
 //
 // The same ILI9341 config is what the Wokwi simulation renders, so this file compiles and
-// runs identically on real hardware (placeholder panel) and in the browser simulator.
-// =================================================================================
+// runs identically on real hardware and in the browser simulator.
+// =====================================================================================
 
 #include "display.h"
 #include "../config.h"
@@ -21,9 +26,9 @@
 // LGFX_USE_V1 is defined project-wide in platformio.ini build_flags.
 #include <LovyanGFX.hpp>
 
-// --- LovyanGFX device definition for the placeholder SPI panel ---
+// --- LovyanGFX device definition for the ILI9341 SPI panel (the real Beta part) ---
 class LGFX : public lgfx::LGFX_Device {
-    lgfx::Panel_ILI9341 _panel;   // PLACEHOLDER: swap for an RM69090 AMOLED panel class
+    lgfx::Panel_ILI9341 _panel;   // real part; RM69090 AMOLED only if the stretch goal funds
     lgfx::Bus_SPI       _bus;
     lgfx::Light_PWM     _light;
 

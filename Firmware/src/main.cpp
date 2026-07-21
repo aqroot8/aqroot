@@ -6,8 +6,8 @@
 // pumped from loop().
 //
 // INPUT:
-//   * Real hardware: the CST816 touchscreen drives an LVGL pointer device.
-//   * SIMULATION_MODE: Wokwi has no CST816, so four physical buttons (wired in
+//   * Real hardware: the FT6236 touchscreen (@ I2C 0x38) drives an LVGL pointer device.
+//   * SIMULATION_MODE: Wokwi has no capacitive-touch model, so four physical buttons (wired in
 //     diagram.json) drive an LVGL keypad — PREV/NEXT move focus between home tiles, ENTER
 //     opens the focused tile, and BACK returns to the launcher.
 
