@@ -20,6 +20,10 @@ tags: [decisions, log]
   GPIO breakouts, D-pad, and confirm/home/back buttons.
 - Manufacturing (v1 prototype): FDM 3D printing on existing Kobra S1 printer.
 - Target dimensions: ~75x45x16mm, matching Kode Dot's pocket-tool scale.
+> UPDATED: superseded by Field Slate v3 enclosure ~122x61x23.5mm — see
+> [[15 - Enclosure Field Slate v3]]. Note the original "pocket-tool, not PDA-sized"
+> rationale (used to reject the 3.5in Hosyond display) no longer holds on size grounds;
+> the ILI9341 decision still stands on cost + QSPI-risk grounds instead.
 - NFC read window: back face of the device.
 
 ## Display
@@ -38,6 +42,8 @@ tags: [decisions, log]
 - Considered: CC1101 (sub-GHz only), either core or add-on.
 - Decision: replaced with SX1262 — one chip covers both LoRa (mesh networking via
   Meshtastic-compatible firmware) and raw sub-GHz FSK/OOK/ASK capture/replay.
+> UPDATED: superseded by the 'Radio: DUAL-RADIO LOCKED' decision below. AQROOT is NOT a
+> one-chip radio design — it ships BOTH CC1101 and SX1262 as core built-in hardware.
 - Sourcing decision: use a certified breakout module (e.g. Ebyte E22 series) PERMANENTLY,
   even in the final design — not bare IC. Reasoning: multi-band RF matching (roughly
   150-960MHz across sub-bands) is high engineering risk, and certified modules carry
@@ -45,11 +51,18 @@ tags: [decisions, log]
   Kickstarter backers). Note: modifying a certified module's RF section (antenna, output
   power) can void that certification — check the module's certification conditions before
   shipping units externally.
-- **Alpha update (July 2026):** the Alpha bench prototype wires BOTH a CC1101 and an
-  SX1262 on a shared SPI bus (see [[09 - Alpha Pin Bus Map]]), with a firmware radio
-  manager guaranteeing only one radio transmits at a time. This supersedes the
-  "replaced with SX1262" line above for the Alpha build; whether both chips ship in the
-  final design is still open.
+## Radio: DUAL-RADIO LOCKED (CC1101 + SX1262) — production, not just Alpha
+AQROOT ships BOTH CC1101 (sub-GHz OOK/ASK/FSK capture/replay) AND SX1262 (LoRa +
+sub-GHz) as core built-in hardware. Validated together in Alpha (shared SPI Bus B,
+CS-discipline). This dual-radio built-in base IS the core competitive wedge (what Kode Dot
+sells as paid add-ons). Beta pin map v0.2 §3 commits permanent pins to both. NOT optional,
+NOT add-on, NOT Alpha-only.
+- Alpha validation: both chips init on one shared SPI bus in a single program with CS
+  discipline — see [[09 - Alpha Pin Bus Map]] and [[Alpha-Tests/HARDWARE-NOTES]].
+- Coexistence rule: firmware radio manager guarantees only ONE radio transmits at a time
+  (multiple may RX). See the RF/antenna architecture decision below.
+- FIRMWARE ACTION REQUIRED: there is no CC1101 driver yet — the firmware is SX1262-only.
+  A CC1101 driver plus a radio manager spanning both chips is outstanding work.
 
 ## Core vs add-on philosophy
 - Original plan pulled CC1101 out to add-on status for regional/antenna flexibility.
@@ -64,10 +77,21 @@ tags: [decisions, log]
 - PN532: bare IC + tuned antenna matching network for final design. Prototype first on a
   proven breakout board (Elechouse/Adafruit-style) to validate firmware before taking on
   the antenna-matching design risk.
-- **Alpha update (July 2026):** the Alpha bench prototype instead uses an ST25R3916
-  (X-NUCLEO-NFC06A1 eval board) on its own SPI bus — see [[09 - Alpha Pin Bus Map]].
-  This differs from the PN532 plan above AND from the current firmware NFC driver
-  (Adafruit_PN532 over I2C); reconcile the driver before NFC bring-up.
+> UPDATED: superseded by the 'NFC part: ST25R3916 (LOCKED)' decision below. The PN532 plan
+> is dead — wrong chip AND wrong bus (PN532 assumed I2C; ST25R3916 is SPI).
+
+## NFC part: ST25R3916 (LOCKED, supersedes PN532)
+NFC front-end is the ST25R3916 (X-NUCLEO-NFC06A1 in Alpha), validated over SPI (raw IC-ID
+reg 0x3F = 0x2A confirmed, IC-type field 0x05). Supersedes the earlier PN532 plan entirely.
+Interface is SPI (NOT I2C as the old PN532 firmware assumes). Needs BOTH 3V3 and a 5V PA
+rail for full RF TX. FIRMWARE ACTION REQUIRED: the current firmware NFC driver + Adafruit
+PN532 library dependency are for the wrong chip/bus and must be replaced with an ST25R3916
+SPI driver (Alpha raw-SPI validation is the foundation). BOM must swap PN532 -> ST25R3916.
+- Power detail: boost ONLY the analog/PA rail to 5V; keep VDD_IO at 3.3V so the shared SPI
+  bus needs no level shifter. See [[11 - Beta Pin Map v0.2]] §3 and §8.
+- Beta places NFC as a THIRD device on shared SPI Bus B (CS on GPIO9, IRQ on GPIO38) — a
+  config not proven in Alpha (Alpha ran NFC on its own pins); validate on Beta.
+- Antenna: rear PCB/flex loop with matching network — see [[12 - RF and Antenna Plan v0.1]].
 
 ## Sensors
 - IMU: 6-axis (accel + gyro, e.g. BMI270) instead of true 9-axis. No magnetometer —
@@ -78,17 +102,23 @@ tags: [decisions, log]
 ## Power
 - Battery: 1000mAh (top of the original 800-1000mAh range), given combined draw from
   AMOLED + Wi-Fi/BT + LoRa/sub-GHz radio.
+> UPDATED: superseded by 2000mAh / ~12-15hr active — see
+> [[13 - Power Budget and Battery Runtime v0.1]]. 2500-3000mAh is an open option if the
+> Field Slate v3 enclosure volume allows.
 - Charging: load-sharing IC required for final design (usable while charging) — a simple
   non-load-sharing TP4056-style module is fine for the dev-board prototype stage only.
 - Target runtime: ~8 hours active use.
+> UPDATED: superseded by ~12-15hr active / ~2wk standby at 2000mAh — see
+> [[13 - Power Budget and Battery Runtime v0.1]].
 - External battery add-on: pogo-pin dock connector (Kode Dot style).
 
 ## PCB and manufacturing
 - Fab house: JLCPCB.
 - Layer count: 4-layer — dedicated ground plane matters for RF cleanliness given
   SX1262 + Wi-Fi/BT coexisting on one small board.
-- Assembly: JLCPCB assembly service for SMD parts (ESP32-S3 module, PN532 IC, SX1262
-  module footprint, passives). Hand-solder headers/connectors/battery wiring yourself.
+- Assembly: JLCPCB assembly service for SMD parts (ESP32-S3 module, ST25R3916, CC1101 +
+  SX1262 module footprints, passives). Hand-solder headers/connectors/battery wiring
+  yourself.
 
 ## Firmware
 - LVGL 8.3.x (stable), not 9.x, to avoid breaking API changes and thinner example coverage.
