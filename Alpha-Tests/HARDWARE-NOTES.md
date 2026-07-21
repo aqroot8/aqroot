@@ -114,3 +114,12 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence).
 - REMAINING (blocked on undelivered parts): IR (TSOP38238), power (bq25185).
 - NEXT SESSION: those two once parts arrive, then Beta schematic in Flux.
+
+## Later corrections / clarifications (appended 2026-07-21)
+The bench observations above are preserved as recorded. Two clarifications from later design work:
+1. "bq25185 only outputs 3.3V" — the 3.3V reading was the board's BUCK output specifically
+   (measured 3.3V, correct). The bq25185 SYS / power-path output is a SEPARATE rail at ~4.5V
+   (measured ~4.6V). Both observations are true — they're different rails. See Pin Map v0.2 §8
+   power tree: SYS ~4.5V feeds the separate TPS63020 3.3V buck-boost for logic.
+2. "Beta schematic in Flux" — the schematic tool decision was later finalized as KiCad (Pin
+   Map v0.2 §12; unanimous in the three-way review). Flux was exploration only.

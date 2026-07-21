@@ -107,11 +107,13 @@ The base enclosure stays clean when no module is attached.
   whip when not in use — never lost, and a distinctive design feature.
 - Target antenna size ~8-14cm class; EXACT size decided POST-PCB by measuring candidates on
   real hardware.
-- **Cert caveat:** a user-swappable antenna may have to launch as an advanced accessory
-  pending FCC review. Note that [[12 - RF and Antenna Plan v0.1]] §4 still carries the older
-  "ship ONE fixed antenna, no user-swappable" launch stance — the external-antenna decision
-  in [[05 - Design Decisions Log]] is the current one; doc 12's launch-stance line needs
-  reconciling at RF review.
+- **Cert path (RESOLVED — the two stances are sequenced, not contradictory):** the BASE
+  CERTIFIED DEVICE ships with the internal electrically-shortened 433 antenna as its default,
+  certified configuration — that is what goes through FCC as the primary device. The external
+  high-gain whip + this side-holder launch as an ADVANCED ACCESSORY, separate from the base
+  certified config, with their own compliance handling. The device is NOT certified with a
+  user-swappable antenna at launch; the whip is added on top. See
+  [[12 - RF and Antenna Plan v0.1]] §4 for the full reworded launch strategy.
 - **Keep magnets away from the NFC coil** if magnetic retention is ever considered.
 
 ## 8. Source documents
@@ -127,5 +129,9 @@ the graphic and this doc disagree on a number, this doc and the product sheet wi
 - [ ] Final battery cell size — 2000mAh baseline, 2500-3000mAh if volume allows.
 - [ ] Exact RootProbe connector part (pin count, pitch, mezzanine vs pogo vs FPC).
 - [ ] Antenna keep-out dimensions from the selected antenna datasheets.
-- [ ] Reconcile doc 12's "no user-swappable 433 antenna" launch stance with the external
-      antenna + side-holder decision.
+- [x] RESOLVED — doc 12's 433 launch stance and the external antenna + side-holder decision
+      are sequenced, not contradictory: internal antenna = base certified device, external
+      whip + holder = advanced accessory on its own FCC path. See
+      [[12 - RF and Antenna Plan v0.1]] §4.
+- [ ] Advanced-accessory FCC path for the external whip — scope and timeline (separate from
+      base device certification).

@@ -89,12 +89,23 @@ Target: pocket handheld (~122 x 61 x 23.5mm, plastic PC+ABS shell, separate RF c
   iteration.
 - **Matching network:** required, plus a U.FL engineering test connector for tuning.
 - **Placement:** RF crown, TOP-LEFT, maximum available volume, away from the user's grip.
-- **Launch stance:** ship ONE fixed, documented, tuned antenna configuration. Do NOT offer
-  user-swappable 433 antennas until compliance review supports it.
-- **Risk:** HIGH — accept a range compromise vs a full-size external whip. Set expectations:
-  a pocket 433 device will not match a Flipper with an external antenna at max range, but a
-  well-tuned internal one is serviceable. An external-antenna engineering accessory (U.FL to
-  SMA) can be a later add-on for users who want max range.
+- **433 antenna launch strategy (sequenced, not a contradiction):**
+  - **BASE CERTIFIED DEVICE:** ships with the internal electrically-shortened 433 antenna as
+    the default, certified configuration. This is what goes through FCC as the primary device.
+  - **EXTERNAL HIGH-GAIN WHIP + SIDE-HOLDER:** launches as an ADVANCED ACCESSORY, separate
+    from the base certified config, with its own compliance handling (a user-attachable
+    antenna is treated as an accessory pending its own FCC path). The side-holder stows it on
+    the device when not in use.
+
+  So the device is NOT certified with a user-swappable antenna at launch; the whip is an
+  accessory added on top. Both the "fixed internal antenna for cert" and the "external whip +
+  holder" decisions are correct and coexist — they apply to different configs/timelines.
+  See [[05 - Design Decisions Log]] (433 external antenna decision) and
+  [[15 - Enclosure Field Slate v3]] §7 (side-holder stowage).
+- **Risk:** HIGH — accept a range compromise vs a full-size external whip on the base device.
+  Set expectations: a pocket 433 device will not match a Flipper with an external antenna at
+  max range, but a well-tuned internal one is serviceable, and the accessory whip closes the
+  gap for users who want max range.
 
 ---
 
@@ -139,6 +150,8 @@ enclosure v3 crown/rear zoning and this plan agree.
 - [ ] PROFESSIONAL RF REVIEW before PCB fab — this plan is architectural; a real RF engineer
       or the cert lab should review antenna placement + matching before committing to copper.
 - [ ] Plan for FCC pre-scan: intentional radiators (433, 915, 2.4, 13.56) drive the cert.
+      Scope this to the BASE CERTIFIED CONFIG (internal 433 antenna) — the external whip is a
+      separate advanced-accessory compliance path, see §4.
 
 **Key honest caveat:** antenna design is the one area where desk-planning only gets you so
 far. Final antenna performance MUST be measured on real hardware in the real enclosure with a
