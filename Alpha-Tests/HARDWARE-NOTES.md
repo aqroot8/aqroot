@@ -113,10 +113,11 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   via raw SPI CMD0; SD.h library deferred to firmware), ST25R3916 NFC (SPI chip-ID
   probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence),
   IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25),
-  audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26).
+  audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26),
+  MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26).
 - MIC PENDING FRESH UNIT: ICS-43434 mic inconclusive (all-zeros, suspected dead single
   unit; all wiring/power/format verified good) - retest with a fresh mic before/at Beta.
-- REMAINING: MCP23017 expander, TPS63020 3.3V rail, bq25185 charging path.
+- REMAINING: TPS63020 3.3V rail, bq25185 charging path.
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
@@ -196,3 +197,23 @@ STATUS: audio-OUT validated; audio-IN wiring + firmware validated, mic UNIT pend
 ACTION: retest with a FRESH ICS-43434 before/at Beta. Part selection (ICS-43434) remains
 LOCKED and correct - this is a suspected bad single unit, NOT a design or part-choice issue.
 Does NOT block the schematic: the audio design and pin map are proven.
+
+## MCP23017 I2C GPIO EXPANDER - PASSED (2026-07-26)
+Board: Waveshare MCP23017 IO Expansion Board.
+Bench wiring: VCC->3V3, GND->GND, SDA->GPIO1, SCL->GPIO2 (shared I2C bus with touch + IMU).
+INTA/INTB unconnected. RESET handled onboard (not broken out). Self-test jumper PA0<->PB0.
+Library: Adafruit MCP23017 Arduino Library (Adafruit_MCP23X17). Pin numbering 0-15:
+GPA0..7 = 0..7, GPB0..7 = 8..15.
+
+ADDRESS: this Waveshare board defaults to 0x27 (A0/A1/A2 pull HIGH when open; short to GND
+to lower the address). The test sketch auto-detects any device in the 0x20-0x27 range, so it
+works regardless of address straps. Detected at 0x27.
+
+RESULT: PASSED. I2C scan found the chip; PA0->PB0 loopback ran 49/49 clean (drove PA0,
+read it back through the expander on PB0, alternating high/low, zero mismatches). Confirms
+the expander does real GPIO output AND input over I2C, coexisting on the same bus as the
+FT6236 touch (0x38) and BMI270 IMU (0x68).
+
+BETA NOTE: the Beta pin map assigns MCP23017 to 0x20 - short A0/A1/A2 to GND on the Beta
+design (or whatever address the final I2C map wants). The chip + library are validated
+either way; only the address straps differ.

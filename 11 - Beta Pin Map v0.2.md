@@ -262,6 +262,9 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
 - I2S AUDIO-IN (ICS-43434 mic): wiring/firmware validated, mic unit inconclusive — all-zeros
   output on a single sample (suspected dead unit; power/continuity/slot-format all verified
   good). Retest with a fresh mic. Part choice remains locked and correct.
+- MCP23017 GPIO EXPANDER VALIDATED (Waveshare board, I2C; PA0->PB0 loopback 49/49 clean;
+  coexists with FT6236 touch + BMI270 IMU on the shared I2C bus; 2026-07-26). Bench board
+  strapped at 0x27; Beta uses 0x20 (short A0/A1/A2 to GND) — chip/library validated either way.
 
 **NOT yet validated (product function):**
 - microSD filesystem read/write under load; NFC tag read/write + RF range; charger
