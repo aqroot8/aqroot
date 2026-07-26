@@ -111,9 +111,11 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
 - PASSED: board/serial, I2C scan, display, touch, CC1101 radio (SPI + RF reception),
   SX1262/LoRa, dual-radio coexistence on shared SPI bus, microSD (hardware validated
   via raw SPI CMD0; SD.h library deferred to firmware), ST25R3916 NFC (SPI chip-ID
-  probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence).
-- REMAINING (blocked on undelivered parts): IR (TSOP38238), power (bq25185).
-- NEXT SESSION: those two once parts arrive, then Beta schematic in Flux.
+  probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence),
+  IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25).
+- REMAINING: audio (ICS-43434 + MAX98357A), MCP23017 expander, TPS63020 3.3V rail,
+  bq25185 charging path.
+- NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
 The bench observations above are preserved as recorded. Two clarifications from later design work:
@@ -123,3 +125,43 @@ The bench observations above are preserved as recorded. Two clarifications from 
    power tree: SYS ~4.5V feeds the separate TPS63020 3.3V buck-boost for logic.
 2. "Beta schematic in Flux" — the schematic tool decision was later finalized as KiCad (Pin
    Map v0.2 §12; unanimous in the three-way review). Flux was exploration only.
+
+## IR - TSOP38238 (RX) + TSAL6200 (TX) - PASSED (2026-07-25)
+Bench pins: IR TX = GPIO 17, IR RX = GPIO 18.
+(Beta pin map uses 43/44. Avoided on the bench: DevKits wire 43/44 to the USB-UART bridge
+chip. Also note 17/18 collide with SX1262 CS/DIO1 on this bench - the radio was unplugged
+for this test. Genuinely free bench pins: 9, 38, 47, 48.)
+
+WIRING:
+  TSOP38238 (lens facing you, legs down): pin1 OUT -> GPIO18, pin2 GND -> GND, pin3 VS -> 3V3
+  TSAL6200: LONG leg (anode) -> 150R resistor -> GPIO17; SHORT leg (flat side) -> GND
+
+RESULTS:
+- RX PASSED: decoded a real remote as NEC, 32 bits, clean.
+- Carrier sweep (LEDC hardware PWM, 36-40kHz): TSOP responded STRONG at every frequency
+  (294-295 LOW samples of ~300). Optical path conclusively confirmed.
+- Full TX->RX loopback PASSED: NEC 0x00FFE01F sent and decoded back, 3 of 4 frames matched.
+
+CRITICAL LESSONS (cost several debug rounds):
+1. THE RECEIVER MUST STAY ENABLED DURING TRANSMIT. Calling irrecv.disableIRIn() before
+   sending means the receiver is deaf while the LED emits - loopback can never work. Also do
+   NOT wrap the send in noInterrupts(): IRrecv's sampling ISR must keep running. This single
+   bug caused every earlier loopback failure and was initially misdiagnosed as a carrier
+   problem.
+2. Use LEDC HARDWARE PWM for the 38kHz carrier on ESP32-S3. IRremoteESP8266 bit-bangs a
+   software carrier on ESP32 which is unreliable here.
+3. A GPIO-driven TSAL6200 is DIM. At 150R and 50% carrier duty the average is ~7mA vs
+   100-500mA in a real remote. Effective range is 1-3cm, not 10-30cm. Aim the LED dome
+   directly at the TSOP dome. BETA MUST DRIVE THE IR LED VIA A TRANSISTOR/MOSFET for
+   usable range.
+4. Timing jitter: with interrupts enabled, hand-timed mark/space occasionally mis-decodes
+   (3 of 4 matched). Native RMT generates timing in hardware and will not have this issue.
+5. IRremoteESP8266 defines unprefixed constants (e.g. kTimeoutMs) that collide with sketch
+   globals - prefix your own. Also resultToHexidecimal() takes a POINTER (&results).
+6. Ambient IR was NOT a factor here (idle LOW 0/50) but the TSOP's AGC can desensitize under
+   flickering LED/fluorescent light - worth checking if RX ever seems weak.
+
+BETA FIRMWARE DECISION: use the native ESP32-S3 RMT peripheral for IR, not a bit-banged
+library. Espressif recommends the S3 for IR specifically because it is the only chip with
+RMT DMA, which keeps IR timing clean while WiFi/BT/radios run concurrently - exactly
+AQROOT's use case.

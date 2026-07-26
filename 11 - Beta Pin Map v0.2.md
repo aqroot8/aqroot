@@ -146,6 +146,8 @@ on its own pins). CS rule generalizes, but validate on Beta.
 | IR RX | 44 | RMT capture; U0TXD, input ignores boot-log edges |
 
 - IR TX needs: transistor/MOSFET driver + current-limit resistor.
+- **Beta must drive the IR LED through a transistor/MOSFET — direct GPIO drive is only
+  ~7mA average and gives just 1-3cm range** (Alpha bench-confirmed on GPIO17/150R).
 - IR RX needs: supply filtering + physical separation from TX LED (avoid self-blinding).
 
 ---
@@ -251,12 +253,14 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
 - ESP32 flashing + PSRAM config; ILI9341 display + FT6236 touch; CC1101 SPI + basic RF RX;
   SX1262 init; dual-radio shared-SPI operation + CS discipline; microSD CMD0 (0x01); NFC SPI
   chip-ID (0x2A / IC-type 0x05); BMI270 IMU (I2C 0x68, accel/gyro functional — accel -1.00g
-  gravity, gyro responds to rotation; multi-device I2C coexistence with touch validated).
+  gravity, gyro responds to rotation; multi-device I2C coexistence with touch validated);
+  IR VALIDATED (TSOP38238 + TSAL6200, bench-tested on GPIO 17/18: RX decode + full TX->RX
+  loopback, NEC 0x00FFE01F; 2026-07-25). Beta pins 43/44 unchanged.
 
 **NOT yet validated (product function):**
-- microSD filesystem read/write under load; NFC tag read/write + RF range; IR; charger
+- microSD filesystem read/write under load; NFC tag read/write + RF range; charger
   + power path; battery runtime; audio; RF performance in an enclosure; SD-on-shared-bus;
-  NFC-as-3rd-SPI-device. (IR/power parts not yet delivered.)
+  NFC-as-3rd-SPI-device. (Power parts pending validation.)
 
 ---
 

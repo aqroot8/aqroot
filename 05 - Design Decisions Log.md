@@ -283,3 +283,12 @@ validations are:
       then test charging
 After these 5 pass, Alpha is COMPLETE -> clear to start the KiCad schematic on fully-
 validated parts.
+
+## IR: native RMT + transistor LED driver (Beta)
+IR validated on the bench (TSOP38238 + TSAL6200). Two Beta requirements emerged:
+(1) FIRMWARE: use the native ESP32-S3 RMT peripheral for IR carrier/timing, NOT a
+bit-banged library. The S3 is the only ESP32 with RMT DMA, which protects IR timing from
+WiFi/BT/radio interrupt jitter - critical since AQROOT runs radios concurrently.
+(2) HARDWARE: drive the IR LED through a transistor/MOSFET, not directly from a GPIO.
+Direct GPIO drive at 150R gives ~7mA average (vs 100-500mA in a real remote) and only
+1-3cm of range. Add the driver stage to the Beta schematic.
