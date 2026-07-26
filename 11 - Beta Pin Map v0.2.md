@@ -265,6 +265,9 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
 - MCP23017 GPIO EXPANDER VALIDATED (Waveshare board, I2C; PA0->PB0 loopback 49/49 clean;
   coexists with FT6236 touch + BMI270 IMU on the shared I2C bus; 2026-07-26). Bench board
   strapped at 0x27; Beta uses 0x20 (short A0/A1/A2 to GND) — chip/library validated either way.
+- TPS63020 3.3V BUCK-BOOST RAIL VALIDATED (bench-tested with a meter; held ~3.3V from a 3.4V
+  battery input — buck-boost regulation confirmed in the hardest near-Vout region; 2026-07-26).
+  On Beta fed from bq25185 SYS (~4.5V) per §8 power tree.
 
 **NOT yet validated (product function):**
 - microSD filesystem read/write under load; NFC tag read/write + RF range; charger

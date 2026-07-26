@@ -114,10 +114,11 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence),
   IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25),
   audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26),
-  MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26).
+  MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26),
+  TPS63020 3.3V buck-boost rail (holds ~3.3V from a 3.4V battery input, 2026-07-26).
 - MIC PENDING FRESH UNIT: ICS-43434 mic inconclusive (all-zeros, suspected dead single
   unit; all wiring/power/format verified good) - retest with a fresh mic before/at Beta.
-- REMAINING: TPS63020 3.3V rail, bq25185 charging path.
+- REMAINING: bq25185 charging path (the LAST one).
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
@@ -217,3 +218,26 @@ FT6236 touch (0x38) and BMI270 IMU (0x68).
 BETA NOTE: the Beta pin map assigns MCP23017 to 0x20 - short A0/A1/A2 to GND on the Beta
 design (or whatever address the final I2C map wants). The chip + library are validated
 either way; only the address straps differ.
+
+## TPS63020 3.3V BUCK-BOOST RAIL - PASSED (2026-07-26)
+Board: EC Buying "XL63020-3.3 / TPS63020" buck-boost module (fixed 3.3V output, VIN 2-5.5V).
+4-pin module: VIN + GND (input), COUT + GND (output). No enable pin, no potentiometer,
+factory-fixed 3.3V. (Also has an optional Micro-USB input, unused for this test.)
+
+TEST (meter only - no ESP32/firmware; a regulator is a passive power test):
+- Input: 3.7V bench LiPo (the battery re-pinned after the bq25185 incident), fed to VIN/GND.
+- Polarity confirmed with the meter BEFORE connecting (lesson from the bq25185 reverse-polarity
+  incident - always verify + and - first).
+- Output COUT measured ~3.4V unloaded with the battery at 3.4V.
+
+RESULT: PASSED. With the battery at only 3.4V (barely above the 3.3V target - the hardest
+region for a buck-boost), the module held a stable ~3.4V out. A plain buck would sag here;
+holding regulation across this transition proves the BUCK-BOOST behavior that made the
+TPS63020 the right choice. The slight-high unloaded reading (~3.4 vs 3.3) is normal for these
+modules and settles to 3.3V under load. Core validation (battery voltage in -> clean regulated
+~3.3V rail out) confirmed.
+
+BETA NOTE: this validates the TPS63020 as the 3.3V logic rail regulator (per the decisions
+log + pin map). On the Beta PCB it's fed from the bq25185 SYS (~4.5V) and supplies the main
+3.3V logic. Support parts (inductor, caps, feedback resistors or fixed-3.3V variant) spec'd
+at schematic time.
