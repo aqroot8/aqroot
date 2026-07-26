@@ -92,8 +92,12 @@ The base enclosure stays clean when no module is attached.
 
 ## 6. Expansion — two-tier
 
-1. **Community GPIO header** — low-speed, off the MCP23017 expander (~7 slow GPIO, not the
-   12 originally advertised; see [[11 - Beta Pin Map v0.2]] §7).
+1. **Community GPIO header** — HYBRID: 16 labeled low-speed GPIO (XGPIO0..15) off a dedicated
+   second MCP23017 @ 0x21, plus native I2C, a shared IRQ/ready line, one native fast pin,
+   3.3V, switched accessory power and multiple grounds. External I2C must be isolated at the
+   connector (series resistors, ESD, bus switch). See [[11 - Beta Pin Map v0.2]] §7b/§8a/§8b.
+   *(v0.2.1: supersedes the earlier "~7 slow GPIO off the shared internal expander" figure,
+   which came from an incorrect MCP23017 pin count.)*
 2. **RootProbe coprocessor connector** — footprint RESERVED on the main board, Phase 2
    product. Recessed connector field with a replaceable protective cover, alignment/keying
    features, optional screw retention. See [[14 - RootProbe Interface v0.1]].

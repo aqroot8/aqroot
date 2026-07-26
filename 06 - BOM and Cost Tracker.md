@@ -17,12 +17,14 @@ tags: [bom, cost, budget]
 | ICS-43434 I2S MEMS mic breakout | $5-8 |
 | MAX98357A I2S Class-D amp breakout | $5-8 |
 | Small 4/8ohm speaker (~1-2W) | $2-5 |
-| MCP23017 I2C GPIO expander breakout | $3-6 |
-| TPS63020 buck-boost 3.3V breakout | $8-12 |
+| MCP23017 I2C GPIO expander breakout **x2** (0x20 internal + 0x21 community header) | $6-12 |
+| TPS63020 buck-boost 3.3V breakout (production P/N: TPS63020DSJR) | $8-12 |
 | MAX17048 fuel gauge breakout (deferred — validate on Beta) | $5-10 |
 | LiPo 2000mAh | $8-14 |
 | bq25185 charger + power-path board | $5-10 |
-| IR: TSOP38238 receiver + TSAL6200 940nm emitter | $2-5 |
+| IR: TSOP38238 receiver + TSAL6200 940nm emitter + low-side MOSFET driver stage | $2-6 |
+| 8x tactile buttons (D-pad + A/B + Back + Home) + physical power switch | $2-5 |
+| I2C bus buffer/isolator or bus switch (external header protection) — part TBD | $1-3 |
 | USB-C breakout, wiring, protoboard | $5-10 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |

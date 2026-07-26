@@ -136,9 +136,10 @@ The bench observations above are preserved as recorded. Two clarifications from 
 
 ## IR - TSOP38238 (RX) + TSAL6200 (TX) - PASSED (2026-07-25)
 Bench pins: IR TX = GPIO 17, IR RX = GPIO 18.
-(Beta pin map uses 43/44. Avoided on the bench: DevKits wire 43/44 to the USB-UART bridge
-chip. Also note 17/18 collide with SX1262 CS/DIO1 on this bench - the radio was unplugged
-for this test. Genuinely free bench pins: 9, 38, 47, 48.)
+(Beta pin map uses TX=16 / RX=44 as of v0.2.1 - see the correction note at the end of this
+section. Avoided on the bench: DevKits wire 43/44 to the USB-UART bridge chip. Also note
+17/18 collide with SX1262 CS/DIO1 on this bench - the radio was unplugged for this test.
+Genuinely free bench pins: 9, 38, 47, 48.)
 
 WIRING:
   TSOP38238 (lens facing you, legs down): pin1 OUT -> GPIO18, pin2 GND -> GND, pin3 VS -> 3V3
@@ -173,6 +174,16 @@ BETA FIRMWARE DECISION: use the native ESP32-S3 RMT peripheral for IR, not a bit
 library. Espressif recommends the S3 for IR specifically because it is the only chip with
 RMT DMA, which keeps IR timing clean while WiFi/BT/radios run concurrently - exactly
 AQROOT's use case.
+
+BETA PIN CORRECTION (2026-07-26, pre-schematic design review): IR TX moved from GPIO43 to
+**GPIO16**; IR RX stays on **GPIO44**. GPIO43 is U0TXD and the ROM bootloader drives the boot
+log out of it on every reset - with the required MOSFET LED driver that would fire the IR LED
+at 100-500mA on every boot. A gate pull-down does NOT fix it (a pull-down cannot override an
+actively-driven push-pull UART output). GPIO16 has no boot-log traffic, and RMT is not
+pin-locked - it routes to any GPIO through the GPIO matrix. This bench validation is
+pin-independent: it proved the parts and the optical path, not a specific GPIO.
+Also note the UART labels in the old Beta map were reversed - correct is GPIO43 = U0TXD,
+GPIO44 = U0RXD.
 
 ## I2S AUDIO - MAX98357A amp PASSED / ICS-43434 mic INCONCLUSIVE (2026-07-26)
 Bench pins (I2S): BCLK=38, LRCK/WS=47, amp DIN=48, mic DOUT=9 (also tested on 3).

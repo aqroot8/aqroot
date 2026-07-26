@@ -188,10 +188,18 @@ bq25185 charger's SYS output (~3.0-4.5V, battery-tracking). Rationale:
 - Has EN (enable) and PS/SYNC (power-save select) pins - useful for firmware power control.
 - Proven, well-documented TI part with reference designs + WEBENCH; good for open-hardware.
 Support components (spec exactly at schematic time from TI datasheet): 1-1.5uH inductor,
-2x10uF input caps, 3x22uF output caps, and (for adjustable variant) R1=180k/R3=1M to set
-3.3V - OR use a fixed-3.3V sibling (e.g. TPS630250) to drop the setpoint resistors.
+2x10uF input caps, 3x22uF output caps, and R1=180k/R3=1M to set 3.3V.
 Prototyping: cheap TPS63020 3.3V breakout modules exist (~$10 on Amazon) for future
 bench validation of the power tree.
+> CORRECTED (2026-07-26, pre-schematic design review): the TPS63020 **IS** the
+> adjustable-output part - there is no "fixed vs adjustable" choice to make, and the earlier
+> "OR use a fixed-3.3V sibling (e.g. TPS630250)" framing has been dropped as a false
+> alternative. Orderable P/N locked: **TPS63020DSJR** (reel). It is **not considered
+> "selected" until its inductor, feedback resistors, and input/output caps are selected with
+> it** - a buck-boost is a compensated loop, not a drop-in symbol. Spec all support components
+> from the TI datasheet at schematic time, and **account for ceramic capacitor DC-bias
+> derating** (a nominal 22uF X5R/X7R can lose 30-60% of its capacitance at the operating
+> voltage - size by effective capacitance, not the printed value).
 
 ## RF/antenna architecture + coexistence
 Per-radio antenna architecture (see 12 - RF and Antenna Plan v0.1): WiFi = ESP32 module
@@ -283,6 +291,96 @@ validations are:
       then test charging
 After these 5 pass, Alpha is COMPLETE -> clear to start the KiCad schematic on fully-
 validated parts.
+
+## PRE-SCHEMATIC DESIGN REVIEW — corrections + decisions (2026-07-26)
+
+Applied immediately before KiCad schematic capture. Source: pre-schematic design review.
+Full detail in [[11 - Beta Pin Map v0.2]] (now revision v0.2.1).
+
+**Factual errors corrected:**
+1. **MCP23017 pin count.** The repo claimed the MCP23017 has "14 bidirectional + 2 output-only
+   pins (GPA7, GPB7)". That is WRONG - the MCP23017 has **16 FULLY BIDIRECTIONAL GPIO** (all
+   of GPA0-7 and GPB0-7, direction set per-pin via IODIRA/IODIRB). There is no output-only pin
+   on this part. All "output-only" notes removed and every pin budget that relied on the wrong
+   number recalculated - including the "~7 slow GPIO" community-header figure, which was
+   downstream of the error.
+2. **GPIO43/44 UART labels.** Corrected to **GPIO43 = U0TXD, GPIO44 = U0RXD** (reversed in
+   v0.2 §5).
+
+**Design changes adopted:**
+3. **IR TX moved GPIO43 -> GPIO16** (IR RX stays on GPIO44). GPIO43 is U0TXD and the ROM
+   bootloader drives the boot log out of it on every reset - that would pulse the IR LED
+   MOSFET driver at 100-500mA on every boot. **A gate pull-down does NOT fix this**: a
+   pull-down cannot override an actively-driven push-pull UART output. GPIO16 has no boot-log
+   traffic and RMT is not pin-locked (it routes through the GPIO matrix). IR TX driver stage
+   specified: low-side MOSFET, gate series resistor 33-220R, gate pull-down 47-100k (float
+   protection during reset/power sequencing only), LED current-limit resistor, local
+   decoupling, physical TX/RX separation.
+4. **GPIO21 reclaimed.** Display RESET and touch RESET both moved off native GPIO21 onto the
+   MCP23017 (reset is a slow signal; the doc already inconsistently had touch RESET on GPA0).
+   Two separate expander pins, not one shared, for sequencing flexibility. The FT6236 still
+   requires a CTP_RST low->high pulse to enumerate - that pulse now comes from the expander,
+   so the boot order is: I2C up -> configure expander -> pulse touch RST -> init touch.
+5. **GPIO3 / BMI270 INT1 strap caution.** SX1262 RESET stays on MCP23017 GPA1; BMI270 INT1
+   stays native on GPIO3. Because GPIO3 is a strapping pin and the IMU can assert INT1 during
+   the reset window, the boot state must be designed: configure INT1 open-drain if the mode
+   allows, add a weak pull setting the correct strap level, add a 100-470R series resistor,
+   add a test pad, and **validate 50-100 cold boots with motion applied during reset** before
+   freezing. Fallback if it fails: drop native motion-wake, poll the IMU, free GPIO3.
+6. **Second MCP23017 at 0x21** for the community expansion header (16 low-speed GPIO,
+   XGPIO0..15). The internal expander (0x20) now carries the 8-button cluster (D-pad + A/B +
+   Back + Home on Port B) plus all internal control signals on Port A - **exactly 16 pins,
+   completely full**. The Port A / Port B split is deliberate: it makes INTB a pure button
+   interrupt. Casualty: the old "display power/control reserve" pin is gone, and no D-pad
+   centre/select fits.
+   - **BUTTON WAKE:** a polled expander CANNOT wake the ESP32 from sleep. The 0x20 INTB output
+     is routed (open-drain, wired-OR with 0x21) to a native wake-capable pin so buttons can
+     wake the device. Without this the ~2-week standby figure is unreachable.
+   - **PHYSICAL POWER SWITCH stays OUT of the expander architecture** - it needs a real
+     hard-off / load-switch / charger ship-mode path, not a firmware GPIO.
+   - **POWER-UP SAFE STATE:** MCP23017 pins default to INPUTS (high-Z) until firmware writes
+     IODIR. Every safety-relevant enable (load switches, amp shutdown, NFC boost enable,
+     resets) needs an **external pull resistor forcing the safe state**. Do NOT rely on
+     "firmware writes it low quickly" - a hung or half-flashed firmware makes that high-Z
+     window permanent.
+7. **External I2C isolation (required).** The community header must NOT expose the internal
+   I2C bus naked: 22-47R series resistors near the host, ESD protection at the connector,
+   optional solder-jumper external pull-ups, a bus buffer/isolator or bus switch, and a
+   firmware/hardware way to disconnect a defective accessory. **A community accessory that
+   shorts SDA/SCL must not disable the internal touch/IMU/fuel-gauge/controls or make AQROOT
+   unbootable.** Reserved I2C address table to publish for accessory makers: **0x20, 0x21,
+   0x36, 0x38, 0x68** (and note the MCP23017 family occupies all of 0x20-0x27).
+8. **Hybrid expansion header.** Not expander-only: expose native fast pins (the reclaimed
+   native GPIO + I2C SDA/SCL + an interrupt/ready line + 3.3V + switched accessory power +
+   multiple grounds) alongside the 16 labeled low-speed expander GPIO. **Do NOT market it as
+   "16 GPIO = Flipper's 18"** - the numbers are not the same currency; label expander pins
+   clearly as low-speed. **Positioning: AQROOT competes on BUILT-IN capability** (dual radios,
+   NFC, IMU, audio, IR, display all onboard), **not on exposed-pin count.** RootProbe remains
+   the dedicated high-speed coprocessor interface.
+9. **TPS63020 variant framing dropped** - see the corrected note in the regulator section
+   above. P/N locked to TPS63020DSJR.
+
+**IMPLEMENTATION NOTE — GPIO21 / GPIO43 role swap (needs sign-off).** The review's wording put
+GPIO21 on the expansion header as the native fast pin, and separately required the expander
+INT on "a native wake-capable pin". With native margin at zero, both cannot be GPIO21. On the
+ESP32-S3 **only GPIO0-21 are RTC GPIO**, so only they can serve as an `ext0`/`ext1` deep-sleep
+wake source - GPIO43/44 cannot. Since [[13 - Power Budget and Battery Runtime v0.1]] depends on
+deep sleep with wake-on-button for the ~2-week standby figure, the wake requirement is the one
+that forces a specific pin. Therefore: **GPIO21 = shared open-drain expander INT / header IRQ
+(RTC-capable, wake works)**, and **GPIO43 = the header's native fast pin** (freed by the IR TX
+move; as U0TXD it also gives accessories a boot-log/UART pin). Same two roles, same two pins,
+assignment swapped so button-wake actually functions. Flagged for explicit sign-off before
+schematic capture.
+
+**Net native pin budget after this revision: 29 used, 2 reserved test pads (GPIO45/46), ZERO
+free.** Reclaiming GPIO21 and freeing GPIO43 exactly paid for IR TX on GPIO16, the button-wake
+line, and one native header pin. Any further native demand - including RootProbe's preferred
+low-latency IRQ - must now displace an existing assignment.
+
+**Left open by this review (recorded, not resolved):** the switched accessory-power enable has
+no pin (0x20 is full, all 16 of 0x21 are promised to the header); the I2C bus switch/isolator
+part is unselected; the physical power-switch topology is unspecified; the IR MOSFET and
+resistor values are unspecified.
 
 ## IR: native RMT + transistor LED driver (Beta)
 IR validated on the bench (TSOP38238 + TSAL6200). Two Beta requirements emerged:

@@ -108,8 +108,10 @@ Then either:
   multi-KB config blob uploaded at init. Add the SparkFun BMI270 library and swap the
   register map.
 - **Infrared** (`ui/screens/ir_screen.cpp`): UI shell only — there is no `drivers/ir.*`
-  yet. IR TX/RX should become an RMT-based driver (native pins 43/44, 38 kHz carrier)
-  following the same interface pattern.
+  yet. IR TX/RX should become an RMT-based driver (native pins **TX=16 / RX=44**, 38 kHz
+  carrier) following the same interface pattern. Note: TX is deliberately NOT on GPIO43 —
+  that pin is U0TXD and carries the ROM boot log, which would fire the LED driver on every
+  reset (see `11 - Beta Pin Map v0.2.md` §5).
 
 - **All pins in `config.h`**: still provisional and currently differ from
   `11 - Beta Pin Map v0.2.md` on every bus (display DC/RST, I2C on 17/18 vs 1/2, radio
