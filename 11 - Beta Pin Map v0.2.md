@@ -261,7 +261,8 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
   Beta pins 39/40/41/42 unchanged.
 - I2S AUDIO-IN (ICS-43434 mic): wiring/firmware validated, mic unit inconclusive — all-zeros
   output on a single sample (suspected dead unit; power/continuity/slot-format all verified
-  good). Retest with a fresh mic. Part choice remains locked and correct.
+  good). NOT bench-retested (decision 2026-07-26): confirmed dead part, not a design issue —
+  first live confirmation happens on Beta hardware. Part choice remains locked and correct.
 - MCP23017 GPIO EXPANDER VALIDATED (Waveshare board, I2C; PA0->PB0 loopback 49/49 clean;
   coexists with FT6236 touch + BMI270 IMU on the shared I2C bus; 2026-07-26). Bench board
   strapped at 0x27; Beta uses 0x20 (short A0/A1/A2 to GND) — chip/library validated either way.
@@ -273,11 +274,11 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
   solid, F off; 2026-07-26). Reverse-polarity protection + keyed battery connector remain
   hard Beta requirements (§8 / power incident note).
 
-> **ALPHA HARDWARE VALIDATION COMPLETE (2026-07-26):** all subsystems bench-proven — the
-> only open item is the audio-in mic (a suspected dead individual ICS-43434 unit; wiring,
+> **ALPHA HARDWARE VALIDATION COMPLETE (2026-07-26):** all subsystems bench-proven. The
+> audio-in mic will NOT be bench-retested (a confirmed dead individual ICS-43434 unit; wiring,
 > firmware, and the MAX98357A amp on the same I2S bus are all validated, so it is a bad part,
-> not a design issue — retest with a fresh mic). **Cleared to begin the KiCad schematic on
-> fully-validated parts.**
+> not a design issue) — its first live confirmation happens on Beta hardware. **Cleared to
+> begin the KiCad schematic on fully-validated parts.**
 
 **NOT yet validated (product function):**
 - microSD filesystem read/write under load; NFC tag read/write + RF range; battery runtime;
@@ -318,6 +319,8 @@ Validate on Beta hardware (new configs not proven in Alpha):
 - [ ] NFC as 3rd device on SPI Bus B.
 - [ ] NFC RF range at 3.3V vs 5V-boosted.
 - [ ] Charger thermals in enclosure.
+- [ ] ICS-43434 mic first live confirmation (Alpha unit was dead; not bench-retested — verify
+      the mic captures audio on first Beta power-up).
 
 ---
 

@@ -118,9 +118,10 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   TPS63020 3.3V buck-boost rail (holds ~3.3V from a 3.4V battery input, 2026-07-26),
   bq25185 charger + power path (USB-first safe method, polarity confirmed, charging
   confirmed, 2026-07-26).
-- *** ALL ALPHA SUBSYSTEMS NOW VALIDATED *** except the audio-in mic (dead individual
-  ICS-43434 unit - retest with a fresh mic; wiring + firmware + the amp on the same bus are
-  all proven, so it's a bad part, not a design issue).
+- *** ALL ALPHA SUBSYSTEMS NOW VALIDATED. *** The audio-in mic is NOT being bench-retested
+  (decision 2026-07-26): the failed ICS-43434 is a confirmed dead individual unit, and its
+  wiring + firmware + the MAX98357A amp on the same I2S bus are all proven, so it's a bad
+  part, not a design issue. The audio-in path will be confirmed on Beta hardware instead.
 - CLEARED to begin the KiCad schematic on fully-validated parts.
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
@@ -273,3 +274,12 @@ BETA NOTES (carry into schematic):
 - REVERSE-POLARITY PROTECTION remains a hard Beta requirement (a reversed LiPo destroyed a
   board during earlier bench work). Beta needs reverse-polarity protection + a keyed/
   standardized battery connector + a tray that can't invite reversed insertion.
+
+## DECISION: ICS-43434 mic NOT bench-retested (2026-07-26)
+Decided not to re-run the audio-in test with a fresh mic. The one unit tested was a confirmed
+dead part, and everything around it is already proven: the I2S wiring, the firmware/driver
+path, and the MAX98357A amp sharing the same I2S bus all validated. This is a bad individual
+unit, not a design or part-choice issue - ICS-43434 stays LOCKED. Consequence: the audio-IN
+path gets its first live confirmation on Beta hardware rather than on the Alpha bench. Low
+risk given the pipeline is proven; noted here so the Beta bring-up checklist explicitly
+verifies the mic on first power-up.
