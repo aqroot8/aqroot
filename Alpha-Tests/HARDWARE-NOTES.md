@@ -115,10 +115,13 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25),
   audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26),
   MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26),
-  TPS63020 3.3V buck-boost rail (holds ~3.3V from a 3.4V battery input, 2026-07-26).
-- MIC PENDING FRESH UNIT: ICS-43434 mic inconclusive (all-zeros, suspected dead single
-  unit; all wiring/power/format verified good) - retest with a fresh mic before/at Beta.
-- REMAINING: bq25185 charging path (the LAST one).
+  TPS63020 3.3V buck-boost rail (holds ~3.3V from a 3.4V battery input, 2026-07-26),
+  bq25185 charger + power path (USB-first safe method, polarity confirmed, charging
+  confirmed, 2026-07-26).
+- *** ALL ALPHA SUBSYSTEMS NOW VALIDATED *** except the audio-in mic (dead individual
+  ICS-43434 unit - retest with a fresh mic; wiring + firmware + the amp on the same bus are
+  all proven, so it's a bad part, not a design issue).
+- CLEARED to begin the KiCad schematic on fully-validated parts.
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
@@ -241,3 +244,32 @@ BETA NOTE: this validates the TPS63020 as the 3.3V logic rail regulator (per the
 log + pin map). On the Beta PCB it's fed from the bq25185 SYS (~4.5V) and supplies the main
 3.3V logic. Support parts (inductor, caps, feedback resistors or fixed-3.3V variant) spec'd
 at schematic time.
+
+## bq25185 CHARGER + POWER PATH - PASSED (2026-07-26)
+Board: Adafruit bq25185 USB/DC/Solar Charger with 3.3V Buck (product 6092). Fresh replacement
+board (NOT the one fried by reverse polarity earlier). Onboard buck = TPS62569 (3.3V/1A).
+Layout: USB-C in, DC/solar pads (unused), JST-PH 2-pin BATT port, 3-pin terminal block
+(4.5V power-path / 3.3V / GND), status LEDs C(charge)/F(fault)/G(3.3V), EN pad, back-side
+charge-rate jumper (left at default 1A).
+
+TEST METHOD - deliberately battery-last to avoid repeating the reverse-polarity kill:
+- Phase 1 (USB only, NO battery): validated the whole output side with zero battery risk.
+  3.3V terminal ~3.3V, 4.5V power-path terminal ~4.5V with USB attached. Green G LED on.
+- Phase 2 (polarity check): measured the re-pinned LiPo's JST pins directly, compared to the
+  board's BATT silkscreen +/- - confirmed MATCH before connecting. This is the exact check
+  skipped when the earlier board was fried.
+- Phase 3 (battery connected): plugged battery in (polarity confirmed). 3.3V output held off
+  battery alone. Then added USB.
+
+RESULT: PASSED. Final state with battery + USB-C connected: Green G (3.3V output) ON, Orange C
+(charging) SOLID ON = actively charging, Red F (fault) OFF. No heat, no fault. Charger, power
+path, 3.3V buck, and charge path all confirmed working.
+
+BETA NOTES (carry into schematic):
+- The bench board's onboard buck is TPS62569; the Beta DESIGN uses a separate TPS63020
+  buck-boost (validated separately) fed from the bq25185-class SYS/power-path (~4.5V). The
+  bench board proves the charger + power-path concept; Beta uses the bq25185 charger stage +
+  our own TPS63020 3.3V rail.
+- REVERSE-POLARITY PROTECTION remains a hard Beta requirement (a reversed LiPo destroyed a
+  board during earlier bench work). Beta needs reverse-polarity protection + a keyed/
+  standardized battery connector + a tray that can't invite reversed insertion.

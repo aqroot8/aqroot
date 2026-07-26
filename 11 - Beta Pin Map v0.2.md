@@ -268,11 +268,21 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
 - TPS63020 3.3V BUCK-BOOST RAIL VALIDATED (bench-tested with a meter; held ~3.3V from a 3.4V
   battery input — buck-boost regulation confirmed in the hardest near-Vout region; 2026-07-26).
   On Beta fed from bq25185 SYS (~4.5V) per §8 power tree.
+- bq25185 CHARGER + POWER PATH VALIDATED (Adafruit 6092; USB-first safe bring-up, battery
+  polarity confirmed vs silkscreen before connecting, active charging confirmed — G on, C
+  solid, F off; 2026-07-26). Reverse-polarity protection + keyed battery connector remain
+  hard Beta requirements (§8 / power incident note).
+
+> **ALPHA HARDWARE VALIDATION COMPLETE (2026-07-26):** all subsystems bench-proven — the
+> only open item is the audio-in mic (a suspected dead individual ICS-43434 unit; wiring,
+> firmware, and the MAX98357A amp on the same I2S bus are all validated, so it is a bad part,
+> not a design issue — retest with a fresh mic). **Cleared to begin the KiCad schematic on
+> fully-validated parts.**
 
 **NOT yet validated (product function):**
-- microSD filesystem read/write under load; NFC tag read/write + RF range; charger
-  + power path; battery runtime; RF performance in an enclosure; SD-on-shared-bus;
-  NFC-as-3rd-SPI-device. (Power parts pending validation; mic pending fresh unit.)
+- microSD filesystem read/write under load; NFC tag read/write + RF range; battery runtime;
+  RF performance in an enclosure; SD-on-shared-bus; NFC-as-3rd-SPI-device. (Mic pending fresh
+  unit.)
 
 ---
 
