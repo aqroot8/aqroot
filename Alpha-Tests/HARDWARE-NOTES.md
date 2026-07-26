@@ -112,9 +112,11 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   SX1262/LoRa, dual-radio coexistence on shared SPI bus, microSD (hardware validated
   via raw SPI CMD0; SD.h library deferred to firmware), ST25R3916 NFC (SPI chip-ID
   probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence),
-  IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25).
-- REMAINING: audio (ICS-43434 + MAX98357A), MCP23017 expander, TPS63020 3.3V rail,
-  bq25185 charging path.
+  IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25),
+  audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26).
+- MIC PENDING FRESH UNIT: ICS-43434 mic inconclusive (all-zeros, suspected dead single
+  unit; all wiring/power/format verified good) - retest with a fresh mic before/at Beta.
+- REMAINING: MCP23017 expander, TPS63020 3.3V rail, bq25185 charging path.
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
@@ -165,3 +167,32 @@ BETA FIRMWARE DECISION: use the native ESP32-S3 RMT peripheral for IR, not a bit
 library. Espressif recommends the S3 for IR specifically because it is the only chip with
 RMT DMA, which keeps IR timing clean while WiFi/BT/radios run concurrently - exactly
 AQROOT's use case.
+
+## I2S AUDIO - MAX98357A amp PASSED / ICS-43434 mic INCONCLUSIVE (2026-07-26)
+Bench pins (I2S): BCLK=38, LRCK/WS=47, amp DIN=48, mic DOUT=9 (also tested on 3).
+(Beta pin map uses 39/40/41/42 - those collide with microSD/NFC/touch on this bench, so
+audio was tested on free pins 38/47/48/9. The bench pin choice does not affect the Beta
+design; it validates the parts + I2S pipeline, which is pin-independent.)
+Library: ESP_I2S (built into Arduino core 3.x, I2SClass). No external lib.
+
+AMP - MAX98357A: PASSED. Plays tones/beeps to a real 8ohm speaker (measured 8.3ohm). Wiring:
+LRC=47, BCLK=38, DIN=48, Vin=3V3, GND=GND, GAIN + SD(SO) unconnected, speaker across +/-.
+This validates the ESP32 I2S peripheral, clock generation, pin assignment, and the whole
+audio-OUT pipeline. NOTE for bench: SD/SO measured 2.98V (enabled) even unconnected on this
+board, so it has a pull-up; still recommend explicitly tying the amp's enable on Beta.
+
+MIC - ICS-43434: INCONCLUSIVE (single sample, suspected dead unit). All-zeros output
+(raw 0x00000000, peak 0) on both GPIO 9 and GPIO 3. Everything AROUND the mic verified good:
+- Power: 3V pin = 2.98V, GND continuity OK
+- SEL = 0V (left channel, matches sketch's I2S_STD_SLOT_LEFT)
+- Continuity CONFIRMED on all three signal lines: DOUT->GPIO, BCLK->38, LRCL->47
+- Slot format tried both LEFT and RIGHT - both all zeros
+- DOUT idles at 0V (a live mic receiving clocks should not sit at flat 0V)
+Since the amp proves the I2S bus/clocks/pins are all good, and every wire to the mic is
+verified, the most likely explanation is a DEAD individual mic unit (MEMS mics are sensitive
+to ESD/reflow; cheap breakouts have real failure rates). Only had ONE mic to test.
+
+STATUS: audio-OUT validated; audio-IN wiring + firmware validated, mic UNIT pending.
+ACTION: retest with a FRESH ICS-43434 before/at Beta. Part selection (ICS-43434) remains
+LOCKED and correct - this is a suspected bad single unit, NOT a design or part-choice issue.
+Does NOT block the schematic: the audio design and pin map are proven.

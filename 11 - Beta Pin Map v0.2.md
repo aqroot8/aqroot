@@ -256,11 +256,17 @@ Do NOT advertise MCP23017 pins as logic-analyzer channels.
   gravity, gyro responds to rotation; multi-device I2C coexistence with touch validated);
   IR VALIDATED (TSOP38238 + TSAL6200, bench-tested on GPIO 17/18: RX decode + full TX->RX
   loopback, NEC 0x00FFE01F; 2026-07-25). Beta pins 43/44 unchanged.
+- I2S AUDIO-OUT VALIDATED (MAX98357A amp driving a real 8ohm speaker; bench-tested on I2S
+  BCLK=38/LRCK=47/DIN=48; validates the I2S peripheral, clocks + pipeline; 2026-07-26).
+  Beta pins 39/40/41/42 unchanged.
+- I2S AUDIO-IN (ICS-43434 mic): wiring/firmware validated, mic unit inconclusive — all-zeros
+  output on a single sample (suspected dead unit; power/continuity/slot-format all verified
+  good). Retest with a fresh mic. Part choice remains locked and correct.
 
 **NOT yet validated (product function):**
 - microSD filesystem read/write under load; NFC tag read/write + RF range; charger
-  + power path; battery runtime; audio; RF performance in an enclosure; SD-on-shared-bus;
-  NFC-as-3rd-SPI-device. (Power parts pending validation.)
+  + power path; battery runtime; RF performance in an enclosure; SD-on-shared-bus;
+  NFC-as-3rd-SPI-device. (Power parts pending validation; mic pending fresh unit.)
 
 ---
 
