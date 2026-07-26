@@ -87,16 +87,49 @@ to decide at schematic time:
   radios for the bus (only one at a time). Since RootProbe use (bench bus-sniffing) rarely
   overlaps with active radio TX, this is probably acceptable.
 - **I2C management** shares the existing I2C bus (SDA=1/SCL=2) - RootProbe gets its own I2C
-  address for housekeeping. Cheap (no new pins).
-- **IRQ/READY + DETECT + RESET** - these need a few GPIO. RESET + one of these could go on
-  the MCP23017 expander (slow signals OK); the IRQ/READY should ideally be a native pin for
-  low-latency "data ready."
+  address for housekeeping. Cheap (no new pins). Must be strapped clear of the reserved
+  addresses (0x20, 0x21, 0x36, 0x38, 0x68 - and the whole 0x20-0x27 MCP23017 block).
 
-**Honest pin-budget note:** the v0.2 map is nearly full on native pins. RootProbe is a Phase-2
-accessory, so the cleanest approach is: reserve the CONNECTOR footprint + route what fits now
-(share SPI bus B + I2C + expander-based reset/detect), and confirm the exact host-pin
-assignment when RootProbe is actually built. Do NOT let RootProbe force main-board pin
-decisions before it exists - just don't paint the board into a corner that makes it impossible.
+### IRQ/READY - DECIDED 2026-07-26: expander pin, NOT a native pin
+
+**The RootProbe host IRQ goes on MCP23017 0x20 GPB7** (the one spare expander pin), reserved
+now and wired when RootProbe is actually built in Phase 2.
+
+Rationale: **RootProbe does its high-speed capture locally on its own MCU.** The line crossing
+to AQROOT is only "data ready / trigger hit / attention" - a notification, not a sampling
+signal. Nothing about capture fidelity depends on how fast the host learns that a buffer is
+ready, because the timing-critical work already completed on the coprocessor and the samples
+are sitting in RootProbe's own RAM. Expander latency (tens to hundreds of microseconds) is
+therefore harmless here, which is exactly the case the earlier "should ideally be a native
+pin" note failed to make. That note is superseded.
+
+Two bonuses fall out of the choice:
+- GPB7 sits on Port B, which already has interrupt-on-change enabled for the button cluster,
+  so the RootProbe IRQ routes through INTB -> GPIO21 and **can wake AQROOT from deep sleep**
+  at no extra cost.
+- It keeps the "don't let a Phase-2 accessory consume scarce native pins" principle intact on
+  the one pin it was most tempting to break it for. The native budget is closed at 29 assigned
+  / 0 unassigned (see [[11 - Beta Pin Map v0.2]] §1) and RootProbe no longer has a claim on it.
+
+### DETECT + RESET - solvable without dedicated pins
+
+- **MODULE_DETECT:** RootProbe has its own MCU and its own I2C address. Detection = "does the
+  coprocessor answer on the management bus." No dedicated pin needed for the basic case.
+- **RESET:** issue it as an I2C management command. A hardware reset line is only worth a pin
+  if Phase-2 bring-up proves the coprocessor can wedge badly enough to stop answering I2C - a
+  question that cannot be answered before RootProbe exists. If it turns out to be needed, the
+  accessory-side load switch (power-cycling the module) is the fallback that costs no host pin.
+- **SPI CS is the one signal that genuinely still needs resolving in Phase 2.** A per-transaction
+  chip select cannot live behind an I2C expander at usable speed. Options when RootProbe is
+  built: displace a native assignment, or assert CS across a whole command/result burst (one
+  expander write to assert, the SPI burst, one to deassert) which is workable for a
+  command-response protocol but not for fine-grained toggling. Do not pre-solve this now.
+
+**Honest pin-budget note:** the main-board map has ZERO free native pins. RootProbe is a
+Phase-2 accessory, so the approach stands: reserve the CONNECTOR footprint, reserve 0x20 GPB7
+for the IRQ, share SPI bus B + I2C, and settle the CS question when RootProbe is actually
+built. Do NOT let RootProbe force main-board pin decisions before it exists - just don't paint
+the board into a corner that makes it impossible.
 
 ---
 
@@ -133,7 +166,8 @@ this. This fits the "power-gate everything" strategy.
 routing, so the base device is "RootProbe-ready" without RootProbe existing yet.
 
 **Stays open (Phase 2, when RootProbe is actually designed):**
-- Exact host-pin assignment on the ESP32-S3 (Option A vs B above).
+- The **SPI CS** host pin (Option A vs B above) — the only signal still needing a native-pin
+  decision. IRQ/READY is settled (0x20 GPB7), DETECT and RESET are handled over I2C.
 - Exact connector part (pin count, pitch, mezzanine vs pogo vs FPC).
 - RootProbe's own board design (RP2040-class MCU, capture front-end, level protection).
 - Number of logic-analyzer channels + max sample rate (defines RootProbe's own silicon).

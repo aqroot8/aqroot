@@ -23,9 +23,9 @@ tags: [hardware, core-components]
 | Buttons | 1x hardware boot/recovery button + 1x physical power switch | — | — | Touchscreen-only input needs a hardware fallback for bricked firmware |
 | Status | RGB LED | — | — | At-a-glance state without waking the screen |
 | Storage | microSD slot | — | — | Kept in core — cheap, small, genuinely useful for capture/log storage |
-| Expansion | Hybrid GPIO header | 16 low-speed XGPIO + native fast pin + I2C + IRQ, 3.3V logic only | — | Off a **dedicated second MCP23017 @ 0x21** (the MCP23017 has 16 fully bidirectional GPIO — the old "14 + 2 output-only" claim was wrong). Internal expander @ 0x20 carries buttons + control. External I2C must be isolated (series R, ESD, bus switch). Label expander pins as LOW-SPEED. See [[11 - Beta Pin Map v0.2]] §7-§8b. No 5V passthrough |
-| Controls | 8-button cluster (D-pad + A/B + Back + Home) | On MCP23017 0x20 Port B | — | Wake via expander INTB -> native RTC-capable GPIO (a polled expander cannot wake the ESP32) |
-| Expansion | RootProbe connector | Footprint reserved | — | High-speed coprocessor accessory interface, Phase 2. Distinct from the slow GPIO header above — see [[14 - RootProbe Interface v0.1]] |
+| Expansion | Hybrid GPIO header | **15 user XGPIO (XGPIO0-14)** + native fast pin (GPIO43) + I2C + IRQ + switched accessory power, 3.3V logic only | — | Off a **dedicated second MCP23017 @ 0x21** (the MCP23017 has 16 fully bidirectional GPIO — the old "14 + 2 output-only" claim was wrong). Its 16th pin is reserved as ACC_PWR_EN. Internal expander @ 0x20 carries buttons + control. External I2C must be isolated (series R, ESD, bus switch). Label expander pins as LOW-SPEED. See [[11 - Beta Pin Map v0.2]] §7-§8b. No 5V passthrough |
+| Controls | **7-button cluster** — D-pad up/down/left/right, A (=select/confirm), B (=back), Home | On MCP23017 0x20 GPB0-6 | — | No separate D-pad centre (A is select) and no separate Back (B is back). Wake via expander INTB -> GPIO21 (RTC-capable; a polled expander cannot wake the ESP32). GPB7 spare, reserved for the Phase-2 RootProbe IRQ |
+| Expansion | RootProbe connector | Footprint reserved | — | High-speed coprocessor accessory interface, Phase 2. Distinct from the slow GPIO header above — see [[14 - RootProbe Interface v0.1]]. Host IRQ reserved on MCP23017 0x20 GPB7 (expander, not native — it is a "data ready" notification, not a sampling signal) |
 
 > [!note] Radio coexistence
 > Both radios and Wi-Fi/BT share the device: firmware enforces that only ONE radio

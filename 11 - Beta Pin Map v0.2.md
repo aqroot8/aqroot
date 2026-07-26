@@ -1,11 +1,11 @@
 ---
-tags: [hardware, beta, pinmap, schematic, v0.2.1]
+tags: [hardware, beta, pinmap, schematic, v0.2.2]
 status: schematic-safe-provisional
 supersedes: "10 - Beta Pin Map.md"
-revision: v0.2.1 (pre-schematic design review, 2026-07-26)
+revision: v0.2.2 (pin-budget resolution, 2026-07-26)
 ---
 
-# AQROOT Beta Pin Map v0.2.1 — schematic-safe provisional
+# AQROOT Beta Pin Map v0.2.2 — schematic-safe provisional
 
 Consolidates corrections from a three-way review (internal / ChatGPT / Fable 5) plus the
 Beta display decision. This supersedes v0.1 ("10 - Beta Pin Map.md"). Target silicon:
@@ -37,12 +37,31 @@ design changes adopted.
 4. **GPIO21 reclaimed.** Display RESET and touch RESET both moved off native GPIO21 onto the
    MCP23017 (reset is a slow signal, and v0.2 already inconsistently placed touch RESET on
    GPA0). See §6a for what GPIO21 now carries and why.
-5. **Second MCP23017 added at 0x21** for the community expansion header (16 low-speed GPIO).
-   The internal expander (0x20) now carries the 8-button cluster + all internal control
-   signals, exactly filling its 16 pins.
+5. **Second MCP23017 added at 0x21** for the community expansion header. *(Superseded in
+   v0.2.2: the header publishes 15 user GPIO, not 16 — the 16th pin is ACC_PWR_EN. The
+   internal 0x20 expander carries a 7-button cluster, not 8, leaving GPB7 spare.)*
 6. **External I2C isolation** required on the community header (§8a).
 7. **Hybrid expansion header** — native fast pins alongside the labeled low-speed expander
    GPIO (§8b).
+
+## v0.2.2 — pin-budget resolution (2026-07-26)
+
+The three items v0.2.1 left open are now closed. No pin assignment from v0.2.1 changed except
+where listed.
+
+1. **GPIO21/GPIO43 swap APPROVED** (§6a). GPIO21 = expander button-wake INT; GPIO43 = header
+   fast pin. Wake capability is a hard silicon constraint (RTC domain = GPIO0-21 only); the
+   header fast pin is pin-number-agnostic. The constrained role takes the constrained pin.
+2. **ACC_PWR_EN = 0x21 GPB7** (§7b). The community header publishes **XGPIO0-14 (15 user
+   GPIO)**; the 16th expander pin gates the switched accessory rail.
+3. **Button cluster = 7 buttons, not 8** (§7a). A = select/confirm, B = back — no separate
+   D-pad centre and no separate Back button. **0x20 GPB7 is spare**, reserved as the Phase-2
+   RootProbe IRQ landing pin.
+4. **RootProbe host IRQ -> expander, not native** (§9). It is a "data ready" notification, not
+   a sampling signal, so expander latency is harmless.
+
+**Native pin budget is now CLOSED: 29 assigned, 2 reserved test pads, 0 unassigned, 0
+outstanding claims.**
 
 ---
 
@@ -88,7 +107,7 @@ design changes adopted.
   therefore cannot serve as an `ext0`/`ext1` deep-sleep wake source. This constrains where
   the button-wake interrupt line can live (see §6a).
 
-### Final native allocation (v0.2.1) — 29 used, 2 reserved test pads, 0 free
+### Final native allocation (v0.2.2) — 29 assigned, 2 reserved test pads, 0 unassigned
 
 | GPIO | Assignment | | GPIO | Assignment |
 |---|---|---|---|---|
@@ -111,12 +130,13 @@ design changes adopted.
 | 16 | **IR TX (moved off GPIO43)** | | | |
 | 17 | SX1262 CS | | | |
 
-**Margin is now ZERO.** Reclaiming GPIO21 (via expander resets) and freeing GPIO43 (via the
-IR TX move) exactly paid for IR TX on GPIO16, the button-wake interrupt line, and one native
-fast pin on the community header. Any further native-pin demand — including RootProbe's
-preferred low-latency IRQ (see [[14 - RootProbe Interface v0.1]]) — must now come out of an
-existing assignment, not out of spare capacity. GPIO45/46 stay unconnected test pads
-deliberately: they are the recovery margin, not a reserve to raid.
+**Margin is ZERO, and every native pin is deliberately assigned — none are unallocated.**
+Reclaiming GPIO21 (via expander resets) and freeing GPIO43 (via the IR TX move) exactly paid
+for IR TX on GPIO16, the button-wake interrupt line, and one native fast pin on the community
+header. RootProbe's host IRQ was the last outstanding claim on a native pin and has been
+resolved onto the expander instead (§9), so **nothing further is queued against the native
+budget.** Any new native-pin demand must displace an existing assignment. GPIO45/46 stay
+unconnected test pads deliberately: they are the recovery margin, not a reserve to raid.
 
 ---
 
@@ -252,7 +272,7 @@ consumes GPIO16 (the last free native pin); GPIO21 was reclaimed in exchange (§
 |---|---|---|
 | BOOT/download button | 0 | MUST be native (ROM samples GPIO0 at reset). Not on expander. |
 | BMI270 INT1 | 3 | strapping pin — hard requirements below |
-| D-pad + A/B/Back/Home (8 buttons) | — | on MCP23017 0x20 GPB0-7, wake via INTB -> GPIO21 |
+| 7-button cluster (D-pad + A + B + Home) | — | on MCP23017 0x20 GPB0-6, wake via INTB -> GPIO21 |
 | Physical power switch | — | **NOT a GPIO** — hard-off path, see below |
 
 **Strapping pins:**
@@ -290,26 +310,27 @@ spare: it becomes the **shared interrupt / wake line**.
 
 | Role | Detail |
 |---|---|
-| MCP23017 0x20 INTB | button-cluster interrupt (all 8 buttons are on Port B) |
+| MCP23017 0x20 INTB | button-cluster interrupt (all 7 buttons are on Port B) |
 | MCP23017 0x21 INTA/INTB | community-header accessory attention line |
 | Header IRQ/READY pin | the same net, exposed on the expansion header (§8b) |
 
 Both expanders' INT outputs are configured **open-drain, active-low, wired-OR** onto this one
 net with a single pull-up. Firmware reads each expander's INTF/INTCAP to identify the source.
 
-**Why GPIO21 and not GPIO43 for this:** a polled expander cannot wake the ESP32 from sleep, so
-this line must be a real wake source — and on the ESP32-S3 only **GPIO0-21 are RTC GPIO**,
-i.e. only they can serve as an `ext0`/`ext1` deep-sleep wake source. GPIO43 is not RTC-capable.
-Since [[13 - Power Budget and Battery Runtime v0.1]] depends on deep sleep (~10-20uA) with
-wake-on-button for the ~2-week standby figure, the interrupt line has to sit on GPIO21 and the
-freed GPIO43 goes to the expansion header instead.
+**Why GPIO21 and not GPIO43 for this — APPROVED 2026-07-26:** a polled expander cannot wake
+the ESP32 from sleep, so this line must be a real wake source — and on the ESP32-S3 only
+**GPIO0-21 are RTC GPIO**, i.e. only they can serve as an `ext0`/`ext1` deep-sleep wake
+source. GPIO43 is not RTC-capable. Since [[13 - Power Budget and Battery Runtime v0.1]]
+depends on deep sleep (~10-20uA) with wake-on-button for the ~2-week standby figure, the
+interrupt line has to sit on GPIO21 and the freed GPIO43 goes to the expansion header instead.
 
-> **NOTE — deviation from the review's literal wording.** The review said "GPIO21 -> native
-> fast expansion GPIO" and separately "route MCP INT to a native wake-capable pin". With zero
-> other native pins left, both cannot be GPIO21. Because GPIO43/44 are outside the RTC domain,
-> the wake requirement is the one that *forces* a specific pin, so GPIO21 takes the interrupt
-> and GPIO43 (freed by the IR TX move) becomes the header's native fast pin. Same two roles,
-> same two pins, assignment swapped so button-wake actually works. Flagged in §11 for sign-off.
+> **RESOLVED — swap approved, not an open item.** The two roles are not symmetric.
+> **Wake capability is a hard electrical constraint of the silicon**: the interrupt line can
+> only work on an RTC-capable pin, and GPIO21 is the only one available. The **header fast
+> pin is pin-number-agnostic** — an accessory maker does not care whether the fast native pin
+> on the connector is called 21 or 43, only that it is native and fast, which GPIO43 is. When
+> one role is constrained and the other is not, the constrained role takes the constrained
+> pin. Signed off in [[05 - Design Decisions Log]] (2026-07-26 pin-budget resolution).
 
 ### 6b. Physical power switch — deliberately OUTSIDE the GPIO architecture
 
@@ -351,14 +372,25 @@ Address straps A0/A1/A2 = GND. **All 16 pins are allocated — this chip is exac
 | GPB1 | in | Button — D-pad DOWN | 10k pull-up |
 | GPB2 | in | Button — D-pad LEFT | 10k pull-up |
 | GPB3 | in | Button — D-pad RIGHT | 10k pull-up |
-| GPB4 | in | Button — A | 10k pull-up |
-| GPB5 | in | Button — B | 10k pull-up |
-| GPB6 | in | Button — BACK | 10k pull-up |
-| GPB7 | in | Button — HOME | 10k pull-up |
+| GPB4 | in | Button — **A = SELECT/CONFIRM** | 10k pull-up |
+| GPB5 | in | Button — **B = BACK** | 10k pull-up |
+| GPB6 | in | Button — HOME | 10k pull-up |
+| GPB7 | in | **SPARE** — reserved for RootProbe IRQ/READY (Phase 2, §9) | 10k pull-up |
 
 Port A = every internal slow control signal. Port B = the entire button cluster. That split is
 deliberate: **INTB becomes a pure button interrupt**, so the wake path (§6a) has no false
 triggers from control-signal activity.
+
+**Button scheme (resolved 2026-07-26) — 7 buttons, not 8.** Standard handheld mapping:
+**D-pad navigates, A = select/confirm, B = back, Home = launcher.** There is **no separate
+D-pad centre/select button** — the A button *is* select, so a centre press would be a
+duplicate control competing with A for the same job. There is also no separate "Back" button
+distinct from B; the earlier "D-pad + A/B + Back + Home" phrasing double-counted it. Power is
+a **hard switch, not a button** (§6b), so it consumes no expander pin.
+
+That leaves **GPB7 spare** — the only unallocated pin anywhere in the design. It is reserved,
+not free: it is the designated landing pin for the Phase-2 RootProbe IRQ/READY line (§9). If
+RootProbe is ever cancelled, GPB7 is the natural home for an 8th button or a centre-select.
 
 - **INTB -> GPIO21**, open-drain, active-low, wired-OR with the 0x21 expander, one pull-up.
 - Enable MCP23017 interrupt-on-change for Port B; use INTCAP/INTF to identify which button.
@@ -381,10 +413,7 @@ half-flashed firmware makes that window permanent.
 
 **Dropped in this revision:** the old GPA4 "display power/control reserve" — displaced by the
 button cluster. If a separate display power-gate is genuinely needed, it must displace
-something else or move to the 0x21 expander. There is no slack left on 0x20.
-
-**No D-pad centre/select button** fits on 0x20. If the enclosure design wants one, it has to
-come off the 0x21 expander or replace an existing button. Settle at enclosure CAD.
+something else or take GPB7. There is no other slack on 0x20.
 
 ### 7b. External expander — 0x21 (community expansion header)
 
@@ -394,17 +423,32 @@ never contend with internal control signals or the button cluster.
 | Pin | Function |
 |---|---|
 | GPA0-7 | XGPIO0-7 — low-speed community GPIO, 3.3V logic |
-| GPB0-7 | XGPIO8-15 — low-speed community GPIO, 3.3V logic |
+| GPB0-6 | XGPIO8-14 — low-speed community GPIO, 3.3V logic |
+| GPB7 | **ACC_PWR_EN** — switched accessory-power enable (NOT exposed to users) |
 
-- 16 labeled low-speed GPIO, brought out as **XGPIO0..XGPIO15**.
+- **15 labeled low-speed user GPIO, brought out as XGPIO0..XGPIO14.** The 16th pin is
+  reserved internally as ACC_PWR_EN.
 - INT output wired-OR onto the shared GPIO21 net (open-drain) so an accessory can request
   attention / wake the device.
 - Every XGPIO line gets ESD protection at the connector and should be current-limited.
-- **Open item:** the switched accessory-power enable has no pin yet. 0x20 is full and all 16
-  of 0x21 are promised to the header. Resolve one of three ways — (a) reserve XGPIO15 as
-  ACC_PWR_EN and publish a 15-pin header, (b) collapse the RGB LED to an I2C RGB driver and
-  free a 0x20 pin, (c) make the accessory rail permanently on and accept the idle draw.
-  Logged in §11.
+
+**ACC_PWR_EN — resolved 2026-07-26 (option (a) of the three logged in v0.2.1).** GPB7 drives
+the load switch on the header's accessory power rail. Worth one header pin because it buys two
+things nothing else provides:
+1. **Power-cycle a misbehaving add-on.** Combined with the I2C bus switch (§8a), a latched-up
+   or bus-jamming accessory can be fully isolated *and* de-powered from firmware, without
+   asking the user to unplug anything or rebooting AQROOT.
+2. **Zero idle draw when nothing is attached** — the rail stays off until an accessory is
+   present and in use, which matters directly to the standby figure in
+   [[13 - Power Budget and Battery Runtime v0.1]].
+
+**15 user GPIO still exceeds Kode Dot's 14**, so the headline number survives the reservation
+intact — see [[04 - Competitive Analysis]] for the caveat about not comparing GPIO counts in
+the first place.
+
+**Safe state:** ACC_PWR_EN needs an external pull holding the accessory rail **OFF** at
+power-up, per the safe-state rule in §7a — an unpowered header is the safe default, and it
+must not depend on firmware having run.
 
 **Audio amp note:** the MAX98357A shutdown/enable (+ optional gain) pin(s) live on 0x20 GPA3
 as slow enables — power-gate the amp when audio is idle, with the external pull holding it in
@@ -497,14 +541,14 @@ margin, §1). So it carries both, clearly labeled.
 | Native fast | **GPIO43** (native fast GPIO; also U0TXD, so it doubles as a boot-log/UART pin) |
 | Native I2C | SDA + SCL, **via the isolation of §8a** |
 | Interrupt | shared open-drain IRQ/READY net (= GPIO21, wired-OR with both expanders) |
-| Power | 3.3V, switched accessory power, **multiple grounds** |
-| Low-speed GPIO | **XGPIO0..XGPIO15** — 16 pins off the 0x21 expander, 3.3V logic only |
+| Power | 3.3V, switched accessory power (gated by ACC_PWR_EN), **multiple grounds** |
+| Low-speed GPIO | **XGPIO0..XGPIO14** — 15 user pins off the 0x21 expander, 3.3V logic only |
 
 **Labeling and marketing rules (binding):**
 - Label the expander pins **clearly as low-speed** on the silkscreen, in the pinout diagram,
   and in the docs. XGPIO is I2C-mediated: expect microseconds-to-milliseconds per transition,
   not MHz. They are for enables, chip selects, mode straps, LEDs, and simple sensors.
-- **Do NOT market this as "16 GPIO = Flipper's 18."** That comparison is false in kind — the
+- **Do NOT market this as "15 GPIO vs Flipper's 18."** That comparison is false in kind — the
   numbers are not the same currency, and claiming it invites exactly the bug reports
   ("your GPIO can't bit-bang X") that the low-speed labeling exists to prevent.
 - **Positioning: AQROOT competes on BUILT-IN capability** — dual radios, NFC, IMU, audio, IR
@@ -529,10 +573,19 @@ It talks to AQROOT over a board-to-board interface: regulated power, GND, SPI da
 management, interrupt/ready line, optional USB pair.
 
 **Split the connector marketing into two things:**
-1. Low-speed community GPIO header — **16 slow GPIO off a dedicated second MCP23017 (0x21)**,
+1. Low-speed community GPIO header — **15 user XGPIO off a dedicated second MCP23017 (0x21)**,
    plus native I2C / IRQ / GPIO43 / power (the hybrid header, §8b). *(v0.2.1: was "~7 slow
    GPIO off the shared internal expander".)*
 2. High-speed RootProbe accessory interface (board-to-board to the coprocessor).
+
+**RootProbe host IRQ — resolved 2026-07-26: EXPANDER pin (0x20 GPB7), not a native pin.**
+RootProbe does its high-speed capture locally on its own MCU; the line crossing to AQROOT is
+only "data ready / trigger hit / attention." That is a notification, not a sampling signal, and
+it tolerates expander latency (tens to hundreds of microseconds) without affecting capture
+fidelity — the timing-critical work already happened on the coprocessor. Putting it on 0x20
+GPB7 also routes it through INTB -> GPIO21, so **RootProbe can wake the device** for free.
+This is the "don't let a Phase-2 accessory consume scarce native pins" principle applied to
+the one pin it was most tempting to break it for. See [[14 - RootProbe Interface v0.1]] §4.
 
 Do NOT advertise MCP23017 pins as logic-analyzer channels.
 
@@ -604,12 +657,16 @@ Resolved by v0.2.1 (pre-schematic design review):
 - [x] External I2C isolation requirements recorded.
 - [x] Header repositioned as a hybrid; marketing rules recorded.
 
+Resolved 2026-07-26 (pin-budget resolution — see [[05 - Design Decisions Log]]):
+- [x] **GPIO21/GPIO43 role swap APPROVED** — GPIO21 = expander button-wake INT (RTC-capable,
+      hard silicon constraint), GPIO43 = header fast pin (pin-number-agnostic). §6a.
+- [x] **ACC_PWR_EN = 0x21 GPB7**; header publishes XGPIO0-14 (15 user GPIO). §7b.
+- [x] **No D-pad centre button** — A = select/confirm, B = back. 7 buttons; GPB7 spare. §7a.
+- [x] **RootProbe host IRQ -> expander pin (0x20 GPB7), Phase 2** — not a native pin. §9.
+
 Still blocking (must resolve before freeze):
-- [ ] **Sign off the GPIO21/GPIO43 role swap** (§6a note) — the review's literal wording put
-      GPIO21 on the header and the INT "somewhere native"; deep-sleep wake needs an RTC GPIO,
-      so they were swapped. Confirm or reverse before capture.
-- [ ] **Switched accessory-power enable has no pin** (§7b) — pick option (a), (b) or (c).
 - [ ] Select the I2C bus buffer/isolator or bus switch part for the external segment (§8a).
+- [ ] Select the ACC_PWR_EN load switch part for the accessory rail (§7b).
 - [ ] Specify the physical power-switch / hard-off topology (§6b).
 - [ ] Specify the IR TX MOSFET + resistor values (§5) against the target drive current.
 - [x] Select exact 3.3V buck-boost regulator part -> TI TPS63020DSJR (adjustable; support

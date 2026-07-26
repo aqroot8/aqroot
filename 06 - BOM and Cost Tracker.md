@@ -23,8 +23,9 @@ tags: [bom, cost, budget]
 | LiPo 2000mAh | $8-14 |
 | bq25185 charger + power-path board | $5-10 |
 | IR: TSOP38238 receiver + TSAL6200 940nm emitter + low-side MOSFET driver stage | $2-6 |
-| 8x tactile buttons (D-pad + A/B + Back + Home) + physical power switch | $2-5 |
+| 7x tactile buttons (D-pad up/down/left/right + A/B + Home) + physical power switch | $2-5 |
 | I2C bus buffer/isolator or bus switch (external header protection) — part TBD | $1-3 |
+| Accessory-rail load switch (driven by ACC_PWR_EN) — part TBD | $0.50-2 |
 | USB-C breakout, wiring, protoboard | $5-10 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |

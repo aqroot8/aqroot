@@ -382,6 +382,102 @@ no pin (0x20 is full, all 16 of 0x21 are promised to the header); the I2C bus sw
 part is unselected; the physical power-switch topology is unspecified; the IR MOSFET and
 resistor values are unspecified.
 
+## PIN BUDGET RESOLUTION — the three open items closed (2026-07-26)
+
+Closes everything the pre-schematic review left open on the pin budget. Detail in
+[[11 - Beta Pin Map v0.2]] (now revision v0.2.2). **The native pin budget is now CLOSED.**
+
+### 1. GPIO21 / GPIO43 role swap — APPROVED, no longer an open item
+
+**GPIO21 = expander button-wake interrupt line. GPIO43 = community-header fast pin.** The swap
+made during the review is kept and signed off.
+
+Rationale, stated plainly because it generalises: **the two roles are not symmetric.**
+- **Wake capability is a hard electrical constraint of the silicon.** On the ESP32-S3 only
+  GPIO0-21 are RTC GPIO, so only they can serve as an `ext0`/`ext1` deep-sleep wake source. A
+  polled expander cannot wake the ESP32 at all, so the expander INT line is the *only* thing
+  making button-wake possible - and GPIO21 is the only RTC-capable pin available. There is no
+  alternative; the constraint decides the pin.
+- **The header fast pin is pin-number-agnostic.** An accessory maker cares that the connector
+  carries a native, fast, 3.3V pin - not whether it is numbered 21 or 43. GPIO43 satisfies
+  every property that matters, and as U0TXD it additionally hands accessories a boot-log/UART
+  pin for free.
+
+When one role is constrained by silicon and the other is not, the constrained role takes the
+constrained pin. Deep-sleep wake-on-button is load-bearing for the ~2-week standby figure in
+[[13 - Power Budget and Battery Runtime v0.1]], so this is not a preference.
+
+### 2. Accessory-power enable — ACC_PWR_EN on 0x21 GPB7; header publishes XGPIO0-14
+
+Option (a) of the three logged during the review. The second MCP23017 (0x21) reserves its
+16th pin (GPB7) as **ACC_PWR_EN**, driving the load switch on the community header's accessory
+power rail. **The user-facing header is XGPIO0-14 = 15 low-speed user GPIO.**
+
+Rationale: switched accessory power is worth one header pin because it buys two things nothing
+else does -
+1. **Power-cycle a misbehaving add-on.** With the I2C bus switch (pin map §8a), a latched-up or
+   bus-jamming accessory can be isolated *and* de-powered from firmware, with no unplugging and
+   no AQROOT reboot. Cutting the bus without cutting the power only half-solves that failure.
+2. **Zero idle draw when nothing is attached**, which feeds directly into the standby budget.
+
+**15 user GPIO still exceeds Kode Dot's 14**, so the reservation costs nothing competitively -
+noting that [[04 - Competitive Analysis]] already forbids comparing GPIO counts at all, since
+these are I2C-mediated low-speed pins and Flipper's/Kode Dot's are native.
+
+ACC_PWR_EN needs an external pull holding the rail OFF at power-up, per the expander
+safe-state rule (an unpowered header is the safe default and must not depend on firmware).
+
+### 3a. Button cluster — 7 buttons; A doubles as select; NO D-pad centre
+
+Standard handheld scheme: **D-pad navigates, A = select/confirm, B = back, Home = launcher.**
+
+Final cluster on MCP23017 0x20 Port B: **D-pad UP / DOWN / LEFT / RIGHT, A (=select),
+B (=back), HOME** = **7 buttons**.
+
+- **No separate D-pad centre/select button.** A *is* select, so a centre press would be a
+  duplicate control competing with A for the same job - added cost and an extra failure point
+  for nothing.
+- **The 8th button does not exist.** The earlier "D-pad + A/B + Back + Home" phrasing
+  double-counted: it listed both a B button and a separate Back button, which are the same
+  control. Corrected to 7.
+- **Power is a hard switch, not a button** - it stays out of the expander architecture
+  entirely (real hard-off / load-switch / ship-mode path), so it consumes no expander pin.
+
+**Consequence: 0x20 GPB7 is spare** - the only unallocated pin anywhere in the design. It is
+reserved, not free (see 3b). If RootProbe were ever cancelled, GPB7 is the natural home for a
+centre-select or an 8th button.
+
+### 3b. RootProbe host IRQ — expander pin (0x20 GPB7), NOT a native pin
+
+Reserved now, wired in Phase 2 when RootProbe is actually built.
+
+Rationale: **RootProbe does its high-speed capture locally on its own RP2040-class MCU.** The
+line crossing to AQROOT is only "data ready / trigger hit / attention" - a notification, not a
+sampling signal. Capture fidelity does not depend on how fast the host learns a buffer is
+ready, because the timing-critical work already finished on the coprocessor and the samples sit
+in RootProbe's own RAM. Expander latency (tens to hundreds of microseconds) is therefore
+harmless. The earlier "IRQ/READY should ideally be a native pin for low-latency data-ready"
+note in [[14 - RootProbe Interface v0.1]] is superseded - it never made the case for why low
+latency mattered, and on inspection it does not.
+
+This applies the "don't let a Phase-2 accessory consume scarce native pins" principle to the
+one pin it was most tempting to break it for. Bonus: GPB7 sits on Port B, which already has
+interrupt-on-change enabled for the buttons, so the RootProbe IRQ routes through INTB ->
+GPIO21 and **can wake AQROOT from deep sleep** at no extra cost.
+
+Also settled in the same pass: RootProbe **MODULE_DETECT** = "does the coprocessor answer on
+the I2C management bus" (no pin), and **RESET** = an I2C management command, with the
+accessory-side load switch as the power-cycle fallback (no pin). **SPI CS remains the one
+RootProbe signal genuinely needing a Phase-2 native-pin decision** - a per-transaction chip
+select cannot sit behind an I2C expander at usable speed.
+
+### Net result
+
+**Native pin budget CLOSED: 29 assigned, 2 reserved test pads (GPIO45/46), 0 unassigned, 0
+outstanding claims.** RootProbe's IRQ was the last queued demand on a native pin and it is now
+on the expander. Expander budget: 0x20 = 15/16 used (GPB7 reserved for RootProbe),
+0x21 = 16/16 used (15 user XGPIO + ACC_PWR_EN).
+
 ## IR: native RMT + transistor LED driver (Beta)
 IR validated on the bench (TSOP38238 + TSAL6200). Two Beta requirements emerged:
 (1) FIRMWARE: use the native ESP32-S3 RMT peripheral for IR carrier/timing, NOT a

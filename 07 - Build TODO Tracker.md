@@ -74,10 +74,14 @@ They are the outstanding firmware debt between the current code and the Beta des
       [[05 - Design Decisions Log]])
 
 ## Pre-schematic review follow-ups (2026-07-26, must settle before/at capture)
-- [ ] Sign off the GPIO21 / GPIO43 role swap (wake line vs header fast pin) — see
-      [[11 - Beta Pin Map v0.2]] §6a
-- [ ] Find a pin for the switched accessory-power enable (0x20 full, 0x21 fully promised)
+- [x] ~~Sign off the GPIO21 / GPIO43 role swap~~ — APPROVED: GPIO21 = wake INT (RTC-capable),
+      GPIO43 = header fast pin. See [[11 - Beta Pin Map v0.2]] §6a
+- [x] ~~Find a pin for the switched accessory-power enable~~ — ACC_PWR_EN = 0x21 GPB7;
+      header publishes XGPIO0-14 (15 user GPIO)
+- [x] ~~D-pad centre button / RootProbe native IRQ~~ — no centre button (A = select, 7 total);
+      RootProbe IRQ reserved on 0x20 GPB7 (expander, Phase 2)
 - [ ] Select the external-I2C bus buffer/isolator or bus switch part
+- [ ] Select the ACC_PWR_EN load switch part for the accessory rail
 - [ ] Specify the physical power-switch / hard-off (load-switch / ship-mode) topology
 - [ ] Specify IR TX MOSFET + gate/current-limit resistor values for the target drive current
 - [ ] Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias

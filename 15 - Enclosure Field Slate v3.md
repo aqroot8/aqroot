@@ -29,9 +29,11 @@ Defining features:
   from the main shell so RF isn't fighting the body.
 - **Flat rear NFC target:** a clean, metal-free flat area on the back face where the user
   taps a card or tag.
-- **Physical controls:** D-pad + A/B + Back + Home. Deliberate hardware navigation — the
-  touchscreen is primary, but the device stays fully drivable with gloves, in the dark, or
-  with a frozen UI.
+- **Physical controls: 7 buttons** — D-pad (up/down/left/right), **A = select/confirm**,
+  **B = back**, Home. Deliberate hardware navigation — the touchscreen is primary, but the
+  device stays fully drivable with gloves, in the dark, or with a frozen UI. **No D-pad centre
+  button** (A is select) and no separate Back button (B is back). The **power switch is a
+  separate hard switch**, not part of the cluster. See [[11 - Beta Pin Map v0.2]] §7a.
 - **Side antenna holder:** an integrated channel/holder on the SIDE of the device that stows
   the external 433MHz whip when not in use (see §6).
 
@@ -92,12 +94,13 @@ The base enclosure stays clean when no module is attached.
 
 ## 6. Expansion — two-tier
 
-1. **Community GPIO header** — HYBRID: 16 labeled low-speed GPIO (XGPIO0..15) off a dedicated
-   second MCP23017 @ 0x21, plus native I2C, a shared IRQ/ready line, one native fast pin,
-   3.3V, switched accessory power and multiple grounds. External I2C must be isolated at the
+1. **Community GPIO header** — HYBRID: **15 labeled low-speed user GPIO (XGPIO0..14)** off a
+   dedicated second MCP23017 @ 0x21, plus native I2C, a shared IRQ/ready line, one native fast
+   pin (GPIO43), 3.3V, switched accessory power and multiple grounds. The expander's 16th pin
+   is reserved as ACC_PWR_EN (gates the accessory rail). External I2C must be isolated at the
    connector (series resistors, ESD, bus switch). See [[11 - Beta Pin Map v0.2]] §7b/§8a/§8b.
-   *(v0.2.1: supersedes the earlier "~7 slow GPIO off the shared internal expander" figure,
-   which came from an incorrect MCP23017 pin count.)*
+   *(v0.2.1/v0.2.2: supersedes the earlier "~7 slow GPIO off the shared internal expander"
+   figure, which came from an incorrect MCP23017 pin count.)*
 2. **RootProbe coprocessor connector** — footprint RESERVED on the main board, Phase 2
    product. Recessed connector field with a replaceable protective cover, alignment/keying
    features, optional screw retention. See [[14 - RootProbe Interface v0.1]].
