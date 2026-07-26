@@ -261,12 +261,25 @@ Already arriving separately:
 - IR: Bridgold TSOP38238 (RX) + TSAL6200 (TX 940nm) - arrives ~2026-07-21
 - Power: 2x bq25185 charger boards (replacements after the reverse-polarity incident) - few days
 
+> UPDATE (2026-07-24): ALL Alpha validation parts now RECEIVED. Nothing left on order:
+> - ICS-43434 mic
+> - MAX98357A amp
+> - speaker
+> - MCP23017 expander
+> - TPS63020 3.3V breakout
+> - IR (Bridgold TSOP38238 RX + TSAL6200 TX)
+> - 2x bq25185 replacement charger boards
+> All parts in hand -> the 5 remaining bench validations below have no shipping blockers.
+
 ## Alpha validation status (remaining)
-Once all parts arrive, the remaining Alpha validations are:
-- IR (TSOP38238 + TSAL6200) on native RMT pins 43/44, 38kHz carrier - NEXT (parts tomorrow)
-- Audio (ICS-43434 + MAX98357A + speaker) on I2S pins 39/40/41/42 - needs a test sketch
-- MCP23017 expander on I2C - verify GPIO in/out + interrupt
-- TPS63020 3.3V rail - bench-test clean 3.3V under load
-- Power charging path (bq25185) - measure outputs, confirm polarity, test charging (few days)
-After these, Alpha is complete for all subsystems -> ready to start the KiCad schematic on
-fully-validated parts.
+All parts now present (received 2026-07-24) - no shipping blockers. The remaining bench
+validations are:
+- [ ] IR: TSOP38238 (RX) + TSAL6200 (TX) on native RMT pins 43/44, 38kHz carrier
+- [ ] Audio: ICS-43434 + MAX98357A + speaker on I2S 39/40/41/42 (check mic L/R strap)
+- [ ] MCP23017 expander on I2C 0x20 (verify GPIO in/out + interrupt)
+- [ ] TPS63020: clean 3.3V under load
+- [ ] Power charging path (bq25185): MEASURE board outputs + CONFIRM battery polarity vs
+      board markings BEFORE connecting (this board was fried by reversed polarity before) ->
+      then test charging
+After these 5 pass, Alpha is COMPLETE -> clear to start the KiCad schematic on fully-
+validated parts.
