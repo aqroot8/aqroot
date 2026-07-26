@@ -96,7 +96,8 @@ The base enclosure stays clean when no module is attached.
 
 1. **Community GPIO header** — HYBRID: **15 labeled low-speed user GPIO (XGPIO0..14)** off a
    dedicated second MCP23017 @ 0x21, plus native I2C, a shared IRQ/ready line, one native fast
-   pin (GPIO43), 3.3V, switched accessory power and multiple grounds. The expander's 16th pin
+   pin (GPIO43, net `FAST_IO / U0TXD / ROOTPROBE_CS`), 3.3V, switched accessory power and
+   multiple grounds. The expander's 16th pin
    is reserved as ACC_PWR_EN (gates the accessory rail). External I2C must be isolated at the
    connector (series resistors, ESD, bus switch). See [[11 - Beta Pin Map v0.2]] §7b/§8a/§8b.
    *(v0.2.1/v0.2.2: supersedes the earlier "~7 slow GPIO off the shared internal expander"

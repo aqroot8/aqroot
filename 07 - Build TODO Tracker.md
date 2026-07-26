@@ -80,8 +80,26 @@ They are the outstanding firmware debt between the current code and the Beta des
       header publishes XGPIO0-14 (15 user GPIO)
 - [x] ~~D-pad centre button / RootProbe native IRQ~~ — no centre button (A = select, 7 total);
       RootProbe IRQ reserved on 0x20 GPB7 (expander, Phase 2)
-- [ ] Select the external-I2C bus buffer/isolator or bus switch part
+- [x] ~~RootProbe SPI CS needs a native pin vs "zero native pins" contradiction~~ — RESOLVED:
+      GPIO43 multiplexed as `FAST_IO / U0TXD / ROOTPROBE_CS` (mutually exclusive). Native
+      budget genuinely closed. See [[11 - Beta Pin Map v0.2]] §9a
+- [ ] Select the external-I2C bus buffer/isolator or bus switch part — **must support
+      powered-off high-impedance and must NOT back-power the accessory side**
 - [ ] Select the ACC_PWR_EN load switch part for the accessory rail
+
+## Connector-sheet schematic requirements (implement when drawing that sheet, not blockers)
+- [ ] Header IRQ/WAKE into GPIO21: series R, connector ESD, open-drain-only accessory rule,
+      defined AQROOT-side pull-up, gating (open-drain buffer on switched accessory power).
+      Label "optional open-drain WAKE/ATTN input"
+- [ ] GPIO43 header leg: 220R-1k series R + ESD; document boot-log traffic; no ungated
+      connection to power-enables/high-current drivers; label FAST_IO/U0TXD honestly
+- [ ] ACC_PWR_EN + I2C sequencing: disconnect -> power off -> discharge -> power on ->
+      stabilize -> reconnect -> enumerate (reverse on detach/fault)
+
+## Beta bring-up measurements
+- [ ] **Measure true system standby current** at the battery, in the final enclosure, deep
+      sleep with wake sources armed. The ~10-20uA/~2-week figures are ESTIMATES. Do NOT
+      publish a standby number in marketing until this is measured
 - [ ] Specify the physical power-switch / hard-off (load-switch / ship-mode) topology
 - [ ] Specify IR TX MOSFET + gate/current-limit resistor values for the target drive current
 - [ ] Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias

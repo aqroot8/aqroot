@@ -46,7 +46,7 @@ Minimum viable interface (what the main-board connector must carry):
 | **SPI SCK** | AQROOT -> RootProbe | High-speed data link clock (main sample/result transfer) |
 | **SPI MOSI** | AQROOT -> RootProbe | Host -> coprocessor data (commands, config) |
 | **SPI MISO** | RootProbe -> AQROOT | Coprocessor -> host data (results, buffered samples) |
-| **SPI CS** | AQROOT -> RootProbe | Chip select for the RootProbe SPI link |
+| **SPI CS** | AQROOT -> RootProbe | Chip select for the RootProbe SPI link. **= GPIO43, multiplexed with the header FAST_IO pin (§4)** |
 | **I2C SDA** | bidirectional | Low-speed management / housekeeping / ID / config |
 | **I2C SCL** | AQROOT -> RootProbe | I2C clock (management bus) |
 | **IRQ / READY** | RootProbe -> AQROOT | RootProbe signals "data ready / trigger hit / attention" |
@@ -92,8 +92,9 @@ to decide at schematic time:
 
 ### IRQ/READY - DECIDED 2026-07-26: expander pin, NOT a native pin
 
-**The RootProbe host IRQ goes on MCP23017 0x20 GPB7** (the one spare expander pin), reserved
-now and wired when RootProbe is actually built in Phase 2.
+**The RootProbe host IRQ goes on MCP23017 0x20 GPB7**, footprint-reserved now and wired when
+RootProbe is actually built in Phase 2. (0x20 is 15 assigned + this 1 reserved = 0 generally
+available; GPB7 is committed, not spare.)
 
 Rationale: **RootProbe does its high-speed capture locally on its own MCU.** The line crossing
 to AQROOT is only "data ready / trigger hit / attention" - a notification, not a sampling
@@ -108,8 +109,10 @@ Two bonuses fall out of the choice:
   so the RootProbe IRQ routes through INTB -> GPIO21 and **can wake AQROOT from deep sleep**
   at no extra cost.
 - It keeps the "don't let a Phase-2 accessory consume scarce native pins" principle intact on
-  the one pin it was most tempting to break it for. The native budget is closed at 29 assigned
-  / 0 unassigned (see [[11 - Beta Pin Map v0.2]] §1) and RootProbe no longer has a claim on it.
+  the one pin it was most tempting to break it for. (The native budget sits at 29 assigned /
+  0 unassigned — see [[11 - Beta Pin Map v0.2]] §1 — but note it is the GPIO43 multiplex below,
+  not this IRQ decision, that actually closes it. RootProbe's CS was still outstanding at the
+  time this section was first written.)
 
 ### DETECT + RESET - solvable without dedicated pins
 
@@ -119,17 +122,47 @@ Two bonuses fall out of the choice:
   if Phase-2 bring-up proves the coprocessor can wedge badly enough to stop answering I2C - a
   question that cannot be answered before RootProbe exists. If it turns out to be needed, the
   accessory-side load switch (power-cycling the module) is the fallback that costs no host pin.
-- **SPI CS is the one signal that genuinely still needs resolving in Phase 2.** A per-transaction
-  chip select cannot live behind an I2C expander at usable speed. Options when RootProbe is
-  built: displace a native assignment, or assert CS across a whole command/result burst (one
-  expander write to assert, the SPI burst, one to deassert) which is workable for a
-  command-response protocol but not for fine-grained toggling. Do not pre-solve this now.
+### SPI CS - RESOLVED 2026-07-26: multiplex GPIO43
 
-**Honest pin-budget note:** the main-board map has ZERO free native pins. RootProbe is a
-Phase-2 accessory, so the approach stands: reserve the CONNECTOR footprint, reserve 0x20 GPB7
-for the IRQ, share SPI bus B + I2C, and settle the CS question when RootProbe is actually
-built. Do NOT let RootProbe force main-board pin decisions before it exists - just don't paint
-the board into a corner that makes it impossible.
+A per-transaction chip select cannot live behind an I2C expander at usable speed, so CS was the
+one RootProbe signal that genuinely required a native pin. With the main-board map at zero
+unassigned native pins, that was a **logical contradiction**: the pin budget was documented as
+"closed" while this doc still recorded a standing requirement for a native pin that did not
+exist. Deferring it to Phase 2 did not make the contradiction go away, it just hid it.
+
+**Resolution: GPIO43 becomes a multiplexed net, `FAST_IO / U0TXD / ROOTPROBE_CS`.**
+
+| Role | Active when |
+|---|---|
+| **FAST_IO** - community-header native fast pin | a general accessory is attached |
+| **ROOTPROBE_CS** - RootProbe SPI chip select | a RootProbe module is attached |
+| *(U0TXD - ROM boot-log output)* | *always, at every reset* |
+
+The two accessory roles are **mutually exclusive - the same physical interface, never both at
+once.** The net routes to both the community header and the RootProbe connector; only one may
+be populated and active. Firmware arbitrates via I2C enumeration (a RootProbe that answers on
+the management bus means GPIO43 is ROOTPROBE_CS and must not be driven as FAST_IO), and the
+combination is documented as unsupported for users. Series resistors on both connector legs
+limit damage if someone ignores that, but that is damage-limiting, not support.
+
+**This is what actually closes the native pin budget** - see [[11 - Beta Pin Map v0.2]] §1 and
+§9a. RootProbe now has a native home for CS, an expander home for IRQ (0x20 GPB7), and I2C for
+DETECT and RESET. It has no remaining unmet pin requirement.
+
+**FIRMWARE REQUIREMENT (RootProbe side, not optional):** GPIO43 is U0TXD, so the AQROOT ROM
+bootloader drives boot-log traffic onto this net at every reset. **RootProbe will therefore see
+spurious chip-select activity while AQROOT boots.** RootProbe's MCU must hold its SPI slave
+interface disabled/ignored until its own firmware has initialised and the host has made contact
+over the I2C management link. An implementation that acts on raw CS edges from power-up will
+misbehave on every AQROOT reset. (This is the same hazard that moved IR TX off GPIO43 in pin
+map v0.2.1 - a boot-log-driven net is fine for something that can ignore it, and unacceptable
+for something that acts on every edge.)
+
+**Honest pin-budget note:** the main-board map has ZERO unassigned native pins; RootProbe fits
+by sharing GPIO43, not by having spare capacity. The approach stands: reserve the CONNECTOR
+footprint, reserve 0x20 GPB7 for the IRQ, share SPI bus B + I2C, and route GPIO43 to both
+connectors. Do NOT let RootProbe force further main-board pin decisions before it exists - just
+don't paint the board into a corner that makes it impossible.
 
 ---
 
@@ -165,9 +198,13 @@ this. This fits the "power-gate everything" strategy.
 **Unblocks:** the main-board PCB can reserve the RootProbe connector footprint + rough signal
 routing, so the base device is "RootProbe-ready" without RootProbe existing yet.
 
+**Host-pin assignment is now fully settled — nothing here is open:**
+- **SPI data link:** shares SPI Bus B (Option B), CS = GPIO43 multiplexed (see above).
+- **IRQ/READY:** MCP23017 0x20 GPB7 (footprint-reserved).
+- **DETECT:** I2C enumeration on the management bus. **RESET:** I2C management command, with
+  the accessory-side load switch as the power-cycle fallback.
+
 **Stays open (Phase 2, when RootProbe is actually designed):**
-- The **SPI CS** host pin (Option A vs B above) — the only signal still needing a native-pin
-  decision. IRQ/READY is settled (0x20 GPB7), DETECT and RESET are handled over I2C.
 - Exact connector part (pin count, pitch, mezzanine vs pogo vs FPC).
 - RootProbe's own board design (RP2040-class MCU, capture front-end, level protection).
 - Number of logic-analyzer channels + max sample rate (defines RootProbe's own silicon).

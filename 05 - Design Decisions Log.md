@@ -385,7 +385,10 @@ resistor values are unspecified.
 ## PIN BUDGET RESOLUTION — the three open items closed (2026-07-26)
 
 Closes everything the pre-schematic review left open on the pin budget. Detail in
-[[11 - Beta Pin Map v0.2]] (now revision v0.2.2). **The native pin budget is now CLOSED.**
+[[11 - Beta Pin Map v0.2]] (revision v0.2.2). **The native pin budget is now CLOSED.**
+> CORRECTED (2026-07-26, second design review): that closure claim was premature — RootProbe's
+> SPI CS was still an outstanding requirement for a native pin. Genuinely closed in v0.2.3 by
+> the GPIO43 multiplex; see the final close-out entry below.
 
 ### 1. GPIO21 / GPIO43 role swap — APPROVED, no longer an open item
 
@@ -477,6 +480,96 @@ select cannot sit behind an I2C expander at usable speed.
 outstanding claims.** RootProbe's IRQ was the last queued demand on a native pin and it is now
 on the expander. Expander budget: 0x20 = 15/16 used (GPB7 reserved for RootProbe),
 0x21 = 16/16 used (15 user XGPIO + ACC_PWR_EN).
+
+## FINAL PRE-SCHEMATIC CLOSE-OUT — second design review (2026-07-26)
+
+Closes the last open items before KiCad capture. Detail in [[11 - Beta Pin Map v0.2]]
+(now v0.2.3) and [[14 - RootProbe Interface v0.1]].
+
+### 1. RootProbe SPI CS — RESOLVED by multiplexing GPIO43
+
+**This fixes a logical contradiction, not just an open question.** The previous entry declared
+the native pin budget "closed with 0 outstanding claims" while [[14 - RootProbe Interface v0.1]]
+simultaneously recorded that RootProbe still needs a native SPI chip select. Both could not be
+true. Deferring CS to Phase 2 did not resolve it - it just moved the contradiction out of sight.
+
+**Decision: GPIO43 becomes a multiplexed net labeled `FAST_IO / U0TXD / ROOTPROBE_CS`.**
+- **FAST_IO** - the community header's native fast pin, when a general accessory is attached.
+- **ROOTPROBE_CS** - RootProbe's SPI chip select, when a RootProbe module is attached.
+- **Mutually exclusive: same physical interface, never both at once.** The net routes to both
+  connectors; only one may be populated and active. Firmware arbitrates by I2C enumeration (a
+  RootProbe answering on the management bus means GPIO43 is CS and must not be driven as
+  FAST_IO). The simultaneous combination is documented as unsupported; series resistors on both
+  connector legs limit damage if a user ignores that, but that is damage-limiting, not support.
+
+**Why this genuinely closes the budget:** RootProbe now has a native home for CS (shared,
+GPIO43), an expander home for IRQ (0x20 GPB7), and I2C for DETECT and RESET. It has no
+remaining unmet pin requirement, so nothing is queued against the native budget any more. The
+budget is closed **via the multiplex**, not by having spare pins - and the docs now say so
+rather than claiming a clean close that was not real.
+
+**Consequence recorded as a RootProbe FIRMWARE REQUIREMENT:** GPIO43 is U0TXD, so the AQROOT
+ROM bootloader drives boot-log traffic onto this net at every reset. RootProbe will see
+spurious chip-select activity while AQROOT boots, and its MCU must hold the SPI slave interface
+disabled until its own firmware is up and the host has made contact over I2C. This is the same
+hazard that moved IR TX off GPIO43 in v0.2.1: a boot-log-driven net is fine for something that
+can ignore it, and unacceptable for something that acts on every edge.
+
+### 2. Connector-sheet SCHEMATIC REQUIREMENTS (not blockers to starting capture)
+
+Recorded in pin map §8c, to implement when the community-header / connector sheet is drawn.
+These exist because all three nets leave the board and can be shorted, back-powered, or held
+low by hardware AQROOT does not control.
+
+**a. Header IRQ/WAKE into GPIO21 - must NOT be wired naked.** GPIO21 is the button-wake
+interrupt; an unprotected external accessory could hold it low and **permanently block internal
+button wake**, making the device look dead to its own buttons because of a faulty add-on.
+Requires: series resistance, connector-side ESD, an **open-drain-only accessory requirement**
+published as a hard rule, a defined pull-up on the AQROOT side, and gating so an unpowered or
+faulty accessory cannot hold the line low. **Preferred: an open-drain buffer/gate powered from
+switched accessory power** - with ACC_PWR_EN off the gate is unpowered and the external leg
+drops out of the wired-OR by construction. **Label the external line "optional open-drain
+WAKE/ATTN input", not a general interrupt** - it is a request-for-attention, and naming it
+accurately stops accessory makers designing against a contract AQROOT does not offer.
+
+**b. GPIO43 on the header.** 220R-1k series resistor + connector-side ESD. **Document that it
+emits UART boot-log traffic at reset.** No direct connection to accessory power-enables or
+high-current drivers without gating - a boot-log burst must not be able to switch a load.
+**Label it honestly as FAST_IO / U0TXD**, never as plain "fast GPIO"; the extra names are the
+warning.
+
+**c. ACC_PWR_EN + I2C isolation sequencing.** Defined order: **disconnect external I2C segment
+-> accessory power OFF -> discharge -> power ON -> stabilize -> reconnect I2C -> enumerate.**
+Detach/fault runs the reverse, isolating the bus before cutting power so a half-powered
+accessory never sits on a live bus. **Isolator part selection criteria (binding, not
+preferences): must support powered-off high-impedance on the external side, and must NOT
+back-power the accessory side.** Back-powering defeats the discharge step, keeps a latched-up
+accessory alive, and makes the whole power-cycle useless.
+
+### 3. Terminology fix - 0x20 expander capacity
+
+"Exactly full" with a "spare" pin was misleading in both directions. Correct wording:
+**15 assigned + 1 (GPB7) footprint-reserved for the Phase-2 RootProbe IRQ = 0 generally
+available.** GPB7 has a committed owner and a reserved footprint; it is simply unpopulated
+until RootProbe exists. Plan new signals against zero available capacity on this chip.
+
+### 4. Deep-sleep current caveat - standby figure is ESTIMATED
+
+The ~10-20 uA deep-sleep figure and the ~2-week standby number derived from it are **NOT
+measured**, and the ~10-20 uA is an ESP32-S3 *chip* figure standing in for a *system* figure.
+The true number must sum **TPS63020 quiescent (~25 uA - already comparable to the entire ESP32
+figure) + both MCP23017s + MAX17048 + all pull-ups (7 buttons, INT/wake, I2C pair, every
+expander safe-state pull) + load-switch leakage + charger/power-path + display leakage + IMU
+wake-mode current.** Two of those - the second expander and the safe-state pulls - are
+structural consequences of decisions locked earlier in this log; both are correct decisions
+that nonetheless cost standby current, and they have to be counted.
+
+**DO NOT PUBLISH THE STANDBY NUMBER IN MARKETING UNTIL MEASURED ON BETA HARDWARE.** A "2-week
+standby" line on a campaign page is a promise; if the measured system figure lands at 100-200
+uA the honest answer is days, not weeks. Same rule already applied to demoing only features
+that actually work. Marked in [[13 - Power Budget and Battery Runtime v0.1]]; Beta bring-up
+must measure true system standby at the battery, in the final enclosure, with wake sources
+armed.
 
 ## IR: native RMT + transistor LED driver (Beta)
 IR validated on the bench (TSOP38238 + TSAL6200). Two Beta requirements emerged:

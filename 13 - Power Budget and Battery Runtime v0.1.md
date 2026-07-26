@@ -24,7 +24,7 @@ browsing draw).
 ## Battery runtime (2000 mAh LiPo, ~85% usable = ~1700 mAh effective)
 | Mode | Runtime |
 |---|---|
-| Standby (~5 mA) | ~340 hrs (~2 weeks) |
+| Standby (~5 mA) | ~340 hrs (~2 weeks) — **ESTIMATED, pending Beta measurement** |
 | UI browsing (~100 mA) | ~17 hrs |
 | Sub-GHz scanning (~115 mA) | ~15 hrs |
 | WiFi active (~160 mA) | ~11 hrs |
@@ -32,7 +32,8 @@ browsing draw).
 | Heavy continuous (~640 mA) | ~2.6 hrs (rarely sustained) |
 
 ## Conclusions
-1. 2000 mAh gives ~10-17 hrs typical active use, ~2 weeks standby. Good for a handheld
+1. 2000 mAh gives ~10-17 hrs typical active use, ~2 weeks standby *(standby ESTIMATED — see
+   the caveat section below)*. Good for a handheld
    (competitive with / better than Flipper in active use). Confirms 2000 mAh is sound.
 2. TPS63020 (2A) has huge headroom - even the ~640 mA worst burst is well within spec.
    Regulator choice validated by the numbers.
@@ -40,6 +41,43 @@ browsing draw).
    is the biggest continuous drain). Build into firmware from the start.
 4. Power-gating idle radios saves ~30 mA baseline - confirms the power-gating strategy.
 5. Deep sleep (~10-20 uA) enables very long standby with wake-on-motion (BMI270) or
-   wake-on-button.
+   wake-on-button. **ESTIMATED — PENDING BETA MEASUREMENT (see the caveat below).**
 6. OPTION (settle at enclosure CAD): a 2500-3000 mAh cell would push active use to ~20+ hrs
    if the enclosure volume allows - a size-vs-runtime tradeoff.
+
+---
+
+## ⚠ Deep-sleep / standby figures are ESTIMATED — PENDING BETA MEASUREMENT
+
+**The ~10-20 uA deep-sleep figure and the ~2-week / ~340 hr standby number derived from it are
+NOT measured. They are estimates, and the ~10-20 uA part is an ESP32-S3 *chip* deep-sleep
+figure, not a system figure.** The real number will be higher — plausibly by an order of
+magnitude — because the whole board draws current in standby, not just the MCU.
+
+**The true system standby current must be summed from every contributor, not assumed:**
+
+| Contributor | Why it matters in standby |
+|---|---|
+| ESP32-S3 deep sleep | the ~10-20 uA that is currently standing in for the whole system |
+| **TPS63020 quiescent** | ~25 uA in power-save — already comparable to the entire ESP32 figure |
+| **Both MCP23017s** (0x20 + 0x21) | two expanders, powered and retaining state, ~1 uA each typ. but spec-dependent |
+| **MAX17048 fuel gauge** | runs continuously by design — that is its job |
+| **All pull-ups** | 7 button pull-ups + INT/wake pull-up + I2C pair + every safe-state pull on the expander enables. Each one is a static path whenever its net is pulled to the opposite rail |
+| **Load-switch leakage** | NFC 5V boost enable, accessory rail (ACC_PWR_EN), any other gating |
+| **Charger / power-path (bq25185)** | battery-side quiescent + power-path leakage |
+| **Display leakage** | panel + backlight driver in the off state |
+| **IMU wake-mode current** | BMI270 in low-power motion-detect is NOT free — it is the cost of wake-on-motion |
+
+Note two of these are structural consequences of decisions already locked: the second MCP23017
+(community header) and the expander safe-state pull resistors both exist for good reasons, and
+both add standby current. That is a fair trade, but it has to be counted.
+
+**DO NOT PUBLISH THE STANDBY NUMBER IN MARKETING UNTIL IT IS MEASURED ON BETA HARDWARE.** A
+"2-week standby" claim on a Kickstarter page is a promise; if the measured figure comes in at
+100-200 uA the real answer could be days rather than weeks. Measure first, claim second — this
+is the same rule already applied to demoing only features that actually work
+([[06 - BOM and Cost Tracker]], prototype-to-production strategy).
+
+**Beta bring-up action:** measure true system standby current at the battery, in the final
+enclosure, with firmware in deep sleep and wake sources armed. Then revise this document and
+only then decide what standby figure is safe to advertise.

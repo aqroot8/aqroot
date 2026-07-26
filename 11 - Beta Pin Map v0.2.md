@@ -1,11 +1,11 @@
 ---
-tags: [hardware, beta, pinmap, schematic, v0.2.2]
+tags: [hardware, beta, pinmap, schematic, v0.2.3]
 status: schematic-safe-provisional
 supersedes: "10 - Beta Pin Map.md"
-revision: v0.2.2 (pin-budget resolution, 2026-07-26)
+revision: v0.2.3 (final pre-schematic close-out, 2026-07-26)
 ---
 
-# AQROOT Beta Pin Map v0.2.2 — schematic-safe provisional
+# AQROOT Beta Pin Map v0.2.3 — schematic-safe provisional
 
 Consolidates corrections from a three-way review (internal / ChatGPT / Fable 5) plus the
 Beta display decision. This supersedes v0.1 ("10 - Beta Pin Map.md"). Target silicon:
@@ -39,7 +39,8 @@ design changes adopted.
    GPA0). See §6a for what GPIO21 now carries and why.
 5. **Second MCP23017 added at 0x21** for the community expansion header. *(Superseded in
    v0.2.2: the header publishes 15 user GPIO, not 16 — the 16th pin is ACC_PWR_EN. The
-   internal 0x20 expander carries a 7-button cluster, not 8, leaving GPB7 spare.)*
+   internal 0x20 expander carries a 7-button cluster, not 8, leaving GPB7 footprint-reserved
+   for the RootProbe IRQ — not "spare", see v0.2.3 item 3.)*
 6. **External I2C isolation** required on the community header (§8a).
 7. **Hybrid expansion header** — native fast pins alongside the labeled low-speed expander
    GPIO (§8b).
@@ -55,13 +56,29 @@ where listed.
 2. **ACC_PWR_EN = 0x21 GPB7** (§7b). The community header publishes **XGPIO0-14 (15 user
    GPIO)**; the 16th expander pin gates the switched accessory rail.
 3. **Button cluster = 7 buttons, not 8** (§7a). A = select/confirm, B = back — no separate
-   D-pad centre and no separate Back button. **0x20 GPB7 is spare**, reserved as the Phase-2
-   RootProbe IRQ landing pin.
+   D-pad centre and no separate Back button. **0x20 GPB7 is footprint-reserved** as the
+   Phase-2 RootProbe IRQ landing pin *(v0.2.3: not "spare" — 0 generally available)*.
 4. **RootProbe host IRQ -> expander, not native** (§9). It is a "data ready" notification, not
    a sampling signal, so expander latency is harmless.
 
-**Native pin budget is now CLOSED: 29 assigned, 2 reserved test pads, 0 unassigned, 0
-outstanding claims.**
+**Native pin budget: 29 assigned, 2 reserved test pads, 0 unassigned.** *(v0.2.3: this was
+stated as "0 outstanding claims", which was not yet true — RootProbe's SPI CS was still
+outstanding. Closed in v0.2.3 by the GPIO43 multiplex.)*
+
+## v0.2.3 — final pre-schematic close-out (2026-07-26)
+
+1. **RootProbe SPI CS resolved by multiplexing GPIO43** (§9a). Net label:
+   `FAST_IO / U0TXD / ROOTPROBE_CS`. Community-header fast pin OR RootProbe chip select,
+   mutually exclusive, never both. **This is what genuinely closes the native budget** — the
+   previous "closed" claim contradicted doc 14's standing requirement for a native CS.
+2. **Connector-sheet schematic requirements recorded** (§8c): header IRQ/WAKE protection into
+   GPIO21, GPIO43 header protection + honest labeling, and ACC_PWR_EN / I2C isolation
+   sequencing. **Requirements to implement when drawing the connector sheet — not blockers to
+   starting capture.**
+3. **0x20 terminology corrected** (§7a): "15 assigned + 1 footprint-reserved = 0 generally
+   available", not "exactly full" with a "spare" pin.
+4. **Deep-sleep standby figure marked ESTIMATED / PENDING BETA MEASUREMENT** — see
+   [[13 - Power Budget and Battery Runtime v0.1]]. Not to be published until measured.
 
 ---
 
@@ -107,7 +124,7 @@ outstanding claims.**
   therefore cannot serve as an `ext0`/`ext1` deep-sleep wake source. This constrains where
   the button-wake interrupt line can live (see §6a).
 
-### Final native allocation (v0.2.2) — 29 assigned, 2 reserved test pads, 0 unassigned
+### Final native allocation (v0.2.3) — 29 assigned, 2 reserved test pads, 0 unassigned
 
 | GPIO | Assignment | | GPIO | Assignment |
 |---|---|---|---|---|
@@ -119,7 +136,7 @@ outstanding claims.**
 | 5 | SPI-B MOSI | | 40 | I2S LRCLK/WS |
 | 6 | SPI-B MISO | | 41 | I2S DOUT (speaker) |
 | 7 | CC1101 CS | | 42 | I2S DIN (mic) |
-| 8 | SX1262 BUSY | | 43 | **header native fast GPIO (U0TXD)** |
+| 8 | SX1262 BUSY | | 43 | **FAST_IO / U0TXD / ROOTPROBE_CS** (muxed, §9a) |
 | 9 | NFC CS | | 44 | **IR RX (U0RXD)** |
 | 10 | Display CS | | 45 | reserved test pad (VDD_SPI strap) |
 | 11 | SPI-A MOSI | | 46 | reserved test pad (boot-mode strap) |
@@ -132,10 +149,16 @@ outstanding claims.**
 
 **Margin is ZERO, and every native pin is deliberately assigned — none are unallocated.**
 Reclaiming GPIO21 (via expander resets) and freeing GPIO43 (via the IR TX move) exactly paid
-for IR TX on GPIO16, the button-wake interrupt line, and one native fast pin on the community
-header. RootProbe's host IRQ was the last outstanding claim on a native pin and has been
-resolved onto the expander instead (§9), so **nothing further is queued against the native
-budget.** Any new native-pin demand must displace an existing assignment. GPIO45/46 stay
+for IR TX on GPIO16, the button-wake interrupt line, and the header's native fast pin.
+
+**The native budget is CLOSED via the GPIO43 multiplex (§9a), not by having spare pins.** The
+previous revision claimed the budget was closed while doc 14 still recorded that RootProbe
+needs a native SPI CS — those two statements could not both be true. They are reconciled by
+making GPIO43 a **mutually-exclusive multiplexed net**: `FAST_IO / U0TXD / ROOTPROBE_CS`. It
+is the community header's fast pin when a general accessory is attached, and RootProbe's chip
+select when a RootProbe module is attached. Never both at once. That gives RootProbe's CS a
+genuine native home without adding a pin, and closes the contradiction rather than deferring
+it. Any *new* native-pin demand must still displace an existing assignment. GPIO45/46 stay
 unconnected test pads deliberately: they are the recovery margin, not a reserve to raid.
 
 ---
@@ -356,7 +379,10 @@ header now gets **its own dedicated expander** rather than the leftovers of the 
 
 ### 7a. Internal expander — 0x20 (buttons + internal control)
 
-Address straps A0/A1/A2 = GND. **All 16 pins are allocated — this chip is exactly full.**
+Address straps A0/A1/A2 = GND. **15 assigned + 1 (GPB7) footprint-reserved for the Phase-2
+RootProbe IRQ = 0 generally available.** GPB7 is not "spare" in any usable sense — it has a
+committed owner and a reserved footprint; it is simply not populated until RootProbe exists.
+Treat this chip as having no free capacity when planning new signals.
 
 | Pin | Direction | Function | Power-up safe state (external pull REQUIRED) |
 |---|---|---|---|
@@ -375,7 +401,7 @@ Address straps A0/A1/A2 = GND. **All 16 pins are allocated — this chip is exac
 | GPB4 | in | Button — **A = SELECT/CONFIRM** | 10k pull-up |
 | GPB5 | in | Button — **B = BACK** | 10k pull-up |
 | GPB6 | in | Button — HOME | 10k pull-up |
-| GPB7 | in | **SPARE** — reserved for RootProbe IRQ/READY (Phase 2, §9) | 10k pull-up |
+| GPB7 | in | **FOOTPRINT-RESERVED** — RootProbe IRQ/READY (Phase 2, §9) | 10k pull-up |
 
 Port A = every internal slow control signal. Port B = the entire button cluster. That split is
 deliberate: **INTB becomes a pure button interrupt**, so the wake path (§6a) has no false
@@ -388,9 +414,11 @@ duplicate control competing with A for the same job. There is also no separate "
 distinct from B; the earlier "D-pad + A/B + Back + Home" phrasing double-counted it. Power is
 a **hard switch, not a button** (§6b), so it consumes no expander pin.
 
-That leaves **GPB7 spare** — the only unallocated pin anywhere in the design. It is reserved,
-not free: it is the designated landing pin for the Phase-2 RootProbe IRQ/READY line (§9). If
-RootProbe is ever cancelled, GPB7 is the natural home for an 8th button or a centre-select.
+That leaves **GPB7 footprint-reserved**, NOT spare — it is the designated landing pin for the
+Phase-2 RootProbe IRQ/READY line (§9), so it has a committed owner even though it is
+unpopulated today. **Generally-available capacity on 0x20 is zero.** Only if RootProbe were
+cancelled outright would GPB7 become genuinely free, at which point it is the natural home for
+an 8th button or a centre-select.
 
 - **INTB -> GPIO21**, open-drain, active-low, wired-OR with the 0x21 expander, one pull-up.
 - Enable MCP23017 interrupt-on-change for Port B; use INTCAP/INTF to identify which button.
@@ -538,7 +566,7 @@ margin, §1). So it carries both, clearly labeled.
 
 | Group | Signals |
 |---|---|
-| Native fast | **GPIO43** (native fast GPIO; also U0TXD, so it doubles as a boot-log/UART pin) |
+| Native fast | **GPIO43 — label the net `FAST_IO / U0TXD / ROOTPROBE_CS`** (§9a). Native and fast, but it emits UART boot-log traffic at every reset, and it is the RootProbe chip select when a RootProbe is attached. Do not label it as plain "fast GPIO" |
 | Native I2C | SDA + SCL, **via the isolation of §8a** |
 | Interrupt | shared open-drain IRQ/READY net (= GPIO21, wired-OR with both expanders) |
 | Power | 3.3V, switched accessory power (gated by ACC_PWR_EN), **multiple grounds** |
@@ -561,6 +589,67 @@ margin, §1). So it carries both, clearly labeled.
 
 ---
 
+## 8c. Connector-sheet SCHEMATIC REQUIREMENTS (2026-07-26)
+
+**These are implementation requirements for the community-header / connector sheet, NOT
+blockers to starting schematic capture.** Start the core sheets now; satisfy these when the
+connector sheet is drawn. They exist because every one of these nets leaves the board and can
+be shorted, back-powered, or held low by hardware AQROOT does not control.
+
+### a. Header IRQ / WAKE line into GPIO21 — must NOT be wired naked
+
+GPIO21 is the button-wake interrupt. An external accessory sharing it can, if unprotected,
+**hold GPIO21 low and permanently block internal button wake** — the device would appear dead
+to its own buttons because of a faulty add-on. Requirements:
+
+- **Series resistance** on the external leg, before the connector.
+- **Connector-side ESD protection.**
+- **Open-drain-only accessory requirement** — published as a hard rule for accessory makers.
+  A push-pull accessory driver on this net is a fault, not a supported configuration.
+- **A defined pull-up on the AQROOT side** (the internal wired-OR pull-up), sized so internal
+  operation never depends on the accessory.
+- **Gating**, so an unpowered or faulty accessory cannot hold GPIO21 low or block internal
+  button wake. **Preferred implementation: an open-drain buffer/gate powered from switched
+  accessory power** — when ACC_PWR_EN is off the gate is unpowered and the external leg is
+  isolated by construction, so a dead accessory simply drops out of the wired-OR.
+- **Label the external line "optional open-drain WAKE/ATTN input", not a general interrupt.**
+  It is a request-for-attention, not a shared IRQ bus, and naming it accurately prevents
+  accessory makers designing against a contract AQROOT does not offer.
+
+### b. GPIO43 on the header — `FAST_IO / U0TXD / ROOTPROBE_CS`
+
+- **220R-1k series resistor** on the connector leg + **connector-side ESD protection**.
+- **Document that it emits UART boot-log traffic at every reset.** Accessory makers must design
+  for that; an accessory that acts on every edge of this pin will misbehave at boot.
+- **No direct connection to accessory power-enables or high-current drivers without gating.**
+  A boot-log burst must not be able to switch a load.
+- **Label it honestly as FAST_IO / U0TXD** (and ROOTPROBE_CS on the RootProbe leg) — never as
+  plain "fast GPIO". The extra names are the warning.
+
+### c. ACC_PWR_EN + I2C isolation — defined sequencing
+
+Power and bus isolation must be sequenced, not toggled independently. **Recovery/attach order:**
+
+1. **Disconnect** the external I2C segment (bus switch open).
+2. **Accessory power OFF** (ACC_PWR_EN deasserted).
+3. **Discharge** the accessory rail (bleed resistor; wait for it to actually decay).
+4. **Power ON** (ACC_PWR_EN asserted).
+5. **Stabilize** — wait out the rail's rise time plus the accessory's own reset/boot time.
+6. **Reconnect** the external I2C segment (bus switch closed).
+7. **Enumerate** the accessory over I2C.
+
+Detach/fault handling runs the same sequence in reverse: isolate the bus *before* cutting
+power, so a half-powered accessory never sits on a live bus.
+
+**Isolator part requirements (both are selection criteria, not nice-to-haves):**
+- **Must support powered-off high-impedance** on the external side — it has to stay isolating
+  while the accessory rail is down, which is precisely the state in steps 1-3.
+- **Must NOT back-power the accessory side** through its I/O pins or protection diodes.
+  Back-powering defeats the discharge step, keeps a latched-up accessory alive, and makes the
+  power-cycle useless.
+
+---
+
 ## 9. RootProbe — re-architected (was a design conflict)
 
 RootProbe (the flagship logic-analyzer / bus-sniffer / GPIO-tooling add-on) CANNOT be built
@@ -577,6 +666,43 @@ management, interrupt/ready line, optional USB pair.
    plus native I2C / IRQ / GPIO43 / power (the hybrid header, §8b). *(v0.2.1: was "~7 slow
    GPIO off the shared internal expander".)*
 2. High-speed RootProbe accessory interface (board-to-board to the coprocessor).
+
+### 9a. GPIO43 multiplex — `FAST_IO / U0TXD / ROOTPROBE_CS` (resolved 2026-07-26)
+
+**The one signal RootProbe genuinely needed a native pin for was its SPI chip select** — a
+per-transaction CS cannot sit behind an I2C expander at usable speed. With zero unassigned
+native pins, that was a live contradiction: the budget could not be "closed" while a known
+Phase-2 signal still required a pin that did not exist.
+
+**Resolution: GPIO43 is a multiplexed net serving two mutually-exclusive roles.**
+
+| Role | Active when |
+|---|---|
+| **FAST_IO** — community-header native fast pin | a general accessory is attached |
+| **ROOTPROBE_CS** — RootProbe SPI chip select | a RootProbe module is attached |
+| *(U0TXD — ROM boot-log output)* | *always, at every reset — see the caution below* |
+
+**Mutual exclusion is a design rule, not an accident.** The net routes to both the community
+header and the RootProbe connector; **only one may be populated and active at a time.**
+Enforcement:
+- **Firmware arbitration:** RootProbe is detected by I2C enumeration on the management bus
+  (§9). When a RootProbe answers, firmware MUST treat GPIO43 as ROOTPROBE_CS and MUST NOT
+  drive it as general FAST_IO, and vice versa.
+- **Documented user rule:** attaching a community accessory that uses FAST_IO *and* a
+  RootProbe simultaneously is unsupported. Two drivers on one net is contention.
+- **Series resistance on both connector legs** (§8c, requirement b) limits the damage if a
+  user does it anyway. This is damage-limiting, not a licence to support the combination.
+
+**Boot-log consequence — RootProbe must tolerate it.** GPIO43 is U0TXD, so the ROM bootloader
+drives the boot log onto this net at every reset. As ROOTPROBE_CS that means **RootProbe will
+see spurious chip-select activity during AQROOT's boot.** RootProbe's own MCU must therefore
+hold its SPI slave interface disabled/ignored until its firmware has initialised and the host
+has spoken over the I2C management link. Record this as a RootProbe firmware requirement — it
+is a direct consequence of the multiplex and it is not optional. (Same reasoning that moved IR
+TX off this pin in v0.2.1: a boot-log-driven net is fine for something that can ignore it, and
+unacceptable for something that acts on every edge.)
+
+---
 
 **RootProbe host IRQ — resolved 2026-07-26: EXPANDER pin (0x20 GPB7), not a native pin.**
 RootProbe does its high-speed capture locally on its own MCU; the line crossing to AQROOT is
@@ -661,12 +787,32 @@ Resolved 2026-07-26 (pin-budget resolution — see [[05 - Design Decisions Log]]
 - [x] **GPIO21/GPIO43 role swap APPROVED** — GPIO21 = expander button-wake INT (RTC-capable,
       hard silicon constraint), GPIO43 = header fast pin (pin-number-agnostic). §6a.
 - [x] **ACC_PWR_EN = 0x21 GPB7**; header publishes XGPIO0-14 (15 user GPIO). §7b.
-- [x] **No D-pad centre button** — A = select/confirm, B = back. 7 buttons; GPB7 spare. §7a.
+- [x] **No D-pad centre button** — A = select/confirm, B = back. 7 buttons; GPB7
+      footprint-reserved for the RootProbe IRQ. §7a.
 - [x] **RootProbe host IRQ -> expander pin (0x20 GPB7), Phase 2** — not a native pin. §9.
+
+Resolved 2026-07-26 (v0.2.3 final close-out):
+- [x] **RootProbe SPI CS -> GPIO43 multiplex** (`FAST_IO / U0TXD / ROOTPROBE_CS`). §9a. This
+      is what genuinely closes the native budget.
+- [x] 0x20 capacity wording corrected to "15 assigned + 1 footprint-reserved = 0 generally
+      available". §7a.
 
 Still blocking (must resolve before freeze):
 - [ ] Select the I2C bus buffer/isolator or bus switch part for the external segment (§8a).
+      **Selection criteria are now binding: powered-off high-impedance, and no back-powering
+      of the accessory side** (§8c-c).
 - [ ] Select the ACC_PWR_EN load switch part for the accessory rail (§7b).
+
+Schematic requirements — implement on the connector sheet, NOT blockers to starting capture:
+- [ ] Header IRQ/WAKE into GPIO21: series R, connector ESD, open-drain-only accessory rule,
+      defined AQROOT-side pull-up, gating (preferably an open-drain buffer powered from
+      switched accessory power). Label "optional open-drain WAKE/ATTN input". §8c-a.
+- [ ] GPIO43 on the header: 220R-1k series R + connector ESD; document the boot-log traffic;
+      no ungated connection to power-enables or high-current drivers; label FAST_IO/U0TXD. §8c-b.
+- [ ] ACC_PWR_EN + I2C isolation sequencing (disconnect -> power off -> discharge -> power on
+      -> stabilize -> reconnect -> enumerate), and the reverse order on detach/fault. §8c-c.
+- [ ] RootProbe firmware requirement: hold the SPI slave disabled until initialised, since
+      boot-log traffic appears on ROOTPROBE_CS at every AQROOT reset. §9a.
 - [ ] Specify the physical power-switch / hard-off topology (§6b).
 - [ ] Specify the IR TX MOSFET + resistor values (§5) against the target drive current.
 - [x] Select exact 3.3V buck-boost regulator part -> TI TPS63020DSJR (adjustable; support
@@ -676,7 +822,8 @@ Still blocking (must resolve before freeze):
 - [~] Display = 2.8in IPS ILI9341 capacitive SPI (matches Alpha). VERIFY exact module
       touch = FT6236 @ 0x38 before Beta order.
 - [x] Power budget + runtime done -> see [[13 - Power Budget and Battery Runtime v0.1]].
-      2000mAh = ~12-15hr active, ~2wk standby. Backlight timeout = top optimization.
+      2000mAh = ~12-15hr active; ~2wk standby is ESTIMATED, pending Beta measurement (do not
+      publish). Backlight timeout = top optimization.
       Battery could go 2500-3000mAh if enclosure allows.
 - [~] RootProbe interface spec'd -> see [[14 - RootProbe Interface v0.1]]. ~16-18 pin
       connector, coprocessor (RP2040-class) over SPI+I2C+IRQ. Reserve connector footprint
