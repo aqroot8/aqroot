@@ -1,0 +1,20 @@
+# KiCad source files are generated and rewritten by KiCad.
+# Preserve their exact bytes and line endings; do not apply Git EOL normalization.
+*.kicad_pro -text
+*.kicad_sch -text
+*.kicad_pcb -text
+*.kicad_sym -text
+*.kicad_mod -text
+*.kicad_wks -text
+*.kicad_dru -text
+
+# Deliberately NOT listed above, and therefore left under Git's default handling:
+#   - sym-lib-table / fp-lib-table (KiCad library tables)
+#   - README and other Markdown files
+#   - firmware and tooling source code
+# These are hand-edited as often as they are tool-written, so normal Git EOL
+# handling is correct for them.
+#
+# Note: `-text` only disables EOL conversion. It does NOT set `binary`, so Git
+# still diffs these files normally, which is the point: KiCad sources are
+# human-readable s-expressions and JSON and must stay reviewable in diffs.
