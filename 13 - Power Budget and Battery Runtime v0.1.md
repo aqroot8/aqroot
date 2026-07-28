@@ -60,17 +60,20 @@ magnitude — because the whole board draws current in standby, not just the MCU
 |---|---|
 | ESP32-S3 deep sleep | the ~10-20 uA that is currently standing in for the whole system |
 | **TPS63020 quiescent** | ~25 uA in power-save — already comparable to the entire ESP32 figure |
-| **Both MCP23017s** (0x20 + 0x21) | two expanders, powered and retaining state, ~1 uA each typ. but spec-dependent |
+| **Both TCA9535PWR expanders** (U60 @ 0x20 + U61 @ 0x21) | two expanders, powered and retaining state, low-uA each per datasheet but **unmeasured — this part has never been on the bench** |
 | **MAX17048 fuel gauge** | runs continuously by design — that is its job |
-| **All pull-ups** | 7 button pull-ups + INT/wake pull-up + I2C pair + every safe-state pull on the expander enables. Each one is a static path whenever its net is pulled to the opposite rail |
+| **All pull-ups** | 7 button pull-ups + the `WAKE_INT_N` pull-up + I2C pair + every safe-state pull on the expander enables. Each one is a static path whenever its net is pulled to the opposite rail. **The TCA9535 has no internal pull-ups, so all of these are external resistors and none can be disabled in firmware to save standby current** |
 | **Load-switch leakage** | NFC 5V boost enable, accessory rail (ACC_PWR_EN), any other gating |
 | **Charger / power-path (bq25185)** | battery-side quiescent + power-path leakage |
 | **Display leakage** | panel + backlight driver in the off state |
 | **IMU wake-mode current** | BMI270 in low-power motion-detect is NOT free — it is the cost of wake-on-motion |
 
-Note two of these are structural consequences of decisions already locked: the second MCP23017
-(community header) and the expander safe-state pull resistors both exist for good reasons, and
-both add standby current. That is a fair trade, but it has to be counted.
+Note two of these are structural consequences of decisions already locked: the second expander
+(U61, community header) and the expander safe-state pull resistors both exist for good reasons,
+and both add standby current. That is a fair trade, but it has to be counted. **The 2026-07-27
+move to the TCA9535PWR makes the pull-resistor contribution slightly worse and wholly
+non-negotiable** — that part has no internal pull-ups, so every pull is an external static path
+that firmware cannot switch off before sleeping.
 
 **DO NOT PUBLISH THE STANDBY NUMBER IN MARKETING UNTIL IT IS MEASURED ON BETA HARDWARE.** A
 "2-week standby" claim on a Kickstarter page is a promise; if the measured figure comes in at

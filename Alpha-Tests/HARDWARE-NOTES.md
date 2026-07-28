@@ -114,15 +114,23 @@ Hard-won board-specific lessons from bring-up. Read before touching hardware.
   probe validated), BMI270 IMU (accel/gyro functional, I2C multi-device coexistence),
   IR (TSOP38238 RX + TSAL6200 TX: RX decode + full TX->RX loopback, 2026-07-25),
   audio-OUT (MAX98357A amp: real 8ohm speaker output, 2026-07-26),
-  MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26),
+  MCP23017 I2C GPIO expander (Waveshare board, PA0->PB0 loopback 49/49, 2026-07-26) —
+    **NOTE: the MCP23017 is NO LONGER the Beta part; see the correction under that section
+    below. This pass does NOT validate the TCA9535PWR that replaced it,**
   TPS63020 3.3V buck-boost rail (holds ~3.3V from a 3.4V battery input, 2026-07-26),
   bq25185 charger + power path (USB-first safe method, polarity confirmed, charging
   confirmed, 2026-07-26).
-- *** ALL ALPHA SUBSYSTEMS NOW VALIDATED. *** The audio-in mic is NOT being bench-retested
-  (decision 2026-07-26): the failed ICS-43434 is a confirmed dead individual unit, and its
-  wiring + firmware + the MAX98357A amp on the same I2S bus are all proven, so it's a bad
+- *** ALL ALPHA SUBSYSTEMS NOW VALIDATED (as built in Alpha). *** The audio-in mic is NOT being
+  bench-retested (decision 2026-07-26): the failed ICS-43434 is a confirmed dead individual unit,
+  and its wiring + firmware + the MAX98357A amp on the same I2S bus are all proven, so it's a bad
   part, not a design issue. The audio-in path will be confirmed on Beta hardware instead.
-- CLEARED to begin the KiCad schematic on fully-validated parts.
+- CLEARED to begin the KiCad schematic.
+- *** CORRECTED 2026-07-27: "on fully-validated parts" has been STRUCK. *** The Beta GPIO
+  expander was changed from the MCP23017 to the **TI TCA9535PWR** (U60 @ 0x20, U61 @ 0x21), so the
+  Beta BOM now contains a part that was never on this bench. **The TCA9535PWR is
+  datasheet-trusted, NOT bench-validated — first hardware validation happens on Beta.** Two Beta
+  parts await first hardware confirmation: the ICS-43434 mic (dead Alpha unit) and both TCA9535PWR
+  expanders (never powered on).
 - NEXT SESSION: work through the remaining validations above, then Beta schematic in KiCad.
 
 ## Later corrections / clarifications (appended 2026-07-21)
@@ -214,7 +222,29 @@ ACTION: retest with a FRESH ICS-43434 before/at Beta. Part selection (ICS-43434)
 LOCKED and correct - this is a suspected bad single unit, NOT a design or part-choice issue.
 Does NOT block the schematic: the audio design and pin map are proven.
 
-## MCP23017 I2C GPIO EXPANDER - PASSED (2026-07-26)
+## MCP23017 I2C GPIO EXPANDER - PASSED (2026-07-26) — *** PART SUPERSEDED, SEE CORRECTION ***
+
+> *** CORRECTION 2026-07-27 — READ BEFORE CITING THIS RESULT. ***
+> **The MCP23017 is no longer the AQROOT Beta GPIO expander.** Beta uses two
+> **TI TCA9535PWR** devices: **U60 @ 0x20** (buttons + internal control) and **U61 @ 0x21**
+> (community header). See [[05 - Design Decisions Log]] and [[11 - Beta Pin Map v0.2]] §7.
+>
+> **What this test DOES establish:** the architectural pattern works — an I2C GPIO expander does
+> real input and output over the bus while coexisting with the FT6236 touch (0x38) and BMI270 IMU
+> (0x68) on the same two native pins.
+>
+> **What this test DOES NOT establish — anything about the TCA9535PWR.** Different vendor,
+> different silicon, different register map, different interrupt model (the TCA9535 has ONE
+> open-drain `/INT` per device with no INTF/INTCAP capture registers and no internal pull-ups,
+> versus the MCP23017's INTA/INTB plus interrupt-on-change and GPPU). **No TCA9535 has ever been
+> powered on for this project.** Do not cite this section as evidence that the Beta expander is
+> validated, and do not describe the Beta expander as "bench-validated" anywhere.
+>
+> Everything TCA9535-specific is a Beta bring-up item: the 0x00-0x07 register set, `/INT`
+> assert / clear-on-read behaviour, two devices wired-OR onto `WAKE_INT_N`, deep-sleep wake
+> through that net, snapshot-compare source identification, and output-latch-before-direction
+> ordering. The button-wake path has never been exercised on any part.
+
 Board: Waveshare MCP23017 IO Expansion Board.
 Bench wiring: VCC->3V3, GND->GND, SDA->GPIO1, SCL->GPIO2 (shared I2C bus with touch + IMU).
 INTA/INTB unconnected. RESET handled onboard (not broken out). Self-test jumper PA0<->PB0.
@@ -230,9 +260,13 @@ read it back through the expander on PB0, alternating high/low, zero mismatches)
 the expander does real GPIO output AND input over I2C, coexisting on the same bus as the
 FT6236 touch (0x38) and BMI270 IMU (0x68).
 
-BETA NOTE: the Beta pin map assigns MCP23017 to 0x20 - short A0/A1/A2 to GND on the Beta
-design (or whatever address the final I2C map wants). The chip + library are validated
-either way; only the address straps differ.
+BETA NOTE — **OBSOLETE, superseded 2026-07-27.** This note used to say the Beta pin map assigned
+the MCP23017 to 0x20 and that "the chip + library are validated either way". **Both halves are now
+wrong:** the Beta part is the TCA9535PWR, and neither that chip nor any driver for it has been
+validated. The addresses themselves survive the part change — **U60 @ 0x20 (A2/A1/A0 = GND/GND/GND)
+and U61 @ 0x21 (A2/A1/A0 = GND/GND/+3V3)** — but the Adafruit_MCP23X17 library used here is the
+wrong library for the Beta design and must be replaced by an address-parameterised TCA9535 driver
+serving both devices.
 
 ## TPS63020 3.3V BUCK-BOOST RAIL - PASSED (2026-07-26)
 Board: EC Buying "XL63020-3.3 / TPS63020" buck-boost module (fixed 3.3V output, VIN 2-5.5V).

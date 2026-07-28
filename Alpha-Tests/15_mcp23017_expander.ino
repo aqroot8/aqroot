@@ -1,8 +1,28 @@
 /*
  * AQROOT ALPHA TEST 15 - MCP23017 I2C GPIO EXPANDER (Waveshare)
  * ------------------------------------------------------------
+ * *** HISTORICAL ALPHA TEST - THE PART UNDER TEST IS NO LONGER IN THE BETA DESIGN. ***
+ *
+ * Corrected 2026-07-27: AQROOT Beta uses TWO Texas Instruments TCA9535PWR expanders,
+ * U60 @ 0x20 (buttons + internal control) and U61 @ 0x21 (community header). The
+ * MCP23017 was dropped because current I2C silicon has output-only GPA7/GPB7
+ * limitations and the community header requires all 15 exposed XGPIO to be genuinely
+ * bidirectional. See "05 - Design Decisions Log" and "11 - Beta Pin Map v0.2" section 7.
+ *
+ * This sketch is KEPT AS-IS as an accurate record of what was actually bench-tested on
+ * 2026-07-26. It is a real MCP23017 test and it passed. It validates the ARCHITECTURAL
+ * PATTERN (I2C-mediated GPIO doing real in/out while coexisting with the FT6236 touch and
+ * BMI270 IMU on the shared bus) and NOTHING about the TCA9535PWR.
+ *
+ * DO NOT treat this as TCA9535 validation, and DO NOT port it in place - the register
+ * models differ fundamentally. The TCA9535 has ONE open-drain /INT per device (no
+ * INTA/INTB), no INTF/INTCAP capture registers, no interrupt-on-change configuration, and
+ * NO internal pull-ups. Its complete register set is 0x00/0x01 Input Port 0/1,
+ * 0x02/0x03 Output Port 0/1, 0x04/0x05 Polarity Inversion 0/1, 0x06/0x07 Configuration 0/1.
+ * A new TCA9535 bring-up sketch should be written for Beta rather than adapting this one.
+ *
  * Board : Waveshare MCP23017 IO Expansion Board
- * Lib   : "Adafruit MCP23017 Arduino Library"
+ * Lib   : "Adafruit MCP23017 Arduino Library" (wrong library for Beta - MCP23017-specific)
  *
  * WIRING (Waveshare MCP23017):
  *   VCC -> 3V3    GND -> GND    SDA -> GPIO 1    SCL -> GPIO 2

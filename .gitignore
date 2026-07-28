@@ -6,3 +6,13 @@ build/
 
 # Editor / IDE
 .vscode/
+
+# KiCad temporary / local-state files
+# (project, schematic, PCB, symbol, footprint, worksheet and library-table
+#  files are intentionally NOT ignored -- they are the canonical sources)
+*.kicad_prl
+*.kicad_pro-bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+_autosave-*
+~*.lck

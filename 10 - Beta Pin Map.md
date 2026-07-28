@@ -5,6 +5,13 @@ status: beta-planning
 
 > **SUPERSEDED by [[11 - Beta Pin Map v0.2]]** (three-way review corrections + ILI9341
 > display decision). Kept for history.
+>
+> **DO NOT DESIGN FROM THIS DOCUMENT.** Beyond the pin reshuffles in v0.2.x, the GPIO expander
+> **part itself changed on 2026-07-27**: Beta uses two **TI TCA9535PWR** devices (**U60** @ 0x20
+> internal, **U61** @ 0x21 community header), not an MCP23017. Every `GPAn`/`GPBn` name below is
+> dead nomenclature — the TCA9535 uses `P00-P07` / `P10-P17` — and the single-expander,
+> IR-on-the-expander, 5V-boost-for-NFC-VDD and "room to spare" claims here were all superseded
+> long before that. Authoritative: [[11 - Beta Pin Map v0.2]] §7 (maps) and §7c (registers).
 
 # AQROOT Beta — Master Pin Map
 

@@ -17,7 +17,7 @@ tags: [bom, cost, budget]
 | ICS-43434 I2S MEMS mic breakout | $5-8 |
 | MAX98357A I2S Class-D amp breakout | $5-8 |
 | Small 4/8ohm speaker (~1-2W) | $2-5 |
-| MCP23017 I2C GPIO expander breakout **x2** (0x20 internal + 0x21 community header) | $6-12 |
+| **TI TCA9535PWR** I2C GPIO expander **x2** — U60 @ 0x20 internal + U61 @ 0x21 community header (PW / TSSOP-24 / 0.65mm) | $2-6 (bare ICs; **no validated breakout — see note**) |
 | TPS63020 buck-boost 3.3V breakout (production P/N: TPS63020DSJR) | $8-12 |
 | MAX17048 fuel gauge breakout (deferred — validate on Beta) | $5-10 |
 | LiPo 2000mAh | $8-14 |
@@ -29,6 +29,14 @@ tags: [bom, cost, budget]
 | USB-C breakout, wiring, protoboard | $5-10 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |
+
+> **GPIO expander note (2026-07-27):** the expander was changed from the MCP23017 to the **TI
+> TCA9535PWR** (see [[05 - Design Decisions Log]]). The MCP23017 breakout that was bought and
+> bench-tested during Alpha is **no longer the design part** — that spend is sunk, and the board
+> is still useful for I2C-architecture work, but it validates nothing about the TCA9535. The
+> TCA9535PWR is **TSSOP-24 only in this package**, so Stage 1 hand-wiring needs either a
+> TSSOP-24 breakout adapter board or a TCA9535 module; budget a few dollars for adapters. **This
+> part is datasheet-trusted and unvalidated — its first hardware confirmation is on Beta.**
 
 > Cost went UP vs the original ~$65-130 estimate, for three deliberate reasons: the
 > dual-radio base adds a CC1101, the NFC part moved from a ~$10 PN532 breakout to a ~$30

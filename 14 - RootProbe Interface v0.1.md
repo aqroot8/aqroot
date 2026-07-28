@@ -10,7 +10,7 @@ the RootProbe coprocessor accessory. RootProbe is the flagship add-on: an intell
 logic-analyzer / bus-sniffer / GPIO-tooling module aimed at the security audience.
 
 **Why an interface spec now:** the three-way review established that RootProbe CANNOT be raw
-MCP23017 expander pins (I2C-mediated GPIO is far too slow for logic-analysis). RootProbe must
+I2C expander pins (I2C-mediated GPIO is far too slow for logic-analysis). RootProbe must
 be its own coprocessor (RP2040-class MCU) that does the fast capture locally and talks to
 AQROOT over a defined board-to-board link. This spec defines that link so the main-board
 connector can be placed during PCB layout. RootProbe itself is a Phase-2 product; this spec
@@ -49,7 +49,7 @@ Minimum viable interface (what the main-board connector must carry):
 | **SPI CS** | AQROOT -> RootProbe | Chip select for the RootProbe SPI link. **= GPIO43, multiplexed with the header FAST_IO pin (§4)** |
 | **I2C SDA** | bidirectional | Low-speed management / housekeeping / ID / config |
 | **I2C SCL** | AQROOT -> RootProbe | I2C clock (management bus) |
-| **IRQ / READY** | RootProbe -> AQROOT | RootProbe signals "data ready / trigger hit / attention" |
+| **IRQ / READY** | RootProbe -> AQROOT | RootProbe signals "data ready / trigger hit / attention". Net `ROOTPROBE_IRQ_READY_N` -> **U60 P17** (§4). **Open-drain, active-low, and MUST be LEVEL-HELD until acknowledged — not a pulse** |
 | **RESET** | AQROOT -> RootProbe | Host can reset the coprocessor |
 | **MODULE_DETECT / ID** | RootProbe -> AQROOT | Tells AQROOT a module is attached + which type |
 
@@ -88,13 +88,15 @@ to decide at schematic time:
   overlaps with active radio TX, this is probably acceptable.
 - **I2C management** shares the existing I2C bus (SDA=1/SCL=2) - RootProbe gets its own I2C
   address for housekeeping. Cheap (no new pins). Must be strapped clear of the reserved
-  addresses (0x20, 0x21, 0x36, 0x38, 0x68 - and the whole 0x20-0x27 MCP23017 block).
+  addresses (0x20, 0x21, 0x36, 0x38, 0x68 - and the whole 0x20-0x27 I2C-expander block, which
+  the TCA9535 family occupies).
 
 ### IRQ/READY - DECIDED 2026-07-26: expander pin, NOT a native pin
 
-**The RootProbe host IRQ goes on MCP23017 0x20 GPB7**, footprint-reserved now and wired when
-RootProbe is actually built in Phase 2. (0x20 is 15 assigned + this 1 reserved = 0 generally
-available; GPB7 is committed, not spare.)
+**The RootProbe host IRQ is `ROOTPROBE_IRQ_READY_N` on U60 P17** — U60 being the internal
+**TI TCA9535PWR @ 0x20** (part locked 2026-07-27, replacing the MCP23017; see
+[[11 - Beta Pin Map v0.2]] §7). The pin is committed now and wired when RootProbe is actually
+built in Phase 2. **All 16 U60 pins are assigned — the chip has zero free capacity.**
 
 Rationale: **RootProbe does its high-speed capture locally on its own MCU.** The line crossing
 to AQROOT is only "data ready / trigger hit / attention" - a notification, not a sampling
@@ -105,14 +107,36 @@ therefore harmless here, which is exactly the case the earlier "should ideally b
 pin" note failed to make. That note is superseded.
 
 Two bonuses fall out of the choice:
-- GPB7 sits on Port B, which already has interrupt-on-change enabled for the button cluster,
-  so the RootProbe IRQ routes through INTB -> GPIO21 and **can wake AQROOT from deep sleep**
-  at no extra cost.
+- P17 sits on U60 Port 1 alongside the button inputs, so the RootProbe IRQ routes through
+  U60 `/INT` -> `WAKE_INT_N` -> GPIO21 and **can wake AQROOT from deep sleep** at no extra cost.
 - It keeps the "don't let a Phase-2 accessory consume scarce native pins" principle intact on
   the one pin it was most tempting to break it for. (The native budget sits at 29 assigned /
   0 unassigned — see [[11 - Beta Pin Map v0.2]] §1 — but note it is the GPIO43 multiplex below,
   not this IRQ decision, that actually closes it. RootProbe's CS was still outstanding at the
   time this section was first written.)
+
+#### FIRMWARE REQUIREMENT (RootProbe side, added 2026-07-27, NOT optional)
+
+**`ROOTPROBE_IRQ_READY_N` must be asserted and HELD LOW until AQROOT acknowledges it over the
+I2C management link. A short pulse is not acceptable and will be lost.**
+
+This is a direct consequence of the expander part change (MCP23017 -> TCA9535PWR). The earlier
+version of this decision leaned on the MCP23017's interrupt-on-change hardware, which latched a
+change into `INTF`/`INTCAP` so the host could discover a brief event after the fact. **The
+TCA9535 has no such hardware — there is no interrupt-capture register of any kind.** Its `/INT`
+asserts while an input differs from the last value read out of the Input Port register and
+deasserts as soon as that register is read. Nothing records a transient that has already
+reverted.
+
+Concretely, a pulsed IRQ can be missed because:
+- AQROOT may be in **deep sleep**; the wake path itself takes milliseconds to bring I2C up.
+- AQROOT may be **mid-I2C-transaction** with another device on the shared bus.
+- U60's single `/INT` **merges the button cluster and this IRQ**, so the driver may be servicing
+  a button event when RootProbe pulses — and one Input Port read clears the assertion for
+  everything on that port.
+
+Hold the line until acknowledged and none of those matter. Release it only on an explicit
+host acknowledgement, not on a timer.
 
 ### DETECT + RESET - solvable without dedicated pins
 
@@ -146,7 +170,7 @@ combination is documented as unsupported for users. Series resistors on both con
 limit damage if someone ignores that, but that is damage-limiting, not support.
 
 **This is what actually closes the native pin budget** - see [[11 - Beta Pin Map v0.2]] §1 and
-§9a. RootProbe now has a native home for CS, an expander home for IRQ (0x20 GPB7), and I2C for
+§9a. RootProbe now has a native home for CS, an expander home for IRQ (U60 P17), and I2C for
 DETECT and RESET. It has no remaining unmet pin requirement.
 
 **FIRMWARE REQUIREMENT (RootProbe side, not optional):** GPIO43 is U0TXD, so the AQROOT ROM
@@ -160,7 +184,7 @@ for something that acts on every edge.)
 
 **Honest pin-budget note:** the main-board map has ZERO unassigned native pins; RootProbe fits
 by sharing GPIO43, not by having spare capacity. The approach stands: reserve the CONNECTOR
-footprint, reserve 0x20 GPB7 for the IRQ, share SPI bus B + I2C, and route GPIO43 to both
+footprint, keep U60 P17 for the IRQ, share SPI bus B + I2C, and route GPIO43 to both
 connectors. Do NOT let RootProbe force further main-board pin decisions before it exists - just
 don't paint the board into a corner that makes it impossible.
 
@@ -200,7 +224,8 @@ routing, so the base device is "RootProbe-ready" without RootProbe existing yet.
 
 **Host-pin assignment is now fully settled — nothing here is open:**
 - **SPI data link:** shares SPI Bus B (Option B), CS = GPIO43 multiplexed (see above).
-- **IRQ/READY:** MCP23017 0x20 GPB7 (footprint-reserved).
+- **IRQ/READY:** `ROOTPROBE_IRQ_READY_N` on **U60 P17** (TCA9535PWR @ 0x20), level-held until
+  acknowledged.
 - **DETECT:** I2C enumeration on the management bus. **RESET:** I2C management command, with
   the accessory-side load switch as the power-cycle fallback.
 

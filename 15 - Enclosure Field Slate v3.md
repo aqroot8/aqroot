@@ -95,13 +95,16 @@ The base enclosure stays clean when no module is attached.
 ## 6. Expansion — two-tier
 
 1. **Community GPIO header** — HYBRID: **15 labeled low-speed user GPIO (XGPIO0..14)** off a
-   dedicated second MCP23017 @ 0x21, plus native I2C, a shared IRQ/ready line, one native fast
-   pin (GPIO43, net `FAST_IO / U0TXD / ROOTPROBE_CS`), 3.3V, switched accessory power and
-   multiple grounds. The expander's 16th pin
-   is reserved as ACC_PWR_EN (gates the accessory rail). External I2C must be isolated at the
-   connector (series resistors, ESD, bus switch). See [[11 - Beta Pin Map v0.2]] §7b/§8a/§8b.
+   dedicated second expander, **U61 (TI TCA9535PWR @ 0x21)**, plus native I2C, a shared
+   IRQ/ready line (`WAKE_INT_N`), one native fast pin (GPIO43, net
+   `FAST_IO / U0TXD / ROOTPROBE_CS`), 3.3V, switched accessory power and multiple grounds. **All
+   15 XGPIO are genuinely bidirectional.** The expander's 16th pin (U61 P17) is reserved as
+   ACC_PWR_EN (gates the accessory rail). External I2C must be isolated at the connector (series
+   resistors, ESD, bus switch). See [[11 - Beta Pin Map v0.2]] §7b/§8a/§8b.
    *(v0.2.1/v0.2.2: supersedes the earlier "~7 slow GPIO off the shared internal expander"
-   figure, which came from an incorrect MCP23017 pin count.)*
+   figure, which came from an incorrect expander pin count. v0.2.4, 2026-07-27: the part changed
+   from MCP23017 to TCA9535PWR precisely so that all 15 published XGPIO are truly bidirectional
+   — see [[05 - Design Decisions Log]].)*
 2. **RootProbe coprocessor connector** — footprint RESERVED on the main board, Phase 2
    product. Recessed connector field with a replaceable protective cover, alignment/keying
    features, optional screw retention. See [[14 - RootProbe Interface v0.1]].

@@ -50,13 +50,31 @@ They are the outstanding firmware debt between the current code and the Beta des
       does not do.
 - [ ] Add an FT6236 reset pulse to `touch_init()`. Alpha gotcha: the touch controller is held
       asleep until CTP_RST is pulsed low->high and does NOT appear on an I2C scan without it.
-      **Beta v0.2.1: touch RST is on MCP23017 0x20 GPA0 and display RST on GPA4** (both moved
-      off native GPIO21), so the boot order is I2C up -> configure expander -> pulse touch RST
+      **Beta: touch RST = `TOUCH_RST_N` on U60 P00, display RST = `DISP_RST_N` on U60 P04** (both
+      moved off native GPIO21), so the boot order is I2C up -> configure U60 -> pulse touch RST
       -> init touch. The reset pulse is now an expander write, not a GPIO toggle.
-- [ ] **Add a dual-MCP23017 driver + button/wake handling** (0x20 internal buttons+control,
-      0x21 external header). Needs interrupt-on-change on 0x20 Port B, INTF/INTCAP decode to
-      identify the source across two wired-OR'd expanders, and deep-sleep wake arming on the
-      shared INT pin. None of this exists yet; none of it was bench-validated in Alpha.
+- [ ] **Add a TCA9535 driver + button/wake handling.** **ONE address-parameterised driver serving
+      both devices** — U60 @ 0x20 (buttons + internal control) and U61 @ 0x21 (external header).
+      They are the same silicon; do not write two drivers. Requirements:
+      - **Registers (the complete set — there are no others):** `0x00` Input Port 0, `0x01` Input
+        Port 1, `0x02` Output Port 0, `0x03` Output Port 1, `0x04` Polarity Inversion 0, `0x05`
+        Polarity Inversion 1, `0x06` Configuration 0, `0x07` Configuration 1.
+      - **Write the safe output-latch value (0x02/0x03) BEFORE flipping any Configuration bit
+        (0x06/0x07) from input to output.** Config resets to `0xFF` (all inputs) and the output
+        latches reset to `0x00`, which is not the safe state for every net — set the latch first
+        or risk glitching `NFC_5V_EN`, `AMP_SD_MODE`, or `ACC_PWR_EN` at boot.
+      - **Source identification is snapshot-compare, not a register read.** The TCA9535 has no
+        interrupt-capture register, so on every `WAKE_INT_N` assertion read both input-port
+        registers from **both** devices and diff against the driver's previous snapshot.
+      - **Treat `WAKE_INT_N` as level-sensitive** and re-check that it released — two devices
+        share the net, so a second assertion during service keeps it low and an edge-only
+        handler will miss it.
+      - **Deep-sleep wake arming** on GPIO21 (`ext0`/`ext1`).
+      - **NO MCP23017 register assumptions.** There is no IODIR, GPPU, GPINTEN, INTF, INTCAP,
+        IOCON, DEFVAL, or INTCON on this part, and no internal pull-ups at all.
+      - **Bring the I2C bus up at 100 kHz, then verify 400 kHz.**
+      None of this exists yet, and **none of it has been validated on a TCA9535 — the Alpha bench
+      test was an MCP23017, a different part.** See [[11 - Beta Pin Map v0.2]] §7c.
 - [ ] Reconcile Firmware/src/config.h pin assignments with [[11 - Beta Pin Map v0.2]] —
       every bus currently differs (display DC/RST, I2C on 17/18 vs 1/2, radio sharing the
       display bus, I2S on the wrong pins). Config.h is still placeholder wiring matched to
@@ -76,16 +94,24 @@ They are the outstanding firmware debt between the current code and the Beta des
 ## Pre-schematic review follow-ups (2026-07-26, must settle before/at capture)
 - [x] ~~Sign off the GPIO21 / GPIO43 role swap~~ — APPROVED: GPIO21 = wake INT (RTC-capable),
       GPIO43 = header fast pin. See [[11 - Beta Pin Map v0.2]] §6a
-- [x] ~~Find a pin for the switched accessory-power enable~~ — ACC_PWR_EN = 0x21 GPB7;
+- [x] ~~Find a pin for the switched accessory-power enable~~ — ACC_PWR_EN = **U61 P17**;
       header publishes XGPIO0-14 (15 user GPIO)
 - [x] ~~D-pad centre button / RootProbe native IRQ~~ — no centre button (A = select, 7 total);
-      RootProbe IRQ reserved on 0x20 GPB7 (expander, Phase 2)
+      RootProbe IRQ = `ROOTPROBE_IRQ_READY_N` on **U60 P17** (expander, Phase 2)
 - [x] ~~RootProbe SPI CS needs a native pin vs "zero native pins" contradiction~~ — RESOLVED:
       GPIO43 multiplexed as `FAST_IO / U0TXD / ROOTPROBE_CS` (mutually exclusive). Native
       budget genuinely closed. See [[11 - Beta Pin Map v0.2]] §9a
-- [ ] Select the external-I2C bus buffer/isolator or bus switch part — **must support
+- [x] ~~Select the GPIO expander part~~ — **LOCKED 2026-07-27: TI TCA9535PWR x2** (U60 @ 0x20,
+      U61 @ 0x21; PW / TSSOP-24 / 0.65mm; symbol `Interface_Expansion:TCA9535PWR`, footprint
+      `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm`). Replaces the MCP23017 — see
+      [[05 - Design Decisions Log]]
+
+### Explicitly UNRESOLVED part selections (both still block schematic freeze)
+- [ ] **Select the external community-header I2C isolator or bus switch part** — **must support
       powered-off high-impedance and must NOT back-power the accessory side**
-- [ ] Select the ACC_PWR_EN load switch part for the accessory rail
+- [ ] **Select the ACC_PWR_EN accessory load switch part** for the accessory rail
+- [ ] **Footprint audit U60/U61** — verify `Interface_Expansion:TCA9535PWR` pin numbering and the
+      TSSOP-24 footprint geometry against the TI datasheet before freeze. Assigned, not verified
 
 ## Connector-sheet schematic requirements (implement when drawing that sheet, not blockers)
 - [ ] Header IRQ/WAKE into GPIO21: series R, connector ESD, open-drain-only accessory rule,
@@ -104,11 +130,19 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] Specify IR TX MOSFET + gate/current-limit resistor values for the target drive current
 - [ ] Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias
       derating accounted for
-- [ ] Add external pull resistors forcing the SAFE state on every expander-driven enable
+- [ ] Add external pull resistors forcing the SAFE state on every expander-driven enable —
+      **the TCA9535 has no internal pull-ups, so these are the only pulls in the design**
 - [ ] Publish the reserved I2C address table (0x20, 0x21, 0x36, 0x38, 0x68) for accessory makers
 - [ ] Validate GPIO3 strap integrity: 50-100 cold boots with motion applied during reset
-- [ ] Remaining Alpha validation: IR, audio (ICS-43434 + MAX98357A), MCP23017 expander,
-      TPS63020 3.3V rail, bq25185 charging path
+- [ ] **FIRST-EVER hardware validation of the TCA9535PWR** (U60 + U61): basic bidirectional I/O
+      on both ports, two devices at 0x20/0x21 on one bus, address straps, `/INT` +
+      wired-OR `WAKE_INT_N`, button wake from deep sleep, output-latch-before-direction ordering
+      (scope `NFC_5V_EN` / `AMP_SD_MODE` / `ACC_PWR_EN` for boot glitches), and I2C at 100 kHz
+      then 400 kHz. **Nothing about this part has been bench-proven** — the Alpha expander test
+      used an MCP23017
+- [ ] Remaining Alpha-part confirmations carried into Beta: ICS-43434 mic first live capture
+      (Alpha unit was dead). *(IR, audio-out, TPS63020 3.3V rail and bq25185 charging all passed
+      on the Alpha bench. The Alpha "expander" pass was an MCP23017 and does NOT carry over.)*
 
 ## Project/business
 - [ ] Set prototype budget ceiling

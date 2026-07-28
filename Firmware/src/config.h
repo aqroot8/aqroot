@@ -61,6 +61,53 @@
 #define TOUCH_I2C_ADDR  0x38     // FT6236-family — Alpha-validated, LOCKED (was 0x15 CST816)
 #define IMU_I2C_ADDR    0x68     // BMI270 — Alpha-validated, LOCKED
 
+// ---------------------------------------------------------------------------------------
+// I2C GPIO EXPANDERS — 2x Texas Instruments TCA9535PWR (LOCKED 2026-07-27; replaced the
+// MCP23017). U60 = internal (buttons + control), U61 = external (community header).
+// 16 genuinely bidirectional I/O each: Port 0 = P00..P07, Port 1 = P10..P17.
+//
+// NO DRIVER EXISTS YET. See "07 - Build TODO Tracker.md" and "11 - Beta Pin Map v0.2.md"
+// §7 for the authoritative pin maps. ONE address-parameterised driver must serve BOTH
+// devices — they are the same silicon at two addresses; do not write two drivers.
+//
+// *** THIS PART IS DATASHEET-TRUSTED, NOT BENCH-VALIDATED. *** The Alpha expander test used
+// an MCP23017 (a different part, different register map, different interrupt model). First
+// hardware validation of the TCA9535PWR happens on Beta.
+//
+// DO NOT PORT MCP23017 ASSUMPTIONS. There is no IODIR, GPPU, GPINTEN, INTF, INTCAP, IOCON,
+// DEFVAL or INTCON on this part, and NO internal pull-ups at all — every pull is external.
+// Each device has ONE open-drain active-low /INT (not INTA/INTB); both are wired-OR onto
+// the WAKE_INT_N net, which terminates at ESP32 GPIO21 (RTC-capable, deep-sleep wake).
+//
+// Interrupt handling contract:
+//   * /INT asserts while an input differs from the value last read out of its Input Port
+//     register, and clears when that register is read. Nothing latches a transient.
+//   * There is NO interrupt-source register. On every WAKE_INT_N assertion, read BOTH input
+//     port registers from BOTH devices and diff against the driver's own previous snapshot.
+//   * Treat WAKE_INT_N as LEVEL-sensitive and re-check that it released — two devices share
+//     the net, so an edge-only handler will miss a second, overlapping assertion.
+//   * ROOTPROBE_IRQ_READY_N (U60 P17) is level-held until acknowledged, never pulsed.
+//
+// Bring the bus up at 100 kHz, then verify 400 kHz.
+#define EXP_U60_I2C_ADDR  0x20   // internal: A2=GND, A1=GND, A0=GND
+#define EXP_U61_I2C_ADDR  0x21   // external: A2=GND, A1=GND, A0=+3V3
+
+// TCA9535 register set — this is the COMPLETE set. There are eight registers and no others.
+#define TCA9535_REG_INPUT_0    0x00   // read-only; reading deasserts /INT for Port 0
+#define TCA9535_REG_INPUT_1    0x01   // read-only; reading deasserts /INT for Port 1
+#define TCA9535_REG_OUTPUT_0   0x02   // output latch, resets to 0x00
+#define TCA9535_REG_OUTPUT_1   0x03   // output latch, resets to 0x00
+#define TCA9535_REG_POLARITY_0 0x04   // keep at 0x00 — invert in firmware, not in hardware
+#define TCA9535_REG_POLARITY_1 0x05   // keep at 0x00 — invert in firmware, not in hardware
+#define TCA9535_REG_CONFIG_0   0x06   // direction: 1 = input, 0 = output; resets to 0xFF
+#define TCA9535_REG_CONFIG_1   0x07   // direction: 1 = input, 0 = output; resets to 0xFF
+
+// SAFE-STATE ORDERING (hard requirement): write the safe value into the OUTPUT register
+// (0x02/0x03) BEFORE clearing the matching CONFIG bit (0x06/0x07) from input to output.
+// Config resets to all-inputs and the output latches reset to 0x00, which is NOT the safe
+// state for every net — setting direction first can glitch NFC_5V_EN, AMP_SD_MODE or
+// ACC_PWR_EN at boot. Set the latch, then the direction.
+
 // WRONG PART / WRONG BUS — pending rewrite. The locked NFC front-end is the ST25R3916 over
 // SPI, not a PN532 over I2C. These IRQ/RESET defines belong to the PN532 driver that still
 // needs replacing (see "07 - Build TODO Tracker.md"). Kept only so the current build links.
@@ -87,8 +134,10 @@
 // ---------------------------------------------------------------------------------------
 // Audio I2S — ICS-43434 MEMS mic in + MAX98357A Class-D amp out (both LOCKED parts; the
 // ICS-43434 replaced the popular INMP441, which is discontinued). The MAX98357A shutdown
-// pin lives on the MCP23017 expander as a slow enable, so audio can be power-gated when
-// idle. Beta pins are BCLK=39/LRCLK=40/DOUT=41/DIN=42. PLACEHOLDER pins below.
+// pin lives on the internal GPIO expander as a slow enable (net AMP_SD_MODE = U60 P03, a
+// TI TCA9535PWR at I2C 0x20), so audio can be power-gated when idle. An external pull holds
+// it in SHUTDOWN until firmware drives it.
+// Beta pins are BCLK=39/LRCLK=40/DOUT=41/DIN=42. PLACEHOLDER pins below.
 #define I2S_BCLK        41
 #define I2S_LRCLK       42
 #define I2S_DOUT        45       // to speaker amp

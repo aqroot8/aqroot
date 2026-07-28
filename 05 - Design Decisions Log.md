@@ -234,7 +234,8 @@ Selected the I2S audio parts (were "planned, unspecified"):
 - Speaker amp: MAX98357A - I2S Class-D mono amp, all-in-one (I2S in -> amplified speaker out,
   no separate DAC). Up to 3.2W into 4ohm (far more than needed; run below max). 2.7-5.5V,
   efficient Class-D. Has a SHUTDOWN/mode pin -> power-gate the amp when audio idle (goes on
-  the MCP23017 expander as a slow enable). Gain pin-settable (3-15dB). No I2C config needed.
+  the internal expander as a slow enable: `AMP_SD_MODE` on **U60 P03**). Gain pin-settable
+  (3-15dB). No I2C config needed.
 - Microphone: ICS-43434 - I2S MEMS mic. IMPORTANT: chosen over the popular INMP441 because
   the INMP441 is DISCONTINUED / not recommended for new designs. The ICS-43434 is the
   current-gen InvenSense replacement (drop-in, better power + audio). Picking the
@@ -244,7 +245,9 @@ Selected the I2S audio parts (were "planned, unspecified"):
 - Shares the reserved I2S pins (BCLK=39, LRCLK=40, DOUT=41 speaker, DIN=42 mic).
 - STILL NEEDS BENCH VALIDATION (audio is the one untested subsystem). Buy ICS-43434 +
   MAX98357A breakouts (~$5-8 each) to validate on the Alpha board when ready.
-- Expander addition: MAX98357A SD/shutdown (+ optional gain) pin(s) on the MCP23017.
+- Expander addition: MAX98357A SD/shutdown (+ optional gain) pin(s) on the internal expander —
+  `AMP_SD_MODE`, **U60 P03** (TCA9535PWR @ 0x20), with an external pull holding it in SHUTDOWN
+  until firmware says otherwise.
 
 ## Display module: 2.8" IPS ILI9341 capacitive SPI (verify touch = FT6236 @ 0x38)
 Beta display = 2.8" IPS, ILI9341 driver, 240x320, 4-wire SPI, CAPACITIVE touch - matches the
@@ -260,7 +263,10 @@ documented alternative + adjust the touch driver. Reference modules: Elecrow / L
 Ordered the remaining breakouts to finish Alpha validation of the last untested subsystems:
 - ICS-43434 I2S mic (audio input)
 - MAX98357A I2S amp (audio output) + small 4/8ohm speaker
-- MCP23017 I2C GPIO expander (0x20) - designed into Beta, not yet bench-tested
+- MCP23017 I2C GPIO expander (0x20) - designed into Beta at the time, not yet bench-tested
+  > **SUPERSEDED 2026-07-27: the MCP23017 is no longer the design part.** The Beta expanders are
+  > TI TCA9535PWR (U60/U61). This purchase is a sunk Alpha cost; the board remains useful for
+  > general I2C-architecture work but validates nothing about the TCA9535.
 - TPS63020 buck-boost breakout (3.3V output) - validate the main 3.3V logic rail before PCB
 Deferred (not needed yet): MAX17048 fuel gauge (battery-% monitoring is a convenience
 feature, low-risk to validate later on the Beta board).
@@ -273,7 +279,7 @@ Already arriving separately:
 > - ICS-43434 mic
 > - MAX98357A amp
 > - speaker
-> - MCP23017 expander
+> - MCP23017 expander *(no longer the design part as of 2026-07-27 — see above)*
 > - TPS63020 3.3V breakout
 > - IR (Bridgold TSOP38238 RX + TSAL6200 TX)
 > - 2x bq25185 replacement charger boards
@@ -292,18 +298,36 @@ validations are:
 After these 5 pass, Alpha is COMPLETE -> clear to start the KiCad schematic on fully-
 validated parts.
 
+> **CORRECTED 2026-07-27 — "on fully-validated parts" no longer holds.** All five bench tests
+> above did pass, but the expander one tested an **MCP23017**, which is no longer the design
+> part. The Beta expanders are **TI TCA9535PWR (U60/U61), datasheet-trusted and never
+> bench-tested.** Schematic capture remains cleared to proceed; the claim that every Beta part
+> is bench-validated is retired. Two Beta parts now await first hardware confirmation: the
+> ICS-43434 mic (dead Alpha unit) and both TCA9535PWR expanders (never powered on).
+
 ## PRE-SCHEMATIC DESIGN REVIEW — corrections + decisions (2026-07-26)
 
 Applied immediately before KiCad schematic capture. Source: pre-schematic design review.
 Full detail in [[11 - Beta Pin Map v0.2]] (now revision v0.2.1).
 
+> **HISTORICAL ENTRY — the expander part described below is NO LONGER IN THE DESIGN.** This
+> section records the 2026-07-26 pre-schematic review using the part and pin names current at
+> the time. **The expander is now the TI TCA9535PWR (U60/U61)** — see the 2026-07-27 part-change
+> decision above. Every `GPAn`/`GPBn` name, `INTA`/`INTB` reference, and MCP23017 register or
+> interrupt-on-change assumption below is **dead nomenclature**; the authoritative maps are
+> [[11 - Beta Pin Map v0.2]] §7a/§7b and the register set is §7c. Read this for *why* decisions
+> were made, never for *what the pins are called*.
+
 **Factual errors corrected:**
-1. **MCP23017 pin count.** The repo claimed the MCP23017 has "14 bidirectional + 2 output-only
-   pins (GPA7, GPB7)". That is WRONG - the MCP23017 has **16 FULLY BIDIRECTIONAL GPIO** (all
-   of GPA0-7 and GPB0-7, direction set per-pin via IODIRA/IODIRB). There is no output-only pin
-   on this part. All "output-only" notes removed and every pin budget that relied on the wrong
-   number recalculated - including the "~7 slow GPIO" community-header figure, which was
-   downstream of the error.
+1. **Expander pin count.** The repo claimed the expander had "14 bidirectional + 2 output-only
+   pins". The review concluded that was wrong and that all 16 were fully bidirectional, then
+   recalculated every pin budget on that basis - including the "~7 slow GPIO" community-header
+   figure, which was downstream of the error.
+   > **CORRECTED AGAIN (2026-07-27): this correction was itself wrong.** Current MCP23017 I2C
+   > silicon *does* have output-only GPA7/GPB7 limitations. Rather than re-litigate which pins are
+   > crippled, the part was changed to the **TI TCA9535PWR**, which genuinely has 16 bidirectional
+   > I/O. The recalculated budgets survive intact because the new part supplies the 16 usable pins
+   > the budgets assumed. See the part-change decision above.
 2. **GPIO43/44 UART labels.** Corrected to **GPIO43 = U0TXD, GPIO44 = U0RXD** (reversed in
    v0.2 §5).
 
@@ -317,39 +341,46 @@ Full detail in [[11 - Beta Pin Map v0.2]] (now revision v0.2.1).
    protection during reset/power sequencing only), LED current-limit resistor, local
    decoupling, physical TX/RX separation.
 4. **GPIO21 reclaimed.** Display RESET and touch RESET both moved off native GPIO21 onto the
-   MCP23017 (reset is a slow signal; the doc already inconsistently had touch RESET on GPA0).
+   internal expander (reset is a slow signal; the doc already inconsistently had touch RESET on
+   an expander pin).
    Two separate expander pins, not one shared, for sequencing flexibility. The FT6236 still
    requires a CTP_RST low->high pulse to enumerate - that pulse now comes from the expander,
    so the boot order is: I2C up -> configure expander -> pulse touch RST -> init touch.
-5. **GPIO3 / BMI270 INT1 strap caution.** SX1262 RESET stays on MCP23017 GPA1; BMI270 INT1
-   stays native on GPIO3. Because GPIO3 is a strapping pin and the IMU can assert INT1 during
+5. **GPIO3 / BMI270 INT1 strap caution.** SX1262 RESET stays on the internal expander
+   (`SX1262_RST_N`, now U60 P01); BMI270 INT1 stays native on GPIO3. Because GPIO3 is a strapping pin and the IMU can assert INT1 during
    the reset window, the boot state must be designed: configure INT1 open-drain if the mode
    allows, add a weak pull setting the correct strap level, add a 100-470R series resistor,
    add a test pad, and **validate 50-100 cold boots with motion applied during reset** before
    freezing. Fallback if it fails: drop native motion-wake, poll the IMU, free GPIO3.
-6. **Second MCP23017 at 0x21** for the community expansion header (16 low-speed GPIO,
-   XGPIO0..15). The internal expander (0x20) now carries the 8-button cluster (D-pad + A/B +
-   Back + Home on Port B) plus all internal control signals on Port A - **exactly 16 pins,
-   completely full**. The Port A / Port B split is deliberate: it makes INTB a pure button
-   interrupt. Casualty: the old "display power/control reserve" pin is gone, and no D-pad
-   centre/select fits.
-   - **BUTTON WAKE:** a polled expander CANNOT wake the ESP32 from sleep. The 0x20 INTB output
-     is routed (open-drain, wired-OR with 0x21) to a native wake-capable pin so buttons can
-     wake the device. Without this the ~2-week standby figure is unreachable.
+6. **Second expander at 0x21** for the community expansion header (16 low-speed GPIO,
+   XGPIO0..15). The internal expander (0x20) now carries the button cluster plus all internal
+   control signals on the other port - **exactly 16 pins, completely full**. The two-port split
+   was chosen partly to make the button interrupt output a pure button interrupt. Casualty: the
+   old "display power/control reserve" pin is gone, and no D-pad centre/select fits.
+   > *(2026-07-27: the button count was corrected to 7 later in this log, and the
+   > "pure button interrupt" rationale is now **VOID** — the TCA9535PWR has a single `/INT` per
+   > device covering both ports. The port split is kept for readability only.)*
+   - **BUTTON WAKE:** a polled expander CANNOT wake the ESP32 from sleep. The internal
+     expander's interrupt output is routed (open-drain, wired-OR with 0x21) to a native
+     wake-capable pin so buttons can wake the device. Without this the ~2-week standby figure is
+     unreachable. *(Now the `WAKE_INT_N` net -> GPIO21.)*
    - **PHYSICAL POWER SWITCH stays OUT of the expander architecture** - it needs a real
      hard-off / load-switch / charger ship-mode path, not a firmware GPIO.
-   - **POWER-UP SAFE STATE:** MCP23017 pins default to INPUTS (high-Z) until firmware writes
-     IODIR. Every safety-relevant enable (load switches, amp shutdown, NFC boost enable,
-     resets) needs an **external pull resistor forcing the safe state**. Do NOT rely on
+   - **POWER-UP SAFE STATE:** expander pins default to INPUTS (high-Z) until firmware sets the
+     direction registers. Every safety-relevant enable (load switches, amp shutdown, NFC boost
+     enable, resets) needs an **external pull resistor forcing the safe state**. Do NOT rely on
      "firmware writes it low quickly" - a hung or half-flashed firmware makes that high-Z
-     window permanent.
+     window permanent. *(2026-07-27: still true on the TCA9535, and now stricter — that part has
+     no internal pull-ups at all, and firmware must also write safe output latches before
+     changing direction. See the part-change decision above.)*
 7. **External I2C isolation (required).** The community header must NOT expose the internal
    I2C bus naked: 22-47R series resistors near the host, ESD protection at the connector,
    optional solder-jumper external pull-ups, a bus buffer/isolator or bus switch, and a
    firmware/hardware way to disconnect a defective accessory. **A community accessory that
    shorts SDA/SCL must not disable the internal touch/IMU/fuel-gauge/controls or make AQROOT
    unbootable.** Reserved I2C address table to publish for accessory makers: **0x20, 0x21,
-   0x36, 0x38, 0x68** (and note the MCP23017 family occupies all of 0x20-0x27).
+   0x36, 0x38, 0x68** (and note the I2C-expander families — TCA9535, PCA9535/9555, MCP23017 —
+   all occupy 0x20-0x27).
 8. **Hybrid expansion header.** Not expander-only: expose native fast pins (the reclaimed
    native GPIO + I2C SDA/SCL + an interrupt/ready line + 3.3V + switched accessory power +
    multiple grounds) alongside the 16 labeled low-speed expander GPIO. **Do NOT market it as
@@ -410,11 +441,11 @@ When one role is constrained by silicon and the other is not, the constrained ro
 constrained pin. Deep-sleep wake-on-button is load-bearing for the ~2-week standby figure in
 [[13 - Power Budget and Battery Runtime v0.1]], so this is not a preference.
 
-### 2. Accessory-power enable — ACC_PWR_EN on 0x21 GPB7; header publishes XGPIO0-14
+### 2. Accessory-power enable — ACC_PWR_EN on the 0x21 expander's 16th pin (now U61 P17); header publishes XGPIO0-14
 
-Option (a) of the three logged during the review. The second MCP23017 (0x21) reserves its
-16th pin (GPB7) as **ACC_PWR_EN**, driving the load switch on the community header's accessory
-power rail. **The user-facing header is XGPIO0-14 = 15 low-speed user GPIO.**
+Option (a) of the three logged during the review. The second expander (0x21 — now **U61**)
+reserves its 16th pin (**P17**) as **ACC_PWR_EN**, driving the load switch on the community
+header's accessory power rail. **The user-facing header is XGPIO0-14 = 15 low-speed user GPIO.**
 
 Rationale: switched accessory power is worth one header pin because it buys two things nothing
 else does -
@@ -434,8 +465,8 @@ safe-state rule (an unpowered header is the safe default and must not depend on 
 
 Standard handheld scheme: **D-pad navigates, A = select/confirm, B = back, Home = launcher.**
 
-Final cluster on MCP23017 0x20 Port B: **D-pad UP / DOWN / LEFT / RIGHT, A (=select),
-B (=back), HOME** = **7 buttons**.
+Final cluster on the internal expander's input port (**U60 P10-P16**): **D-pad UP / DOWN /
+LEFT / RIGHT, A (=select), B (=back), HOME** = **7 buttons**.
 
 - **No separate D-pad centre/select button.** A *is* select, so a centre press would be a
   duplicate control competing with A for the same job - added cost and an extra failure point
@@ -446,11 +477,12 @@ B (=back), HOME** = **7 buttons**.
 - **Power is a hard switch, not a button** - it stays out of the expander architecture
   entirely (real hard-off / load-switch / ship-mode path), so it consumes no expander pin.
 
-**Consequence: 0x20 GPB7 is spare** - the only unallocated pin anywhere in the design. It is
-reserved, not free (see 3b). If RootProbe were ever cancelled, GPB7 is the natural home for a
-centre-select or an 8th button.
+**Consequence: the internal expander's 16th pin (now U60 P17) is spare** - the only unallocated
+pin anywhere in the design at the time. It is reserved, not free (see 3b), and as of v0.2.4 it is
+a live assignment carrying `ROOTPROBE_IRQ_READY_N`. If RootProbe were ever cancelled, that pin is
+the natural home for a centre-select or an 8th button.
 
-### 3b. RootProbe host IRQ — expander pin (0x20 GPB7), NOT a native pin
+### 3b. RootProbe host IRQ — expander pin (now U60 P17), NOT a native pin
 
 Reserved now, wired in Phase 2 when RootProbe is actually built.
 
@@ -464,9 +496,14 @@ note in [[14 - RootProbe Interface v0.1]] is superseded - it never made the case
 latency mattered, and on inspection it does not.
 
 This applies the "don't let a Phase-2 accessory consume scarce native pins" principle to the
-one pin it was most tempting to break it for. Bonus: GPB7 sits on Port B, which already has
-interrupt-on-change enabled for the buttons, so the RootProbe IRQ routes through INTB ->
-GPIO21 and **can wake AQROOT from deep sleep** at no extra cost.
+one pin it was most tempting to break it for. Bonus: the pin sits on the same port as the button
+inputs, so the RootProbe IRQ routes through the shared interrupt net to GPIO21 and **can wake
+AQROOT from deep sleep** at no extra cost.
+> *(2026-07-27: the "interrupt-on-change already enabled for the buttons" reasoning is void —
+> the TCA9535 has no interrupt-on-change configuration and no capture register. The wake bonus
+> still holds via `WAKE_INT_N`, but **RootProbe must now hold the IRQ level until acknowledged
+> rather than pulsing it**, since nothing latches a transient. See
+> [[14 - RootProbe Interface v0.1]] §4.)*
 
 Also settled in the same pass: RootProbe **MODULE_DETECT** = "does the coprocessor answer on
 the I2C management bus" (no pin), and **RESET** = an I2C management command, with the
@@ -478,8 +515,8 @@ select cannot sit behind an I2C expander at usable speed.
 
 **Native pin budget CLOSED: 29 assigned, 2 reserved test pads (GPIO45/46), 0 unassigned, 0
 outstanding claims.** RootProbe's IRQ was the last queued demand on a native pin and it is now
-on the expander. Expander budget: 0x20 = 15/16 used (GPB7 reserved for RootProbe),
-0x21 = 16/16 used (15 user XGPIO + ACC_PWR_EN).
+on the expander. Expander budget: **U60 @ 0x20 = 16/16 used** (P17 = RootProbe IRQ),
+**U61 @ 0x21 = 16/16 used** (15 user XGPIO + ACC_PWR_EN).
 
 ## FINAL PRE-SCHEMATIC CLOSE-OUT — second design review (2026-07-26)
 
@@ -503,7 +540,7 @@ true. Deferring CS to Phase 2 did not resolve it - it just moved the contradicti
   connector legs limit damage if a user ignores that, but that is damage-limiting, not support.
 
 **Why this genuinely closes the budget:** RootProbe now has a native home for CS (shared,
-GPIO43), an expander home for IRQ (0x20 GPB7), and I2C for DETECT and RESET. It has no
+GPIO43), an expander home for IRQ (U60 P17), and I2C for DETECT and RESET. It has no
 remaining unmet pin requirement, so nothing is queued against the native budget any more. The
 budget is closed **via the multiplex**, not by having spare pins - and the docs now say so
 rather than claiming a clean close that was not real.
@@ -549,18 +586,19 @@ accessory alive, and makes the whole power-cycle useless.
 ### 3. Terminology fix - 0x20 expander capacity
 
 "Exactly full" with a "spare" pin was misleading in both directions. Correct wording:
-**15 assigned + 1 (GPB7) footprint-reserved for the Phase-2 RootProbe IRQ = 0 generally
-available.** GPB7 has a committed owner and a reserved footprint; it is simply unpopulated
-until RootProbe exists. Plan new signals against zero available capacity on this chip.
+**15 assigned + 1 footprint-reserved for the Phase-2 RootProbe IRQ = 0 generally available.**
+That pin has a committed owner and a reserved footprint; it is simply unpopulated until RootProbe
+exists. Plan new signals against zero available capacity on this chip. *(2026-07-27: in v0.2.4 it
+is a live assignment — U60 P17 = `ROOTPROBE_IRQ_READY_N`. Still 0 available.)*
 
 ### 4. Deep-sleep current caveat - standby figure is ESTIMATED
 
 The ~10-20 uA deep-sleep figure and the ~2-week standby number derived from it are **NOT
 measured**, and the ~10-20 uA is an ESP32-S3 *chip* figure standing in for a *system* figure.
 The true number must sum **TPS63020 quiescent (~25 uA - already comparable to the entire ESP32
-figure) + both MCP23017s + MAX17048 + all pull-ups (7 buttons, INT/wake, I2C pair, every
-expander safe-state pull) + load-switch leakage + charger/power-path + display leakage + IMU
-wake-mode current.** Two of those - the second expander and the safe-state pulls - are
+figure) + both TCA9535 expanders (U60 + U61) + MAX17048 + all pull-ups (7 buttons, INT/wake, I2C
+pair, every expander safe-state pull) + load-switch leakage + charger/power-path + display
+leakage + IMU wake-mode current.** Two of those - the second expander and the safe-state pulls - are
 structural consequences of decisions locked earlier in this log; both are correct decisions
 that nonetheless cost standby current, and they have to be counted.
 
@@ -570,6 +608,101 @@ uA the honest answer is days, not weeks. Same rule already applied to demoing on
 that actually work. Marked in [[13 - Power Budget and Battery Runtime v0.1]]; Beta bring-up
 must measure true system standby at the battery, in the final enclosure, with wake sources
 armed.
+
+## GPIO EXPANDER PART CHANGE: MCP23017 -> TI TCA9535PWR (LOCKED, 2026-07-27)
+
+**Both I2C GPIO expanders are now Texas Instruments TCA9535PWR.** This supersedes the MCP23017
+everywhere in the design. Detail in [[11 - Beta Pin Map v0.2]] §7 (now revision **v0.2.4**).
+
+| Property | Value |
+|---|---|
+| Part | **Texas Instruments TCA9535PWR** (both devices) |
+| **U60** | internal expander — buttons + internal control — **I2C 0x20**, straps **A2=GND, A1=GND, A0=GND** |
+| **U61** | external expander — community header — **I2C 0x21**, straps **A2=GND, A1=GND, A0=+3V3** |
+| Package | **PW, TSSOP-24, 0.65 mm pitch** |
+| KiCad symbol | **`Interface_Expansion:TCA9535PWR`** |
+| KiCad footprint | **`Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm`** |
+| I/O | **16 genuinely bidirectional** per device — Port 0 `P00-P07`, Port 1 `P10-P17` |
+| Interrupt | **one open-drain active-low `/INT` per device**, both wired-OR onto **`WAKE_INT_N`** -> **ESP32 GPIO21** |
+
+### Why the part changed — two reasons, both binding
+
+1. **The current MCP23017 I2C silicon has output-only GPA7/GPB7 limitations.** The pre-schematic
+   review of 2026-07-26 recorded a "factual correction" asserting all 16 MCP23017 pins were fully
+   bidirectional and recalculated every pin budget on that basis. **That correction does not hold
+   up against the current I2C-variant silicon, so it is itself corrected here.** The right
+   resolution is not to re-litigate which two pins are crippled — it is to use a part that has no
+   such asymmetry.
+2. **The community header requires all 15 exposed XGPIO to be genuinely bidirectional.** An
+   accessory maker reading a published "XGPIO0-14, 3.3V logic" contract will wire an input to any
+   one of them. Two output-only pins hidden inside that range is a latent support disaster and a
+   promise AQROOT cannot keep. **This reason alone forces the change**, independently of reason 1.
+
+### Validation status — stated honestly
+
+> **The TCA9535PWR is DATASHEET-TRUSTED, NOT BENCH-VALIDATED. First hardware validation happens
+> on Beta.** No TCA9535 has ever been powered on for this project. The expander test that passed
+> on 2026-07-26 used a **Waveshare MCP23017 board** — different vendor, different silicon,
+> different register map, different interrupt model. That test validated the *architectural
+> pattern* (I2C-mediated GPIO coexisting with the FT6236 touch and BMI270 IMU on one bus) and
+> **nothing about this part.** Do not call the expander "validated" anywhere without naming the
+> part that was actually tested. See the corrected Alpha validation entries below and in
+> [[Alpha-Tests/HARDWARE-NOTES]].
+
+This is a deliberate, accepted risk: a datasheet-specified digital I2C part with a locked pin map
+is a reasonable thing to capture in a schematic ahead of bench proof. The cost is that **the Beta
+BOM is no longer 100% bench-validated**, and the earlier "cleared to begin the KiCad schematic on
+fully-validated parts" claim has been retired accordingly.
+
+### Architectural consequences
+
+- **INTA/INTB separation is GONE.** The MCP23017 Port-A/Port-B split was chosen partly so `INTB`
+  would be a "pure button interrupt" immune to control-signal activity. **The TCA9535 has ONE
+  `/INT` covering both ports, so that property no longer exists.** The port split is kept for
+  readability (Port 0 = outputs, Port 1 = inputs), but the interrupt rationale for it is void and
+  firmware must not rely on it.
+- **Interrupt-on-change configuration is GONE.** Nothing to enable: `/INT` asserts whenever an
+  input differs from the value last read out of its Input Port register, and clears when that
+  register is read.
+- **INTF / INTCAP are GONE**, so the chip cannot report what changed. **Firmware identifies the
+  source by reading both input-port registers from both devices and diffing against its own
+  previous snapshot.** Treat `WAKE_INT_N` as level-sensitive and re-check that it released — two
+  devices share the net.
+- **Internal GPPU pull-ups are GONE — the TCA9535 has no internal pull-ups at all.** The external
+  10k button pull-ups and every safe-state pull were already mandatory; they are now the *only*
+  pulls in the design, with no fallback. The safe-state rule tightens rather than relaxes.
+- **New hard firmware rule:** all ports default to inputs (Configuration registers reset to
+  `0xFF`) while the output latches reset to `0x00`, which is **not** the safe state for every net.
+  **Firmware MUST write safe output-latch values (0x02/0x03) BEFORE changing Configuration bits
+  (0x06/0x07) from input to output**, or it risks glitching `NFC_5V_EN`, `AMP_SD_MODE`, or
+  `ACC_PWR_EN` at boot.
+- **New hard RootProbe rule:** `ROOTPROBE_IRQ_READY_N` (U60 P17) **must be level-held until
+  acknowledged, not pulsed** — there is no capture register to catch a transient, and U60's single
+  `/INT` merges the button and RootProbe sources. See [[14 - RootProbe Interface v0.1]] §4.
+- **TCA9535 register set (the complete set — eight registers, no others):** `0x00` Input Port 0,
+  `0x01` Input Port 1, `0x02` Output Port 0, `0x03` Output Port 1, `0x04` Polarity Inversion 0,
+  `0x05` Polarity Inversion 1, `0x06` Configuration 0, `0x07` Configuration 1. **There is no
+  IODIR, GPPU, GPINTEN, INTF, INTCAP, IOCON, DEFVAL, or INTCON.** Keep Polarity Inversion at
+  `0x00` and invert in firmware, so register contents match the schematic net names.
+- **One address-parameterised driver serves both U60 and U61** — same silicon, two instances. Do
+  not write two drivers.
+- **I2C bring-up: start at 100 kHz, then verify 400 kHz** with all five devices plus an accessory
+  on the external segment.
+
+### What did NOT change
+
+Every native ESP32-S3 GPIO assignment, both I2C addresses (0x20 / 0x21), the reserved address
+table, the GPIO43 `FAST_IO / U0TXD / ROOTPROBE_CS` multiplex, the connector-sheet requirements,
+the 7-button cluster, and the 15-user-XGPIO header. **The digital pin architecture is not
+reopened by this change.**
+
+### Still unresolved (unchanged by this decision, still blocking schematic freeze)
+
+- **External community-header I2C isolator or bus switch** — unselected. Binding criteria:
+  powered-off high-impedance on the external side, and must NOT back-power the accessory side.
+- **ACC_PWR_EN accessory load switch** — unselected.
+- **U60/U61 footprint audit** — the symbol/footprint pair above is assigned but **not yet verified
+  against the TI datasheet drawing.**
 
 ## IR: native RMT + transistor LED driver (Beta)
 IR validated on the bench (TSOP38238 + TSAL6200). Two Beta requirements emerged:
