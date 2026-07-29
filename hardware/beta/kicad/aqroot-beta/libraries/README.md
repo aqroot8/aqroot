@@ -12,14 +12,30 @@ libraries/
 
 Intended library nickname: **`AQROOT_Beta`** (both symbol and footprint library).
 
-> `sym-lib-table` and `fp-lib-table` are **deliberately not modified**. Register the
-> library manually in KiCad — see [Registering the library](#registering-the-library).
+> The library is **already registered** in the project's `sym-lib-table` and
+> `fp-lib-table` under the nickname `AQROOT_Beta` — see
+> [Registration](#registration). Nothing to do before using it.
+
+---
+
+## Contents
+
+| Part | Symbol | Footprint |
+|---|---|---|
+| Bosch Sensortec BMI270 | `BMI270` | `Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
+| Vishay TSOP38238 | `TSOP38238` | `Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
+| Vishay TSAL6200 | *(none — use stock `Device:LED`)* | *(none — use stock `LED_THT:LED_D5.0mm`)* |
+
+See [TSAL6200](#tsal6200--recommended-kicad-symbol-and-footprint) for why that part
+deliberately has no custom library entry.
 
 ---
 
 ## Source of authority
 
-Everything in this library is derived from a single document:
+### BMI270
+
+The BMI270 symbol and footprint are derived from a single document:
 
 | | |
 |---|---|
@@ -40,6 +56,23 @@ Sections used:
 | §7.2.3 | I²C connection diagram, decoupling recommendation |
 | §8.1 | Package outline dimensions, metallized pad detail |
 | §8.3 | Landing pattern recommendation |
+
+### TSOP38238 and TSAL6200
+
+| | TSOP38238 | TSAL6200 |
+|---|---|---|
+| Document | IR Receiver Modules for Remote Control Systems | High Power Infrared Emitting Diode, 940 nm |
+| Covers | TSOP382.., TSOP384.. | TSAL6200 |
+| Document number | **82491** | **81010** |
+| Revision | **Rev. 2.1, 27-May-2025** | **Rev. 2.4, 13-Mar-2014** |
+| Package drawing | 6.550-5263.01-4, issue 12, 16.04.10 | 6.544-5259.06-4, issue 6, 19.05.09 |
+| URL | <https://www.vishay.com/docs/82491/tsop382.pdf> | <https://www.vishay.com/docs/81010/tsal6200.pdf> |
+
+Supporting Vishay documents consulted (not used for any dimension): **80121**
+"Marking on IR Receiver Modules" rev. 3.7, and **81638** "Minicast IR Receiver
+Packaging Options". Neither adds pin-orientation data beyond the datasheet.
+
+### Provenance rule
 
 **No SnapEDA / SnapMagic, Ultra Librarian, Octopart, vendor-portal or community
 library was used as a design authority**, and none was consulted to fill gaps.
@@ -240,6 +273,177 @@ format version the first time you save from the library editors.
 
 ---
 
+## Symbol — `TSOP38238`
+
+| Field | Value |
+|---|---|
+| Reference prefix | `U` |
+| Value | `TSOP38238` |
+| Footprint | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
+| Manufacturer | Vishay |
+| MPN | TSOP38238 |
+| Description | 38 kHz IR remote-control receiver module |
+| Datasheet | <https://www.vishay.com/docs/82491/tsop382.pdf> |
+
+All **3 physical pins appear exactly once**, with **no hidden pins**. Pin names are
+Vishay's verbatim from the "MECHANICAL DATA / Pinning" statement: `1 = OUT, 2 = GND,
+3 = VS`.
+
+### Pin table
+
+| Physical pin | Vishay name | Symbol name | Electrical type | Notes |
+|---|---|---|---|---|
+| 1 | OUT | `OUT` | Open collector | Demodulated, **active-low** output. The BLOCK DIAGRAM shows an NPN with its collector on pin 1, emitter to pin 2, and an internal **30 kΩ pull-up to VS**. Open collector is the exact KiCad type: it can pull low but only weakly pulls high, and it will not raise a false ERC output conflict if wire-OR'd. |
+| 2 | GND | `GND` | Power input | Ground. |
+| 3 | VS | `VS` | Power input | Supply, 2.0 V to 5.5 V. |
+
+Symbol layout: `VS` on top, `GND` on the bottom, `OUT` on the right. The symbol
+encodes **no AQROOT net names**.
+
+---
+
+## Footprint — `Vishay_TSOP382xx_Minicast_3Pin_P2.54mm`
+
+The footprint **was created**. The Vishay drawing gives the body envelope, the lead
+pitch and the lead cross-section, which is everything a 3-lead inline through-hole
+land pattern needs.
+
+Named for the package family rather than the single part: drawing 6.550-5263.01-4
+covers the whole TSOP382../TSOP384.. Minicast range, so the same footprint serves
+any TSOP382xx/TSOP384xx. `P2.54mm` records the pitch explicitly.
+
+### Package-view convention
+
+* The footprint is drawn in **top view**, as KiCad requires — looking down at the
+  board with the part standing upright on it, `F.Cu` toward the viewer.
+* In this top view the **lens/dome faces −Y** and the **flat marking face faces +Y**.
+* **Pin 1 (OUT) is at −X (left)**, pin 2 (GND) at the centre, pin 3 (VS) at +X.
+* Equivalent statement in Vishay's own terms: viewed from the **front — the lens
+  side — with the leads pointing down, the pins read 1‑2‑3 left to right**, i.e.
+  OUT on the left. Viewed from the **rear (marking) side** they read 3‑2‑1.
+
+The only pin-numbered figure Vishay publishes is the isometric on page 2; the
+orthographic package drawing on page 7 carries no pin numbers, and docs 80121 and
+81638 add none. Rather than eyeball the isometric, the orientation was derived from
+the drawing's vector geometry: the three projected axes are at 30°, 150° and
+vertical, the pin 1→3 label axis lies on the 30° axis, the leads on the 150° axis and
+the dome on the vertical axis, and the visible faces place the viewer in the
+(+width, +lead, +lens) octant. For a standard isometric from that octant the axes in
+counter-clockwise screen order are a cyclic permutation of a right-handed triad,
+which fixes the handedness and hence the pin-1 side. See
+[Reproducing the orientation check](#reproducing-the-orientation-check).
+
+### Pad table
+
+| Pad | X | Y | Drill | Pad size | Shape | Layers |
+|---|---|---|---|---|---|---|
+| 1 (OUT) | −2.54 | 0 | Ø1.1 | Ø1.8 | rect | \*.Cu, \*.Mask |
+| 2 (GND) | 0 | 0 | Ø1.1 | Ø1.8 | circle | \*.Cu, \*.Mask |
+| 3 (VS) | 2.54 | 0 | Ø1.1 | Ø1.8 | circle | \*.Cu, \*.Mask |
+
+Pad 1 is rectangular — the standard KiCad pin-1 indication in copper.
+
+### Which numbers are Vishay's, and which are allowances
+
+Straight from document 82491 (drawing 6.550-5263.01-4):
+
+| Value | Meaning |
+|---|---|
+| **2.54 nom.** | Lead pitch → pads at X = −2.54, 0, +2.54 |
+| **5** | Body width → F.Fab X = ±2.5 |
+| **4.8** | Body depth incl. dome → F.Fab spans Y = +1.4 … −3.4 |
+| **2.8** | Depth of the rectangular block before the dome → block front face at Y = −1.4 |
+| **R 2** and **(4)** | Dome radius, and its 4 mm span (= 2R) → dome arc from (−2, −1.4) through (0, −3.4) to (2, −1.4) |
+| **1.2 ± 0.2** | Rear face → **rear edge** of the lead. With the 0.5 max lead thickness this puts the lead *centre* 1.4 mm from the rear face, which is where the pad row sits |
+| **0.7 max** | Lead width |
+| **0.5 max** | Lead thickness |
+| **6.95 ± 0.3** | Body height above the seating plane (not represented in a 2D footprint) |
+
+Derived, **not** Vishay values — ordinary manufacturing allowances:
+
+| Item | Value | Basis |
+|---|---|---|
+| Drill | **Ø1.1 mm** | Worst-case lead diagonal √(0.7² + 0.5²) = 0.86 mm, plus 0.25 mm IPC-7251 nominal-density lead-to-hole clearance |
+| Pad diameter | **Ø1.8 mm** | Drill + 0.7 mm → 0.35 mm annular ring. Leaves 0.74 mm copper gap between adjacent pads at 2.54 pitch |
+| `F.CrtYd` | X ±3.75, Y −3.65 … +1.75 | Body-and-pad extents + 0.25 mm |
+| `F.SilkS` | Body outline offset 0.15 mm outward, broken either side of the pads | Keeps silk off pad copper |
+| `F.Fab` chamfer | 0.6 mm on the rear-left corner | Pin-1 indication |
+
+The lead row is **centred on the 5 mm body width** — confirmed by measuring the
+drawing's vector geometry, where the body edges sit at ±2.50 and the outer lead
+centres at ±2.54, i.e. the outer leads are flush with (0.04 mm proud of) the body
+sides.
+
+**No 3D model is referenced.** Vishay publishes none in this datasheet and none was
+invented.
+
+### Reproducing the orientation check
+
+Both Vishay drawings are pure vector art (no raster), so the derivation above is
+reproducible. Extract the page-2 isometric line segments, histogram their directions
+weighted by length, and you get exactly three axes — 150° (the leads, dominant
+because of the six long lead lines), 30° and 90°. The pin labels `1`, `2`, `3` sit at
+(85.8, 222.6), (97.4, 228.8) and (108.8, 236.2) in PDF points, so the 1→3 axis is
+atan2(13.6, 23.0) = 30.6° — the 30° axis. That is the whole input to the handedness
+argument.
+
+---
+
+## TSAL6200 — recommended KiCad symbol and footprint
+
+**No custom symbol or footprint was created for the TSAL6200, and none is needed.**
+
+### Recommendation
+
+| | Use |
+|---|---|
+| Symbol | **`Device:LED`** — set Value to `TSAL6200`, and add `Manufacturer` = Vishay, `MPN` = TSAL6200 |
+| Footprint | **`LED_THT:LED_D5.0mm`** |
+
+### Why the generic symbol is sufficient
+
+The TSAL6200 is a two-terminal emitting diode. `Device:LED` has exactly two pins,
+`K` (1) and `A` (2), which is unambiguous — there is no third terminal, no polarity
+convention to get wrong, and nothing the generic symbol could misrepresent. Creating
+a custom symbol would add a maintenance burden and a second place for the pin
+mapping to drift, with no gain. Setting Value/MPN removes any BOM ambiguity.
+
+The one thing to be aware of: `Device:LED` draws a *visible-light* LED glyph. That is
+cosmetic. If you want the schematic to read unmistakably as an emitter, add a text
+note on the IR sheet rather than forking the symbol.
+
+### Package and polarity, from document 81010
+
+| Item | Value |
+|---|---|
+| Package form | **T-1¾** (5 mm) |
+| Body diameter | **Ø5 ± 0.15** |
+| Rim/flange diameter | Ø5.8 ± 0.15 |
+| Lead spacing | **2.54 nom.** |
+| Lead cross-section | **0.5 +0.15/−0.05 mm square** |
+| Dome | R 2.49 (sphere) |
+| Body height | 8.7 ± 0.3; total length 34.3 ± 0.55 |
+| Polarity | The package-dimensions top view labels the two leads **`A` (anode) and `C` (cathode)**, and the cathode side carries the **flat** on the rim. Cathode is also the **shorter** lead. |
+
+`LED_D5.0mm` is a Ø5.0 mm body at 2.54 mm pitch, which matches the drawing.
+
+### One thing to verify in your KiCad install
+
+KiCad was not available on the machine that authored this library, so
+`LED_THT:LED_D5.0mm` could not be opened and measured. Check its **drill diameter**
+before fabrication:
+
+* worst-case TSAL6200 lead is 0.65 mm square → diagonal **0.92 mm**;
+* the stock footprint is expected to use a 0.9 mm drill, which is marginally under
+  that worst case.
+
+If it is 0.9 mm, either accept it (real leads are ~0.5 mm square and 0.9 mm is the
+long-standing convention for 5 mm LEDs) or copy the footprint into
+`AQROOT_Beta.pretty` and open the drill to **1.0 mm**. Do not change the stock
+library in place. Nothing else about the stock footprint needs review.
+
+---
+
 ## AQROOT connection intent
 
 **This section is documentation only.** None of it is encoded in the symbol — the
@@ -312,6 +516,54 @@ firmware register value being correct at power-up.
 Add `no_connect` flags in the schematic on `INT2`, `OCSB` and `OSDO` so ERC stays
 clean and the intent is explicit.
 
+---
+
+### IR receiver — TSOP38238
+
+| Vishay pin | AQROOT net | Note |
+|---|---|---|
+| 3 `VS` | `+3V3` **through local supply filtering** | Well within the 2.0–5.5 V range. Vishay's application circuit shows a series **R1** and shunt **C1** at VS, noting they are "recommended in case there are strong ripple or spikes on the supply line" — which is exactly the case here, since the IR **emitter** pulses hundreds of mA off the same board. Fit the RC. |
+| 2 `GND` | `GND` | |
+| 1 `OUT` | `IR_RX_GPIO44` | Active low, open collector with an internal 30 kΩ pull-up to VS. No external pull-up is required. GPIO44 is U0RXD — an input at boot — so ROM boot-log traffic on the UART cannot be driven into this output. |
+
+**Placement is a schematic-and-layout requirement, not a wiring one:** keep the
+receiver **physically separated from the TSAL6200 and outside the emitter's direct
+emission cone**. The TSOP has AGC and will happily desensitise itself, or latch on
+its own board-coupled reflection, if it can see the emitter. Separation plus the VS
+RC filter are the two mitigations.
+
+### IR emitter — TSAL6200
+
+Driven **only** through a low-side N-channel MOSFET — never directly from a GPIO.
+
+```
+GPIO16 ──[ gate series R ]──┬── MOSFET gate
+                            │
+                        [ gate pull-down R ]
+                            │
+                           GND
+
+MOSFET source ── GND
+MOSFET drain  ── TSAL6200 cathode (K)
+TSAL6200 anode (A) ──[ current-limit R ]── IR LED supply rail
+```
+
+| Net | Connection |
+|---|---|
+| `IR_TX_GPIO16` | → gate series resistor → MOSFET gate |
+| gate | → pull-down resistor → `GND` (float protection during reset / power sequencing) |
+| MOSFET source | `GND` |
+| MOSFET drain | TSAL6200 **cathode** |
+| TSAL6200 **anode** | → current-limit resistor → selected IR LED supply rail |
+
+**Deliberately not chosen in this task, and deliberately not encoded anywhere in the
+library:** the MOSFET part, the gate series and pull-down resistor values, the
+current-limit resistor value, the IR LED supply rail, and the pulse current. Those
+are a driver-design decision that depends on the target range and duty cycle.
+
+Note the polarity direction: the MOSFET switches the **cathode**, so the LED's anode
+sits at the supply and the `Device:LED` symbol's pin 1 (`K`) goes to the drain.
+
 ### Firmware note
 
 The BMI270 requires a multi-kilobyte configuration blob to be uploaded after
@@ -321,28 +573,40 @@ routinely surprises people probing a correctly wired part.
 
 ---
 
-## Registering the library
+## Registration
 
-`sym-lib-table` and `fp-lib-table` are intentionally untouched. Register manually:
+The library is registered in the **project-specific** tables, both under the
+nickname `AQROOT_Beta`:
 
-**Symbols** — *Preferences → Manage Symbol Libraries → Project Specific Libraries → +*
-
-| Field | Value |
+| File | Entry |
 |---|---|
-| Nickname | `AQROOT_Beta` |
-| Library Path | `${KIPRJMOD}/libraries/AQROOT_Beta.kicad_sym` |
-| Library Format | KiCad |
+| `../sym-lib-table` | `(lib (name "AQROOT_Beta")(type "KiCad")(uri "${KIPRJMOD}/libraries/AQROOT_Beta.kicad_sym")…)` |
+| `../fp-lib-table` | `(lib (name "AQROOT_Beta")(type "KiCad")(uri "${KIPRJMOD}/libraries/AQROOT_Beta.pretty")…)` |
 
-**Footprints** — *Preferences → Manage Footprint Libraries → Project Specific Libraries → +*
+`${KIPRJMOD}` resolves to the directory holding `aqroot-Beta.kicad_pro`, so both
+paths are relative to the project and the repository stays portable — no absolute
+paths, and no dependency on any one machine's KiCad configuration.
 
-| Field | Value |
+Using the same nickname for both tables is what makes each symbol's `Footprint`
+field resolve — `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` and
+`AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm`.
+
+Project-specific tables are read **in addition to** your global tables, so this
+adds `AQROOT_Beta` without hiding any stock KiCad library. If you happen to have a
+*global* library already nicknamed `AQROOT_Beta`, KiCad will report a nickname
+collision — rename the global one, not this project entry.
+
+Contents exposed by the nickname:
+
+| Symbols | Footprints |
 |---|---|
-| Nickname | `AQROOT_Beta` |
-| Library Path | `${KIPRJMOD}/libraries/AQROOT_Beta.pretty` |
-| Library Format | KiCad |
+| `AQROOT_Beta:BMI270` | `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
+| `AQROOT_Beta:TSOP38238` | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
 
-Using the same nickname for both is what makes the symbol's
-`AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` footprint field resolve.
+Note that the library tables are deliberately **not** covered by the repository's
+`.gitattributes` `-text` rule (which applies only to `*.kicad_*` files), so they
+follow Git's normal end-of-line handling. That is intentional — see the comments in
+`.gitattributes`.
 
 ---
 
@@ -352,9 +616,13 @@ This library was built from the datasheet without KiCad installed on the
 authoring machine, so the following have **not** been run and should be done
 before committing to fabrication:
 
-- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm it loads and run
-      the symbol checker.
-- [ ] Open the footprint in the Footprint Editor and run the footprint checker.
+- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **both** `BMI270`
+      and `TSOP38238` load, and run the symbol checker on each.
+- [ ] Open **both** footprints in the Footprint Editor and run the footprint checker.
+- [ ] Confirm `LED_THT:LED_D5.0mm` drill vs the TSAL6200 lead — see
+      [TSAL6200](#one-thing-to-verify-in-your-kicad-install).
+- [ ] Confirm the TSOP38238 lens direction on the PCB matches `−Y` in the footprint,
+      and that the emitter is outside its cone.
 - [ ] Overlay the footprint against §8.3 at 1:1 print scale.
 - [ ] Confirm pad 1 lands at the upper left with the part oriented as in §7.1's
       top view.
