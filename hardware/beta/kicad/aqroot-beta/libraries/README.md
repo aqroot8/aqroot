@@ -25,9 +25,18 @@ Intended library nickname: **`AQROOT_Beta`** (both symbol and footprint library)
 | Bosch Sensortec BMI270 | `BMI270` | `Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
 | Vishay TSOP38238 | `TSOP38238` | `Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
 | Vishay TSAL6200 | *(none — use stock `Device:LED`)* | *(none — use stock `LED_THT:LED_D5.0mm`)* |
+| Display module, ILI9341 + FT6236 | `ILI9341_FT6236_MODULE_PLACEHOLDER` | **none — deliberately unassigned** |
+| Sub-GHz radio, CC1101 | `CC1101_RADIO_PLACEHOLDER` | **none — deliberately unassigned** |
 
 See [TSAL6200](#tsal6200--recommended-kicad-symbol-and-footprint) for why that part
 deliberately has no custom library entry.
+
+Two entries are **functional schematic placeholders** — they exist so their nets can
+be drawn and ERC-checked before the physical implementation is chosen, and both are
+excluded from the board (`on_board no`) because neither has a footprint:
+
+* [`ILI9341_FT6236_MODULE_PLACEHOLDER`](#symbol--ili9341_ft6236_module_placeholder)
+* [`CC1101_RADIO_PLACEHOLDER`](#symbol--cc1101_radio_placeholder)
 
 ---
 
@@ -71,6 +80,28 @@ Sections used:
 Supporting Vishay documents consulted (not used for any dimension): **80121**
 "Marking on IR Receiver Modules" rev. 3.7, and **81638** "Minicast IR Receiver
 Packaging Options". Neither adds pin-orientation data beyond the datasheet.
+
+### ILI9341_FT6236_MODULE_PLACEHOLDER
+
+**No source of authority — deliberately.** No module has been selected, so there is
+no datasheet, drawing or vendor document behind this symbol, and none was
+substituted. It is derived only from AQROOT's own functional requirement (an
+ILI9341 SPI LCD plus an FT6236 capacitive touch controller) and from the net names
+already fixed in `11 - Beta Pin Map v0.2.md`. Nothing physical is claimed — see
+[what the symbol does not claim](#what-this-symbol-deliberately-does-not-claim).
+
+### CC1101_RADIO_PLACEHOLDER
+
+**No source of authority for anything physical — deliberately.** The symbol's
+`Datasheet` field points at TI's **product page**
+(<https://www.ti.com/product/CC1101>) rather than a package datasheet, and that is a
+deliberate distinction: the page identifies *which transceiver silicon* AQROOT
+targets, without asserting that AQROOT uses the bare IC. The
+[bare-IC-versus-module question is open](#the-central-open-question-module-or-bare-ic),
+so **no** pin numbering, package, crystal, RF matching network, balun, filtering or
+antenna interface was taken from that document or from anywhere else. The pins are
+derived only from AQROOT's own SPI Bus B assignments in
+`11 - Beta Pin Map v0.2.md`.
 
 ### Provenance rule
 
@@ -444,6 +475,273 @@ library in place. Nothing else about the stock footprint needs review.
 
 ---
 
+## Symbol — `ILI9341_FT6236_MODULE_PLACEHOLDER`
+
+| Field | Value |
+|---|---|
+| Reference prefix | `J` |
+| Value | `ILI9341_FT6236_MODULE_PLACEHOLDER` |
+| Footprint | **blank — deliberately unassigned** |
+| Manufacturer | `TBD` |
+| MPN | `TBD` |
+| Description | Functional placeholder for AQROOT Beta 2.8-inch ILI9341 SPI LCD with FT6236 capacitive touch |
+| Datasheet | **blank** — the exact module is not selected, so there is no datasheet to cite. The pin intent is documented here and in `11 - Beta Pin Map v0.2.md`. |
+
+> **This symbol is a functional schematic placeholder only.** It exists so the
+> display and touch nets can be drawn, named and ERC-checked before the physical
+> module is chosen. It is **not** a part, **not** a connector, and **not** ready
+> for layout.
+
+### What this symbol deliberately does *not* claim
+
+Nothing about the physical module was known when this symbol was written, and
+nothing was invented to fill the gap. The symbol contains **no**:
+
+* connector type, series, or manufacturer;
+* connector pin count, pin numbering, or pin order;
+* flex-cable / FPC / FFC pinout or pitch;
+* module outline, dimensions, mounting holes or keep-outs;
+* backlight electrical interface (drive current, LED string voltage, whether
+  `LCD_BL_CTL` is a logic enable or a PWM input into an on-module driver);
+* supply interface details (whether the module has its own regulator, its inrush,
+  or its decoupling);
+* level-shifting or on-module pull-up arrangement.
+
+Every one of these is **unresolved** and must be settled against the selected
+module before layout.
+
+### Pin table
+
+The **symbol pin numbers are logical indices, not connector pin numbers.** KiCad
+requires every pin to carry a number, so pins are numbered 1–13 in the order below
+purely to keep the symbol valid and its netlist stable. To make sure they are never
+misread as a connector pinout, **pin numbers are hidden** in the symbol
+(`(pin_numbers (hide yes))`). When the real module is selected, renumber to the
+actual connector pinout — expect the numbers below to change.
+
+| Symbol pin | Pin name | Electrical type | Intended AQROOT net |
+|---|---|---|---|
+| 1 | `VCC_3V3` | Power input | `+3V3` |
+| 2 | `GND` | Power input | `GND` |
+| 3 | `LCD_SCK` | Input | `SPI_A_SCK` |
+| 4 | `LCD_MOSI` | Input | `SPI_A_MOSI` |
+| 5 | `LCD_MISO` | Tri-state | `SPI_A_MISO` |
+| 6 | `LCD_CS_N` | Input | `DISP_CS_N` |
+| 7 | `LCD_DC` | Input | `DISP_DC` |
+| 8 | `LCD_RST_N` | Input | `DISP_RST_N` |
+| 9 | `LCD_BL_CTL` | Input | `DISP_BL_CTL` |
+| 10 | `CTP_SDA` | Bidirectional | `I2C_SDA_INT` |
+| 11 | `CTP_SCL` | Input | `I2C_SCL_INT` |
+| 12 | `CTP_RST_N` | Input | `TOUCH_RST_N` |
+| 13 | `CTP_INT_N` | Output | **no connect** — AQROOT polls the FT6236 |
+
+All 13 pins are **visible**; there are no hidden pins. The **symbol encodes no
+AQROOT net names** — the names above are functional pin names, and the net column
+is documentation only. See
+[Display module](#display-module--ili9341--ft6236-placeholder) for the wiring intent.
+
+### Pin grouping in the symbol
+
+| Group | Side | Pins |
+|---|---|---|
+| Supply | top | `VCC_3V3` |
+| Ground | bottom | `GND` |
+| LCD SPI + control | left | `LCD_SCK`, `LCD_MOSI`, `LCD_MISO`, `LCD_CS_N`, `LCD_DC`, `LCD_RST_N`, `LCD_BL_CTL` |
+| Touch I²C + reset + interrupt | right | `CTP_SDA`, `CTP_SCL`, `CTP_RST_N`, `CTP_INT_N` |
+
+The body carries a visible four-line graphic note:
+
+```
+FUNCTIONAL PLACEHOLDER
+EXACT MODULE / CONNECTOR PENDING
+DO NOT ASSIGN FOOTPRINT
+DO NOT ROUTE
+```
+
+Pins are drawn with the plain `line` graphic style. Active-low pins are **not**
+drawn with inversion bubbles — the `_N` suffix already carries the polarity, and
+doubling it up reads as a double negative.
+
+### Electrical type interpretations
+
+| Pin | Choice | Why |
+|---|---|---|
+| `LCD_MISO` | **Tri-state**, not Output | SPI Bus A is shared with the microSD socket. Tri-state is the conservative KiCad type for a bus-attached slave output: it will not raise a false ERC output-conflict on the shared `SPI_A_MISO` net, whereas Output would. Same reasoning as `OSDO` on the BMI270. |
+| `CTP_SDA` | **Bidirectional** | I²C data is genuinely bidirectional. |
+| `CTP_SCL` | **Input** | The FT6236 is an I²C slave and never drives the clock; it has no documented clock-stretch behaviour that would need Bidirectional. |
+| `CTP_INT_N` | **Output** | An interrupt line the module drives. Typed Output even though AQROOT does not use it, so that ERC flags any accidental attempt to drive it from the MCU side. |
+| `LCD_BL_CTL` | **Input** | Typed as a logic input into the module. **This is an assumption of convenience, not a fact** — if the selected module exposes a raw backlight LED anode/cathode pair instead of a logic enable, this pin is wrong and the symbol must change. Flagged again in [what this symbol does not claim](#what-this-symbol-deliberately-does-not-claim). |
+
+### Symbol flags
+
+| Flag | Value | Why |
+|---|---|---|
+| `on_board` | **`no`** | With no footprint, this symbol must not reach the PCB. `on_board no` makes KiCad exclude it from the board, so "Update PCB from Schematic" cannot silently pull in a footprint-less part or invite routing. Flip to `yes` at the same time the real footprint is assigned. |
+| `in_bom` | `yes` | The display module is a real purchased assembly. It stays in the BOM with `Manufacturer`/`MPN` = `TBD`, which is exactly the visibility this open item needs. |
+| `exclude_from_sim` | `yes` | There is no simulation model for a placeholder. |
+| `pin_numbers` | hidden | See [Pin table](#pin-table-2). |
+
+**No footprint was created and none is assigned.** There is no
+`AQROOT_Beta.pretty` entry for this part, and the symbol carries no `ki_fp_filters`
+property — a footprint filter would imply a package family had been chosen, and
+none has.
+
+---
+
+## Symbol — `CC1101_RADIO_PLACEHOLDER`
+
+| Field | Value |
+|---|---|
+| Reference prefix | `U` |
+| Value | `CC1101_RADIO_PLACEHOLDER` |
+| Footprint | **blank — deliberately unassigned** |
+| Manufacturer | `TBD` |
+| MPN | `TBD` |
+| Description | Functional placeholder for AQROOT built-in CC1101 sub-GHz radio |
+| Datasheet | <https://www.ti.com/product/CC1101> — TI's **product page**, cited only to identify the target transceiver silicon. See [below](#why-the-datasheet-field-does-not-imply-a-bare-ic). |
+
+> **This symbol is a functional schematic placeholder only.** It exists so the
+> radio's SPI Bus B nets can be drawn, named and ERC-checked before the physical
+> implementation is chosen. It is **not** a part, **not** a package, and **not**
+> ready for layout.
+
+**AQROOT Beta ships two radios: the CC1101 (sub-GHz) *and* the SX1262, together on
+shared SPI Bus B.** This placeholder covers the CC1101 only. The SX1262 is a separate
+subsystem with its own CS, `BUSY`, `DIO1` and reset lines and is not represented here.
+Both radios sit on the same bus, so the CS discipline in
+`11 - Beta Pin Map v0.2.md` §3 applies to both.
+
+### The central open question: module or bare IC
+
+**It is not yet decided whether AQROOT uses a certified CC1101 module or a bare
+CC1101 IC**, and this symbol deliberately does not answer that. The two paths pull
+in completely different board content:
+
+| Path | What the main board must then carry |
+|---|---|
+| **Certified / pre-built module** | A module land pattern and keep-out, a defined module supply and control interface, and the module's own antenna interface. RF matching, crystal and filtering are inside the module. Certification may carry over. |
+| **Bare CC1101 IC** | The IC package land pattern, **plus** the crystal and its loading, **plus** the RF matching / balun network, **plus** band filtering, **plus** an antenna interface — all of which must be designed, laid out under RF constraints, and certified from scratch. |
+
+Until that decision is made, **nothing physical about this subsystem can be drawn**,
+which is exactly why this symbol has no footprint and is excluded from the board.
+
+### What this symbol deliberately does *not* claim
+
+The symbol contains **no**:
+
+* choice between module and bare IC — see [above](#the-central-open-question-module-or-bare-ic);
+* IC package or module land pattern, dimensions, keep-out or mounting;
+* module or IC pin numbering, pin count, or pin order;
+* crystal, load capacitors, or reference-frequency assumption;
+* RF matching network, balun, or filtering topology or values;
+* antenna connector type, series, or manufacturer, and no trace-antenna geometry;
+* impedance target or RF stack-up assumption;
+* operating band or regional band plan;
+* supply decoupling or regulator arrangement.
+
+Every one of these is **unresolved**.
+
+### Why the `Datasheet` field does not imply a bare IC
+
+The field is set to TI's product page, **not** to the CC1101 datasheet PDF and not to
+any package drawing. The distinction is the point: the product page names the
+transceiver AQROOT targets — which is genuinely decided — while a package datasheet
+would be the authority for pin numbering and a land pattern, neither of which AQROOT
+has committed to. Nothing was copied from TI into this symbol. If the module path is
+chosen, replace this field with the module vendor's document; if the bare-IC path is
+chosen, replace it with the CC1101 datasheet at that point, when the pinout it
+specifies actually applies.
+
+### Pin table
+
+The **symbol pin numbers are logical indices, not IC or module pin numbers.** KiCad
+requires every pin to carry a number, so pins are numbered 1–8 in the order below
+purely to keep the symbol valid and its netlist stable. To make sure they are never
+misread as a real pinout, **pin numbers are hidden** in the symbol
+(`(pin_numbers (hide yes))`). Expect them all to change when the implementation is
+selected.
+
+| Logical pin | Name | Electrical type | Intended AQROOT net |
+|---|---|---|---|
+| 1 | `VCC_3V3` | Power input | `+3V3` |
+| 2 | `GND` | Power input | `GND` |
+| 3 | `SCK` | Input | `SPI_B_SCK` |
+| 4 | `MOSI` | Input | `SPI_B_MOSI` |
+| 5 | `MISO` | Tri-state | `SPI_B_MISO` |
+| 6 | `CS_N` | Input | `CC1101_CS_N` |
+| 7 | `GDO0` | Output | `CC1101_GDO0` |
+| 8 | `RF_ANT` | Passive | `CC1101_RF_TBD` |
+
+All 8 pins are **visible**; there are no hidden pins. The **symbol encodes no AQROOT
+net names** — the names above are functional pin names, and the net column is
+documentation only. See [Sub-GHz radio](#sub-ghz-radio--cc1101-placeholder) for the
+wiring intent.
+
+**`GDO2` is intentionally omitted.** It is not an oversight and not a pin that was
+forgotten: `11 - Beta Pin Map v0.2.md` §3 records it as *"(removed) — optional;
+dropped to free GPIO16"*. Adding it to this symbol would reintroduce a signal the pin
+map has already spent, so it is absent. If a future firmware need brings it back, it
+must go through the pin map first, not through this library.
+
+### Pin grouping in the symbol
+
+| Group | Side | Pins |
+|---|---|---|
+| Supply | top | `VCC_3V3` |
+| Ground | bottom | `GND` |
+| SPI + control | left | `SCK`, `MOSI`, `MISO`, `CS_N`, `GDO0` |
+| RF | right | `RF_ANT` |
+
+Keeping `RF_ANT` alone on the opposite side from the digital pins is deliberate — it
+mirrors how the RF path must be kept away from the digital section in layout, and it
+makes an accidental digital-to-RF connection visually obvious in the schematic.
+
+The body carries a visible five-line graphic warning:
+
+```
+FUNCTIONAL PLACEHOLDER
+MODULE / BARE-IC IMPLEMENTATION PENDING
+RF MATCHING / ANTENNA INTERFACE PENDING
+NO FOOTPRINT
+DO NOT ROUTE
+```
+
+Pins use the plain `line` graphic style. `CS_N` is **not** drawn with an inversion
+bubble — the `_N` suffix already carries the polarity.
+
+### Electrical type interpretations
+
+| Pin | Choice | Why |
+|---|---|---|
+| `MISO` | **Tri-state**, not Output | SPI Bus B is shared with the SX1262 and NFC. Tri-state is the conservative KiCad type for a bus-attached slave output: it will not raise a false ERC output-conflict on the shared `SPI_B_MISO` net, whereas Output would. Same reasoning as `OSDO` on the BMI270. |
+| `CS_N` | **Input** | Chip select driven by the MCU. Requires an external pull-up — see [the wiring section](#sub-ghz-radio--cc1101-placeholder). |
+| `GDO0` | **Output** | Driven by the radio; typed Output so ERC flags any attempt to drive it from the MCU side. |
+| `RF_ANT` | **Passive** | The correct type for an RF port. It is not a logic signal, has no direction, and Passive is the only type that will not produce meaningless ERC results. It says nothing about impedance, band, or what sits on the other side. |
+| `VCC_3V3` | **Power input** | Typed as a supply input to the subsystem regardless of which implementation path is chosen. |
+
+### Symbol flags
+
+| Flag | Value | Why |
+|---|---|---|
+| `on_board` | **`no`** | With no footprint, this symbol must not reach the PCB. `on_board no` makes KiCad exclude it from the board, so "Update PCB from Schematic" cannot pull in a footprint-less part or invite routing an RF net that has no defined impedance. Flip to `yes` only when the real footprint is assigned. |
+| `in_bom` | **`yes`** | Required and deliberate. The radio is a **required subsystem that is still unresolved**, and it must stay visible in the BOM as `TBD`/`TBD` so it cannot be quietly forgotten during costing or procurement. |
+| `exclude_from_sim` | `yes` | There is no simulation model for a placeholder. |
+| `pin_numbers` | hidden | See [Pin table](#pin-table-3). |
+
+**No footprint was created and none is assigned.** There is no `AQROOT_Beta.pretty`
+entry for this part, and the symbol carries no `ki_fp_filters` property — a footprint
+filter would imply a package family had been chosen, and none has.
+
+> **Do not create a "generic CC1101 module" footprint to unblock layout.** There is
+> no such thing as a generic CC1101 module land pattern: module vendors differ in
+> outline, pad pitch, pad count, castellation arrangement, keep-out and antenna
+> position, and a bare IC shares none of it. A placeholder footprint would be a
+> fabricated dimension presented as a real one, it would silently become the thing
+> the board is laid out around, and the RF keep-out it implies would be wrong.
+> Resolve the implementation instead.
+
+---
+
 ## AQROOT connection intent
 
 **This section is documentation only.** None of it is encoded in the symbol — the
@@ -564,6 +862,113 @@ are a driver-design decision that depends on the target range and duty cycle.
 Note the polarity direction: the MOSFET switches the **cathode**, so the LED's anode
 sits at the supply and the `Device:LED` symbol's pin 1 (`K`) goes to the drain.
 
+### Display module — ILI9341 + FT6236 (placeholder)
+
+**Documentation only, and provisional.** None of this is encoded in the symbol.
+Because the module is not selected, this table records *intent* — it is the wiring
+to reconcile against the real module, not a wiring that has been validated.
+
+| Symbol pin | AQROOT net | Note |
+|---|---|---|
+| `VCC_3V3` | `+3V3` | Supply interface unresolved — see the caveats below. |
+| `GND` | `GND` | |
+| `LCD_SCK` | `SPI_A_SCK` | SPI Bus A, shared with the microSD socket. |
+| `LCD_MOSI` | `SPI_A_MOSI` | |
+| `LCD_MISO` | `SPI_A_MISO` | Shared bus — hence the Tri-state pin type. |
+| `LCD_CS_N` | `DISP_CS_N` | Display chip select. |
+| `LCD_DC` | `DISP_DC` | Data/command select. |
+| `LCD_RST_N` | `DISP_RST_N` | On the U60 expander, port **P04** (per `11 - Beta Pin Map v0.2.md`), not a native GPIO. |
+| `LCD_BL_CTL` | `DISP_BL_CTL` | Backlight control. Interface type unresolved. |
+| `CTP_SDA` | `I2C_SDA_INT` | Internal I²C bus. |
+| `CTP_SCL` | `I2C_SCL_INT` | Internal I²C bus. |
+| `CTP_RST_N` | `TOUCH_RST_N` | On the U60 expander, port **P00**. |
+| `CTP_INT_N` | **no connect** | AQROOT **polls** the FT6236, so the interrupt is unused. Place a `no_connect` flag on this pin in the schematic so ERC stays clean and the intent is explicit. |
+
+**FT6236 I²C address: expected `0x38`.** It shares `I2C_SDA_INT` / `I2C_SCL_INT`
+with the other internal-bus devices, so confirm `0x38` does not collide before the
+bus is frozen.
+
+Bus pull-ups on `I2C_SDA_INT` / `I2C_SCL_INT` are a **bus-level** concern, as with
+the IMU. Many display modules carry their own touch-bus pull-ups — check the
+selected module and do not end up with two sets in parallel.
+
+**There is no second microSD interface here.** AQROOT's microSD socket is a
+**separate** part on the same SPI Bus A. Nothing about card detect, `SD_CS_N` or the
+socket belongs in this symbol, even if the module you eventually buy happens to
+carry an SD slot on its own carrier PCB — if it does, leave that slot unpopulated
+and unwired rather than absorbing it into this placeholder.
+
+#### Still unresolved — must be closed before routing
+
+| Open item | Consequence if left open |
+|---|---|
+| Exact module (vendor, part, revision) | Everything below depends on it. |
+| Connector type and pin numbering | The symbol's logical pins 1–13 are placeholders and **will** change. |
+| Backlight interface | Determines whether `LCD_BL_CTL` stays a logic input, and whether a driver/current-limit network is needed on the main board. |
+| Supply interface | Determines whether `+3V3` feeds the module directly, what inrush to expect, and where decoupling belongs. |
+| Physical footprint, outline and mounting | No footprint exists; the board cannot be laid out around the display until it does. |
+| Logic level of the touch and SPI pins | Determines whether level shifting is required. |
+
+**This placeholder must be replaced, or reconciled pin-for-pin against the selected
+module, before PCB routing begins.** Until then the symbol's `on_board no` flag
+keeps it off the board.
+
+### Sub-GHz radio — CC1101 (placeholder)
+
+**Documentation only, and provisional.** None of this is encoded in the symbol.
+Because the implementation is not selected, this table records *intent* — the wiring
+to reconcile against the real module or IC, not a wiring that has been validated.
+
+| Symbol pin | AQROOT net | Note |
+|---|---|---|
+| `VCC_3V3` | `+3V3` | Decoupling and supply arrangement unresolved — they depend on the implementation path. |
+| `GND` | `GND` | |
+| `SCK` | `SPI_B_SCK` | SPI Bus B, shared with the SX1262 and NFC. |
+| `MOSI` | `SPI_B_MOSI` | |
+| `MISO` | `SPI_B_MISO` | Shared bus — hence the Tri-state pin type. |
+| `CS_N` | `CC1101_CS_N` | ESP32-S3 **GPIO7** per `11 - Beta Pin Map v0.2.md` §3. **Requires a hardware pull-up to `+3V3`** — see below. |
+| `GDO0` | `CC1101_GDO0` | ESP32-S3 **GPIO15**. Primary data / IRQ line. |
+| `RF_ANT` | `CC1101_RF_TBD` | Placeholder net name. It is deliberately named `_TBD` because the RF path on the other side of this pin does not exist yet. |
+
+#### `CC1101_CS_N` needs a hardware pull-up
+
+`11 - Beta Pin Map v0.2.md` §3 requires a **hardware pull-up on every CS line** on
+this bus, and `CC1101_CS_N` is no exception: **fit a pull-up resistor to `+3V3`**.
+Three radios/peripherals share SPI Bus B, so a CS line that floats during reset,
+power sequencing or firmware upload can let a device decide it has been selected and
+drive `SPI_B_MISO` against another. The pull-up holds it deselected until firmware
+takes control. The resistor is a **board-level part on the main board** — it belongs
+in the schematic, not in this placeholder symbol, and it is needed on **both**
+implementation paths.
+
+#### Both radios ship together
+
+**AQROOT Beta ships the CC1101 and the SX1262 together.** They are separate parts on
+the shared SPI Bus B, each with its own CS. This placeholder is the CC1101 only —
+resolving it does not resolve the SX1262, and the two radios' RF paths, antennas and
+certification are separate problems. Coexistence (bus arbitration, and RF isolation
+between the two chains) has to be handled at board level once both implementations
+are known.
+
+#### Still unresolved — must be closed before routing
+
+| Open item | Consequence if left open |
+|---|---|
+| **Module or bare IC** | Determines every item below. See [the central open question](#the-central-open-question-module-or-bare-ic). |
+| Package / module land pattern and keep-out | No footprint exists; the board cannot be laid out around the radio. |
+| Pin numbering | The symbol's logical pins 1–8 are placeholders and **will** change. |
+| Crystal and loading *(bare-IC path only)* | Frequency accuracy; a module supplies its own. |
+| RF matching network / balun *(bare-IC path only)* | The `RF_ANT` net has no defined impedance until this exists. |
+| Band filtering and operating band | Band plan, harmonics, and regional compliance. |
+| Antenna interface | Whether `CC1101_RF_TBD` terminates in a connector, a trace antenna, or a module-internal antenna. |
+| Certification path | A certified module may carry over; a bare IC will not. |
+| RF stack-up and impedance target | Cannot route a controlled-impedance RF trace without it. |
+
+**No PCB routing and no footprint assignment until the exact implementation is
+selected.** Until then the symbol's `on_board no` flag keeps it off the board. In
+particular, **do not create a placeholder or "generic" CC1101 module footprint** to
+work around this — see [the warning above](#symbol--cc1101_radio_placeholder).
+
 ### Firmware note
 
 The BMI270 requires a multi-kilobyte configuration blob to be uploaded after
@@ -601,6 +1006,8 @@ Contents exposed by the nickname:
 | Symbols | Footprints |
 |---|---|
 | `AQROOT_Beta:BMI270` | `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
+| `AQROOT_Beta:CC1101_RADIO_PLACEHOLDER` | *(none)* |
+| `AQROOT_Beta:ILI9341_FT6236_MODULE_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:TSOP38238` | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
 
 Note that the library tables are deliberately **not** covered by the repository's
@@ -616,8 +1023,11 @@ This library was built from the datasheet without KiCad installed on the
 authoring machine, so the following have **not** been run and should be done
 before committing to fabrication:
 
-- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **both** `BMI270`
-      and `TSOP38238` load, and run the symbol checker on each.
+- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **all four** of
+      `BMI270`, `TSOP38238`, `ILI9341_FT6236_MODULE_PLACEHOLDER` and
+      `CC1101_RADIO_PLACEHOLDER` load, and run the symbol checker on each. Both
+      placeholders are expected to report a missing footprint; that is the intended
+      state, not a defect.
 - [ ] Open **both** footprints in the Footprint Editor and run the footprint checker.
 - [ ] Confirm `LED_THT:LED_D5.0mm` drill vs the TSAL6200 lead — see
       [TSAL6200](#one-thing-to-verify-in-your-kicad-install).
@@ -628,3 +1038,18 @@ before committing to fabrication:
       top view.
 - [ ] Confirm the board's global solder-mask expansion suits a 0.25 mm-wide land
       with your fab.
+- [ ] **Blocking for layout:** select the actual display module, then reconcile
+      `ILI9341_FT6236_MODULE_PLACEHOLDER` against it — renumber the pins to the real
+      connector pinout, create and assign a footprint, resolve the backlight and
+      supply interfaces, and set `on_board` back to `yes`. Do not route the display
+      area until this is closed.
+- [ ] Confirm the FT6236's `0x38` I²C address does not collide with another device
+      on `I2C_SDA_INT` / `I2C_SCL_INT`.
+- [ ] **Blocking for layout:** decide **module or bare CC1101 IC**, then reconcile
+      `CC1101_RADIO_PLACEHOLDER` against the choice — renumber the pins to the real
+      pinout, create and assign a footprint, resolve the crystal (bare-IC path), RF
+      matching, filtering and antenna interface, replace the `CC1101_RF_TBD` net, and
+      set `on_board` back to `yes`. Do not route the RF area until this is closed,
+      and do not substitute a generic module footprint to get started.
+- [ ] Confirm the hardware pull-up to `+3V3` on `CC1101_CS_N` is present in the
+      schematic, along with the pull-ups on the other SPI Bus B chip selects.
