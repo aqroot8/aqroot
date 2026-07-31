@@ -536,10 +536,15 @@ NOT PART OF BETA
 
 ## 01_POWER_TREE — Beta architecture complete except reverse polarity (2026-07-31)
 
+> **Status: SPECIFIED, NOT DRAWN.** "Architecture complete" here means the design is settled in
+> writing. `01_power_tree.kicad_sch` is still an empty stub — nothing below has been drawn in
+> KiCad. **SPECIFIED** = written in Markdown; **CAPTURED** = actually drawn in the `.kicad_sch`.
+> Never report one as the other.
+
 ```
 01_POWER_TREE — BETA ARCHITECTURE COMPLETE
 
-CAPTURED:
+SPECIFIED (NOT YET DRAWN IN KICAD):
 - USB-C 5V sink / USB 2.0 front end
 - BQ25185 charger/power path
 - TPS63020 main +3V3 buck-boost

@@ -9,6 +9,43 @@ This directory contains the canonical KiCad 10 project for the AQROOT Beta main 
 * PCB placement and routing: DO NOT START
 * Schematic freeze: BLOCKED pending ERC, footprint audit, RF review, DFM review, and unresolved part selections
 
+### Status vocabulary — read this before quoting any status in this file
+
+| Term | Meaning |
+|---|---|
+| **SPECIFIED** | The design is written out in Markdown (this README / the Decisions Log). **Nothing has been drawn.** |
+| **CAPTURED** | The block actually exists in the `.kicad_sch` file: real symbols, real wires, real nets. |
+
+**These two are never interchangeable.** A block can be fully SPECIFIED — every part, value,
+net name and layout note settled — and still be a completely empty sheet in KiCad. Do not
+report a SPECIFIED block as captured, drawn, complete, or done.
+
+### Capture status by sheet (2026-07-31)
+
+| Sheet | Status | Notes |
+|---|---|---|
+| `01_POWER_TREE` | **SPECIFIED, NOT DRAWN** | `.kicad_sch` is an empty stub. Full spec below. |
+| `02_MCU_CORE` | **CAPTURED** | ESP32-S3-WROOM-1, EN/BOOT networks, strap test points |
+| `03_SPI_A_DISPLAY_SD` | **CAPTURED** | display placeholder + microSD, both CS pull-ups |
+| `04_SPI_B_RADIOS_NFC` | **CAPTURED** | CC1101 / SX1262 / ST25R3916 placeholders, 3 CS pull-ups |
+| `05_I2C_DEVICES` | **CAPTURED** | BMI270 + bus pull-ups + strap protection |
+| `06_AUDIO` | **CAPTURED** | ICS-43434 + MAX98357A + differential speaker |
+| `07_IR` | **CAPTURED** | TSOP38238 RX + TSAL6200 low-side NMOS TX |
+| `08_BUTTONS_EXPANDERS` | **CAPTURED** | U60/U61 TCA9535PWR, 7 buttons, safe-state pulls |
+| `09_COMMUNITY_HEADER` | **SPECIFIED, NOT DRAWN** | `.kicad_sch` is an empty stub. Isolator and load switch are **not even selected** — see below. |
+
+Board-level status:
+
+| Item | Status |
+|---|---|
+| PCB (`aqroot-Beta.kicad_pcb`) | **EMPTY** — no footprints, no tracks, no board outline |
+| ERC | **NEVER RUN** — no report exists, `erc_exclusions` is empty |
+| Footprints assigned | **7 of ~47 components** — every resistor, capacitor, switch, test point, the microSD socket and the speaker are still footprint-less |
+
+> `09_COMMUNITY_HEADER` is **not** merely undrawn. Two of its load-bearing parts (the I2C
+> isolator/bus switch and the ACC_PWR_EN load switch) have not been selected at all, so the
+> sheet cannot be captured yet even in placeholder form. See *Explicit unresolved parts*.
+
 ## Locked GPIO expanders (v0.2.4, 2026-07-27)
 
 Both I2C GPIO expanders are Texas Instruments TCA9535PWR, replacing the MCP23017.
@@ -25,16 +62,24 @@ bench test that passed was an MCP23017, a different part.
 
 ## Explicit unresolved parts
 
-* External community-header I2C isolator or bus switch
-* ACC_PWR_EN accessory load switch
+* External community-header I2C isolator or bus switch — **UNSELECTED.** Candidates proposed
+  for evaluation (TCA9517A / PCA9515A) are **proposals, not decisions** — see
+  [[07 - Build TODO Tracker]]
+* ACC_PWR_EN accessory load switch — **UNSELECTED.** Candidate proposed for evaluation
+  (TPS22918) is a **proposal, not a decision** — see [[07 - Build TODO Tracker]]
 * **Battery reverse-polarity protection — topology PARKED, see below**
 
 ## 01_POWER_TREE — sheet status note to place (2026-07-31)
 
+**Sheet status: SPECIFIED, NOT DRAWN.** Everything below is the written design for this sheet.
+`01_power_tree.kicad_sch` is currently an empty stub — none of it exists in KiCad yet. The
+block below is the note to place *on the sheet once it is captured*; it is not a record that
+capture happened.
+
 ```
 01_POWER_TREE — BETA ARCHITECTURE COMPLETE
 
-CAPTURED:
+SPECIFIED (NOT YET DRAWN IN KICAD):
 - USB-C 5V sink / USB 2.0 front end
 - BQ25185 charger/power path
 - TPS63020 main +3V3 buck-boost
@@ -52,10 +97,15 @@ OTHER PRE-FAB VALIDATION:
 - professional power / DFM review
 ```
 
-> **Architecture-complete is not fabrication-ready.** Do not describe the completed power tree
-> as fabrication-ready.
+> **Architecture-complete is not captured, and captured is not fabrication-ready.** The power
+> tree is fully specified in Markdown and entirely undrawn in KiCad. Do not describe it as
+> captured, drawn or complete, and do not describe it as fabrication-ready once it is drawn.
 
-### Reverse-polarity placeholder — the only undrawn block
+### Reverse-polarity placeholder — the one block that must STAY undrawn
+
+(The whole of `01_POWER_TREE` is currently undrawn. The distinction here is that every other
+block on the sheet is cleared to be captured as soon as someone draws it, whereas this one must
+remain a labelled placeholder even after the rest of the sheet exists.)
 
 ```
 BAT_CONNECTOR_P

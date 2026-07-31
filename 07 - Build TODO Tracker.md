@@ -147,9 +147,26 @@ They are the outstanding firmware debt between the current code and the Beta des
       [[05 - Design Decisions Log]]
 
 ### Explicitly UNRESOLVED part selections (both still block schematic freeze)
+
+> **Candidate ≠ decision.** The part numbers below are **CTO PROPOSALS to evaluate**, recorded
+> here so they are not lost. **Nothing in this section is locked.** Do not put any of these
+> parts into a schematic, a BOM, or a status report as a selected part. Each must clear its
+> stated criteria against the manufacturer datasheet first, and the selection must then be
+> logged as a decision in [[05 - Design Decisions Log]].
+
 - [ ] **Select the external community-header I2C isolator or bus switch part** — **must support
       powered-off high-impedance and must NOT back-power the accessory side**
+      - **CANDIDATES TO EVALUATE (NOT SELECTED): TCA9517A, PCA9515A.** Proposed 2026-07-31.
+        Neither has been checked against the two binding criteria above. Note these are
+        different device classes — a level-translating buffer vs a bus repeater — so evaluating
+        them is not a like-for-like price comparison; confirm which class actually delivers
+        powered-off high-Z and no accessory-side back-powering before shortlisting either.
 - [ ] **Select the ACC_PWR_EN accessory load switch part** for the accessory rail
+      - **CANDIDATE TO EVALUATE (NOT SELECTED): TPS22918.** Proposed 2026-07-31. Not yet
+        checked for current rating against the accessory rail budget, quiescent current
+        against the standby target, controlled slew / inrush behaviour, or the discharge
+        behaviour the §8c-c sequencing depends on (disconnect -> power off -> **discharge** ->
+        power on -> stabilize -> reconnect -> enumerate).
 - [ ] **Footprint audit U60/U61** — verify `Interface_Expansion:TCA9535PWR` pin numbering and the
       TSSOP-24 footprint geometry against the TI datasheet before freeze. Assigned, not verified
 
