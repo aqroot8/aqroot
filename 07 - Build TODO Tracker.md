@@ -168,8 +168,59 @@ They are the outstanding firmware debt between the current code and the Beta des
       publish a standby number in marketing until this is measured
 - [ ] Specify the physical power-switch / hard-off (load-switch / ship-mode) topology
 - [ ] Specify IR TX MOSFET + gate/current-limit resistor values for the target drive current
-- [ ] Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias
-      derating accounted for
+- [x] ~~Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias
+      derating accounted for~~ — **ARCHITECTURE LOCKED 2026-07-30, schematic capture APPROVED.**
+      L1 = Coilcraft **XFL4020-152MEC** 1.5µH (LCSC C3033018); FB = `R_FB_TOP` 1M /
+      `R_FB_BOTTOM` 180k 1%, no Cff; `C_VINA` 100nF; `R_EN_LINK` 0R (EN always-on, never
+      firmware-driven); `R_PS_DEFAULT` 0R to GND (power-save); `R_PG_PULLUP` 1M (PG
+      diagnostic-only, no GPIO). Capacitor **values/voltages/dielectrics/packages locked**;
+      **exact MPNs deferred** to the pre-fab BOM pass below. See [[05 - Design Decisions Log]]
+- [ ] **Pre-fab BOM-validation pass (board-wide, ONE batched pass — a BOM-release gate, NOT a
+      schematic-capture gate).** Do not stall capture on per-capacitor DC-bias research. Runs
+      alongside the professional power/DFM review. Must archive, for **every exact capacitor
+      MPN**: datasheet permalink; manufacturer DC-bias curve/model/CSV or numerical output;
+      operating voltage; nominal capacitance; **effective** capacitance at operating voltage;
+      tolerance calculation; temperature assumption; **total** effective capacitance
+      calculation; lifecycle status; distributor/LCSC/JLCPCB code; stock-check date; and a note
+      to **recheck stock at BOM release**. For **the inductor**: datasheet; official
+      footprint/land pattern; DCR typ **and** max; Isat at **10% / 20% / 30%** L loss; Irms
+      thermal-rise definition; height; lifecycle; LCSC mapping; stock-check date.
+      - [ ] TPS63020 CIN: 2×10µF, 10V+, X7R — combined effective **≥10µF at 4.5V**, each
+            retaining ~**≥5µF at 4.5V** after derating. **Obsolete GRM21BR71A106KE51L must NOT
+            be used.** Provisional footprint 1206 (prefer over 0805 unless mechanically forced).
+      - [ ] TPS63020 COUT: 4×22µF, 10V, X7R, **1206** — combined effective **≥40µF at 3.3V**,
+            each averaging **≥10µF** under the documented acceptance assumptions. Provisional
+            MPN **Murata GRM31CR71A226ME15L** — verify Murata DC-bias data before fab.
+      - [ ] Confirm L1 XFL4020-152MEC lifecycle + stock. **XGL4020-152 may be reviewed as an
+            approved alternate — DO NOT SILENTLY SUBSTITUTE**, and do not list it as installed.
+      - [ ] USB-C connector: confirm the **exact GCT USB4105 suffix** (candidate
+            **USB4105-GF-A-120**) against the official drawing, **shell-stake length vs final
+            PCB thickness**, symbol pin numbering, and that the KiCad footprint
+            `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` matches the
+            manufacturer drawing. Recheck stock/lifecycle.
+      - [ ] USB ESD array **USBLC6-2SC6**: recheck stock/lifecycle; verify symbol pin numbering
+            against the **ST datasheet** (do not trust a generic 6-pin ESD symbol).
+      - [ ] `C_USB_VBUS` 4.7µF 10V+ X7R — effective-capacitance verification (kept at 4.7µF
+            deliberately, not 10µF, to keep hot-plug inrush conservative).
+
+## USB-C front end (Beta-locked 2026-07-30 — see [[05 - Design Decisions Log]])
+- [x] ~~Define the USB-C role and front-end architecture~~ — **BETA ARCHITECTURE LOCKED:**
+      sink/UFP, 5V only, USB 2.0 full-speed. **No PD, no source role, no DRP, no VCONN, no alt
+      modes.** Two **independent** 5.1k 1% Rd resistors; USBLC6-2SC6 ESD; 22R series at the MCU;
+      100pF EMC footprints DNP; shield on its own net with a 0R default link.
+- [ ] **EMI / ESD review of the shield-to-ground strategy** — 0R link is the Beta default,
+      1M bleed is a DNP alternative. **Do not populate both without explicit review**, and **do
+      not leave the shield floating without review.**
+- [ ] Signal-integrity review before changing 22R → 33R (**never mix values across the pair**)
+      and before populating the 100pF EMC capacitors.
+- [ ] **Set the bq25185 input-current limit conservatively for generic ports.** There is **no CC
+      current-advertisement detection** in this design — Rd only establishes the sink role. Do
+      not assume 1.5A/3A from an unknown source. **The charger-input-current setting and the
+      battery-charge-current setting are separate decisions.**
+- [ ] Verify at capture: CC1/CC2 have separate resistors and are not shorted; **GPIO20 = D+,
+      GPIO19 = D−**, not crossed; USBLC6 VBUS is a branch, not series; SBU1/SBU2 carry
+      no-connect markers; all duplicate VBUS/GND/D+/D− contacts joined; **no invented SuperSpeed
+      pins**; no PD controller; **no GPIO allocated for CC logic**.
 - [ ] Add external pull resistors forcing the SAFE state on every expander-driven enable —
       **the TCA9535 has no internal pull-ups, so these are the only pulls in the design**
 - [ ] Publish the reserved I2C address table (0x20, 0x21, 0x36, 0x38, 0x68) for accessory makers

@@ -193,7 +193,12 @@ requirements (§8c), and the 7-button cluster. **The digital pin architecture is
 
 - ESP32-S3 exposes GPIO 0-21 and 26-48. GPIO 22-25 don't exist on this die.
 - GPIO 26-37 consumed by octal PSRAM/flash (R8). Excluded.
-- GPIO 19/20 = native USB. Reserved.
+- GPIO 19/20 = native USB. Reserved. **USB front end BETA-LOCKED 2026-07-30: GPIO19 = D−
+  (`USB_D_N_MCU`), GPIO20 = D+ (`USB_D_P_MCU`)**, each through a **22R series resistor placed at
+  the MCU end** (`R_USB_DN_SER` / `R_USB_DP_SER`). **Do not cross D+/D−.** **No additional GPIO
+  is consumed by the USB front end** — CC1/CC2 are static 5.1k pull-downs to GND with **no
+  firmware connection and no CC controller**, so the zero-margin native budget is unaffected.
+  See [[05 - Design Decisions Log]].
 - No input-only pins on the S3 (unlike classic ESP32).
 - Usable set (31 pins): 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 21 38 39 40 41 42 43 44 45 46 47 48
 - Strapping pins (handle with care): 0, 3, 45, 46.
@@ -732,9 +737,15 @@ documented here first.
 ## 8. Power tree (CORRECTED — bq25185 is NOT a 3.3V regulator)
 
 ```
-USB-C 5V
+USB-C 5V  (GCT USB4105 family, 16-contact USB 2.0 Type-C receptacle — SINK/UFP, 5V only)
+  |       CC1 -> R_CC1_RD 5.1k 1% -> GND    (two INDEPENDENT Rd resistors, never combined)
+  |       CC2 -> R_CC2_RD 5.1k 1% -> GND    NO PD / NO VCONN / NO SOURCE ROLE / SBU1,SBU2 NC
   |
-  +-- ESD / input protection
+  +-- ESD / input protection  (ST USBLC6-2SC6 — data clamp + VBUS clamp REFERENCE,
+  |                            NOT a series power path)
+  |
+  +-- USB_VBUS_RAW -> [0R link, optional current-measurement] -> USB_VBUS_CHG
+  |     +-- C_USB_VBUS 4.7uF (connector-side bulk; does NOT replace the bq25185 VIN cap)
   |
   +-- bq25185 IN (linear charger + power-path)
         |
@@ -761,11 +772,22 @@ USB-C 5V
   raise only after enclosure thermal testing.
 - **TPS63020 (v0.2.1 clarification):** the TPS63020 **is** the adjustable-output part — there
   is no "fixed vs adjustable" choice to make, and that framing has been dropped. Orderable
-  P/N: **TPS63020DSJR** (reel). It is **not "selected" until its inductor, feedback resistors,
-  and input/output caps are selected with it** — a buck-boost is a loop, not a single symbol.
-  Spec all of them from the TI datasheet at schematic time, and **account for ceramic cap
-  DC-bias derating** (a nominal 22uF X5R/X7R can lose 30-60% of its capacitance at the
-  operating voltage; size by effective capacitance, not the printed value).
+  P/N: **TPS63020DSJR** (reel). ~~It is **not "selected" until its inductor, feedback resistors,
+  and input/output caps are selected with it**~~ — **SUPERSEDED 2026-07-30.**
+- **TPS63020 STATUS (2026-07-30): ARCHITECTURE LOCKED — SCHEMATIC CAPTURE APPROVED — CAPACITOR
+  EXACT MPNs DEFERRED TO PRE-FAB BOM VALIDATION.** In `BQ25185_SYS`, out `+3V3`. L1 =
+  **Coilcraft XFL4020-152MEC** 1.5uH (LCSC C3033018), locked. FB = `R_FB_TOP` 1M /
+  `R_FB_BOTTOM` 180k, 1%, no Cff. `C_VINA` 100nF. CIN 2x10uF, COUT 4x22uF 1206.
+  **No GPIO is consumed by this block** — EN is tied always-on through `R_EN_LINK` 0R to VINA
+  and is **never firmware-driven** (the MCU cannot restore its own disabled 3V3 rail); PS/SYNC
+  is tied to GND through `R_PS_DEFAULT` 0R for power-save default; PG is open-drain to a
+  `R_PG_PULLUP` 1M and is **diagnostic-only, no MCU or expander connection**. Exact capacitor
+  MPNs are a **BOM-release gate, not a capture gate** — obsolete GRM21BR71A106KE51L must not be
+  used. See [[05 - Design Decisions Log]].
+  The DC-bias reasoning that drove the original caveat still stands and still applies at BOM
+  release: **account for ceramic cap DC-bias derating** (a nominal 22uF X5R/X7R can lose 30-60%
+  of its capacitance at the operating voltage; size by effective capacitance, not the printed
+  value).
 
 ---
 

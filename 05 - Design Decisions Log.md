@@ -194,9 +194,13 @@ bench validation of the power tree.
 > CORRECTED (2026-07-26, pre-schematic design review): the TPS63020 **IS** the
 > adjustable-output part - there is no "fixed vs adjustable" choice to make, and the earlier
 > "OR use a fixed-3.3V sibling (e.g. TPS630250)" framing has been dropped as a false
-> alternative. Orderable P/N locked: **TPS63020DSJR** (reel). It is **not considered
+> alternative. Orderable P/N locked: **TPS63020DSJR** (reel). ~~It is **not considered
 > "selected" until its inductor, feedback resistors, and input/output caps are selected with
-> it** - a buck-boost is a compensated loop, not a drop-in symbol. Spec all support components
+> it**~~ — **SUPERSEDED 2026-07-30: the block is now ARCHITECTURE LOCKED and schematic capture
+> is APPROVED. The inductor and all resistors are locked; capacitor values/voltages/dielectrics/
+> packages are locked; only exact capacitor MPNs remain open, and those are a BOM-release gate,
+> not a capture gate.** See *TPS63020 3.3V regulator block* below. The original reasoning still
+> holds and is kept for the record: a buck-boost is a compensated loop, not a drop-in symbol. Spec all support components
 > from the TI datasheet at schematic time, and **account for ceramic capacitor DC-bias
 > derating** (a nominal 22uF X5R/X7R can lose 30-60% of its capacitance at the operating
 > voltage - size by effective capacitance, not the printed value).
@@ -228,6 +232,548 @@ reverse-polarity protection at the battery input + a standardized/keyed battery 
 polarity + a battery tray that doesn't invite reversed insertion. Also validated: bq25185
 board 3.3V buck output = 3.3V, power-path out = 4.6V (both measured correct before the
 incident).
+
+## USB-C 5V sink + USB 2.0 front end — BETA ARCHITECTURE LOCKED (2026-07-30)
+
+> **USB-C FRONT END: BETA ARCHITECTURE LOCKED.**
+>
+> **ROLE: USB TYPE-C SINK / UFP. 5V ONLY. USB 2.0 FULL-SPEED DATA. NO USB POWER DELIVERY. NO
+> SOURCE ROLE. NO DRP ROLE. NO VCONN. NO ALTERNATE MODES.**
+
+**This is Beta-locked, not production-hardened.** It remains subject to professional
+power/DFM/EMI review before fabrication.
+
+**The two independent CC pull-downs are mandatory.**
+
+### Connector
+
+| Item | Value |
+|---|---|
+| Family | **GCT USB4105** — 16-contact USB 2.0 Type-C receptacle, top-mount horizontal, SMD contacts, through-hole shell stakes |
+| Preferred Beta candidate | **GCT USB4105-GF-A-120** |
+| KiCad footprint | `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` |
+
+**Before assigning the MPN, verify:** the official drawing; that the **shell-stake length suits
+the eventual PCB thickness**; the pin numbering against the KiCad symbol; and that the installed
+KiCad footprint matches the manufacturer drawing. **The exact suffix is subject to
+PCB-thickness / shell-stake confirmation.**
+
+Required symbol pin mapping (16-contact USB 2.0 receptacle):
+
+| Function | Contacts |
+|---|---|
+| VBUS | **A4, B9, A9, B4** |
+| GND | **A1, A12, B1, B12** |
+| D+ | **A6, B6** |
+| D− | **A7, B7** |
+| CC1 | **A5** |
+| CC2 | **B5** |
+| SBU1 / SBU2 | **A8 / B8 — no connect** |
+| Shield | shield tabs → `USB_SHIELD` |
+
+Verify all duplicate VBUS, GND, D+ and D− pins are electrically joined as intended.
+
+> **A 16-contact USB 2.0 receptacle has NO SuperSpeed TX/RX contacts. Do not add invented
+> SuperSpeed no-connect pins.** Mark only **SBU1** and **SBU2** as no-connect.
+
+### CC sink identification — two independent Rd resistors
+
+```
+CC1 -> R_CC1_RD (5.1k, 1%) -> GND
+CC2 -> R_CC2_RD (5.1k, 1%) -> GND
+```
+
+**Do not** combine CC1 and CC2; **do not** share one resistor; **do not** connect either CC pin
+to firmware; **do not** add a PD or CC controller; **do not** connect VCONN.
+
+```
+TWO INDEPENDENT 5.1k Rd RESISTORS REQUIRED
+USB-C SINK / UFP, 5V ONLY
+NO PD NEGOTIATION
+```
+
+```
+STATIC Rd ESTABLISHES THE SINK ROLE
+NO CC CURRENT-ADVERTISEMENT DETECTION IS IMPLEMENTED
+BQ25185 INPUT-CURRENT POLICY MUST NOT ASSUME 1.5A/3A
+FROM AN UNKNOWN SOURCE
+```
+
+### VBUS power path
+
+```
+USB connector VBUS pins
+        |
+   USB_VBUS_RAW
+        |
+   R_USB_VBUS_LINK (0R, optional current-measurement / link footprint)
+        |
+   USB_VBUS_CHG
+        |
+   BQ25185 VIN
+```
+
+The 0R link exists for **bring-up current measurement**, **charger-input isolation**, and
+**later replacement by an input protection component** if required.
+
+> **Do not route USB VBUS through the USBLC6-2SC6 as though the ESD device were a series pass
+> component.** Its VBUS pin connects as a **branch** to `USB_VBUS_RAW` (or the connector-side
+> protected VBUS node) per the ST application circuit.
+
+```
+USBLC6 VBUS PIN IS A CLAMP REFERENCE
+NOT A SERIES POWER PATH
+```
+
+**`C_USB_VBUS` = 4.7 µF, 10 V minimum, X7R.** Effective-capacitance MPN verification is
+**deferred to pre-fab BOM validation**. **4.7 µF is preferred over automatically using 10 µF**
+so connector-side input capacitance and hot-plug behaviour stay conservative. Place it close to
+the receptacle/VBUS entry, the USBLC6 VBUS reference, and the charger-input path.
+
+**The BQ25185's own required local VIN decoupling is separate** and is captured with the
+charger's support network. **This connector-side capacitor does not replace the charger
+datasheet capacitor.**
+
+### USB 2.0 data path
+
+MCU nets are already defined in the locked pin map (§ *Final native allocation*, GPIO 19/20 =
+native USB, reserved):
+
+| Net | Pin |
+|---|---|
+| `USB_D_N_MCU` | **ESP32-S3 GPIO19 = D−** |
+| `USB_D_P_MCU` | **ESP32-S3 GPIO20 = D+** |
+
+```
+Connector D- pins (A7,B7) -> USB_D_N_CONN -> USBLC6 protected channel -> R_USB_DN_SER (22R) -> USB_D_N_MCU / GPIO19
+Connector D+ pins (A6,B6) -> USB_D_P_CONN -> USBLC6 protected channel -> R_USB_DP_SER (22R) -> USB_D_P_MCU / GPIO20
+```
+
+* `R_USB_DN_SER` = `R_USB_DP_SER` = **22R initial**, equal values, matching footprints.
+* A **33R assembly option** is acceptable after signal-integrity review — **but never mix 22R
+  and 33R across the pair.**
+* **Place the series resistors close to the ESP32-S3, not close to the connector.**
+* **Do not cross D+ and D−.** Confirm **GPIO19 = D−**, **GPIO20 = D+**.
+
+### ESD array
+
+**STMicroelectronics USBLC6-2SC6**, SOT-23-6 / SOT23-6L. Use the **exact official pinout** and
+a footprint matching the SC6 package.
+
+* Two protected channels assigned consistently to D+ and D−.
+* GND directly to the ground plane.
+* VBUS clamp/reference pin to `USB_VBUS_RAW` — **not in series**.
+* **Place physically very close to the USB connector.**
+
+> **Verify the chosen symbol's pin numbering against the ST datasheet. Do not trust a generic
+> six-pin ESD symbol unchecked.**
+
+```
+ESD CURRENT PATH TO GND MUST BE SHORT AND DIRECT
+PLACE ESD BEFORE LONG DATA TRACES
+MINIMIZE STUB BETWEEN CONNECTOR AND ESD ARRAY
+```
+
+### Optional EMC capacitors — DNP for Beta
+
+`C_USB_DP_EMC` = 100 pF **DNP**, `USB_D_P_MCU`-side node → GND.
+`C_USB_DN_EMC` = 100 pF **DNP**, `USB_D_N_MCU`-side node → GND.
+
+Place close to the MCU-side series resistors.
+
+```
+DNP FOR BETA
+POPULATE ONLY AFTER SIGNAL-INTEGRITY / EMI REVIEW
+```
+
+**Do not populate by default. Do not silently replace them with larger values.**
+
+### Connector shield
+
+Distinct net **`USB_SHIELD`**; all shield tabs connect to it.
+
+| Option | Value | Beta default |
+|---|---|---|
+| `R_USB_SHIELD_LINK` | **0R** | **populated** |
+| `R_USB_SHIELD_BLEED` | 1M | **DNP** |
+
+**Do not populate both simultaneously unless explicitly reviewed.** A single resistor footprint
+may be used instead, with the fitted value documented as 0R and 1M retained only as an assembly
+experiment. An **optional DNP small capacitor footprint** from `USB_SHIELD` to GND may be added
+for later EMI review **only if board space permits** — no mandatory value at this stage.
+
+```
+SHIELD-GROUND STRATEGY PROVISIONAL FOR EMI/ESD REVIEW
+DEFAULT BETA LINK: 0R
+DO NOT LEAVE SHIELD FLOATING WITHOUT REVIEW
+```
+
+Keep shield return placement close to the connector.
+
+### USB current-capability note — the important one
+
+```
+USB-C Rd RESISTORS CAUSE A SOURCE TO PRESENT 5V,
+BUT THIS DESIGN DOES NOT MEASURE THE SOURCE'S
+DEFAULT / 1.5A / 3A CURRENT ADVERTISEMENT.
+
+GENERIC-PORT OPERATION MUST USE A CONSERVATIVE
+BQ25185 INPUT-CURRENT LIMIT.
+
+HIGHER INPUT CURRENT REQUIRES A KNOWN CAPABLE
+USB-C SOURCE OR FUTURE CC CURRENT-DETECTION LOGIC.
+```
+
+**Do not claim USB-PD support.** **Do not claim universal 1 A USB input compliance merely
+because the charger supports 1 A battery charge current** — the **charger-input-current setting
+and the battery-charge-current setting are separate design decisions.**
+
+### PCB layout notes
+
+**D+/D−:** route as a **90 Ω differential pair** (tolerance appropriate to the stack-up);
+equal-length; continuous GND reference plane; minimise vias; no stubs; avoid switch nodes,
+inductors, antennas and crystal traces; preserve pair spacing; add **paired ground-return vias**
+if a layer transition is unavoidable.
+
+**Placement order:** 1. connector → 2. USBLC6-2SC6 → 3. controlled differential routing →
+4. series resistors near ESP32-S3 → 5. ESP32-S3 USB pins.
+
+**VBUS:** suitable width for expected input current; keep the connector bulk capacitor and ESD
+clamp close; keep away from D+/D− where practical.
+
+### ERC checks for this block
+
+**Do not globally weaken ERC.** Verify: CC1 has its own 5.1k; CC2 has its own 5.1k; CC1 and CC2
+are not shorted; D+ is not swapped with D−; **GPIO20 receives D+**; **GPIO19 receives D−**;
+USBLC6 VBUS is not treated as series power; SBU1/SBU2 carry no-connect markers; all connector
+VBUS pins are joined; all connector GND pins are joined; the shield is not accidentally used as
+signal GND through an unintended duplicate path; **no nonexistent SuperSpeed pins were added**;
+no PD controller was added; **no GPIO was allocated for CC logic.**
+
+### Status summary
+
+| Gate | State |
+|---|---|
+| **Architecture lock** | ✅ Beta-locked |
+| **Schematic-capture approval** | ✅ Approved |
+| **Exact BOM lock** | ❌ Connector suffix, ESD array and capacitor MPNs — stock/lifecycle rechecked at pre-fab BOM validation |
+| **Fabrication-release approval** | ❌ Blocked — needs BOM lock **plus** professional power/DFM/**EMI** review (shield-ground strategy especially) |
+
+## TPS63020 3.3V regulator block — ARCHITECTURE LOCKED, capture approved (2026-07-30)
+
+> **TPS63020 3.3V REGULATOR: ARCHITECTURE LOCKED. SCHEMATIC CAPTURE APPROVED. CAPACITOR EXACT
+> MPNs DEFERRED TO PRE-FAB BOM VALIDATION.**
+
+**This supersedes the "not selected until its inductor, feedback resistors and caps are
+selected with it" caveat** recorded in the regulator section above and in
+[[11 - Beta Pin Map v0.2]] §8. The inductor and every resistor are now locked; the capacitor
+*values, voltages, dielectrics and packages* are locked; only the exact capacitor **MPNs**
+remain open.
+
+**Exact capacitor verification is a BOM-RELEASE gate, not a schematic-capture gate.** Do not
+block schematic progress on per-capacitor DC-bias research. Batch all exact capacitor MPN,
+DC-bias, lifecycle and stock checks into **one board-wide BOM-validation pass before
+fabrication**, alongside the professional power/DFM review that also owns the
+[reverse-polarity lock](#reverse-polarity-protection--parked-topology-not-locked-2026-07-30).
+
+### The four distinct gates — do not conflate them
+
+| Gate | State for this block |
+|---|---|
+| **Architecture lock** | ✅ **DONE** — topology, part, inductor, feedback, EN/PS/PG strategy all fixed |
+| **Schematic-capture approval** | ✅ **APPROVED** — `01_POWER_TREE` may draw this block in full |
+| **Exact BOM lock** | ❌ **OPEN** — capacitor MPNs pending the board-wide validation pass |
+| **Fabrication-release approval** | ❌ **BLOCKED** — needs the BOM lock *and* the power/DFM review |
+
+### Regulator — locked
+
+| Item | Value |
+|---|---|
+| Part | **Texas Instruments TPS63020DSJR** |
+| Package | DSJ — use the correct KiCad symbol and footprint for DSJ |
+| Input rail | **`BQ25185_SYS`** |
+| Output rail | **`+3V3`** |
+| Ground | Per the TI datasheet's own PGND/AGND treatment. **Do not invent split-ground nets unless the datasheet explicitly requires them.** |
+
+**Verify the official TI pinout before wiring.** Do not take a pinout from a third-party
+library without checking it against the datasheet — the same provenance rule the symbol library
+already applies to every other part.
+
+Block title to place on the sheet:
+
+```
+TPS63020 3.3V BUCK-BOOST
+ARCHITECTURE LOCKED
+CAPACITOR MPNs PENDING PRE-FAB BOM VALIDATION
+```
+
+### L1 inductor — LOCKED
+
+| Item | Value |
+|---|---|
+| Part | **Coilcraft XFL4020-152MEC** |
+| Inductance | **1.5 µH ±20%** |
+| LCSC | **C3033018** |
+| DCR | ~**14.4 mΩ** typical, ~**15.8 mΩ** maximum |
+| Isat (10% / 20% / 30% L loss) | ~**4.1 A** / ~**4.4 A** / ~**4.6 A** |
+| Max body height | ~**2.1 mm** |
+| Construction | Shielded, molded |
+
+Use the exact manufacturer-recommended footprint if available; otherwise use or create one that
+matches the **official Coilcraft land pattern**.
+
+Note to place beside L1:
+
+```
+LOCKED MPN: XFL4020-152MEC
+XGL4020-152 MAY BE REVIEWED AS AN APPROVED ALTERNATE
+DO NOT SILENTLY SUBSTITUTE
+```
+
+**XGL4020-152 is not the installed part** and must not be listed as such.
+
+### Feedback network — LOCKED
+
+Two-resistor divider **only**:
+
+```
++3V3 / VOUT
+    |
+R_FB_TOP = 1M, 1%
+    |
+   FB
+    |
+R_FB_BOTTOM = 180k, 1%
+    |
+   GND
+```
+
+* Reference/value naming is explicit: **`R_FB_TOP`**, **`R_FB_BOTTOM`**.
+* **No Cff. No third feedback resistor.**
+* Keep the FB node compact and visually separate from switching nodes on the sheet.
+
+Layout note to place on the sheet:
+
+```
+KEEP FB TRACE SHORT
+ROUTE AWAY FROM L1, L1/L2 SWITCH NODES AND HIGH-DI/DT LOOPS
+SENSE VOUT AFTER OUTPUT CAPACITORS
+```
+
+### Power-good — LOCKED
+
+PG is **open-drain**.
+
+```
++3V3
+  |
+R_PG_PULLUP = 1M
+  |
+ PG
+```
+
+* **PG test point** present.
+* **No MCU connection. No expander connection. No GPIO allocated.**
+
+```
+PG DIAGNOSTIC ONLY
+NO GPIO ALLOCATED
+```
+
+### EN — LOCKED DEFAULT (always-on)
+
+**EN must not float.**
+
+```
+VINA
+ |
+R_EN_LINK = 0R
+ |
+EN
+```
+
+* **EN test point** present.
+* **DNP landing** for the future external hard-off controller — shown clearly as provisional
+  and disconnected unless populated. **It must not create an accidental second drive source.**
+* **Do not connect EN to the ESP32, the TCA9535, or any firmware-controlled signal.**
+
+```
+ALWAYS-ON DEFAULT
+FUTURE EXTERNAL HARD-OFF CONTROL ONLY
+MCU CANNOT RESTORE ITS OWN DISABLED 3V3 RAIL
+```
+
+That last line is the reason firmware never touches EN: a rail the MCU can switch off is a rail
+the MCU cannot switch back on.
+
+### PS/SYNC — LOCKED DEFAULT (power-save)
+
+```
+PS/SYNC
+   |
+R_PS_DEFAULT = 0R
+   |
+  GND
+```
+
+* Selects **power-save operation by default**.
+* Test point or solder-jumper/DNP option allowing a future tie to VINA for **forced-PWM or EMI
+  testing**. **No GPIO allocation.**
+* **Avoid any configuration where the GND link and a VINA link can both be populated without an
+  explicit assembly warning** — that would short VINA to GND.
+
+```
+DEFAULT: POWER-SAVE MODE
+FORCED PWM OPTION FOR BRING-UP / EMI TESTING ONLY
+```
+
+### VINA decoupling — LOCKED
+
+**`C_VINA` = 100 nF, X7R, VINA to GND**, placed close to VINA.
+
+```
+C_VINA = 100nF
+DO NOT EXCEED 220nF WITHOUT REVIEW
+```
+
+### Input capacitors — VALUE LOCKED, MPN PENDING
+
+**`CIN1` = 10 µF, `CIN2` = 10 µF.**
+
+| Requirement | Value |
+|---|---|
+| Voltage rating | **10 V minimum** |
+| Dielectric | **X7R** |
+| Exact MPN | **Pending** — must be active-lifecycle |
+| Combined effective CIN | **≥ 10 µF at ~4.5 V** |
+| Each capacitor after derating | **≥ ~5 µF at 4.5 V** |
+
+> **The obsolete Murata `GRM21BR71A106KE51L` must NOT be used** and must not be assigned to
+> either capacitor.
+
+Provisional footprint: **1206 preferred**; 0805 only if the eventual MPN can meet the derating
+requirement. **Prefer 1206 unless a mechanical constraint strongly favours 0805.**
+
+```
+CIN MPN NOT BOM-LOCKED
+REQUIRE COMBINED EFFECTIVE CIN >=10uF AT 4.5V
+VERIFY DC-BIAS / LIFECYCLE / STOCK BEFORE FAB
+```
+
+Place both close to VIN and PGND per TI layout guidance.
+
+### Output capacitors — VALUE/PACKAGE LOCKED, MPN PROVISIONAL
+
+**`COUT1`–`COUT4` = 22 µF each.**
+
+| Requirement | Value |
+|---|---|
+| Voltage rating | **10 V** |
+| Dielectric | **X7R** |
+| Package | **1206** |
+| Provisional MPN | **Murata GRM31CR71A226ME15L** — *provisional, not BOM-locked* |
+| Combined effective COUT | **≥ 40 µF at 3.3 V** |
+| Each part | must retain an average of **≥ 10 µF** under the documented acceptance assumptions |
+
+```
+COUT MPN PROVISIONAL
+REQUIRE COMBINED EFFECTIVE COUT >=40uF AT 3.3V
+VERIFY MURATA DC-BIAS DATA BEFORE FAB
+```
+
+Place tightly around VOUT and PGND per TI layout guidance.
+
+### Required visible warning beside the block
+
+```
+CAPACITOR MPNs NOT BOM-LOCKED
+VERIFY DC-BIAS EFFECTIVE CIN/COUT BEFORE FAB
+
+CIN:
+2 x 10uF, 10V+, X7R
+TOTAL EFFECTIVE >=10uF AT 4.5V
+
+COUT:
+4 x 22uF, 10V, X7R, 1206
+TOTAL EFFECTIVE >=40uF AT 3.3V
+
+DO NOT USE OBSOLETE GRM21BR71A106KE51L
+```
+
+### Battery-input side — unchanged
+
+The TPS63020 block connects to **`BQ25185_SYS`**, *not* to the raw battery connector. The
+battery-input area remains the
+[parked reverse-polarity placeholder](#reverse-polarity-protection--parked-topology-not-locked-2026-07-30)
+and **must not** be drawn as a finalised circuit.
+
+### ERC handling for this sheet
+
+**Do not globally reduce ERC severity.** If the incomplete reverse-polarity block or the future
+hard-off DNP landing generates findings: classify them explicitly, and use a **narrowly scoped**
+no-connect, no-ERC marker or documented waiver **only where justified**. Never suppress
+unrelated errors.
+
+Verify on this block specifically:
+
+- [ ] EN is not floating
+- [ ] PS/SYNC is not floating
+- [ ] PG open-drain has its pull-up
+- [ ] FB connects only to the intended divider
+- [ ] No obsolete capacitor MPN appears anywhere
+- [ ] No GPIO was consumed
+- [ ] The `+3V3` power-flag strategy matches the project's existing conventions
+
+---
+
+## Pre-fabrication BOM-validation pass — what it must archive (2026-07-30)
+
+**One board-wide pass, run before fabrication, alongside the professional power/DFM review.**
+Batching this is deliberate: per-part DC-bias research done piecemeal during capture stalls the
+schematic and gets redone anyway when stock moves.
+
+**For every exact capacitor MPN, archive:**
+
+| Item |
+|---|
+| Manufacturer datasheet permalink |
+| Manufacturer DC-bias curve, model, CSV or numerical output |
+| Operating voltage |
+| Nominal capacitance |
+| **Effective** capacitance at operating voltage |
+| Tolerance calculation |
+| Temperature assumption |
+| **Total** effective capacitance calculation |
+| Lifecycle status |
+| Distributor / LCSC / JLCPCB code |
+| Stock-check date |
+| Explicit note to **recheck stock at BOM release** |
+
+**For the inductor, archive:**
+
+| Item |
+|---|
+| Manufacturer datasheet |
+| Official footprint / land pattern |
+| DCR typical **and** maximum |
+| Isat definition at **10%, 20% and 30%** inductance loss |
+| Irms thermal-rise definition |
+| Height |
+| Lifecycle status |
+| LCSC mapping |
+| Stock-check date |
+
+### Gate vocabulary — keep these four distinct
+
+| Gate | Means |
+|---|---|
+| **Architecture lock** | The topology and the parts that define the loop are fixed. Schematic can proceed. |
+| **Schematic-capture approval** | This block may be drawn now, with its open items marked on the sheet. |
+| **Exact BOM lock** | Every MPN is chosen, derated, lifecycle-checked and stock-checked. |
+| **Fabrication-release approval** | BOM lock **plus** the power/DFM review **plus** the reverse-polarity topology lock. |
+
+A block can be architecture-locked and capture-approved while still being nowhere near
+fabrication-release. The TPS63020 block is exactly that today.
 
 ## Reverse-polarity protection — PARKED, topology NOT locked (2026-07-30)
 
