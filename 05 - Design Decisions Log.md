@@ -229,6 +229,208 @@ polarity + a battery tray that doesn't invite reversed insertion. Also validated
 board 3.3V buck output = 3.3V, power-path out = 4.6V (both measured correct before the
 incident).
 
+## Reverse-polarity protection — PARKED, topology NOT locked (2026-07-30)
+
+**Status: architecture defined, implementation unresolved, final lock delegated.** This is a
+deliberate park, not an oversight. The requirement above is unchanged and still mandatory; what
+follows records exactly how far the decision has been taken and where it stops.
+
+### Why this is parked rather than decided
+
+The remaining open question — **does normal ~1 A charging current flowing VOUT→VIN trip the
+controller's reverse-current sense?** — needs an **LTspice model of the LTC4368 charge-path
+case**, and most likely an **ADI FAE confirmation** on top of it. That is specialist analog
+work, best done **once, properly, by the power review**, rather than iterated at in an AI-chat
+loop where the answer cannot actually be validated.
+
+It occupies **one corner of the power tree**, and it **must not stall the rest of the board**.
+Everything else in `01_POWER_TREE` proceeds normally.
+
+### Architecture — decided
+
+| Item | State |
+|---|---|
+| Topology class | **High-side only** |
+| Battery negative | **Remains tied directly to system GND — LOCKED.** Not switched, not sensed in the return path. |
+| Keyed connector + tray geometry | **Additional mechanical layer only, NEVER the primary electrical defence.** The electrical protection must stand on its own with a reversed cell physically inserted. |
+| Leading candidate | **Analog Devices LTC4368-1** controlling **back-to-back N-channel MOSFETs** |
+| External MOSFET class considered | **AO3400A-class low-voltage NFETs**, two in series |
+
+### Leading candidate — detail (NOT locked)
+
+**Controller — Analog Devices LTC4368-1**, active back-to-back N-FET controller:
+
+| Parameter | Value |
+|---|---|
+| Input range | ~2.5–60 V |
+| Quiescent current | ~80 µA |
+| Forward / reverse sense threshold | ~±50 mV |
+| Package | MSOP or 3×3 DFN |
+
+The reason it is the leading candidate is **active gate turn-off**: it drives the gates down
+hard rather than relying on a passive network, which is what avoids the **AN-171 partially-on
+thermal-runaway equilibrium**.
+
+**External FETs — back-to-back N-channel, AO3400A-class, two in series:**
+
+| Parameter | Value |
+|---|---|
+| Part | AOS **AO3400A** |
+| LCSC | **C20917** |
+| Package | SOT-23 |
+| V(DS) | 30 V |
+| R(DS,on) | ~48 mΩ @ V(GS) = 2.5 V |
+| V(GS) max | ±12 V |
+
+**Building-block PMOS — AO3401A (LCSC C15127) remains valid** *if a PMOS variant is chosen
+instead*. Note the distinction carefully: **a single PMOS alone is rejected as a final
+solution**, but the part itself is not blacklisted and stays available as a building block
+should the review land on a PMOS-based topology.
+
+### Not selected — every one of these is open
+
+Exact MOSFET, sense resistor, UV/OV divider, timer/inrush parts, gate clamp, and package.
+**No part number in any of these roles is final.**
+
+The battery connector side, the protected BAT rail, and the **BQ25185 BAT path remain
+architecturally defined** — the block's boundaries and its place in the power tree are settled.
+**The protection implementation inside those boundaries is unresolved.**
+
+### Rejected as final solutions — recorded so they are not revisited
+
+| Rejected | Why it fails |
+|---|---|
+| **Single PMOS alone** | Does not survive the mandatory fault case. *(The AO3401A part itself stays valid as a building block — see above.)* |
+| **Naive passive back-to-back** | No active turn-off. |
+| **Any passive gate network that can leave a FET partially-on under charger drive** | This is precisely the AN-171 failure mode. |
+| **Low-side protection** | Architecture is high-side only; battery negative stays tied to system GND. |
+| **Keyed connector as primary defence** | Mechanical layer only. Must not be load-bearing electrically. |
+| **Ordinary load switches that block charging** | The battery path is bidirectional — charge flows *through* this block. |
+| **Cell over/under-voltage protectors** | They do not address **physical reverse insertion**, which is the actual failure that destroyed a board. |
+
+### REQUIREMENT — locked, regardless of final topology
+
+This survives whatever the review picks. The design is not acceptable unless it survives the
+case that destroyed a board on the bench, made worse by the charger being live:
+
+> **Reversed battery while USB powers the BQ25185.**
+
+Required behaviour:
+
+* **Both pass FETs remain fully off.** Not partially enhanced — off.
+* **Block sustained current into the reversed cell.**
+* **Keep the BQ25185 `BAT` pin above its ~−0.3 V absolute maximum.**
+* **Avoid any Analog Devices AN-171 linear-equilibrium self-heating.** A FET that settles into
+  a partially-on operating point can sit in a self-sustaining thermal equilibrium and destroy
+  itself and the cell. Proving this cannot happen is part of the gate, not a nice-to-have.
+* **The keyed connector is an additional mechanical layer only — never the primary electrical
+  defence.**
+
+### STATUS: PENDING — the open engineering questions
+
+None of these has an answer yet. They are the reason the topology is not locked, and they are
+**assigned to the professional power/DFM review (pre-fab gate)**:
+
+| # | Open question |
+|---|---|
+| **(a)** | **LTspice validation of the 1 A charge-path / reverse-sense question** — does normal ~1 A charging current flowing VOUT→VIN trip the reverse-current sense? Also: does the LTC4368-1 support a *removable* 1-cell charger path at all? |
+| **(b)** | **ADI vendor / FAE confirmation** of the intended use. |
+| **(c)** | **UV/OV divider values for 3.0–4.2 V.** |
+| **(d)** | **Sense-resistor value vs charge current.** |
+| **(e)** | **V(GS)-clamp need vs the ±12 V FETs.** |
+| **(f)** | **Standby-current impact of the ~80 µA controller** — see [[13 - Power Budget and Battery Runtime v0.1]]. |
+
+Further open items in the same gate: negative-input behaviour while the output is
+charger-powered; startup and hot-insertion behaviour; BQ25185 battery detection, charge
+termination and recharge interaction; voltage drop and thermal performance.
+
+**(a), (b) and the negative-input question are the ones most likely to invalidate the LTC4368-1
+candidate outright** — the part is aimed at a supply-input position, and AQROOT is asking it to
+sit in a bidirectional battery path that is charged *through* it.
+
+### Ownership — who closes this
+
+**Final topology lock belongs to the professional power/DFM pre-fabrication review.** Not to
+schematic capture, not to this log, not to a bench guess.
+
+That review **must**:
+
+* run the **LTC4368 LTspice case**, covering the mandatory fault case above; and
+* obtain **Analog Devices vendor/FAE confirmation** of the intended use, specifically on
+  questions 1, 2 and 5.
+
+> **GATE: do not allow PCB routing or fabrication release until this is closed.** This blocks
+> the board, not just the power sheet.
+
+### KiCad capture instruction
+
+**`01_POWER_TREE` may be captured except for this implementation.** The rest of the power tree
+is not blocked by this park.
+
+**Every section EXCEPT the battery-input protection block is drawn normally.** The protection
+block must remain a clearly labelled **functional placeholder**, carrying exactly this text:
+
+```
+REV-POLARITY: LTC4368-1 + BACK-TO-BACK NFETS (LEADING CANDIDATE)
+TOPOLOGY PENDING SIM / VENDOR REVIEW
+DO NOT ROUTE
+```
+
+Same discipline as the radio and NFC placeholders: no footprint, nothing routable, and the open
+question stated on the sheet where it cannot be missed.
+
+### Beta validation test card — PRESERVED IN FULL
+
+Fourteen cases. **This card runs at Beta bring-up regardless of the final topology** — it is
+the acceptance test for whatever the review locks, and a different topology does not shorten
+it:
+
+| # | Case |
+|---|---|
+| 1 | Correct battery, USB absent |
+| 2 | Correct battery, USB present |
+| 3 | **Reversed battery, USB absent** |
+| 4 | **Reversed battery, USB present** — *the mandatory fault case* |
+| 5 | Battery absent, USB present |
+| 6 | Hot insertion |
+| 7 | Repeated reversal |
+| 8 | 640 mA discharge *(charge + discharge through the protection)* |
+| 9 | 1 A charging *(charge through the protection — the case behind open question (a))* |
+| 10 | Charge termination |
+| 11 | Recharge behaviour |
+| 12 | Sleep leakage *(includes the ~80 µA controller — open question (f))* |
+| 13 | Voltage drop |
+| 14 | Protection-device temperature |
+
+Inrush is covered by cases 6 and 9.
+
+### Initial validation — current-limited, simulator first
+
+**Use a battery simulator before a real LiPo.** A reversed real cell has no current limit and
+will happily deliver whatever a partially-on FET asks for.
+
+| Setting | Value |
+|---|---|
+| USB current limit | **50 mA** |
+| Battery-simulator current limit | **25–50 mA** |
+
+**Measure at:** the battery connector, `BAT_PROTECTED_P` / BQ25185 `BAT`, the common gate node,
+`SYS`, and battery-path current.
+
+**Abort immediately on any of:**
+
+* `BAT` below **−0.3 V**
+* sustained reversed-cell current above **10 mA**
+* **gate plateau** (the AN-171 partially-on signature)
+* **rapid heating**
+* **oscillation**
+* **unstable `BAT` or `SYS`**
+
+### BOM position
+
+No final reverse-protection part number is claimed. The candidate controller and the candidate
+NFET class are listed as **provisional only** — see [[06 - BOM and Cost Tracker]].
+
 ## Audio parts: ICS-43434 mic + MAX98357A amp
 Selected the I2S audio parts (were "planned, unspecified"):
 - Speaker amp: MAX98357A - I2S Class-D mono amp, all-in-one (I2S in -> amplified speaker out,

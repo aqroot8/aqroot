@@ -58,6 +58,7 @@ magnitude — because the whole board draws current in standby, not just the MCU
 
 | Contributor | Why it matters in standby |
 |---|---|
+| **Reverse-polarity protection controller (~80 µA, if LTC4368-1 is locked)** | **Always-on, in the battery path, and not power-gateable** — it must keep working precisely when everything else is asleep. At ~80 µA it is comparable to the whole ESP32-S3 chip deep-sleep figure (~10–20 µA) and could dominate it several times over. **Topology is PARKED and the part is NOT locked** (see [[05 - Design Decisions Log]]), so treat this as a budget line to close, not a number to publish. Standby-current impact is open question **(f)** assigned to the power/DFM review. |
 | ESP32-S3 deep sleep | the ~10-20 uA that is currently standing in for the whole system |
 | **TPS63020 quiescent** | ~25 uA in power-save — already comparable to the entire ESP32 figure |
 | **Both TCA9535PWR expanders** (U60 @ 0x20 + U61 @ 0x21) | two expanders, powered and retaining state, low-uA each per datasheet but **unmeasured — this part has never been on the bench** |

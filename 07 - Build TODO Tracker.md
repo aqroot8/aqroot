@@ -90,6 +90,46 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] Reverse-polarity protection at the battery input + keyed connector + a battery tray
       that can't invite reversed insertion (from the bench incident — see
       [[05 - Design Decisions Log]])
+      - **PARKED (2026-07-30) — leading candidate documented, topology NOT locked.**
+        High-side only; battery negative stays tied to system GND (locked). Keyed connector
+        is an *additional mechanical layer only*, never the primary electrical defence.
+        Leading candidate: **ADI LTC4368-1** (active back-to-back N-FET controller, ~2.5–60 V,
+        ~80 µA Iq, forward/reverse sense ~±50 mV, MSOP or 3×3 DFN) + **back-to-back N-channel
+        AO3400A-class** FETs, two in series (AOS AO3400A, LCSC C20917, SOT-23, 30 V,
+        ~48 mΩ @ Vgs 2.5 V, Vgs max ±12 V). Active gate turn-off is what avoids the AN-171
+        equilibrium. **AO3401A (LCSC C15127) remains valid as a building block** if a PMOS
+        variant is chosen. Exact MOSFET, sense resistor, UV/OV divider, timer/inrush parts,
+        gate clamp and package **not selected**.
+      - **Rejected as final solutions — do not revisit:** single PMOS alone; naive passive
+        back-to-back; any passive gate network that can leave a FET partially-on under
+        charger drive; low-side protection; keyed connector as primary defence; ordinary load
+        switches that block charging; cell over/under-voltage protectors that don't address
+        physical reverse insertion.
+      - [ ] **GATE — professional power/DFM pre-fabrication review owns the final topology
+            lock.** It must run the **LTC4368 LTspice charge-path case** and obtain **ADI
+            vendor/FAE confirmation**. **BLOCKS PCB routing and fabrication release for the
+            whole board** — not just the power sheet.
+      - [ ] Close STATUS items (a)–(f), all assigned to that review: **(a)** LTspice
+            validation of the 1 A charge-path / reverse-sense question — does normal charging
+            current flowing VOUT→VIN trip the reverse sense; **(b)** ADI vendor confirmation;
+            **(c)** UV/OV divider values for 3.0–4.2 V; **(d)** sense-resistor value vs charge
+            current; **(e)** Vgs-clamp need vs the ±12 V FETs; **(f)** standby-current impact
+            of the ~80 µA controller. Plus: negative-input behaviour while output is
+            charger-powered; startup and hot-insertion; BQ25185 detection / termination /
+            recharge interaction; voltage drop and thermals.
+      - [ ] Prove the **locked REQUIREMENT** (holds regardless of final topology) — reversed
+            battery *while USB powers the BQ25185*: both pass FETs fully off, sustained
+            current into the reversed cell blocked, BQ25185 `BAT` kept above its ~−0.3 V
+            abs-max, and **no AN-171 linear-equilibrium self-heating**.
+      - [ ] Capture `01_POWER_TREE` — **every section except the battery-input protection
+            block is drawn normally**. That block stays a clearly labelled placeholder:
+            `REV-POLARITY: LTC4368-1 + BACK-TO-BACK NFETS (LEADING CANDIDATE)` /
+            `TOPOLOGY PENDING SIM / VENDOR REVIEW` / `DO NOT ROUTE`. The rest of the power
+            tree is **not** blocked by this park.
+      - [ ] Run the **14-case Beta validation card** (see [[05 - Design Decisions Log]]).
+            Battery **simulator** before a real LiPo; USB limit **50 mA**, simulator limit
+            **25–50 mA**. Abort on `BAT` < **−0.3 V**, sustained reversed-cell current
+            > **10 mA**, gate plateau, rapid heating, oscillation, or unstable `BAT`/`SYS`.
 
 ## Pre-schematic review follow-ups (2026-07-26, must settle before/at capture)
 - [x] ~~Sign off the GPIO21 / GPIO43 role swap~~ — APPROVED: GPIO21 = wake INT (RTC-capable),

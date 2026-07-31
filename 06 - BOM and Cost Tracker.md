@@ -22,6 +22,7 @@ tags: [bom, cost, budget]
 | MAX17048 fuel gauge breakout (deferred — validate on Beta) | $5-10 |
 | LiPo 2000mAh | $8-14 |
 | bq25185 charger + power-path board | $5-10 |
+| **Reverse-polarity protection — NO FINAL P/N CLAIMED (parked)**. *Provisional only:* ADI **LTC4368-1** controller (MSOP / 3×3 DFN) + **2x AO3400A-class** N-channel FETs (AOS AO3400A, LCSC C20917, SOT-23) + sense resistor, UV/OV divider, timer/inrush parts and gate clamp — **all values and P/Ns unselected**. See note below. | $2-6 **(provisional estimate — not a quote)** |
 | IR: TSOP38238 receiver + TSAL6200 940nm emitter + low-side MOSFET driver stage | $2-6 |
 | 7x tactile buttons (D-pad up/down/left/right + A/B + Home) + physical power switch | $2-5 |
 | I2C bus buffer/isolator or bus switch (external header protection) — part TBD | $1-3 |
@@ -29,6 +30,20 @@ tags: [bom, cost, budget]
 | USB-C breakout, wiring, protoboard | $5-10 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |
+
+> **Reverse-polarity protection note (2026-07-30) — no final part number is claimed.** The
+> topology is **PARKED**: high-side only, battery negative tied to system GND. The **leading
+> candidate is provisional only** — ADI **LTC4368-1** (active back-to-back N-FET controller,
+> ~2.5–60 V, ~80 µA Iq, forward/reverse sense ~±50 mV) driving **two series back-to-back
+> N-channel AO3400A-class** FETs (AOS AO3400A, LCSC C20917, SOT-23, 30 V, ~48 mΩ @ Vgs 2.5 V,
+> Vgs max ±12 V). **AO3401A (LCSC C15127)** remains a valid building block *if* a PMOS variant
+> is chosen; a single PMOS alone is rejected as a final solution. **Do not order these as
+> final.** The sense resistor, UV/OV divider (3.0–4.2 V), timer/inrush parts, gate clamp and
+> package are all unselected, and the cost line above is a placeholder estimate rather than a
+> quote. **Final topology lock belongs to the professional power/DFM pre-fabrication review**,
+> which must run the LTC4368 LTspice charge-path case and obtain ADI vendor/FAE confirmation.
+> **No PCB routing or fabrication release until that gate closes.** See
+> [[05 - Design Decisions Log]].
 
 > **GPIO expander note (2026-07-27):** the expander was changed from the MCP23017 to the **TI
 > TCA9535PWR** (see [[05 - Design Decisions Log]]). The MCP23017 breakout that was bought and

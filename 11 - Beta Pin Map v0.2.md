@@ -1004,7 +1004,13 @@ Do NOT advertise expander pins as logic-analyzer channels.
 - bq25185 CHARGER + POWER PATH VALIDATED (Adafruit 6092; USB-first safe bring-up, battery
   polarity confirmed vs silkscreen before connecting, active charging confirmed — G on, C
   solid, F off; 2026-07-26). Reverse-polarity protection + keyed battery connector remain
-  hard Beta requirements (§8 / power incident note).
+  hard Beta requirements (§8 / power incident note). **The protection TOPOLOGY is PARKED as of
+  2026-07-30** — high-side only, battery negative tied to system GND (locked); leading
+  candidate ADI **LTC4368-1** + back-to-back **AO3400A-class** N-FETs, **not locked**. Final
+  lock is owned by the professional power/DFM pre-fab review (LTspice charge-path case + ADI
+  FAE confirmation), and that gate **blocks PCB routing and fabrication release for the whole
+  board**. `01_POWER_TREE` may be captured with the battery-input protection block left as a
+  marked `DO NOT ROUTE` placeholder. See [[05 - Design Decisions Log]].
 
 > **ALPHA HARDWARE VALIDATION COMPLETE (2026-07-26):** all Alpha subsystems bench-proven *as
 > built in Alpha*. The audio-in mic will NOT be bench-retested (a confirmed dead individual

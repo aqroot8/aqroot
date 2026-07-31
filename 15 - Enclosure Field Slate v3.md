@@ -85,7 +85,11 @@ The base enclosure stays clean when no module is attached.
 - Switched **5V boost for the NFC PA rail** only (VDD_IO stays 3.3V).
 - **REVERSE-POLARITY PROTECTION at the battery input — mandatory.** Learned the hard way:
   a reverse-wired LiPo JST connector destroyed a bq25185 board during bench testing (see
-  [[05 - Design Decisions Log]]).
+  [[05 - Design Decisions Log]]). **The requirement is locked; the TOPOLOGY is PARKED**
+  (2026-07-30) — high-side only, leading candidate ADI LTC4368-1 + back-to-back AO3400A-class
+  N-FETs, **not locked**, final lock owned by the professional power/DFM pre-fab review.
+  Enclosure impact: the protection parts sit on the battery-input side and their **package and
+  board area are not yet known**, so do not freeze battery-bay geometry against them.
 - **Keyed/standardized battery connector polarity**, and a **battery tray whose geometry
   cannot invite reversed insertion.** This is an enclosure requirement, not just an
   electrical one — the tray shape is the last line of defence.

@@ -27,6 +27,40 @@ bench test that passed was an MCP23017, a different part.
 
 * External community-header I2C isolator or bus switch
 * ACC_PWR_EN accessory load switch
+* **Battery reverse-polarity protection — topology PARKED, see below**
+
+## Reverse-polarity protection — PARKED (2026-07-30)
+
+**`01_POWER_TREE` may be captured. Every section EXCEPT the battery-input protection block is
+drawn normally** — this park does not stall the rest of the power tree or the board.
+
+The battery-input protection block must remain a clearly labelled functional placeholder:
+
+```
+REV-POLARITY: LTC4368-1 + BACK-TO-BACK NFETS (LEADING CANDIDATE)
+TOPOLOGY PENDING SIM / VENDOR REVIEW
+DO NOT ROUTE
+```
+
+* **Decided and locked:** high-side only; battery negative stays tied directly to system GND.
+  The keyed connector is an *additional mechanical layer only*, never the primary electrical
+  defence.
+* **Leading candidate, NOT locked:** ADI **LTC4368-1** active back-to-back N-FET controller
+  driving two series **AO3400A-class** N-channel FETs.
+* **Not selected:** exact MOSFET, sense resistor, UV/OV divider, timer/inrush parts, gate clamp
+  and package. **Do not assign a footprint to this block.**
+* **Rejected as final solutions:** single PMOS alone; naive passive back-to-back; any passive
+  gate network that can leave a FET partially-on under charger drive; low-side protection;
+  keyed connector as primary defence; ordinary load switches that block charging; cell
+  over/under-voltage protectors that don't address physical reverse insertion.
+
+> **GATE: final topology lock belongs to the professional power/DFM pre-fabrication review**,
+> which must run the LTC4368 LTspice charge-path case and obtain ADI vendor/FAE confirmation.
+> **No PCB routing and no fabrication release until that gate is closed** — this blocks the
+> whole board, not just the power sheet.
+
+Full record, including the locked requirement, the open questions (a)–(f), and the 14-case Beta
+validation card: [[05 - Design Decisions Log]].
 
 ## Rules
 
@@ -34,7 +68,8 @@ bench test that passed was an MCP23017, a different part.
 * KiCad files will be created manually in KiCad 10.0.3.
 * Do not assign unverified footprints. The U60/U61 TSSOP-24 footprint above is assigned but NOT
   yet verified against the TI datasheet drawing — audit it before freeze.
-* Do not begin PCB routing until the full schematic passes review and ERC.
+* Do not begin PCB routing until the full schematic passes review and ERC, **and until the
+  power/DFM pre-fab review has locked the reverse-polarity topology** (see above).
 * Preserve the authoritative GPIO assignments from Beta Pin Map v0.2.4.
 * Do not reintroduce MCP23017 nomenclature (GPAn/GPBn, INTA/INTB, IODIR, GPPU, GPINTEN, INTF,
   INTCAP, IOCON, DEFVAL, INTCON). The TCA9535 register set is 0x00-0x07 only.
