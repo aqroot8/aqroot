@@ -509,7 +509,7 @@ free capacity.** Plan new signals against zero availability on this chip.
 |---|---|---|---|---|
 | **P00** | out | `TOUCH_RST_N` | Touch RESET (FT6236) | pull to **RESET-ASSERTED** |
 | **P01** | out | `SX1262_RST_N` | SX1262 RESET | pull to **RESET-ASSERTED** |
-| **P02** | out | `NFC_5V_EN` | NFC 5V boost enable | pull to **OFF** |
+| **P02** | out | `NFC_5V_EN` | NFC 5V boost enable — **TI TPS61023DRLR** boost, `BQ25185_SYS` → `NFC_5V_PA_PENDING`, feeding **ST25R3916 `VDD_PA` ONLY** (`VDD_IO` stays `+3V3`) | pull to **OFF** — the 100k safe-state pull-down is the only thing holding the boost off before U60 is configured |
 | **P03** | out | `AMP_SD_MODE` | Audio amp shutdown/mode (MAX98357A SD) | pull to **SHUTDOWN** |
 | **P04** | out | `DISP_RST_N` | Display RESET (ILI9341) | pull to **RESET-ASSERTED** |
 | **P05** | out | `RGB_R_CTL` | RGB LED — red | pull to **LED-OFF** |
@@ -778,8 +778,8 @@ USB-C 5V  (GCT USB4105 family, 16-contact USB 2.0 Type-C receptacle — SINK/UFP
   EXACT MPNs DEFERRED TO PRE-FAB BOM VALIDATION.** In `BQ25185_SYS`, out `+3V3`. L1 =
   **Coilcraft XFL4020-152MEC** 1.5uH (LCSC C3033018), locked. FB = `R_FB_TOP` 1M /
   `R_FB_BOTTOM` 180k, 1%, no Cff. `C_VINA` 100nF. CIN 2x10uF, COUT 4x22uF 1206.
-  **No GPIO is consumed by this block** — EN is tied always-on through `R_EN_LINK` 0R to VINA
-  and is **never firmware-driven** (the MCU cannot restore its own disabled 3V3 rail); PS/SYNC
+  **No GPIO is consumed by this block** — EN is driven by a **physical SPST maintained hard-off switch**
+  (VINA→switch→EN, `R_EN_PULLDOWN` 100k to GND) and is **never firmware-driven** (the MCU cannot restore its own disabled 3V3 rail); PS/SYNC
   is tied to GND through `R_PS_DEFAULT` 0R for power-save default; PG is open-drain to a
   `R_PG_PULLUP` 1M and is **diagnostic-only, no MCU or expander connection**. Exact capacitor
   MPNs are a **BOM-release gate, not a capture gate** — obsolete GRM21BR71A106KE51L must not be

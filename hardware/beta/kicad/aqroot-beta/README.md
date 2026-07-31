@@ -29,6 +29,216 @@ bench test that passed was an MCP23017, a different part.
 * ACC_PWR_EN accessory load switch
 * **Battery reverse-polarity protection — topology PARKED, see below**
 
+## 01_POWER_TREE — sheet status note to place (2026-07-31)
+
+```
+01_POWER_TREE — BETA ARCHITECTURE COMPLETE
+
+CAPTURED:
+- USB-C 5V sink / USB 2.0 front end
+- BQ25185 charger/power path
+- TPS63020 main +3V3 buck-boost
+- TPS61023 NFC 5V PA boost
+- MAX17048 fuel gauge
+- physical TPS63020 EN hard-off switch
+
+OPEN PRE-FAB BLOCKER:
+- reverse-polarity protection implementation
+
+OTHER PRE-FAB VALIDATION:
+- exact capacitor MPN / DC-bias checks
+- connector and switch mechanical review
+- power-domain backfeed review
+- professional power / DFM review
+```
+
+> **Architecture-complete is not fabrication-ready.** Do not describe the completed power tree
+> as fabrication-ready.
+
+### Reverse-polarity placeholder — the only undrawn block
+
+```
+BAT_CONNECTOR_P
+       |
+[ REV-POLARITY PROTECTION PLACEHOLDER ]
+       |
+BAT_PROTECTED_P
+```
+
+`BAT_CONNECTOR_P` and `BAT_PROTECTED_P` must remain **distinct nets**. Placeholder text:
+
+```
+REV-POLARITY:
+LTC4368-1 CANDIDATE
++ BACK-TO-BACK N-CHANNEL MOSFETS
+
+TOPOLOGY PENDING:
+- LTSPICE CHARGE-PATH SIMULATION
+- ADI FAE / VENDOR CONFIRMATION
+- PROFESSIONAL POWER / DFM REVIEW
+
+MANDATORY FAULT CASE:
+REVERSED BATTERY WHILE USB POWERS BQ25185
+
+DO NOT ROUTE
+DO NOT RELEASE TO FAB
+```
+
+**Do not instantiate** a final controller, MOSFETs, sense resistor, UV/OV divider, gate clamp or
+timer components.
+
+## TPS61023 NFC 5V PA boost — BETA LOCKED, CAPTURE APPROVED (2026-07-31)
+
+| | |
+|---|---|
+| Part | **TI TPS61023DRLR**, adjustable synchronous boost |
+| Package | **DRL, 6-pin SOT563 / SOT-5X3, 1.2 × 1.6 mm** — **do NOT substitute a generic SOT-23 footprint** |
+| Symbol / footprint | **Not selected** — verify exact symbol pinout, exact TI DRL footprint, pin-1 orientation, exposed-pad status, manufacturer land pattern |
+| In / Out | `BQ25185_SYS` → `NFC_5V_PA_PENDING` |
+| Enable | `NFC_5V_EN` from TCA9535 **U60 P02** (100k safe-state pull-down already in the architecture) |
+| Load | **ST25R3916 `VDD_PA` ONLY** |
+
+> **FB divider values are PENDING-FROM-DATASHEET.** Inspect the current TPS61023 datasheet and
+> EVM schematic and record the exact FB resistor values, inductor and capacitor recommendations
+> at capture time. **Do not invent values from memory** — that is why no numbers appear here.
+
+| Ref | Value |
+|---|---|
+| `U?` | TPS61023DRLR |
+| `L_NFC_BOOST` | ~1 µH, **shielded**, low DCR, current rating from the TI design calculation; MPN may stay provisional |
+| `C_NFC_BOOST_IN` | input ceramic — value/voltage/dielectric **from TI** |
+| `C_NFC_BOOST_OUT` | output ceramic, **or the exact TI-recommended count** |
+| `R_NFC_FB_TOP` / `R_NFC_FB_BOT` | FB divider for ~5.0 V — **exact values from the TI 5V reference/EVM** |
+| `TP_NFC_5V_EN`, `TP_NFC_5V_PA` | test points |
+
+**Do not connect** ST25R3916 `VDD_IO` (stays on `+3V3`), general 5V accessories, USB VBUS, or any
+unrelated load.
+
+```
+NFC 5V PA RAIL ONLY
+ST25R3916 VDD_IO REMAINS +3V3
+NOT A GENERAL-PURPOSE 5V RAIL
+```
+
+```
+DEFAULT OFF
+ENABLE ONLY DURING NFC FIELD OPERATION
+```
+
+```
+PLACE INDUCTOR, INPUT CAPACITOR AND OUTPUT CAPACITOR
+TIGHT TO TPS61023
+
+MINIMIZE SW NODE COPPER AREA
+
+KEEP FB TRACE AWAY FROM SW AND INDUCTOR
+
+PROVIDE SHORT DIRECT GROUND RETURNS
+```
+
+**ERC:** VIN is `BQ25185_SYS`; output is only `NFC_5V_PA_PENDING`; `VDD_IO` remains `+3V3`; EN is
+`NFC_5V_EN`; the safe-state pull-down exists and no conflicting pull-up was added; FB is not
+floating; no support capacitor or inductor omitted; symbol and DRL footprint pin numbering match.
+
+## MAX17048 fuel gauge — BETA LOCKED, CAPTURE APPROVED (2026-07-31)
+
+| | |
+|---|---|
+| Part | **ADI MAX17048G+T10** — prefer the **G** package over the **X** WLP for Beta assembly/inspection |
+| Package | 8-pin 2 × 2 mm TDFN / LFCSP-style |
+| Symbol / footprint | **Not selected** — verify official pinout and package drawing, assign the **exact manufacturer land pattern**, include the **exposed pad** if required |
+| I²C address | **0x36**, no address configuration |
+| Sense resistor | none required |
+
+| Ref | Net |
+|---|---|
+| `VDD` | **`BAT_PROTECTED_P`** |
+| `CELL` | **`BAT_PROTECTED_P`** or the exact recommended system-side sense node |
+| `SDA` / `SCL` | `I2C_SDA_INT` / `I2C_SCL_INT` — **no second pull-up pair**, the bus already has the locked 4.7k |
+| `ALRT_N` | **test point, otherwise unused**; no-connect marker if the datasheet allows. **Do not connect to `WAKE_INT_N`.** No new GPIO. |
+| `C_FG_VDD` | **value from the current datasheet** — X7R, appropriate rating |
+| `TP_FG_CELL` | test point |
+
+```
+MAX17048 MUST REMAIN BEHIND FINAL REVERSE-POLARITY PROTECTION
+DO NOT CONNECT TO RAW BATTERY CONNECTOR POSITIVE
+```
+
+```
+MAX17048 I2C ADDRESS 0x36
+NO ADDRESS CONFIGURATION
+```
+
+```
+MAX17048 — NEVER BENCH VALIDATED ON AQROOT
+
+BETA BRING-UP REQUIRED:
+- I2C detection at 0x36
+- cell-voltage accuracy
+- SOC plausibility
+- charge/discharge response
+- hibernate entry/exit
+- battery insertion/removal
+- charger-connected behavior
+- hard-off behavior
+- no I2C backpower
+- firmware temperature compensation
+- low-battery threshold validation
+```
+
+> **Do not check the "only one capacitor" assumption off** until the official typical application
+> is reviewed for CELL filtering, VDD bypass, alert-network components and exposed-pad grounding.
+> **Power-domain item:** the gauge stays battery-powered while `+3V3` is off, but the I²C
+> pull-ups are on `+3V3`. Verify from the datasheet that SDA/SCL cannot back-power the disabled
+> rail. No level shifting unless primary documentation requires it.
+
+## Physical hard-off switch → TPS63020 EN (2026-07-31)
+
+```
+VINA -> [SPST maintained slide switch] -> EN
+                                          |
+                                   R_EN_PULLDOWN = 100k
+                                          |
+                                         GND
+```
+
+Closed → EN high → TPS63020 on → `+3V3` active. Open → 100k pulls EN low → TPS63020 off →
+`+3V3` inactive. **No switch position, including mid-travel, can short VINA to GND** — which is
+why SPST-plus-pull-down was chosen over the SPDT common/VINA/GND arrangement.
+
+**Do not connect the switch to** ESP32 GPIO, TCA9535 GPIO, a firmware latch, battery ground, or
+the raw battery current path.
+
+**Switch part:** MPN provisional until mechanical review, **but the footprint must correspond to
+a real candidate**. SPST preferred; **maintained** positions; low-profile side/top actuator;
+through-hole mounting tabs preferred for strength; side-wall accessible; clear OFF/ON. **Do not
+assign a tiny signal-switch footprint without checking** actuator travel, body dimensions,
+mounting tabs, PCB edge setback, enclosure cutout and hand-solder access.
+
+```
+SWITCH POSITION / ACTUATOR / ENCLOSURE CUTOUT
+REQUIRE FIELD SLATE MECHANICAL REVIEW BEFORE ROUTING
+```
+
+```
+PHYSICAL MAIN-RAIL HARD OFF
+
+SWITCH OFF:
+TPS63020 DISABLED
++3V3 SYSTEM RAIL OFF
+
+UPSTREAM BATTERY CIRCUITS REMAIN POWERED:
+BQ25185
+MAX17048
+REVERSE-PROTECTION CONTROLLER CANDIDATE
+
+TOTAL BATTERY STANDBY IS NOT ZERO
+```
+
+**Never claim** complete battery isolation, shipping mode, zero battery current or zero standby
+draw. Soft push-button power UX / load-switch / latch / shipping-mode architecture is a
+**post-Kickstarter option, not part of Beta**.
+
 ## USB-C 5V sink + USB 2.0 front end — BETA LOCKED, CAPTURE APPROVED (2026-07-30)
 
 **Cleared to be drawn in `01_POWER_TREE` now.** Beta-locked, **not production-hardened** —
@@ -202,7 +412,9 @@ The block connects to `BQ25185_SYS`, **not** to the raw battery connector.
 | `R_FB_TOP` | 1M, 1% | ✅ | VOUT → FB |
 | `R_FB_BOTTOM` | 180k, 1% | ✅ | FB → GND. **No Cff, no third resistor.** |
 | `R_PG_PULLUP` | 1M | ✅ | +3V3 → PG (open-drain) |
-| `R_EN_LINK` | 0R | ✅ | VINA → EN |
+| `SW?` | SPST maintained slide switch | ✅ | **Physical hard-off**: VINA → switch → EN |
+| `R_EN_PULLDOWN` | 100k | ✅ | EN → GND, defines the OFF state |
+| `R_EN_BYPASS` | 0R **DNP** | ✅ | VINA → EN, **bench bypass only** — supersedes the withdrawn `R_EN_LINK` |
 | `R_PS_DEFAULT` | 0R | ✅ | PS/SYNC → GND |
 | `C_VINA` | 100nF X7R | ✅ | VINA→GND, close to VINA. **Do not exceed 220nF without review.** |
 | `CIN1`, `CIN2` | 10 µF each | value ✅ / **MPN ❌** | 10 V min, X7R, **1206 preferred**. Close to VIN/PGND. |
@@ -214,14 +426,21 @@ controller, and a test point / solder-jumper / DNP option on PS/SYNC for forced-
 ### Locked defaults — and why no GPIO is consumed
 
 ```
-ALWAYS-ON DEFAULT
-FUTURE EXTERNAL HARD-OFF CONTROL ONLY
+PHYSICAL MAIN-RAIL HARD OFF
 MCU CANNOT RESTORE ITS OWN DISABLED 3V3 RAIL
 ```
 
-* **EN must not float.** Tied to VINA through `R_EN_LINK` 0R. **Never connect EN to the ESP32,
-  the TCA9535, or any firmware-controlled signal.** The DNP hard-off landing must be shown as
-  provisional and disconnected — **it must not create an accidental second drive source**.
+* **EN must not float.** Driven by the **physical SPST maintained hard-off switch**
+  (VINA → switch → EN) with **`R_EN_PULLDOWN` 100k** to GND holding the OFF state.
+  **Never connect EN to the ESP32, the TCA9535, or any firmware-controlled signal.**
+* **The permanent `R_EN_LINK` 0R is WITHDRAWN** (superseded 2026-07-31). It survives only as
+  **`R_EN_BYPASS` 0R, DNP**. A populated permanent link in parallel with a switch that pulls EN
+  low would defeat OFF and short VINA to GND.
+
+```
+DO NOT POPULATE R_EN_BYPASS WHEN HARD-OFF SWITCH IS FITTED
+UNLESS INTENTIONAL ALWAYS-ON BENCH CONFIGURATION IS REQUIRED
+```
 * **PS/SYNC must not float.** Tied to GND through `R_PS_DEFAULT` 0R → **power-save default**.
   Forced-PWM is a bring-up/EMI option only. **Never allow the GND link and a VINA link to be
   populated simultaneously without an explicit assembly warning** — that shorts VINA to GND.

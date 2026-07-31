@@ -171,8 +171,8 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [x] ~~Spec TPS63020DSJR support components (inductor, feedback resistors, caps) with DC-bias
       derating accounted for~~ — **ARCHITECTURE LOCKED 2026-07-30, schematic capture APPROVED.**
       L1 = Coilcraft **XFL4020-152MEC** 1.5µH (LCSC C3033018); FB = `R_FB_TOP` 1M /
-      `R_FB_BOTTOM` 180k 1%, no Cff; `C_VINA` 100nF; `R_EN_LINK` 0R (EN always-on, never
-      firmware-driven); `R_PS_DEFAULT` 0R to GND (power-save); `R_PG_PULLUP` 1M (PG
+      `R_FB_BOTTOM` 180k 1%, no Cff; `C_VINA` 100nF; **physical hard-off switch** on EN + `R_EN_PULLDOWN` 100k (old `R_EN_LINK`
+      0R withdrawn → `R_EN_BYPASS` 0R DNP; never firmware-driven); `R_PS_DEFAULT` 0R to GND (power-save); `R_PG_PULLUP` 1M (PG
       diagnostic-only, no GPIO). Capacitor **values/voltages/dielectrics/packages locked**;
       **exact MPNs deferred** to the pre-fab BOM pass below. See [[05 - Design Decisions Log]]
 - [ ] **Pre-fab BOM-validation pass (board-wide, ONE batched pass — a BOM-release gate, NOT a
@@ -202,6 +202,43 @@ They are the outstanding firmware debt between the current code and the Beta des
             against the **ST datasheet** (do not trust a generic 6-pin ESD symbol).
       - [ ] `C_USB_VBUS` 4.7µF 10V+ X7R — effective-capacitance verification (kept at 4.7µF
             deliberately, not 10µF, to keep hot-plug inrush conservative).
+
+## Power tree — final three blocks (Beta-locked 2026-07-31 — see [[05 - Design Decisions Log]])
+
+- [x] ~~Define the NFC 5V PA boost~~ — **BETA LOCKED: TI TPS61023DRLR**, DRL/SOT563 6-pin.
+      `BQ25185_SYS` → `NFC_5V_PA_PENDING`, enabled by `NFC_5V_EN` (U60 P02), feeding
+      **ST25R3916 `VDD_PA` only** — `VDD_IO` stays on `+3V3`.
+- [ ] **Read the current TPS61023 datasheet + EVM schematic and record the exact FB divider,
+      inductor and capacitor values.** They are deliberately **not** written down yet — do not
+      invent them from memory. **Do not substitute a generic SOT-23 footprint** for DRL.
+- [ ] Verify the **100k safe-state pull-down on `NFC_5V_EN` is electrically effective before
+      the TCA9535 configures its output**, and that no conflicting pull-up was added.
+- [ ] NFC boost Beta bring-up: 5V accuracy; startup on enable; clean shutdown; **no output when
+      disabled**; input current; **ripple during NFC field transmission**; TPS61023 + inductor
+      temperature; ST25R3916 `VDD_PA` current; **no backfeed into `+3V3` or `BQ25185_SYS`**.
+- [x] ~~Select the exact fuel gauge part~~ — **MAX17048G+T10** (prefer G over the X WLP).
+      I²C **0x36**, no sense resistor, **protected-side placement only**.
+- [ ] Verify MAX17048 pinout/package drawing, assign the **exact ADI land pattern**, handle the
+      **exposed pad**, and check the official typical application for CELL filtering, VDD bypass
+      and alert-network parts before claiming "one capacitor".
+- [ ] **Power-domain / backfeed review:** the MAX17048 stays battery-powered while `+3V3` is
+      off, but the I²C pull-ups are on `+3V3`. **Verify SDA/SCL cannot back-power the disabled
+      rail.** No level shifting unless primary documentation requires it.
+- [ ] MAX17048 Beta bring-up — **never bench validated on AQROOT**: I²C detect at 0x36;
+      cell-voltage accuracy; SOC plausibility; charge/discharge response; hibernate entry/exit;
+      battery insertion/removal; charger-connected behaviour; hard-off behaviour; no I²C
+      backpower; firmware temperature compensation; low-battery threshold.
+- [x] ~~Specify the physical power-switch / hard-off topology~~ — **SPST maintained slide switch,
+      VINA → switch → TPS63020 EN, with `R_EN_PULLDOWN` 100k to GND.** Chosen over SPDT because
+      no switch position can short VINA to GND. **The permanent `R_EN_LINK` 0R is withdrawn** →
+      `R_EN_BYPASS` 0R **DNP** (bench bypass only).
+- [ ] **Field Slate mechanical review of the switch** before routing: actuator travel, body
+      dimensions, mounting tabs, PCB edge setback, enclosure cutout, hand-solder access. MPN
+      provisional, but the footprint must match a real candidate.
+- [ ] **Do not describe hard-off as zero battery draw.** It disables the `+3V3` system rail
+      only; bq25185, MAX17048 and the reverse-protection controller stay powered upstream.
+      Soft push-button power UX / load switch / latch / shipping mode = **post-Kickstarter, not
+      Beta**.
 
 ## USB-C front end (Beta-locked 2026-07-30 — see [[05 - Design Decisions Log]])
 - [x] ~~Define the USB-C role and front-end architecture~~ — **BETA ARCHITECTURE LOCKED:**

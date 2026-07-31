@@ -20,9 +20,11 @@ tags: [bom, cost, budget]
 | **TI TCA9535PWR** I2C GPIO expander **x2** — U60 @ 0x20 internal + U61 @ 0x21 community header (PW / TSSOP-24 / 0.65mm) | $2-6 (bare ICs; **no validated breakout — see note**) |
 | TPS63020 buck-boost 3.3V breakout (production P/N: TPS63020DSJR, DSJ) — **architecture LOCKED**; support parts below | $8-12 |
 | L1 inductor **LOCKED**: Coilcraft **XFL4020-152MEC**, 1.5µH ±20%, DCR ~14.4mΩ typ / ~15.8mΩ max, Isat ~4.1/4.4/4.6 A at 10/20/30% L loss, ~2.1mm max height, shielded molded — **LCSC C3033018** | $1-3 |
-| TPS63020 feedback + config resistors **LOCKED**: `R_FB_TOP` 1M 1%, `R_FB_BOTTOM` 180k 1%, `R_PG_PULLUP` 1M, `R_EN_LINK` 0R, `R_PS_DEFAULT` 0R | <$1 |
+| TPS63020 feedback + config resistors **LOCKED**: `R_FB_TOP` 1M 1%, `R_FB_BOTTOM` 180k 1%, `R_PG_PULLUP` 1M, `R_EN_PULLDOWN` 100k, `R_PS_DEFAULT` 0R (**`R_EN_BYPASS` 0R = DNP**) | <$1 |
 | TPS63020 capacitors — **VALUES LOCKED, EXACT MPNs PENDING**: `C_VINA` 100nF X7R; **CIN** 2×10µF 10V+ X7R; **COUT** 4×22µF 10V X7R **1206** (provisional MPN Murata GRM31CR71A226ME15L). See note below. | $1-4 **(provisional)** |
-| MAX17048 fuel gauge breakout (deferred — validate on Beta) | $5-10 |
+| MAX17048 fuel gauge — **Beta part MAX17048G+T10** (ADI, 8-pin 2×2mm TDFN/LFCSP; prefer **G** over the **X** WLP for assembly/inspection). I²C **0x36**, no sense resistor. **Protected-side placement only.** Breakout deferred — validate on Beta | $5-10 |
+| NFC 5V boost **LOCKED**: TI **TPS61023DRLR**, DRL / SOT563 6-pin (1.2×1.6mm) — **not a generic SOT-23**. Plus `L_NFC_BOOST` ~1µH shielded low-DCR, `C_NFC_BOOST_IN`/`C_NFC_BOOST_OUT`, FB divider — **all values from the TI 5V reference/EVM, MPNs provisional** | $1-4 **(provisional)** |
+| Physical hard-off slide switch (SPST maintained, TH mounting tabs preferred) — **MPN provisional pending Field Slate mechanical review**, footprint must match a real candidate | $0.30-1 |
 | LiPo 2000mAh | $8-14 |
 | bq25185 charger + power-path board | $5-10 |
 | **Reverse-polarity protection — NO FINAL P/N CLAIMED (parked)**. *Provisional only:* ADI **LTC4368-1** controller (MSOP / 3×3 DFN) + **2x AO3400A-class** N-channel FETs (AOS AO3400A, LCSC C20917, SOT-23) + sense resistor, UV/OV divider, timer/inrush parts and gate clamp — **all values and P/Ns unselected**. See note below. | $2-6 **(provisional estimate — not a quote)** |
