@@ -7,6 +7,11 @@ build/
 # Editor / IDE
 .vscode/
 
+# VS Code "Local History" extension snapshots. These are editor-local undo
+# history (each directory carries its own nested .git), not project sources --
+# every snapshot shadows a file that is already tracked here.
+.history/
+
 # KiCad temporary / local-state files
 # (project, schematic, PCB, symbol, footprint, worksheet and library-table
 #  files are intentionally NOT ignored -- they are the canonical sources)

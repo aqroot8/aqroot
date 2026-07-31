@@ -27,16 +27,18 @@ Intended library nickname: **`AQROOT_Beta`** (both symbol and footprint library)
 | Vishay TSAL6200 | *(none — use stock `Device:LED`)* | *(none — use stock `LED_THT:LED_D5.0mm`)* |
 | Display module, ILI9341 + FT6236 | `ILI9341_FT6236_MODULE_PLACEHOLDER` | **none — deliberately unassigned** |
 | Sub-GHz radio, CC1101 | `CC1101_RADIO_PLACEHOLDER` | **none — deliberately unassigned** |
+| LoRa / sub-GHz module, SX1262 | `SX1262_MODULE_PLACEHOLDER` | **none — deliberately unassigned** |
 
 See [TSAL6200](#tsal6200--recommended-kicad-symbol-and-footprint) for why that part
 deliberately has no custom library entry.
 
-Two entries are **functional schematic placeholders** — they exist so their nets can
-be drawn and ERC-checked before the physical implementation is chosen, and both are
-excluded from the board (`on_board no`) because neither has a footprint:
+Three entries are **functional schematic placeholders** — they exist so their nets can
+be drawn and ERC-checked before the physical implementation is chosen, and all are
+excluded from the board (`on_board no`) because none has a footprint:
 
 * [`ILI9341_FT6236_MODULE_PLACEHOLDER`](#symbol--ili9341_ft6236_module_placeholder)
 * [`CC1101_RADIO_PLACEHOLDER`](#symbol--cc1101_radio_placeholder)
+* [`SX1262_MODULE_PLACEHOLDER`](#symbol--sx1262_module_placeholder)
 
 ---
 
@@ -102,6 +104,17 @@ so **no** pin numbering, package, crystal, RF matching network, balun, filtering
 antenna interface was taken from that document or from anywhere else. The pins are
 derived only from AQROOT's own SPI Bus B assignments in
 `11 - Beta Pin Map v0.2.md`.
+
+### SX1262_MODULE_PLACEHOLDER
+
+**No source of authority, and deliberately no datasheet reference at all.** The
+`Datasheet` field is **blank** — unlike the CC1101 placeholder, which cites TI's
+product page. The difference is deliberate: AQROOT uses a **certified SX1262
+module**, not the bare Semtech IC, so linking Semtech's SX1262 silicon datasheet
+would point at the wrong thing and invite exactly the bare-IC reading this symbol
+must not carry. The module vendor is not chosen, so there is no vendor document to
+cite either. Pin intent comes only from AQROOT's own SPI Bus B and expander
+assignments in `11 - Beta Pin Map v0.2.md` §3 and §7.
 
 ### Provenance rule
 
@@ -742,6 +755,162 @@ filter would imply a package family had been chosen, and none has.
 
 ---
 
+## Symbol — `SX1262_MODULE_PLACEHOLDER`
+
+| Field | Value |
+|---|---|
+| Reference prefix | `U` |
+| Value | `SX1262_MODULE_PLACEHOLDER` |
+| Footprint | **blank — deliberately unassigned** |
+| Manufacturer | `TBD` |
+| MPN | `TBD` |
+| Description | Functional placeholder for AQROOT built-in certified SX1262 LoRa/sub-GHz module |
+| Datasheet | **blank** — see [why](#sx1262_module_placeholder) |
+
+> **This symbol is a functional schematic placeholder only.** It exists so the
+> SX1262's SPI Bus B nets can be drawn, named and ERC-checked before the certified
+> module is chosen. It is **not** a part, **not** a package, and **not** ready for
+> layout.
+
+This is the **second** of AQROOT Beta's two radios. The CC1101 is the other; see
+[`CC1101_RADIO_PLACEHOLDER`](#symbol--cc1101_radio_placeholder). Both sit on shared
+SPI Bus B with the NFC controller, each with its own chip select.
+
+### This is a module, not an IC
+
+**Do not model a bare SX1262 IC.** AQROOT ships a **certified module** — that part of
+the decision *is* settled, and it is the reason this symbol exists in this shape:
+
+* A certified module carries its own crystal/TCXO, RF matching, filtering and
+  (usually) its antenna interface. None of that appears on the AQROOT main board, so
+  none of it belongs in this symbol.
+* The certification carries over, which is the whole point of choosing a module.
+* A bare-IC symbol would have a package pinout, RF ports, `DIO2`/`DIO3`, `DCC`/`VREG`
+  and crystal pins — every one of which would be wrong here and would invite someone
+  to lay out an RF front end AQROOT is not building.
+
+The open question is **which** certified module, not module-versus-IC. That is the
+difference from the CC1101 placeholder, where
+[both paths are still live](#the-central-open-question-module-or-bare-ic).
+
+### Module selection: Ebyte E22 vs Waveshare Core1262
+
+**Unresolved.** The two candidates under consideration are the **Ebyte E22** family
+and the **Waveshare Core1262** family. They are named here as the open question, and
+are deliberately **not** committed to anywhere in the symbol — no vendor, no part
+number, no `MPN`, no footprint filter. They differ in outline, pad arrangement,
+supply requirements and antenna interface, so choosing between them changes the board.
+
+### What the SX1262 symbol deliberately does *not* claim
+
+The symbol contains **no**:
+
+* module vendor, family or part number;
+* module land pattern, outline, dimensions, keep-out or mounting;
+* module pin numbering, pin count or pin order;
+* module supply voltage or current requirement — **module voltage requirements are
+  unresolved**, and `VCC_3V3` is the AQROOT-side intent, not a verified module spec;
+* crystal, TCXO or reference-frequency assumption (module-internal);
+* RF matching, filtering or balun topology (module-internal);
+* RF connector type, antenna interface, or trace-antenna geometry;
+* operating band or regional band plan;
+* `DIO2` / `DIO3` — see [Pin table](#pin-table-4).
+
+### Pin table
+
+The **symbol pin numbers are logical indices, not module pin numbers.** KiCad requires
+every pin to carry a number, so pins are numbered 1–10 in the order below purely to
+keep the symbol valid and its netlist stable. **Pin numbers are hidden**
+(`(pin_numbers (hide yes))`) so they cannot be misread as a module pinout. Expect them
+all to change once the module is selected.
+
+| Logical pin | Name | Electrical type | Intended AQROOT net |
+|---|---|---|---|
+| 1 | `VCC_3V3` | Power input | `+3V3` |
+| 2 | `GND` | Power input | `GND` |
+| 3 | `SCK` | Input | `SPI_B_SCK` |
+| 4 | `MOSI` | Input | `SPI_B_MOSI` |
+| 5 | `MISO` | Tri-state | `SPI_B_MISO` |
+| 6 | `CS_N` | Input | `SX1262_CS_N` |
+| 7 | `BUSY` | Output | `SX1262_BUSY` |
+| 8 | `DIO1` | Output | `SX1262_DIO1` |
+| 9 | `RESET_N` | Input | `SX1262_RST_N` |
+| 10 | `RF_ANT` | Passive | `SX1262_RF_TBD` |
+
+All 10 pins are **visible**; there are no hidden pins. The **symbol encodes no AQROOT
+net names** — the names above are functional pin names, and the net column is
+documentation only. See [LoRa radio](#lora--sub-ghz-radio--sx1262-placeholder) for the
+wiring intent.
+
+**`DIO2` and `DIO3` are intentionally omitted.** Neither is assigned in the **locked**
+Beta pin map — §3 lists only `SX1262 CS` (GPIO17), `DIO1` (GPIO18), `BUSY` (GPIO8) and
+`RST`. Adding them here would create schematic pins with nowhere to go and would
+invite spending GPIOs the pin map has already allocated. On many SX1262 modules
+`DIO2` is an internal TX/RX switch control and `DIO3` an internal TCXO supply, both
+handled inside the module — another reason they do not belong on a module-level
+symbol. If either is ever needed, it goes through the pin map first, not this library.
+
+### Pin grouping in the symbol
+
+| Group | Side | Pins |
+|---|---|---|
+| Supply | top | `VCC_3V3` |
+| Ground | bottom | `GND` |
+| SPI + control | left | `SCK`, `MOSI`, `MISO`, `CS_N`, `BUSY`, `DIO1`, `RESET_N` |
+| RF | right | `RF_ANT` |
+
+As with the CC1101 placeholder, `RF_ANT` sits alone on the opposite side from the
+digital pins — it mirrors the layout separation and makes an accidental digital-to-RF
+connection visually obvious.
+
+The body carries a visible six-line graphic warning:
+
+```
+FUNCTIONAL PLACEHOLDER
+EXACT CERTIFIED MODULE PENDING
+EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED
+RF / ANTENNA INTERFACE PENDING
+NO FOOTPRINT
+DO NOT ROUTE
+```
+
+Pins use the plain `line` graphic style. `CS_N` and `RESET_N` are **not** drawn with
+inversion bubbles — the `_N` suffix already carries the polarity.
+
+### Electrical type interpretations
+
+| Pin | Choice | Why |
+|---|---|---|
+| `MISO` | **Tri-state**, not Output | SPI Bus B is shared with the CC1101 and NFC. Tri-state is the conservative KiCad type for a bus-attached slave output: it will not raise a false ERC output-conflict on `SPI_B_MISO`, whereas Output would. |
+| `BUSY` | **Output** | Driven by the module to signal it is processing a command. Typed Output so ERC flags any attempt to drive it from the MCU side. |
+| `DIO1` | **Output** | The module's interrupt line to the MCU. Typed Output for the same reason. |
+| `RESET_N` | **Input** | Active-low reset driven into the module — from the expander, not a native GPIO. See [the wiring section](#lora--sub-ghz-radio--sx1262-placeholder). |
+| `CS_N` | **Input** | Chip select driven by the MCU. Requires an external 10k pull-up — see below. |
+| `RF_ANT` | **Passive** | The correct type for an RF port: no direction, not a logic signal, and the only type that will not produce meaningless ERC results. It says nothing about impedance, band, or what sits on the other side. |
+| `VCC_3V3` | **Power input** | AQROOT-side intent. The module's actual supply requirement is unresolved. |
+
+### Symbol flags
+
+| Flag | Value | Why |
+|---|---|---|
+| `on_board` | **`no`** | With no footprint, this symbol must not reach the PCB. `on_board no` makes KiCad exclude it from the board, so "Update PCB from Schematic" cannot pull in a footprint-less part or invite routing an RF net with no defined impedance. Flip to `yes` only when the real footprint is assigned. |
+| `in_bom` | **`yes`** | The module is a **required subsystem that is still unresolved**. It stays visible in the BOM as `TBD`/`TBD` so it cannot be quietly forgotten during costing or procurement. |
+| `exclude_from_sim` | `yes` | There is no simulation model for a placeholder. |
+| `pin_numbers` | hidden | See [Pin table](#pin-table-4). |
+
+**No footprint was created and none is assigned.** There is no `AQROOT_Beta.pretty`
+entry for this part, and the symbol carries no `ki_fp_filters` property — a footprint
+filter would imply a module family had been chosen, and none has.
+
+> **Do not create a generic SX1262 module footprint.** There is no generic land
+> pattern: the E22 and Core1262 families differ in outline, pad pitch, pad count,
+> castellation arrangement, keep-out and antenna position. A placeholder footprint
+> would be a fabricated dimension presented as a real one, it would become the thing
+> the board is laid out around, and its RF keep-out would be wrong. Select the module
+> instead.
+
+---
+
 ## AQROOT connection intent
 
 **This section is documentation only.** None of it is encoded in the symbol — the
@@ -969,6 +1138,68 @@ selected.** Until then the symbol's `on_board no` flag keeps it off the board. I
 particular, **do not create a placeholder or "generic" CC1101 module footprint** to
 work around this — see [the warning above](#symbol--cc1101_radio_placeholder).
 
+### LoRa / sub-GHz radio — SX1262 (placeholder)
+
+**Documentation only, and provisional.** None of this is encoded in the symbol.
+Because the certified module is not selected, this table records *intent* — the wiring
+to reconcile against the real module, not a wiring that has been validated.
+
+| Symbol pin | AQROOT net | Note |
+|---|---|---|
+| `VCC_3V3` | `+3V3` | **Module voltage requirements unresolved.** Confirm against the selected module before relying on this. |
+| `GND` | `GND` | |
+| `SCK` | `SPI_B_SCK` | SPI Bus B, shared with the CC1101 and NFC. |
+| `MOSI` | `SPI_B_MOSI` | |
+| `MISO` | `SPI_B_MISO` | Shared bus — hence the Tri-state pin type. |
+| `CS_N` | `SX1262_CS_N` | ESP32-S3 **GPIO17** per `11 - Beta Pin Map v0.2.md` §3. **Requires a 10k hardware pull-up to `+3V3`** — see below. |
+| `BUSY` | `SX1262_BUSY` | ESP32-S3 **GPIO8**. |
+| `DIO1` | `SX1262_DIO1` | ESP32-S3 **GPIO18**. Primary interrupt line. |
+| `RESET_N` | `SX1262_RST_N` | **From the expander, not a native GPIO** — U60 **P01**. See below. |
+| `RF_ANT` | `SX1262_RF_TBD` | Placeholder net name, deliberately `_TBD`: the RF path on the other side of this pin does not exist yet. |
+
+#### `SX1262_CS_N` needs a 10k pull-up to `+3V3`
+
+**Fit a 10k pull-up resistor from `SX1262_CS_N` to `+3V3`.** §3 of the pin map requires
+a hardware pull-up on every chip select on this bus, and 10k is the value the pin map
+standardises on. Three devices share SPI Bus B, so a CS line left floating during
+reset, power sequencing or firmware upload can let a device decide it has been
+selected and drive `SPI_B_MISO` against another. The pull-up holds the module
+deselected until firmware takes control. This resistor is a **board-level part on the
+AQROOT main board** — it belongs in the schematic, not in this placeholder symbol.
+
+#### `SX1262_RST_N` comes from the expander, and is held asserted at power-up
+
+`SX1262_RST_N` is driven by **U60 port P01**, a TCA9535 expander output — not a native
+ESP32 GPIO. (§7 of the pin map: reset moved off GPIO3 so that pin carries the BMI270
+interrupt alone.) That creates a power-up ordering problem the board already solves:
+
+* The TCA9535 has **no internal pull-ups at all**, and its outputs are not driven
+  until firmware has configured the expander over I²C. Between power-up and that
+  moment, P01 floats.
+* The **existing external 100k pull-down** on this net is what covers the gap: it
+  **holds the SX1262 reset asserted** until firmware configures U60 and deliberately
+  releases it. The pin map records P01's mandatory power-up safe state as
+  *"pull to RESET-ASSERTED"*.
+* **Do not remove or re-purpose that pull-down**, and do not add a competing pull-up.
+  It is the only thing keeping the radio in a defined state during early boot.
+
+#### Still unresolved — must be closed before routing
+
+| Open item | Consequence if left open |
+|---|---|
+| **Which certified module — Ebyte E22 or Waveshare Core1262** | Determines every item below. |
+| Module voltage requirements | Whether `+3V3` is correct, and what supply/decoupling the board must provide. |
+| Module land pattern, outline and keep-out | No footprint exists; the board cannot be laid out around the radio. |
+| Module pin numbering | The symbol's logical pins 1–10 are placeholders and **will** change. |
+| RF connector / antenna interface | Whether `SX1262_RF_TBD` terminates in a connector, a trace antenna, or a module-internal antenna. |
+| RF matching | Module-internal on both candidates, but confirm against the selected part rather than assuming. |
+| Operating band and regional band plan | Band selection and compliance. |
+| Coexistence with the CC1101 | Two sub-GHz chains on one handheld — bus arbitration plus RF isolation, resolvable only once both implementations are known. |
+
+**Do not route until the exact certified module is selected**, and **do not create a
+generic module footprint** to get started. Until then the symbol's `on_board no` flag
+keeps it off the board.
+
 ### Firmware note
 
 The BMI270 requires a multi-kilobyte configuration blob to be uploaded after
@@ -1008,6 +1239,7 @@ Contents exposed by the nickname:
 | `AQROOT_Beta:BMI270` | `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
 | `AQROOT_Beta:CC1101_RADIO_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:ILI9341_FT6236_MODULE_PLACEHOLDER` | *(none)* |
+| `AQROOT_Beta:SX1262_MODULE_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:TSOP38238` | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
 
 Note that the library tables are deliberately **not** covered by the repository's
@@ -1023,11 +1255,11 @@ This library was built from the datasheet without KiCad installed on the
 authoring machine, so the following have **not** been run and should be done
 before committing to fabrication:
 
-- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **all four** of
-      `BMI270`, `TSOP38238`, `ILI9341_FT6236_MODULE_PLACEHOLDER` and
-      `CC1101_RADIO_PLACEHOLDER` load, and run the symbol checker on each. Both
-      placeholders are expected to report a missing footprint; that is the intended
-      state, not a defect.
+- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **all five** of
+      `BMI270`, `TSOP38238`, `ILI9341_FT6236_MODULE_PLACEHOLDER`,
+      `CC1101_RADIO_PLACEHOLDER` and `SX1262_MODULE_PLACEHOLDER` load, and run the
+      symbol checker on each. All three placeholders are expected to report a missing
+      footprint; that is the intended state, not a defect.
 - [ ] Open **both** footprints in the Footprint Editor and run the footprint checker.
 - [ ] Confirm `LED_THT:LED_D5.0mm` drill vs the TSAL6200 lead — see
       [TSAL6200](#one-thing-to-verify-in-your-kicad-install).
@@ -1053,3 +1285,13 @@ before committing to fabrication:
       and do not substitute a generic module footprint to get started.
 - [ ] Confirm the hardware pull-up to `+3V3` on `CC1101_CS_N` is present in the
       schematic, along with the pull-ups on the other SPI Bus B chip selects.
+- [ ] **Blocking for layout:** select the certified SX1262 module (**Ebyte E22** or
+      **Waveshare Core1262**), then reconcile `SX1262_MODULE_PLACEHOLDER` against it —
+      renumber the pins to the real module pinout, confirm the module's supply
+      requirement against `+3V3`, create and assign a footprint, resolve the RF /
+      antenna interface, replace the `SX1262_RF_TBD` net, and set `on_board` back to
+      `yes`. Do not route the RF area until this is closed, and do not substitute a
+      generic module footprint.
+- [ ] Confirm the **10k pull-up to `+3V3` on `SX1262_CS_N`** is in the schematic, and
+      that the **existing 100k pull-down holding `SX1262_RST_N` asserted** is still
+      present and not competing with any added pull-up.
