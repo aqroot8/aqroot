@@ -3369,10 +3369,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "dbc3b09d-7b2b-4b69-8020-fb1ecf4fdc88")
+			(uuid "dbc3b09d-7b2b-4b69-8020-fb1ecf4fdc89")
 		)
 		(pin "1"
-			(uuid "3500f009-f348-4b61-8639-882dd41f154f")
+			(uuid "3500f009-f348-4b61-8639-882dd41f1550")
 		)
 		(instances
 			(project "aqroot-Beta"
