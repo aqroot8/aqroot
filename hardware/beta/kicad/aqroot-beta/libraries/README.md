@@ -28,17 +28,22 @@ Intended library nickname: **`AQROOT_Beta`** (both symbol and footprint library)
 | Display module, ILI9341 + FT6236 | `ILI9341_FT6236_MODULE_PLACEHOLDER` | **none — deliberately unassigned** |
 | Sub-GHz radio, CC1101 | `CC1101_RADIO_PLACEHOLDER` | **none — deliberately unassigned** |
 | LoRa / sub-GHz module, SX1262 | `SX1262_MODULE_PLACEHOLDER` | **none — deliberately unassigned** |
+| NFC reader front-end, ST25R3916 | `ST25R3916_NFC_PLACEHOLDER` | **none — deliberately unassigned** |
 
 See [TSAL6200](#tsal6200--recommended-kicad-symbol-and-footprint) for why that part
 deliberately has no custom library entry.
 
-Three entries are **functional schematic placeholders** — they exist so their nets can
+Four entries are **functional schematic placeholders** — they exist so their nets can
 be drawn and ERC-checked before the physical implementation is chosen, and all are
 excluded from the board (`on_board no`) because none has a footprint:
 
 * [`ILI9341_FT6236_MODULE_PLACEHOLDER`](#symbol--ili9341_ft6236_module_placeholder)
 * [`CC1101_RADIO_PLACEHOLDER`](#symbol--cc1101_radio_placeholder)
 * [`SX1262_MODULE_PLACEHOLDER`](#symbol--sx1262_module_placeholder)
+* [`ST25R3916_NFC_PLACEHOLDER`](#symbol--st25r3916_nfc_placeholder)
+
+The last three are all **SPI Bus B** devices, sharing `SPI_B_SCK` / `SPI_B_MOSI` /
+`SPI_B_MISO` with a chip select each.
 
 ---
 
@@ -115,6 +120,19 @@ would point at the wrong thing and invite exactly the bare-IC reading this symbo
 must not carry. The module vendor is not chosen, so there is no vendor document to
 cite either. Pin intent comes only from AQROOT's own SPI Bus B and expander
 assignments in `11 - Beta Pin Map v0.2.md` §3 and §7.
+
+### ST25R3916_NFC_PLACEHOLDER
+
+**The silicon is decided; nothing physical is.** The `Datasheet` field points at ST's
+official **product page** (<https://www.st.com/en/nfc/st25r3916.html>), and
+`Manufacturer`/`MPN` carry `STMicroelectronics` / `ST25R3916` — unlike the other
+placeholders, the part itself is chosen, so recording it is honest and useful for
+costing. What is **not** taken from ST, or from anywhere else, is any physical
+detail: no package variant, no pin numbering, no crystal or reference network, no
+decoupling scheme, no RF output or receiver network, no antenna. The MPN deliberately
+carries **no package suffix**, because the package has not been selected. Pins are
+derived from AQROOT's own SPI Bus B assignments in `11 - Beta Pin Map v0.2.md` §3
+and the supply split recorded in §3's NFC level note.
 
 ### Provenance rule
 
@@ -911,6 +929,161 @@ filter would imply a module family had been chosen, and none has.
 
 ---
 
+## Symbol — `ST25R3916_NFC_PLACEHOLDER`
+
+| Field | Value |
+|---|---|
+| Reference prefix | `U` |
+| Value | `ST25R3916_NFC_PLACEHOLDER` |
+| Footprint | **blank — deliberately unassigned** |
+| Manufacturer | STMicroelectronics |
+| MPN | `ST25R3916` — **no package suffix**, because the package is not selected |
+| Description | Functional placeholder for AQROOT built-in ST25R3916 NFC/RFID reader front-end |
+| Datasheet | <https://www.st.com/en/nfc/st25r3916.html> — ST's official product page |
+
+> **This symbol is functional only.** It exists so the NFC subsystem's SPI, IRQ,
+> supply and RF nets can be drawn, named and ERC-checked before the physical
+> implementation is designed. It **must not** be read as implying a package pinout,
+> package variant, matching network, crystal / reference implementation, antenna
+> geometry, or power-stage topology.
+
+This is the **third device on SPI Bus B**, alongside
+[`CC1101_RADIO_PLACEHOLDER`](#symbol--cc1101_radio_placeholder) and
+[`SX1262_MODULE_PLACEHOLDER`](#symbol--sx1262_module_placeholder).
+
+### Three supplies, and why they are separate pins
+
+The ST25R3916 does **not** run from one rail in AQROOT, and the split is a decision
+already recorded in `11 - Beta Pin Map v0.2.md` §3, not an invention here:
+
+| Pin | Rail | Why it is its own pin |
+|---|---|---|
+| `VDD_IO_3V3` | 3.3 V | Digital I/O supply. **Kept at 3.3 V so the SPI lines stay 3.3 V — no level shifter is needed** on the shared bus. This is the whole reason the I/O supply is broken out separately. |
+| `VDD_DIG_3V3` | 3.3 V | Digital core supply, also 3.3 V. |
+| `VDD_PA_5V` | **switched 5 V** | Analog / PA transmit rail. **Only this rail is boosted to 5 V**, for RF range and headroom. |
+
+Modelling them as one pin would erase the constraint that makes the design work.
+The pin map is explicit: *"boost ONLY the ST25R3916 analog/PA rail to 5V. Keep its
+digital I/O supply (VDD_IO) at 3.3V so the SPI lines stay 3.3V — no level shifter
+needed on the shared bus."*
+
+The 5 V rail is **switched** — see
+[the wiring section](#nfc-reader--st25r3916-placeholder) for `NFC_5V_EN` and why the
+boost IC is still unresolved.
+
+### What the ST25R3916 symbol deliberately does *not* claim
+
+The symbol contains **no**:
+
+* package variant, package outline, dimensions, keep-out or land pattern;
+* pin numbering, pin count or pin order — the logical indices are not ST's;
+* crystal, reference oscillator, load capacitors or clock topology — `XIN`/`XOUT` are
+  bare functional ports;
+* RF output network, receiver network, EMC filtering or matching component values;
+* loop antenna, PCB coil, flex coil, turns count or antenna geometry;
+* power-stage topology — no boost IC, no load switch, no inductor, no decoupling
+  quantities;
+* operating-mode, field-strength or range assumption.
+
+Every one of these is **unresolved**.
+
+**Do not model the X-NUCLEO-NFC06A1 board.** ST's evaluation board is a reference
+design with its own matching network, antenna and component choices; copying it would
+import a whole set of physical decisions AQROOT has not made and cannot verify against
+its own enclosure and coil. It is not referenced anywhere in this symbol.
+
+### Pin table
+
+The **symbol pin numbers are logical indices, not ST's package pin numbers.** KiCad
+requires every pin to carry a number, so pins are numbered 1–15 in the order below
+purely to keep the symbol valid and its netlist stable. **Pin numbers are hidden**
+(`(pin_numbers (hide yes))`) so they cannot be misread as a real pinout. Expect them
+all to change once the package is selected.
+
+| Logical pin | Name | Electrical type | Intended AQROOT net |
+|---|---|---|---|
+| 1 | `VDD_IO_3V3` | Power input | `+3V3` |
+| 2 | `VDD_DIG_3V3` | Power input | `+3V3` |
+| 3 | `VDD_PA_5V` | Power input | `NFC_5V_PA_PENDING` |
+| 4 | `GND` | Power input | `GND` |
+| 5 | `SCK` | Input | `SPI_B_SCK` |
+| 6 | `MOSI` | Input | `SPI_B_MOSI` |
+| 7 | `MISO` | Tri-state | `SPI_B_MISO` |
+| 8 | `CS_N` | Input | `NFC_CS_N` |
+| 9 | `IRQ` | Output | `NFC_IRQ` |
+| 10 | `RFO1` | Passive | `NFC_RFO1_TBD` |
+| 11 | `RFO2` | Passive | `NFC_RFO2_TBD` |
+| 12 | `RFI1` | Passive | `NFC_RFI1_TBD` |
+| 13 | `RFI2` | Passive | `NFC_RFI2_TBD` |
+| 14 | `XIN` | Passive | `NFC_XIN_TBD` |
+| 15 | `XOUT` | Passive | `NFC_XOUT_TBD` |
+
+All 15 pins are **visible**; there are no hidden pins. The **symbol encodes no AQROOT
+net names** — the names above are functional pin names, and the net column is
+documentation only. Every RF and clock net carries a `_TBD` suffix because the network
+on the other side of each of those pins does not exist yet.
+
+### Pin grouping in the symbol
+
+| Group | Side | Pins |
+|---|---|---|
+| Supplies | top | `VDD_IO_3V3`, `VDD_DIG_3V3`, `VDD_PA_5V` |
+| Ground | bottom | `GND` |
+| SPI + interrupt | left | `SCK`, `MOSI`, `MISO`, `CS_N`, `IRQ` |
+| RF + clock | right | `RFO1`, `RFO2`, `RFI1`, `RFI2`, `XIN`, `XOUT` |
+
+Digital on the left, RF and clock on the right, with a visible gap between the RF
+group and the crystal group. As with the two radio placeholders, the separation
+mirrors the layout discipline and makes an accidental digital-to-RF connection obvious
+in the schematic.
+
+The body carries a visible six-line graphic warning:
+
+```
+FUNCTIONAL PLACEHOLDER
+ST25R3916 PACKAGE / SUPPORT NETWORK PENDING
+NFC MATCHING / COIL / CLOCK IMPLEMENTATION PENDING
+SWITCHED 5V PA RAIL REQUIRED
+NO FOOTPRINT
+DO NOT ROUTE
+```
+
+Pins use the plain `line` graphic style. `CS_N` is **not** drawn with an inversion
+bubble — the `_N` suffix already carries the polarity.
+
+### Electrical type interpretations
+
+| Pin | Choice | Why |
+|---|---|---|
+| `MISO` | **Tri-state**, not Output | SPI Bus B is shared with the CC1101 and SX1262. Tri-state is the conservative KiCad type for a bus-attached slave output: it will not raise a false ERC output-conflict on `SPI_B_MISO`, whereas Output would. |
+| `CS_N` | **Input** | Chip select driven by the MCU. Requires an external 10k pull-up — see [the wiring section](#nfc-reader--st25r3916-placeholder). |
+| `IRQ` | **Output** | Driven by the reader. Typed Output so ERC flags any attempt to drive it from the MCU side. Note it is **not** typed active-low: ST25R3916 IRQ is active-high, so no `_N` suffix and no inversion bubble. |
+| `RFO1`, `RFO2`, `RFI1`, `RFI2` | **Passive** | The correct type for RF ports: no direction, not logic signals, and the only type that will not produce meaningless ERC results. Naming them as two output and two input ports reflects the device's functional structure — it does **not** specify a differential drive topology, an impedance, or any matching arrangement. |
+| `XIN`, `XOUT` | **Passive** | Crystal / reference-clock ports. Passive because whatever lands here is a passive network. The symbol takes no position on frequency, crystal-versus-external-clock, or load capacitance. |
+| `VDD_IO_3V3`, `VDD_DIG_3V3`, `VDD_PA_5V` | **Power input** | Three separate supply inputs — see [Three supplies](#three-supplies-and-why-they-are-separate-pins). |
+
+### Symbol flags
+
+| Flag | Value | Why |
+|---|---|---|
+| `on_board` | **`no`** | With no footprint, this symbol must not reach the PCB. `on_board no` makes KiCad exclude it from the board, so "Update PCB from Schematic" cannot pull in a footprint-less part or invite routing an RF or antenna net that has no defined network behind it. Flip to `yes` only when the real footprint is assigned. |
+| `in_bom` | **`yes`** | NFC is a **required subsystem** and a headline AQROOT feature. It stays in the BOM — here with a real `Manufacturer`/`MPN`, since the silicon *is* chosen even though the package is not. |
+| `exclude_from_sim` | `yes` | There is no simulation model for a placeholder. |
+| `pin_numbers` | hidden | See [Pin table](#pin-table-5). |
+
+**No footprint was created and none is assigned.** There is no `AQROOT_Beta.pretty`
+entry for this part, and the symbol carries no `ki_fp_filters` property — a footprint
+filter would imply a package variant had been chosen, and none has.
+
+> **Do not create or assign a footprint, and do not invent a PCB or flex coil or a
+> matching network.** An NFC antenna is not a footprint you can approximate: the coil
+> geometry, the matching values and the enclosure are one coupled design problem, and
+> a fabricated placeholder would become the thing the board is laid out around while
+> being wrong in every dimension that matters. The same applies to the RF output and
+> receiver networks. Resolve the implementation instead.
+
+---
+
 ## AQROOT connection intent
 
 **This section is documentation only.** None of it is encoded in the symbol — the
@@ -1200,6 +1373,89 @@ interrupt alone.) That creates a power-up ordering problem the board already sol
 generic module footprint** to get started. Until then the symbol's `on_board no` flag
 keeps it off the board.
 
+### NFC reader — ST25R3916 (placeholder)
+
+**Documentation only, and provisional.** None of this is encoded in the symbol.
+Because the package and every support network are unresolved, this table records
+*intent* — the wiring to reconcile against the real implementation, not a wiring that
+has been validated.
+
+| Symbol pin | AQROOT net | Note |
+|---|---|---|
+| `VDD_IO_3V3` | `+3V3` | **Stays at 3.3 V.** This is what keeps the SPI lines at 3.3 V — see below. |
+| `VDD_DIG_3V3` | `+3V3` | Digital core, also 3.3 V. |
+| `VDD_PA_5V` | `NFC_5V_PA_PENDING` | The **switched 5 V** PA/analog rail. Net name is deliberately `_PENDING`: the rail's source does not exist yet. |
+| `GND` | `GND` | |
+| `SCK` | `SPI_B_SCK` | SPI Bus B, shared with the CC1101 and SX1262. |
+| `MOSI` | `SPI_B_MOSI` | |
+| `MISO` | `SPI_B_MISO` | Shared bus — hence the Tri-state pin type. |
+| `CS_N` | `NFC_CS_N` | ESP32-S3 **GPIO9** per `11 - Beta Pin Map v0.2.md` §3. **Requires a 10k hardware pull-up to `+3V3`** — see below. |
+| `IRQ` | `NFC_IRQ` | ESP32-S3 **GPIO38**. Keep it — ST's RFAL driver stack is IRQ-driven, not polled. |
+| `RFO1` | `NFC_RFO1_TBD` | RF output port. Network unresolved. |
+| `RFO2` | `NFC_RFO2_TBD` | RF output port. Network unresolved. |
+| `RFI1` | `NFC_RFI1_TBD` | Receiver input port. Network unresolved. |
+| `RFI2` | `NFC_RFI2_TBD` | Receiver input port. Network unresolved. |
+| `XIN` | `NFC_XIN_TBD` | Reference-clock port. Network unresolved. |
+| `XOUT` | `NFC_XOUT_TBD` | Reference-clock port. Network unresolved. |
+
+#### `NFC_CS_N` needs a 10k pull-up to `+3V3`
+
+**Fit a 10k pull-up resistor from `NFC_CS_N` to `+3V3`.** §3 of the pin map requires a
+hardware pull-up on every chip select on this bus, and 10k is the standard value
+there. With three devices on SPI Bus B, a CS line floating during reset, power
+sequencing or firmware upload can let a device decide it has been selected and drive
+`SPI_B_MISO` against another. The pull-up holds the reader deselected until firmware
+takes control. This resistor is a **board-level part on the AQROOT main board** — it
+belongs in the schematic, not in this placeholder symbol.
+
+#### No SPI level shifter is required
+
+`VDD_IO` stays at **3.3 V**, so the reader's SPI pins are 3.3 V logic and sit directly
+on the shared bus with no translation. **Only the PA/analog rail is boosted.** The pin
+map states this as a requirement and adds: *"Confirm VDD_IO is tied to 3V3 in the
+schematic."* Treat that as a checklist item — if `VDD_IO` ever drifts to 5 V, the
+whole shared bus needs level shifting and the design changes shape.
+
+#### The 5 V PA rail: required, switched, and its source unresolved
+
+* The **PA / analog transmit rail requires the switched 5 V rail.** The chip does
+  operate at 3.3 V — Alpha proved SPI comms there — but 5 V on the PA rail is what
+  buys RF range and headroom, which is the reason the rail exists.
+* It is **switched, not always-on**: `NFC_5V_EN` is controlled by **U60 port P02**,
+  whose mandatory power-up safe state in the pin map is *"pull to **OFF**"*. The boost
+  must be off at power-up and stay off while NFC is idle, both for current draw and so
+  a floating expander output cannot momentarily enable it before firmware configures
+  U60.
+* **The exact 5 V boost IC is unresolved.** No part, topology, inductor or feedback
+  network is chosen, which is why `NFC_5V_PA_PENDING` is a placeholder net rather than
+  a real rail name. Nothing about the power stage belongs in this symbol.
+
+#### NFC as the third SPI Bus B device is first validated on Beta
+
+Alpha tested **two** radios sharing this bus, with NFC on its own dedicated pins.
+**Three devices on one bus is new in Beta.** The pin map is explicit that the CS
+discipline *"generalizes, but validate on Beta"*. Treat the shared-bus behaviour with
+all three devices — CS discipline, per-device SPI frequency and mode, mutex, and
+recovery if a device fails while holding MISO — as **unvalidated** until Beta bring-up
+proves it.
+
+#### Still unresolved — must be closed before routing
+
+| Open item | Consequence if left open |
+|---|---|
+| ST25R3916 **package variant** | No footprint exists; the board cannot be laid out around the reader. The symbol's logical pins 1–15 **will** change. |
+| Crystal / reference network | `XIN`/`XOUT` have nothing on the other side. |
+| Decoupling scheme and quantities | Supply integrity on three separate rails. |
+| RF output network (`RFO1`/`RFO2`) | The transmit path does not exist. |
+| Receiver network (`RFI1`/`RFI2`) | The receive path does not exist. |
+| Loop antenna and matching values | Coil geometry, matching and enclosure are one coupled problem — see the warning above. |
+| 5 V boost IC and load switch | `NFC_5V_PA_PENDING` has no source. |
+| Three-device SPI Bus B behaviour | Unvalidated until Beta bring-up. |
+
+**Do not route until the implementation is selected**, and **do not create a footprint
+or invent a coil or matching network** to get started. Until then the symbol's
+`on_board no` flag keeps it off the board.
+
 ### Firmware note
 
 The BMI270 requires a multi-kilobyte configuration blob to be uploaded after
@@ -1239,6 +1495,7 @@ Contents exposed by the nickname:
 | `AQROOT_Beta:BMI270` | `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` |
 | `AQROOT_Beta:CC1101_RADIO_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:ILI9341_FT6236_MODULE_PLACEHOLDER` | *(none)* |
+| `AQROOT_Beta:ST25R3916_NFC_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:SX1262_MODULE_PLACEHOLDER` | *(none)* |
 | `AQROOT_Beta:TSOP38238` | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` |
 
@@ -1255,11 +1512,12 @@ This library was built from the datasheet without KiCad installed on the
 authoring machine, so the following have **not** been run and should be done
 before committing to fabrication:
 
-- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **all five** of
+- [ ] Open `AQROOT_Beta.kicad_sym` in the Symbol Editor — confirm **all six** of
       `BMI270`, `TSOP38238`, `ILI9341_FT6236_MODULE_PLACEHOLDER`,
-      `CC1101_RADIO_PLACEHOLDER` and `SX1262_MODULE_PLACEHOLDER` load, and run the
-      symbol checker on each. All three placeholders are expected to report a missing
-      footprint; that is the intended state, not a defect.
+      `CC1101_RADIO_PLACEHOLDER`, `SX1262_MODULE_PLACEHOLDER` and
+      `ST25R3916_NFC_PLACEHOLDER` load, and run the symbol checker on each. All four
+      placeholders are expected to report a missing footprint; that is the intended
+      state, not a defect.
 - [ ] Open **both** footprints in the Footprint Editor and run the footprint checker.
 - [ ] Confirm `LED_THT:LED_D5.0mm` drill vs the TSAL6200 lead — see
       [TSAL6200](#one-thing-to-verify-in-your-kicad-install).
@@ -1295,3 +1553,16 @@ before committing to fabrication:
 - [ ] Confirm the **10k pull-up to `+3V3` on `SX1262_CS_N`** is in the schematic, and
       that the **existing 100k pull-down holding `SX1262_RST_N` asserted** is still
       present and not competing with any added pull-up.
+- [ ] **Blocking for layout:** select the ST25R3916 package and design its support
+      networks, then reconcile `ST25R3916_NFC_PLACEHOLDER` against them — renumber the
+      pins to ST's real pinout, create and assign a footprint, resolve the crystal /
+      reference network, decoupling, RF output and receiver networks, the loop antenna
+      and its matching, and the 5 V boost IC behind `NFC_5V_PA_PENDING`; then set
+      `on_board` back to `yes`. Do not route the NFC area until this is closed, and do
+      not invent a coil or matching network to get started.
+- [ ] Confirm the **10k pull-up to `+3V3` on `NFC_CS_N`** is in the schematic.
+- [ ] **Confirm `VDD_IO` is tied to 3V3, not 5 V** — this is what keeps SPI Bus B at
+      3.3 V and removes the need for a level shifter. Confirm only the PA/analog rail
+      is boosted, and that `NFC_5V_EN` (U60 P02) is pulled to **OFF** at power-up.
+- [ ] Validate **NFC as the third device on SPI Bus B** during Beta bring-up — Alpha
+      only tested two radios sharing this bus, with NFC on dedicated pins.
