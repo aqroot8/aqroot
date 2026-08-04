@@ -1594,6 +1594,226 @@
 		)
 		(uuid "ebc652c1-00cd-4e4b-a84b-4b6eff9f0a3a")
 	)
+	(hierarchical_label "XGPIO6"
+		(shape bidirectional)
+		(at 251.46 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0a18a09a-4a0c-41c8-a059-06864b8c8310")
+	)
+	(hierarchical_label "XGPIO11"
+		(shape bidirectional)
+		(at 251.46 57.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2b89cd30-b905-4e71-a091-c421e7082f77")
+	)
+	(hierarchical_label "I2C_SCL_INT"
+		(shape input)
+		(at 251.46 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3f71d890-00b9-420d-988d-9da5818b1ae0")
+	)
+	(hierarchical_label "XGPIO1"
+		(shape bidirectional)
+		(at 251.46 31.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "58e2a753-e8ed-45af-80fb-f1386ebbce24")
+	)
+	(hierarchical_label "XGPIO8"
+		(shape bidirectional)
+		(at 251.46 49.53 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5c6afe19-690d-43d7-bf44-b4c094e9631a")
+	)
+	(hierarchical_label "XGPIO13"
+		(shape bidirectional)
+		(at 251.46 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "662cfb0b-ee64-4eaf-a42d-5a7008cadc26")
+	)
+	(hierarchical_label "I2C_SDA_INT"
+		(shape bidirectional)
+		(at 251.46 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "71252430-3d4b-43b2-8dce-57335c75a28b")
+	)
+	(hierarchical_label "XGPIO7"
+		(shape bidirectional)
+		(at 251.46 46.99 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9603617c-1009-4df8-a1df-4369019c1b5f")
+	)
+	(hierarchical_label "XGPIO2"
+		(shape bidirectional)
+		(at 251.46 34.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a3ec0e54-01bb-4436-8874-fd3b000905b3")
+	)
+	(hierarchical_label "XGPIO0"
+		(shape bidirectional)
+		(at 251.46 29.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a6a76cfb-8fe1-4ec0-9435-694fac2fefa1")
+	)
+	(hierarchical_label "ACC_PWR_EN"
+		(shape input)
+		(at 251.46 67.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "af1f4040-ecfe-4418-beaf-a571d3fc20e8")
+	)
+	(hierarchical_label "XGPIO10"
+		(shape bidirectional)
+		(at 251.46 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b6f031cc-1bbe-4ea7-9108-af0efa542112")
+	)
+	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
+		(shape input)
+		(at 251.46 78.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bac3df7e-76c9-457d-a123-400979e1afab")
+	)
+	(hierarchical_label "XGPIO9"
+		(shape bidirectional)
+		(at 251.46 52.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "beaebc4c-75cb-402c-b873-b6d200e4426d")
+	)
+	(hierarchical_label "XGPIO5"
+		(shape bidirectional)
+		(at 251.46 41.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d23b1cf7-e24b-464b-b639-43b23efa0c59")
+	)
+	(hierarchical_label "XGPIO14"
+		(shape bidirectional)
+		(at 251.46 64.77 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "de7654d6-e440-405a-9e3e-7980eed9c3ec")
+	)
+	(hierarchical_label "WAKE_INT_N"
+		(shape output)
+		(at 251.46 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e3a92fbb-31f4-4704-9877-334f3aa5cc9b")
+	)
+	(hierarchical_label "XGPIO3"
+		(shape bidirectional)
+		(at 251.46 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "eef86af5-152a-4f51-b015-5e04d890dcd6")
+	)
+	(hierarchical_label "XGPIO12"
+		(shape bidirectional)
+		(at 251.46 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f3e90681-608e-4dca-8d70-a93401c9da8d")
+	)
+	(hierarchical_label "XGPIO4"
+		(shape bidirectional)
+		(at 251.46 39.37 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb6b627f-586f-4035-b319-5d9814744862")
+	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x13_Odd_Even")
 		(at 257.81 124.46 0)
