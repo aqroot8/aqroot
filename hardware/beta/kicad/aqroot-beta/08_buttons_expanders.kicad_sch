@@ -1357,7 +1357,7 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 54.61) (xy 186.69 54.61)
+			(xy 185.42 54.61) (xy 187.96 54.61)
 		)
 		(stroke
 			(width 0)
@@ -1554,16 +1554,6 @@
 			(type default)
 		)
 		(uuid "215874c4-f84c-43ea-beda-49a88e52811e")
-	)
-	(wire
-		(pts
-			(xy 185.42 57.15) (xy 186.69 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2554c6b5-a21d-4b80-863f-b2ded6ded8dd")
 	)
 	(wire
 		(pts
@@ -1894,6 +1884,16 @@
 			(type default)
 		)
 		(uuid "7f98549a-8596-45a5-a8b9-86c6260d0e56")
+	)
+	(wire
+		(pts
+			(xy 185.42 57.15) (xy 187.96 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "81c2a4f8-17ba-4ade-a302-a02487f6a952")
 	)
 	(wire
 		(pts
@@ -2638,6 +2638,17 @@
 		)
 		(uuid "5b74f599-8137-44be-84d3-0a91547ca806")
 	)
+	(hierarchical_label "XGPIO1"
+		(shape bidirectional)
+		(at 187.96 57.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5db9e45f-a7c7-4b5d-94c0-c7d74e086a7e")
+	)
 	(hierarchical_label "XGPIO12"
 		(shape bidirectional)
 		(at 186.69 87.63 0)
@@ -2670,17 +2681,6 @@
 			(justify left)
 		)
 		(uuid "7c890b48-e646-472e-8888-dda3a1d3594c")
-	)
-	(hierarchical_label "XGPIO1"
-		(shape bidirectional)
-		(at 186.69 57.15 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "7fa0cf5e-9386-425e-9fb7-2a1b1eeddac2")
 	)
 	(hierarchical_label "RGB_R_CTL"
 		(shape output)
@@ -2869,6 +2869,17 @@
 		)
 		(uuid "d464267e-9134-40a8-98e1-2dfe8e3635fe")
 	)
+	(hierarchical_label "XGPIO0"
+		(shape bidirectional)
+		(at 187.96 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e5ddea3d-8dbb-4f5b-8003-7bab8976309e")
+	)
 	(hierarchical_label "I2C_SCL_INT"
 		(shape input)
 		(at 147.32 57.15 180)
@@ -2901,17 +2912,6 @@
 			(justify left)
 		)
 		(uuid "f531aa3f-166a-414a-84e1-6f9bb27b76b7")
-	)
-	(hierarchical_label "XGPIO0"
-		(shape bidirectional)
-		(at 186.69 54.61 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "f5a34172-7619-4208-a3e0-2bc9cdc6f001")
 	)
 	(hierarchical_label "WAKE_INT_N"
 		(shape output)
