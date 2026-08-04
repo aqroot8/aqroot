@@ -3658,6 +3658,16 @@
 		)
 		(uuid "a15b69f0-db39-45ff-b2e3-d11c170804cf")
 	)
+	(text "MAX17048 FUEL GAUGE\n\nI2C ADDRESS 0x36\nNO SENSE RESISTOR\n\nNEVER BENCH VALIDATED ON AQROOT\nBETA BRING-UP REQUIRED\n\nVERIFY:\nCELL VOLTAGE\nSOC PLAUSIBILITY\nHIBERNATE\nBATTERY INSERTION / REMOVAL\nNO I2C BACKPOWER DURING +3V3 HARD-OFF\n\nFOOTPRINT PENDING EXACT ADI LAND-PATTERN REVIEW\nDO NOT ROUTE UNTIL FOOTPRINT APPROVED"
+		(exclude_from_sim no)
+		(at 103.378 111.76 0)
+		(effects
+			(font
+				(size 0.762 0.762)
+			)
+		)
+		(uuid "241104a2-90c4-4da2-8f01-4051f4960df2")
+	)
 	(text "REV-POLARITY PROTECTION PLACEHOLDER\n\nLEADING CANDIDATE:\nLTC4368-1 + BACK-TO-BACK N-CHANNEL MOSFETs\n\nTOPOLOGY PENDING:\nLTSPICE CHARGE-PATH SIMULATION\nADI FAE / VENDOR CONFIRMATION\nPROFESSIONAL POWER / DFM REVIEW\n\nMANDATORY FAULT CASE:\nREVERSED BATTERY WHILE USB POWERS BQ25185\n\nDO NOT ROUTE\nDO NOT RELEASE TO FAB"
 		(exclude_from_sim no)
 		(at 193.294 138.684 0)
@@ -3687,6 +3697,16 @@
 			)
 		)
 		(uuid "4daf3bcf-6d0f-4380-887d-5e2e1ad23f14")
+	)
+	(text "01_POWER_TREE - BETA CAPTURE IN PROGRESS\n\nCAPTURED:\nUSB-C 5V SINK / USB 2.0\nBQ25185 CHARGER / POWER PATH\nTPS63020 MAIN +3V3 RAIL\nTPS61023 NFC 5V PA BOOST\nMAX17048 FUEL GAUGE\nPHYSICAL MAIN-RAIL HARD OFF\n\nOPEN PRE-FAB BLOCKER:\nREVERSE-POLARITY TOPOLOGY\n\nNOT FABRICATION READY"
+		(exclude_from_sim no)
+		(at 83.82 133.096 0)
+		(effects
+			(font
+				(size 0.635 0.635)
+			)
+		)
+		(uuid "7f7e4492-ed4c-49af-b40c-84726b924fb2")
 	)
 	(text "KEEP FB TRACE SHORT\nROUTE AWAY FROM L1/L2 SWITCH NODES\nSENSE VOUT AFTER OUTPUT CAPACITORS"
 		(exclude_from_sim no)
@@ -3813,6 +3833,12 @@
 		(uuid "67a153c3-f514-43ca-a6bd-7bfc1519cd85")
 	)
 	(junction
+		(at 97.79 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7817a8d4-9e60-43c6-a7b4-d0485e59c0ab")
+	)
+	(junction
 		(at 270.51 58.42)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3841,6 +3867,10 @@
 		(uuid "47c8ffd2-e341-4e0f-8ccd-2ba62b78f5e4")
 	)
 	(no_connect
+		(at 130.81 87.63)
+		(uuid "712b2378-a06a-4b7d-be79-66e9d8b4be7a")
+	)
+	(no_connect
 		(at 45.72 59.69)
 		(uuid "e4805f29-07f8-4ccb-8adb-11b8a26f1ca6")
 	)
@@ -3866,6 +3896,16 @@
 	)
 	(wire
 		(pts
+			(xy 97.79 77.47) (xy 97.79 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02677ad4-396c-42cb-9735-79c9acf39568")
+	)
+	(wire
+		(pts
 			(xy 255.27 40.64) (xy 255.27 44.45)
 		)
 		(stroke
@@ -3883,6 +3923,16 @@
 			(type default)
 		)
 		(uuid "04944fb5-d58e-40a8-a16a-2e834f1adb7f")
+	)
+	(wire
+		(pts
+			(xy 100.33 60.96) (xy 100.33 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05979aa7-b826-41db-9828-53b3774601d4")
 	)
 	(wire
 		(pts
@@ -3936,16 +3986,6 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 34.29) (xy 176.53 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1113fe99-7161-418a-8d67-a2a3934c4b33")
-	)
-	(wire
-		(pts
 			(xy 110.49 156.21) (xy 110.49 157.48)
 		)
 		(stroke
@@ -3953,6 +3993,16 @@
 			(type default)
 		)
 		(uuid "13f246c3-0727-400b-8219-73d01a107ed5")
+	)
+	(wire
+		(pts
+			(xy 175.26 34.29) (xy 177.8 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1572842c-20c6-4945-8c6b-8738c493b585")
 	)
 	(wire
 		(pts
@@ -3986,13 +4036,23 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 25.4) (xy 176.53 25.4)
+			(xy 130.81 77.47) (xy 132.08 77.47)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "214b2805-dbfc-45ff-a1a6-41e79b1f1e8e")
+		(uuid "1df5958a-e77d-419b-bbee-77cfc3136715")
+	)
+	(wire
+		(pts
+			(xy 100.33 52.07) (xy 100.33 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23a8e51b-1144-4d79-973b-215873892678")
 	)
 	(wire
 		(pts
@@ -4053,6 +4113,16 @@
 			(type default)
 		)
 		(uuid "2d62e62e-f3bf-407d-ae0f-412f2d303a10")
+	)
+	(wire
+		(pts
+			(xy 124.46 57.15) (xy 124.46 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ded3965-58d6-436e-90e7-0e3d9ede7716")
 	)
 	(wire
 		(pts
@@ -4143,6 +4213,16 @@
 			(type default)
 		)
 		(uuid "3ac7376b-2391-41bf-9267-f87a2c2cf2c6")
+	)
+	(wire
+		(pts
+			(xy 96.52 78.74) (xy 97.79 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d3c5bff-e876-47c9-b974-425f327914a0")
 	)
 	(wire
 		(pts
@@ -4366,6 +4446,26 @@
 	)
 	(wire
 		(pts
+			(xy 118.11 96.52) (xy 118.11 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "63435b0e-b675-44f6-90c1-ac092bca68e9")
+	)
+	(wire
+		(pts
+			(xy 130.81 80.01) (xy 132.08 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "634f64ac-e38e-4af3-a18a-4d5f29fc39d1")
+	)
+	(wire
+		(pts
 			(xy 190.5 69.85) (xy 228.6 69.85)
 		)
 		(stroke
@@ -4526,6 +4626,16 @@
 	)
 	(wire
 		(pts
+			(xy 130.81 85.09) (xy 132.08 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83eeade3-571f-4e6a-9180-163c7d48671c")
+	)
+	(wire
+		(pts
 			(xy 71.12 107.95) (xy 73.66 107.95)
 		)
 		(stroke
@@ -4666,6 +4776,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 80.01) (xy 97.79 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "964e5da6-5a8c-4669-b896-c9b8b31f8eec")
+	)
+	(wire
+		(pts
 			(xy 218.44 91.44) (xy 228.6 91.44)
 		)
 		(stroke
@@ -4746,7 +4866,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 97.79) (xy 148.59 99.06)
+			(xy 156.21 109.22) (xy 156.21 110.49)
 		)
 		(stroke
 			(width 0)
@@ -4816,6 +4936,16 @@
 	)
 	(wire
 		(pts
+			(xy 97.79 78.74) (xy 97.79 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bb49fce0-1e77-4a0d-9bcd-96890d42bb7f")
+	)
+	(wire
+		(pts
 			(xy 270.51 58.42) (xy 271.78 58.42)
 		)
 		(stroke
@@ -4836,6 +4966,16 @@
 	)
 	(wire
 		(pts
+			(xy 113.03 96.52) (xy 113.03 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bdcd4688-3132-4649-909a-26d8effcd2e0")
+	)
+	(wire
+		(pts
 			(xy 223.52 58.42) (xy 224.79 58.42)
 		)
 		(stroke
@@ -4843,6 +4983,16 @@
 			(type default)
 		)
 		(uuid "bf7f8f2c-3896-4956-9fbb-bf7281b3d516")
+	)
+	(wire
+		(pts
+			(xy 97.79 77.47) (xy 100.33 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2b79672-e272-4b79-922c-5d60828feaac")
 	)
 	(wire
 		(pts
@@ -5116,7 +5266,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 88.9) (xy 148.59 90.17)
+			(xy 156.21 100.33) (xy 156.21 101.6)
 		)
 		(stroke
 			(width 0)
@@ -5133,6 +5283,16 @@
 			(type default)
 		)
 		(uuid "ec5b8bdf-c6fa-4f53-9abf-fdebada52ce5")
+	)
+	(wire
+		(pts
+			(xy 175.26 25.4) (xy 177.8 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee5ef610-101f-4412-b3a3-eede4b3f2bd3")
 	)
 	(wire
 		(pts
@@ -5274,16 +5434,6 @@
 		)
 		(uuid "15d1135c-f53f-4b1b-a71a-dbc40738c427")
 	)
-	(label "BQ25185_SYS"
-		(at 73.66 97.79 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "16653c8e-b2c9-403c-ba90-00bb32086f2e")
-	)
 	(label "R_FB_TOP 1M"
 		(at 227.33 91.44 180)
 		(effects
@@ -5344,16 +5494,6 @@
 		)
 		(uuid "378d2f0b-a482-4032-9741-104e3121476b")
 	)
-	(label "USB_D_N_MCU"
-		(at 176.53 25.4 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3caf5bc9-f175-47f3-8afd-7274c030f1ab")
-	)
 	(label "BQ25185_SYS"
 		(at 233.68 100.33 90)
 		(effects
@@ -5363,6 +5503,16 @@
 			(justify left bottom)
 		)
 		(uuid "48d58ec6-2303-448c-b646-c0088a21591f")
+	)
+	(label "MAX17048_ALRT_N"
+		(at 132.08 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "55a6db5a-951b-427d-aff8-6fa11210ce21")
 	)
 	(label "BQ25185_SYS"
 		(at 119.38 168.91 180)
@@ -5384,6 +5534,16 @@
 		)
 		(uuid "5c013925-984b-4dc6-b969-bad5f9d7f7bd")
 	)
+	(label "BAT_PROTECTED_P"
+		(at 96.52 78.74 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5e8ef9d7-61fe-4a33-894b-e262915159ce")
+	)
 	(label "USB_D_N_CONN"
 		(at 49.53 45.72 0)
 		(effects
@@ -5395,7 +5555,7 @@
 		(uuid "5f77a8bb-125b-4f28-bca3-dff729312fd4")
 	)
 	(label "BAT_PROTECTED_P"
-		(at 148.59 88.9 90)
+		(at 156.21 100.33 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5403,6 +5563,16 @@
 			(justify left bottom)
 		)
 		(uuid "60176475-674c-44ce-aef0-ec2fdf669a84")
+	)
+	(label "MAX17048_ALRT_N"
+		(at 124.46 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "60f220f0-3608-4eb2-ada8-6c89cb8d8747")
 	)
 	(label "USB_D_P_ESD"
 		(at 153.67 46.99 0)
@@ -5524,16 +5694,6 @@
 		)
 		(uuid "8e6e5bb3-ee36-469a-9452-a6465df1e984")
 	)
-	(label "NFC_5V_EN"
-		(at 119.38 173.99 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "95d45d22-df93-43d0-85fd-39bf6d488caf")
-	)
 	(label "BQ25185_STAT1"
 		(at 73.66 107.95 0)
 		(effects
@@ -5595,16 +5755,6 @@
 		(uuid "a336f476-ec25-454f-b49b-997bf29fe1f3")
 	)
 	(label "NFC_5V_PA_PENDING"
-		(at 147.32 168.91 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ada66e70-8944-49de-8b13-2bf76e9dfb23")
-	)
-	(label "NFC_5V_PA_PENDING"
 		(at 156.21 173.99 0)
 		(effects
 			(font
@@ -5653,16 +5803,6 @@
 			(justify left bottom)
 		)
 		(uuid "ce745a32-1e67-4b10-b1b2-9874c310142d")
-	)
-	(label "USB_D_P_MCU"
-		(at 176.53 34.29 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d4303e3a-84a9-49e6-ba31-aa8066183168")
 	)
 	(label "USB_VBUS_RAW"
 		(at 66.04 158.75 180)
@@ -5714,6 +5854,16 @@
 		)
 		(uuid "e6d2365f-fbce-436c-871f-ae9ab1a55107")
 	)
+	(label "BAT_PROTECTED_P"
+		(at 100.33 52.07 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e7391110-1d76-4f9e-972c-1c1326cd4c62")
+	)
 	(label "ISET"
 		(at 34.29 113.03 180)
 		(effects
@@ -5744,16 +5894,6 @@
 		)
 		(uuid "f7549e22-1860-40a1-9044-a3978684f30d")
 	)
-	(label "BAT_PROTECTED_P"
-		(at 73.66 100.33 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f8301cc0-9ff4-4f94-9f73-eecda7103cb3")
-	)
 	(label "NFC_5V_PA_PENDING"
 		(at 163.83 195.58 180)
 		(effects
@@ -5763,6 +5903,94 @@
 			(justify right bottom)
 		)
 		(uuid "fa399df3-d5ce-4e22-8462-f0620539642c")
+	)
+	(hierarchical_label "USB_D_N_MCU"
+		(shape output)
+		(at 177.8 25.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "12903521-38b4-453d-b6cd-454bebfae9d5")
+	)
+	(hierarchical_label "I2C_SCL_INT"
+		(shape input)
+		(at 132.08 80.01 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4299cdf1-37b8-4c72-be53-3ee38cad9b24")
+	)
+	(hierarchical_label "USB_D_P_MCU"
+		(shape output)
+		(at 177.8 34.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9ef31eeb-5838-447f-ab61-c1075bd84918")
+	)
+	(hierarchical_label "NFC_5V_PA_PENDING"
+		(shape output)
+		(at 147.32 168.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a4a6f7be-3812-4e47-9cda-524284fd4e53")
+	)
+	(hierarchical_label "BAT_PROTECTED_P"
+		(shape bidirectional)
+		(at 73.66 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bb1f6139-8c9b-4057-9ebb-5ad06db65dd9")
+	)
+	(hierarchical_label "I2C_SDA_INT"
+		(shape bidirectional)
+		(at 132.08 77.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "be37aa6e-6888-4f26-8e37-58ab6311d852")
+	)
+	(hierarchical_label "NFC_5V_EN"
+		(shape input)
+		(at 119.38 173.99 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c523a097-2089-45dd-90db-0a7b1cc81a63")
+	)
+	(hierarchical_label "BQ25185_SYS"
+		(shape output)
+		(at 73.66 97.79 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "cd5ea4dc-48a0-4617-8039-2932f27b6317")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -6640,7 +6868,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 148.59 93.98 0)
+		(at 100.33 57.15 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6649,9 +6877,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "2760513b-e4c1-4726-8f94-7f62b1b47a18")
-		(property "Reference" "C25"
-			(at 152.4 92.7099 0)
+		(uuid "1d447ea5-22ba-41ff-8b09-fde273f953e4")
+		(property "Reference" "C36"
+			(at 104.14 55.8799 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6661,8 +6889,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1uF 10V X7R"
-			(at 152.4 95.2499 0)
+		(property "Value" "100nF X7R"
+			(at 104.14 58.4199 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6673,7 +6901,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 149.5552 97.79 0)
+			(at 101.2952 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6684,7 +6912,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 148.59 93.98 0)
+			(at 100.33 57.15 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6695,7 +6923,167 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 148.59 93.98 0)
+			(at 100.33 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4dd86fbe-6cd6-453f-9161-99132953e1a6")
+		)
+		(pin "2"
+			(uuid "0b168ffa-fd71-4ee0-bd91-dc9eb12a68d9")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "C36")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 118.11 97.79 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2089afb6-a591-47a0-bed0-52e2d9150fb5")
+		(property "Reference" "#PWR0155"
+			(at 118.11 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 118.11 102.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 118.11 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 118.11 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 118.11 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8b3380f7-0818-411f-9512-90d096de378f")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0155")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 156.21 105.41 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2760513b-e4c1-4726-8f94-7f62b1b47a18")
+		(property "Reference" "C25"
+			(at 160.02 104.1399 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1uF 10V X7R"
+			(at 160.02 106.6799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 157.1752 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 156.21 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 156.21 105.41 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7104,6 +7492,84 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#PWR0130")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 113.03 97.79 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "319300ca-2f99-40a3-84ab-af109500314d")
+		(property "Reference" "#PWR0156"
+			(at 113.03 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 113.03 102.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 113.03 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 113.03 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 113.03 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7ec488b4-e7fa-4a65-96b7-7bcae5c6ca2d")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0156")
 					(unit 1)
 				)
 			)
@@ -9029,6 +9495,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 124.46 57.15 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7ed794ab-f1aa-455a-947b-ae08d1c70fc4")
+		(property "Reference" "TP11"
+			(at 127 52.5779 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 127 55.1179 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 129.54 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 129.54 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 124.46 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3741c072-4dba-4251-8315-9178f474f57e")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "TP11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 77.47 33.02 90)
 		(unit 1)
@@ -10053,6 +10598,84 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#PWR0118")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 100.33 62.23 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "996d91ef-eb5e-4fc8-baf9-5724f6087c76")
+		(property "Reference" "#PWR0154"
+			(at 100.33 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 100.33 67.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "185e2c70-8211-419f-8706-548445dcf686")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0154")
 					(unit 1)
 				)
 			)
@@ -11609,7 +12232,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 148.59 99.06 0)
+		(at 156.21 110.49 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11620,7 +12243,7 @@
 		(fields_autoplaced yes)
 		(uuid "c300e294-3f1b-4ca4-95f8-ed0ff4cd7ade")
 		(property "Reference" "#PWR0122"
-			(at 148.59 105.41 0)
+			(at 156.21 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11631,7 +12254,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 148.59 104.14 0)
+			(at 156.21 115.57 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11641,7 +12264,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 148.59 99.06 0)
+			(at 156.21 110.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11652,7 +12275,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 148.59 99.06 0)
+			(at 156.21 110.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11663,7 +12286,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 148.59 99.06 0)
+			(at 156.21 110.49 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

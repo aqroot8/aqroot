@@ -75,6 +75,16 @@
 	)
 	(wire
 		(pts
+			(xy 74.93 20.32) (xy 74.93 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "192af5ff-19cd-4f20-99e9-55c3f3dafade")
+	)
+	(wire
+		(pts
 			(xy 128.27 45.72) (xy 129.54 45.72)
 		)
 		(stroke
@@ -195,6 +205,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 30.48) (xy 106.68 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "74baafeb-a30d-4933-babb-c45326765f7b")
+	)
+	(wire
+		(pts
 			(xy 128.27 45.72) (xy 128.27 43.18)
 		)
 		(stroke
@@ -222,6 +242,16 @@
 			(type default)
 		)
 		(uuid "7959f54d-17ac-4ea2-b1eb-069e1884c6bc")
+	)
+	(wire
+		(pts
+			(xy 105.41 88.9) (xy 106.68 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c684050-ce5f-4017-9775-213c17a33389")
 	)
 	(wire
 		(pts
@@ -295,6 +325,16 @@
 	)
 	(wire
 		(pts
+			(xy 62.23 102.87) (xy 62.23 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "adde5172-a6e7-4498-a264-40a90ab69ccd")
+	)
+	(wire
+		(pts
 			(xy 388.62 60.96) (xy 391.16 60.96)
 		)
 		(stroke
@@ -302,6 +342,26 @@
 			(type default)
 		)
 		(uuid "afede3e0-0d06-408f-8f2a-cdb2c3bacca7")
+	)
+	(wire
+		(pts
+			(xy 105.41 36.83) (xy 106.68 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be63817f-c132-454b-97a4-f0bca392350b")
+	)
+	(wire
+		(pts
+			(xy 22.86 58.42) (xy 24.13 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d042cc1a-924f-432f-98b6-9e89be3d2906")
 	)
 	(wire
 		(pts
@@ -453,6 +513,16 @@
 		)
 		(uuid "03718c50-62cc-40e7-b340-00acf9bc7804")
 	)
+	(label "NFC_5V_EN"
+		(at 22.86 58.42 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "09bb86df-28ff-4dde-b90c-0c367729574f")
+	)
 	(label "DISP_CS_N"
 		(at 293.37 41.91 0)
 		(effects
@@ -513,6 +583,16 @@
 		)
 		(uuid "38a9d878-4403-4009-8392-2763f4ab6c96")
 	)
+	(label "USB_D_N_MCU"
+		(at 106.68 30.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3b233fb5-d710-494a-855e-118211d30a04")
+	)
 	(label "I2C_SDA_INT"
 		(at 124.46 43.18 180)
 		(effects
@@ -562,6 +642,26 @@
 			(justify left bottom)
 		)
 		(uuid "5582b94a-8e6a-41a3-a138-1f4fb9161d78")
+	)
+	(label "I2C_SCL_INT"
+		(at 74.93 20.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5e504231-5aa8-48e6-80eb-87dbc869511f")
+	)
+	(label "BAT_PROTECTED_P"
+		(at 62.23 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "63dfcc03-faf5-4067-8778-7763e28012cc")
 	)
 	(label "I2C_SCL_INT"
 		(at 124.46 45.72 180)
@@ -773,6 +873,16 @@
 		)
 		(uuid "d6883305-9260-4efc-a733-003dc07deaf3")
 	)
+	(label "BQ25185_SYS"
+		(at 106.68 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ed35ecf6-3c50-42b2-8174-6f94b92fc442")
+	)
 	(label "I2C_SDA_INT"
 		(at 223.52 91.44 180)
 		(effects
@@ -792,6 +902,16 @@
 			(justify right bottom)
 		)
 		(uuid "f696ec67-1e5b-463b-9ffb-15a9c819a9b4")
+	)
+	(label "USB_D_P_MCU"
+		(at 106.68 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f6ab59c0-d3cb-473a-b024-14389799b0cc")
 	)
 	(label "I2S_LRCLK"
 		(at 127 137.16 180)
@@ -1101,6 +1221,86 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
+			)
+		)
+		(pin "BAT_PROTECTED_P" bidirectional
+			(at 62.23 102.87 270)
+			(uuid "c4abf8e9-5792-4ecc-b998-f3bcd9d81937")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "BQ25185_SYS" output
+			(at 105.41 88.9 0)
+			(uuid "df685130-0209-4506-8e15-d5fd324ba045")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SCL_INT" input
+			(at 74.93 22.86 90)
+			(uuid "d1caa866-98b8-4b9c-80c7-dd3a12e39b44")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SDA_INT" bidirectional
+			(at 48.26 22.86 90)
+			(uuid "dc874bd6-2b67-4177-9091-afa614f43a5e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "NFC_5V_EN" input
+			(at 24.13 58.42 180)
+			(uuid "eaa84c26-f024-4864-8a53-ebcad1d674ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NFC_5V_PA_PENDING" output
+			(at 105.41 52.07 0)
+			(uuid "2464393c-e735-49c0-98f3-dc05d2561c43")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USB_D_N_MCU" output
+			(at 105.41 30.48 0)
+			(uuid "381b27e2-43e6-4410-80f1-1b2e6b1a12e2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USB_D_P_MCU" output
+			(at 105.41 36.83 0)
+			(uuid "4d3f7646-1c90-4f91-beaa-88fdc5d585b8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances

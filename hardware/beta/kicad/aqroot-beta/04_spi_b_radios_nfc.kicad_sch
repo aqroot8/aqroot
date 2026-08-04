@@ -4076,10 +4076,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "8fa54d13-e703-406a-b8e2-f514779fc8cb")
+			(uuid "8fa54d13-e703-406a-b8e2-f514779fc8cc")
 		)
 		(pin "1"
-			(uuid "e0d4b7a9-1280-478b-b879-f27411526b65")
+			(uuid "e0d4b7a9-1280-478b-b879-f27411526b66")
 		)
 		(instances
 			(project "aqroot-Beta"
