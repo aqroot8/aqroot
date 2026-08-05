@@ -2421,7 +2421,7 @@
 				)
 			)
 		)
-		(property "Note" "Bidirectional shunt protection. Place on the connector side of any series resistors. Route the GND pin directly to board ground. Intended for SDA/SCL connector protection. Pin 1 and pin 3 are the two independent channels; both are named IO and are interchangeable."
+		(property "Note" "Bidirectional shunt protection. Place on the connector side of any series resistors. Route the GND pin directly to board ground. Intended for SDA/SCL connector protection. Pin 1 (IO1) and pin 3 (IO2) are the two independent channels and are interchangeable."
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -2456,7 +2456,7 @@
 			(pin passive line
 				(at -10.16 0 0)
 				(length 2.54)
-				(name "IO"
+				(name "IO1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -2492,7 +2492,7 @@
 			(pin passive line
 				(at 10.16 0 180)
 				(length 2.54)
-				(name "IO"
+				(name "IO2"
 					(effects
 						(font
 							(size 1.27 1.27)
