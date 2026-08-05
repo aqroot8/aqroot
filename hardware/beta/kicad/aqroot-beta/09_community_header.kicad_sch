@@ -3797,7 +3797,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 237.49 71.628 90)
 			(hide yes)
 			(show_name no)
@@ -3876,7 +3876,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 279.4 97.282 90)
 			(hide yes)
 			(show_name no)
@@ -4115,7 +4115,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 205.232 157.48 90)
 			(hide yes)
 			(show_name no)
@@ -4197,7 +4197,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 209.55 58.7248 0)
 			(hide yes)
 			(show_name no)
@@ -4815,7 +4815,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 240.03 102.108 90)
 			(hide yes)
 			(show_name no)
@@ -5075,7 +5075,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 219.71 130.81 0)
 			(hide yes)
 			(show_name no)
@@ -5153,7 +5153,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 215.5952 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -5468,7 +5468,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 181.3052 134.62 0)
 			(hide yes)
 			(show_name no)
@@ -5547,7 +5547,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 237.49 81.788 90)
 			(hide yes)
 			(show_name no)
@@ -5990,7 +5990,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 222.25 63.1952 0)
 			(hide yes)
 			(show_name no)
@@ -6147,7 +6147,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 191.77 153.9748 0)
 			(hide yes)
 			(show_name no)
