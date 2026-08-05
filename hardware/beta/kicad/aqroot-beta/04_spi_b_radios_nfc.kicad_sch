@@ -1696,16 +1696,6 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 129.54) (xy 104.14 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1f0a643a-a98f-40a4-80e0-2b8c065bf427")
-	)
-	(wire
-		(pts
 			(xy 142.24 161.29) (xy 142.24 162.56)
 		)
 		(stroke
@@ -1883,6 +1873,16 @@
 			(type default)
 		)
 		(uuid "47a654d5-1e54-4a13-a1bb-19fbd2e83e73")
+	)
+	(wire
+		(pts
+			(xy 104.14 128.27) (xy 104.14 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4e3c0013-ccf8-4975-9781-7863d8f40438")
 	)
 	(wire
 		(pts
@@ -2184,16 +2184,6 @@
 		)
 		(uuid "74d5aa91-26e9-4f1f-829f-9e8c4febf844")
 	)
-	(label "NFC_5V_PA_PENDING"
-		(at 104.14 129.54 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a3994ec4-114c-4c98-9c44-3732fb6e8585")
-	)
 	(label "SX1262_CS_N"
 		(at 266.7 105.41 270)
 		(effects
@@ -2308,6 +2298,17 @@
 			(justify right)
 		)
 		(uuid "21e729ae-2f5f-438c-b0fc-dd59fea7e6e9")
+	)
+	(hierarchical_label "NFC_5V_PA_PENDING"
+		(shape input)
+		(at 104.14 128.27 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "38d259c9-343b-4569-bc6e-5f9411d87f24")
 	)
 	(hierarchical_label "SX1262_RST_N"
 		(shape input)
