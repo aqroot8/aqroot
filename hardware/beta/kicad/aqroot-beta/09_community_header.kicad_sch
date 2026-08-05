@@ -2615,7 +2615,7 @@
 	)
 	(text "TPS22918 ACCESSORY LOAD SWITCH\n\nVIN = +3V3\nVOUT = ACC_3V3_SW\nON = ACC_PWR_EN\n\nCT = 100nF (Beta)\nQOD = 100k to VOUT (Beta)\n\nTPS22918DBVR\nSOT-23-6"
 		(exclude_from_sim no)
-		(at 223.774 159.766 0)
+		(at 167.386 157.734 0)
 		(effects
 			(font
 				(size 0.635 0.635)
@@ -2623,15 +2623,35 @@
 		)
 		(uuid "a958866b-03c0-44a2-ac17-456b70472a23")
 	)
-	(text "COMMUNITY HEADER - 2×13, 2.54 mm\n\nPIN 1 = +3V3\nODD PINS = LEFT COLUMN\nEVEN PINS = RIGHT COLUMN\nTOP TO BOTTOM\n\nBETA CONNECTOR IS NOT KEYED\nADD PIN-1 TRIANGLE ON SILKSCREEN\n\nPRODUCTION UPGRADE:\nSHROUDED / KEYED CONNECTOR"
+	(text "ROOTPROBE PHASE 2\nCONNECTOR / PIN COUNT / MECHANICAL FORMAT NOT LOCKED\nNO FOOTPRINT\nDO NOT ROUTE"
 		(exclude_from_sim no)
-		(at 268.732 154.178 0)
+		(at 233.426 164.084 0)
 		(effects
 			(font
-				(size 1.016 1.016)
+				(size 0.635 0.635)
+			)
+		)
+		(uuid "bac267a5-373e-4e69-b9d2-3583c5598824")
+	)
+	(text "COMMUNITY HEADER - 2×13, 2.54 mm\n\nPIN 1 = +3V3\nODD PINS = LEFT COLUMN\nEVEN PINS = RIGHT COLUMN\nTOP TO BOTTOM\n\nBETA CONNECTOR IS NOT KEYED\nADD PIN-1 TRIANGLE ON SILKSCREEN\n\nPRODUCTION UPGRADE:\nSHROUDED / KEYED CONNECTOR"
+		(exclude_from_sim no)
+		(at 276.86 146.304 0)
+		(effects
+			(font
+				(size 0.508 0.508)
 			)
 		)
 		(uuid "c95d3f11-91a1-467b-bde4-8cba4f7eee4d")
+	)
+	(text "WAKE_ATTN_N\nOPEN-DRAIN ACCESSORY ONLY\nINTERNAL 10k PULL-UP\nNO PUSH-PULL DRIVE"
+		(exclude_from_sim no)
+		(at 237.998 142.494 0)
+		(effects
+			(font
+				(size 0.635 0.635)
+			)
+		)
+		(uuid "ccad8aa7-f1b7-4e62-bb93-46fdb479259d")
 	)
 	(junction
 		(at 260.35 72.39)
@@ -2686,6 +2706,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2c919f03-7cd3-450e-80aa-b3a34b231d40")
+	)
+	(junction
+		(at 243.84 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3cadc1a6-996a-4a6e-9209-96a3b14882bf")
 	)
 	(junction
 		(at 236.22 100.33)
@@ -2748,6 +2774,12 @@
 		(uuid "9c5f26d6-f9b7-47fd-9a6f-e394fcfdf3e5")
 	)
 	(junction
+		(at 269.24 152.4)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "aff20e1b-f93d-4568-b481-0a8ccb3bf92d")
+	)
+	(junction
 		(at 180.34 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2792,6 +2824,16 @@
 			(type default)
 		)
 		(uuid "007ff3c2-60a1-4440-a1a9-696f60b2d9a8")
+	)
+	(wire
+		(pts
+			(xy 240.03 148.59) (xy 240.03 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "009f7e1c-cc7b-4fd3-82dc-b77c52cd41fc")
 	)
 	(wire
 		(pts
@@ -2865,6 +2907,16 @@
 	)
 	(wire
 		(pts
+			(xy 283.21 160.02) (xy 283.21 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0bfd45c4-e256-4dfd-9c4e-d219d8cdcfab")
+	)
+	(wire
+		(pts
 			(xy 132.08 114.3) (xy 133.35 114.3)
 		)
 		(stroke
@@ -2892,6 +2944,26 @@
 			(type default)
 		)
 		(uuid "14d458a1-584c-4c16-8383-e4d61a365ed3")
+	)
+	(wire
+		(pts
+			(xy 264.16 151.13) (xy 269.24 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15de2f1d-d2d6-44ac-8b76-40f5f0e75ab1")
+	)
+	(wire
+		(pts
+			(xy 269.24 152.4) (xy 270.51 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "16dc323d-6f22-4dac-be6f-0d7965359bce")
 	)
 	(wire
 		(pts
@@ -3165,6 +3237,16 @@
 	)
 	(wire
 		(pts
+			(xy 243.84 151.13) (xy 243.84 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4932c8b7-df4b-410c-a2b9-e2d6f1731564")
+	)
+	(wire
+		(pts
 			(xy 259.08 72.39) (xy 260.35 72.39)
 		)
 		(stroke
@@ -3295,6 +3377,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 160.02) (xy 274.32 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c76f3ce-7e2d-4ee8-9116-4fdcd79eca33")
+	)
+	(wire
+		(pts
 			(xy 130.81 147.32) (xy 132.08 147.32)
 		)
 		(stroke
@@ -3312,6 +3404,16 @@
 			(type default)
 		)
 		(uuid "5cf9f1d9-04e7-468b-8708-385037bd31b5")
+	)
+	(wire
+		(pts
+			(xy 242.57 147.32) (xy 243.84 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e610ce4-d687-4448-a4f3-7af780cf52a1")
 	)
 	(wire
 		(pts
@@ -3455,6 +3557,26 @@
 	)
 	(wire
 		(pts
+			(xy 281.94 160.02) (xy 283.21 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b5c73c3-7636-4f57-ac83-5b3ad444a442")
+	)
+	(wire
+		(pts
+			(xy 243.84 156.21) (xy 243.84 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bf3ee34-9a75-4673-9241-f26dbec09152")
+	)
+	(wire
+		(pts
 			(xy 265.43 121.92) (xy 266.7 121.92)
 		)
 		(stroke
@@ -3512,6 +3634,16 @@
 			(type default)
 		)
 		(uuid "8584f466-5f1d-4751-b91e-bbf809082647")
+	)
+	(wire
+		(pts
+			(xy 242.57 154.94) (xy 243.84 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "85c764c9-9325-43d0-9a58-93ed4cee73d3")
 	)
 	(wire
 		(pts
@@ -3612,6 +3744,26 @@
 			(type default)
 		)
 		(uuid "9fa3416f-9b69-4b47-b55b-68ecef04f436")
+	)
+	(wire
+		(pts
+			(xy 240.03 161.29) (xy 243.84 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9ff69a93-0524-4b58-9ad5-8ec5747b332b")
+	)
+	(wire
+		(pts
+			(xy 269.24 151.13) (xy 269.24 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a1fcdee3-7d61-4a63-8d98-80e4915b83da")
 	)
 	(wire
 		(pts
@@ -3845,6 +3997,26 @@
 	)
 	(wire
 		(pts
+			(xy 254 158.75) (xy 255.27 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bb1fc413-3b3c-410f-880b-d16a693bcb18")
+	)
+	(wire
+		(pts
+			(xy 242.57 147.32) (xy 242.57 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be7e1e1d-457e-4f66-ab02-7084bc5edf31")
+	)
+	(wire
+		(pts
 			(xy 132.08 146.05) (xy 132.08 147.32)
 		)
 		(stroke
@@ -3895,6 +4067,16 @@
 	)
 	(wire
 		(pts
+			(xy 269.24 152.4) (xy 269.24 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1ef0344-0d02-4c5c-bd9a-54469b47f67b")
+	)
+	(wire
+		(pts
 			(xy 251.46 109.22) (xy 252.73 109.22)
 		)
 		(stroke
@@ -3935,6 +4117,16 @@
 	)
 	(wire
 		(pts
+			(xy 281.94 165.1) (xy 283.21 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4ad1105-06e3-4e83-81e7-ea40b31a5777")
+	)
+	(wire
+		(pts
 			(xy 156.21 73.66) (xy 156.21 74.93)
 		)
 		(stroke
@@ -3962,6 +4154,16 @@
 			(type default)
 		)
 		(uuid "cf834a9b-c9d1-406f-86f0-dbf23cc03059")
+	)
+	(wire
+		(pts
+			(xy 267.97 162.56) (xy 269.24 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cf921dc3-28be-4d4f-999c-d6f20d61752c")
 	)
 	(wire
 		(pts
@@ -4205,6 +4407,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 152.4) (xy 270.51 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f564d41f-7584-44b6-bd4e-132caf1d1193")
+	)
+	(wire
+		(pts
 			(xy 189.23 97.79) (xy 190.5 97.79)
 		)
 		(stroke
@@ -4272,6 +4484,16 @@
 			(justify right bottom)
 		)
 		(uuid "136da79d-2fca-4d7e-82af-839cd7ac3413")
+	)
+	(label "FAST_IO_GPIO43_HDR"
+		(at 267.97 162.56 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1b3f6261-bb1d-485a-afcc-94a985ca1c7d")
 	)
 	(label "XGPIO1_HDR"
 		(at 266.7 111.76 0)
@@ -4554,6 +4776,16 @@
 		(uuid "881d3af1-7047-40df-99e3-0db940d5a361")
 	)
 	(label "WAKE_ATTN_N_HDR"
+		(at 243.84 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8a95231c-8446-4074-8dc4-046117dea6cb")
+	)
+	(label "WAKE_ATTN_N_HDR"
 		(at 266.7 137.16 0)
 		(effects
 			(font
@@ -4729,7 +4961,7 @@
 	)
 	(hierarchical_label "I2C_SCL_INT"
 		(shape input)
-		(at 252.73 45.72 0)
+		(at 259.08 53.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4751,7 +4983,7 @@
 	)
 	(hierarchical_label "I2C_SDA_INT"
 		(shape bidirectional)
-		(at 252.73 43.18 0)
+		(at 259.08 50.8 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4817,7 +5049,7 @@
 	)
 	(hierarchical_label "ACC_PWR_EN"
 		(shape input)
-		(at 252.73 40.64 0)
+		(at 259.08 48.26 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4825,6 +5057,17 @@
 			(justify left)
 		)
 		(uuid "af1f4040-ecfe-4418-beaf-a571d3fc20e8")
+	)
+	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
+		(shape input)
+		(at 281.94 165.1 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "af7884d8-999d-47d8-98e5-5ae546568655")
 	)
 	(hierarchical_label "XGPIO11"
 		(shape bidirectional)
@@ -4836,17 +5079,6 @@
 			(justify left)
 		)
 		(uuid "b3195286-d0fe-44d3-a3e7-9218e10ccd2d")
-	)
-	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
-		(shape input)
-		(at 252.73 52.07 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "bac3df7e-76c9-457d-a123-400979e1afab")
 	)
 	(hierarchical_label "XGPIO4"
 		(shape bidirectional)
@@ -4881,17 +5113,6 @@
 		)
 		(uuid "d4c01936-bb86-4c68-ad63-d35d80cd3617")
 	)
-	(hierarchical_label "WAKE_INT_N"
-		(shape output)
-		(at 252.73 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "e3a92fbb-31f4-4704-9877-334f3aa5cc9b")
-	)
 	(hierarchical_label "XGPIO12"
 		(shape bidirectional)
 		(at 121.92 147.32 180)
@@ -4902,6 +5123,17 @@
 			(justify right)
 		)
 		(uuid "f70463c0-4c0b-451e-84dd-ca0067638c70")
+	)
+	(hierarchical_label "WAKE_INT_N"
+		(shape output)
+		(at 240.03 148.59 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fc0fd897-a109-4cdf-b8ca-2d222266383a")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -5360,6 +5592,165 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 255.27 158.75 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "1b23aa55-29b3-43e9-8906-df2a5f1cbeca")
+		(property "Reference" "#PWR0177"
+			(at 261.62 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 258.572 158.75 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 255.27 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 255.27 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 255.27 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b6c412b5-569e-42c4-8a64-b79116c4a261")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
+					(reference "#PWR0177")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 240.03 157.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "251f7772-51e1-42b1-a31e-fac365b64258")
+		(property "Reference" "R66"
+			(at 229.87 155.956 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "330R 1%"
+			(at 229.87 158.496 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 238.252 157.48 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 240.03 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "a0d4bde1-bf65-4639-ac68-c6794c79c55e")
+		)
+		(pin "1"
+			(uuid "c548090d-453c-401e-b6d4-2a0e9eb0c7bf")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
+					(reference "R66")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 242.57 60.96 90)
 		(unit 1)
 		(body_style 1)
@@ -5528,7 +5919,7 @@
 		(dnp no)
 		(uuid "354ba466-93f7-4b9a-96cf-95f4b3305b8a")
 		(property "Reference" "R46"
-			(at 209.55 156.2099 0)
+			(at 209.296 159.258 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5539,7 +5930,7 @@
 			)
 		)
 		(property "Value" "100k 1%"
-			(at 208.534 158.75 0)
+			(at 211.074 161.29 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7387,6 +7778,86 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 278.13 160.02 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "937057ee-1d4a-4478-89f1-f88af14a6f7a")
+		(property "Reference" "R67"
+			(at 278.13 153.67 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470R 1%"
+			(at 278.13 156.21 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 278.13 161.798 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 278.13 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 278.13 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "2e1428c4-2050-460a-898c-dc184946c098")
+		)
+		(pin "1"
+			(uuid "3e06975b-4442-432e-b1f8-3662dab72269")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
+					(reference "R67")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "AQROOT_Beta:TPD4E1B06DRLR")
 		(at 144.78 111.76 0)
 		(unit 1)
@@ -8391,6 +8862,132 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
 					(reference "#PWR0162")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AQROOT_Beta:TPD2E009DBZR")
+		(at 254 151.13 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c18d0700-c65a-43dd-b649-fc487517e233")
+		(property "Reference" "D7"
+			(at 254 142.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TPD2E009DBZR"
+			(at 254 144.526 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd2e009.pdf"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Dual-channel ultra-low-capacitance ESD protection diode array"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPD2E009DBZR"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SOT-23-3, TI DBZ"
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Bidirectional shunt protection. Place on the connector side of any series resistors. Route the GND pin directly to board ground. Intended for SDA/SCL connector protection. Pin 1 (IO1) and pin 3 (IO2) are the two independent channels and are interchangeable."
+			(at 254 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "f75bcc66-1c26-43db-b463-e379ecae8361")
+		)
+		(pin "2"
+			(uuid "4f61e30b-ac6b-4147-aa81-5f89daeb55e0")
+		)
+		(pin "1"
+			(uuid "6d9ee11b-58f7-4a5c-a9a5-d6321c1bd18e")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
+					(reference "D7")
 					(unit 1)
 				)
 			)
