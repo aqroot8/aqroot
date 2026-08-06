@@ -1113,6 +1113,56 @@
 		)
 		(uuid "1559df38-1047-4cda-8b47-6afb91fcff95")
 	)
+	(wire
+		(pts
+			(xy 334.01 115.57) (xy 334.01 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "650605da-4307-4b3f-869e-f1896fd40313")
+	)
+	(wire
+		(pts
+			(xy 351.79 115.57) (xy 351.79 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d760c269-bd01-49b4-b18e-2e7b10f3fd74")
+	)
+	(wire
+		(pts
+			(xy 339.09 115.57) (xy 339.09 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "07ede8d0-9fa7-4e22-a660-6783a9dff387")
+	)
+	(wire
+		(pts
+			(xy 358.14 115.57) (xy 358.14 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c66e3d02-ecb1-4514-9693-f1c9e16d2623")
+	)
+	(wire
+		(pts
+			(xy 344.17 115.57) (xy 344.17 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c0bcf921-1be1-42ad-8cff-3041c1f1bd5a")
+	)
 	(label "I2C_SDA_INT"
 		(at 320.04 144.78 180)
 		(effects
@@ -2212,6 +2262,56 @@
 			(justify left bottom)
 		)
 		(uuid "0871a2b6-ef0e-48ef-8999-2d974cea83a1")
+	)
+	(label "TOUCH_RST_N"
+		(at 334.01 113.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8405414b-2561-4a3d-94b9-4570229a307d")
+	)
+	(label "AMP_SD_MODE"
+		(at 351.79 113.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a0d130dd-bcb8-4880-9b6d-67c55280573a")
+	)
+	(label "SX1262_RST_N"
+		(at 339.09 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "be3f6c27-95d1-4ef8-9abf-ee1b700e983b")
+	)
+	(label "DISP_RST_N"
+		(at 358.14 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f6545e41-b700-4895-a268-0e15845fc5ed")
+	)
+	(label "NFC_5V_EN"
+		(at 344.17 107.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8870beb0-5167-4cb5-b23a-cb105980917a")
 	)
 	(sheet
 		(at 129.54 115.57)
