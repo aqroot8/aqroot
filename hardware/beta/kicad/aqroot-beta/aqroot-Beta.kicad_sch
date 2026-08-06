@@ -1163,6 +1163,46 @@
 		)
 		(uuid "c0bcf921-1be1-42ad-8cff-3041c1f1bd5a")
 	)
+	(wire
+		(pts
+			(xy 365.76 115.57) (xy 365.76 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f2c8cd3-c230-4438-9109-b6fbd7c5612c")
+	)
+	(wire
+		(pts
+			(xy 370.84 115.57) (xy 370.84 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2fa9a790-8e9d-4ee0-829c-66c03f0d4b29")
+	)
+	(wire
+		(pts
+			(xy 375.92 115.57) (xy 375.92 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8028bcb8-c065-41ad-9a63-9b74a98e523d")
+	)
+	(wire
+		(pts
+			(xy 353.06 189.23) (xy 353.06 191.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "46d29ab0-2777-4f30-a67e-3c76efa1f1ee")
+	)
 	(label "I2C_SDA_INT"
 		(at 320.04 144.78 180)
 		(effects
@@ -2312,6 +2352,46 @@
 			(justify left bottom)
 		)
 		(uuid "8870beb0-5167-4cb5-b23a-cb105980917a")
+	)
+	(label "RGB_R_CTL"
+		(at 365.76 107.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "01cf2913-04a3-4b71-9eac-139ace5fa70b")
+	)
+	(label "RGB_G_CTL"
+		(at 370.84 113.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "bc9a757f-55ca-47f9-a625-e432a22325e1")
+	)
+	(label "RGB_B_CTL"
+		(at 375.92 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "68332bb1-af94-4d7b-a06e-7ff7f67eb3dc")
+	)
+	(label "ROOTPROBE_IRQ_READY_N"
+		(at 353.06 191.77 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b51e085d-e1b4-4611-9b0b-dbc1dde98fb9")
 	)
 	(sheet
 		(at 129.54 115.57)
