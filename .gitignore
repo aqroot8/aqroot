@@ -22,7 +22,8 @@ build/
 _autosave-*
 ~*.lck
 
-# Locally generated snapshot archive of the Beta KiCad project. Fully anchored
-# to this one path on purpose -- a bare *.zip would also hide legitimate
+# Locally generated snapshot archives of the Beta KiCad project. Fully anchored
+# to these exact paths on purpose -- a bare *.zip would also hide legitimate
 # release packages, which we do want tracked.
 /hardware/beta/kicad/aqroot-beta.zip
+/hardware/beta/kicad.zip
