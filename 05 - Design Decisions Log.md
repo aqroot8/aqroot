@@ -2040,3 +2040,79 @@ Markdown docs and from an MPN listing filtered to parts that already had footpri
 had none, so its MPN was never displayed. What was genuinely missing was the **Markdown
 documentation**, now added here and in [[01 - Hardware Core]] and
 [[06 - BOM and Cost Tracker]].
+
+---
+
+## MAX17048 footprint NOT locked — verification failed (2026-08-07)
+
+> **NO FOOTPRINT ASSIGNED. U14 stays blank.**
+
+Package metadata, now also recorded in [[01 - Hardware Core]]:
+
+| Item | Value |
+|---|---|
+| MPN | **MAX17048G+T10** (Analog Devices / Maxim) |
+| Package | **8-pin TDFN-EP**, 2 mm x 2 mm, 0.5 mm pitch, exposed pad |
+| Package code | **T822+3** |
+| Outline drawing | **21-0168** |
+| Recommended land pattern | **90-0065** |
+
+### The proposed stock footprint was REJECTED — wrong manufacturer
+
+`Package_DFN_QFN:DFN-8-1EP_2x2mm_P0.5mm_EP0.9x1.5mm` was put forward as the candidate. Its
+own `descr` field shows it is **not a Maxim footprint at all**:
+
+```
+(descr "DFN, 8 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/
+        Atmel-8127-AVR-8-bit-Microcontroller-ATtiny4-ATtiny5-ATtiny9-ATtiny10_Datasheet.pdf)")
+```
+
+It is derived from the **Microchip/Atmel ATtiny4/5/9/10** drawing. Assigning it would have put
+an ATtiny land pattern under a Maxim fuel gauge.
+
+### The Maxim-derived footprint is a different one
+
+`Package_DFN_QFN:TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm` cites **exactly the outline named in the
+MAX17048 datasheet**:
+
+```
+(descr "TDFN, 8 Pin (https://pdfserv.maximintegrated.com/package_dwgs/21-0168.PDF)")
+```
+
+Every copper dimension differs between the two:
+
+| | proposed (0.9x1.5) | Maxim-derived (0.8x1.2) |
+|---|---|---|
+| Provenance | Microchip ATtiny | **Maxim 21-0168** |
+| Signal pad size | 0.7 x 0.25 mm | **0.775 x 0.25 mm** |
+| Signal pad X | ±1.0 mm | **±0.9875 mm** |
+| Exposed pad | 0.9 x 1.5 mm | **0.8 x 1.2 mm** |
+| Courtyard X | ±1.6 mm | ±1.63 mm |
+
+Identical in both, and both matching the symbol: 8 signal pads, 0.5 mm row pitch, EP numbered
+**9**, pin 1 top-left with 1–4 down the left and 5–8 up the right.
+
+**"2 x 2 mm, 0.5 mm pitch, 8-pin" identifies nothing on its own** — stock KiCad ships **nine**
+such variants whose exposed pads range from 0.6 x 1.2 mm to 1.05 x 1.75 mm. The EP is the
+discriminator, and only one variant cites Maxim.
+
+### Why even the Maxim-derived one is not assigned
+
+It cites **21-0168, the package OUTLINE** — not **90-0065, the recommended LAND PATTERN**.
+Outline drawings give the component body and its exposed pad; land patterns give the PCB
+copper, which is normally not identical. This is the same gap the symbol's own `Note` recorded:
+datasheet 19-6171 Rev 7 references 21-0168 and 90-0065 as external documents and **does not
+print the TDFN exposed-pad dimensions**, so no variant could be checked against the G-package
+drawing.
+
+### To close this
+
+1. Obtain **Maxim/ADI land pattern 90-0065**.
+2. Compare against `TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm` — EP copper, signal pad size, pad
+   span, paste treatment. **Do not re-check the 0.9x1.5 variant; it is the wrong part.**
+3. If 90-0065 matches, assign that stock footprint to the symbol, the `lib_symbols` cache and
+   the U14 instance together.
+4. If any material dimension differs, create a project-local **`MAX17048_TDFN8_T822`** from
+   90-0065. Not created yet.
+
+Thermal vias on the EP remain a separate layout/thermal decision, as with the BQ25185.
