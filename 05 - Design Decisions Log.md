@@ -2893,3 +2893,136 @@ Confirmed against pages 6–7 in full:
 
 Supply note carried forward: DC characteristics give **IOVCC 1.65 / 1.8–2.8 / 3.3 V** and
 **VCI 2.5 / 2.8 / 3.3 V** — `+3V3` sits at the **maximum** of both, with absolute max 4.6 V.
+
+---
+
+## Backlight operating point VALIDATED; J1 connector moved to Hirose FH69 (2026-08-07)
+
+### 1. TPS61169 at the approved ballast operating point — TI-VALID, no restriction found
+
+Checked against `tps61169.pdf` SNVSA40B (rev. June 2024) §5.3 **Recommended Operating Conditions**:
+
+| Parameter | TI limit | AQROOT | Verdict |
+|---|---|---|---|
+| **VOUT** | **MIN = VIN**, MAX 38 V | 3.884 – 4.484 V vs VIN 3.3 V | **PASS** |
+| VIN | 2.7 – 5.5 V | 3.3 V | PASS |
+| L | 4.7 – 10 µH | see below | PASS |
+| CI | ≥ 1 µF | 4.7 µF | PASS |
+| CO | 1 – 10 µF | 1 µF | PASS |
+| F_PWM | 5 – 100 kHz | `DISP_BL_CTL` PWM | constrain firmware |
+| D_PWM | 1 – 100 % | — | constrain firmware |
+
+**TI's table literally specifies `VOUT` minimum as `VIN`.** This is the decisive line: it confirms
+both that the original direct-tie scheme was out of spec (3.104 V required at Vf min, below the
+3.3 V input) **and** that the approved ballast topology is inside spec at every Vf. **No TI
+restriction invalidates the operating point — the backlight subtask is NOT blocked.**
+
+Two firmware constraints fall out of the same tables and must be honoured by `DISP_BL_CTL`:
+PWM must stay **5–100 kHz**, and CTRL low for **> 2.5 ms shuts the device down** (`tSD`). At the
+5 kHz floor a 1 % duty gives a 198 µs low time, comfortably clear of that. CTRL logic thresholds
+are **VH 1.2 V min / VL 0.4 V max**, so a 3.3 V ESP32-S3 GPIO drives it directly.
+
+### 2. Backlight component selection — from the datasheet, not memory
+
+| Ref | Value | Source |
+|---|---|---|
+| Ballast ×4 | **39 Ω 1 % 0603** | CTO-approved; 15.6 mW each, well inside 0603 |
+| RSET | **2.55 Ω 1 % 0603** | Eq. 1, `204 mV / 80 mA`; **16.3 mW**. Equation validated against TI's own Figure 7-1, where 204 mV / 20 mA = the printed 10.2 Ω |
+| L | **4.7–10 µH**; TI Table 7-2 lists Coilcraft **LPS4018-472ML** / **LPS4018-103ML**, Cyntec **PCMB051H-4R7M** / **PCMB051H-100M** | §7.2.2.1 + Table 7-2 |
+| D | **ONSemi NSR0240** | TI names this part explicitly in §7.2.2.2 |
+| CIN | **4.7 µF** | Figure 7-1 |
+| COUT | **1 µF** | Figure 7-1 |
+
+**Computed operating point** (Vout 4.184 V typ, 80 mA, η ≈ 0.85): inductor DC current **≈ 119 mA**,
+ripple ≈ 124 mA at 4.7 µH, **peak ≈ 181 mA** — against a **1.2 A minimum** switch current limit,
+so enormous margin. TI's listed inductors are sized for their 32 V / 20 mA example and are
+oversized here; a smaller 4.7–10 µH part is electrically sufficient but **must clear the
+vendor-verification policy before an MPN is locked**.
+
+**COUT and diode voltage rating — design call-out.** §5.5 gives `VOVP_SW` = **36 / 37.5 / 39 V**.
+Under an open-LED fault the output rises toward that threshold before the device disables, so
+**COUT must be rated for the OVP voltage (50 V), not for the ~4.2 V normal output**, and the
+Schottky reverse rating must exceed it — which is exactly why TI specifies the 40 V NSR0240.
+
+### 3. Old FCI/Amphenol 62684 — DROPPED
+
+`62684-50210` / `62684-502100` is **obsolete** and is no longer a Beta candidate. The captured
+sheet-3 geometry is retained **only as historical evidence** of the panel interface. Its
+unresolved hold-down Y offset is now moot.
+
+### 4. Hirose FH69-50S-0.5SH — official data captured
+
+Source: **Hirose FH69 series catalog, Jun. 2025 issue** (`en_FH69_CAT`, 16 pp), fetched from
+hirose.com. Part **FH69-50S-0.5SH**, **HRS No. CL0580-5008-0-00**, 1,000 pcs/reel.
+
+**Connector dimensions (catalog p.6):** A **29.98**, B **28.7**, C **24.5**, D **25.57**,
+height **2.3 ±0.1**, pitch **0.5 ±0.1**, depth 6.95 ±0.1, `8.68 ±0.3` with actuator closed.
+
+**Ratings (p.4):** **0.5 A** per contact, **50 V AC/DC**, −55 to +125 °C, contact resistance
+50 mΩ initial, **mating durability 10 cycles**, insulation case LCP, contact copper alloy
+partially gold plated, retention tab brass. Halogen-free.
+
+### 5. Panel ↔ FH69 compatibility — PASS on every checkable item
+
+| Check | Panel CH280QV10-CT Rev.D | Hirose FH69-50S-0.5SH | Result |
+|---|---|---|---|
+| Contacts | 50 | 50 | **PASS** |
+| Pitch | 0.5 mm | 0.5 ±0.1 mm | **PASS** |
+| Contact span | 0.5 × (50−1) = **24.5 mm** | **C = 24.5 mm** | **PASS — exact** |
+| FPC thickness | — (to confirm from the panel's own FPC drawing) | **t = 0.3 ±0.05, gold plated** | consistent with the class; **VERIFY** against panel FPC |
+| Contact side | single-sided FPC | **top *and* bottom 2-point contact** | **PASS** — accepts either side, this is the tolerance the FH69 buys |
+| Current | 80 mA on LEDK, 20 mA per anode | **0.5 A per contact** | **PASS**, 6× margin on the worst contact |
+| Voltage | ≤ 4.5 V | 50 V | **PASS** |
+| Insertion | — | 10° upward insertion, back-flip actuator, opens delivered | mechanical clearance is a **floorplanning** constraint |
+
+The `C = 24.5 mm` match is exact and is the single most important number: the panel's contact
+span and the connector's contact span are the same value from two independent documents.
+
+**Still to confirm before the footprint is classified VERIFIED_VENDOR_EXACT:** the panel FPC's
+own thickness and tail/stiffener dimensions, which the panel datasheet does not state in the
+pages read. Hirose additionally requires a **glass-epoxy stiffener ≥ 0.3 mm** on the FPC.
+
+### 6. FH69 recommended PCB layout — fully dimensioned
+
+From catalog **p.7 "Recommended PCB Layout"**, with the n-dependent values taken from the
+official table rather than measured:
+
+| Feature | Value |
+|---|---|
+| Pitch | **0.5** |
+| Signal land | **0.3 ±0.03** wide × **1.23 ±0.03** long |
+| Contact span **C** (n=50) | **24.5** |
+| Hold-down land | **0.36 ±0.03** wide × **4.25 ±0.03** long |
+| Hold-down span **E** (n=50) | **28.73 ±0.05** |
+| Overall vertical span | **7.38 ±0.05** |
+| Positional tolerance | ⌖ 0.05 to datum Z, nX |
+| Metal mask | dedicated table, recommended thickness **t = 0.12** |
+
+**The vertical stack closes exactly**, which is a strong self-check on the reading:
+`1.23 (signal land) + 1.90 (gap) + 4.25 (hold-down) = 7.38` ✓ — so the signal row and hold-down
+rows are separated by a **1.90 mm** clear gap, with no ambiguity left of the kind that defeated
+the obsolete FCI scan.
+
+**One item deliberately left open:** whether **E** is measured **outer-to-outer or
+centre-to-centre** of the hold-down lands. The dimension arrows fall very close to the land
+centres, favouring centre-to-centre, but "very close" is not verification, and the two readings
+differ by 0.36 mm. **The footprint was therefore not generated this pass** — this is a
+single, cleanly-stated question against a page that is otherwise fully dimensioned, and Hirose
+publishes both a 2D drawing and a downloadable footprint for `CL0580-5008-0-00` that settle it
+outright.
+
+Note also from p.3/p.7: *"FH69 has a dedicated land pattern; however, the land patterns of the
+0.5 mm pitch standard products FH28/FH28K/FH52E/FH52K/FH52T/FH75 can also be used with FH69."*
+
+### 7. Status of the four planned commits
+
+| # | Commit | State |
+|---|---|---|
+| 1 | TPS61169 backlight driver | **UNBLOCKED** — operating point validated, values fixed; capture pending |
+| 2 | 50-pin display symbol | pin table verified and ready; not yet built |
+| 3 | Hirose FH69 footprint | blocked only on the **E** datum question above |
+| 4 | Complete display interface | gated on 1–3 |
+
+No schematic, symbol or footprint file was modified this pass. ERC, exclusions and netlist are
+unchanged. `IM3:IM0 = 1110` (4-wire 8-bit SPI Ⅱ) and the full 50-pin map recorded earlier remain
+valid and are unaffected by the connector change.
