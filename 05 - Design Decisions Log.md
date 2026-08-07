@@ -2356,3 +2356,66 @@ The AO3400A datasheet also does not state the G/S/D pin assignment in extractabl
 symbol's `Q_NMOS_GSD` mapping (1 Gate / 2 Source / 3 Drain — consistent with the existing
 wiring) remains unconfirmed against AOS. Both the pinout and the land pattern need the AOS
 package document.
+
+---
+
+## Vendor verification — second pass results (2026-08-07)
+
+### U12 TPS63020DSJR — BLOCKED_EXTERNAL_DOCUMENT (confirmed, not assumed)
+
+The TI TPS63020 datasheet was retrieved and searched in full (34 pages). It confirms
+**VSON / DSJ / 14 pins** in the packaging tables, but contains **no PACKAGE OUTLINE and no
+LAND PATTERN EXAMPLE** — unlike the TPS61023/TPS22918/TCA9517/TCA9535/TPD2E009/BQ25185
+datasheets, which all carry both. TI publishes the DSJ mechanical drawing separately. No
+generic VSON substitute permitted.
+
+### L1 / L2 — electrical data now recorded; footprints still blocked
+
+Both datasheets retrieved and their **electrical and body data extracted unambiguously**. This
+closes the earlier "take from the datasheet, do not record from memory" placeholders:
+
+| | L1 Coilcraft XFL4020-152MEC | L2 Würth 74438357010 (WE-MAPI 4030) |
+|---|---|---|
+| Inductance | 1.5 µH ±20% | 1 µH ±20% |
+| DCR | 14.40 mΩ typ / 15.80 max | 11.6 mΩ typ / 13.5 max |
+| Isat | 4.1 A (10%) / 4.4 (20%) / 4.6 (30%) | 6.2 A (10%) / 12.5 A (30%) |
+| Irms / IRP | 6.7 A (20 K) / 9.1 A (40 K) | IRP,40K 10.25 A max |
+| SRF | 59 MHz | 59 MHz |
+| Body | 4.0 × 4.0 mm, 2.10 max | 4.1 × 4.1 mm, 3.1 max |
+| Source | Coilcraft doc 745-1 rev 03/10/26 | Würth 74438357010 datasheet |
+
+**L2's ratings satisfy the outstanding requirement** that it be checked against the TI TPS61023
+5 V boost design — 6.2 A saturation and 10.25 A rated current are far above any NFC PA draw.
+
+**Both footprints remain BLOCKED.** The recommended land patterns print as three bare numbers —
+Coilcraft **0.98 / 2.37 / 3.4**, Würth **1.39 / 3.35 / 3.7** — and text extraction does not
+recover which number is the span. For each, **two different pad-centre solutions are
+arithmetically valid**:
+
+- Coilcraft: span 3.4 → gap 1.44, **or** span 2.37 → gap 0.41
+- Würth: span 3.7 → gap 0.92, **or** span 3.35 → gap 0.57
+
+Choosing wrong misplaces both pads by roughly half a millimetre on a 4 mm part. Not guessed.
+**Resolvable in seconds by eye from either drawing**, or by using Würth's own EDA/KiCad asset.
+
+Also recorded: Coilcraft marks the **start (short) lead** — connect high dv/dt there for lowest
+EMI — so whichever footprint is built must carry that orientation marker. Würth marks
+start-of-winding equivalently.
+
+### Retrieval failures this pass
+
+| Ref | Source | Result |
+|---|---|---|
+| J2 | Molex 5025700893 drawing | request **timed out** |
+| SW9 | C&K / Littelfuse JS | **HTTP 403** (unchanged) |
+| U10 | ST USBLC6-2 | **timed out** (third attempt) |
+| U5 | ADI MAX98357A | **connection reset** (unchanged) |
+| Q1 | AOS separate SOT-23 package spec | device datasheet has no package drawing |
+
+### Method note — where text extraction stops being sufficient
+
+Dimension **callouts** extract reliably; **which geometry a callout attaches to** does not.
+That was harmless for the TI leaded packages, where pad width/length/pitch are individually
+labelled (`6X (0.67)`, `6X (0.3)`, `4X (0.5)`), and it is decisive for two-terminal magnetics,
+where the land pattern is three unlabelled numbers. **Any part whose land pattern is given as
+bare numbers without per-feature labels needs a human to read the drawing.**

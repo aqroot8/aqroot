@@ -9566,7 +9566,7 @@
 				)
 			)
 		)
-		(property "Note" "TPS61023 NFC 5V boost inductor (L_NFC_BOOST). Body size, DCR, Isat and current rating NOT recorded here - take them from the Wurth datasheet. Current rating must still be checked against the TI TPS61023 5V design calculation."
+		(property "Note" "Wurth datasheet for 74438357010 (WE-MAPI 4030): 1 uH +/-20%; RDC 11.6 mOhm typ / 13.5 max; Isat 6.2 A (10% drop) / 12.5 A (30%); IRP,40K 10.25 A max; fres 59 MHz. Body 4.1 x 4.1 mm +/-0.2, height 3.1 mm max. Marked with start-of-winding. These ratings supersede the earlier 'take from datasheet' placeholder and satisfy the outstanding check that L2 be rated for the TI TPS61023 5V boost. FOOTPRINT STILL BLOCKED: recommended land pattern prints 1.39 / 3.35 / 3.7 mm but which is the span is not recoverable from text; prefer Wurth's own EDA/KiCad asset."
 			(at 133.35 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -12011,7 +12011,7 @@
 				)
 			)
 		)
-		(property "Note" "1.5 uH +/-20%, LCSC C3033018. Isat/DCR/current rating NOT recorded here - take them from the Coilcraft datasheet at BOM lock rather than from memory."
+		(property "Note" "Coilcraft doc 745-1 rev 03/10/26: 1.5 uH +/-20%; DCR 14.40 mOhm typ / 15.80 max; SRF 59 MHz typ; Isat 4.1 A (10% drop) / 4.4 A (20%) / 4.6 A (30%); Irms 6.7 A (20K rise) / 9.1 A (40K). Body 4.0 x 4.0 mm +/-0.3, height 2.10 mm max, terminals 0.82 x 1.57 mm. LCSC C3033018. Coilcraft marks the start (short) lead - connect high dv/dt there for lowest EMI; the footprint must carry that orientation marker. FOOTPRINT STILL BLOCKED: the recommended land pattern prints 0.98 / 2.37 / 3.4 mm but text extraction does not reveal which dimension is the span, so pad centres cannot be fixed without reading the drawing."
 			(at 248.92 40.64 0)
 			(hide yes)
 			(show_name no)
