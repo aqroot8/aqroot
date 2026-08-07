@@ -1983,3 +1983,60 @@ NFC RF / MATCHING / ANTENNA REMAIN DO NOT ROUTE
 - [ ] Update `libraries/README.md` and the `ST25R3916_NFC_PLACEHOLDER` symbol fields when
       the footprint work is actually done — **not before**, so the library README keeps
       describing the symbol as it really is.
+
+---
+
+## BQ25185 package + footprint LOCKED: BQ25185DLHR / DLH0010A (2026-08-07)
+
+| Item | Value |
+|---|---|
+| MPN | **BQ25185DLHR** (Texas Instruments) |
+| Package | **DLH — WSON-10**, 2.2 x 2.0 mm body, 0.4 mm pitch, exposed thermal pad |
+| Footprint | **`Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm`** (KiCad stock) |
+| Source | TI BQ25185 datasheet / DLH0010A package drawing |
+
+### Why a stock footprint was accepted here
+
+Every other unresolved power device needs a project-local land pattern because no stock
+KiCad footprint matches. This one is the exception, and the reason is specific: the stock
+footprint is **not a generic WSON-10** — it is TI's own DLH0010A land pattern, and the
+KiCad library file cites the BQ25185 datasheet by URL in its own `descr` field:
+
+```
+(descr "Texas DLH0010A WSON, 10 Pin (https://www.ti.com/lit/gpn/BQ25185)")
+```
+
+Geometry checked before assigning, every item matching:
+
+| Attribute | TI DLH spec | KiCad footprint | |
+|---|---|---|---|
+| Package designator | DLH | `Texas_DLH0010A` | ✅ |
+| Signal pads | WSON-10 | pads 1–10, five per side | ✅ |
+| Pitch | 0.4 mm | 0.4 mm (y = -0.8, -0.4, 0, +0.4, +0.8) | ✅ |
+| Body | 2.2 x 2.0 mm | F.Fab outline -1.1..+1.1 x -1.0..+1.0 | ✅ |
+| Exposed pad | yes | pad **11**, 0.9 x 1.5 mm rect at origin | ✅ |
+
+**Symbol/footprint pin agreement:** the project symbol declares pins 1–10 plus **pin 11 =
+EP (power_in)**; the footprint provides pads 1–10 plus **pad 11 = exposed pad**. Exact 1:1,
+and the EP numbering agrees — which is the usual failure mode with WSON parts.
+
+### Residual checks — NOT closed by this entry
+
+- **Confirm against TI's *recommended land pattern* section, not just the package drawing.**
+  TI datasheets publish both; KiCad's footprint follows the land pattern, but that has not
+  been read directly here.
+- **Thermal vias are not included.** A `..._ThermalVias` variant of this footprint exists.
+  Whether to use it is a thermal/layout decision for the power review, not a package
+  decision. The base footprint was chosen as the neutral option.
+- **Charge-current setting** (`ISET`, start ~500 mA pending enclosure thermal testing) is
+  unaffected by this entry.
+
+### Correction to the previous audit
+
+An earlier audit reported the BQ25185 as having "no MPN and no package recorded". **That was
+wrong.** The schematic symbol already carried `MPN = BQ25185DLHR`, `Manufacturer = Texas
+Instruments` and a DLH/WSON-10 `Package` note. The error came from grepping only the
+Markdown docs and from an MPN listing filtered to parts that already had footprints — U11
+had none, so its MPN was never displayed. What was genuinely missing was the **Markdown
+documentation**, now added here and in [[01 - Hardware Core]] and
+[[06 - BOM and Cost Tracker]].

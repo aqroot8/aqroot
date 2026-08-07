@@ -26,7 +26,7 @@ tags: [bom, cost, budget]
 | NFC 5V boost **LOCKED**: TI **TPS61023DRLR**, DRL / SOT563 6-pin (1.2×1.6mm) — **not a generic SOT-23**. Plus `L_NFC_BOOST` ~1µH shielded low-DCR, `C_NFC_BOOST_IN`/`C_NFC_BOOST_OUT`, FB divider — **all values from the TI 5V reference/EVM, MPNs provisional** | $1-4 **(provisional)** |
 | Physical hard-off slide switch (SPST maintained, TH mounting tabs preferred) — **MPN provisional pending Field Slate mechanical review**, footprint must match a real candidate | $0.30-1 |
 | LiPo 2000mAh | $8-14 |
-| bq25185 charger + power-path board | $5-10 |
+| **BQ25185DLHR** charger + power-path — TI, **DLH / WSON-10**, 2.2 x 2.0 mm, 0.4 mm pitch, exposed thermal pad. Footprint `Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm` (KiCad stock, derived from TI DLH0010A) | $5-10 |
 | **Reverse-polarity protection — NO FINAL P/N CLAIMED (parked)**. *Provisional only:* ADI **LTC4368-1** controller (MSOP / 3×3 DFN) + **2x AO3400A-class** N-channel FETs (AOS AO3400A, LCSC C20917, SOT-23) + sense resistor, UV/OV divider, timer/inrush parts and gate clamp — **all values and P/Ns unselected**. See note below. | $2-6 **(provisional estimate — not a quote)** |
 | IR: TSOP38238 receiver + TSAL6200 940nm emitter + low-side MOSFET driver stage | $2-6 |
 | 7x tactile buttons (D-pad up/down/left/right + A/B + Home) + physical power switch | $2-5 |
