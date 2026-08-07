@@ -165,3 +165,22 @@ architecture PCB-ready; it does not replace RF measurement/tuning.
 The four-radio + ground-plane needs point toward a **4-layer PCB** (signal / ground / power /
 signal), not 2-layer. A continuous ground plane is hard to maintain on 2 layers with this
 much routing. 4-layer also helps EMI/cert. Budget for 4-layer in the PCB cost.
+
+---
+
+## Beta Hidden-Antenna Picks (post-fab, plug-on - DO NOT ROUTE)
+Selected flex/FPC antennas to make Beta look like the final product (hidden antennas).
+These plug onto the module IPEX connectors - ZERO PCB impact (no footprint, pad, or routing).
+
+- 915 MHz (E22-900M22S / SX1262): Taoglas FXP890.07.0100C - u.FL / MHF I connector
+- 433 MHz (E07-400M10S / CC1101): Taoglas FXP450.07.0100C - u.FL / MHF I connector
+
+Connector note: MUST be u.FL / MHF I variant. MHF II does NOT mate with the module IPEX.
+Order timing: after PCB fab (they connect to the module, not the board).
+Layout requirement: place each module's antenna end at a board edge with RF keep-out around it
+  (no ground pour, no metal, away from battery). This is normal module placement, not a design
+  change.
+Status: DO NOT ROUTE. Selection recorded; final placement/performance pending post-Kickstarter
+  RF pass (NanoVNA + range test). 433 MHz hidden = expected range compromise, acceptable for
+  Beta demo.
+NFC (13.56 MHz) and WiFi/BLE (2.4 GHz, WROOM onboard) are already internal - not affected.
