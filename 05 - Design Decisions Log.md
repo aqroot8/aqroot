@@ -2419,3 +2419,65 @@ That was harmless for the TI leaded packages, where pad width/length/pitch are i
 labelled (`6X (0.67)`, `6X (0.3)`, `4X (0.5)`), and it is decisive for two-terminal magnetics,
 where the land pattern is three unlabelled numbers. **Any part whose land pattern is given as
 bare numbers without per-feature labels needs a human to read the drawing.**
+
+---
+
+## Footprint verification — third pass (2026-08-07)
+
+### Method advance: rasterize the drawing
+
+The land-pattern ambiguity that blocked L1/L2 is **resolved**. Vendor PDF pages are now
+rendered to PNG with PyMuPDF and the dimension **leader lines read visually**, so which callout
+attaches to which geometry is known rather than inferred. This is the fix for the limitation
+recorded in the previous pass, and it should be the default for any drawing whose land pattern
+is given as bare numbers.
+
+It also proved the earlier text-order guesses **wrong**: for Coilcraft, neither of the two
+arithmetic candidates was correct — 2.37 turned out to be centre-to-centre, not a span.
+
+### VERIFIED_VENDOR_EXACT — new project-local footprints
+
+| Ref | MPN | Source | Land pattern as drawn |
+|---|---|---|---|
+| **L1** | XFL4020-152MEC | Coilcraft doc 745-3 rev 03/10/26 | pad **0.98 × 3.4**, **2.37 centre-to-centre** |
+| **L2** | 74438357010 | WE datasheet rev 003.001 (2024-02-27) | span **3.35** o/o, gap **1.39**, length **3.7** → pad **0.98 × 3.7**, **2.37 c-c** |
+
+Cross-checks that raised confidence: Coilcraft's terminals are 0.82 wide at 3.25 typ outer
+span → ~2.43 terminal centres against a 2.37 land spacing; and the two parts independently
+produce the **same 0.98 mm pad width and 2.37 mm spacing**, as expected for two 4 mm-class
+inductors from different vendors.
+
+Both footprints carry their vendor orientation marker — Coilcraft's start (short) lead bar
+(*connect high dv/dt there for lowest EMI*), Würth's Start-of-Winding dot. Würth's **"No vias
+and traces in restricted area"** is reproduced as a `Dwgs.User` outline over the 1.39 mm
+inter-pad gap.
+
+### VERIFIED_IPC_ALTERNATE — Q1
+
+**AO3400A** — AOS publishes package geometry **separately** from the device datasheet, at
+`res/package/SOT23.pdf` (doc PO-00001 rev N). Retrieved and rasterized:
+
+- Recommended land pattern: pads **0.80 × 0.80**, row-to-row **2.40**, pitch **0.95**
+- Package: e = 0.95 BSC, e1 = 1.90 BSC, D = 2.90 nom, E = 2.80 nom, E1 = 1.60 nom, b = 0.40 nom
+
+KiCad `Package_TO_SOT_SMD:SOT-23` has 3 pads, **pitch 0.95 exact**, same 2+1 lead arrangement,
+pads 1.475 × 0.6 at ±0.9375. Copper proportions differ (AOS shorter/wider, KiCad longer/
+narrower) but both straddle the 2.80 mm lead span; ordinary leaded package, Class A → assigned.
+
+**Pin order confirmed** from the datasheet package view and symbol: **G and S on the two-lead
+side, D on the single-lead side** = 1 G / 2 S / 3 D, matching `Q_NMOS_GSD` and the existing
+wiring (1→IR_GATE, 2→GND, 3→IR_LED_K). The earlier "unconfirmed pin order" caveat is closed.
+
+### Still BLOCKED_EXTERNAL_DOCUMENT
+
+| Ref | Missing | Attempts |
+|---|---|---|
+| U12 | TI **DSJ** package drawing (separate from datasheet) | full 34-page datasheet has no outline/land pattern |
+| U14 | Maxim **90-0065** | no exception |
+| SW9 | C&K JS recommended PCB layout | ckswitches 301 → littelfuse **403** |
+| U10 | ST USBLC6-2 | st.com **timed out 4×** |
+| U5 | ADI MAX98357A (confirm T1633-5) | analog.com **connection reset** |
+
+### Not reached
+
+J2 (Molex), LS1 (Same Sky), J3 (GCT), U7/U8 (Ebyte), U9 (ST EDA), J1 (Adafruit + mating FPC), D1 (Vishay 81010).
