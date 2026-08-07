@@ -2528,8 +2528,7 @@
 		)
 		(uuid "0fd166ed-cb1b-46de-bb6b-1c91bb7efdda")
 	)
-	(hierarchical_label "BTN_B_N"
-		(shape input)
+	(label "BTN_B_N"
 		(at 101.6 90.17 0)
 		(effects
 			(font
@@ -2660,8 +2659,7 @@
 		)
 		(uuid "6a983630-e844-4f9f-829d-b59178374ada")
 	)
-	(hierarchical_label "BTN_UP_N"
-		(shape input)
+	(label "BTN_UP_N"
 		(at 101.6 77.47 0)
 		(effects
 			(font
@@ -2693,8 +2691,7 @@
 		)
 		(uuid "8810c901-d8c5-400e-87c1-b8d6fcb76e74")
 	)
-	(hierarchical_label "BTN_RIGHT_N"
-		(shape input)
+	(label "BTN_RIGHT_N"
 		(at 101.6 85.09 0)
 		(effects
 			(font
@@ -2792,8 +2789,7 @@
 		)
 		(uuid "b096c4ca-6e04-409a-b4b7-93e6555f61d0")
 	)
-	(hierarchical_label "BTN_LEFT_N"
-		(shape input)
+	(label "BTN_LEFT_N"
 		(at 101.6 82.55 0)
 		(effects
 			(font
@@ -2814,8 +2810,7 @@
 		)
 		(uuid "b528d0af-b94f-4c94-8a95-6f8df4005a5d")
 	)
-	(hierarchical_label "BTN_DOWN_N"
-		(shape input)
+	(label "BTN_DOWN_N"
 		(at 101.6 80.01 0)
 		(effects
 			(font
@@ -2825,8 +2820,7 @@
 		)
 		(uuid "b5aed7bf-2735-411e-8566-e9d76a8aabd0")
 	)
-	(hierarchical_label "BTN_A_N"
-		(shape input)
+	(label "BTN_A_N"
 		(at 101.6 87.63 0)
 		(effects
 			(font
@@ -2858,8 +2852,7 @@
 		)
 		(uuid "cd498d5f-3cc0-44f8-8592-02f7bd4f6d38")
 	)
-	(hierarchical_label "BTN_HOME_N"
-		(shape input)
+	(label "BTN_HOME_N"
 		(at 101.6 92.71 0)
 		(effects
 			(font

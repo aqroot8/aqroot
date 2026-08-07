@@ -1404,8 +1404,7 @@
 		)
 		(uuid "cebb1b90-3fea-467e-a73f-edb4da519be5")
 	)
-	(hierarchical_label "BMI270_INT1_RAW"
-		(shape output)
+	(label "BMI270_INT1_RAW"
 		(at 77.47 91.44 180)
 		(effects
 			(font
