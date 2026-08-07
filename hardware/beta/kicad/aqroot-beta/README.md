@@ -62,12 +62,15 @@ bench test that passed was an MCP23017, a different part.
 
 ## Explicit unresolved parts
 
-* External community-header I2C isolator or bus switch — **UNSELECTED.** Candidates proposed
-  for evaluation (TCA9517A / PCA9515A) are **proposals, not decisions** — see
-  [[07 - Build TODO Tracker]]
-* ACC_PWR_EN accessory load switch — **UNSELECTED.** Candidate proposed for evaluation
-  (TPS22918) is a **proposal, not a decision** — see [[07 - Build TODO Tracker]]
+* ~~External community-header I2C isolator or bus switch — **UNSELECTED.**~~ **LOCKED
+  2026-08-07: TI `TCA9517ADGKR`, DGK / VSSOP-8** (U16). PCA9515A is not selected.
+* ~~ACC_PWR_EN accessory load switch — **UNSELECTED.**~~ **LOCKED 2026-08-07: TI
+  `TPS22918DBVR`, DBV / SOT-23-6** (U15).
 * **Battery reverse-polarity protection — topology PARKED, see below**
+
+> Both former candidates are now firm part locks. Their **footprints remain UNVERIFIED** —
+> locking the part is a separate gate from comparing KiCad copper against the manufacturer
+> land pattern. See *Nontrivial footprint verification policy* in [[05 - Design Decisions Log]].
 
 ## 01_POWER_TREE — sheet status note to place (2026-07-31)
 
