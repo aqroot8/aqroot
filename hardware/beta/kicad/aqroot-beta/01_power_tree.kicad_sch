@@ -9544,7 +9544,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010"
 			(at 133.35 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -11989,7 +11989,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:Coilcraft_XFL4020"
 			(at 248.92 40.64 0)
 			(hide yes)
 			(show_name no)
