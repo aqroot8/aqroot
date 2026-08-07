@@ -97,6 +97,10 @@ SPI driver (Alpha raw-SPI validation is the foundation). BOM must swap PN532 -> 
 - Beta places NFC as a THIRD device on shared SPI Bus B (CS on GPIO9, IRQ on GPIO38) — a
   config not proven in Alpha (Alpha ran NFC on its own pins); validate on Beta.
 - Antenna: rear PCB/flex loop with matching network — see [[12 - RF and Antenna Plan v0.1]].
+> UPDATED 2026-08-07: the package is now fixed — **ST25R3916-AQET**, discrete, with an ST
+> reference-derived tuned PCB loop and ST reference matching network. See *NFC package
+> LOCKED: ST25R3916-AQET* at the end of this doc. The RF/matching/antenna work is still
+> uncaptured and remains DO NOT ROUTE.
 
 ## Sensors
 - IMU: 6-axis (accel + gyro, e.g. BMI270) instead of true 9-axis. No magnetometer —
@@ -1927,3 +1931,55 @@ MANUFACTURER DRAWING.
 Pin assignments, the shared SPI Bus B topology, CS discipline, and the `SX1262_RST_N` /
 `CC1101_GDO0` control nets are all unaffected — this decision picks packages, not pins. The
 dual-radio commitment itself is unchanged; see **Radio: DUAL-RADIO LOCKED** above.
+
+---
+
+## NFC package LOCKED: ST25R3916-AQET (2026-08-07)
+
+> **DISCRETE ST25R3916. NOT A PLUG-ON NFC MODULE.**
+
+| Item | Value |
+|---|---|
+| Part | **STMicroelectronics ST25R3916-AQET** |
+| Architecture | **Discrete** ST25R3916 on the AQROOT main board |
+| Antenna | **ST reference-derived tuned PCB loop** — rear face, per [[12 - RF and Antenna Plan v0.1]] §2 |
+| Matching | **ST reference matching network** — not an in-house design |
+| Interface | SPI (Bus B, third device), unchanged |
+
+This closes the package question recorded against `ST25R3916_NFC_PLACEHOLDER` in
+`hardware/beta/kicad/aqroot-beta/libraries/README.md`, which until now read *"MPN
+`ST25R3916` — no package suffix, because the package is not selected"*. The **-AQET**
+suffix is now fixed and the MPN is orderable.
+
+Note the contrast with the two sub-GHz radios: those are **certified modules**
+(E22-900M22S, E07-400M10S) with their RF front ends inside the module and the antenna on
+an IPEX port. NFC is the opposite — a **bare IC whose RF front end, matching network and
+antenna are all AQROOT board content**. See *Radio modules LOCKED* above; do not
+generalise the module approach to NFC.
+
+### What this does NOT change
+
+```
+NFC RF / MATCHING / ANTENNA REMAIN DO NOT ROUTE
+```
+
+- **U9 is still `ST25R3916_NFC_PLACEHOLDER`**, still `on_board no`, still with **no
+  footprint**. The symbol has not been touched.
+- **No land pattern exists.** Selecting a package makes the correct footprint
+  *obtainable*; it does not make one *exist*. It must be built from the ST package
+  drawing for the -AQET variant, and the exposed pad treated per the datasheet.
+- **The antenna and matching network are not captured.** `NFC_RFO1/RFO2/RFI1/RFI2_TBD`
+  and `NFC_XIN/XOUT_TBD` remain parked, and their six ERC exclusions stand unchanged.
+- **The symbol's logical pins 1–15 are still placeholders** and will change when the real
+  pinout is applied.
+
+### Still open
+
+- [ ] Build the -AQET land pattern from the ST package drawing; confirm exposed-pad
+      requirement. **Do not use a generic QFN footprint.**
+- [ ] Capture the ST reference matching network and the tuned PCB loop; only then may the
+      `*_TBD` RF nets be resolved and the DO NOT ROUTE markers revisited.
+- [ ] Crystal / reference-clock network (`NFC_XIN/XOUT_TBD`) per the ST reference design.
+- [ ] Update `libraries/README.md` and the `ST25R3916_NFC_PLACEHOLDER` symbol fields when
+      the footprint work is actually done — **not before**, so the library README keeps
+      describing the symbol as it really is.

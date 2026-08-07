@@ -1026,6 +1026,20 @@ filter would imply a module family had been chosen, and none has.
 | Description | Functional placeholder for AQROOT built-in ST25R3916 NFC/RFID reader front-end |
 | Datasheet | <https://www.st.com/en/nfc/st25r3916.html> — ST's official product page |
 
+> **PACKAGE RESOLVED 2026-08-07 — `ST25R3916-AQET`.** The reason the `MPN` field above
+> carries no suffix ("because the package is not selected") has expired: the package IS now
+> selected. The field itself is **unchanged and still reads `ST25R3916`** — updating it is
+> part of the footprint work, not the decision, so this table continues to describe the
+> symbol exactly as it stands. See *NFC package LOCKED: ST25R3916-AQET* in
+> [[05 - Design Decisions Log]].
+>
+> **Nothing else about this symbol changed.** Still no footprint, still `on_board no`,
+> logical pins 1–15 still placeholders that **will** change. The architecture is a
+> **discrete** ST25R3916 with an ST reference-derived tuned PCB loop — unlike the two
+> sub-GHz radios, its RF front end, matching network and antenna are all AQROOT board
+> content, so `NFC_RFO1/RFO2/RFI1/RFI2_TBD` and `NFC_XIN/XOUT_TBD` remain parked and
+> **DO NOT ROUTE** still stands.
+
 > **This symbol is functional only.** It exists so the NFC subsystem's SPI, IRQ,
 > supply and RF nets can be drawn, named and ERC-checked before the physical
 > implementation is designed. It **must not** be read as implying a package pinout,
