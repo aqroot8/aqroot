@@ -7538,6 +7538,50 @@
 				)
 			)
 		)
+		(property "Note" "Community-header I2C buffer. LOCKED 2026-08-07, superseding the earlier TCA9517A / PCA9515A candidate framing. Powered-off high-Z and no accessory-side back-powering still require bring-up validation."
+			(at 229.87 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "DGK / VSSOP-8, 3 mm x 3 mm, 0.65 mm pitch - LOCKED. Footprint Package_SO:VSSOP-8_3x3mm_P0.65mm is tagged Texas_DGK0008A but has NOT been compared against the TI DGK land pattern."
+			(at 229.87 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 229.87 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TCA9517ADGKR"
+			(at 229.87 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Level-Translating I2C Bus Buffer/Repeater, VSSOP-8"
 			(at 229.87 76.2 0)
 			(hide yes)

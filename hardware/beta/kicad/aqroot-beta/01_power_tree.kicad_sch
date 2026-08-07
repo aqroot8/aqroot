@@ -9329,7 +9329,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1uH SHIELDED"
+		(property "Value" "1uH"
 			(at 134.62 154.9399 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9352,6 +9352,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "TPS61023 NFC 5V boost inductor (L_NFC_BOOST). Body size, DCR, Isat and current rating NOT recorded here - take them from the Wurth datasheet. Current rating must still be checked against the TI TPS61023 5V design calculation."
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "WE-LQS series shielded SMT power inductor - LOCKED. Footprint BLOCKED: needs the official Wurth recommended land pattern."
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Wurth Elektronik"
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "74438357010"
 			(at 133.35 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -11731,7 +11775,7 @@
 				)
 			)
 		)
-		(property "Value" "1.5uH XFL4020-152MEC"
+		(property "Value" "1.5uH"
 			(at 248.92 38.1 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11753,6 +11797,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 248.92 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "1.5 uH +/-20%, LCSC C3033018. Isat/DCR/current rating NOT recorded here - take them from the Coilcraft datasheet at BOM lock rather than from memory."
+			(at 248.92 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "XFL4020 shielded moulded power inductor, 4.0 x 4.0 x 2.1 mm max - LOCKED. Footprint BLOCKED: needs the official Coilcraft XFL4020 recommended land pattern; no stock KiCad XFL footprint exists."
+			(at 248.92 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Coilcraft"
+			(at 248.92 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "XFL4020-152MEC"
 			(at 248.92 40.64 0)
 			(hide yes)
 			(show_name no)

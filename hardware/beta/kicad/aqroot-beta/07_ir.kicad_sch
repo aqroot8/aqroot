@@ -2327,7 +2327,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NMOS_TBD"
+		(property "Value" "AO3400A"
 			(at 203.2 48.2599 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2350,6 +2350,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR LED low-side driver. Symbol Transistor_FET:Q_NMOS_GSD maps pin 1 Gate / 2 Source / 3 Drain, matching the existing wiring (1 -> IR_GATE, 2 -> GND, 3 -> IR_LED_K). VERIFY that AO3400A pin order is G/S/D against the AOS datasheet before assigning a footprint. Vds/Id/Rds(on) NOT recorded here."
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SOT-23-3 - LOCKED. Footprint BLOCKED: needs the official AOS recommended land pattern."
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "AO3400A"
 			(at 196.85 46.99 0)
 			(hide yes)
 			(show_name no)
