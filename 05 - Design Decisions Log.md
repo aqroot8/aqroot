@@ -2648,3 +2648,89 @@ value in committing a footprint whose mechanical anchors are uncertain.
 Intended mapping once unblocked: DISP_RST_N to 10, SPI_A_SCK to 37, SPI_A_MOSI to 34,
 SPI_A_MISO to 33 (mode II), DISP_CS_N to 38, DISP_DC to 36, I2C_SCL to 44, I2C_SDA to 45,
 touch IRQ to 46, touch reset to 47.
+
+---
+
+## Metadata drift closure: SW9, U7, U8, U9, J3 (2026-08-07)
+
+Five symbols carried metadata that contradicted decisions already locked elsewhere in this
+log. No external vendor document was needed for any of them — this is propagation of existing
+locks, not new selection. **Connectivity and ERC verified byte-identical before and after.**
+
+### SW9 — stale SYMBOL CONFLICT note removed, pole mapping VERIFIED
+
+The `Note` still read *"MUST BE RESOLVED BEFORE FOOTPRINT … this instance uses Switch:SW_SPST
+which has only 2 pins … Changing the symbol is an approval-gated change and was NOT made here."*
+That is no longer true — the instance **is** `Switch:SW_SPDT` with pins 1/2/3.
+
+**Pole mapping now verified 1:1, closing the numbering question:**
+
+| | KiCad `SW_SPDT` | C&K JS102011SAQN |
+|---|---|---|
+| Pole / common | **pin 2**, name `B`, alone at (−5.08, 0) | **terminal 2 = C = COMMON/POLE** |
+| Throw | pin 1, name `A`, at (5.08, +2.54) | terminal 1 |
+| Throw | pin 3, name `C`, at (5.08, −2.54) | terminal 3 |
+
+The KiCad symbol places pin 2 by itself on the opposite side of the body from pins 1 and 3,
+which is what makes it the pole. It coincides with the confirmed C&K common terminal, so the
+numbering needs **no cross-map**.
+
+Wiring as built, from the netlist: pin 2 → `BQ25185_SYS` (source), pin 1 → `U12 EN` + `TP13`,
+pin 3 → unused throw carrying a `no_connect`. Electrical intent unchanged and still
+SPST-in-practice (VINA → switch → EN, never switching GND).
+
+**SW9 is no longer blocked on symbol numbering — only on land-pattern geometry** from the C&K
+PCB layout drawing.
+
+### U7 / U8 — Ebyte module lock propagated (was `Manufacturer: TBD`, `MPN: TBD`)
+
+`12 - RF and Antenna Plan` locks both radios to Ebyte modules and states the module lock
+*"removed that assumption"* of a board-level front-end. The symbols still said TBD.
+
+| Ref | Symbol value | Manufacturer | MPN | Band / silicon |
+|---|---|---|---|---|
+| U7 | `CC1101_RADIO_PLACEHOLDER` | Ebyte | **E07-400M10S** | 433 MHz, CC1101 |
+| U8 | `SX1262_MODULE_PLACEHOLDER` | Ebyte | **E22-900M22S** | 915 MHz, SX1262 |
+
+Each `Package` field now also records the standing constraint: the module owns its matching
+network and presents a matched 50-ohm IPEX port, so **no matching network and no separate U.FL
+test connector belong on the main PCB**. Footprints remain BLOCKED pending Ebyte mechanical
+drawings.
+
+### U9 — package suffix propagated (was `MPN: ST25R3916`)
+
+The `NFC package LOCKED: ST25R3916-AQET` decision explicitly closed the open question recorded
+against this placeholder, which was *"`ST25R3916` — no package suffix, because the package is
+not selected"*. The symbol never received the suffix. Now **`ST25R3916-AQET`**, VQFN-32
+(5×5 mm), discrete — **not** a plug-on module. `VDD_PA` from the switched 5 V boost, `VDD_IO`
+remains `+3V3`. Footprint still BLOCKED pending the ST package outline.
+
+### J3 — manufacturer/MPN recorded for the first time, suffix kept UNCONFIRMED
+
+J3 had a footprint (`…GCT_USB4105-xx-A_16P_TopMnt_Horizontal`) but **no `Manufacturer` and no
+`MPN` property at all**. Added: GCT, `USB4105-GF-A-120`. The `Package` field states plainly
+that the **family** is locked while the **variant suffix is a candidate and NOT confirmed** —
+the suffix and its shell-stake configuration at the locked 1.6 mm board thickness must still be
+verified against the GCT drawing. Recording the candidate does not promote it to verified.
+
+### Tooling defect found and fixed (worth keeping)
+
+The first attempt at this edit **silently corrupted both sheets** — 148 nets became 151. Cause:
+the property-editing helper counted `(` and `)` with a plain per-line count, but property values
+legitimately contain parentheses — `(Global Connector Technology)`, `(5x5 mm)`, `(3 signal pads
+plus mounting tabs)`. Those inner parens skewed every depth walk, so inserted blocks landed
+inside the wrong s-expression. A whole-file paren-balance assertion did **not** catch it,
+because parens inside string literals are themselves balanced.
+
+Fixed by counting depth **only outside double-quoted strings**, and by cloning a real sibling
+property block rather than synthesising one. The corrupted attempt was reverted from backups and
+never committed; the netlist was diffed against a restored-baseline export to prove it.
+
+**Any future s-expression tooling in this project must use quote-aware paren counting.**
+
+### Verification
+
+- Netlist: **148 nets before, 148 after, zero differing nets.**
+- ERC: 4 unique `(type, uuid)` violation groups, **all four carrying an `excluded` copy →
+  0 real ERC items**, unchanged from baseline. No items introduced, none removed.
+- Files touched: `01_power_tree.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch` only.

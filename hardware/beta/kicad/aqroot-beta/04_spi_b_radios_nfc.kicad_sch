@@ -3784,7 +3784,18 @@
 				)
 			)
 		)
-		(property "MPN" "ST25R3916"
+		(property "MPN" "ST25R3916-AQET"
+			(at 91.44 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "VQFN-32 (5x5 mm), discrete NFC front-end - part AND package LOCKED per 'NFC package LOCKED: ST25R3916-AQET'. NOT a plug-on NFC module. Footprint BLOCKED: needs the official ST package outline / recommended footprint. VDD_PA runs from the switched 5V boost; VDD_IO REMAINS +3V3."
 			(at 91.44 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -4233,7 +4244,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "TBD"
+		(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
 			(at 217.17 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -4244,7 +4255,18 @@
 				)
 			)
 		)
-		(property "MPN" "TBD"
+		(property "MPN" "E22-900M22S"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Certified SX1262-based 915 MHz SMD module with on-board RF front-end and IPEX/u.FL port - part LOCKED per '12 - RF and Antenna Plan'. Footprint BLOCKED: needs the official Ebyte E22-900M22S mechanical drawing / recommended land pattern. The module owns its matching network; NO 915 MHz matching network or U.FL test connector belongs on the main PCB."
 			(at 217.17 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -4592,7 +4614,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "TBD"
+		(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
 			(at 87.63 57.15 0)
 			(hide yes)
 			(show_name no)
@@ -4603,7 +4625,18 @@
 				)
 			)
 		)
-		(property "MPN" "TBD"
+		(property "MPN" "E07-400M10S"
+			(at 87.63 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Certified CC1101-based 433 MHz SMD module with on-board RF front-end and IPEX/u.FL port - part LOCKED per '12 - RF and Antenna Plan'. Footprint BLOCKED: needs the official Ebyte E07-400M10S mechanical drawing / recommended land pattern. The module owns its matching network; NO 433 MHz matching network or U.FL test connector belongs on the main PCB."
 			(at 87.63 57.15 0)
 			(hide yes)
 			(show_name no)
