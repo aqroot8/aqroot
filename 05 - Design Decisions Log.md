@@ -2290,3 +2290,69 @@ fetching once option A or B is chosen.
 - **U14 MAX17048** — BLOCKED. 90-0065 not obtained. Outline 21-0168 alone is insufficient.
 - **SW9** — footprint work STOPPED at the §1 gate: the symbol is still 2-pin `Switch:SW_SPST`
   and the locked JS102011SAQN is a 3-terminal SPDT.
+
+---
+
+## Footprint verification register (hybrid policy applied, 2026-08-07)
+
+Policy: **Class A** — ordinary JEDEC leaded packages may be VERIFIED as IPC-7351 alternates
+when package code, pad count, pin numbering, pitch and body/lead geometry agree and the only
+differences are normal solder-fillet allowances. **Class B** — exposed-pad/thermal, magnetics,
+connectors, switches, RF modules and mechanical interfaces require direct vendor land-pattern
+review.
+
+### CLASS A — VERIFIED_IPC_ALTERNATE
+
+All five below: package code confirmed, pad count exact, pin numbering/orientation correct,
+**pitch exact**, no exposed pad involved, no special layout requirement. Differences are
+solder-fillet allowances only.
+
+| Refs | MPN | TI pkg / drawing | KiCad footprint | Pitch | Pad (TI → KiCad) |
+|---|---|---|---|---|---|
+| U13, D3–D6 | TPS61023DRLR, TPD4E1B06DRLR | DRL0006A · 4223266/F | `Package_TO_SOT_SMD:SOT-563` | 0.5 = 0.5 ✅ | W 0.30→0.35 · L 0.67→0.675 |
+| U15 | TPS22918DBVR | DBV0006A · 4214840/G | `Package_TO_SOT_SMD:SOT-23-6` | 0.95 = 0.95 ✅ | W 0.6→0.6 ✅ · L 1.1→1.325 |
+| U2, U3 | TCA9535PWR | PW0024A · 4220208/A | `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm` | 0.65 = 0.65 ✅ | W 0.45→0.40 · L 1.5→1.475 |
+| U16 | TCA9517ADGKR | DGK0008A · 4214862/A | `Package_SO:VSSOP-8_3x3mm_P0.65mm` | 0.65 = 0.65 ✅ | W 0.45→0.5 · L 1.4→1.625 |
+| D2, D7 | TPD2E009DBZR | DBZ0003A · 4214838/F | `Package_TO_SOT_SMD:SOT-23` | 0.95 = 0.95 ✅ | W 0.6→0.6 ✅ · L 1.3→1.475 |
+
+U16's KiCad footprint additionally carries the tag **`Texas_DGK0008A`** — TI's own package code.
+TI's drawings all state *"Publication IPC-7351 may have alternate designs."*
+
+### CLASS B — U11 BQ25185DLHR: VERIFIED_IPC_ALTERNATE (EP vendor-exact)
+
+TI DLH0010A land pattern **4226298/A** retrieved and compared against
+`Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm`:
+
+| | TI 4226298/A | KiCad | |
+|---|---|---|---|
+| Pitch | 8X (0.4) | 0.4 | ✅ exact |
+| Signal pad width | 10X (0.2) | 0.2 | ✅ exact |
+| **Exposed pad** | **(0.9) × (1.5)** | **0.9 × 1.5** | ✅ **exact** |
+| Signal pad length | 10X (0.5) | 0.75 | IPC fillet |
+
+The Class-B-critical element — **the exposed pad — is vendor-exact**, and provenance is TI's own
+drawing (footprint named `Texas_DLH0010A`, `descr` citing ti.com/lit/gpn/BQ25185). Only the
+signal pad length is an IPC enlargement. Accepted with this note. TI's drawing also shows
+optional **(Ø 0.2) thermal vias** under paste — a layout decision, not part of this footprint.
+
+### BLOCKED_EXTERNAL_DOCUMENT
+
+| Ref | Missing document | Why blocked |
+|---|---|---|
+| U14 | Maxim/ADI **90-0065** | policy: 21-0168 outline alone insufficient |
+| SW9 | C&K JS recommended PCB layout | ckswitches.com 301→littelfuse.com returns **HTTP 403** |
+| Q1 | AOS **SOT-23 package spec** (separate doc) | AO3400A datasheet rev 3.1 contains **no** package drawing or land pattern |
+| U10 | ST USBLC6-2 datasheet | st.com **timed out twice** |
+| U5 | ADI MAX98357A datasheet | analog.com **connection reset**; package code T1633-5 unconfirmed |
+
+### NOT REACHED this pass
+
+U12 (TI DSJ), L1 (Coilcraft), L2 (Würth), J2 (Molex), LS1 (Same Sky), J3 (GCT),
+U7/U8 (Ebyte), U9 (ST), J1 (Adafruit panel + mating FPC connector), D1 (Vishay 81010).
+
+### Note on Q1
+
+The AO3400A datasheet also does not state the G/S/D pin assignment in extractable text, so the
+symbol's `Q_NMOS_GSD` mapping (1 Gate / 2 Source / 3 Drain — consistent with the existing
+wiring) remains unconfirmed against AOS. Both the pinout and the land pattern need the AOS
+package document.
