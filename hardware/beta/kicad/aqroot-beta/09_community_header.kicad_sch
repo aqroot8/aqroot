@@ -4814,7 +4814,8 @@
 		)
 		(uuid "59ff931b-6a6a-4655-9307-3cbcba22c278")
 	)
-	(label "I2C_SCL_INT"
+	(hierarchical_label "I2C_SCL_INT"
+		(shape input)
 		(at 215.9 73.66 180)
 		(effects
 			(font
@@ -4834,7 +4835,8 @@
 		)
 		(uuid "6aec320c-2da1-450e-b3b3-145988f5dfb7")
 	)
-	(label "ACC_PWR_EN"
+	(hierarchical_label "ACC_PWR_EN"
+		(shape input)
 		(at 243.84 83.82 0)
 		(effects
 			(font
@@ -5014,7 +5016,8 @@
 		)
 		(uuid "c6557e58-892b-4be7-94ea-ef407b92ae3a")
 	)
-	(label "I2C_SDA_INT"
+	(hierarchical_label "I2C_SDA_INT"
+		(shape bidirectional)
 		(at 215.9 78.74 180)
 		(effects
 			(font
@@ -5118,17 +5121,6 @@
 		)
 		(uuid "3cec8ddd-aa7e-4968-9217-eaf2f02e7327")
 	)
-	(hierarchical_label "I2C_SCL_INT"
-		(shape input)
-		(at 259.08 53.34 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "3f71d890-00b9-420d-988d-9da5818b1ae0")
-	)
 	(hierarchical_label "XGPIO5"
 		(shape bidirectional)
 		(at 146.05 73.66 180)
@@ -5139,17 +5131,6 @@
 			(justify right)
 		)
 		(uuid "6c93dc77-a32b-46f0-8169-879f39af6364")
-	)
-	(hierarchical_label "I2C_SDA_INT"
-		(shape bidirectional)
-		(at 259.08 50.8 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "71252430-3d4b-43b2-8dce-57335c75a28b")
 	)
 	(hierarchical_label "XGPIO2"
 		(shape bidirectional)
@@ -5205,17 +5186,6 @@
 			(justify left)
 		)
 		(uuid "ad1dcb12-64b2-4c23-a6d6-e8ce46657b4f")
-	)
-	(hierarchical_label "ACC_PWR_EN"
-		(shape input)
-		(at 259.08 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "af1f4040-ecfe-4418-beaf-a571d3fc20e8")
 	)
 	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
 		(shape input)
