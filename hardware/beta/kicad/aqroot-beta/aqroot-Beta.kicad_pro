@@ -261,18 +261,9 @@
   },
   "erc": {
     "erc_exclusion_comments": {
-      "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "isolated_pin_label|1600200|1257300|3496c504-ce06-4b47-af2d-a23f135672e0|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "isolated_pin_label|2463800|1320800|1a592845-3125-415f-9dae-e7224d3e8e4d|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "isolated_pin_label|3657600|1079500|01cf2913-04a3-4b71-9eac-139ace5fa70b|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
-      "isolated_pin_label|3708400|1130300|bc9a757f-55ca-47f9-a625-e432a22325e1|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
-      "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|1016000|673100|8810c901-d8c5-400e-87c1-b8d6fcb76e74|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|1016000|698500|314cf88c-f676-42c5-b889-f4119f56808a|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|1016000|723900|ab4c33d4-99a0-4771-9302-516d25899834|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
-      "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000": "RootProbe Phase 2 placeholder -> connector, pin count and mechanical format not locked, no footprint. DO NOT ROUTE.",
       "isolated_pin_label|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
       "isolated_pin_label|1181100|1358900|13947410-1ae3-4371-aa10-e70a5d33bc86|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
       "isolated_pin_label|1181100|1384300|a46b3466-b47a-4014-bc10-a2b9360e6378|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
@@ -280,29 +271,98 @@
       "isolated_pin_label|1181100|1435100|2955eebd-9fd3-4dae-b625-2c1a125c890a|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
       "isolated_pin_label|1181100|1485900|e2760ceb-c087-46c7-b05b-a5aeed133f4a|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
       "isolated_pin_label|1181100|1511300|2c66bd9d-d059-4aeb-a7e6-51cc9143a0a9|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE."
+      "isolated_pin_label|1600200|1257300|3496c504-ce06-4b47-af2d-a23f135672e0|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
+      "isolated_pin_label|2463800|1320800|1a592845-3125-415f-9dae-e7224d3e8e4d|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "isolated_pin_label|3657600|1079500|01cf2913-04a3-4b71-9eac-139ace5fa70b|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
+      "isolated_pin_label|3708400|1130300|bc9a757f-55ca-47f9-a625-e432a22325e1|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
+      "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
+      "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000": "RootProbe Phase 2 placeholder -> connector, pin count and mechanical format not locked, no footprint. DO NOT ROUTE.",
+      "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE."
     },
     "erc_exclusions": [
-      "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000",
-      "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1600200|1257300|3496c504-ce06-4b47-af2d-a23f135672e0|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|2463800|1320800|1a592845-3125-415f-9dae-e7224d3e8e4d|00000000-0000-0000-0000-000000000000",
-      "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|3657600|1079500|01cf2913-04a3-4b71-9eac-139ace5fa70b|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|3708400|1130300|bc9a757f-55ca-47f9-a625-e432a22325e1|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1016000|673100|8810c901-d8c5-400e-87c1-b8d6fcb76e74|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1016000|698500|314cf88c-f676-42c5-b889-f4119f56808a|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1016000|723900|ab4c33d4-99a0-4771-9302-516d25899834|00000000-0000-0000-0000-000000000000",
-      "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1358900|13947410-1ae3-4371-aa10-e70a5d33bc86|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1384300|a46b3466-b47a-4014-bc10-a2b9360e6378|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1409700|c369ab1d-2c54-415f-ad3e-063eeab9ef9d|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1435100|2955eebd-9fd3-4dae-b625-2c1a125c890a|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1485900|e2760ceb-c087-46c7-b05b-a5aeed133f4a|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|1181100|1511300|2c66bd9d-d059-4aeb-a7e6-51cc9143a0a9|00000000-0000-0000-0000-000000000000",
-      "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000"
+      [
+        "isolated_pin_label|1016000|673100|8810c901-d8c5-400e-87c1-b8d6fcb76e74|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1016000|698500|314cf88c-f676-42c5-b889-f4119f56808a|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1016000|723900|ab4c33d4-99a0-4771-9302-516d25899834|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1358900|13947410-1ae3-4371-aa10-e70a5d33bc86|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1384300|a46b3466-b47a-4014-bc10-a2b9360e6378|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1409700|c369ab1d-2c54-415f-ad3e-063eeab9ef9d|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1435100|2955eebd-9fd3-4dae-b625-2c1a125c890a|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1485900|e2760ceb-c087-46c7-b05b-a5aeed133f4a|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1181100|1511300|2c66bd9d-d059-4aeb-a7e6-51cc9143a0a9|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|1600200|1257300|3496c504-ce06-4b47-af2d-a23f135672e0|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|2463800|1320800|1a592845-3125-415f-9dae-e7224d3e8e4d|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|3657600|1079500|01cf2913-04a3-4b71-9eac-139ace5fa70b|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|3708400|1130300|bc9a757f-55ca-47f9-a625-e432a22325e1|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ]
     ],
     "meta": {
       "version": 0
