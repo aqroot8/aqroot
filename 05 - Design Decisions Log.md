@@ -2116,3 +2116,110 @@ drawing.
    90-0065. Not created yet.
 
 Thermal vias on the EP remain a separate layout/thermal decision, as with the BQ25185.
+
+---
+
+## Nontrivial footprint verification policy (STANDING, 2026-08-07)
+
+A footprint may be marked **VERIFIED** only when **all five** hold:
+
+1. Exact **MPN** is locked.
+2. Manufacturer **package code** is identified.
+3. Manufacturer **recommended PCB land pattern** has been obtained.
+4. KiCad **copper / paste / mask / pin-1** geometry has been compared against that land pattern.
+5. The comparison **passes**.
+
+**A footprint name is not evidence.** This rule exists because a stock KiCad footprint with the
+correct headline geometry (body, pitch, pad count) can be derived from a *different
+manufacturer's* drawing — proven twice in this project:
+
+- `DFN-8-1EP_2x2mm_P0.5mm_EP0.9x1.5mm` was proposed for the MAX17048 and is
+  **Microchip/Atmel ATtiny-derived**. Rejected.
+- `LED_D5.0mm` on D1 (TSAL6200) derives from an unrelated **Reichelt LL-504BC2E** datasheet.
+
+**Exempt** (no manufacturer provenance required): generic EIA chip passives
+(`R_xxxx_yyyyMetric`, `C_xxxx_yyyyMetric`), simple SMD test pads
+(`TestPoint_Pad_D1.0mm`), and ordinary generic 2.54 mm THT pin headers.
+
+**Locking a part and verifying its footprint are separate gates.** A part may be LOCKED while
+its footprint stays BLOCKED.
+
+---
+
+## Nontrivial footprint provenance audit (2026-08-07)
+
+Provenance below is read from each footprint's own `descr`/`tags`. **No footprint was changed
+in this pass, and none was promoted to VERIFIED — no manufacturer land pattern was available
+to compare against.**
+
+| Ref | MPN | Pkg | Footprint | Provenance in file | Verdict |
+|---|---|---|---|---|---|
+| U11 | BQ25185DLHR | DLH | `Texas_DLH0010A_WSON-10-1EP…` | **TI, cites ti.com/lit/gpn/BQ25185** | geometry compared, land-pattern section unread |
+| U5 | MAX98357A | TQFN-16 | `TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` | **Maxim 21-0136 (T1633-5) + land pattern 90-0032** | strongest stock provenance; confirm package code |
+| J3 | USB4105-GF-A-120 | — | `…GCT_USB4105-xx-A_16P…` | **GCT usb4105.pdf**; tags list this exact variant | suffix VERIFY |
+| J4 | — | — | `JST_PH_B2B-PH-K…` | **JST ePH.pdf** | acceptable |
+| U1 | — | — | `RF_Module:ESP32-S3-WROOM-1` | **Espressif datasheet** | acceptable |
+| MK1 | — | — | `InvenSense_ICS-43434-6…` | TDK/InvenSense **product page** (not land pattern) | VERIFY |
+| U4 | BMI270 | LGA-14 | project-local | **BST-BMI270-DS000-08 rev 1.6 §8.3 landing pattern** | VERIFIED (project-local) |
+| U6 | TSOP38238 | Minicast | project-local | Vishay 82491 rev 2.1; **drill/pad are IPC-7251 allowances, not Vishay values** | acceptable, self-declared |
+| U13 | TPS61023DRLR | DRL | `SOT-563` | JEDEC MO-293-UAAD + tag **`Texas-DRL-6`** | GEOMETRY_REVIEW_REQUIRED |
+| D3–D6 | TPD4E1B06DRLR | DRL | `SOT-563` | same as U13 | GEOMETRY_REVIEW_REQUIRED |
+| U16 | TCA9517ADGKR | DGK | `VSSOP-8_3x3mm_P0.65mm` | JEDEC MO-187 + tag **`Texas_DGK0008A`** | GEOMETRY_REVIEW_REQUIRED |
+| U2/U3 | TCA9535PWR | PW | `TSSOP-24_4.4x7.8mm_P0.65mm` | JEDEC MO-153 AD, **no TI tag** | GEOMETRY_REVIEW_REQUIRED (repo already flagged) |
+| U15 | TPS22918DBVR | DBV | `SOT-23-6` | JEDEC MO-178, **no TI tag** | GEOMETRY_REVIEW_REQUIRED |
+| U10 | USBLC6-2SC6 | SOT-23-6L | `SOT-23-6` | JEDEC MO-178, **no ST provenance** | GEOMETRY_REVIEW_REQUIRED |
+| D2/D7 | TPD2E009DBZR | DBZ | `SOT-23` | JEDEC TO-236 AB, **no TI tag** | GEOMETRY_REVIEW_REQUIRED |
+| D1 | TSAL6200 | 5 mm THT | `LED_D5.0mm` | **Reichelt LL-504BC2E — unrelated part** | see below |
+
+### D1 — measured, not replaced
+
+`LED_D5.0mm` is: 2 through-holes, **2.54 mm lead spacing**, 0.9 mm drill, 1.8 mm pads,
+**5.00 mm body circle**, pin 1 square. That is the standard 5 mm THT LED form and is very
+likely correct for the TSAL6200. **Not replaced** — but the provenance is a different part, so
+confirm lead spacing, lead diameter and body diameter against **Vishay document 81010** before
+fab. Replace only if a real dimension disagrees.
+
+---
+
+## Deferred and blocked items — status at 2026-08-07
+
+### C24 — SYS bulk, still UNRESOLVED (schematic deliberately unchanged)
+
+Direction recorded: **22 µF / 10 V / X7R / 1206**, candidate **Murata GRM31CR71A226ME15L**.
+The schematic still reads `22uF 25V X7R` on an invalid `C_0603_1608Metric`, and was **not
+edited**, because the direction cannot yet be proven appropriate:
+
+- The Murata part and its **DC-bias curve** have not been verified from an authoritative source.
+- **The minimum acceptable effective capacitance is not derivable**: no SYS transient or
+  peak-current requirement is documented anywhere in this repo. Inventing a threshold was
+  refused. **This requirement must be written down before C24 can be closed.**
+
+The 0603 assignment remains wrong regardless — 0603 X7R does not reach 22 µF at 25 V.
+
+### C12, R24 — IR driver, DEFERRED
+
+Both stay `TBD`. R24 is the LED current-limit resistor and C12 the `IR_LED_SUPPLY_TBD`
+decoupling; neither can be chosen until **`IR_LED_SUPPLY` and the intended TSAL6200 pulse
+current** are locked. No value, voltage or package guessed. Q1 is now locked (AO3400A) but
+does not by itself resolve either.
+
+### C18, C19 — NFC decoupling placeholders, DO NOT ROUTE
+
+Roles identified from the netlist: **C18 = `+3V3` → GND** (ST25R3916 `VDD_IO` domain),
+**C19 = `NFC_5V_PA_PENDING` → GND** (the switched 5 V PA rail). Both stay
+`100nF_PLACEHOLDER`: the ST reference decoupling network has not been captured, and values
+must come from the ST reference design, not from a generic 100 nF assumption. **DO NOT ROUTE
+preserved.**
+
+### J3 USB-C — suffix still VERIFY
+
+**Board thickness is now locked at 1.6 mm.** The GCT **USB4105** family is locked and the
+footprint cites GCT's own drawing. The candidate suffix **USB4105-GF-A-120** is **not
+confirmed**: what the `-120` field designates, and which suffix corresponds to a 1.6 mm board
+with the intended shell-stake configuration, must come from the GCT drawing. Not guessed.
+
+### Still blocked on external vendor drawings
+
+`U12` TI DSJ (14-pin VSON 3×4 mm) · `U14` Maxim **90-0065** · `L1` Coilcraft XFL4020 ·
+`L2` Würth 74438357010 · `Q1` AOS AO3400A · `SW9` C&K PCB layout · `J2` Molex ·
+`LS1` Same Sky · `J1` current Adafruit mechanical/FPC drawing · `U7`/`U8` Ebyte · `U9` ST.
