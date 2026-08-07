@@ -2481,3 +2481,68 @@ wiring (1→IR_GATE, 2→GND, 3→IR_LED_K). The earlier "unconfirmed pin order"
 ### Not reached
 
 J2 (Molex), LS1 (Same Sky), J3 (GCT), U7/U8 (Ebyte), U9 (ST EDA), J1 (Adafruit + mating FPC), D1 (Vishay 81010).
+
+---
+
+## Floorplanning-critical batch — J1 connector identified, J1 symbol mismatch found (2026-08-07)
+
+### J1 — mating FPC connector IDENTIFIED, but J1 is BLOCKED_SYMBOL_MISMATCH
+
+The Adafruit 1773 connector's linked datasheet is an **FCI (Amphenol) drawing no. 62684**,
+product family **58DF**, "0.5mm CONTACT SPACING CONNECTOR" for FPC/FFC, SMT.
+
+| | |
+|---|---|
+| Connector MPN | **FCI / Amphenol 62684-50210** (50 contacts) |
+| Tape-and-reel form | **62684-502100** |
+| Pitch | 0.5 mm |
+| Contacts | 50 |
+| Body (from sheet 2) | A 24.5 · B 25.65 · C 29.3 · D 30.5 mm |
+
+**Recommended PC board layout (sheet 3, rev E) — captured in full:**
+
+- pitch **0.5 ±0.05**
+- signal land **0.3 wide × 1.2 long**
+- contact field span **0.5 × (n−1) ±0.05** → **24.5 mm** for n = 50
+- hold-down / mounting-plate lands **0.9 × 2.4**, set **3.3 mm** outboard of the contact field
+- connector outline given for keep-out
+
+**That is enough to build the footprint. It is not enough to assign it.**
+
+**The blocker is the symbol, not the land pattern.** `ILI9341_FT6236_MODULE_PLACEHOLDER` (J1)
+has **13 logical pins** — VCC_3V3, GND, LCD_SCK, LCD_MOSI, LCD_MISO, LCD_CS_N, LCD_DC,
+LCD_RST_N, LCD_BL_CTL, CTP_SDA, CTP_SCL, CTP_RST_N, CTP_INT_N. The physical connector has
+**50 contacts**. A 13-pin symbol cannot carry a 50-pad footprint.
+
+**Required before J1 can be closed:**
+
+1. The **Adafruit 2770 panel's 50-pin FPC pinout** — which signal sits on each of the 50
+   contacts, including all the NC/GND/power/backlight-cathode pins the placeholder omits.
+   **This document was not obtained and is the real remaining blocker.**
+2. A **real 50-pin symbol** capturing that pinout, replacing the 13-pin functional placeholder.
+3. Only then: build `AQROOT_Beta:FCI_62684-50210` from the sheet-3 layout and assign it.
+
+Note also that the panel's backlight, touch-reset and any LED-anode/cathode pins commonly need
+series/driver parts that the current 13-pin abstraction hides. **Do not narrow this to a
+pin-count change** — it is a real capture of the display interface.
+
+### LS1 CMS-1535-058SP — BLOCKED_EXTERNAL_DOCUMENT
+
+The Same Sky datasheet (09/11/2024, 4 pages) was retrieved and every page inspected, including
+the mechanical drawing rasterized. It gives:
+
+- body **Ø15 × 3.5 mm**, acoustic opening **Ø11**, frame SPCC, cone PEN, Nd-Fe-B magnet
+- 8 Ω (6.8–9.2), 0.5 W nominal / 1 W max, Fo 1000 Hz, SPL 89 dB @0.1 W
+- polarity defined functionally: *"cone moves forward w/ positive dc current to the + terminal"*
+
+**It does not dimension the solder pads at all.** The two pads appear on the drawing but carry
+no size, spacing or angular-position callouts, and pages 3–4 are response curves and legal text.
+Body outline alone is not a footprint. The 3D model may carry the geometry but is a STEP asset,
+not parseable here.
+
+**Needed:** a Same Sky land-pattern/soldering drawing, or measurement off the 3D model.
+
+### Not reached this pass
+
+SW9 (C&K retry), U10 (ST), J2 (Molex), J3 (GCT), U7/U8 (Ebyte), U9 (ST EDA), U5 (ADI),
+U12 (TI DSJ), D1 (Vishay).
