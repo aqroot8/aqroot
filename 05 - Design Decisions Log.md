@@ -2734,3 +2734,162 @@ never committed; the netlist was diffed against a restored-baseline export to pr
 - ERC: 4 unique `(type, uuid)` violation groups, **all four carrying an `excluded` copy →
   0 real ERC items**, unchanged from baseline. No items introduced, none removed.
 - Files touched: `01_power_tree.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch` only.
+
+---
+
+## J1 capture batch: SPI-II locked, backlight driver BLOCKED on topology (2026-08-07)
+
+Sources read this pass, all fetched fresh and quoted directly:
+`SPEC-CH280QV10-CT_Rev.D.pdf` (18 p), FCI `62684.pdf` (14 p, Rev E, sheet 3 of 3),
+TI `tps61169.pdf` (SNVSA40B, Oct 2014 – **rev. June 2024**, 24 p).
+
+### 1. Serial mode — LOCKED, IM3:IM0 verified from the datasheet table
+
+Page 6 "4. Interface Description" mode table, transcribed for the two SPI-Ⅱ rows:
+
+| IM3 | IM2 | IM1 | IM0 | Interface mode | DB Pin |
+|---|---|---|---|---|---|
+| 1 | 1 | 0 | 1 | 3-wires_9-bit SPI Ⅱ | /CS, SDI, SDO, SCL |
+| **1** | **1** | **1** | **0** | **4-wires_8-bit SPI Ⅱ** | **/CS, RS, SDI, SDO, SCL** |
+
+**LOCKED: IM3:IM0 = 1 1 1 0** → 4-wire 8-bit SPI Ⅱ, which is the only 4-wire mode that
+exposes **SDO**. Straps: **IM3 (pin 9) HIGH, IM2 (pin 8) HIGH, IM1 (pin 7) HIGH, IM0 (pin 6)
+GND.** Read from the table, not from memory. (For the record, 4-wire SPI **Ⅰ** is `0110` and
+omits SDO — rejected, as instructed.)
+
+### 2. Backlight — all three §3 preconditions CHECKED
+
+| Check | Result |
+|---|---|
+| Is 80 mA **total**, not per-LED? | **YES — total.** Page 11 §8 gives *one* `Vf` of 2.9/3.2/3.5 V for the whole module with test condition `If=80mA`, and `If` typ **80 mA** as the module supply current. Four parallel white LEDs at ~20 mA each. |
+| Is LEDK the common return? | **YES.** Page 6 lists exactly **one** cathode pin (1 `LEDK`) against **four** anode pins (2–5 `LED-A1..A4`) — the cathodes are commoned inside the module. |
+| May LED-A1..A4 be tied to the driver's boosted output? | **Electrically yes, but NOT to a TPS61169 boost output at +3V3 in — see below.** |
+
+A consequence worth stating plainly: because the four cathodes are commoned internally, the
+LEDs **cannot be placed in series**. The panel mandates a ~3.2 V parallel array.
+
+### 3. BLOCKER — TPS61169 boost cannot regulate this panel from +3V3
+
+TI's own typical application (Figure 7-1) is **"10 LEDs in Series"** — `10s1p`, 20 mA,
+RSET 10.2 Ω, driving roughly 32 V out of a 2.7–5.5 V input. That is a real step-up. Our load is
+the opposite case: **one LED deep**, 3.2 V, from a 3.3 V rail.
+
+With the four anodes tied **directly** to the boost output, the converter must produce
+`Vout = Vf + VFB` where `VFB = 204 mV`:
+
+| Case | Vf | Vout required | Verdict at VIN = 3.3 V |
+|---|---|---|---|
+| Vf **min** | 2.9 V | **3.104 V** | **IMPOSSIBLE — below VIN.** A boost cannot output under its input. |
+| Vf **typ** | 3.2 V | 3.404 V | duty **3.06 %** → **25 ns** on-time at 1.2 MHz |
+| Vf **max** | 3.5 V | 3.704 V | duty 10.9 % → 91 ns |
+
+So across the panel's *own* stated Vf tolerance the design runs from **completely unregulated**
+(low end — output pinned near `VIN − Vd`, LED current set by nothing but resistance) to a
+**25 ns commanded on-time** at nominal, which is at or below the minimum controllable on-time
+for a 1.2 MHz converter and will pulse-skip. **This is not a viable operating point.**
+The RSET portion is therefore **STOPPED and reported**, exactly as §3 directs.
+
+### 4. Recommended resolution — keeps the TPS61169 lock intact
+
+Give each anode its own **ballast resistor** so the boost output rises to a voltage it can
+actually regulate. The feedback loop still regulates *total* current through RSET, and the
+ballasts additionally enforce current sharing between the four LEDs.
+
+With **R_ballast = 39 Ω per anode** (4 off), `Vout = Vf + 0.020×39 + 0.204`:
+
+| Vf | Vout | Duty | On-time |
+|---|---|---|---|
+| 2.9 V | 3.884 V | 15.0 % | 125 ns |
+| 3.2 V | 4.184 V | 21.1 % | 176 ns |
+| 3.5 V | 4.484 V | 26.4 % | 220 ns |
+
+Comfortably regulatable across the **entire** Vf band. Cost: **62 mW** in the ballasts against
+256 mW of useful LED power. A lower ballast value trades efficiency for regulation margin.
+
+**This is a proposal, not an applied change** — adding four resistors alters the locked
+backlight architecture, so it needs approval before capture.
+
+### 5. RSET — calculated, held pending §4 above
+
+Datasheet Equation 1, `RSET = 204 mV / I_LED`. **Validated against TI's own example**: 10 LEDs
+at 20 mA → 204 mV / 20 mA = **10.2 Ω**, which is exactly the value printed in Figure 7-1.
+
+For AQROOT at **80 mA total**: `RSET = 204 mV / 80 mA =` **2.55 Ω** (E96, 1 %), dissipating
+**16.3 mW** — a 0603 is ample. **Not locked**, because it is only correct once §3/§4 is settled.
+
+### 6. Support components — from the TI datasheet, requirements not invented MPNs
+
+| Part | Datasheet basis |
+|---|---|
+| **Schottky D** | TI names **ONSemi NSR0240** explicitly. Reverse breakdown must exceed the open-LED protection voltage (device is rated to a 40 V switch / 38 V string). |
+| **Inductor L** | §7.2.2.1 recommends **4.7 µH–10 µH**, 4.7 µH for higher inputs. TI lists Coilcraft LPS4018-472ML and Cyntec PCMB051H-4R7M — both 4×4 mm+ parts sized for their 32 V/20 mA example. At our operating point the computed inductor DC current is only ~120 mA with ~125 mA ripple, so a far smaller 4.7 µH part suffices. **A specific MPN is deliberately not named** — it must clear the vendor-verification policy first. |
+| **CIN** | 4.7 µF (Figure 7-1). |
+| **COUT** | §7.2.2.3: **1 µF–4.7 µF** ceramic; ESR ripple negligible. **Voltage rating must be chosen against the open-LED protection voltage, not against the ~4.2 V normal output.** |
+| **RSET** | 2.55 Ω, per §5, pending. |
+
+### 7. Connector footprint — X geometry verified, ONE parameter unresolved
+
+FCI `62684.pdf` **sheet 3 of 3**, view *"RECOMMENDED PC BOARD LAYOUT (COMPORNENT SIDE)"* [sic],
+Rev E, tolerances ±0.05, dimensions in mm.
+
+**Verified and self-consistent:**
+
+- pitch **0.5 ±0.05**
+- contact span **0.5×(n−1) ±0.05** → **24.5 mm** for n = 50
+- signal land **0.3 wide × 1.2 long**
+- hold-down land **0.9 wide × 2.4 long**
+- hold-down X position: inner edge **2.4 mm** and outer edge **3.3 mm** outboard of the
+  end-contact centre. These corroborate each other — **3.3 − 2.4 = 0.9**, exactly the stated
+  hold-down width — so the X placement is confirmed by two independent readings.
+
+**Unresolved: the Y offset between the signal-land row and the hold-down lands.** The page
+carries **no vector geometry** — it is a single 3520×4960 scanned image, confirmed by
+`get_drawings()` returning 0 paths — so the dimension leader lines for the vertical `0.8`/`0.9`/
+`(0.3)` stack cannot be attributed with certainty at the available scan resolution. Automated
+component analysis recovered only text glyphs, not pad outlines.
+
+**The footprint was therefore NOT created.** Everything except one offset is known, but a
+connector land pattern with a guessed Y offset is worse than none. This is a single missing
+parameter, not a missing document — a cleaner Amphenol-published drawing for `62684-502100`
+would close it immediately.
+
+### 8. Touch controller — hardware interface locked, silicon identity VERIFY
+
+Unchanged from the previous pass and re-confirmed: panel datasheet §2 names **CST026**;
+Adafruit's material claims FT6236/FT6236U-compatible. **Locked:** the physical interface only —
+I²C on 44/45, IRQ 46, reset 47. **VERIFY, not locked:** I²C address, reset polarity/timing, IRQ
+polarity, firmware protocol. No hardware is being changed to force an FT6236 assumption.
+
+### 9. Commit gate — J1 correctly NOT committed
+
+Of the §9 gate conditions, "backlight circuit is complete" and "TPS61169 circuit is complete"
+both fail on §3, and "connector footprint pads 1–50 map 1:1" fails on §7. Per the gate, **no J1
+symbol, footprint or capture commit was made.** No schematic, symbol or footprint file was
+modified this pass; this entry is documentation only.
+
+### 10. Verified 50-pin map, ready to apply once unblocked
+
+Confirmed against pages 6–7 in full:
+
+| Pins | Function | Planned AQROOT net |
+|---|---|---|
+| 1 | LEDK (cathode, common) | backlight return → RSET |
+| 2–5 | LED-A1..A4 (anodes) | boost output, via ballasts if §4 approved |
+| 6–9 | IM0, IM1, IM2, IM3 | **GND, +3V3, +3V3, +3V3** (= 1110) |
+| 10 | /RESET | `DISP_RST_N` |
+| 11–14 | VSYNC, HSYNC, DOTCLK, DE | RGB-only, unused in SPI |
+| 15–32 | DB17..DB0 | **tie to GND** — datasheet: *"Connect unused pins to GND."* |
+| 33 | SDO | `SPI_A_MISO` |
+| 34 | SDI | `SPI_A_MOSI` |
+| 35 | /RD | MPU-only |
+| 36 | /WR_RS | `DISP_DC` |
+| 37 | RS_SCL | `SPI_A_SCK` |
+| 38 | /CS | `DISP_CS_N` |
+| 39 | TE | tearing-effect output, optional |
+| 40, 41 | IOVCC | `+3V3` |
+| 42 | VCI | `+3V3` |
+| 43, 48, 49, 50 | GND | `GND` |
+| 44–47 | CTP_SCL, CTP_SDA, CTP_IRQ, CTP_RES | touch I²C + IRQ + reset |
+
+Supply note carried forward: DC characteristics give **IOVCC 1.65 / 1.8–2.8 / 3.3 V** and
+**VCI 2.5 / 2.8 / 3.3 V** — `+3V3` sits at the **maximum** of both, with absolute max 4.6 V.
