@@ -45,6 +45,27 @@ excluded from the board (`on_board no`) because none has a footprint:
 The last three are all **SPI Bus B** devices, sharing `SPI_B_SCK` / `SPI_B_MOSI` /
 `SPI_B_MISO` with a chip select each.
 
+> ### ⚠ Both radio implementations were SELECTED on 2026-08-07 — the symbols are NOT yet updated
+>
+> | Radio | Decision | Closes |
+> |---|---|---|
+> | Sub-GHz CC1101 | **Ebyte E07-400M10S** — a module, **not** a bare IC | the module-vs-bare-IC question |
+> | LoRa SX1262 | **Ebyte E22-900M22S** | the E22-vs-Core1262 question |
+>
+> See *Radio modules LOCKED* in [[05 - Design Decisions Log]] and
+> [[12 - RF and Antenna Plan v0.1]].
+>
+> **This README still describes the symbols as they currently exist, and they still encode
+> the old open questions** — `TBD` manufacturer/MPN, no footprint, `on_board no`, and the
+> `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` graphic text inside
+> `SX1262_MODULE_PLACEHOLDER`. Every "unresolved" statement below about *which* radio part
+> AQROOT uses is now **stale as a decision** but still **accurate as a description of the
+> library**. Reconciling the symbols is a KiCad edit and is outstanding — see
+> [Verification before manufacture](#verification-before-manufacture).
+>
+> **Nothing here unblocks routing on its own.** The footprints still do not exist; they must
+> be built from the Ebyte land-pattern drawings first.
+
 ---
 
 ## Source of authority
@@ -110,6 +131,12 @@ antenna interface was taken from that document or from anywhere else. The pins a
 derived only from AQROOT's own SPI Bus B assignments in
 `11 - Beta Pin Map v0.2.md`.
 
+> **RESOLVED 2026-08-07 — module path, `E07-400M10S`.** The bare-IC path is dead, so the
+> `Datasheet` field's careful silence about packaging has served its purpose: per the
+> [rule below](#why-the-datasheet-field-does-not-imply-a-bare-ic), it should now be replaced
+> with **Ebyte's E07-400M10S module document**, not TI's CC1101 datasheet. That is a symbol
+> edit and has not been made. Everything above still describes the symbol as it stands.
+
 ### SX1262_MODULE_PLACEHOLDER
 
 **No source of authority, and deliberately no datasheet reference at all.** The
@@ -120,6 +147,11 @@ would point at the wrong thing and invite exactly the bare-IC reading this symbo
 must not carry. The module vendor is not chosen, so there is no vendor document to
 cite either. Pin intent comes only from AQROOT's own SPI Bus B and expander
 assignments in `11 - Beta Pin Map v0.2.md` §3 and §7.
+
+> **RESOLVED 2026-08-07 — `E22-900M22S`.** A vendor document now exists to cite, so the
+> reason the `Datasheet` field is blank has expired. It should be set to **Ebyte's
+> E22-900M22S module document** — still never Semtech's SX1262 silicon datasheet, since the
+> bare-IC reading this symbol must not carry is unchanged. Symbol edit, not yet made.
 
 ### ST25R3916_NFC_PLACEHOLDER
 
@@ -656,6 +688,23 @@ in completely different board content:
 Until that decision is made, **nothing physical about this subsystem can be drawn**,
 which is exactly why this symbol has no footprint and is excluded from the board.
 
+> **CLOSED 2026-08-07 — the module path was chosen: Ebyte `E07-400M10S`.**
+>
+> The right-hand column of the table above is now void: the crystal and its loading, the RF
+> matching / balun network, the band filtering and the antenna interface are all **inside the
+> module** and none of them appears on the AQROOT main board. The 433 MHz antenna plugs onto
+> the module's own IPEX port, so `CC1101_RF_TBD` does not terminate on our copper at all —
+> see [[12 - RF and Antenna Plan v0.1]] §4.
+>
+> "Certification may carry over" in the left column is the one claim that does **not** simply
+> transfer: the Beta antenna is not the module's stock antenna, and modifying a certified
+> module's RF section can void its approval. Treat it as an open cert question, not a benefit
+> already banked.
+>
+> **This unblocks drawing the subsystem; it does not mean it is drawn.** The symbol still has
+> no footprint and is still `on_board no`. A real land pattern must be built from Ebyte's
+> E07-400M10S drawing before anything physical is committed.
+
 ### What this symbol deliberately does *not* claim
 
 The symbol contains **no**:
@@ -770,6 +819,12 @@ filter would imply a package family had been chosen, and none has.
 > fabricated dimension presented as a real one, it would silently become the thing
 > the board is laid out around, and the RF keep-out it implies would be wrong.
 > Resolve the implementation instead.
+>
+> **Still binding after the 2026-08-07 lock.** The implementation is now resolved
+> (**E07-400M10S**), which means the correct footprint is obtainable — it does **not** mean
+> a generic one became acceptable. Build the land pattern from Ebyte's E07-400M10S drawing,
+> and do not reuse the SX1262 module's: the two modules differ in outline, pad pitch and pad
+> count.
 
 ---
 
@@ -813,11 +868,21 @@ difference from the CC1101 placeholder, where
 
 ### Module selection: Ebyte E22 vs Waveshare Core1262
 
-**Unresolved.** The two candidates under consideration are the **Ebyte E22** family
-and the **Waveshare Core1262** family. They are named here as the open question, and
-are deliberately **not** committed to anywhere in the symbol — no vendor, no part
-number, no `MPN`, no footprint filter. They differ in outline, pad arrangement,
-supply requirements and antenna interface, so choosing between them changes the board.
+~~**Unresolved.**~~ **RESOLVED 2026-08-07: Ebyte `E22-900M22S`.** Waveshare Core1262 is
+not selected.
+
+The original entry, kept because it explains why the symbol looks the way it does: *the two
+candidates under consideration are the Ebyte E22 family and the Waveshare Core1262 family.
+They are named here as the open question, and are deliberately not committed to anywhere in
+the symbol — no vendor, no part number, no `MPN`, no footprint filter. They differ in
+outline, pad arrangement, supply requirements and antenna interface, so choosing between
+them changes the board.*
+
+That last sentence is now the actionable part: the board content follows the **E22-900M22S**
+specifically. Take outline, pad arrangement, supply requirement and antenna interface from
+Ebyte's E22-900M22S document — **not from the E22 family in general**, which spans several
+different modules. The symbol still carries no vendor, part number or `MPN`; setting them is
+an outstanding symbol edit.
 
 ### What the SX1262 symbol deliberately does *not* claim
 
@@ -892,6 +957,14 @@ NO FOOTPRINT
 DO NOT ROUTE
 ```
 
+> **Lines 2 and 3 of that graphic are now STALE.** The module *is* selected
+> (**E22-900M22S**, 2026-08-07), so `EXACT CERTIFIED MODULE PENDING` and
+> `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` no longer state the truth. The block is
+> reproduced above exactly as it still appears in `AQROOT_Beta.kicad_sym` — it is quoted, not
+> endorsed. **`NO FOOTPRINT` and `DO NOT ROUTE` remain correct and must stay** until a real
+> land pattern exists. Rewriting the graphic is a symbol edit; the same stale text also
+> appears on the `04_spi_b_radios_nfc` sheet.
+
 Pins use the plain `line` graphic style. `CS_N` and `RESET_N` are **not** drawn with
 inversion bubbles — the `_N` suffix already carries the polarity.
 
@@ -926,6 +999,11 @@ filter would imply a module family had been chosen, and none has.
 > would be a fabricated dimension presented as a real one, it would become the thing
 > the board is laid out around, and its RF keep-out would be wrong. Select the module
 > instead.
+>
+> **Still binding after the 2026-08-07 lock.** The module is now selected
+> (**E22-900M22S**), so the correct land pattern is obtainable — that does not license a
+> generic one. Take it from Ebyte's E22-900M22S drawing specifically, **not** from another
+> E22-family module and **not** from the E07-400M10S.
 
 ---
 
@@ -1360,18 +1438,19 @@ interrupt alone.) That creates a power-up ordering problem the board already sol
 
 | Open item | Consequence if left open |
 |---|---|
-| **Which certified module — Ebyte E22 or Waveshare Core1262** | Determines every item below. |
-| Module voltage requirements | Whether `+3V3` is correct, and what supply/decoupling the board must provide. |
-| Module land pattern, outline and keep-out | No footprint exists; the board cannot be laid out around the radio. |
+| ~~**Which certified module — Ebyte E22 or Waveshare Core1262**~~ | **CLOSED 2026-08-07 — `E22-900M22S`.** Every item below is now answerable from one document. |
+| Module voltage requirements | Whether `+3V3` is correct, and what supply/decoupling the board must provide. **Take from the E22-900M22S datasheet — do not assume 3V3 because the net is named `VCC_3V3`.** |
+| Module land pattern, outline and keep-out | No footprint exists; the board cannot be laid out around the radio. **Now obtainable from the Ebyte drawing — still must be built.** |
 | Module pin numbering | The symbol's logical pins 1–10 are placeholders and **will** change. |
-| RF connector / antenna interface | Whether `SX1262_RF_TBD` terminates in a connector, a trace antenna, or a module-internal antenna. |
-| RF matching | Module-internal on both candidates, but confirm against the selected part rather than assuming. |
-| Operating band and regional band plan | Band selection and compliance. |
-| Coexistence with the CC1101 | Two sub-GHz chains on one handheld — bus arbitration plus RF isolation, resolvable only once both implementations are known. |
+| RF connector / antenna interface | ~~Whether `SX1262_RF_TBD` terminates in a connector, a trace antenna, or a module-internal antenna.~~ **Answered: the module's own IPEX/u.FL port, with a Taoglas FXP890 plugging onto it. `SX1262_RF_TBD` does not reach our copper.** Confirm the ordered variant is IPEX and not stamp-hole. |
+| RF matching | ~~Module-internal on both candidates, but confirm against the selected part.~~ **Module-internal on the E22-900M22S. No board-level 915 MHz matching network.** |
+| Operating band and regional band plan | Band selection and compliance. **Open — and see the cert caveat: the Beta antenna is not the module's stock antenna.** |
+| Coexistence with the CC1101 | Two sub-GHz chains on one handheld — bus arbitration plus RF isolation. **Both implementations are now known (E22-900M22S + E07-400M10S), so this is resolvable.** Note that board-level harmonic filtering is no longer available as a mitigation — there is no board RF path to filter on. |
 
-**Do not route until the exact certified module is selected**, and **do not create a
-generic module footprint** to get started. Until then the symbol's `on_board no` flag
-keeps it off the board.
+~~**Do not route until the exact certified module is selected**~~ — that condition is met.
+**Do not route until a real land pattern exists**, and **do not create a generic module
+footprint** to get started. Until then the symbol's `on_board no` flag keeps it off the
+board, and it must stay `no`.
 
 ### NFC reader — ST25R3916 (placeholder)
 
@@ -1535,21 +1614,38 @@ before committing to fabrication:
       area until this is closed.
 - [ ] Confirm the FT6236's `0x38` I²C address does not collide with another device
       on `I2C_SDA_INT` / `I2C_SCL_INT`.
-- [ ] **Blocking for layout:** decide **module or bare CC1101 IC**, then reconcile
-      `CC1101_RADIO_PLACEHOLDER` against the choice — renumber the pins to the real
-      pinout, create and assign a footprint, resolve the crystal (bare-IC path), RF
-      matching, filtering and antenna interface, replace the `CC1101_RF_TBD` net, and
-      set `on_board` back to `yes`. Do not route the RF area until this is closed,
-      and do not substitute a generic module footprint to get started.
+- [x] ~~**Blocking for layout:** decide **module or bare CC1101 IC**~~ — **DONE 2026-08-07:
+      module, `E07-400M10S`.** The crystal / RF matching / filtering / antenna sub-tasks are
+      void with it (all module-internal).
+- [ ] **Blocking for layout:** reconcile `CC1101_RADIO_PLACEHOLDER` against the
+      **E07-400M10S** — set Manufacturer/MPN off `TBD`, repoint `Datasheet` from TI's
+      product page to Ebyte's module document, renumber the pins to the real module pinout,
+      build and assign a footprint from the Ebyte land-pattern drawing, confirm the module's
+      supply requirement, resolve `CC1101_RF_TBD` (it terminates at the module's IPEX port,
+      not on our copper), and set `on_board` back to `yes`. Do not route the RF area until
+      this is closed, and do not substitute a generic module footprint to get started.
 - [ ] Confirm the hardware pull-up to `+3V3` on `CC1101_CS_N` is present in the
       schematic, along with the pull-ups on the other SPI Bus B chip selects.
-- [ ] **Blocking for layout:** select the certified SX1262 module (**Ebyte E22** or
-      **Waveshare Core1262**), then reconcile `SX1262_MODULE_PLACEHOLDER` against it —
-      renumber the pins to the real module pinout, confirm the module's supply
-      requirement against `+3V3`, create and assign a footprint, resolve the RF /
-      antenna interface, replace the `SX1262_RF_TBD` net, and set `on_board` back to
-      `yes`. Do not route the RF area until this is closed, and do not substitute a
+- [x] ~~**Blocking for layout:** select the certified SX1262 module (**Ebyte E22** or
+      **Waveshare Core1262**)~~ — **DONE 2026-08-07: `E22-900M22S`.**
+- [ ] **Blocking for layout:** reconcile `SX1262_MODULE_PLACEHOLDER` against the
+      **E22-900M22S** — set Manufacturer/MPN off `TBD`, set the blank `Datasheet` to Ebyte's
+      module document (never Semtech's silicon datasheet), renumber the pins to the real
+      module pinout, confirm the module's supply requirement against `+3V3`, build and assign
+      a footprint from the Ebyte land-pattern drawing, resolve `SX1262_RF_TBD` (it terminates
+      at the module's IPEX port), rewrite the symbol's stale `EXACT CERTIFIED MODULE PENDING`
+      / `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` graphic lines, and set `on_board` back
+      to `yes`. Do not route the RF area until this is closed, and do not substitute a
       generic module footprint.
+- [ ] **Verify the antenna interface before ordering either module.** Ebyte sells IPEX and
+      stamp-hole variants under closely-related part numbers. Everything above assumes IPEX;
+      a stamp-hole variant would force a board-level antenna interface and RF routing.
+- [ ] **Cert question, not yet answered.** Both modules' pre-certification is the reason they
+      were chosen, but the Beta antennas are not their stock antennas, and modifying a
+      certified module's RF section can void the approval. Confirm with the cert lab before
+      treating the pre-cert as banked.
+- [ ] **Stale text outside this library:** the `04_spi_b_radios_nfc` sheet still displays
+      `EXACT CERTIFIED MODULE PENDING` / `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED`.
 - [ ] Confirm the **10k pull-up to `+3V3` on `SX1262_CS_N`** is in the schematic, and
       that the **existing 100k pull-down holding `SX1262_RST_N` asserted** is still
       present and not competing with any added pull-up.
