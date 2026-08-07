@@ -2599,7 +2599,7 @@ Datasheet mode table (pins 6-9, IM3:IM0):
 | 0 1 1 0 | 4-wire 8-bit SPI I | /CS, RS, SDI, SCL — **no SDO** |
 | **1 1 1 0** | 4-wire 8-bit SPI II | /CS, RS, SDI, **SDO**, SCL |
 
-The locked AQROOT architecture **expects display MISO**: `10 - Beta Pin Map` section "SPI Bus A
+The locked AQROOT architecture **expects display MISO**: [[10 - Beta Pin Map]] section "SPI Bus A
 — Display + microSD (shared SCK/MOSI/**MISO**, separate CS)", and `libraries/README.md` maps
 `LCD_MISO` to `SPI_A_MISO`, justifying its Tri-state pin type because SPI Bus A is shared with
 the microSD socket.
@@ -2684,7 +2684,7 @@ PCB layout drawing.
 
 ### U7 / U8 — Ebyte module lock propagated (was `Manufacturer: TBD`, `MPN: TBD`)
 
-`12 - RF and Antenna Plan` locks both radios to Ebyte modules and states the module lock
+[[12 - RF and Antenna Plan v0.1]] locks both radios to Ebyte modules and states the module lock
 *"removed that assumption"* of a board-level front-end. The symbols still said TBD.
 
 | Ref | Symbol value | Manufacturer | MPN | Band / silicon |
