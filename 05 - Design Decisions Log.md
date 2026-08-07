@@ -51,6 +51,11 @@ tags: [decisions, log]
   Kickstarter backers). Note: modifying a certified module's RF section (antenna, output
   power) can void that certification — check the module's certification conditions before
   shipping units externally.
+> UPDATED 2026-08-07: the exact modules are now fixed — **E22-900M22S** (SX1262) and
+> **E07-400M10S** (CC1101). "e.g. Ebyte E22 series" is no longer an example. The CC1101 is
+> now also a module, not a bare IC. See *Radio modules LOCKED* at the end of this doc.
+> The certification caveat in the line above is now a live open item, not a footnote: the
+> Beta antennas are NOT the modules' stock antennas.
 ## Radio: DUAL-RADIO LOCKED (CC1101 + SX1262) — production, not just Alpha
 AQROOT ships BOTH CC1101 (sub-GHz OOK/ASK/FSK capture/replay) AND SX1262 (LoRa +
 sub-GHz) as core built-in hardware. Validated together in Alpha (shared SPI Bus B,
@@ -214,6 +219,14 @@ in RF crown (hardest, range compromise). COEXISTENCE: only ONE radio transmits a
 RX at once. Implies a 4-layer PCB for a clean ground plane. Final antenna tuning + exact
 sizes are a POST-PCB step (measured on real hardware); professional RF review required
 before PCB fab.
+> UPDATED 2026-08-07 (module lock): the 433/915 antenna descriptions above are superseded.
+> Both are now purchased flex antennas plugging onto the module IPEX ports — 915 = Taoglas
+> FXP890, 433 = Taoglas FXP450 — NOT board-level designs. No matching networks and no U.FL
+> test connectors on our PCB for either band; the module IPEX port is the test point.
+> The 433 range compromise still stands (the FXP450 is still electrically small at 433 MHz).
+> Board-level harmonic filtering is no longer an available mitigation — there is no board RF
+> path to filter on. Coexistence, one-TX-at-a-time and the 4-layer call are unaffected.
+> See [[12 - RF and Antenna Plan v0.1]] §3-§5 and *Radio modules LOCKED* at the end of this doc.
 
 ## 433 MHz antenna: external screw-on + integrated side-holder
 Default: internal compromised 433 antenna (modest range, fully pocketable). Max range:
@@ -1833,3 +1846,84 @@ WiFi/BT/radio interrupt jitter - critical since AQROOT runs radios concurrently.
 (2) HARDWARE: drive the IR LED through a transistor/MOSFET, not directly from a GPIO.
 Direct GPIO drive at 150R gives ~7mA average (vs 100-500mA in a real remote) and only
 1-3cm of range. Add the driver stage to the Beta schematic.
+
+---
+
+## Radio modules LOCKED: Ebyte E22-900M22S + E07-400M10S (2026-08-07)
+
+> **BOTH RADIOS ARE CERTIFIED MODULES. NEITHER IS A BARE IC.**
+
+| Radio | Module | Silicon | Band |
+|---|---|---|---|
+| LoRa / sub-GHz | **Ebyte E22-900M22S** | SX1262 | 915 MHz |
+| Sub-GHz OOK/ASK/FSK | **Ebyte E07-400M10S** | CC1101 | 433 MHz |
+
+Both expose an **IPEX / u.FL** antenna port; the Beta antennas plug onto those ports. See
+[[12 - RF and Antenna Plan v0.1]] for the selected antennas (Taoglas FXP890 / FXP450) and the
+antenna keep-out rules.
+
+### What this closes
+
+Two separate open questions, both previously recorded as blocking layout:
+
+| Question | Recorded as | Now |
+|---|---|---|
+| Which SX1262 module | "**EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED**" — schematic text + `libraries/README.md` | **E22-900M22S** |
+| CC1101 module *or* bare IC | "**not yet decided**" — `libraries/README.md` § `CC1101_RADIO_PLACEHOLDER` | **Module** (E07-400M10S) |
+
+The second is the larger consequence. Choosing a module over a bare CC1101 removes the entire
+bare-IC burden that `libraries/README.md` enumerates: **no crystal + loading, no RF matching /
+balun network, no band filtering, no antenna interface** to design, lay out under RF
+constraints, or certify from scratch. Combined with the SX1262 module, **no 433 or 915 MHz RF
+signal reaches the main PCB at all** — NFC is now the only board-level RF design task.
+
+This also supersedes the open framing in the **Radio** section above ("use a certified breakout
+module, *e.g.* Ebyte E22 series") — the family is no longer an example, the part is fixed.
+
+### Deliberately NOT recorded here
+
+House rule from the [TPS61023](#tps61023-nfc-5v-pa-boost--beta-architecture-locked-2026-07-31)
+and [MAX17048](#max17048-fuel-gauge--beta-architecture-locked-2026-07-31) blocks: a remembered
+number written here is indistinguishable from a verified one later. So these stay **PENDING —
+FROM DATASHEET** and must be taken from Ebyte's official documentation at capture time:
+
+- Exact pin count, pitch, pinout, module outline and land pattern — **for both modules**.
+- TX power, supply voltage range, and peak/average TX current — **do not infer TX power from
+  the part number**; take it from the datasheet.
+- Whether either module needs external decoupling beyond the datasheet reference circuit.
+- The exact certification status and its conditions (see the cert caveat below).
+
+```
+E22-900M22S AND E07-400M10S HAVE DIFFERENT
+OUTLINES, PAD PITCH AND PAD COUNTS.
+
+DO NOT CREATE A "GENERIC EBYTE MODULE" FOOTPRINT.
+ONE VERIFIED LAND PATTERN PER MODULE, FROM THE
+MANUFACTURER DRAWING.
+```
+
+### Open items this lock creates
+
+- [ ] **VERIFY THE ANTENNA INTERFACE BEFORE ORDERING.** Ebyte sells IPEX and stamp-hole
+      variants under closely-related part numbers. The whole zero-PCB-impact antenna plan
+      assumes IPEX. A stamp-hole variant would force footprints, RF routing and a board-level
+      antenna interface — the exact work this lock was chosen to avoid.
+- [ ] **Modular-cert conditions.** The *reason* for choosing certified modules (recorded in the
+      Radio section above) was FCC/CE pre-certification that survives units leaving your hands.
+      That same section already warns that **modifying a certified module's RF section can void
+      the certification** — and swapping the stock antenna for the Taoglas parts is exactly such
+      a modification. Confirm with the cert lab that the pre-cert still applies, or budget for
+      re-evaluation. **Do not bank the pre-cert saving until this is answered.**
+- [ ] **Footprints + symbols.** `SX1262_RADIO_PLACEHOLDER` and `CC1101_RADIO_PLACEHOLDER` carry
+      **no footprint** by design, pending exactly this decision. Both can now be assigned real
+      land patterns from the manufacturer drawings.
+- [ ] **Stale "UNRESOLVED" text still in the project.** `libraries/README.md` and the
+      `04_spi_b_radios_nfc` sheet text still read "EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED" /
+      "EXACT CERTIFIED MODULE PENDING". Both need updating — the schematic text is a KiCad edit
+      and is deliberately left untouched here.
+
+### Not changed by this lock
+
+Pin assignments, the shared SPI Bus B topology, CS discipline, and the `SX1262_RST_N` /
+`CC1101_GDO0` control nets are all unaffected — this decision picks packages, not pins. The
+dual-radio commitment itself is unchanged; see **Radio: DUAL-RADIO LOCKED** above.
