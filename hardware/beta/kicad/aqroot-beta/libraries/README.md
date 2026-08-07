@@ -45,7 +45,7 @@ excluded from the board (`on_board no`) because none has a footprint:
 The last three are all **SPI Bus B** devices, sharing `SPI_B_SCK` / `SPI_B_MOSI` /
 `SPI_B_MISO` with a chip select each.
 
-> ### ⚠ Both radio implementations were SELECTED on 2026-08-07 — the symbols are NOT yet updated
+> ### ⚠ Both radio implementations were SELECTED on 2026-08-07 — body graphics updated, fields still `TBD`
 >
 > | Radio | Decision | Closes |
 > |---|---|---|
@@ -55,16 +55,21 @@ The last three are all **SPI Bus B** devices, sharing `SPI_B_SCK` / `SPI_B_MOSI`
 > See *Radio modules LOCKED* in [[05 - Design Decisions Log]] and
 > [[12 - RF and Antenna Plan v0.1]].
 >
-> **This README still describes the symbols as they currently exist, and they still encode
-> the old open questions** — `TBD` manufacturer/MPN, no footprint, `on_board no`, and the
-> `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` graphic text inside
-> `SX1262_MODULE_PLACEHOLDER`. Every "unresolved" statement below about *which* radio part
-> AQROOT uses is now **stale as a decision** but still **accurate as a description of the
-> library**. Reconciling the symbols is a KiCad edit and is outstanding — see
+> **Partially reconciled.** The **body graphic text** in both placeholder symbols has been
+> rewritten to state the locked modules, in `AQROOT_Beta.kicad_sym` **and** in the matching
+> `lib_symbols` cache inside `04_spi_b_radios_nfc.kicad_sch` — the two were edited together
+> and verified identical, so the schematic's cached copy does not desync from the library.
+>
+> **Still NOT reconciled — these remain true descriptions of the symbols:** `TBD`
+> manufacturer/MPN, `Datasheet` fields unchanged (CC1101 still points at TI's product page,
+> SX1262 still blank), **no footprint**, and **`on_board no`**. Pin numbering is still the
+> logical 1–8 / 1–10 placeholder order and **will** change. Statements below about *which*
+> radio part AQROOT uses are now stale as decisions; statements about **fields, footprints,
+> pins and `on_board`** remain accurate. See
 > [Verification before manufacture](#verification-before-manufacture).
 >
-> **Nothing here unblocks routing on its own.** The footprints still do not exist; they must
-> be built from the Ebyte land-pattern drawings first.
+> **Nothing here unblocks routing.** The footprints still do not exist; they must be built
+> from the Ebyte land-pattern drawings first, and `on_board` must stay `no` until they are.
 
 ---
 
@@ -776,12 +781,12 @@ Keeping `RF_ANT` alone on the opposite side from the digital pins is deliberate 
 mirrors how the RF path must be kept away from the digital section in layout, and it
 makes an accidental digital-to-RF connection visually obvious in the schematic.
 
-The body carries a visible five-line graphic warning:
+The body carries a visible five-line graphic, **rewritten 2026-08-07** for the module lock:
 
 ```
 FUNCTIONAL PLACEHOLDER
-MODULE / BARE-IC IMPLEMENTATION PENDING
-RF MATCHING / ANTENNA INTERFACE PENDING
+MODULE LOCKED: EBYTE E07-400M10S
+NOT A BARE IC - ANTENNA ON MODULE IPEX
 NO FOOTPRINT
 DO NOT ROUTE
 ```
@@ -946,24 +951,26 @@ As with the CC1101 placeholder, `RF_ANT` sits alone on the opposite side from th
 digital pins — it mirrors the layout separation and makes an accidental digital-to-RF
 connection visually obvious.
 
-The body carries a visible six-line graphic warning:
+The body carries a visible six-line graphic, **rewritten 2026-08-07** for the module lock:
 
 ```
 FUNCTIONAL PLACEHOLDER
-EXACT CERTIFIED MODULE PENDING
-EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED
-RF / ANTENNA INTERFACE PENDING
+MODULE LOCKED: EBYTE E22-900M22S
+ANTENNA ON MODULE IPEX PORT
+FOOTPRINT PENDING - FROM EBYTE DRAWING
 NO FOOTPRINT
 DO NOT ROUTE
 ```
 
-> **Lines 2 and 3 of that graphic are now STALE.** The module *is* selected
-> (**E22-900M22S**, 2026-08-07), so `EXACT CERTIFIED MODULE PENDING` and
-> `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` no longer state the truth. The block is
-> reproduced above exactly as it still appears in `AQROOT_Beta.kicad_sym` — it is quoted, not
-> endorsed. **`NO FOOTPRINT` and `DO NOT ROUTE` remain correct and must stay** until a real
-> land pattern exists. Rewriting the graphic is a symbol edit; the same stale text also
-> appears on the `04_spi_b_radios_nfc` sheet.
+> The previous lines 2–4 read `EXACT CERTIFIED MODULE PENDING` /
+> `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` / `RF / ANTENNA INTERFACE PENDING`. All three
+> were superseded by the lock. **`NO FOOTPRINT` and `DO NOT ROUTE` were deliberately kept** —
+> they are still true, and remain the operative instruction until a real land pattern exists.
+>
+> The identical rewrite was applied to the `lib_symbols` cache in
+> `04_spi_b_radios_nfc.kicad_sch` in the same commit. **Never edit one without the other:** a
+> cache that disagrees with the library makes KiCad report the symbol as changed against its
+> source. Text and positions were diffed after editing and confirmed identical.
 
 Pins use the plain `line` graphic style. `CS_N` and `RESET_N` are **not** drawn with
 inversion bubbles — the `_N` suffix already carries the polarity.
@@ -1633,10 +1640,9 @@ before committing to fabrication:
       module document (never Semtech's silicon datasheet), renumber the pins to the real
       module pinout, confirm the module's supply requirement against `+3V3`, build and assign
       a footprint from the Ebyte land-pattern drawing, resolve `SX1262_RF_TBD` (it terminates
-      at the module's IPEX port), rewrite the symbol's stale `EXACT CERTIFIED MODULE PENDING`
-      / `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED` graphic lines, and set `on_board` back
-      to `yes`. Do not route the RF area until this is closed, and do not substitute a
-      generic module footprint.
+      at the module's IPEX port), and set `on_board` back to `yes`. Do not route the RF area
+      until this is closed, and do not substitute a generic module footprint.
+      **(The body graphic text is already done — 2026-08-07, symbol + cache together.)**
 - [ ] **Verify the antenna interface before ordering either module.** Ebyte sells IPEX and
       stamp-hole variants under closely-related part numbers. Everything above assumes IPEX;
       a stamp-hole variant would force a board-level antenna interface and RF routing.
@@ -1644,8 +1650,10 @@ before committing to fabrication:
       were chosen, but the Beta antennas are not their stock antennas, and modifying a
       certified module's RF section can void the approval. Confirm with the cert lab before
       treating the pre-cert as banked.
-- [ ] **Stale text outside this library:** the `04_spi_b_radios_nfc` sheet still displays
-      `EXACT CERTIFIED MODULE PENDING` / `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED`.
+- [x] ~~**Stale text outside this library:** the `04_spi_b_radios_nfc` sheet still displays
+      `EXACT CERTIFIED MODULE PENDING` / `EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED`.~~
+      **DONE 2026-08-07** — both the sheet annotations and the sheet's `lib_symbols` cache
+      were updated, the latter in lockstep with `AQROOT_Beta.kicad_sym`.
 - [ ] Confirm the **10k pull-up to `+3V3` on `SX1262_CS_N`** is in the schematic, and
       that the **existing 100k pull-down holding `SX1262_RST_N` asserted** is still
       present and not competing with any added pull-up.

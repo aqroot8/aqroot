@@ -771,7 +771,7 @@
 					)
 				)
 			)
-			(text "MODULE / BARE-IC IMPLEMENTATION PENDING"
+			(text "MODULE LOCKED: EBYTE E07-400M10S"
 				(at 0 -11.43 0)
 				(effects
 					(font
@@ -779,7 +779,7 @@
 					)
 				)
 			)
-			(text "RF MATCHING / ANTENNA INTERFACE PENDING"
+			(text "NOT A BARE IC - ANTENNA ON MODULE IPEX"
 				(at 0 -13.335 0)
 				(effects
 					(font
@@ -2119,7 +2119,7 @@
 					)
 				)
 			)
-			(text "EXACT CERTIFIED MODULE PENDING"
+			(text "MODULE LOCKED: EBYTE E22-900M22S"
 				(at 0 -13.97 0)
 				(effects
 					(font
@@ -2127,7 +2127,7 @@
 					)
 				)
 			)
-			(text "EBYTE E22 VS WAVESHARE CORE1262 UNRESOLVED"
+			(text "ANTENNA ON MODULE IPEX PORT"
 				(at 0 -15.875 0)
 				(effects
 					(font
@@ -2135,7 +2135,7 @@
 					)
 				)
 			)
-			(text "RF / ANTENNA INTERFACE PENDING"
+			(text "FOOTPRINT PENDING - FROM EBYTE DRAWING"
 				(at 0 -17.78 0)
 				(effects
 					(font
