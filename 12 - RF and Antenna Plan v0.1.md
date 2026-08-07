@@ -20,8 +20,13 @@ Target: pocket handheld (~122 x 61 x 23.5mm, plastic PC+ABS shell, separate RF c
 |---|---|---|---|---|---|
 | WiFi / BLE | 2.4 GHz | ESP32-S3 module onboard PCB antenna | Top corner, PCB edge | Easy (done by Espressif) | Decided |
 | NFC | 13.56 MHz | PCB/flex loop coil | Rear center (NFC target) | Moderate (well-understood) | Decided |
-| LoRa | 915 MHz | Internal FPC antenna | Upper sidewall / crown edge | Moderate | Decided (tune later) |
-| Sub-GHz | 433 MHz | Electrically-shortened (helical/meander) | RF crown (max volume) | HARD | Decided direction, needs testing |
+| LoRa | 915 MHz | Taoglas FXP890 flex, plug-on via module IPEX | Upper sidewall / crown edge | Moderate | Part selected (tune later) |
+| Sub-GHz | 433 MHz | Taoglas FXP450 flex, plug-on via module IPEX (still electrically small) | RF crown (max volume) | HARD | Part selected, needs testing |
+
+**Board-level RF scope:** with 433 and 915 on certified modules with IPEX ports, NO RF signal
+at either frequency reaches the main PCB — no matching networks, no RF traces, no test
+connectors, no controlled-impedance routing for those two radios. NFC is the only remaining
+board-level RF design task.
 
 ---
 
@@ -60,42 +65,57 @@ Target: pocket handheld (~122 x 61 x 23.5mm, plastic PC+ABS shell, separate RF c
 
 ## 3. LoRa — 915 MHz (real TX radio, moderate)
 
-- **Antenna:** internal FPC (flexible printed circuit) antenna — a thin flexible antenna
-  that adheres inside the enclosure. Off-the-shelf 915MHz FPC antennas exist.
+- **Antenna — SELECTED:** Taoglas FXP890.07.0100C internal FPC (flexible printed circuit)
+  antenna — a thin flexible antenna that adheres inside the enclosure, plugging onto the
+  E22-900M22S module's IPEX port via its u.FL cable. See **Beta Hidden-Antenna Picks** at the
+  end of this doc for the connector and ordering rules.
 - **Location:** along an upper sidewall or the crown edge (per enclosure v3), positioned:
   - Clear of the battery and large grounded/metal structures.
   - Away from the user's normal grip where possible (a hand detunes antennas).
-- **Matching network:** required (a few passives) to match the antenna to 50 ohms at 915MHz.
-- **Engineering test connector:** include a U.FL test point so range/matching can be
-  measured and tuned in the FINAL enclosure with a realistic hand grip.
+- **Matching network — NOT a board-level item (changed).** The E22-900M22S carries its own RF
+  front-end and presents a matched 50-ohm IPEX port. Do NOT design a 915 matching network on
+  the main PCB. Nothing at 915 MHz touches our copper.
+- **Engineering test access (changed):** the module's IPEX port IS the test port — unplug the
+  flex antenna and connect the NanoVNA there. Do NOT add a separate U.FL test connector.
+  Range/grip testing in the FINAL enclosure is still required; only the test point moved.
 - **Coexistence:** 915MHz sits between 433 and 2.4GHz; physical separation from the 433
   antenna matters (see coexistence section).
 - **Placement:** upper-LEFT sidewall / crown edge (per enclosure v3).
-- **Risk:** moderate — FPC + matching + tuning is well-trodden; the main care item is
-  keeping it off the hand and the battery.
+- **Risk:** moderate, and LOWER than v0.1 assumed — the module owns the matching, so what's
+  left is placement and in-enclosure tuning. The main care item is keeping the antenna body
+  off the hand and away from the battery.
 
 ## 4. Sub-GHz — 433 MHz (THE HARD ONE)
 
 - **Why hard:** 433 MHz wavelength ~69cm. A full efficient antenna (quarter-wave ~17cm)
   does NOT fit a pocket device. So we MUST use an electrically-shortened, compromised
   antenna, which sacrifices efficiency/range. Every pocket 433MHz device makes this tradeoff.
-- **Candidate antenna forms (test several before freezing):**
-  - Helical spring (coiled wire) — good size/performance compromise, common in handhelds.
-  - Meandered PCB trace (zig-zag) — flat, cheap, moderate performance.
-  - Electrically-shortened monopole / short whip.
-  - Flexible wire element in the crown.
-- **Strategy:** reserve the LARGEST crown volume for the 433 antenna (per enclosure v3), and
-  test multiple constructions on real hardware — this is the one antenna most likely to need
-  iteration.
-- **Matching network:** required, plus a U.FL engineering test connector for tuning.
-- **Placement:** RF crown, TOP-LEFT, maximum available volume, away from the user's grip.
+- **Antenna — SELECTED (supersedes the candidate-form study below):** Taoglas FXP450.07.0100C
+  flex/FPC, plugging onto the E07-400M10S module's IPEX port via its u.FL cable. See
+  **Beta Hidden-Antenna Picks** at the end of this doc for the connector and ordering rules.
+- **Superseded candidate forms — NOT in play for Beta.** These were the options while 433 was
+  assumed to be a board-level design (bare CC1101 + our own front-end). The module lock removed
+  that assumption; kept only as the record of why a compromised antenna is unavoidable:
+  helical spring, meandered PCB trace, shortened monopole / short whip, flexible wire element.
+- **Matching network — NOT a board-level item (changed).** The E07-400M10S carries its own RF
+  front-end and presents a matched 50-ohm IPEX port. Do NOT design a 433 matching network on
+  the main PCB. Nothing at 433 MHz touches our copper.
+- **Engineering test access (changed):** the module's IPEX port IS the test port — unplug the
+  flex antenna and connect the NanoVNA there. Do NOT add a separate U.FL test connector; there
+  is no board-level RF trace to attach one to.
+- **Placement:** the antenna's u.FL cable decouples the antenna BODY from the module position,
+  so the zoning below still stands — reserve the LARGEST crown volume (per enclosure v3) for
+  the FXP450 body, TOP-LEFT, away from the user's grip. Iteration is now placement and
+  orientation, not antenna construction.
 - **433 antenna launch strategy (sequenced, not a contradiction):**
-  - **BASE CERTIFIED DEVICE:** ships with the internal electrically-shortened 433 antenna as
-    the default, certified configuration. This is what goes through FCC as the primary device.
+  - **BASE CERTIFIED DEVICE:** ships with the internal hidden FXP450 flex antenna as the
+    default, certified configuration. This is what goes through FCC as the primary device.
   - **EXTERNAL HIGH-GAIN WHIP + SIDE-HOLDER:** launches as an ADVANCED ACCESSORY, separate
     from the base certified config, with its own compliance handling (a user-attachable
     antenna is treated as an accessory pending its own FCC path). The side-holder stows it on
-    the device when not in use.
+    the device when not in use. Mechanically this is now simpler: the whip attaches to the SAME
+    module IPEX port via a u.FL-to-SMA pigtail — the internal flex unplugs, the whip plugs in.
+    That physical swap-ability is exactly what makes it a separate cert config, not a bonus.
 
   So the device is NOT certified with a user-swappable antenna at launch; the whip is an
   accessory added on top. Both the "fixed internal antenna for cert" and the "external whip +
@@ -120,8 +140,10 @@ Target: pocket handheld (~122 x 61 x 23.5mm, plastic PC+ABS shell, separate RF c
     and consider orientation to reduce coupling.
 - **Frequency separation (helps us):** 13.56MHz, 433MHz, 915MHz, 2.4GHz are far apart — no
   harmonic overlaps at the fundamentals that would cause direct in-band interference in
-  normal operation. (Watch 2x433=866 near 915 — a 433 harmonic could nick the 915 RX;
-  filtering/separation mitigates. Flag for RF review.)
+  normal operation. (Watch 2x433=866 near 915 — a 433 harmonic could nick the 915 RX.
+  NOTE: board-level filtering is no longer a lever — there is no board RF path to filter on.
+  Mitigation is now limited to antenna separation/orientation, the one-TX-at-a-time rule, and
+  whatever harmonic suppression the modules already provide. Flag for RF review.)
 - **DECISION — one transmitter at a time (firmware-enforced):** design so only ONE radio
   transmits at any instant. This massively simplifies RF coexistence (no two PAs desensing
   each other) and matches real use (you don't WiFi-attack + LoRa-TX + 433-replay at once).
@@ -140,13 +162,23 @@ Target: pocket handheld (~122 x 61 x 23.5mm, plastic PC+ABS shell, separate RF c
 enclosure v3 crown/rear zoning and this plan agree.
 
 **Still needs (RF-specific, before/at PCB layout):**
-- [ ] Select specific off-the-shelf antennas: 915MHz FPC part, 433MHz antenna candidates,
-      NFC loop (etched vs flex part).
-- [ ] Design matching networks for 433, 915, and NFC (values set by simulation/measurement).
-- [ ] Place U.FL engineering test connectors for 433, 915 (and optionally NFC).
+- [x] Select specific off-the-shelf antennas: 915MHz = Taoglas FXP890.07.0100C,
+      433MHz = Taoglas FXP450.07.0100C. STILL OPEN: NFC loop (etched vs flex part).
+- [ ] ~~Design matching networks for 433 and 915~~ — VOID, on-module. NFC matching network
+      still required (values set by simulation/measurement).
+- [ ] ~~Place U.FL engineering test connectors for 433, 915~~ — VOID, the module IPEX ports
+      serve as test points. Optional NFC test point still worth considering.
+- [ ] **VERIFY BEFORE ORDERING:** confirm the exact module variants ship with an IPEX/u.FL
+      port and not stamp-hole-only. Ebyte sells both interfaces under similar part numbers,
+      and the entire zero-PCB-impact plan collapses if a stamp-hole variant arrives.
+- [ ] **Modular-cert check:** the certified modules carry FCC/CE pre-cert only for the antenna
+      types/gains in their grant. Swapping in the Taoglas parts may fall outside it and force
+      re-evaluation. Confirm with the cert lab BEFORE treating the module pre-cert as a saving
+      — this is the main cost risk the module lock was supposed to eliminate.
 - [ ] Define exact keep-out dimensions (WiFi from Espressif; others from antenna datasheets).
 - [ ] Define the ground-plane strategy in the stackup (likely 4-layer PCB for a clean plane).
-- [ ] Decide 433 vs 915 harmonic mitigation (filtering / separation) — flag for RF review.
+- [ ] Decide 433 vs 915 harmonic mitigation — separation/orientation only, since board-level
+      filtering is off the table with module RF (see §5) — flag for RF review.
 - [ ] PROFESSIONAL RF REVIEW before PCB fab — this plan is architectural; a real RF engineer
       or the cert lab should review antenna placement + matching before committing to copper.
 - [ ] Plan for FCC pre-scan: intentional radiators (433, 915, 2.4, 13.56) drive the cert.
