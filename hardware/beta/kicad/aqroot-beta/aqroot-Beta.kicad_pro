@@ -279,6 +279,10 @@
       "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000": "RootProbe Phase 2 placeholder -> connector, pin count and mechanical format not locked, no footprint. DO NOT ROUTE.",
       "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "pin_to_pin|1041400|787400|08a69486-0327-4b8e-ad43-d69a1762dd85|60a66239-11df-4a6f-817b-38f3f6844702": "BMI270 unused auxiliary interface pin tied to VDDIO per datasheet; bidirectional symbol type retained intentionally.",
+      "pin_to_pin|1041400|812800|b3d48b15-1a70-49b1-96b4-e2c8b674085a|60a66239-11df-4a6f-817b-38f3f6844702": "BMI270 unused auxiliary interface pin tied to VDDIO per datasheet; bidirectional symbol type retained intentionally.",
+      "pin_to_pin|2222500|927100|1551f271-07e9-4f76-92ef-071a04755d7d|22b536b2-2e85-4bb0-8fb4-c942a97959cd": "MAX98357A exposed thermal pad intentionally connected to GND per device requirements; stock KiCad symbol pin semantics cause ERC type warning.",
+      "pin_to_pin|787400|863600|13bf1a29-e85d-412b-9875-cf738977a08d|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "BMI270 SDO strapped to GND for I2C address selection; bidirectional pin type is datasheet-correct.",
       "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
       "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE."
     },
@@ -353,6 +357,22 @@
       ],
       [
         "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1041400|787400|08a69486-0327-4b8e-ad43-d69a1762dd85|60a66239-11df-4a6f-817b-38f3f6844702|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1041400|812800|b3d48b15-1a70-49b1-96b4-e2c8b674085a|60a66239-11df-4a6f-817b-38f3f6844702|||",
+        ""
+      ],
+      [
+        "pin_to_pin|2222500|927100|1551f271-07e9-4f76-92ef-071a04755d7d|22b536b2-2e85-4bb0-8fb4-c942a97959cd|||",
+        ""
+      ],
+      [
+        "pin_to_pin|787400|863600|13bf1a29-e85d-412b-9875-cf738977a08d|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
         ""
       ],
       [
