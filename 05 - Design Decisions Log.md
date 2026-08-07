@@ -2546,3 +2546,105 @@ not parseable here.
 
 SW9 (C&K retry), U10 (ST), J2 (Molex), J3 (GCT), U7/U8 (Ebyte), U9 (ST EDA), U5 (ADI),
 U12 (TI DSJ), D1 (Vishay).
+
+---
+
+## J1 display interface — BLOCKED on backlight architecture (2026-08-07)
+
+Panel datasheet **CH280QV10-CT Rev.D** (Shenzhen ChengHao) retrieved and read. The 50-pin
+pinout, mode table, backlight spec and supply limits below are quoted from it.
+
+### J1 is not "a 13-pin abstraction to expand" — it is entirely uncaptured
+
+`J1` (`ILI9341_FT6236_MODULE_PLACEHOLDER`) has 13 logical pins and **zero netlist nodes — it is
+wired to nothing**. The display signals exist but stop at the MCU/expander:
+
+| Net | Members |
+|---|---|
+| `/DISP_CS_N` | U1.18, R26.2 (10k pull-up) |
+| `/DISP_DC` | U1.22 only |
+| `/DISP_RST_N` | U2.8, R16.1 |
+| `/DISP_BL_CTL` | **U1.24 only** |
+| `/SPI_A_SCK`, `/SPI_A_MOSI`, `/SPI_A_MISO` | U1 + **J2 (microSD) only** |
+
+Sheet 03 contains only C13/C14/C15 (+3V3 decoupling), R25/R26 (CS pull-ups), J1 and J2. So
+capturing J1 means **capturing the whole display interface for the first time**, including
+supplies, grounds, mode straps, unused-pin grounding and the backlight subsystem.
+
+### HARD BLOCKER — backlight has no circuit and +3V3 cannot drive it
+
+Datasheet section 8, Backlight Characteristics: **4 white LEDs in parallel**, Vf **2.9 / 3.2 /
+3.5 V** at **If = 80 mA**.
+
+- The **+3V3 rail cannot drive this**. At Vf typ 3.2 V the headroom is 0.1 V; at Vf max 3.5 V
+  the LEDs will not light from 3.3 V at all. A series resistor from +3V3 is **not viable** —
+  current would swing wildly with Vf spread, temperature and rail sag.
+- `DISP_BL_CTL` currently terminates on **one ESP32-S3 GPIO and nothing else**. A GPIO cannot
+  carry 80 mA; that is far beyond the per-pin limit.
+- **There is no LED driver, no current limiting, no boost, and no PWM stage anywhere.**
+- The existing **TPS61023 5 V boost must NOT be reused.** It is architecturally locked to the
+  NFC PA rail, and the repo already states "NOT A GENERAL-PURPOSE 5V RAIL" and "Do not connect
+  ... general 5V accessories".
+
+**Decision required before J1 can be wired** — a backlight topology: a dedicated constant-current
+boost LED driver (typical for this panel class), or another sanctioned rail plus current
+control, and how `DISP_BL_CTL` drives it (PWM into an EN/dimming pin). **Not guessed here.**
+
+### SPI mode — recommendation, needs confirmation
+
+Datasheet mode table (pins 6-9, IM3:IM0):
+
+| IM3 IM2 IM1 IM0 | Mode | Pins used |
+|---|---|---|
+| 0 1 1 0 | 4-wire 8-bit SPI I | /CS, RS, SDI, SCL — **no SDO** |
+| **1 1 1 0** | 4-wire 8-bit SPI II | /CS, RS, SDI, **SDO**, SCL |
+
+The locked AQROOT architecture **expects display MISO**: `10 - Beta Pin Map` section "SPI Bus A
+— Display + microSD (shared SCK/MOSI/**MISO**, separate CS)", and `libraries/README.md` maps
+`LCD_MISO` to `SPI_A_MISO`, justifying its Tri-state pin type because SPI Bus A is shared with
+the microSD socket.
+
+**Recommendation: SPI mode II, IM3:IM0 = 1 1 1 0** — IM3 HIGH, IM2 HIGH, IM1 HIGH, IM0 GND —
+because it is the only 4-wire mode exposing SDO, and dropping SDO would contradict the locked
+pin map. **Confirm before wiring**: if display read-back is genuinely unused, mode I (0110) is
+simpler and removes any shared-bus contention risk.
+
+### Supply headroom — flag
+
+Datasheet section 6, DC Characteristics: **IOVCC 1.65 / 1.8-2.8 / 3.3 V** and **VCI 2.5 / 2.8 /
+3.3 V**. Both list **3.3 V as the MAXIMUM**, not a typical. Powering pins 40/41 (IOVCC) and 42
+(VCI) from `+3V3` runs the panel at the top of its rated range with no margin for rail
+tolerance. Absolute max is 4.6 V so it is not a destruction risk, but this should be an
+explicit decision.
+
+### Unused interface pins — real capture work, not NC markers
+
+The datasheet states **"Connect unused pins to GND"** for the DB bus. In SPI mode that means
+**DB[17:0] (pins 15-32) all to GND**, plus VSYNC/HSYNC/DOTCLK/DE (11-14) and /RD (35) handled
+per the datasheet. TE (39) is optional. **These must be grounded, not marked no-connect.**
+
+### Touch controller — VERIFY
+
+Datasheet section 2: **CTP Driver IC = CST026**. Adafruit's page claims FT6236/FT6236U-compatible.
+The repo assumes **FT6236 at I2C 0x38**. The physical interface (I2C SCL/SDA/IRQ/RESET on pins
+44-47) is unaffected and stays locked, but the **controller identity and I2C address/protocol
+are unconfirmed**. Recorded as a Beta procurement/firmware verification item — do not redesign
+the I2C hardware over it.
+
+### Mating connector — confirmed, footprint not yet built
+
+**FCI/Amphenol 62684-50210** (tape 62684-502100), 50 contacts, 0.5 mm, top-contact. Recommended
+layout captured: pitch 0.5 ±0.05, signal lands 0.3 x 1.2, contact span 0.5x(n-1) = 24.5 mm,
+hold-down lands 0.9 x 2.4 set 3.3 mm outboard. **Footprint deliberately not built this pass** —
+the hold-down pad Y-offsets were not unambiguously readable, and with J1 blocked there is no
+value in committing a footprint whose mechanical anchors are uncertain.
+
+### Panel 50-pin map (for the eventual symbol)
+
+1 LEDK · 2-5 LED-A1..A4 · 6-9 IM0..IM3 · 10 /RESET · 11 VSYNC · 12 HSYNC · 13 DOTCLK · 14 DE ·
+15-32 DB17..DB0 · 33 SDO · 34 SDI · 35 /RD · 36 /WR_RS · 37 RS_SCL · 38 /CS · 39 TE ·
+40-41 IOVCC · 42 VCI · 43 GND · 44 CTP_SCL · 45 CTP_SDA · 46 CTP_IRQ · 47 CTP_RES · 48-50 GND.
+
+Intended mapping once unblocked: DISP_RST_N to 10, SPI_A_SCK to 37, SPI_A_MOSI to 34,
+SPI_A_MISO to 33 (mode II), DISP_CS_N to 38, DISP_DC to 36, I2C_SCL to 44, I2C_SDA to 45,
+touch IRQ to 46, touch reset to 47.
