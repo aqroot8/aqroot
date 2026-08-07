@@ -1322,7 +1322,7 @@
 		)
 		(uuid "feaaa814-bc9c-4f6f-803a-5ac70134892e")
 	)
-	(label "I2C_SCL_TEST"
+	(label "I2C_SCL_INT"
 		(at 198.12 80.01 270)
 		(effects
 			(font
