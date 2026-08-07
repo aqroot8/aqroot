@@ -2223,3 +2223,70 @@ with the intended shell-stake configuration, must come from the GCT drawing. Not
 `U12` TI DSJ (14-pin VSON 3×4 mm) · `U14` Maxim **90-0065** · `L1` Coilcraft XFL4020 ·
 `L2` Würth 74438357010 · `Q1` AOS AO3400A · `SW9` C&K PCB layout · `J2` Molex ·
 `LS1` Same Sky · `J1` current Adafruit mechanical/FPC drawing · `U7`/`U8` Ebyte · `U9` ST.
+
+---
+
+## Vendor land-pattern verification pass — method proven, systematic finding (2026-08-07)
+
+### The retrieval method now works
+
+Vendor PDFs can be fetched and their land-pattern dimension callouts extracted as text
+(PyMuPDF). Extraction was corroborated against independently supplied values for TPD4E1B06
+(0.5 mm pitch, 0.30 × 0.67 mm pads, 1.48 mm span) — exact match. This is repeatable for any
+part whose datasheet is reachable.
+
+### Systematic finding — KiCad stock footprints are IPC-7351 alternates, not vendor-exact
+
+Four TI packages were compared against their **recommended land patterns** (not merely the
+package outlines). In every case pitch and pad width match, and the **signal pad length is
+longer in KiCad than TI recommends**:
+
+| Package | Part | TI land pattern | KiCad footprint | Pitch | Pad width | Pad length |
+|---|---|---|---|---|---|---|
+| DRL0006A | U13, D3–D6 | 4223266/F | `SOT-563` | 0.5 ✅ | 0.30 vs **0.35** ❌ | 0.67 vs 0.675 ✅ |
+| DBV0006A | U15 | 4214840/G | `SOT-23-6` | 0.95 ✅ | 0.6 ✅ | 1.1 vs **1.325** ❌ |
+| PW0024A | U2, U3 | 4220208/A | `TSSOP-24_4.4x7.8mm` | 0.65 ✅ | 0.45 vs **0.40** ❌ | 1.5 vs 1.475 ✅ |
+| DLH0010A | U11 | 4226298/A | `Texas_DLH0010A_WSON-10…` | 0.4 ✅ | 0.2 ✅ | 0.5 vs **0.75** ❌ |
+
+**U11 is the closest**: pitch, pad width **and the exposed pad (0.9 × 1.5)** match TI exactly —
+only the signal pad length differs.
+
+**These footprints are not defective.** TI's own drawings state *"Publication IPC-7351 may have
+alternate designs"*. KiCad's are IPC-7351-derived with fillet allowance; TI's are drawn to the
+terminal. Both are legitimate.
+
+### Consequence — a decision is required before any footprint can be marked VERIFIED
+
+The standing policy requires the comparison to **pass**. On a strict vendor-exact reading,
+**none of these can be marked VERIFIED**, and none was. Two coherent options:
+
+- **A — accept IPC-7351 alternates.** Keep the stock footprints, record a documented deviation,
+  and narrow the policy to require correct *provenance and package identity* rather than
+  dimensional identity. Cheapest, and defensible: IPC-7351 is an industry standard.
+- **B — build vendor-exact project-local footprints** from each TI drawing. Highest fidelity,
+  but means authoring and maintaining a footprint per package family.
+
+**This is an engineering/manufacturing preference, not a technical fact, so it was not decided
+here.** No footprint was created, changed, or marked VERIFIED in this pass.
+
+### One measurement caveat, stated plainly
+
+Pad **count, pitch, and pad dimensions** extract unambiguously and are what the verdicts above
+rest on. The parenthesised **overall-span** figure could **not** be resolved from text alone —
+whether it denotes outer-edge-to-outer-edge or centre-to-centre depends on leader lines that
+are not in the text layer, and the drawings use filled paths rather than rectangle primitives,
+so vector measurement did not recover them. **No verdict above depends on the span figure.**
+
+### Not reached in this pass
+
+U16 (DGK), D2/D7 (DBZ0003A), U10 (ST Figure 19), L1 (Coilcraft), L2 (Würth), Q1 (AOS),
+J2 (Molex), LS1 (Same Sky), J3 (GCT), U7/U8 (Ebyte), U9 (ST), J1 (Adafruit panel + mating FPC
+connector), U5 (confirm T1633-5), D1 (Vishay 81010). The TI parts will very likely reproduce
+the IPC-vs-vendor pattern above; the non-TI vendors are genuinely unknown and still worth
+fetching once option A or B is chosen.
+
+### Unchanged and still blocked
+
+- **U14 MAX17048** — BLOCKED. 90-0065 not obtained. Outline 21-0168 alone is insufficient.
+- **SW9** — footprint work STOPPED at the §1 gate: the symbol is still 2-pin `Switch:SW_SPST`
+  and the locked JS102011SAQN is a 3-terminal SPDT.
