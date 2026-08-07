@@ -605,16 +605,6 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 88.9) (xy 106.68 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7c684050-ce5f-4017-9775-213c17a33389")
-	)
-	(wire
-		(pts
 			(xy 133.35 266.7) (xy 135.89 266.7)
 		)
 		(stroke
@@ -2253,16 +2243,6 @@
 		)
 		(uuid "eb5ae82d-c876-4c79-875a-fe843e05f1a7")
 	)
-	(label "BQ25185_SYS"
-		(at 106.68 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ed35ecf6-3c50-42b2-8174-6f94b92fc442")
-	)
 	(label "SX1262_BUSY"
 		(at 204.47 72.39 0)
 		(effects
@@ -2701,16 +2681,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(pin "BQ25185_SYS" output
-			(at 105.41 88.9 0)
-			(uuid "df685130-0209-4506-8e15-d5fd324ba045")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 			)
 		)
 		(pin "I2C_SCL_INT" input

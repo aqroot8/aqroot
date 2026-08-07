@@ -6172,8 +6172,7 @@
 		)
 		(uuid "c523a097-2089-45dd-90db-0a7b1cc81a63")
 	)
-	(hierarchical_label "BQ25185_SYS"
-		(shape output)
+	(label "BQ25185_SYS"
 		(at 73.66 97.79 0)
 		(effects
 			(font
