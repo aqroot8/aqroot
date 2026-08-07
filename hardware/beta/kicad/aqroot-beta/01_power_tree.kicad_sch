@@ -3924,6 +3924,12 @@
 		(uuid "ee5b5351-f066-4e63-a663-9642201df58c")
 	)
 	(junction
+		(at 190.5 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "249b8124-34e3-4882-ae1c-5161173fa3cc")
+	)
+	(junction
 		(at 203.2 69.85)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4012,6 +4018,36 @@
 	(no_connect
 		(at 45.72 59.69)
 		(uuid "e4805f29-07f8-4ccb-8adb-11b8a26f1ca6")
+	)
+	(wire
+		(pts
+			(xy 184.15 59.69) (xy 184.15 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "deae5b1d-7f68-4dca-9e8e-92f8cdf74bb0")
+	)
+	(wire
+		(pts
+			(xy 184.15 67.31) (xy 184.15 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a3fc947-e8e4-4a3f-93fd-c09015c71a65")
+	)
+	(wire
+		(pts
+			(xy 184.15 69.85) (xy 190.5 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f209cb5a-74e8-4e56-8696-0cf83b0a0df7")
 	)
 	(wire
 		(pts
@@ -5653,6 +5689,16 @@
 		)
 		(uuid "fffbc878-3b9c-4f6b-b289-2b63e96a2362")
 	)
+	(label "BQ25185_SYS"
+		(at 184.15 57.15 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cd00c3f5-1b08-4609-948f-2d885892a75b")
+	)
 	(label "BAT_PROTECTED_P"
 		(at 91.44 76.2 0)
 		(effects
@@ -6259,6 +6305,88 @@
 			(justify left)
 		)
 		(uuid "cd5ea4dc-48a0-4617-8039-2932f27b6317")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 184.15 63.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "1339117e-cf68-4065-8abb-7c171aff0d8c")
+		(property "Reference" "R68"
+			(at 186.69 62.2299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R DNP"
+			(at 186.69 64.7699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 182.372 63.5 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 184.15 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 184.15 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "496778ad-206c-4a8d-83e6-f7399466dd50")
+		)
+		(pin "1"
+			(uuid "d850c5ac-2279-4f7c-9729-7c2bc5a11cf9")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "R68")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
