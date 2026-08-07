@@ -1841,6 +1841,50 @@
 				)
 			)
 		)
+		(property "Note" "Audio circuit unchanged - driven differentially from MAX98357A OUTP/OUTN. Enclosure cavity, grille and acoustic sealing are a mechanical-phase check. Exact body height, mounting method and pad geometry NOT recorded here; take them from the Same Sky datasheet."
+			(at 241.3 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "15 mm round solder-pad speaker, 8 ohm - part LOCKED. Footprint BLOCKED: needs the official Same Sky mechanical drawing / land pattern."
+			(at 241.3 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Same Sky (CUI Devices)"
+			(at 241.3 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CMS-1535-058SP"
+			(at 241.3 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Speaker"
 			(at 241.3 72.39 0)
 			(hide yes)

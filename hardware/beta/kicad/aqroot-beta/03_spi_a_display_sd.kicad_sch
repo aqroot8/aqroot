@@ -2006,6 +2006,50 @@
 				)
 			)
 		)
+		(property "Note" "Signal architecture unchanged: 1-bit SPI mode, DAT1/DAT2 intentionally unconnected, shield to GND. VERIFY the Molex contact numbering against Connector:Micro_SD_Card pin numbering, and confirm card-entry clearance and push-push travel against the Field Slate enclosure before placement."
+			(at 234.95 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SMT push-push microSD socket, 8 contacts + shield - part LOCKED. Footprint BLOCKED: needs the official Molex recommended land pattern."
+			(at 234.95 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "5025700893"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Micro SD Card Socket"
 			(at 234.95 60.96 0)
 			(hide yes)
@@ -3142,6 +3186,28 @@
 				)
 			)
 		)
+		(property "Note" "CRITICAL PCB/ENCLOSURE DEPENDENCY. Adafruit may change panel manufacturer while preserving compatibility, so 2770 is a vendor SKU lock for the Beta prototype and must NOT be treated as a production MPN lock. Required before J1 can be drawn: the current Adafruit mechanical/FPC drawing, verification of the 50-pin 0.5 mm FPC pinout against this sheet's architecture, and selection of the exact mating FPC connector (which is a separate part with its own land pattern). Panel dimensions above are approximate and must be confirmed against the current drawing."
+			(at 101.6 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "2.8 inch 240x320 ILI9341-compatible panel with FT6236U-compatible capacitive touch, 50-pin 0.5 mm FPC, approx 69 x 50 x 4 mm - BETA PROTOTYPE LOCK ONLY. Footprint BLOCKED."
+			(at 101.6 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Functional placeholder for AQROOT Beta 2.8-inch ILI9341 SPI LCD with FT6236 capacitive touch"
 			(at 101.6 90.17 0)
 			(hide yes)
@@ -3153,7 +3219,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "TBD"
+		(property "Manufacturer" "Adafruit (vendor SKU - NOT a production manufacturer MPN)"
 			(at 101.6 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -3164,7 +3230,7 @@
 				)
 			)
 		)
-		(property "MPN" "TBD"
+		(property "MPN" "Adafruit 2770"
 			(at 101.6 90.17 0)
 			(hide yes)
 			(show_name no)

@@ -13626,6 +13626,50 @@
 				)
 			)
 		)
+		(property "Note" "SYMBOL/PART CONFLICT - MUST BE RESOLVED BEFORE FOOTPRINT. JS102011SAQN is a 3-terminal SPDT; this instance uses Switch:SW_SPST which has only 2 pins (A,B). Any correct JS102011SAQN land pattern has 3 signal pads plus mounting tabs, so symbol and footprint cannot agree as-is. The locked electrical intent is SPST (VINA -> switch -> EN, never switching GND); wiring an SPDT as SPST is fine, but the symbol must then expose the unused throw so it can carry a no-connect. Changing the symbol is an approval-gated change and was NOT made here. Actuator direction and travel also still require the enclosure mechanical review."
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Right-angle SMD SPDT slide switch - part LOCKED. Footprint BLOCKED: needs the official C&K PCB layout drawing, and see the SYMBOL CONFLICT below."
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "C&K (Littelfuse)"
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "JS102011SAQN"
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Single Pole Single Throw (SPST) switch"
 			(at 190.5 63.5 0)
 			(hide yes)
