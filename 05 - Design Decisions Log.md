@@ -3765,3 +3765,86 @@ whether both feeds are live simultaneously, or whether a 0 R / jumper selects be
 **One decision: which XGPIO to reclaim from U3, or which alternative to take.** Everything else
 needed for U7 capture is now resolved, except the `Pcb_E22-900M22S` archive, which downloads with
 zip magic but is malformed.
+
+---
+
+## U7 — vendor PCB package RECOVERED; XGPIO14 reallocation verified but not applied (2026-08-08)
+
+### Pcb_E22-900M22S recovered — the archive was truncated, not corrupt
+
+The earlier download was **2,035,977 bytes**; a clean re-fetch gave **3,702,298 bytes**. Both lack a
+valid end-of-central-directory, so `zipfile` and `unzip` both refuse them. The contents are
+nevertheless intact and were recovered by **scanning `PK\x03\x04` local file headers directly and
+inflating each member with `zlib.decompress(blob, -15)`**.
+
+Archive layout (13 local headers) — note it is a **multi-variant** archive, exactly the trap the
+brief warned about:
+
+```
+Pcb_E22/E22-400M30S/...
+Pcb_E22/E22-433M22S/...
+Pcb_E22/E22-900M22S/E22-900M22S(1).png      1,255,303 B
+Pcb_E22/E22-900M22S/E22-900M22S_Size.jpg       75,623 B
+Pcb_E22/E22-900M30S/...
+```
+
+Both `E22-900M22S` members extracted with **CRC32 verified OK** against the header — so these are
+authentic, complete vendor files for the exact part.
+
+**They are drawings (PNG/JPG), not an ECAD library.** "Pcb_E22-900M22S" is a dimensioned mechanical
+drawing set, so the footprint must still be constructed from it — but from vendor geometry.
+
+### Geometry read from `E22-900M22S_Size.jpg`
+
+| Feature | Value |
+|---|---|
+| Body | **14.0 ±0.1 (W) × 20.0 ±0.1 (H)** |
+| Thickness | **3.00 ±0.1** |
+| Pad pitch | **1.27** |
+| Top inset | **2.00** (body top edge to pin 12 / pin 11 centre) |
+| Bottom inset | **1.00** (body bottom edge to pin 22 / pin 1 centre) |
+| Numbering | counter-clockwise: **pin 1 bottom-right**, up the right edge to 11 top-right, 12 top-left, down to **22 bottom-left** |
+| Split | 11 pads per edge (1–11 right, 12–22 left) |
+| **IPX connector** | **drawn and labelled on the module, lower-left of the top view** |
+
+**Antenna finding (Task 7): the IPX/u.FL connector is shown populated on the drawing for this exact
+part number**, alongside the pin-21 ANT stamp hole. This is the strongest evidence yet that the
+u.FL path is native to `E22-900M22S` rather than a family-level option — but it is a *drawing*, not
+a purchasing guarantee, so the **procurement requirement stands**: confirm with the supplier that
+shipped units have the IPEX connector populated before ordering Beta.
+
+**One datum still missing for the footprint:** the drawing dimensions pitch (1.27), top inset (2.00)
+and bottom inset (1.00), but **does not dimension the gap between pin 19 and pin 20** (left edge) or
+between pin 4 and pin 3 (right edge) — the break where the IPX connector sits. Pads 12–19 and 1–11
+are regular at 1.27, and 20–22 sit at the bottom, but the group offset is not stated. The larger
+`E22-900M22S(1).png` (1.25 MB, the detailed PCB drawing) has not yet been read and is the obvious
+place that gap is dimensioned.
+
+### XGPIO14 reallocation — verified, deliberately NOT applied
+
+Confirmed against the netlist, matching the brief exactly:
+
+- **XGPIO14 = U3 pin 19** → `R65` (100 R) → `XGPIO14_HDR` → `D6` pin 4 + `J5` pin 19
+- sheet 08 `08_buttons_expanders`: hierarchical label `XGPIO14` at (186.69, 92.71)
+- sheet 09 `09_community_header`: hierarchical label `XGPIO14` at (167.64, 147.32); `R65` at
+  (162.56, 147.32) rot 90; labels `XGPIO14_HDR` at (156.21, 144.78) and (251.46, 132.08);
+  `D6` at (143.51, 149.86)
+
+**Why it was not applied this pass:** renaming a hierarchical label requires the matching **sheet
+pin in the parent `aqroot-Beta.kicad_sch` to be renamed too**, and sheet 09's `XGPIO14` pin must be
+**deleted** rather than renamed. More importantly the change is **coupled to U7 capture** — until
+U7 exists, `SX1262_RXEN` terminates at the sheet-08 boundary and goes nowhere, which is the same
+dangling-intermediate problem that made the J1/backlight split impossible. Applying step 1 alone
+would leave the design in a worse state than not starting.
+
+**The reallocation and the U7 capture must land in one session**, in this order: reallocate U3.19 →
+`SX1262_RXEN` (parent + sheet 08), retire the sheet-09 path (delete `R65`, delete the sheet-09
+hierarchical label and its parent sheet pin, rename `XGPIO14_HDR` → `RESERVED_NC`), add the 100 k
+pull-down, then create and place the 22-pin symbol wired to the nets above.
+
+### Ebyte pull-down check (Task 2 of the brief)
+
+The manual specifies **no pull resistor on RXEN**. It gives only the truth table, in which
+**0,0 = CLOSE is a defined safe state**. A 100 k pull-down is therefore consistent with vendor
+documentation and contradicts nothing; it exists to hold CLOSE while the TCA9535 ports are high-Z
+at power-up. **No vendor-mandated alternative value was found.**
