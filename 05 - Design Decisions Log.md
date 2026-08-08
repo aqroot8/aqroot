@@ -4060,3 +4060,82 @@ correct the project's package record — at which point §6.1's drawing applies 
 No symbol, no footprint, no integration. The pin table is captured but the symbol cannot be
 finalised while three supply-architecture decisions and the `I2C_EN` strap are open, and the
 footprint is blocked on the package code.
+
+---
+
+## U9 ST25R3916-AQET — pin table re-verified, ST decoupling extracted, VDD_DR open (2026-08-08)
+
+Nothing modified. 176 components, 160 footprinted, ERC 0 real, 24 exclusions, tree clean.
+
+### Pin table re-verified programmatically, not from memory
+
+All **33 pads** were re-parsed directly out of the archived `ST25R3916_DS12484_Rev3.pdf` (Table 2,
+pp. 20–21) and matched **exactly** against the table in the brief — 33/33, no discrepancies, no
+gaps in the auto-parse. Types confirmed as well: `VDD_D` (3), `VDD_A` (7), `VDD_RF` (9) and
+`VDD_AM` (11) are all **AO — analog output**, confirming they are regulator outputs, not supply
+inputs, and that the retired placeholder's `VDD_DIG_3V3` model was inverted.
+
+### Internal regulator decoupling — quoted from ST, not inferred
+
+DS12484 §Application information, p.40 states verbatim:
+
+> *"For regulators recommended blocking capacitors are **2.2 μF in parallel with 10 nF**, for pin
+> **AGDC 1 μF in parallel with 10 nF** is suggested."*
+
+and p.41, separately, for the AM regulator:
+
+> *"It requires decoupling capacitors **(2.2 µF + 1 nF)** at VDD_AM pin."*
+
+| Pin | Rail | Regulator function | Required decoupling |
+|---|---|---|---|
+| 3 | `VDD_D` | Digital supply regulator output | **2.2 µF ∥ 10 nF** |
+| 7 | `VDD_A` | Analog supply regulator output | **2.2 µF ∥ 10 nF** |
+| 9 | `VDD_RF` | Regulated driver supply for antenna drivers | **2.2 µF ∥ 10 nF** |
+| 11 | `VDD_AM` | Regulated driver supply for AM modulation | **2.2 µF ∥ 1 nF** — note **1 nF**, not 10 nF |
+| 24 | `AGDC` | Analog reference voltage | **1 µF ∥ 10 nF** |
+
+**The VDD_AM value differs from the other three.** ST gives it its own sentence with **1 nF**
+rather than the general 10 nF, so treating all four regulators identically would be wrong.
+
+**That is 10 new capacitors** (5 pins × 2 each) that do not exist in the design. All values are
+ST-specified, so none would be invented — but they are new physical components and will move the
+component total.
+
+### VDD_DR — normal-mode connection NOT yet established
+
+The datasheet is explicit about the **bypass** case only:
+
+> *"If a transmitter output current higher than 350 mArms is required the VDD_RF regulator cannot
+> be used to supply the transmitter. **VDD_RF and VDD_DR have to be externally connected to
+> VDD_TX**."*
+
+That configuration is **excluded for Beta** by the standing lock, which is consistent — normal
+internal-regulator mode is correct and no thermal review is triggered.
+
+What the datasheet does **not** state in any passage found is what `VDD_DR` (14, antenna driver
+supply **input**, type P) connects to in **normal** mode. It only notes that *"VDD_DR is used as
+reference voltage, resulting in correct VDD_AM voltage"* and that *"the transmitter outputs are
+driven with VDD_DR"*. The obvious reading is that `VDD_RF` (the regulator output feeding the
+antenna drivers) supplies `VDD_DR` — **but that is inference, and it is the one connection that
+distinguishes normal mode from the excluded bypass mode**, so it is not being guessed.
+
+**This needs the X-NUCLEO-NFC06A1 / ST25R3916 reference schematic**, which the brief itself names
+as the secondary architecture check for exactly this point.
+
+### Confirmed and unchanged
+
+- **Package**: `AQET` = UFQFPN-32, 5 × 5 × 0.55 mm, ACTIVE; `AQWT` = VFQFPN-32, 5 × 5 × 1 mm,
+  wettable flanks, NRND. The Beta lock is correct and the AQWT land pattern must not be
+  substituted. This resolves the blocker raised last session.
+- **Supply mapping locked**: `VDD_IO` (1) → `+3V3`; `VDD` (8) and `VDD_TX` (10) → both to
+  `NFC_5V_PA_PENDING`, sharing one external supply.
+- **`I2C_EN` (20) → GND** for SPI selection.
+- **`BSS` (29) is the SPI chip select** — *"SPI enable (active low)"* per Table 2 — mapping to
+  `NFC_CS_N`.
+
+### Not built
+
+No symbol, no footprint, no integration, no capacitors added. The footprint still requires a
+UFQFPN-32 source (ST-linked Ultra Librarian/SamacSys, or the exact `C5267441` EasyEDA part as
+secondary), and the symbol should not be finalised while the `VDD_DR` connection is open, since it
+determines whether pin 14 carries a real net or a deferred one.
