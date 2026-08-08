@@ -4164,7 +4164,7 @@ a deferred net.
 ### FOOTPRINT BLOCKED — the exact-part library contradicts the locked package
 
 The exact-part EasyEDA entry was retrieved and **is genuinely the right part**: title
-, LCSC . Its geometry is complete and self-consistent:
+`ST25R3916-AQET`, LCSC `C5267441`. Its geometry is complete and self-consistent:
 
 | Feature | Value |
 |---|---|
@@ -4174,29 +4174,29 @@ The exact-part EasyEDA entry was retrieved and **is genuinely the right part**: 
 | Pad extremes | x and y both +/-2.420 mm |
 | Exposed pad 33 | **3.5 x 3.5 mm** at origin |
 
-**But its package is declared ** - and the same string is the
+**But its package is declared `VFQFPN-32_L5.0-W5.0-P0.50-TL-EP3.5`** - and the same string is the
 3D model name. That directly contradicts the Beta lock of **UFQFPN-32, 5 x 5 x 0.55 mm**.
 
 Under the standing discrepancy rule ST wins, so the footprint was **not** built. The conflict
 cannot be arbitrated from what is in hand: **DS12484 Rev 3 documents only VFQFPN32** in section
-6.1 and its ordering table lists only , so the ST datasheet has no UFQFPN32 land pattern to
+6.1 and its ordering table lists only `QW`, so the ST datasheet has no UFQFPN32 land pattern to
 check against, and the LCSC entry - while correct on the MPN - names the package the locked spec
 says it is not.
 
 Note the two families plausibly share a land pattern, differing mainly in body height (0.55 vs
 1.0 mm). **That is exactly the assumption that must not be made silently for a Class B part.**
 
-**To close:** obtain ST's UFQFPN32 package drawing for  - a newer datasheet revision, the ST
+**To close:** obtain ST's UFQFPN32 package drawing for `QE` - a newer datasheet revision, the ST
 product page package tab, or ST-linked Ultra Librarian/SamacSys - and compare it against the
 geometry above. If it matches, the footprint can be built immediately from data already recovered.
 
 ### Symbol built and validated
 
-, **33 pads**, names/numbers/types programmatically re-verified against the
+`ST25R3916-AQET`, **33 pads**, names/numbers/types programmatically re-verified against the
 archived DS12484 Table 2 before writing. Electrical types set deliberately: **VDD_D, VDD_A,
 VDD_RF and VDD_AM are typed as outputs**, not power inputs, correcting the retired placeholder's
 inverted model; VDD_IO, VDD, VDD_TX and VDD_DR are power inputs; the five grounds and the exposed
 pad are power inputs. Footprint field left **empty** rather than pointing at an unverified land
-pattern.  plots it. The locked supply mapping, the I2C_EN strap, the
+pattern. `kicad-cli sym export svg` plots it. The locked supply mapping, the I2C_EN strap, the
 BSS chip-select identification and all five ST decoupling pairs are recorded in the symbol Package
 note for the integration session.
