@@ -4635,3 +4635,54 @@ order of directness:
 
 Option 3 is available immediately if the risk is acceptable; it would be classified
 VERIFIED_VENDOR_EXACT_WITH_DOCUMENTED_DATUM_ASSUMPTION rather than plain vendor-exact.
+
+---
+
+## J2 — Ultra Librarian / CAD corroboration unreachable; datum still unresolved (2026-08-08)
+
+Nothing modified. 186 components, 171 footprinted, 15 missing, ERC 0 real, 24 exclusions, netlist
+unchanged, tree clean.
+
+### CAD routes attempted, all gated
+
+| Route | Result |
+|---|---|
+| `ultralibrarian.com/api/search?q=5025700893` | **404** (SPA shell, 1 MB of HTML) |
+| `app.ultralibrarian.com/api/search/parts` | **404** |
+| `ultralibrarian.com/details/molex/5025700893` | **404** (SPA shell) |
+| `componentsearchengine.com/502570-0893/Molex` (SamacSys) | **403** |
+| EasyEDA component API | no matching LCSC entry found for this MPN |
+
+Ultra Librarian and SamacSys both serve their part pages as JavaScript applications and gate the
+actual CAD downloads behind a login. Neither exposes pad coordinates to an unauthenticated fetch,
+so **the CAD corroboration this session depended on could not be obtained**.
+
+### Position unchanged
+
+Both datums remain unresolved by the method required:
+
+- **4.45** — arithmetic indicates *first-contact centre* (7 x 1.1 = 7.7 closes exactly; the
+  edge-to-edge alternative of 8.5 appears nowhere on the sheet), but this was explicitly not to be
+  accepted on arithmetic alone, and the archived raster cannot separate the extension lines.
+- **14.3** — outer-to-outer vs centre-to-centre across the shell lands, untouched.
+
+Everything else for J2 is settled and has been for two sessions: the Molex drawing is archived and
+identity-verified, the contact assignment matches the existing net map exactly, and the card-detect
+topology is manufacturer-stated (**DETECT LEVER = Vss GROUND**, **DETECT SWITCH** = the switched
+signal, **closed on insertion**).
+
+### The decision this now reduces to
+
+The blocker is no longer analytical or even really a document problem - the drawing is in the repo.
+It is that **one reference point cannot be read at the resolution available**, and every
+independent CAD source that would settle it is behind authentication.
+
+Three ways to close, unchanged from the previous session and now narrowed by elimination:
+
+1. **A higher-resolution sheet 2**, or the source PDF, dropped into `vendor/Molex_5025700893/`.
+2. **An authenticated CAD export** (Ultra Librarian or SamacSys account) for 5025700893.
+3. **Authorise the arithmetic reading** - build with 4.45 to first-contact centre, classified
+   `VERIFIED_VENDOR_EXACT_WITH_DOCUMENTED_DATUM_ASSUMPTION`. The chain closes exactly and no
+   alternative reading closes it, so the engineering risk is low and fully documented.
+
+Option 3 needs no further retrieval and would let J2 complete in one short session.
