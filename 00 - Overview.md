@@ -36,8 +36,19 @@ keyfob. See [[15 - Enclosure Field Slate v3]].
 - [[13 - Power Budget and Battery Runtime v0.1]]
 - [[14 - RootProbe Interface v0.1]]
 - [[15 - Enclosure Field Slate v3]]
+- [[16 - AQROOT Journey]]
 - [[Alpha-Tests/HARDWARE-NOTES]]
 - [[Firmware/README]]
+
+## Where the project stands (2026-08-08)
+
+Alpha hardware validation is **complete** — every subsystem was proven on a bench rig before
+it reached a schematic. The Beta schematic is **captured**, with **172 of 186 components
+footprinted** and no connectors outstanding. **Not fabrication-released:** the battery
+reverse-polarity protection topology is parked pending a professional power/DFM review, and
+that gate blocks routing for the whole board.
+
+Read [[16 - AQROOT Journey]] for how it got here and what remains open.
 
 ## First design concept
 ![[first-design-concept.png]]

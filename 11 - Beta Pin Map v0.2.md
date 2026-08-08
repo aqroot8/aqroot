@@ -1,11 +1,11 @@
 ---
-tags: [hardware, beta, pinmap, schematic, v0.2.4]
+tags: [hardware, beta, pinmap, schematic, v0.2.5]
 status: schematic-safe-provisional
 supersedes: "10 - Beta Pin Map.md"
-revision: v0.2.4 (GPIO expander part change MCP23017 -> TCA9535PWR, 2026-07-27)
+revision: v0.2.5 (XGPIO14 reclaimed for SX1262_RXEN, 2026-08-07)
 ---
 
-# AQROOT Beta Pin Map v0.2.4 — schematic-safe provisional
+# AQROOT Beta Pin Map v0.2.5 — schematic-safe provisional
 
 Consolidates corrections from a three-way review (internal / ChatGPT / Fable 5) plus the
 Beta display decision. This supersedes v0.1 ("10 - Beta Pin Map.md"). Target silicon:
@@ -14,6 +14,36 @@ ESP32-S3-WROOM-1 N16R8 (octal PSRAM, native USB-CDC console).
 **Status:** schematic-safe for the digital pin map. NOT production-final — several part
 selections (audio, regulator, exact display P/N) and the RootProbe interface still block a
 full schematic freeze. See Section 11.
+
+---
+
+## v0.2.5 amendment — XGPIO14 reclaimed for the SX1262 RX enable (2026-08-07)
+
+> **THE COMMUNITY HEADER NOW PUBLISHES 14 USER GPIO, NOT 15.** Every "15 user GPIO" and
+> "XGPIO0-14" statement in this document below this point is **superseded**. The authoritative
+> range is **XGPIO0..XGPIO13**.
+
+**What changed and why.** Locking the physical **Ebyte E22-900M22S** (SX1262) module at U8
+required an RX-enable control for its RF switch. `DIO2` drives `TXEN` locally inside the
+module, but `RXEN` has no local source and needs a host control line. **No new GPIO was
+created and the MCU pin map is unchanged** — the line was taken from the existing expander
+budget by reclaiming the last community pin.
+
+| | Before (v0.2.4) | After (v0.2.5) |
+|---|---|---|
+| U61 (0x21) **P16** | `XGPIO14` — published user GPIO | **`SX1262_RXEN`** — internal, NOT exposed |
+| Header user GPIO | XGPIO0-14 (15) | **XGPIO0-13 (14)** |
+| Header pin that carried XGPIO14 | user GPIO | **`RESERVED_NC`** — present, deliberately unconnected |
+
+**XGPIO0..XGPIO13 were NOT renumbered.** Only the top pin was withdrawn, so no accessory
+pinout below XGPIO13 shifts. The header pin itself is retained as `RESERVED_NC` rather than
+removed, so the physical connector geometry is unchanged. The pull-down on `SX1262_RXEN` is
+100k. `R65` (the old XGPIO14 header series resistor) was deleted.
+
+**Marketing consequence — this must not be missed.** The claim recorded further down this
+document, *"15 user GPIO still exceeds Kode Dot's 14"*, **is no longer true**. AQROOT now
+**ties** Kode Dot at 14 rather than exceeding it. See [[04 - Competitive Analysis]] — which
+already says not to compare GPIO counts at all, and that guidance now matters more, not less.
 
 ---
 
@@ -49,7 +79,8 @@ design changes adopted.
    internal expander (reset is a slow signal, and v0.2 already inconsistently placed touch
    RESET on a different expander pin). See §6a for what GPIO21 now carries and why.
 5. **Second expander added at 0x21** for the community expansion header. *(Superseded in
-   v0.2.2: the header publishes 15 user GPIO, not 16 — the 16th pin is ACC_PWR_EN. The
+   v0.2.2: the header publishes 15 user GPIO, not 16 — the 16th pin is ACC_PWR_EN. **In
+   v0.2.5 it publishes 14 — P16 was also reclaimed, as `SX1262_RXEN`.** The
    internal 0x20 expander carries a 7-button cluster, not 8. In v0.2.4 the 16th internal pin
    is U60 P17 = ROOTPROBE_IRQ_READY_N, a live assignment.)*
 6. **External I2C isolation** required on the community header (§8a).
@@ -66,7 +97,8 @@ where listed.
    header fast pin is pin-number-agnostic. The constrained role takes the constrained pin.
 2. **ACC_PWR_EN = the 0x21 expander's 16th pin** (§7b; **U61 P17** in v0.2.4 naming). The
    community header publishes **XGPIO0-14 (15 user GPIO)**; the 16th expander pin gates the
-   switched accessory rail.
+   switched accessory rail. *(**Superseded v0.2.5: XGPIO0-13, 14 user GPIO** — P16 is now
+   `SX1262_RXEN`.)*
 3. **Button cluster = 7 buttons, not 8** (§7a). A = select/confirm, B = back — no separate
    D-pad centre and no separate Back button. The 0x20 expander's 16th pin was
    footprint-reserved as the Phase-2 RootProbe IRQ landing pin *(v0.2.3: not "spare" — 0
@@ -107,9 +139,9 @@ expanders are now **Texas Instruments TCA9535PWR**, designated **U60** (internal
    corrected here. The whole point of v0.2.1 item 1 was that a pin-budget built on
    output-only pins had to be recalculated — the honest resolution is to use a part with no
    such asymmetry rather than to keep re-litigating which two pins are crippled.
-2. **The community header requires all 15 exposed XGPIO to be genuinely bidirectional.** An
-   accessory maker reading "XGPIO0-14, 3.3V logic" will wire an input to any one of them. Two
-   output-only pins hidden inside a published 15-pin range is a latent support disaster and a
+2. **The community header requires all exposed XGPIO to be genuinely bidirectional.** An
+   accessory maker reading "XGPIO0-13, 3.3V logic" *(v0.2.5; was XGPIO0-14)* will wire an input
+   to any one of them. Output-only pins hidden inside a published range is a latent support disaster and a
    documentation contract AQROOT cannot honour. **This reason alone forces the change** even
    if the internal expander could have tolerated the limitation.
 
@@ -634,12 +666,13 @@ that an accessory can never contend with internal control signals or the button 
 | **P13** | `XGPIO11` | low-speed community GPIO, 3.3V logic, bidirectional |
 | **P14** | `XGPIO12` | low-speed community GPIO, 3.3V logic, bidirectional |
 | **P15** | `XGPIO13` | low-speed community GPIO, 3.3V logic, bidirectional |
-| **P16** | `XGPIO14` | low-speed community GPIO, 3.3V logic, bidirectional |
+| **P16** | `SX1262_RXEN` | **RECLAIMED v0.2.5** — E22-900M22S RF-switch RX enable, 100k pull-down. **Internal, NOT exposed to users** |
 | **P17** | `ACC_PWR_EN` | switched accessory-power enable — **NOT exposed to users** |
 
-- **15 labeled low-speed user GPIO, brought out as XGPIO0..XGPIO14.** The 16th pin (P17) is
-  reserved internally as `ACC_PWR_EN`.
-- **All 15 XGPIO are genuinely bidirectional** — this is the requirement that forced the part
+- **14 labeled low-speed user GPIO, brought out as XGPIO0..XGPIO13** *(v0.2.5 — was 15/XGPIO0..XGPIO14)*.
+  P16 is now `SX1262_RXEN` and P17 is reserved internally as `ACC_PWR_EN`, so **two** of the 16
+  expander pins are internal.
+- **All 14 XGPIO are genuinely bidirectional** — this is the requirement that forced the part
   change (v0.2.4 reason 2). Any XGPIO may be configured as an input or an output; there is no
   crippled pin hidden in the published range.
 - **`/INT` wired-OR onto `WAKE_INT_N`** (open-drain, active-low) so an accessory can request
@@ -658,9 +691,11 @@ things nothing else provides:
    present and in use, which matters directly to the standby figure in
    [[13 - Power Budget and Battery Runtime v0.1]].
 
-**15 user GPIO still exceeds Kode Dot's 14**, so the headline number survives the reservation
-intact — see [[04 - Competitive Analysis]] for the caveat about not comparing GPIO counts in
-the first place.
+> **SUPERSEDED v0.2.5.** This paragraph read *"15 user GPIO still exceeds Kode Dot's 14, so
+> the headline number survives the reservation intact."* After reclaiming XGPIO14 for
+> `SX1262_RXEN` the count is **14**, which **ties** Kode Dot rather than exceeding it. The
+> headline number did **not** survive. See [[04 - Competitive Analysis]] for why GPIO counts
+> should not be compared in the first place — that guidance now matters more, not less.
 
 **Safe state:** `ACC_PWR_EN` needs an external pull holding the accessory rail **OFF** at
 power-up, per the safe-state rule in §7a — an unpowered header is the safe default, and it
@@ -833,7 +868,7 @@ margin, §1). So it carries both, clearly labeled.
 | Native I2C | SDA + SCL, **via the isolation of §8a** |
 | Interrupt | shared open-drain IRQ/READY net — **`WAKE_INT_N`** (= GPIO21, wired-OR with both expanders' `/INT`) |
 | Power | 3.3V, switched accessory power (gated by ACC_PWR_EN), **multiple grounds** |
-| Low-speed GPIO | **XGPIO0..XGPIO14** — 15 user pins off U61 (TCA9535PWR @ 0x21), 3.3V logic only, **all bidirectional** |
+| Low-speed GPIO | **XGPIO0..XGPIO13** — 14 user pins off U61 (TCA9535PWR @ 0x21), 3.3V logic only, **all bidirectional** *(v0.2.5: was 15; P16 reclaimed as `SX1262_RXEN`, its header pin retained as `RESERVED_NC`)* |
 
 **Labeling and marketing rules (binding):**
 - Label the expander pins **clearly as low-speed** on the silkscreen, in the pinout diagram,
@@ -926,8 +961,8 @@ It talks to AQROOT over a board-to-board interface: regulated power, GND, SPI da
 management, interrupt/ready line, optional USB pair.
 
 **Split the connector marketing into two things:**
-1. Low-speed community GPIO header — **15 user XGPIO off a dedicated second expander, U61
-   (TCA9535PWR @ 0x21)**, plus native I2C / IRQ / GPIO43 / power (the hybrid header, §8b).
+1. Low-speed community GPIO header — **14 user XGPIO off a dedicated second expander, U61
+   (TCA9535PWR @ 0x21)** *(v0.2.5: was 15)*, plus native I2C / IRQ / GPIO43 / power (the hybrid header, §8b).
    *(v0.2.1: was "~7 slow GPIO off the shared internal expander".)*
 2. High-speed RootProbe accessory interface (board-to-board to the coprocessor).
 
@@ -1081,7 +1116,8 @@ Resolved by v0.2.1 (pre-schematic design review):
 Resolved 2026-07-26 (pin-budget resolution — see [[05 - Design Decisions Log]]):
 - [x] **GPIO21/GPIO43 role swap APPROVED** — GPIO21 = expander button-wake INT (RTC-capable,
       hard silicon constraint), GPIO43 = header fast pin (pin-number-agnostic). §6a.
-- [x] **ACC_PWR_EN = U61 P17**; header publishes XGPIO0-14 (15 user GPIO). §7b.
+- [x] **ACC_PWR_EN = U61 P17**; header publishes XGPIO0-14 (15 user GPIO). §7b. *(**Superseded
+      v0.2.5: XGPIO0-13, 14 user GPIO**; U61 P16 reclaimed as `SX1262_RXEN`.)*
 - [x] **No D-pad centre button** — A = select/confirm, B = back. 7 buttons; the 16th internal
       pin carries the RootProbe IRQ. §7a.
 - [x] **RootProbe host IRQ -> expander pin (`ROOTPROBE_IRQ_READY_N`, U60 P17), Phase 2** — not

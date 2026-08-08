@@ -10,10 +10,52 @@ tags: [tasks, tracker]
 - [~] VERIFY the exact display module's touch controller is FT6236-family @ I2C 0x38
       before ordering Beta quantity — many cheap ILI9341 modules ship resistive (XPT2046)
       or a different capacitive chip (FT6336/GT911, possibly different address)
-- [ ] Confirm SX1262 certified module choice (e.g. Ebyte E22 series) and check
-      certification conditions (RF section modification voids certification)
-- [ ] Select the production CC1101 part/module (dual-radio base — Alpha used a generic
-      blue 433M V2.0 board)
+- [x] ~~Confirm SX1262 certified module choice~~ — **LOCKED 2026-08-07: Ebyte E22-900M22S**
+      (915 MHz), U8. Physically captured with a VERIFIED_VENDOR_EXACT footprint. **Certification
+      condition honoured: RF section modification voids certification, so all RF is marked
+      DO NOT ROUTE** and the antenna leaves via the module IPEX port
+- [x] ~~Select the production CC1101 part/module~~ — **LOCKED 2026-08-07: Ebyte E07-400M10S**
+      (433 MHz), U7. Certified module rather than a bare IC, same DO-NOT-ROUTE RF rule as the E22
+
+
+## Physical schematic capture — status (updated 2026-08-08)
+
+**Coverage: 186 components, 172 footprinted, 14 missing.** No connectors remain unfootprinted.
+
+Closed this run (each with a verified, non-fabricated land pattern):
+
+- [x] **J1 display interface** — Hirose **FH69-50S-0.5SH** 50-pin 0.5 mm FPC. The obsolete FCI
+      62684 was dropped. Panel locked to **SPI mode II with readback (IM3:IM0 = 1110)**.
+      Backlight = **TPS61169DCKR** + 4×39R ballasts + 2.55R RSET
+- [x] **J2 microSD** — Molex **5025700893**, push-push with mechanical card detect.
+      **Card detect captured on a named `SD_CARD_DETECT_TBD` net but deliberately NOT routed**
+- [x] **U7** Ebyte **E07-400M10S** (CC1101, 433 MHz) integrated on sheet 04
+- [x] **U8** Ebyte **E22-900M22S** (SX1262, 915 MHz) integrated on sheet 04
+- [x] **U9** ST **ST25R3916-AQET** integrated with the 10 ST-specified decoupling caps C45-C54
+- [x] **U12** TPS63020 **DSJ** footprint built
+- [x] **SW9** verified vendor-exact
+
+Still missing footprints — **`C12 C18 C19 LS1 R24 SW1`-`SW8 U14`**:
+
+- [ ] **LS1** speaker — mechanical/vendor selection still open
+- [ ] **U14** — footprint still open
+- [ ] **SW1-SW8** button cluster + **R24**, **C12**, **C18/C19** — support parts pending
+      selection. *(C18/C19 are the ST25R3916 external supply rails' decoupling — `+3V3`/VDD_IO
+      and `NFC_5V_PA_PENDING`/VDD+VDD_TX. **Values remain placeholders because ST specifies the
+      regulator-output decoupling but not these external-rail values** — nothing was force-fitted)*
+
+**Open engineering items created by this capture:**
+
+- [ ] **Allocate a real card-detect input, or formally accept no card detect.** J2 pin 10 is
+      captured and traceable but unrouted; **no GPIO was allocated and the MCU pin map is
+      unchanged.** This needs a pin-map revision or an explicit decision to drop the feature
+- [ ] **Re-establish the absolute ERC baseline under ONE fixed `kicad-cli` invocation.** The
+      figure of "0 real violations, 24 exclusions" quoted in earlier sessions **does not
+      reproduce**; the current invocation reports 5 `label_dangling` at error severity, unchanged
+      before and after the J2 work. Changes are currently being validated by **delta**, which is
+      sound but is not a substitute for a trustworthy absolute number
+- [ ] **Resolve the deferred `*_TBD` nets** — 16 deferred labels across NFC, CC1101 and SX1262
+      (crystal, matching, AAT, antenna). These are intentionally unrouted, not oversights
 
 ## Firmware bring-up (in build order)
 First implementation pass complete — full driver + UI stack written and verified compiling
@@ -39,7 +81,9 @@ They are the outstanding firmware debt between the current code and the Beta des
       the wrong chip AND the wrong bus. The Alpha raw-SPI validation (IC-ID 0x3F -> 0x2A) is
       the foundation; full tag read/write needs the ST RFAL library port.
 - [ ] **Add a CC1101 driver + a radio manager spanning both radios.** Firmware is currently
-      SX1262-only. Dual-radio is locked for production, so the manager must enforce
+      SX1262-only. **The parts are now locked: E07-400M10S (CC1101) and E22-900M22S (SX1262).**
+      The manager must also drive **`SX1262_RXEN` (U61 P16)** for the E22 RF switch — `TXEN` is
+      handled inside the module by `DIO2`, but **`RXEN` is a host responsibility via the expander**. Dual-radio is locked for production, so the manager must enforce
       one-TX-at-a-time and CS discipline across CC1101 + SX1262 on shared SPI Bus B.
 - [ ] **Add a real IR driver (RMT-based TX/RX)** on native pins **TX=16 / RX=44**, 38kHz
       carrier — `ir_screen` is currently a UI shell only. (TX moved off GPIO43 in pin map
@@ -135,7 +179,8 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [x] ~~Sign off the GPIO21 / GPIO43 role swap~~ — APPROVED: GPIO21 = wake INT (RTC-capable),
       GPIO43 = header fast pin. See [[11 - Beta Pin Map v0.2]] §6a
 - [x] ~~Find a pin for the switched accessory-power enable~~ — ACC_PWR_EN = **U61 P17**;
-      header publishes XGPIO0-14 (15 user GPIO)
+      header publishes **XGPIO0-13 (14 user GPIO)** *(v0.2.5 — was XGPIO0-14 / 15; U61 P16 was
+      reclaimed as `SX1262_RXEN`)*
 - [x] ~~D-pad centre button / RootProbe native IRQ~~ — no centre button (A = select, 7 total);
       RootProbe IRQ = `ROOTPROBE_IRQ_READY_N` on **U60 P17** (expander, Phase 2)
 - [x] ~~RootProbe SPI CS needs a native pin vs "zero native pins" contradiction~~ — RESOLVED:

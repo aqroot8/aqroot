@@ -10,9 +10,9 @@ tags: [bom, cost, budget]
 |---|---|
 | ESP32-S3 DevKitC-1 (N16R8) | $8-12 |
 | 2.8" IPS ILI9341 capacitive-touch SPI module (FT6236 @ 0x38) | $12-20 (sourcing resolved — Elecrow / LCDwiki class) |
-| ST25R3916 NFC — X-NUCLEO-NFC06A1 eval board | $25-35 |
-| CC1101 sub-GHz module (433MHz, e.g. blue 433M V2.0) | $3-8 |
-| SX1262 certified LoRa breakout (e.g. Ebyte E22 / Waveshare Core1262) | $10-20 |
+| ST25R3916 NFC — X-NUCLEO-NFC06A1 eval board *(Beta production part is the bare **ST25R3916-AQET**, UFQFPN32 — see the physical-capture table below)* | $25-35 |
+| CC1101 sub-GHz module (433MHz, e.g. blue 433M V2.0) *(Beta production part **LOCKED: Ebyte **E07-400M10S** — see below)* | $3-8 |
+| SX1262 certified LoRa breakout (e.g. Ebyte E22 / Waveshare Core1262) *(Beta production part **LOCKED: Ebyte **E22-900M22S** — see below)* | $10-20 |
 | BMI270 6-axis IMU breakout (SparkFun Qwiic) | $3-8 |
 | ICS-43434 I2S MEMS mic breakout | $5-8 |
 | MAX98357A I2S Class-D amp breakout | $5-8 |
@@ -38,6 +38,35 @@ tags: [bom, cost, budget]
 | USB passives: `R_CC1_RD` + `R_CC2_RD` **2× 5.1k 1%** (independent Rd); `R_USB_DN_SER` + `R_USB_DP_SER` 2× 22R; `C_USB_VBUS` 4.7µF 10V+ X7R; `R_USB_SHIELD_LINK` 0R. **DNP:** `C_USB_DP_EMC` + `C_USB_DN_EMC` 100pF, `R_USB_SHIELD_BLEED` 1M | <$1 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |
+
+## Beta production parts locked by physical schematic capture (2026-08-06 → 2026-08-08)
+
+These are **real parts with verified footprints already integrated into the KiCad schematic**,
+not candidates. Each carries its verification class. Costs are rough order-of-magnitude and are
+**not quotes** — they still go through the pre-fab BOM-validation pass below.
+
+| Ref | Part | Package / footprint | Verification | Est. cost (USD) |
+|---|---|---|---|---|
+| J1 | **Hirose FH69-50S-0.5SH** — 50-pin 0.5 mm FPC display connector | `AQROOT_Beta:Hirose_FH69-50S-0.5SH` | VERIFIED_VENDOR_EXACT | $1-3 |
+| J2 | **Molex 5025700893** — microSD push-push, shielded, mechanical card detect | `AQROOT_Beta:Molex_5025700893` — 14 lands, 1.10 mm pitch, 7.7 contact span, 14.3 shell outer | VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION (Molex SD-502570-001 + exact-part CAD C429846) | $0.50-2 |
+| U7 | **Ebyte E07-400M10S** — CC1101 certified module, 433 MHz | `AQROOT_Beta:Ebyte_E07-400M10S` | VERIFIED_VENDOR_EXACT | $3-6 |
+| U8 | **Ebyte E22-900M22S** — SX1262 certified module, 915 MHz | `AQROOT_Beta:Ebyte_E22-900M22S` | VERIFIED_VENDOR_EXACT | $6-12 |
+| U9 | **ST ST25R3916-AQET** — NFC/RFID reader | `AQROOT_Beta:ST25R3916_AQET`, UFQFPN32, ST land pattern (0.30×0.75 lands, 5.30 span, 3.45×3.45 EP) | VERIFIED_VENDOR_EXACT | $4-8 |
+| U12 | **TI TPS63020DSJR** buck-boost | `AQROOT_Beta:TI_TPS63020_DSJ` (DSJ, exposed pad with slots) | VERIFIED_VENDOR_EXACT | *(already costed above)* |
+| — | **TI TPS61169DCKR** display-backlight LED driver | SC-70-5 / DCK | vendor symbol + footprint built | $0.30-1 |
+| — | Backlight passives: **4×39R** LED-string ballasts + **2.55R** RSET | 0603 | values locked from the TI datasheet | <$1 |
+| C45-C54 | **ST-specified ST25R3916 decoupling — 10 capacitors**: VDD_D 2.2µF+10nF, VDD_A 2.2µF+10nF, VDD_RF 2.2µF+10nF, VDD_AM 2.2µF+1nF, AGDC 1µF+10nF | 2.2µF = 16V X7R **0805** (not 0603, so effective capacitance survives DC bias); small values 50V X7R 0603; 1µF 16V X7R 0603 | values exactly as ST specifies, **not substituted** | $1-3 |
+
+> **Why the radios are modules, not bare ICs.** Both are **certified** modules carrying FCC/CE
+> pre-certification. Modifying the RF section **voids that certification**, which is why all RF
+> on both parts is marked **DO NOT ROUTE** and antennas leave via the modules' own IPEX ports.
+> The E22's RF switch is controlled by **`DIO2` → `TXEN` locally inside the module**, with
+> **`RXEN` host-driven from U61 P16 (`SX1262_RXEN`)** — the reclaimed XGPIO14, with a 100k
+> pull-down. No MCU pin was added; see [[11 - Beta Pin Map v0.2]] §v0.2.5.
+
+> **Still missing footprints (14 refs, 2026-08-08):** `C12 C18 C19 LS1 R24 SW1`-`SW8 U14`.
+> **No connectors remain on that list.** Coverage is **186 components, 172 footprinted**.
+
 
 > **USB-C front-end note (2026-07-30) — Beta-locked, NOT production-hardened.** Role is **USB
 > Type-C sink / UFP, 5V only, USB 2.0 full-speed — no PD, no source/DRP role, no VCONN, no alt
