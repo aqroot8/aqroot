@@ -3361,3 +3361,80 @@ J2, LS1, U7, U8, U9, U12, U14 each require a vendor document retrieval plus, for
 modules, a complete physical-pin audit against a placeholder symbol that is known not to match.
 Those were not reached; the session went to the C&K verification that closed SW9, and to the
 audits recorded above. **No speculative footprints were created.**
+
+---
+
+## Vendor-document blocker sweep: all seven attempted (2026-08-08)
+
+No schematic, symbol or footprint file was modified. Coverage stays **157/176**, ERC **0 real
+items**, 24 exclusions intact, netlist unchanged. Two blockers moved materially; five did not.
+
+| Ref | MPN | Document outcome | Classification |
+|---|---|---|---|
+| U12 | TPS63020DSJR | **TI land pattern OBTAINED** — drawing `4210895-2/E 02/16` | **DOCUMENT_OBTAINED_FOOTPRINT_PENDING** |
+| LS1 | CMS-1535-058SP | **datasheet fully inspected — no land geometry exists** | **EXACT_REPLACEMENT_DECISION_REQUIRED** |
+| U14 | MAX17048G+T10 | `90-0065` fetch failed on both Maxim and ADI paths | BLOCKED_EXTERNAL_DOCUMENT |
+| U9 | ST25R3916-AQET | st.com datasheet fetch timed out | BLOCKED_EXTERNAL_DOCUMENT |
+| J2 | Molex 5025700893 | 3 drawing URL patterns attempted, batch timed out | BLOCKED_EXTERNAL_DOCUMENT |
+| U7 | Ebyte E22-900M22S | not retrieved (batch timeout) | BLOCKED_EXTERNAL_DOCUMENT |
+| U8 | Ebyte E07-400M10S | not attempted after timeout | BLOCKED_EXTERNAL_DOCUMENT |
+
+### U12 — the real win: TI's authoritative DSJ land pattern is in hand
+
+Retrieved from the TPS63020 datasheet (SLVS916I), **page 33**, titled *"LAND PATTERN DATA —
+DSJ (R-PVSON-N14) PLASTIC SMALL OUTLINE NO-LEAD"*, drawing number **4210895-2/E 02/16**. The
+pages are graphics-only, so this was read by rasterisation.
+
+Captured from *Example Board Layout*, *Example Stencil Design* and *Example Via Layout Design*:
+
+| Feature | Value |
+|---|---|
+| Pitch | **12 × (0.5)** |
+| Row span | **(2.8)** |
+| Signal pad geometry | **0.24 × 0.6, R0.12 TYP**, non-solder-mask-defined |
+| Solder mask | opening (0.12), **(0.07) all around** |
+| Stencil (0.125 mm) | 14×(0.6), 14×(0.24), 8×(0.85), 8×(0.2), 4×(1.25), 4×(0.66), 4×(0.46), 4×(0.23) |
+| Thermal pad paste | **81 % solder coverage by printed area** |
+| Via layout | (4.4), (2.85), (1.58), **15 × ⌀0.2**, 6×(0.46), 4×(0.23) |
+
+**The footprint was still not built, deliberately.** Two reasons, both concrete:
+
+1. DSJ is **not a plain two-row VSON**. The Example Board Layout shows oval signal pads in top and
+   bottom rows *plus* wide horizontal bar lands on the left and right flanks (the L1/L2/VOUT/VIN
+   power terminals) around a central thermal pad. The single supplied view **does not dimension
+   the position of every one of those lands** — the stencil counts (4×1.25, 8×0.85, 4×0.66 …)
+   imply at least four distinct land sizes whose individual coordinates are not given.
+2. **No KiCad stock footprint matches.** The available candidates are
+   `VSON-14-1EP_3x4.45mm_P0.65mm_EP1.6x4.2mm` (wrong pitch, 0.65 vs 0.5) and
+   `WSON-14-1EP_4.0x4.0mm_P0.5mm_EP2.6x2.6mm` (right pitch, but a plain two-row 4×4 body with a
+   2.6×2.6 EP — not the flanked DSJ arrangement).
+
+This is a **power VSON with a thermal pad — Class B**, where the standing rule forbids generic
+approximation. Constructing it needs the full TI package outline (page 31/32) read alongside this
+land-pattern sheet, which is a bounded task now that the document is in hand.
+
+### LS1 — settled definitively: the vendor publishes no land geometry
+
+The Same Sky datasheet (09/11/2024, 4 pp) was retrieved and **inspected in full, including
+rasterising the page-2 mechanical drawing**. It gives body **Ø15 × 3.5 mm**, an inner **Ø11**,
+a rear view with six vent holes, "BLACK NET" and "BLACK GLUE (118B)" callouts, and a ±0.3 mm
+general tolerance. Page 1 lists `terminal: solder pads`.
+
+**The two solder pads are drawn but carry no dimensions at all** — no pad size, no pitch, no
+angular position, no keep-out. This is no longer an inference from failed text extraction; the
+drawing itself has been looked at. **CMS-1535-058SP cannot be given a vendor-exact footprint.**
+
+Per the standing instruction, the answer is a replacement rather than invented pads. Requirements
+for the substitute: **15 mm class, 8 Ω, ≥0.5 W, low profile, solder/SMT PCB mounting, active
+production, and a manufacturer drawing that dimensions the PCB lands.** The replacement search
+was **not completed this session** — recorded as the next action, and `LS1` keeps
+`CMS-1535-058SP` until a substitute is proven electrically and mechanically compatible.
+
+### Retrieval notes for the next session
+
+- `ckswitches.com` returns **403**; the Octopart mirror works (this is how SW9 closed).
+- `st.com/resource/...` **times out** — try the ST product page or an EDA-asset mirror instead.
+- `pdfserv.maximintegrated.com/land_patterns/90-0065.PDF` and the analog.com land-pattern path
+  both fail; ADI's document portal has moved and needs a fresh URL.
+- Batch curl of seven vendors **exceeds a 2-minute tool timeout** — fetch in pairs with
+  `--max-time 22`, not all at once.
