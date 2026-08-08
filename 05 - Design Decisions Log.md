@@ -3098,3 +3098,55 @@ thickness is.
 
 FCI/Amphenol `62684-50210` / `62684-502100` remains **dropped**; its geometry is retained only as
 historical evidence and its unresolved hold-down offset is moot.
+
+---
+
+## J1 pin disposition table — all 50 contacts accounted for (2026-08-08)
+
+Symbol `AQROOT_Beta:CH280QV10_CT_50P` + footprint `AQROOT_Beta:Hirose_FH69-50S-0.5SH`.
+Mode **4-wire 8-bit SPI Ⅱ, IM3:IM0 = 1110**. **No unexplained pin.**
+
+| Pin(s) | Name | Disposition | Net / state |
+|---|---|---|---|
+| 1 | LEDK | **BACKLIGHT** | common cathode → RSET (2.55 R) → GND, TPS61169 FB sense |
+| 2–5 | LED-A1..A4 | **BACKLIGHT** | each via its own **39 R 1 %** ballast to the boosted LED rail |
+| 6 | IM0 | **MODE_STRAP** | **GND** |
+| 7, 8, 9 | IM1, IM2, IM3 | **MODE_STRAP** | **+3V3** (HIGH) |
+| 10 | /RESET | **ACTIVE_SIGNAL** | `DISP_RST_N` |
+| 11–14 | VSYNC, HSYNC, DOTCLK, DE | **DATASHEET_REQUIRED_INACTIVE** | **GND** — RGB-interface inputs, unused in SPI (see caveat) |
+| 15–32 | DB17..DB0 | **DATASHEET_REQUIRED_INACTIVE** | **GND** — datasheet p.6 states verbatim *"Connect unused pins to GND."* |
+| 33 | SDO | **ACTIVE_SIGNAL** | `SPI_A_MISO` — the readback that mandates SPI Ⅱ |
+| 34 | SDI | **ACTIVE_SIGNAL** | `SPI_A_MOSI` |
+| 35 | /RD | **DATASHEET_REQUIRED_INACTIVE** | **+3V3** (HIGH = inactive; see caveat) |
+| 36 | /WR_RS | **ACTIVE_SIGNAL** | `DISP_DC` |
+| 37 | RS_SCL | **ACTIVE_SIGNAL** | `SPI_A_SCK` |
+| 38 | /CS | **ACTIVE_SIGNAL** | `DISP_CS_N` |
+| 39 | TE | **DATASHEET_REQUIRED_INACTIVE** | **no_connect** — tearing-effect *output*, unused; floating an output is safe |
+| 40, 41 | IOVCC | **POWER** | `+3V3` |
+| 42 | VCI | **POWER** | `+3V3` — permitted, DC characteristics give VCI 2.5 / 2.8 / **3.3 max** |
+| 43, 48, 49, 50 | GND | **GND** | `GND` |
+| 44–47 | CTP_SCL, CTP_SDA, CTP_IRQ, CTP_RES | **ACTIVE_SIGNAL** | touch I²C + IRQ + reset |
+
+**Tally: 5 BACKLIGHT + 4 MODE_STRAP + 10 ACTIVE_SIGNAL + 24 DATASHEET_REQUIRED_INACTIVE +
+3 POWER + 4 GND = 50.**
+
+### Two honest caveats on the "required inactive" states
+
+The datasheet's explicit *"Connect unused pins to GND"* sentence sits inside the **DB17:0 block
+only**. It therefore directly authorises pins 15–32 and nothing else. The other two entries are
+**derived, not quoted**, and are flagged so they are not mistaken for datasheet instructions:
+
+- **Pins 11–14** (VSYNC/HSYNC/DOTCLK/DE) are RGB-interface *inputs* that are unused in SPI mode.
+  Unused CMOS inputs must not float, and GND is the conventional inactive level — but the
+  datasheet does not say so for these pins specifically.
+- **Pin 35 (/RD)** is described as *"Reads strobe signal … when /RD is 'Low'"*, i.e. **active
+  low**, so the inactive state is **HIGH**. That is inference from the pin description, not an
+  explicit instruction. Tying /RD to GND would assert it permanently and must be avoided.
+
+Both should be confirmed against ILI9341V application material before fabrication. They are
+recorded here so the reasoning is auditable rather than buried.
+
+### Supply headroom, carried forward
+
+`+3V3` sits at the **maximum** of both rated ranges — IOVCC 1.65 / 1.8–2.8 / **3.3**, VCI 2.5 /
+2.8 / **3.3** — with absolute max 4.6 V. Legal, but with no tolerance margin.
