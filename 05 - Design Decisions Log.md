@@ -4518,3 +4518,66 @@ unknowns are closed: the drawing is in the repo, and the card-detect topology is
 stated rather than assumed. What remains is a bounded build — physical symbol including the two
 detect lands, then the footprint from sheet 2, then the swap preserving the SD nets recorded
 earlier.
+
+---
+
+## J2 — Sheet 2 dimensions extracted; footprint NOT built (attribution incomplete) (2026-08-08)
+
+Nothing modified. 186 components, 171 footprinted, 15 missing, ERC 0 real, 24 exclusions, netlist
+unchanged, tree clean. Baseline J2 map re-verified unchanged.
+
+### What sheet 2 gives, read at 430 dpi from the archived page
+
+**Contact field — this part resolves cleanly and self-consistently:**
+
+- contact pitch **1.1**
+- contact land **0.8 wide x 1.7 tall**
+- **7.7** is the contact-field span, and it checks out exactly: 7 gaps x 1.1 = **7.7**
+- **4.45** locates the field from the left datum
+- **14.3** is the overall span across the shell-mount lands
+- shell-mount lands **1.4 wide x 1.7 tall**, one at each end
+
+That yields a coherent reading of the eight contacts at 1.1 spacing starting 4.45 from the left
+datum and ending at 12.15, with 14.3 overall - the arithmetic closes.
+
+**Detect lands:** DETECT LEVER MOUNT AREA (Vss : GROUND) and DETECT SWITCH MOUNT AREA are both
+present and separately labelled, with **1.15** and **1.5** dimensions attached to them, plus
+**4.25 / 6.55 / 13.15 / 1.5 / 1.5 / 1.5** locating the detect-switch region.
+
+**Vertical stack:** 3, 1.5, 10.6, 15, 1.15, 1.15.
+
+**Pattern-prohibition (keep-out) region:** the dimensions carrying the note-3 triangle are
+**14.95, 13.35, 13.15, 11.15, 8.65, 7.5, 2.9, 1.4, 1, 0.5, 0.5** - note 3 on sheet 1 is
+*パターン禁止エリア / PATTERN PROHIBITION AREA*. These bound the no-copper region rather than any
+land.
+
+General recommended-pattern tolerance **±0.05**.
+
+### Why the footprint was still not built
+
+The dimension set is now *in hand*, but several values are **not yet unambiguously attributed to a
+specific feature**. Specifically it is not yet certain whether **4.45 locates the first contact
+centre or its edge**, and whether **14.3 is outer-to-outer or centre-to-centre of the shell-mount
+lands** - a 0.7-1.4 mm difference in where every land sits. The left-hand vertical stack is also
+dominated by note-3 keep-out dimensions interleaved with land dimensions on shared extension lines.
+
+Committing a footprint on the wrong reading of those two datums would place every pad on this
+connector 0.7 mm out, which is exactly the class of silent error that a pad-count or DRC check
+would not catch. Consistent with how every other Class B part in this project has been handled,
+**no geometry was guessed**.
+
+**What closes it:** one more measurement pass resolving those two attributions - achievable by
+zooming the extension-line endpoints on the archived sheet at high magnification, which is local
+work needing no retrieval. The contact field itself is already provably correct because 7 x 1.1 =
+7.7 matches the drawn span exactly; it is the datum reference that is open, not the pitch.
+
+### Card-detect implementation, ready to apply
+
+Unchanged and locked from the previous session: **DETECT LEVER -> GND** (Molex states
+*Vss : GROUND*), **DETECT SWITCH -> SD_CARD_DETECT_TBD**, switch **CLOSED on card insertion, OPEN
+with no card**, and **no Beta GPIO allocated** - DO NOT ROUTE until a pin-map revision.
+
+### Status
+
+J2 remains **DOCUMENT_OBTAINED_BUILD_PENDING**. Nothing external is needed; the remaining work is a
+focused measurement pass on a sheet already in the repository.
