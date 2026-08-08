@@ -3438,3 +3438,81 @@ was **not completed this session** — recorded as the next action, and `LS1` ke
   both fail; ADI's document portal has moved and needs a fresh URL.
 - Batch curl of seven vendors **exceeds a 2-minute tool timeout** — fetch in pairs with
   `--max-time 22`, not all at once.
+
+---
+
+## Sequential vendor sweep #2 — J2 audit, U12 near-complete, LS1 candidate ruled out (2026-08-08)
+
+No schematic/symbol/footprint file modified. Coverage stays **157/176**, ERC **0 real**, 24
+exclusions intact, netlist unchanged.
+
+### J2 — symbol mismatch now PROVEN, footprint still blocked
+
+Molex direct URLs fail; the **RS-Online mirror** of the Molex part sheet was retrieved. It
+confirms: part **Active**, 1.10 mm pitch microSD, **Normal Mount SMT, Push-Push**, **Circuits
+(Loaded) = 8**, **Card Detection Switch = Open**, Card Entry = Front, Shielded = Yes, PCB
+Retention = Yes, 10 000 mating cycles, 0.5 A/contact, 10 V.
+
+**Audit result — the current symbol is incomplete.** `Connector:Micro_SD_Card` has 9 pins:
+`1 DAT2, 2 DAT3/CD, 3 CMD, 4 VDD, 5 CLK, 6 VSS, 7 DAT0, 8 DAT1, SH SHIELD`. That is the 8 SD
+contacts plus a shield — and **no terminals for the mechanical card-detect switch**, which this
+Molex part physically has. Pin 2 `DAT3/CD` is the *card's data line* used for detection via a
+pull-up; it is **not** the connector's CD switch. So the symbol cannot represent the CD switch
+contacts, and a footprint carrying CD lands would have no symbol pins to map to.
+
+**Blocker is now precisely named:** Molex sales drawings **SD-502570-001** and **SD-502570-002**
+(also referenced: product spec PS-502570-001-001). Those give the CD-switch terminal count and
+the land geometry. **BLOCKED_EXTERNAL_DOCUMENT + BLOCKED_SYMBOL_MISMATCH.**
+
+### U12 — one datum from complete
+
+Second TI drawing obtained: **`4208549-3/G 04/15`, "THERMAL PAD MECHANICAL DATA", DSJ
+(R-PVSON-N14)**. Adds to the land pattern already held:
+
+| Datum | Value | Source |
+|---|---|---|
+| Exposed thermal pad | **2.85 ±0.10 × 1.58 ±0.10** | 4208549-3/G |
+| Pin arrangement | **1–7 top row, 8–14 bottom row** (bottom view) | 4208549-3/G |
+| Pitch | 0.5 (12× callout = 6 gaps per row × 2 rows) | 4210895-2/E |
+| Row span | 2.8 centre-to-centre | 4210895-2/E |
+| Signal land | 0.24 × 0.6, R0.12, NSMD, mask 0.07 all round | 4210895-2/E |
+
+**The 14 signal lands are now fully determined**: 7 per row, 0.5 pitch → x = 0, ±0.5, ±1.0, ±1.5;
+rows at y = ±1.4; each land 0.24 × 0.6.
+
+**Still missing, exactly one datum:** the thermal drawing shows **`4X 0.20` features at `0.46`
+spacing** on the package flanks, and the Example Board Layout correspondingly shows wide
+horizontal bar lands left and right of centre. **It is not documented whether these are separate
+exposed pads, or segments of the single 2.85 × 1.58 thermal pad.** The stencil sheet's
+`4×(1.25) / 8×(0.85) / 4×(0.66)` aperture counts hint at the answer, but the standing instruction
+is explicit — *do not infer coordinates from stencil aperture counts* — so the footprint was **not
+built**. This is Class B; approximation is forbidden.
+
+**Next action:** TI application report **SLUA271** (QFN/SON PCB Attachment), cited in note C of
+the land sheet, or the TPS63020 EVM layout, should resolve the flank features.
+
+### LS1 — replacement search started; one candidate definitively ruled out
+
+Confirmed again that **CMS-1535-058SP** publishes no land geometry. Two replacements identified,
+both matching the envelope (15 mm class, 8 Ω, ≥0.5 W, ~3 mm — *thinner* than the 3.5 mm original):
+
+| Candidate | Body | Z | Impedance | Power | Land geometry published? |
+|---|---|---|---|---|---|
+| **PUI Audio AS01508MS-WP** | 15 × 11 | **3 ±0.2** | 8 Ω ±15 % | 1 W rated / 1.5 W max | **NO — ruled out** |
+| **Soberton SP-1511-3** | 15 × 11 | 3 | 8 Ω | 0.7 / 1.0 W | **not yet checked** |
+
+The PUI datasheet was retrieved and its page-6 dimension sheet rasterised: it gives 15 × 11 × 3
+with ±0.15 mm tolerance and shows the two solder pads as hatched rectangles in the rear view —
+**but dimensions none of them**. Identical failure mode to Same Sky. **PUI AS01508MS-WP is
+therefore rejected on the same criterion that rejected the original**, despite being otherwise
+attractive (IP65, 95 dB, higher power).
+
+Electrically both candidates suit the MAX98357A (8 Ω, ≥0.5 W). **Soberton SP-1511-3 is the
+remaining candidate to check**; Soberton publishes per-part drawings, so it is the most likely to
+carry dimensioned lands. **LS1 unchanged — no MPN was altered.**
+
+### Unchanged this session
+
+U7, U8 (Ebyte), U9 (ST), U14 (MAX17048 `90-0065`) — not attempted; the session went to J2, U12
+and LS1 under the sequential-fetch rule. J3 remains **ASSIGNED_UNVERIFIED** (GCT drawing not
+sought this pass).
