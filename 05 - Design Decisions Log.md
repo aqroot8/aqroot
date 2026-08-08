@@ -3562,3 +3562,42 @@ Soberton/PUI directly. **LS1 keeps CMS-1535-058SP** — no MPN was altered.
 
 U7, U8 (Ebyte), U9 (ST), U14 (`90-0065`) — the session went to J2, U12 and LS1. J3 remains
 **ASSIGNED_UNVERIFIED**.
+
+---
+
+## RF/NFC capture session — retrieval route mapped, no capture performed (2026-08-08)
+
+**No schematic, symbol or footprint file was modified.** Coverage stays **158/176**, ERC 0 real,
+24 exclusions intact, netlist unchanged. U7/U8/U9 placeholders are untouched and DO NOT ROUTE
+stands.
+
+### What was established for U7 (E22-900M22S)
+
+`ebyte.com/product/435.html` **is reachable** (294 KB retrieved) — unlike st.com, molex.com and
+soberton.com, which fail at transport. The obstacle here is different and worth recording
+precisely: **the page exposes no direct file links.** Scraping yields only
+`/datadown/<id>.html` **category** pages (e.g. 915 MHz = `/datadown/1077.html`, 433 MHz =
+`/datadown/1081.html`) plus a company-profile PDF. The per-product resources named in the brief
+— `Pcb_E22-900M22S`, the user manual — sit **at least two hops deeper**: category page, then
+product resource page, then the file.
+
+**This is a navigable route, not a dead end** — materially better than the pure transport
+failures. It simply needs the hop chain walked, which is a bounded task for a fresh session.
+The same structure will apply to U8 via `ebyte.com/product/1546.html` and the 433 MHz category.
+
+### Why nothing was captured
+
+A physical module capture is not a footprint drop — it requires the **complete pad audit against
+the placeholder** that the brief mandates for every pad (VCC, every GND, NSS, SCK, MOSI, MISO,
+BUSY, DIO1, NRST, RXEN, TXEN, DIO2/3 for U7; CSN, GDO0/1/2 for U8; 32 pins + exposed pad for U9),
+followed by a symbol replacement that must not silently move an existing net. Beginning that with
+insufficient budget to finish and verify would risk exactly the half-captured state the brief
+forbids — and the project has already been bitten once by a large generated schematic edit that
+passed a paren-balance check while being wrong.
+
+### Standing items unchanged
+
+U7/U8 antenna variant control (**IPEX/u.FL must be confirmed for the exact ordered MPN**, not
+assumed from family marketing, because the locked Taoglas FXP890/FXP450 flex antennas depend on
+it) remains **open and is a procurement-control risk**. U9 remains a logical placeholder; ST's
+EDA assets were not retrieved this pass.
