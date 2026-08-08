@@ -3516,3 +3516,49 @@ carry dimensioned lands. **LS1 unchanged — no MPN was altered.**
 U7, U8 (Ebyte), U9 (ST), U14 (MAX17048 `90-0065`) — not attempted; the session went to J2, U12
 and LS1 under the sequential-fetch rule. J3 remains **ASSIGNED_UNVERIFIED** (GCT drawing not
 sought this pass).
+
+---
+
+## U12 CLOSED; J2 and LS1 transports still failing (2026-08-08)
+
+### U12 — closed without Ultra Librarian
+
+The stalling datum is resolved. Rasterising TI's *Example Board Layout* at 900 dpi shows the
+**4X 0.20 features at 0.46 spacing are slots cut into a SINGLE contiguous thermal land** — a comb
+on both flanks of one connected copper area, with the 5x3 grid of 15 vias inside it. They are
+**not separate pads**. Ultra Librarian was therefore unnecessary: TI's own package drawing, named
+in the brief as the primary source, was sufficient once read at adequate resolution.
+
+`AQROOT_Beta:TI_TPS63020_DSJ` created and assigned, **VERIFIED_VENDOR_EXACT**. Coverage
+**157 -> 158 / 176**; missing **19 -> 18**. Netlist unchanged, ERC 0 real.
+
+Two implementation choices are recorded in the footprint description: the comb is not reproduced
+(the plain dimensioned 2.85 x 1.58 envelope is used, which is conservative — more thermal copper,
+same outline), and paste uses `solder_paste_margin_ratio -0.05`, which KiCad applies per side,
+giving 0.9 linear and 0.81 area to match TI's stated 81 % coverage. The 15 x 0.2 mm thermal vias
+are a layout task, not part of the footprint.
+
+### J2 — transport failed again, blocker unchanged and precise
+
+The alldatasheet mirror and a second Molex path both failed. The requirement is unchanged and
+exactly named: **Molex SD-502570-001 / SD-502570-002**. The symbol gap is already proven — the
+stock 9-pin `Connector:Micro_SD_Card` has no terminals for the connector's mechanical
+card-detect switch, so both symbol and footprint remain blocked on that one document set.
+**BLOCKED_EXTERNAL_DOCUMENT + BLOCKED_SYMBOL_MISMATCH.**
+
+### LS1 — Soberton transport failed; size class now exhausted
+
+`soberton.com` returned no PDF on two direct paths and the product page yielded no PDF link to
+scrape. Combined with the two prior negatives — Same Sky **CMS-1535-058SP** and PUI
+**AS01508MS-WP**, both of which *draw* their solder pads without dimensioning them — three
+15 mm-class candidates have now failed the same test.
+
+Per the brief's own instruction, this size class is marked
+**PHYSICAL_SAMPLE_OR_MECHANICAL_DECISION_REQUIRED**. The realistic options are: accept a
+documented speaker of a different class, measure a physical sample, or request the drawing from
+Soberton/PUI directly. **LS1 keeps CMS-1535-058SP** — no MPN was altered.
+
+### Not reached
+
+U7, U8 (Ebyte), U9 (ST), U14 (`90-0065`) — the session went to J2, U12 and LS1. J3 remains
+**ASSIGNED_UNVERIFIED**.
