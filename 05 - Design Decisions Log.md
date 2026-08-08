@@ -3965,3 +3965,98 @@ pull-down), the firmware sequence, the antenna/IPEX finding and the XGPIO14 reti
 
 The XGPIO14 baseline was re-verified this session and is intact: `XGPIO14` = R65.2 + U3.19;
 `XGPIO14_HDR` = D6.4 + J5.19 + R65.1. 155 nets, ERC 0 real, tree clean.
+
+---
+
+## U9 ST25R3916 — authoritative 33-pad table captured; footprint BLOCKED on package code (2026-08-08)
+
+Nothing modified. 176 components, 160 footprinted, ERC 0 real, 24 exclusions, tree clean.
+
+### Source
+
+**ST `DS12484 Rev 3`, June 2020, ST25R3916/ST25R3917, 156 pp.** `st.com` failed transport for a
+fourth consecutive session on two URL forms; the document was obtained from MikroElektronika's
+mirror and verified by its own cover page (`DS12484 Rev 3`, ST title block).
+
+### Complete physical pin table — Table 2, VFQFPN32 + thermal pad
+
+| # | Name | Type | Function | Placeholder | Status |
+|---|---|---|---|---|---|
+| 1 | VDD_IO | P | Supply for peripheral comms | VDD_IO_3V3 | MATCH |
+| 2 | CSO | AO | Capacitor sensor out / test out 2 | — | **MISSING** |
+| 3 | VDD_D | AO | **Digital regulator OUTPUT** | VDD_DIG_3V3 | **CONFLICT** |
+| 4 | XTO | AO | Crystal oscillator output | XOUT | MATCH (renamed) |
+| 5 | XTI | AI/DI | Crystal oscillator input | XIN | MATCH (renamed) |
+| 6 | GND_D | P | Digital ground | GND | partial |
+| 7 | VDD_A | AO | **Analog regulator OUTPUT** | — | **MISSING** |
+| 8 | VDD | P | External positive supply | — | **MISSING** |
+| 9 | VDD_RF | AO | **Regulated driver supply OUTPUT** | — | **MISSING** |
+| 10 | VDD_TX | P | External positive supply, TX part | VDD_PA_5V | likely MATCH |
+| 11 | VDD_AM | AO | **Regulated AM driver supply OUTPUT** | — | **MISSING** |
+| 12 | GND_DR | P | Antenna driver ground | — | **MISSING** |
+| 13 | RFO1 | AO | Antenna driver output | RFO1 | MATCH |
+| 14 | VDD_DR | P | Antenna driver supply **input** | — | **MISSING** |
+| 15 | RFO2 | AO | Antenna driver output | RFO2 | MATCH |
+| 16 | GND_DR | P | Antenna driver ground | — | **MISSING** |
+| 17 | EXT_LM | AO | External load-modulation gate driver | — | **MISSING** |
+| 18 | AAT_A | AO | AAT tune voltage | — | **MISSING** |
+| 19 | AAT_B | AO | AAT tune voltage | — | **MISSING** |
+| 20 | I2C_EN | DI | **I2C interface enable** | — | **MISSING — strap required** |
+| 21 | VSS | P | Ground, die substrate | — | **MISSING** |
+| 22 | RFI1 | AI | Receiver input | RFI1 | MATCH |
+| 23 | RFI2 | AI | Receiver input | RFI2 | MATCH |
+| 24 | AGDC | AIO | Analog reference voltage | — | **MISSING** |
+| 25 | CSI | AIO | Capacitor sensor in / test out 1 | — | **MISSING** |
+| 26 | GND_A | P | Analog ground | — | **MISSING** |
+| 27 | IRQ | DO | Interrupt request output | IRQ | MATCH |
+| 28 | MCU_CLK | DO | Clock output for MCU | — | **MISSING** |
+| 29 | **BSS** | DI | **SPI enable (active low)** — the chip select | CS_N | MATCH (renamed) |
+| 30 | SCLK | DI | SPI clock / I2C clock | SCK | MATCH |
+| 31 | MOSI | DI | SPI data input | MOSI | MATCH |
+| 32 | MISO | DO_T | SPI data out / I2C data | MISO | MATCH |
+| 33 | Thermal pad | P | Exposed pad | — | **MISSING** |
+
+**Placeholder had 15 pins against 33 physical pads — 18 absent.**
+
+### Three findings that change the NFC work, beyond simple pin count
+
+1. **Four pins are regulator OUTPUTS, not supply inputs.** `VDD_D` (3), `VDD_A` (7), `VDD_RF` (9)
+   and `VDD_AM` (11) are typed **AO — analog output**. The placeholder modelled `VDD_D` as a 3V3
+   *supply input* (`VDD_DIG_3V3`), which is **backwards**. These pins require external decoupling
+   to ground and **must not be tied to a rail**. That capacitance does not exist in the design.
+2. **The supply architecture has three external inputs, not two**: `VDD` (8), `VDD_TX` (10) and
+   `VDD_DR` (14) — all typed **P**. The locked architecture only anticipates a 3V3 I/O rail and the
+   5 V PA rail (`NFC_5V_PA_PENDING`). Which of VDD/VDD_TX/VDD_DR takes which rail is a **design
+   decision that is not yet made**.
+3. **`I2C_EN` (20) is a mandatory strap.** AQROOT drives this device over SPI, so the pin must be
+   strapped to select SPI. The datasheet names it *"I2C interface enable"*; the required level and
+   whether a resistor is needed are not yet extracted. `BSS` (29) is the SPI chip select — the name
+   bears no resemblance to `CS_N`, which is worth knowing before anyone maps by name.
+
+### FOOTPRINT BLOCKED — the package code does not match
+
+ST's ordering scheme (§7, p.153) decodes as `ST25 R 3916 - A QW T`, where the character pair
+**after** the temperature letter is the package:
+
+- `A` = ambient −40 °C to 105 °C
+- **`QW` = 32-pin VFQFPN (5 × 5 mm) with wettable flanks** — the only QFN option listed
+- `T` = 4000 pcs/reel
+
+**Our locked part is `ST25R3916-AQET`, i.e. package code `QE`, which does not appear in this
+datasheet.** §6.1 documents only *"VFQFPN32 … 32-pin, 5×5 mm, 0.5 mm pitch, very thin fine pitch
+quad flat no lead"*, while the project records AQET as **UFQFPN-32, 5 × 5 × 0.55 mm** — *ultra*
+thin, presumably taken from ST's website rather than DS12484.
+
+The **electrical table above is package-independent** and stands regardless: same die, same pin
+numbering. But **the land pattern is not**, and substituting the VFQFPN32 drawing for a UFQFPN32
+part is precisely the "adjacent package" substitution the brief forbids. **No footprint was built.**
+
+**To close:** either confirm that `AQET`/`QE` is UFQFPN32 and obtain that package drawing (likely a
+newer datasheet revision or the ST product page), or confirm AQET is in fact the VFQFPN32 part and
+correct the project's package record — at which point §6.1's drawing applies directly.
+
+### Not done
+
+No symbol, no footprint, no integration. The pin table is captured but the symbol cannot be
+finalised while three supply-architecture decisions and the `I2C_EN` strap are open, and the
+footprint is blocked on the package code.
