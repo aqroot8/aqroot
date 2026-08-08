@@ -4252,3 +4252,54 @@ The two blockers are independent. The **footprint** needs one ST package drawing
 is otherwise already in hand. **VDD_DR** needs one connection off ST's reference design, and is the
 only thing preventing the symbol from being wired — pin 14 is typed correctly either way, so the
 symbol itself needs no rework whichever answer arrives.
+
+---
+
+## U9 — blocker is now proven ENVIRONMENTAL, not informational (2026-08-08)
+
+Nothing modified. 176 components, 160 footprinted, ERC 0 real, 24 exclusions, netlist
+unchanged, tree clean. Symbol untouched, Footprint field still blank.
+
+### The package-family fallback was attempted and hit the same wall
+
+The fallback route was identified correctly: ST publishes the UFQFPN32 5x5 outline **and a
+recommended footprint** inside the datasheets of other current parts using that package, notably
+STM32G031 and STM8L101. Those are ST-hosted documents and would satisfy the primary-source
+requirement.
+
+They cannot be retrieved here. This session added:
+
+- STM32G031 datasheet via curl: fail
+- STM8L101 datasheet via curl: fail
+- a non-ST mirror for the same: fail
+- STM32G031 datasheet via WebFetch: **ECONNRESET**
+
+### The important conclusion
+
+Across four sessions, every st.com resource path has failed - datasheet, user manual, schematic
+pack, and now two unrelated STM32/STM8 datasheets - by **two independent transport mechanisms**
+(curl and WebFetch), and ST's own FCC-filed schematic returns 403 from both mirrors that host it.
+Non-ST mirrors worked once, for the ST25R3916 datasheet itself, which is why that document is in
+the repo.
+
+**The remaining U9 blockers are therefore not analytical - they are network reachability.** Every
+open route needs one ST-hosted PDF, and this environment cannot reach st.com by any method tried.
+Continuing to spend sessions on retrieval attempts has a poor expected return.
+
+### What is actually needed - two files
+
+1. **Any ST datasheet containing the UFQFPN32 5x5x0.55 recommended footprint** (STM32G031 and
+   STM8L101 both contain it). Dropping it into vendor/ST25R3916/ closes the footprint: the
+   comparison targets are already fixed - pitch 0.50, perimeter pads 0.28 x 0.665, pad-centre
+   extremes +/-2.420, exposed pad 3.5 x 3.5 - so it is a direct match-or-report check against
+   C5267441 and nothing further needs discovering.
+2. **X-NUCLEO-NFC06A1 schematic pack or Gerber ZIP**, which settles the normal-mode VDD_DR
+   connection.
+
+Both are public and open normally in a browser; only automated retrieval is refused. With those
+two files present, U9 assets close in one short session and integration can follow.
+
+### Nothing was compromised to make progress
+
+No VFQFPN geometry adopted, C5267441 not promoted beyond secondary, AQET/AQWT distinction intact,
+no VDD_DR connection inferred from pin naming, and no bypass-mode wiring created.
