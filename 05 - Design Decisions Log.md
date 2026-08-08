@@ -3667,3 +3667,101 @@ stamp hole**, and pin 21 ANT is the 50 Ω stamp-hole pad. Both appear present on
 AQROOT uses **IPEX + Taoglas FXP890.07.0100C**, so **pin 21 ANT is expected to stay NC** — but
 whether both feeds are simultaneously populated, and whether that loads the RF path, is **not yet
 confirmed** and is an RF-review plus procurement-control item.
+
+---
+
+## U7 RXEN architecture analysis — NO free GPIO exists (2026-08-08)
+
+Read-only analysis. Nothing modified.
+
+### Task 1 — candidate audit, taken from the netlist not the doc
+
+| Candidate | Current function | Free? | Verdict |
+|---|---|---|---|
+| **U1 pin 28 / IO35** | unconnected in netlist | **NO** | GPIO 26–37 consumed by octal PSRAM/flash |
+| **U1 pin 29 / IO36** | unconnected in netlist | **NO** | as above |
+| **U1 pin 30 / IO37** | unconnected in netlist | **NO** | as above |
+| U1, all other pins | 38 assigned functions | NO | pin map: *native budget is CLOSED via the GPIO43 multiplex, not by having spare pins* |
+| **U2 TCA9535** | **16/16 I/O used** | **NO** | 4 resets (touch, SX1262, NFC 5V EN, display), amp SD, RGB ×3, 7 buttons, RootProbe IRQ |
+| **U3 TCA9535** | **16/16 I/O used** | **NO** | XGPIO0–14 (community header) + ACC_PWR_EN |
+
+**The three unconnected ESP32 pins are a trap.** They are unconnected *because they must be*:
+U1 is **ESP32-S3-WROOM-1 N16R8**, and the pin map states *"GPIO 26-37 consumed by octal
+PSRAM/flash (R8). Excluded."* Wiring RXEN there would collide with the PSRAM bus.
+
+**Conclusion: there is no free controllable output anywhere in the design.**
+
+### Task 2 — timing
+
+**Ebyte publishes no timing figures.** What it does publish is 表1, the RF-switch control logic
+truth table (manual p.10):
+
+| TXEN | RXEN | MODE |
+|---|---|---|
+| 1 | 0 | TX |
+| 0 | 1 | RX |
+| 0 | 0 | CLOSE |
+
+Two things follow directly, and the second is a hazard:
+
+1. **0,0 = CLOSE is a defined safe state**, so a pull-down guarantees the switch is isolated at
+   boot. This matters because **TCA9535 ports power up as inputs (high-Z)** — an expander-driven
+   RXEN would otherwise float.
+2. **1,1 is NOT in the table.** With DIO2 driving TXEN *autonomously in hardware* while RXEN is
+   driven *slowly in software*, there is a real window in which the radio raises TXEN while RXEN
+   is still high from a previous RX — an undefined state that points PA output into the LNA. This
+   is a consequence of the locked DIO2 to TXEN decision, not an argument against it, but it
+   becomes a hard firmware rule.
+
+**Inference, flagged as inference rather than vendor data:** RXEN is a per-transition control, not
+per-symbol. A 400 kHz I2C register write is roughly 200 us against LoRa airtimes of tens to
+hundreds of ms, so expander latency is **acceptable for MCU-initiated transitions**. It is **not**
+acceptable for autonomous radio transitions (TX-done auto-RX, RxDutyCycle, CAD-to-RX), where RXEN
+would lag the hardware.
+
+### Task 3 — recommendation
+
+Preference 1 (native GPIO) is **impossible**; preference 2 carries the caveats above.
+
+**Recommended: reclaim ONE XGPIO from U3 for `SX1262_RXEN`**, leaving 14 on the community header.
+Rationale: the XGPIOs are the only *discretionary* allocation left in the design — every U2 line
+is a button, reset or rail control, and every native pin is committed.
+
+Required alongside it:
+
+- **pull-down on RXEN** (TCA9535 is high-Z at power-up; 0,0 = CLOSE is the safe state)
+- **firmware rule: drive RXEN low and confirm the I2C write has completed before issuing any TX
+  command**, and avoid autonomous TX/RX modes, because DIO2 raises TXEN in hardware
+
+Two alternatives, recorded but not recommended:
+
+- **Inverter from DIO2/TXEN to RXEN** — zero GPIOs, one single-gate SC70. Produces TX (1,0) and
+  RX (0,1) automatically with no software timing, and structurally *cannot* create the 1,1 hazard.
+  **Cost: CLOSE becomes unreachable**, so the RX path is always connected when not transmitting —
+  a sleep-current and isolation question rather than a correctness one.
+- **Drop octal PSRAM (N16R8 to quad)** to free GPIO 33–37 natively. Cleanest electrically, but the
+  pin map kept the full 8 MB PSRAM deliberately for the display; this reopens a locked decision.
+
+### Task 4 — TXEN / DIO2 confirmed
+
+The manual states DIO2 *may connect to T/R CTRL rather than an MCU IO, to control RF-switch
+transmit*, with note ①: *if DIO2 and TXEN are shorted, firmware must enable the DIO2
+switch-control function*. **No pull resistor is specified and none is needed** — it is a direct
+SX1262 output driving a module input. Also confirmed: **DIO3 is internal**, supplying the 32 MHz
+TCXO at 2.2 V, and the manual warns the driver must be configured for TCXO.
+
+**Firmware requirement: enable SX1262 DIO2-as-RF-switch mode, or TXEN never asserts and TX fails.**
+
+### Task 5 — antenna, unresolved
+
+The manual describes the series as *dual-antenna optional (IPEX / stamp hole)* with pin 21 ANT as
+the 50 ohm stamp hole. It does **not** state whether IPEX is populated by default on this MPN,
+whether both feeds are live simultaneously, or whether a 0 R / jumper selects between them.
+**Pin 21 must not be routed until that is settled**, and IPEX population is a
+**procurement-control item** for the locked Taoglas FXP890 path.
+
+### Remaining blocker
+
+**One decision: which XGPIO to reclaim from U3, or which alternative to take.** Everything else
+needed for U7 capture is now resolved, except the `Pcb_E22-900M22S` archive, which downloads with
+zip magic but is malformed.
