@@ -4303,3 +4303,78 @@ two files present, U9 assets close in one short session and integration can foll
 
 No VFQFPN geometry adopted, C5267441 not promoted beyond secondary, AQET/AQWT distinction intact,
 no VDD_DR connection inferred from pin naming, and no bypass-mode wiring created.
+
+---
+
+## U9 ASSETS COMPLETE — AQET land pattern built, normal RF-regulator wiring locked (2026-08-08)
+
+Library assets only. No sheet touched; ERC 0 real, 24 exclusions, netlist unchanged, tree clean.
+
+### VDD_DR — normal mode LOCKED
+
+Recorded for the integration session, from the CTO decision citing ST's X-NUCLEO-NFC06A1 schematic
+and ST support ("VDD_DR is sourced via the LDO"):
+
+```
+NORMAL MODE (Beta):
+  VDD_TX          -> NFC_5V_PA_PENDING          (upstream transmitter supply)
+  VDD             -> NFC_5V_PA_PENDING          (same supply as VDD_TX)
+  VDD_RF          <- internal VDD_RF regulator output, + 2.2uF || 10nF to GND
+  VDD_DR          -> VDD_RF regulated node       <-- the previously open question
+  VDD_IO          -> +3V3
+  I2C_EN          -> GND                         (selects SPI)
+
+BYPASS MODE (NOT used, NOT populated for Beta):
+  VDD_RF and VDD_DR tied directly to VDD_TX
+  Implemented on ST's Discovery board via jumper J206; Beta has no equivalent.
+```
+
+**No direct `VDD_DR -> VDD_TX` and no direct `VDD_RF -> VDD_TX` connection exists or will be
+created.** Regulator-output decoupling queued for integration: `VDD_D` 2.2 µF ∥ 10 nF, `VDD_A`
+2.2 µF ∥ 10 nF, `VDD_RF` 2.2 µF ∥ 10 nF, `VDD_AM` 2.2 µF ∥ **1 nF**, `AGDC` 1 µF ∥ 10 nF.
+
+### Footprint built — `AQROOT_Beta:ST25R3916_AQET`
+
+| Feature | Value | Basis |
+|---|---|---|
+| Perimeter lands | **32**, 0.30 × 0.75 | ST recommended land |
+| Pitch | **0.50**, 8 per side at ±0.25/0.75/1.25/1.75 | ST |
+| Land centres | **±2.275** (span 5.30 − land 0.75) | derived, reads back exact |
+| Exposed pad 33 | **3.45 × 3.45**, F.Cu + F.Mask only | ST recommended land (pkg EP 3.50) |
+| Body | 5.00 × 5.00 | ST |
+| Numbering | CCW from pin 1, top of left side | ST QFN convention |
+
+**Classification: VERIFIED_VENDOR_EXACT_PACKAGE_FAMILY.** Primary provenance is ST's UFQFPN32
+5×5×0.55 recommended footprint, applicable because ST designates AQET as that package family.
+**AQWT (VFQFPN 5×5×1.0, wettable flanks, NRND) geometry is not used anywhere.**
+
+**C5267441 was deliberately not used as the source.** Its copper (0.28 × 0.665, EP 3.50) does not
+match ST's recommended land (0.30 × 0.75, EP land 3.45); it is recorded as an **IPC/library
+alternate**. It does corroborate pad count, pitch, body, EP location and numbering — the two agree
+on everything except final copper dimensions, which is exactly why ST's values were taken.
+
+**Paste**: ST prescribes no aperture pattern, so the EP carries a conservative 2 × 2 segmentation
+of four 1.4 × 1.4 apertures on 1.8 mm centres (**65.9 %** coverage), documented in the footprint
+as **assembly implementation, not manufacturer geometry**. **No thermal vias** in the footprint —
+layout work, with ST's ground-the-EP recommendation recorded.
+
+### Validation
+
+`kicad-cli` plots footprint and symbol. **33 copper pads, contiguous 1–33, no duplicates**, plus
+4 paste-only apertures correctly not counted as pads. Perimeter |x| and |y| sets both
+`{0.25, 0.75, 1.25, 1.75, 2.275}`. Perimeter sizes only `0.30 × 0.75` and its rotation. EP 3.45 sq
+on Cu+Mask. **Symbol pins 1–33 map 1:1 onto footprint pads 1–33.**
+
+### Honesty note
+
+**st.com remains unreachable from this environment** — one further attempt this session failed,
+consistent with every prior attempt across four sessions via two transport mechanisms. The VDD_DR
+conclusion and the ST land-pattern values are therefore held **on supplied authority and were not
+independently re-verified here**. The geometry is internally coherent (span, land length and centre
+positions agree), which is a consistency check, not a source check.
+
+### U9 status
+
+**Assets complete.** Symbol (33 pads) + footprint (32 + EP) + power model + decoupling schedule all
+in place. **Ready for schematic integration**, which will add ~10 ST-specified capacitors and is
+deliberately left to its own session. NFC antenna/matching remains DO NOT ROUTE.

@@ -5940,7 +5940,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:ST25R3916_AQET"
 			(at 0 0 0)
 			(hide yes)
 			(effects
