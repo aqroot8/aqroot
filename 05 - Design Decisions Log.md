@@ -4378,3 +4378,67 @@ positions agree), which is a consistency check, not a source check.
 **Assets complete.** Symbol (33 pads) + footprint (32 + EP) + power model + decoupling schedule all
 in place. **Ready for schematic integration**, which will add ~10 ST-specified capacitors and is
 deliberately left to its own session. NFC antenna/matching remains DO NOT ROUTE.
+
+---
+
+## J2 Molex 5025700893 — card-detect question answered; drawing still unreachable (2026-08-08)
+
+Nothing modified. 186 components, 171 footprinted, 15 missing, ERC 0 real, 24 exclusions, netlist
+unchanged, tree clean.
+
+### Baseline J2 map, recorded for the eventual swap
+
+| Pin | Function | Net |
+|---|---|---|
+| 1 | DAT2 | `unconnected-(J2-DAT2-Pad1)` |
+| 2 | DAT3/CD | `SD_CS_N` |
+| 3 | CMD | `SPI_A_MOSI` |
+| 4 | VDD | `+3V3` |
+| 5 | CLK | `SPI_A_SCK` |
+| 6 | VSS | `GND` |
+| 7 | DAT0 | `SPI_A_MISO` |
+| 8 | DAT1 | `unconnected-(J2-DAT1-Pad8)` |
+| SH | SHIELD | `GND` |
+
+SPI-A is shared correctly across `J1 + J2 + U1`; `SD_CS_N` carries `J2.2 + R25.2 + U1.25`. This is
+1-bit SD mode with DAT1/DAT2 intentionally unconnected, as the architecture already records.
+
+### Card-detect — answered definitively
+
+**A project-wide net search returns NOTHING matching card-detect** (`CARD_DET`, `SD_CD`, `CD_N`,
+`DETECT`). So AQROOT allocates **no MCU or expander input for a physical card-detect switch**, and
+per the standing rule none may be created automatically.
+
+That settles the first half of the CD question. The **disposition** of the two switch terminals
+still cannot be fixed, because it depends on how the Molex drawing numbers and arranges them —
+whether they are an isolated SPST pair, or one terminal commoned to the shell. Choosing between
+"both NC" and "one grounded" without that drawing would be guessing at the connector's internals.
+
+**Note also:** pin 2 `DAT3/CD` is presently used as `SD_CS_N`, which is correct for SPI mode — and
+is a further reason the mechanical switch must not be conflated with it.
+
+### Drawing retrieval — failed again, but one useful discovery
+
+Attempted this session:
+
+- `molex.com/webdocs/...`, `media.digikey.com/...`, and the `molex.com/content/dam/...`
+  salesdrawing path — all fail
+- `docs.rs-online.com/9fc5/...` — succeeds, but hosts only the **one-page product summary**, not
+  the drawing
+
+**Useful discovery:** a sibling RS document for Molex part `5035000993` exposes Molex's drawing
+filename convention — **`<partnumber>_sd.pdf`** — confirming the target filename is
+`5025700893_sd.pdf`. Every CDN host tried for that filename refused it, so the convention is known
+but no reachable host serves it.
+
+### Status unchanged
+
+**J2 remains BLOCKED_EXTERNAL_DOCUMENT + BLOCKED_SYMBOL_MISMATCH.** Without `SD-502570-001` /
+`SD-502570-002` there is no card-detect terminal numbering for the symbol and no land geometry for
+the footprint, so neither asset was built and the stock `Connector:Micro_SD_Card` symbol is
+untouched.
+
+**What would close it:** the Molex sales drawing `SD-502570-001` (and `-002`), or a
+manufacturer-linked ECAD model for `502570-0893` that exposes CD terminal numbering plus land
+geometry. Like the ST case, this is a **retrieval** blocker, not an analysis one — the moment the
+drawing is in `vendor/`, the symbol and footprint are a bounded build.
