@@ -3026,3 +3026,75 @@ Note also from p.3/p.7: *"FH69 has a dedicated land pattern; however, the land p
 No schematic, symbol or footprint file was modified this pass. ERC, exclusions and netlist are
 unchanged. `IM3:IM0 = 1110` (4-wire 8-bit SPI Ⅱ) and the full 50-pin map recorded earlier remain
 valid and are unaffected by the connector change.
+
+---
+
+## J1 connector footprint LOCKED: Hirose FH69-50S-0.5SH (2026-08-08)
+
+`AQROOT_Beta:Hirose_FH69-50S-0.5SH` created. Classification **VERIFIED_VENDOR_EXACT** for the
+land geometry.
+
+### Manufacturer sources used
+
+Retrieved from Hirose's own document endpoint for **CL0580-5008-0-00**:
+
+| Document | Detail |
+|---|---|
+| **2D drawing** | `documenttype=2DDrawing`, 7 pp, 830 KB |
+| **Specification sheet** | `documenttype=SpecSheet`, drawing no. **ELC-399242-00-00**, code CL580 |
+| **Series catalogue** | `en_FH69_CAT`, Jun. 2025 issue, 16 pp — carries the dimensioned *Recommended PCB Layout* |
+
+### E resolved — centre-to-centre, not hand-derived
+
+The prior pass left one question: is `E = 28.73` outer-to-outer or centre-to-centre? **Resolved
+from the manufacturer drawing itself, two independent ways:**
+
+1. Rendered at 1200 dpi, the **E extension line coincides exactly with the hold-down land's
+   dash-dot centreline** (land edges at 155/240 px, centreline *and* dimension arrow both at
+   ~200 px). A centreline is drawn there precisely because it is the dimension reference.
+2. Connector dimension **B = 28.7** (retention-tab centres, catalogue p.6) agrees with
+   **E = 28.73** only on a centre reference; outer-to-outer would put E at ~29.09.
+
+### Final pad coordinates (mm, origin = centre of the contact field)
+
+| Feature | Value |
+|---|---|
+| Signal pads | **50**, `0.30 × 1.23`, pitch **0.5**, span **24.5** |
+| Pin 1 | **x = +12.25** — matches the *"Contact No.1"* callout on the manufacturer drawing |
+| Pin 50 | x = −12.25 |
+| Signal row | centred on **y = 0** |
+| Hold-downs | `0.36 × 4.25`, at **x = ±14.365**, **y = +4.64** |
+| Gap, signal → hold-down | **1.90** |
+| Overall depth | **7.38** — stack closes exactly: `1.23 + 1.90 + 4.25` |
+| Courtyard | ±15.24 × (−1.75 … +8.30), covering the **8.68 ±0.3** actuator-closed envelope |
+| Metal mask | recommended thickness **t = 0.12** |
+
+Hold-downs are **mechanical only** — unnamed pads, deliberately not a ground connection, so they
+demand no symbol pin. Verified after generation: 50 contiguously-numbered signal pads, single
+pitch value 0.5, span 24.50, uniform 0.3 × 1.23. `kicad-cli fp export svg` plots it, confirming
+KiCad parses the file.
+
+### Ratings (specification sheet ELC-399242-00-00)
+
+**0.50 A** and **50 V AC/DC** per contact; applicable FPC/FFC **t = 0.30 ±0.05 mm, gold plated**;
+FPC retention force 25.5 N min; **10 insertion cycles**; contact resistance 50 mΩ initial.
+Worst-case AQROOT contact is LEDK at 80 mA → **6× margin**.
+
+### Panel FPC thickness — VERIFY (not fabricated)
+
+`SPEC-CH280QV10-CT_Rev.D.pdf` was searched in full for FPC thickness, stiffener thickness and
+tail cross-section: **all 18 pages text-searched** for `FPC`/`flex`/`thick`/`stiffen`/`reinforc`/
+`t=`, plus inspection of the pages flagged as dimensional (3, 5, 13, 15) and page 18. The only
+matches are supply-voltage `−0.3` values; page 18 is the packing method, not a mechanical
+drawing. **The panel datasheet does not state its FPC tail thickness.**
+
+Per instruction, **no value was invented**. This single mechanical point is **VERIFY**:
+confirm the panel FPC tail is **0.30 ±0.05 mm** before the connector is finally committed.
+Hirose additionally requires a **glass-epoxy stiffener ≥ 0.3 mm**. Because FH69 is
+top-and-bottom 2-point contact, **contact-side orientation is explicitly not a blocker** — only
+thickness is.
+
+### Obsolete part
+
+FCI/Amphenol `62684-50210` / `62684-502100` remains **dropped**; its geometry is retained only as
+historical evidence and its unresolved hold-down offset is moot.
