@@ -4139,3 +4139,64 @@ No symbol, no footprint, no integration, no capacitors added. The footprint stil
 UFQFPN-32 source (ST-linked Ultra Librarian/SamacSys, or the exact `C5267441` EasyEDA part as
 secondary), and the symbol should not be finalised while the `VDD_DR` connection is open, since it
 determines whether pin 14 carries a real net or a deferred one.
+
+---
+
+## U9 assets — symbol built; footprint BLOCKED on a package-name conflict (2026-08-08)
+
+Library symbol only. No sheet touched, so connectivity, ERC, exclusions and the netlist are
+unchanged by construction; coverage stays 160/176 and U9 remains on the missing list.
+
+### VDD_DR still unresolved — ST transport failed a fifth time
+
+The X-NUCLEO-NFC06A1 schematic could not be retrieved; two ST-hosted URL forms failed. Falling
+back to the archived datasheet, **Figure 11 turns out to be an internal block diagram, not an
+application schematic** - it shows VDD_DR as a pin with an internal power-down clamp to VDD_TX
+through a switch and 1 kohm, but **does not show any external normal-mode connection**.
+
+So the position is unchanged and deliberately not guessed: ST states the **bypass** case
+explicitly (*VDD_RF and VDD_DR have to be externally connected to VDD_TX* above 350 mArms, which
+Beta excludes) but no located ST source states what feeds VDD_DR in **normal** mode.
+**This does not block the symbol** - VDD_DR is typed **P (power input)** in Table 2 regardless of
+what drives it - but it does block integration, since it decides whether pin 14 carries a real or
+a deferred net.
+
+### FOOTPRINT BLOCKED — the exact-part library contradicts the locked package
+
+The exact-part EasyEDA entry was retrieved and **is genuinely the right part**: title
+, LCSC . Its geometry is complete and self-consistent:
+
+| Feature | Value |
+|---|---|
+| Pads | **33** = 32 perimeter + 1 exposed pad |
+| Pitch | **0.50 mm** |
+| Perimeter pad | 0.28 x 0.665 (rotated 0.665 x 0.28 on the other two sides) |
+| Pad extremes | x and y both +/-2.420 mm |
+| Exposed pad 33 | **3.5 x 3.5 mm** at origin |
+
+**But its package is declared ** - and the same string is the
+3D model name. That directly contradicts the Beta lock of **UFQFPN-32, 5 x 5 x 0.55 mm**.
+
+Under the standing discrepancy rule ST wins, so the footprint was **not** built. The conflict
+cannot be arbitrated from what is in hand: **DS12484 Rev 3 documents only VFQFPN32** in section
+6.1 and its ordering table lists only , so the ST datasheet has no UFQFPN32 land pattern to
+check against, and the LCSC entry - while correct on the MPN - names the package the locked spec
+says it is not.
+
+Note the two families plausibly share a land pattern, differing mainly in body height (0.55 vs
+1.0 mm). **That is exactly the assumption that must not be made silently for a Class B part.**
+
+**To close:** obtain ST's UFQFPN32 package drawing for  - a newer datasheet revision, the ST
+product page package tab, or ST-linked Ultra Librarian/SamacSys - and compare it against the
+geometry above. If it matches, the footprint can be built immediately from data already recovered.
+
+### Symbol built and validated
+
+, **33 pads**, names/numbers/types programmatically re-verified against the
+archived DS12484 Table 2 before writing. Electrical types set deliberately: **VDD_D, VDD_A,
+VDD_RF and VDD_AM are typed as outputs**, not power inputs, correcting the retired placeholder's
+inverted model; VDD_IO, VDD, VDD_TX and VDD_DR are power inputs; the five grounds and the exposed
+pad are power inputs. Footprint field left **empty** rather than pointing at an unverified land
+pattern.  plots it. The locked supply mapping, the I2C_EN strap, the
+BSS chip-select identification and all five ST decoupling pairs are recorded in the symbol Package
+note for the integration session.
