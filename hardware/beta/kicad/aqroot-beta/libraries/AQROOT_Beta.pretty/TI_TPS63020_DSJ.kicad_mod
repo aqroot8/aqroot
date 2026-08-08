@@ -1,0 +1,160 @@
+(footprint "TI_TPS63020_DSJ"
+	(version 20241229)
+	(generator "aqroot-beta-library")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Texas Instruments TPS63020DSJR, DSJ (R-PVSON-N14) plastic small outline no-lead, 14 pins plus exposed thermal pad. Geometry taken from TI drawings 4210895-2/E 02/16 (LAND PATTERN DATA) and 4208549-3/G 04/15 (THERMAL PAD MECHANICAL DATA). Signal lands 0.24 x 0.60 with R0.12 (fully rounded = oval), 0.5 mm pitch, 7 per row, row centres 2.8 mm apart so y = +/-1.4, x = 0, +/-0.5, +/-1.0, +/-1.5. Non-solder-mask-defined with 0.07 mm mask expansion all round per the drawing. Exposed thermal pad 2.85 +/-0.10 x 1.58 +/-0.10. Pin 1 is bottom-left in top view, per the circled callout on TI's Example Board Layout; numbering runs 1-7 left to right along the bottom row then 8-14 right to left along the top row. THERMAL PAD SIMPLIFICATION - TI's Example Board Layout draws the thermal land with 4 x 0.20 mm slots per flank at 0.46 mm spacing, forming a comb on a SINGLE contiguous pad (they are NOT separate pads; this was confirmed by rasterising the drawing at 900 dpi). This footprint implements the plain TI-dimensioned 2.85 x 1.58 envelope instead of reproducing the comb, which is conservative - more thermal copper, same outline. Paste is reduced by solder_paste_margin_ratio -0.05, giving 0.9 linear and therefore 0.81 area, matching TI's stated 81 percent solder coverage by printed area on the centre thermal pad. TI also recommends 15 thermal vias of 0.2 mm within the pad (5 x 3 grid); vias are a layout task and are NOT part of this footprint. See TI SLUA271.")
+	(tags "TI TPS63020 DSJ VSON PVSON-N14 buck-boost thermal-pad")
+	(attr smd)
+	(fp_text reference "REF**"
+		(at 0 -2.6 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text value "TI_TPS63020_DSJ"
+		(at 0 2.6 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+			)
+		)
+	)
+	(fp_rect
+		(start -1.75 -1.5)
+		(end 1.75 1.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_rect
+		(start -2.05 -2.05)
+		(end 2.05 2.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+	)
+	(fp_circle
+		(center -1.95 1.95)
+		(end -1.85 1.95)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+	)
+	(pad "1" smd oval
+		(at -1.5 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "2" smd oval
+		(at -1 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "3" smd oval
+		(at -0.5 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "4" smd oval
+		(at 0 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "5" smd oval
+		(at 0.5 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "6" smd oval
+		(at 1 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "7" smd oval
+		(at 1.5 1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "8" smd oval
+		(at 1.5 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "9" smd oval
+		(at 1 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "10" smd oval
+		(at 0.5 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "11" smd oval
+		(at 0 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "12" smd oval
+		(at -0.5 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "13" smd oval
+		(at -1 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "14" smd oval
+		(at -1.5 -1.4)
+		(size 0.24 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+	)
+	(pad "15" smd rect
+		(at 0 0)
+		(size 2.85 1.58)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(solder_mask_margin 0.07)
+		(solder_paste_margin_ratio -0.05)
+	)
+)

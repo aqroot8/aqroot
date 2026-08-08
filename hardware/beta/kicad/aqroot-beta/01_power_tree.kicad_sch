@@ -11348,7 +11348,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:TI_TPS63020_DSJ"
 			(at 248.92 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -11403,7 +11403,7 @@
 				)
 			)
 		)
-		(property "Package" "14-pin VSON (DSJ), 3 mm x 4 mm, with exposed thermal pad - exact DSJ land pattern still requires package-drawing verification"
+		(property "Package" "DSJ (R-PVSON-N14) 14-pin VSON with exposed thermal pad. Footprint built from TI drawings 4210895-2/E (LAND PATTERN DATA) and 4208549-3/G (THERMAL PAD MECHANICAL DATA): signal lands 0.24 x 0.60 oval R0.12, 0.5 pitch, 7 per row, rows 2.8 apart at y +/-1.4; NSMD with 0.07 mask expansion; thermal pad 2.85 +/-0.10 x 1.58 +/-0.10; paste ratio -0.05 giving TI's stated 81 percent coverage. Pin 1 bottom-left per TI's circled Example Board Layout callout, 1-7 along the bottom row then 8-14 back along the top. The 4X 0.20 flank features at 0.46 spacing were confirmed by 900 dpi rasterisation to be SLOTS IN A SINGLE CONTIGUOUS THERMAL PAD, not separate pads; the plain dimensioned 2.85 x 1.58 envelope is implemented instead of the comb, which is conservative. TI recommends 15 thermal vias of 0.2 mm (5x3) inside the pad - a layout task, not part of the footprint. See TI SLUA271."
 			(at 248.92 67.31 0)
 			(hide yes)
 			(show_name no)
