@@ -4442,3 +4442,79 @@ untouched.
 manufacturer-linked ECAD model for `502570-0893` that exposes CD terminal numbering plus land
 geometry. Like the ST case, this is a **retrieval** blocker, not an analysis one — the moment the
 drawing is in `vendor/`, the symbol and footprint are a bounded build.
+
+---
+
+## J2 Molex 5025700893 — drawing OBTAINED, card-detect topology RESOLVED (2026-08-08)
+
+Nothing modified in the design. 186 components, 171 footprinted, 15 missing, ERC 0 real, 24
+exclusions, netlist unchanged, tree clean.
+
+### The drawing is in the repo
+
+Direct PDF/CDN retrieval fails, but AllDataSheet's HTML viewer serves the original Molex sheets as
+full-resolution page images. All five pages are archived under
+`vendor/Molex_5025700893/SD-502570-001_page1..5.png`.
+
+**Identity verified from the title block, not the hosting page:**
+
+- **MOLEX INCORPORATED**
+- Document no. **SD-502570-001**, sheets **1 OF 2** and **2 OF 2**
+- Title: *MICROSD CARD CONN. (P/P & NORMALSMALL TYPE)*
+- MODEL NO. table lists **502570-0893** explicitly, alongside 502570-0831
+- Rev **A**, EC J2009-2308, drawn 07/09/10, scale 4:1, metric, third-angle projection
+
+### Contact assignment, from sheet 1
+
+`Pin 1 DAT2 · Pin 2 CD/DAT3 · Pin 3 CMD · Pin 4 VDD · Pin 5 CLK · Pin 6 Vss · Pin 7 DAT0 ·
+Pin 8 DAT1` — matching the current AQROOT mapping exactly, so no SD signal changes are implied.
+
+### CARD-DETECT TOPOLOGY — resolved, and it is NOT "both NC"
+
+Sheet 1's materials table lists two distinct parts: **⑦ DETECT LEVER** and **⑧ DETECT SWITCH**,
+both copper alloy with gold contact plating. Sheet 2's recommended PCB layout then labels their
+lands separately, and decisively:
+
+> **DETECT LEVER MOUNT AREA (Vss : GROUND)**
+> **DETECT SWITCH MOUNT AREA**
+
+**So one side of the mechanical switch is committed by Molex to Vss/GROUND.** The switch is
+therefore *not* an isolated floating pair — the lever land is ground, and the detect-switch land is
+the single switched signal.
+
+Sheet 1's state table completes it:
+
+| Condition | Switch |
+|---|---|
+| Card inserting position | **CLOSE** |
+| No card | **OPEN** |
+
+**Consequence for Beta:** the correct representation is **DETECT LEVER land → GND** (manufacturer
+intent, not a choice) and **DETECT SWITCH land → a single signal** which, with no card-detect GPIO
+allocated anywhere in AQROOT, becomes an explicit named NC/TBD. Had this been guessed as "both
+terminals NC", the ground land would have been left floating against the manufacturer's own
+pattern.
+
+This also confirms the switch is **active-low into ground when a card is present** — useful for
+firmware if a GPIO is ever allocated.
+
+### Recommended PCB pattern layout — sheet 2 of 2
+
+Labelled regions: **TERMINAL MOUNT AREA** (the 8 contacts), **SHELL MOUNT AREA** (top and bottom),
+**DETECT LEVER MOUNT AREA**, **DETECT SWITCH MOUNT AREA**, and a hatched **PATTERN PROHIBITION
+AREA** (keep-out). General tolerance **±0.05**.
+
+Dimensions visible on the sheet include contact **pitch 1.1**, land **0.8** wide × **1.7**, overall
+**14.3** across the shell mounts, and a vertical stack of 15.9 / 15 / 10.6 / 13.35 / 14.95 / 13.15 /
+8.65 / 11.15 / 7.5 / 6.55 / 4.45 / 4.25 / 2.9 / 1.5 / 1.4 / 1.15 / 0.5 / 0.25.
+
+**The footprint was not built this session** — extracting every land coordinate from this sheet is
+a careful measurement job, and it is the whole remaining task rather than a loose end.
+
+### Status
+
+J2 moves from **BLOCKED_EXTERNAL_DOCUMENT** to **DOCUMENT_OBTAINED_BUILD_PENDING**. Both prior
+unknowns are closed: the drawing is in the repo, and the card-detect topology is manufacturer-
+stated rather than assumed. What remains is a bounded build — physical symbol including the two
+detect lands, then the footprint from sheet 2, then the swap preserving the SD nets recorded
+earlier.
