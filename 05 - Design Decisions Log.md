@@ -4686,3 +4686,70 @@ Three ways to close, unchanged from the previous session and now narrowed by eli
    alternative reading closes it, so the engineering risk is low and fully documented.
 
 Option 3 needs no further retrieval and would let J2 complete in one short session.
+
+---
+
+## J2 — BOTH DATUMS RESOLVED from exact-part CAD C429846 (2026-08-08)
+
+Identity verified before use: EasyEDA/JLCPCB entry reports **title 5025700893**, **LCSC C429846**,
+**Manufacturer MOLEX**, **Manufacturer Part 5025700893**, package `TF-SMD_5025700893`, **14 pads**.
+Raw JSON archived at `vendor/Molex_5025700893/C429846_easyeda.json`.
+
+### Pad table (1 unit = 10 mil = 0.254 mm; effective W x H after rotation)
+
+| Pad | X | Y | eff W x H | Function |
+|---|---|---|---|---|
+| 1–8 | −2.806 … +4.894 @ **1.1000** | −4.338 | **0.800 × 1.500** | SD contacts |
+| 9 | **−6.556** | −7.237 | **1.400 × 1.700** | shell / ground |
+| 9 | **+6.344** | −7.237 | **1.400 × 1.700** | shell / ground |
+| 9 | −3.006 | +7.237 | 1.500 × 1.150 | shell / ground |
+| 9 | +5.894 | +7.237 | 1.500 × 1.150 | shell / ground |
+| 10 | −0.706 | +7.237 | 1.500 × 1.150 | detect (to confirm vs 11) |
+| 11 | +6.556 | +2.512 | 1.300 × 1.500 | detect (to confirm vs 10) |
+
+### DATUM #1 — 4.45 is to the FIRST CONTACT CENTRE
+
+The eight contacts sit at **exactly 1.1000 pitch**, and the first-to-last **centre span is 7.7000**
+— matching Molex's drawn **7.7** to four decimal places. That proves 7.7 is a centre-to-centre
+dimension, so the chain `datum → 4.45 → 7.7` must also terminate on the **first contact centre**.
+
+**The arithmetic reading is confirmed by independent exact-part CAD, not assumed.**
+
+### DATUM #2 — 14.3 is OUTER-EDGE-TO-OUTER-EDGE
+
+The two bottom shell-mount lands measure **1.400 × 1.700**, matching Molex's **1.4 × 1.7** exactly.
+Their centres are at −6.556 and +6.344, i.e. **centre-to-centre 12.900**. Adding one land width:
+
+```
+12.900 + 1.400 = 14.300   ← exactly Molex's 14.3
+```
+
+Centre-to-centre (12.900) does **not** match 14.3; outer-to-outer does, exactly. **14.3 is
+outer-edge-to-outer-edge across the bottom shell-mount lands.**
+
+### Molex vs C429846 cross-check — no material disagreement
+
+| Molex dimension | C429846 | Verdict |
+|---|---|---|
+| contact pitch **1.1** | 1.1000 (7 intervals) | **exact** |
+| contact-field span **7.7** | 7.7000 | **exact** |
+| contact land width **0.8** | 0.800 | **exact** |
+| shell land **1.4 × 1.7** | 1.400 × 1.700 | **exact** |
+| shell span **14.3** | 12.900 + 1.400 = 14.300 | **exact (outer-to-outer)** |
+| detect land **1.15** | 1.150 on pads 9(top)/10 | **exact** |
+
+Every explicitly readable Molex dimension is reproduced. The CAD resolves only the two ambiguous
+reference points and contradicts nothing, so under the standing rule it is **accepted as
+corroboration** with Molex remaining primary.
+
+**Classification when built: VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION.**
+
+### Remaining before build
+
+One detail is still open: **which of pad 10 / pad 11 is DETECT LEVER and which is DETECT SWITCH**.
+Molex states the lever is Vss/GROUND and the switch is the switched signal; the CAD numbers them
+separately from the shell (9), so the assignment must be read from the C429846 symbol pin names or
+by correlating pad positions against the drawing's labelled DETECT LEVER / DETECT SWITCH MOUNT
+AREAs. That is local work on data now in the repository.
+
+**The geometry blocker that held J2 for four sessions is gone.**
