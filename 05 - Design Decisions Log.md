@@ -4826,3 +4826,112 @@ with that number, which KiCad handles natively.
 Symbol, footprint and integration were **not** produced. Every input is now local and unambiguous —
 geometry, pad numbering, pin names, net map and detect topology — so the remaining work is a
 mechanical build with no open questions.
+
+---
+
+## J2 Molex 5025700893 — physical microSD interface CLOSED (2026-08-08)
+
+**J2 is complete.** Symbol, footprint and integration all built and pushed. This closes the last
+connector on the missing-footprint list and the last item from the "close ALL remaining vendor
+footprint blockers" batch. See [[01 - Hardware Core]] and [[06 - BOM and Cost Tracker]].
+
+**Coverage: 186 components, 172 footprinted, 14 missing** (was 171 / 15). Component set identical
+across the swap; J2 is the *only* changed footprint assignment. Remaining missing: `C12 C18 C19 LS1
+R24 SW1`–`SW8 U14`.
+
+### Footprint — `AQROOT_Beta:Molex_5025700893`
+
+Classification **VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION**. Primary geometry is
+Molex `SD-502570-001`; the exact-part CAD `C429846` supplied coordinate corroboration and pad
+numbering. Verified programmatically on write and again after:
+
+| Check | Expected | Actual |
+|---|---|---|
+| Physical lands | 14 | **14** |
+| Contact pitch (as a set) | single value 1.1 | **[1.1]** |
+| 8-contact centre span | 7.7 | **7.7000** |
+| Shell centre-to-centre | 12.9 | **12.900** |
+| Shell outer-to-outer | 14.3 | **14.300** |
+| Pad 9 occurrences | 4 | **4** |
+| Pads 10, 11 | 1 each | **1, 1** |
+| Pins 1–8 | 1 each | **1 each** |
+| Numbers present | 1–11, none invented | **1–11** |
+
+**Pad 9 is deliberately repeated on four shell lands** — two bottom mounts 1.4 × 1.7 whose outer
+span *is* the 14.3 datum, and two top mounts 1.5 × 1.15. The symbol carries one logical pin 9. This
+is intentional; do not "fix" it by renumbering.
+
+Also carries: body on `F.Fab`; card-entry / ejection-travel zone and the pattern-prohibition
+no-copper region on `Dwgs.User`; courtyard covering card travel; `CARD INSERTION >>` orientation
+text. Both assets plot under `kicad-cli`.
+
+### Symbol — 11 logical pins, no hidden terminals
+
+`DAT2 · CD/DAT3 · CMD · VDD · CLK · VSS · DAT0 · DAT1 · SHIELD · DET-SW · DETECT_LEVER`
+
+**Pin 11 is a second ground terminal distinct from pin 6**, per Molex's `Vss:GROUND` label on the
+detect lever.
+
+### Net map — 11/11 verified against an expected table
+
+| Pin | Function | Net |
+|---|---|---|
+| 1 | DAT2 | *no-connect* |
+| 2 | CD/DAT3 | `SD_CS_N` |
+| 3 | CMD | `SPI_A_MOSI` |
+| 4 | VDD | `+3V3` |
+| 5 | CLK | `SPI_A_SCK` |
+| 6 | VSS | `GND` |
+| 7 | DAT0 | `SPI_A_MISO` |
+| 8 | DAT1 | *no-connect* |
+| 9 | SHIELD | `GND` |
+| 10 | DET-SW | `SD_CARD_DETECT_TBD` |
+| 11 | DETECT LEVER | `GND` |
+
+The expected table was written **before** validating and every pin compared against the exported
+netlist. **Zero mismatches.** This is the check that has caught every silent mis-wire in this
+project — ERC alone would not have.
+
+### The old wiring was deleted explicitly
+
+Past integrations (notably U9) showed that deleting only the symbol leaves its wires behind and
+silently lands new pins on wrong nets. The deletion set here covered the **J2 symbol, 7 wires, 2
+no-connect flags and 3 orphaned power symbols**, plus the stale stock `lib_symbols` cache entry.
+Nothing survived to bind a new pin to an old net.
+
+### Regression — SPI bus A byte-identical
+
+`SPI_A_SCK` = `J1.37 J2.5 U1.20` · `SPI_A_MOSI` = `J1.34 J2.3 U1.19` · `SPI_A_MISO` = `J1.33 J2.7
+U1.21` · `SD_CS_N` = `J2.2 R25.2 U1.25` — all unchanged. `+3V3` unchanged at 73 pins. `GND` 187 →
+188, the difference being exactly the old single `SH` terminal replaced by pins 9 and 11.
+
+**Only four nets changed project-wide, and the set of changed nets not involving J2 is EMPTY.**
+
+### Card detect — captured, deliberately not routed
+
+Pin 10 goes to a **named** `SD_CARD_DETECT_TBD` label rather than a no-connect, so the terminal is
+visible and traceable. **No GPIO was allocated and the MCU pin map is unchanged** — see
+[[11 - Beta Pin Map v0.2]]. Pin 2 remains `SD_CS_N`; the mechanical switch is *not* conflated with
+DAT3/CD. Switch is active-low on insertion.
+
+### ERC — measured as a delta, and one honest correction
+
+The identical command was run against the pre-change sheet and the post-change sheet. **The change
+introduces exactly one new item and resolves none:** an `isolated_pin_label` on
+`SD_CARD_DETECT_TBD`, which is the intended single-pin deferred label.
+
+**No exclusion was added.** Fifteen sibling deferred nets — `NFC_XIN_TBD`, `NFC_RFO1_TBD`,
+`NFC_AAT_A_TBD`, `CC1101_ANT_TBD`, `SX1262_RF_TBD`, `RF_ANT_TBD` and the rest — already sit
+unexcluded in exactly the same class. Excluding this one would be inconsistent and would weaken ERC
+for no gain.
+
+**Correction worth recording:** the absolute figure of *"0 real violations, 24 exclusions"* quoted
+in earlier sessions **does not reproduce** under the current `kicad-cli` invocation, which reports
+5 `label_dangling` at error severity — *identically before and after this change*. Those five are
+pre-existing and untouched. Only the delta is attributable to this work, so the delta is what is
+claimed here. The absolute ERC baseline should be re-established under a single fixed invocation
+before it is quoted again.
+
+### Commits
+
+`e1b04ab` symbol + footprint assets · `2bb1497` integration
