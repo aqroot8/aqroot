@@ -4753,3 +4753,76 @@ by correlating pad positions against the drawing's labelled DETECT LEVER / DETEC
 AREAs. That is local work on data now in the repository.
 
 **The geometry blocker that held J2 for four sessions is gone.**
+
+---
+
+## J2 — pads 10/11 RESOLVED from local symbol metadata (2026-08-08)
+
+No web access used. Resolved entirely from `vendor/Molex_5025700893/C429846_easyeda.json`.
+
+### C429846 symbol pin names — decisive, not inferred
+
+| Pad | EasyEDA name | Molex function |
+|---|---|---|
+| 1 | `DAT2` | DAT2 |
+| 2 | `CD/DAT3` | CD/DAT3 |
+| 3 | `CMD` | CMD |
+| 4 | `VDD` | VDD |
+| 5 | `CLK` | CLK |
+| 6 | `VSS` | Vss |
+| 7 | `DAT0` | DAT0 |
+| 8 | `DAT1` | DAT1 |
+| 9 | **`EH`** | shell / shield — **4 physical lands share this number** |
+| **10** | **`DET-SW`** | **DETECT SWITCH** |
+| **11** | **`VSS`** | **DETECT LEVER** |
+
+**Pad 11 is named `VSS` — a second ground pin, distinct from pad 6.** That is exactly what Molex's
+sheet 2 states: *DETECT LEVER MOUNT AREA (Vss : GROUND)*. Two independent sources, the manufacturer
+drawing label and the exact-part CAD pin name, agree that the lever land is ground.
+
+**Pad 10 is `DET-SW`** — the switched signal.
+
+Position corroborates: pad 11 sits at x = +6.556, the right-hand side where the drawing places the
+DETECT LEVER MOUNT AREA; pad 10 at x = −0.706 in the detect-switch region.
+
+**pad 10 = DETECT SWITCH -> `SD_CARD_DETECT_TBD`**
+**pad 11 = DETECT LEVER -> `GND`**
+
+### Complete 14-land table (effective W x H after rotation)
+
+| Pad | Function | X | Y | eff W x H | rot | AQROOT net |
+|---|---|---|---|---|---|---|
+| 1 | DAT2 | −2.806 | −4.338 | 0.800 × 1.500 | 90 | unused / NC |
+| 2 | CD/DAT3 | −1.706 | −4.338 | 0.800 × 1.500 | 90 | `SD_CS_N` |
+| 3 | CMD | −0.606 | −4.338 | 0.800 × 1.500 | 90 | `SPI_A_MOSI` |
+| 4 | VDD | +0.494 | −4.338 | 0.800 × 1.500 | 90 | `+3V3` |
+| 5 | CLK | +1.594 | −4.338 | 0.800 × 1.500 | 90 | `SPI_A_SCK` |
+| 6 | VSS | +2.694 | −4.338 | 0.800 × 1.500 | 90 | `GND` |
+| 7 | DAT0 | +3.794 | −4.338 | 0.800 × 1.500 | 90 | `SPI_A_MISO` |
+| 8 | DAT1 | +4.894 | −4.338 | 0.800 × 1.500 | 90 | unused / NC |
+| 9 | EH shell | −6.556 | −7.237 | 1.400 × 1.700 | 90 | `GND` |
+| 9 | EH shell | +6.344 | −7.237 | 1.400 × 1.700 | 90 | `GND` |
+| 9 | EH shell | −3.006 | +7.237 | 1.500 × 1.150 | 180 | `GND` |
+| 9 | EH shell | +5.894 | +7.237 | 1.500 × 1.150 | 180 | `GND` |
+| 10 | DET-SW | −0.706 | +7.237 | 1.500 × 1.150 | 180 | `SD_CARD_DETECT_TBD` |
+| 11 | DETECT LEVER (VSS) | +6.556 | +2.512 | 1.300 × 1.500 | 270 | `GND` |
+
+**Pad 9 carries four physical lands on one electrical number** — two bottom shell mounts
+(1.4 × 1.7, the pair whose outer span is the 14.3 datum) and two top shell mounts (1.5 × 1.15).
+The symbol must expose a single `SHIELD` pin numbered 9 while the footprint carries all four lands
+with that number, which KiCad handles natively.
+
+### Card-detect implementation, now fully determined
+
+`DETECT LEVER (pad 11) -> GND` · `DETECT SWITCH (pad 10) -> SD_CARD_DETECT_TBD` ·
+**closed to GND on card insertion, open with no card** · **no Beta GPIO allocated**.
+`CD/DAT3` (pad 2) stays on `SD_CS_N` and is *not* conflated with the mechanical switch.
+
+> **MECHANICAL CARD DETECT — ACTIVE LOW ON INSERTION — NO BETA GPIO ALLOCATED —
+> DO NOT ROUTE UNTIL PIN-MAP REVISION**
+
+### Not built this session
+
+Symbol, footprint and integration were **not** produced. Every input is now local and unambiguous —
+geometry, pad numbering, pin names, net map and detect topology — so the remaining work is a
+mechanical build with no open questions.
