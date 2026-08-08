@@ -3150,3 +3150,46 @@ recorded here so the reasoning is auditable rather than buried.
 
 `+3V3` sits at the **maximum** of both rated ranges — IOVCC 1.65 / 1.8–2.8 / **3.3**, VCI 2.5 /
 2.8 / **3.3** — with absolute max 4.6 V. Legal, but with no tolerance margin.
+
+---
+
+## J1 inactive-pin states VERIFIED from ILI9341 documentation (2026-08-08)
+
+Source: **ILI9341 datasheet** (Ilitek, 245 pp), pin descriptor table pp. 10–12 and the serial
+interface section p. 33. This closes Task 1 and **supersedes the "derived, not quoted" caveats**
+recorded in the previous disposition table — every state below is now a datasheet quotation.
+
+| Pin | Name | Datasheet statement | Required state |
+|---|---|---|---|
+| 11 | VSYNC | RGB-interface input, table notation `(VDDI/VSS)`, *"Fix to VDDI or VSS level when not in use."* | **GND** |
+| 12 | HSYNC | as above | **GND** |
+| 13 | DOTCLK | *"Dot clock signal for RGB interface operation. **Fix to VDDI or VSS level when not in use.**"* | **GND** |
+| 14 | DE | *"Data enable signal for RGB interface operation. **Fix to VDDI or VSS level when not in use.**"* | **GND** |
+| 35 | /RD (RDX) | *"Serves as a read signal and MCU read data at the rising edge. **Fix to VDDI level when not in use.**"* | **HIGH → +3V3** |
+| 39 | TE | *"…activated by S/W command. When this pin is not activated, this pin is low. **If not used, open this pin.**"* | **NC / open** |
+| 15–32 | DB17..DB0 | p.33: *"The data bus (D [17:0]), which are not used, **must be connected to GND**."* | **GND** |
+
+### Three corrections this forces
+
+1. **/RD must go HIGH, and only HIGH.** The datasheet says *"Fix to **VDDI** level"* — **not**
+   "VDDI or VSS" as it does for the RGB pins. Grounding /RD would be wrong. The previous pass
+   reached HIGH by inference from active-low naming; that inference happened to be right, but it
+   is now backed by an explicit instruction, and the asymmetry against pins 11–14 is real and
+   deliberate.
+2. **TE is `OUTPUT_UNUSED_NC`, not `DATASHEET_REQUIRED_INACTIVE`.** Leaving it open is
+   **datasheet-mandated** (*"If not used, open this pin"*), not merely tolerated because it is an
+   output. It gets its own disposition category.
+3. **Pins 11–14 are confirmed GND-legal.** The prior entry noted only that unused CMOS inputs
+   must not float, flagging GND as convention rather than instruction. It is now an instruction —
+   and note the datasheet permits **either** rail for these four, so GND is a choice, made for
+   consistency with the DB bus which has no such latitude.
+
+### Revised disposition tallies
+
+`ACTIVE_SIGNAL 10 · POWER 3 · GND 4 · MODE_STRAP 4 · BACKLIGHT 5 ·
+DATASHEET_REQUIRED_INACTIVE 23 · OUTPUT_UNUSED_NC 1` = **50**.
+
+(Previously 24 / 0; TE moves out of `DATASHEET_REQUIRED_INACTIVE` into `OUTPUT_UNUSED_NC`.)
+
+**Wiring is no longer gated on pin-state uncertainty.** Every one of the 50 contacts now has a
+state traceable to either the CH280QV10-CT panel datasheet or the ILI9341 controller datasheet.
