@@ -3269,3 +3269,95 @@ ERC reported both wires dangling, even though every coordinate verified correct 
 cached symbol definitions in the sheet. Rebuilding it as three label-coupled stubs (`BL_SW`) —
 the pattern already proven elsewhere on this sheet — binds correctly. **Future generated capture
 in this project should prefer label coupling over multi-wire junctions.**
+
+---
+
+## Pre-layout blocker register + two decisions LOCKED (2026-08-08)
+
+### Decision 1 — backlight inductor L3 LOCKED as-is
+
+**L3 = Coilcraft XFL4020-472MEC stays for Beta.** It is electrically oversized (Isat 2 A against
+a ~181 mA peak) and that is **accepted**: the `AQROOT_Beta:Coilcraft_XFL4020` land pattern is
+already VERIFIED_VENDOR_EXACT and shared with L1, the part is electrically safe, and no new
+footprint verification is required. **Do not replace it for optimisation alone.** Size/cost
+optimisation is deferred unless PCB placement proves the 4.0 x 4.0 mm body is a real constraint.
+
+### Decision 2 — touch IRQ intentionally not connected
+
+> **Beta touch controller uses polling over I2C; CTP_IRQ intentionally not connected. IRQ
+> allocation deferred unless firmware testing demonstrates a need.**
+
+J1 pin 46 `CTP_IRQ` remains NC for Beta. The previous 13-pin abstraction never connected the
+interrupt, no MCU GPIO is allocated to it, and no GPIO may be reassigned without reopening the
+locked pin map. **This is an intentional NC and must not be treated as an ERC defect** — it is
+carried by an explicit `no_connect` flag, which is exactly why ERC stays at 0 real items rather
+than raising a warning.
+
+### SW9 CLOSED — footprint assigned and verified
+
+`Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN` assigned. **VERIFIED_VENDOR_EXACT.**
+
+Verified against the C&K JS-series drawing, page 4, *"RIGHT ANGLE SURFACE MOUNT / PCB MOUNT —
+HOLE LAYOUT"* for JS102011SAQN:
+
+| Feature | C&K drawing | KiCad footprint | Result |
+|---|---|---|---|
+| Terminal pitch | **2.5 TYP** | 2.5 (x = −2.5, 0, +2.5) | **exact** |
+| Locating holes | **2 × ⌀0.9, span 6.8** | 2 × NPTH ⌀0.9 at x = ±3.4 | **exact** |
+| Land width | **1.2 TYP** | 1.25 | +0.05 (fillet allowance) |
+| Terminals | 3 (SPDT) | 3 lands | **exact** |
+
+The mechanically critical features — hole diameter, hole span and pitch — match exactly; only the
+land width carries a 0.025 mm per-side solder-fillet allowance, which is documented rather than
+glossed. Rating 6 VDC / 0.3 A, 5000 cycles. Pole mapping unchanged (KiCad pin 2 = C&K terminal 2
+= COMMON). **No electrical wiring changed** — netlist verified identical, 155 nets before and
+after.
+
+### J3 status — NOT missing, confirmed
+
+J3 already carries `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` with
+MPN `USB4105-GF-A-120`. It is **assigned but UNVERIFIED** — the variant suffix and shell-stake
+configuration at the locked 1.6 mm board thickness are still unconfirmed against the GCT drawing.
+**UNVERIFIED is a separate axis from MISSING**; J3 correctly does not appear in the missing count.
+
+### Remaining blocker register
+
+| Ref | MPN / value | Symbol | Footprint | Classification | Next prerequisite |
+|---|---|---|---|---|---|
+| J2 | Molex 5025700893 | `Connector:Micro_SD_Card` (9 pins) | none | **BLOCKED_EXTERNAL_DOCUMENT** | Molex drawing; then audit 8 contacts + CD switch + shell vs the 9-pin symbol |
+| LS1 | Same Sky CMS-1535-058SP | generic speaker | none | **BLOCKED_EXTERNAL_DOCUMENT** | vendor pad geometry, or a 15 mm/8 Ω/≥0.5 W replacement that publishes lands |
+| U7 | Ebyte E22-900M22S | `SX1262_MODULE_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + full physical-pin audit (VCC, all GND, NSS, SCK, MOSI, MISO, BUSY, DIO1, NRST, RXEN, TXEN) |
+| U8 | Ebyte E07-400M10S | `CC1101_RADIO_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + audit (VCC, all GND, CSN, SCK, MOSI, MISO/GDO1, GDO0, GDO2, antenna pad) |
+| U9 | ST ST25R3916-AQET | `ST25R3916_NFC_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | ST EDA asset; 32-pin + exposed-pad audit. Do not force UFQFPN onto the abstraction |
+| U12 | TI TPS63020DSJR | real symbol | none | **BLOCKED_EXTERNAL_DOCUMENT** | TI DSJ package drawing. Power VSON/thermal — no generic approximation |
+| U14 | ADI MAX17048G+T10 | real symbol | none | **BLOCKED_EXTERNAL_DOCUMENT** | Maxim/ADI land pattern 90-0065. Rule not to be compromised |
+| C12 | **TBD** | `Device:C` | none | **DESIGN_DECISION_BLOCKED** | IR drive-current design unresolved; value still literally `TBD` |
+| R24 | **TBD** | `Device:R` | none | **DESIGN_DECISION_BLOCKED** | as C12 |
+| C18 | `100nF_PLACEHOLDER` | `Device:C` | none | **DESIGN_DECISION_BLOCKED** | NFC/RF function unproven; must not become a real BOM line without proof |
+| C19 | `100nF_PLACEHOLDER` | `Device:C` | none | **DESIGN_DECISION_BLOCKED** | as C18 |
+| SW1 | BOOT | `Switch:SW_Push` | none | **MECHANICAL_DECISION_BLOCKED** | maintenance button — internal vs accessible, recessed or not |
+| SW2–SW8 | UP, DOWN, LEFT, RIGHT, A_SELECT, B_BACK, HOME | `Switch:SW_Push` | none | **MECHANICAL_DECISION_BLOCKED** | actuator height/travel/force + mounting style |
+
+### Why SW1–SW8 are mechanically blocked, specifically
+
+`15 - Enclosure Field Slate v3` **does** fix the button set — *"Physical controls: 7 buttons —
+D-pad (up/down/left/right), A = select/confirm"*, plus B = back and Home, matching SW2–SW8, with
+SW1 as a separate BOOT/maintenance button. It also sets a usability bar: the device must stay
+*"fully drivable with gloves, in the dark"*.
+
+What it does **not** fix is anything that actually selects an MPN: **actuator height above PCB,
+travel, operating force, and mounting style** (top-actuated under a membrane/keypad vs
+side-actuated, SMD vs through-hole). Those follow from the enclosure stack-up and the front-panel
+design, neither of which is locked. A glove-operable button in the dark implies a specific force
+and travel envelope — picking a generic 4.5 mm tactile switch now would silently pre-empt that.
+
+**One MPN plausibly covers SW2–SW8** (identical role, identical panel), but **SW1 is likely a
+different part** (maintenance access, probably recessed or internal). That split should be
+confirmed, not assumed.
+
+### Not attempted this session
+
+J2, LS1, U7, U8, U9, U12, U14 each require a vendor document retrieval plus, for the three RF/NFC
+modules, a complete physical-pin audit against a placeholder symbol that is known not to match.
+Those were not reached; the session went to the C&K verification that closed SW9, and to the
+audits recorded above. **No speculative footprints were created.**

@@ -13808,7 +13808,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN"
 			(at 190.5 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -13841,7 +13841,7 @@
 				)
 			)
 		)
-		(property "Package" "Right-angle SMD SPDT slide switch - part LOCKED, symbol conflict RESOLVED. Footprint BLOCKED: needs the official C&K PCB layout drawing for the land pattern geometry only (3 signal pads plus mounting tabs). Symbol-to-terminal numbering is no longer a blocker - see Note."
+		(property "Package" "Right-angle SMD SPDT slide switch, C&K JS series. FOOTPRINT VERIFIED against the C&K JS-series drawing (octopart mirror of the C&K/ITT datasheet), page 4 'RIGHT ANGLE SURFACE MOUNT / PCB MOUNT - HOLE LAYOUT' for JS102011SAQN. Verified exact: terminal pitch 2.5 TYP; two locating holes dia 0.9 with 6.8 span, i.e. x = +/-3.4; three SPDT lands; body 9.0 x 3.6 + 2.0. Documented delta: KiCad land is 1.25 wide vs the drawing's 1.2 TYP, a 0.025 mm per-side solder-fillet allowance. Mechanically critical features (hole diameter, hole span, pitch) match exactly. Contact rating 6 VDC 0.3 A, 5000 cycles. Pole mapping unchanged and previously verified 1:1: KiCad pin 2 = C&K terminal 2 = COMMON."
 			(at 190.5 63.5 0)
 			(hide yes)
 			(show_name no)
