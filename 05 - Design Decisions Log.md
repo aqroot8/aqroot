@@ -3326,8 +3326,9 @@ configuration at the locked 1.6 mm board thickness are still unconfirmed against
 |---|---|---|---|---|---|
 | J2 | Molex 5025700893 | `Connector:Micro_SD_Card` (9 pins) | none | **BLOCKED_EXTERNAL_DOCUMENT** | Molex drawing; then audit 8 contacts + CD switch + shell vs the 9-pin symbol |
 | LS1 | Same Sky CMS-1535-058SP | generic speaker | none | **BLOCKED_EXTERNAL_DOCUMENT** | vendor pad geometry, or a 15 mm/8 Ω/≥0.5 W replacement that publishes lands |
-| U7 | Ebyte E22-900M22S | `SX1262_MODULE_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + full physical-pin audit (VCC, all GND, NSS, SCK, MOSI, MISO, BUSY, DIO1, NRST, RXEN, TXEN) |
-| U8 | Ebyte E07-400M10S | `CC1101_RADIO_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + audit (VCC, all GND, CSN, SCK, MOSI, MISO/GDO1, GDO0, GDO2, antenna pad) |
+> **CORRECTED 2026-08-08 — the row below transposed U7/U8. The schematic is authoritative: U7 = E07-400M10S (CC1101), U8 = E22-900M22S (SX1262).**
+> | U7 | Ebyte E22-900M22S | `SX1262_MODULE_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + full physical-pin audit (VCC, all GND, NSS, SCK, MOSI, MISO, BUSY, DIO1, NRST, RXEN, TXEN) |
+> | U8 | Ebyte E07-400M10S | `CC1101_RADIO_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | Ebyte drawing + audit (VCC, all GND, CSN, SCK, MOSI, MISO/GDO1, GDO0, GDO2, antenna pad) |
 | U9 | ST ST25R3916-AQET | `ST25R3916_NFC_PLACEHOLDER` | none | **BLOCKED_SYMBOL_MISMATCH** | ST EDA asset; 32-pin + exposed-pad audit. Do not force UFQFPN onto the abstraction |
 | U12 | TI TPS63020DSJR | real symbol | none | **BLOCKED_EXTERNAL_DOCUMENT** | TI DSJ package drawing. Power VSON/thermal — no generic approximation |
 | U14 | ADI MAX17048G+T10 | real symbol | none | **BLOCKED_EXTERNAL_DOCUMENT** | Maxim/ADI land pattern 90-0065. Rule not to be compromised |
@@ -3376,8 +3377,8 @@ items**, 24 exclusions intact, netlist unchanged. Two blockers moved materially;
 | U14 | MAX17048G+T10 | `90-0065` fetch failed on both Maxim and ADI paths | BLOCKED_EXTERNAL_DOCUMENT |
 | U9 | ST25R3916-AQET | st.com datasheet fetch timed out | BLOCKED_EXTERNAL_DOCUMENT |
 | J2 | Molex 5025700893 | 3 drawing URL patterns attempted, batch timed out | BLOCKED_EXTERNAL_DOCUMENT |
-| U7 | Ebyte E22-900M22S | not retrieved (batch timeout) | BLOCKED_EXTERNAL_DOCUMENT |
-| U8 | Ebyte E07-400M10S | not attempted after timeout | BLOCKED_EXTERNAL_DOCUMENT |
+> | U7 | Ebyte E22-900M22S | not retrieved (batch timeout) | BLOCKED_EXTERNAL_DOCUMENT |  *(refs transposed — see correction 2026-08-08)*
+> | U8 | Ebyte E07-400M10S | not attempted after timeout | BLOCKED_EXTERNAL_DOCUMENT |  *(refs transposed — see correction 2026-08-08)*
 
 ### U12 — the real win: TI's authoritative DSJ land pattern is in hand
 
@@ -3898,3 +3899,69 @@ proceed, and with it neither did the coupled symbol/capture work.
 
 Everything else for U7 is settled: pinout verified against manual section 3.2, RF-switch
 architecture locked, XGPIO14 chain mapped with coordinates, pull-down justified, IPEX confirmed.
+
+---
+
+## CORRECTION — U7 and U8 were transposed in the blocker register (2026-08-08)
+
+**Integration was aborted at the Task 1 baseline gate. No schematic file was modified.**
+
+### The schematic is authoritative, and it says the opposite of the recent briefs
+
+Read directly from `04_spi_b_radios_nfc.kicad_sch`:
+
+| Ref | Symbol value | MPN | Silicon / band |
+|---|---|---|---|
+| **U7** | `CC1101_RADIO_PLACEHOLDER` | **E07-400M10S** | CC1101, 433 MHz |
+| **U8** | `SX1262_MODULE_PLACEHOLDER` | **E22-900M22S** | SX1262, 915 MHz |
+
+This matches the drift-closure entry recorded at commit `a9e8952` (log line ~2692), which assigned
+those MPNs from `12 - RF and Antenna Plan`. It is corroborated by the net names: the design carries
+`CC1101_CS_N` and `CC1101_GDO0` for U7, and `SX1262_CS_N`, `SX1262_BUSY`, `SX1262_DIO1`,
+`SX1262_RST_N` for U8.
+
+### The error is mine, and it is in this log
+
+The **blocker register table (log line ~3329)** states the reverse — *"U7 | Ebyte E22-900M22S"* and
+*"U8 | Ebyte E07-400M10S"*. That table was written by me and **transposed the two references**.
+Every subsequent session brief was built on it, which is why the last several tasks have said
+"U7 = E22-900M22S".
+
+**The transposition never reached the schematic** — only this log and the task framing. The design
+files have been internally consistent throughout.
+
+### What would have happened had the integration proceeded
+
+Applying the locked mapping to U7 would have:
+
+1. placed the **E22/SX1262** symbol on the **CC1101** reference;
+2. wired `SX1262_CS_N`, `SX1262_BUSY`, `SX1262_DIO1` and `SX1262_RST_N` to the **433 MHz CC1101**
+   position, while `CC1101_CS_N` and `CC1101_GDO0` were left stranded;
+3. left the **real SX1262 module (U8) still a placeholder**;
+4. produced a netlist that passes ERC and *looks* complete while being wrong at the part level —
+   the most expensive class of error to find later, since it would likely survive to fabrication.
+
+### Corrected assignment
+
+**The E22-900M22S integration belongs to U8, not U7.**
+
+- **U8** ← `E22-900M22S` symbol + `AQROOT_Beta:Ebyte_E22-900M22S` footprint, RXEN/TXEN/DIO2
+  architecture, 100 k pull-down, the `SX1262_*` and `SPI_B_*` nets, IPEX/Taoglas FXP890 antenna.
+- **U7** remains the **E07-400M10S / CC1101** module, still a placeholder, still blocked on its own
+  vendor pin audit, and carries `CC1101_CS_N` / `CC1101_GDO0`.
+
+### The library assets from commit 3f80b62 are unaffected
+
+Symbol `E22-900M22S` and footprint `AQROOT_Beta:Ebyte_E22-900M22S` were built from the exact
+E22-900M22S vendor geometry and remain **fully valid and VERIFIED_VENDOR_EXACT**. Only the
+*reference they attach to* changes. **No asset rework is required** — the 5.57 mm gap resolution,
+the C411293 cross-validation and the 22-pad geometry all stand.
+
+### Everything else in the locked architecture survives the swap
+
+The RF-switch decision (DIO2→TXEN local, RXEN from reclaimed `XGPIO14` = U3 pin 19, 100 k
+pull-down), the firmware sequence, the antenna/IPEX finding and the XGPIO14 retirement plan are all
+**module-specific, not reference-specific**, and apply unchanged — to **U8**.
+
+The XGPIO14 baseline was re-verified this session and is intact: `XGPIO14` = R65.2 + U3.19;
+`XGPIO14_HDR` = D6.4 + J5.19 + R65.1. 155 nets, ERC 0 real, tree clean.
