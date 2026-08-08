@@ -2941,6 +2941,10 @@
 		(uuid "e9b5e35a-20f9-43ed-9226-6e39964f5dbf")
 	)
 	(no_connect
+		(at 153.67 147.32)
+		(uuid "d1e1bcb5-a129-4a64-b2e2-d5ad1d234434")
+	)
+	(no_connect
 		(at 153.67 152.4)
 		(uuid "0e911f54-5b68-4103-859b-1ae1bae52c37")
 	)
@@ -3306,16 +3310,6 @@
 	)
 	(wire
 		(pts
-			(xy 156.21 144.78) (xy 156.21 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3dd388d9-4eaf-4b48-b03f-f3d89f27584e")
-	)
-	(wire
-		(pts
 			(xy 229.87 88.9) (xy 229.87 90.17)
 		)
 		(stroke
@@ -3586,16 +3580,6 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 147.32) (xy 156.21 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "60c046d1-ed77-48e4-8d34-6b199e8d6ff5")
-	)
-	(wire
-		(pts
 			(xy 213.36 97.79) (xy 215.9 97.79)
 		)
 		(stroke
@@ -3613,16 +3597,6 @@
 			(type default)
 		)
 		(uuid "664d228f-ad25-48aa-8632-2c927d2f3c7a")
-	)
-	(wire
-		(pts
-			(xy 166.37 147.32) (xy 167.64 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6696ef4b-ff94-4f4b-b816-724ed0597e5c")
 	)
 	(wire
 		(pts
@@ -4436,16 +4410,6 @@
 	)
 	(wire
 		(pts
-			(xy 156.21 147.32) (xy 158.75 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e1f08277-45d1-4928-98f0-5a51b9a27b90")
-	)
-	(wire
-		(pts
 			(xy 180.34 125.73) (xy 180.34 127)
 		)
 		(stroke
@@ -4804,7 +4768,7 @@
 		)
 		(uuid "53ac4446-bba7-463b-bcc1-e0dbe4c497b5")
 	)
-	(label "XGPIO14_HDR"
+	(label "RESERVED_NC"
 		(at 251.46 132.08 180)
 		(effects
 			(font
@@ -5006,7 +4970,7 @@
 		)
 		(uuid "c63b5c51-87ca-48fd-9c65-299b1c096307")
 	)
-	(label "XGPIO14_HDR"
+	(label "RESERVED_NC"
 		(at 156.21 144.78 90)
 		(effects
 			(font
@@ -5175,17 +5139,6 @@
 			(justify left)
 		)
 		(uuid "a88c23ef-95a1-4a92-b44b-b01902b81315")
-	)
-	(hierarchical_label "XGPIO14"
-		(shape bidirectional)
-		(at 167.64 147.32 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ad1dcb12-64b2-4c23-a6d6-e8ce46657b4f")
 	)
 	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
 		(shape input)
@@ -10381,85 +10334,6 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
 					(reference "R58")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 162.56 147.32 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f7e3ab87-ca89-4288-8903-a097dd2a3719")
-		(property "Reference" "R65"
-			(at 162.814 142.494 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 162.56 144.526 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 162.56 149.098 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 162.56 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 162.56 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "8671d060-b300-4be2-aa96-eebfa9e1bb4e")
-		)
-		(pin "1"
-			(uuid "9c414027-30e7-4d3d-8721-035980fbf899")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R65")
 					(unit 1)
 				)
 			)

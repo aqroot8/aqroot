@@ -5,6 +5,504 @@
 	(uuid "c9c5bda1-3956-427a-b3ae-972c71997504")
 	(paper "A4")
 	(lib_symbols
+		(symbol "AQROOT_Beta:E22-900M22S"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -15.24 17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "E22-900M22S"
+				(at -15.24 -17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "AQROOT_Beta:Ebyte_E22-900M22S"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.ebyte.com/product/435.html"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Ebyte E22-900M22S SX1262 850-930MHz LoRa module, 22-pad castellated SMD"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "E22-900M22S"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C411293"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Package" "20.0 x 14.0 x 3.0 mm castellated SMD module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. Antenna: module IPEX/u.FL used for Beta with Taoglas FXP890.07.0100C; pin 21 ANT stamp hole present but NOT routed. DIO2 (8) is strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) needs an external control; RF DO NOT ROUTE until final RF review."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "E22-900M22S_0_1"
+				(rectangle
+					(start -15.24 16.51)
+					(end 15.24 -16.51)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "E22-900M22S_1_1"
+				(pin power_in line
+					(at -17.78 13.97 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 11.43 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 8.89 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 6.35 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 3.81 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -17.78 1.27 0)
+					(length 2.54)
+					(name "RXEN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -17.78 -1.27 0)
+					(length 2.54)
+					(name "TXEN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -17.78 -3.81 0)
+					(length 2.54)
+					(name "DIO2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 -6.35 0)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 -8.89 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -17.78 -11.43 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 17.78 13.97 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 17.78 11.43 180)
+					(length 2.54)
+					(name "DIO1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 17.78 8.89 180)
+					(length 2.54)
+					(name "BUSY"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 17.78 6.35 180)
+					(length 2.54)
+					(name "~{NRST}"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin tri_state line
+					(at 17.78 3.81 180)
+					(length 2.54)
+					(name "MISO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 17.78 1.27 180)
+					(length 2.54)
+					(name "MOSI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 17.78 -1.27 180)
+					(length 2.54)
+					(name "SCK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 17.78 -3.81 180)
+					(length 2.54)
+					(name "~{NSS}"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 17.78 -6.35 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "20"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 -8.89 180)
+					(length 2.54)
+					(name "ANT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 17.78 -11.43 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "22"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "AQROOT_Beta:CC1101_RADIO_PLACEHOLDER"
 			(pin_numbers
 				(hide yes)
@@ -733,347 +1231,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "AQROOT_Beta:SX1262_MODULE_PLACEHOLDER"
-			(pin_numbers
-				(hide yes)
-			)
-			(exclude_from_sim yes)
-			(in_bom yes)
-			(on_board no)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 0 15.24 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "SX1262_MODULE_PLACEHOLDER"
-				(at 0 -29.21 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Functional placeholder for AQROOT built-in certified SX1262 LoRa/sub-GHz module"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "TBD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "MPN" "TBD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "placeholder certified module LoRa sub-GHz SX1262 SPI transceiver AQROOT Beta unresolved implementation"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "SX1262_MODULE_PLACEHOLDER_0_1"
-				(rectangle
-					(start -19.05 10.16)
-					(end 19.05 -24.13)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(text "FUNCTIONAL PLACEHOLDER"
-					(at 0 -11.43 0)
-					(effects
-						(font
-							(size 1.27 1.27)
-							(bold yes)
-						)
-					)
-				)
-				(text "MODULE LOCKED: EBYTE E22-900M22S"
-					(at 0 -13.97 0)
-					(effects
-						(font
-							(size 1 1)
-						)
-					)
-				)
-				(text "ANTENNA ON MODULE IPEX PORT"
-					(at 0 -15.875 0)
-					(effects
-						(font
-							(size 1 1)
-						)
-					)
-				)
-				(text "FOOTPRINT PENDING - FROM EBYTE DRAWING"
-					(at 0 -17.78 0)
-					(effects
-						(font
-							(size 1 1)
-						)
-					)
-				)
-				(text "NO FOOTPRINT"
-					(at 0 -19.685 0)
-					(effects
-						(font
-							(size 1 1)
-						)
-					)
-				)
-				(text "DO NOT ROUTE"
-					(at 0 -21.59 0)
-					(effects
-						(font
-							(size 1 1)
-						)
-					)
-				)
-			)
-			(symbol "SX1262_MODULE_PLACEHOLDER_1_1"
-				(pin power_in line
-					(at 0 12.7 270)
-					(length 2.54)
-					(name "VCC_3V3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -26.67 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -21.59 7.62 0)
-					(length 2.54)
-					(name "SCK"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -21.59 5.08 0)
-					(length 2.54)
-					(name "MOSI"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin tri_state line
-					(at -21.59 2.54 0)
-					(length 2.54)
-					(name "MISO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -21.59 0 0)
-					(length 2.54)
-					(name "CS_N"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at -21.59 -2.54 0)
-					(length 2.54)
-					(name "BUSY"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at -21.59 -5.08 0)
-					(length 2.54)
-					(name "DIO1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -21.59 -7.62 0)
-					(length 2.54)
-					(name "RESET_N"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 21.59 0 180)
-					(length 2.54)
-					(name "RF_ANT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -1666,16 +1823,6 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 71.12) (xy 195.58 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "164877de-03f3-4f0f-a015-92008a971d17")
-	)
-	(wire
-		(pts
 			(xy 217.17 49.53) (xy 217.17 50.8)
 		)
 		(stroke
@@ -1773,16 +1920,6 @@
 			(type default)
 		)
 		(uuid "2b85f5c8-e0ce-4616-a890-9ee7a00d91e1")
-	)
-	(wire
-		(pts
-			(xy 194.31 58.42) (xy 195.58 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "309e6462-e9af-414a-8148-50f5ee86da10")
 	)
 	(wire
 		(pts
@@ -1916,16 +2053,6 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 60.96) (xy 195.58 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "751a6cb8-8004-4581-8db9-b7d8b7092d0d")
-	)
-	(wire
-		(pts
 			(xy 143.51 69.85) (xy 143.51 71.12)
 		)
 		(stroke
@@ -1953,26 +2080,6 @@
 			(type default)
 		)
 		(uuid "8e6582c4-5595-4691-8be1-ca8fb5d743d8")
-	)
-	(wire
-		(pts
-			(xy 194.31 68.58) (xy 195.58 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8f128c3e-1336-476a-9be0-083a34a835ed")
-	)
-	(wire
-		(pts
-			(xy 194.31 55.88) (xy 195.58 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "924dc069-dee6-4f77-ae91-f83f50e691a2")
 	)
 	(wire
 		(pts
@@ -2093,26 +2200,6 @@
 			(type default)
 		)
 		(uuid "dbfefbd7-513d-4aec-876e-5256937de909")
-	)
-	(wire
-		(pts
-			(xy 194.31 66.04) (xy 195.58 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e6f86331-1ef4-4cdf-a839-a19a3d71458e")
-	)
-	(wire
-		(pts
-			(xy 194.31 63.5) (xy 195.58 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ebd0b402-7be0-49fd-8124-2cf3c12dfaf9")
 	)
 	(wire
 		(pts
@@ -2246,12 +2333,12 @@
 	)
 	(hierarchical_label "SPI_B_SCK"
 		(shape input)
-		(at 194.31 55.88 180)
+		(at 242.57 64.77 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "086df25d-af93-4a12-b43b-03b06daa4565")
 	)
@@ -2268,12 +2355,12 @@
 	)
 	(hierarchical_label "SPI_B_MISO"
 		(shape output)
-		(at 194.31 60.96 180)
+		(at 242.57 59.69 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "0eda4789-87a2-4eab-9a96-499ed14d3e56")
 	)
@@ -2312,12 +2399,12 @@
 	)
 	(hierarchical_label "SX1262_RST_N"
 		(shape input)
-		(at 194.31 71.12 180)
+		(at 242.57 57.15 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "40ae93c4-e4f6-4df7-84c9-3618b41c711c")
 	)
@@ -2345,23 +2432,23 @@
 	)
 	(hierarchical_label "SX1262_CS_N"
 		(shape input)
-		(at 194.31 63.5 180)
+		(at 242.57 67.31 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "7360eb56-28db-41ff-8635-4842c8a23c13")
 	)
 	(hierarchical_label "SX1262_BUSY"
 		(shape output)
-		(at 194.31 66.04 180)
+		(at 242.57 54.61 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "76db55c4-a967-498a-aed4-cc242820ec03")
 	)
@@ -2389,23 +2476,23 @@
 	)
 	(hierarchical_label "SX1262_DIO1"
 		(shape output)
-		(at 194.31 68.58 180)
+		(at 242.57 52.07 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "a50cf223-dbf3-467b-b8e4-8f03c83e1f80")
 	)
 	(hierarchical_label "SPI_B_MOSI"
 		(shape input)
-		(at 194.31 58.42 180)
+		(at 242.57 62.23 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "b8407275-b1e5-43b3-b7b0-64fdeec5993d")
 	)
@@ -4181,142 +4268,6 @@
 		)
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:SX1262_MODULE_PLACEHOLDER")
-		(at 217.17 63.5 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim yes)
-		(in_bom yes)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "cbea0857-27c5-42a7-849e-d0fdaa7a06bf")
-		(property "Reference" "U8"
-			(at 252.73 54.864 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SX1262_MODULE_PLACEHOLDER"
-			(at 252.73 57.404 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Functional placeholder for AQROOT built-in certified SX1262 LoRa/sub-GHz module"
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "E22-900M22S"
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "Certified SX1262-based 915 MHz SMD module with on-board RF front-end and IPEX/u.FL port - part LOCKED per '12 - RF and Antenna Plan'. Footprint BLOCKED: needs the official Ebyte E22-900M22S mechanical drawing / recommended land pattern. The module owns its matching network; NO 915 MHz matching network or U.FL test connector belongs on the main PCB."
-			(at 217.17 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "8"
-			(uuid "566d90d3-8c61-4d0e-bb24-257ba19e9712")
-		)
-		(pin "2"
-			(uuid "a09dd4b2-d746-4fe2-9bfd-160f2e793f27")
-		)
-		(pin "6"
-			(uuid "a831cac6-9dc4-447c-aedf-e42524f031f9")
-		)
-		(pin "7"
-			(uuid "f06c11d4-8d38-4aac-9e9d-937dc1d06ea1")
-		)
-		(pin "9"
-			(uuid "e3ba617c-b7a9-45ce-a47f-9733d0b5b877")
-		)
-		(pin "5"
-			(uuid "a30f9761-af98-447f-84a9-cdac37291281")
-		)
-		(pin "10"
-			(uuid "970b3f8e-6c4c-499f-90e1-2569fb87f30b")
-		)
-		(pin "3"
-			(uuid "bf322505-8dce-47ff-8df3-2b8a31ef0eff")
-		)
-		(pin "1"
-			(uuid "c6418f0b-d291-4340-af6d-7da3b4460b53")
-		)
-		(pin "4"
-			(uuid "ef8d9f85-354e-4f2a-b618-1f66656d6dc1")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
-					(reference "U8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 142.24 152.4 0)
 		(unit 1)
@@ -4761,5 +4712,1316 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "AQROOT_Beta:E22-900M22S")
+		(at 217.17 63.5 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "79cb3bbf-7956-40bc-840d-21667d7be8e2")
+		(property "Reference" "U8"
+			(at 217.17 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "E22-900M22S"
+			(at 217.17 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "AQROOT_Beta:Ebyte_E22-900M22S"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ebyte.com/product/435.html"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Ebyte E22-900M22S SX1262 850-930MHz LoRa module, 22-pad castellated SMD"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "E22-900M22S"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C411293"
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "20.0 x 14.0 x 3.0 mm castellated module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. DIO2 (8) strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) driven from SX1262_RXEN on the reclaimed U3.19 expander port with a 100k pulldown for a defined CLOSE state. Antenna: module IPEX/u.FL with Taoglas FXP890.07.0100C; pin 21 ANT stamp hole present but NOT routed - RF DO NOT ROUTE until final RF review. Procurement: Beta units must ship with the IPEX connector populated."
+			(at 217.17 63.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "aed3e39f-c7b4-40e7-8b3d-0f2183e21061")
+		)
+		(pin "2"
+			(uuid "12c72ec5-6351-420b-9efe-c86a3f5b2f9b")
+		)
+		(pin "3"
+			(uuid "d1215f9b-4bc0-4031-a687-22c30b2af137")
+		)
+		(pin "4"
+			(uuid "d573fee9-48fb-4031-8605-0a5c6b9e6b75")
+		)
+		(pin "5"
+			(uuid "98e00366-966e-4f8c-9742-2007ce6e5389")
+		)
+		(pin "6"
+			(uuid "aaf5b9ea-ba1e-4473-ab16-c079ad3f6687")
+		)
+		(pin "7"
+			(uuid "5fb953a6-1bc0-4a2a-9805-94157f54f377")
+		)
+		(pin "8"
+			(uuid "7e9d44f2-a883-4c40-bf22-be971a49f6f8")
+		)
+		(pin "9"
+			(uuid "ae59a143-ade9-46c7-9d15-750fd4790c05")
+		)
+		(pin "10"
+			(uuid "bee9a63e-1e18-432f-9ddb-bb210f851eb6")
+		)
+		(pin "11"
+			(uuid "27fbf902-61eb-4792-94b1-2615aadcdbf4")
+		)
+		(pin "12"
+			(uuid "c008d5fa-02f4-4423-bc20-893a2ed332a4")
+		)
+		(pin "13"
+			(uuid "38b1d021-22a9-479c-b513-c3647c1af367")
+		)
+		(pin "14"
+			(uuid "8038813b-4059-4cd0-8e30-3fb158a245b1")
+		)
+		(pin "15"
+			(uuid "3162663d-5a47-4957-8524-151606f66aa2")
+		)
+		(pin "16"
+			(uuid "ad1e396e-a82d-4d7b-98a8-95a202c71a1b")
+		)
+		(pin "17"
+			(uuid "fd019552-ae29-4519-b9eb-4bac42cbda3c")
+		)
+		(pin "18"
+			(uuid "34cc2edf-1c3b-4c82-87b5-a31b02f2a10e")
+		)
+		(pin "19"
+			(uuid "2a68c7e5-63eb-4760-b3a1-adf9eab7db9c")
+		)
+		(pin "20"
+			(uuid "7e2f762e-02b1-4777-bdf7-effe39eec732")
+		)
+		(pin "21"
+			(uuid "1216b147-2907-444d-9d35-3e5dfe1ec139")
+		)
+		(pin "22"
+			(uuid "f4b684a9-b9f9-402c-a751-414c38c2c29e")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "U8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 49.53) (xy 190.5 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "25e39633-8272-417a-af47-d8e0892df814")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 190.5 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4691e42a-136e-4ed8-8e68-305d5368e08d")
+		(property "Reference" "#PWR201"
+			(at 190.5 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 190.5 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 190.5 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dc6cf695-27f7-40f5-ba50-c988aeaa31d7")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 194.31 52.07 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3dc40fc1-cf76-4a53-a5d3-da8a5cbb3546")
+		(property "Reference" "#PWR202"
+			(at 194.31 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 194.31 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 194.31 52.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 52.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 194.31 52.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7a644903-9264-4a0b-b23c-872cb5687a0a")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 54.61) (xy 190.5 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7b91d4d-2954-4d7e-bbca-ab053e84eb93")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 190.5 54.61 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7cf5c569-ba14-46b8-95b6-e72446fd4b29")
+		(property "Reference" "#PWR203"
+			(at 190.5 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 190.5 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 54.61 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 54.61 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 190.5 54.61 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "506a97de-52ad-4663-8bba-69069481c7b9")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR203")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 194.31 57.15 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "59eee169-1701-4914-8650-6c758f4129d8")
+		(property "Reference" "#PWR204"
+			(at 194.31 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 194.31 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 194.31 57.15 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 57.15 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 194.31 57.15 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8c0b6db7-ddea-4f88-a511-2af2b433242b")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR204")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 59.69) (xy 190.5 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "07fe4b3e-99f5-4d16-8cd4-70cd0ffd4364")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 190.5 59.69 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5dc059b9-98b0-4f82-84f2-165f2785ce2d")
+		(property "Reference" "#PWR205"
+			(at 190.5 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 190.5 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 59.69 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 59.69 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 190.5 59.69 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "56332677-ff0f-46c9-99bf-1a028da1417a")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR205")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 62.23) (xy 191.77 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ea5f3b7-0c08-47a1-9464-68a36a65e9a2")
+	)
+	(hierarchical_label "SX1262_RXEN"
+		(shape input)
+		(at 191.77 62.23 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "721e8fbf-50eb-4de1-bac8-4b7e4b0292e5")
+	)
+	(wire
+		(pts
+			(xy 199.39 64.77) (xy 191.77 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4528ccca-063f-4c94-a470-25a804de5e8e")
+	)
+	(label "DIO2_TXEN"
+		(at 191.77 64.77 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "49322c65-46b4-4f19-816b-9e5f055c34e6")
+	)
+	(wire
+		(pts
+			(xy 199.39 67.31) (xy 191.77 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e33d5ca-78c2-4223-b6d6-d82f17353167")
+	)
+	(label "DIO2_TXEN"
+		(at 191.77 67.31 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4b2bfdcc-37ff-41ab-a360-c5b986e6b86d")
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 194.31 69.85 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b6e7cb5f-d75e-43a3-b8ca-e67a4b0ccf66")
+		(property "Reference" "#PWR206"
+			(at 194.31 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 194.31 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 194.31 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 194.31 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e7ab0ebb-c9ed-4032-a300-224606625f68")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR206")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 194.31 72.39 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e44274b1-ba1b-4c44-a5e5-b53bf579d2b0")
+		(property "Reference" "#PWR207"
+			(at 194.31 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 194.31 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 194.31 72.39 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 194.31 72.39 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 194.31 72.39 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8e1841fa-7366-452f-a248-05ff92ad5179")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR207")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 74.93) (xy 190.5 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd45e459-d00f-4705-a278-0d2f5d52c5c0")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 190.5 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d989b87d-e5a1-475b-9475-39cc739cd56a")
+		(property "Reference" "#PWR208"
+			(at 190.5 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 190.5 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 190.5 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6c856a0c-43a2-4f7e-9539-7dcf44a26ead")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 234.95 49.53) (xy 240.03 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36d93f62-7bc3-4495-8fc6-4f036fe1a436")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 240.03 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d1bede6f-ecda-4c80-92b8-0c85557a5943")
+		(property "Reference" "#PWR209"
+			(at 240.03 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 240.03 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 240.03 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 240.03 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "553d74c8-7b3a-4c69-b0fa-d92823bfec71")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR209")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 234.95 52.07) (xy 242.57 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "514e92ac-8023-4d30-882f-2594f0ac519f")
+	)
+	(wire
+		(pts
+			(xy 234.95 54.61) (xy 242.57 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0ce4cbb3-eb7a-4223-a5c7-1209e80be63b")
+	)
+	(wire
+		(pts
+			(xy 234.95 57.15) (xy 242.57 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fd9b82f3-65a4-4c86-8488-832eca969b98")
+	)
+	(wire
+		(pts
+			(xy 234.95 59.69) (xy 242.57 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4fda6a1-db90-4309-9ad5-b391b753bafc")
+	)
+	(wire
+		(pts
+			(xy 234.95 62.23) (xy 242.57 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "59b25ecc-a502-47d8-9924-aa594254793f")
+	)
+	(wire
+		(pts
+			(xy 234.95 64.77) (xy 242.57 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a03098b0-31b3-4e1c-a8d0-a7469704c31c")
+	)
+	(wire
+		(pts
+			(xy 234.95 67.31) (xy 242.57 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3e1c2c60-b417-4888-92cc-b9c561b15341")
+	)
+	(wire
+		(pts
+			(xy 234.95 69.85) (xy 240.03 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15eb4ec4-a06f-47ee-9e96-706c4b3faa44")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 240.03 69.85 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2d1d1d63-e9dd-4ba1-83a0-a70f1a4f9043")
+		(property "Reference" "#PWR210"
+			(at 240.03 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 240.03 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 240.03 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 240.03 69.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ba492892-2079-4c6f-a812-6930104235d2")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR210")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 234.95 72.39) (xy 242.57 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea071cc1-88f2-4252-9aea-e39acd6f5f1a")
+	)
+	(label "RF_ANT_TBD"
+		(at 242.57 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9ac49ba7-afb0-4d6f-8cea-bf9276ac3089")
+	)
+	(wire
+		(pts
+			(xy 234.95 74.93) (xy 240.03 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb3ef92d-3c73-4691-a394-3d57369f7b1a")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 240.03 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6232e220-7130-43ce-802e-2690ae02be44")
+		(property "Reference" "#PWR211"
+			(at 240.03 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 240.03 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 240.03 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 240.03 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a1a53243-2572-46be-9c68-fa11f4c51d10")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR211")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 180.34 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1c8df545-d45a-409d-86c1-055d9ed6bd5f")
+		(property "Reference" "R74"
+			(at 180.34 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 180.34 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 180.34 71.12 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 71.12 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "100k"
+			(at 180.34 71.12 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 180.34 71.12 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SX1262_RXEN pulldown. Holds the E22 RF switch in the CLOSE state (TXEN=0, RXEN=0) while the TCA9535 expander ports are high-Z at power-up/reset. Ebyte specifies no pull value; 0,0 = CLOSE is a defined state in the module truth table."
+			(at 180.34 71.12 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3b1080b1-b9f4-41bb-a715-8e4b4f4e263f")
+		)
+		(pin "2"
+			(uuid "4d82a81c-7f54-4967-83ca-f18c2d7d5de0")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "R74")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 180.34 67.31) (xy 180.34 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "988f78ed-6be5-491d-92cf-741ebeedb22b")
+	)
+	(label "SX1262_RXEN"
+		(at 180.34 64.77 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "47d4128f-2178-4384-ae86-d08e68ac97bc")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 180.34 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8d5692da-bd5e-40bc-a0b9-684cc4ea825a")
+		(property "Reference" "#PWR212"
+			(at 180.34 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 180.34 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 180.34 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 180.34 74.93 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "429503a0-601b-4e5a-afb0-4b3177fcae34")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
+					(reference "#PWR212")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 199.39 52.07) (xy 194.31 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c2d8896-74d1-4e6b-bca9-46d806a6698b")
+	)
+	(wire
+		(pts
+			(xy 199.39 57.15) (xy 194.31 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f87426c1-0ca2-4da3-ae10-a68e2f887118")
+	)
+	(wire
+		(pts
+			(xy 199.39 69.85) (xy 194.31 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "59cc98e3-cb54-4772-aab8-f0b20bed0e44")
+	)
+	(wire
+		(pts
+			(xy 199.39 72.39) (xy 194.31 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc043ea1-e0fb-4b86-9da7-6e74cb70002c")
 	)
 )

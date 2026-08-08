@@ -605,16 +605,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 266.7) (xy 135.89 266.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7d42e2c4-983e-4137-a031-db532d042f43")
-	)
-	(wire
-		(pts
 			(xy 388.62 64.77) (xy 391.16 64.77)
 		)
 		(stroke
@@ -1293,7 +1283,7 @@
 		)
 		(uuid "130a66ed-d9a7-423b-b3e7-8a577447e085")
 	)
-	(label "XGPIO14"
+	(label "SX1262_RXEN"
 		(at 391.16 170.18 0)
 		(effects
 			(font
@@ -1302,16 +1292,6 @@
 			(justify left bottom)
 		)
 		(uuid "1603b8bd-ac79-4543-b651-44b30f1abd31")
-	)
-	(label "XGPIO14"
-		(at 135.89 266.7 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "1c1c5a22-d0cc-43da-874e-95150fa6b318")
 	)
 	(label "XGPIO1"
 		(at 391.16 135.89 0)
@@ -2627,6 +2607,16 @@
 				(justify left)
 			)
 		)
+		(pin "SX1262_RXEN" input
+			(at 388.62 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "63376321-bba1-4486-be1c-1c99f68f4ce0")
+		)
 		(instances
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405"
@@ -3059,7 +3049,7 @@
 				(justify right)
 			)
 		)
-		(pin "XGPIO14" bidirectional
+		(pin "SX1262_RXEN" bidirectional
 			(at 388.62 170.18 0)
 			(uuid "90695c23-ca33-4490-840f-a616047e0a54")
 			(effects
@@ -3603,16 +3593,6 @@
 				(justify right)
 			)
 		)
-		(pin "XGPIO14" bidirectional
-			(at 133.35 266.7 0)
-			(uuid "6a59ca21-95d0-41b9-a1b4-d7c32b0d4245")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(instances
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405"
@@ -3973,4 +3953,24 @@
 		)
 	)
 	(embedded_fonts no)
+	(wire
+		(pts
+			(xy 388.62 72.39) (xy 391.16 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29463e36-f786-472d-b2d5-509d05d2fd19")
+	)
+	(label "SX1262_RXEN"
+		(at 391.16 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d93e31d-5f86-465a-a0be-4d2564ce0607")
+	)
 )

@@ -2517,7 +2517,7 @@
 		)
 		(uuid "0596e75d-8431-4fdf-aa0b-568659857d08")
 	)
-	(hierarchical_label "XGPIO14"
+	(hierarchical_label "SX1262_RXEN"
 		(shape bidirectional)
 		(at 186.69 92.71 0)
 		(effects
