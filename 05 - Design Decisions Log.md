@@ -3193,3 +3193,79 @@ DATASHEET_REQUIRED_INACTIVE 23 · OUTPUT_UNUSED_NC 1` = **50**.
 
 **Wiring is no longer gated on pin-state uncertainty.** Every one of the 50 contacts now has a
 state traceable to either the CH280QV10-CT panel datasheet or the ILI9341 controller datasheet.
+
+---
+
+## J1 physical capture + TPS61169 backlight COMPLETE (2026-08-08)
+
+Sheet `03_spi_a_display_sd.kicad_sch`. Paper A4 to **A3** to fit the 66 mm-tall 50-pin symbol.
+
+### Backlight components — exact MPNs
+
+| Ref | Part | Key data | Footprint / source |
+|---|---|---|---|
+| U17 | **TI TPS61169DCKR** | SC70-5 (DCK) | `Package_TO_SOT_SMD:SOT-353_SC-70-5`, **VERIFIED_IPC_ALTERNATE** |
+| L3 | **Coilcraft XFL4020-472MEC** | 4.7 µH ±20 %, **Isat 2 A**, Irms 5 A, DCR 0.05 Ω max, 4.0×4.0×2.1 mm, AEC-Q200 | reuses **existing VERIFIED_VENDOR_EXACT** `AQROOT_Beta:Coilcraft_XFL4020`, shared with L1 |
+| D8 | **onsemi NSR0240V2T5G** | SOD-323, 40 V, 250 mA avg | TI section 7.2.2.2 names NSR0240 explicitly |
+| C43 | 4.7 µF **16 V X7R 0805** | CIN | 16 V/0805 over 6.3 V/0603 so effective C survives 3.3 V DC bias |
+| C44 | 1 µF **50 V X7R 0805** | COUT | rating set by **VOVP_SW 36/37.5/39 V**, not the 4.2 V output |
+| R69 | **2.55 Ω 1 % 0603** | RSET | 204 mV / 80 mA; 16.3 mW |
+| R70–R73 | **39 Ω 1 % 0603** x4 | ballast, one per anode | 20 mA, 0.78 V, 15.6 mW each |
+
+**L3 is deliberately oversized** — Isat 2 A against a calculated 181 mA peak, roughly 11x margin.
+Accepted in order to reuse an already-verified land pattern and consolidate on one inductor
+family with L1. A compact 2.5x2.0 mm-class 4.7 µH part remains a valid future substitution,
+subject to vendor verification.
+
+### Verified topology — read back from the netlist, not from intent
+
+    BL_SW       = U17.1 (SW) + L3.2 + D8.2 (anode)
+    LED_BOOST   = D8.1 (cathode) + C44.1 + R70.1 + R71.1 + R72.1 + R73.1
+    LED_A1..A4  = J1.2 / J1.3 / J1.4 / J1.5, each with exactly ONE ballast
+    LED_K       = J1.1 + R69.1 + U17.3 (FB)
+    DISP_BL_CTL = U1.24 + U17.4 (CTRL)        <- GPIO carries no LED current
+
+The four anode branches are independent after their ballasts. Nothing connects to `NFC_5V_PA`,
+`TPS61023` or `BAT_PROTECTED_P`.
+
+**Firmware constraints**, confirmed from TI sections 5.3 and 6.4.1: PWM **5–100 kHz**, duty
+1–100 %, and **CTRL held low longer than 2.5 ms (`tSD`) shuts the driver down**. CTRL thresholds
+are VH 1.2 V min / VL 0.4 V max, so a 3.3 V ESP32-S3 GPIO drives it directly.
+
+### Final 50-pin disposition — every contact accounted for
+
+`BACKLIGHT 5 · MODE_STRAP 4 · ACTIVE_SIGNAL 9 · DATASHEET_REQUIRED_INACTIVE 23 · POWER 3 ·
+GND 4 · OUTPUT_UNUSED_NC 1 · unrouted 1` = **50**
+
+Straps confirmed in the netlist: **6 to GND, 7/8/9 to +3V3 = IM3:IM0 1110**. `/RD` (35) to
+**+3V3**. DB17:0 (15–32) to **GND**. TE (39) **open**. 40/41/42 to +3V3; 43/48/49/50 to GND.
+Signals: 10 `DISP_RST_N`, 33 `SPI_A_MISO`, 34 `SPI_A_MOSI`, 36 `DISP_DC`, 37 `SPI_A_SCK`,
+38 `DISP_CS_N`, 44 `I2C_SCL_INT`, 45 `I2C_SDA_INT`, 47 `TOUCH_RST_N`.
+
+### FINDING — the touch interrupt has no net anywhere in the design
+
+**Pin 46 `CTP_IRQ` is an explicit no-connect, and this needs a decision.** The old 13-pin
+placeholder's `CTP_INT_N` pin had **no wire and no hierarchical label** — it carried a bare
+no-connect. A project-wide search found **no touch-IRQ net at all**, only `NFC_IRQ` and
+`ROOTPROBE_IRQ_READY_N`. Wiring it would require assigning a new MCU pin, which is explicitly
+forbidden, so existing behaviour was preserved rather than invented over.
+
+**Consequence: capacitive touch is polling-only** — no interrupt-driven wake on touch. That is a
+real functional limitation that the 13-pin placeholder was hiding. Resolving it needs a free GPIO
+on U1 or the expander, i.e. an MCU pin-map decision.
+
+### Validation
+
+Netlist **148 to 155 nets**, the seven additions being `BL_SW`, `LED_BOOST`, `LED_K` and
+`LED_A1..A4`. **Zero unrelated net-membership changes.** ERC **4 groups, all excluded, 0 real
+items**. SPI bus intact and unshorted — SCK, MOSI and MISO each carry exactly `J1 + J2 + U1` —
+and SCL/SDA remain distinct. No placeholder remains anywhere in the project. Footprint coverage
+**156 of 176, 20 missing**; J1 has closed.
+
+### Capture note worth keeping
+
+The SW node was first built as pin-wire-wire-pin with a junction. KiCad refused to bind it and
+ERC reported both wires dangling, even though every coordinate verified correct against the
+cached symbol definitions in the sheet. Rebuilding it as three label-coupled stubs (`BL_SW`) —
+the pattern already proven elsewhere on this sheet — binds correctly. **Future generated capture
+in this project should prefer label coupling over multi-wire junctions.**
