@@ -4581,3 +4581,57 @@ with no card**, and **no Beta GPIO allocated** - DO NOT ROUTE until a pin-map re
 
 J2 remains **DOCUMENT_OBTAINED_BUILD_PENDING**. Nothing external is needed; the remaining work is a
 focused measurement pass on a sheet already in the repository.
+
+---
+
+## J2 — datum #1 attempted at 1100 dpi; read conflicts with arithmetic, build NOT started (2026-08-08)
+
+Nothing modified. 186 components, 171 footprinted, 15 missing, ERC 0 real, 24 exclusions, netlist
+unchanged, tree clean.
+
+### The arithmetic case for 4.45 = first contact CENTRE
+
+The dimension chain closes only one way. There are 8 contacts at 1.1 pitch:
+
+- centre-to-centre across the field = 7 x 1.1 = **7.7**, which is exactly the drawn value
+- edge-to-edge would be 8 x 0.8 + 7 x 0.3 = **8.5**, which is not drawn anywhere
+
+So **7.7 is unambiguously a centre-to-centre span**, first contact centre to eighth. For the chain
+`datum -> 4.45 -> 7.7` to be dimensionally coherent, 4.45 must therefore also terminate on the
+**first contact centre**, giving centre8 at 12.15 and leaving 2.15 to the right end of the 14.3.
+
+### Why that was still not accepted
+
+The brief is explicit: *do not infer from arithmetic alone; use the arrow/extension-line endpoint
+itself*. At 1100 dpi the region was legible, but the reading is **not clean enough to confirm the
+arithmetic**: the 4.45 right-hand extension line and the left extension line of the adjacent
+**0.8** land-width dimension fall within roughly one line-width of each other at this raster
+resolution. That is precisely the distinction that separates "4.45 to centre" from "4.45 to left
+edge" - a 0.4 mm shift on every contact - and the archived page (1188 x 918) does not carry enough
+pixels in that region to separate them with confidence against the drawing's own ±0.05 tolerance.
+
+**The arithmetic says centre. The pixels cannot yet confirm it. Those are not the same thing**, and
+on a Class B connector the difference is 0.4 mm on all eight contacts plus a knock-on to the shell
+lands.
+
+### Status
+
+**Datum #1: strongly indicated as first-contact-centre by dimensional closure, not yet visually
+confirmed. Datum #2 (14.3 outer vs centre) not reached.** No pad table, symbol, footprint or
+integration was produced. J2 remains **DOCUMENT_OBTAINED_BUILD_PENDING**.
+
+### What would actually close it
+
+The limitation is now **raster resolution of the archived page**, not interpretation. Options, in
+order of directness:
+
+1. A **higher-resolution copy of sheet 2** - the AllDataSheet viewer served 1188 x 918; the source
+   PDF at native resolution would separate those extension lines trivially.
+2. **Molex's own ECAD/STEP model** for 502570-0893, where land coordinates are numeric rather than
+   drawn, removing the reading problem entirely.
+3. Accepting the **arithmetic reading** (4.45 to centre) as a documented engineering judgement,
+   which is defensible - the chain closes exactly and no alternative reading closes it - but is a
+   decision to record explicitly, not something to adopt silently.
+
+Option 3 is available immediately if the risk is acceptable; it would be classified
+VERIFIED_VENDOR_EXACT_WITH_DOCUMENTED_DATUM_ASSUMPTION rather than plain vendor-exact.
