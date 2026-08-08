@@ -4200,3 +4200,55 @@ pad are power inputs. Footprint field left **empty** rather than pointing at an 
 pattern. `kicad-cli sym export svg` plots it. The locked supply mapping, the I2C_EN strap, the
 BSS chip-select identification and all five ST decoupling pairs are recorded in the symbol Package
 note for the integration session.
+
+---
+
+## U9 — footprint and VDD_DR both still blocked on transport (2026-08-08)
+
+Nothing modified. 176 components, 160 footprinted, ERC 0 real, 24 exclusions, netlist unchanged,
+tree clean. The committed `ST25R3916-AQET` symbol is untouched and its Footprint field remains
+deliberately blank.
+
+### Routes attempted this session, and how each failed
+
+| Target | Route | Result |
+|---|---|---|
+| VDD_DR | `st.com` UM2615, two URL forms | **fail** — st.com transport, now 6 consecutive failures across 4 sessions |
+| VDD_DR | ST schematic pack via `fcc.report` (ST's own filed drawing) | **403** |
+| VDD_DR | same via `fccid.io`, direct and through WebFetch | **403** both |
+| Footprint | ST-linked Ultra Librarian / SamacSys | **not reached** — budget went to the VDD_DR routes |
+
+The FCC route was worth trying and remains the best non-st.com lead: the applicant on FCC ID
+`YCPNFC06A1` is **STMicroelectronics SAS**, so the filed schematic is ST's own drawing rather than
+a third-party redraw — it satisfies the "no random redraw" constraint. Both mirrors that host it
+simply refuse automated fetches.
+
+### Position unchanged, and deliberately so
+
+- **VDD_DR normal-mode source: still UNRESOLVED.** ST states only the bypass case
+  (*VDD_RF and VDD_DR externally tied to VDD_TX*, above 350 mA rms), which Beta excludes. No ST
+  source obtained states what feeds VDD_DR in normal mode. Not inferred from pin naming.
+- **Footprint: still BLOCKED.** The exact-part EasyEDA entry `C5267441` supplies complete geometry
+  (32 perimeter pads + EP, 0.50 pitch, pads 0.28 x 0.665, extremes +/-2.420, EP 3.5 x 3.5) but
+  declares its package **VFQFPN-32**, contradicting the locked **UFQFPN-32 5 x 5 x 0.55**. It stays
+  **secondary evidence only** and was not promoted to verified.
+- **AQET / AQWT distinction preserved.** No VFQFPN geometry was adopted, and nothing was
+  substituted on the grounds of looking similar.
+
+### Cheapest remaining routes, in the order I would try them
+
+1. **ST-linked Ultra Librarian / SamacSys for `ST25R3916-AQET`** — the one primary-source footprint
+   route not yet attempted. Should be first next session.
+2. **ST-hosted UFQFPN32 5x5x0.55 package drawing from any other ST part** using that package, per
+   the standing fallback — establishes the family land pattern, then cross-check `C5267441`.
+3. **X-NUCLEO-NFC06A1 Gerbers** rather than the schematic; tracing copper from the VDD_DR pad on
+   ST's own manufactured reference board is explicitly sanctioned and sidesteps the PDF mirrors.
+4. A human fetch of either PDF — both are public and open fine in a browser; only automated
+   retrieval is refused.
+
+### Standing judgement
+
+The two blockers are independent. The **footprint** needs one ST package drawing and the geometry
+is otherwise already in hand. **VDD_DR** needs one connection off ST's reference design, and is the
+only thing preventing the symbol from being wired — pin 14 is typed correctly either way, so the
+symbol itself needs no rework whichever answer arrives.
