@@ -5,6 +5,306 @@
 	(uuid "e5ed7088-6df5-494c-ba15-bb4f5334a2b1")
 	(paper "A3")
 	(lib_symbols
+		(symbol "AQROOT_Beta:Molex_5025700893"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at -10.16 16.51 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Molex_5025700893"
+				(at -10.16 -16.51 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "AQROOT_Beta:Molex_5025700893"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Molex 5025700893 microSD card connector, push-push, with mechanical card detect"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "Molex"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "5025700893"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C429846"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Package" "Molex 5025700893 microSD push-push connector, 1.10 mm pitch, normal-mount SMT, front entry, shielded, with independent mechanical card-detect switch. Logical pins 1-11 per exact-part CAD C429846. Pin 9 SHIELD/EH is ONE logical pin carried on FOUR physical shell lands in the footprint - deliberate, do not renumber. Pin 10 DET-SW is the switched detect signal; pin 11 is the DETECT LEVER which Molex SD-502570-001 labels Vss:GROUND, so it is a second ground terminal distinct from pin 6. MECHANICAL CARD DETECT - ACTIVE LOW ON CARD INSERTION - NO BETA GPIO ALLOCATED - DO NOT ROUTE UNTIL PIN-MAP REVISION. CD/DAT3 (pin 2) is the SD data line used as SD_CS_N in SPI mode and is NOT the mechanical switch. DAT1 and DAT2 are unused in 1-bit SPI mode."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Molex_5025700893_0_1"
+				(rectangle
+					(start -10.16 15.24)
+					(end 10.16 -15.24)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "Molex_5025700893_1_1"
+				(pin bidirectional line
+					(at -12.7 12.7 0)
+					(length 2.54)
+					(name "DAT2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -12.7 10.16 0)
+					(length 2.54)
+					(name "CD/DAT3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 7.62 0)
+					(length 2.54)
+					(name "CMD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -12.7 5.08 0)
+					(length 2.54)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 2.54 0)
+					(length 2.54)
+					(name "CLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -12.7 0 0)
+					(length 2.54)
+					(name "VSS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -12.7 -2.54 0)
+					(length 2.54)
+					(name "DAT0"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -12.7 -5.08 0)
+					(length 2.54)
+					(name "DAT1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -7.62 0)
+					(length 2.54)
+					(name "SHIELD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -10.16 0)
+					(length 2.54)
+					(name "DET-SW"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -12.7 0)
+					(length 2.54)
+					(name "DETECT_LEVER"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "AQROOT_Beta:CH280QV10_CT_50P"
 			(pin_names
 				(offset 0.508)
@@ -1525,372 +1825,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector:Micro_SD_Card"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "J"
-				(at -16.51 15.24 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Micro_SD_Card"
-				(at 16.51 15.24 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify right)
-				)
-			)
-			(property "Footprint" ""
-				(at 29.21 7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.we-online.com/components/products/datasheet/693072010801.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Micro SD Card Socket"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "connector SD microsd"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "microSD*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "Micro_SD_Card_0_1"
-				(polyline
-					(pts
-						(xy -8.89 -11.43) (xy -8.89 8.89) (xy -1.27 8.89) (xy 2.54 12.7) (xy 3.81 12.7) (xy 3.81 11.43)
-						(xy 6.35 11.43) (xy 7.62 12.7) (xy 20.32 12.7) (xy 20.32 -11.43) (xy -8.89 -11.43)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(rectangle
-					(start -7.62 8.255)
-					(end -5.08 6.985)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 5.715)
-					(end -5.08 4.445)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 3.175)
-					(end -5.08 1.905)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 0.635)
-					(end -5.08 -0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 -1.905)
-					(end -5.08 -3.175)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 -4.445)
-					(end -5.08 -5.715)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 -6.985)
-					(end -5.08 -8.255)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -7.62 -9.525)
-					(end -5.08 -10.795)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 16.51 12.7) (xy 16.51 13.97) (xy -19.05 13.97) (xy -19.05 -16.51) (xy 16.51 -16.51) (xy 16.51 -11.43)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Micro_SD_Card_1_1"
-				(pin bidirectional line
-					(at -22.86 7.62 0)
-					(length 3.81)
-					(name "DAT2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin bidirectional line
-					(at -22.86 5.08 0)
-					(length 3.81)
-					(name "DAT3/CD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -22.86 2.54 0)
-					(length 3.81)
-					(name "CMD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -22.86 0 0)
-					(length 3.81)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -22.86 -2.54 0)
-					(length 3.81)
-					(name "CLK"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -22.86 -5.08 0)
-					(length 3.81)
-					(name "VSS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin bidirectional line
-					(at -22.86 -7.62 0)
-					(length 3.81)
-					(name "DAT0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin bidirectional line
-					(at -22.86 -10.16 0)
-					(length 3.81)
-					(name "DAT1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 20.32 -15.24 180)
-					(length 3.81)
-					(name "SHIELD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "SH"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -2461,54 +2395,6 @@
 		)
 		(uuid "c4609642-9829-45ef-8faa-3e034078a9b9")
 	)
-	(no_connect
-		(at 212.09 71.12)
-		(uuid "9e5efe2e-8335-4e35-a5f9-c8055e4937e1")
-	)
-	(no_connect
-		(at 212.09 53.34)
-		(uuid "a1bcf975-e505-472b-b2b1-0d6522ef209f")
-	)
-	(wire
-		(pts
-			(xy 210.82 60.96) (xy 212.09 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1b765e4b-2e3a-4090-8fa6-0c89079ee666")
-	)
-	(wire
-		(pts
-			(xy 210.82 55.88) (xy 212.09 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "33795c47-5f6e-464f-8bff-bac58b43b05c")
-	)
-	(wire
-		(pts
-			(xy 255.27 76.2) (xy 256.54 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3554590e-daad-4d73-9047-48cab8ac9660")
-	)
-	(wire
-		(pts
-			(xy 210.82 66.04) (xy 212.09 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "659fbd54-f724-4f57-a1ec-9d81bdd1f043")
-	)
 	(wire
 		(pts
 			(xy 77.47 64.77) (xy 77.47 66.04)
@@ -2561,16 +2447,6 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 58.42) (xy 212.09 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c1fbbf2-2c0d-4e35-89d4-a7d988041aae")
-	)
-	(wire
-		(pts
 			(xy 242.57 96.52) (xy 242.57 97.79)
 		)
 		(stroke
@@ -2578,16 +2454,6 @@
 			(type default)
 		)
 		(uuid "b4919ea9-7a30-452a-9ff9-b84fda3fe7ac")
-	)
-	(wire
-		(pts
-			(xy 210.82 68.58) (xy 212.09 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd80aaf2-9167-4184-8275-cf1bb6dac966")
 	)
 	(wire
 		(pts
@@ -2628,16 +2494,6 @@
 			(type default)
 		)
 		(uuid "f6afd061-0f6b-4dbf-87d4-4e0e0b2aa3f9")
-	)
-	(wire
-		(pts
-			(xy 210.82 63.5) (xy 212.09 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f805762f-5435-4c48-a657-94387742fd99")
 	)
 	(label "DISP_CS_N"
 		(at 195.58 95.25 270)
@@ -2738,7 +2594,7 @@
 	)
 	(hierarchical_label "SPI_A_MOSI"
 		(shape input)
-		(at 210.82 58.42 180)
+		(at 214.63 53.34 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2749,7 +2605,7 @@
 	)
 	(hierarchical_label "SD_CS_N"
 		(shape input)
-		(at 210.82 55.88 180)
+		(at 214.63 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2782,7 +2638,7 @@
 	)
 	(hierarchical_label "SPI_A_SCK"
 		(shape input)
-		(at 210.82 63.5 180)
+		(at 214.63 58.42 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2804,7 +2660,7 @@
 	)
 	(hierarchical_label "SPI_A_MISO"
 		(shape output)
-		(at 210.82 68.58 180)
+		(at 214.63 63.5 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2970,151 +2826,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Micro_SD_Card")
-		(at 234.95 60.96 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "15c16aec-5305-4418-a972-7799dedb9de9")
-		(property "Reference" "J2"
-			(at 235.585 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Micro_SD_Card"
-			(at 235.585 44.45 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 264.16 53.34 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/693072010801.pdf"
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Signal architecture unchanged: 1-bit SPI mode, DAT1/DAT2 intentionally unconnected, shield to GND. VERIFY the Molex contact numbering against Connector:Micro_SD_Card pin numbering, and confirm card-entry clearance and push-push travel against the Field Slate enclosure before placement."
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "SMT push-push microSD socket, 8 contacts + shield - part LOCKED. Footprint BLOCKED: needs the official Molex recommended land pattern."
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "Molex"
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5025700893"
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Micro SD Card Socket"
-			(at 234.95 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "SH"
-			(uuid "f50d6728-8e9e-4196-9713-607f649289d7")
-		)
-		(pin "2"
-			(uuid "30d9d6ad-fc4f-4ac9-8dee-425daee45fdb")
-		)
-		(pin "4"
-			(uuid "56be7b6c-1912-471c-969e-5beb73207ad7")
-		)
-		(pin "7"
-			(uuid "75b346ed-09da-4071-8874-d60d55307329")
-		)
-		(pin "8"
-			(uuid "846ec900-891d-467f-88d8-392bdda8e21b")
-		)
-		(pin "6"
-			(uuid "74b3ddfd-a5c6-4d72-b841-daa9ab8aabc8")
-		)
-		(pin "3"
-			(uuid "cae90fca-92d0-4413-8e51-59b72b61a5df")
-		)
-		(pin "1"
-			(uuid "2d79f377-1336-472f-9aa3-bfe882fecb0e")
-		)
-		(pin "5"
-			(uuid "65ea5886-8b05-4d1c-968d-7acf47254d79")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
-					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 77.47 66.04 0)
 		(unit 1)
@@ -3269,85 +2980,6 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
 					(reference "C13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 210.82 66.04 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4f49445b-e89f-40c4-9f9e-f420d4ff493f")
-		(property "Reference" "#PWR085"
-			(at 204.47 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 207.01 66.0399 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 210.82 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 210.82 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 210.82 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2ff4e422-e66a-450f-a12a-3d1daf01c7d8")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
-					(reference "#PWR085")
 					(unit 1)
 				)
 			)
@@ -3748,85 +3380,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 256.54 76.2 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9c50eeda-83e7-4354-b3fa-8353b3489fa8")
-		(property "Reference" "#PWR086"
-			(at 262.89 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 260.35 76.1999 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 256.54 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 256.54 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb0e2364-4564-418c-be7b-f169b1e8c1c4")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
-					(reference "#PWR086")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 195.58 90.17 0)
 		(unit 1)
@@ -3903,85 +3456,6 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
 					(reference "R26")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 210.82 60.96 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c0aa6c61-e123-4803-9169-96d97b5526b9")
-		(property "Reference" "#PWR084"
-			(at 214.63 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 207.01 60.9599 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 210.82 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 210.82 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 210.82 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fc3bdb41-51b6-458e-82cd-d084e377c1d9")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
-					(reference "#PWR084")
 					(unit 1)
 				)
 			)
@@ -8894,5 +8368,504 @@
 			(justify right bottom)
 		)
 		(uuid "fad55a19-108f-479a-80ab-b4e56ee5b378")
+	)
+	(symbol
+		(lib_id "AQROOT_Beta:Molex_5025700893")
+		(at 234.95 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f6e45c2d-08c8-44e5-9383-78998a05be72")
+		(property "Reference" "J2"
+			(at 234.95 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Molex_5025700893"
+			(at 234.95 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "AQROOT_Beta:Molex_5025700893"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Molex 5025700893 microSD card connector, push-push, with mechanical card detect"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Molex"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "5025700893"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C429846"
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Molex 5025700893 microSD push-push connector with independent mechanical card-detect switch. Pin 9 SHIELD is one logical pin on four physical shell lands. Pin 11 DETECT_LEVER is a second ground terminal per Molex Vss:GROUND. MECHANICAL CARD DETECT - ACTIVE LOW ON CARD INSERTION - NO BETA GPIO ALLOCATED - DO NOT ROUTE UNTIL PIN-MAP REVISION. CD/DAT3 (pin 2) is the SD data line used as SD_CS_N in SPI mode and is NOT the mechanical switch. DAT1/DAT2 unused in 1-bit mode."
+			(at 234.95 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7f25745e-a380-41aa-bab3-76b871c68079")
+		)
+		(pin "2"
+			(uuid "186a3d82-38dd-46eb-919f-ab47a25b4161")
+		)
+		(pin "3"
+			(uuid "fe942251-ca2e-4abb-adc9-63a81f7e2988")
+		)
+		(pin "4"
+			(uuid "20fe4002-8729-467d-b5bf-8468c110cee6")
+		)
+		(pin "5"
+			(uuid "cd2f8141-276e-43c0-846f-0530ff981d0c")
+		)
+		(pin "6"
+			(uuid "6b233052-389d-4f6e-afe1-0d33e3c1590d")
+		)
+		(pin "7"
+			(uuid "709c521c-4e74-40e0-8e03-9d34d6693bdf")
+		)
+		(pin "8"
+			(uuid "57228c0a-d6cc-43e9-89cf-1e57afa3c92d")
+		)
+		(pin "9"
+			(uuid "6fb0137f-6146-405f-b404-34864fa86512")
+		)
+		(pin "10"
+			(uuid "32cfb226-76c6-40f4-8ec1-8e17f43dec10")
+		)
+		(pin "11"
+			(uuid "983dd8e0-8572-4e3e-9894-0d151fdd61ed")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 222.25 48.26)
+		(uuid "88958319-b433-4a94-8a3f-c259af0300e8")
+	)
+	(wire
+		(pts
+			(xy 222.25 50.8) (xy 214.63 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34cf4fbd-768c-4ba2-89bc-23c1df86fe73")
+	)
+	(wire
+		(pts
+			(xy 222.25 53.34) (xy 214.63 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6819280f-912d-4e27-b580-e1f0e471e0b4")
+	)
+	(wire
+		(pts
+			(xy 222.25 55.88) (xy 217.17 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1753310a-9c9b-493c-9df1-3ceea526d67d")
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 217.17 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "82dfcf47-ea2e-410f-93fb-04299596bee4")
+		(property "Reference" "#PWR501"
+			(at 217.17 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 217.17 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 217.17 55.88 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 217.17 55.88 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 217.17 55.88 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5822ed2a-8de3-4e82-b888-384df3a99472")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+					(reference "#PWR501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 222.25 58.42) (xy 214.63 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8480a57-743b-41fa-855d-64029c658bd4")
+	)
+	(wire
+		(pts
+			(xy 222.25 60.96) (xy 217.17 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52c4f09a-4754-45e8-985a-6029514c76a5")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 217.17 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9b92e60a-207b-41d6-a1ee-91a4c802c502")
+		(property "Reference" "#PWR502"
+			(at 217.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 217.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 217.17 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 217.17 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 217.17 60.96 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "145c6cdc-47a5-428f-85ba-b94e15f7173c")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+					(reference "#PWR502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 222.25 63.5) (xy 214.63 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96ec1240-43c5-4743-992e-188e81dad381")
+	)
+	(no_connect
+		(at 222.25 66.04)
+		(uuid "25146f60-e445-4d82-b31a-8ab280abbf11")
+	)
+	(wire
+		(pts
+			(xy 222.25 68.58) (xy 213.36 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "655355e9-49c2-4795-92be-0c90237a640a")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 213.36 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "240cd390-1037-496d-8c12-3212a8e242ac")
+		(property "Reference" "#PWR503"
+			(at 213.36 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 213.36 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 213.36 68.58 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 68.58 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 213.36 68.58 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8e89d3b7-7946-4bac-8466-52dd5b7873ce")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+					(reference "#PWR503")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 222.25 71.12) (xy 214.63 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3b4e1ea-57b5-425c-878f-b1b5b431d7d0")
+	)
+	(label "SD_CARD_DETECT_TBD"
+		(at 214.63 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4ba0d5c0-86af-4111-92e5-283b1be4e596")
+	)
+	(wire
+		(pts
+			(xy 222.25 73.66) (xy 213.36 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a0373056-cafc-40a7-8766-e38004b4f7bc")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 213.36 73.66 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cdc1290c-f868-403c-a9bf-755bc12efe44")
+		(property "Reference" "#PWR504"
+			(at 213.36 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 213.36 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 213.36 73.66 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 213.36 73.66 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol"
+			(at 213.36 73.66 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d78a5487-8d0d-4f62-b6a4-e1ddf0f6110d")
+		)
+		(instances
+			(project "aqroot-beta"
+				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+					(reference "#PWR504")
+					(unit 1)
+				)
+			)
+		)
 	)
 )
