@@ -3601,3 +3601,69 @@ U7/U8 antenna variant control (**IPEX/u.FL must be confirmed for the exact order
 assumed from family marketing, because the locked Taoglas FXP890/FXP450 flex antennas depend on
 it) remains **open and is a procurement-control risk**. U9 remains a logical placeholder; ST's
 EDA assets were not retrieved this pass.
+
+---
+
+## U7 E22-900M22S — vendor manual retrieved, pinout verified, RF switch BLOCKED (2026-08-08)
+
+**Retrieval route solved.** The Ebyte product page exposes its resources only via inline links,
+not a file listing. Working URLs, recorded for reuse:
+
+- user manual: `https://www.ebyte.com/downpdf/435.html` (PDF, 2.0 MB, 15 pp)
+- package file `Pcb_E22-900M22S`: `http://www.ebyte.com/pdf-down/766.html` (**PK/zip magic but
+  malformed — will not open; needs a re-fetch or another route**)
+
+### Pinout VERIFIED — and a variant trap avoided
+
+The manual covers several variants with **different pinouts and the same pin count**. Our part is
+section **3.2 `E22-170/400/900M22S`**. Two neighbours are dangerous look-alikes:
+
+| Manual section | Part | Pins | Trap |
+|---|---|---|---|
+| 3.1 | `E22-400/900**MM**22S` | **20** | double-M; the brief already flags it as a different product |
+| **3.2** | **`E22-170/400/900M22S`** | **22** | **ours** |
+| 3.3 | `E22-170/400/900M30S(33S)` | 22 | same count, but **pin 10 = VCC, not GND**, and VCC is 2.5–5.5 V |
+
+**The 22-pin table supplied in the brief matches section 3.2 exactly** — 1–5 GND, 6 RXEN, 7 TXEN,
+8 DIO2, 9 VCC (**1.8–3.7 V**), 10–12 GND, 13 DIO1, 14 BUSY, 15 NRST, 16 MISO, 17 MOSI, 18 SCK,
+19 NSS, 20 GND, 21 ANT (stamp hole, 50 Ω), 22 GND. Confirmed, not assumed.
+
+### Placeholder mismatch — 10 pins vs 22
+
+`SX1262_MODULE_PLACEHOLDER` has: 1 VCC_3V3, 2 GND, 3 SCK, 4 MOSI, 5 MISO, 6 CS_N, 7 BUSY,
+8 DIO1, 9 RESET_N, 10 RF_ANT.
+
+- **MISSING entirely: RXEN, TXEN, DIO2**
+- **MISSING: 9 of 10 physical GND pads** — the placeholder collapses all grounds into one pin
+- **Numbering is unrelated to the vendor's** — every pad must be renumbered
+- U7 is `on_board no` and **has zero netlist nodes**, so like J1 this is a first-time physical
+  capture, not an expansion. The locked nets exist but terminate on the MCU only:
+  `SX1262_CS_N` (R27.2, U1.10), `SX1262_BUSY` (U1.12), `SX1262_DIO1` (U1.11),
+  `SX1262_RST_N` (R13.1, U2.5), `SPI_B_SCK/MOSI/MISO` (U1.4/5/6).
+
+### RF-switch control — RXEN needs a GPIO that does not exist
+
+Quoting section 3.2 directly:
+
+- **TXEN (7)**: *RF switch **transmit** control, connect to external MCU IO **or DIO2**, active
+  HIGH.* Note ①: *if DIO2 and TXEN are shorted, firmware must enable the DIO2 switch-control
+  function.* → **TXEN can be solved with no MCU pin at all.**
+- **RXEN (6)**: *RF switch **receive** control, **connect to external MCU IO**, active HIGH.*
+  **Ebyte offers no DIO alternative for RXEN.**
+- **DIO3**: not exposed on the M22S; on the M30S/33S table it is *internal, powering the 32 MHz
+  TCXO at 2.2 V*. **It cannot drive RXEN.**
+
+**Conclusion: RF_SWITCH_CONTROL_DECISION_REQUIRED.** RXEN requires a dedicated MCU GPIO;
+AQROOT has no `SX1262_RXEN` net and no allocated pin, and the brief forbids taking one
+automatically. TXEN/DIO2 is resolvable in firmware. **Both pins will be captured physically and
+parked on explicit named nets — U7 must not be described as electrically complete.**
+Still to extract: the manual's 表1 (Table 1) giving required TXEN/RXEN states for TX, RX, sleep
+and reset.
+
+### Antenna
+
+Manual p4: *dual antenna optional (IPEX / stamp hole)*; p5 lists the interface as **IPEX-1 /
+stamp hole**, and pin 21 ANT is the 50 Ω stamp-hole pad. Both appear present on the same MPN.
+AQROOT uses **IPEX + Taoglas FXP890.07.0100C**, so **pin 21 ANT is expected to stay NC** — but
+whether both feeds are simultaneously populated, and whether that loads the RF path, is **not yet
+confirmed** and is an RF-review plus procurement-control item.
