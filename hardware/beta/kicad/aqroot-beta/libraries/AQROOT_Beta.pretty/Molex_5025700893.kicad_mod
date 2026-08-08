@@ -1,0 +1,189 @@
+(footprint "Molex_5025700893"
+	(version 20241229)
+	(generator "aqroot-beta-library")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Molex 5025700893 microSD memory card connector, 1.10 mm pitch, normal-mount SMT, push-push, front card entry, shielded, with independent mechanical card-detect switch. PRIMARY GEOMETRY: Molex sales drawing SD-502570-001 Rev A, archived in vendor/Molex_5025700893/ - contact pitch 1.1, contact land width 0.8, 8-contact centre span 7.7, shell lands 1.4 x 1.7, and the 14.3 dimension which is OUTER-EDGE TO OUTER-EDGE across the two bottom shell mounts (12.900 centre-to-centre + 1.400 = 14.300 exactly). The 4.45 datum is to the FIRST CONTACT CENTRE. SECONDARY CORROBORATION: exact-part EasyEDA/JLCPCB CAD C429846 (Manufacturer MOLEX, MPN 5025700893), which reproduces every readable Molex dimension - pitch 1.1000, span 7.7000, land 0.800, shell 1.400 x 1.700, detect land 1.150 - and supplied the pad numbering. PAD 9 IS REPEATED ON FOUR PHYSICAL SHELL LANDS (EH/shield): two bottom mounts 1.4 x 1.7 and two top mounts 1.5 x 1.15. That is deliberate and valid - the symbol has ONE logical pin 9. Do not renumber them. Pad 10 is DET-SW, pad 11 is the DETECT LEVER which Molex labels Vss:GROUND. MECHANICAL CARD DETECT: closed to GND on card insertion, open with no card. Card enters from +Y; contacts sit at the far (-Y) end. Classification VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION.")
+	(tags "Molex 5025700893 microSD card connector push-push card-detect shielded")
+	(attr smd)
+	(fp_text reference "REF**"
+		(at 0 -9.6 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text value "Molex_5025700893"
+		(at 0 9.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "CARD INSERTION >>"
+		(at 0 11.4 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.9 0.9)
+				(thickness 0.14)
+			)
+		)
+	)
+	(fp_text user "PUSH-PUSH / KEEP CLEAR FOR CARD TRAVEL"
+		(at 0 12.7 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+			)
+		)
+	)
+	(fp_rect
+		(start -7.25 -8.3)
+		(end 7.25 8.3)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_rect
+		(start -7.25 8.3)
+		(end 7.25 10.8)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+	)
+	(fp_rect
+		(start -5 -3.2)
+		(end 5 3.2)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+	)
+	(fp_text user "NO COPPER"
+		(at 0 -2.2 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.08)
+			)
+		)
+	)
+	(fp_rect
+		(start -7.6 -8.7)
+		(end 7.6 11.1)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+	)
+	(fp_circle
+		(center -7.9 -4.338)
+		(end -7.7 -4.338)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+	)
+	(pad "1" smd rect
+		(at -2.806 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "2" smd rect
+		(at -1.706 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "3" smd rect
+		(at -0.606 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "4" smd rect
+		(at 0.494 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "5" smd rect
+		(at 1.594 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "6" smd rect
+		(at 2.694 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "7" smd rect
+		(at 3.794 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "8" smd rect
+		(at 4.894 -4.338)
+		(size 0.8 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "9" smd rect
+		(at -6.556 -7.237)
+		(size 1.4 1.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "9" smd rect
+		(at 6.344 -7.237)
+		(size 1.4 1.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "9" smd rect
+		(at -3.006 7.237)
+		(size 1.5 1.15)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "9" smd rect
+		(at 5.894 7.237)
+		(size 1.5 1.15)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "10" smd rect
+		(at -0.706 7.237)
+		(size 1.5 1.15)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "11" smd rect
+		(at 6.556 2.512)
+		(size 1.3 1.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+)
