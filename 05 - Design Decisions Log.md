@@ -3848,3 +3848,53 @@ The manual specifies **no pull resistor on RXEN**. It gives only the truth table
 **0,0 = CLOSE is a defined safe state**. A 100 k pull-down is therefore consistent with vendor
 documentation and contradicts nothing; it exists to hold CLOSE while the TCA9535 ports are high-Z
 at power-up. **No vendor-mandated alternative value was found.**
+
+---
+
+## U7 — pad-group gap still unresolved; (1).png is a render, not a drawing (2026-08-08)
+
+Nothing modified. Coverage 158/176, ERC 0 real, 24 exclusions, netlist unchanged, U7 placeholder
+and XGPIO14 chain both untouched.
+
+### Definitive negative: E22-900M22S(1).png contains no dimensions
+
+The 1.25 MB file expected to carry the detailed PCB drawing is a **2765 x 1932 product
+photograph/render** of the module top face - label, QR code, SN, and the castellations along two
+edges. **It has no dimensions of any kind.** Recording this so no future session re-opens it
+hoping for the missing datum.
+
+It does add one thing: the **IPEX/u.FL connector is clearly visible and populated** on the
+pictured unit, reinforcing the same finding from Size.jpg. Antenna evidence is now two
+independent vendor files; the procurement check still stands because neither is a purchase
+guarantee.
+
+### The gap datum remains missing, and the measurement was rejected
+
+`E22-900M22S_Size.jpg` is therefore the **only** dimensioned vendor drawing, and it labels body
+14.0 x 20.0 x 3.00, pitch 1.27, top inset 2.00 and bottom inset 1.00 - but **not** the gap between
+pins 19 and 20 (left edge) or 4 and 3 (right edge), where the IPX connector sits.
+
+Raster measurement was attempted, as the brief permits. It was **discarded as unreliable**: the
+routine located candidate body edges at x = 85 and x = 354 and derived a body width of
+**12.23 mm against the labelled 14.0 mm**, proving it had registered on dimension/extension lines
+rather than the body outline. Pad-cluster detection outside those edges then returned zero
+clusters, confirming the mis-registration. **Numbers that fail a known-dimension sanity check were
+not used**, and no footprint was built from them.
+
+Per the standing instruction - *only proceed once all 22 pad coordinates are deterministic*, and
+*do not infer the special gap from normal 1.27 mm pitch* - the footprint build correctly did not
+proceed, and with it neither did the coupled symbol/capture work.
+
+### What would actually close this
+
+1. **Re-do the raster measurement with correct registration** - anchor on the outer body rectangle
+   verified to measure 14.0 x 20.0 before trusting any derived spacing. The approach is sound; the
+   implementation mis-registered.
+2. Or obtain a **dimensioned PCB land drawing** rather than the size drawing - the Ebyte resource
+   set may carry one under a different item, and the user manual section 3.2 figure may dimension
+   it where Size.jpg does not.
+3. Or derive the gap from the **IPX connector footprint position**, which is drawn to scale on
+   both files, once registration is trustworthy.
+
+Everything else for U7 is settled: pinout verified against manual section 3.2, RF-switch
+architecture locked, XGPIO14 chain mapped with coordinates, pull-down justified, IPEX confirmed.
