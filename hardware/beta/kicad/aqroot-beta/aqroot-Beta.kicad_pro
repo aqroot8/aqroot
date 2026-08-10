@@ -264,27 +264,61 @@
       "isolated_pin_label|1016000|673100|8810c901-d8c5-400e-87c1-b8d6fcb76e74|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|1016000|698500|314cf88c-f676-42c5-b889-f4119f56808a|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|1016000|723900|ab4c33d4-99a0-4771-9302-516d25899834|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
-      "isolated_pin_label|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1358900|13947410-1ae3-4371-aa10-e70a5d33bc86|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1384300|a46b3466-b47a-4014-bc10-a2b9360e6378|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1409700|c369ab1d-2c54-415f-ad3e-063eeab9ef9d|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1435100|2955eebd-9fd3-4dae-b625-2c1a125c890a|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1485900|e2760ceb-c087-46c7-b05b-a5aeed133f4a|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
-      "isolated_pin_label|1181100|1511300|2c66bd9d-d059-4aeb-a7e6-51cc9143a0a9|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
+      "isolated_pin_label|1130300|660400|3c534a06-53bb-46bc-9b5b-e5678ca66dab|00000000-0000-0000-0000-000000000000": "Beta deferred: U7 Ebyte E07-400M10S pin 21 ANT intentionally parked; antenna is on the module IPEX port and all module RF is DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1231900|7e7837ac-6975-4aa2-80e0-b2e39379b439|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET AAT_A (antenna auto-tuning A) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1257300|971e684c-8adf-40ce-ad7a-23513a5a27d2|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET AAT_B (antenna auto-tuning B) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1333500|40117d71-d1a9-4524-add6-3281ea4f08ac|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET RFI1 (RF receiver in 1) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1358900|a0832ccb-e6a2-4ed8-88a2-607d920b1d67|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET RFI2 (RF receiver in 2) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1409700|82d349ff-3e3c-4fe0-a931-7dcc6558c2b2|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET CSI (capacitive-sensor input) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|1193800|1485900|f8fc8579-79e1-4685-8d93-37f7009cdb87|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET MCU_CLK (clock output) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
       "isolated_pin_label|1600200|1257300|3496c504-ce06-4b47-af2d-a23f135672e0|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000": "Parked RF/clock net -> matching network / crystal deferred; module is an on_board=no placeholder symbol. DO NOT ROUTE.",
+      "isolated_pin_label|2146300|711200|4ba0d5c0-86af-4111-92e5-283b1be4e596|00000000-0000-0000-0000-000000000000": "Beta deferred: J2 Molex 5025700893 mechanical card-detect captured as a named net but intentionally unrouted -- no Beta GPIO allocated; awaiting a pin-map revision or a formal decision to drop the feature. DO NOT ROUTE.",
+      "isolated_pin_label|2425700|723900|9ac49ba7-afb0-4d6f-8cea-bf9276ac3089|00000000-0000-0000-0000-000000000000": "Beta deferred: U8 Ebyte E22-900M22S antenna net intentionally parked; antenna is on the module port and all module RF is DO NOT ROUTE.",
       "isolated_pin_label|2463800|1320800|1a592845-3125-415f-9dae-e7224d3e8e4d|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
       "isolated_pin_label|3657600|1079500|01cf2913-04a3-4b71-9eac-139ace5fa70b|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|3708400|1130300|bc9a757f-55ca-47f9-a625-e432a22325e1|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
       "isolated_pin_label|3759200|1104900|68332bb1-af94-4d7b-a06e-7ff7f67eb3dc|00000000-0000-0000-0000-000000000000": "RGB output not implemented -> LED part not selected, no safe-state pull and no load yet. Beta scope: expander pin reserved only.",
+      "isolated_pin_label|635000|1257300|0e23aa75-a3c8-4e86-9394-c31ab24de9d3|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET CSO (capacitive-sensor output) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|635000|1308100|8c5a3689-71da-442f-be4e-59cfd4667fd9|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET XTO (crystal out) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|635000|1333500|943823c7-c11d-48e2-80f7-c8275d81e187|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET XTI (crystal in) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|635000|1536700|86004674-f57e-4582-b62d-5fe5f054a70a|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET RFO1 (RF driver out 1) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|635000|1587500|14cba8b1-538c-41d2-a776-686d269dc3a3|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET RFO2 (RF driver out 2) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "isolated_pin_label|635000|1638300|c5627309-6f3b-4433-a71b-503277fa80df|00000000-0000-0000-0000-000000000000": "Beta deferred: ST25R3916-AQET EXT_LM (external load modulation) network intentionally parked until the NFC RF/matching review; no external network is captured yet. DO NOT ROUTE.",
+      "label_dangling|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000": "Beta deferred: U7 Ebyte E07-400M10S RF net intentionally parked until the RF review; certified module keeps its front end internal. DO NOT ROUTE.",
+      "label_dangling|1562100|1447800|c6557e58-892b-4be7-94ea-ef407b92ae3a|00000000-0000-0000-0000-000000000000": "Intentionally reserved: former XGPIO14 community-header pin, retained as RESERVED_NC after U61 P16 was reclaimed as SX1262_RXEN; deliberately unconnected so the header pinout below XGPIO13 does not shift. DO NOT ROUTE.",
+      "label_dangling|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000": "Beta deferred: U8 Ebyte E22-900M22S RF net intentionally parked until the RF review; certified module keeps its front end internal. DO NOT ROUTE.",
       "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000": "RootProbe Phase 2 placeholder -> connector, pin count and mechanical format not locked, no footprint. DO NOT ROUTE.",
       "label_dangling|622300|1054100|63dfcc03-faf5-4067-8778-7763e28012cc|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
       "pin_to_pin|1041400|787400|08a69486-0327-4b8e-ad43-d69a1762dd85|60a66239-11df-4a6f-817b-38f3f6844702": "BMI270 unused auxiliary interface pin tied to VDDIO per datasheet; bidirectional symbol type retained intentionally.",
       "pin_to_pin|1041400|812800|b3d48b15-1a70-49b1-96b4-e2c8b674085a|60a66239-11df-4a6f-817b-38f3f6844702": "BMI270 unused auxiliary interface pin tied to VDDIO per datasheet; bidirectional symbol type retained intentionally.",
+      "pin_to_pin|1231900|1181100|4fafc37d-fd35-4cb9-90fa-5b664e13d190|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 26 (DB6) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1206500|39cb2c16-7416-4074-839d-ecc30a5fc993|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 27 (DB5) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1231900|bee17a88-bb28-47d5-ab2f-ed0c9a1485b5|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 28 (DB4) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1257300|da45a13b-7506-4795-9ac2-8bdfa56f864b|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 29 (DB3) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1282700|5724ce55-3309-42b4-916c-58bea5286d17|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 30 (DB2) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1308100|24ad64c2-d5f3-4534-beb4-39b5a1db1a36|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 31 (DB1) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|1231900|1333500|0d522831-57df-40d6-a333-7e8863036e96|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 32 (DB0) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
       "pin_to_pin|2222500|927100|1551f271-07e9-4f76-92ef-071a04755d7d|22b536b2-2e85-4bb0-8fb4-c942a97959cd": "MAX98357A exposed thermal pad intentionally connected to GND per device requirements; stock KiCad symbol pin semantics cause ERC type warning.",
+      "pin_to_pin|673100|1536700|adbf3303-d8de-482a-8333-0b78e3f250e5|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 15 (DB17) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1562100|66ad48a6-5dc9-484b-9fd7-a4c8acbc79fe|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 16 (DB16) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1587500|65f4d474-5560-4095-a7f9-6592b03d693b|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 17 (DB15) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1612900|6a763854-b3c4-4cdf-9b8a-1fac6356f999|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 18 (DB14) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1638300|7c784933-ece4-4a29-816b-2f8e5cc88d51|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 19 (DB13) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1663700|2b760741-384c-4b22-8fe5-f5395402cff1|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 20 (DB12) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1689100|9b40441f-c5fa-47d3-aa3d-d93323b9f7f3|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 21 (DB11) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1714500|8c699fff-71d8-437e-91f7-69e371485f7f|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 22 (DB10) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1739900|3b64dddc-d855-4465-9fa0-dcddde1a0560|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 23 (DB9) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1765300|53569645-10d5-451e-bc03-81cb92f601c5|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 24 (DB8) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
+      "pin_to_pin|673100|1790700|09d83d92-d4c5-4f19-b2a2-bffba00ec880|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "Display parallel bus unused: J1 pin 25 (DB7) tied to GND as the panel datasheet requires verbatim -- \"The data bus (D[17:0]), which are not used, must be connected to GND\" (p.33). Bidirectional-vs-power-output is a stock symbol pin-type artifact, not an electrical conflict.",
       "pin_to_pin|787400|863600|13bf1a29-e85d-412b-9875-cf738977a08d|efbd5101-2bcb-4d14-8417-81c5b9268bc3": "BMI270 SDO strapped to GND for I2C address selection; bidirectional pin type is datasheet-correct.",
+      "unconnected_wire_endpoint|1079500|571500|c5e61c67-47fb-4773-8206-b9cb46c510d0|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E07-400M10S (CC1101, 433 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE.",
       "unconnected_wire_endpoint|1600200|1257300|3ac7376b-2391-41bf-9267-f87a2c2cf2c6|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
-      "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE."
+      "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000": "reverse-polarity topology parked -> post-Kickstarter power review; BAT_CONNECTOR_P/BAT_PROTECTED_P intentionally distinct. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|2171700|495300|189107cf-be42-48fe-8a8a-f6a1d536ae98|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E22-900M22S (SX1262, 915 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|2171700|901700|43e6d6bb-23f5-40c2-847d-3b3457e8c79e|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E22-900M22S (SX1262, 915 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|2387600|635000|262fae59-88c4-4037-a609-a531596fa9bd|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E22-900M22S (SX1262, 915 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|876300|457200|ce8cecfc-915c-4ff2-a26f-e0f2aa9e53ec|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E07-400M10S (CC1101, 433 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE.",
+      "unconnected_wire_endpoint|876300|787400|b736f9e7-3967-4d34-bdee-a8a3e75c2d39|00000000-0000-0000-0000-000000000000": "Beta deferred: Ebyte E07-400M10S (CC1101, 433 MHz) RF/antenna pin stub intentionally left unrouted while the antenna and matching network are parked; antenna is on the module IPEX port. DO NOT ROUTE."
     },
     "erc_exclusions": [
       [
@@ -300,31 +334,31 @@
         ""
       ],
       [
-        "isolated_pin_label|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1130300|660400|3c534a06-53bb-46bc-9b5b-e5678ca66dab|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1358900|13947410-1ae3-4371-aa10-e70a5d33bc86|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1231900|7e7837ac-6975-4aa2-80e0-b2e39379b439|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1384300|a46b3466-b47a-4014-bc10-a2b9360e6378|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1257300|971e684c-8adf-40ce-ad7a-23513a5a27d2|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1409700|c369ab1d-2c54-415f-ad3e-063eeab9ef9d|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1333500|40117d71-d1a9-4524-add6-3281ea4f08ac|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1435100|2955eebd-9fd3-4dae-b625-2c1a125c890a|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1358900|a0832ccb-e6a2-4ed8-88a2-607d920b1d67|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1485900|e2760ceb-c087-46c7-b05b-a5aeed133f4a|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1409700|82d349ff-3e3c-4fe0-a931-7dcc6558c2b2|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
-        "isolated_pin_label|1181100|1511300|2c66bd9d-d059-4aeb-a7e6-51cc9143a0a9|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|1193800|1485900|f8fc8579-79e1-4685-8d93-37f7009cdb87|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
@@ -332,7 +366,11 @@
         ""
       ],
       [
-        "isolated_pin_label|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000|||",
+        "isolated_pin_label|2146300|711200|4ba0d5c0-86af-4111-92e5-283b1be4e596|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|2425700|723900|9ac49ba7-afb0-4d6f-8cea-bf9276ac3089|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
@@ -352,6 +390,42 @@
         ""
       ],
       [
+        "isolated_pin_label|635000|1257300|0e23aa75-a3c8-4e86-9394-c31ab24de9d3|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|635000|1308100|8c5a3689-71da-442f-be4e-59cfd4667fd9|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|635000|1333500|943823c7-c11d-48e2-80f7-c8275d81e187|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|635000|1536700|86004674-f57e-4582-b62d-5fe5f054a70a|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|635000|1587500|14cba8b1-538c-41d2-a776-686d269dc3a3|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "isolated_pin_label|635000|1638300|c5627309-6f3b-4433-a71b-503277fa80df|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "label_dangling|1092200|571500|d0c3c9f7-aec1-4967-999d-760b67d144eb|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "label_dangling|1562100|1447800|c6557e58-892b-4be7-94ea-ef407b92ae3a|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "label_dangling|2413000|635000|05d7c383-469e-4456-9b4d-abb779ef0f48|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
         "label_dangling|3530600|1917700|b51e085d-e1b4-4611-9b0b-dbc1dde98fb9|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
@@ -368,11 +442,87 @@
         ""
       ],
       [
+        "pin_to_pin|1231900|1181100|4fafc37d-fd35-4cb9-90fa-5b664e13d190|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1206500|39cb2c16-7416-4074-839d-ecc30a5fc993|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1231900|bee17a88-bb28-47d5-ab2f-ed0c9a1485b5|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1257300|da45a13b-7506-4795-9ac2-8bdfa56f864b|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1282700|5724ce55-3309-42b4-916c-58bea5286d17|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1308100|24ad64c2-d5f3-4534-beb4-39b5a1db1a36|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|1231900|1333500|0d522831-57df-40d6-a333-7e8863036e96|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
         "pin_to_pin|2222500|927100|1551f271-07e9-4f76-92ef-071a04755d7d|22b536b2-2e85-4bb0-8fb4-c942a97959cd|||",
         ""
       ],
       [
+        "pin_to_pin|673100|1536700|adbf3303-d8de-482a-8333-0b78e3f250e5|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1562100|66ad48a6-5dc9-484b-9fd7-a4c8acbc79fe|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1587500|65f4d474-5560-4095-a7f9-6592b03d693b|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1612900|6a763854-b3c4-4cdf-9b8a-1fac6356f999|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1638300|7c784933-ece4-4a29-816b-2f8e5cc88d51|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1663700|2b760741-384c-4b22-8fe5-f5395402cff1|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1689100|9b40441f-c5fa-47d3-aa3d-d93323b9f7f3|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1714500|8c699fff-71d8-437e-91f7-69e371485f7f|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1739900|3b64dddc-d855-4465-9fa0-dcddde1a0560|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1765300|53569645-10d5-451e-bc03-81cb92f601c5|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "pin_to_pin|673100|1790700|09d83d92-d4c5-4f19-b2a2-bffba00ec880|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
         "pin_to_pin|787400|863600|13bf1a29-e85d-412b-9875-cf738977a08d|efbd5101-2bcb-4d14-8417-81c5b9268bc3|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|1079500|571500|c5e61c67-47fb-4773-8206-b9cb46c510d0|00000000-0000-0000-0000-000000000000|||",
         ""
       ],
       [
@@ -381,6 +531,26 @@
       ],
       [
         "unconnected_wire_endpoint|1600200|1295400|913d1b16-ccc9-4f1c-9096-98a7ace19271|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|2171700|495300|189107cf-be42-48fe-8a8a-f6a1d536ae98|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|2171700|901700|43e6d6bb-23f5-40c2-847d-3b3457e8c79e|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|2387600|635000|262fae59-88c4-4037-a609-a531596fa9bd|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|876300|457200|ce8cecfc-915c-4ff2-a26f-e0f2aa9e53ec|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "unconnected_wire_endpoint|876300|787400|b736f9e7-3967-4d34-bdee-a8a3e75c2d39|00000000-0000-0000-0000-000000000000|||",
         ""
       ]
     ],
