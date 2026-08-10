@@ -1,0 +1,165 @@
+(footprint "MAX17048_T822"
+	(version 20241229)
+	(generator "aqroot-beta-library")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Analog Devices / Maxim MAX17048G+T10, package code T822+3 (8-pin TDFN-EP, 2 x 2 mm, 0.5 mm pitch, exposed pad). Geometry taken verbatim from the Maxim RECOMMENDED PACKAGE LAND PATTERN drawing, DOCUMENT CONTROL NO. 90-0065, REV. E, sheet 1/1, titled 'PACKAGE LAND PATTERN, 8L TDFN, 2X2 MM'. Applicability is established by the MAX17048/MAX17049 datasheet package table, which maps PACKAGE TYPE T822+3 to OUTLINE NO. 21-0168 and LAND PATTERN NO. 90-0065. Drawing dimensions used: signal land 0.70 (x) x 0.30 (y); pitch 0.50; pad row centre-to-centre 1.98, so x = +/-0.99 and y = +/-0.25, +/-0.75; exposed pad 0.80 (x) x 1.38 (y). Drawing tolerance is +/-0.02 mm and note 2 states the land pattern complies to IPC7351A. The drawing is marked NOT TO SCALE, so the six printed dimensions were used directly; they were additionally cross-checked against the drawing's own vector geometry, where a single uniform scale of 0.04664 mm/unit reproduces all six labels to within 0.37 percent, confirming which feature each dimension attaches to. REJECTED ALTERNATIVE - the stock KiCad footprint Package_DFN_QFN:TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm cites the same Maxim outline 21-0168 but does NOT match this land pattern: its exposed pad is 0.80 x 1.20 against Maxim's 0.80 x 1.38 (0.18 mm short, a 13 percent area deficit) and its signal land is 0.25 wide against Maxim's 0.30 (0.05 mm NARROWER, which is a reduction and therefore cannot be an IPC fillet expansion). It corresponds to a different T822 exposed-pad variant and was not used. PROJECT DECISIONS, not manufacturer geometry - (a) signal lands are drawn as roundrect with rratio 0.25 for manufacturability; the land envelope is exactly Maxim's 0.70 x 0.30 and only the corners are relieved. (b) 90-0065 gives NO solder-mask guidance, so all lands are non-solder-mask-defined at KiCad's default mask expansion. (c) 90-0065 gives NO paste guidance, so the exposed pad is printed through four apertures of 0.34 x 0.62 at (+/-0.23, +/-0.38), flush with the pad boundary and separated by 0.12 mm in x and 0.14 mm in y, giving 0.843 mm2 of 1.104 mm2 or 76 percent coverage, which sits inside the IPC-7093 band for exposed pads; this mirrors the segmentation idiom already used for U9 in this library. (d) 90-0065 specifies NO thermal vias, so none are included; vias under the exposed pad remain a PCB-layout task. Pin 1 is top-left in top view with numbering running counter-clockwise: 1-4 down the left flank, 5-8 up the right flank.")
+	(tags "Maxim ADI MAX17048 MAX17049 T822 TDFN-8 TDFN 2x2 0.5mm exposed-pad fuel-gauge 90-0065 21-0168")
+	(attr smd)
+	(fp_text reference "REF**"
+		(at 0 -1.9 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text value "MAX17048_T822"
+		(at 0 1.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.08)
+			)
+		)
+	)
+	(fp_poly
+		(pts
+			(xy -0.7 -1)
+			(xy 1 -1)
+			(xy 1 1)
+			(xy -1 1)
+			(xy -1 -0.7)
+		)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_line
+		(start -0.6 -1.06)
+		(end 0.6 -1.06)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start -0.6 1.06)
+		(end 0.6 1.06)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_circle
+		(center -1.45 -0.75)
+		(end -1.4 -0.75)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+	)
+	(fp_rect
+		(start -1.59 -1.25)
+		(end 1.59 1.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+	)
+	(pad "1" smd roundrect
+		(at -0.99 -0.75)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "2" smd roundrect
+		(at -0.99 -0.25)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "3" smd roundrect
+		(at -0.99 0.25)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "4" smd roundrect
+		(at -0.99 0.75)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "5" smd roundrect
+		(at 0.99 0.75)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "6" smd roundrect
+		(at 0.99 0.25)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "7" smd roundrect
+		(at 0.99 -0.25)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "8" smd roundrect
+		(at 0.99 -0.75)
+		(size 0.7 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+	)
+	(pad "9" smd rect
+		(at 0 0)
+		(size 0.8 1.38)
+		(layers "F.Cu" "F.Mask")
+	)
+	(pad "9" smd rect
+		(at -0.23 -0.38)
+		(size 0.34 0.62)
+		(layers "F.Paste")
+	)
+	(pad "9" smd rect
+		(at 0.23 -0.38)
+		(size 0.34 0.62)
+		(layers "F.Paste")
+	)
+	(pad "9" smd rect
+		(at -0.23 0.38)
+		(size 0.34 0.62)
+		(layers "F.Paste")
+	)
+	(pad "9" smd rect
+		(at 0.23 0.38)
+		(size 0.34 0.62)
+		(layers "F.Paste")
+	)
+)
