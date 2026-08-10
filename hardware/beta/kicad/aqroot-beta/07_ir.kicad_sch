@@ -1586,15 +1586,83 @@
 		)
 		(uuid "1cfc8ff0-571b-4689-84b1-ff02ba98fd5a")
 	)
-	(label "IR_LED_SUPPLY_TBD"
+	(symbol
+		(lib_id "power:+3V3")
 		(at 180.34 92.71 0)
-		(effects
-			(font
-				(size 1.27 1.27)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1aae5ded-5597-407d-86a9-73a28583f86e")
+		(property "Reference" "#PWR0505"
+			(at 180.34 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
-			(justify left bottom)
 		)
-		(uuid "19c2dd10-9c51-444e-a7a0-ca40576cd253")
+		(property "Value" "+3V3"
+			(at 180.34 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 180.34 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 180.34 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3fa302e1-53f8-4820-acdc-4bc562325147")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/d14ac91a-547d-41d4-b6d8-03779253a1ea"
+					(reference "#PWR0505")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(label "IR_LED_K"
 		(at 199.39 40.64 90)
@@ -1656,15 +1724,83 @@
 		)
 		(uuid "b7453780-2399-4780-afd1-c2e81d0abeb2")
 	)
-	(label "IR_LED_SUPPLY_TBD"
-		(at 218.44 86.36 90)
-		(effects
-			(font
-				(size 1.27 1.27)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 218.44 86.36 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e82e473c-4b5e-4753-a631-26e8a522fedd")
+		(property "Reference" "#PWR0506"
+			(at 218.44 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
-			(justify left bottom)
 		)
-		(uuid "c98993cc-8d5e-41d3-819e-d19b58321695")
+		(property "Value" "+3V3"
+			(at 218.44 81.28 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 218.44 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 218.44 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d1ce45c4-2de2-4db6-be44-afef60960821")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/d14ac91a-547d-41d4-b6d8-03779253a1ea"
+					(reference "#PWR0506")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(label "IR_RX_VS_LOCAL"
 		(at 154.94 64.77 90)
@@ -2005,7 +2141,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "TBD"
+		(property "Value" "4.7uF"
 			(at 222.25 93.9799 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2016,7 +2152,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 217.4748 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -2039,6 +2175,61 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 218.44 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "10V"
+			(at 218.44 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Dielectric" "X7R"
+			(at 218.44 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "0805 (2012 metric)"
+			(at 218.44 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Class" "STANDARD_EIA_PASSIVE - multi-source, approved alternates, no premium single MPN. DC-bias derating to be validated at BOM lock."
+			(at 218.44 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Local IR pulse reservoir on the +3V3 IR LED branch; supplies the ~100 mA 38 kHz burst locally so the carrier does not modulate the shared +3V3 rail."
 			(at 218.44 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2086,7 +2277,7 @@
 				)
 			)
 		)
-		(property "Value" "TBD"
+		(property "Value" "18R"
 			(at 175.26 88.9 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2096,7 +2287,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 175.26 94.488 90)
 			(hide yes)
 			(show_name no)
@@ -2119,6 +2310,50 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 175.26 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 175.26 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "0805 (2012 metric)"
+			(at 175.26 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Class" "STANDARD_EIA_PASSIVE - multi-source, approved alternates, no premium single MPN"
+			(at 175.26 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR LED current limit on the +3V3 IR branch. Rail 3.3 V, TSAL6200 Vf ~1.35 V typ / ~1.6 V high, AO3400A drop negligible at this current, so I = (3.3 - Vf) / 18R gives ~108 mA at Vf 1.35 V and ~94 mA at Vf 1.6 V, target ~100 mA. Peak dissipation in R24 is I^2*R, about 0.21 W at 108 mA and 0.18 W at 100 mA; the drive is 38 kHz pulsed at low duty so average power is far below that, and 0805 is chosen for pulse-energy headroom rather than average power. Do NOT raise IR current - longer-range IR tuning is deferred post-Kickstarter."
 			(at 175.26 92.71 0)
 			(hide yes)
 			(show_name no)
