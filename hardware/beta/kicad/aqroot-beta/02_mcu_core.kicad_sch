@@ -4235,7 +4235,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92"
 			(at 87.63 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -4258,6 +4258,83 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "C&K / Littelfuse"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PTS645Sx SMTR92 LFS"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "6.0 x 6.0 mm tactile switch, straight SMT gull-wing, 4 terminals"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mounting" "BOARD_MOUNTED"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Status" "C&K / Littelfuse PTS645 family, 6 mm SMD, top-actuated. FINAL SUFFIX VERIFY AT BOM LOCK - 160gf TARGET, ~5mm ACTUATOR TARGET, ~0.25 mm travel and 100,000 operation class are the selection targets, not a quoted commercial suffix. FOOTPRINT LOCKED / BOM SUFFIX VERIFY."
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint_Provenance" "Land pattern VERIFIED_VENDOR_EXACT against the C&K / Littelfuse PTS645 series datasheet (Revised VL 01/29/26), RECOMMENDED PCB LAYOUT / PCB LAYOUT panels. The drawing gives 9.5 outer-edge to outer-edge and 6.4 inner-edge to inner-edge in X, and 5.8 outer to 3.2 inner in Y, which yields pads 1.55 (X) x 1.30 (Y) on centres of +/-3.975 (X) and +/-2.25 (Y). KiCad Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92 implements 1.55 x 1.30 at (+/-3.98, +/-2.25) - exact on pad size and on the Y centre, with a 0.005 mm rounding on the X centre that is far inside any fabrication tolerance. The same land pattern is published for both the 4.3 mm SMT G Type and the 7.3 mm straight SMT variants, which is why the footprint can be locked before the actuator-height suffix is. Four physical pads; C&K numbers them 1 and 2 on the top row and 3 and 4 on the bottom row with 1-2 tied and 3-4 tied, so the KiCad footprint maps its pad 1 to the top pair and pad 2 to the bottom pair, matching the 2-pin Switch:SW_Push symbol."
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ESP32 BOOT strap button - electrically identical part, but it is not a user-facing game button and does not receive a plastic cap. ENCLOSURE DESIGN TARGETS - these are AQROOT enclosure targets, NOT C&K switch specifications: individual plastic button caps, no membrane for Beta; 0.1-0.3 mm rest gap above the actuator with no preload; enclosure hard stop sized for ~0.3-0.4 mm total cap travel so the user cannot drive the tactile switch past its own travel."
 			(at 87.63 95.25 0)
 			(hide yes)
 			(show_name no)
