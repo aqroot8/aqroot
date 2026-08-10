@@ -3307,7 +3307,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF_PLACEHOLDER"
+		(property "Value" "100nF"
 			(at 146.05 134.6199 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3318,7 +3318,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 143.2052 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -3341,6 +3341,61 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 142.24 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "16V"
+			(at 142.24 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Dielectric" "X7R"
+			(at 142.24 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "0402 (1005 metric)"
+			(at 142.24 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Class" "STANDARD_EIA_PASSIVE - multi-source, approved alternates, no premium single MPN"
+			(at 142.24 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ST25R3916 VDD_IO external supply decoupling: +3V3 -> C18 -> GND. Supply decoupling only; VDD_D / VDD_A / VDD_RF / VDD_AM / AGDC decoupling is captured separately and is untouched. Finalised for Beta - the previous 100nF_PLACEHOLDER wording is retired."
 			(at 142.24 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -4017,7 +4072,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF_PLACEHOLDER"
+		(property "Value" "100nF"
 			(at 173.99 134.6199 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4028,7 +4083,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 171.1452 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -4051,6 +4106,61 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 170.18 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "16V"
+			(at 170.18 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Dielectric" "X7R"
+			(at 170.18 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "0402 (1005 metric)"
+			(at 170.18 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Class" "STANDARD_EIA_PASSIVE - multi-source, approved alternates, no premium single MPN"
+			(at 170.18 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ST25R3916 external VDD / VDD_TX high-frequency decoupling: NFC_5V_PA_PENDING -> C19 -> GND. Remains the HF decoupler and is NOT replaced by the bulk capacitor; C55 supplies bulk charge alongside it. Finalised for Beta - the previous 100nF_PLACEHOLDER wording is retired."
 			(at 170.18 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -9714,6 +9824,251 @@
 			(project "aqroot-beta"
 				(path "/c9c5bda1-3956-427a-b3ae-972c71997504"
 					(reference "#PWR418")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 157.48 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d7f63fd9-7e5e-43b3-945e-64f56f2e28aa")
+		(property "Reference" "C55"
+			(at 161.29 132.0799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2uF"
+			(at 161.29 134.6199 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 158.445 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "16V"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Dielectric" "X7R"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "0805 (2012 metric)"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM_Class" "STANDARD_EIA_PASSIVE - multi-source, approved alternates, no premium single MPN. DC-bias derating to be validated at BOM lock."
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ST25R3916 VDD / VDD_TX local BULK decoupling for pulsed NFC transmitter current: NFC_5V_PA_PENDING -> C55 -> GND, placed electrically at the external supply input alongside the C19 HF decoupler. LOCKED VALUE FOR BETA, but VALUE TO BE RECONFIRMED DURING ST REFERENCE / BOM REVIEW."
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "0b12039a-bb3e-4628-9167-c045836260f7")
+		)
+		(pin "1"
+			(uuid "8b479df3-58b9-4249-bd19-8b5f2e401435")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C55")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "NFC_5V_PA_PENDING"
+		(at 157.48 128.27 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1d74beb0-f97c-4c10-8195-34b4aebfc97a")
+	)
+	(wire
+		(pts
+			(xy 157.48 128.27) (xy 157.48 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93a3f3f2-5024-4134-a745-5ab1aeadd017")
+	)
+	(wire
+		(pts
+			(xy 157.48 137.16) (xy 157.48 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12b7ab33-086a-4e39-bf79-d27c2c2df20f")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 157.48 138.43 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fd7f3065-9efe-44aa-9993-eb532c35d3bc")
+		(property "Reference" "#PWR0507"
+			(at 157.48 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 157.48 143.51 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 157.48 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 157.48 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 157.48 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "95fe7821-0c14-4a86-982e-cf28ac8b5c86")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0507")
 					(unit 1)
 				)
 			)
