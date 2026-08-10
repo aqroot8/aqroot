@@ -414,6 +414,164 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic:Conn_01x02"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x02_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -1194,7 +1352,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "AUDIO ARCHITECTURE LOCKED\n\nICS-43434:\nLEFT I2S SLOT - LR PIN TIED TO GND\n\nMAX98357A:\n3.3V SUPPLY\nGAIN_SLOT TIED TO GND - 12 dB GAIN\nDIFFERENTIAL FILTERLESS SPEAKER OUTPUT\n\nSPEAKER PART / FOOTPRINT PENDING\nVERIFY OUTPUT LEVEL AND THERMALS ON BETA\nDO NOT ROUTE UNTIL SPEAKER IS SELECTED"
+	(text "AUDIO ARCHITECTURE LOCKED\n\nICS-43434:\nLEFT I2S SLOT - LR PIN TIED TO GND\n\nMAX98357A:\n3.3V SUPPLY\nGAIN_SLOT TIED TO GND - 12 dB GAIN\nDIFFERENTIAL FILTERLESS SPEAKER OUTPUT\n\nSPEAKER IS OFF-BOARD - WIRED VIA J6 (JST PH 2.0 mm)\nVERIFY OUTPUT LEVEL AND THERMALS ON BETA\nSPEAKER SKU FINALISES WITH THE ENCLOSURE"
 		(exclude_from_sim no)
 		(at 256.286 51.816 0)
 		(effects
@@ -1792,7 +1950,7 @@
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
-		(on_board yes)
+		(on_board no)
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -1808,7 +1966,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "8ohm_SPEAKER"
+		(property "Value" "8R_SPEAKER_OFFBOARD"
 			(at 246.38 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1841,7 +1999,7 @@
 				)
 			)
 		)
-		(property "Note" "Audio circuit unchanged - driven differentially from MAX98357A OUTP/OUTN. Enclosure cavity, grille and acoustic sealing are a mechanical-phase check. Exact body height, mounting method and pad geometry NOT recorded here; take them from the Same Sky datasheet."
+		(property "Note" "OFF_BOARD / WIRED SPEAKER / 8R >=0.5W / SKU FINALIZES WITH ENCLOSURE. Implementation is OPTION C, off-board wired speaker. The MAX98357A differential output path is unchanged: U5 OUTP -> SPK_P and U5 OUTN -> SPK_N, brought to the board edge at J6 and out to the speaker on a crimped lead. LS1 is marked exclude-from-board, so it is intentionally footprintless and must NOT be counted as a missing board footprint. Target class 8 ohm, >=0.5 W, ~15 mm; exact SKU is deferred to enclosure/mechanical selection."
 			(at 241.3 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -1852,7 +2010,7 @@
 				)
 			)
 		)
-		(property "Package" "15 mm round solder-pad speaker, 8 ohm - part LOCKED. Footprint BLOCKED: needs the official Same Sky mechanical drawing / land pattern."
+		(property "Package" "OFF_BOARD WIRED SPEAKER, 8 ohm, >=0.5 W, ~15 mm class. No PCB footprint by design - the speaker is enclosure-mounted and wired to the board through J6 (JST PH 2.0 mm)."
 			(at 241.3 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -1863,7 +2021,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Same Sky (CUI Devices)"
+		(property "Manufacturer" "TBD - selected with the enclosure"
 			(at 241.3 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -1874,7 +2032,7 @@
 				)
 			)
 		)
-		(property "MPN" "CMS-1535-058SP"
+		(property "MPN" "SKU FINALIZES WITH ENCLOSURE"
 			(at 241.3 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -1886,6 +2044,17 @@
 			)
 		)
 		(property "Description" "Speaker"
+			(at 241.3 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mounting" "OFF_BOARD"
 			(at 241.3 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -3109,5 +3278,216 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 241.3 110.49 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6bb3aeb6-4f17-4fd8-ae66-78c6b4e3cb05")
+		(property "Reference" "J6"
+			(at 243.84 110.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "JST-PH-2 SPEAKER"
+			(at 243.84 113.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "B2B-PH-K-S"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "JST PH series, 2 pin, 2.00 mm pitch, vertical through-hole board-side header"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mounting" "BOARD_MOUNTED"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Board-side speaker connector. OFF-BOARD SPEAKER / 8R >=0.5W / JST PH 2.0 mm / ENCLOSURE-MOUNTED. Pin 1 = SPK_P and pin 2 = SPK_N, matching MAX98357A OUTP and OUTN; observe this polarity when crimping the speaker lead. Footprint Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical is the same land pattern already used for the J4 battery connector."
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a4b8ed39-0295-401d-bca4-d8282dcb062e")
+		)
+		(pin "2"
+			(uuid "f51e73aa-c92d-484e-9e5d-ab73793005a5")
+		)
+		(instances
+			(project "aqroot-Beta"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SPK_P"
+		(at 234.95 72.39 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a5b53664-fd5e-4ddb-97aa-7a3d9b395bc5")
+	)
+	(label "SPK_N"
+		(at 234.95 74.93 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "55d9d0fd-9539-46cb-8a58-37ce3307ed67")
+	)
+	(wire
+		(pts
+			(xy 236.22 110.49) (xy 232.41 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd33918e-cbe0-411d-85d7-7579c06a2c33")
+	)
+	(wire
+		(pts
+			(xy 236.22 113.03) (xy 232.41 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd86f7a5-7281-4566-bf3f-08910bd5a00a")
+	)
+	(label "SPK_P"
+		(at 232.41 110.49 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a1b9a46f-8d94-4f6e-9358-25529e42b39e")
+	)
+	(label "SPK_N"
+		(at 232.41 113.03 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1f25b4fa-16ac-4159-99a7-d5d40b28f635")
+	)
+	(text "SPEAKER IS OFF-BOARD\n\nOFF-BOARD SPEAKER\n8R >=0.5W\nJST PH 2.0 mm\nENCLOSURE-MOUNTED\n\nLS1 represents the wired speaker beyond J6 and is EXCLUDED FROM THE BOARD.\nJ6 pin 1 = SPK_P = MAX98357A OUTP\nJ6 pin 2 = SPK_N = MAX98357A OUTN\nOBSERVE POLARITY WHEN CRIMPING\n\nSpeaker SKU finalises with the enclosure."
+		(exclude_from_sim no)
+		(at 256.286 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "14eadc76-8b9e-4bf0-9f6f-7d6db18cbb04")
 	)
 )
