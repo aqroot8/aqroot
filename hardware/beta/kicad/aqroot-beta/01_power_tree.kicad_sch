@@ -361,7 +361,7 @@
 					)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "AQROOT_Beta:MAX17048_T822"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -9237,7 +9237,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:MAX17048_T822"
 			(at 115.57 82.55 0)
 			(hide yes)
 			(show_name no)

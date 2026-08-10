@@ -1339,7 +1339,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "AQROOT_Beta:MAX17048_T822"
 			(at 0 0 0)
 			(hide yes)
 			(effects
