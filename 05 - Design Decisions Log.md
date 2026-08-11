@@ -5834,3 +5834,239 @@ Recorded because it is real data and will not need re-deriving next pass:
 Next pass, once the width decision is made: re-run blocks C–F from
 `scratchpad/pass1b.py`, which is already written and whose geometry is validated against pads —
 what it fails is only the width/clearance floors above.
+
+
+---
+
+## ROUTING PASS 1 BLOCKER CORRECTION — all three blockers CLOSED (2026-08-11)
+
+Width lock applied, the HEADER RESERVED In1 void removed, U9's exposed-pad grounding audited
+against ST's own layout application note, and one capacitor added on TI's explicit instruction.
+**No routing was performed. GND remains the only net carrying copper.**
+
+### 1–3. BAT / SYS width lock and layer policy
+
+| Netclass | Before | **After** | Basis |
+|---|---|---|---|
+| `BAT_MAIN` | min 1.00 / opt 1.50 mm | **min 0.60 / opt 1.00 mm** | 1.5 A sustained, 1 oz outer, ΔT = 10 K → 0.525 mm |
+| `SYS_MAIN` | min 0.60 / opt 1.00 mm | **min 0.50 / opt 0.80 mm** | 1.0 A, 1 oz outer, ΔT = 10 K → 0.300 mm |
+
+Netclass default track widths follow: `BAT_MAIN` 1.50 → **1.00 mm**, `SYS_MAIN` 1.00 → **0.80 mm**.
+Both floors remain ≥1.6× the IPC-2221B thermal minimum.
+
+The section-10 derivation comment was corrected in place, because the wrong number is the thing
+that has to stop propagating:
+
+> `IBAT_OCP` = 3.125 A is a **FAULT TRIP THRESHOLD, not a routing design current.** The earlier
+> 1.00/1.50 mm floor was derived from it and made U11's 0.40 mm-pitch west flank unroutable.
+
+**Layer policy, now written into the rule file rather than left as intent:** both rails are
+**outer-layer by policy**. `BAT_MAIN` must not distribute on In2 — at 0.5 oz, 1.5 A needs
+**2.73 mm**, which defeats the point of using In2. `SYS_MAIN` is outer-layer by preference; if an
+In2 segment ever proves unavoidable it must be sized separately from the actual SYS current at
+0.5 oz. **Never inherit an outer-layer width onto inner copper.**
+
+**Necking rule confirmed unchanged** — `min 0.20 mm` on width *and* clearance, scoped to exactly six
+named courtyards (`U11 U12 U13 U14 U17 U9`), still sitting in the **PRECEDENCE TAIL** where
+last-match-wins puts it above the rail clearances and below the land-pattern rules. `git diff`
+confirms **zero RF/E4/E5 rule lines touched**: the only DRU edits are the two width constraints and
+their comment block.
+
+### 4. HEADER RESERVED — In1 removed, and the audit found a bonus
+
+Audited what is actually inside X18.5–55.5 / Y0–8.5: **only J5**, and only its 26 through-hole pads
+— all present on In1, **five of them GND** (pads 2, 7, 13, 20, 25). No manufacturer requirement for
+an In1 void exists; J5 is a THT right-angle header whose pads get normal antipads automatically.
+The keepout was an outer-layer dock reservation that had been applied to all four layers.
+
+`HEADER RESERVED` layer set **F.Cu + In1 + In2 + B.Cu → F.Cu + In2 + B.Cu**. The dock still
+restricts the three layers where it matters mechanically.
+
+| | |
+|---|---|
+| In1 filled **before** | 10025.8 mm² |
+| In1 filled **after** | **10237.0 mm²** |
+| Gain | **+211.3 mm² (+2.11 %)** — now 91.56 % of the 11181.0 mm² outline |
+| New DRC issues | **none**, 0 errors |
+
+The gain is 211 mm² rather than the ~315 mm² of raw rectangle because J5's 26 THT antipads
+legitimately consume the difference. **Plane continuity improves in two ways:** the 37 × 8.5 mm slot
+in the reference plane is gone, *and* J5's five GND pins now tie directly to the In1 pour instead of
+being isolated from it — which is what a dock connector's return path needs.
+
+ST corroborates the direction of this fix. AN5240 Rev 5 §4.2: *"Reducing the ground impedance can be
+done by using solid ground planes or ground grids, and by avoiding slots in the ground plane"*, with
+Figure 9 titled *"Avoiding slots in the GND plane"*. **J5 was not moved.**
+
+The other two In1 voids stay: `WROOM ANTENNA KEEPOUT` (Espressif) and `NFC RESERVED` (an NFC loop
+over a ground plane is shorted out). Both are electrically required.
+
+### 5. U9 / U1 cross-side overlap — exact geometry
+
+| | |
+|---|---|
+| U9 EP land (pad 33) | **X 22.775–26.225, Y 20.275–23.725** (3.45 × 3.45 mm) |
+| U1 WROOM B.Cu pad column | **X 24.500–26.000** |
+
+Four WROOM pads overlap the EP footprint in XY:
+
+| U1 pad | Net | Y span | Overlap with the EP |
+|---|---|---|---|
+| 16 | `TEST_GPIO46` | 19.835–20.735 | 1.500 × 0.460 mm |
+| 17 | **`NFC_CS_N`** | 21.105–22.005 | 1.500 × 0.900 mm |
+| 18 | `DISP_CS_N` | 22.375–23.275 | 1.500 × 0.900 mm |
+| 19 | `SPI_A_MOSI` | 23.645–24.545 | 1.500 × 0.080 mm |
+
+So **the eastern 1.725 mm — exactly half the EP — has WROOM signal pads beneath it.** With 0.55 mm
+THERMAL pads and 0.20 mm clearance to those pads, legal via centres lie only in
+**X 23.150–24.025** (a 0.875 mm band). The committed 2 × 3 array sits at X 23.300 / 23.950,
+**0.913 mm west of the EP centre**.
+
+### 6. ST guidance — AN5240, and it settles the symmetry question
+
+**Source: ST `AN5240` Rev 5, June 2023**, *"Layout recommendations for the design of boards with the
+ST25R3916/16B, 17/17B, 18, 19B, and 20/20B devices"*. Retrieved through the browser — `curl` and
+WebFetch both fail against st.com (connection reset / timeout), and the archived DS12484 Rev 3
+datasheet contains **no** layout guidance at all (0 hits for "ground plane", 0 for "layout", 0 for
+"soldered"; its only "exposed pad" mention is a coplanarity note).
+
+**§8 "Thermal pad", verbatim and complete:**
+
+> *"The thermal pad underneath the ST25R3916 provides both a ground plane and a thermal heat sink.
+> This pad is connected to the PCB ground plane by multiple through-vias, and must be plated to have
+> good soldering results. The multiple vias keep the total parasitic inductance low in this area."*
+
+What that does and does not say:
+
+* **Dual objective is explicit** — ground plane *and* heat sink.
+* **"through-vias"** — ST names through vias specifically, which independently vindicates the
+  project's no-microvia / no-blind-via policy.
+* **"multiple"** — and **no count and no pattern is given anywhere in the text.** No minimum was
+  invented.
+* The stated purpose of the multiplicity is *"keep the total parasitic inductance low"* — an
+  **inductance** objective, not a symmetry one.
+* **ST imposes no symmetry requirement on the thermal pad.** Every one of the seven "symmetr"
+  occurrences in AN5240 is about the RF matching network and the RFO1/RFO2 and RFI1/RFI2 differential
+  traces (*"Route RFI and RFO signals symmetrically"*, *"the matching components need be placed close
+  to each other, and symmetrically"*). Those are all `RF_DEFERRED_NFC` nets and are not routed.
+* **ST's own Figure 16 draws a 3 × 3 = 9 via array** evenly spread across pad 33. That is a
+  reference implementation, not a stated requirement.
+
+### 7. U9 verdict — six vias are adequate; Option B implemented
+
+Quantified against ST's stated objectives rather than against the figure.
+
+**Inductance (the objective ST actually names).** A 0.25 mm through via in 1.6 mm FR4 is ≈1 nH.
+Six in parallel with mutual coupling ≈0.3 nH; nine ≈0.2 nH. At 13.56 MHz that is
+**0.026 Ω versus 0.017 Ω — a difference of ~0.01 Ω.** Lateral spreading across the EP's own 1 oz
+copper from the east side to the west via column is 1.7 mm at 3.45 mm width: **0.24 mΩ** DC and
+≈0.026 Ω at 13.56 MHz.
+
+**Thermal.** Each via ≈185 K/W; six in parallel 30.8 K/W, in parallel with the EP's direct coupling
+to In1 through 0.2104 mm of prepreg over 11.9 mm² (58.9 K/W) → **20.3 K/W**. Nine vias give
+15.3 K/W. The ST25R3916 datasheet gives `Pt` = **300 mW** absolute maximum total dissipation, so
+EP-to-plane rise is **6.1 K with six vias versus 4.6 K with nine — a difference of 1.5 K** at the
+device's absolute max.
+
+**Verdict: six legal EP vias are adequate for Beta.** The asymmetry costs ~0.03 Ω of ground
+impedance at the NFC carrier and ~1.5 K at absolute-max dissipation. ST's text is satisfied
+("multiple through-vias"), ST's symmetry language does not apply to this pad, and no minimum count
+was invented.
+
+**Option B was implemented anyway, because it is nearly free and removes the lateral-spreading term
+for the pins that were worst served.** U9's GND pins 12, 16, 20 and 21 previously had **no path to
+In1 at all**. Added:
+
+| Tie | Stub | Via | Clearance to the WROOM column |
+|---|---|---|---|
+| pad 12 (south) | 0.97 mm, 0.25 mm wide | (24.000, 25.560) | 0.20 mm |
+| pad 16 (south) | 0.96 mm, 0.25 mm wide | (26.550, 25.560) | 0.25 mm |
+| pads 20+21 (east) | 0.50 + 4.04 mm | (27.500, 25.560) | 1.20 mm |
+
+3 GENERAL_SIGNAL vias (0.30/0.60). Every position was asserted against **X 24.500–26.000** in the
+build script, so **no through via sits over a WROOM signal pad**. No blind, buried or microvia was
+used. The in-pad array is unchanged at 6.
+
+**U9 placement stays HARD-LOCKED.** Option C was not needed and no translation is proposed.
+
+### 8–9. TPS61169 VIN — TI says the capacitor must be close to VIN, so C56 was added
+
+**Source: TI `SNVSA40B`**, *TPS61169 38 V High Current-Boost WLED Driver With PWM Control*,
+October 2014, **revised June 2024**.
+
+**§7.5.1 Layout Guidelines, verbatim:**
+
+> *"The input capacitor CIN must be close to VIN pin and GND pin in order to reduce the input ripple
+> seen by the device."*
+
+**§7.4 Power Supply Recommendations, verbatim:**
+
+> *"If the input supply is located more than a few inches from the TPS61169 device, additional bulk
+> capacitance may be required in addition to the ceramic bypass capacitors."*
+
+Two things follow, and one of them corrects the framing of the question:
+
+1. **TI does not describe a separate small "local VIN bypass" part, and never names 10–100 nF.** The
+   datasheet has one input capacitor, `CIN`, with `CI` min **1 µF** in Recommended Operating
+   Conditions and 4.7 µF in the typical application. §7.4's *"in addition to the ceramic bypass
+   capacitors"* does distinguish local ceramic from remote bulk, but the near part in TI's model is
+   `CIN` itself.
+2. **AQROOT does not satisfy the §7.5.1 requirement.** C43 (4.7 µF) is the power-stage input
+   capacitor and is **9.39 mm** from U17 pin 5 — correct for the C43→L3 loop at 2.37 mm, but not
+   "close to VIN pin". **U17 has no local bypass at all.**
+
+**Verdict: a local capacitor at U17 VIN is required, on TI's explicit instruction.** Added as
+authorised:
+
+| | |
+|---|---|
+| Ref | **C56** |
+| Value | 100 nF, 16 V, X7R, 0603 |
+| BOM class | STANDARD_EIA_PASSIVE, multi-source |
+| Net | `+3V3` (pad 1) / `GND` (pad 2) |
+| Placement | **(46.100, 82.500) rot 0, B.Cu** |
+| C56 pad 1 → U17 pin 5 (VIN) | **1.624 mm** (was 9.39 mm to C43) |
+| Routed | **No** — the ruling says place only |
+
+Clear of every exclusion: not in the TOP panel shadow (B.Cu, and Y 82.5 > 78), not in the bottom
+battery shadow (Y > 77.5), not in the 915 or 433 band, not in `NFC RESERVED`, and clear of the
+BL_SW switch node (x ≥ 44.575 versus U17 pin 1 at x ≤ 42.675) and of the LED_K/R69 FB path.
+
+> **One honest caveat.** The authorised class is 100 nF, and that is what was fitted — it gives U17
+> the local HF bypass it currently lacks. But TI's literal requirement is that **`CIN` (≥1 µF)** be
+> close to VIN. A **1 µF** part in the same 0603 footprint would satisfy §7.5.1 outright and costs
+> nothing extra in area. **Recommended as a one-value BOM change if the CTO wants the datasheet
+> requirement met to the letter rather than mitigated.**
+
+### 10. Thermal via status — preserved
+
+U11 **2** · U12 **6** · U9 **6** (now confirmed, no longer provisional) · U5 **1** · U14 **1** · U1
+integral module vias unchanged. **No decorative vias were added** — the three new U9 vias are pin
+ground ties for pads that had no plane path, not thermal padding.
+
+Totals: **21 vias** (16 THERMAL 0.25, 4 GENERAL_SIGNAL 0.30, 1 POWER 0.40) and **9 tracks**, all GND.
+
+### 11–12. Verification
+
+* **DRC: 0 errors**, 234 warnings (231 silkscreen, +1 `silk_overlap` from C56's own silkscreen,
+  1 dangling track, 1 dangling via, 1 text height). 499 unconnected, as expected.
+* **ERC: 116 / 58 excluded / 58 live, zero delta** against the established baseline. **C56 introduced
+  no ERC item** — both pins land on power symbols.
+* **Netlist: 174 nets before and after.** C56 adds no net; the only change is `+3V3` gaining
+  `(C56, 1)` and `GND` gaining `(C56, 2)`.
+* **Placement: 188 footprints, 187 unchanged plus C56. Zero moved** — verified position, rotation,
+  side and footprint ID against HEAD for all 187.
+* **E4/E5 and RF layer policy: unchanged.** DRU diff is two width constraints and one comment block.
+* Parity 259 → 261, both new items C56 field-mismatch warnings.
+* **No `NFC_DEFERRED` net routed. GND is still the only net carrying copper.**
+
+### Status
+
+**BAT/SYS WIDTH BLOCKER: CLOSED**
+**U9 EP GROUNDING BLOCKER: CLOSED** — six in-pad vias adequate per AN5240 §8, plus three fanout ties
+**TPS61169 VIN DECOUPLING REVIEW: CLOSED** — C56 added on TI SNVSA40B §7.5.1
+**READY TO RESUME ROUTING PASS 1: YES**
+**ROUTING STARTED IN THIS TASK: NO**
+
+`scratchpad/pass1b.py` can now be re-run: its geometry is already validated against every pad, and
+the width floors it failed are the ones just corrected. C56 still needs routing when Pass 1 resumes.

@@ -328,8 +328,11 @@
 # 1 oz outer (35 um), 0.5 oz inner (17.4 um), dT = 10 K:
 #
 #   net / class        design current      outer min   inner min
-#   BAT_PROTECTED_P    1.5 A cont.          0.525 mm    2.734 mm
-#                      3.125 A OCP peak     1.446 mm    7.524 mm
+#   BAT_PROTECTED_P    1.5 A sustained      0.525 mm    2.734 mm
+#     NOTE: IBAT_OCP = 3.125 A is a FAULT TRIP THRESHOLD, not a routing
+#     design current.  The earlier 1.00/1.50 mm floor was derived from it
+#     and made U11's 0.40 mm-pitch west flank unroutable.  CTO ruling
+#     2026-08-11: size normal copper for the sustained case.
 #   BQ25185_SYS        1.0 A                0.300 mm    1.563 mm
 #   +3V3               1.0 A design         0.300 mm    1.563 mm
 #                      0.64 A measured pk   0.162 mm    0.844 mm
@@ -337,17 +340,20 @@
 #   NFC_5V_PA_PENDING  0.5 A TX burst       0.115 mm    0.601 mm
 #   LED_BOOST          0.05 A at >20 V      clearance-driven, not width
 #
-# The floors below sit well above the thermal minimum. BAT_MAIN and
-# SYS_MAIN are outer-layer rails by policy: at 0.5 oz they would need
-# 2.7 mm / 1.6 mm on In2, which no inner region on this board can host.
+# The floors below sit well above the thermal minimum, and both rails are
+# OUTER-LAYER BY POLICY.  Do NOT distribute BAT_MAIN on In2: at 0.5 oz,
+# 1.5 A needs 2.73 mm, which defeats the point of using In2 at all.
+# SYS_MAIN is outer-layer by preference; if an In2 segment ever proves
+# unavoidable, size it separately from the actual SYS current at 0.5 oz -
+# never inherit the outer-layer width onto inner copper.
 # ---------------------------------------------------------------------
 
 (rule "BAT_MAIN minimum width"
-	(constraint track_width (min 1.00mm) (opt 1.50mm))
+	(constraint track_width (min 0.60mm) (opt 1.00mm))
 	(condition "A.hasNetclass('BAT_MAIN')"))
 
 (rule "SYS_MAIN minimum width"
-	(constraint track_width (min 0.60mm) (opt 1.00mm))
+	(constraint track_width (min 0.50mm) (opt 0.80mm))
 	(condition "A.hasNetclass('SYS_MAIN')"))
 
 (rule "P3V3 minimum width on the outer layers"
