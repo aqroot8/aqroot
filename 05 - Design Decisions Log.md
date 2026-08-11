@@ -6508,3 +6508,116 @@ pass**; C20 remains at (35.000, 144.500). **Schematic untouched.**
 **USB ROUTING: PASS**
 **USB / E4 INFRASTRUCTURE LOCK: YES**
 **ROUTING PASS 1 USB BLOCKER: CLOSED**
+
+
+---
+
+## SYS hand-off closed; the VBUS/E4 crossing is NOT complete, contrary to the Pass 1B entry (2026-08-11)
+
+`BQ25185_SYS` is fully routed. The infrastructure audit also found that **the Pass 1B entry above
+overstates the VBUS/E4 crossing** — the copper it describes is not in the board file.
+
+### SYS to SW9 and R68
+
+Both remaining ratsnest items sat in the far-west control cluster, ~53 mm from the SYS spine that
+already runs the full board height at x = 61.200. The band **x 20–62, y 54–72 turned out to be
+completely empty of both pads and copper**, so the trunk crosses it straight.
+
+| | |
+|---|---|
+| Trunk | **43.70 mm at 0.80 mm** (preferred), y = 61.810, x 61.200 → 17.500 |
+| Neck | **11.00 mm at 0.50 mm** (locked minimum), x 17.500 → 6.500 |
+| To R68 pad 1 | 4.19 mm at 0.50 mm, x = 8.675 |
+| To SW9 pad 2 | 4.31 mm at 0.50 mm, x = 6.500, entered from the south |
+| **Total** | **63.20 mm, F.Cu only, 0 vias** |
+
+The neck is forced by one channel: between C6/C7 (pad bottoms at 61.275) and U4 (pad tops at 62.350)
+there is **1.075 mm**. At 0.80 mm that leaves 0.135 mm; at the locked 0.50 mm minimum it leaves
+**0.285 / 0.290 mm**. So the trunk necks to the minimum and stays there — **no 0.20 mm package escape
+was needed and none was used**, and nothing went onto In2.
+
+SW9 pad 2 is entered **from the south**, through the 5.9 mm gap between its two outer mechanical pads
+(x 3.550–9.450). A north approach is impossible: R14 pad 1 sits 0.125 mm above pad 2's top edge.
+**SW9 was not moved or rotated**; its bezel zone carries no keepout in the file, and the branch at
+x = 6.500 clears both mechanical pads by 2.7 mm.
+
+Estimated drop at 500 mA: 34.1 mOhm over the 0.80 mm run + 10.9 mOhm over the neck, about **23 mV**.
+
+### Correction: the VBUS/E4 crossing is incomplete
+
+The Pass 1B entry states the In2 VBUS trunk runs `(28.000, 144.800)` to `(56.000, 144.800)` to
+`(56.000, 84.000)`. **That copper is not in the file.** What exists is the E4 segment
+`(56.000, 116.000)–(56.000, 86.000)`, a via at each end, a via at (28.000, 144.800) with nothing
+attached, and the U11-side hop. `USB_VBUS_CHG` therefore has **2 missing connections**:
+
+| Gap | From | To |
+|---|---|---|
+| south hand-off | via (28.000, 144.800) | In2 track at (56.000, 116.000) |
+| north hand-off | F.Cu track end (56.000, 86.000) | U11 pad 10 (66.100, 66.200) |
+
+`USB_VBUS_RAW` has a further **4 missing connections** — J3 pads B4/B9 to C20 pad 1, C20 to R35 pad 1,
+and C20 to U10 pin 5. The connector-side VBUS distribution was never routed.
+
+**Neither was attempted this pass**: the south leg's mouth is where SW7 sits, the RAW nets are inside
+the area locked around USB, and the stated primary target was SYS. They are recorded here with exact
+coordinates so the next pass can act on them directly.
+
+### U9 EP grounding — the actual count is 6 + 2, not 6 + 3
+
+Six vias sit **on U9 pad 33 (the EP)** at (23.300 / 23.950) by (20.850 / 22.000 / 23.150). Only **two**
+GND fanout vias remain nearby, at **(26.550, 25.560)** and **(27.500, 25.560)**. The third went away in
+Pass 1B when pads 12 and 16 were given a shared south rail to the (26.550, 25.560) tie — that was a
+deliberate consolidation to open the C55 lane, and it was described in the entry above without the via
+count being restated. Recording it now so the earlier "6 + 3" is not carried forward.
+
+### Audit results
+
+**Switch nodes** — unchanged, none altered:
+
+| Node | Net | Length | Copper area | Layer |
+|---|---|---|---|---|
+| U12 buck | Net-(L1-Pad1) | 2.70 mm | 1.350 mm2 | F.Cu |
+| U12 boost | Net-(L1-Pad2) | 6.89 mm | 3.443 mm2 | F.Cu |
+| U13 SW | Net-(U13-SW) | 2.87 mm | 0.984 mm2 | F.Cu |
+| U17 BL_SW | /03_SPI_A_DISPLAY_SD/BL_SW | 4.55 mm | 2.275 mm2 | **B.Cu** |
+
+**RF, measured by span rather than endpoint** (the endpoint test used in earlier passes was too weak —
+a track crossing a band has both ends outside it):
+
+| Layer | In 915 band (Y 88–114) | In 433 band |
+|---|---|---|
+| F.Cu | **0 nets** | 0 |
+| B.Cu | **0 nets — pristine** | 0 |
+| In1.Cu | **0 nets** (plane only) | 0 |
+| In2.Cu | 19 nets, 26.00 mm each | 5 nets (C-W), 23.00 mm each |
+
+All 19 are authorised corridor content: 10 C-E radio/SPI-B, 5 C-W, USB D+/D-, +3V3, VBUS.
+**Vias in the 915 band: 0. Vias in the 433 band: 0. Vias landing on a WROOM pad: 0.**
+NFC copper is `/NFC_5V_PA_PENDING` only (the authorised C55 supply); **no NFC_DEFERRED net carries
+copper**.
+
+**Rule areas intact:** NFC RESERVED (4 layers), WROOM ANTENNA KEEPOUT (4 layers), HEADER RESERVED
+(**F.Cu, B.Cu, In2 — In1 still excluded, so the plane stays continuous**).
+
+**Thermal/ground vias:** U9 6+2 (above), U12 6, U11 3, U5 1, U14 1. **None added this pass.**
+
+### State
+
+**DRC 0 errors**, 258 warnings, of which the **26 dangling** are inventoried: 20 tracks (18 staged E5
+crossings + the VBUS south leg + NFC_5V_PA) and 6 vias (2 VBUS, 2 USB E4 — the E4 pair's north vias
+await the digital pass — 1 +3V3, 1 U13 FB). **21 staged crossings, 20 READY_FOR_DIGITAL_ROUTE, 1
+(VBUS) incomplete.**
+
+| | |
+|---|---|
+| Tracks / vias | **157** (was 153) / **43** (unchanged) |
+| Unconnected items | **492** (was 494) |
+| Nets carrying copper | **38** |
+| In1 GND | **10209.6 / 11181.0 mm2 = 91.31 %** |
+| Placement | **188 footprints, none moved**; C20 at (35.000, 144.500) |
+| ERC | **116 / 58 excluded / 58 live, zero delta** |
+
+**ROUTING PASS 1: FAIL** — SYS closed, VBUS_CHG (2) and VBUS_RAW (4) connections open
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO** — VBUS/E4 incomplete
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
