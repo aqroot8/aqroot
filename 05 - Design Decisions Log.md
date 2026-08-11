@@ -6597,7 +6597,8 @@ NFC copper is `/NFC_5V_PA_PENDING` only (the authorised C55 supply); **no NFC_DE
 copper**.
 
 **Rule areas intact:** NFC RESERVED (4 layers), WROOM ANTENNA KEEPOUT (4 layers), HEADER RESERVED
-(**F.Cu, B.Cu, In2 — In1 still excluded, so the plane stays continuous**).
+(**F.Cu, B.Cu, In2 only — In1 is NOT a member of the keepout, so In1 GND fill continues
+through the header region, broken only by the normal J5 pad antipads**).
 
 **Thermal/ground vias:** U9 6+2 (above), U12 6, U11 3, U5 1, U14 1. **None added this pass.**
 
@@ -6619,5 +6620,107 @@ await the digital pass — 1 +3V3, 1 U13 FB). **21 staged crossings, 20 READY_FO
 
 **ROUTING PASS 1: FAIL** — SYS closed, VBUS_CHG (2) and VBUS_RAW (4) connections open
 **POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO** — VBUS/E4 incomplete
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
+
+
+---
+
+## VBUS_CHG closed; USB_VBUS_RAW is unroutable without touching locked USB copper (2026-08-11)
+
+`USB_VBUS_CHG` is **fully routed, 0 ratsnest items**. `USB_VBUS_RAW` is **not**, and the reason is now
+measured rather than asserted: three of its five pads are enclosed by the locked USB pair with
+**55–75 micron** shortfalls.
+
+### USB_VBUS_CHG — both hand-offs closed
+
+Rule binding first, since it was asked for: `USB_VBUS_RAW` and `USB_VBUS_CHG` both match the netclass
+pattern `*USB_VBUS_*` to **VBUS_CHG** — `track_width` min 0.35 / opt 0.50, routed clearance min 0.25 mm
+(non-pad to non-pad), via class POWER 0.40/0.80. **0.50 mm was used throughout**, the rule optimum;
+no new class, no invented width.
+
+| Leg | Path | Length |
+|---|---|---|
+| South approach | In2 (28.000, 144.800) → (54.850, 144.800) → (54.850, 119.000) | 52.65 mm |
+| South hand-off | via (54.850, 119.000), then F.Cu → (54.850, 116.000) → (56.000, 116.000) at **0.35 mm** | 4.15 mm |
+| E4 trunk | In2 (56.000, 116.000) → (56.000, 86.000), unchanged | 30.00 mm |
+| North hand-off | F.Cu (56.000, 82.000) → (56.000, 77.000) → (71.800, 77.000) → (71.800, 66.000) → (70.775, 66.000) | 32.82 mm |
+| **Net total** | **130.78 mm, 6 vias, min USB↔VBUS on In2 1.475 mm** | |
+
+Two things were learned the hard way and are worth recording:
+
+> **The E4 corridor and the VBUS lane both span y 84.000–118.000**, and the `enclosedByArea` mechanic
+> from Pass 1B applies again: a track that *enters* a corridor can never satisfy it, because its end cap
+> pokes past the boundary. A first attempt ran In2 straight from y 144.800 to y 116.000 and threw
+> `Items not allowed` on exactly that. **The approach must stop north of y = 118 and hand off by via** —
+> which is what every other crossing on this board already does.
+
+> **The F.Cu link past SW7 threads 0.820 mm**: the `USB_D_MCU_P` via pad's right edge is 54.425 and
+> SW7 pad 1's left edge is 55.245. A 0.50 mm VBUS track needs 0.95 mm there; the **0.35 mm rule
+> minimum needs 0.80 mm and fits with 20 microns to spare**. That is a short local neck at the existing
+> rule floor — not an exception — and it is the only sub-0.50 mm VBUS copper on the board. Clearance to
+> SW7 pad 1 is **0.220 mm**. SW7 was not moved, rotated or altered.
+
+The north leg needed no via at all. Every F.Cu path from (56, 82) to U11 is blocked by the **SYS spine
+at x = 61.200 (y 30.000–75.000)** and by the **BAT_PROTECTED_P B.Cu wall at x 61.4–62.2, y 66.6–80.4**.
+Rather than hop layers twice, the route goes **around the spine's south end at y = 77.000**, where the
+band between C33/R38 (bottom 75.325) and U14 (top 79.600) is 4.275 mm of clear F.Cu.
+
+### USB_VBUS_RAW — measured, and blocked
+
+Every F.Cu escape channel around each RAW pad was measured against every non-RAW pad and track. The
+requirement is 0.95 mm for a 0.50 mm track, **0.80 mm for the 0.35 mm rule minimum**, 0.95 mm for the
+smallest approved via pad (0.55) and 1.20 mm for the VBUS POWER via (0.80).
+
+| Pad | west | east | north | south | Verdict |
+|---|---|---|---|---|---|
+| J3 A9/B4 (east VBUS) | 0.200 | 0.200 | **1.370** | 0.175 | **reachable** |
+| R35 pad 1 | **1.569** | 0.850 | open | open | **reachable** |
+| U10 pin 5 | 0.350 | 0.350 | **0.975** | **0.950** | **reachable** |
+| J3 A4/B9 (west VBUS) | 0.200 | 0.200 | 0.745 | 0.175 | **BLOCKED — 0.055 mm short** |
+| C20 pad 1 | 0.525 | 0.900 | 0.675 | 0.225 | **BLOCKED — dead end** |
+
+* **J3 west VBUS**: its only non-pad side is 0.745 mm north, against the `USB_D_CONN_N` west corridor.
+  **55 microns short** of the 0.35 mm minimum.
+* **C20 pad 1**: the 0.900 mm east channel between C20's own pads takes a 0.35 mm track, but it is a
+  **dead end** — north is 0.675 mm to U10 pin 2, south is 0.225 mm to the `USB_D_CONN_P` merge.
+* **U10 pin 5 → C20 pad 1**: reachable in isolation, but the routes around U10 pin 1 (west) and pin 3
+  (east) are both **0.725 mm** against the N and P corridors — **75 microns short**.
+
+Three independent shortfalls of 55–75 microns, every one against copper that this pass hard-locks.
+**Connecting only the three reachable pads would close 2 of the 4 items while leaving C20 — the VBUS
+bulk reservoir — disconnected**, which inverts the topology this task asks to preserve. So nothing was
+routed on RAW.
+
+Unlocking it needs one of: a small C20 or U10 placement change; re-cutting the `USB_D_CONN_P` merge at
+y = 145.575; or via-in-pad on C20 pad 1 (its 1.000 x 1.450 mm pad would host a 0.80 mm via easily, but
+that is a new fabrication technology). **All three are outside this pass's authority.**
+
+### Corrections carried
+
+**HEADER RESERVED wording fixed.** The previous entry read "In1 still excluded", which reads as though
+In1 GND were removed. The board is right and the prose was ambiguous: the keepout has **F.Cu, B.Cu and
+In2 as members and In1 is not one**, so **In1 GND fill continues through the header region**, broken
+only by the normal J5 pad antipads. No geometry was changed.
+
+**U9 ledger carried forward: 6 EP vias + 2 external GND fanout vias**, at (26.550, 25.560) and
+(27.500, 25.560). U9 was not touched.
+
+### State
+
+| | |
+|---|---|
+| Tracks / vias | **165** (was 157) / **44** (was 43) |
+| Unconnected items | **490** (was 492) |
+| In1 GND | **10208.2 / 11181.0 mm2 = 91.30 %** |
+| Vias in 915 / 433 band | **0 / 0** |
+| F.Cu, B.Cu nets crossing the 915 band | **0 / 0 — B.Cu pristine** |
+| Staged E5 dangling | **20 READY_FOR_DIGITAL_ROUTE, not consumed** |
+| Placement | **188 footprints, none moved**; C20 at (35.000, 144.500) |
+| USB | **unchanged** — 0.25/0.20, 0.26 mm launch, 0.25/0.55 vias, E4 untouched |
+| DRC | **0 electrical errors** |
+
+**ROUTING PASS 1: FAIL** — USB_VBUS_RAW has 4 connections that cannot be made under the current locks
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
 **READY FOR DIGITAL ROUTING PASS: NO**
 **FULL ROUTING COMPLETE: NO**
