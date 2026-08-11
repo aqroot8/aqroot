@@ -6203,3 +6203,106 @@ area of the 11 new vias — expected, not a policy change.
 
 Next pass needs: the C55/U9 decision above, then USB + E4 + E5 + the +3V3 band crossing, then GND
 stitching. `scratchpad/pass1final.py` holds the working geometry for everything already routed.
+
+
+---
+
+## ROUTING PASS 1B — C55 closed without an exception, E5 corridors and crossings built; USB still open (2026-08-11)
+
+**0 DRC errors. Placement unchanged. No new custom rule was needed.** USB remains the one block not
+started, so Pass 1 still does not close.
+
+Starting HEAD `4580f04`, pushed `e6220da..4580f04` to `origin/master` before starting; no commit was
+made for the push.
+
+### The authorised C55 width exception turned out to be unnecessary
+
+**No rule was added.** Two measurements closed it:
+
+* The **C50 pad 2 → C52 pad 1 gap is 0.950 mm**. A full-width 0.35 mm `NFC_5V_PA_PENDING` track
+  centred at x = 23.700 leaves **0.300 mm each side** — above the 0.25 mm routed clearance. The
+  capacitors were never the obstruction.
+* The real blocker last pass was **my own U9 pad-12 GND fanout via at (24.000, 25.560)**, added in the
+  previous commit. It is relocated: pads 12 and 16 now share the (26.550, 25.560) plane tie through a
+  common rail south of U9, so the same three GND pins stay tied and the lane opens.
+
+The only sub-0.35 mm segments are the two 0.30 mm final approaches, both **inside U9's courtyard**,
+already covered by the existing pad-escape necking rule. So the escape is 0.30 mm, not the 0.20 mm
+authorised, and it is scoped by a rule that already existed.
+
+| | |
+|---|---|
+| Neck width | **0.30 mm** (the authorised 0.20 mm was not needed) |
+| Neck length | 1.00 mm to pin 10, 1.65 mm to pin 8; both wholly inside U9's courtyard |
+| Minimum clearance | **0.300 mm** to C50 pad 2 and C52 pad 1; 0.20 mm to U9 pins 9/11 |
+| Layer | F.Cu throughout — no via, no layer change |
+| **C55 pad1 → U9 pin 10** | **5.92 mm routed** (4.469 mm straight-line) |
+| **C55 pad1 → U9 pin 8** | **7.47 mm routed** (4.875 mm straight-line) |
+
+The 1.5–2.6 mm overhead is the detour around C50/C52. C19 untouched.
+
+### Other nets closed
+
+| Net | Result |
+|---|---|
+| **ISET** | **7.50 mm, 2 vias** (0.25/0.50). Pin 8 → F.Cu east → In2 beneath the ILIM run → R37. TS/MR re-laid 0.2 mm west to clear the via. **Now fully routed.** |
+| **U13 FB** | **8.49 mm, 2 vias.** Takes its crossing of the SYS escape on In2, sandwiched under In1 GND — quieter than any F.Cu detour. **Minimum SW↔FB separation 1.59 mm**, and the two are on different layers with In1 between them. |
+| **BQ25185_SYS** | 81.04 mm, **2 ratsnest items left** — both to SW9, the hard-off switch, whose EN partner is deferred. Left as a pair. |
+
+### Corridors and crossings
+
+| Structure | Length | Notes |
+|---|---|---|
+| **E5 C-W** (X 8–20) | **280 mm** over 5 nets | `SD_CS_N`, `SPI_A_SCK/MOSI/MISO`, `BTN_HOME_N` at x 9.0–13.8, 1.2 mm pitch, In2, y 85→141 — crosses **both** bands |
+| **E5 C-E** (X 58–70) | **320 mm** over 10 nets | `SPI_B_*`, `SX1262_*` ×5, `CC1101_*` ×2 at x 59–68, 1.0 mm pitch, In2, y 85→117 |
+| **+3V3 crossing** | **30 mm** In2 at 0.60 mm | y 86→116, enclosed by C-E; vias at (69.100, 86.000) and (69.100, 116.000); B.Cu continues south to y 141 |
+| **E4 VBUS** | **34 mm** | In2 at 0.50 mm, y 86→116, enclosed by `E4 VBUS LANE`; vias at (56.000, 116.000) and (56.000, 86.000) |
+
+**+3V3 drop:** 0.60 mm on 0.5 oz In2, 30 mm in-band → 50 squares × 0.991 mΩ = **49.6 mΩ**; at the
+derived 235 mA that is **11.6 mV**, and 15.1 mV at the 305 mA design figure.
+
+> **A rule mechanic worth recording.** `enclosedByArea` can never be satisfied by a track that
+> *enters or leaves* a corridor — the end cap always pokes past the boundary. So a corridor crossing
+> must hand off by **via inside the corridor margin**, which is exactly what §10's "layer transitions
+> outside Y88–114" asks for. All four crossing structures are built that way, and every E5 segment is
+> pulled 1 mm inside its corridor ends for the same reason.
+
+### USB — still not started, and the blocker is now precisely located
+
+**C20 sits directly between J3 and U10.** Its pads occupy x 33.550–34.550 and 35.450–36.450 at
+y 144.075–145.525, leaving a **0.9 mm gap** between them. A 0.30/0.20/0.30 pair needs **1.20 mm**
+with clearance, so the pair cannot pass between C20's pads. Going around: the western corridor
+(R30 pad 2 → C20 pad 1) is **1.325 mm** and does fit; the eastern one is **0.925 mm** and does not.
+Combined with J3's four interleaved pads (D+ at 34.75/35.75 with D− at 34.25/35.25 *between* them,
+0.5 mm pitch, needing a via-based merge that 0.60 mm via pads cannot host without fanning out first),
+USB needs a dedicated pass. **No J3 escape rule was added, because none was used.**
+
+Also deferred: VBUS's two hand-off runs from the E4 vias to R35 and to the committed C23 hop — SW7
+pad 1 sits directly at the corridor mouth (x ~55.2–56.8, y ~115.6–116.9), so the south hand-off has
+no room until USB routing settles that area.
+
+### Totals and audit
+
+| | |
+|---|---|
+| Tracks / vias | **118** (F.Cu 79, In2 21, B.Cu 18) / **37** (20×0.25, 15×0.40, 2×0.30) |
+| Nets carrying copper | **32** |
+| Fully routed | **10** — ILIM_VSET, **ISET**, R_FB_TOP, BL_SW, LED_BOOST, BAT_PROTECTED_P, both L1 nodes, **TS_MR**, U13_SW |
+| Partially routed | 22 |
+| Unconnected items | 499 (each reserved E5 segment adds ratsnest until its ends are routed) |
+| **In1 GND** | **10214.5 / 11181.0 mm² = 91.36 %** |
+| **Vias inside an RF band** | **NONE** |
+| **B.Cu tracks in the 915 band** | **0** — pristine |
+| Deferred RF / NFC nets with copper | **NONE** |
+
+**DRC 0 errors**, 256 warnings (132 silk-over-copper, 96 silk-overlap, **20 dangling tracks + 4
+dangling vias — the reserved E5 crossing segments and corridor hand-off vias**, 3 silk-edge, 1 text).
+**ERC 116 / 58 excluded / 58 live, zero delta.** **Placement 188 footprints, zero moved.** Schematic
+untouched. `aqroot-Beta.kicad_dru` untouched.
+
+### Status
+
+**ROUTING PASS 1: FAIL** — USB not started; VBUS and SYS have hand-offs open
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
