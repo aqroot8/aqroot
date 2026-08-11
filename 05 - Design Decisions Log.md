@@ -6405,3 +6405,106 @@ excluded / 58 live, zero delta**. **Placement: 188 footprints, C20 the only one 
 **POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
 **READY FOR DIGITAL ROUTING PASS: NO**
 **FULL ROUTING COMPLETE: NO**
+
+
+---
+
+## USB routed end to end — 0.25/0.20 geometry, and the two numbers that made it work (2026-08-11)
+
+USB is **closed**. It took a geometry change, and the reason four earlier passes failed is now a
+measured fact rather than a suspicion: **0.30/0.20 put the track width at the exact maximum the
+connector's 0.5 mm pad pitch permits**, leaving 0.000 mm of margin on every one of the four escapes.
+
+### The insight
+
+At a fixed 0.5 mm pitch the adjacent-copper gap is `0.5 − W` and depends on **W alone**, while Zdiff
+depends on **W and S**. The two can therefore be traded independently — which the original geometry
+never exploited:
+
+| Geometry | Zdiff (F.Cu over In1) | Gap at 0.5 mm pitch | Margin vs 0.20 mm |
+|---|---|---|---|
+| 0.30 / 0.20 (old) | 89.3 Ω | 0.200 mm | **+0.000** |
+| 0.25 / 0.25 | 102.3 Ω | 0.250 mm | +0.050 |
+| **0.25 / 0.20 (adopted)** | **97.6 Ω** | **0.250 mm** | **+0.050** |
+| 0.25 / 0.14 | 90.2 Ω | 0.250 mm | +0.050 |
+
+0.25/0.14 hits 90 Ω almost exactly, but a sub-0.20 mm intra-pair gap would have needed a P-to-N
+clearance exception. **8 Ω of accuracy was traded to avoid that exception** — at Full Speed the
+12 Mb/s edges are indifferent to +8.4 %, and no clearance rule anywhere on the board was weakened.
+
+### Two mechanics worth recording
+
+> **A 0.55 mm via pad on a 0.45 mm pair pitch always clashes with the other polarity's track**, no
+> matter which polarity transitions first, and no manufacturable through-via is small enough to fix it
+> (JLC's floor is 0.20 drill + 0.1275 ring = 0.455 mm pad, still larger than the pitch). So **both**
+> polarities splay symmetrically at every transition and re-converge after it. This is what the 17 mm
+> `diff_pair_uncoupled` budget exists for; three passes were spent trying to make one polarity hop
+> alone, which cannot work.
+
+> **The 0.5 mm pitch also breaks `diff_pair_gap`, and the fix is the width tolerance, not a rule.**
+> At W = 0.25 the on-pitch gap is 0.250 mm — 0.010 mm *over* the 0.24 mm max. Widening only the
+> on-pitch segments to **0.26 mm**, inside the approved 0.23–0.27 band, lands the gap on exactly
+> 0.240 mm. Every segment still on the connector pitch carries 0.26; the nominal 0.25/0.20 pair
+> geometry begins past it. **Six DRC errors closed with no rule change and no exception.**
+
+### J3 fanout, as built
+
+Straight parallel stubs from the pad row to y = 146.900 — far enough to clear the pads at 147.070 and
+nothing more, which preserves the full 0.25 mm gap. **No diagonal begins inside the pad shadow.** A6/B6
+then hold pitch for a further 0.200 mm before turning: the perpendicular from B7's stub end-cap to A6's
+diagonal was 0.452 mm, which after both half-widths left 0.197 — 3 µm short, and only visible in DRC.
+
+**A7 (N) is the single polarity that hops**, on B.Cu from (35.250, 146.200) to (33.500, 146.200). Once
+it is off F.Cu the x = 35.25 lane is vacant, so **A6 and B6 (both P) merge straight over the top of it**
+— one crossing resolves both merges, which is the only way two merges fit the 1.845 mm band. The P
+merge at y = 145.575 sits in a 0.700 mm channel between C20's pads (145.225) and the via pads (145.925),
+clearing both by 0.225 mm.
+
+### Metrics
+
+| Segment | P | N | Skew | Vias | Uncoupled |
+|---|---|---|---|---|---|
+| CONN | 11.05 mm | 9.32 mm | 1.72 mm | 2 (N) | 9.45 mm |
+| ESD | 3.08 mm | 4.73 mm | 1.65 mm | 0 | 4.73 mm |
+| MCU (incl. E4) | 67.01 mm | 75.35 mm | 8.35 mm | 4 | **13.35 mm** |
+| **TOTAL J3→U1** | **81.14 mm** | **89.41 mm** | **8.27 mm** | **6** | max **13.35 / 17 mm** |
+
+**Skew 8.27 mm ≈ 60 ps**, which is 0.07 % of a Full Speed bit and immaterial. It is architectural, not
+sloppy: R33 sits west of U10 and R34 east, so N makes a westward excursion to R33 and comes back. It
+would matter at High Speed and does not here.
+
+**E4:** In2 only, N 30.00 mm at x = 53.400, P 30.09 mm at x = 53.850 (both inside the 53.0–54.3 west
+lane). Transition vias at **(53.400, 116.000) / (54.150, 116.000)** south and **(53.400, 86.000) /
+(54.150, 86.000)** north — all four **outside Y 88–114**, clearing the band by 2.0 mm. **Minimum
+USB↔VBUS copper-to-copper on In2: 1.475 mm** against the 1.0 mm requirement.
+
+> The P via pads overhang the west lane's 54.3 mm edge; the P **tracks** do not (max edge 54.275 mm).
+> `enclosedByArea` checks tracks, and the two In2 splay diagonals were re-cut from 54.200 to 54.150
+> for exactly this reason.
+
+### E4 impedance — accepted by analysis, not validated
+
+At 0.25/0.20 the In2 section reads **≈139.8 Ω** against the 90 Ω F.Cu target (reflection coefficient
+0.22), because In1 is 1.065 mm away across the core rather than 0.2104 mm through prepreg. The section
+is **≈216 ps one way** and USB here is Full Speed. Recorded in the DRU as
+**USB E4 IMPEDANCE DISCONTINUITY → BETA SIGNAL-INTEGRITY / BRING-UP VERIFY**. **Not production-validated.**
+
+### State
+
+**DRC 0 errors**, 258 warnings (132 silk-over-copper, 96 silk-overlap, 20 dangling tracks + 6 dangling
+vias — the reserved E5 segments and corridor hand-offs, awaiting the digital pass — 3 silk-edge,
+1 text). **ERC 116 / 58 excluded / 58 live, zero delta.** **Placement 188 footprints, none moved this
+pass**; C20 remains at (35.000, 144.500). **Schematic untouched.**
+
+| | |
+|---|---|
+| Tracks / vias | **153** (was 118) / **43** (was 37) |
+| USB tracks / vias added | **35 / 6** |
+| In1 GND | **10209.6 / 11181.0 mm² = 91.31 %** (−4.9 mm² for the six new via clearances) |
+| **USB vias in an RF band** | **NONE** — all six audited against 915 (Y 88–114) and 433 (X 0–52.5, Y 115–138) |
+| **B.Cu tracks in the 915 band** | **0** — pristine |
+| E5 rules changed | **none** |
+
+**USB ROUTING: PASS**
+**USB / E4 INFRASTRUCTURE LOCK: YES**
+**ROUTING PASS 1 USB BLOCKER: CLOSED**

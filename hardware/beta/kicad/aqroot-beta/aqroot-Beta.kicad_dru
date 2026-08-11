@@ -228,8 +228,14 @@
 
 (rule "E4: USB differential geometry on In2"
 	(layer "In2.Cu")
-	(constraint track_width (min 0.25mm) (opt 0.30mm) (max 0.35mm))
+	(constraint track_width (min 0.23mm) (opt 0.25mm) (max 0.27mm))
 	(condition "A.hasNetclass('USB_D') && A.intersectsArea('E5 CORRIDOR E4')"))
+
+# At the approved 0.25/0.20 geometry the In2 section reads ~139.8 ohm against the
+# 90 ohm F.Cu target (reflection coefficient 0.22).  The section is ~216 ps one
+# way and USB here is Full Speed, so it is accepted BY ANALYSIS ONLY:
+# USB E4 IMPEDANCE DISCONTINUITY -> BETA SIGNAL-INTEGRITY / BRING-UP VERIFY.
+# Not production-validated.
 
 (rule "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
 	(layer outer)
@@ -238,7 +244,14 @@
 
 (rule "USB 2.0 trace width on the outer layers"
 	(layer outer)
-	(constraint track_width (min 0.28mm) (opt 0.30mm) (max 0.32mm))
+	(constraint track_width (min 0.23mm) (opt 0.25mm) (max 0.27mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+# Uncoupled budget for the pair.  The J3 fanout, the C20 west/east split and the
+# via splays are all legitimately uncoupled; declaring the budget is honest where
+# pretending the pair stays coupled through them would not be.
+(rule "USB uncoupled length budget"
+	(constraint diff_pair_uncoupled (max 17mm))
 	(condition "A.hasNetclass('USB_D')"))
 
 
