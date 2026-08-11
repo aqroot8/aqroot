@@ -3,7 +3,7 @@
 	(generator "aqroot-beta-library")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Texas Instruments TPS63020DSJR, DSJ (R-PVSON-N14) plastic small outline no-lead, 14 pins plus exposed thermal pad. Geometry taken from TI drawings 4210895-2/E 02/16 (LAND PATTERN DATA) and 4208549-3/G 04/15 (THERMAL PAD MECHANICAL DATA). Signal lands 0.24 x 0.60 with R0.12 (fully rounded = oval), 0.5 mm pitch, 7 per row, row centres 2.8 mm apart so y = +/-1.4, x = 0, +/-0.5, +/-1.0, +/-1.5. Non-solder-mask-defined with 0.07 mm mask expansion all round per the drawing. Exposed thermal pad 2.85 +/-0.10 x 1.58 +/-0.10. Pin 1 is bottom-left in top view, per the circled callout on TI's Example Board Layout; numbering runs 1-7 left to right along the bottom row then 8-14 right to left along the top row. THERMAL PAD SIMPLIFICATION - TI's Example Board Layout draws the thermal land with 4 x 0.20 mm slots per flank at 0.46 mm spacing, forming a comb on a SINGLE contiguous pad (they are NOT separate pads; this was confirmed by rasterising the drawing at 900 dpi). This footprint implements the plain TI-dimensioned 2.85 x 1.58 envelope instead of reproducing the comb, which is conservative - more thermal copper, same outline. Paste is reduced by solder_paste_margin_ratio -0.05, giving 0.9 linear and therefore 0.81 area, matching TI's stated 81 percent solder coverage by printed area on the centre thermal pad. TI also recommends 15 thermal vias of 0.2 mm within the pad (5 x 3 grid); vias are a layout task and are NOT part of this footprint. See TI SLUA271.")
+	(descr "Texas Instruments TPS63020DSJR, DSJ (R-PVSON-N14) plastic small outline no-lead, 14 pins plus exposed thermal pad. Geometry taken from TI drawings 4210895-2/E 02/16 (LAND PATTERN DATA) and 4208549-3/G 04/15 (THERMAL PAD MECHANICAL DATA). Signal lands 0.24 x 0.60 with R0.12 (fully rounded = oval), 0.5 mm pitch, 7 per row, row centres 2.8 mm apart so y = +/-1.4, x = 0, +/-0.5, +/-1.0, +/-1.5. Non-solder-mask-defined with 0.07 mm mask expansion all round per the drawing. Exposed thermal pad 2.85 +/-0.10 x 1.58 +/-0.10. Pin 1 is bottom-left in top view, per the circled callout on TI's Example Board Layout; numbering runs 1-7 left to right along the bottom row then 8-14 right to left along the top row. THERMAL PAD SIMPLIFICATION - TI's Example Board Layout draws the thermal land with 4 x 0.20 mm slots per flank at 0.46 mm spacing, forming a comb on a SINGLE contiguous pad (they are NOT separate pads; this was confirmed by rasterising the drawing at 900 dpi). This footprint implements the plain TI-dimensioned 2.85 x 1.58 envelope instead of reproducing the comb, which is conservative - more thermal copper, same outline. Paste is reduced by solder_paste_margin_ratio -0.05, giving 0.9 linear and therefore 0.81 area, matching TI's stated 81 percent solder coverage by printed area on the centre thermal pad. TI also recommends 15 thermal vias of 0.2 mm within the pad (5 x 3 grid); vias are a layout task and are NOT part of this footprint. See TI SLUA271. PAD NUMBERING: TI SLVS916I Pin Functions lists 14 numbered pins (1-14); PGND and the Exposed Thermal Pad both carry pin number \"-\" and TI states the exposed thermal pad IS PGND. The project symbol models that single terminal as TWO pins (15 PGND, 16 EP), so the one thermal land carries BOTH pad numbers: pad 15 defines the copper, mask and paste; pad 16 is copper-only and exactly co-located. No extra copper, mask or paste is created.")
 	(tags "TI TPS63020 DSJ VSON PVSON-N14 buck-boost thermal-pad")
 	(attr smd)
 	(fp_text reference "REF**"
@@ -156,5 +156,10 @@
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(solder_mask_margin 0.07)
 		(solder_paste_margin_ratio -0.05)
+	)
+	(pad "16" smd rect
+		(at 0 0)
+		(size 2.85 1.58)
+		(layers "F.Cu")
 	)
 )
