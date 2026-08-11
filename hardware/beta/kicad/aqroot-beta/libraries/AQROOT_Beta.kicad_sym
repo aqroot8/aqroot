@@ -3262,7 +3262,7 @@
 				)
 			)
 		)
-		(property "Note" "Pins 15 and 16 are KiCad-only logical numbers for the unnumbered power-ground pad and exposed thermal pad. Verify exact footprint pad mapping against the TI DSJ package drawing before routing."
+		(property "Note" "TI SLVS916I section 5 defines the DSJ package as 14 numbered pins plus ONE exposed thermal pad; TI gives PGND and the exposed thermal pad pin number '-' and states the exposed thermal pad is connected to PGND. Pin/pad 15 (PGND_EP) is the AQROOT/KiCad logical identifier for that unnumbered exposed PGND thermal pad; it is NOT a manufacturer package pin number. There is no pin 16 - an earlier model wrongly split the single thermal terminal into 15 PGND + 16 EP."
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -3561,7 +3561,7 @@
 			(pin power_in line
 				(at 0 -20.32 90)
 				(length 5.08)
-				(name "PGND"
+				(name "PGND_EP"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -3569,24 +3569,6 @@
 					)
 				)
 				(number "15"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin power_in line
-				(at 7.62 -20.32 90)
-				(length 5.08)
-				(name "EP"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "16"
 					(effects
 						(font
 							(size 1.27 1.27)

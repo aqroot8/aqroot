@@ -4759,13 +4759,6 @@
 			(solder_paste_margin_ratio -0.05)
 			(uuid "6e2b1f95-52dc-4b91-af3e-45af7091f58e")
 		)
-		(pad "16" smd rect
-			(at 0 0)
-			(size 2.85 1.58)
-			(layers "F.Cu")
-			(net "GND")
-			(uuid "41a13c10-7293-4884-9261-f3eb8490e202")
-		)
 		(embedded_fonts no)
 	)
 	(footprint "TestPoint:TestPoint_Pad_D1.0mm"

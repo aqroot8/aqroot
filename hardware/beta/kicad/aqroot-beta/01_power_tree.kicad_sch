@@ -972,7 +972,7 @@
 					)
 				)
 			)
-			(property "Note" "Pins 15 and 16 are KiCad-only logical numbers for the unnumbered power-ground pad and exposed thermal pad. Verify exact footprint pad mapping against the TI DSJ package drawing before routing."
+			(property "Note" "TI SLVS916I section 5 defines the DSJ package as 14 numbered pins plus ONE exposed thermal pad; TI gives PGND and the exposed thermal pad pin number '-' and states the exposed thermal pad is connected to PGND. Pin/pad 15 (PGND_EP) is the AQROOT/KiCad logical identifier for that unnumbered exposed PGND thermal pad; it is NOT a manufacturer package pin number. There is no pin 16 - an earlier model wrongly split the single thermal terminal into 15 PGND + 16 EP."
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1275,7 +1275,7 @@
 				(pin power_in line
 					(at 0 -20.32 90)
 					(length 5.08)
-					(name "PGND"
+					(name "PGND_EP"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1283,24 +1283,6 @@
 						)
 					)
 					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 7.62 -20.32 90)
-					(length 5.08)
-					(name "EP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4805,16 +4787,6 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 88.9) (xy 256.54 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ee663e7-80eb-464e-b191-293cf25aac29")
-	)
-	(wire
-		(pts
 			(xy 63.5 149.86) (xy 63.5 151.13)
 		)
 		(stroke
@@ -7692,84 +7664,6 @@
 			(project "aqroot-Beta"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#PWR0108")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 256.54 88.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "19c79895-eda5-4318-b08d-af5c2009803e")
-		(property "Reference" "#PWR0131"
-			(at 256.54 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 256.54 93.98 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 256.54 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 256.54 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7eaac83a-0807-4ccb-9996-7b3f00969647")
-		)
-		(instances
-			(project "aqroot-Beta"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
-					(reference "#PWR0131")
 					(unit 1)
 				)
 			)
@@ -11466,9 +11360,6 @@
 		)
 		(pin "15"
 			(uuid "043d84da-8fc5-4e29-9245-f1360b62e89f")
-		)
-		(pin "16"
-			(uuid "20ed925a-eb7f-47a2-b5a6-0c3d04bb4615")
 		)
 		(pin "14"
 			(uuid "d67c162e-353a-4c8d-af64-94251e3635b6")

@@ -4935,3 +4935,83 @@ before it is quoted again.
 ### Commits
 
 `e1b04ab` symbol + footprint assets · `2bb1497` integration
+
+---
+
+## TPS63020 (U12) model normalized to the physical TI package (2026-08-10)
+
+**Do not reintroduce a pin 16 on this part.**
+
+### What TI actually documents
+
+`TPS63020DSJR`, **DSJ** package. Source: **TI SLVS916I**, *TPS63020, TPS63021 — TPS6302x High
+Efficiency Single Inductor Buck-boost Converter with 4-A Switches*, July 2010, **revised October
+2019**, section **5 "Pin Configuration and Functions"**, page 4 — headed *"DSJ Package, 14-Pin VSON
+with Exposed Thermal Pad, Top View"*.
+
+The Pin Functions table gives:
+
+| NAME | NO. | NAME | NO. |
+|---|---|---|---|
+| VINA | 1 | VIN | 10, 11 |
+| GND | 2 | EN | 12 |
+| FB | 3 | PS/SYNC | 13 |
+| VOUT | 4, 5 | PG | 14 |
+| L2 | 6, 7 | **PGND** | **-** |
+| L1 | 8, 9 | **Exposed Thermal Pad** | **-** |
+
+and states verbatim: **"The exposed thermal pad is connected to PGND."**
+
+So the physical device is **14 numbered pins plus ONE exposed thermal pad**, and that pad *is* PGND.
+**TI does not number PGND or the exposed pad.** There is no 15th signal/power pin and no 16th
+terminal of any kind.
+
+### What the project used to model, and why it was wrong
+
+The original project symbol invented **two** pins for TI's single unnumbered terminal:
+`15 = PGND` and `16 = EP`, both tied to GND. The footprint, built correctly from TI land-pattern
+`4210895-2/E` and thermal-pad data `4208549-3/G`, has 14 signal lands plus one thermal land — so
+symbol pin 16 had no pad. That surfaced as a KiCad schematic-parity error, *"No pad found for pin 16
+(GND)"*, the moment U12 was placed during power placement.
+
+It was never an electrical fault: both invented pins were GND, and the one physical thermal pad is
+GND. It was a modelling fault.
+
+### The AQROOT convention (binding)
+
+**Pad/pin 15 is the AQROOT/KiCad logical identifier for TI's unnumbered exposed PGND thermal pad.
+It is NOT a manufacturer package pin number.** The pin is named `PGND_EP`, electrical type
+`power_in`.
+
+This matches the convention already used elsewhere in the project library — the exposed pad takes
+the next number after the last manufacturer pin: BQ25185 (10 pins) → EP 11, MAX17048 (8) → EP 9,
+ST25R3916 (32) → EP 33, and now TPS63020 (14) → **PGND_EP 15**.
+
+### What changed
+
+1. **Project symbol** `AQROOT_Beta:TPS63020` — pin 16 (`EP`) deleted; pin 15 renamed `PGND` →
+   `PGND_EP`; the misleading `Note` property replaced with the TI-verified statement above.
+2. **`01_power_tree.kicad_sch`** — `lib_symbols` cache updated identically; the `(pin "16")` entry
+   removed from the U12 instance; the now-orphaned wire stub `(256.54, 88.9)-(256.54, 87.63)` and
+   the GND power symbol at `(256.54, 88.9)` that terminated it removed, so no dangling endpoint is
+   created. No component moved, no other net touched.
+3. **Footprint** `AQROOT_Beta:TI_TPS63020_DSJ` — the temporary coincident `pad 16` (added
+   `788fff0` as a compatibility shim) removed. The part is back to **14 signal lands + one thermal
+   land numbered 15**. TI-verified geometry, mask, paste, courtyard and via guidance untouched.
+4. **PCB** — U12's `pad 16` instance removed. U12 unchanged at **(65.5000, 51.0000), rotation 0,
+   TOP**; all 71 footprint positions identical.
+
+### Verification
+
+- Schematic netlist: 174 nets before and after; none added, none removed. **Exactly one membership
+  change: GND lost the node `(U12, 16)`.** No other net altered. U12 now presents 15 pins, pin 15 →
+  GND.
+- Canonical ERC: **58 violations / 58 exclusions / 0 live / 0 stale** — unchanged. Removing the wire
+  and power symbol created no new defect and stranded no exclusion.
+- PCB DRC: 57 violations, unchanged in composition, **0 U12-related**. The schematic-parity
+  `net_conflict` is gone.
+
+### Commits
+
+`788fff0` temporary coincident pad-16 compatibility fix (superseded) · this entry: permanent
+symbol/footprint/PCB normalization
