@@ -6724,3 +6724,83 @@ only by the normal J5 pad antipads. No geometry was changed.
 **POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
 **READY FOR DIGITAL ROUTING PASS: NO**
 **FULL ROUTING COMPLETE: NO**
+
+
+---
+
+## Moving C20 east does NOT unlock USB_VBUS_RAW — and my previous diagnosis was wrong (2026-08-11)
+
+The C20 lock was released eastward to close `USB_VBUS_RAW`. **The sweep shows the move cannot work, so
+C20 was not moved and no copper was changed.** Two of my own earlier numbers were wrong and are
+corrected below.
+
+### Correction 1: the binding channel is west, not east
+
+Last pass I reported C20 pad 1's escape sides as `west 0.525 / east 0.900 / north 0.675 / south 0.225`
+and concluded the 0.900 mm east channel was "the only viable side". That measurement **charged a
+clearance against C20's own pad 1**. The escape track is `USB_VBUS_RAW` — *the same net as pad 1* — so
+no clearance applies on that side at all. The track may overlap the pad; it connects to it.
+
+Re-measured correctly, **a 0.50 mm track already attaches to C20 pad 1 from the west at d = 0**:
+centred at x = 33.525 it holds 0.250 mm to the `USB_D_CONN_N` corridor and its right edge lands at
+33.775, well inside pad 1. Attaching was never the problem.
+
+**Travelling is.** Once attached, the track must run north or south along that channel:
+
+| Channel | Bounded by | Width | 0.35 mm track needs | Short by |
+|---|---|---|---|---|
+| north (travel) | `USB_D_CONN_N` right edge 33.025 → U10 pin 1 left edge 33.750 | **0.725 mm** | 0.25 + 0.35 + 0.20 = 0.800 | **75 µm** |
+| south | C20 pad 1 bottom 145.225 → `USB_D_CONN_P` merge top 145.450 | **0.225 mm** | 0.800 | unusable |
+
+**Neither channel contains C20.** Both are bounded by the two locked USB corridors and by U10. Moving
+C20 east cannot widen either one.
+
+### Correction 2: +0.6 mm east is not legal, and would not have helped
+
+I suggested "moving C20 ~0.6 mm east" as the cheapest unlock. The full-constraint sweep — every C20 pad
+against every non-C20 pad, track and via, plus courtyard overlap, in 0.025 mm steps — caps the window
+much earlier:
+
+| Limit | Cap on d |
+|---|---|
+| C20 pad 2 vs the `USB_D_CONN_P` east corridor (x 37.100, left edge 36.975) | **d ≤ 0.300** (0.325 fails DRC) |
+| C20 courtyard vs R31 courtyard | d ≤ 0.730 |
+| C20 courtyard vs U10 courtyard | 0.080 mm, unaffected by eastward motion |
+
+So the legal window is **d ≤ 0.300 mm**, and at that maximum the pad-1 west channel reaches only
+0.825 mm — still 0.35 mm width with **0.025 mm** of margin, which section 4 of the directive explicitly
+refuses. **No eastward displacement satisfies the requirement.** C20 stays at (35.000, 144.500).
+
+### What would actually unlock it
+
+The 75 µm shortfall is in the `USB_D_CONN_N` → U10 pin 1 channel, and that corridor has room to move
+**away** from U10:
+
+| | |
+|---|---|
+| `USB_D_CONN_N` vertical, x = 32.900, w 0.25 → left edge | 32.775 |
+| R30 pad 2 right edge | 32.225 |
+| **clearance available today** | **0.550 mm** |
+| shift needed for a 0.35 mm RAW track | **0.075 mm** |
+| shift for 0.10 mm routing margin | **0.175 mm** |
+| clearance to R30 pad 2 after a 0.175 mm shift | **0.375 mm** (0.20 required) |
+
+Shifting that one straight segment 0.175 mm west takes the channel to 0.900 mm and closes the RAW
+escape with margin. The segment is a single-ended uncoupled run through the C20 bypass region — it is
+already inside the 17 mm uncoupled budget, so the shift changes no impedance, no coupling and no skew.
+**It is a USB change, which this pass hard-locks, so it was not made.**
+
+The alternative that touches no USB copper is a **U10 placement change** — moving U10 ~0.1 mm east
+widens the same channel — but U10 is fixed by the same section.
+
+### State
+
+**Nothing was routed and nothing was moved.** Board geometry is byte-identical to `aaf8e27`: 165 tracks,
+44 vias, 188 footprints, C20 at (35.000, 144.500), DRC **0 electrical errors**, ERC **116 / 58 excluded
+/ 58 live**. `USB_VBUS_RAW` still has **4** open connections; every other Pass-1 net is closed.
+
+**USB_VBUS_RAW: FAIL**
+**ROUTING PASS 1: FAIL**
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
