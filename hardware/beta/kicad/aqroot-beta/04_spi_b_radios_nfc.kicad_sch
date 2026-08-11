@@ -9863,7 +9863,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 158.445 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -9918,7 +9918,7 @@
 				)
 			)
 		)
-		(property "Package" "0805 (2012 metric)"
+		(property "Package" "0603 (1608 metric)"
 			(at 157.48 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -9940,7 +9940,7 @@
 				)
 			)
 		)
-		(property "Note" "ST25R3916 VDD / VDD_TX local BULK decoupling for pulsed NFC transmitter current: NFC_5V_PA_PENDING -> C55 -> GND, placed electrically at the external supply input alongside the C19 HF decoupler. LOCKED VALUE FOR BETA, but VALUE TO BE RECONFIRMED DURING ST REFERENCE / BOM REVIEW."
+		(property "Note" "ST25R3916 VDD / VDD_TX local BULK decoupling for pulsed NFC transmitter current: NFC_5V_PA_PENDING -> C55 -> GND, placed electrically at the external supply input alongside the C19 HF decoupler. LOCKED VALUE FOR BETA, but VALUE TO BE RECONFIRMED DURING ST REFERENCE / BOM REVIEW. 2026-08-11 pre-routing pass: package changed 0805 -> 0603 and the part moved from (10.0, 19.0) to (22.225, 29.40) rot 270, giving 4.875 mm to U9 pin 8 and 4.469 mm to pin 10 (CTO target was <=3.0 mm; NOT met - C50 and C52 hold the only closer space and placement is locked). The new position is inside the TOP panel shadow X12-62 Y9-78, so C55 now carries the <=0.80 mm panel ceiling. NO 2.2uF >=10V X7R MLCC in 0603 or 0805 has a documented MAX height <=0.80 mm (0603 is 0.80+/-0.10 -> 0.90 max; Murata GRM21BR71E225KA73 0805 is 1.25+/-0.15 -> 1.40 max), so height is an OPEN BOM/MECH item shared with the other 0603s already in the panel shadow. DC-bias requirement: >=1.2 uF effective at 5.0 V - 16 V X7R 0603 is specified for that margin."
 			(at 157.48 133.35 0)
 			(hide yes)
 			(show_name no)

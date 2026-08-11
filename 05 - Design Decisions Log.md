@@ -5015,3 +5015,475 @@ ST25R3916 (32) → EP 33, and now TPS63020 (14) → **PGND_EP 15**.
 
 `788fff0` temporary coincident pad-16 compatibility fix (superseded) · this entry: permanent
 symbol/footprint/PCB normalization
+
+---
+
+## PRE-ROUTING RULE SYSTEM implemented; C55 moved; routing still NOT authorised (2026-08-11)
+
+Closes the deterministic work the *FINAL PRE-ROUTING CTO / RF RULING* required before routing.
+**No signal traces were drawn. Placement is unchanged except C55.**
+
+### BQ25185 current setting — verified against TI, not memory
+
+**Source: TI `SLUSF65A`**, *BQ25185 1-Cell, 1A Standalone Linear Battery Charger with Power Path,
+Factory Mode, and Battery Tracking VINDPM*, October 2023, **revised January 2026**.
+
+`R36 = 18 kΩ` sits on `ILIM_VSET` (U11 **pin 7**) to GND. `R37 = 2 kΩ` sits on `ISET`
+(U11 **pin 8**) to GND. Confirmed from the netlist, not inferred.
+
+| | R36 — ILIM/VSET | R37 — ISET |
+|---|---|---|
+| Function | sets **input current limit AND battery regulation voltage** together | sets fast-charge current |
+| Mechanism | **discrete selection table**, not an equation — §7.3.6 *Table 7-1, ILIM and VBATREG Resistor Map* (p.16) | equation (1), §7.1.1.4 *ISET Pin Detection* |
+| Equation / constant | none — 18 kΩ is a table row | `ICHG = KISET / RISET`, `KISET` = 285 / **300** / 315 AΩ |
+| Programmed result | **ILIM500** and **VBATREG = 4.2 V**, `VLOWV` = 3.0 V | `300 AΩ / 2000 Ω` = **150 mA** |
+| Effective after device limits | EC table `ILIM`: **450 / 475 / 498 mA** at VIN = 5 V | EC table row *"Charge current accuracy at 150 mA, RISET = 2.0 kΩ"*: **135 / 150 / 165 mA** |
+| Clipped? | **No.** 500 mA is a native setting. | **No.** Well under the 1 A device maximum and far above `RISET_SHORT` = 264 Ω. |
+
+Table 7-1 was reconstructed from glyph coordinates rather than reading-order text, because the
+`VBATREG` column uses merged cells spanning 2–3 resistor rows and flat extraction interleaves them
+wrongly. The reconstruction closes exactly: 14 resistor rows, 7 `VBATREG` values, groups of
+2/2/2/**3**/2/1/2. `VLOWV` = 3.0 V is a single cell spanning all 14 rows.
+
+**R36 = 18 kΩ is byte-identical to TI's own design example.** §8.2.2.1: *"To configure the device for
+a battery regulation voltage (VBATREG) of 4.2 V and an input current limit of 500 mA, set the
+RILIM/VSET resistor to 18 kΩ."* Nothing to change.
+
+Derived consequences: `IPRECHG` = 20 % of ICHG = **30 mA**; `ITERM` = 10 % of ICHG = **15 mA**;
+`VSYS_REG` = 4.5 V; input budget at ILIM500 ≈ 475 mA × 5 V = **2.4 W**, and SYS has priority over
+charging, so the 640 mA `+3V3` burst enters supplement mode from the battery as architected.
+
+> **REPORTED, NOT CHANGED — ISET is far below what this log previously anticipated.** The
+> BQ25185 package entry (2026-08-07) records *"charge current setting (ISET, start ~500 mA pending
+> enclosure thermal testing)"*. The implemented `R37 = 2 kΩ` gives **150 mA**, not 500 mA. Against
+> the 2000 mAh pack that is **0.075 C** and a >13 h charge from empty. It is electrically valid — it
+> is conservative, it will not provoke a thermal problem, and it is inside every device limit — so
+> per the ruling **no resistor value was changed**. Closing this is a charging-policy decision:
+> 500 mA needs `RISET = 600 Ω`, 300 mA needs `1 kΩ`. **CTO decision required before BOM lock.**
+
+### Fabrication stackup — SELECTED
+
+**JLCPCB `JLC04161H-7628`**, from JLCPCB's published impedance/stackup tables. The name decodes to
+JLC / 04 layers / 1.6 mm / 1 oz outer / **H** = half-ounce inner / 7628 prepreg — exactly the
+architecture the ruling locked.
+
+| | |
+|---|---|
+| Finished thickness | 1.6 mm |
+| Outer copper | 0.035 mm (1 oz) |
+| **F.Cu → In1 dielectric** | **7628 prepreg, 0.2104 mm, Dk 4.4** |
+| Inner copper | 0.0152 mm (0.5 oz, H) |
+| Core | 1.065 mm, Dk 4.6 |
+| In2 → B.Cu dielectric | 7628 prepreg, 0.2104 mm, Dk 4.4 |
+| Min trace / space | 3.5 mil = 0.0889 mm |
+| Min via (drill) | 0.20 mm |
+| Impedance control | offered; requires **FR-4 TG155** selected at order time, not the 4L default TG135–140 |
+
+Sum check: 0.035 + 0.2104 + 0.0152 + 1.065 + 0.0152 + 0.2104 + 0.035 = **1.5862 mm**, + soldermask
+≈ 1.6 mm. The arithmetic closing is the reason this stackup is trusted rather than a reconstruction.
+
+### USB 2.0 impedance geometry — 90 Ω differential
+
+Computed with Hammerstad–Jensen microstrip plus the Wheeler thickness correction and the standard
+edge-coupled differential form `Zdiff = 2·Z0·(1 − 0.48·e^(−0.96·s/h))`, against the **actual**
+stackup above.
+
+| | |
+|---|---|
+| Routing layer | **F.Cu**, over the continuous In1 GND plane |
+| Trace width | **0.30 mm** |
+| Pair gap | **0.20 mm** |
+| Reference plane | In1.Cu, h = 0.2104 mm |
+| Copper | 0.035 mm |
+| **Result** | **Zdiff = 89.3 Ω** (target 90 Ω), Z0se = 55.3 Ω, εeff = 3.283 |
+| Single-ended 50 Ω, same stack | W = 0.365 mm → 49.9 Ω |
+
+Both figures are ~3.4× JLCPCB's 0.0889 mm minimum, so nothing here is at the fab edge.
+**Confirm against JLCPCB's own impedance calculator before ordering impedance-controlled boards.**
+
+**E4 In2 excursion — a deliberate discontinuity, not an oversight.** On In2 the only continuous
+reference is In1, across the **1.065 mm** core. The same 0.30/0.20 geometry there presents
+**≈133 Ω**; holding 90 Ω would need W ≈ 1.06 mm / S ≈ 0.36 mm, which does not fit a 3.5 mm corridor
+that must also carry VBUS at ≥1.0 mm separation. Even 0.60/0.40 only reaches ≈117 Ω.
+**Decision: carry the F.Cu geometry unchanged through E4.** Coupling and intra-pair skew stay
+constant, and the excursion is electrically short — 7.2 ps/mm × 26 mm ≈ **190 ps** one way at
+Γ ≈ 0.19, against Full-Speed USB edges of 4–20 ns. **Cap the total In2 excursion at 30 mm.**
+
+> **ROUTING-TOOLING ITEM.** `USB_D_P_MCU` / `USB_D_N_MCU` put the polarity marker *mid-name*, so
+> KiCad's differential-pair engine will not auto-pair them and `inDiffPair()` will not match. The
+> width/gap rules in the DRU still bind. Either rename to `USB_DP_MCU`/`USB_DM_MCU` in a later
+> schematic pass or route the pair manually. **Not a blocker — connectivity is correct.**
+
+### Layer architecture
+
+`F.Cu` / `In1.Cu` / `In2.Cu` / `B.Cu` already existed and are unchanged. What changed is policy:
+**In1 is now the board-wide continuous GND reference with no intentional splits.** The `915 KEEPOUT`
+and `433 KEEPOUT` rule areas previously blocked copper on **all four** layers, which would have
+forced a hole in In1 straight through both antenna bands. Their layer set is now
+**F.Cu + In2.Cu + B.Cu**, and their own keepout flags are reduced to *copper pour not allowed*.
+Everything net-aware or layer-aware moved into `aqroot-Beta.kicad_dru`, which a rule area cannot
+express. **No copper zones were created** — pours would obscure rule verification at this stage.
+
+### RF layer policy as implemented
+
+| Layer | 915 band (all X, Y 88–114) | 433 band (X 0–52.5, Y 115–138) | Mechanism |
+|---|---|---|---|
+| F.Cu | no tracks; **pads allowed** (E2 + J1) | same | DRU *"RF bands: F.Cu carries no ordinary copper"*, with a named `E2_BUTTON_ESCAPE` exception |
+| In1 | **solid GND, continuous, no split** | same | In1 removed from both keepouts; DRU *"In1.Cu carries GND only"* |
+| In2 | E5 corridor contents only, no pour | same | DRU corridor + netclass rules; pour blocked by the rule area |
+| B.Cu | **no tracks, no pads, no exceptions** | same | DRU *"RF bands: B.Cu is pristine"* |
+| Vias | **none in band, any layer** | same | DRU *"RF bands: no vias in band on any layer"* |
+
+Audited against the actual board: the only copper inside either band is **F.Cu button pads** —
+`SW2 SW3 SW4 SW5 SW6 SW8`, signal + GND pads — plus J1's body, whose pads all fall outside.
+**No B.Cu pad intrudes into either band**, so the no-exception B.Cu rule is satisfied today. `U8`
+(y ≥ 117.2) and `U7` (y ≥ 138.6) sit outside the 433 band's Y range; `J2`'s outline clips the band
+but none of its pads do.
+
+`BTN_UP_N`, `BTN_LEFT_N` and `BTN_RIGHT_N` belong to buttons whose bodies sit **inside** a band, so
+they cannot use E5 and are the E2 short-escape exception on F.Cu. `BTN_A_N`, `BTN_B_N`,
+`BTN_DOWN_N` and `BTN_HOME_N` are south of the band and cross on In2 — which is exactly the four-net
+list the ruling authorised for E5, and the split is now encoded in two netclasses rather than a
+comment.
+
+### E5 and E4 as implemented
+
+Rule areas on **In2.Cu only**: `E5 CORRIDOR C-W` X 8–20, `E5 CORRIDOR E4` X 53.0–56.5,
+`E5 CORRIDOR C-E` X 58–70. The X geometry is exactly as ruled and was **not** widened.
+
+The areas extend to **Y 84–142** (C-W) and **Y 84–118** (E4, C-E) — 4 mm past each band — purely so
+that a segment entering or leaving a band is still *wholly* enclosed by its corridor for
+`enclosedByArea()`. Without the margin, every legal crossing would false-positive at the band edge.
+The corridors carry no restriction of their own outside the bands, so the margin costs nothing.
+
+`E4 USB LANE` X 53.00–54.30 · reserved guard X 54.30–55.40 (**1.10 mm**, no copper) ·
+`E4 VBUS LANE` X 55.40–56.50. Worst-case USB-to-VBUS copper gap is therefore **1.10 mm ≥ 1.0 mm**,
+and a redundant explicit 1.0 mm clearance rule backs it up. **No isolated GND finger. No stitching
+via inside Y 88–114** — the blanket in-band via prohibition already forbids one.
+
+**+3V3 crossing width: 0.60 mm on In2 (enforced min 0.50, max 1.00).** Derived, not adopted. The
+current that must actually cross is only the load *south* of Y = 88: U8 SX1262 TX burst ≈118 mA,
+J2 microSD write ≈100 mA, U7 CC1101 RX ≈17 mA, plus pull-ups — worst credible concurrency ≈235 mA,
++30 % → **305 mA design**. IPC-2221B on 0.5 oz inner needs 0.30 mm for that at ΔT = 10 K; 0.60 mm
+gives **ΔT ≈ 1.8 K** and ≈10 mV over the 26 mm crossing. It lands inside the CTO's expected
+0.5–1.0 mm class but the number comes from the current budget, and it is emphatically **not** the
+1.0 A full-rail figure — that current never crosses the band.
+
+### Global clearance and the fine-pitch audit
+
+**The global 0.20 mm clearance was kept.** It is ~2.2× JLCPCB's 0.0889 mm floor, and lowering it to
+silence a few packages is exactly what the ruling forbade. `min_track_width` 0.20 → **0.15 mm**
+(floor only), `min_via_annular_width` 0.10 → **0.125 mm**. **`min_clearance` stays 0.0 deliberately**
+— a non-zero global floor in KiCad clamps custom rules *upward* and would re-create every false
+fine-pitch error this pass exists to remove.
+
+All 56 baseline `clearance` errors were same-footprint vendor land patterns:
+
+| Ref | Footprint | Pad pair class | Actual gap | Vendor validity | Min rule needed |
+|---|---|---|---|---|---|
+| U9 | ST25R3916_AQET, QFN-32 0.5 mm | lead → exposed pad 33 | **0.1750 mm** | ST land pattern (AQET, built from ST docs) | 0.05 mm |
+| U9 | same | corner lead → lead (1–32, 8–9, 16–17, 24–25) | **0.0621 mm** | same | 0.05 mm |
+| U13 | SOT-563, TPS61023 | adjacent leads | 0.1500 mm | TI SOT-563 | 0.13 mm |
+| U16 | VSSOP-8 0.65 mm, TCA9517ADGK | adjacent leads | 0.1500 mm | TI VSSOP | 0.13 mm |
+| D3 D4 D5 D6 | SOT-563, TPD4E1B06DRLR | adjacent leads | 0.1500 mm | TI SOT-563 | 0.13 mm |
+
+Seven rules, each scoped `A.Type == 'Pad' && B.Type == 'Pad'` inside **one named footprint**. No
+routing clearance anywhere is weakened, and no track, via or pour can inherit the exception.
+**Result: all 56 gone.**
+
+> **A trap worth recording.** The first attempt also raised per-netclass `clearance` to
+> 0.25–0.30 mm on the power classes. That immediately manufactured **27 new** false errors — `J3`
+> USB-C ×11, `U11` WSON 0.4 mm pitch ×4, `U14` ×4, `J1` FH69 0.5 mm pitch ×5, `U12` ×2 — the same
+> failure mode, one rung up. **Fix: netclass clearance is 0.20 mm for every class**, and the
+> elevated figures are DRU rules scoped to `A.Type != 'Pad' && B.Type != 'Pad'` — routing clearance
+> applied to routed copper, never to a vendor land pattern. Nothing electrical is lost: IPC-2221
+> needs ~0.1 mm even at the backlight string's <30 V.
+>
+> Also: `A.memberOfFootprint('D[3-6]')` **silently matches nothing.** KiCad's expression wildcards
+> are `*` and `?` only — character classes are not supported and fail quietly rather than erroring.
+> That is why D3–D6 are four separate rules.
+
+### J2 microSD shell — the two board-edge errors
+
+Molex 5025700893's shell GND tab sits **0.213 mm** from `Edge.Cuts` by vendor geometry (the shell
+aligns with the card opening), against the 0.5 mm board rule. Encoded as one named rule scoped to
+J2 at **0.20 mm**, the mainstream copper-to-outline floor. This converts a recurring
+"connector-edge accepted" error into an explicit, greppable exception — and it is carried as a
+**FAB confirmation item**, because 0.20 mm is *at* the floor, not inside it.
+
+### Netclasses, via classes, switch nodes
+
+14 netclasses, 61 patterns. Via classes are mainstream through vias only — **no microvias, no
+blind/buried vias**, all three explicitly disallowed:
+
+| Via class | Drill | Pad | Annular ring |
+|---|---|---|---|
+| GENERAL_SIGNAL | 0.30 mm | 0.60 mm | 0.150 mm |
+| POWER | 0.40 mm | 0.80 mm | 0.200 mm |
+| THERMAL | 0.25 mm | 0.55 mm | 0.150 mm |
+
+None sits at JLCPCB's 0.20 mm / ~0.1275 mm floor, per *"do not select minimum-fab geometry unless
+routing density actually requires it"*.
+
+| Netclass | Nets | Design current | Outer width | In2 | Via | Notes |
+|---|---|---|---|---|---|---|
+| `BAT_MAIN` | `BAT_PROTECTED_P`, `BAT_CONNECTOR_P` | 1.5 A cont., **3.125 A** OCP peak | **1.50 mm** (min 1.00) | outer only — 0.5 oz would need 2.73 mm | POWER | 0.30 mm routed clearance |
+| `SYS_MAIN` | `BQ25185_SYS` | 1.0 A | **1.00 mm** (min 0.60) | outer only — needs 1.56 mm inner | POWER | 0.25 mm routed clearance |
+| `P3V3` | `+3V3`, `ACC_3V3_SW` | 1.0 A design, 0.64 A measured peak | **0.60 mm** (min 0.40) | **0.60 mm in corridors only** | POWER | never poured under an antenna |
+| `VBUS_CHG` | `USB_VBUS_CHG`, `USB_VBUS_RAW` | **0.5 A** (= verified ILIM500) | **0.50 mm** (min 0.35) | E4 east lane only | POWER | 0.25 mm routed clearance |
+| `NFC_5V_PA` | `NFC_5V_PA_PENDING` | 0.5 A TX burst | **0.60 mm** (min 0.35) | — | POWER | 0.25 mm routed clearance |
+| `LED_BOOST` | `LED_BOOST`, `LED_K`, `LED_A1..A4` | 0.05 A at >20 V | 0.30 mm | — | GENERAL_SIGNAL | **clearance-driven**, 0.30 mm routed |
+| `SWITCH_NODE` | `Net-(L1-Pad1)`, `Net-(L1-Pad2)`, `Net-(U13-SW)`, `BL_SW` | pulsed | **0.60 mm** (min 0.40) | banned in bands | POWER | see below |
+| `USB_D` | 6 USB data nets | — | 0.30 mm / gap 0.20 | E4 west lane only | GENERAL_SIGNAL | 90 Ω |
+| `E5_CROSSING` | the 18 authorised signals | — | 0.20 mm | corridors | GENERAL_SIGNAL | |
+| `E2_BUTTON_ESCAPE` | `BTN_UP_N`, `BTN_LEFT_N`, `BTN_RIGHT_N` | — | 0.20 mm | **not** authorised on In2 | GENERAL_SIGNAL | F.Cu in-band exception |
+| `RF_DEFERRED_NFC` | 12 U9 nets | — | — | — | — | **all routing disallowed** |
+| `RF_DO_NOT_ROUTE` | `CC1101_ANT_TBD`, `RF_ANT_TBD`, `SX1262_RF_TBD` | — | — | — | — | **all routing disallowed** |
+
+Switch-node rules encoded: **no switch node in either antenna band**, none over `MK1` or `U5`
+courtyards, and a 0.40 mm minimum width. **`U11 BQ25185` has no switch node — it is a *linear*
+charger with a power path**, so the ruling's "keep-small" instruction applies to U12, U13 and U17
+only. Not encodable and therefore carried into routing: minimum loop area, no routing on adjacent
+layers directly beneath L1/L2/L3, and In1 kept solid under each inductor.
+
+### NFC route-now / defer — now enforced, not just documented
+
+`RF_DEFERRED_NFC` covers `RFO1 RFO2 RFI1 RFI2 AAT_A AAT_B EXT_LM CSI CSO XIN XOUT MCU_CLK` and
+disallows track **and** via outright. `RF_DO_NOT_ROUTE` does the same for the U7/U8 pin-21 stamp RF
+pads. Routing any of them is now an immediate DRC error rather than something a reviewer must spot.
+U9's digital and power side — `SPI_B_*`, `NFC_CS_N`, `NFC_IRQ`, `+3V3`, `NFC_5V_PA_PENDING`,
+`NFC_VDD_*`, `AGDC`, `GND` — is deliberately **not** in either class and may be routed.
+
+### WROOM antenna keepout — created, and it outranks In1
+
+**X 0–6, Y 17–35, all four copper layers**, no tracks / vias / pads / pour. The 6 mm boundary is
+not invented: it is the `ESP32-S3-WROOM-1` footprint's own `B.Fab` antenna line at local X = 6,
+and the module's pads start at X = 7.04, so nothing is caught. This is **the single authorised void
+in the continuous In1 GND reference** and it takes local precedence, exactly as the ruling directs.
+
+Footprints are left *allowed* in the area for one specific reason: U1's courtyard, as shipped,
+spans (−15.0, 2.0)–(26.2, 50.0) and overlaps the keepout, so a footprint keepout would report U1
+against its own antenna zone. Component keepout is a placement rule and placement is locked.
+
+### C55 — moved; the ≤3.0 mm target is NOT met, and the reason is structural
+
+| | Before | After |
+|---|---|---|
+| Position | (10.000, 19.000) rot 0 | **(22.225, 29.400) rot 270** |
+| Footprint | `C_0805_2012Metric` | **`C_0603_1608Metric`** |
+| Courtyard | 8.255–11.745 × 17.975–20.025 | 21.450–23.000 × 27.875–30.925 |
+| **→ U9 pin 8 (VDD_TX)** | 14.005 mm | **4.875 mm** |
+| **→ U9 pin 10 (VDD_TX)** | 15.148 mm | **4.469 mm** |
+
+Pad 1 (`NFC_5V_PA_PENDING`) faces north toward U9 pins 8/10; pad 2 (GND) faces south, so the return
+loop closes away from U9's RF pins. **Measured from pad centres in the saved board, not estimated.**
+
+**The ≤3.0 mm electrical target is NOT achieved.** This was established by exhaustive search, not by
+inspection: every 0.05 mm position × 4 rotations × {0603, 0805} in X 14–34, Y 14–34, rejected
+against every locked F.Cu courtyard at 0.15 mm and against the WROOM keepout. **680,610 legal
+positions**; the best possible worst-case distance is **4.813 mm** (0603) / **4.900 mm** (0805).
+
+The blockers are **C50** (10 nF, VDD_RF) and **C52** (1 nF, VDD_AM), which occupy the only space
+within 3 mm of U9's south edge, plus U9's own courtyard. The gap between U9's south edge
+(y = 24.995) and C50/C52's north edge (y = 26.125) is **1.13 mm** — shorter than an 0603 courtyard
+(1.55 mm) and an 0805 courtyard (2.05 mm). The strip west of U9 is **0.98 mm**. Only an 0402 would
+fit, and 2.2 µF ≥10 V X7R does not exist in 0402. Neither C50 nor C52 is on the authorised-move
+list, so **4.875 mm is the honest floor under the current placement lock**.
+
+> **FLAGGED FOR THE NEXT PLACEMENT PASS:** the near-U9 space is allocated to a 10 nF and a 1 nF cap
+> while the TX bulk reservoir and the 100 nF HF decoupler sit 4.5–4.9 mm away. `C19` (100 nF, same
+> net) is 4.309 mm from pin 8 — it was never close either. If U9 TX-burst rail droop measures badly
+> on Beta, **swapping C55/C19 with C50/C52 is the fix**, and it is a placement decision, not a rule
+> decision.
+
+### C55 package / BOM — a hard constraint conflict, reported not papered over
+
+Footprint changed **0805 → 0603** under the ruling's explicit authorisation. Value unchanged at
+2.2 µF. Schematic `Footprint` and `Package` fields updated to match so parity stays clean;
+`Voltage = 16V` and `Dielectric = X7R` were already correct and were left alone.
+
+Rationale — and it is *not* the 0.087 mm distance gain, which is immaterial:
+
+**No 2.2 µF, ≥10 V, X7R MLCC in either 0603 or 0805 has a documented maximum height ≤ 0.80 mm.**
+
+* **0805** standard thickness classes are 0.60 / 0.85 / 1.25 mm, and 2.2 µF needs the thickest.
+  Verified: **Murata `GRM21BR71E225KA73`** (0805, X7R, 2.2 µF, 25 V) reference sheet gives
+  **T = 1.25 ± 0.15 mm → 1.40 mm max**. That is **0.60 mm over** the panel ceiling.
+* **0603** at 2.2 µF is the 0.80 mm class, i.e. **0.80 ± 0.10 → 0.90 mm max** — **0.10 mm over**.
+
+So the footprint choice cannot solve the height problem, but it changes a 0.60 mm miss into a
+0.10 mm miss — one is hopeless, the other is closable by tolerance selection or a small enclosure
+change. 0603/16 V X7R also meets the DC-bias requirement with margin (typical retention at 5 V
+gives ≈1.4–1.75 µF against the ≥1.2 µF floor), whereas 0603/10 V would be marginal.
+
+**MPN: still VERIFY.** Required: 2.2 µF, **16 V**, X7R, 0603, documented **max** height, and a
+manufacturer DC-bias curve proving **≥1.2 µF at 5.0 V**. No candidate has been confirmed against
+both curves in this pass.
+
+**Note the move imposed the height constraint.** At (10, 19) C55 was at X < 12 — *outside* the
+`PANEL SHADOW (TOP ≤0.8 mm) X12-62 Y9-78` — and had no height limit at all. Every position that
+improves on 14.005 mm is inside the shadow; the closest legal position outside it is ~15 mm, i.e.
+worse than doing nothing. **The trade was taken deliberately** and §24 of the ruling anticipates it
+("C55 joins this list").
+
+### C45 / C47 / C49 / C51 — left in place, as the ruling permits
+
+| Ref | Value | Net | → U9 pad | Before | After |
+|---|---|---|---|---|---|
+| C45 | 2.2 µF | `NFC_VDD_D` | pad 3 | 13.176 mm | **13.176 mm** |
+| C47 | 2.2 µF | `NFC_VDD_A` | pad 7 | 13.186 mm | **13.186 mm** |
+| C49 | 2.2 µF | `NFC_VDD_RF` | pad 9 | 13.835 mm | **13.835 mm** |
+| C51 | 2.2 µF | `NFC_VDD_AM` | pad 11 | 15.323 mm | **15.323 mm** |
+
+**No opportunistic move was possible, and none was made.** These are 0805s and their footprints are
+*not* authorised to change. The distance is dominated by X (they sit at x = 9.05, U9 at x ≈ 22), and
+freeing C55's old slot at (10, 19) only opens space *north* in the same x column — no X improvement
+exists. The ruling's own instruction applies: *"Otherwise leave them."*
+
+### U9 decoupling verdict
+
+| Cap | Value | Rail | U9 pad | Distance |
+|---|---|---|---|---|
+| C19 | 100 nF | `NFC_5V_PA_PENDING` | 8 / 10 | 4.309 / 5.018 mm |
+| **C55** | 2.2 µF | `NFC_5V_PA_PENDING` | 8 / 10 | **4.875 / 4.469 mm** |
+| C45 | 2.2 µF | `NFC_VDD_D` | 3 | 13.176 mm |
+| C47 | 2.2 µF | `NFC_VDD_A` | 7 | 13.186 mm |
+| C49 | 2.2 µF | `NFC_VDD_RF` | 9 | 13.835 mm |
+| C51 | 2.2 µF | `NFC_VDD_AM` | 11 | 15.323 mm |
+
+**Verdict: improved but not good.** The TX bulk path is 3× shorter than it was; every internal
+regulator rail is still 13–15 mm from its own pin. **All four internal regulator rails —
+`VDD_D`, `VDD_A`, `VDD_RF`, `VDD_AM` — plus `VDD_TX` are flagged for Beta TX-burst rail-droop
+measurement**, as the CTO required. Measure at the U9 pin, not at the capacitor.
+
+### Thermal-via plan — audited, nothing added
+
+**The board currently contains 0 tracks, 0 vias and 4 zones.** No footprint has integral thermal
+vias, and none is *defective* for lacking them — the stock land patterns ship without vias by
+design because via placement is a layout decision. Per the ruling, **no vias were added**.
+
+| Ref | Part | Exposed pad | Vendor guidance | Current | Proposed |
+|---|---|---|---|---|---|
+| U1 | ESP32-S3-WROOM-1 | pad 41, **3.9 × 3.9 mm** | Espressif reference PCB shows a via array under the module GND pad | none | **3 × 3** THERMAL @ 1.2 mm |
+| U9 | ST25R3916-AQET | pad 33, **3.45 × 3.45 mm** | **VERIFY** — DS12484 Rev 3 gives the VFQFPN32 outline but **no thermal-via guidance**; needs ST's layout app note | none | **3 × 3** THERMAL @ 1.1 mm |
+| U12 | TPS63020 DSJ | pad 15, **2.85 × 1.58 mm** | **VERIFY** — SLVS916I layout section not read in this pass | none | **3 × 1** THERMAL @ 1.0 mm |
+| U5 | MAX98357A TQFN-16-1EP | pad 17, **1.23 × 1.23 mm** | **VERIFY** | none | **1** central THERMAL (0.55 mm pads will not tile a 1.23 mm pad) |
+| U11 | BQ25185 DLH0010A | pad 11, **0.9 × 1.5 mm** | SLUSF65A Fig. 8-9 shows a board layout example | none | **1** central THERMAL |
+| U14 | MAX17048 T822 | pad 9, **0.8 × 1.38 mm** | **VERIFY** | none | **1** central THERMAL |
+| U7 / U8 | Ebyte modules | no EP — GND stamp pads act thermally | vendor | none | GND stitching at routing |
+
+> **CORRECTION to the ruling's audit list: `U13` (TPS61023) has NO exposed pad.** It is a plain
+> SOT-563. Same for `U17` (SOT-353), `U16` (VSSOP-8), `U2`/`U3` (TSSOP-24), `U4` (LGA-14),
+> `U10`/`U15` (SOT-23-6). `MK1`'s pad 3 is 0.3 × 0.3 mm and is not a thermal pad.
+
+### Panel-height BOM ledger — 33 refs, and U9 already fails
+
+Every **TOP-side** part inside `PANEL SHADOW X12-62 Y9-78`, all requiring **documented maximum**
+height ≤ 0.80 mm. Height is **not** inferred from package.
+
+`C18 C19` (0402) · `C39 C46 C48 C50 C52 C53 C54` **`C55`** (0603) · `D3 D4 D5 D6` (SOT-563) ·
+`R29 R46 R51 R52 R53 R54 R55 R56 R57 R58 R59 R60 R61 R62 R63 R64 R66 R67` (0603) · **`U9`**
+
+> **`U9` ALREADY EXCEEDS THE CEILING — measured, not suspected.** ST25R3916 DS12484 Rev 3,
+> *Table 134, VFQFPN32 mechanical data*: **A = 0.800 / 0.900 / 1.000 mm**. Max **1.00 mm** against a
+> 0.80 mm ceiling. And standard 0603 X7R is 0.80 ± 0.10 → **0.90 mm max**, so most of the 0603 rows
+> above are likely over too.
+>
+> **This means the 0.80 mm panel ceiling is probably wrong, not the parts.** It reads like a
+> *nominal* figure being applied as a *maximum*. Resolve the ceiling against enclosure CAD before
+> chasing 33 individual MPNs — otherwise the ledger cannot be closed at all. **BLOCKS_FAB.**
+
+### Samtec J5 — FAB blocker, not a routing blocker
+
+Body depth **B** and the finished-hole requirement are still unverified. J5 is a **through-hole
+right-angle 2×13 header at (37.0, 0.0) on B.Cu**, whose position, pad geometry and net assignment
+are all fixed; nothing about routing to it depends on the unresolved dimensions. Its pads are also
+inside `HEADER RESERVED` (X 18.5–55.5, Y 0–8.5), which already keeps routing out of the area.
+**Classification: BLOCKS_FAB only.** No J5 schematic metadata was changed.
+
+One genuine parity item surfaced and was **left alone** per the ruling: J5's PCB footprint is
+`AQROOT_Beta:Samtec_TSW-113-08-G-D-RA` while its symbol's `Footprint` field still says
+`Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical`. Metadata drift, not connectivity.
+
+### The rule system was tested in both directions
+
+A rule set that reports zero errors on an unrouted board proves nothing. Both halves were checked
+on **throwaway copies** of the board.
+
+**15 deliberate violations → every one caught by its named rule:** B.Cu track in band · In2 track
+in band outside all corridors · unauthorised net (I2C) in a corridor · via in band · non-GND track
+on In1 · deferred NFC net routed · stamp RF pad net routed · USB pair in C-W · VBUS in the E4 west
+lane · track in the WROOM keepout · microvia · F.Cu track in the 433 band · switch node in band ·
++3V3 crossing at 2.00 mm (**max** fired) and at 0.30 mm (**min** fired) · BAT_MAIN at 0.2 mm.
+
+**15 authorised constructs → 0 errors:** E5 signal crossings on In2 through C-E and C-W · +3V3 at
+0.60 mm through C-W · USB pair in the E4 west lane · VBUS in the E4 east lane · E2 button escape on
+F.Cu inside the band · GND on In1 · BAT_MAIN at 1.50 mm · SYS_MAIN at 1.00 mm · +3V3 at 0.60 mm on
+F.Cu · GENERAL_SIGNAL and POWER vias outside the bands.
+
+> **Harness bug worth recording, because it nearly produced a false pass.** KiCad's SWIG
+> `NETINFO_ITEM` proxies get reused if Python collects them between `SetNet()` calls, silently
+> assigning a track the *previous* call's net. Two injected test tracks came out on the wrong net
+> and one "legal control" never tested what it claimed. **Hold net references and assert
+> `GetNetname()` after `SetNet()`** in any pcbnew script.
+
+### DRC — before / after taxonomy
+
+Identical invocation both times: `kicad-cli pcb drc --severity-all --schematic-parity`.
+
+| Class | Before | After |
+|---|---|---|
+| **A. real electrical / layout defects** | **0** | **0** |
+| **B. connector-edge accepted** | 2 `copper_edge_clearance` (J2 shell) | **0** — named J2 rule, carried as FAB item |
+| **C. fine-pitch** | **56** `clearance` errors | **0** — 7 named intra-footprint rules |
+| **D. silkscreen / cosmetic** | 234 warnings | 231 warnings |
+| **E. unrouted expected** | 499 unconnected | 499 unconnected |
+| **F. intentional deferred RF** | 0 | 0 (nothing routed to flag) |
+| **TOTAL ERRORS** | **58** | **0** |
+| Total violations | 292 | 231 |
+
+Silkscreen was not chased: none of it obscures a pad or an assembly-critical reference, and it will
+move again when reference designators are placed for assembly. The 259 schematic-parity items are
+**all** `warning` — 187 empty-`Description`-field mismatches and 72 library-prefix artifacts of
+`kicad-cli`'s comparison (PCB stores the bare footprint name, the symbol stores `Lib:Name`). The
+only substantive one is J5, above.
+
+### Preservation
+
+* **Connectivity: identical.** 174 nets before and after; zero added, zero removed, **zero
+  membership changes**. Compared node-set by node-set against `git archive HEAD`.
+* **ERC: identical.** 116 reported / 58 excluded / **58 live** (23 `isolated_pin_label`, 22
+  `pin_to_pin`, 8 `unconnected_wire_endpoint` — all warnings — plus **5 `label_dangling` at error
+  severity**). **Zero added, zero removed** versus HEAD under the same invocation. The 5 errors are
+  the pre-existing deferred-label set this log already corrected the record on; the "58/58/0 live"
+  phrasing does not reproduce under `--severity-all`.
+* **Placement: 187 footprints, exactly one changed — C55.** Verified position, rotation, side and
+  footprint ID for all 187 against HEAD.
+
+### Still BLOCKS_ROUTING
+
+1. **BQ25185 ISET charging policy.** `R37 = 2 kΩ` → 150 mA = 0.075 C. Electrically valid, so it was
+   not touched, but the CTO must confirm 150 mA or choose 600 Ω / 1 kΩ.
+2. **USB diff-pair net naming.** `USB_D_P_MCU` / `USB_D_N_MCU` will not auto-pair in KiCad. Decide
+   rename-vs-manual before the pair is routed.
+
+### Still BLOCKS_FAB
+
+1. **Panel ceiling 0.80 mm is probably a nominal figure misapplied as a maximum** — U9 is 1.00 mm
+   max by datasheet and standard 0603 X7R is 0.90 mm max. Resolve against enclosure CAD; 33 refs
+   cannot be closed otherwise.
+2. **C55 MPN** — 2.2 µF / 16 V / X7R / 0603 with a documented max height *and* a DC-bias curve
+   showing ≥1.2 µF at 5.0 V.
+3. **Samtec J5** — body depth B and finished-hole requirement.
+4. **USB 90 Ω geometry** — confirm 0.30/0.20 against JLCPCB's own impedance calculator, and select
+   **FR-4 TG155** at order time (the 4-layer default is TG135–140 and is not impedance-controlled).
+5. **J2 shell edge clearance 0.20 mm** — at the fab floor; confirm with JLCPCB.
+6. **Thermal-via vendor guidance** for U9, U12, U5, U14 (marked VERIFY above).
+
+### Files changed
+
+`aqroot-Beta.kicad_dru` (new, 45 rules) · `aqroot-Beta.kicad_pro` (14 netclasses, 61 patterns, via
+and track presets, board rule floors) · `aqroot-Beta.kicad_pcb` (2 rule areas relayered, 6 created,
+4 annotations, C55) · `04_spi_b_radios_nfc.kicad_sch` (C55 `Footprint` / `Package` / `Note`).
+
+**ROUTING NOT STARTED. No signal trace was drawn in this pass.**
