@@ -36026,6 +36026,54 @@
 			)
 		)
 	)
+	(gr_text "WROOM ANTENNA KEEPOUT X0-6 Y17-35 - ALL LAYERS - MANUFACTURER PRECEDENCE OVER In1"
+		(at 0.4 16 0)
+		(layer "Cmts.User")
+		(uuid "53c7070d-119a-4291-8db4-f0f680cfbe8b")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+			(justify left)
+		)
+	)
+	(gr_text "E5 CROSSING CORRIDORS (In2 ONLY): C-W X8-20  |  E4 X53.0-56.5  |  C-E X58-70"
+		(at 0.4 86 0)
+		(layer "Cmts.User")
+		(uuid "b6152027-1696-485e-a3ce-3f4d5f5abcb2")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+			(justify left)
+		)
+	)
+	(gr_text "In1 = SOLID CONTINUOUS GND THROUGH BOTH BANDS - NO SPLITS  |  B.Cu PRISTINE - NO EXCEPTIONS"
+		(at 0.4 87 0)
+		(layer "Cmts.User")
+		(uuid "ed633062-2842-46cc-9521-5f73a95939e5")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+			(justify left)
+		)
+	)
+	(gr_text "E4: USB pair WEST X53.0-54.3 | guard 1.10mm | VBUS_CHG EAST X55.4-56.5"
+		(at 53.2 83 0)
+		(layer "Cmts.User")
+		(uuid "a640a1aa-a33e-476f-938d-bbc2e923858d")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+			(justify left)
+		)
+	)
 	(gr_text "through 433 (Y115-138) and 915 (Y88-114) keepouts - RF REVIEW ITEM"
 		(at 4 121.6 0)
 		(layer "Cmts.User")
@@ -36414,8 +36462,8 @@
 	)
 	(zone
 		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
-		(uuid "cc8587f6-cdb4-49a3-86b1-90940762dd68")
-		(name "915 KEEPOUT")
+		(uuid "fea08a33-7a49-4853-ad78-63671e7459ad")
+		(name "WROOM ANTENNA KEEPOUT")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0)
@@ -36424,6 +36472,37 @@
 		(keepout
 			(tracks not_allowed)
 			(vias not_allowed)
+			(pads not_allowed)
+			(copperpour not_allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 0 17) (xy 6 17) (xy 6 35) (xy 0 35)
+			)
+		)
+	)
+	(zone
+		(layers "F.Cu" "B.Cu" "In2.Cu")
+		(uuid "cc8587f6-cdb4-49a3-86b1-90940762dd68")
+		(name "915 KEEPOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
 			(pads allowed)
 			(copperpour not_allowed)
 			(footprints allowed)
@@ -36444,7 +36523,7 @@
 		)
 	)
 	(zone
-		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
+		(layers "F.Cu" "B.Cu" "In2.Cu")
 		(uuid "e3b82a31-cd96-4426-9922-4011ad1397cb")
 		(name "433 KEEPOUT")
 		(hatch edge 0.5)
@@ -36453,8 +36532,8 @@
 		)
 		(min_thickness 0.25)
 		(keepout
-			(tracks not_allowed)
-			(vias not_allowed)
+			(tracks allowed)
+			(vias allowed)
 			(pads allowed)
 			(copperpour not_allowed)
 			(footprints allowed)
@@ -36471,6 +36550,161 @@
 		(polygon
 			(pts
 				(xy 0 115) (xy 52.5 115) (xy 52.5 138) (xy 0 138)
+			)
+		)
+	)
+	(zone
+		(layer "In2.Cu")
+		(uuid "12734176-0851-4715-8ba0-2224797b28d8")
+		(name "E4 VBUS LANE")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 55.4 84) (xy 56.5 84) (xy 56.5 118) (xy 55.4 118)
+			)
+		)
+	)
+	(zone
+		(layer "In2.Cu")
+		(uuid "4dcdd806-b72e-4af7-ae00-30524754dc65")
+		(name "E5 CORRIDOR C-W")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 8 84) (xy 20 84) (xy 20 142) (xy 8 142)
+			)
+		)
+	)
+	(zone
+		(layer "In2.Cu")
+		(uuid "71b3252e-8d21-42f2-a677-79498a8131a6")
+		(name "E5 CORRIDOR E4")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 53 84) (xy 56.5 84) (xy 56.5 118) (xy 53 118)
+			)
+		)
+	)
+	(zone
+		(layer "In2.Cu")
+		(uuid "bff65ca9-e1b2-42a2-8853-594508a1a625")
+		(name "E4 USB LANE")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 53 84) (xy 54.3 84) (xy 54.3 118) (xy 53 118)
+			)
+		)
+	)
+	(zone
+		(layer "In2.Cu")
+		(uuid "cb417406-7e7d-4f69-8008-10d7a2e46627")
+		(name "E5 CORRIDOR C-E")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 58 84) (xy 70 84) (xy 70 118) (xy 58 118)
 			)
 		)
 	)
