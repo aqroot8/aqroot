@@ -6306,3 +6306,102 @@ untouched. `aqroot-Beta.kicad_dru` untouched.
 **POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
 **READY FOR DIGITAL ROUTING PASS: NO**
 **FULL ROUTING COMPLETE: NO**
+
+
+---
+
+## C20 moved 0.300 mm NORTH, not east — and a correction to the previous pass (2026-08-11)
+
+The authorised C20 move was **+2 mm east**. That is impossible, it was aimed at the wrong problem, and
+one of the numbers I reported last pass was wrong. All three are set out below. C20 moved **0.300 mm
+north**, which is what actually opens the J3 escape. **USB is still not routed.**
+
+### C20 function — verified from the netlist, not inferred
+
+| | |
+|---|---|
+| Value | **4.7 µF 10 V X7R** |
+| Footprint | `Capacitor_SMD:C_0805_2012Metric` |
+| Nets | pad 1 `/01_POWER_TREE/USB_VBUS_RAW`, pad 2 `GND` |
+| Function | **USB VBUS bulk / bypass at the USB-C connector** |
+| Serves | J3 pads A4, A9, B4, B9 (VBUS); U10 pin 5 (USBLC6-2SC6 VBUS clamp); R35 pin 1 (VBUS_RAW → VBUS_CHG) |
+
+### Correction to the previous pass
+
+I reported the bypass corridors as **"west 1.325 mm (fits), east 0.925 mm (does not)"**. The east
+corridor is **also 1.325 mm** (C20 pad 2 right edge 36.450 → R31 pad 1 left edge 37.775). The 0.925 mm
+figure was wrong; the 0.900 mm number I had measured was the gap **between C20's own two pads**, and I
+conflated the two. **Both bypass corridors accommodate the 1.20 mm pair envelope**, so widening one
+was never the thing standing in the way.
+
+### The east move is impossible, and the real constraint is vertical
+
+C20 is boxed in on all four sides by parts §4 locks:
+
+| Direction | Limit | Blocked by |
+|---|---|---|
+| west | **0.730 mm** | R30 |
+| east | **0.730 mm** | R31 |
+| north | **0.380 mm** | U10 |
+| south | **0.695 mm** | J3 |
+
+A 1.5–2.0 mm east move cannot be made without moving R31, which is forbidden. And it would not have
+helped: J3's D+/D− pads run **N P N P at 0.5 mm pitch**, so getting all N to one side and all P to the
+other needs exactly **one layer hop**, and that hop needs a via row in the band between J3's pad row
+(y 147.070) and C20's pad row (y 145.525):
+
+```
+0.20  clearance to the J3 pad row
+0.60  via pad          (the N/P crossing)
+0.20  clearance
+0.30  USB track        (the other polarity passing over the hop)
+0.20  clearance to the C20 pad row
+----
+1.500 mm required      1.545 mm available      margin 0.045 mm
+```
+
+**It already fitted — by 45 µm.** That is not a manufacturable margin. East or west moves do not change
+this band at all; south shrinks it. **North is the only productive direction**, and 0.300 mm of it
+(keeping 0.080 mm of courtyard clearance to U10) takes the band to **1.845 mm — a 0.345 mm margin**.
+
+### The move, and what it costs
+
+**C20 (35.000, 144.800) → (35.000, 144.500)** — 0.300 mm north. Value, footprint, nets, rotation and
+side unchanged. It is **0.300 mm, not ~2 mm**, honouring §2's "smallest move that provides a legal,
+practical straight USB channel".
+
+| Distance | Before | After | Δ |
+|---|---|---|---|
+| pad 1 → J3 A4 (VBUS) | 3.193 mm | 3.463 mm | **+0.270** |
+| pad 1 → U10 pin 5 (VBUS) | 4.734 mm | **4.440 mm** | −0.293 |
+| pad 2 → U10 pin 2 (GND) | 2.546 mm | **2.271 mm** | −0.276 |
+| pad 2 → J3 A12 (GND) | 3.627 mm | 3.867 mm | +0.240 |
+
+**Its bypass role is not sacrificed — it improves.** The move trades 0.27 mm of extra reach to J3's
+nearest VBUS pad for 0.29 mm closer to U10's VBUS clamp and 0.28 mm closer to U10's ground. The VBUS
+node is a low-impedance bulk rail with four connector pads on it; a 0.27 mm shift on one of them is
+immaterial, while U10's clamp loop is the return path that actually wants to be short.
+
+### USB — still not routed
+
+The escape is now geometrically viable but was not routed in this pass. The route is planned and the
+mechanism is settled: **one B.Cu hop for one polarity** (the pad order is N P N P, so exactly one
+crossing is needed, and A7/B7 are the same net as each other, as are A6/B6, so they may merge freely).
+The pair then takes the west and east 1.325 mm bypass corridors around C20 to U10 pins 1 and 3.
+
+**Still open:** CONN / ESD / MCU segments, the E4 USB In2 lane, the two VBUS hand-off runs (SW7 pad 1
+sits at the corridor mouth), and the SW9 SYS pair.
+
+### State
+
+118 tracks, 37 vias, unchanged from `15cb5a5`. In1 GND **10214.5 / 11181.0 mm² = 91.36 %**. **No via
+inside either RF band. No USB net carries copper.** DRC **0 errors**, 256 warnings (the 20 dangling
+tracks and 4 dangling vias remain the reserved E5 crossing segments and corridor hand-off vias, on the
+correct nets, terminating at legal hand-off points, awaiting the digital pass). ERC **116 / 58
+excluded / 58 live, zero delta**. **Placement: 188 footprints, C20 the only one moved.** Schematic and
+`aqroot-Beta.kicad_dru` untouched.
+
+**ROUTING PASS 1: FAIL** — USB not routed
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
