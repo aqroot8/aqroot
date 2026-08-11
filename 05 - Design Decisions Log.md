@@ -6070,3 +6070,136 @@ Totals: **21 vias** (16 THERMAL 0.25, 4 GENERAL_SIGNAL 0.30, 1 POWER 0.40) and *
 
 `scratchpad/pass1b.py` can now be re-run: its geometry is already validated against every pad, and
 the width floors it failed are the ones just corrected. C56 still needs routing when Pass 1 resumes.
+
+
+---
+
+## ROUTING PASS 1 (resumed) — converters and power rails routed, USB/E4/E5 NOT (2026-08-11)
+
+The corrected width lock unblocked the converter and power-rail work: **all four converter blocks
+and the BAT/SYS/+3V3 rails are now routed and DRC-clean.** USB, the E4 and E5 crossings, the +3V3
+band crossing and the C55/U9 supply are **not** routed, so Pass 1 still does not close. Two of those
+are blocked by geometry rather than effort, and both are documented below.
+
+**0 DRC errors. Placement unchanged. `aqroot-Beta.kicad_dru` not touched in this pass.**
+
+### Totals
+
+| | |
+|---|---|
+| Tracks | **83** (F.Cu 64, B.Cu 17, In2 2) |
+| Vias | **29** — 16 THERMAL 0.25, 10 POWER 0.40, 3 GENERAL_SIGNAL 0.30 |
+| Nets carrying copper | **15** |
+| **Fully routed** | **9** — `ILIM_VSET`, `R_FB_TOP`, `BL_SW`, `LED_BOOST`, **`BAT_PROTECTED_P`**, `L1-Pad1`, `L1-Pad2`, `U11-TS_MR`, `U13-SW` |
+| **Partially routed** | **6** — `BQ25185_SYS` (2 left), `+3V3` (68), `USB_VBUS_CHG` (1), `NFC_5V_PA_PENDING` (6), `LED_K` (1), `GND` (178) |
+| Not started | 159 nets |
+| Unconnected items | 486 (from 499) |
+
+Two items removed: the pass-1A U12 pin-2 GND escape and its plane via. U12 pin 2 now ties **directly
+to PGND_EP**, which already carries 6 vias to In1 — a shorter, lower-inductance return, and it
+cleared the board's only dangling via.
+
+### Per-block results
+
+**U11 BQ25185.** SYS pin 1 and BAT pin 2 escape west at 0.20 mm through the 0.40 mm-pitch WSON, then
+flare on the next segment — SYS to 0.60 mm into the F.Cu trunk, BAT to 0.60 mm into a via. VBUS pin 10
+escapes at 0.30 mm and reaches C23 through In2, because the C36/C23 corridor is only 0.75 mm wide and
+no compliant VBUS track crosses it on F.Cu. `ILIM_VSET` → R36 and `TS_MR` → R38 complete.
+
+> **ISET DEFERRED — a genuine crossing conflict.** U11 pin 8 (ISET) is *north* of pin 7 (ILIM_VSET),
+> but R37 is *south* of R36, so the two programming nets must cross. Every via position that takes
+> the crossing to another layer lands within 0.25 mm of the VBUS_CHG via, the VBUS escape, or the
+> TS/MR run — the corner east of U11 is fully committed. One 1 kΩ programming net, carried to the
+> cleanup pass rather than forced through at reduced clearance.
+
+**U12 TPS63020.** Both switch nodes minimal and local: **buck 2.70 mm / 1.35 mm²**, **boost
+6.89 mm / 3.44 mm²**. The boost node is 2.5× the buck node because L1's west pad faces U12's *north*
+pin row and its east pad faces the *south* row, so the boost node must route **around the inductor** —
+a placement consequence, flagged again. VIN loop pins 10/11 → C26 → C27; VINA pin 1 to the trunk;
+VOUT pins 4/5 → In2 hop past the FB divider row → the C29/C30/C31/C32 F.Cu spine. FB pin 3 → R39 →
+R40 routed clear of every switch node.
+
+**U13 TPS61023.** VIN escape → SYS trunk. SW **2.87 mm / 0.98 mm²**, kept local. VOUT leaves north
+to C34 and on to C35. The SYS feed to L2 approaches **from the south at y = 34.5** rather than across
+y = 29.45, which is what frees the northern lane for the output path. **FB divider (R44/R45)
+deferred** — not in the section-6 scope, and its only path crosses the SYS feed at U13's pin column.
+
+**U17 TPS61169 + C56.** C43 → L3 input loop **2.37 mm** (loop-critical, good). BL_SW **4.55 mm /
+2.27 mm²**. D8 → C44 → the R70–R73 ballast rail, routed around R70's LED_A1 pad. LED_K → R69 RSET.
+**C56 1 µF local CIN is routed to U17 pin 5 in 1.62 mm** at 0.40 mm — the TI SNVSA40B §7.5.1
+requirement is now met physically, not just on paper.
+
+**BAT / SYS rails.** Both outer-layer, as locked.
+
+| Rail | Layer | Length | Widths |
+|---|---|---|---|
+| `BQ25185_SYS` | **F.Cu** trunk x = 61.2 | **81.04 mm** | 0.20/0.25 escapes, 0.50–0.80 mm rail |
+| `BAT_PROTECTED_P` | **B.Cu** trunk x = 62.2 | **36.24 mm** | 0.20 escape, **0.60 mm** throughout |
+
+> **Why BAT is on B.Cu.** C24 (SYS), C25 (BAT) and C33 (SYS) interleave in one x-column, so the two
+> rails must cross. BAT may not use In2 — 1.5 A at 0.5 oz needs 2.73 mm — so the crossing is taken
+> **between two outer layers**, which is the only arrangement that keeps both rails at class width.
+> The trunk also steps west around the committed U11 GND plane-tie via at (62.6, 67.8).
+> BAT reaches C25, C36, U14 pins 2/3 and TP15; **`BAT_PROTECTED_P` is fully routed.**
+
+**In1 GND plane: 10224.4 mm² of an 11181.0 mm² outline — 91.44 %.** The HEADER RESERVED slot stays
+removed; the only voids are the WROOM antenna keepout and the NFC loop region, both required. The
+fill dropped 12.6 mm² from the 10237.0 mm² of the previous commit, which is exactly the antipad
+area of the 11 new vias — expected, not a policy change.
+
+**U9 grounding: unchanged and verified.** 6 in-pad EP vias + 3 fanout vias. **No via lies within
+0.4 mm of the WROOM pad column** (checked programmatically over the whole board, not just U9).
+
+### What is NOT routed, and why
+
+| Item | Status | Reason |
+|---|---|---|
+| **USB** J3→U10→R33/R34→U1 | **not started** | complex four-pad interleave at J3 (D+ at x 34.75/35.75 with D− at 34.25/35.25 between them) plus a ~150 mm route to U1; needs its own pass |
+| **E4** In2 crossing | **not started** | depends on USB |
+| **E5 C-W / C-E** crossings | **not started** | ran out of pass |
+| **+3V3 band crossing** | **not started** | ran out of pass |
+| **C55 → U9 supply** | **BLOCKED — see below** | |
+| GND stitching beyond EP/pin ties | deferred | §16 says no decorative fence; the return-critical ties are in |
+
+> **C55 → U9 is blocked at class width, and it is the same constraint that limited C55's placement.**
+> `NFC_5V_PA_PENDING` has a 0.35 mm netclass minimum and a 0.25 mm routed clearance. The only paths
+> from C55 to U9 pins 8/10 pass the C50/C52 row:
+> * west of C50 pad 2: the C50 pad1↔pad2 gap is **0.65 mm**, which fits 0.35 mm of track with only
+>   0.15 mm each side — 0.25 mm is required;
+> * east through the C50/C52 gap (**0.95 mm**): a 0.35 mm track fits, but it then collides with the
+>   new U9 GND fanout via at (24.000, 25.560) — the remaining corridor is **0.475 mm** against the
+>   0.85 mm that 0.35 mm of track plus two 0.25 mm gaps needs;
+> * B.Cu underneath: every candidate via position between C55 and U9 overlaps C50 pad 2 or C55's own
+>   pad.
+>
+> **Three ways out, and the choice is the CTO's:** move C50/C52 (they are the parts holding the
+> near-U9 space, exactly as flagged when C55 was placed); accept a documented width exception for
+> this one tap; or accept that C55 serves U9 through the In1 plane and a longer path. **No exception
+> was taken and nothing was moved.**
+
+### Preservation
+
+* **Placement: 188 footprints, zero moved**, verified against HEAD for position, rotation, side and
+  footprint ID.
+* **ERC: 116 / 58 excluded / 58 live, zero delta.**
+* **DRC: 0 errors**, 233 warnings (231 silkscreen, 1 dangling track, 1 text height). Parity 261.
+* **RF rules untouched** — `aqroot-Beta.kicad_dru` is not in this commit's diff. No copper exists on
+  any RF-band layer restriction: **no deferred RF or NFC net carries copper**, and In2 holds only two
+  short segments (the +3V3 hop at y 54.4–56.9 and the VBUS hop at y 64.6–65.6), both well outside
+  Y 88–114 and Y 115–138.
+* **No via inside either antenna band.**
+
+### Views
+
+`floorplan-views/Z_pass1_all_copper.svg`, `Z_pass1_in1_gnd_plane.svg`, `Z_pass1_fcu_power.svg`,
+`Z_pass1_bcu_power.svg`.
+
+### Status
+
+**ROUTING PASS 1: FAIL** — converters and rails done, USB / E4 / E5 / +3V3 crossing / C55-U9 not
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
+
+Next pass needs: the C55/U9 decision above, then USB + E4 + E5 + the +3V3 band crossing, then GND
+stitching. `scratchpad/pass1final.py` holds the working geometry for everything already routed.
