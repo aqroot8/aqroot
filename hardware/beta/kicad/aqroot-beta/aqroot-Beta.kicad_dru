@@ -496,3 +496,23 @@
 (rule "FP-D6 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
 	(constraint clearance (min 0.13mm))
 	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D6') && B.memberOfFootprint('D6')"))
+
+# ---------------------------------------------------------------------
+# 12. USB_VBUS_RAW ESCAPE VIAS
+#
+# The POWER-class drill floor assumes every VBUS_CHG-class via is a bulk
+# power via.  USB_VBUS_RAW's two escape vias are not.  C20 pad 1 sits in a
+# 1.050 mm pocket where an 0.80 mm POWER pad fits only by overlapping the
+# pad itself - via-in-pad, which is not allowed for Beta.  These vias use
+# the already-approved 0.25/0.55 geometry (the USB and THERMAL classes both
+# use it); at 500 mA a 0.25 mm barrel is far inside its rating.
+#
+# Scoped to this ONE net and to hole_size only, and placed at the very end
+# so that last-match precedence puts it after the POWER drill rule without
+# disturbing the PRECEDENCE TAIL above (those are width/clearance rules).
+# ---------------------------------------------------------------------
+
+(rule "USB_VBUS_RAW escape vias use the approved 0.25/0.55 geometry"
+	(constraint hole_size (min 0.25mm) (max 0.55mm))
+	(condition "A.Type == 'Via' && A.NetName == '/01_POWER_TREE/USB_VBUS_RAW'"))
+
