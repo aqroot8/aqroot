@@ -1169,27 +1169,27 @@
       },
       {
         "netclass": "USB_D",
-        "pattern": "/USB_D_P_MCU"
+        "pattern": "/USB_D_MCU_P"
       },
       {
         "netclass": "USB_D",
-        "pattern": "/USB_D_N_MCU"
+        "pattern": "/USB_D_MCU_N"
       },
       {
         "netclass": "USB_D",
-        "pattern": "*USB_D_P_CONN"
+        "pattern": "*USB_D_CONN_P"
       },
       {
         "netclass": "USB_D",
-        "pattern": "*USB_D_N_CONN"
+        "pattern": "*USB_D_CONN_N"
       },
       {
         "netclass": "USB_D",
-        "pattern": "*USB_D_P_ESD"
+        "pattern": "*USB_D_ESD_P"
       },
       {
         "netclass": "USB_D",
-        "pattern": "*USB_D_N_ESD"
+        "pattern": "*USB_D_ESD_N"
       },
       {
         "netclass": "E5_CROSSING",

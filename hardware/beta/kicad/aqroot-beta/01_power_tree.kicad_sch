@@ -6045,7 +6045,7 @@
 		)
 		(uuid "5e8ef9d7-61fe-4a33-894b-e262915159ce")
 	)
-	(label "USB_D_N_CONN"
+	(label "USB_D_CONN_N"
 		(at 49.53 45.72 0)
 		(effects
 			(font
@@ -6075,7 +6075,7 @@
 		)
 		(uuid "60f220f0-3608-4eb2-ada8-6c89cb8d8747")
 	)
-	(label "USB_D_P_ESD"
+	(label "USB_D_ESD_P"
 		(at 153.67 46.99 0)
 		(effects
 			(font
@@ -6095,7 +6095,7 @@
 		)
 		(uuid "6888a2d8-5bed-421d-a335-5b45cfc4c5de")
 	)
-	(label "USB_D_N_MCU"
+	(label "USB_D_MCU_N"
 		(at 54.61 57.15 0)
 		(effects
 			(font
@@ -6105,7 +6105,7 @@
 		)
 		(uuid "6a8a6485-c5e6-4d8e-add6-1e8a01a31e7f")
 	)
-	(label "USB_D_P_MCU"
+	(label "USB_D_MCU_P"
 		(at 76.2 57.15 0)
 		(effects
 			(font
@@ -6135,7 +6135,7 @@
 		)
 		(uuid "73252f9c-9bee-44a4-bd58-ea9b2269aadd")
 	)
-	(label "USB_D_P_CONN"
+	(label "USB_D_CONN_P"
 		(at 49.53 50.8 0)
 		(effects
 			(font
@@ -6155,7 +6155,7 @@
 		)
 		(uuid "80482d96-bce5-46ef-8349-955dc56575ab")
 	)
-	(label "USB_D_N_ESD"
+	(label "USB_D_ESD_N"
 		(at 165.1 25.4 180)
 		(effects
 			(font
@@ -6165,7 +6165,7 @@
 		)
 		(uuid "8452e7d8-55ce-4d6f-97ea-21bf6ea0001f")
 	)
-	(label "USB_D_P_ESD"
+	(label "USB_D_ESD_P"
 		(at 166.37 34.29 180)
 		(effects
 			(font
@@ -6205,7 +6205,7 @@
 		)
 		(uuid "968f83d6-0118-4fa5-a466-f54f17f4b965")
 	)
-	(label "USB_D_P_CONN"
+	(label "USB_D_CONN_P"
 		(at 139.7 46.99 180)
 		(effects
 			(font
@@ -6215,7 +6215,7 @@
 		)
 		(uuid "96f1b711-ef47-4c6b-a7dd-355dc4fe186f")
 	)
-	(label "USB_D_N_ESD"
+	(label "USB_D_ESD_N"
 		(at 153.67 44.45 0)
 		(effects
 			(font
@@ -6315,7 +6315,7 @@
 		)
 		(uuid "dd108f17-810b-4ef2-b91c-7700cd84bbab")
 	)
-	(label "USB_D_N_CONN"
+	(label "USB_D_CONN_N"
 		(at 139.7 44.45 180)
 		(effects
 			(font
@@ -6395,7 +6395,7 @@
 		)
 		(uuid "fa399df3-d5ce-4e22-8462-f0620539642c")
 	)
-	(hierarchical_label "USB_D_N_MCU"
+	(hierarchical_label "USB_D_MCU_N"
 		(shape output)
 		(at 177.8 25.4 0)
 		(effects
@@ -6417,7 +6417,7 @@
 		)
 		(uuid "4299cdf1-37b8-4c72-be53-3ee38cad9b24")
 	)
-	(hierarchical_label "USB_D_P_MCU"
+	(hierarchical_label "USB_D_MCU_P"
 		(shape output)
 		(at 177.8 34.29 0)
 		(effects
@@ -10031,7 +10031,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2k 1%"
+		(property "Value" "1k 1%"
 			(at 31.75 167.6399 0)
 			(show_name no)
 			(do_not_autoplace no)

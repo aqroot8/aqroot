@@ -156,3 +156,30 @@ it works.
 
 ## Open item
 - Total prototype budget ceiling: not yet set by [YOUR NAME] — fill in once decided.
+
+## Battery pack — charge-rate VERIFY (2026-08-11, blocks BOM lock, not routing)
+
+`R37` was changed **2 kΩ → 1 kΩ** on the BQ25185 `ISET` pin, taking the programmed fast-charge
+current from 150 mA to **300 mA typical** (285/300/315 mA from the `KISET` spread; 270–330 mA at
+TI's ±10 % `ICHG_ACC` spec). `R36` = 18 kΩ is unchanged, so the input current limit stays at
+**ILIM500** (450/475/498 mA) and `VBATREG` stays at 4.2 V.
+
+**VERIFY BEFORE BOM LOCK — the cell/pack must permit ≥300 mA charge current:**
+
+- [ ] Cell datasheet **standard** and **maximum** charge current at 2000 mAh. 300 mA is **0.15 C**,
+      which is conservative for LiPo (typical standard charge is 0.5 C), but no pack MPN is locked
+      yet so this is unverified rather than safe-by-assumption.
+- [ ] The **pack's integrated protection circuit** charge-current rating, which is a separate
+      number from the cell's and is often the lower of the two.
+- [ ] Charge **temperature** window, against the enclosure's internal rise at 300 mA.
+
+> **Related thermal consequence, carried to the routing/thermal pass.** The BQ25185 is a *linear*
+> charger with a power path: it regulates SYS to 4.5 V by dropping VIN, then drops SYS→BAT across
+> the BATFET. Worst-case device dissipation is **≈0.69 W** (0.238 W on IN→SYS at 475 mA + 0.450 W
+> on the BATFET at 300 mA with a depleted 3.0 V pack), against ≈0.46 W at the old 150 mA — a **50 %
+> increase**, in a 2.2 × 2.0 mm WSON-10. `TREG` = 100 °C folds charge current back rather than
+> failing, so this is a charge-*time* risk, not a hazard. But it means **U11's exposed-pad thermal
+> vias are now required for the 300 mA target to be sustained**, not optional. The thermal-via plan
+> is revised from 1 to **2** THERMAL-class vias on U11's 0.9 × 1.5 mm pad. Dissipation falls to
+> ≈0.39 W once the pack reaches 4.0 V, so the peak is transient and occurs exactly when a depleted
+> pack is plugged in.

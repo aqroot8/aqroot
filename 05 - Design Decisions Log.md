@@ -5487,3 +5487,180 @@ and track presets, board rule floors) · `aqroot-Beta.kicad_pcb` (2 rule areas r
 4 annotations, C55) · `04_spi_b_radios_nfc.kicad_sch` (C55 `Footprint` / `Package` / `Note`).
 
 **ROUTING NOT STARTED. No signal trace was drawn in this pass.**
+
+
+---
+
+## FINAL PRE-ROUTING ELECTRICAL CLOSURE: ISET locked at 300 mA, USB pair renamed (2026-08-11)
+
+Closes the two `BLOCKS_ROUTING` items left open by the pre-routing rule pass. **No traces drawn.
+No component moved.** Both changes are electrically minimal and were verified by delta, not by
+assertion.
+
+### 1. BQ25185 charge current locked at 300 mA
+
+| | Before | After |
+|---|---|---|
+| `R37` (U11 pin 8, `ISET` → GND) | **2 kΩ 1 %** | **1 kΩ 1 %** |
+| `ICHG` = `KISET / RISET` | 300 AΩ / 2000 Ω = 150 mA | **300 AΩ / 1000 Ω = 300 mA** |
+| Min / typ / max from the `KISET` spread (285/300/315 AΩ) | 135 / 150 / 165 mA | **285 / 300 / 315 mA** |
+| Bound by TI's `ICHG_ACC` spec (±10 %, ICHG ≥ 40 mA) | 135–165 mA | **270–330 mA** |
+| Rate against the 2000 mAh Beta pack | 0.075 C | **0.15 C** |
+| `IPRECHG` (20 % of ICHG, VBAT < VLOWV) | 30 mA | **60 mA** |
+| `ITERM` (10 % of ICHG) | 15 mA | **30 mA** |
+
+`RISET` = 1 kΩ is far above `RISET_SHORT` = 264 Ω and 300 mA is far below the 1 A device maximum, so
+**nothing is clipped**. 1 kΩ is also TI's own figure — `SLUSF65A` §8.2.2.2: *"To configure the device
+for a fast charge current of 300 mA, set the RISET resistor to 1 kΩ."*
+
+**`R36` = 18 kΩ is untouched.** The input current limit is therefore unchanged at **ILIM500** —
+450 / 475 / 498 mA per the EC table — and `VBATREG` remains 4.2 V with `VLOWV` 3.0 V. Verified in
+the saved board, not assumed: `R36 = 18k 1%`, `R37 = 1k 1%`.
+
+Both the schematic symbol **and** the PCB footprint `Value` field were updated together, so the
+change adds no `footprint_symbol_field_mismatch` parity warning (parity count is unchanged at 259).
+
+### 2. Power netclass recalculation — no width target changes
+
+Recomputed against the already-selected `JLC04161H-7628` copper weights (1 oz outer / 0.5 oz inner).
+**No conductor was widened, because nothing needed widening.**
+
+| Netclass | Sizing case | Does 300 mA charge affect it? | Width |
+|---|---|---|---|
+| `VBUS_CHG` | 0.5 A, set by ILIM500 — **and ILIM did not change** | No. Charging draws from the *same* capped input; it re-allocates the budget, it does not raise it. | **0.50 mm, unchanged** |
+| `BAT_MAIN` | **discharge**: 1.5 A continuous, 3.125 A `IBAT_OCP` | No. 300 mA into the pack is ~10 % of the sizing case. | **1.50 mm, unchanged** |
+| `SYS_MAIN` | system load ≈750 mA at SYS to make 640 mA at 3.3 V through the TPS63020 | No. SYS is sized by the load, not by charge current; beyond ILIM the battery supplements and current reverses at similar magnitude. | **1.00 mm, unchanged** |
+| `P3V3` `NFC_5V_PA` `LED_BOOST` `SWITCH_NODE` `USB_D` | — | No. Downstream of SYS, unaffected. | **unchanged** |
+
+For scale: IPC-2221B needs **0.057 mm** for 300 mA on 1 oz outer copper at ΔT = 10 K. Every existing
+floor already exceeds that by an order of magnitude. Widening anything here would have been arbitrary.
+
+**What *did* change is the input-power allocation, and it is the accepted tradeoff.** At 475 mA typ
+input with SYS regulated to 4.5 V, charging 300 mA at ~3.8 V consumes ≈253 mA of the SYS-side
+budget, leaving ≈222 mA (≈1.0 W) for the system before DPPM/supplement engages — against ≈348 mA
+(≈1.57 W) at the old 150 mA. USB-only operation therefore has less headroom before the battery
+starts supplementing. That is exactly the "preserve *some* system-current headroom" position the
+decision took, and it needs no layout change.
+
+> **The real consequence is thermal, not conductor width, and it lands on U11.** The BQ25185 is a
+> **linear** charger with a power path: it regulates SYS to 4.5 V by dropping VIN, then drops
+> SYS→BAT across the BATFET. Worst-case device dissipation:
+>
+> * IN→SYS path: (5.0 − 4.5) × 0.475 = **0.238 W**
+> * BATFET at fast-charge onset with a depleted 3.0 V pack: (4.5 − 3.0) × 0.300 = **0.450 W**
+> * **Total ≈ 0.69 W**, against ≈0.46 W at the old 150 mA — a **+50 %** increase, in a
+>   DLH0010A **2.2 × 2.0 mm** WSON-10.
+>
+> `TREG` = 100 °C folds charge current back rather than failing, so this is a charge-**time** risk,
+> not a hazard, and it is transient — dissipation falls to ≈0.39 W once the pack reaches 4.0 V.
+> But it means **U11's exposed-pad thermal vias are now required for the 300 mA target to be
+> sustained, not optional.** The thermal-via plan is revised from 1 to **2 THERMAL-class vias**
+> (0.25 mm drill / 0.55 mm pad) on U11's 0.9 × 1.5 mm exposed pad — two fit along the 1.5 mm axis at
+> 0.75 mm pitch with a 0.20 mm pad gap. **Implementation stays deferred to the routing/thermal pass;
+> this is guidance for that pass, not a routing blocker.**
+
+### 3. USB differential net names normalised
+
+| Old | New | Segment |
+|---|---|---|
+| `/01_POWER_TREE/USB_D_P_CONN` | **`/01_POWER_TREE/USB_D_CONN_P`** | J3 ↔ U10 (connector side of the ESD array) |
+| `/01_POWER_TREE/USB_D_N_CONN` | **`/01_POWER_TREE/USB_D_CONN_N`** | " |
+| `/01_POWER_TREE/USB_D_P_ESD` | **`/01_POWER_TREE/USB_D_ESD_P`** | U10 ↔ R33/R34 (22 R series) |
+| `/01_POWER_TREE/USB_D_N_ESD` | **`/01_POWER_TREE/USB_D_ESD_N`** | " |
+| `/USB_D_P_MCU` | **`/USB_D_MCU_P`** | R33/R34 ↔ U1 (+ C21/C22 DNP) |
+| `/USB_D_N_MCU` | **`/USB_D_MCU_N`** | " |
+
+**Scope note, stated explicitly.** The instruction named only the MCU pair, but *"use one naming
+convention consistently"* and the goal of actually closing the blocker both point at all three
+segments. `USB_D_P_CONN` and `USB_D_P_ESD` had the identical mid-name defect, and the CONN segment
+(J3 → U10, ~10 mm) and ESD segment (U10 → the series resistors) are physically routed as
+differential pairs too. Renaming only the MCU pair would have left two thirds of the pair
+un-pairable by the router. All six were renamed to the same `_P`/`_N` suffix convention.
+
+38 renames total: 12 in `01_power_tree.kicad_sch`, 2 in `02_mcu_core.kicad_sch` (hierarchical
+labels), 8 in `aqroot-Beta.kicad_sch` (root labels + sheet pins), 16 pad-net references in
+`aqroot-Beta.kicad_pcb`. Six `netclass_patterns` in `aqroot-Beta.kicad_pro` were retargeted.
+**Nothing but names changed** — no pin, no series component, no ESD part, no J3, no MCU assignment,
+no architecture.
+
+### 4. Differential-pair detection — verified functionally, three ways
+
+Checked on a throwaway board copy with two temporary probe rules and four injected tracks
+(discarded afterwards — the committed rule set is unchanged).
+
+1. **`A.inDiffPair('/USB_D_MCU')` matched both tracks.** KiCad resolves the base name and pairs the
+   `_P`/`_N` members. This is the check that failed before the rename.
+2. **`AB.isCoupledDiffPair()` fired on all three segments** — `USB_D_MCU_P/N`, `USB_D_CONN_P/N` and
+   `USB_D_ESD_P/N` — confirming every segment is recognised, not just the MCU pair. It also fired on
+   the pre-existing, already-correctly-named `SPK_P`/`SPK_N`, which is a useful control that the
+   probe itself works.
+3. **The real `USB_DIFF` geometry rule binds and discriminates.** A pair injected at the correct
+   **0.20 mm** gap produced **no** violation; a pair injected at **0.50 mm** produced
+   `diff_pair_gap_out_of_range` quoting *"USB 2.0 differential pair geometry (90 Ω on F.Cu over In1)
+   maximum gap 0.2400 mm; actual 0.5000 mm"*. Before the rename this constraint could not fire at
+   all, because KiCad never identified a pair to measure.
+
+**Geometry unchanged, as instructed:** W **0.30 mm**, gap **0.20 mm**, ~**90 Ω** differential
+(89.3 Ω computed) on F.Cu over the continuous In1 GND plane, `JLC04161H-7628`, 4 layer, 1.6 mm. The
+rule bound on the first attempt, so nothing needed adjusting.
+
+### 5. Verification
+
+* **Connectivity: identical.** 174 nets before and after. Applying the expected six-name map to the
+  HEAD netlist reproduces the new netlist **exactly** — zero nets added, zero removed, **zero
+  membership changes**. The chain is intact and traceable: `J3.A6/B6 → U10.3` ▸ `U10.4 → R34.1` ▸
+  `R34.2 → U1.14` (+`C22.1`), and the N side mirrors it through `U10.1`, `R33`, `U1.13`, `C21`.
+* **ERC: 116 reported / 58 excluded / 58 live**, and **zero delta** against the pre-rules baseline
+  under an identical `--severity-all` invocation. Live set is 23 `isolated_pin_label`, 22
+  `pin_to_pin`, 8 `unconnected_wire_endpoint` (all warnings) and the 5 pre-existing
+  `label_dangling` errors. **Exclusion reconciliation: all 58 stored `erc_exclusions` still bind and
+  none references a USB net name, so nothing went stale.** `drc_exclusions` remains **0** — no DRC
+  finding is being hidden anywhere in this project.
+* **PCB DRC: 0 errors**, 231 warnings (132 `silk_over_copper`, 95 `silk_overlap`, 3
+  `silk_edge_clearance`, 1 `text_height`) — identical in composition to the previous pass. The
+  fine-pitch rules remain effective (no `clearance` error returned) and the RF **E4/E5 rules are
+  byte-unchanged**: `aqroot-Beta.kicad_dru` was not edited in this pass.
+* **Schematic ↔ PCB parity: 259, all `warning`, count unchanged.** 187 empty-`Description` field
+  mismatches and 72 library-prefix artifacts. The R37 value edit added none because both sides were
+  updated together.
+* **Placement: 187 footprints, zero changes** to position, rotation, side or footprint ID. C55
+  remains at **(22.225, 29.400) rot 270, `C_0603_1608Metric`**. The board still has **0 tracks and
+  0 vias**.
+
+### 6. Routing blocker ledger
+
+**`BLOCKS_ROUTING`: NONE.**
+
+Both prior items are closed: the ISET charging policy is decided and implemented, and the USB pair
+is renamed with differential-pair binding demonstrated rather than assumed.
+
+**`BLOCKS_FAB` (unchanged in kind, one added):**
+
+1. **NEW — battery cell/pack must permit ≥300 mA charge** (0.15 C at 2000 mAh). Cell standard and
+   maximum charge current, the pack protection circuit's own charge rating, and the charge
+   temperature window. See [[06 - BOM and Cost Tracker]].
+2. Panel ceiling re-derivation — 0.80 mm reads as a nominal applied as a maximum; U9 is 1.00 mm max
+   by datasheet and standard 0603 X7R is 0.90 mm max.
+3. C55 exact low-profile MPN — 2.2 µF / 16 V / X7R / 0603 with documented max height and a DC-bias
+   curve showing ≥1.2 µF at 5.0 V.
+4. Samtec J5 body depth **B**.
+5. Samtec J5 finished-hole requirement.
+6. Final JLCPCB impedance confirmation at order, and **FR-4 TG155** selected rather than the
+   4-layer default TG135–140.
+7. J2 microSD shell edge clearance 0.20 mm — at the fab floor, confirm with JLCPCB.
+8. Thermal-via implementation and vendor-guidance review (U9, U12, U5, U14 marked VERIFY; **U11
+   revised to 2 vias and now load-bearing for the 300 mA charge target**).
+
+None of these is promoted to a routing blocker. Each is a fabrication, BOM or thermal-implementation
+item that routing can proceed alongside — the thermal vias in particular are *placed during* routing,
+which is why the plan belongs to that pass rather than blocking its start.
+
+### Files changed
+
+`01_power_tree.kicad_sch` (R37 value, 12 USB label renames) · `02_mcu_core.kicad_sch` (2
+hierarchical labels) · `aqroot-Beta.kicad_sch` (8 root labels + sheet pins) ·
+`aqroot-Beta.kicad_pcb` (16 pad-net references, R37 value field) · `aqroot-Beta.kicad_pro` (6
+netclass patterns) · `06 - BOM and Cost Tracker.md` (charge-rate VERIFY).
+**`aqroot-Beta.kicad_dru` deliberately untouched.**
+
+**ROUTING NOT STARTED. No signal trace was drawn in this pass.**

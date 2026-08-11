@@ -2337,7 +2337,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_N_ESD")
+			(net "/01_POWER_TREE/USB_D_ESD_N")
 			(uuid "afb23d22-986c-401f-9568-5ef7b640e91f")
 		)
 		(pad "2" smd roundrect
@@ -2345,7 +2345,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_N_MCU")
+			(net "/USB_D_MCU_N")
 			(uuid "6fe525e4-1db3-4ede-bef8-afc73dff4f09")
 		)
 		(embedded_fonts no)
@@ -5685,7 +5685,7 @@
 			(size 0.9 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_N_MCU")
+			(net "/USB_D_MCU_N")
 			(uuid "83b007ab-8935-4dda-b7c5-fd1d6cf37ce6")
 		)
 		(pad "2" smd roundrect
@@ -6123,7 +6123,7 @@
 			(size 0.9 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_P_MCU")
+			(net "/USB_D_MCU_P")
 			(uuid "549c6ce2-9a02-4af3-a4d2-e58d9ce5e55f")
 		)
 		(pad "2" smd roundrect
@@ -6415,7 +6415,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_P_ESD")
+			(net "/01_POWER_TREE/USB_D_ESD_P")
 			(uuid "a0463ee3-213f-4cfa-932b-4eae42e257a4")
 		)
 		(pad "2" smd roundrect
@@ -6423,7 +6423,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_P_MCU")
+			(net "/USB_D_MCU_P")
 			(uuid "28746e31-d5cc-4dfb-9d78-de1f445818e3")
 		)
 		(embedded_fonts no)
@@ -7898,7 +7898,7 @@
 				)
 			)
 		)
-		(property "Value" "2k 1%"
+		(property "Value" "1k 1%"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "89ff7892-2f41-4dda-9843-9c3f1e718757")
@@ -15915,7 +15915,7 @@
 			(size 1.325 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_N_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_N")
 			(uuid "f992a9ed-fd00-409b-931b-b26a2c6eb696")
 		)
 		(pad "2" smd roundrect
@@ -15931,7 +15931,7 @@
 			(size 1.325 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_P_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_P")
 			(uuid "6747fd0a-b7a0-4560-addb-c755afb68d38")
 		)
 		(pad "4" smd roundrect
@@ -15939,7 +15939,7 @@
 			(size 1.325 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_P_ESD")
+			(net "/01_POWER_TREE/USB_D_ESD_P")
 			(uuid "fce81f2d-8723-4fce-8bfb-a10334ec7d57")
 		)
 		(pad "5" smd roundrect
@@ -15955,7 +15955,7 @@
 			(size 1.325 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_N_ESD")
+			(net "/01_POWER_TREE/USB_D_ESD_N")
 			(uuid "acc31c7e-1c27-46cd-b6e0-98e8cd1a598e")
 		)
 		(embedded_fonts no)
@@ -17851,7 +17851,7 @@
 			(size 0.3 1.15)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_P_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_P")
 			(uuid "e9b89c78-5c46-4f37-ac48-06fe388cafe6")
 		)
 		(pad "A7" smd roundrect
@@ -17859,7 +17859,7 @@
 			(size 0.3 1.15)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_N_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_N")
 			(uuid "c5d5d1e4-7404-4006-be48-b6da0b011974")
 		)
 		(pad "A8" smd roundrect
@@ -17915,7 +17915,7 @@
 			(size 0.3 1.15)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_P_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_P")
 			(uuid "a1d0cada-aaed-49ff-959c-77cba15f4fbf")
 		)
 		(pad "B7" smd roundrect
@@ -17923,7 +17923,7 @@
 			(size 0.3 1.15)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/01_POWER_TREE/USB_D_N_CONN")
+			(net "/01_POWER_TREE/USB_D_CONN_N")
 			(uuid "f9fd7415-1ae0-41ba-bcbb-dc37393bda25")
 		)
 		(pad "B8" smd roundrect
@@ -28076,14 +28076,14 @@
 			(at -8.75 -9.98 270)
 			(size 1.5 0.9)
 			(layers "B.Cu" "B.Mask" "B.Paste")
-			(net "/USB_D_N_MCU")
+			(net "/USB_D_MCU_N")
 			(uuid "e8ee5628-0e95-4f51-8109-1286c8f9df1d")
 		)
 		(pad "14" smd rect
 			(at -8.75 -11.25 90)
 			(size 1.5 0.9)
 			(layers "B.Cu" "B.Mask" "B.Paste")
-			(net "/USB_D_P_MCU")
+			(net "/USB_D_MCU_P")
 			(uuid "c0ce2277-1129-468e-972a-7f34ed3d3e9d")
 		)
 		(pad "15" smd rect

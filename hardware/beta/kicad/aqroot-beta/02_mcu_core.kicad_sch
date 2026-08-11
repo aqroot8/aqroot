@@ -2504,7 +2504,7 @@
 		)
 		(uuid "7697b511-3616-494a-850e-f367da2ae53a")
 	)
-	(hierarchical_label "USB_D_P_MCU"
+	(hierarchical_label "USB_D_MCU_P"
 		(shape bidirectional)
 		(at 149.86 86.36 0)
 		(effects
@@ -2614,7 +2614,7 @@
 		)
 		(uuid "b43d5e91-70dd-46f2-94eb-690cd03925ef")
 	)
-	(hierarchical_label "USB_D_N_MCU"
+	(hierarchical_label "USB_D_MCU_N"
 		(shape bidirectional)
 		(at 149.86 83.82 0)
 		(effects

@@ -1403,7 +1403,7 @@
 		)
 		(uuid "38a9d878-4403-4009-8392-2763f4ab6c96")
 	)
-	(label "USB_D_N_MCU"
+	(label "USB_D_MCU_N"
 		(at 106.68 30.48 0)
 		(effects
 			(font
@@ -1693,7 +1693,7 @@
 		)
 		(uuid "7d90b664-72cb-4ad5-a803-9bac93377d41")
 	)
-	(label "USB_D_P_MCU"
+	(label "USB_D_MCU_P"
 		(at 148.59 24.13 90)
 		(effects
 			(font
@@ -2293,7 +2293,7 @@
 		)
 		(uuid "f696ec67-1e5b-463b-9ffb-15a9c819a9b4")
 	)
-	(label "USB_D_P_MCU"
+	(label "USB_D_MCU_P"
 		(at 106.68 36.83 0)
 		(effects
 			(font
@@ -2333,7 +2333,7 @@
 		)
 		(uuid "fb1de8c6-886a-4ea7-a08c-e47bb279fc43")
 	)
-	(label "USB_D_N_MCU"
+	(label "USB_D_MCU_N"
 		(at 144.78 24.13 90)
 		(effects
 			(font
@@ -2713,7 +2713,7 @@
 				(justify right)
 			)
 		)
-		(pin "USB_D_N_MCU" output
+		(pin "USB_D_MCU_N" output
 			(at 105.41 30.48 0)
 			(uuid "381b27e2-43e6-4410-80f1-1b2e6b1a12e2")
 			(effects
@@ -2723,7 +2723,7 @@
 				(justify right)
 			)
 		)
-		(pin "USB_D_P_MCU" output
+		(pin "USB_D_MCU_P" output
 			(at 105.41 36.83 0)
 			(uuid "4d3f7646-1c90-4f91-beaa-88fdc5d585b8")
 			(effects
@@ -3909,7 +3909,7 @@
 				(justify right)
 			)
 		)
-		(pin "USB_D_N_MCU" bidirectional
+		(pin "USB_D_MCU_N" bidirectional
 			(at 144.78 25.4 90)
 			(uuid "4637a892-7cee-4870-aee8-6ad6beb33044")
 			(effects
@@ -3919,7 +3919,7 @@
 				(justify right)
 			)
 		)
-		(pin "USB_D_P_MCU" bidirectional
+		(pin "USB_D_MCU_P" bidirectional
 			(at 148.59 25.4 90)
 			(uuid "3a69459c-0204-46eb-a9ed-f3dcfb87c508")
 			(effects
