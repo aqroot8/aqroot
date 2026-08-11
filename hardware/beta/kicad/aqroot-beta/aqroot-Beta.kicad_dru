@@ -41,35 +41,6 @@
 #   D3 D4 D5 D6 TPD4E1B06DRLR SOT-563          0.1500 mm   -> 0.13 mm
 # ---------------------------------------------------------------------
 
-(rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
-	(constraint clearance (min 0.05mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
-
-(rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U13') && B.memberOfFootprint('U13')"))
-
-(rule "FP-U16 TCA9517ADGK VSSOP-8 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U16') && B.memberOfFootprint('U16')"))
-
-(rule "FP-D3 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D3') && B.memberOfFootprint('D3')"))
-
-(rule "FP-D4 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D4') && B.memberOfFootprint('D4')"))
-
-(rule "FP-D5 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D5') && B.memberOfFootprint('D5')"))
-
-(rule "FP-D6 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
-	(constraint clearance (min 0.13mm))
-	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D6') && B.memberOfFootprint('D6')"))
-
-
 # ---------------------------------------------------------------------
 # 2. J2 microSD SHELL - VENDOR LAND PATTERN REACHES THE BOARD EDGE
 #
@@ -84,6 +55,27 @@
 	(constraint edge_clearance (min 0.20mm))
 	(condition "A.memberOfFootprint('J2')"))
 
+
+# ---------------------------------------------------------------------
+# 2b. PAD-ESCAPE NECKING INSIDE FINE-PITCH POWER PACKAGES
+#
+# Added during Routing Pass 1, and deliberately placed HERE: KiCad applies
+# the FIRST matching rule, so this must precede the elevated rail
+# clearances in section 10 or it would never win.
+#
+#   U11 BQ25185  DLH0010A WSON-10, 0.40 mm pitch, 0.20 mm tall pads
+#   U12 TPS63020 DSJ VSON-14,      0.50 mm pitch, 0.24 mm wide pads
+#   U13 TPS61023 SOT-563,          0.50 mm pitch
+#   U14 MAX17048 T822,             0.50 mm pitch
+#   U17 TPS61169 SOT-353
+#
+# A 1.00 mm BAT_MAIN track cannot land on a 0.20 mm pad, and SYS and BAT
+# leaving adjacent pins of a 0.40 mm pitch WSON cannot hold 0.30 mm from
+# each other.  Inside these five courtyards the VENDOR PITCH governs, so
+# width and clearance both fall back to the 0.20 mm global figure - which
+# is still 2.2x the fab floor.  Outside the courtyard the full rail width
+# and the elevated routed clearances apply again, unchanged.
+# ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
 # 3. In1.Cu IS THE GND REFERENCE PLANE
@@ -432,3 +424,56 @@
 (rule "POWER-class vias use the 0.40 mm drill"
 	(constraint hole_size (min 0.40mm))
 	(condition "A.Type == 'Via' && (A.hasNetclass('BAT_MAIN') || A.hasNetclass('SYS_MAIN') || A.hasNetclass('P3V3') || A.hasNetclass('NFC_5V_PA') || A.hasNetclass('VBUS_CHG'))"))
+
+# =====================================================================
+# PRECEDENCE TAIL - ORDER HERE IS LOAD-BEARING
+#
+# KiCad applies the LAST matching custom rule, not the first.  That was
+# established empirically during Routing Pass 1: with the necking rules
+# at the end of the file they beat the section-10 rail clearances, and
+# when they were moved to the front the section-1 land-pattern rules
+# stopped winning and U13 reported four false 0.15 mm pad-pair errors.
+#
+# Required order, weakest first:
+#   1. sections 3-12 above  - RF policy, rails, vias
+#   2. pad-escape necking   - vendor pitch governs inside 6 courtyards
+#   3. land-pattern rules   - vendor land pattern governs pad-vs-pad
+# Moving either block earlier silently breaks the one below it.
+# =====================================================================
+
+(rule "Pad-escape necking - width, fine-pitch power packages"
+	(constraint track_width (min 0.20mm))
+	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')"))
+
+(rule "Pad-escape necking - clearance, fine-pitch power packages"
+	(constraint clearance (min 0.20mm))
+	(condition "(A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')) && (B.intersectsCourtyard('U11') || B.intersectsCourtyard('U12') || B.intersectsCourtyard('U13') || B.intersectsCourtyard('U14') || B.intersectsCourtyard('U17') || B.intersectsCourtyard('U9'))"))
+
+
+(rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
+	(constraint clearance (min 0.05mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
+
+(rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U13') && B.memberOfFootprint('U13')"))
+
+(rule "FP-U16 TCA9517ADGK VSSOP-8 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U16') && B.memberOfFootprint('U16')"))
+
+(rule "FP-D3 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D3') && B.memberOfFootprint('D3')"))
+
+(rule "FP-D4 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D4') && B.memberOfFootprint('D4')"))
+
+(rule "FP-D5 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D5') && B.memberOfFootprint('D5')"))
+
+(rule "FP-D6 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D6') && B.memberOfFootprint('D6')"))

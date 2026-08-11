@@ -5664,3 +5664,173 @@ netclass patterns) · `06 - BOM and Cost Tracker.md` (charge-rate VERIFY).
 **`aqroot-Beta.kicad_dru` deliberately untouched.**
 
 **ROUTING NOT STARTED. No signal trace was drawn in this pass.**
+
+
+---
+
+## ROUTING PASS 1 — PARTIAL: GND reference + EP thermal infrastructure committed, rails BLOCKED (2026-08-11)
+
+**Routing Pass 1 did NOT complete its stated scope.** Blocks A and B (thermal/exposed-pad
+infrastructure and the primary GND reference) are routed and DRC-clean. Blocks C–F (converters,
+major power rails, USB, E4/E5 crossings, critical decoupling loops) were routed, produced **41 DRC
+errors**, and were **reverted rather than committed**, because they cannot be made legal against
+the current rail-width floors. The cause is diagnosed below and needs one CTO decision.
+
+Nothing broken was committed. Placement, connectivity and ERC are untouched.
+
+### Push status
+
+Working tree was clean at three commits ahead. `acdff55..e6220da` pushed to `origin/master`; no
+commit was created for the push. Branch in sync before routing began.
+
+### What IS routed and verified
+
+| | |
+|---|---|
+| Stackup | JLCPCB `JLC04161H-7628`, 4 layer, 1.6 mm, 1 oz outer / 0.5 oz inner |
+| Tracks added | **3** (F.Cu, GND only) |
+| Vias added | **18** — 16 THERMAL 0.25/0.55, 1 POWER 0.40/0.80, 1 GENERAL_SIGNAL 0.30/0.60 |
+| Nets carrying copper | **GND only** |
+| In1 GND zone | outline 11181.0 mm², **filled 10025.8 mm²** |
+| DRC | **0 errors**, 233 warnings (231 silkscreen + 1 dangling track + 1 dangling via) |
+
+### In1 GND reference — created, and it is NOT continuous
+
+The `In1 GND REFERENCE` zone is a single pour inset 0.6 mm from the board edge. **1155.2 mm² of it
+is missing**, and that is worth stating plainly because the ruling asked for a continuous plane:
+
+| Void | Area | Authority |
+|---|---|---|
+| `WROOM ANTENNA KEEPOUT` X0–6 Y17–35 | ~108 mm² | Espressif — **required**, and the ruling names it |
+| `NFC RESERVED` X28–54 Y15–35 | ~520 mm² | NFC loop antenna — **required**; a loop over a plane is shorted |
+| `HEADER RESERVED` X18.5–55.5 Y0–8.5 | ~315 mm² | J5 dock reservation from the placement passes |
+| pad/via clearance cutouts | ~212 mm² | normal |
+
+Two of the three are electrically necessary. **`HEADER RESERVED` is the one worth questioning** — it
+is a 37 × 8.5 mm hole in the reference plane at the top edge, and unlike the antenna keepouts there
+is no manufacturer requirement behind it. It was not changed (it predates this pass and §2 says
+preserve authoritative exceptions), but any net routed across Y0–8.5 in that X range will lose its
+reference. **Flagged for the CTO.**
+
+### Exposed-pad thermal vias — 16 vias, all vendor-geometry-derived
+
+TI `SLUSF65A` §8.4.1 verbatim: *"A solid ground plane tied to the GND pin and thermal pad should be
+used."* **TI specifies a plane tie, not a via count**, so no array was invented — each array is the
+maximum the vendor land pattern accepts at the project THERMAL class (0.25 mm drill / 0.55 mm pad)
+with ≥0.10 mm land margin.
+
+| Ref | Land | Vias | Note |
+|---|---|---|---|
+| U11 BQ25185 | 0.90 × 1.50 mm | **2** @ 0.70 mm pitch | the most a 0.90 mm-wide land takes |
+| U12 TPS63020 | 2.85 × 1.58 mm | **6** (3 × 2) | 0.90 / 0.70 mm pitch |
+| U9 ST25R3916 | 3.45 × 3.45 mm | **6** (2 × 3), west half only | see below |
+| U5 MAX98357A | 1.23 × 1.23 mm | **1** centred | 0.55 mm pads will not tile 1.23 mm |
+| U14 MAX17048 | 0.80 × 1.38 mm | **1** centred | |
+
+**U1 ESP32-S3-WROOM-1 needed nothing: its footprint already carries 12 integral plated 0.20 mm vias
+in pad 41**, present on F.Cu/In1/In2/B.Cu. Module grounding is done by the land pattern.
+
+> **NEW FINDING — U9's exposed pad sits on top of the WROOM pad column.** U9's EP land spans
+> X 22.775–26.225; U1's B.Cu pad column (pads 15–30, `TEST_GPIO46`, `NFC_CS_N`, `DISP_CS_N`,
+> `SPI_A_MOSI`, `SPI_A_SCK` …) occupies **X 24.500–26.000** directly beneath it. A through via in the
+> eastern half of U9's EP would short the NFC reader's ground pad to a WROOM GPIO. Only the western
+> strip X 23.15–24.03 is usable, giving **6 vias instead of the 9 a 3.45 mm land would otherwise
+> take**, all offset to one side of the pad. U9's thermal and RF grounding is therefore
+> **asymmetric and weaker than the land pattern allows**, and it is a *placement stack* consequence,
+> not a routing one. Carried as an RF/thermal review item for U9 bring-up.
+
+### KiCad custom-rule precedence is LAST-match-wins — and it is now load-bearing
+
+Established empirically, twice, during this pass, because the first assumption was wrong:
+
+1. Necking rule at the **end** of the file → it beat the section-10 rail clearances.
+2. Necking rule moved to the **front** → the section-1 land-pattern rules stopped winning and U13
+   immediately reported **four false 0.15 mm pad-pair errors**.
+
+So later rules override earlier ones. `aqroot-Beta.kicad_dru` now ends with an explicit
+**PRECEDENCE TAIL** whose comment records the required weakest-first order — RF/rail rules, then
+pad-escape necking, then land-pattern rules — and warns that moving either block earlier silently
+breaks the one below it. **This ordering is not cosmetic; it is the only reason the fine-pitch
+exceptions work.**
+
+### Rule added: pad-escape necking (section in the precedence tail)
+
+Two rules, scoped to six named courtyards — `U11 U12 U13 U14 U17 U9`:
+
+* `track_width (min 0.20mm)`
+* `clearance (min 0.20mm)` when **both** items are inside one of those courtyards
+
+Justification: a 1.00 mm `BAT_MAIN` track cannot land on U11's 0.20 mm-tall pad, and SYS and BAT
+leaving adjacent pins of a 0.40 mm-pitch WSON cannot hold 0.30 mm from each other. Inside these
+courtyards the **vendor pitch governs**; 0.20 mm is still 2.2× the fab floor. Width *and* clearance
+fall back only there — outside the courtyard the full rail width and elevated routed clearances
+apply unchanged. **RF E4/E5 rules were not touched: `git diff` confirms no edit inside sections 4–9.**
+
+### Why blocks C–F were reverted — one decision unblocks them
+
+The routing was built and measured. It produced 41 errors that reduce to **one root cause**:
+
+> **`BAT_MAIN` min 1.00 mm and `SYS_MAIN` min 0.60 mm cannot be honoured on the copper that
+> actually exists around U11, and the widths were derived from the wrong current.**
+
+* `BAT_MAIN`'s 1.00/1.50 mm floor came from **`IBAT_OCP` = 3.125 A** — which is a *fault trip
+  threshold*, not a design current. Sizing a rail for the OCP point is what makes the geometry
+  infeasible. The realistic sustained battery current is **~1.0–1.5 A** (system load in supplement
+  mode). At 1.5 A on 1 oz outer copper, IPC-2221B needs **0.525 mm** at ΔT = 10 K — half the
+  present floor.
+* On **In2 at 0.5 oz**, 1.5 A needs **2.73 mm** at ΔT = 10 K. A 0.60 mm In2 rail would run ~120 K
+  hot. So BAT and SYS genuinely **cannot** distribute on In2, and the attempt to do so was wrong —
+  the rule system correctly rejected it. They must stay on the outer layers.
+* But U11's **west flank is a 0.40 mm-pitch WSON**: SYS (pin 1), BAT (pin 2), STAT2 (pin 3) and two
+  GND pins all exit within 1.6 mm of each other. Two rails at 1.00 mm + 0.60 mm + 0.30 mm clearance
+  need 1.9 mm of width that is not there, and the free F.Cu corridor west of x = 62.5 can only be
+  reached through ~1.1 mm of necked escape.
+
+**Decision needed before Pass 1 can be re-run (this is a rules change, and §0 makes the rules
+authoritative, so it is not mine to make):**
+
+| Netclass | Present floor | Proposed | Basis |
+|---|---|---|---|
+| `BAT_MAIN` | min 1.00 / opt 1.50 mm | **min 0.60 / opt 1.00 mm** | 1.5 A sustained on 1 oz outer, ΔT = 10 K → 0.525 mm |
+| `SYS_MAIN` | min 0.60 / opt 1.00 mm | **min 0.50 / opt 0.80 mm** | 1.0 A on 1 oz outer, ΔT = 10 K → 0.300 mm |
+
+Both proposals still carry ≥2× the IPC-2221B thermal minimum. Keeping the present floors is also a
+valid answer — it would mean accepting that BAT and SYS route as short wide F.Cu spurs only, with
+U11's charge path deliberately necked, and TI's *"high-current charge paths … must be sized
+appropriately"* satisfied by length rather than width.
+
+### Also measured while the reverted routing was in place
+
+Recorded because it is real data and will not need re-deriving next pass:
+
+| Item | Result |
+|---|---|
+| U12 L1 buck switch node | **2.70 mm** of 0.50 mm copper |
+| U12 L2 boost switch node | **6.89 mm** — L1's west pad faces U12's *north* pin row and its east pad faces the *south* row, so the boost node must route **around the inductor**. Placement consequence; flagged. |
+| U13 SW | **3.70 mm** |
+| U17 BL_SW | **4.55 mm** |
+| C43 → L3 | **2.37 mm** — the loop-critical hop, and it is good |
+| U17 VIN ← C43 | **9.39 mm** — *not* loop-critical: on the TPS61169 the VIN pin is an internal-bias input, and the power path is rail → L3 → SW. **But there is no local bias cap at U17 pin 5**; C43 serves both roles at 9.39 mm. Review item — adding one is a schematic change and was not done. |
+| C55 → U9 pin 10 | routable at 0.35 mm through the **0.95 mm** gap between C50 and C52, necking to 0.25 mm for the final 0.5 mm-pitch approach — which is why U9 was added to the necking set |
+
+### Preservation
+
+* **Placement: 187 footprints, zero changes.** No component moved.
+* **Schematic connectivity: untouched** — no schematic file was modified in this pass.
+* **ERC: 116 / 58 excluded / 58 live, zero delta** against the established baseline.
+* **RF E4/E5 rules: unchanged** — no edit inside DRU sections 4–9; only the precedence tail and the
+  two necking rules were added.
+* **No `NFC_DEFERRED` net was routed.** The only net carrying copper anywhere on this board is
+  **GND**.
+* Board still has **0 signal traces**.
+
+### Status
+
+**ROUTING PASS 1: FAIL** (scope incomplete — blocks C–F not delivered)
+**POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
+**READY FOR DIGITAL ROUTING PASS: NO**
+**FULL ROUTING COMPLETE: NO**
+
+Next pass, once the width decision is made: re-run blocks C–F from
+`scratchpad/pass1b.py`, which is already written and whose geometry is validated against pads —
+what it fails is only the width/clearance floors above.
