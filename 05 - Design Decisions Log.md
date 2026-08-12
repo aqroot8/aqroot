@@ -7203,3 +7203,157 @@ staged list. `SPI_B_MISO`, SX1262 x5, CC1101 x2, `BTN_HOME_N`, +3V3 and the thre
 **SPI-B SHARED BUS: PARTIAL — 2/3 nets routed, both 3/4 endpoints**
 **USB PRESERVED: YES**
 **READY FOR SPI_B_MISO: NO — the U9 escape must be resolved first**
+
+## U9 moved 0.050 mm south — the first swept position is legal, and a correction to the last pass (2026-08-12)
+
+U9 moves from **(24.500, 22.000)** to **(24.500, 22.050)**: ΔX 0.000, ΔY +0.050, magnitude **0.050 mm,
+direction S**. Rotation and side unchanged. That is the **first candidate the ordered sweep tested**,
+and per the binding sweep order the sweep stopped there — no larger move was evaluated and no
+optimisation was attempted.
+
+### Correction: U9.30 was never sealed
+
+The previous pass reported that **both** U9.30 and U9.31 sat in closed pockets. That was wrong for
+U9.30. Re-running the escape analysis at 0.005 mm resolution — four times finer than the 0.01 mm
+flood used before — finds a legal F.Cu escape for U9.30 at the *old* position, through a single
+pinch at **(23.775, 19.040)** where the clearance is **0.3100 mm**, i.e. a 0.20 mm track keeps
+**0.2100 mm** to the `USB_D_MCU_P` via. That is above the 0.200 mm rule. The earlier flood's
+resolution was too coarse to resolve a gateway that is one grid cell wide, and it reported the
+pocket as closed.
+
+**U9.31 was correctly identified as blocked**, so the pass-3A-1 outcome — SPI-B could not be closed
+to U9 — stands unchanged, as does the conclusion that a CTO decision was needed. But the specific
+claim "U9.30 is in a closed pocket" was false, and `SPI_B_SCK` could in principle have been routed
+to U9.30 at the old position. The measured numbers in that entry should be read with this
+correction.
+
+Two lessons, both now baked into the tooling: a grid escape test must resolve gateways narrower than
+the grid, and any margin inside the grid's Lipschitz error must be confirmed analytically. Every
+escape reported below was re-derived exactly at its pinch point, not read off the grid.
+
+### Verified before the sweep
+
+U9: `ST25R3916_AQET`, F.Cu, rotation 0, at (24.500, 22.000). SPI pads confirmed —
+U9.30 `SPI_B_SCK` x[23.600..23.900] y[19.350..20.100]; U9.31 `SPI_B_MOSI` x[23.100..23.400];
+U9.32 `SPI_B_MISO` x[22.600..22.900]; all F.Cu, all y[19.350..20.100]. Exposed pad U9.33
+x[22.775..26.225] y[20.275..23.725], **6** EP through-vias, 0.25 drill / 0.55 pad.
+
+**Decoupling-set discrepancy, reported before executing.** All eight capacitors the CTO listed
+(C19, C45, C47, C49, C51, C53, C54, C55) exist and are U9-associated. The list is **incomplete**:
+the U9 supply rails also carry **C46** (`NFC_VDD_D`, 4.100 mm), **C48** (`NFC_VDD_A`, 4.079 mm),
+**C50** (`NFC_VDD_RF`, 3.036 mm) and **C52** (`NFC_VDD_AM`, 2.767 mm) — the *near* member of each
+pair, where C45/C47/C49/C51 are the *far* ones out at x ≈ 9 — plus **C18** (+3V3, 3.705 mm to U9.1).
+C50 and C52 sit directly south of U9 at y 26.425–27.375 and are the capacitors a southward move
+actually threatens, so gating on the CTO list alone would have missed the only ones that matter for
+direction S. All thirteen were carried through the sweep. Nothing was omitted or silently added.
+
+**C55 metric ambiguity, also reported before executing.** Measured two ways:
+
+| C55.1 to | centre-to-centre | copper-path along the `NFC_5V_PA_PENDING` rail |
+|---|---|---|
+| U9.8 | 4.875 mm | 8.125 mm |
+| U9.10 | 4.469 mm | 5.925 mm |
+
+Under the centre-to-centre reading both are inside the CTO's 5 mm "acceptable-with-report" band.
+Under the copper-path reading **the pre-move baseline already exceeds 5 mm**, so that reading cannot
+be a candidate gate — it would fail the board as it stands today. The sweep therefore gated on
+centre-to-centre and both numbers **improve** with the move.
+
+### The sweep
+
+Magnitude-major, S then SW then W at each magnitude, starting at 0.050 mm. **The first row is legal**:
+
+| mag | dir | ΔX | ΔY | U9 at | U9.30 | U9.31 | U9.32 | via landing | USB N | USB P | EP/WROOM | NFC | C55 | overall |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.05 | **S** | 0.0000 | +0.0500 | (24.5000, 22.0500) | PASS 0.0300 | PASS 0.0126 | PASS 0.4500 | YES / YES / YES | 0.4290 | 0.6305 | 0.2500 | 0.8500 = baseline | 4.42 / 4.83 | **LEGAL** |
+
+Escape margin is the slack above the 0.300 mm a 0.20 mm centreline needs, so a margin of 0.0300
+means the track keeps 0.2300 mm of clearance. **U9.31's escape is thin — 0.2126 mm clearance,
+0.0126 mm of slack** — pinching at (23.605, 18.935) against the `USB_D_MCU_P` via. Legal, and the
+sweep order forbids trading it for a larger move.
+
+Two gates were re-specified after their baselines were measured, because as first written they
+failed the *existing* board. The minimum-clearance gate initially treated the `NFC_5V_PA_PENDING`
+stub feeding U9.8 as static; it is U9-local copper (its 0.30 mm-wide end lands on the pad even
+though its centreline endpoint sits 0.15 mm off the pad edge) and translates with U9. And the NFC
+gate was first written as a routable path from each RF pin to the NFC RESERVED boundary — at
+baseline **no such path exists for any of the seven RF pins**, the matching network being unrouted,
+so the metric became the geometric escape room the directive actually names: the gap from U9's east
+pad face to the keepout boundary.
+
+### At the new position
+
+| | before | after |
+|---|---|---|
+| U9.30 escape | (0.2100 mm clearance) | **PASS, 0.2300 mm clearance** (margin 0.0300) |
+| U9.31 escape | **blocked** | **PASS, 0.2126 mm clearance** (margin 0.0126) |
+| U9.32 escape | PASS | **PASS, 0.6500 mm clearance** (margin 0.4500) |
+| ordinary 0.60/0.30 via landing | — | **YES for all three** — nearest legal centres (25.550, 18.060) for U9.30/31, (21.410, 19.905) for U9.32 |
+| U9 copper to `USB_D_MCU_N` via | — | **0.4290 mm** (pads), 1.6671 mm (EP vias) |
+| U9 copper to `USB_D_MCU_P` via | — | **0.6305 mm** (pads), 1.8505 mm (EP vias) |
+| U9 copper to `BMI270_INT1_STRAP` | — | **1.2250 mm** — measured through-via aware, not treated as an all-layer wall |
+| U9 copper to NFC RESERVED | 0.8500 mm | **0.8500 mm** |
+| EP via count | 6 | **6**, all still inside the exposed pad |
+| minimum EP via to WROOM B.Cu pad | 0.275 mm | **0.275 mm** (three vias improved, none worsened) |
+| forced capacitor moves | — | **none** |
+
+The EP via pattern translated with U9 rather than shifting relative to it, so all six stay on the
+pad and the three grounding structures — U9.20/21 → EP, U9.12 → EP, U9.16 → the pad-12 rail — remain
+intact without redrawing. Only their y coordinates changed.
+
+**NFC access.** The directive defines the metric as escape room *toward* NFC RESERVED, which is the
+east face: **0.8500 mm before and after, unchanged**. Recorded honestly: the free room south of the
+RFO1/RFO2 pins toward C50/C52 falls from 1.7750 mm to 1.7250 mm — by exactly the move. That face
+does not point at NFC RESERVED, and no direction the CTO authorised avoids it (S and SW both carry a
+southward component, and W fails the escape test because it pushes U9.31 *into* the `USB_D_MCU_N`
+via). `NFC_5V_PA_PENDING` keeps its 5-island topology and both stubs stay landed on U9.8 and U9.10.
+No `RF_DEFERRED_NFC` copper was created. No mechanical keepout, panel-height reservation, side or
+rotation change.
+
+### Local copper
+
+Seven U9-local F.Cu tracks translated +0.050 mm in y with the part — five GND (the pad-20/21 → EP
+bridges, the pad-12 → EP stub and the pad-16 → pad-12 rail) and the two `NFC_5V_PA_PENDING` stubs
+into U9.8 and U9.10, whose far ends stay overlapped on the fixed rail at y = 25.400. The pad-8 stub
+*had* to move: leaving it put U9.7 at 0.185 mm from it, below the 0.200 mm rule.
+
+Nothing else was touched. **`SPI_B_SCK` U9.30, `SPI_B_MOSI` U9.31 and `SPI_B_MISO` remain
+unrouted** — this pass proves the escapes exist, it does not consume them.
+
+### Preservation
+
+Object-by-object against `1968d95`: tracks **420 → 420** (7 changed, all U9-local), vias
+**114 → 114** (6 changed, all EP), pads **776 → 776** (37 changed, all U9's own). **USB copper: 111
+objects, 0 added, 0 removed** — pair, crossover, south corridor and both E4 handoffs byte-identical,
+`USB_D_MCU_N`/`_P` still ratsnest 0, uncoupled budget still 25 mm. **SPI-B SCK/MOSI copper: 45
+objects, 0 changed** — U1 escapes, mid-board trunks, E5 crossings and U8/U7 fanouts all intact.
+`BMI270_INT1_STRAP`: 7 objects, 0 changed.
+
+Island count is identical before and after for **all 25 U9 nets**, so nothing that was connected
+came apart. Board ratsnest **430 → 430**; the only open U9 SPI items remain `SPI_B_SCK` ↔ U9.30 and
+`SPI_B_MOSI` ↔ U9.31, with `SPI_B_MISO` staged. No new ratsnest item.
+
+**Exactly one footprint moved.** 188 footprints, U9 the only change, F.Cu → F.Cu, rotation
+unchanged. Schematic untouched — ERC **116 / 58 excluded / 58 live**. `.kicad_dru` unchanged.
+Schematic parity **261 → 261**, delta 0. DRC **0 electrical errors**; warnings 244, unchanged.
+Radio lanes x 61 (`SPI_B_MISO`), x 62–66 (SX1262), x 67–68 (CC1101) and x 69.100 (+3V3) are
+untouched — U9 sits at x ≈ 24 and nothing this pass changed goes near them.
+
+### Carried to the next pass
+
+§7 requires each of the three escapes to be legal **individually**, and each is. It does not prove
+all three can coexist, and they do not all have room to: U9.32 leaves westward with 0.65 mm of
+clearance, but U9.30 and U9.31 both leave north-east through the same corridor between the
+`USB_D_MCU_P` via and the U9.29/U9.30 pads, where the pinch is only wide enough for one 0.20 mm
+track. **Establishing a simultaneous three-track solution is the first thing pass 3A-2 must do**,
+before consuming any of them.
+
+**U9 MOVE: PASS**
+**WINNING SWEEP: S 0.050 mm**
+**U9.30 ESCAPE: PASS** — 0.2300 mm clearance
+**U9.31 ESCAPE: PASS** — 0.2126 mm clearance
+**U9.32 ESCAPE: PASS** — 0.6500 mm clearance
+**EP GROUNDING: PASS** — 6 vias, all on pad, min WROOM clearance 0.275 mm
+**NFC FUTURE ACCESS: PASS** — 0.8500 mm, unchanged
+**USB PRESERVED: YES**
+**U9 SPI ESCAPE ARCHITECTURE: HARD-LOCKED**

@@ -317,15 +317,18 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [x] ~~Route SPI_B_SCK and SPI_B_MOSI~~ — **PARTIAL 2026-08-12.** Both nets reach **U1, U8 and U7**
       through their staged C-E crossings (x 59.000 / 60.000); DRC **0 electrical errors**; USB
       untouched. **Each net still has one open connection: U9.** See the blocker below.
-- [ ] **BLOCKER — CTO decision required: U9's SPI-B pads have no escape.** `U9.30`, `U9.31` and
-      `U9.32` are sealed in closed pockets by the `USB_D_MCU_N` via at (23.025, 18.700), the
-      `USB_D_MCU_P` via at (24.000, 18.500), the `BMI270_INT1_STRAP` B.Cu at y = 19.300 and U9's own
-      pad row. Proven by flood fill; the largest all-layer clearance inside either pocket is
-      **0.350 mm** against the **0.475 mm** a smallest-legal 0.55/0.25 via needs. Options: move a USB
-      transition via (breaks the USB hard-lock), move U9 ~0.5 mm south (breaks placement lock),
-      re-pin U9's SPI-B on the ST25R3916, or drop U9 from the SPI-B bus (i.e. no NFC).
-      **This blocks `SPI_B_MISO` identically — decide before attempting pass 3A-2.**
-      See [[05 - Design Decisions Log]].
+- [x] ~~BLOCKER: U9's SPI-B pads have no escape~~ — **RESOLVED 2026-08-12 by CTO Option A.** U9 moved
+      **0.050 mm south**, (24.500, 22.000) → (24.500, 22.050); rotation, side and every other
+      footprint unchanged. All three escapes now legal for a 0.20 mm F.Cu track: **U9.30 0.2300 mm**,
+      **U9.31 0.2126 mm**, **U9.32 0.6500 mm** clearance, each with an ordinary 0.60/0.30 via landing.
+      USB, `BMI270_INT1_STRAP` and the SPI-B trunks untouched. *(Correction: the earlier "U9.30 is
+      sealed" finding was a grid-resolution artifact — U9.30 always had a 0.2100 mm escape. U9.31
+      was genuinely blocked, so the blocker itself was real.)* See [[05 - Design Decisions Log]].
+- [ ] **Pass 3A-2 must first prove the three U9 escapes can coexist.** Each is legal on its own, but
+      U9.30 and U9.31 both leave north-east through the same corridor between the `USB_D_MCU_P` via
+      and the U9.29/U9.30 pads, and that pinch fits **one** 0.20 mm track. U9.32 leaves westward with
+      0.65 mm and is not in contention. Establish a simultaneous three-track solution before
+      consuming any escape; if none exists, the U9 placement question reopens.
 - [ ] **Beta bring-up: scope the USB pair.** Two accepted-by-analysis items are carried into
       bring-up rather than resolved on the board — the **E4 In2 impedance discontinuity**
       (~139.8 Ω against a 90 Ω F.Cu target) and a **7.245 mm (~52 ps) full-path intra-pair
