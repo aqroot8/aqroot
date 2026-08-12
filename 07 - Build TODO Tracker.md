@@ -324,11 +324,19 @@ They are the outstanding firmware debt between the current code and the Beta des
       USB, `BMI270_INT1_STRAP` and the SPI-B trunks untouched. *(Correction: the earlier "U9.30 is
       sealed" finding was a grid-resolution artifact — U9.30 always had a 0.2100 mm escape. U9.31
       was genuinely blocked, so the blocker itself was real.)* See [[05 - Design Decisions Log]].
-- [ ] **Pass 3A-2 must first prove the three U9 escapes can coexist.** Each is legal on its own, but
-      U9.30 and U9.31 both leave north-east through the same corridor between the `USB_D_MCU_P` via
-      and the U9.29/U9.30 pads, and that pinch fits **one** 0.20 mm track. U9.32 leaves westward with
-      0.65 mm and is not in contention. Establish a simultaneous three-track solution before
-      consuming any escape; if none exists, the U9 placement question reopens.
+- [x] ~~Prove the three U9 escapes can coexist~~ — **DONE 2026-08-12. U9 moved to (24.500, 22.250)**,
+      total **0.250 mm S** from the original (24.500, 22.000). All three escapes demonstrated
+      **simultaneously** with real 0.20 mm F.Cu test geometry: SCK 0.2484 mm clearance via the NE
+      gateway, MOSI 0.2011 mm via a newly-opened **west bypass**, MISO 0.3850 mm on its own west lane;
+      minimum inter-track separation 0.5350 mm. Test tracks were proof-only and never written.
+      See [[05 - Design Decisions Log]].
+- [ ] **When routing U9's SPI-B escapes, lay MOSI on exactly the proven corridor.** `SPI_B_MOSI`'s
+      escape keeps only **0.2011 mm** — 1.07 µm over the rule — and is bounded by U9.32's own pad, so
+      MISO's escape must stay put too. Proven polylines are in the design log; do not re-optimise
+      them. SCK (0.2484 mm) and MISO (0.3850 mm) have more room.
+- [ ] **Pre-fab silk tidy-up: C50 and C52 reference-designator text is clipped by U9's south pads**
+      (6 cosmetic `silk_over_copper` warnings introduced by the 0.250 mm U9 move). No electrical
+      content; nudge the silk text when the board is otherwise final.
 - [ ] **Beta bring-up: scope the USB pair.** Two accepted-by-analysis items are carried into
       bring-up rather than resolved on the board — the **E4 In2 impedance discontinuity**
       (~139.8 Ω against a 90 Ω F.Cu target) and a **7.245 mm (~52 ps) full-path intra-pair

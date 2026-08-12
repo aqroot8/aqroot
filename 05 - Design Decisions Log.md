@@ -7357,3 +7357,136 @@ before consuming any of them.
 **NFC FUTURE ACCESS: PASS** — 0.8500 mm, unchanged
 **USB PRESERVED: YES**
 **U9 SPI ESCAPE ARCHITECTURE: HARD-LOCKED**
+
+## U9 to 0.250 mm South — three SPI-B escapes proven simultaneously, and two test-method defects fixed (2026-08-12)
+
+U9 moves to **(24.500, 22.250)**. Total displacement from the original (24.500, 22.000): ΔX **0.000**,
+ΔY **+0.250**, magnitude **0.250 mm**, direction **S**. Incremental from the committed (24.500,
+22.050): **+0.200 mm S**. Rotation and side unchanged. This is the **first candidate in the binding
+sweep order that survives an actual simultaneous three-track test**, so the sweep stopped there.
+
+### The winning mechanism is a west bypass, not a wider gateway
+
+The NE gateway at this position is **0.8438 mm** — still short of the 1.000 mm two 0.20 mm tracks
+need, so it still carries **one** track. What the extra 0.200 mm of southward travel buys is a
+**second, independent exit**: the gap between the `USB_D_MCU_N` via and U9.32's pad opens far enough
+for **U9.31 (MOSI) to escape west**, leaving the NE gateway to U9.30 (SCK) alone, with U9.32 (MISO)
+taking its own west lane further south. The CTO's calibration predicted the NE-widening mechanism
+would first work near 0.45 mm; the west bypass arrives earlier, at 0.250 mm, which is exactly why
+§6 forbade skipping the 0.10–0.40 rings.
+
+### Two defects in the test method, both found and fixed here
+
+**The escape search was seeding off the pad.** It seeded from any free cell within 0.45 mm of the pad
+outline, so a route could "escape" starting from a point the pad itself cannot legally reach. Under
+that loose test **0.15 SW screened LEGAL**; with seeding tightened to cells strictly *inside* the pad
+it fails. Every escape in this pass starts on its pad and that is verified explicitly. This also
+means the individual-escape margins quoted in the 0.050 mm placement entry were slightly optimistic —
+the CTO had already retired that per-pad test as insufficient, and it is superseded here.
+
+**The U9-local copper set was missing part of U9's own ground bridge.** The pad-16 → pad-12 GND rail
+is three segments; the two verticals land on pads and were correctly treated as U9-local, but the
+horizontal joining them, `(24.250, 25.200) → (26.250, 25.200)`, lands on neither and was treated as
+fixed board copper. Southward candidates then appeared to drive U9's pads into their own ground rail
+— **0.25 S and 0.30 S were both rejected on a 0.175 mm / 0.125 mm "clearance" against copper that
+actually travels with the part.** Local copper is now grouped by contact rather than by endpoint
+identity: a track joins the set when both ends touch in-set copper and nothing outside the set
+touches it, which picks up the GND rail and correctly leaves the C55 `NFC_5V_PA_PENDING` rail behind.
+That fix is what let 0.25 S win.
+
+Without the first fix the sweep would have stopped too early on a route that cannot be built; without
+the second it would have run past a legal position. Both were necessary.
+
+### Sweep, in binding order
+
+0.05 S is the committed position and was already proven a simultaneous FAIL, so it was not re-tested.
+
+| mag | dir | ΔX | ΔY | U9 at | cheap | NE gw | verdict |
+|---|---|---|---|---|---|---|---|
+| 0.05 | SW | −0.0354 | +0.0354 | (24.4646, 22.0354) | PASS | 0.618 | ILLEGAL — NE gateway is the sole articulation for U9.30+U9.31, holds 1 track |
+| 0.05 | W | −0.0500 | 0.0000 | (24.4500, 22.0000) | PASS | 0.580 | ILLEGAL — same |
+| 0.10 | S | 0.0000 | +0.1000 | (24.5000, 22.1000) | PASS | 0.694 | ILLEGAL — same |
+| 0.10 | SW | −0.0707 | +0.0707 | (24.4293, 22.0707) | PASS | 0.647 | ILLEGAL — same |
+| 0.10 | W | −0.1000 | 0.0000 | (24.4000, 22.0000) | PASS | 0.575 | ILLEGAL — same |
+| 0.15 | S | 0.0000 | +0.1500 | (24.5000, 22.1500) | PASS | 0.744 | ILLEGAL — same |
+| 0.15 | SW | −0.1061 | +0.1061 | (24.3939, 22.1061) | PASS | 0.681 | ILLEGAL — same *(screened LEGAL under the defective off-pad seeding; fails on retest)* |
+| 0.15 | W | −0.1500 | 0.0000 | (24.3500, 22.0000) | PASS | 0.575 | ILLEGAL — same |
+| 0.20 | S | 0.0000 | +0.2000 | (24.5000, 22.2000) | PASS | 0.794 | ILLEGAL — same |
+| 0.20 | SW | −0.1414 | +0.1414 | (24.3586, 22.1414) | PASS | 0.716 | ILLEGAL — same |
+| 0.20 | W | −0.2000 | 0.0000 | (24.3000, 22.0000) | PASS | 0.575 | ILLEGAL — same |
+| **0.25** | **S** | **0.0000** | **+0.2500** | **(24.5000, 22.2500)** | **PASS** | **0.844** | **LEGAL — three-track ensemble demonstrated** |
+
+The "sole articulation" verdicts are a sound skip, not a guess: the NE gateway is walled off with a
+virtual barrier and neither U9.30 nor U9.31 can then reach anything outside the local pocket, so with
+the gateway narrower than two tracks need, no ordering can succeed. Pure-W candidates flatline at
+0.575 mm because moving west carries U9.31 *toward* the `USB_D_MCU_N` via.
+
+### The three simultaneous test routes
+
+Laid in order U9.30 → U9.31 → U9.32, each becoming an obstacle for the next, at 0.005 mm resolution
+and then re-verified analytically. **Nothing was written to the board — these are proof geometry only.**
+
+| net | pad exit | corridor | polyline | exact min clearance | keeps |
+|---|---|---|---|---|---|
+| `SPI_B_SCK` U9.30 | north, then east | **NE gateway** | (23.750,19.600) → (23.760,19.495) → (23.820,19.380) → (23.915,19.295) → (24.040,19.250) → (25.775,19.250) → (25.775,17.595) | **0.34842** at (23.753,19.568), U9.29 | **0.2484 mm** |
+| `SPI_B_MOSI` U9.31 | north-west, then west | **west bypass** | (23.215,19.600) → (23.155,19.405) → (23.065,19.325) → (22.955,19.285) → (20.600,19.285) | **0.30107** at (23.188,19.512), U9.32 pad | **0.2011 mm** |
+| `SPI_B_MISO` U9.32 | west | **west, southern lane** | (22.600,19.865) → (20.600,19.865) | **0.48500** at (22.600,19.865), U9.1 | **0.3850 mm** |
+
+Every route starts **on** its pad. Minimum inter-track centreline separation **0.5350 mm** against the
+0.400 mm two-track requirement (U9.30↔U9.31 0.5350, U9.30↔U9.32 1.1801, U9.31↔U9.32 0.5800).
+
+**`SPI_B_MOSI` has 1.07 µm of margin.** 0.20107 mm against a 0.200 mm rule is legal and the sweep
+order forbids trading it for a bigger move, but the routing pass must lay that escape on exactly this
+corridor — it cannot be nudged, and it is bounded by U9.32's own pad, so MISO's escape must also stay
+where it is.
+
+### Gates at the winning position
+
+| | before (0.050 S) | after (0.250 S) |
+|---|---|---|
+| NE gateway | 0.6811 | **0.8438 mm** (still 1 track) |
+| U9 pads → `USB_D_MCU_N` via | 0.4290 | **0.6281 mm** |
+| U9 pads → `USB_D_MCU_P` via | 0.6305 | **0.8295 mm** |
+| U9 copper → `BMI270_INT1_STRAP` | 1.2250 | **1.4250 mm** |
+| U9 copper → NFC RESERVED | 0.8500 | **0.8500 mm** |
+| NFC east matching access | 0.8500 | **0.8500 mm — unchanged** |
+| NFC south room | 1.7250 | 1.5250 mm |
+| EP vias | 6 | **6**, all on the exposed pad |
+| min EP via → WROOM B.Cu pad | 0.275 | **0.275 mm** (two improved to 0.289) |
+| forced capacitor moves | — | **none** |
+| min U9 copper → fixed copper | — | **0.3250 mm** |
+
+All three grounding bridges — U9.20/21 → EP, U9.12 → EP, U9.16 → the pad-12 rail — travel intact with
+the part, the rail horizontal included this time. No capacitor moved; the largest distance change in
+the thirteen-capacitor set is C52 at −0.189 mm. C55 improves to **4.2262 mm** (U9.10) and **4.6250 mm**
+(U9.8) centre-to-centre, both inside the 5 mm band.
+
+### Preservation
+
+Against `d4a083d`: tracks **420 → 420** (8 changed, all U9-local), vias **114 → 114** (6 changed, all
+EP), pads **776 → 776** (37 changed, U9's own). **USB copper 111 objects, 0 added, 0 removed**;
+`USB_D_MCU_N`/`_P` ratsnest 0; uncoupled 22.1321 / 25.000 and skew 1.1011 / 2.000 untouched.
+**SPI-B copper 46 objects, 0 changed** — SCK and MOSI keep their U1 escapes, mid-board trunks, E5
+crossings at x 59 / x 60 and U8/U7 fanouts; MISO stays staged at x 61; x 62–66, x 67–68 and x 69.100
+untouched. `BMI270_INT1_STRAP` unchanged. **Island count identical before and after for all 25 U9
+nets.** 188 footprints, U9 the only one moved.
+
+DRC **0 electrical errors**, board ratsnest **430 → 430**, schematic parity **261, delta 0**, ERC
+**116 / 58 excluded / 58 live**. Schematic and `.kicad_dru` untouched.
+
+DRC warnings rise 244 → 250: six new `silk_over_copper`, all of them C50's and C52's reference-designator
+text now clipped by U9's south pads. Cosmetic silkscreen only, no electrical content; the board already
+carried 132 of these. Worth a silk-text nudge at pre-fab tidy-up, not now.
+
+U9.30, U9.31 and U9.32 remain **unrouted** — this pass proves the three escapes coexist, it does not
+consume them.
+
+**U9 REVISED MOVE: PASS**
+**WINNING SWEEP: 0.25 ring, S**
+**SIMULTANEOUS U9.30/U9.31: PASS**
+**U9.32 COEXISTENCE: PASS**
+**ALL THREE SPI ESCAPES: PASS**
+**EP GROUNDING: PASS**
+**NFC FUTURE ACCESS: PASS**
+**USB PRESERVED: YES**
+**U9 SIMULTANEOUS ESCAPE: HARD-LOCKED**
