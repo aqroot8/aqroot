@@ -6804,3 +6804,101 @@ widens the same channel — but U10 is fixed by the same section.
 **POWER / USB / CROSSING INFRASTRUCTURE LOCK: NO**
 **READY FOR DIGITAL ROUTING PASS: NO**
 **FULL ROUTING COMPLETE: NO**
+## C21/C22 data-side pins set NC for Beta — Option B locked (2026-08-12)
+
+CTO ruling, **Option B — LOCKED**. `C21` and `C22` are **retained physically** at their existing
+placement, remain **100 pF**, remain **DNP**, and their **data-side pins are intentionally
+NC for Beta**. Their **GND pins stay connected**. They are an **optional USB Full-Speed
+edge-rate / EMI tuning footprint** and a **rework-grade contingency only**.
+
+### Verified topology before the change
+
+| | pin 1 | pin 2 |
+|---|---|---|
+| C21 (`C_USB_DN_EMC`) | `/USB_D_MCU_N` | `GND` |
+| C22 (`C_USB_DP_EMC`) | `/USB_D_MCU_P` | `GND` |
+
+Both `Device:C`, value `100pF DNP`, `dnp yes`, footprint `Capacitor_SMD:C_0603_1608Metric`.
+Matches the expected mapping — pin 1 is the data side on both.
+
+### Schematic edits (`01_power_tree.kicad_sch`)
+
+Wire deletion first, NC flag second, so no wire-connected-to-NC artifact is created:
+
+- deleted wire `(54.61 57.15) → (54.61 58.42)` — the C21 pin-1 stub
+- deleted wire `(76.20 57.15) → (76.20 58.42)` — the C22 pin-1 stub
+- deleted the two **local labels** `USB_D_MCU_N` @ (54.61, 57.15) and `USB_D_MCU_P` @ (76.20, 57.15)
+
+That last deletion was **required, not optional**. Each stub carried its net solely through a local
+label sitting at its far end; nothing else on the sheet touched those two points. Deleting only the
+wires would have left two labels floating in space and produced two **new live `label_dangling`
+errors**, which the no-regression gate forbids. The hierarchical labels `USB_D_MCU_N` @ (177.80,
+25.40) and `USB_D_MCU_P` @ (177.80, 34.29) are untouched and still carry both nets off-sheet.
+
+- added `no_connect` @ (54.61, 58.42) — C21 pin 1
+- added `no_connect` @ (76.20, 58.42) — C22 pin 1
+- added one schematic text note @ (45.72, 73.66) adjacent to the pair
+
+Symbols, references, values, footprints and DNP status were not touched. C21/C22 GND connections
+were not touched.
+
+### Netlist result
+
+`C21.1` and `C22.1` now resolve to `unconnected-(C21-Pad1)` / `unconnected-(C22-Pad1)`.
+`C21.2` and `C22.2` remain `GND`. The USB data nets keep exactly their real pair path:
+
+- `/USB_D_MCU_N` → `R33.2`, `U1.13`
+- `/USB_D_MCU_P` → `R34.2`, `U1.14`
+
+### PCB synchronisation
+
+Net-only sync. `C21` pad 1 and `C22` pad 1 were moved off the USB data nets onto their
+`unconnected-(...)` nets — the same convention the board already uses for its 20 existing NC pins.
+GND pads untouched. **No branch copper existed at either data pad and none was created.**
+
+| | before | after |
+|---|---|---|
+| footprints | 188 | 188 (**0 moved**, position / rotation / side / footprint identical) |
+| tracks | 364 | 364 |
+| vias | 98 | 98 |
+| ratsnest | 440 | **438** (**−2**, one per capacitor) |
+| DRC electrical errors | 0 | **0** |
+| DRC schematic parity | 0 | 0 |
+| ERC | 116 / 58 excluded / 58 live | **116 / 58 excluded / 58 live** |
+
+The two ratsnest items that disappeared are exactly:
+
+- `Pad 1 [/USB_D_MCU_N] of C21 ↔ Pad 2 [/USB_D_MCU_N] of R33`
+- `Pad 1 [/USB_D_MCU_P] of C22 ↔ Track [/USB_D_MCU_P] on F.Cu, 1.1654 mm`
+
+Both nets still show their one remaining open — the In2.Cu track to the `U1` pad — which is the
+USB routing work this pass deliberately did not start.
+
+### Rules unchanged
+
+USB uncoupled budget stays **25 mm**. USB skew limit stays **2.000 mm**. No DRU change. No USB
+copper, `BMI270_INT1_STRAP`, E4 handoff, SPI-A, I2C, display/control, power, radio crossing, C20,
+U9 grounding or RF rule was touched.
+
+### Revalidation condition
+
+**Before any future population or reconnection of C21/C22, the 100 pF value must be revalidated
+against actual measured USB edge-rate / EMI behaviour.** The value is an inherited assumption, not
+a measured result, and reconnecting an unvalidated 100 pF to a Full-Speed data line is a
+signal-integrity risk, not a neutral default. Restore the connection at the next revision only if
+Beta EMI data justifies it.
+
+### Ledger — deferred, do not solve yet
+
+**VERIFY after final USB routing:** each `C21` / `C22` data pad must have a **solder-accessible
+attachment point** — outer-layer USB copper or an accessible via — **within practical tack-jumper
+reach**. If it does not, document that **mask scraping** or an **added future-revision test point**
+is required. No test points, jumpers, vias or copper were added for this now.
+
+**C21 DATA PIN NC: PASS**
+**C22 DATA PIN NC: PASS**
+**C21/C22 BETA ARCHITECTURE: LOCKED**
+**RATSNEST: 438**
+**ERC NO-REGRESSION: PASS**
+**PCB GEOMETRY CHANGED: NO**
+**USB ROUTING STARTED: NO**

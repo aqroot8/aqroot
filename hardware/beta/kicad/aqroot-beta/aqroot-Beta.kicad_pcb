@@ -5685,7 +5685,7 @@
 			(size 0.9 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_MCU_N")
+			(net "unconnected-(C21-Pad1)")
 			(uuid "83b007ab-8935-4dda-b7c5-fd1d6cf37ce6")
 		)
 		(pad "2" smd roundrect
@@ -6123,7 +6123,7 @@
 			(size 0.9 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/USB_D_MCU_P")
+			(net "unconnected-(C22-Pad1)")
 			(uuid "549c6ce2-9a02-4af3-a4d2-e58d9ce5e55f")
 		)
 		(pad "2" smd roundrect

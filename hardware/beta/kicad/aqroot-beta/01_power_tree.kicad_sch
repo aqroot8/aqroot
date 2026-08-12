@@ -4188,6 +4188,14 @@
 		(uuid "47c8ffd2-e341-4e0f-8ccd-2ba62b78f5e4")
 	)
 	(no_connect
+		(at 54.61 58.42)
+		(uuid "b21c0001-4e11-4c21-9a10-0d1e2f3a4b5c")
+	)
+	(no_connect
+		(at 76.2 58.42)
+		(uuid "b22c0002-4e12-4c22-9a11-0d1e2f3a4b5d")
+	)
+	(no_connect
 		(at 130.81 87.63)
 		(uuid "712b2378-a06a-4b7d-be79-66e9d8b4be7a")
 	)
@@ -4767,16 +4775,6 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 57.15) (xy 54.61 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4dfb1259-7a34-441e-927c-5ad25ab9ab02")
-	)
-	(wire
-		(pts
 			(xy 45.72 31.75) (xy 46.99 31.75)
 		)
 		(stroke
@@ -4804,16 +4802,6 @@
 			(type default)
 		)
 		(uuid "54d0f87b-3e04-4caa-96c2-6d9ced2829e6")
-	)
-	(wire
-		(pts
-			(xy 76.2 57.15) (xy 76.2 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "57e585d5-aecd-495b-90a8-119305cac2c5")
 	)
 	(wire
 		(pts
@@ -6094,26 +6082,6 @@
 			(justify right bottom)
 		)
 		(uuid "6888a2d8-5bed-421d-a335-5b45cfc4c5de")
-	)
-	(label "USB_D_MCU_N"
-		(at 54.61 57.15 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6a8a6485-c5e6-4d8e-add6-1e8a01a31e7f")
-	)
-	(label "USB_D_MCU_P"
-		(at 76.2 57.15 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6fa143e3-9217-463b-914d-a9d40860606d")
 	)
 	(label "BQ25185_SYS"
 		(at 133.35 148.59 90)
@@ -14994,5 +14962,16 @@
 				)
 			)
 		)
+	)
+	(text "C21/C22 data-side pins intentionally NC for Beta\n(CTO ruling, USB uncoupled budget).\nPopulate via rework jumper only.\nRestore connection at next revision if Beta EMI data justifies."
+		(exclude_from_sim no)
+		(at 45.72 73.66 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left)
+		)
+		(uuid "c21c22a3-0003-4e13-9a12-0d1e2f3a4b5e")
 	)
 )

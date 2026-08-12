@@ -313,6 +313,18 @@ They are the outstanding firmware debt between the current code and the Beta des
       not leave the shield floating without review.**
 - [ ] Signal-integrity review before changing 22R → 33R (**never mix values across the pair**)
       and before populating the 100pF EMC capacitors.
+- [x] ~~C21/C22 Beta architecture~~ — **LOCKED 2026-08-12 (CTO, Option B):** both retained
+      physically at 100 pF **DNP**, **data-side pins intentionally NC for Beta**, GND side
+      retained, **rework-only tuning contingency**. 25 mm USB uncoupled rule and 2.0 mm skew rule
+      unchanged. See [[05 - Design Decisions Log]].
+- [ ] **Revalidate the 100 pF value against actual measured USB edge-rate / EMI behaviour before
+      any future population or reconnection of C21/C22.** The value is an inherited assumption,
+      not a measured result.
+- [ ] **VERIFY after final USB routing:** each C21 / C22 **data pad** must have a
+      **solder-accessible attachment point** — outer-layer USB copper or an accessible via —
+      **within practical tack-jumper reach**. If not, document that **mask scraping** or an
+      **added future-revision test point** is required. *(Deferred by CTO — do not add test
+      points, jumpers, vias or copper for this before final USB routing.)*
 - [ ] **Set the bq25185 input-current limit conservatively for generic ports.** There is **no CC
       current-advertisement detection** in this design — Rd only establishes the sink role. Do
       not assume 1.5A/3A from an unknown source. **The charger-input-current setting and the

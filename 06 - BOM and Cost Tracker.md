@@ -35,7 +35,7 @@ tags: [bom, cost, budget]
 | USB-C breakout, wiring, protoboard | $5-10 |
 | USB-C receptacle **(Beta-locked family)**: GCT **USB4105**, 16-contact USB 2.0 Type-C, top-mount horizontal, SMD contacts + TH shell stakes. Candidate **USB4105-GF-A-120** — **exact suffix pending PCB-thickness / shell-stake confirmation** | $1-3 |
 | USB ESD array **LOCKED**: ST **USBLC6-2SC6**, SOT-23-6 — data clamp + VBUS clamp reference (**not** a series pass part) | $0.30-1 |
-| USB passives: `R_CC1_RD` + `R_CC2_RD` **2× 5.1k 1%** (independent Rd); `R_USB_DN_SER` + `R_USB_DP_SER` 2× 22R; `C_USB_VBUS` 4.7µF 10V+ X7R; `R_USB_SHIELD_LINK` 0R. **DNP:** `C_USB_DP_EMC` + `C_USB_DN_EMC` 100pF, `R_USB_SHIELD_BLEED` 1M | <$1 |
+| USB passives: `R_CC1_RD` + `R_CC2_RD` **2× 5.1k 1%** (independent Rd); `R_USB_DN_SER` + `R_USB_DP_SER` 2× 22R; `C_USB_VBUS` 4.7µF 10V+ X7R; `R_USB_SHIELD_LINK` 0R. **DNP:** `C_USB_DP_EMC` = **C22** + `C_USB_DN_EMC` = **C21**, 100 pF — **DNP — data pin NC in Beta; rework-only tuning option** (no populated Beta MPN assigned); `R_USB_SHIELD_BLEED` 1M | <$1 |
 | 3D print filament (own Kobra S1) | $3-8 |
 | **Total per unit** | **~$110-200** |
 
@@ -78,6 +78,11 @@ not candidates. Each carries its verification class. Costs are rough order-of-ma
 > pass-through**. **Two independent 5.1k 1% Rd resistors** are mandatory — one per CC pin, never
 > combined, never firmware-connected. **22R series resistors at the MCU** on D+/D−; **100pF EMC
 > capacitors are DNP** for Beta and populate only after signal-integrity / EMI review.
+> **C21 / C22 (2026-08-12, CTO ruling — Option B):** both remain 100 pF **DNP** and keep their
+> footprints and placement, but their **data-side pins are intentionally NC in Beta** — only the
+> GND pin stays connected. BOM status for both: **"DNP — data pin NC in Beta; rework-only tuning
+> option."** **No populated Beta MPN is assigned.** The 100 pF value must be **revalidated
+> against measured USB edge-rate / EMI behaviour** before any future population or reconnection.
 > **`C_USB_VBUS` is 4.7 µF deliberately rather than 10 µF**, to keep connector-side input
 > capacitance and hot-plug behaviour conservative; it does **not** replace the bq25185's own VIN
 > decoupling. **No CC current-advertisement detection exists**, so the bq25185 input-current
