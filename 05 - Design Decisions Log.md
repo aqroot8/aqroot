@@ -7064,3 +7064,142 @@ correctly reports zone and hole-clearance errors.
 **USB E4 HANDOFFS CONSUMED: YES**
 **USB BLOCK: HARD-LOCKED COMPLETE**
 **READY FOR SPI-B: YES**
+
+## SPI-B pass 3A-1: SCK and MOSI reach U1, U8 and U7 — and U9 is provably unreachable (2026-08-12)
+
+`SPI_B_SCK` and `SPI_B_MOSI` are routed from U1 through the staged C-E crossings to both radios.
+**Three of each net's four endpoints are connected. The fourth — U9 — cannot be routed at all**, and
+that is the headline of this pass.
+
+### U9.30 / U9.31 are sealed in closed pockets
+
+U9's SPI-B pads are 0.30 x 0.75 mm F.Cu pads on the chip's north edge at y 19.350–20.100. Everything
+that could carry them out of that band is now occupied:
+
+| boundary | what closes it |
+|---|---|
+| north-west | `USB_D_MCU_N` transition via at (23.025, 18.700), Ø0.55 |
+| north-east | `USB_D_MCU_P` transition via at (24.000, 18.500), Ø0.55 |
+| south | U9's own pad row and the U9.33 exposed GND pad |
+| all layers | `BMI270_INT1_STRAP` B.Cu at y 19.300, x 19.800–25.000 |
+
+A flood fill of the legal 0.20 mm-track centreline space, seeded on each pad, returns a **closed
+pocket**:
+
+| net | pad | reachable region | escapes? |
+|---|---|---|---|
+| `SPI_B_SCK` | U9.30 | x 23.480–23.960, y 18.890–19.970 | **NO** |
+| `SPI_B_MOSI` | U9.31 | x 23.190–23.340, y 19.190–19.970 | **NO** |
+
+A via cannot rescue it either. The **largest all-layer clearance anywhere inside either pocket is
+0.350 mm**; the smallest legal via on this board (0.55/0.25, the geometry already approved for the
+USB and `USB_VBUS_RAW` escapes) needs **0.475 mm**. Even a zero-width track fails the arithmetic: at
+x ≈ 23.0 the USB N via demands y ≥ 19.175 while U9's neighbouring pads demand y ≤ 19.150.
+
+**This is not a routing-order problem and no amount of effort in this pass fixes it.** The corridor
+was already marginal before USB — the BMI strap at y=19.300 alone forces any via to sit at
+y ≤ 18.725 — and the two USB transition vias, placed at coordinates the CTO fixed in the USB
+directive and now hard-locked, close the remaining gap. Resolving it needs a decision at CTO level:
+
+1. **Move one or both USB transition vias.** Opening the x 23.30–23.73 gap to ≥ 0.95 mm would let a
+   0.20 mm track out eastward. This breaks the USB hard-lock and needs the USB gates re-run.
+2. **Move U9** ~0.5 mm south, opening the band between its pad row and the USB/BMI copper. This
+   breaks placement lock and disturbs the NFC matching geometry.
+3. **Re-pin U9's SPI-B on the ST25R3916** if the part allows an alternative SPI mapping, moving
+   SCK/MOSI/MISO to pads with a free escape.
+4. **Accept U9 off the SPI-B bus for Beta**, which means no NFC — almost certainly unacceptable.
+
+Note this blocks **`SPI_B_MISO` identically** (U9.32 sits in the same row), so pass 3A-2 will hit the
+same wall. The decision should be taken before MISO is attempted.
+
+### What was routed
+
+Topology as directed: one shared trunk per net with short tees, no star branches.
+
+| | `SPI_B_SCK` | `SPI_B_MOSI` |
+|---|---|---|
+| U1 escape | U1.4, B.Cu stub **1.700 mm** to a via at (11.300, 19.100) | U1.5, B.Cu stub **2.524 mm** to a via at (13.400, 19.500) |
+| In2 descent lane | x = 11.300, y 19.100 → 82.000 | x = 13.000, y 20.300 → 80.000 |
+| F.Cu hop | (11.300, 82.000) → (15.000, 84.200) | (13.000, 80.000) → (16.400, 83.500) |
+| In2 east lane | y = 84.200 to x = 59.000 | y = 83.500, stepping to 83.700 at x 54.5–55.2 |
+| staged C-E crossing consumed | **x = 59.000, y 85.000 → 117.000** | **x = 60.000, y 85.000 → 117.000** |
+| radio trunk | x = 59.450, **36.451 mm** | x = 60.150, **36.050 mm** |
+| U8 tee | B.Cu **1.450 mm** into U8.18 | B.Cu **2.150 mm** into U8.17 |
+| U7 stub | B.Cu **1.700 mm** into U7.18 | B.Cu **1.700 mm** into U7.17 |
+| total net copper | **187.544 mm** | **184.826 mm** |
+| vias added | 5 (0.60/0.30 through) | 5 (0.60/0.30 through) |
+| layers | In2 144.794, F.Cu 5.900, B.Cu 4.850 | In2 141.573, F.Cu 6.374 … B.Cu 6.374, F.Cu 4.880 |
+
+Both staged crossings were **consumed, not moved, duplicated, replaced or resized** — the new copper
+simply lands on their existing endpoints at y = 85.000 and y = 117.000.
+
+### Two things the corridor forced
+
+**The F.Cu hop is not decoration.** `DISP_RST_N` runs on In2 at y = 82.800 from x = 6.400 to
+x = 45.250, and it seals every In2 descent between those x. The only clean east-west In2 lane to the
+C-E crossings lies *south* of it, at y ≈ 83.5–84.4. Both nets therefore leave In2 briefly, cross the
+barrier on F.Cu, and return — one extra via each. Crossing on B.Cu instead is not available: the
+`SD_CS_N` and `SPI_A_MISO` B.Cu horizontals at y = 81.000 and y = 82.000 occupy that window.
+
+**SCK dodges the `SPI_A_MOSI` via at (33.250, 84.400).** With `SPI_B_MOSI` pinned to y ≈ 83.5 by J4's
+through-hole pads (south edge y = 83.375) and `SPI_B_SCK` 0.7 mm south of it, SCK's lane runs straight
+into that via. Rather than re-lane the pair, SCK takes a 2.6 mm dip to y = 85.100 across x 32.0–34.6.
+Closest approach to the via is **0.2368 mm**.
+
+### Measured
+
+| | measured | required |
+|---|---|---|
+| DRC electrical errors | **0** | 0 |
+| minimum clearance, new copper to anything | **0.2250 mm** (MOSI In2 to J4 pads) | 0.200 mm |
+| minimum SCK ↔ MOSI same-layer clearance | **0.2950 mm** | 0.200 mm |
+| minimum clearance to USB copper | **0.2700 mm** (MOSI via to `USB_D_MCU_N` F.Cu) | 0.200 mm |
+| minimum clearance to the `SPI_B_MISO` reserved lane | **0.7200 mm** | — |
+| lateral clearance to every reserved future lane (x 61–69.1) | **0.6500 mm** | — |
+| new vias in the 915 band | **0** | 0 |
+| new vias in the 433 band | **0** | 0 |
+| new B.Cu through the 915 band | **0** | 0 |
+| NFC RESERVED intrusion | **0** (nearest 14.300 mm) | 0 |
+| 915 band clearance | 2.800 mm | — |
+| 433 band clearance | 5.400 mm | — |
+| `SPI_B_SCK` ratsnest | **1** (U9.30 only) | 0 — **not met, blocked** |
+| `SPI_B_MOSI` ratsnest | **1** (U9.31 only) | 0 — **not met, blocked** |
+
+Connectivity verified by union-find over the copper, independent of the ratsnest:
+`SPI_B_SCK` = {U1.4, U8.18, U7.18} in one island plus U9.30 isolated;
+`SPI_B_MOSI` = {U1.5, U8.17, U7.17} in one island plus U9.31 isolated.
+
+### The MISO corridor is still usable
+
+`SPI_B_MISO`'s staged lane at x = 61.000 is untouched, and the trunks were deliberately pulled west
+(59.450 / 60.150 rather than the 59.5 / 60.5 first laid out) so that a future MISO via at x = 61.000
+keeps 0.45 mm to the nearest In2 trunk. MISO can still reach U8.16 by dropping to B.Cu at x ≈ 61 and
+running west under U8's body — the two In2 trunks pass beneath on a different layer — and U7.16 by
+running In2 west at y ≈ 150.5 to x ≈ 58.4, east of both trunks. The reserved lanes at x 62–66
+(SX1262), x 67–68 (CC1101) and x 69.100 (+3V3) are likewise clear; nearest approach of any new
+copper to any of them is **0.650 mm**.
+
+### Preservation
+
+Order-independent copper set comparison against `af04cc1`: **33 tracks added, 0 removed; 10 vias
+added, 0 removed; 776 pads, 0 changed**; every added object is on `/SPI_B_SCK` or `/SPI_B_MOSI`.
+**USB copper: 111 objects before, 111 after, 0 added, 0 removed** — the pair, the crossover, the
+south corridor and both E4 handoffs are byte-identical, and `USB_D_MCU_N` / `USB_D_MCU_P` remain at
+ratsnest 0. `BMI270_INT1_STRAP`: 7 objects, unchanged. C21/C22 still carry
+`unconnected-(Cxx-Pad1)` with **zero copper** on those nets.
+
+188 footprints, **0 moved**. Schematic untouched — ERC **116 / 58 excluded / 58 live**, unchanged.
+`.kicad_dru` unchanged. Schematic parity unchanged at **261** pre-existing cosmetic mismatches.
+Tracks 387 → 420, vias 104 → 114, board ratsnest **436 → 430**.
+
+Staged infrastructure: free track endpoints **27 → 23**. The four consumed are exactly the north and
+south ends of the two SPI-B C-E crossings; `SPI_B_SCK` and `SPI_B_MOSI` no longer appear in the
+staged list. `SPI_B_MISO`, SX1262 x5, CC1101 x2, `BTN_HOME_N`, +3V3 and the three pre-existing
+`BQ25185_SYS` / `LED_K` / `NFC_5V_PA_PENDING` ends remain. Dangling vias: 1 (+3V3), unchanged.
+**No orphan copper.**
+
+**SPI_B_SCK: PARTIAL — U1, U8, U7 connected; U9 blocked**
+**SPI_B_MOSI: PARTIAL — U1, U8, U7 connected; U9 blocked**
+**SPI-B SHARED BUS: PARTIAL — 2/3 nets routed, both 3/4 endpoints**
+**USB PRESERVED: YES**
+**READY FOR SPI_B_MISO: NO — the U9 escape must be resolved first**

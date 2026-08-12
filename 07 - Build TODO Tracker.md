@@ -314,6 +314,18 @@ They are the outstanding firmware debt between the current code and the Beta des
       DRC **0 electrical errors**; uncoupled **22.1321 / 25.000 mm**; MCU-side skew **1.1011 /
       2.000 mm**; 0 NFC-keepout intrusion; 0 new RF-band vias or B.Cu. Chirality crossover on
       In2 (N) / B.Cu (P) at x 39.4–40.15, y 60.85–62.75. See [[05 - Design Decisions Log]].
+- [x] ~~Route SPI_B_SCK and SPI_B_MOSI~~ — **PARTIAL 2026-08-12.** Both nets reach **U1, U8 and U7**
+      through their staged C-E crossings (x 59.000 / 60.000); DRC **0 electrical errors**; USB
+      untouched. **Each net still has one open connection: U9.** See the blocker below.
+- [ ] **BLOCKER — CTO decision required: U9's SPI-B pads have no escape.** `U9.30`, `U9.31` and
+      `U9.32` are sealed in closed pockets by the `USB_D_MCU_N` via at (23.025, 18.700), the
+      `USB_D_MCU_P` via at (24.000, 18.500), the `BMI270_INT1_STRAP` B.Cu at y = 19.300 and U9's own
+      pad row. Proven by flood fill; the largest all-layer clearance inside either pocket is
+      **0.350 mm** against the **0.475 mm** a smallest-legal 0.55/0.25 via needs. Options: move a USB
+      transition via (breaks the USB hard-lock), move U9 ~0.5 mm south (breaks placement lock),
+      re-pin U9's SPI-B on the ST25R3916, or drop U9 from the SPI-B bus (i.e. no NFC).
+      **This blocks `SPI_B_MISO` identically — decide before attempting pass 3A-2.**
+      See [[05 - Design Decisions Log]].
 - [ ] **Beta bring-up: scope the USB pair.** Two accepted-by-analysis items are carried into
       bring-up rather than resolved on the board — the **E4 In2 impedance discontinuity**
       (~139.8 Ω against a 90 Ω F.Cu target) and a **7.245 mm (~52 ps) full-path intra-pair
