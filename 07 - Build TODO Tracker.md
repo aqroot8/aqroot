@@ -308,6 +308,17 @@ They are the outstanding firmware debt between the current code and the Beta des
       sink/UFP, 5V only, USB 2.0 full-speed. **No PD, no source role, no DRP, no VCONN, no alt
       modes.** Two **independent** 5.1k 1% Rd resistors; USBLC6-2SC6 ESD; 22R series at the MCU;
       100pF EMC footprints DNP; shield on its own net with a 0R default link.
+- [x] ~~Route the USB differential pair end to end~~ — **CLOSED 2026-08-12. USB BLOCK
+      HARD-LOCKED COMPLETE.** `USB_D_MCU_N` and `USB_D_MCU_P` are each a single copper island from
+      J3 through U10 and the 22R series resistors to U1.13 / U1.14; both E4 handoff vias consumed;
+      DRC **0 electrical errors**; uncoupled **22.1321 / 25.000 mm**; MCU-side skew **1.1011 /
+      2.000 mm**; 0 NFC-keepout intrusion; 0 new RF-band vias or B.Cu. Chirality crossover on
+      In2 (N) / B.Cu (P) at x 39.4–40.15, y 60.85–62.75. See [[05 - Design Decisions Log]].
+- [ ] **Beta bring-up: scope the USB pair.** Two accepted-by-analysis items are carried into
+      bring-up rather than resolved on the board — the **E4 In2 impedance discontinuity**
+      (~139.8 Ω against a 90 Ω F.Cu target) and a **7.245 mm (~52 ps) full-path intra-pair
+      length difference** dominated by pre-existing connector-side geometry. Both are immaterial
+      at Full Speed by analysis; **neither is production-validated.**
 - [ ] **EMI / ESD review of the shield-to-ground strategy** — 0R link is the Beta default,
       1M bleed is a DNP alternative. **Do not populate both without explicit review**, and **do
       not leave the shield floating without review.**
@@ -320,11 +331,14 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] **Revalidate the 100 pF value against actual measured USB edge-rate / EMI behaviour before
       any future population or reconnection of C21/C22.** The value is an inherited assumption,
       not a measured result.
-- [ ] **VERIFY after final USB routing:** each C21 / C22 **data pad** must have a
-      **solder-accessible attachment point** — outer-layer USB copper or an accessible via —
-      **within practical tack-jumper reach**. If not, document that **mask scraping** or an
-      **added future-revision test point** is required. *(Deferred by CTO — do not add test
-      points, jumpers, vias or copper for this before final USB routing.)*
+- [x] ~~VERIFY after final USB routing: C21 / C22 data-pad rework accessibility~~ — **CLOSED
+      2026-08-12, PASS.** With the USB MCU-side pair routed, the nearest solder-accessible point on
+      each capacitor's matching net is a **mask-open pad**, not track copper: **C21 pad 1 →
+      R33 pad 2** and **C22 pad 1 → R34 pad 2**, both 3.053 mm centre-to-centre and **1.812 mm
+      pad-edge to pad-edge** — trivially inside tack-jumper reach. Those are the MCU-side terminals
+      of the 22R series resistors, i.e. exactly the node each capacitor is meant to shunt.
+      **No mask scraping required. No future-revision test point required.** No copper was added
+      for rework access. See [[05 - Design Decisions Log]].
 - [ ] **Set the bq25185 input-current limit conservatively for generic ports.** There is **no CC
       current-advertisement detection** in this design — Rd only establishes the sink role. Do
       not assume 1.5A/3A from an unknown source. **The charger-input-current setting and the

@@ -6902,3 +6902,165 @@ is required. No test points, jumpers, vias or copper were added for this now.
 **ERC NO-REGRESSION: PASS**
 **PCB GEOMETRY CHANGED: NO**
 **USB ROUTING STARTED: NO**
+
+## USB MCU-side routed end to end — the pair is closed, and the crossover the CTO specified is real (2026-08-12)
+
+`USB_D_MCU_N` and `USB_D_MCU_P` are **complete**. Both E4 handoff vias are consumed, both nets are a
+**single copper island** from the connector to the MCU, and no copper was added to C21/C22.
+
+### The proven route was reconstructed, not re-searched
+
+The previous attempt was never committed, so the route had to be rebuilt from the directive's fixed
+points. Three independent numbers confirm the reconstruction landed on the same geometry:
+
+| directive | measured on the current board |
+|---|---|
+| SYS clearance 0.265 mm | **0.265 mm** — south via row edge 62.475 vs SYS rail edge 62.210 |
+| SYS clearance 0.285 mm | **0.285 mm** — north via row edge 61.125 vs SYS rail edge 61.410 |
+| south corridor 1.200 mm | **1.200 mm** — U1 top-row pad edge y=18.000 to `BMI270_INT1_STRAP` B.Cu edge y=19.200 |
+
+Those fall out of the geometry only if the crossover sits at y=62.750 / y=60.850 across the 0.80 mm
+`BQ25185_SYS` rail at y=61.810, and only if the transition vias sit in the U1 / BMI-strap corridor.
+
+### Why the chirality crossover is not optional
+
+At the E4 handoff N is **west** of P, and at U1 pads 13/14 N is again **west** of P — which looks like
+no swap is needed. It is. The final approach to the transition vias can only come **from the west**:
+east of pad 14 the F.Cu band is closed by C54 (x 26.425–27.375) and then by the `NFC RESERVED`
+keepout at x=28, leaving a 0.625 mm gap. So the pair arrives travelling **east**, and the track that
+must continue past the other's via is the one that has to pass **north** of it. That forces N's via
+south (18.700) and P north-then-down (18.075 → 18.500), which puts N on the right-hand side
+travelling east — one chirality swap, taken at the SYS crossing where the pair has to leave F.Cu
+anyway. N crosses on **In2.Cu**, P on **B.Cu**, so the two legs cross without shorting.
+
+### Geometry as built
+
+| | N (`USB_D_MCU_N`) | P (`USB_D_MCU_P`) |
+|---|---|---|
+| E4 handoff consumed | via (53.400, 86.000) | via (54.150, 86.000) |
+| crossover south via | (39.400, 62.750) | (40.150, 62.750) |
+| crossover leg | **2.0427 mm on In2.Cu** | **2.0427 mm on B.Cu** |
+| crossover north via | (40.150, 60.850) | (39.400, 60.850) |
+| long run | F.Cu, 0.25 mm wide / 0.20 mm gap | F.Cu, 0.25 mm wide / 0.20 mm gap |
+| transition via | (23.025, 18.700) | (24.000, 18.500) |
+| B.Cu fanout lands at | (22.730, **16.900**) in U1.13 | (24.290, **17.700**) in U1.14 |
+| MCU-side length | **120.9929 mm** | **122.0940 mm** |
+
+The two fanout landing points are the **only** deviation from the directive's coordinates, and they
+are the skew correction (below). Every other fixed point is exactly as specified.
+
+Corridor occupancy at U1: the staggered via band spans y 18.225–18.975 inside the 1.200 mm corridor,
+leaving **0.225 mm** to the U1 pad row and **0.225 mm** to the BMI strap against a 0.200 mm rule —
+0.025 mm of margin on each side. `BMI270_INT1_STRAP` itself was not touched.
+
+### Skew
+
+At the directive's literal fanout endpoints (both at y=17.400) the route measures **1.879 mm** of
+skew — legal, but only 0.121 mm inside the 2.000 mm limit. The structural cause is corner parity:
+five 90° corner pairs, three of them with P on the outside, and a square diff-pair corner makes the
+outer track longer by exactly 2 × pitch = 0.90 mm every time.
+
+Rather than add a meander, the correction was taken as **landing depth inside the destination pads**:
+N lands 0.500 mm deeper into U1.13 and P lands 0.300 mm shallower into U1.14. Both endpoints stay
+well inside their pads (both span y 16.500–18.000), so contact is unaffected.
+
+| | |
+|---|---|
+| MCU-side skew | **1.1011 mm** = **7.93 ps** at 7.2 ps/mm |
+| limit | 2.000 mm |
+| margin | 0.899 mm |
+
+**Full end-to-end pair length is a separate number and it is worth recording honestly.** Total copper
+`USB_D_MCU_N` = 196.3471 mm, `USB_D_MCU_P` = 189.1019 mm — a **7.245 mm (~52 ps)** intra-pair
+difference. It is **not** caused by this pass: the connector-side geometry, which this pass
+hard-preserves, already runs N 8.347 mm longer than P, and the MCU-side route pulls 1.101 mm of that
+back. At Full Speed (12 Mbps, ~4 ns edges) 52 ps is immaterial, and USB 2.0 tolerates far more even
+at High Speed, which this design does not implement. Flagged rather than fixed, because nulling it
+would require an 8.3 mm MCU-side mismatch and that violates the 2.000 mm gate the CTO set.
+
+### Measured against the rules
+
+Every number below is KiCad's, not an estimate. The uncoupled figure was obtained by running DRC on a
+**throwaway copy** of the project with `diff_pair_uncoupled` forced to 0.001 mm so the checker prints
+the actual value; **the real `.kicad_dru` was not modified and the 25 mm budget stands.**
+
+| | measured | limit |
+|---|---|---|
+| DRC electrical errors | **0** | 0 |
+| `USB_D_MCU_N` ratsnest | **0** | 0 |
+| `USB_D_MCU_P` ratsnest | **0** | 0 |
+| diff-pair uncoupled, MCU pair | **22.1321 mm** | 25.000 mm |
+| intra-pair gap, minimum | **0.2000 mm** | 0.18–0.24 mm |
+| clearance to other nets, minimum | **0.2292 mm** (P via to U1.15 pad) | 0.200 mm |
+| NFC RESERVED intrusion | **0** (nearest approach 3.585 mm) | 0 |
+| new vias in 915 / 433 bands | **0** | 0 |
+| new B.Cu in 915 / 433 bands | **0** | 0 |
+
+The uncoupled result came in at 22.13 mm rather than the ~19.2 mm the directive projected. That
+projection subtracted the 7.063 mm of C21/C22 branch from the old 26.280 mm figure; this route is not
+the old route segment-for-segment, and its corner and crossover splays account for the ~2.9 mm
+difference. It sits inside the production budget with 2.868 mm to spare and **the rule was not
+relaxed**.
+
+### End-to-end connectivity, verified independently of DRC
+
+Union-find over the actual copper, not the ratsnest:
+
+| net | islands | pads in the island |
+|---|---|---|
+| `USB_D_CONN_N` | 1 | J3.A7, J3.B7, U10.1 |
+| `USB_D_ESD_N` | 1 | U10.6, R33.1 |
+| `USB_D_MCU_N` | 1 | R33.2, **U1.13** |
+| `USB_D_CONN_P` | 1 | J3.A6, J3.B6, U10.3 |
+| `USB_D_ESD_P` | 1 | U10.4, R34.1 |
+| `USB_D_MCU_P` | 1 | R34.2, **U1.14** |
+
+Before this pass each MCU net was **two** islands with the U1 pad stranded. **C21 and C22 are not
+members of either net** — their data pads carry `unconnected-(C21-Pad1)` / `unconnected-(C22-Pad1)`
+and have **zero copper objects** on those nets.
+
+### C21/C22 rework accessibility — the deferred CTO check, now answerable
+
+| | C21 pad 1 | C22 pad 1 |
+|---|---|---|
+| DNP data pad centre | (29.725, 142.400) F.Cu | (38.725, 142.400) F.Cu |
+| nearest solder-accessible point on the matching net | **R33 pad 2** (31.325, 139.800) F.Cu | **R34 pad 2** (40.325, 139.800) F.Cu |
+| mask | **open** (F.Mask + F.Paste) | **open** (F.Mask + F.Paste) |
+| centre to centre | 3.053 mm | 3.053 mm |
+| pad edge to pad edge | **1.812 mm** | **1.812 mm** |
+| practical tack jumper | **YES** | **YES** |
+
+**PASS. No mask scraping is required and no future-revision test point is needed.** The attachment
+point is not a compromise: R33.2 / R34.2 are the MCU-side terminals of the 22R series resistors —
+exactly the node each capacitor is meant to shunt — so a tack jumper from the DNP pad to that
+resistor pad restores precisely the intended connection. Same-net F.Cu track copper also passes
+within 2.291 mm of each DNP pad, but it is under solder mask and is the fallback, not the plan.
+
+### Preservation
+
+188 footprints, **0 moved**. Schematic **untouched** — ERC unchanged at **116 / 58 excluded / 58
+live**. `.kicad_dru` **unchanged**; the 25 mm uncoupled budget and the 2.000 mm skew limit stand.
+Schematic parity **unchanged at 261** pre-existing cosmetic field / footprint-name mismatches, delta
+exactly zero, none of them USB or C21/C22 related. *(Note for future passes: `kicad-cli pcb drc` only
+runs the parity check when `--schematic-parity` is passed; without it the report shows an empty
+parity list, which is absence of the test, not a clean result.)*
+
+An order-independent set comparison of every copper object against `9ddc74f`: **23 tracks added, 0
+removed; 6 vias added, 0 removed; 776 pads, 0 changed.** Tracks 364 → 387, vias 98 → 104, board
+ratsnest **438 → 436**. The remaining file diff is the In1 GND plane refill around the six new vias
+plus KiCad's own reordering of two footprint blocks (C50 / C55) and two `USB_D_ESD_P` segments — both
+reorders reproduce on an untouched copy of the board, so they are the writer's canonical ordering and
+not a change. Zones were refilled with `kicad-cli pcb drc --refill-zones --save-board`, which is
+required after adding vias by direct file edit: without it the new vias have no In1 void and DRC
+correctly reports zone and hole-clearance errors.
+
+**USB MCU PAIR: PASS**
+**USB END-TO-END: PASS**
+**USB UNCOUPLED: 22.1321 / 25.000 mm**
+**USB SKEW: 1.1011 / 2.000 mm**
+**USB CROSSOVER: PASS**
+**C21/C22 NC PRESERVED: YES**
+**C21/C22 REWORK ACCESS: PASS**
+**USB E4 HANDOFFS CONSUMED: YES**
+**USB BLOCK: HARD-LOCKED COMPLETE**
+**READY FOR SPI-B: YES**
