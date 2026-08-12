@@ -36567,6 +36567,14 @@
 		(uuid "37323b64-d78a-4c11-ba5f-28ae96d50120")
 	)
 	(segment
+		(start 63 31.5)
+		(end 63 30.8)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "Net-(U13-FB)")
+		(uuid "4f9b28fd-48ff-44a3-bb11-289f48f062da")
+	)
+	(segment
 		(start 63 36.6)
 		(end 63.1 37.6)
 		(width 0.2)
@@ -37095,7 +37103,7 @@
 		(uuid "747dc41d-8bca-4074-b549-64621a163e08")
 	)
 	(segment
-		(start 61.2 30)
+		(start 61.2 32.5)
 		(end 61.2 75)
 		(width 0.6)
 		(layer "F.Cu")
