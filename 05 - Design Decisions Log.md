@@ -7490,3 +7490,121 @@ consume them.
 **NFC FUTURE ACCESS: PASS**
 **USB PRESERVED: YES**
 **U9 SIMULTANEOUS ESCAPE: HARD-LOCKED**
+
+## SPI-B shared bus closed — SCK, MOSI and MISO all reach U1, U9, U8 and U7 (2026-08-12)
+
+All three shared SPI-B nets are **complete**. Each is a single copper island containing all four
+endpoints, board ratsnest **430 → 424**, DRC **0 electrical errors**.
+
+| net | island | total copper | tracks | vias |
+|---|---|---|---|---|
+| `SPI_B_SCK` | U1.4, U9.30, U8.18, U7.18 | 210.599 mm | 27 | 5 |
+| `SPI_B_MOSI` | U1.5, U9.31, U8.17, U7.17 | 197.238 mm | 25 | 6 |
+| `SPI_B_MISO` | U1.6, U9.32, U8.16, U7.16 | 195.522 mm | 23 | 8 |
+
+### The three U9 escapes were laid exactly as proven
+
+The placement audit's coordinates were used verbatim, extended only into the pad so each track
+starts on copper rather than on the pad boundary. Nothing was straightened or re-optimised.
+
+| net | corridor | polyline (local escape) | exact min clearance |
+|---|---|---|---|
+| SCK U9.30 | NE gateway | (23.750,20.000) → (23.750,19.600) → (23.760,19.495) → (23.820,19.380) → (23.915,19.295) → (24.040,19.250) → (25.775,19.250) | **0.34842** (U9.29) |
+| MOSI U9.31 | west bypass | (23.215,20.000) → (23.215,19.600) → (23.155,19.405) → (23.065,19.325) → (22.955,19.285) → (20.600,19.285) | **0.30107** (U9.32 pad) |
+| MISO U9.32 | west lane | (22.750,20.000) → (22.750,19.865) → (21.225,19.865) | **0.35000** (U9.31 pad) |
+
+**MISO's west run was stopped at x = 21.225 rather than the proven x = 20.600.** That is a strict
+truncation of the proven path, never a move upward toward MOSI: MOSI needs to turn south at x =
+20.600 to reach its layer transition, and MISO's own southward lane has to clear both MOSI's turn
+and its via while staying clear of the `NFC_5V_PA_PENDING` stub at x = 21.700 — which pins MISO's
+lane into the window x ∈ [21.200, 21.250]. Stopping short only increases MISO-to-MOSI clearance.
+
+### Ensemble clearance audit — the three escapes measured together, not just by DRC
+
+| pair | measured |
+|---|---|
+| SCK ↔ MOSI | **0.3350 mm** |
+| SCK ↔ MISO | **0.8000 mm** |
+| MOSI ↔ MISO | **0.2250 mm** |
+| SCK ↔ USB copper | **0.3761 mm** (`USB_D_MCU_P` via) |
+| MOSI ↔ USB copper | **0.2142 mm** (`USB_D_MCU_N` via) |
+| MISO ↔ USB copper | **0.5500 mm** (`USB_D_MCU_N` track) |
+| MOSI ↔ U9.32 pad | **0.2011 mm** |
+
+Every applicable clearance is at or above the 0.200 mm rule. MOSI's 0.2011 mm to U9.32 is the
+predicted critical value and it landed exactly where the placement audit said it would.
+
+### How each net was completed
+
+**SCK** — one F.Cu branch, no new via: out through the NE gateway, north at x = 25.775 between C53.2
+and C54, west at y = 16.200 above R29/C53 and below U3 (which is B.Cu, so F.Cu is clear there), then
+south at x = 11.300 onto the existing `SPI_B_SCK` via at (11.300, 19.100). 23.056 mm added.
+
+**MOSI** — the west bypass to (20.600, 19.285), south to (20.600, 20.400), one via, then B.Cu west at
+y = 20.400 through U1's belly to (13.400, 20.400) and north onto the existing MOSI via at
+(13.400, 19.500). 12.411 mm added. The southward leg had to sit at x = 20.600: C46 forbids anything
+west of 20.525 and the `BMI270_INT1_STRAP` via blocks x 19.200–20.400 at that latitude.
+
+**MISO** — the full net, 163.522 mm and 8 vias, following the SCK/MOSI architecture:
+
+- U9.32 west, then south at x = 21.225, then west at y = 21.100 between C18 and C46 to a tee via at
+  (19.000, 21.100)
+- U1.6 out on B.Cu to a via at (14.700, 19.300), then F.Cu south and east into the same tee
+- In2 descent at **x = 19.000**, the one free lane between `I2C_SCL_INT` at x = 18.2 and the
+  `BMI270_INT1_STRAP` In2 at x = 19.8 — 0.800 mm to each — down to y = 80.300
+- F.Cu hop (19.000, 80.300) → (19.000, 86.500), crossing the `DISP_RST_N` In2 barrier at y = 82.800
+  **and** SCK's own In2 east lane at y = 84.200
+- In2 east at **y = 86.500** to x = 52.400, north to y = 85.200, east to x = 58.300
+- B.Cu hop (58.300, 85.200) → (61.000, 86.000) over SCK's and MOSI's In2 crossings
+- the staged **x = 61.000** C-E crossing, consumed
+- In2 radio trunk at x = 60.850 with a B.Cu tee into U8.16 and a branch to a via at (58.420, 151.800)
+  and a B.Cu stub into U7.16
+
+Three constraints shaped the eastern half and are worth recording. The band between `DISP_RST_N`
+(y = 82.8) and the staged crossings (y = 85.0) already carries MOSI at 83.500 and SCK at 84.200 with
+no room for a third lane — 83.20 is the floor and 0.40 separation cannot be met — so MISO runs
+*south* of both at y = 86.500, where In2 is clear from x = 15 to 52.97. It steps north to y = 85.200
+at x = 52.400 because the USB In2 verticals at x = 53.4 / 53.85 / 56.0 start at y = 86.000 and are
+absent above it. And it crosses SCK's and MOSI's crossings on B.Cu because on In2 they are an
+unbroken wall from y = 85 to y = 117.
+
+Two via sites had to move during the audit: (19.000, 82.000) sits on the `SPI_A_MISO` B.Cu run, and
+the 1.0 mm window between that and `SD_CS_N` at y = 81.000 is too narrow for a 0.60 mm via at
+0.200 mm clearance, so the transition moved north of both to y = 80.300. And (19.000, 86.200) fell
+0.30 mm from the `SPI_A_SCK` B.Cu at y = 85.800, so the landing moved to y = 86.500.
+
+**The x = 61.000 crossing is fully consumed.** The B.Cu hop lands at y = 86.000 because TP7's F.Cu
+pad (x 60.0–61.0, y 84.0–85.0) forbids a via any closer to the crossing's north end, so a 1.0 mm
+In2 segment carries the net the rest of the way to (61.000, 85.000). Without it the crossing's north
+end stays a dangling stub; with it, DRC's `track_dangling` count drops 11 → 10 and no SPI-B copper
+is left free.
+
+### Preservation
+
+Against `44a7d1d`: tracks **420 → 459**, vias **114 → 123**, **0 removed**, every added object on
+`/SPI_B_SCK`, `/SPI_B_MOSI` or `/SPI_B_MISO`. Pads 776, unchanged. **USB copper 111 objects, 0 added,
+0 removed** — `USB_D_MCU_N`/`_P` still ratsnest 0, uncoupled 22.1321 / 25.000 and skew 1.1011 / 2.000
+untouched. `BMI270_INT1_STRAP` 7 objects unchanged. GND copper 26 objects unchanged, U9's six EP vias
+and all three grounding bridges intact. U9 still at (24.500, 22.250), F.Cu, rotation 0; 188
+footprints, none moved this pass. No capacitor moved. No `NFC_DEFERRED` copper.
+
+RF and E5: **0 new vias in the 915 band, 0 in the 433 band, 0 new B.Cu crossing either band**; the
+three E5 crossings at x 59 / 60 / 61 are consumed in place and none was moved, duplicated or resized.
+Nearest approach of new copper to the reserved lanes x 62–69.1 is **0.800 mm**, so `SX1262_CS_N`,
+`SX1262_DIO1`, `SX1262_BUSY`, `SX1262_RST_N`, `SX1262_RXEN`, `CC1101_CS_N`, `CC1101_GDO0` and +3V3
+keep their corridors.
+
+DRC **0 electrical errors**; warnings 250 → **249** (the consumed MISO stub). Board ratsnest
+**430 → 424**. ERC **116 / 58 excluded / 58 live**. Schematic parity **261, delta 0**. Schematic and
+`.kicad_dru` untouched. The six cosmetic `silk_over_copper` warnings from the U9 move are still
+present and still logged for pre-fab tidy-up, as instructed.
+
+Staged infrastructure remaining: `BTN_HOME_N`, SX1262 ×5, CC1101 ×2, +3V3, and the pre-existing
+`BQ25185_SYS`, `LED_K` and `NFC_5V_PA_PENDING` ends. No orphan copper.
+
+**SPI_B_SCK: PASS**
+**SPI_B_MOSI: PASS**
+**SPI_B_MISO: PASS**
+**SPI-B SHARED BUS: HARD-LOCKED COMPLETE**
+**U9 SIMULTANEOUS ESCAPES: PASS**
+**USB PRESERVED: YES**

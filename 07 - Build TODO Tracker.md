@@ -330,10 +330,12 @@ They are the outstanding firmware debt between the current code and the Beta des
       gateway, MOSI 0.2011 mm via a newly-opened **west bypass**, MISO 0.3850 mm on its own west lane;
       minimum inter-track separation 0.5350 mm. Test tracks were proof-only and never written.
       See [[05 - Design Decisions Log]].
-- [ ] **When routing U9's SPI-B escapes, lay MOSI on exactly the proven corridor.** `SPI_B_MOSI`'s
-      escape keeps only **0.2011 mm** — 1.07 µm over the rule — and is bounded by U9.32's own pad, so
-      MISO's escape must stay put too. Proven polylines are in the design log; do not re-optimise
-      them. SCK (0.2484 mm) and MISO (0.3850 mm) have more room.
+- [x] ~~Lay U9's SPI-B escapes on the proven corridors~~ — **DONE 2026-08-12. SPI-B SHARED BUS
+      HARD-LOCKED COMPLETE.** All three nets closed: `SPI_B_SCK`, `SPI_B_MOSI` and `SPI_B_MISO` each
+      form a single island over U1, U9, U8 and U7; board ratsnest 430 → 424; DRC 0 electrical errors.
+      Measured together, the three U9 escapes keep SCK↔MOSI 0.3350, MOSI↔MISO 0.2250, SCK↔MISO
+      0.8000 mm, and MOSI holds **0.2011 mm** to U9.32 exactly as predicted. All three E5 crossings
+      (x 59 / 60 / 61) consumed in place. See [[05 - Design Decisions Log]].
 - [ ] **Pre-fab silk tidy-up: C50 and C52 reference-designator text is clipped by U9's south pads**
       (6 cosmetic `silk_over_copper` warnings introduced by the 0.250 mm U9 move). No electrical
       content; nudge the silk text when the board is otherwise final.
