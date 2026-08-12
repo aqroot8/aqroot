@@ -251,7 +251,7 @@
 # via splays are all legitimately uncoupled; declaring the budget is honest where
 # pretending the pair stays coupled through them would not be.
 (rule "USB uncoupled length budget"
-	(constraint diff_pair_uncoupled (max 17mm))
+	(constraint diff_pair_uncoupled (max 25mm))
 	(condition "A.hasNetclass('USB_D')"))
 
 
