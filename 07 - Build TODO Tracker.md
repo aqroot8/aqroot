@@ -466,3 +466,16 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] **DFM note at fab submission**: the four Tier-B pockets (R2.1 0.100 mm,
       J1.40/41/42 0.120 mm, R11.1 0.140 mm) sit between JLCPCB's 0.09 mm floor and
       its 4 mil recommended baseline. Flag them for DFM review.
+
+
+## +3V3 Pass B - all rule gates now closed
+- [x] ~~Ruling on the four sub-0.40 pads~~ - `E6_R3_2`, `E6_U4_5`, `E6_U4_12`,
+      `E6_J1_35` implemented as width-only pockets, clearance left at the global
+      0.20 mm. Probe-verified.
+- [ ] **B1** - cluster E normal-width pads
+- [ ] **B2** - cluster G normal-width + cluster H island absorption
+- [ ] **B3** - the eight E6 clearance escapes
+- [ ] **B4** - U3.21 + U9.1 + Pass-B closure
+- [ ] **B5** - the four new width-only escapes. Watch the J1.35 merge rule: its
+      0.15 mm neck feeds J1.35 only and must widen to >= 0.30 mm (prefer 0.60 mm)
+      as soon as it clears the FPC pad field.

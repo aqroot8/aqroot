@@ -45785,5 +45785,129 @@
 			)
 		)
 	)
+	(zone
+		(layer "B.Cu")
+		(uuid "w4a00000-0000-4000-8000-000000000001")
+		(name "E6_R3_2")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 18.3 42.2) (xy 20.025 42.2) (xy 20.025 45.475) (xy 18.3 45.475)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "w4a00000-0000-4000-8000-000000000002")
+		(name "E6_U4_5")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 9.6 61.95) (xy 12.125 61.95) (xy 12.125 63.65) (xy 9.6 63.65)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "w4a00000-0000-4000-8000-000000000003")
+		(name "E6_U4_12")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 11.2 62.85) (xy 13.075 62.85) (xy 13.075 65) (xy 11.2 65)
+			)
+		)
+	)
+	(zone
+		(layer "F.Cu")
+		(uuid "w4a00000-0000-4000-8000-000000000004")
+		(name "E6_J1_35")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 32.275 79.21) (xy 33.225 79.21) (xy 33.225 83.075) (xy 32.275 83.075)
+			)
+		)
+	)
 	(embedded_fonts no)
 )

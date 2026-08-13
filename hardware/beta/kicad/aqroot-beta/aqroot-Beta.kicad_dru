@@ -651,3 +651,68 @@
 	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R29_1')"))
 
 # E6_U9_1     U9.1    TIER A - measured 0.160 mm; rule written above in section 13.
+
+# =====================================================================
+# 16. WIDTH-ONLY +3V3 ESCAPE POCKETS
+#
+# Four pads measured on the current board cannot be escaped at the 0.40 mm
+# P3V3 outer-layer minimum, but - unlike the section-13/15 E6 pockets - they
+# are limited by WIDTH ALONE.  Each one works at the ordinary 0.20 mm
+# clearance once the trace narrows.  U4.12 and J1.35 additionally have pads
+# only 0.250 mm and 0.300 mm across, so a 0.40 mm centreline cannot land on
+# them at all.
+#
+# These rules therefore constrain WIDTH ONLY and deliberately carry NO
+# clearance term, so the pockets can never silently diverge from the global
+# 0.20 mm figure.  Clearance is left entirely to the P3V3 netclass.  That
+# makes these a strictly weaker concession than the E6 clearance pockets:
+# there is no fab-capability question and no pairwise blast radius.
+#
+#   E6_R3_2    R3.2   >= 0.15 mm   R3 is a 10k pull-up on WAKE_INT_N; the
+#                                  neck carries ~330 uA
+#   E6_U4_5    U4.5   >= 0.30 mm   BMI270 VDDIO, sub-mA single-device supply
+#   E6_U4_12   U4.12  >= 0.20 mm   BMI270 CSB, an I2C-mode strap - leakage only
+#   E6_J1_35   J1.35  >= 0.15 mm   one of seven parallel display +3V3 pins;
+#                                  see the merge rule below
+#
+# PROCEDURAL, NOT ENCODED (reviewed geometrically at routing time):
+#   - reduced-width neck <= 2.0 mm
+#   - single-pad feed only; no transit; no aggregate current
+#   - no in-pocket via unless individually proven
+#   - widen to >= 0.30 mm, preferably 0.60 mm, immediately after escaping
+#
+# J1.35 MERGE RULE: J1.35 is one of seven parallel +3V3 pins on the display
+# FPC (J1.7, .8, .9, .35, .40, .41, .42).  Its 0.15 mm neck feeds J1.35 and
+# nothing else.  Once clear of the FPC pad field it must merge immediately
+# into the normal-width display +3V3 branch at >= 0.30 mm, preferably
+# 0.60 mm.  No shared display current may flow through the neck itself.
+#
+# U4.12 NOTE: CSB is strapped high to select I2C.  If the BMI270 is ever
+# moved to SPI, CSB becomes an active chip select - that is a schematic
+# function change, not a routing-only change, and this pocket must be
+# re-reviewed rather than reused.
+#
+# CONTAINMENT: these use enclosedByArea(), so only a neck lying wholly inside
+# its own pocket gets the relief.  A track that merely clips a pocket keeps
+# the ordinary 0.40 mm P3V3 outer-layer minimum.
+#
+# Ordering: these sit in the specific-E6 tail at the end of the file so that
+# inside their named areas they beat the section-10 P3V3 width floor.  Outside
+# them P3V3 is unchanged.
+# =====================================================================
+(rule "E6_R3_2: R3.2 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R3_2')"))
+
+(rule "E6_U4_5: U4.5 width-only escape, clearance stays global"
+	(constraint track_width (min 0.30mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_U4_5')"))
+
+(rule "E6_U4_12: U4.12 width-only escape, clearance stays global"
+	(constraint track_width (min 0.20mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_U4_12')"))
+
+(rule "E6_J1_35: J1.35 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_35')"))
+

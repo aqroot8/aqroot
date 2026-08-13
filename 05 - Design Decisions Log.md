@@ -8282,3 +8282,95 @@ the implementation would have been wrong.
 DRC 0 electrical errors before and after; ratsnest 384 unchanged; 638 tracks,
 166 vias, 776 pads, 188 footprints all bit-identical; every zone except the two
 intended edits bit-identical.
+
+
+---
+
+## Four width-only +3V3 escape pockets, and the consolidated E6 registry
+
+Rules-only pass. No copper routed, no placement moved, no existing copper touched.
+
+Four Pass-B pads measured on the current board cannot be escaped at the 0.40 mm
+P3V3 outer-layer minimum. Unlike the section-13/15 E6 pockets, they are limited by
+**width alone** - each works at the ordinary 0.20 mm clearance once the trace narrows.
+`U4.12` and `J1.35` additionally have pads only 0.250 mm and 0.300 mm across their
+narrow dimension, so a 0.40 mm centreline cannot land on them at all.
+
+These four rules therefore constrain **width only and carry no clearance term**, so
+the pockets can never silently diverge from the global figure. That makes them a
+strictly weaker concession than the E6 clearance pockets: no fab-capability question,
+no pairwise blast radius.
+
+| area | pad | layer | polygon (x, y) | size | min width | clearance |
+|---|---|---|---|---|---|---|
+| `E6_R3_2` | R3.2 | B.Cu | 18.300-20.025 x 42.200-45.475 | 1.725 x 3.275 | 0.15 mm | global 0.20 |
+| `E6_U4_5` | U4.5 | B.Cu | 9.600-12.125 x 61.950-63.650 | 2.525 x 1.700 | 0.30 mm | global 0.20 |
+| `E6_U4_12` | U4.12 | B.Cu | 11.200-13.075 x 62.850-65.000 | 1.875 x 2.150 | 0.20 mm | global 0.20 |
+| `E6_J1_35` | J1.35 | F.Cu | 32.275-33.225 x 79.210-83.075 | 0.950 x 3.865 | 0.15 mm | global 0.20 |
+
+Each polygon was derived from the measured escape at that pad's approved width,
+trimmed to the 2.0 mm neck cap, plus a half-width + 0.25 mm margin. All four use
+`enclosedByArea()`, so only a neck lying wholly inside its own pocket gets the relief;
+a track that merely clips a pocket keeps the full 0.40 mm minimum. No existing +3V3
+copper lies inside any of them.
+
+### J1.35 merge requirement
+
+J1.35 is **one of seven parallel +3V3 pins** on the CH280QV10-CT_50P display FPC
+(J1.7, .8, .9, .35, .40, .41, .42). Its 0.15 mm neck feeds J1.35 **and nothing else**.
+Once clear of the FPC pad field it must merge immediately into the normal-width display
++3V3 branch at >= 0.30 mm, preferably 0.60 mm. **No shared display current may flow
+through the neck itself.** This is a routing-time gate, checked geometrically.
+
+### U4.12 strap note
+
+U4 is a **BMI270** (Bosch 6-axis IMU, LGA-14). Its +3V3 pins are not equivalent:
+U4.5 is VDDIO and U4.8 is VDD (supplies, sub-mA); U4.2 ASDx and U4.3 ASCx are
+auxiliary-interface straps; and **U4.12 is CSB**, strapped high to select I2C. The
+narrow local route at U4.12 is therefore a **strap connection, not a power-current
+branch**. If the BMI270 is ever moved to SPI, CSB becomes an active chip select -
+that is a **schematic function change, not a routing-only change**, and this pocket
+must be re-reviewed rather than silently reused. R3.2 is likewise a strap-class load:
+R3 is a 10k pull-up on WAKE_INT_N, so its neck carries ~330 uA.
+
+### Consolidated relief-area registry - 13 areas, read from the live board and rules
+
+| area | pad | net | min width | clearance term | neck cap | fab gate | status |
+|---|---|---|---|---|---|---|---|
+| `E6_C18_1` | C18.1 | +3V3 | 0.15 mm | measured 0.180 | 2.0 mm | n/a (Tier A) | active |
+| `E6_R29_1` | R29.1 | +3V3 | 0.15 mm | measured 0.160 | 2.0 mm | n/a (Tier A) | active |
+| `E6_U9_1` | U9.1 | +3V3 | 0.15 mm | measured 0.160 | 2.0 mm | n/a (Tier A) | active |
+| `E6_R11_1` | R11.1 | +3V3 | 0.15 mm | measured 0.140 | 2.0 mm | PASS vs 0.09 | active |
+| `E6_J1_40` | J1.40 | +3V3 | 0.15 mm | measured 0.120 | 2.0 mm | PASS vs 0.09 | active |
+| `E6_J1_41` | J1.41 | +3V3 | 0.15 mm | measured 0.120 | 2.0 mm | PASS vs 0.09 | active |
+| `E6_J1_42` | J1.42 | +3V3 | 0.15 mm | measured 0.120 | 2.0 mm | PASS vs 0.09 | active |
+| `E6_R2_1` | R2.1 | +3V3 | 0.15 mm | measured 0.100 | 2.0 mm | PASS vs 0.09 | active |
+| `E6_R3_2` | R3.2 | +3V3 | 0.15 mm | **global 0.20** | 2.0 mm | n/a | active (new) |
+| `E6_U4_5` | U4.5 | +3V3 | 0.30 mm | **global 0.20** | 2.0 mm | n/a | active (new) |
+| `E6_U4_12` | U4.12 | +3V3 | 0.20 mm | **global 0.20** | 2.0 mm | n/a | active (new) |
+| `E6_J1_35` | J1.35 | +3V3 | 0.15 mm | **global 0.20** | 2.0 mm | n/a | active (new) |
+| `U3_21_ESCAPE` | U3.21 | +3V3 | 0.15 mm | **global 0.20** | 2.0 mm | n/a | active; also carries the scoped HEADER RESERVED exception. The measured escape fits at 0.40 mm, so the width relief is expected to go unused |
+
+The eight `measured` entries relax clearance; the five `global 0.20` entries do not.
+Every area is +3V3-only and single-pad.
+
+### Acceptance probes
+
+Scratch board only, no probe copper reached the real board.
+
+| probe | expected | result |
+|---|---|---|
+| A - approved width inside each of the four pockets | PASS | **0 violations** in all four |
+| B - 0.15 mm +3V3 outside every pocket | FAIL | `P3V3 minimum width on the outer layers` 0.400 |
+| B2 - 0.30 mm +3V3 outside every pocket | FAIL | same rule, 0.400 |
+| C - neck at 0.150 mm clearance inside `E6_R3_2` | FAIL | netclass P3V3 clearance 0.200 |
+| C - neck at ~0.157 mm inside `E6_U4_5` | FAIL | netclass P3V3 clearance 0.200 |
+| C - neck at ~0.185 mm inside `E6_U4_12` | FAIL | netclass P3V3 clearance 0.200 |
+| C - neck at 0.150 mm inside `E6_J1_35` | FAIL | netclass P3V3 clearance 0.200 |
+
+Probe A proves the width relief is live; probe B proves it is scoped to the pockets;
+probe C proves clearance is **not** relaxed anywhere.
+
+DRC 0 electrical errors before and after; ratsnest 384 unchanged; 638 tracks, 166 vias,
+776 pads and 188 footprints all bit-identical; every pre-existing rule area and rule
+untouched; the `.kicad_dru` change is a pure append.
