@@ -352,6 +352,23 @@ They are the outstanding firmware debt between the current code and the Beta des
       E5 crossing is consumed. Board ratsnest 419 → 417; DRC 0 electrical errors. All three
       SX1262 controls (CS_N x62, DIO1 x63, BUSY x64) are now closed.
       See [[05 - Design Decisions Log]].
+- [x] ~~Route SX1262_RXEN~~ — **DONE 2026-08-13 (pass 3B).** One island over U3.19 (expander U61
+      P16), R74.1 (100k pull-down tee) and U8.6; 197.227 mm, 18 tracks, 4 vias
+      (B.Cu 12 / In2 5 / F.Cu 1). E5 x66 consumed. Board ratsnest 417 -> 414; DRC 0 electrical
+      errors. See [[05 - Design Decisions Log]].
+- [ ] **Route `SX1262_RST_N` (U2.5 -> R13.1 tee -> E5 x65 -> U8.15)** — deferred from pass 3B. The
+      **eastern half is already proven legal**: In2 trunk y = 48.000 (x 30->60), far-east In2
+      descent x = 71.500, westward approach In2 y = 81.500, drop to (65.000, 85.000), and the
+      U8.15 B.Cu entry at y = 131.800. The **western** section (U2.5 escape, R13 tee, and the F.Cu
+      hop over the SPI_A wall) needs a proper scan-then-audit pass: the first-cut path fouled the
+      `TOUCH_RST_N` via, R4.1, R7.1, `WAKE_INT_N` B.Cu, the `BQ25185_SYS` F.Cu rail at x = 61.200,
+      and came within 0.100 mm of `SX1262_DIO1`'s B.Cu descent at x = 59.500. Not a capacity
+      problem — U2.5 has 547,517 legal via sites at up to 3.000 mm margin.
+- [ ] **Mounting-hole clearance is now a standing route check.** Four Edge.Cuts circles of radius
+      1.200 mm at (4.0, 148.0), (10.5, 10.0), (69.0, 13.0) and (70.5, 144.0). A 0.20 mm track needs
+      **1.800 mm** from the centre and a 0.60 mm via **2.000 mm**. The RXEN pass hit the (69, 13)
+      hole on its first write and DRC caught it as `copper_edge_clearance 0.0000 mm`; every future
+      route audit must include the holes explicitly, not just copper.
 - [ ] **`NFC_IRQ` — INTENTIONAL, NOT CONNECTED IN BETA.** It now sits on U1.11, the pad with no
       legal escape. Hardware IRQ is **deferred to the NFC-enablement respin**. Beta NFC scope is
       **polling-based digital bring-up only**. This is an intentional-unrouted ledger item, not a

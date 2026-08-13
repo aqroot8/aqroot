@@ -7960,3 +7960,142 @@ DRC **0 electrical errors**; warnings 247 → **246**. Board ratsnest **419 → 
 
 **SX1262_DIO1: PASS**
 **SX1262 U1-ORIGIN CONTROL BLOCK: HARD-LOCKED COMPLETE**
+
+## SX1262_RXEN routed U3.19 → U8.6; SX1262_RST_N deferred (2026-08-13)
+
+`SX1262_RXEN` is **closed**: one island over **U3.19**, **R74.1** and **U8.6**, ratsnest 0, DRC 0
+electrical errors. Board ratsnest **417 → 414**. `SX1262_RST_N` was **not** closed in this pass — see
+below. This was a two-net pass; only one net is committed, per the pass rule that the first net must
+not be compromised to force both into one commit.
+
+| metric | value |
+|---|---|
+| length | **197.227 mm** |
+| tracks | 18 |
+| vias | 4 |
+| layers | B.Cu 12, In2 5, F.Cu 1 |
+| minimum clearance | **0.20000 mm copper** (U3.19 escape, against `I2C_SCL_INT` B.Cu) |
+
+### Topology verified before routing, not assumed
+
+Both resistors turned out to be **pull-downs, i.e. tees — not series elements**:
+
+| net | pads | resistor |
+|---|---|---|
+| `SX1262_RXEN` | **U3.19** (expander U61 @ 0x21, P16), R74.1, U8.6 | R74.2 = **GND** → 100 k pull-down tee |
+| `SX1262_RST_N` | **U2.5** (expander U60 @ 0x20, P01), R13.1, U8.15 | R13.2 = **GND** → pull-down tee, holds the radio RESET-ASSERTED |
+
+Neither net originates at U1. `U8.6` sits on U8's **east** side (x 71.1–72.9), unlike the west-side
+CS_N/DIO1/BUSY pads, so the radio end is in open territory.
+
+### Route order: RXEN first, and the reason
+
+RXEN is the more constrained net by a wide margin. Its source U3.19 sits at y ≈ 9.4 in the far north,
+**behind the I2C fan-out barrier** (x 17.5 → 33.8, y 9.4 → 11.6) whose only 0.200 mm opening was
+consumed by `SX1262_BUSY`'s jog at y = 8.750 in pass 3A-1. It must then traverse the full board
+height to y ≈ 130. RST_N's source (U2.5, y ≈ 45) and tee (R13.1, y ≈ 53) are already mid-board, south
+of all the northern congestion, with 547,517 and 140,663 legal via sites respectively.
+
+### Route
+
+```
+B.Cu  (22.325,  9.600) → (22.325, 10.600)      out of U3.19, south into the TSSOP body gap
+B.Cu  (22.325, 10.600) → (17.500, 10.600)      west, above the I2C_SCL_INT B.Cu wall at y = 11.000
+B.Cu  (17.500, 10.600) → (17.500, 13.500)      south, west of the I2C_SCL_INT via
+B.Cu  (17.500, 13.500) → (25.500, 13.500)      east, crossing WAKE_INT_N's In2 on B.Cu
+B.Cu  (25.500, 13.500) → (25.500, 12.250) → (27.000, 12.250)   north between R66 and R67
+via   (27.000, 12.250)   B.Cu → In2                        0.250 mm
+In2   (27.000, 12.250) → (60.000, 12.600)      northern trunk, over NFC RESERVED
+via   (60.000, 12.600)   In2 → B.Cu                        0.425 mm
+B.Cu  (60.000, 12.600) → (66.000, 12.600) → (66.000, 10.800) → (72.000, 10.800)
+B.Cu  (72.000, 10.800) → (72.000, 83.500)      far-east descent
+B.Cu  (72.000, 83.500) → (66.000, 83.500)      west, north of the CC1101 / +3V3 lanes
+via   (66.000, 83.500)   B.Cu → In2                        1.003 mm
+In2   (66.000, 83.500) → (66.000, 85.000)      joins the staged x66 crossing
+      [staged (66.000, 85.000) → (66.000, 117.000) — CONSUMED]
+In2   (66.000, 117.000) → (66.000, 129.650) → (70.600, 129.650)
+via   (70.600, 129.650)  In2 → F.Cu + B.Cu                 0.325 mm
+F.Cu  (70.600, 129.650) → (70.000, 129.650)    tee into R74.1
+B.Cu  (70.600, 129.650) → (71.500, 129.650)    into U8.6
+```
+
+### Three things shaped it
+
+**U3 is a TSSOP-24 with 0.25 mm inter-pad gaps**, so U3.19 cannot escape between pads, and
+HEADER RESERVED sits 0.2 mm above its north edge — no northward exit either. The only way out is
+**south into the package body gap** between the two pad rows, then west above the `I2C_SCL_INT` B.Cu
+wall at y = 11.000 and around the `I2C_SCL_INT` via at (18.200, 11.700). `WAKE_INT_N`'s In2 vertical
+is then crossed on B.Cu rather than fought.
+
+**`SX1262_BUSY`'s In2 descent at x = 61.000 is a wall** from y = 10 to 74.5, so the northern trunk
+cannot continue east on In2. One B.Cu hop at y = 12.600 clears it.
+
+**A mounting hole at (69.000, 13.000), radius 1.200 mm**, sits directly on the natural eastward path.
+The first write put the B.Cu run at y = 12.600 and DRC caught it immediately —
+`copper_edge_clearance, actual 0.0000 mm`. The run now jogs north to **y = 10.800** across
+x 66 → 72, giving **2.200 mm** to the hole centre against the 1.800 mm requirement. All four board
+cutouts (4.0/148.0, 10.5/10.0, 69.0/13.0, 70.5/144.0) were enumerated and are now checked explicitly.
+
+### Clearances
+
+| pair | measured |
+|---|---|
+| RXEN whole net, minimum | **0.20000 mm** (`I2C_SCL_INT` B.Cu at the U3.19 escape) |
+| RXEN ↔ `SX1262_BUSY` | **0.80000 mm** |
+| RXEN ↔ `SX1262_DIO1` | **2.77113 mm** |
+| RXEN ↔ `SX1262_CS_N` | **3.80000 mm** |
+| RXEN ↔ `USB_D_MCU_N` | **3.17500 mm** |
+| RXEN ↔ `USB_D_MCU_P` | **3.97500 mm** |
+| nearest mounting hole | **2.200 mm** (need 1.800) |
+
+### E5, RF and keepouts
+
+**x = 66.000 consumed** — it no longer appears in the free-endpoint audit. `SX1262_CS_N` x62,
+`SX1262_DIO1` x63, `SX1262_BUSY` x64 and `SX1262_RST_N` x65 are all untouched; nothing was moved,
+resized, duplicated or swapped and no new crossing was created. **0 new vias in the 915 band, 0 in
+the 433 band, 0 new outer-layer transit of either band.** NFC RESERVED, HEADER RESERVED and WROOM
+ANTENNA all clear of new copper. No `NFC_DEFERRED` copper.
+
+### SX1262_RST_N — not closed in this pass
+
+Its **eastern half is proven**: a mid-board In2 trunk at y = 48.000 (x 30 → 60, clear 0.900 mm), the
+far-east In2 descent at x = 71.500 (clear 76 → 88), the westward approach on In2 at y = 81.500
+(x 71.5 → 65, clear 0.600 mm past the `BAT_PROTECTED_P` via), the drop to (65.000, 85.000) onto the
+staged lane (0.700 mm), and the U8.15 entry on B.Cu at y = 131.800 (0.300 mm clear of
+`SX1262_DIO1`'s via at (63.000, 132.500)) all audit legal.
+
+Four blockers remain, all in the **western** section, and all in territory I had not yet scanned at
+the resolution used elsewhere:
+
+- the U2.5 escape fouls the `TOUCH_RST_N` via near (7.500, 45.625);
+- the southward run at x = 7.500 hits R4.1, and the eastward run at y = 50.500 hits R7.1;
+- the climb at x = 20.000 crosses `WAKE_INT_N`'s B.Cu at y ≈ 49.200;
+- the F.Cu hop over `SPI_B`'s wall would cross the `BQ25185_SYS` F.Cu rail at x = 61.200, and its
+  first via site at (20.000, 48.000) fouls the `BMI270_INT1_STRAP` In2, while the second at
+  (60.000, 48.000) comes within 0.100 mm of `SX1262_DIO1`'s B.Cu descent at x = 59.500.
+
+None of these is a capacity problem — U2.5 alone has 547,517 legal via sites and 3.000 mm of best
+margin — they are placement details of a first-cut path that needs the same scan-then-audit treatment
+the eastern half received. RST_N is left for a focused pass. Its x = 65.000 crossing is untouched and
+still staged at both ends.
+
+### Preservation
+
+Against `561bdca`: tracks **506 → 523**, vias **134 → 138**, **0 objects removed**, all 21 additions
+on `/SX1262_RXEN`. Pads 776 with every coordinate identical and **0 pad net assignments changed**, so
+**188 footprints, 0 moved**. `USB_D_MCU_P` 24, `USB_D_MCU_N` 20, `SPI_B_SCK` 32, `SPI_B_MOSI` 31,
+`SPI_B_MISO` 31, `SX1262_CS_N` 19, `SX1262_BUSY` 23, `SX1262_DIO1` 19, `BMI270_INT1_STRAP` 7,
+`I2C_SDA_INT` 32, `I2C_SCL_INT` 36, `NFC_IRQ` 0, `SX1262_RST_N` 1 — every count unchanged.
+
+`NFC_IRQ` remains **0 tracks, 0 vias, 0 zones**, 2 islands, 1 intentional ratsnest item.
+
+DRC **0 electrical errors**; warnings 246 → **245**. Board ratsnest **417 → 414**. ERC
+**116 / 58 excluded / 58 live**, unchanged. Schematic parity **261, delta 0**. Schematic,
+`.kicad_dru` and `.kicad_pro` untouched.
+
+Staged lanes remaining: `SX1262_RST_N` (x 65), `CC1101_CS_N` (x 67), `CC1101_GDO0` (x 68),
+`BTN_HOME_N` (x 13.8), `+3V3` (x 69.1 B.Cu end), plus the pre-existing `BQ25185_SYS`, `LED_K` and
+`NFC_5V_PA_PENDING` ends — 15 free endpoints.
+
+**SX1262_RXEN: PASS**
+**SX1262_RST_N: DEFERRED — eastern half proven, western half needs a focused pass**
