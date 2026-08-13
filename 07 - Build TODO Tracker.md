@@ -449,3 +449,20 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] **Fab spacing confirmation for E6_U9_1** — no copper may use the 0.10 mm clearance
       until the selected 4-layer / 1 oz outer process publishes spacing <= 0.10 mm.
       Tagged VERIFY-AT-FAB-LOCK.
+
+
+## +3V3 Pass B - cleared to route
+- [x] ~~Clearance decision for the seven standard E6 pads~~ - measured per pad and
+      encoded; all eight pockets are Tier A or Tier B and every Tier-B gate passes
+      against the locked JLCPCB process.
+- [x] ~~U3.21 pin-function verification~~ - TCA9535PWR pin 21 = A0 address strap
+      (TI SCPS201E table 5-1, "Connect directly to VCC or ground"). REQUIRED.
+- [x] ~~HEADER RESERVED scoped notch~~ - done as an enforcement conversion plus an
+      `enclosedByArea` exception, not a geometry notch. Leak probe passes.
+- [x] ~~Fab spacing confirmation for E6_U9_1~~ - JLCPCB 0.09 mm published; U9.1's
+      measured need is 0.160 mm, so the 0.10 mm allowance was retired as unnecessary.
+- [ ] **Pass B routing**: clusters E / G / H, the eight E6 pad escapes, the U3.21
+      escape at 0.40 mm, then the southern tree through x69.100.
+- [ ] **DFM note at fab submission**: the four Tier-B pockets (R2.1 0.100 mm,
+      J1.40/41/42 0.120 mm, R11.1 0.140 mm) sit between JLCPCB's 0.09 mm floor and
+      its 4 mil recommended baseline. Flag them for DFM review.

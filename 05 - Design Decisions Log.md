@@ -8161,3 +8161,124 @@ length. Every E6 neck must be written as its own short segment.
 
 DRC 0 electrical errors before and after; 638 tracks, 166 vias, 776 pads and 188
 footprints all bit-identical; every pre-existing rule area unchanged.
+
+
+---
+
+## JLCPCB fab lock, per-pad E6 clearances, and the U3.21 HEADER RESERVED exception
+
+Rules-only pass. No copper routed, no placement moved, no existing copper touched.
+
+### Fab lock
+
+**JLCPCB is the locked AQROOT Beta PCB fab.** Class: 4-layer, 1.6 mm finished,
+1 oz outer / 0.5 oz inner, stackup JLC04161H-7628.
+
+Published capability, checked 2026-08-13 against *"PCB Manufacturing & Assembly
+Capabilities - JLCPCB"*, <https://jlcpcb.com/capabilities/pcb-capabilities>,
+row **"Min. track width and spacing (1 oz)"**:
+
+> Multilayer: 0.09 / 0.09 mm (3.5 / 3.5 mil). 3 mil is acceptable in BGA fan-outs.
+
+So **minimum outer track width 0.09 mm, minimum outer spacing 0.09 mm**. JLCPCB's
+own recommended production baseline is 4 mil (0.1016 mm); anything between 0.09 mm
+and that baseline is within capability but should be flagged for DFM review at
+submission. Board Setup absolute floors were re-confirmed and left unchanged at
+**0.15 mm minimum track width / 0.0 mm minimum clearance** - these remain DRC
+floors only and confer no routing permission.
+
+### Per-pad E6 clearances - measured, not assumed
+
+Each figure is the largest clearance at which a 0.15 mm neck can still reach the
++3V3 tree on the current board. No pad inherits another's number.
+
+| area | pad | layer | measured clearance | narrowest channel | tier | JLCPCB gate |
+|---|---|---|---|---|---|---|
+| `E6_C18_1` | C18.1 | F.Cu | 0.180 mm | 0.510 mm | A | n/a |
+| `E6_R29_1` | R29.1 | F.Cu | 0.160 mm | 0.470 mm | A | n/a |
+| `E6_U9_1`  | U9.1  | F.Cu | 0.160 mm | 0.470 mm | A | n/a |
+| `E6_R11_1` | R11.1 | B.Cu | 0.140 mm | 0.430 mm | B | PASS (0.140 >= 0.09) |
+| `E6_J1_40` | J1.40 | F.Cu | 0.120 mm | 0.390 mm | B | PASS (0.120 >= 0.09) |
+| `E6_J1_41` | J1.41 | F.Cu | 0.120 mm | 0.390 mm | B | PASS (0.120 >= 0.09) |
+| `E6_J1_42` | J1.42 | F.Cu | 0.120 mm | 0.390 mm | B | PASS (0.120 >= 0.09) |
+| `E6_R2_1`  | R2.1  | B.Cu | 0.100 mm | 0.350 mm | B | PASS (0.100 >= 0.09) |
+
+No pad falls in Tier C. All Tier-B gates pass against the locked fab.
+
+**U9.1's provisional 0.10 mm allowance was never needed.** The measured requirement
+is 0.160 mm, so the rule was *tightened* from 0.10 to 0.160 mm and the
+VERIFY-AT-FAB-LOCK tag retired. For the record the original gate also passes on its
+own terms - 0.10 mm >= JLCPCB's 0.09 mm - but no copper will now rely on it.
+
+Containment: every per-pad clearance rule is conditioned on `enclosedByArea()`, so
+only a neck lying wholly inside its own pocket gets the relief. A track that merely
+clips a pocket keeps the ordinary 0.20 mm netclass figure - verified by probe.
+
+### U3.21 is REQUIRED
+
+U3 is a **TCA9535PWR** (TSSOP-24), datasheet TI **SCPS201E**, Aug 2009, revised
+May 2022. Table 5-1 for the DB/PW package gives pin 21 as **A0, Input** -
+*"Address input 0. Connect directly to V<sub>CC</sub> or ground."*
+
+U3.21 is therefore an address strap, not a supply pin, and **not NC-capable**: the
+part has no internal pull on A0/A1/A2 and the datasheet requires a hard tie. U3.24
+is VCC and is already fed by the Pass-A backbone. Leaving A0 floating would leave
+U3's I2C address undefined, so **U3.21 REQUIRED = YES**. Note it carries only
+leakage current (+-1 uA per the datasheet), so the escape has no width obligation
+beyond manufacturability.
+
+### HEADER RESERVED enforcement converted
+
+HEADER RESERVED was enforced by the rule area's own keepout flags (case B), not by
+any DRU rule. A zone keepout cannot carry a net-conditional exception, so this
+commit converts it: the zone's `tracks`/`vias` flags are released to `allowed` and
+the prohibition is re-imposed as a DRU rule over the same area, same geometry
+(x 18.5-55.5, y 0-8.5) and same layers (F.Cu, B.Cu, In2.Cu). The zone keeps
+`copperpour not_allowed`, so pour protection never lapsed, and `pads allowed`, which
+is what lets the J5 land pattern sit inside the reservation. J5's fanout exception is
+untouched - it was never a track/via rule.
+
+The exception is scoped with **`enclosedByArea('U3_21_ESCAPE')`, never
+`intersectsArea`**, which is what makes it leak-proof.
+
+`U3_21_ESCAPE` was resized from 1.10 x 3.53 mm to **x 23.125-26.100, y 7.750-9.900
+(2.975 x 2.150 mm) on B.Cu** to fully enclose the measured escape:
+
+```
+B.Cu (23.625, 9.400) -> (23.625, 8.250)   out of U3.21, north across y = 8.5
+B.Cu (23.625, 8.250) -> (25.600, 8.250)   east inside HEADER RESERVED
+B.Cu (25.600, 8.250) -> (25.600, 9.400)   south into U3.24's existing +3V3
+```
+
+**The escape does not need E6 at all.** It fits at **0.40 mm**, the full P3V3
+outer-layer minimum - HEADER RESERVED was its only blocker, not width or clearance.
+The area covers about 2% of the reservation, admits +3V3 only, and admits only
+objects wholly inside it.
+
+Because `U3_21_ESCAPE` is a single-layer (B.Cu) area, a through via can never be
+"enclosed" by it, so **no via can ever use this exception** - confirmed by probe.
+The escape is planar B.Cu with zero vias, which is what we want.
+
+### Acceptance probes
+
+All on a scratch board; no probe copper reached the real board.
+
+| probe | expected | result |
+|---|---|---|
+| A  +3V3 wholly enclosed, crossing HEADER RESERVED | PASS | **0 violations** |
+| B  +3V3 in HEADER RESERVED outside the area | FAIL | items_not_allowed |
+| C  non-+3V3 inside the area crossing HEADER RESERVED | FAIL | items_not_allowed |
+| D1 +3V3 via enclosed by the area | - | items_not_allowed (single-layer area; vias can never qualify) |
+| D2 +3V3 via in HEADER RESERVED outside the area | FAIL | items_not_allowed |
+| **E  LEAK: one track starts inside the area, continues through HEADER RESERVED outside it** | **FAIL** | **items_not_allowed** |
+| F  0.15 mm +3V3 enclosed by E6_R2_1 at its measured 0.100 mm | PASS | 0 violations |
+| G  same at 0.090 mm | FAIL | cites `E6_R2_1: measured local +3V3 clearance 0.100 mm` |
+| H  0.15 mm at 0.100 mm that clips E6_R2_1 and runs outside | FAIL | falls back to netclass P3V3 0.200 mm |
+| I  0.15 mm +3V3 outside every pocket | FAIL | `P3V3 minimum width on the outer layers` 0.400 mm |
+
+Probe E is the one that matters: had it passed, the exception would have leaked and
+the implementation would have been wrong.
+
+DRC 0 electrical errors before and after; ratsnest 384 unchanged; 638 tracks,
+166 vias, 776 pads, 188 footprints all bit-identical; every zone except the two
+intended edits bit-identical.

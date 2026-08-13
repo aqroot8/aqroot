@@ -43054,8 +43054,8 @@
 		)
 		(min_thickness 0.25)
 		(keepout
-			(tracks not_allowed)
-			(vias not_allowed)
+			(tracks allowed)
+			(vias allowed)
 			(pads allowed)
 			(copperpour not_allowed)
 			(footprints allowed)
@@ -45781,7 +45781,7 @@
 		)
 		(polygon
 			(pts
-				(xy 23.075 7) (xy 24.175 7) (xy 24.175 10.525) (xy 23.075 10.525)
+				(xy 23.125 7.75) (xy 26.1 7.75) (xy 26.1 9.9) (xy 23.125 9.9)
 			)
 		)
 	)

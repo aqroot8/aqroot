@@ -559,6 +559,95 @@
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
 	(condition "A.hasNetclass('P3V3') && A.intersectsArea('U3_21_ESCAPE')"))
 
-(rule "E6_U9_1: local +3V3 clearance 0.10 mm - VERIFY-AT-FAB-LOCK"
-	(constraint clearance (min 0.10mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.intersectsArea('E6_U9_1')"))
+(rule "E6_U9_1: measured local +3V3 clearance 0.160 mm"
+	(constraint clearance (min 0.160mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_U9_1')"))
+
+# =====================================================================
+# 14. HEADER RESERVED - ENFORCEMENT CONVERTED FROM ZONE KEEPOUT TO RULE
+#
+# HEADER RESERVED used to be enforced by the rule area's own keepout flags
+# (tracks not_allowed / vias not_allowed).  A zone keepout cannot carry a
+# net-conditional exception, so the track/via prohibition is re-imposed here
+# as a DRU rule with identical geometry (the same 'HEADER RESERVED' area,
+# x 18.5-55.5, y 0-8.5) and identical layer coverage - F.Cu, B.Cu and In2.Cu,
+# the layers the area is drawn on.  The zone still carries
+# copperpour not_allowed, so pour protection never lapsed, and pads stay
+# allowed, which is what lets the J5 land pattern live inside the reservation.
+# J5's own fanout exception is unchanged: it was never a track/via rule.
+#
+# The single exception is the CTO-approved U3.21 escape.  U3.21 is the
+# TCA9535PWR A0 address-strap input - TI SCPS201E table 5-1: "Address input 0.
+# Connect directly to VCC or ground" - so it must be tied to a rail and is not
+# NC-capable.  Its pocket is sealed by U3.20 and U3.22 at 0.250 mm, by
+# I2C_SCL_INT at 0.350 mm, and on the fourth side by this reservation at
+# 0.200 mm, so the only escape is a short hop north into the reservation and
+# back out into U3.24's +3V3 copper.
+#
+# CONTAINMENT: the exception uses enclosedByArea(), NOT intersectsArea().  A
+# track that merely clips U3_21_ESCAPE and then continues on through the
+# reservation is not enclosed by it, so it stays disallowed.  That is the
+# property which makes this exception leak-proof, and it is verified by an
+# explicit leak probe rather than assumed.
+# =====================================================================
+
+(rule "HEADER RESERVED: no tracks or vias, except the scoped U3.21 +3V3 escape"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.intersectsArea('HEADER RESERVED') && !(A.NetName == '+3V3' && A.enclosedByArea('U3_21_ESCAPE'))"))
+
+# ---------------------------------------------------------------------
+# 15. PER-PAD E6 CLEARANCES - MEASURED, NOT ASSUMED
+#
+# Fab locked to JLCPCB: 4-layer, 1.6 mm finished, 1 oz outer / 0.5 oz inner,
+# stackup JLC04161H-7628.  Published capability for multilayer at 1 oz is
+# 0.09 mm minimum track width and 0.09 mm minimum spacing (3.5 / 3.5 mil).
+# JLCPCB's own recommended production baseline is 4 mil (0.1016 mm), so the
+# Tier-B pockets below sit between JLCPCB's floor and its comfort figure and
+# should be treated as DFM-review items at fab submission.
+#
+# Every pocket carries its OWN measured clearance - no pad inherits another's.
+# Each figure is the largest clearance at which a 0.15 mm neck can still reach
+# the +3V3 tree, measured on the current board.  Width stays at the 0.15 mm
+# E6 floor from section 13.
+#
+# CONTAINMENT: these clearance rules use enclosedByArea(), so only a neck
+# lying wholly inside its own pocket gets the relief.  A track that merely
+# clips a pocket keeps the ordinary 0.20 mm netclass clearance.
+# ---------------------------------------------------------------------
+# E6_C18_1    C18.1   TIER A - measured 0.180 mm; JLCPCB gate n/a (Tier A)
+(rule "E6_C18_1: measured local +3V3 clearance 0.180 mm"
+	(constraint clearance (min 0.180mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_C18_1')"))
+
+# E6_J1_40    J1.40   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_40: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_40')"))
+
+# E6_J1_41    J1.41   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_41: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_41')"))
+
+# E6_J1_42    J1.42   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_42: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_42')"))
+
+# E6_R11_1    R11.1   TIER B - measured 0.140 mm; JLCPCB gate PASS (0.140 >= 0.09)
+(rule "E6_R11_1: measured local +3V3 clearance 0.140 mm"
+	(constraint clearance (min 0.140mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R11_1')"))
+
+# E6_R2_1     R2.1    TIER B - measured 0.100 mm; JLCPCB gate PASS (0.100 >= 0.09)
+(rule "E6_R2_1: measured local +3V3 clearance 0.100 mm"
+	(constraint clearance (min 0.100mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R2_1')"))
+
+# E6_R29_1    R29.1   TIER A - measured 0.160 mm; JLCPCB gate n/a (Tier A)
+(rule "E6_R29_1: measured local +3V3 clearance 0.160 mm"
+	(constraint clearance (min 0.160mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R29_1')"))
+
+# E6_U9_1     U9.1    TIER A - measured 0.160 mm; rule written above in section 13.
