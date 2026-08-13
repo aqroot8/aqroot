@@ -7608,3 +7608,132 @@ Staged infrastructure remaining: `BTN_HOME_N`, SX1262 ×5, CC1101 ×2, +3V3, and
 **SPI-B SHARED BUS: HARD-LOCKED COMPLETE**
 **U9 SIMULTANEOUS ESCAPES: PASS**
 **USB PRESERVED: YES**
+
+## SX1262 control routing pass 3A-1 — CS_N and BUSY closed, DIO1 deferred (2026-08-12)
+
+`SX1262_CS_N` and `SX1262_BUSY` are **complete**; each is a single copper island holding every
+endpoint. Board ratsnest **424 → 419**, DRC **0 electrical errors**. `SX1262_DIO1` is deliberately
+left unrouted — it has no legal escape from U1 and needs a placement ruling, not a router.
+
+| net | island | length | tracks | vias | layers |
+|---|---|---|---|---|---|
+| `SX1262_CS_N` | U1.10, U8.19, R27.2 | 175.930 mm | 17 | 2 | F.Cu 1, In2 12, B.Cu 4 |
+| `SX1262_BUSY` | U1.12, U8.14 | 195.126 mm | 19 | 4 | In2 12, B.Cu 7 |
+
+### The U1 belly corridor carries exactly two tracks, and that is the whole story
+
+Pass 3A reported the corridor under U1's north pad row as one track wide. That was wrong: it
+conflated a 0.600 mm *centre window* with a 0.600 mm *corridor*. The corridor is the 1.200 mm band
+between the pad row (y = 18.000) and the `BMI270_INT1_STRAP` B.Cu track (y = 19.200), and it holds
+**two** 0.20 mm tracks, at y = **18.300** and y = **18.700**, every clearance in the stack landing on
+exactly 0.2000 mm. A third at 19.100 fails against the strap track, which is immutable.
+
+Because every escape is a drop at the pad's own x followed by a westward run, and the pads order
+CS_N (18.920) < DIO1 (20.190) < BUSY (21.460) west to east, **depth must increase eastward** or a
+drop crosses a shallower lane. BUSY, the easternmost, is capped at y ≤ 18.700 by the strap. Two
+distinct depths exist above that cap, so **only two of the three nets can leave U1 at all**. This is
+geometry, not effort: it was proved four independent ways and it is why DIO1 is deferred.
+
+CS_N therefore takes the shallow western lane and BUSY the deep eastern one:
+
+| net | drop | corridor | transition via | via margin |
+|---|---|---|---|---|
+| CS_N | x = 18.920 | y = **18.300** | **(15.800, 19.500)** | 0.500 mm |
+| BUSY | x = 21.460 | y = **18.700** | **(16.600, 19.500)** | 0.500 mm |
+
+Both vias sit in pocket P2 (x 15.400–16.900, y 19.200–19.800), the only belly pocket that holds two
+0.60 mm vias. They are 0.800 mm apart — exactly the minimum — and P2 is now fully consumed.
+
+### Two different corridors east, because the I2C fan-out only has one door
+
+The two nets do **not** run parallel. The `I2C_SDA_INT`/`I2C_SCL_INT` fan-out forms a closed barrier
+from x = 17.5 to x = 33.8 between y = 9.4 and y = 11.6 (horizontals at y = 10.875, 11.350 and 11.600,
+closed at its east end by an In2 via and stub at x = 33.800). The only opening is north of that
+stub, a window of y between 8.80 and 9.00 — **0.200 mm, one track**. So:
+
+**BUSY takes the far-north corridor.** North on In2 at x = 16.600 to y = 10.000, east to x = 32.900,
+a jog to y = **8.750** across x 33.300 → 34.600 to clear the `I2C_SCL_INT` via at (33.800, 9.400) by
+0.350 mm, then east at y = 10.000 to x = 61.000 and straight south to y = 74.500. The jog keeps
+0.150 mm outside HEADER RESERVED (x 18.5–55.5, y 0–8.5) and does not intersect it.
+
+**CS_N takes the southern route.** West on In2 at y = 18.500 to x = 12.000 — the free channel between
+`SPI_B_SCK`'s In2 descent at x = 11.300 and `SPI_B_MOSI`'s at x = 13.000 — then straight south to
+y = 82.250, the only latitude clearing both the `SPI_A_MISO` via row at y = 81.500 and `DISP_RST_N`
+at y = 82.800. It steps north to y = 80.700 at x = 44.500, threading the 0.250 mm window between the
+`DISP_BL_CTL` via (43.800, 81.300) and the `DISP_RST_N` via (45.250, 81.400), then runs east at
+y = 80.700 — north of the J4 battery-connector pads, which wall x 57.1–60.9 on every layer between
+y 81.625 and 83.375.
+
+### Getting past U14 and BQ25185
+
+Both nets have to cross the two In2 walls at y = 76.0 (`I2C_SCL_INT`) and y = 77.0 (`I2C_SDA_INT`),
+which span x 29.9 → 66.9. CS_N does not — at x = 12.000 both are absent. BUSY hops to B.Cu, and the
+transition had to move west to **x = 60.200** because the `BQ25185_SYS` F.Cu rail at x = 61.200 is
+0.60 mm wide and forbids any via within 0.800 mm for y 32.5 → 75.0. From there BUSY runs B.Cu south
+at x = 61.000 (0.300 mm clear of J4.2) to y = 83.000 and east to x = 64.000, where it drops to In2 —
+0.781 mm clear of TP6.1, whose F.Cu pad occupies x 64.000–65.000, y 84.000–85.000 and blocks the
+obvious via site one millimetre north.
+
+### E5 crossings and the U8 side
+
+The staged In2 crossings at **x = 62.000** (CS_N) and **x = 64.000** (BUSY), y 85.000 → 117.000, are
+consumed exactly in place — not moved, resized, duplicated or swapped. `SX1262_DIO1`'s x = 63.000
+crossing is untouched between them and still has 0.700 mm of clearance to the nearest new copper.
+
+At U8 both nets follow the pattern SPI-B established: In2 south to the pad latitude, a short west
+step to x = 61.700, a via, then B.Cu west into the pad. `R27` is confirmed from the netlist as a
+pull-up (R27.1 = +3V3, R27.2 = `SX1262_CS_N`), so CS_N **tees** to it on F.Cu from the same via —
+1.286 mm clear — and is not routed through it in series.
+
+### Measured clearances
+
+| measurement | value |
+|---|---|
+| `SX1262_CS_N` minimum, whole net | **0.20000 mm** (to `SX1262_BUSY` B.Cu in the belly) |
+| `SX1262_BUSY` minimum, whole net | **0.20000 mm** (to `SX1262_CS_N` B.Cu in the belly) |
+| CS_N to BUSY, track to track | **0.20000 mm** |
+| CS_N to BUSY, via to via | **0.20000 mm** (the P2 pair, 0.800 mm centres) |
+| tightest clearance outside the belly | **0.24077 mm** (BUSY's jog to the `I2C_SCL_INT` via) |
+
+Every applicable clearance is at or above the 0.200 mm rule. Both nets are netclass `E5_CROSSING`
+(0.20 track, 0.20 clearance, 0.60/0.30 via), which the DRU authorises inside the E5 corridors.
+
+### DIO1 access after the pass
+
+Re-audited on the routed board. What survives: pocket **P1 (x 18.800–19.000, y = 19.300) is still a
+legal via site** at 0.200 mm; all three descent lanes are still clear (**x = 24.900 jogged 0.400 mm,
+x = 25.900 0.400 mm, x = 26.400 0.500 mm**); the x = 63.000 crossing, the U8.13 B.Cu escape
+(0.820 mm) and its via site at (61.700, 134.730) (0.450 mm) are all intact.
+
+What is gone: **P2 is fully consumed** (0 legal via sites left in the belly between x 13.0 and 19.4)
+and both corridor latitudes are occupied. DIO1 can still drop from U1.11 to y = 18.300 at
+x 19.740–20.640 with 0.200 mm, but that stub can only run east into the dead end closed by
+`USB_D_MCU_N`'s B.Cu stub at x = 22.605.
+
+**Nothing DIO1 could have used was taken.** DIO1 was already unroutable before this pass — reaching
+P2 required a corridor latitude, and it could never hold both. Its solution space is unchanged: it
+still needs a ruling on the `BMI270_INT1_STRAP` via or track, or a U1 move. Failing that, the
+electrical fallback stands — DIO1 is the SX1262's IRQ line and can be substituted by polling
+`GetIrqStatus()` over SPI, at a cost in latency and idle power. `BUSY` is a pin-only handshake and
+cannot be polled, which is why it, not DIO1, was routed.
+
+### Preservation
+
+Against `7010eb8`: tracks **459 → 493**, vias **123 → 129**, **0 objects removed**, all 40 additions
+on `/SX1262_CS_N` or `/SX1262_BUSY`. Pads 776 and every pad coordinate identical, so **188
+footprints, 0 moved**. SPI-B, USB, `BMI270_INT1_STRAP`, I2C, display/control, power and U9 grounding
+all still single islands with unchanged object counts.
+
+RF and E5: **0 new vias in the 915 band, 0 in the 433 band, 0 new B.Cu transit of either band**, no
+new E5 lanes, NFC RESERVED / HEADER RESERVED / WROOM ANTENNA all clear of new copper, no
+`NFC_DEFERRED` copper.
+
+DRC **0 electrical errors**; warnings 249 → **247**. Board ratsnest **424 → 419**. ERC **116 / 58
+excluded / 58 live**, unchanged. Schematic parity **261, delta 0**. Schematic and `.kicad_dru`
+untouched. The six cosmetic `silk_over_copper` warnings from the U9 move remain, still logged for
+pre-fab tidy-up.
+
+**SX1262_CS_N: PASS**
+**SX1262_BUSY: PASS**
+**SX1262 TWO-NET PASS: PASS**
+**SX1262_DIO1 ACCESS PRESERVED: YES**

@@ -336,6 +336,22 @@ They are the outstanding firmware debt between the current code and the Beta des
       Measured together, the three U9 escapes keep SCK↔MOSI 0.3350, MOSI↔MISO 0.2250, SCK↔MISO
       0.8000 mm, and MOSI holds **0.2011 mm** to U9.32 exactly as predicted. All three E5 crossings
       (x 59 / 60 / 61) consumed in place. See [[05 - Design Decisions Log]].
+- [x] ~~Route the U1-origin SX1262 controls~~ — **DONE 2026-08-12 (pass 3A-1). `SX1262_CS_N` and
+      `SX1262_BUSY` complete**, each a single island (CS_N: U1.10 + U8.19 + R27.2, 175.930 mm,
+      2 vias; BUSY: U1.12 + U8.14, 195.126 mm, 4 vias). Board ratsnest 424 → 419; DRC 0 electrical
+      errors. R27 confirmed a **pull-up tee**, not a series element. E5 crossings x 62.000 and
+      x 64.000 consumed in place. See [[05 - Design Decisions Log]].
+- [ ] **CTO RULING NEEDED: `SX1262_DIO1` has no legal escape from U1.** The belly corridor between
+      U1's north pad row (y 18.000) and the `BMI270_INT1_STRAP` B.Cu track (y 19.200) is 1.200 mm
+      and holds exactly **two** 0.20 mm tracks (y 18.300 and 18.700), every clearance landing on
+      exactly 0.2000 mm. Escape depth must increase eastward or a drop crosses a shallower lane, and
+      BUSY — the easternmost pad — is capped at y 18.700 by the strap. So **two of the three nets can
+      leave U1, never three.** CS_N and BUSY were routed; DIO1 was left unrouted deliberately and its
+      solution space is intact (P1 via pocket, all three descent lanes, the x 63.000 crossing and the
+      whole U8 side still clear). Options: (a) authorise moving the `BMI270_INT1_STRAP` via or track,
+      (b) authorise a U1 placement move, or (c) accept DIO1 unrouted for Beta and poll
+      `GetIrqStatus()` over SPI. `BUSY` is a pin-only handshake and cannot be polled, which is why
+      DIO1 rather than BUSY is the deferred net.
 - [ ] **Pre-fab silk tidy-up: C50 and C52 reference-designator text is clipped by U9's south pads**
       (6 cosmetic `silk_over_copper` warnings introduced by the 0.250 mm U9 move). No electrical
       content; nudge the silk text when the board is otherwise final.
