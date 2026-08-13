@@ -28214,7 +28214,7 @@
 			(at -8.75 -7.44 270)
 			(size 1.5 0.9)
 			(layers "B.Cu" "B.Mask" "B.Paste")
-			(net "/SX1262_DIO1")
+			(net "/NFC_IRQ")
 			(uuid "ecb60cf1-badd-42f8-af2b-5b82e35af3be")
 		)
 		(pad "12" smd rect
@@ -28354,7 +28354,7 @@
 			(at 8.75 -6.17 270)
 			(size 1.5 0.9)
 			(layers "B.Cu" "B.Mask" "B.Paste")
-			(net "/NFC_IRQ")
+			(net "/SX1262_DIO1")
 			(uuid "044ebec8-7c2b-4b96-9456-b2ba2c098859")
 		)
 		(pad "32" smd rect

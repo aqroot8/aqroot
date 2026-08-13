@@ -2328,7 +2328,7 @@
 		)
 		(uuid "ec195724-7d5e-4b19-b068-1b6688656b0a")
 	)
-	(hierarchical_label "SX1262_DIO1"
+	(hierarchical_label "NFC_IRQ"
 		(shape input)
 		(at 149.86 81.28 0)
 		(effects
@@ -2394,7 +2394,7 @@
 		)
 		(uuid "3961fe7b-3751-4d05-a02f-18e03bfefb8a")
 	)
-	(hierarchical_label "NFC_IRQ"
+	(hierarchical_label "SX1262_DIO1"
 		(shape input)
 		(at 149.86 99.06 0)
 		(effects

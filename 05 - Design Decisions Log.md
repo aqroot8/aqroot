@@ -7737,3 +7737,108 @@ pre-fab tidy-up.
 **SX1262_BUSY: PASS**
 **SX1262 TWO-NET PASS: PASS**
 **SX1262_DIO1 ACCESS PRESERVED: YES**
+
+## SX1262_DIO1 moved to IO38; NFC_IRQ takes IO18 — pin swap only, zero copper moved (2026-08-13)
+
+`SX1262_DIO1` now leaves the MCU on **U1.31 / IO38** instead of U1.11 / IO18. `NFC_IRQ` takes
+U1.11 / IO18 in exchange. **No copper moved: 0 objects added, 0 removed, 493 tracks and 129 vias
+before and after.** Only two pad net assignments changed.
+
+### Why a pin swap was the answer
+
+Four successive placement-preserving analyses proved DIO1 could not escape U1.11:
+
+- the U1 belly corridor between the north pad row (y 18.000) and the `BMI270_INT1_STRAP` B.Cu run
+  (y 19.200) is 1.200 mm and holds exactly **two** 0.20 mm tracks, both consumed by `SX1262_CS_N`
+  and `SX1262_BUSY`;
+- `USB_D_MCU_P` F.Cu (y 17.950–18.200) and `USB_D_MCU_N` F.Cu (y 18.400–18.650) sweep the whole
+  local x-range, so any through-via needs y ≥ 19.150 — south of both committed lanes;
+- deleting the **entire** strap net still left U1.11 with **0 reachable via sites** and P1
+  unreachable;
+- the proposed four-depth stack (CS_N 18.300 / DIO1 18.700 / BUSY 19.100 / STRAP 19.500) is
+  geometrically legal as a stack, but BUSY at 19.100 **destroys P1** and DIO1 still ends with
+  0 reachable via sites.
+
+U1.11's trap is a property of the **pad**, not the net, so swapping DIO1 with CS_N or BUSY would
+only strand a more critical signal. A flood test of candidate host pads settled it:
+
+| pad | GPIO | reachable B.Cu cells | legal via sites | best margin |
+|---|---|---|---|---|
+| **31** | **IO38** | 278,225 | **31,369** | **1.1000 mm** |
+| 26 | IO45 | 86,549 | 35,225 | 0.7333 mm — but VDD_SPI strapping pin |
+| 9 | IO16 | 51,459 | 296 | 0.2489 mm |
+| 16 | IO46 | 144,604 | **0** | trapped as well, by `DISP_CS_N` B.Cu and U9's via field |
+| 11 | IO18 | 30,160 | **0** | the trap |
+
+IO38 is a plain GPIO with no strapping role and 1.100 mm of via margin on the south row, facing
+open board on the correct side for the x = 63.000 E5 lane. IO45 and IO46 were rejected: both are
+strapping pins the pin map reserves as test pads, and IO46's pad is trapped anyway.
+
+### What changed
+
+Two hierarchical labels in `02_mcu_core.kicad_sch`, both already `(shape input)`, swapped in place:
+
+| position | drives U1 pin | was | now |
+|---|---|---|---|
+| (149.86, 81.28) | pad 11 / IO18 | `SX1262_DIO1` | **`NFC_IRQ`** |
+| (149.86, 99.06) | pad 31 / IO38 | `NFC_IRQ` | **`SX1262_DIO1`** |
+
+and the two matching pad net assignments in the board:
+
+```
+U1.11  /SX1262_DIO1 -> /NFC_IRQ
+U1.31  /NFC_IRQ     -> /SX1262_DIO1
+```
+
+Nothing else. No resistor, test point or topology change; no component moved; no other pin touched.
+The schematic file length is byte-for-byte unchanged (78,833 bytes) and so is the board's
+(1,087,570 bytes) — the swapped strings are the same total length.
+
+### Lane and pull-up semantics are net-owned, so they did not move
+
+`SX1262_CS_N` keeps **E5 x = 62.000 → U8.19** and its **R27 pull-up** (R27.1 = +3V3,
+R27.2 = CS_N) — still one island over R27.2, U1.10, U8.19. `SX1262_BUSY` keeps
+**x = 64.000 → U8.14**, still one island over U1.12 and U8.14. `SX1262_DIO1` keeps
+**x = 63.000 → U8.13**; only its MCU-side endpoint moved. No crossing was swapped, moved,
+resized or duplicated.
+
+### NFC_IRQ — INTENTIONAL, NOT CONNECTED IN BETA
+
+`NFC_IRQ` now lands on U1.11, which has no legal escape. **This is deliberate and accepted.** The
+hardware interrupt is deferred to the NFC-enablement respin. Beta NFC scope is **polling-based
+digital bring-up only**, and the ST25R3916 interrupt-status registers must be polled instead.
+
+**Beta bring-up must verify ST25R3916 interrupt-status polling** — without the IRQ line there is no
+edge notification, so the driver has to poll the interrupt-status registers and the latency and CPU
+cost of that path need measuring on real hardware before the respin scope is fixed.
+
+This is the second entry in the intentional-unrouted ledger, alongside the C21/C22 DNP data pins.
+It is **not** a routing defect and must not be counted as one: board ratsnest stays at **419**, of
+which 1 item is `NFC_IRQ` (U1.11 ↔ U9.27) and 2 are `SX1262_DIO1` (U1.31 ↔ crossing ↔ U8.13),
+the latter to be closed by the DIO1 routing pass.
+
+### Firmware
+
+`Firmware/src/config.h` is an explicit placeholder — its header says every pin "must be reconciled
+with the final PCB pinout once the board is routed" and it currently carries `RADIO_DIO1 38`,
+`RADIO_NSS 8`, `RADIO_BUSY 39`, `I2C_SDA 17`, none of which match the schematic. So this swap costs
+nothing incremental in firmware. Recorded as TODO: **`RADIO_DIO1` → GPIO38**, and the Beta NFC path
+must poll ST25R3916 interrupt status. Full Beta pin-map reconciliation remains outstanding.
+
+### Preservation
+
+Tracks **493 → 493**, vias **129 → 129**, **0 removed, 0 added**, pads 776 with every coordinate
+identical, **188 footprints, 0 moved**. `USB_D_MCU_P` 24, `USB_D_MCU_N` 20, `SPI_B_SCK` 32,
+`SPI_B_MOSI` 31, `SPI_B_MISO` 31, `SX1262_CS_N` 19, `SX1262_BUSY` 23, `BMI270_INT1_STRAP` 7,
+`I2C_SDA_INT` 32, `I2C_SCL_INT` 36 — every count unchanged. U9 grounding, RF rules, `.kicad_dru`
+and `.kicad_pro` untouched.
+
+DRC **0 electrical errors**, 247 warnings, board ratsnest **419** — all identical to `e12f49d`.
+Schematic parity **261, delta 0**, with **zero** parity entries mentioning either swapped net, which
+is the proof that board and schematic agree on the new mapping. ERC **116 total / 58 excluded /
+58 live**, unchanged.
+
+**PIN SWAP: PASS**
+**NFC_IRQ ZERO-COPPER BEFORE SWAP: VERIFIED (0 tracks, 0 vias, 0 zones)**
+**PCB COPPER PRESERVED: YES**
+**READY FOR DIO1 ROUTING FROM IO38: YES**
