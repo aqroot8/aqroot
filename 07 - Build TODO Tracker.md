@@ -436,3 +436,16 @@ They are the outstanding firmware debt between the current code and the Beta des
 - [ ] Decide how many prototype units to build for reviewer seeding
 - [ ] Prepare press kit for YouTuber outreach (see Kickstarter and Review Strategy note)
 - [ ] Set Kickstarter launch date and reviewer embargo date
+
+
+## +3V3 Pass B blockers (opened by the E6 rules pass)
+- [ ] **Clearance decision for the seven standard E6 pads** — 0.15 mm width alone does not
+      open C18.1, J1.40, J1.41, J1.42, R11.1, R2.1 or R29.1; they are trapped by clearance.
+      Either extend a reduced clearance to those pockets or accept the pads as unfed.
+- [ ] **U3.21 pin-function verification** — confirm whether U3.21 is actually a required
+      power pin before spending a HEADER RESERVED notch on it.
+- [ ] **HEADER RESERVED scoped notch** — required for any U3.21 escape; a keepout cannot be
+      overridden by a DRU rule. Needs explicit authorisation to edit the existing zone.
+- [ ] **Fab spacing confirmation for E6_U9_1** — no copper may use the 0.10 mm clearance
+      until the selected 4-layer / 1 oz outer process publishes spacing <= 0.10 mm.
+      Tagged VERIFY-AT-FAB-LOCK.

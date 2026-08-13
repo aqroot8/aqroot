@@ -516,3 +516,49 @@
 	(constraint hole_size (min 0.25mm) (max 0.55mm))
 	(condition "A.Type == 'Via' && A.NetName == '/01_POWER_TREE/USB_VBUS_RAW'"))
 
+
+# =====================================================================
+# 13. E6 +3V3 PAD ESCAPE  and  U3_21_ESCAPE
+#
+# CTO-approved.  These are PAD-SCOPED escape pockets, not a netclass
+# relaxation.  Each exists only so a +3V3 feed can enter one specific
+# trapped pad.  They are NOT transit corridors, they do NOT authorise
+# 0.15 mm trunks, and they do NOT relax clearance generally.
+#
+#   standard E6 pockets  width >= 0.15 mm, clearance UNCHANGED at 0.20 mm
+#   E6_U9_1              width >= 0.15 mm, clearance 0.10 mm
+#                        VERIFY-AT-FAB-LOCK - no copper may use the
+#                        0.10 mm figure until the selected 4-layer, 1 oz
+#                        outer process publishes a spacing capability
+#                        <= 0.10 mm.  The rule exists; the permission
+#                        does not, until that is confirmed.
+#   U3_21_ESCAPE         width >= 0.15 mm, clearance UNCHANGED at 0.20 mm
+#
+# PROCEDURAL, DELIBERATELY NOT ENCODED (reviewed geometrically at routing
+# time - KiCad's net-length constraint is the wrong instrument for this):
+#   - reduced-width neck <= 2.0 mm
+#   - single-pad feed only; no aggregate current; no transit
+#   - widen to >= 0.30 mm, preferably 0.60 mm, immediately after escaping
+#
+# SCOPE WARNING: KiCad evaluates intersectsArea per OBJECT, so a track
+# that merely clips one of these areas inherits the relaxed rule along
+# its WHOLE length.  Every E6 neck must therefore be written as its own
+# short segment, never as part of a longer run.
+#
+# These rules are LAST in the file on purpose.  KiCad applies the last
+# matching rule, so inside these areas they must beat both the P3V3
+# outer-layer width floor (section 10) and the land-pattern block that
+# closes the PRECEDENCE TAIL.  Moving them earlier silently disables them.
+# =====================================================================
+
+(rule "E6: +3V3 pad-escape neck width"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_C18_1') || A.intersectsArea('E6_J1_40') || A.intersectsArea('E6_J1_41') || A.intersectsArea('E6_J1_42') || A.intersectsArea('E6_R11_1') || A.intersectsArea('E6_R2_1') || A.intersectsArea('E6_R29_1') || A.intersectsArea('E6_U9_1'))"))
+
+(rule "U3_21_ESCAPE: +3V3 escape neck width"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.intersectsArea('U3_21_ESCAPE')"))
+
+(rule "E6_U9_1: local +3V3 clearance 0.10 mm - VERIFY-AT-FAB-LOCK"
+	(constraint clearance (min 0.10mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.intersectsArea('E6_U9_1')"))

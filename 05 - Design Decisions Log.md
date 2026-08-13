@@ -8099,3 +8099,65 @@ Staged lanes remaining: `SX1262_RST_N` (x 65), `CC1101_CS_N` (x 67), `CC1101_GDO
 
 **SX1262_RXEN: PASS**
 **SX1262_RST_N: DEFERRED — eastern half proven, western half needs a focused pass**
+
+
+---
+
+## E6_3V3_PAD_ESCAPE and U3_21_ESCAPE — DRU rule areas (rules-only pass)
+
+`+3V3` was routed last, so on four fine-pitch parts its pads are now enclosed by
+neighbouring escapes that were routed first. This pass adds the CTO-approved rule
+infrastructure for those escapes. **No copper was routed and no placement moved.**
+
+**E6 is pad-scoped, not a netclass relaxation.** It is not a transit corridor, it does
+not authorise 0.15 mm trunks, and it does not relax clearance generally.
+
+| area | pad | layer | width | clearance |
+|---|---|---|---|---|
+| `E6_C18_1` `E6_J1_40` `E6_J1_41` `E6_J1_42` `E6_R11_1` `E6_R2_1` `E6_R29_1` | seven standard pads | F/B.Cu | >= 0.15 mm | **0.20 mm, UNCHANGED** |
+| `E6_U9_1` | U9.1 | F.Cu | >= 0.15 mm | **0.10 mm — VERIFY-AT-FAB-LOCK** |
+| `U3_21_ESCAPE` | U3.21 | B.Cu | >= 0.15 mm | **0.20 mm, UNCHANGED** |
+
+The 2.0 mm reduced-neck cap, the single-pad-feed rule and the "no aggregate current"
+rule are **procedural** and reviewed geometrically at routing time; KiCad's net-length
+constraint is the wrong instrument and was deliberately not used. Every neck must widen
+to >= 0.30 mm, preferably 0.60 mm, immediately after the escape.
+
+**Board Setup floors were already sufficient and were NOT changed**: minimum track width
+0.15 mm, minimum clearance 0.0 mm. These are DRC floors only — they grant no permission
+for copper outside the named areas; netclass and custom rules continue to govern.
+
+**U9.1 copper is NOT authorised yet.** The 0.10 mm rule exists so the geometry can be
+planned, but no copper may use it until the selected 4-layer, 1 oz outer process
+publishes a spacing capability <= 0.10 mm.
+
+### Two findings that change what Pass B can achieve
+
+**1. The standard E6 rule does not, by itself, unblock any of its seven pads.** Those
+pads are trapped by *clearance*, not width: a pocket needs `w + 2 x clearance` of room,
+so with clearance held at 0.20 mm a pad needs a 0.55 mm gap and narrowing the trace to
+0.15 mm barely helps. Re-flooding each pad at 0.15 mm / 0.20 mm leaves all seven still
+trapped. Only `E6_U9_1`, the one area that relaxes clearance, actually opens its pad.
+Closing C18.1, J1.40-42, R11.1, R2.1 and R29.1 needs a clearance decision, not a width one.
+
+**2. `U3_21_ESCAPE` grants width relief but not passage.** HEADER RESERVED's keepout is
+enforced by the zone itself, not by a custom rule, so no DRU rule can let +3V3 cross it.
+A probe track at 0.15 mm inside the area reports no width error but is still rejected as
+"Items not allowed". Routing U3.21 north will additionally require a scoped notch in the
+HEADER RESERVED polygon — an existing-zone edit, which this pass was not authorised to
+make. U3.21 also cannot be rescued by clearance alone: it stays trapped even at
+0.10 mm / 0.10 mm, boxed by HEADER RESERVED at 0.200 mm north, U3.20 and U3.22 at
+0.250 mm either side and I2C_SCL_INT at 0.350 mm south.
+
+Rule ordering is load-bearing: the three new rules sit **last** in `aqroot-Beta.kicad_dru`
+so they beat both the P3V3 outer-layer width floor and the land-pattern block that closes
+the PRECEDENCE TAIL. Verified by probe: 0.15 mm +3V3 outside any area still fails at
+0.40 mm; inside a standard area it passes on width but still fails at 0.15 mm clearance;
+inside `E6_U9_1` the measured escape passes cleanly at 0.15/0.10.
+
+**Scope warning recorded in the rules file:** KiCad evaluates `intersectsArea` per object,
+so a track that merely clips one of these areas inherits the relaxed rule along its whole
+length. Every E6 neck must be written as its own short segment.
+
+DRC 0 electrical errors before and after; 638 tracks, 166 vias, 776 pads and 188
+footprints all bit-identical; every pre-existing rule area unchanged.
