@@ -346,9 +346,12 @@ They are the outstanding firmware debt between the current code and the Beta des
       `NFC_IRQ` took U1.11/IO18 in exchange. Zero copper moved: 493 tracks / 129 vias before and
       after, only 2 pad net assignments changed. CS_N (E5 x62, R27 pull-up) and BUSY (E5 x64)
       untouched; DIO1 keeps E5 x63 → U8.13. See [[05 - Design Decisions Log]].
-- [ ] **Route `SX1262_DIO1` from U1.31 / IO38** — the last SX1262 control. E5 x63 crossing and the
-      U8.13 fanout are staged and proven; descent lanes x 24.900 (jogged) / 25.900 / 26.400 remain
-      free. Not yet attempted from the new pad.
+- [x] ~~Route SX1262_DIO1 from U1.31 / IO38~~ — **DONE 2026-08-13. SX1262 U1-ORIGIN CONTROL BLOCK
+      HARD-LOCKED COMPLETE.** One island over U1.31 and U8.13, 148.407 mm, 14 tracks, 5 vias
+      (B.Cu 7 / In2 5 / F.Cu 2); minimum clearance 0.30000 mm copper across the whole net. The x63
+      E5 crossing is consumed. Board ratsnest 419 → 417; DRC 0 electrical errors. All three
+      SX1262 controls (CS_N x62, DIO1 x63, BUSY x64) are now closed.
+      See [[05 - Design Decisions Log]].
 - [ ] **`NFC_IRQ` — INTENTIONAL, NOT CONNECTED IN BETA.** It now sits on U1.11, the pad with no
       legal escape. Hardware IRQ is **deferred to the NFC-enablement respin**. Beta NFC scope is
       **polling-based digital bring-up only**. This is an intentional-unrouted ledger item, not a

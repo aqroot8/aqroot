@@ -7842,3 +7842,121 @@ is the proof that board and schematic agree on the new mapping. ERC **116 total 
 **NFC_IRQ ZERO-COPPER BEFORE SWAP: VERIFIED (0 tracks, 0 vias, 0 zones)**
 **PCB COPPER PRESERVED: YES**
 **READY FOR DIO1 ROUTING FROM IO38: YES**
+
+## SX1262_DIO1 routed from IO38 — the SX1262 U1-origin control block is complete (2026-08-13)
+
+`SX1262_DIO1` is **closed**: one copper island over **U1.31** and **U8.13**, ratsnest 0, DRC 0
+electrical errors. This is the third and last U1-origin SX1262 control. Board ratsnest **419 → 417**.
+
+| metric | value |
+|---|---|
+| length | **148.407 mm** |
+| tracks | 14 (13 new + the staged x63 crossing) |
+| vias | 5 |
+| layers | B.Cu 7, In2 5, F.Cu 2 |
+| minimum clearance, whole net | **0.30000 mm copper** (0.40000 centreline) |
+
+### The pin swap paid for itself immediately
+
+From U1.11 the net had **zero** reachable via sites under any placement-preserving change. From
+U1.31 it routed on the first attempt with **0.300 mm of copper clearance everywhere** — half again
+the 0.200 mm the CS_N and BUSY escapes had to accept, and with no zero-margin geometry anywhere in
+the net. The south row faces open board, so there is no belly corridor to fight over.
+
+### Route
+
+```
+B.Cu  (19.200, 35.000) → (19.200, 38.600)     drop out of U1.31, west of U1.30
+B.Cu  (19.200, 38.600) → (23.400, 38.600)     east under the U1 south row
+B.Cu  (23.400, 38.600) → (23.400, 39.000)
+via   (23.400, 39.000)   B.Cu → F.Cu                     0.300 mm
+F.Cu  (23.400, 39.000) → (28.000, 39.000)     hop the SD_CS_N / SPI_A / DISP_CS_N wall
+via   (28.000, 39.000)   F.Cu → B.Cu                     0.525 mm
+B.Cu  (28.000, 39.000) → (59.500, 39.000)     east, south of NFC RESERVED
+B.Cu  (59.500, 39.000) → (59.500, 78.000)     descent; crosses the I2C In2 walls on B.Cu
+via   (59.500, 78.000)   B.Cu → F.Cu                     0.450 mm
+F.Cu  (59.500, 78.000) → (63.400, 78.000)     past BAT_PROTECTED_P and BUSY's B.Cu
+via   (63.400, 78.000)   F.Cu → In2                      0.400 mm
+In2   (63.400, 78.000) → (63.400, 82.000) → (63.000, 83.000) → (63.000, 85.000)
+      [staged crossing (63.000, 85.000) → (63.000, 117.000) — CONSUMED]
+In2   (63.000, 117.000) → (63.000, 132.500)
+via   (63.000, 132.500)  In2 → B.Cu                      0.560 mm
+B.Cu  (63.000, 132.500) → (63.000, 134.730)   passes south of BUSY's U8 approach
+B.Cu  (63.000, 134.730) → (58.600, 134.730)   into U8.13
+```
+
+### Three walls, three different answers
+
+**The SPI_A / DISP_CS_N wall (x 23.7 → 27.4).** `SD_CS_N` (24.1), `SPI_A_MISO` (24.75),
+`SPI_A_SCK` (26.675) and `SPI_A_MOSI` (27.075) form an unbroken B.Cu palisade, and `DISP_CS_N`'s In2
+vertical at x 26.9–27.1 runs y 18.735 → 76.100 behind it, so **both** B.Cu and In2 are blocked. F.Cu
+is wide open there (0.305 mm at y = 39, and 0.95–3.19 mm further south), so a 4.6 mm F.Cu hop between
+two vias clears all five obstacles at once.
+
+**NFC RESERVED.** The keepout ends at y = 35, so everything from y ≈ 36 southward is free to cross
+x 28 → 54. In2 is clear from x 27.4 to 60.6 across the whole band y 35.6 → 50.0 (0.310 mm), and B.Cu
+from 27.5 to 66.0. B.Cu was chosen for the long eastward run because it also carries the descent
+without another transition.
+
+**The I2C In2 walls at y = 76.0 and y = 77.0.** `I2C_SCL_INT` (x 31.3–66.9) and `I2C_SDA_INT`
+(x 29.9–65.59) block In2 across the entire descent corridor. B.Cu at x = 59.500 is clear from
+y = 14.5 to 81.3, so the descent simply stays on B.Cu straight through both.
+
+The last obstacle is the `BAT_PROTECTED_P` cluster: a 0.80 mm via at (62.200, 80.400), a B.Cu
+vertical at x 61.9–62.5 (y 69.3–80.7) and a B.Cu horizontal at y 78.7–79.3 (x 61.9–69.3), with
+`SX1262_BUSY`'s own B.Cu descent at x = 61.000 immediately west. F.Cu is the only clear layer at that
+latitude, so the crossing runs F.Cu at y = 78.000 and drops to In2 at **x = 63.400** rather than
+63.000 — that 0.400 mm eastward offset lifts the via's clearance from 0.200 mm to **0.400 mm**, and
+a short In2 jog brings the net back onto the x = 63.000 lane before y = 84.
+
+### U8 side
+
+`SX1262_BUSY` already occupies In2 at x = 64.000 down to y = 133.460 and turns west there, directly
+across DIO1's path to U8.13 at y = 134.730. Rather than fight it, DIO1 stops its In2 descent at
+y = 132.500, drops to B.Cu, and passes **beneath** BUSY's approach — 1.000 mm clear of BUSY's via at
+(61.700, 133.460) and 0.860 mm from its In2 horizontal.
+
+### Clearances
+
+| pair | measured |
+|---|---|
+| DIO1 whole net, minimum | **0.30000 mm** (`SX1262_BUSY` via at (60.200, 74.500)) |
+| DIO1 ↔ `SX1262_BUSY` | **0.30000 mm** |
+| DIO1 ↔ `SX1262_CS_N` | **0.80000 mm** |
+| DIO1 ↔ `USB_D_MCU_P` | **5.43169 mm** |
+| DIO1 ↔ `USB_D_MCU_N` | **5.91793 mm** |
+| tightest via | 0.300 mm at (23.400, 39.000) to `WAKE_INT_N` In2 |
+
+### E5 and RF
+
+The **x = 63.000 crossing is consumed** — it no longer appears in the free-endpoint audit. CS_N keeps
+x = 62.000, BUSY keeps x = 64.000; nothing was moved, resized, duplicated or swapped, and no new
+crossing was created. **0 new vias in the 915 band, 0 in the 433 band, 0 new B.Cu transit of either
+band.** NFC RESERVED, HEADER RESERVED and WROOM ANTENNA all clear of new copper.
+
+Staged lanes still awaiting later nets: `SX1262_RST_N` (x 65), `SX1262_RXEN` (x 66), `CC1101_CS_N`
+(x 67), `CC1101_GDO0` (x 68), `BTN_HOME_N` (x 13.8), +3V3 (x 69.1), plus the pre-existing
+`BQ25185_SYS`, `LED_K` and `NFC_5V_PA_PENDING` ends. 17 free endpoints, none belonging to SPI-B,
+USB or any SX1262 control.
+
+### NFC_IRQ
+
+Still **0 tracks, 0 vias, 0 zones** and still 2 islands (U1.11, U9.27). Its single ratsnest item is
+the documented intentional-unrouted ledger entry — **INTENTIONAL, NOT CONNECTED IN BETA**, hardware
+IRQ deferred to the NFC-enablement respin, Beta NFC scope polling-only. Board ratsnest 417 is
+therefore the correct end state, not a defect.
+
+### Preservation
+
+Against `24b204e`: tracks **493 → 506**, vias **129 → 134**, **0 objects removed**, all 18 additions
+on `/SX1262_DIO1`. Pads 776 with every coordinate identical and **0 pad net assignments changed**, so
+**188 footprints, 0 moved**. `USB_D_MCU_P` 24, `USB_D_MCU_N` 20, `SPI_B_SCK` 32, `SPI_B_MOSI` 31,
+`SPI_B_MISO` 31, `SX1262_CS_N` 19, `SX1262_BUSY` 23, `BMI270_INT1_STRAP` 7, `I2C_SDA_INT` 32,
+`I2C_SCL_INT` 36, `NFC_IRQ` 0 — every count unchanged. Schematic, `.kicad_dru` and `.kicad_pro`
+untouched.
+
+DRC **0 electrical errors**; warnings 247 → **246**. Board ratsnest **419 → 417**. ERC
+**116 / 58 excluded / 58 live**, unchanged. Schematic parity **261, delta 0**.
+
+**SX1262_DIO1: PASS**
+**SX1262 U1-ORIGIN CONTROL BLOCK: HARD-LOCKED COMPLETE**
