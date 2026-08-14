@@ -9331,3 +9331,139 @@ pads still need Pass C, none of them requiring any E6 concession:
 
 Deferred items carried forward untouched: the R29.1 NFC-channel dependency, the
 banked (9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
+
+## 2026-08-14 - +3V3 PASS C: south-east radio tree and J2 west tree
+
+Ten ordinary pads, 37 segments, 6 vias, **every segment 0.60 mm**. The staged
+x69.100 crossing is now electrically consumed. Only J5.1 remains, deferred to
+Pass D under the standing J5 self-fanout exception.
+
+### x69.100 consumed in place, not rewritten
+
+The staged crossing was **not touched**. Verified identical including UUIDs before
+and after:
+
+| object | uuid | geometry |
+|---|---|---|
+| track | `a9a1f1c1` | In2.Cu (69.100, 86.000)-(69.100, 116.000) w 0.60 |
+| track | `84b0b5ea` | B.Cu (69.100, 116.000)-(69.100, 141.000) w 0.60 |
+| via | `a4127ae1` | (69.100, 86.000) 0.80 / 0.40 |
+| via | `07a407a2` | (69.100, 116.000) 0.80 / 0.40 |
+
+Pass C connected to its **endpoints**: a 25.938 mm 0.60 mm F.Cu feed from the
+source island south to the via at (69.100, 86.000), and branches off the B.Cu leg
+below y = 141. The crossing moved from a dangling island of 2 tracks + 2 vias to
+part of the U12.4/U12.5 source island.
+
+### Tree
+
+| branch | segments | vias | length | layers |
+|---|---|---|---|---|
+| north feed: source -> x69.100 north via | 9 | 0 | 25.938 mm | F.Cu |
+| U8 / C17 / R27 cluster | 7 | 2 | 15.124 mm | F.Cu + B.Cu |
+| U7 / C16 / R28 cluster | 14 | 3 | 26.820 mm | F.Cu + B.Cu |
+| J2 / C14 / C15 / R25 west tree | 7 | 1 | 45.488 mm | F.Cu + B.Cu |
+| **total** | **37** | **6** | **113.371 mm** | |
+
+Vias added, all 0.80 / 0.40 POWER geometry: (68.800, 127.850), (69.350, 134.150),
+(68.800, 140.150), (64.550, 140.950), (58.700, 141.050), (16.550, 151.050).
+
+**No sub-0.40 copper anywhere in Pass C**, no E6 area used, no clearance relief.
+
+### Local decoupling topology
+
+Each radio supply pad is fed by a short local fork rather than a long feeder that
+passes through the device to reach its capacitor:
+
+* **U8.9 / C17.1** - the trunk drops through the via at (69.350, 134.150) and
+  forks locally: 1.20 mm and 2.12 mm B.Cu to U8.9, and a 0.92 mm F.Cu stub to
+  C17.1 off the same node. Cap and supply pin share the fork, neither is in series
+  with the other.
+* **R27.1** - 1.31 mm F.Cu stub off the trunk.
+* **U7.9 / C16.1** - the via at (68.800, 140.150) feeds a short B.Cu fan
+  (1.20 / 0.53 / 0.28 / 0.16 mm) into U7.9, with C16.1 tapped off the same local
+  node.
+* **R28.1** - 2.09 mm F.Cu stub.
+
+### IR / topology
+
+0.60 mm on 1 oz outer copper is ~0.82 mOhm/mm; the In2 leg of the crossing is
+0.5 oz, so ~1.64 mOhm/mm.
+
+| path | series elements | approx DC |
+|---|---|---|
+| source -> U8.9 | 25.9 mm feed + crossing (30 mm In2 + 25 mm B.Cu) + 3.3 mm branch | **~93 mOhm** |
+| source -> U7.9 | 25.9 mm feed + crossing + 8.8 mm branch | **~98 mOhm** |
+| source -> J2.4 | 25.9 mm feed + crossing + 38.5 mm west trunk | **~122 mOhm** |
+
+**The dominant element is the In2 leg of the x69.100 crossing** - 30 mm of 0.60 mm
+on 0.5 oz inner copper, ~49 mOhm, more than the whole north feed. That is by
+design: the E5 rule fixes that crossing at 0.50-1.00 mm and it is already at
+0.60 mm. At the ~305 mA design current for everything south of the band this is
+~15 mV, which is acceptable for Beta. No other bottleneck was found; the west
+trunk to J2 is long but only feeds a microSD socket and its decoupling.
+
+### RF band discipline
+
+Pass-C copper inside either band: **zero**.
+
+| audit | result |
+|---|---|
+| 915 band F.Cu additions | **0** |
+| 915 band B.Cu additions | **0** |
+| 915 band In2.Cu additions | **0** (the pre-existing authorised crossing is unchanged) |
+| 915 band new vias | **0** |
+| 433 band additions, any layer | **0** |
+| NFC RESERVED | **0** |
+| HEADER RESERVED | **0** |
+| WROOM antenna keepout | **0** |
+| In1.Cu tracks board-wide | **0** - the GND reference is still a pure plane |
+
+Both crossing vias remain outside the band at y = 86.000 and y = 116.000, exactly
+as staged. No second power crossing was created.
+
+### Writer-prefix defect, caught and corrected
+
+The first live write used prefix `pc61b840`, which is **not valid hexadecimal**
+('p'), so KiCad silently discarded those UUIDs and assigned random ones on save.
+Preservation was unaffected - 37 tracks and 6 vias added, none removed, all locked
+copper byte-identical - but Pass C would have lost the per-pass traceability every
+prior pass relies on. The write was reverted with `git checkout`, the board
+verified back to the B5 sha `00fe09f7a6df6e06`, and rewritten with **`c0de1a70`**.
+All 43 objects now carry it and survived the refill/save.
+
+**Standing note for future passes: the writer prefix must be 8 hex digits.**
+`b3f7c210`, `b4a91d30`, `b5e33c70` and `c0de1a70` are valid; anything containing
+a non-hex letter is silently dropped by KiCad.
+
+### Verification
+
+Complete-set candidate DRC **0 violations** before any live write. After the write
+DRC 0 with `--refill-zones`, and 0 again on the saved board.
+
+An earlier candidate set carried 11 then 2 violations, all of them
+`VBUS_CHG routed clearance` at 0.20-0.24 mm against the 0.25 mm requirement. The
+offline model had been applying the global 0.20 mm everywhere and ignoring the
+DRU section-10/11 **elevated per-netclass routed clearances** (LED_BOOST 0.30,
+BAT_MAIN 0.30, SWITCH_NODE 0.30, SYS_MAIN 0.25, VBUS_CHG 0.25, NFC_5V_PA 0.25).
+The model now resolves each neighbour's netclass from the project patterns and
+raises the requirement accordingly, for **tracks and vias** - the rule excludes
+only pads.
+
+| quantity | before | after |
+|---|---|---|
+| track segments | 846 | 883 (+37, 0 removed) |
+| vias | 181 | 187 (+6, 0 removed) |
+| board ratsnest | 348 | 337 |
+| +3V3 ratsnest entries | 12 | **1** |
+| +3V3 islands | 13 | **2** |
+| source-island pads | 65 | 75 |
+
+All ten targets on the U12.4/U12.5 island. **B3 (112+5), B4 (7+0) and B5 (31+1)
+identical including UUIDs**; every pre-existing track and via unchanged including
+UUIDs; 776 pads identical; 188 footprints, 0 moved; zero zone outline differences;
+the `.kicad_dru` untouched. NFC_IRQ 0/0/0, no NFC_DEFERRED copper. J5.1 left
+unrouted.
+
+The R29.1 NFC-channel dependency, the banked (9.050, 19.950) via and the 0.300 mm
+segment at (65.500-66.000, 52.400) are all carried forward untouched.
