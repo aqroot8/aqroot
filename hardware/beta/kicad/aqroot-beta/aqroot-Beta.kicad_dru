@@ -768,16 +768,26 @@
 #   These are different metrics.  The 2.0 mm cap does NOT apply to
 #   total narrow-width length.
 #
-# E6_J1_42_WIDTH NORTH EDGE - CTO ruling 2026-08-14 (comment only, the
-# rule terms below are unchanged):  the north edge moved 79.385 -> 79.245,
-# a 0.140 mm extension, so the J1.42 escape can hand off to normal width
-# north of the J1 pad row.  The first legal 0.40 mm handoff is y = 79.320
-# (KiCad-verified limit 79.342; analytic 79.3414 from the 0.20 mm clearance
-# to the GND pad J1.43 corner at 28.900, 79.535), and its 0.075 mm end cap
-# needs the area to reach 79.245.  This area therefore overhangs by
-# 0.290 mm on its north edge, not the 0.150 mm stated above - it is the
-# documented exception, applied to E6_J1_42_WIDTH alone.  No clearance
-# relief was added: E6_J1_42_CLR is untouched at 1.541 mm / 0.120 mm.
+# J1 NORTH-ESCAPE EDGE - CTO rulings 2026-08-14 (comment only, the rule
+# terms below are unchanged).  E6_J1_42_WIDTH and E6_J1_41_WIDTH both moved
+# their north edge 79.385 -> 79.245, a 0.140 mm extension each, so the J1.42
+# and J1.41 escapes can hand off to normal width north of the J1 pad row.
+# The first legal 0.40 mm handoff is y = 79.320 (KiCad-verified limit 79.342;
+# analytic 79.3414 from the 0.20 mm clearance to the GND pad J1.43 corner at
+# 28.900, 79.535), and a 0.15 mm neck end cap needs the area to reach 79.245.
+# Both areas therefore overhang by 0.290 mm on their north edge, not the
+# 0.150 mm stated above - the documented exception, scoped to these two.
+#
+# PAD SCOPE (standing law, made explicit by the B3 deviation ruling):  these
+# rectangles overlap each other and several neighbouring J1 pads, and always
+# have.  Geometric exclusivity is NOT the test.  The test is OWN-AREA
+# SUFFICIENCY: every pad-escape neck must be enclosed by the WIDTH area named
+# for ITS OWN pad, on its own.  Incidental coverage by a neighbour area is
+# permitted; DEPENDING on one is not.  J1.41 briefly depended on
+# E6_J1_42_WIDTH and that is why E6_J1_41_WIDTH was extended to match.
+#
+# No clearance relief was added by either extension: E6_J1_41_CLR and
+# E6_J1_42_CLR are untouched at 0.771 / 1.541 mm and 0.120 mm.
 #
 # C18.1 is width-only: it measures 0.000 mm of reduced-clearance track
 # and its via at (18.900, 19.400) already clears 0.200 mm to both B.Cu

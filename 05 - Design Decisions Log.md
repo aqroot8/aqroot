@@ -8855,3 +8855,126 @@ track-for-track and via-for-via identical. NFC_IRQ remains 0 tracks / 0 vias /
 touched and no rule area was modified. The large textual diff is KiCad
 re-serialising footprint order on the zone refill plus the In1 pour clearing the
 five new via holes; the structural audit above is what establishes preservation.
+
+## 2026-08-14 - B3 deviation ruling: J1.41 pad scope, C18.1 second via, R29.1 length
+
+Post-route review of `27358ee` raised three deviations. Rulings and the one
+correction they required, applied before `27358ee` was pushed.
+
+### 1. J1.41 using E6_J1_42_WIDTH - REJECTED, corrected
+
+J1.41's 0.15 mm north neck was legal but was authorised by the **wrong area**.
+`E6_J1_41_WIDTH` stopped at y = 79.385, so it can only enclose a neck whose
+handoff is at y >= 79.460; the legal handoff band set by the 0.20 mm clearance
+to the GND pad J1.43 corner is 79.320 .. 79.342. The two do not overlap, so a
+J1.41 north escape could not be authorised by its own area at all - it was
+leaning entirely on `E6_J1_42_WIDTH`, which spans x 28.950-31.550 and therefore
+covers J1.41's pad.
+
+**Correction: `E6_J1_41_WIDTH` north edge 79.385 -> 79.245**, the identical
+0.140 mm on the identical arithmetic already ruled for J1.42. Rules only - one
+polygon line, two byte-runs, **no copper changed**: J1.41's routed neck already
+fits its own area once extended. A dedicated new north area was considered and
+rejected as strictly more invasive (it would need a new rule and a new registry
+entry for the same effect).
+
+### Pad scope - what the doctrine actually tests
+
+The review asked whether E6 areas must be pad-exclusive. **They cannot be, and
+never were.** Measured on the committed board:
+
+| area | J1 pads whose centre it covers |
+|---|---|
+| `E6_J1_40_WIDTH` | J1.40 |
+| `E6_J1_41_WIDTH` | J1.41, J1.42, J1.43, J1.44, J1.45, J1.46, J1.47, J1.48, J1.49, J1.50 |
+| `E6_J1_42_WIDTH` | J1.40, J1.41, J1.42 |
+
+On a 0.5 mm pad pitch, rectangles 2-5 mm wide necessarily span neighbours.
+Coverage of the non-+3V3 pads is harmless because the rule condition also
+requires `hasNetclass('P3V3')`.
+
+The enforceable test is therefore **own-area sufficiency**, not geometric
+exclusivity:
+
+> every pad-escape neck must be enclosed by the WIDTH area named for its own
+> pad, on its own. Incidental coverage by a neighbouring area is permitted;
+> depending on one is not.
+
+Status after the correction:
+
+| pad | own area encloses its neck | also incidentally inside |
+|---|---|---|
+| J1.40 | YES `E6_J1_40_WIDTH` | `E6_J1_42_WIDTH` |
+| J1.41 | YES `E6_J1_41_WIDTH` | `E6_J1_42_WIDTH` |
+| J1.42 | YES `E6_J1_42_WIDTH` | `E6_J1_41_WIDTH` |
+
+### Authorisation probes
+
+Scratch boards carrying the real B3 copper; only the rule-area polygons varied.
+
+| probe | `E6_J1_41_WIDTH` | `E6_J1_42_WIDTH` | result | proves |
+|---|---|---|---|---|
+| P0 | 79.385 | 79.245 | **0** | `27358ee` as committed is DRC-clean |
+| P1 | 79.385 | clipped to x <= 29.60 | **1 width error, 0.820 mm track** | J1.41 depended on `E6_J1_42_WIDTH` |
+| P6 | 79.385 | 79.385 | **2 width errors, 0.820 mm each** | both north necks need the 0.140 mm |
+| P4 | **79.245** | clipped to x <= 29.60 | **0** | after the fix `E6_J1_41_WIDTH` alone carries J1.41 |
+| P5 | 79.245, clipped to x >= 29.50 | 79.245 | **0** | J1.42 is self-sufficient on its own area |
+| P3 | **79.245** | 79.245 | **0** | the committed fix is clean |
+
+P1 is the defect and P4 is the repair, in the same two lines of geometry.
+
+### 2. C18.1 second 0.65/0.40 via - ACCEPTED
+
+Both vias are **normal-rule**: drill 0.400 >= 0.400 floor, annular 0.125 exactly
+at the floor for a 0.65 pad, no E6 area invoked, 0.000 mm narrow, 0.000 mm
+reduced clearance. The brief's "one via" was a statement about where *relief*
+was needed, not a via budget. A second ordinary via is ordinary routing.
+
+It is also forced: F.Cu around C18.1 is a closed pocket (USB_D_MCU_N north, the
+y = 19.3-19.5 via row west, `/SPI_A_MISO` south) and B.Cu under the approved via
+is closed too (`/SX1262_BUSY` north, `/SPI_B_MOSI` south, the
+`/BMI270_INT1_STRAP` via east). A two-layer C18.1 does not exist; the choice was
+In2 plus a second normal via, or a narrow fallback. Normal width won.
+
+### 3. R29.1 ~24.9 mm - ACCEPTED for Beta, with a flagged B4 dependency
+
+Electrically a non-issue: 0.40 mm x 35 um over 24.9 mm is **30.6 mOhm**, 0.3 mV
+at 10 mA. No rule caps total normal-width length; narrow (2.181 mm) and
+reduced-clearance (0.403 mm) are both far inside their caps, and no via was
+added, as ruled.
+
+The real cost is **routing channel**, and it is worth recording precisely. The
+trunk runs down the F.Cu gap between the NFC decoupling columns:
+
+* gap C4x.1 east edge 9.550 to C4x.2 west edge 10.450 = **0.900 mm**
+* trunk at x = 10.000, 0.40 mm wide, occupies 9.800 .. 10.200
+* residual channel 0.250 mm each side - a further 0.20 mm track needs 0.60 mm,
+  so **nothing else fits on F.Cu either side**
+
+All four `NFC_VDD_D/A/RF/AM` nets are still unrouted (0 tracks each) and every
+one has its bulk cap at x 8.550-9.550, west of the trunk, and its sink at U9,
+x 22.2-26.8, east of it - all on F.Cu-only pads. They must now change layer to
+cross x = 10.0. Not a block, but four forced vias that did not exist before.
+
+If B4 wants that channel back, the shortening move is a single via near
+**(9.050, 19.950)** - verified clear at 0.80/0.40 on the current board - which
+drops R29.1 to roughly 3.5 mm. **Not applied**: no via was authorised here.
+
+### Verification after the correction
+
+Seven-pad gate re-run: every +3V3 narrow segment enclosed by a WIDTH area, all
+three J1 necks own-area sufficient, all seven pads on the U12.4/U12.5 island,
++3V3 islands 19. DRC **0 electrical errors** with `--refill-zones`, after
+`--refill-zones --save-board`, and again on the saved board. 354 unconnected
+throughout.
+
+Copper preservation against `27358ee`: **808 tracks and 180 vias identical**,
+all 776 pads identical, exactly one zone outline changed (`E6_J1_41_WIDTH`).
+The `.kicad_dru` gained a comment only - all 70 rule bodies and every
+non-comment line byte-identical.
+
+One pre-existing observation re-confirmed and again not touched: the 0.300 mm
++3V3 segment at (65.500, 52.400)-(66.000, 52.400) on F.Cu sits below the 0.40 mm
+P3V3 outer floor and inside no rule area, yet KiCad raises no width error. It
+predates B3 (present at `26039e5`), carries no B3 writer prefix, and is outside
+every B-pass region.
