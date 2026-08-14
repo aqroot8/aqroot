@@ -8654,3 +8654,93 @@ added, removed or modified.
 
 With this, all seven B3 pads have correctly sited relief and B3 copper can be
 routed.
+
+## 2026-08-14 - J1.42 WIDTH north extension (rules only, one area)
+
+### What changed
+
+`E6_J1_42_WIDTH` north edge **79.385 -> 79.245**, a **0.140 mm** extension.
+Nothing else. One polygon line in the board file; the DRU gained a comment and
+no rule. No copper, no placement, no schematic, no new clearance relief.
+
+| area | before | after |
+|---|---|---|
+| `E6_J1_42_WIDTH` | x 28.950-31.550 y **79.385**-82.300 | x 28.950-31.550 y **79.245**-82.300 |
+| `E6_J1_42_CLR` | x 30.400-31.550 y 80.850-82.000 | **unchanged** |
+| `E6_J1_40_WIDTH` / `_CLR` | - | **unchanged** |
+| `E6_J1_41_WIDTH` / `_CLR` | - | **unchanged** |
+
+### Why - the handoff arithmetic
+
+J1.42 escapes **north** out of the pad row. The neck runs at 0.15 mm until the
+first point where a normal-width P3V3 track (0.40 mm outer floor) is legal. The
+binding obstacle is the **GND pad J1.43 corner at (28.900, 79.535)**: a 0.40 mm
+track on the J1.42 pad centreline x = 29.250 must keep 0.200 mm from it, so its
+south end cap centre must satisfy
+
+	sqrt(0.350^2 + (79.535 - Yh)^2) >= 0.200 + 0.200
+	Yh <= 79.535 - sqrt(0.40^2 - 0.35^2) = **79.341351**
+
+KiCad agrees: Yh = 79.342 passes, Yh = 79.345 raises `clearance`. The approved
+handoff **Yh = 79.320** sits inside that limit. Its 0.15 mm end cap reaches
+79.320 - 0.075 = **79.245**, which is the new north edge.
+
+Tolerance check against the ruling: the strictest handoff the geometry allows
+(79.342) would need only 79.267, so the approved 79.245 is **0.022 mm** more
+generous - inside the +/-0.05 mm band, no STOP condition.
+
+### End-cap margin - this area is the documented exception
+
+Standing doctrine gives every `*_WIDTH` rectangle a 0.150 mm overhang. On its
+north edge this one now overhangs the approved route bbox by **0.290 mm**, and
+the approved handoff sits at exactly 0.075 mm of overhang - **zero containment
+margin**. Probe A confirms KiCad accepts an end cap lying exactly on the
+boundary, but B3 should not route on the knife edge. Usable window under the
+committed edge, both ends verified by DRC:
+
+| Yh | end cap | containment margin | clearance margin | DRC |
+|---|---|---|---|---|
+| 79.320 | 79.245 | 0.000 | 0.021 | pass |
+| **79.330** | **79.255** | **+0.010** | **+0.011** | **pass - balanced, recommended** |
+| 79.340 | 79.265 | +0.020 | +0.001 | pass |
+| 79.342 | 79.267 | +0.022 | 0.000 | pass |
+| 79.345 | 79.270 | +0.025 | negative | **clearance** |
+
+The band is 79.320 .. 79.342, 0.022 mm wide. **B3 should hand off at 79.330.**
+
+### Containment probes
+
+Scratch boards only, writer prefix `e6f42n01`; no probe copper reached the real
+board. Approved escape under test: 0.15 mm neck (29.250, 80.150) -> (29.250,
+79.320), then 0.40 mm (29.250, 79.320) -> (29.250, 78.550).
+
+| probe | expectation | result |
+|---|---|---|
+| baseline, new edge, no probe copper | 0 errors | **0** |
+| A - approved neck wholly inside the extended area | PASS | **0 errors** |
+| A2 - neck + 0.40 mm continuation | PASS | **0 errors** |
+| B - same neck under the OLD 79.385 edge | FAIL width | **`P3V3 minimum width` 0.4000 vs 0.1500** |
+| C - neck straddling the new boundary | FAIL | **`P3V3 minimum width` 0.4000 vs 0.1500** |
+| D - 0.40 mm continuation outside the WIDTH area | PASS | **0 errors** |
+| E - 0.120 mm gap to J1.43 outside `E6_J1_42_CLR` | FAIL clearance | **`netclass 'P3V3' clearance 0.2000; actual 0.1200`** |
+
+B is the whole case in one line: the identical neck that passes at 79.245 fails
+at 79.385, so the 0.140 mm is load-bearing and nothing wider was granted.
+
+### Merge discipline - unchanged
+
+The north escape does not change display-power aggregation. J1.42 still runs its
+own 0.15 mm neck from its own pad to the first >= 0.40 mm node and only then
+joins the shared display branch; no aggregate current crosses the neck. The three
+merge points get reported with the B3 route.
+
+### Preservation
+
+DRC **0 electrical errors before and after** (361 unconnected both sides, the
+unrouted-board baseline). 696 segments, 175 vias, 0 arcs and all 188 footprint
+blocks **byte-identical**; 0 footprints moved; 31 zones with **exactly one**
+changed, `E6_J1_42_WIDTH`. File length unchanged, CRLF preserved, two byte-runs
+differ - the two digit pairs of one polygon edge. NFC_IRQ still 0 tracks / 0 vias
+/ 0 zones. x69.100 remains staged.
+
+**No B3 copper was written in this commit.**
