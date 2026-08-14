@@ -8978,3 +8978,139 @@ One pre-existing observation re-confirmed and again not touched: the 0.300 mm
 P3V3 outer floor and inside no rule area, yet KiCad raises no width error. It
 predates B3 (present at `26039e5`), carries no B3 writer prefix, and is outside
 every B-pass region.
+
+## 2026-08-14 - +3V3 PASS B4: U3.21 and U9.1
+
+Two pads, seven track segments, **no vias**. B3 was pushed and hard-locked first
+(`27358ee` + `db52c7e` -> origin/master), and nothing in B3 was touched.
+
+### Pad model correction found during B4 setup
+
+Before routing near U3 the offline model was found to mis-place pads in
+**rotated** footprints. KiCad stores a pad's orientation **absolutely** (it
+already includes the footprint rotation) and defaults to 0 when the token is
+absent; the model had been adding the footprint angle. U3 sits at 90 degrees, so
+its 0.4 x 1.475 pads were being modelled 1.475 wide on a 0.65 pitch - physically
+impossible, and the same error affected U1.
+
+Corrected, every footprint on the board now has **zero overlapping
+distinct-number pads** (U1, U3, U9, J1, U2, U4, U12 all checked). The fix also
+reproduces a figure the eaae455 pass recorded but which the old model could not:
+the R2.1 via at (23.300, 36.000) clears B.Cu pad U1.28 by **0.1142 mm**, against
+the 0.114 mm in the log.
+
+**B3 was re-validated under the corrected model and is still clean** - all 112
+B3 track objects pass width and clearance with the correct relief. J1 and U9 are
+unrotated footprints, so the region B3 actually routed was never affected, and
+KiCad DRC had been the authority throughout.
+
+### U3.21 - TCA9535 A0 strap
+
+| | |
+|---|---|
+| layer | B.Cu only, **no via** |
+| escape | north stub out of the pad, 0.40 mm, (23.625, 9.400) -> (23.625, 8.150) |
+| run | **0.60 mm** east through the J5/U3 corridor, (23.625, 8.150) -> (25.575, 8.150) |
+| landing | 0.40 mm south, (25.575, 8.150) -> (25.575, 9.250), onto U3.24 and the +3V3 B.Cu trunk |
+| total | 4.300 mm |
+| narrow | **0.000 mm** |
+| reduced clearance | **0.000 mm** |
+| minimum clearance | **0.2500 mm** everywhere |
+
+The corridor between the J5 header pads (bottom y = 7.430) and the U3 pin row
+(top y = 8.700) is 1.270 mm; the 0.60 mm run sits at y = 8.150, keeping 0.25 mm
+to both. Preferred width was achievable for the run; the two pad stubs are
+0.40 mm because U3's 0.65 mm pitch leaves only 0.25 mm either side of the pad.
+
+**HEADER RESERVED usage.** All three segments intersect the reservation
+(y < 8.500) and all three are wholly enclosed by `U3_21_ESCAPE`, so the scoped
+exception carries them. No other net is involved, no via is placed, In1 GND is
+untouched, and no general transit occurs - the copper enters the reservation
+only inside the 2.975 x 2.150 mm scoped rectangle.
+
+### U9.1 - ST25R3916 VDD
+
+| | |
+|---|---|
+| layer | F.Cu only, **no via** |
+| neck | 0.15 mm west out of the pad then south through the pinch, (22.100, 20.500) -> (21.5875, 20.500) -> (21.5875, 21.250) -> (21.430, 21.580) |
+| handoff | **(21.430, 21.580)**, widen to 0.40 mm |
+| landing | 0.40 mm to the existing +3V3 via at (20.760, 21.730) |
+| total | 2.315 mm |
+| narrow | **1.628 mm** (< 6.0 trigger) |
+| reduced clearance | **0.743 mm** (< 2.0 cap) |
+| minimum clearance | **0.1875 mm** |
+
+The pinch is between the `/SPI_B_MISO` vertical (east edge x = 21.325) and the
+U9 pad column (west edge x = 21.850) - a 0.525 mm channel. A 0.15 mm neck
+centred at x = 21.5875 sits **0.1875 mm from each side**, which is above the
+committed 0.160 mm relief by 0.0275 mm, so no new relief was needed and none was
+requested. Normal width becomes legal again at y = 21.580, just past U9.3, and
+the route widens there.
+
+The landing is the +3V3 via at (20.760, 21.730) - the second C18.1 via placed in
+B3, now part of the source island. U9.1 therefore joins the island in >= 0.40 mm
+copper; its 0.15 mm neck feeds one pad and carries no other pad's current.
+
+A first attempt cut the corner diagonally from the pad and clipped U9.2's
+north-west corner at 0.1494 mm. Squaring the escape - straight west, then
+straight south - removed it.
+
+### Own-area sufficiency
+
+Every segment of both routes was checked against **every** rule area on the
+board. Neither route touches any area other than its own:
+
+| route | enclosed by | intersects |
+|---|---|---|
+| U3.21 (all 3 segments) | `U3_21_ESCAPE` | `U3_21_ESCAPE`, `HEADER RESERVED` |
+| U9.1 (3 neck segments) | `E6_U9_1` | `E6_U9_1` |
+| U9.1 (0.40 mm segment) | - (needs no relief) | `E6_U9_1` |
+
+There is **no incidental neighbouring coverage to remove**, so the probe was run
+by disabling areas outright:
+
+| probe | configuration | result | proves |
+|---|---|---|---|
+| P0 | committed board, no B4 copper | **0** | baseline |
+| P1 | U9.1 with `E6_U9_1` present | **0** | own area suffices |
+| P2 | U9.1 with an unrelated scoped area disabled | **0** | no foreign dependence |
+| P3 | U9.1 with **`E6_U9_1` disabled** | **7 violations** | relief is genuinely required |
+| P4 | committed state restored, both routes | **0** | final state clean |
+| - | U3.21 with **`U3_21_ESCAPE` disabled** | **3 `items_not_allowed`** | the HEADER exception is its only dependency |
+| - | U3.21 with an unrelated E6 area disabled | **0** | no unrelated E6 relief used |
+
+P3's failures are worth recording: with `E6_U9_1` gone the neck draws
+`netclass 'P3V3' clearance 0.2000; actual 0.1875` **and**
+`Pad-escape necking - width, fine-pitch power packages min width 0.2000;
+actual 0.1500` - so inside U9's courtyard the E6_U9_1 rules are what supersede
+the generic 0.20 mm necking floor. No probe geometry reached the real board.
+
+### Verification
+
+DRC after U3.21 alone: **0**. After U9.1: **0**. After `--refill-zones
+--save-board` and re-run on the saved board: **0 electrical errors**.
+
+Source island (independent union-find, seeded only from the island containing
+U12.4/U12.5): both U3.21 and U9.1 present, and all seven B3 pads still present.
+
+| quantity | before | after |
+|---|---|---|
+| track segments | 808 | 815 (+7, 0 removed) |
+| vias | 180 | 180 (+0) |
+| board ratsnest | 354 | 352 |
+| +3V3 ratsnest entries | 18 | 16 |
+| +3V3 islands | 19 | 17 |
+| source-island pads | 59 | 61 |
+
+Preservation: **all 112 B3 track objects byte-identical**, 188 footprints with
+0 moved, all 776 pads identical, **zero zone outline or layer differences** so
+every B3 rule area is untouched, and every locked signal net - USB, SPI-A,
+SPI-B, I2C, SX1262, CC1101, BMI270, display, SD_CS_N, WAKE_INT_N, GND -
+identical. NFC_IRQ still 0/0/0, no RF-band copper or vias added, x69.100 still
+staged at 2 tracks / 2 vias. Writer prefix `b4a91d30`, verified absent first;
+all seven added objects carry it.
+
+The R29.1 NFC-channel dependency and the 0.300 mm segment at
+(65.500-66.000, 52.400) are carried forward unchanged as ruled - neither was
+touched, and the banked (9.050, 19.950) via remains deferred.
