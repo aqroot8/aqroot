@@ -553,7 +553,7 @@
 
 (rule "E6: +3V3 pad-escape neck width"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
-	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_R29_1') || A.intersectsArea('E6_U9_1'))"))
+	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_U9_1'))"))
 
 (rule "U3_21_ESCAPE: +3V3 escape neck width"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
@@ -641,9 +641,9 @@
 	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R2_1_CLR')"))
 
 # E6_R29_1    R29.1   TIER A - measured 0.160 mm; JLCPCB gate n/a (Tier A)
-(rule "E6_R29_1: measured local +3V3 clearance 0.160 mm"
+(rule "E6_R29_1_CLR: measured local +3V3 clearance 0.160 mm"
 	(constraint clearance (min 0.160mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R29_1')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R29_1_CLR')"))
 
 # E6_U9_1     U9.1    TIER A - measured 0.160 mm; rule written above in section 13.
 
@@ -797,3 +797,17 @@
 (rule "E6_C18_1_WIDTH: C18.1 width-only escape, clearance stays global"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
 	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_C18_1_WIDTH')"))
+
+# ---------------------------------------------------------------------
+# 19. R29.1 PAIRED AREAS - the old combined E6_R29_1 sat around the pad,
+# but the relief is needed ~6 mm west where the escape actually pinches.
+#   E6_R29_1_CLR    x 11.700-12.000 y 18.750-19.400  F.Cu  clearance 0.160 mm
+#                   constrained run 0.350 mm, requires 0.1753 mm
+#   E6_R29_1_WIDTH  x 11.550-12.000 y 17.550-19.850  F.Cu  width 0.15 mm
+#                   narrow run 1.991 mm, handoff (11.700, 19.700)
+# 2.0 mm cap = reduced-clearance length; 6.0 mm trigger = narrow-width run.
+# ---------------------------------------------------------------------
+
+(rule "E6_R29_1_WIDTH: R29.1 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R29_1_WIDTH')"))

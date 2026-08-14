@@ -43769,7 +43769,7 @@
 	(zone
 		(layer "F.Cu")
 		(uuid "e6a00000-0000-4000-8000-000000000007")
-		(name "E6_R29_1")
+		(name "E6_R29_1_CLR")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0)
@@ -43793,7 +43793,7 @@
 		)
 		(polygon
 			(pts
-				(xy 17.575 16.275) (xy 20.725 16.275) (xy 20.725 17.925) (xy 17.575 17.925)
+				(xy 11.7 18.75) (xy 12 18.75) (xy 12 19.4) (xy 11.7 19.4)
 			)
 		)
 	)
@@ -43825,6 +43825,37 @@
 		(polygon
 			(pts
 				(xy 21.35 20.05) (xy 22.9 20.05) (xy 22.9 22.7) (xy 21.35 22.7)
+			)
+		)
+	)
+	(zone
+		(layer "F.Cu")
+		(uuid "f3d808d7-80b2-4241-bd8a-9d68e54bce97")
+		(name "E6_R29_1_WIDTH")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 11.55 17.55) (xy 12 17.55) (xy 12 19.85) (xy 11.55 19.85)
 			)
 		)
 	)

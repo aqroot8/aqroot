@@ -8592,3 +8592,65 @@ DRC 0 electrical errors before and after. 696 segments, 175 vias and all 188
 footprint blocks byte-identical; zones 24 -> 29 (5 renamed to `_CLR`, `E6_C18_1`
 repurposed, 5 new `_WIDTH`); NFC_IRQ still 0 tracks / 0 vias / 0 zones; x69.100
 staged and unchanged; no routed copper added, removed or modified.
+
+
+## 2026-08-14 - R29.1 final rule pass: paired areas placed on the measured geometry
+
+The old `E6_R29_1` was a single combined area wrapped around the pad at
+x 17.575-20.725, y 16.275-17.925. R29.1's escape does not pinch there - it runs
+**west** along y ~17.5 and pinches about 6 mm away. The old area granted relief
+in a region the route never uses, and granted none where the route needs it.
+
+An earlier figure of 9.757 mm for R29.1's narrow run was an upper bound from a
+clearance-minimising search, not a minimum. Re-searched minimising sub-0.40 mm
+width length, the true figures are far smaller.
+
+### Measured (route from the pad at (19.600, 17.500) to handoff (11.700, 19.700), F.Cu, no via)
+
+| quantity | value |
+|---|---|
+| reduced-clearance run | **0.350 mm**, one contiguous run, (11.850, 18.900) -> (11.850, 19.250) |
+| clearance actually required | **0.1753 mm**, limited by via `/SPI_B_SCK` |
+| approved R29.1 clearance | 0.160 mm - **sufficient**, kept unchanged |
+| total narrow-width run | **1.991 mm**, one contiguous run, (11.850, 17.700) -> (11.750, 19.650) |
+
+Both are inside the standing limits: 2.0 mm hard cap on reduced-clearance length,
+6.0 mm review trigger on narrow-width length. Neither cap was touched.
+
+### Areas
+
+| area | geometry | layer | rule |
+|---|---|---|---|
+| `E6_R29_1_CLR` | x 11.700-12.000, y 18.750-19.400 | F.Cu | clearance min 0.160 mm, `enclosedByArea` |
+| `E6_R29_1_WIDTH` | x 11.550-12.000, y 17.550-19.850 | F.Cu | track_width min 0.15 mm, `enclosedByArea`, no clearance term |
+
+Both are the measured run plus the standing 0.150 mm overhang. The handoff at
+(11.700, 19.700) sits inside the WIDTH area with 0.150 mm to spare in every
+direction, well past the 0.075 mm end-cap minimum.
+
+`E6_R29_1` no longer exists: the zone was repurposed into `E6_R29_1_CLR` with the
+new polygon, so no dormant relief is left in the abandoned region. The shared
+`intersectsArea` width rule now names only `E6_U9_1`.
+
+### Probes (scratch boards only, deleted)
+
+| probe | expectation | result |
+|---|---|---|
+| baseline | 0 errors | **0** |
+| A - 0.15 mm neck wholly inside `E6_R29_1_WIDTH` | width relief granted | **0 errors** |
+| B - same neck outside the WIDTH area | width relief denied | **`P3V3 minimum width` 0.4000 vs 0.1500** |
+| C - the 0.350 mm constrained run wholly inside `E6_R29_1_CLR` | relief granted at 0.160 | **0 errors** |
+| D/E - same geometry straddling the CLR edge | relief denied | **`netclass 'P3V3' clearance 0.2000; actual 0.1750`** |
+| F - WIDTH endpoint exactly on the boundary | unsafe | **width error, end cap outside** |
+| G - same endpoint with 0.150 mm overhang | safe | **0 errors** |
+
+Probe E doubles as an independent confirmation of the measurement: KiCad reports
+the achieved clearance as 0.1750 mm, matching the 0.1753 mm computed offline, and
+above the approved 0.160 mm.
+
+DRC 0 electrical errors before and after; 696 segments, 175 vias and all 188
+footprint blocks byte-identical; zones 29 -> 30; NFC_IRQ 0/0/0; no routed copper
+added, removed or modified.
+
+With this, all seven B3 pads have correctly sited relief and B3 copper can be
+routed.
