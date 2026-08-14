@@ -665,6 +665,26 @@
 #
 #   E6_R3_2    R3.2   >= 0.15 mm   R3 is a 10k pull-up on WAKE_INT_N; the
 #                                  neck carries ~330 uA
+#                                  RELOCATED 2026-08-14 (B5 corrective audit):
+#                                  x 18.300-20.025 y 42.200-45.475  ->
+#                                  x 17.705-19.445 y 48.605-48.845, B.Cu.
+#                                  The old pocket belonged to an abandoned
+#                                  topology whose only landing was R11.1's
+#                                  0.15 mm neck - a forbidden narrow-to-narrow
+#                                  merge.  The ratified route leaves the pad at
+#                                  0.40 mm, runs 6.4 mm south at full width, and
+#                                  needs relief ONLY for a 1.602 mm squeeze at
+#                                  y ~ 48.7 before landing on C4.1.  The two
+#                                  rectangles do not overlap: this is a
+#                                  relocation, not an extension, and no dormant
+#                                  width relief is left in the old region.
+#
+# NARROW-ESCAPE SEARCH DOCTRINE (CTO standing law, 2026-08-14):  when solving
+# any reduced-width escape, EVERY sub-0.40 mm +3V3 object on the board -
+# including other pads' relief necks - is an OBSTACLE, never a SOURCE.  Only
+# >= 0.40 mm-class copper (pads, vias, >= 0.40 mm track) may terminate a narrow
+# escape.  Same-net contact with another pad's neck is a narrow-to-narrow merge
+# and is forbidden however clean the DRC looks.
 #   E6_U4_5    U4.5   >= 0.30 mm   BMI270 VDDIO, sub-mA single-device supply
 #   E6_U4_12   U4.12  >= 0.20 mm   BMI270 CSB, an I2C-mode strap - leakage only
 #   E6_J1_35   J1.35  >= 0.15 mm   one of seven parallel display +3V3 pins;

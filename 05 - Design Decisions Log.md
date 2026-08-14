@@ -9114,3 +9114,121 @@ all seven added objects carry it.
 The R29.1 NFC-channel dependency and the 0.300 mm segment at
 (65.500-66.000, 52.400) are carried forward unchanged as ruled - neither was
 touched, and the banked (9.050, 19.950) via remains deferred.
+
+## 2026-08-14 - B5: E6_R3_2 relocated (rules only, no copper)
+
+R3.2's width pocket sat in the wrong place. The geometry it was sized for
+belonged to a topology whose only landing was **R11.1's 0.15 mm B3 neck** - a
+narrow-to-narrow merge, forbidden. Under the corrected rule that every sub-0.40 mm
++3V3 object is an obstacle rather than a source, the valid route is elsewhere and
+so is the relief it needs.
+
+### The change
+
+| | |
+|---|---|
+| old `E6_R3_2` | x 18.300-20.025, y 42.200-45.475, B.Cu |
+| new `E6_R3_2` | **x 17.705-19.445, y 48.605-48.845**, B.Cu |
+| overlap | **none** - a relocation, not an extension |
+| rule terms | unchanged: `track_width min 0.15 opt 0.60`, `enclosedByArea('E6_R3_2')`, +3V3 only, **no clearance term** |
+
+No dormant width relief is left in the old region: the polygon moved, it was not
+extended or duplicated. Clearance stays global 0.20 mm everywhere; no CLR area
+exists for R3.2 and none was created.
+
+### Ratified topology (copper NOT written this pass)
+
+All B.Cu, **no via**, no clearance relief. The route leaves the pad already at
+0.40 mm, runs 6.453 mm south at full width, needs relief only for a **1.602 mm
+squeeze** at y ~ 48.7, then returns to 0.40 mm and lands on **C4.1's +3V3 pad**.
+
+| # | width | from | to |
+|---|---|---|---|
+| 1-7 | 0.40 | (19.020, 43.000) | (19.370, 48.690) |
+| 8 | 0.15 | (19.360, 48.690) | (19.030, 48.760) |
+| 9 | 0.15 | (19.030, 48.760) | (17.850, 48.760) |
+| 10 | 0.15 | (17.850, 48.760) | (17.790, 48.700) |
+| 11-12 | 0.40 | (17.790, 48.700) | (17.470, 48.470) |
+
+Total 8.055 mm - normal 6.453 mm, **narrow 1.602 mm** (against the 6.0 mm
+standing limit, and inside the older 2.0 mm pocket wording as well).
+Reduced-clearance run **0.000 mm**. First >= 0.40 mm node is the pad exit itself.
+
+### Containment margins
+
+| edge | narrow endpoint | area edge | margin | required |
+|---|---|---|---|---|
+| east | 19.360 | 19.445 | **0.085** | >= 0.075 |
+| west | 17.790 | 17.705 | **0.085** | >= 0.075 |
+
+Both match the ratified figures exactly. An earlier vertex set placed the east
+transition at 19.370, which meets the 0.075 floor but lands the end cap exactly on
+the area edge with zero slack; the transition was pulled to 19.360, restoring
+0.010 mm of interior slack. The preceding 0.40 mm segment still ends at 19.370, so
+its end cap overlaps the neck start by 0.190 mm and connectivity is unaffected.
+
+### KiCad exact-vertex recheck (binding)
+
+The offline model had shown a ~0.002 mm sub-0.20 reading on an earlier smoothed
+path. That was a smoothing artefact - the simplifier was merging near-collinear
+runs across bends and cutting corners. It was replaced with a line-of-sight
+reducer that never merges across a width-class change and samples at 600
+points/mm. The final 12-segment vertex set above was instantiated against the
+relocated area on a scratch board:
+
+**KiCad DRC: 0 violations, 0 clearance violations of any kind.** No clearance rule
+was altered.
+
+### Own-area sufficiency probes
+
+Scratch copper only; nothing reached the real board.
+
+| probe | configuration | result |
+|---|---|---|
+| P0 | committed board, no scratch copper | **0** |
+| P1 | R3.2 squeeze + relocated `E6_R3_2` | **0** |
+| P2 | relocated, unrelated B.Cu WIDTH areas disabled | **delta 0 vs control** |
+| P3 | R3.2 squeeze against the OLD `E6_R3_2` geometry | **3 `track_width` 0.4000 vs 0.1500** |
+| P4 | committed state restored | **0** |
+
+P2 needs its control stated: disabling `E6_R11_1_WIDTH` and `E6_R2_1_WIDTH`
+breaks R11.1's and R2.1's own committed B3 necks and raises 40 violations with or
+without R3.2's copper present. The delta attributable to R3.2 is **0**, so R3.2
+depends on no neighbouring area. Independently: **no committed WIDTH area encloses
+the new narrow run** - not `E6_R11_1_WIDTH`, `E6_R2_1_WIDTH`, `E6_R3_2` (old),
+`U3_21_ESCAPE`, `E6_U4_5` or `E6_U4_12`.
+
+P3 is the one that proves the relocation is load-bearing rather than cosmetic.
+
+### R11.1 separation
+
+Minimum distance from the whole R3.2 route to R11.1's 0.15 mm neck: **0.7750 mm**,
+against the 0.20 mm requirement and matching the audit's predicted ~0.775 mm. No
+narrow-to-narrow merge exists; R11.1 was an obstacle throughout and the landing is
+an independent >= 0.40-class node.
+
+### Standing law recorded
+
+Added to the DRU registry comment: for all future narrow-escape searches, **every
+sub-0.40 mm +3V3 object, including other pads' relief necks, is an OBSTACLE and
+never a SOURCE**; only >= 0.40 mm-class copper may terminate a narrow escape.
+
+### Naming
+
+The pass brief calls this area `E6_R3_2_WIDTH`. The committed zone is named
+**`E6_R3_2`** and the DRU rule binds `enclosedByArea('E6_R3_2')`. Only the geometry
+was changed; renaming would require editing the rule condition too, which is a
+rule-term change and outside a geometry relocation. Flagged for a naming pass if
+the `*_WIDTH` convention is to be normalised across the registry.
+
+### Preservation
+
+DRC **0 before and after**. 815 tracks and 180 vias **identical including UUIDs**;
+B3's 112 objects and B4's 7 objects byte-identical; 776 pads identical; 188
+footprints, 0 moved; **exactly one zone outline changed** (`E6_R3_2`). Board
+ratsnest 352, +3V3 ratsnest 16, +3V3 islands 17 - all unchanged, since no copper
+was added. x69.100 staged unchanged. NFC_IRQ 0/0/0. The `.kicad_dru` gained
+comments only: all 70 rule bodies and every non-comment line byte-identical.
+
+**No B5 copper was written.** U4.5, U4.12 and J1.35 candidates remain frozen and
+unwritten.
