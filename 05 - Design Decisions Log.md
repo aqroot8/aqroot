@@ -9232,3 +9232,102 @@ comments only: all 70 rule bodies and every non-comment line byte-identical.
 
 **No B5 copper was written.** U4.5, U4.12 and J1.35 candidates remain frozen and
 unwritten.
+
+## 2026-08-14 - +3V3 PASS B5: R3.2, U4.5, U4.12, J1.35 (final escape copper)
+
+Four pads, 31 track segments, one via. This closes the +3V3 **escape** programme:
+every pad that needed an E6 width or clearance concession is now routed.
+
+### Per-pad result
+
+| pad | layers | topology | total | narrow | reduced-clr | min clr | vias |
+|---|---|---|---|---|---|---|---|
+| R3.2 | B.Cu | 0.40 out of the pad, 6.45 mm south, 1.602 mm squeeze at y ~ 48.7, back to 0.40, land on C4.1 | 8.055 | 1.602 @ 0.15 | 0.000 | 0.2000 | 0 |
+| U4.5 | B.Cu | 0.862 mm at 0.30 straight onto U4.3's +3V3 pad | 0.862 | 0.862 @ 0.30 | 0.000 | 0.2027 | 0 |
+| U4.12 | B.Cu | 1.671 mm at 0.20, handoff (11.302, 63.736), 0.40 onto U4.2's +3V3 pad | 1.804 | 1.671 @ 0.20 | 0.000 | 0.2024 | 0 |
+| J1.35 | F.Cu -> B.Cu | Option V: 0.830 mm neck, handoff (32.750, 80.980), 0.40 F.Cu south, via (32.580, 85.490), 0.40 B.Cu onto C43.1 | 7.755 | 0.830 @ 0.15 | 0.000 | 0.2000 | 1 |
+
+Every narrow run is inside its **own** pad's WIDTH area; **no clearance relief is
+used anywhere in B5** - all four minima sit at or above the global 0.20 mm, so the
+reduced-clearance length is 0.000 mm on every pad. Longest narrow run 1.671 mm
+(U4.12), far inside the 6.0 mm limit.
+
+### R3.2 - the route the corrective audit ratified
+
+The relocated `E6_R3_2` (x 17.705-19.445, y 48.605-48.845) authorises exactly one
+1.602 mm squeeze. Minimum distance from the whole R3.2 route to **R11.1's 0.15 mm
+B3 neck is 0.7750 mm** - R11.1 was treated as an obstacle throughout, never as a
+source, and R3.2 lands independently on C4.1's +3V3 pad, a >= 0.40-class node. No
+narrow-to-narrow merge exists anywhere in B5.
+
+### J1.35 Option V - merge location waived, aggregate discipline intact
+
+| stage | geometry |
+|---|---|
+| neck (single-pad, 0.15) | (32.750, 80.150) -> (32.750, 80.980) |
+| **first >= 0.40 node** | **(32.750, 80.980)** |
+| normal-width F.Cu | -> (32.580, 85.490) |
+| via | **(32.580, 85.490)** 0.65 / 0.40 |
+| normal-width B.Cu | -> (33.960, 83.870) |
+| merge / source point | **C43.1 +3V3 pad** (33.950-34.950, 82.425-83.875) |
+
+Via floors: drill 0.400 >= 0.400 POWER floor; annular (0.65-0.40)/2 = **0.1250** =
+the 0.125 mm floor exactly. Ordinary rules only - no E6 area, no clearance relief.
+
+Only the merge *location* was waived. The neck feeds J1.35 alone, every shared
+path is >= 0.40 mm, and no aggregate display current touches 0.15 mm copper.
+
+### Own-area sufficiency
+
+| pad | own area | P1 own present | P2 neighbours disabled (delta vs control) | P3 own disabled |
+|---|---|---|---|---|
+| R3.2 | `E6_R3_2` | 0 | **+0** (ctl 0) | **3 width errors** |
+| U4.5 | `E6_U4_5` | 0 | **+0** (ctl 0) | **3 width errors** |
+| U4.12 | `E6_U4_12` | 0 | **+0** (ctl 0) | **3 width errors** |
+| J1.35 | `E6_J1_35` | 0 | **+0** (ctl 0) | **1 width error** |
+
+P0 baseline 0, P4 all-four-restored 0. No route depends on another pad's area, and
+P3 proves every area is load-bearing rather than decorative.
+
+### Validation and write
+
+Complete-set candidate validation (all four together, against tracks, vias, pads,
+rule areas, keepouts, Edge.Cuts, holes and POWER via floors): **KiCad DRC 0
+violations**, unconnected 352 -> 348.
+
+Writer prefix `b5e33c70`, verified absent. The writer's object-count assertion
+fired on the first attempt - the expected count was stated as 35 when the set is
+32 (31 segments + 1 via) - and **aborted before touching the file**. Corrected and
+re-run.
+
+After the write DRC is 0 with `--refill-zones`; the board was then refilled, saved,
+and re-checked on the saved file: **0 electrical errors**. Candidate and live DRC
+agree, so no revert was needed.
+
+### Preservation
+
+| quantity | before | after |
+|---|---|---|
+| track segments | 815 | 846 (+31, 0 removed) |
+| vias | 180 | 181 (+1, 0 removed) |
+| board ratsnest | 352 | 348 |
+| +3V3 ratsnest entries | 16 | 12 |
+| +3V3 islands | 17 | 13 |
+| source-island pads | 61 | 65 |
+
+**B3's 112 tracks + 5 vias and B4's 7 tracks byte-identical.** 776 pads identical,
+188 footprints with 0 moved, **zero zone outline or layer differences** - no rule
+area touched, and the `.kicad_dru` untouched entirely. Every locked signal net
+(USB, SPI-A, SPI-B, I2C, SX1262, CC1101, BMI270, display, SD_CS_N, WAKE_INT_N,
+ROOTPROBE_IRQ_READY_N, GND) identical. NFC_IRQ 0/0/0, no NFC_DEFERRED copper, no
+RF-band copper added. x69.100 staged and unchanged at 2 tracks / 2 vias.
+
+### What remains
+
+The escape programme is closed; **+3V3 itself is not finished**. Eleven ordinary
+pads still need Pass C, none of them requiring any E6 concession:
+
+`C14.1  C15.1  C16.1  C17.1  J2.4  J5.1  R25.1  R27.1  R28.1  U7.9  U8.9`
+
+Deferred items carried forward untouched: the R29.1 NFC-channel dependency, the
+banked (9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
