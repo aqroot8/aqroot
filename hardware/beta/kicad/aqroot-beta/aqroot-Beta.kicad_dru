@@ -553,7 +553,7 @@
 
 (rule "E6: +3V3 pad-escape neck width"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
-	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_C18_1') || A.intersectsArea('E6_J1_40') || A.intersectsArea('E6_J1_41') || A.intersectsArea('E6_J1_42') || A.intersectsArea('E6_R11_1') || A.intersectsArea('E6_R2_1') || A.intersectsArea('E6_R29_1') || A.intersectsArea('E6_U9_1'))"))
+	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_R29_1') || A.intersectsArea('E6_U9_1'))"))
 
 (rule "U3_21_ESCAPE: +3V3 escape neck width"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
@@ -615,35 +615,30 @@
 # lying wholly inside its own pocket gets the relief.  A track that merely
 # clips a pocket keeps the ordinary 0.20 mm netclass clearance.
 # ---------------------------------------------------------------------
-# E6_C18_1    C18.1   TIER A - measured 0.180 mm; JLCPCB gate n/a (Tier A)
-(rule "E6_C18_1: measured local +3V3 clearance 0.180 mm"
-	(constraint clearance (min 0.180mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_C18_1')"))
-
 # E6_J1_40    J1.40   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
 (rule "E6_J1_40: measured local +3V3 clearance 0.120 mm"
 	(constraint clearance (min 0.120mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_40')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_40_CLR')"))
 
 # E6_J1_41    J1.41   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
 (rule "E6_J1_41: measured local +3V3 clearance 0.120 mm"
 	(constraint clearance (min 0.120mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_41')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_41_CLR')"))
 
 # E6_J1_42    J1.42   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
 (rule "E6_J1_42: measured local +3V3 clearance 0.120 mm"
 	(constraint clearance (min 0.120mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_42')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_42_CLR')"))
 
 # E6_R11_1    R11.1   TIER B - measured 0.140 mm; JLCPCB gate PASS (0.140 >= 0.09)
 (rule "E6_R11_1: measured local +3V3 clearance 0.140 mm"
 	(constraint clearance (min 0.140mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R11_1')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R11_1_CLR')"))
 
 # E6_R2_1     R2.1    TIER B - measured 0.100 mm; JLCPCB gate PASS (0.100 >= 0.09)
 (rule "E6_R2_1: measured local +3V3 clearance 0.100 mm"
 	(constraint clearance (min 0.100mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R2_1')"))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R2_1_CLR')"))
 
 # E6_R29_1    R29.1   TIER A - measured 0.160 mm; JLCPCB gate n/a (Tier A)
 (rule "E6_R29_1: measured local +3V3 clearance 0.160 mm"
@@ -748,3 +743,57 @@
 # Comments only - no rule is defined in this section, so the
 # last-match precedence tail is unaffected.
 # =====================================================================
+
+# =====================================================================
+# 18. WIDTH-ONLY AREAS PAIRED WITH THE E6 CLEARANCE POCKETS
+#
+# Each paired case now has TWO areas:
+#   *_CLR    holds ONLY the measured reduced-clearance region
+#   *_WIDTH  wraps the WHOLE 0.15 mm route, endpoints included
+#
+# Both use enclosedByArea().  intersectsArea() is deliberately NOT used
+# here: a touching-only width exemption lets one narrow track clip the
+# area and stay narrow outside it.  Routing discipline: split every
+# track segment at the area boundary.
+#
+# END-CAP MARGIN: KiCad extends a track cap by width/2 past the
+# endpoint, so a 0.15 mm neck needs >= 0.075 mm of overhang or the cap
+# pokes out and enclosedByArea() fails.  Every *_WIDTH rectangle below
+# overhangs the route bbox by 0.150 mm, which also absorbs the 0.075 mm
+# half-width and the 0.05 mm measurement grid.
+#
+# CAP SEMANTICS (standing law):
+#   clearance-relief run   HARD cap        <= 2.0 mm
+#   total narrow-width run REVIEW trigger   > 6.0 mm
+#   These are different metrics.  The 2.0 mm cap does NOT apply to
+#   total narrow-width length.
+#
+# C18.1 is width-only: it measures 0.000 mm of reduced-clearance track
+# and its via at (18.900, 19.400) already clears 0.200 mm to both B.Cu
+# /SX1262_BUSY and In2 /I2C_SCL_INT (hole-referenced 0.400 mm, +0.200).
+# Its clearance rule was deleted; the via uses normal rules only.
+# =====================================================================
+
+(rule "E6_R2_1_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R2_1_WIDTH')"))
+
+(rule "E6_J1_40_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_40_WIDTH')"))
+
+(rule "E6_J1_41_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_41_WIDTH')"))
+
+(rule "E6_J1_42_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_42_WIDTH')"))
+
+(rule "E6_R11_1_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R11_1_WIDTH')"))
+
+(rule "E6_C18_1_WIDTH: C18.1 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_C18_1_WIDTH')"))

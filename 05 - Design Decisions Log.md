@@ -8495,3 +8495,100 @@ width-only areas must be defined. This pass does not resolve that.
 DRC 0 electrical errors before and after; 696 tracks and 175 vias byte-identical;
 all 188 footprint blocks byte-identical (file order changed only because KiCad
 re-serialised on zone refill); exactly 5 zones changed; NFC_IRQ still 0/0/0.
+
+
+## 2026-08-14 - FINAL B3 rule update: paired CLR/WIDTH areas, C18.1 reclassified
+
+### Why pairing was needed
+
+The previous pass moved the E6 clearance pockets onto the measured
+reduced-clearance regions, which was correct but left the **width** relief
+dangling: the narrow runs are 2.4-4.5 mm long while the clearance pockets are
+under 1.6 mm, and the shared width rule used `intersectsArea`, which is
+per-object and would let a track clip the area and stay narrow outside it.
+Each case now carries two areas.
+
+### Standing cap semantics
+
+| metric | limit |
+|---|---|
+| clearance-relief run | **hard cap 2.0 mm** |
+| total narrow-width run | **review trigger above 6.0 mm** |
+
+Different metrics. The 2.0 mm cap does **not** apply to narrow-width length.
+Longest narrow run is J1.41 at 4.478 mm, below the trigger.
+
+### Area semantics
+
+Both `*_CLR` and `*_WIDTH` use `enclosedByArea()`. `intersectsArea()` is
+deliberately not used for the new width paths. Routing discipline for B3: split
+every track segment at the area boundary.
+
+### End-cap margin
+
+KiCad extends a track cap by width/2 past the endpoint, so a 0.15 mm neck needs
+at least 0.075 mm of overhang or the cap pokes out and `enclosedByArea()` fails.
+Every `*_WIDTH` rectangle overhangs by **0.150 mm**, which also absorbs the
+0.075 mm half-width and the 0.05 mm measurement grid.
+
+`*_WIDTH` areas are the union of the measured route bbox **and the source pad
+bbox**, both plus the overhang. Probe C caught the reason: the route's first cell
+sits near one corner of the pad, so a neck attached anywhere else on the pad would
+have started outside the area and lost its width relief.
+
+### Registry (read from the live rules and board)
+
+| area | class | semantics | geometry | layers | width min | clearance | clr run | narrow run |
+|---|---|---|---|---|---|---|---|---|
+| `E6_C18_1_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 18.090-19.050 y 19.250-20.710 | F.Cu | 0.15 | global 0.20 | 0.000 | 0.612 |
+| `E6_J1_35` | WIDTH-ONLY | `enclosedByArea` | x 32.275-33.225 y 79.210-83.075 | F.Cu | 0.15 | global 0.20 | - | - |
+| `E6_J1_40_CLR` | CLEARANCE | `enclosedByArea` | x 30.950-31.800 y 78.150-78.550 | F.Cu | - | 0.120 | 0.641 | 2.394 |
+| `E6_J1_40_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 29.950-32.050 y 78.050-80.915 | F.Cu | 0.15 | global 0.20 | 0.641 | 2.394 |
+| `E6_J1_41_CLR` | CLEARANCE | `enclosedByArea` | x 25.500-26.500 y 80.850-81.200 | F.Cu | - | 0.120 | 0.771 | 4.478 |
+| `E6_J1_41_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 25.200-30.050 y 79.385-81.350 | F.Cu | 0.15 | global 0.20 | 0.771 | 4.478 |
+| `E6_J1_42_CLR` | CLEARANCE | `enclosedByArea` | x 30.400-31.550 y 80.850-82.000 | F.Cu | - | 0.120 | 1.541 | 3.506 |
+| `E6_J1_42_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 28.950-31.550 y 79.385-82.300 | F.Cu | 0.15 | global 0.20 | 1.541 | 3.506 |
+| `E6_R11_1_CLR` | CLEARANCE | `enclosedByArea` | x 18.150-18.800 y 45.800-46.350 | B.Cu | - | 0.140 | 0.504 | 2.911 |
+| `E6_R11_1_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 16.825-18.950 y 44.875-47.350 | B.Cu | 0.15 | global 0.20 | 0.504 | 2.911 |
+| `E6_R29_1` | CLEARANCE+width | `enclosedByArea/intersectsArea` | x 17.575-20.725 y 16.275-17.925 | F.Cu | 0.15 | 0.160 | - | - |
+| `E6_R2_1_CLR` | CLEARANCE | `enclosedByArea` | x 22.800-23.800 y 35.500-36.500 | B.Cu,F.Cu,In1.Cu,In2.Cu | - | 0.100 | 0.000 | 2.916 |
+| `E6_R2_1_WIDTH` | WIDTH-ONLY | `enclosedByArea` | x 20.625-23.450 y 35.800-38.125 | B.Cu | 0.15 | global 0.20 | 0.000 | 2.916 |
+| `E6_R3_2` | WIDTH-ONLY | `enclosedByArea` | x 18.300-20.025 y 42.200-45.475 | B.Cu | 0.15 | global 0.20 | - | - |
+| `E6_U4_12` | WIDTH-ONLY | `enclosedByArea` | x 11.200-13.075 y 62.850-65.000 | B.Cu | 0.20 | global 0.20 | - | - |
+| `E6_U4_5` | WIDTH-ONLY | `enclosedByArea` | x 9.600-12.125 y 61.950-63.650 | B.Cu | 0.30 | global 0.20 | - | - |
+| `E6_U9_1` | CLEARANCE+width | `enclosedByArea/intersectsArea` | x 21.350-22.900 y 20.050-22.700 | F.Cu | 0.15 | 0.160 | - | - |
+| `U3_21_ESCAPE` | WIDTH-ONLY | `intersectsArea` | x 23.125-26.100 y 7.750-9.900 | B.Cu | 0.15 | global 0.20 | - | - |
+
+`E6_C18_1` no longer exists as a clearance pocket: the zone was repurposed into
+`E6_C18_1_WIDTH` and its clearance rule was **deleted**. C18.1 measures 0.000 mm
+of reduced-clearance track, and its via at (18.900, 19.400) already clears
+0.200 mm to both B.Cu `/SX1262_BUSY` and In2 `/I2C_SCL_INT` (hole-referenced
+0.400 mm, +0.200 mm margin), so the via uses normal rules only.
+
+`E6_R29_1` and `E6_U9_1` are untouched and keep their `intersectsArea` width
+relief; the shared width rule was narrowed to just those two.
+
+### Probes (scratch boards only, all deleted)
+
+| probe | expectation | result |
+|---|---|---|
+| baseline, no probe copper | 0 errors | **0** |
+| A - 0.15 mm neck wholly inside `E6_J1_40_WIDTH` | width relief granted | **no width error** |
+| B - same neck at x 32.5, outside every WIDTH area | width relief denied | **`P3V3 minimum width` 0.4000 vs 0.1500** |
+| C - R2.1 via inside `E6_R2_1_CLR`, attached to the pad | clearance relief granted | **all via clearance errors gone, no width error** |
+| D - same via straddling the CLR boundary | clearance relief denied | **3 clearance errors at netclass 0.200** |
+| E - neck endpoint exactly on the WIDTH boundary | unsafe | **width error - the end cap pokes out, as predicted** |
+| F - same neck with 0.150 mm overhang | safe | **no width error** |
+
+Probe E is the one that justifies the mandatory end-cap margin: an endpoint placed
+exactly on the boundary fails, the same endpoint pulled 0.150 mm inside passes.
+Residual `clearance` / `shorting_items` entries in A/C/E/F come from probe tracks
+drawn as straight lines rather than along the measured dogleg; they are not width
+or relief failures.
+
+### Preservation
+
+DRC 0 electrical errors before and after. 696 segments, 175 vias and all 188
+footprint blocks byte-identical; zones 24 -> 29 (5 renamed to `_CLR`, `E6_C18_1`
+repurposed, 5 new `_WIDTH`); NFC_IRQ still 0 tracks / 0 vias / 0 zones; x69.100
+staged and unchanged; no routed copper added, removed or modified.
