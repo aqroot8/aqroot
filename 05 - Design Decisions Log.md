@@ -8744,3 +8744,114 @@ differ - the two digit pairs of one polygon edge. NFC_IRQ still 0 tracks / 0 via
 / 0 zones. x69.100 remains staged.
 
 **No B3 copper was written in this commit.**
+
+## 2026-08-14 - +3V3 PASS B3: all seven pads routed
+
+First B3 copper. Seven orphan +3V3 pads joined the U12.4/U12.5 source island;
+112 track segments and 5 vias added, nothing removed.
+
+### Seeding and independence
+
+Every route was solved against the **one verified source island containing
+U12.4 and U12.5** (52 pads at HEAD). Orphan +3V3 pads and other candidates'
+narrow necks were carried as obstacles, so no pad borrowed another pad's neck.
+Candidate copper at >= 0.40 mm was allowed to merge, candidate copper below
+0.40 mm was not.
+
+### Per-pad result
+
+| pad | layers | topology | narrow | reduced-clr | vias |
+|---|---|---|---|---|---|
+| R2.1 | B.Cu -> F.Cu | narrow B.Cu dogleg -> POWER via (23.300, 36.000) -> normal F.Cu -> +3V3 trunk x=21.05 | 3.269 | 0.000 | 1 x 0.80/0.40 |
+| J1.40 | F.Cu | own neck -> east through `E6_J1_40_CLR` -> normal width -> via (32.350, 78.495) -> B.Cu backbone / R26.1 | 2.890 | 0.709 | 1 x 0.80/0.40 |
+| J1.41 | F.Cu | own north neck -> handoff y = 79.330 -> shared display branch | 0.820 | 0.000 | 0 |
+| J1.42 | F.Cu | own north neck -> handoff y = 79.330 -> shared display branch | 0.820 | 0.000 | 0 |
+| display branch | F.Cu | >= 0.40 mm only, via (29.500, 78.950) -> C13.1 | 0.000 | 0.000 | 1 x 0.80/0.40 |
+| R11.1 | B.Cu | narrow east past the `/I2C_SCL_INT` corner -> south -> +3V3 via (17.400, 47.050) / C4.1 | 3.589 | 0.580 | 0 |
+| R29.1 | F.Cu | normal width -> `E6_R29_1_WIDTH` neck -> `E6_R29_1_CLR` -> normal width -> existing +3V3 via (9.850, 33.350) | 2.181 | 0.403 | 0 |
+| C18.1 | F.Cu -> In2 -> B.Cu | **all normal width**, 0.65/0.40 vias at (18.900, 19.400) and (20.760, 21.730) | 0.000 | 0.000 | 2 x 0.65/0.40 |
+
+Caps: longest reduced-clearance run 0.709 mm (J1.40) against the 2.0 mm hard
+cap; longest narrow run 3.589 mm (R11.1) against the 6.0 mm review trigger.
+
+### J1 merge discipline
+
+| pad | own neck | first >= 0.40 node | merge point | merge width |
+|---|---|---|---|---|
+| J1.40 | (30.250, 80.150) -> (31.965, 78.270) | (31.9650, 78.2700) | via (32.350, 78.495) into the B.Cu +3V3 backbone | 0.40 / via 0.80 |
+| J1.41 | (29.750, 80.150) -> (29.750, 79.330) | (29.7500, 79.3300) | (29.550, 78.950) on the shared branch | 0.40 |
+| J1.42 | (29.250, 80.150) -> (29.250, 79.330) | (29.2500, 79.3300) | (29.450, 78.950) on the shared branch | 0.40 |
+
+Three separate single-pad necks; every merge happens in >= 0.40 mm copper. No
+narrow-to-narrow merge exists anywhere in the pass, so no 0.15 mm neck carries
+aggregate display current.
+
+### J1.42 north escape
+
+Achieved handoff **y = 79.330**, inside the verified legal band 79.320 .. 79.342
+and at the balance point (+0.010 mm containment margin, +0.011 mm clearance
+margin to the GND pad J1.43 corner). The neck is wholly enclosed by
+`E6_J1_42_WIDTH` under its new 79.245 north edge; it needs **no** clearance
+relief, so `E6_J1_42_CLR` carries 0.000 mm of this route.
+
+### Deviations from the pass brief, and why
+
+1. **J1.41 escapes north, not west.** The west route through `E6_J1_41_CLR` is
+   real (its 0.771 mm reduced-clearance pinch past the `/SPI_A_MISO` via at
+   (26.000, 81.500) measures out as documented), but west of the pocket there is
+   no +3V3 to reach: the only solved continuation ran ~15 mm south-east to
+   (32.640, 85.640) before it could via down. The north escape is 0.820 mm of
+   neck with zero reduced-clearance copper. J1.41's neck is enclosed by
+   `E6_J1_42_WIDTH`, which spans x 28.950-31.550 and therefore covers J1.41's
+   pad as well - the DRU width rule is geometric, not pad-scoped, so this is the
+   committed rule doing exactly what it says. `E6_J1_41_WIDTH` still encloses the
+   neck's southern part; `E6_J1_41_CLR` is unused this pass.
+2. **C18.1 needed In2.Cu and a second via.** F.Cu around C18.1 is a closed pocket
+   (USB_D_MCU_N north, the y=19.3-19.5 via row west, `/SPI_A_MISO` south), and
+   B.Cu below the approved via is closed too (`/SX1262_BUSY` north,
+   `/SPI_B_MOSI` south, the `/BMI270_INT1_STRAP` via east). Normal-width routing
+   therefore does not fail - it just cannot stay on two layers. The approved
+   0.65/0.40 via at (18.900, 19.400) is used exactly as ruled; a second
+   0.65/0.40 via at (20.760, 21.730) returns to B.Cu. Zero narrow copper, so
+   `E6_C18_1_WIDTH` is untouched and still needs no width relief.
+3. **R29.1 uses no new via**, as ruled - it lands on the existing +3V3 via at
+   (9.850, 33.350) after a 13 mm normal-width F.Cu trunk down the x=10.0 gap
+   between the C45/C47/C49/C51 pad columns.
+
+### Validation
+
+Complete-set validation before any live write: 112 segments and 5 vias checked
+for width-area enclosure, clearance under the correct relief, POWER via drill and
+annular floors, hole-to-hole between all five new vias, neck-to-neck separation,
+foreign +3V3 pad contact, cap limits, and union-find source connectivity -
+**0 violations**, all seven pads on the U12.4/U12.5 island. Scratch board with
+the identical copper: KiCad DRC **0 violations** with `--refill-zones`.
+
+### Live write and DRC
+
+Fresh writer prefix `b3f7c210`, verified absent first. After the write KiCad DRC
+reported 10 violations against **stored** zone fills - all five new vias against
+the not-yet-refilled `In1 GND REFERENCE` pour - and **0** with `--refill-zones`.
+The board was then refilled and saved, and DRC re-run on the saved board:
+**0 electrical errors**.
+
+### Preservation
+
+| quantity | before | after |
+|---|---|---|
+| track segments | 696 | 808 (+112, 0 removed) |
+| vias | 175 | 180 (+5, 0 removed) |
+| footprints | 188 | 188, 0 moved |
+| pads | 776 | geometry and net identical |
+| named zones | 30 | 30, every outline and layer set identical |
+| board ratsnest | 361 | 354 |
+| +3V3 ratsnest entries | 25 | 18 |
+| +3V3 islands | 26 | 19 |
+
+Every added object carries the `b3f7c210` prefix. All locked signal nets - USB,
+SPI-A, SPI-B, I2C, SX1262, CC1101, BMI270, display, SD_CS_N and GND - are
+track-for-track and via-for-via identical. NFC_IRQ remains 0 tracks / 0 vias /
+0 zones. x69.100 remains staged (2 tracks, 2 vias). The `.kicad_dru` was not
+touched and no rule area was modified. The large textual diff is KiCad
+re-serialising footprint order on the zone refill plus the In1 pour clearing the
+five new via holes; the structural audit above is what establishes preservation.
