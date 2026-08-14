@@ -8374,3 +8374,124 @@ probe C proves clearance is **not** relaxed anywhere.
 DRC 0 electrical errors before and after; ratsnest 384 unchanged; 638 tracks, 166 vias,
 776 pads and 188 footprints all bit-identical; every pre-existing rule area and rule
 untouched; the `.kicad_dru` change is a pure append.
+
+
+## 2026-08-14 - B3 rule correction: E6 areas moved to the MEASURED constrained regions
+
+### The defect this fixes
+
+The original E6 pockets were sized as "pad bbox + the first ~2 mm of the measured
+escape", assuming the sub-0.20 mm clearance region sits next to the pad. It does
+not. Measured against HEAD 7b16f0f, every one of the four hard pads needed its
+relief somewhere the pocket did not cover, and because the clearance rules use
+`enclosedByArea` a track leaving its pocket gets no relief along **any** of its
+length. That is why +3V3 Pass B3 wrote zero copper.
+
+### CTO cap interpretation (now binding)
+
+The 2.0 mm E6 cap means **maximum length of copper running below normal
+clearance**. It is NOT a cap on sub-0.40 mm-width length. A narrow-width run at
+normal clearance may exceed 2.0 mm as geometry requires; any single narrow-width
+run over **6.0 mm** requires a fresh ruling before routing.
+
+### R2.1 - reclassified from corridor relief to VIA-SITE relief
+
+R2.1 needs **0.000 mm** of reduced-clearance track. Its entire relief requirement
+is one through via at **(23.300, 36.000)**, B.Cu to F.Cu, after a short B.Cu
+dogleg. The old ~4.75 mm reduced-clearance corridor is abandoned.
+
+Hole-referenced fab arithmetic (the governing metric is hole-to-copper, not
+pad-to-copper):
+
+| quantity | value |
+|---|---|
+| via pad / drill (POWER class) | 0.800 mm / 0.400 mm |
+| annular ring width | 0.200 mm |
+| In2 annular ring | present (`remove_unused_layers no`) |
+| copper-edge clearance to In2 `/WAKE_INT_N` | 0.100 mm |
+| **hole-edge to `/WAKE_INT_N`** | **0.300 mm** |
+| JLCPCB via hole to copper requirement | 0.200 mm |
+| margin | **+0.100 mm** |
+
+0.300 >= 0.200, and also >= the 0.225 mm target (0.200 floor + 0.025 design
+margin), so the candidate survives and no Option-B re-search was needed.
+`E6_R2_1` therefore becomes a tight multilayer via-site area. The copper-to-copper
+relief it must grant at that site is 0.100 mm (In2 `/WAKE_INT_N`), 0.114 mm (B.Cu
+pad U1.28), 0.125 mm (via `/SD_CS_N`) and 0.159 mm (B.Cu pad U1.27), all covered
+by the approved 0.100 mm figure.
+
+### Relocated rule areas
+
+| area | was | now | layers | measured reduced-clearance run |
+|---|---|---|---|---|
+| `E6_R2_1` | x 20.425-21.925, y 35.025-38.325, B.Cu | x 22.800-23.800, y 35.500-36.500 | F.Cu In1.Cu In2.Cu B.Cu | 0.000 mm (via only) |
+| `E6_J1_40` | x 29.750-30.750, y 77.535-81.115 | x 30.950-31.800, y 78.150-78.550 | F.Cu | 0.641 mm, east |
+| `E6_J1_41` | x 29.250-30.250, y 77.535-81.115 | x 25.500-26.500, y 80.850-81.200 | F.Cu | 0.771 mm, west |
+| `E6_J1_42` | x 28.750-29.750, y 77.535-81.115 | x 30.400-31.550, y 80.850-82.000 | F.Cu | 1.541 mm, south |
+| `E6_R11_1` | x 14.975-18.125, y 44.675-46.325 | x 18.150-18.800, y 45.800-46.350 | B.Cu | 0.504 mm, east |
+
+Each rectangle is the measured tight region plus 0.150 mm for the 0.15 mm track
+body and the 0.05 mm search grid - tight containment per doctrine, not the whole
+narrow track. The three J1 escapes were validated **sequentially**, each committed
+neck blocking the next, so all three fit simultaneously with separate necks. They
+leave in three different directions and merge only in normal-width F.Cu copper.
+
+### C18.1 - NOT changed, needs a ruling
+
+C18.1 measures **0.000 mm** of reduced-clearance track and a 0.612 mm narrow run.
+Its only relief candidate is a via at (18.900, 19.400) F.Cu to In2.Cu whose gap to
+both B.Cu `/SX1262_BUSY` and In2 `/I2C_SCL_INT` is **exactly 0.200 mm** - it
+already meets the ordinary requirement and needs no clearance relief at all
+(hole-referenced 0.400 mm, +0.200 mm margin). Turning `E6_C18_1` into a via-site
+area, or deleting its clearance rule, is beyond a relocation, so its pocket was
+left untouched pending a ruling.
+
+### R29.1 - earlier reclassification withdrawn
+
+An earlier recommendation to demote R29.1 to width-only was based on an
+endpoint-only spot check and is **wrong**. Under the proper test R29.1 is not
+inside source-connected 0.15 mm / 0.20 mm space, so it remains an E6
+clearance-relief pad. Its rule was not touched.
+
+### Existing E6 routed-copper sweep
+
+No routed copper currently leans on any E6 rule - B3 wrote nothing and Passes
+A/B1/B2 routed at normal width and clearance - so the retrospective cap audit
+passes with nothing to grandfather. KiCad DRC is authoritative and reports 0
+errors. An offline sweep flagged several power-net pairs, but that model is not
+parity-validated for the elevated-clearance netclasses and KiCad does not agree,
+so no violation is claimed. One observation worth carrying: a pre-existing 0.300 mm
++3V3 segment at (65.500, 52.400)-(66.000, 52.400) on F.Cu sits below the 0.40 mm
+P3V3 outer floor and intersects no rule area, yet KiCad raises no width error. It
+is outside every B-pass region and was not touched.
+
+### Acceptance probes
+
+Scratch boards only; no probe copper reached the real board. Probe boards need the
+`.kicad_pro` copied alongside them (netclass assignments) and `--refill-zones`, or
+an isolated through via merges into the In1 GND pour and the results are garbage.
+Both mistakes were made and corrected before these numbers were taken.
+
+| probe | expected | result |
+|---|---|---|
+| baseline scratch board, no probe copper | 0 errors | **0** |
+| A - +3V3 via at (23.300, 36.000) inside `E6_R2_1`, attached to R2.1 | relief applies | **all three via clearance violations gone** |
+| B - same via outside the area | FAIL | falls back to netclass 0.200 mm |
+| C - 0.15 mm track straddling the `E6_J1_40` boundary | FAIL | `netclass 'P3V3' clearance 0.2000` - relief refused |
+| C2 - same track wholly inside `E6_J1_40` | relief applies | `rule 'E6_J1_40: measured local +3V3 clearance 0.120 mm'` fires |
+
+C versus C2 is the leak test: `enclosedByArea` grants relief only to a wholly
+contained object. Probe A's residual `shorting_items` is the straight-line probe
+track clipping the `/CC1101_GDO0` via, which the real 2.916 mm dogleg route avoids.
+
+### Open item before B3 copper
+
+These areas grant clearance relief on the tight region only. The **width** relief
+for the narrow runs (R2.1 2.916 mm, J1.40 2.394 mm, J1.41 4.478 mm, J1.42 3.506 mm,
+R11.1 2.911 mm) comes from the shared `intersectsArea` width rule, which is
+per-object - so every narrow segment must individually touch its area, or separate
+width-only areas must be defined. This pass does not resolve that.
+
+DRC 0 electrical errors before and after; 696 tracks and 175 vias byte-identical;
+all 188 footprint blocks byte-identical (file order changed only because KiCad
+re-serialised on zone refill); exactly 5 zones changed; NFC_IRQ still 0/0/0.

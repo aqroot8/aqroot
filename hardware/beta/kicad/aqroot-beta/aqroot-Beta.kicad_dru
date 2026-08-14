@@ -716,3 +716,35 @@
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
 	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_35')"))
 
+
+# =====================================================================
+# 17. E6 AREA GEOMETRY - CORRECTED 2026-08-14 (rules-only, no copper)
+#
+# The section 13 pockets were pad-centred; the measured sub-0.20 mm
+# clearance regions are NOT pad-centred, so the areas below were moved
+# onto the measured regions.  Tight containment: each holds ONLY the
+# reduced-clearance region, not the whole narrow track.
+#
+#   E6_R2_1   x 22.800-23.800  y 35.500-36.500  F/In1/In2/B
+#             VIA-SITE relief, through via (23.300, 36.000)
+#             hole-edge to In2 /WAKE_INT_N = 0.100 + 0.200 ring
+#             = 0.300 mm  vs  JLCPCB 0.200 mm  ->  +0.100 mm
+#             reduced-clearance TRACK length: 0.000 mm
+#   E6_J1_40  x 30.950-31.800  y 78.150-78.550  F.Cu   0.641 mm east
+#   E6_J1_41  x 25.500-26.500  y 80.850-81.200  F.Cu   0.771 mm west
+#   E6_J1_42  x 30.400-31.550  y 80.850-82.000  F.Cu   1.541 mm south
+#   E6_R11_1  x 18.150-18.800  y 45.800-46.350  B.Cu   0.504 mm east
+#
+#   E6_C18_1  UNCHANGED - measures 0.000 mm reduced-clearance track and
+#             its via site already meets 0.200 mm.  Awaiting a ruling.
+#   E6_R29_1  UNCHANGED - stays an E6 clearance-relief pad.  The earlier
+#             width-only reclassification was withdrawn.
+#
+# NECK DOCTRINE (CTO, 2026-08-14):
+#   2.0 mm HARD cap = length of copper BELOW NORMAL CLEARANCE.
+#   It is NOT a cap on sub-0.40 mm-width length.
+#   Any single narrow-width run > 6.0 mm needs a new ruling first.
+#
+# Comments only - no rule is defined in this section, so the
+# last-match precedence tail is unaffected.
+# =====================================================================
