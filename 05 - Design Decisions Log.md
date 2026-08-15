@@ -9670,3 +9670,197 @@ objects after the refill/save.
 
 The deferred items are unchanged: the R29.1 NFC-channel dependency, the banked
 (9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
+
+
+## 2026-08-15 - J5 GND thermal relief + U3-wall budget ledger (rules/assembly only, no signal copper)
+
+Batch 1 stopped on two independent findings. This commit resolves both without
+routing anything.
+
+### Finding 1 - all five J5 GND barrels were solid-connected
+
+`In1 GND REFERENCE` carries **`(connect_pads yes (clearance 0.25))`**. In KiCad
+`yes` means **solid**, not thermal relief - the default (no qualifier) is thermal.
+It is the **only** zone on the board using `yes`, and J5's five GND pads carried no
+`zone_connect` override, so all five inherited a solid plane connection.
+
+That is electrically excellent and thermally hostile for a **26-pin through-hole**
+connector: a solid tie to a full inner plane sinks soldering heat away from the
+barrel, which is the classic cause of cold joints and incomplete barrel fill on
+hand- and wave-soldered headers. It is exactly the part on this board where it
+matters most.
+
+### Ruling applied
+
+**Change locally, not board-wide.** The zone default is untouched; the board's
+other 14 through-hole GND pads and its 15 `zone_connect 2` heatsink overrides keep
+their existing solid behaviour. Only J5 changes.
+
+`(zone_connect 1)` added to exactly five pads, inserted between `(net "GND")` and
+`(uuid ...)` to match the board's existing canonical ordering. **No thermal
+parameters were invented** - spoke width, spoke count and gap are all inherited
+from the zone's own `(thermal_gap 0.5) (thermal_bridge_width 0.5)`.
+
+| pad | pad uuid | centre | before | after |
+|---|---|---|---|---|
+| J5.2  | `a1d829e4-...-e89ee4ef8b80` | (52.240, 6.580) | SOLID | thermal, 4 spokes |
+| J5.7  | `e97bfc7f-...-9493e8d23fef` | (44.620, 4.040) | SOLID | thermal, 4 spokes |
+| J5.13 | `17ea4000-...-8f4c25f37121` | (37.000, 4.040) | SOLID | thermal, 4 spokes |
+| J5.20 | `d0dce24f-...-bfdb123a5413` | (29.380, 6.580) | SOLID | thermal, 4 spokes |
+| J5.25 | `4f1d3bec-...-4c95ad5feca8` | (21.760, 4.040) | SOLID | thermal, 4 spokes |
+
+### Measured result
+
+Geometry read back from the refilled fill polygon, not from the settings.
+
+| | control (HEAD, refilled) | after |
+|---|---|---|
+| copper at r = 0.95 / 1.10 / 1.20 / 1.30 mm | **100 %** all round | **4 arcs**, 34.0 / 29.3 / 26.8 / 24.6 % |
+| spoke chord | n/a | **0.502, 0.502, 0.502, 0.502 mm** (0.499 at r = 1.30) |
+| spoke orientation | n/a | 45 deg / 135 deg / 225 deg / 315 deg |
+| copper first reached, on-spoke | r = 0.510 (drill edge) | **r = 0.512** |
+| copper first reached, off-spoke | r = 0.510 | **r = 1.350** |
+| implied thermal gap | 0 | **0.500 mm** = 1.350 - 0.850 pad radius |
+
+All five pads measure identically. Spoke width **0.500 mm** and gap **0.500 mm**
+both equal the zone's declared values, confirming inheritance rather than override.
+Copper removed per pad **4.21-4.29 mm2**.
+
+### Blast radius
+
+The comparison baseline is HEAD's board put through the **identical**
+`--refill-zones --save-board` cycle, so KiCad writer churn cancels out and only the
+edit shows.
+
+- **One** zone's fill changed: `In1 GND REFERENCE`. The other 30 are byte-identical.
+- Zone outlines, layers, net assignments and fill settings: **0 changes**, all 31.
+- Exact scanline coverage diff over the whole In1 fill (7 690 rows at 0.020 mm):
+  **21.338 mm2 differs, and 0 of it lies more than 2.0 mm from a J5 GND pad centre.**
+  Per pad: J5.2 4.261, J5.7 4.292, J5.13 4.292, J5.20 4.288, J5.25 4.205 mm2.
+- The 89 changed fill *vertices* outside that radius are polygon-fracture
+  re-topology - the coverage diff proves they move no copper. Vertex lists are not
+  a sound blast-radius test for a fractured zone; area is.
+- All **14** non-J5 through-hole GND pads measured **SOLID before and SOLID after**.
+  SMD GND pads sit on F.Cu/B.Cu and never touch In1; no F/B zone fill changed.
+- In1 island count **1 -> 1**. `island_removal_mode 0`, so an orphaned island would
+  have been deleted rather than kept - it was not. All five spokes land in the one
+  island, so every J5 GND barrel remains on the same plane island as before.
+- Unconnected **336 -> 336**; entries naming GND **178 -> 178**. No GND pad became
+  unconnected.
+
+### GND self-fanout: unchanged
+
+GND remains **excluded** from `J5_SELF_FANOUT`; the allowlist still holds exactly
+21 nets and the `.kicad_dru` is byte-identical to HEAD. No GND fanout tracks were
+added and none are required - the plated barrels land directly on the In1 plane,
+and the four thermal spokes are that connection. `J5_SELF_FANOUT` geometry is
+byte-identical: x 20.400-54.250, y 3.650-9.400, B.Cu only.
+
+### J5 in-reservation length budget ledger
+
+Budgets cap the length a J5 escape may spend **inside HEADER RESERVED**. They are
+independent of DRC: a route over budget is rejected even at 0 violations.
+
+| scope | budget | status |
+|---|---|---|
+| south row, general | <= 4.0 mm | unchanged |
+| north row, general | <= 8.0 mm | unchanged |
+| **J5.24** `WAKE_ATTN_N_HDR` | **<= 8.0 mm** | new, pin-specific |
+| **J5.26** `ACC_3V3_SW` | **<= 11.5 mm** | new, pin-specific |
+
+**Reason for both: the U3 structural wall.** U3's pin row occupies
+x 18.225-25.775, y 8.700-10.175 on B.Cu at 0.65 mm pitch with 0.40 mm pads, leaving
+**0.25 mm** inter-pad gaps. A 0.40 mm track needs 0.80 mm and even a 0.20 mm track
+needs 0.60 mm, so **nothing can pass through it**. J5 columns c1 (x 21.760) and c2
+(x 24.300) sit directly above that wall and therefore have no southward exit at
+all; their escapes must run east inside the reservation past x ~ 26 before turning
+south. c3 (x 26.840) and everything east are clear - J5.22 measures 2.775 mm and
+J5.21 4.853 mm, both inside the general budgets.
+
+Measured minima, at 0.020 mm grid with a heavy in-reservation cost penalty:
+
+- **J5.24: 7.053 mm.** Below the north-row default of 8.0 mm. The 4.0 mm south-row
+  figure presumes a clear straight-down exit, which c2 does not have; with the wall
+  in place a c2 south pin behaves exactly like a north pin. Its own column-mate
+  J5.23 needs 7.065 mm and already passes at 8.0.
+- **J5.26: 11.130 mm**, and **stable at in-reservation penalty weights 25, 120 and
+  400** - it is the geometric minimum, not a search artefact. J5.26 is the worst
+  case on the board: furthest west, 0.40 mm wide as a P3V3 member, and every one of
+  its endpoints (U16.8, C42.2, C38.1, R46.2, U15.6, R49.2, R50.2, TP12.1) lies east
+  of U3. Budget set to 11.5 mm, 0.370 mm of headroom.
+
+**Both allowances are pin-specific, one-pin, one-net, non-transferable and
+non-precedential.** They do not change the general J5 doctrine, do not extend to
+any other pin in columns c1/c2, and do not authorise lateral crawling as a
+technique. The earlier 22.84 mm ACC_3V3_SW candidate stays rejected.
+
+### Verification
+
+DRC **0 errors** at every stage: baseline, after refill, on the saved board, and on
+reload. 241 warnings throughout (138 silk_over_copper, 96 silk_overlap, 3
+track_dangling, 3 silk_edge_clearance, 1 text_height) - **the violation set is
+identical to baseline, 0 new and 0 gone**. Unconnected 336 -> 336.
+
+Preservation: 887 segments and 187 vias **identical including UUIDs**, 0 added and
+0 removed; 776 pads with **exactly 5 differing**, each differing by a single added
+`(zone_connect 1)` line and nothing else; 188 footprints, **0 moved**; 31 zones with
+0 outline or settings changes. No writer prefix was consumed - this commit creates
+no new PCB objects and allocates no new UUIDs.
+
+**No J5 signal copper in this commit.** J5.26, J5.24 and J5.23 remain unrouted;
+Batch 1 is cleared to re-run against the updated budgets.
+
+### Incidental finding - two duplicated footprint UUIDs (pre-existing, ledgered not fixed)
+
+The `git diff` for this commit is larger than the edit warrants (387 insertions /
+285 deletions on the PCB). Investigated before committing; the cause is **not** this
+edit.
+
+The board carries **two pairs of footprints that share a UUID**:
+
+| uuid | shared by |
+|---|---|
+| `278e2d40-a98c-...` | **C50** (22, 26.9) and **C55** (22.225, 29.4, -90) |
+| `454b77f7-5a39-...` | **C13** (28.5, 79, 180) and **C56** (46.1, 82.5) |
+
+188 footprints, 188 distinct references, but only 186 distinct footprint UUIDs; 776
+pads, 772 distinct pad UUIDs (the four cloned pads follow their parents). The
+signature of a copy-pasted footprint that kept its source's identity.
+
+KiCad **reorders each duplicated pair when it saves**. Putting HEAD's board through
+an identical `--refill-zones --save-board` with **no edit at all** produces exactly
+that and nothing else:
+
+```
+HEAD -> control (KiCad writer only)
+  segments   887 -> 887   differing: 0
+  vias       187 -> 187   differing: 0
+  zones       31 ->  31   differing: 0     (outline + settings)
+  footprints 188 -> 188   differing: 2     index 16: C55 -> C50
+                                           index 17: C50 -> C55
+```
+
+That accounts for the whole 44-line churn; the rest of the diff is the In1 fill.
+Verified harmless by reference-keyed comparison against HEAD: **747 reference-keyed
+pad entries, key sets identical, 0 pads changed net or parent placement.** C50 keeps
+`NFC_VDD_RF`/`GND` at (22, 26.9); C55 keeps `NFC_5V_PA_PENDING`/`GND` at
+(22.225, 29.4, -90); C13 and C56 both keep `+3V3`/`GND` at their own positions.
+Nothing moved and nothing was renamed - only the order of two blocks in the file.
+
+It also explains the six ratsnest entries that swapped representative endpoints
+between DRC runs (C50 <-> C55, and J3 pad B12 <-> A1): the unconnected **count is
+336 in both**, and the representative chosen among electrically equivalent endpoints
+follows file order.
+
+**Not fixed here.** Reassigning a footprint UUID is a footprint-identity change with
+its own blast radius - it is what schematic/PCB back-annotation matches on - and
+this is a rules/assembly commit. Consequences to carry:
+
+- UUID-keyed preservation audits silently collapse these four footprints and four
+  pads. **Use index-keyed or reference-keyed comparison for them.** Every audit in
+  this commit was re-run positionally for exactly that reason.
+- Every future `--save-board` will re-emit the same 44-line reorder, so a small
+  unexplained diff on those two pairs is expected and is not evidence of a change.
+
+Added to the deferred-defects ledger alongside the R29.1 NFC-channel dependency, the
+banked (9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
