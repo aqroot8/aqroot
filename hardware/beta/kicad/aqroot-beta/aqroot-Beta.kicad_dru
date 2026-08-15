@@ -591,10 +591,10 @@
 # explicit leak probe rather than assumed.
 # =====================================================================
 
-(rule "HEADER RESERVED: no tracks or vias, except the scoped U3.21 +3V3 escape"
+(rule "HEADER RESERVED: no tracks or vias, except the scoped U3.21 +3V3 escape and J5 self-fanout"
 	(severity error)
 	(constraint disallow track via)
-	(condition "A.intersectsArea('HEADER RESERVED') && !(A.NetName == '+3V3' && A.enclosedByArea('U3_21_ESCAPE'))"))
+	(condition "A.intersectsArea('HEADER RESERVED') && !((A.NetName == '+3V3' && A.enclosedByArea('U3_21_ESCAPE')) || (A.enclosedByArea('J5_SELF_FANOUT') && (A.NetName == '+3V3' || A.NetName == '/09_COMMUNITY_HEADER/ACC_3V3_SW' || A.NetName == '/09_COMMUNITY_HEADER/FAST_IO_GPIO43_HDR' || A.NetName == '/09_COMMUNITY_HEADER/I2C_SCL_EXT_HDR' || A.NetName == '/09_COMMUNITY_HEADER/I2C_SDA_EXT_HDR' || A.NetName == '/09_COMMUNITY_HEADER/RESERVED_NC' || A.NetName == '/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO0_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO10_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO11_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO12_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO13_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO1_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO2_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO3_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO4_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO5_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO6_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO7_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO8_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO9_HDR')))"))
 
 # ---------------------------------------------------------------------
 # 15. PER-PAD E6 CLEARANCES - MEASURED, NOT ASSUMED

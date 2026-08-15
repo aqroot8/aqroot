@@ -9467,3 +9467,120 @@ unrouted.
 
 The R29.1 NFC-channel dependency, the banked (9.050, 19.950) via and the 0.300 mm
 segment at (65.500-66.000, 52.400) are all carried forward untouched.
+
+## 2026-08-14 - J5 shared self-fanout exception (rules only, no copper)
+
+Pass D found that the approved J5 self-fanout decision had never been encoded. The
+DRU's own comment said so: *"J5's own fanout exception is unchanged: it was never a
+track/via rule."* The reservation's only encoded exception was `U3_21_ESCAPE`, so
+**every** track leaving **any** J5 pad was disallowed - all 26 pads sit inside
+HEADER RESERVED. This commit encodes the exception.
+
+### Architecture
+
+One shared area, not 26 per-pin areas, with authorisation keyed on **both**
+enclosure and net identity.
+
+| | |
+|---|---|
+| area | **`J5_SELF_FANOUT`** |
+| layer | **B.Cu only** |
+| polygon | **x 20.400-54.250, y 3.650-9.400** (33.850 x 5.750 mm) |
+| portion inside HEADER RESERVED | y 3.650-8.500, **4.850 mm tall** |
+
+B.Cu only, deliberately: J5.1's measured route is B.Cu with no via, and a
+single-layer area can never wholly enclose a through via - the same leak-proofing
+that makes `U3_21_ESCAPE` safe. F.Cu permission and via permission are **not**
+granted pre-emptively; a later J5 pin that demonstrably needs either must be
+measured and returned for a scoped extension.
+
+Geometry derivation: the J5 pad field is x 20.910-53.090, rows at y = 4.040 and
+6.580 with pad extents y 3.190-4.890 and 5.730-7.430; the courtyard is
+x 20.240-53.760, y -0.250-7.680. The north edge 3.650 clears a 0.60 mm cap from a
+north-row pad centre (3.740) with 0.09 mm to spare; the south edge 9.400 encloses a
+0.60 mm track ending at y = 9.000, whose 8.700 cap already clears the reservation.
+The area therefore covers the pad field and its southern escape apron and nothing
+else - it does not reach the board edge and does not reuse the reservation
+rectangle (37.0 x 8.5 mm).
+
+### Net scope
+
+Enumerated from the board: J5 carries **22 distinct nets** across 26 pads.
+**21 are authorised**; `GND` is deliberately excluded.
+
+```
++3V3
+/09_COMMUNITY_HEADER/ACC_3V3_SW          /09_COMMUNITY_HEADER/XGPIO0_HDR
+/09_COMMUNITY_HEADER/FAST_IO_GPIO43_HDR  /09_COMMUNITY_HEADER/XGPIO1_HDR
+/09_COMMUNITY_HEADER/I2C_SCL_EXT_HDR     /09_COMMUNITY_HEADER/XGPIO2_HDR
+/09_COMMUNITY_HEADER/I2C_SDA_EXT_HDR     /09_COMMUNITY_HEADER/XGPIO3_HDR
+/09_COMMUNITY_HEADER/RESERVED_NC         /09_COMMUNITY_HEADER/XGPIO4_HDR
+/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR     /09_COMMUNITY_HEADER/XGPIO5_HDR
+/09_COMMUNITY_HEADER/XGPIO9_HDR          /09_COMMUNITY_HEADER/XGPIO6_HDR
+/09_COMMUNITY_HEADER/XGPIO10_HDR         /09_COMMUNITY_HEADER/XGPIO7_HDR
+/09_COMMUNITY_HEADER/XGPIO11_HDR         /09_COMMUNITY_HEADER/XGPIO8_HDR
+/09_COMMUNITY_HEADER/XGPIO12_HDR
+/09_COMMUNITY_HEADER/XGPIO13_HDR
+```
+
+**GND excluded, and why.** GND is present on J5.2/.7/.13/.20/.25, so it is
+technically J5-owned - but it is also the most widespread net on the board, and
+authorising it would let *any* GND track anywhere in the band use the exception.
+J5's GND pins are through-hole barrels landing directly on the continuous In1 GND
+reference plane, so they need no fanout copper at all. Excluding GND costs nothing
+and is what makes the leak probes meaningful. Reversing it is a one-token change
+(`|| A.NetName == 'GND'`) if a future pass proves a need.
+
+### Final HEADER RESERVED condition
+
+```
+A.intersectsArea('HEADER RESERVED') && !(
+    (A.NetName == '+3V3' && A.enclosedByArea('U3_21_ESCAPE'))
+ || (A.enclosedByArea('J5_SELF_FANOUT') && ( <21 J5-owned net names OR'd> ))
+)
+```
+
+Permission requires **both** enclosure and net identity. `U3_21_ESCAPE` is
+untouched and still works.
+
+### Anti-leak probes
+
+Scratch boards only; no probe copper reached the real board.
+
+| probe | expected | result |
+|---|---|---|
+| A  J5.1 +3V3 wholly inside the area | PASS | **0 HDR violations** |
+| B  J5.26 ACC_3V3_SW inside the area | PASS | **0** |
+| C  unrelated `/XGPIO0` inside the area | FAIL | **items_not_allowed** |
+| C2 GND (J5-owned, not authorised) | FAIL | **items_not_allowed** |
+| D  J5 net in the reservation but outside the area | FAIL | **items_not_allowed** |
+| E  J5 net straddling the area boundary | FAIL | **items_not_allowed** |
+| F  unrelated net crossing horizontally | FAIL | **items_not_allowed** |
+| G  existing U3.21 escape | PASS | **0** |
+| H  through-via inside the B.Cu-only area | FAIL | **items_not_allowed** |
+
+Two probes had to be rebuilt before they meant anything. The first straddle probe
+sat entirely south of y = 8.5, so it never intersected the reservation and the rule
+was correctly silent. The first horizontal-crossing probe was drawn long enough to
+**touch the committed U3.21 escape copper**, so KiCad re-netted it to +3V3 - an
+authorised net - and it passed. Both were re-cut to test what they were meant to
+test, and both then failed as required.
+
+### Residual property, stated plainly
+
+A shared area necessarily lets **any authorised J5 net move laterally inside the
+band**, including +3V3. A +3V3 corridor across the connector is therefore not
+forbidden by geometry alone. It is unmotivated in practice - +3V3's only J5 pad is
+J5.1 at the far east and the +3V3 trunk is east of it - and the band is only
+4.850 mm tall inside the reservation, but it is a real consequence of the
+one-shared-area mandate and is recorded here rather than glossed. Unrelated nets
+remain fully excluded, which is what the doctrine protects.
+
+### Verification
+
+DRC **0 before and after**. 883 tracks and 187 vias **identical including UUIDs**;
+776 pads identical; 188 footprints, 0 moved; 30 -> 31 zones with the only change
+being the added `J5_SELF_FANOUT`, and no existing zone outline altered. Exactly one
+of 70 DRU rules changed; rule count unchanged. Writer prefix `5e1f0a75` (8 hex).
+
+**No copper was routed in this commit.**
