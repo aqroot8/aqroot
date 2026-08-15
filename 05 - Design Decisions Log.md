@@ -9584,3 +9584,89 @@ being the added `J5_SELF_FANOUT`, and no existing zone outline altered. Exactly 
 of 70 DRU rules changed; rule count unchanged. Writer prefix `5e1f0a75` (8 hex).
 
 **No copper was routed in this commit.**
+
+## 2026-08-14 - +3V3 PASS D: J5.1 self-fanout. +3V3 IS COMPLETE
+
+The last routable +3V3 pad. Four segments, no vias, B.Cu only, all 0.60 mm.
+**+3V3 ratsnest 1 -> 0; +3V3 islands 2 -> 1.**
+
+### Route
+
+| # | from | to | length |
+|---|---|---|---|
+| 1 | (52.240, 4.040) | (53.850, 5.650) | 2.277 mm - 45 deg out of the pad, eastward |
+| 2 | (53.850, 5.650) | (53.850, 9.000) | 3.350 mm - south along the connector's east edge |
+| 3 | (53.850, 9.000) | (53.850, 10.400) | 1.400 mm - clear of the reservation |
+| 4 | (53.850, 10.400) | (55.350, 10.400) | 1.500 mm - onto the Pass-A +3V3 B.Cu trunk |
+
+Total **8.527 mm**, of which **5.127 mm** lies inside HEADER RESERVED. Segments 1
+and 2 are the only ones that intersect the reservation and **both are wholly
+enclosed by `J5_SELF_FANOUT`**; segments 3 and 4 clear it entirely, so the split at
+y = 9.000 is what keeps segment 3 out of the exception's scope.
+
+**Minimum clearance 0.2940 mm**, limited by J5.2's GND through-hole pad
+(51.390-53.090, 5.730-7.430) - J5.1's own row-mate.
+
+### Why this topology
+
+J5.1 is the **easternmost pin of the north row**, so it escapes away from every
+other pin. Copper crossing in front of another pad: **0**. Horizontal copper
+spanning the reservation: **0**. The only J5 pad within 0.5 mm is J5.2 directly
+below it. The main south fanout field - x 20.9-51.4, y 7.68-8.5 - is left entirely
+free for the remaining 25 pins, which is the point: the first pin routed out of a
+26-pin header must not be the one that seals the field.
+
+### Mechanical - FAB VERIFY carried forward
+
+J5 remains a **FAB VERIFY** item. The southward run spans x 53.550-54.150 against a
+courtyard east edge of 53.760, so **0.210 mm of the trace width sits under the
+courtyard**. That is not a violation - a courtyard is placement metadata, not a
+copper keepout, and this is a right-angle connector whose body sits above the
+board. What stays on the verify list is the **0.294 mm B.Cu clearance to J5.2's
+through-hole pad on the solder side**: the soldermask web there is thin, and the
+assembly process should be confirmed at fab lock. Not a Beta routing blocker.
+
+Board-edge geometry is comfortable: minimum copper-to-north-edge 3.740 mm against
+the 0.500 mm floor, and 18.350 mm to the east edge. The only nearby through-hole is
+D1.1 at (59.500, 4.000), 5.6 mm away.
+
+### Verification
+
+Candidate DRC **0** before the live write. After the write, DRC **0** with
+`--refill-zones`; after `--refill-zones --save-board`, **0 electrical errors** on
+the saved board. Unconnected 337 -> 336.
+
+### +3V3 completion audit
+
+| | |
+|---|---|
+| +3V3 ratsnest | **1 -> 0** |
+| +3V3 islands | **2 -> 1** |
+| source-island pads | 75 -> **76** |
+| +3V3 pads not on the U12.4/U12.5 island | **none** |
+| +3V3 copper | 318 tracks, 34 vias, 612.0 mm |
+| sub-0.40 mm +3V3 segments | 72, every one inside its own E6 width area |
+| In2 +3V3 crossing the 915 band | exactly one - the authorised x69.100 crossing |
+
+Passes A, B1, B2, B3, B4, B5, C and D are all closed. x69.100 is consumed and its
+four original objects are still byte-identical. No dangling +3V3 copper, no second
+E5 crossing, no accidental RF-band transit, no unintended E6 usage.
+
+### RF / reserved audit for this pass
+
+915 band **0**, 433 band **0**, NFC RESERVED **0**, WROOM keepout **0**. Two
+segments inside HEADER RESERVED, both enclosed by `J5_SELF_FANOUT` as the new rule
+requires. In1.Cu still carries **0 tracks** - the GND reference remains a pure
+plane. NFC_IRQ 0/0/0, no NFC_DEFERRED copper.
+
+### Preservation
+
+887 tracks (+4, 0 removed), 187 vias (+0). Every pre-existing track and via
+**identical including UUIDs**; B3 (112+5), B4 (7+0), B5 (31+1) and Pass C (37+6)
+all identical including UUIDs; 776 pads identical; 188 footprints, 0 moved; zero
+zone outline or layer differences; the `.kicad_dru` untouched by this commit.
+Writer prefix `d15ea5ed`, verified absent beforehand and still carried by all four
+objects after the refill/save.
+
+The deferred items are unchanged: the R29.1 NFC-channel dependency, the banked
+(9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
