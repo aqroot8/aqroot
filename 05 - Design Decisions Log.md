@@ -10184,3 +10184,192 @@ The three `via_dangling` warnings at (20.020, 114.650), (51.280, 114.450) and
 
 **E2 is therefore NOT hard-locked.** R5.2/+3V3 is solved and locked as a local
 architecture; the E2 block itself stays open until the three switch legs land.
+
+## 2026-08-17 - E2 CLOSEOUT: Option D. BTN_DOWN/A/HOME complete, E2 HARD-LOCKED
+
+CTO approved **Option D**. Option E (extend `E2_ESC_A` east) is archived as the
+alternate; options C and F were rejected. **No DRU change** was made, no new
+crossing rule was created, and the sanctioned C-W In2 crossing was retained.
+
+### What was actually blocking BTN_A
+
+The inter-band gap - the 1.000 mm lane between the 915 band (ends y = 114.000)
+and the 433 band (starts y = 115.000) - is only **0.800 mm** of legal centreline
+for a 0.20 mm track. A 0.60/0.30 via needs **1.200 mm**, so **any via in that gap
+seals it end to end**. The gap is therefore divided into compartments by the
+E2_GND_SW escape vias at x = 8.370, 9.520, 17.480, 27.980, 30.520, 38.480 and
+41.820.
+
+BTN_A's escape lands at (51.280, 114.450), in the compartment bounded west by the
+GND via at 41.820 and east by **BTN_HOME's escape via at (52.580, 114.650)**. No
+E5 corridor overlaps x 42-52 - C-W ends at 20.000, E4 starts at 53.000 - so BTN_A
+had no reachable crossing. Removing the HOME via merges that compartment with the
+eastern region and BTN_A immediately routes.
+
+### HOME Option D rework
+
+| removed | |
+|---|---|
+| via `0c09d594-...eaaf1538` | (52.580, 114.650) 0.60/0.30 - the gap via |
+
+The 21.6 mm F.Cu escape run `(52.580,136.250)-(52.580,114.650)` was **retained and
+reused**: the new route starts at the very tip the via vacated, so the run is used
+end to end and leaves no stub. Only one object was removed.
+
+New HOME copper, **83.450 mm, 24 segments, 1 via**:
+
+```
+F.Cu   (52.650,114.650) east along the inter-band gap to (63.900,115.300)
+F.Cu   south/east around the 433 band, x >= 52.65 throughout
+F.Cu   (54.950,138.400) -> ... -> (41.550,139.300)   now south of the band
+VIA    (41.350,139.500) 0.60/0.30
+In2.Cu (41.350,139.500) -> ... -> (13.800,141.000)   C-W crossing SOUTH end
+```
+
+**First-via band clearance** (§5, tested on the envelope, not the centre):
+
+```
+via centre                          (41.350, 139.500)
+diameter / drill                    0.60 / 0.30
+required clearance                  0.20
+via copper north edge               139.200
+clearance-envelope north edge       139.000
+433 band south boundary             138.000
+MARGIN                              +1.000 mm
+```
+
+Note the descent could **not** be made where the escape already was. `E2_ESC_HOME`
+ends at y = 136.700 but the 433 band runs to y = 138.000, so sanctioned F.Cu cannot
+reach the band's southern edge; and the hard-locked USB pair forms an L-shaped F.Cu
+wall - verticals at x = 53.400 / 53.850 (y 116-138.85) and horizontals at
+y = 138.400 / 138.850 (x 32-53.85) - that caps the only band-edge corridor at
+y = 137.975. The route therefore leaves through the gap eastward first, which is
+legal because the USB verticals start at y = 116 and the gap sits at y ~ 114.7.
+
+HOME side B, crossing north end -> R10.2/U2.19: **38.380 mm, 34 segments, 3 vias**
+at (13.400,83.600), (10.150,81.600), (10.700,73.400).
+
+The crossing `(13.800,85.000)-(13.800,141.000)` is now terminated at **both** ends -
+its `track_dangling` warning is gone, and it is no longer a stranded island.
+
+### BTN_A through the freed gap
+
+**102.626 mm, 57 segments, 7 vias**, crossing the 915 band on In2 inside
+**E5 CORRIDOR C-E**:
+
+```
+vias (57.100,115.400) (58.150,86.000) (55.200,78.400) (51.900,75.400)
+     (27.700,57.650) (13.600,56.900) (10.500,56.850)
+```
+
+Long, and deliberately so: BTN_A is a DC, debounced button line, and the route uses
+only existing legal E2/E5 rules.
+
+### BTN_DOWN
+
+Landed verbatim from the previously validated artifact: **76.622 mm, 20 segments,
+3 vias** at (19.850,87.100), (16.450,66.200), (13.600,45.450), crossing the 915
+band on In2 inside **E5 CORRIDOR C-W**.
+
+### +3V3 dead stubs removed
+
+| uuid | geometry | length | why safe |
+|---|---|---|---|
+| `b1e0...000014` | B.Cu 0.60 (13.450,51.100)-(13.050,51.500) | 0.566 mm | spur off R6.1/`...000013`, open east end |
+| `b1e0...000016` | B.Cu 0.60 (11.050,51.500)-(11.050,50.950) | 0.550 mm | spur off the R5.1 pad, open north end |
+
+Both were left single-ended by the Candidate A release. Removing them keeps +3V3 at
+**exactly one island** with R4.1/R5.1/R6.1/R7.1/R8.1/R9.1/R10.1 all on it, and
+Candidate A's replacement is untouched at 0.60 mm.
+
+### Two things the model got wrong, caught before landing
+
+**Elevated netclass clearances.** The first scratch produced 4 clearance errors:
+`VBUS_CHG routed clearance` is **0.25 mm**, not the 0.20 global, and HOME passed
+0.207 mm from the `USB_VBUS_RAW` via at (37.2, 139.9). Candidate A never met an
+elevated class, so the router had only ever needed 0.20. The clearance model now
+inflates foreign *routed* copper (not pads, matching the rule's scoping) for
+BAT_MAIN and LED_BOOST and SWITCH_NODE at 0.30, and SYS_MAIN and VBUS_CHG and
+NFC_5V_PA at 0.25.
+
+**Per-object vs per-cell area enclosure.** KiCad evaluates `enclosedByArea` on the
+whole track object, but a grid mask evaluates it per cell. BTN_A initially emitted
+an In2 segment from (56.85,115.4) to (58.15,114.1) that was neither clear of the
+915 band nor wholly inside C-E - it sat **exactly tangent** to the band. KiCad
+passed it at 0 errors; it was rejected anyway, because zero margin against an RF
+keepout is not something to ship. The In2 corridor transition now has to happen
+0.30 mm clear of any band, and BTN_A re-routed for +0.147 mm.
+
+### Verification
+
+**DRC 0 errors**, measured in the project directory with `--refill-zones`:
+
+| category | 871d657 | pre-closeout | **final** |
+|---|---|---|---|
+| silk_over_copper | 138 | 138 | 138 |
+| silk_overlap | 96 | 96 | 96 |
+| silk_edge_clearance | 3 | 3 | 3 |
+| track_dangling | 3 | 5 | **2** |
+| via_dangling | 3 | 3 | **0** |
+| text_height | 1 | 1 | 1 |
+| **TOTAL** | **244** | **246** | **240** |
+
+The three temporary E2 `via_dangling` warnings are **gone**, the two +3V3 stub
+`track_dangling` warnings are **gone**, and the BTN_HOME crossing tail is gone too.
+The 2 survivors are pre-existing and unrelated: `/NFC_5V_PA_PENDING` on F.Cu and the
+25 mm `+3V3` run at (69.1, 116.0).
+
+**Button connectivity - every net independently rebuilt:**
+
+| net | islands | ratsnest |
+|---|---|---|
+| BTN_UP_N | 1 | 0 |
+| BTN_DOWN_N | 1 | 0 |
+| BTN_LEFT_N | 1 | 0 |
+| BTN_RIGHT_N | 1 | 0 |
+| BTN_A_N | 1 | 0 |
+| BTN_B_N | 1 | 0 |
+| BTN_HOME_N | 1 | 0 |
+| **TOTAL** | **7/7** | **0** |
+
+Unconnected 285 -> 281; the only nets that changed anywhere on the board are
+BTN_A_N (1->0), BTN_DOWN_N (1->0) and BTN_HOME_N (2->0).
+
+**Preservation**, reference/index-keyed because of the known duplicate uuid families:
+exactly 2 authorised track removals and 1 authorised via removal, 135 tracks and 14
+vias added, **776 pads / 188 footprints / 41 zones identical**, and byte-identical
+geometry for WAKE_INT_N, BTN_UP/LEFT/RIGHT/B, the USB pair, USB_VBUS_RAW and
+USB_VBUS_CHG.
+
+### RF
+
+Independent geometric audit of all E2 copper: **0** in-band B.Cu, **0** in-band vias,
+**0** in-band B.Cu pads, **0** In2 in a band outside an E5 corridor, **0**
+unsanctioned in-band F.Cu. The 22 in-band pads are the F.Cu switch pads.
+
+Final exposure ledger, recomputed from landed copper:
+
+| net | mm | band |
+|---|---|---|
+| BTN_UP_N | 21.764 | 915 |
+| BTN_LEFT_N | 32.276 | 915 |
+| BTN_RIGHT_N | 32.411 | 915 |
+| BTN_DOWN_N | 15.710 | 433 |
+| BTN_A_N | 13.210 | 433 |
+| BTN_HOME_N | 8.480 | 433 |
+| GND (SW2-SW6) | 60.330 | 15.710 / 44.620 |
+| **TOTAL** | **184.181** | |
+
+Option D was expected to raise this, because it keeps HOME on F.Cu longer. Measured,
+it **did not**: every metre of new HOME F.Cu sits at x >= 52.65, outside the 433
+band's x-range, or south of y = 138. The figure is unchanged at **184.181 mm**.
+Superseded historical values: 184.181 (pre-closeout, now confirmed final) and the
+older 184.65. Status remains **WAITING ON RF MEASUREMENT** - S11/matching, efficiency
+at 433 and 915, RX sensitivity, RX desense, and aggressor-active button/digital tests
+at Beta bring-up. No analytical RF closure is claimed.
+
+### E2 HARD-LOCK
+
+All gates pass. **E2 button architecture, E2 button routing, E2 RF escape rules, the
+R5.2/+3V3 local solution and the HOME Option D escape are HARD-LOCKED.** No future E2
+change without explicit CTO reopening.
