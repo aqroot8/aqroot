@@ -887,6 +887,68 @@ margin, §1). So it carries both, clearly labeled.
 
 ---
 
+## 8b-1. J5 physical pinout — FINAL (F4 map, hard-locked)
+
+`J5` is a 2x13 (26-pin) through-hole header, `Conn_02x13_Odd_Even`. Odd pins are the
+west/left column, even pins the east/right column. This table is the **authoritative
+public pinout**; schematic, PCB and this document are gated against each other.
+
+| pin | signal | | pin | signal |
+|---|---|---|---|---|
+| 1 | `+3V3` | | 2 | `GND` |
+| 3 | `XGPIO0` | | 4 | `XGPIO1` |
+| 5 | `XGPIO2` | | 6 | `XGPIO3` |
+| 7 | `GND` | | 8 | `XGPIO4` |
+| 9 | `XGPIO5` | | 10 | `XGPIO6` |
+| 11 | `XGPIO7` | | 12 | `XGPIO8` |
+| **13** | **`WAKE_ATTN_N`** | | 14 | `XGPIO9` |
+| **15** | **`I2C_SDA_EXT`** | | **16** | **`I2C_SCL_EXT`** |
+| 17 | `XGPIO12` | | 18 | `XGPIO13` |
+| **19** | **`ACC_3V3_SW`** | | 20 | `GND` |
+| **21** | **`XGPIO10`** | | **22** | **`XGPIO11`** |
+| 23 | `FAST_IO / U0TXD / ROOTPROBE_CS` | | **24** | **`GND`** |
+| 25 | `GND` | | **26** | **`RESERVED_NC`** |
+
+Bold entries are the eight pads that moved in the F4 revision. F4 is exactly three
+logical swaps — **WAKE <-> GND**, **I2C pair <-> XGPIO10/11**, **ACC <-> RESERVED_NC**.
+No function was added or removed:
+
+- all **14** low-speed XGPIO (`XGPIO0..XGPIO13`) are preserved
+- `FAST_IO` stays on pin 23
+- external I2C, switched accessory power, WAKE/ATTN, `+3V3` and five grounds all retained
+- `RESERVED_NC` (pin 26) remains deliberately unconnected — no track, no via, no zone
+
+**Why F4 exists.** The original arrangement put `ACC_3V3_SW` on pin 26 and `WAKE_ATTN_N`
+on pin 24 — columns c1/c2, directly above the U3 structural wall (§ ledger in
+[[05 - Design Decisions Log]]), which has no southward exit. Those two pins needed
+pin-specific length allowances to escape at all, and the header as a whole could not be
+fully routed. F4 moves both functions to clear north-row columns. The result is the first
+**19/19** J5 escape: every routable header function reaches its source, all budgets pass
+under the *general* doctrine, and **both pin-specific budget exceptions are retired**.
+
+### Module-design note — ground distribution (binding interface guidance)
+
+F4 removes the former mid-connector ground at pin 13. Grounds now sit at pins
+**2, 7, 20, 24, 25** — clustered at the two ends plus pin 20.
+
+- Columns **c5-c9** (roughly pins 9-18) are comparatively **ground-poor**.
+- External I2C at **pins 15/16** is about two columns — **~5 mm** — from the nearest ground.
+- Module designers should take their return from the **pin 2/7 cluster or the pin 20/24/25
+  cluster**, and keep mid-connector return loops short.
+
+This is an accepted module-layout consideration at these interface speeds (I2C at 100-400
+kHz, XGPIO at expander speeds), **not an electrical defect**. It matters only if a module
+runs fast edges off the mid-connector pins, which the low-speed labeling already forbids.
+
+### Preferred pairings
+
+| pair | use |
+|---|---|
+| **pin 23 `FAST_IO`** + **pin 24 `GND`** | same-column adjacent — the preferred return for high-speed module use of the native fast pin |
+| **pin 19 `ACC_3V3_SW`** + **pin 20 `GND`** | same-column adjacent — the preferred switched-accessory power/return pair, convenient for module-side decoupling and local accessory power entry |
+
+---
+
 ## 8c. Connector-sheet SCHEMATIC REQUIREMENTS (2026-07-26)
 
 **These are implementation requirements for the community-header / connector sheet, NOT

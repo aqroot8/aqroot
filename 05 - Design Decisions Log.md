@@ -9765,8 +9765,8 @@ independent of DRC: a route over budget is rejected even at 0 violations.
 |---|---|---|
 | south row, general | <= 4.0 mm | unchanged |
 | north row, general | <= 8.0 mm | unchanged |
-| **J5.24** `WAKE_ATTN_N_HDR` | **<= 8.0 mm** | new, pin-specific |
-| **J5.26** `ACC_3V3_SW` | **<= 11.5 mm** | new, pin-specific |
+| ~~**J5.24** `WAKE_ATTN_N_HDR`~~ | ~~<= 8.0 mm~~ | **RETIRED by F4** — J5.24 is now `GND` |
+| ~~**J5.26** `ACC_3V3_SW`~~ | ~~<= 11.5 mm~~ | **RETIRED by F4** — J5.26 is now `RESERVED_NC` |
 
 **Reason for both: the U3 structural wall.** U3's pin row occupies
 x 18.225-25.775, y 8.700-10.175 on B.Cu at 0.65 mm pitch with 0.40 mm pads, leaving
@@ -9793,6 +9793,76 @@ Measured minima, at 0.020 mm grid with a heavy in-reservation cost penalty:
 non-precedential.** They do not change the general J5 doctrine, do not extend to
 any other pin in columns c1/c2, and do not authorise lateral crawling as a
 technique. The earlier 22.84 mm ACC_3V3_SW candidate stays rejected.
+
+### J5 F4 pin map + 19/19 escape — FINAL (hard-locked)
+
+F4 is the approved final J5 pin map. Eight pads move, in exactly three logical swaps —
+`WAKE <-> GND`, the I2C pair `<-> XGPIO10/11`, and `ACC <-> RESERVED_NC`. No header
+function is added or removed; all 14 XGPIO, `FAST_IO`, external I2C, switched accessory
+power, WAKE/ATTN and five grounds are preserved. The public pinout lives in
+[[11 - Beta Pin Map v0.2]] §8b-1.
+
+**Both pin-specific budget exceptions are retired, not transferred.** They existed only
+because `ACC_3V3_SW` (J5.26, c1) and `WAKE_ATTN_N_HDR` (J5.24, c2) sat above the U3
+structural wall, which has no southward exit. F4 relocates both functions to clear
+north-row columns — `ACC_3V3_SW` to **J5.19 (c4N)** and `WAKE_ATTN_N_HDR` to
+**J5.13 (c7N)** — where the *general* north-row doctrine applies unmodified. Nothing is
+grandfathered and no new allowance is created.
+
+**ACC budget reconciliation (explicit):**
+
+| quantity | value |
+|---|---|
+| ACC final achieved clipped length, J5.19 | **7.53 mm** |
+| ACC position-derived budget (general north-row, c4N, east of the U3 wall) | **8.00 mm** |
+| margin | **+0.47 mm** |
+| old J5.26 pin-specific allowance | **11.5 mm — RETIRED** |
+
+The 8.00 mm figure is the standing north-row budget, not a new number: J5.19 is a
+north-row pin in column c4, and the ledger above already records that "c3 (x 26.840) and
+everything east are clear". ACC additionally lands its escape in **0 vias, B.Cu only**.
+
+**Measured per-net result, from the landed copper** (centreline clipped to
+HEADER RESERVED, x 18.500-55.500, y 0.000-8.500):
+
+| pin | net | row | clipHDR | budget | margin |
+|---|---|---|---|---|---|
+| J5.3 | `XGPIO0_HDR` | N | 6.12 | 8.0 | +1.88 |
+| J5.4 | `XGPIO1_HDR` | S | 2.15 | 4.0 | +1.85 |
+| J5.5 | `XGPIO2_HDR` | N | 5.05 | 8.0 | +2.95 |
+| J5.6 | `XGPIO3_HDR` | S | 2.33 | 4.0 | +1.67 |
+| J5.8 | `XGPIO4_HDR` | S | 2.19 | 4.0 | +1.81 |
+| J5.9 | `XGPIO5_HDR` | N | 7.57 | 8.0 | +0.43 |
+| J5.10 | `XGPIO6_HDR` | S | 1.93 | 4.0 | +2.07 |
+| J5.11 | `XGPIO7_HDR` | N | 7.43 | 8.0 | +0.57 |
+| J5.12 | `XGPIO8_HDR` | S | 1.99 | 4.0 | +2.01 |
+| J5.13 | `WAKE_ATTN_N_HDR` | N | 7.08 | 8.0 | +0.92 |
+| J5.14 | `XGPIO9_HDR` | S | 1.96 | 4.0 | +2.04 |
+| J5.15 | `I2C_SDA_EXT_HDR` | N | 7.13 | 8.0 | +0.87 |
+| J5.16 | `I2C_SCL_EXT_HDR` | S | 2.11 | 4.0 | +1.89 |
+| J5.17 | `XGPIO12_HDR` | N | 7.44 | 8.0 | +0.56 |
+| J5.18 | `XGPIO13_HDR` | S | 2.17 | 4.0 | +1.83 |
+| **J5.19** | **`ACC_3V3_SW`** | **N** | **7.53** | **8.0** | **+0.47** |
+| J5.21 | `XGPIO10_HDR` | N | 7.54 | 8.0 | +0.46 |
+| J5.22 | `XGPIO11_HDR` | S | 2.88 | 4.0 | +1.12 |
+| J5.23 | `FAST_IO_GPIO43_HDR` | N | 7.64 | 8.0 | +0.36 |
+
+**All 19 PASS under the general doctrine. No pin-specific allowance is in force.**
+
+Escape copper added: **207 segments, 24 vias, 271.46 mm** of J5 route length. GND thermal
+relief migrated J5.13 -> J5.24; the override set is `{2, 7, 20, 24, 25}`, still exactly
+five, all on GND pads. `J5_SELF_FANOUT` and `HEADER RESERVED` geometry are unchanged, and
+no Option-B / F.Cu / In2 header exception was introduced — the 19/19 solution needs none.
+
+**How 19/19 was reached.** The obstruction was never local to one net. The exact minimal
+UNSAT core was six nets — `{J5.15, J5.17, J5.19, J5.21, J5.22, J5.23}` — which are UNSAT
+*on their own*, so every two- and three-blocker local repair was provably futile before it
+ran. The cure was negotiated-congestion column generation restricted to the core pins,
+merged back into the candidate libraries: 2,775 -> 6,121 candidates over three rounds.
+Each round relocated the missing net (17 -> 13 -> 11) and grew the core before the third
+round closed it. A deficit that *relocates* looks like a hard capacity bound but was in
+fact library incompleteness.
+
 
 ### Verification
 
