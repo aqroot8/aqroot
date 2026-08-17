@@ -112,7 +112,15 @@
 	(layer "F.Cu")
 	(severity error)
 	(constraint disallow track)
-	(condition "(A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')) && !A.hasNetclass('E2_BUTTON_ESCAPE')"))
+	(condition "(A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')) && !A.hasNetclass('E2_BUTTON_ESCAPE') && !((A.NetName == '/08_BUTTONS_EXPANDERS/BTN_DOWN_N' && A.enclosedByArea('E2_ESC_DOWN')) || (A.NetName == '/08_BUTTONS_EXPANDERS/BTN_A_N' && A.enclosedByArea('E2_ESC_A')) || (A.NetName == '/08_BUTTONS_EXPANDERS/BTN_HOME_N' && A.enclosedByArea('E2_ESC_HOME')) || (A.NetName == 'GND' && (A.enclosedByArea('E2_GND_SW2') || A.enclosedByArea('E2_GND_SW3') || A.enclosedByArea('E2_GND_SW4A') || A.enclosedByArea('E2_GND_SW4B') || A.enclosedByArea('E2_GND_SW5A') || A.enclosedByArea('E2_GND_SW5B') || A.enclosedByArea('E2_GND_SW6'))))"))
+
+# E2 ESCAPE EXCEPTION (post-I2C §5, completed).  BTN_UP/LEFT/RIGHT carry the
+# netclass E2_BUTTON_ESCAPE and are exempt board-wide in-band.  BTN_DOWN/A/HOME
+# and the SW2-SW6 button-side GND escapes are exempt ONLY inside their own tight
+# named area, by net name.  CONTAINMENT: enclosedByArea(), never
+# intersectsArea() - a track that leaks out of its area while still in-band is
+# not enclosed and stays illegal.  B.Cu, In2 and in-band vias gain nothing here;
+# their rules are untouched.  No generic GND permission is created.
 
 (rule "RF bands: B.Cu is pristine - no tracks, no pads, no exceptions"
 	(layer "B.Cu")
