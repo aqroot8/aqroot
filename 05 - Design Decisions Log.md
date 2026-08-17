@@ -10004,3 +10004,183 @@ this is a rules/assembly commit. Consequences to carry:
 
 Added to the deferred-defects ledger alongside the R29.1 NFC-channel dependency, the
 banked (9.050, 19.950) via, and the 0.300 mm segment at (65.500-66.000, 52.400).
+
+## 2026-08-17 - E2 FINAL: R5.2 / +3V3 joint local solution, Candidate A landed
+
+CTO approved **Candidate A**. B1 (one +3V3 via, but a 0.50/0.25 board-minimum-annular
+escape via) was validated and **archived as an alternate, not selected** - Candidate A
+was chosen for fab margin, because every object it lands is stock netclass geometry
+and no parameter on the board is taken to its floor.
+
+### The problem
+
+`BTN_DOWN_N` needed R5.2 (12.325, 50.500) -> U2.14 (14.863, 41.075). R5.2's pad is
+B.Cu-only. North is sealed by the `WAKE_INT_N` wall at y = 49.200: the channel to the
+resistor row at y = 50.025 is **0.725 mm**, and the smallest via the board rules allow
+needs 0.20 + 0.50 + 0.20 = **0.90 mm**. So R5.2 must leave southward, through the lane
+between the two resistor rows - which is **1.55 mm** tall (50.975 -> 52.525) and is
+where the local +3V3 distribution bar ran.
+
+Flooding R5.2's B.Cu-reachable region and intersecting it with the legal-via mask gives
+**exactly one** escape cluster for the netclass 0.60/0.30 via:
+
+```
+x [10.150 .. 10.425]   y [51.475 .. 52.025]     162 legal centres, nothing else
+```
+
+Stacking a via beside a 0.60 bar in that lane needs 0.20 + 0.60 + 0.20 + 0.60 + 0.20 =
+**1.80 mm** against 1.55 mm available, so any escape necessarily severs the B.Cu bar at
+x ~ 10.3. That is why this was a joint problem and not "move +3V3 slightly".
+
+### Release set - exactly three objects
+
+| # | layer | width | from | to | uuid |
+|---|---|---|---|---|---|
+| 1 | B.Cu | 0.60 | (13.050, 51.500) | (11.050, 51.500) | `b1e0...000015` |
+| 2 | B.Cu | 0.60 | (10.800, 51.500) | ( 7.550, 51.500) | `b1e0...000017` |
+| 3 | B.Cu | 0.60 | (10.300, 51.800) | (10.300, 52.550) | `b1e0...000022` |
+
+Matched by (layer, endpoints, width, net) and cross-checked against the expected uuid
+set; the writer aborts on any count other than 3. Removing them splits +3V3 into four
+islands: main, `{R4.1, R8.1}`, `{R5.1}`, `{R9.1}`.
+
+### Candidate A - landed geometry
+
+Writer prefix `e2a00001`. **+3V3, 0.60 mm everywhere, 18.904 mm, 2 vias 0.80/0.40:**
+
+```
+B.Cu   (10.600,50.025)->(10.600,49.975)     tap off the R5.1 pad
+VIA    (10.600,49.975)  0.80/0.40
+F.Cu   (10.600,49.975)->(11.300,47.325)->(11.500,44.500)
+       ->(11.500,38.450)->(10.075,37.025)   north feed to the R20.1 node, 13.638 mm
+F.Cu   (10.600,52.775)->(10.975,51.650)->(10.975,50.600)
+       ->(10.725,50.350)                    bridge over the escape, 2.590 mm
+VIA    (10.600,52.775)  0.80/0.40           lands on the R9.1 pad
+B.Cu   ( 7.850,52.025)->( 9.575,52.025)->(10.225,52.650)   R4/R8 <-> R9.1
+```
+
+**BTN_DOWN_N, 0.20 mm, 21.067 mm, 2 vias 0.60/0.30 (E5_CROSSING netclass):**
+
+```
+B.Cu   (11.925,50.975)->(11.775,51.625)->(11.375,52.025)
+       ->(11.200,52.100)->(10.800,52.100)->(10.175,51.475)
+VIA    (10.175,51.475)  0.60/0.30
+F.Cu   (10.175,51.475)-> ... ->(10.700,41.725)
+VIA    (10.700,41.725)  0.60/0.30
+B.Cu   (10.700,41.725)-> ... ->(15.600,40.925)   -> U2.14
+```
+
+The obvious 19.838 mm BTN_DOWN route was **rejected**: it is the one that severs +3V3
+completely. Both sequential orderings fail 162/162 - +3V3 first blocks BTN_DOWN, and
+BTN_DOWN-by-shortest-path blocks +3V3. Only negotiated congestion produced a pair, and
+the landed route is 1.2 mm longer than optimal for exactly that reason.
+
+### Verification
+
+**DRC 0 errors**, measured in the project directory with `--refill-zones` on both sides
+so the footprint-library check resolves identically:
+
+| category | HEAD | after | delta |
+|---|---|---|---|
+| silk_over_copper | 138 | 138 | +0 |
+| silk_overlap | 96 | 96 | +0 |
+| silk_edge_clearance | 3 | 3 | +0 |
+| track_dangling | 3 | **5** | **+2** |
+| via_dangling | 3 | 3 | +0 |
+| text_height | 1 | 1 | +0 |
+| **total** | **244** | **246** | **+2** |
+
+The **+2 track_dangling is disclosed, not absorbed**. Both are *pre-existing* objects
+that were left single-ended by the authorized removals, and both remain electrically on
+the +3V3 island:
+
+- `B.Cu (13.450,51.100)-(13.050,51.500)` (`...000014`) - joined at its west end to
+  `...000013`; its east end used to meet released segment #1.
+- `B.Cu (11.050,51.500)-(11.050,50.950)` (`...000016`) - joined at its south end to the
+  R5.1 pad; its north end used to meet released segment #1.
+
+Neither may be removed: the ruling authorizes **exactly three** removals. Each is a
+0.55 mm single-ended stub, harmless at DC and at any frequency this board cares about.
+
+Minimum clearance is **0.200 mm exactly**, with zero margin - inherent, since the lane
+is 1.55 mm and the stack consumes all of it. Classified **TIGHT LOCAL ROUTING -
+FAB / BRING-UP VERIFY**. No rule was relaxed and no DRU byte changed.
+
+Connectivity: **+3V3 is one island**; R4.1, R5.1, R6.1, R7.1, R8.1, R9.1, R10.1 all on
+it. Unconnected 286 -> 285, and a per-net diff shows **`BTN_DOWN_N` 2 -> 1 is the only
+net that changed anywhere on the board**; GND is 164 -> 164.
+
+Preservation, reference/index-keyed because of the known duplicated footprint/pad uuid
+families: **776 pads and 188 footprints identical**, 0 pre-existing vias removed, 3
+tracks removed and 31 added, zones unchanged. `WAKE_INT_N`, `BTN_UP_N`, the USB pair,
+`USB_VBUS_RAW`, and BTN_B/LEFT/RIGHT/A/HOME are byte-identical in geometry. The only
+positional churn is the documented C50 <-> C55 footprint reorder that every
+`--save-board` re-emits.
+
+### Power
+
+DC path resistance from `L3.1`, 35 um copper assumed (the file carries no stackup
+block, so this is the standard-fab default and not a measured value):
+
+| node | HEAD | after | delta |
+|---|---|---|---|
+| R4.1 | 61.10 mohm | 82.57 mohm | +21.46 |
+| R5.1 | 58.44 | 77.23 | +18.79 |
+| R8.1 | 61.27 | 82.12 | +20.85 |
+| R9.1 | 61.27 | 79.35 | +18.08 |
+| R6.1 / R7.1 / R10.1 | - | - | +0.00 |
+
+R4-R10 are **10 kohm button pull-ups**, not a power load: 330 uA per node while a
+button is held. Worst added drop **7 uV**, or **28 uV** if all four conducted at once.
+Nothing is materially degraded and the 0.60 mm width is unchanged, so current
+capability is unchanged.
+
+### RF
+
+E2 exposure recomputed from landed copper, not carried forward. F.Cu centreline length
+inside a band:
+
+| net | mm | band |
+|---|---|---|
+| BTN_UP_N | 21.764 | 915 |
+| BTN_LEFT_N | 32.276 | 915 |
+| BTN_RIGHT_N | 32.411 | 915 |
+| BTN_DOWN_N | 15.710 | 433 |
+| BTN_A_N | 13.210 | 433 |
+| BTN_HOME_N | 8.480 | 433 |
+| GND (SW2-SW6) | 60.330 | 15.710 / 44.620 |
+| **TOTAL** | **184.181** | |
+
+**Identical to HEAD to the micron** - Candidate A is entirely at y 37-55 and never
+approaches a band. Independent geometric audit of all in-band copper: 0 B.Cu, 0 vias,
+0 B.Cu pads, 0 In2 outside an E5 corridor, 0 unsanctioned F.Cu. The 22 in-band pads are
+the F.Cu switch pads, which is where the switches live.
+
+Note the carried figure was **184.65 mm** and the measured centreline figure is
+**184.181 mm**, a 0.469 mm difference. Measuring copper extent instead (centreline plus
+w/2 at each clipped end) gives 185.481 mm, so neither convention reproduces 184.65.
+Flagged for reconciliation - **not** silently adopted in either direction. Whatever the
+convention, this commit's delta is 0.000 mm.
+
+All RF figures remain **WAITING ON RF MEASUREMENT** at Beta bring-up: S11/matching,
+efficiency at 433 and 915, RX sensitivity, RX desense, aggressor-active tests.
+
+### E2 is NOT closed by this commit
+
+The button ratsnest is **4, not 0**. Candidate A closed R5.2 <-> U2.14 and nothing else;
+the residual work is the switch-side legs, which live at y 114-136 in the RF bands and
+are a separate problem from this pocket:
+
+| net | residual edge |
+|---|---|
+| BTN_DOWN_N | `{SW3.1, SW3.1}` <-> `{R5.2, U2.14}` |
+| BTN_A_N | `{SW6.1, SW6.1}` <-> `{R8.2, U2.17}` |
+| BTN_HOME_N | `{SW8.1, SW8.1}` <-> `{R10.2, U2.19}` |
+| BTN_HOME_N | stranded In2 track at (13.800, 85.000), 56.0 mm, no pads |
+
+The three `via_dangling` warnings at (20.020, 114.650), (51.280, 114.450) and
+(52.580, 114.650) are the matching escape stubs waiting for those legs, and are
+**unchanged at 3** - they were never going to clear from this pocket.
+
+**E2 is therefore NOT hard-locked.** R5.2/+3V3 is solved and locked as a local
+architecture; the E2 block itself stays open until the three switch legs land.
