@@ -49,3 +49,57 @@ wiring matched to the Wokwi diagram rather than [[11 - Beta Pin Map v0.2]].
 
 ## File system
 LittleFS on internal flash, or FAT on microSD (microSD is kept in the core build).
+
+---
+
+# POST-KICKSTARTER SOFTWARE ROADMAP — INTENT ONLY
+
+> **POST-KICKSTARTER — INTENT ONLY · MAY CHANGE · NOT BETA SCOPE**
+>
+> No Beta hardware change is implied or authorized by anything below. The F4 J5
+> community header is HARD-LOCKED. For what that header actually exposes today —
+> including the fact that it carries **no UART and no USB** — see
+> [[02 - Add-on Modules]].
+
+## Remote Kali over a user-hosted VPS
+
+AQROOT may provide **SSH / mosh / a terminal UI** over its native WiFi to a
+**user-hosted** Kali or Linux VPS.
+
+**Honest architecture statement — read this before writing any marketing copy:**
+
+> **A remote Kali VPS has no direct physical access to AQROOT's radios.**
+
+Network and compute jobs run remotely. All RF, NFC, IR and sub-GHz work stays in
+AQROOT firmware. That separation holds **unless and until a future authenticated
+AQROOT remote hardware API/bridge is deliberately designed** — and no such bridge
+exists today.
+
+Do **not** describe this as *"Kali directly controls AQROOT's radios."* It does not.
+
+The project hosts **no mandatory Kali service**. The user brings their own VPS.
+
+## Kali NetHunter / Android companion
+
+> POST-KICKSTARTER exploration.
+
+A phone running Kali NetHunter handles Linux/Kali/network compute while AQROOT
+handles local RF and hardware functionality. **Transport TBD.** No Beta hardware
+change.
+
+## Keyboard input compatibility targets
+
+Firmware/software targets, subject to hardware support:
+
+- **BLE keyboard input** — pair an external BLE keyboard for terminal use
+- **USB keyboard input** — where the USB role and host support permit it
+- an optional **physical AQROOT keyboard module** over I²C + a GPIO/interrupt line,
+  as sketched in [[02 - Add-on Modules]]
+
+## Linux-orchestrates / AQROOT-performs
+
+The long-term split, if a Linux companion ships: Linux provides the terminal, network
+tooling, scripting and compute-heavy workflows; AQROOT firmware performs the physical
+and RF operations; structured results move between them. The transport for that
+exchange is an **open post-Beta hardware question**, not something the current header
+already answers.
