@@ -9794,6 +9794,76 @@ non-precedential.** They do not change the general J5 doctrine, do not extend to
 any other pin in columns c1/c2, and do not authorise lateral crawling as a
 technique. The earlier 22.84 mm ACC_3V3_SW candidate stays rejected.
 
+### E2 button escapes — RF exposure ledger (post-I2C §5 completed)
+
+The DRU now encodes the standing post-I2C §5 ruling in full. Previously only
+`BTN_UP_N`, `BTN_LEFT_N` and `BTN_RIGHT_N` carried `E2_BUTTON_ESCAPE` and were
+exempt from the in-band F.Cu prohibition; `BTN_DOWN_N`, `BTN_A_N`,
+`BTN_HOME_N` and the SW2–SW6 button-side GND pads had **no legal escape on any
+layer** and were therefore unroutable. Ten tight named areas
+(`E2_ESC_DOWN`/`_A`/`_HOME`, `E2_GND_SW2`/`SW3`/`SW4A`/`SW4B`/`SW5A`/`SW5B`/`SW6`)
+now scope the exception by net name **and** `enclosedByArea`.
+
+No base RF rule was weakened. B.Cu in-band, In2 outside an E5 corridor, and
+in-band vias remain prohibited for these nets exactly as before, and no generic
+GND permission exists — GND is exempt only inside the five switch-local areas.
+A track that leaks out of its area while still in-band is not enclosed and stays
+illegal; both leak directions were probed and correctly denied.
+
+**Measured in-band F.Cu exposure — whole board, from landed copper:**
+
+| net | in-band F.Cu | status |
+|---|---|---|
+| GND (SW2–SW6 escapes + links) | 60.47 mm | WAITING ON RF MEASUREMENT |
+| `BTN_RIGHT_N` | 32.49 mm | WAITING ON RF MEASUREMENT |
+| `BTN_LEFT_N` | 32.36 mm | WAITING ON RF MEASUREMENT |
+| `BTN_UP_N` | 21.84 mm | WAITING ON RF MEASUREMENT |
+| `BTN_DOWN_N` | 15.74 mm | WAITING ON RF MEASUREMENT |
+| `BTN_A_N` | 13.24 mm | WAITING ON RF MEASUREMENT |
+| `BTN_HOME_N` | 8.52 mm | WAITING ON RF MEASUREMENT |
+| **total** | **184.65 mm** | |
+
+Per-switch GND stubs, each F.Cu to a stitch via that lands inside the In1 GND
+pour (all seven confirmed inside the fill):
+
+| switch | in-band F.Cu | via | notes |
+|---|---|---|---|
+| SW2 | 15.74 mm | (27.980, 114.350) | link + south exit into the inter-band gap |
+| SW3 | 18.74 mm | (20.020, 138.350) | link + south exit below the 433 band |
+| SW4A | 1.76 mm | (8.370, 114.550) | via offset west of the E5 C-W In2 crossings |
+| SW4B | 1.76 mm | (17.480, 114.650) | |
+| SW5A | 1.76 mm | (30.520, 114.650) | |
+| SW5B | 1.76 mm | (38.480, 114.650) | |
+| SW6 | 18.96 mm | (41.820, 114.650) | routed west of the A link to avoid crossing it |
+
+**Geometry the layout is fighting.** The corridor between the 433 band edge
+(x 52.5) and the hard-locked USB differential pair (x 53.4 / 53.85) is **one
+lane wide**, and the USB pair's horizontal runs at y 138.4 / 138.85 seal the
+433 band's entire southern edge from x 32 to x 53.85. Three east-side escapes
+(`BTN_A_N`, `BTN_HOME_N`, SW6 GND) compete for that single lane. It was given
+to `BTN_HOME_N`, which saves the most in-band copper by using it — 8.52 mm
+versus roughly 29 mm if it had to climb north through the band. `BTN_A_N` and
+SW6 GND therefore exit north through the band instead.
+
+The existing `BTN_HOME_N` E5 C-W In2 crossing, (13.8, 85) → (13.8, 141), is
+**retained unchanged**; it is the sanctioned crossing, wholly inside
+`E5 CORRIDOR C-W`, with both ends outside the bands.
+
+**RF bring-up ledger.** Every figure above is layout-legal, not RF-closed. DRC
+cannot say anything about antenna behaviour. Before Beta sign-off this copper
+must be validated by measurement: S11 / antenna matching at both bands,
+radiated efficiency at 915 MHz and 433 MHz, RX sensitivity and desense, and
+aggressor-active tests where relevant. Treat all 184.65 mm as
+**WAITING ON RF MEASUREMENT**.
+
+**Still open.** `BTN_B_N` E4 crossing is analysis-only pending a separate
+ruling — `E5 CORRIDOR C-E` is full (11 crossings on 1.0 mm pitch plus a 0.6 mm
++3V3 trace). `R5.2` → `U2.14` remains blocked by hard-locked copper; see the
+no-architecture search record. Three `via_dangling` warnings are expected and
+explained: the DOWN/A/HOME escapes terminate at their first legal via, awaiting
+the onward E5 crossings that are not in this pass's scope.
+
+
 ### J5 F4 pin map + 19/19 escape — FINAL (hard-locked)
 
 F4 is the approved final J5 pin map. Eight pads move, in exactly three logical swaps —
