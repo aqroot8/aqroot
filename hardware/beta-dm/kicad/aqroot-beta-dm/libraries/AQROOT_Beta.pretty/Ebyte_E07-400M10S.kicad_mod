@@ -1,0 +1,229 @@
+(footprint "Ebyte_E07-400M10S"
+	(version 20241229)
+	(generator "aqroot-beta-library")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Ebyte E07-400M10S CC1101 410-450MHz 10dBm SPI module. 22 castellated pads, 11 per long edge, 1.27 mm pitch with a 5.57 mm special gap between pins 3-4 and 19-20 where the IPX connector sits. Body 14.0 +/-0.1 x 20.0 +/-0.1 mm, height 3.00 +/-0.1 mm. Pin 1 bottom-right, numbering counter-clockwise. Origin at body centre; pad field asymmetric - 2.00 mm inset from the top edge to pins 11/12 and 1.00 mm from the bottom edge to pins 1/22. SOURCE: Ebyte E07-400M10S user manual chapter 3, which dimensions body, thickness, pitch, the 5.57 mm gap, both end insets and states 'Pad quantity: 22' directly - this part is FULLY dimensioned by the manufacturer, unlike the E22 manual. Module pad detail from the same drawing: top pad 0.50 x 0.80, bottom pad 0.90 x 0.80. The land geometry here is identical to AQROOT_Beta:Ebyte_E22-900M22S because Ebyte's own drawings show the two modules share one mechanical form factor - same 14x20x3 body, same 22 pads, same 2.00/1.27/5.57/1.27/1.00 scheme, same IPX position, same numbering. This E07 drawing therefore independently corroborates the 5.57 mm gap that was recovered for the E22 from LCSC C411293. ANTENNA END is +Y (pins 1-3, 20-22 and the IPX connector). Beta uses the module IPEX/u.FL with Taoglas FXP450.07.0100C; pin 21 ANT stamp hole is NOT routed. RF DO NOT ROUTE until final RF review.")
+	(tags "Ebyte E07-400M10S CC1101 module castellated IPEX 433MHz")
+	(attr smd)
+	(fp_text reference "REF**"
+		(at 0 -11.2 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text value "Ebyte_E07-400M10S"
+		(at 0 11.2 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 -3 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+		)
+	)
+	(fp_text user "ANTENNA END"
+		(at 0 8.2 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "PLACE AT PCB EDGE"
+		(at 0 9.3 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "RF DO NOT ROUTE"
+		(at 0 10.3 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "IPEX / u.FL -> Taoglas FXP450"
+		(at 0 4.6 0)
+		(layer "Dwgs.User")
+		(effects
+			(font
+				(size 0.7 0.7)
+				(thickness 0.1)
+			)
+		)
+	)
+	(fp_rect
+		(start -7 -10)
+		(end 7 10)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_rect
+		(start -5.6 5.4)
+		(end -1.2 9.4)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+	)
+	(fp_rect
+		(start -7.9 -10.5)
+		(end 7.9 10.75)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+	)
+	(fp_circle
+		(center 8.4 9.0)
+		(end 8.65 9.0)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+	)
+	(pad "1" smd rect
+		(at 7 9)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "2" smd rect
+		(at 7 7.73)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "3" smd rect
+		(at 7 6.46)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "4" smd rect
+		(at 7 0.89)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "5" smd rect
+		(at 7 -0.38)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "6" smd rect
+		(at 7 -1.65)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "7" smd rect
+		(at 7 -2.92)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "8" smd rect
+		(at 7 -4.19)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "9" smd rect
+		(at 7 -5.46)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "10" smd rect
+		(at 7 -6.73)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "11" smd rect
+		(at 7 -8)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "12" smd rect
+		(at -7 -8)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "13" smd rect
+		(at -7 -6.73)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "14" smd rect
+		(at -7 -5.46)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "15" smd rect
+		(at -7 -4.19)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "16" smd rect
+		(at -7 -2.92)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "17" smd rect
+		(at -7 -1.65)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "18" smd rect
+		(at -7 -0.38)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "19" smd rect
+		(at -7 0.89)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "20" smd rect
+		(at -7 6.46)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "21" smd rect
+		(at -7 7.73)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+	(pad "22" smd rect
+		(at -7 9)
+		(size 1.8 0.9)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+	)
+)

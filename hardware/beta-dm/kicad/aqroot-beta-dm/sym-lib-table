@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "AQROOT_Beta")(type "KiCad")(uri "${KIPRJMOD}/libraries/AQROOT_Beta.kicad_sym")(options "")(descr "AQROOT Beta project symbols - BMI270, TSOP38238"))
+)
