@@ -11,7 +11,7 @@ Both radios are Demo Model must-work and neither is deferred.
 
 | signal | MCU / driver | module pin | pads | segments | vias | **ratsnest** |
 |---|---|---|---|---|---|---|
-| `SPI_B_SCK` | U1.4 (IO4) | U8.18 | 4 | 27 | 5 | **0** |
+| `SPI_B_SCK` | U1.4 (IO4) | U8.18 | 4 | 74 | 5 | **0** |
 | `SPI_B_MOSI` | U1.5 (IO5) | U8.17 | 4 | 25 | 6 | **0** |
 | `SPI_B_MISO` | U1.6 (IO6) | U8.16 | 4 | 23 | 8 | **0** |
 | `SX1262_CS_N` | U1.10 (IO17) + R27 pull-up | U8.19 | 3 | 17 | 2 | **0** |
@@ -19,14 +19,16 @@ Both radios are Demo Model must-work and neither is deferred.
 | `SX1262_DIO1` | U1.31 (IO38) | U8.13 | 2 | 14 | 5 | **0** |
 | `SX1262_RST_N` | **U2.P01** expander + R13 | U8.15 | 3 | 18 | 7 | **0** |
 | `SX1262_RXEN` | **U3.P16** expander + R74 pull-down | U8.6 | 3 | 18 | 4 | **0** |
+
+> `SPI_B_SCK` and `SX1262_RXEN` were both re-landed by the DM release (R5 and
+> R6). Their segment counts changed; their connectivity did not — both are still
+> one island with zero ratsnest, re-verified after landing.
 | `TXEN` | strapped to `DIO2` on the module | U8.7 ↔ U8.8 | 2 | 1 | 0 | **0** |
 | `+3V3` | main rail | U8.9 | 76 | 323 | 36 | **0** |
 | `RF_ANT_TBD` | — | U8.21 | 1 | **0** | 0 | **0** |
 
 **Every control, data and power net on the SX1262 is fully routed with zero
-ratsnest.** Counts are as measured on the board at the DNP-variant commit; the
-R5 release re-lands `SPI_B_SCK` on a different path, which changes its segment
-count but not its connectivity — it stays one island with zero ratsnest.
+ratsnest.** Counts re-measured after the release and the I2S were landed.
 
 Two control lines come from **I2C port expanders, not the MCU** — `RST_N` from
 U2.P01 and `RXEN` from U3.P16. The internal I2C bus must be alive before the

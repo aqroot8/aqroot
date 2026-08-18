@@ -375,3 +375,78 @@ re-land is the next piece of work and is not part of this result.
 > not been landed on `hardware/beta-dm/`** — per the standing instruction to
 > report before major DM routing. Landing it requires, in the same pass, the
 > re-land of `I2C_SDA_INT` and `I2C_SCL_INT`, and a KiCad zone refill.
+
+---
+
+## 8. Landed — implementation record
+
+Landed on `hardware/beta-dm/` in two commits. Everything below is measured on
+the board, with zones refilled through pcbnew (`kicad-cli` cannot fill zones,
+and an unfilled pour makes every new via report a bogus 0.000 mm zone
+clearance).
+
+### 8.1 The four release objects, as landed
+
+| id | released object | net | re-land | frees |
+|---|---|---|---|---|
+| R1 | In2 (17.500,37.000)-(17.500,10.875) | `/I2C_SDA_INT` | **27.798 mm, 2 vias**, F.Cu + In2 | BCLK |
+| R2 | B.Cu (10.030,36.000)-(18.200,36.000) | `/I2C_SCL_INT` | **8.876 mm, 0 vias**, B.Cu, 3-terminal tree | LRCLK |
+| R4 | In2 (24.701,35.985)-(23.300,33.481) | `/BTN_RIGHT_N` | **3.304 mm, 0 vias**, In2 | BOOT_N |
+| R5 | In2 (11.300,19.100)-(11.300,82.000) | `/SPI_B_SCK` | **66.048 mm, 0 vias**, In2 | FAST_IO |
+| R6 | B.Cu ×3 at y = 10.800 | `/SX1262_RXEN` | re-landed at **y = 11.000** | MIC_DIN at the MK1 end |
+
+Total cost of the release: **+4.6 mm of copper and +2 vias** against the four
+originals.
+
+### 8.2 LRCLK's release object changed, and why
+
+§4.2 offered `R2` (`BTN_RIGHT_N` F.Cu) or `R2-alt` (`I2C_SCL_INT` B.Cu). The
+implementation takes **`I2C_SCL_INT`**, and the reason is measured rather than
+preferential.
+
+With `BTN_RIGHT_N` the SCL wall at y = 36.000 stays in place, which closes B.Cu
+southward for x 10.03–18.20. All three I2S nets are then forced onto F.Cu and
+In2, where the northbound In2 lane under U1 has capacity one (§7.2). The
+consequence:
+
+- all **six** sequential orders fail after the first net
+- negotiated congestion ran **32 iterations without converging** — best 12
+  conflict cells at iteration 22, oscillating between 12 and 186
+
+Releasing the wall instead reopens B.Cu — the landed `LRCLK` route uses
+**41.33 mm of it** — and the trio solves. It is still exactly four objects, one
+per demand, with `BTN_HOME_N` excluded.
+
+### 8.3 The I2S trio, as landed
+
+| net | length | vias | B.Cu | F.Cu | In2.Cu | escape via |
+|---|---|---|---|---|---|---|
+| `I2S_BCLK` U1.32 → MK1.4 | **84.281 mm** | 5 | 0.69 | 42.01 | 41.58 | (17.550, 34.100) |
+| `I2S_LRCLK` U1.33 → MK1.1 | **87.909 mm** | 8 | 41.33 | 19.30 | 27.28 | (16.700, 35.550) |
+| `I2S_MIC_DIN` U1.35 → MK1.6 | **91.635 mm** | 8 | 15.21 | 56.67 | 19.75 | (13.650, 35.000) |
+| **total** | **263.824 mm** | **21** | | | | |
+
+`BCLK` moved 0.030 mm from the validated artifact: that artifact predates the
+`BOOT_N` and `FAST_IO` escape reservations and ran straight through `BOOT_N`'s
+escape window, leaving it zero cells. Ripping up `BCLK` alone and re-routing it
+with both sites held cost 0.030 mm and no extra via.
+
+### 8.4 Gate results
+
+| requirement | result |
+|---|---|
+| 3/3 I2S connected | **PASS** |
+| `I2S_MIC_DIN` one island | **PASS** — {U1.35, MK1.6} |
+| `I2S_BCLK` one island | **PASS for the fitted circuit** — {U1.32, MK1.4}; a second island holds the single **DNP** pad `U5.16` |
+| `I2S_LRCLK` one island | **PASS for the fitted circuit** — {U1.33, MK1.1}; second island is `U5.14`, **DNP** |
+| released nets one island | **PASS** — `I2C_SDA_INT`, `I2C_SCL_INT`, `BTN_RIGHT_N`, `SPI_B_SCK`, `SX1262_RXEN`, and untouched `SPI_B_MOSI`/`SPI_B_MISO`/`+3V3` all one island |
+| all five demands still escapable | **PASS** — FAST_IO 54 cells, BCLK 16, MIC_DIN 12, BOOT_N 6, LRCLK 1 |
+| `SPK_DOUT` / `IR_RX` still blocked | **PASS** — 0 cells each, so the eliminated `BTN_HOME_N` release is genuinely not being paid for |
+| exact analytic validation | **PASS** — 352 segments + 23 vias, 0 violations, minimum separation 0.200 mm |
+| DRC | **0 errors**, 240 warnings, composition unchanged from baseline including `track_dangling` still 2 |
+| unconnected | 281 → **278**; the three closed lines are exactly the three U1→MK1 links |
+| continuous In1 GND reference | **PASS** — In1 is the only plane and is refilled |
+| RF band intrusion | **none** — the DM copper added nothing to either band; both still hold F.Cu-only E2 escapes and zero vias |
+| artificial matching | **none, and none needed** — two clocks and one data line at a 16 kHz frame rate |
+| preservation | 0 footprint, pad, zone or Edge.Cuts changes across both commits; no component moved |
+
