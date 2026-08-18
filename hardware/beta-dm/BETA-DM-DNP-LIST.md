@@ -193,12 +193,19 @@ line (the mic drives `I2S_MIC_DIN`; the amplifier would have received
 | U6 | TSOP38238 receiver | IR_RX | **DNP** (deferred) |
 | R21 | 100 R (VS series) | IR_RX | **DNP** |
 | C11 | 4.7 µF (VS bypass) | IR_RX | **DNP** |
-| D1 | TSAL6200 IR LED | IR_TX | pending ruling — see the MCU-release doc |
-| Q1 | AO3400A | IR_TX | pending ruling |
-| R22 | 100 R gate series | IR_TX | pending ruling |
-| R23 | 100 K gate pull-down | IR_TX | pending ruling (**MUST KEEP if Q1 is populated**) |
-| R24 | 18 R LED series | IR_TX | pending ruling |
-| C12 | 4.7 µF | IR_TX local +3V3 | pending ruling / DNP-ELIGIBLE |
+| D1 | TSAL6200 IR LED | IR_TX | **DNP** (deferred, see below) |
+| Q1 | AO3400A | IR_TX | **DNP** |
+| R22 | 100 R gate series | IR_TX | **DNP** |
+| R23 | 100 K gate pull-down | IR_TX | **DNP** (**MUST KEEP if Q1 is ever populated**) |
+| R24 | 18 R LED series | IR_TX | **DNP** |
+| C12 | 4.7 µF | IR_TX local +3V3 | DNP-ELIGIBLE / KEEP (bare +3V3–GND) |
+
+**IR TX is deferred.** `U1.9` (IO16) has zero escape cells and needs a
+**two-object** release — the north-row In2 trunks `/I2C_SDA_INT` (x = 17.500)
+and either the `+3V3` F.Cu bar or the `/SPI_B_SCK` F.Cu escape bar straddle it.
+`/I2C_SDA_INT` is release R1, which DM takes anyway, so the marginal cost is one
+extra release on a power net or a must-work radio bus. Full evidence in
+[BETA-DM-RF-AND-IR.md](BETA-DM-RF-AND-IR.md) §2.
 
 `IR_RX_GPIO44` also has **no single-object escape release** at U1.36 — the only
 demand in the south row for which none exists — which independently supports
@@ -215,10 +222,10 @@ U9  C45 C46 C47 C48 C49 C50 C51 C52 C53 C54          NFC controller + its suppor
 U5  J6                                                speaker amplifier + connector
 U6  R21 C11                                           IR receiver
 U13 L2 R44 R45 C34 C35 C19 C55                        NFC 5 V PA boost  [ruling requested]
-D1  Q1 R22 R23 R24 C12                                IR transmitter    [ruling requested]
+D1  Q1 R22 R23 R24                                    IR transmitter    [deferred, see RF-AND-IR §2]
 ```
 
-**DNP-eligible but recommended to fit:** `C18`, `R29`, `C9`, `C10`, `R15`
+**DNP-eligible but recommended to fit:** `C18`, `R29`, `C9`, `C10`, `R15`, `C12`
 (and `R14`, `TP10` follow the U13 ruling).
 
 **Nets not routed in DM:** `I2S_SPK_DOUT`, `AMP_SD_MODE`, `SPK_P`, `SPK_N`,

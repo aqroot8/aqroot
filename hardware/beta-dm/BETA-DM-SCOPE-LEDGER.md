@@ -32,13 +32,13 @@ DM ruling) and the only thing that changes is population and routing effort.
 | 5 | Buttons (SW2..SW9 + U2 TCA9535) | MUST WORK | E2 closed out, button ratsnest 0 | none for buttons; `WAKE_ATTN_N_HDR` (1) | same |
 | 6 | microSD (J2) | MUST WORK | SPI_A + SD_CS_N routed | J2 GND (9 rats) | same |
 | 7 | Wi-Fi / BLE | MUST WORK | module onboard antenna, no board RF | nothing electrical; enclosure keep-out only | same |
-| 8 | SX1262 915 (U8) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U8 GND (17 rats); flex antenna install | same |
+| 8 | SX1262 915 (U8) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U8 GND (17 rats); flex antenna install; `RXEN` re-land for R6 | same |
 | 9 | 915 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP890 flex on module IPEX | same |
 | 10 | AQROOT↔AQROOT LoRa | MUST WORK | depends on 1,8,9,4 | firmware | same |
 | 11 | CC1101 433 (U7) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U7 GND (15 rats); flex antenna install | same |
 | 12 | 433 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP450 flex on module IPEX | same |
 | 13 | IMU (U4 BMI270) | BASIC BRING-UP | I2C/strap routed | `U4-INT2`, `OCSB`, `OSDO` are NC by design; GND (6) | same |
-| 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S solve (see MCU release doc); MK1 GND (4) | same |
+| 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S solve + release **R6** (a 0.200 mm move of the `SX1262_RXEN` B.Cu run) — see MCU release doc; MK1 GND (4) | same |
 | 15 | J5 / F4 community header | MUST WORK — **KEEP AS ROUTED** | 19/19 escapes landed | `XGPIO*`↔`XGPIO*_HDR` links (14 rats), `ACC_3V3_SW` (7), ext-I2C (4) | same |
 | 16 | BOOT / programming access (SW1, R2) | MUST WORK | 0 tracks | `BOOT_N` after R4 release | same |
 | 17 | Safety / protection (D3..D7 ESD, R27/R28/R74) | MUST WORK | pull-ups and R74 in place | ESD-diode GND stitching | same |
@@ -56,7 +56,7 @@ DM ruling) and the only thing that changes is population and routing effort.
 | 24 | `AMP_SD_MODE` + R15 | NO ROUTE, R15 KEEP-populated | no amplifier to mute ⇒ no safety dependency (audit §4 below) | RESTORE |
 | 25 | J6 connector-type swap | NOT A DM ITEM | no DM reason to touch it | FINAL item, unchanged |
 | 26 | IR_RX (U6 TSOP38238, R21, C11) | DEFER / DNP | receiver demo not in DM scope; U1.36 has **no** single-object escape release | RESTORE |
-| 27 | IR_TX (D1, Q1, R22, R23, R24, C12) | **NEEDS RULING** — see audit §6 | routable only behind a release; not free | RESTORE |
+| 27 | IR_TX (D1, Q1, R22, R23, R24, C12) | **DEFER / DNP** | not routable under ordinary rules: `U1.9` has 0 escape cells and needs a **2-object** release, the cheapest being a +3V3 F.Cu bar or the SPI_B_SCK F.Cu escape bar — see [BETA-DM-RF-AND-IR.md](BETA-DM-RF-AND-IR.md) §2 | RESTORE |
 | 28 | NFC physical (loop, matching, crystal) | DEFER | antenna and matching never designed; all `*_TBD` nets | RESTORE |
 | 29 | U9 ST25R3916 | **DNP** | floating CS on a live shared SPI-B bus + unpowered VDD (audit §3) | RESTORE |
 | 30 | U9 support passives C18, C45–C55 | DNP (C18 KEEP-populated) | U9-only (audit §3) | RESTORE |
