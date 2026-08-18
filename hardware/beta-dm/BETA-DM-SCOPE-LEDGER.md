@@ -87,3 +87,34 @@ DM ruling) and the only thing that changes is population and routing effort.
 - **The microphone.** The reduced 3-net routing is judged practical — see
   [BETA-DM-MCU-RELEASE.md](BETA-DM-MCU-RELEASE.md).
 - **The board outline.** No compaction, no area reclaim.
+
+---
+
+## 5. Final-product restoration ledger
+
+Confirmed for every Demo Model cut. **No DM simplification changes Final scope.**
+Nothing was deleted from the design, no footprint moved and no board area was
+reclaimed, so every restoration below is a population change plus the routing of
+that function's nets — never a re-layout.
+
+| DM cut | DM disposition | **Final disposition** | what restoration costs |
+|---|---|---|---|
+| Speaker output (U5, J6) | DNP, `I2S_SPK_DOUT` / `AMP_SD_MODE` / `SPK_P` / `SPK_N` unrouted | **RESTORE / REQUIRED** | clear `dnp` on U5 and J6; route 4 nets. `I2S_SPK_DOUT` needs full-Beta release object #3 (`BTN_HOME_N` In2) back — the object DM eliminated. |
+| IR transmitter (D1, Q1, R22, R23, R24) | DNP, `IR_TX_GPIO16` and the IR-TX local nets unrouted | **RESTORE / REQUIRED** | clear `dnp`; route. `U1.9` needs a **two-object** release: `I2C_SDA_INT` In2 (already taken by DM as R1) plus either the `+3V3` F.Cu bar at y ≈ 17.10–17.55 or the `SPI_B_SCK` F.Cu escape bar. |
+| IR receiver (U6, R21, C11) | DNP, `IR_RX_GPIO44` and `IR_RX_VS_LOCAL` unrouted | **RESTORE / REQUIRED** | clear `dnp`; route. `U1.36` has **no single-object release** — this is the hardest of the deferred escapes and needs its own architecture pass. |
+| NFC front end (U9 + C45–C54) | DNP for SPI-B bus safety | **RESTORE / REQUIRED** | clear `dnp`; **route `NFC_CS_N` first** — that is what makes population safe. Then `NFC_IRQ`, the four `NFC_VDD_*` rails and `NFC_AGDC`. |
+| NFC loop / matching / crystal | never designed; `RF_DEFERRED_NFC` netclass makes routing a DRC error | **RESTORE WITH NFC / REQUIRED** | antenna and matching design, then lift the `RF_DEFERRED_NFC` rule. |
+| NFC 5 V PA boost (U13, L2, R44, R45, C34, C35, C19, C55) | DNP — U9 is its only load | **RESTORE WITH NFC / REQUIRED** | clear `dnp`; route `NFC_5V_PA_PENDING`, `NFC_5V_EN`, `Net-(U13-FB)`, `Net-(U13-SW)`. `R14` and `TP10` are already fitted on DM, so nothing to undo there. |
+| Advanced protocol suites | not on DM | **FINAL SOFTWARE** | firmware only; no hardware consequence. |
+| J6 connector-type swap | not touched on DM | **FINAL DESIGN ITEM, UNCHANGED** | still open as a Full/Final decision; DM neither advanced nor foreclosed it. |
+| Board area | not reclaimed | **n/a** | the DM board and the Final board share the same outline, the same placement and the same mounting holes. |
+
+Two restoration facts worth keeping visible:
+
+1. **DM eliminated release object #3** (`BTN_HOME_N` In2) because `I2S_SPK_DOUT`
+   is not a DM demand. Restoring the speaker for Final brings that object back —
+   it was not made unnecessary, only unnecessary *for DM*.
+2. **DM took release R1** (`I2C_SDA_INT` In2) for `I2S_BCLK`. IR TX also needs
+   R1. That is a shared prerequisite, not a conflict: with R1 already landed,
+   IR TX's marginal cost drops from two release objects to one.
+
