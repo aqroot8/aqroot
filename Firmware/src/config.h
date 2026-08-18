@@ -159,3 +159,62 @@
 #define BTN_NEXT        5        // move focus down/right (LV_KEY_NEXT)
 #define BTN_ENTER       6        // activate focused tile (LV_KEY_ENTER)
 #define BTN_BACK        7        // return to the launcher home screen
+
+// =======================================================================================
+// BETA DM (DEMO MODEL) FEATURE GATES  --  CONFIG_AQROOT_DM
+//
+// Beta DM is a hardware DERIVATIVE of the full Beta (hardware/beta-dm/), not a firmware
+// fork. ONE source tree, one extra build configuration: PlatformIO env
+// `esp32-s3-aqroot-dm` defines CONFIG_AQROOT_DM. Nothing else changes.
+//
+// The gates below say what the DM BOARD does not populate, so driver code can compile the
+// corresponding hardware access out and the UI can present the feature as unavailable
+// (or simulated) instead of talking to a part that is not there. Restoring a feature for
+// the Final product is deleting a gate, never re-merging a fork.
+//
+// Authoritative scope: hardware/beta-dm/BETA-DM-SCOPE-LEDGER.md
+//                      hardware/beta-dm/BETA-DM-DNP-LIST.md
+// =======================================================================================
+#ifdef CONFIG_AQROOT_DM
+
+// Speaker output: U5 MAX98357A and J6 are DNP; I2S_SPK_DOUT and AMP_SD_MODE are not
+// routed on the DM board. The ICS-43434 microphone is UNAFFECTED and must still work.
+#define AQROOT_HAS_SPEAKER        0
+#define AQROOT_HAS_MIC            1
+
+// NFC: U9 ST25R3916 is DNP for SPI-B bus safety (its chip select has no copper, so a
+// populated part could contend on the bus the LoRa demo depends on). No NFC antenna or
+// matching network exists either. Firmware must NEVER assert an NFC transaction on DM.
+#define AQROOT_HAS_NFC            0
+
+// Infrared: receiver deferred; transmitter deferred pending a routing ruling.
+#define AQROOT_HAS_IR_RX          0
+#define AQROOT_HAS_IR_TX          0
+
+// Everything the DM demo depends on stays on.
+#define AQROOT_HAS_LORA           1   // SX1262 / 915 MHz  -- flagship two-unit demo
+#define AQROOT_HAS_SUBGHZ         1   // CC1101 / 433 MHz
+#define AQROOT_HAS_DISPLAY        1
+#define AQROOT_HAS_TOUCH          1
+#define AQROOT_HAS_SDCARD         1
+#define AQROOT_HAS_IMU            1
+#define AQROOT_HAS_BUTTONS        1
+#define AQROOT_HAS_HEADER_J5      1
+
+#else   // full Beta / Final
+
+#define AQROOT_HAS_SPEAKER        1
+#define AQROOT_HAS_MIC            1
+#define AQROOT_HAS_NFC            1
+#define AQROOT_HAS_IR_RX          1
+#define AQROOT_HAS_IR_TX          1
+#define AQROOT_HAS_LORA           1
+#define AQROOT_HAS_SUBGHZ         1
+#define AQROOT_HAS_DISPLAY        1
+#define AQROOT_HAS_TOUCH          1
+#define AQROOT_HAS_SDCARD         1
+#define AQROOT_HAS_IMU            1
+#define AQROOT_HAS_BUTTONS        1
+#define AQROOT_HAS_HEADER_J5      1
+
+#endif  // CONFIG_AQROOT_DM
