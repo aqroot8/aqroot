@@ -172,13 +172,19 @@ search over all triples.
 
 `R2` (`BTN_RIGHT_N` F.Cu escape stub, 2.615 mm) reopens the E2 hard-lock.
 `R2-alt` (`I2C_SCL_INT` B.Cu wall, 8.170 mm) does not, but it re-routes a live
-I2C trunk through the most congested part of the board.
+I2C trunk through a congested part of the board. Both give all three I2S nets
+full reachability to MK1, so neither costs the microphone anything.
 
-**Recommendation: take `R2` (BTN_RIGHT_N F.Cu).** `BOOT_N` requires `R4`, which
-is the *same net* on In2, so `BTN_RIGHT_N` has to be reopened for DM regardless.
-Doing both of its objects in one pass touches three nets in total
-(`I2C_SDA_INT`, `BTN_RIGHT_N`, `SPI_B_SCK`) instead of four, and leaves the I2C
-trunks alone. `R2-alt` remains the fallback if the E2 rework proves expensive.
+**Recommendation: take `R2-alt` (`I2C_SCL_INT` B.Cu).** It is the variant the
+validated 3-net solution in §7 was solved and DRC-checked against, and the
+landed LRCLK escape via at (16.700, 35.550) is the cell that release vacates.
+`R2` remains available and is attractive on a different axis — `BOOT_N` needs
+`R4`, the *same net* on In2, so taking `R2` would let the whole DM release set
+touch three nets instead of four — but it has no validated route behind it yet
+and would need its own solve.
+
+Either way `I2C_SCL_INT` or `BTN_RIGHT_N` must be re-landed; the release tails
+are visible in the scratch DRC as `track_dangling` warnings (§7.3).
 
 ---
 
@@ -308,21 +314,64 @@ with `MIC_DIN` landed first, `LRCLK` is left with a **647-cell** pocket
 (x 15.85–16.90, y 33.75–35.55) and cannot escape at all. All six sequential
 orders fail after the first net.
 
-### 7.3 Status
+### 7.3 Result — PASS
 
-`3-NET I2S: PENDING.` Feasibility is established and the macro-route structure
-is known — one net up the R1 lane, one through the eastern passage between the
-`/DISP_CS_N` In2 trunk (x = 27.000) and `NFC RESERVED` (x = 28.000), one on the
-southern route around the reservation and up the east edge. What is not yet
-landed is a simultaneous three-net solution that passes exact validation.
+Solved with negotiated congestion (present cost = the number of other nets whose
+0.40 mm exclusion envelope covers a cell, plus an accumulating history cost),
+then cleaned up by ripping up and re-routing each net once with the other two
+frozen as hard obstacles. Converged at iteration 23 with **zero conflict cells**.
 
-A negotiated-congestion solve on the **uncorrected** model did converge
-(0 conflicts, 253.4 mm, 18 vias) and passed exact analytic validation, but
-scratch-KiCad DRC then exposed the three model defects in §1, so that result is
-**withdrawn, not reported**. The corrected model is the one every number in this
-document comes from.
+Releases in force: `R1` (`/I2C_SDA_INT` In2), `R2-alt` (`/I2C_SCL_INT` B.Cu),
+`R6` (`/SX1262_RXEN` B.Cu re-landed at y = 11.000).
 
-No artificial matching is applied and none is required: `BCLK` and `LRCLK` are
-clocks and `MIC_DIN` is data at a 16 kHz frame rate — skew between them is
-irrelevant at these lengths.
+| net | length | vias | B.Cu | F.Cu | In2.Cu |
+|---|---|---|---|---|---|
+| `I2S_BCLK` U1.32 → MK1.4 | **84.251 mm** | 5 | 0.69 | 42.01 | 41.55 |
+| `I2S_LRCLK` U1.33 → MK1.1 | **87.909 mm** | 8 | 41.33 | 19.30 | 27.28 |
+| `I2S_MIC_DIN` U1.35 → MK1.6 | **91.635 mm** | 8 | 15.21 | 56.67 | 19.75 |
+| **total** | **263.795 mm** | **21** | | | |
 
+Escape vias: BCLK (17.550, 34.100), LRCLK (16.700, 35.550),
+MIC_DIN (13.650, 35.000).
+
+**Success gate**
+
+| requirement | result |
+|---|---|
+| 3/3 I2S routed | **PASS** |
+| `BCLK` connected | **PASS** — U1.32 ↔ MK1.4 |
+| `LRCLK` connected | **PASS** — U1.33 ↔ MK1.1 |
+| `MIC_DIN` connected | **PASS** — U1.35 ↔ MK1.6, net ratsnest **0** |
+| 0 pairwise conflicts | **PASS** — 0 conflict cells at convergence, and the cleanup pass treats the other two nets as hard obstacles |
+| exact analytic validation | **PASS** — 0 violations over 239 new segments and 21 new vias, checked against every foreign pad (custom-pad primitives included), track, via (all four layers), rule area, board edge and Edge.Cuts cutout |
+| scratch KiCad DRC | **0 errors** |
+| minimum clearance | **0.200 mm** — several categories sit exactly on the requirement; nothing is below it |
+| reference plane | `In1.Cu` solid GND. F.Cu and In2.Cu are each adjacent to it; the B.Cu portions reference it across the full core |
+| artificial matching | none, and none needed — two clocks and one data line at a 16 kHz frame rate |
+
+**Two honest qualifications on the DRC number.**
+
+1. `kicad-cli` cannot refill zones, so a via added through the `In1 GND
+   REFERENCE` pour is judged against a **stale** fill and reports a bogus
+   0.000 mm zone clearance. With the pour left in place the run reports exactly
+   42 errors — 21 `clearance` + 21 `hole_clearance`, one pair per new via, every
+   single one against that zone and **nothing else**. With the pour removed for
+   the check the run reports **0 errors**. The pour must be refilled and
+   re-DRC'd inside KiCad before this lands.
+2. Removing the pour for the check orphans the 27 existing GND stitching vias
+   (`via_dangling` warnings) and lifts the GND ratsnest from 164 to 186. Both
+   are artifacts of the same removal, not of the new copper.
+
+Remaining ratsnest after the solve: `I2S_MIC_DIN` **0**; `I2S_BCLK` **1** and
+`I2S_LRCLK` **1** — and those two are the **U5.16 / U5.14 amplifier pads we
+deliberately do not route**, exactly as the DNP ledger specifies.
+`/SX1262_RXEN` is **0**, so the R6 re-land is complete.
+
+`track_dangling` rises from 2 to 7: the five new tails are the released
+`I2C_SCL_INT` (×3) and `I2C_SDA_INT` (×2) stubs waiting for their re-land. That
+re-land is the next piece of work and is not part of this result.
+
+> **Status: the 3-net microphone bus is SOLVED and validated in scratch. It has
+> not been landed on `hardware/beta-dm/`** — per the standing instruction to
+> report before major DM routing. Landing it requires, in the same pass, the
+> re-land of `I2C_SDA_INT` and `I2C_SCL_INT`, and a KiCad zone refill.

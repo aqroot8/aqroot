@@ -38,7 +38,7 @@ DM ruling) and the only thing that changes is population and routing effort.
 | 11 | CC1101 433 (U7) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U7 GND (15 rats); flex antenna install | same |
 | 12 | 433 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP450 flex on module IPEX | same |
 | 13 | IMU (U4 BMI270) | BASIC BRING-UP | I2C/strap routed | `U4-INT2`, `OCSB`, `OSDO` are NC by design; GND (6) | same |
-| 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S solve + release **R6** (a 0.200 mm move of the `SX1262_RXEN` B.Cu run) — see MCU release doc; MK1 GND (4) | same |
+| 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S **solved and validated in scratch** (263.795 mm, 21 vias, DRC 0 errors) but **not landed**; needs releases R1 + R2-alt + R6 and their re-lands — see MCU release doc §7.3; MK1 GND (4) | same |
 | 15 | J5 / F4 community header | MUST WORK — **KEEP AS ROUTED** | 19/19 escapes landed | `XGPIO*`↔`XGPIO*_HDR` links (14 rats), `ACC_3V3_SW` (7), ext-I2C (4) | same |
 | 16 | BOOT / programming access (SW1, R2) | MUST WORK | 0 tracks | `BOOT_N` after R4 release | same |
 | 17 | Safety / protection (D3..D7 ESD, R27/R28/R74) | MUST WORK | pull-ups and R74 in place | ESD-diode GND stitching | same |
