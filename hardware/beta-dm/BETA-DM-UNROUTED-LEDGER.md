@@ -10,26 +10,31 @@ commits. Total unconnected: **230**.
 
 | bucket | ratsnest lines | nets |
 |---|---|---|
-| A — intentional DM deferral (DNP function) | **37** | 21 |
+| A — intentional DM deferral (DNP function) | **52** | 36 |
 | B — GND, pours pending | **130** | 1 |
-| C — must-work still open (see the blockers document) | **63** | 48 |
+| C — must-work still open (see the blockers document) | **48** | 33 |
 | **total** | **230** | **70** |
 
 History: 281 after the I2S landed → 278 → **264** after FAST_IO, the USB-C CC
 pair, the shield and the critical power controls → **239** after GND stitching
 at both radios and the microphone → **230** after stitching the USB-C connector,
-the MCU and the pull-to-ground parts.
+the MCU and the pull-to-ground parts. The total is unchanged by the `D2`–`D7`
+DNP reclassification — **15 signal lines moved from bucket C to bucket A**, and
+the 8 GND lines on those six parts stay in bucket B with the other DNP grounds.
 
 Bucket C is enumerated and evidenced in
 [BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md): `BOOT_N` (3) is
-blocked by hard-locked copper and returned for ruling; the J5/F4 header
-interconnect (41) needs a dedicated program; the display backlight (5) is
-partly blocked at its elevated 0.30 mm clearance; and 14 power/status/test lines
-are blocked by local congestion. **Nothing in bucket C is unexplained.**
+**solvable and returned for ruling** — see
+[BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md); the J5/F4
+header interconnect (26, after the ESD reclassification) needs a dedicated
+program; the display backlight (5) completes at a 0.25 mm scoped exception —
+see [BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md); and 14
+power/status/test lines are blocked by local congestion. **Nothing in bucket C
+is unexplained.**
 
 ---
 
-## A — intentional DM deferral: 37 lines, 21 nets
+## A — intentional DM deferral: 52 lines, 36 nets
 
 These are unrouted **because the function is DNP on the Demo Model**. They are
 not defects and must not be "fixed" by routing them. Every one restores for the
@@ -89,6 +94,22 @@ it does not change. `/I2S_MIC_DIN` is **one island** with zero ratsnest.
 | `/07_IR/IR_LED_A` | 1 | D1/R24 DNP |
 | `/07_IR/IR_LED_K` | 1 | D1/Q1 DNP |
 | `/07_IR/IR_RX_VS_LOCAL` | 2 | U6/R21/C11 DNP |
+
+### A.4 J5 community-header ESD arrays — `D2`–`D7` DNP
+
+15 signal lines, one per protected header net. Each is the link from a J5 header
+net to its ESD array pin; the array is unfitted on the Demo Model, so the link
+is a deliberate non-connection.
+
+| net group | lines |
+|---|---|
+| `XGPIO0_HDR`, `XGPIO1_HDR`, `XGPIO4_HDR`, `XGPIO5_HDR`, `XGPIO7_HDR`, `XGPIO8_HDR`, `XGPIO9_HDR`, `XGPIO10_HDR`, `XGPIO11_HDR`, `XGPIO12_HDR`, `XGPIO13_HDR` | 11 |
+| `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` | 2 |
+| `WAKE_ATTN_N_HDR` | 1 |
+| `FAST_IO_GPIO43_HDR` | 1 |
+
+The 8 `GND` lines on `D2`–`D7` stay in bucket B with the other DNP grounds.
+**FINAL RESTORE REQUIRED** — the Final product fits and routes header ESD.
 
 ---
 

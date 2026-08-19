@@ -10,73 +10,45 @@ elevated netclass applies), with no rule relaxed.
 
 | item | lines | status |
 |---|---|---|
-| `BOOT_N` | 3 | **BLOCKED by hard-locked copper — ruling required** |
-| J5/F4 header interconnect | 41 | **BLOCKED by congestion inside the hard-locked header region** |
-| display backlight string | 5 | **3 of 5 blocked** at the LED_BOOST 0.30 mm clearance |
+| `BOOT_N` | 3 | **SOLVABLE — ruling required.** Two complete solutions proven end to end, neither touching a hard lock. See [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md) |
+| J5/F4 header interconnect | 26 | **BLOCKED by congestion inside the hard-locked header region.** Was 41; the 15 ESD-array links moved to the intentional-deferral bucket when `D2`–`D7` became DNP |
+| display backlight string | 5 | **completes at a 0.25 mm scoped exception**, 4 of 6 at the enforced 0.30 mm. See [BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md) |
 | charger status, MCU test points, `SW9-A`, `U15-QOD` | 14 | blocked; local congestion |
-| **total must-work non-GND still open** | **63** | |
+| **total must-work non-GND still open** | **48** | |
 
 Nothing here is a defect in the copper already landed. Every one of these is a
 route that does not exist at the current geometry.
 
 ---
 
-## 1. `BOOT_N` — blocked by the hard-locked I2S, and then by SPI-A and +3V3
+## 1. `BOOT_N` — SUPERSEDED, and solvable
 
 `BOOT_N` is mandatory programming and recovery access: `U1.27` (IO0) ↔ `R2.2`
-(10 k pull-up) ↔ `SW1.1` (BOOT button).
+(10 k pull-up) ↔ `SW1.1` (BOOT button). It still has **zero copper**.
 
-### 1.1 What blocks it
+**The analysis below this heading in earlier revisions was wrong and has been
+replaced.** It measured escape sites inside one reserved via window, which made
+the problem look like a two-lock conflict between `I2S_LRCLK` and either
+`SD_CS_N` or the `+3V3` `R2.1` escape. Measuring the whole reachable region
+instead shows that `U1.27` sits in a sealed 9 728-cell pocket, that **nine
+different single-object releases each open it**, and that **`I2S_LRCLK` is not
+required at all**.
 
-`U1.27` sits at (24.000, 34.750) on B.Cu. It has **zero escape cells**.
+The ratified `R2` micro-move was studied in full and **does not solve it**:
+278 legal `R2` positions exist within a 1.285 mm displacement, 72 of them
+connect `U1.27` to `R2.2`, and none escapes the pocket. Per the standing
+instruction, nothing was landed and the two-lock fallback was not activated.
 
-The immediate blocker is `/I2S_LRCLK` on **F.Cu**, which runs
-(23.100, 34.100)–(24.300, 34.100) — straight across `U1.27`'s escape window —
-as part of a diagonal that spans x 21.5→25.1, y 32.6→34.1. That is copper this
-programme landed and the CTO has since **hard-locked**.
+Two complete solutions are proven end to end, neither touching a hard lock —
+`WAKE_INT_N` (recommended) and `CC1101_GDO0` — plus a third, `BTN_RIGHT_N`
+alone, whose `BOOT_N` route is proven but whose re-land is not.
 
-Measured: with 17 of those `I2S_LRCLK` F.Cu segments (**6.008 mm**) released,
-`BOOT_N` regains **6 escape cells**, including the originally reserved site
-(23.750, 34.150) on F.Cu / In2.Cu. And `I2S_LRCLK` re-lands in **6.001 mm with
-0 vias** — a net change of −0.007 mm. As hard-lock touches go this is about as
-cheap as one can be.
-
-### 1.2 But that alone is not enough
-
-With the `LRCLK` stretch released, `U1.27` reaches an F.Cu pocket of
-x 17.50–25.15, y 29.90–35.60, and `R2.2` reaches a *different* F.Cu pocket of
-x 23.05–25.60, y 34.75–38.55. The two overlap spatially but are separate
-components. `SW1.1` reaches the whole board.
-
-The barrier between them, measured:
-
-| copper | net | status |
-|---|---|---|
-| F.Cu (25.200,34.300)–(24.100,36.200) | `/SD_CS_N` | **SPI-A — hard-locked** |
-| F.Cu (21.945,35.850)–(23.300,36.000), 0.40 mm | `+3V3` | **R2.1 E6 escape — hard-locked, and it carries the Tier-B `E6_R2_1` 0.100 mm measured-clearance exception** |
-| F.Cu (24.400,31.950)–(27.250,34.800) | `/I2S_BCLK` | **I2S — hard-locked** |
-
-So completing `BOOT_N` needs the `I2S_LRCLK` stretch **plus** one of `SD_CS_N`
-(SPI-A) or the `+3V3` R2.1 escape. That is a two-lock conflict, which is why it
-is being returned rather than forced.
-
-### 1.3 Options, for ruling
-
-| # | option | cost | risk |
-|---|---|---|---|
-| A | release 6.008 mm of `I2S_LRCLK` F.Cu **and** re-route the `/SD_CS_N` F.Cu diagonal | LRCLK re-land proven at 6.001 mm / 0 vias; SD_CS_N re-land not yet costed | opens I2S and SPI-A |
-| B | release the `I2S_LRCLK` stretch **and** the `+3V3` R2.1 escape bar | LRCLK proven; +3V3 re-land would have to re-derive the `E6_R2_1` measured clearance | opens I2S and a Tier-B E6 pocket — the most delicate copper on the board |
-| C | move `R2` a short distance | forbidden this pass (no component moves) | needs a placement ruling; probably the cheapest real fix |
-| D | accept `BOOT_N` unrouted and program via USB only | zero copper | **loses hardware BOOT/recovery access** — recommend against |
-
-**Recommendation: C, then A.** `R2` is a 0603 pull-up whose only constraint is
-proximity to `U1.27`; a 1–2 mm move opens the corridor without touching any
-routed net. If component moves stay forbidden, A is the next cheapest because
-the `+3V3` E6 pocket in B is the highest-risk copper on the board.
+**Full evidence, candidate tables and the ruling request:
+[BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md).**
 
 ---
 
-## 2. J5 / F4 header interconnect — 41 lines, blocked by congestion
+## 2. J5 / F4 header interconnect — 26 lines, blocked by congestion
 
 The header cluster (x 30–52, y 9–14) holds two rows of series resistors between
 `U3`/`U15`/`U16` and the `D3`–`D7` ESD diodes, all inside the hard-locked
@@ -99,25 +71,32 @@ The three routable nets were **deliberately not landed**: landing 3 of 37 would
 consume space the remaining 34 need and make a proper header program harder.
 
 **This needs a dedicated header-completion program, not opportunistic routing.**
-It is also worth a ruling on whether the DM demo needs the ESD network populated
-and connected at all, given `D3`–`D7` are fitted but their protection is
-currently not attached to anything.
+**That ruling has since been given and implemented**: `D2`–`D7` are now DNP on
+the Demo Model (commit `4ea1588`). Their 15 signal links moved out of this
+bucket into the intentional-deferral ledger, which is why this section is 26
+lines rather than 41. What remains here is the header interconnect proper —
+`XGPIO*` series-resistor links, `ACC_3V3_SW`, `ACC_PWR_EN`, the buffered
+external I2C and `U15-QOD` — and it still needs a dedicated program.
 
 ---
 
-## 3. Display backlight — 3 of 5 blocked
+## 3. Display backlight — SUPERSEDED, and solvable
 
 `LED_A1`…`LED_A4` and `LED_K` carry the `LED_BOOST` netclass, which the DRU
-gives an **elevated 0.30 mm routed clearance** because the backlight string runs
-above 20 V.
+gives an elevated 0.30 mm routed clearance on the stated premise that the
+backlight string runs above 20 V.
 
-At 0.20 mm all five routed. At the correct 0.30 mm only **`LED_A1` (4.874 mm)**
-and **`LED_A3` (2.528 mm)** route; `LED_A2`, `LED_A4` and `LED_K` fail.
+**That premise does not match the circuit**, and the earlier claim that three of
+five nets were geometrically blocked was an artifact of routing order. Measured
+individually, every backlight net has a fully connected free region at
+0.30 mm; the failures are mutual congestion in a ~2 mm corridor. Order alone
+takes the result from 2 of 6 to 4 of 6, and the whole string completes at a
+**0.25 mm** clearance in 53 segments and 5 vias.
 
-This was caught by the analytic validator before anything landed — the router
-had been applying only the *obstacle's* netclass clearance, not the routed net's.
-Fixed, and the two routable nets were not landed because two of four anodes plus
-no cathode is not a usable backlight.
+**Full analysis — operating voltage, fault voltage, `J1` geometry, the two
+proposed scoped areas, leak probes, IPC-2221 and JLCPCB comparisons:
+[BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md).** Nothing was
+landed and no rule was changed.
 
 ---
 
@@ -146,7 +125,8 @@ allowed minimum.
 ## 5. What this means for pours
 
 Pours are explicitly last, and only after `BOOT_N` is complete. `BOOT_N` is
-blocked, so **pours were not created in this pass**. That is also the right
+still unrouted pending the ruling, and pours are separately **HELD** by the
+pass-4 directive, so **pours were not created**. That is also the right
 engineering call: pouring now would have to be undone by whichever remedy the
 `BOOT_N` ruling selects, and by the header program.
 
