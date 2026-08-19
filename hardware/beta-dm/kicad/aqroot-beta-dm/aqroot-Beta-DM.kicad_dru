@@ -860,3 +860,42 @@
 (rule "E6_R29_1_WIDTH: R29.1 escape neck width, clearance stays global"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
 	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R29_1_WIDTH')"))
+
+# =====================================================================
+# 20. DISPLAY BACKLIGHT LOCAL CLEARANCE - Beta-DM only
+# The LED_BOOST string is a TPS61169 boost from +3V3 driving FOUR
+# PARALLEL panel LEDs through 39 R ballasts, sensed by 2.55 R into the
+# 204 mV FB pin: 80 mA total, 20 mA per branch, so LED_BOOST sits at
+# 3.884-4.484 V in normal operation.  The elevated 0.30 mm figure is
+# justified only by the open-LED fault, where TI SNVSA40B gives
+# VOVP_SW = 36 / 37.5 / 39 V before the part latches off; 39 V is the
+# worst-case basis used here.  C44 is 50 V X7R, above that.
+#
+# The four anodes fan out from a B.Cu resistor column at x = 49.575 to
+# F.Cu connector pads on a 0.500 mm pitch with 0.200 mm gaps, in a
+# corridor bounded to the north by USB_D_MCU_N at y = 78.725.  At the
+# global 0.30 mm only four of six nets route; at 0.250 mm all six do.
+# Measured minimum in the landed geometry: 0.2500 mm exactly.
+#
+# IPC-2221 at 31-50 V: 0.13 mm (B4, external under permanent polymer
+# coating) -> 1.92x margin.  At the 0-15 V operating band: 0.05 mm ->
+# 5.0x.  JLCPCB 4-layer minimum spacing 0.09 mm -> 2.78x.
+#
+# GLOBAL LED_BOOST CLEARANCE IS UNCHANGED AT 0.30 mm.  These two areas
+# are the only places it is reduced, they are last in the file so they
+# take precedence.  Pads are excluded on BOTH sides, exactly as the
+# global LED_BOOST rule does: pad clearance stays at the 0.200 mm
+# global figure and is never raised to 0.250 by this exception.
+# take precedence, and the exception is one-sided: only LED_BOOST copper
+# WHOLLY INSIDE an area gets it, and pads never do.
+#   E6_BL_FANOUT_CLR  x 47.575-50.776  y 79.025-82.675  F/In1/In2/B
+#   E6_BL_KVIA_CLR    x 51.775-52.525  y 79.025-79.775  F/In1/In2/B
+# =====================================================================
+
+(rule "E6_BL_FANOUT: measured local backlight clearance 0.250 mm"
+	(constraint clearance (min 0.250mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad' && A.enclosedByArea('E6_BL_FANOUT_CLR')"))
+
+(rule "E6_BL_KVIA: measured local backlight clearance 0.250 mm"
+	(constraint clearance (min 0.250mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad' && A.enclosedByArea('E6_BL_KVIA_CLR')"))
