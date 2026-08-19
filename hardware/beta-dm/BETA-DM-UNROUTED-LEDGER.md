@@ -6,18 +6,19 @@ unconnected count must equal the sum of these four buckets, and any line that
 does not fall into one of them is a defect, not a deferral.
 
 Measured on the Beta-DM board after the residual-copper and GND-stitching
-commits. Total unconnected: **239**.
+commits. Total unconnected: **230**.
 
 | bucket | ratsnest lines | nets |
 |---|---|---|
 | A — intentional DM deferral (DNP function) | **37** | 21 |
-| B — GND, pours pending | **139** | 1 |
+| B — GND, pours pending | **130** | 1 |
 | C — must-work still open (see the blockers document) | **63** | 48 |
-| **total** | **239** | **70** |
+| **total** | **230** | **70** |
 
 History: 281 after the I2S landed → 278 → **264** after FAST_IO, the USB-C CC
 pair, the shield and the critical power controls → **239** after GND stitching
-at both radios and the microphone.
+at both radios and the microphone → **230** after stitching the USB-C connector,
+the MCU and the pull-to-ground parts.
 
 Bucket C is enumerated and evidenced in
 [BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md): `BOOT_N` (3) is
