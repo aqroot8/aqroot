@@ -5,15 +5,20 @@ this file is that **nothing is unexplained**: at any DM audit the remaining
 unconnected count must equal the sum of the three buckets below, and any line
 that falls into none of them is a defect, not a deferral.
 
-Measured on the board at the display-backlight and header-link commits.
-**Total unconnected: 223.**
+Measured on the board after Option W landed `BOOT_N` and the active-J5 residual
+sweep closed four more lines. **Total unconnected: 216.**
 
 | bucket | ratsnest lines | what it is |
 |---|---|---|
-| A — intentional DM deferral (DNP function) | **53** | at least one endpoint is a pad of a DNP part, or the whole net belongs to a deferred block |
+| A — intentional DM deferral (DNP function) | **55** | at least one endpoint is a pad of a DNP part, or the whole net belongs to a deferred block |
 | B — GND, pours pending | **130** | one net; the plane and stitching program |
-| C — must-work, still open | **40** | see [BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md) |
-| **total** | **223** | |
+| C — fitted must-work, still open | **31** | see [BETA-DM-BOOT-N-OPTION-W.md](BETA-DM-BOOT-N-OPTION-W.md) §7 |
+| **total** | **216** | |
+
+A is 55 rather than 53 because two lines that used to be counted in C —
+`AMP_SD_MODE` to the DNP amplifier and the `NFC_5V_PA_PENDING` track-to-track
+line — are filed by the rule they actually meet: a DNP pad at one end, or a
+block that is DNP as a whole.
 
 Buckets are assigned **per ratsnest line**, not per net: several header nets
 have one line to a DNP ESD diode (bucket A) and another to a fitted resistor
@@ -24,7 +29,9 @@ History: 281 after the I2S landed → 264 after `FAST_IO`, the USB-C CC pair, th
 shield and the critical power controls → 239 after GND stitching at both radios
 and the microphone → 230 after stitching the USB-C connector, the MCU and the
 pull-to-ground parts → **225** after the display backlight closed its five
-lines → **223** after `XGPIO2_HDR` and `XGPIO3_HDR`.
+lines → **223** after `XGPIO2_HDR` and `XGPIO3_HDR` → **220** after Option W
+landed `BOOT_N` → **216** after the active-J5 sweep closed `XGPIO6_HDR`, two
+`Net-(SW9-A)` lines and one `ACC_3V3_SW` line.
 
 The `D2`–`D7` DNP reclassification did not change the total; it moved 15 signal
 lines from bucket C to bucket A.
@@ -83,21 +90,19 @@ closed, so this bucket does not move in this pass.
 
 ---
 
-## C — must-work, still open: 40 lines
+## C — fitted must-work, still open: 31 lines
 
 | group | lines | status |
 |---|---|---|
-| J5 header interconnect — `XGPIO0`…`XGPIO13` (`U3` ↔ series resistor) | 14 | **congestion-blocked**; each endpoint sits in a sealed pocket of 1 000–3 000 cells |
-| `ACC_3V3_SW` | 4 | congestion-blocked, 6 fitted islands |
-| `BOOT_N` | 3 | **returned for ruling** — see [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md) |
-| `ACC_PWR_EN` | 3 | congestion-blocked, 4 fitted islands |
-| `Net-(SW9-A)` | 3 | congestion-blocked; hard-off switch to `U12.EN` |
-| `XGPIO6_HDR`, `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` | 3 | header-side links, congestion-blocked |
-| `Net-(U15-QOD)`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | 3 | congestion-blocked inside the header cluster |
-| `BQ25185_STAT1` / `STAT2`, `TEST_GPIO45` / `46` | 4 | status and test points, congestion-blocked |
-| `AMP_SD_MODE` (`U2` ↔ `R15`) | 1 | both parts fitted, but the amplifier they mute is DNP — see note |
-| track-to-track line on `NFC_5V_PA_PENDING` | 1 | DNP block; no pad at either end |
-| others in the header cluster | 1 | |
+| J5 header interconnect — `XGPIO0`…`XGPIO13` (`U3` ↔ series resistor) | 14 | **congestion-sealed**; `U3` pads reach 186–1 330-cell pockets, the `R5x` pads reach separate ones, no pair shares a free region |
+| `ACC_3V3_SW` | 3 | congestion-sealed; one join closed at the P3V3 0.40 mm floor |
+| `ACC_PWR_EN` | 3 | congestion-sealed, 4 disjoint pockets |
+| `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR`, `XGPIO13_HDR` | 3 | header-side links, congestion-sealed |
+| `Net-(U15-QOD)`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | 3 | congestion-sealed inside the header cluster |
+| `BQ25185_STAT1` / `STAT2`, `TEST_GPIO45` / `46` | 4 | status and test points; `U11.9` reaches **zero** free cells |
+| `Net-(SW9-A)` `TP13.1` | 1 | 1 016-cell pocket; the switch function itself is now routed |
+| ~~`BOOT_N`~~ | ~~3~~ | **CLOSED** — Option W landed, 52.445 mm, one island |
+| ~~`XGPIO6_HDR`~~ | ~~1~~ | **CLOSED** — 1.613 mm |
 
 **Nothing in bucket C is unexplained**, and nothing in it is blocked by a rule
 or by a lock. `BOOT_N` is a ruling request; the rest are blocked by local
@@ -121,7 +126,7 @@ At any Beta-DM audit:
 
 ```
 unconnected(measured)  ==  A(intentional deferral) + B(GND) + C(must-work open)
-        223            ==       53                 + 130    +      40
+        216            ==       55                 + 130    +      31
 ```
 
 If the measured count exceeds the sum, something broke. If a line appears that

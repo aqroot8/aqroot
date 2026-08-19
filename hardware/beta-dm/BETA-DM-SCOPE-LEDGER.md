@@ -25,7 +25,7 @@ DM ruling) and the only thing that changes is population and routing effort.
 
 | # | function | DM status | routed today | remaining DM work | Final |
 |---|---|---|---|---|---|
-| 1 | ESP32-S3 boot / core (U1) | MUST WORK | core rails and SPI routed | `BOOT_N` (3 rats) needs release object R4 | same |
+| 1 | ESP32-S3 boot / core (U1) | MUST WORK | core rails, SPI **and `BOOT_N`** routed | none | same |
 | 2 | Display + touch (SPI-A, J1) | MUST WORK | SPI_A_*, DISP_*, TOUCH_RST_N routed | backlight string `LED_A1..4`, `LED_K` (5 rats); J1 GND (55 rats) | same |
 | 3 | Battery / charging (BQ25185, MAX17048, TPS63020) | MUST WORK | rails routed | `BQ25185_STAT1/2` (2), `SW9-A` (4), `U12-PG`/`PS_SYNC` (4), `U15-CT`/`QOD` (2), GND | same |
 | 4 | USB / programming (J3, USB_D pair) | MUST WORK | USB pair routed through E4 | `J3-CC1/CC2` (2), `J3-SHIELD` (4), GND | same |
@@ -39,8 +39,8 @@ DM ruling) and the only thing that changes is population and routing effort.
 | 12 | 433 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP450 flex on module IPEX | same |
 | 13 | IMU (U4 BMI270) | BASIC BRING-UP | I2C/strap routed | `U4-INT2`, `OCSB`, `OSDO` are NC by design; GND (6) | same |
 | 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S **solved and validated in scratch** (263.795 mm, 21 vias, DRC 0 errors) but **not landed**; needs releases R1 + R2-alt + R6 and their re-lands — see MCU release doc §7.3; MK1 GND (4) | same |
-| 15 | J5 / F4 community header | MUST WORK — **KEEP AS ROUTED** | 19/19 escapes landed | `XGPIO*`↔`XGPIO*_HDR` links (14 rats), `ACC_3V3_SW` (7), ext-I2C (4) | same |
-| 16 | BOOT / programming access (SW1, R2) | MUST WORK | 0 tracks | `BOOT_N` after R4 release | same |
+| 15 | J5 / F4 community header | MUST WORK — **PINS ACTIVE, keep as routed** | 19/19 escapes landed; `XGPIO6_HDR` and one `ACC_3V3_SW` join closed | 23 J5-active lines, all congestion-sealed: `XGPIO0`…`XGPIO13` (14), `ACC_3V3_SW` (3), `ACC_PWR_EN` (3), ext-I2C + `XGPIO13_HDR` (3) | same |
+| 16 | BOOT / programming access (SW1, R2) | MUST WORK | **`BOOT_N` routed** — Option W, 52.445 mm, one island | none | same |
 | 17 | Safety / protection (D3..D7 ESD, R27/R28/R74) | MUST WORK | pull-ups and R74 in place | ESD-diode GND stitching | same |
 | 18 | GND finalisation | MUST WORK | In1 plane filled, 27 GND vias | **164 GND rats** — the single largest remaining DM job | same |
 
