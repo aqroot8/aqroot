@@ -1,9 +1,9 @@
-# AQROOT Beta DM — display backlight: analysis only, nothing landed
+# AQROOT Beta DM — display backlight
 
-**Status: ANALYSIS ONLY.** No copper was landed, no DRU rule was changed, no
-rule area was created. Every number below is measured on the board at commit
-`4ea1588`, at the rules as they stand. The scratch routes exist only as JSON
-artifacts outside the repository.
+**Status: IMPLEMENTED** at commit `4c3dc2a`, after the CTO's conditional
+approval and after all three of its conditions were met. This file began as an
+analysis-only study; §7 records what was actually landed, and §1.3 carries a
+correction to the analysis it superseded.
 
 The directive was explicit that **voltage governs the clearance argument, not
 current draw**. So this starts with the voltage.
@@ -32,18 +32,19 @@ ballasts meaningless.
 
 ### 1.2 The operating voltage
 
-The TPS61169 regulates `FB` to **200 mV**.
+The TPS61169 regulates `FB` to **204 mV typical** (188–220 mV over the band).
 
 ```
-I_total   = 0.200 V / 2.55 R          = 78.4 mA
-I_string  = 78.4 mA / 4               = 19.6 mA        (typical for a 2.8" panel)
-V_ballast = 19.6 mA x 39 R            = 0.764 V
-V(LED_BOOST) = Vf + V_ballast + V_FB  = Vf + 0.964 V
+I_total   = 0.204 V / 2.55 R          = 80.0 mA      (73.7 - 86.3 mA over VREF)
+I_string  = 80.0 mA / 4               = 20.0 mA      per parallel LED
+V_ballast = 20.0 mA x 39 R            = 0.780 V
+V(LED_BOOST) = Vf + V_ballast + V_FB  = Vf + 0.984 V
 ```
 
 With a white-LED `Vf` of 2.9–3.4 V at 20 mA:
 
-> **`LED_BOOST` in normal operation is about 3.9 – 4.4 V, nominally ~4.2 V.**
+> **`LED_BOOST` in normal operation is 3.884 – 4.484 V, nominally ~4.2 V** —
+> the same band the schematic's own `R70` property records.
 
 It is a **boost from 3.3 V to about 4.2 V** — the point of `U17` is to clear the
 LED forward drop from a 3.3 V rail, not to generate a high-voltage string.
@@ -58,24 +59,48 @@ internal over-voltage protection clamps it. That is the only condition in which
 `LED_BOOST` leaves the single-digit volts, and it is bounded by the silicon, not
 by the load.
 
-**This needs datasheet confirmation before any ruling** — the TPS61169 is a
-38 V-class part and its OVP threshold sets the worst case. The surrounding
-components are consistent with that class: `D8` NSR0240 is a 40 V Schottky.
+**Confirmed from TI SNVSA40B (rev June 2024)**, the datasheet the schematic
+already cites:
 
-> **Finding, raised for ruling: `C44` (1 µF, 0805, `LED_BOOST`→`GND`) has no MPN
-> and no voltage rating in the BOM.** It sits directly on the node the OVP clamp
-> defines. Whatever clearance is ratified, `C44` must be specified at or above
-> the OVP limit; a 6.3 V or 10 V part there is a field failure waiting to
-> happen.
+| parameter | min | typ | max |
+|---|---|---|---|
+| `VOVP_SW` output over-voltage threshold | **36 V** | 37.5 V | **39 V** |
+| `VREF` feedback regulation, duty 100 %, 25 °C | 188 mV | **204 mV** | 220 mV |
+| `SW` absolute maximum | | | **40 V** |
+| `VOUT` recommended maximum | | | 38 V |
+| `VIN` recommended | 2.7 V | | 5.5 V |
 
-### 1.4 Netclass over-reach found while measuring this
+The datasheet's §6.3.2 also says what happens next: the part turns the switch
+FET off and **shuts down** once the SW voltage exceeds `VOVP` and `FB` is below
+30 mV for three switching cycles, after which *"the output voltage falls to the
+level of the input supply"* and stays there until `CTRL` is toggled. So 39 V is
+a **transient ceiling of at most three switching cycles** (≈ 2–4 µs at
+0.75–1.5 MHz), not a sustained rail.
 
-The `LED_BOOST` netclass is assigned by pattern. One pattern is `*LED_K`, which
-also matches **`/07_IR/IR_LED_K`** — the IR transmitter's LED cathode, an
-unrelated net that is DNP on the Demo Model. It carries the 0.30 mm elevated
-routed clearance for no reason. Harmless today (IR is unrouted and unfitted),
-but it should be tightened to an explicit net list before Final. `IR_LED_A` does
-not collide, because the patterns are `*LED_A1`…`*LED_A4`.
+> **`VOVP_SW` max = 39 V is the worst-case voltage basis used for spacing in
+> this document.**
+
+**Correction.** An earlier revision of this file recorded that `C44` had no
+voltage rating. That was wrong. `C44` carries `Voltage = 50V` and
+`Dielectric = X7R` as schematic properties, with a note stating that the rating
+is set by `VOVP_SW = 36/37.5/39 V` and not by the ~4.2 V normal output. **50 V
+against a 39 V worst case is 1.28×.** What is true is that the BOM export's
+field list does not include `Voltage`, so the rating is not visible in
+`fab/aqroot-Beta-DM-BOM-full.csv` — a reporting gap, not a design gap.
+
+### 1.4 Netclass over-reach found while measuring this — FIXED
+
+The `LED_BOOST` netclass was assigned by pattern. One pattern was `*LED_K`,
+which also matched **`/07_IR/IR_LED_K`** — the IR transmitter's LED cathode, an
+unrelated net that is DNP on the Demo Model — giving it the elevated 0.30 mm
+routed clearance for no reason.
+
+**Fixed in commit `cbcaa56`.** All six patterns are now pinned to their exact
+sheet paths. Before: 7 nets resolved to `LED_BOOST`. After: exactly 6. No
+routing or DRC change was possible, because `IR_LED_K` and `IR_LED_A` have 0
+tracks and 0 vias. `checks/netclass_probe.py` is a permanent regression probe
+and was verified to fail against the old patterns and pass against the new
+ones.
 
 ---
 
@@ -271,9 +296,9 @@ The question is the peak voltage **between** the two conductors.
 
 | condition | voltage between conductors | B1 internal | B4 external, permanent polymer coating |
 |---|---|---|---|
-| normal operation, anywhere in the string | ≤ ~4.2 V (0–15 V band) | 0.05 mm | 0.05 mm |
-| backlight to `USB_D_MCU_N` / `+3V3`, normal | ≤ ~4.2 V (0–15 V band) | 0.05 mm | 0.05 mm |
-| all-LEDs-open fault, `LED_BOOST` / `LED_A*` at the OVP clamp | 31–50 V band | 0.10 mm | 0.13 mm |
+| normal operation, anywhere in the string | ≤ 4.484 V (0–15 V band) | 0.05 mm | 0.05 mm |
+| backlight to `USB_D_MCU_N` / `SX1262_CS_N`, normal | ≤ 4.484 V (0–15 V band) | 0.05 mm | 0.05 mm |
+| all-LEDs-open fault, `VOVP_SW` max **39 V**, ≤ 3 switching cycles | 31–50 V band | 0.10 mm | 0.13 mm |
 
 These traces run under solder mask, which is the B4 case. The B2 row — external
 conductors **uncoated** — asks 0.60 mm at 31–50 V and would not be met by the
@@ -297,7 +322,7 @@ the **loosest** exception on the board — 2.5× the tightest one already approv
 
 ---
 
-## 6. Recommendation, for ruling
+## 6. Recommendation, as given to the CTO before implementation
 
 1. **Confirm the TPS61169 OVP threshold from the datasheet and specify `C44`
    accordingly.** That is a real electrical gap and it is independent of
@@ -319,6 +344,95 @@ the **loosest** exception on the board — 2.5× the tightest one already approv
    foreign-net sites with **no rule change at all**. Both are outside this
    pass's authority and are noted, not attempted.
 
-**Nothing in this document has been landed.** The scratch route — 53 segments,
-5 vias — exists only as an out-of-tree JSON artifact and is reproducible from
-the tooling.
+Items 1–4 were accepted and implemented; §7 records what was landed. Item 5 —
+nudging `USB_D_MCU_N` or the `+3V3` via to remove the two foreign-net sites
+without any rule change — was **not** attempted and remains available if the
+exception is ever to be retired.
+
+---
+
+## 7. What was landed
+
+Commit `4c3dc2a`. All three of the CTO's conditions were met first: the OVP
+threshold is verified from TI SNVSA40B (§1.3), `C44` is a 50 V X7R part (§1.3),
+and 0.250 mm is conservative against the 39 V worst case (§5).
+
+### 7.1 The route
+
+| net | margin used | segments | vias | length | islands |
+|---|---|---|---|---|---|
+| `LED_A1` | 0.30 global | 3 | 1 | 4.874 mm | 1 |
+| `LED_A2` | **0.250 local** | 5 | 1 | 3.211 mm | 1 |
+| `LED_A3` | **0.250 local** | 4 | 1 | 2.957 mm | 1 |
+| `LED_A4` | **0.250 local** | 11 | 1 | 5.130 mm | 1 |
+| `LED_K` | **0.250 local** | 31 | 1 | 15.400 mm | 1 |
+| `LED_BOOST` | 0.30 global | 2 | 0 | 3.800 mm | 1 |
+| **total** | | **56** | **5** | **35.372 mm** | |
+
+Island counts are KiCad's own, not the geometric model's. **Measured minimum
+clearance in the landed geometry: 0.2500 mm exactly** — at the rule figure, not
+under it.
+
+### 7.2 The two areas, as landed
+
+```
+E6_BL_FANOUT_CLR   F.Cu In1.Cu In2.Cu B.Cu
+                   (47.575, 79.025) (50.776, 79.025) (50.776, 82.675) (47.575, 82.675)
+                   3.201 x 3.650 mm   14 segments + 2 vias enclosed
+
+E6_BL_KVIA_CLR     F.Cu In1.Cu In2.Cu B.Cu
+                   (51.775, 79.025) (52.525, 79.025) (52.525, 79.775) (51.775, 79.775)
+                   0.750 x 0.750 mm    1 via enclosed
+```
+
+Both are derived from the final geometry, not guessed: every object whose real
+clearance is under 0.30 mm is **wholly** inside exactly one of them with at
+least 0.075 mm of overhang past its copper, which is what `enclosedByArea`
+requires. Splitting into two instead of one bounding box keeps the total
+exception area a third smaller (12.24 mm² against 18.07 mm²).
+
+The rules are appended at the **end** of the `.kicad_dru` so they take
+precedence, and they exclude pads on **both** sides — `A.Type != 'Pad' &&
+B.Type != 'Pad'` — exactly as the global rule does. That detail was caught by
+the scratch gate: a first version excluded pads only on the A side, which
+silently *raised* the pad clearance from the 0.200 mm global figure to 0.250 mm
+and produced 12 DRC errors.
+
+**The global `LED_BOOST` routed clearance is unchanged at 0.30 mm.**
+
+### 7.3 Leak probes on the landed areas
+
+| area | foreign tracks / vias inside | foreign copper within 0.35 mm outside |
+|---|---|---|
+| `E6_BL_FANOUT_CLR` | `/SX1262_CS_N`, one 0.20 mm track on In2.Cu | `USB_D_MCU_N`, 0.25 mm F.Cu track at 0.300 mm |
+| `E6_BL_KVIA_CLR` | none | `USB_D_MCU_N`, 0.25 mm F.Cu track at 0.300 mm |
+
+`/SX1262_CS_N` and `USB_D_MCU_N` are the **complete** leak set — the only nets
+on the board that can ever see 0.250 mm instead of 0.300 mm from backlight
+copper. Both are ≤ 3.3 V logic. The only pads inside either area are the
+backlight pins themselves, and pads are excluded by the rule text.
+
+### 7.4 Two tool defects the gates caught
+
+Neither was found by inspection; both were found by a gate refusing to pass.
+
+1. **Extra-obstacle vias were stamped at the global clearance.** When several
+   nets are routed in one session, each is an obstacle to the others. Segments
+   correctly used the netclass clearance; vias used `GLOBAL_CLR` instead. That
+   let LED-to-LED spacing land at 0.2364 mm while the router believed it was
+   holding 0.250 mm. Fixed; the re-solve then achieved exactly 0.2500 mm.
+2. **The first zone insertion anchored on the file's first `(zone`** — which is
+   inside `U1`'s footprint block, because several footprints on this board carry
+   embedded rule areas. The areas became part of `U1`, and KiCad flagged it as
+   `lib_footprint_mismatch`. The installer now anchors on an existing top-level
+   rule area and asserts the insertion point is at paren depth 1.
+
+### 7.5 Validation
+
+DRC **0 errors**, 240 warnings, 225 unconnected — the warning count is exactly
+the pre-existing baseline and the unconnected count fell by the five backlight
+lines. Zones refilled with `pcbnew`. Preservation: 56 segments and 5 vias added,
+**0 removed, 0 modified**; every footprint byte-identical; `Edge.Cuts` identical;
+5 NPTH mounting holes unchanged. `USB_D_MCU_P/N`, `I2S_MIC_DIN`, `I2C_SCL_INT`,
+`I2C_SDA_INT`, `SPI_A_MISO`, `SD_CS_N`, `SPI_B_SCK`, `SX1262_CS_N` and `+3V3`
+island counts all unchanged.

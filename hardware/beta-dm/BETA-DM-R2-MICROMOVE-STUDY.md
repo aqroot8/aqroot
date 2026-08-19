@@ -1,6 +1,13 @@
 # AQROOT Beta DM — R2 micro-move study and the `BOOT_N` result
 
-**Status: STOPPED AND RETURNED FOR RULING.** The ratified R2 micro-move was
+> **UPDATE — Option W was ratified and attempted. It does not land.** The
+> replay reproduced exactly, and the exact analytic validation passed, but the
+> **KiCad scratch gate rejected it with 11 errors**: the replacement `+3V3`
+> escape violates the `P3V3` netclass rules. §7 has the full evidence and the
+> corrected option set. `E6_R2_1` therefore **cannot** be removed, and the
+> condition attached to its removal is not met. Nothing was landed.
+
+**Status of the original study: STOPPED AND RETURNED FOR RULING.** The ratified R2 micro-move was
 studied in full. It does **not** solve `BOOT_N`. Per the standing instruction —
 *"If the micro-move does NOT solve `BOOT_N` cleanly: STOP. Do NOT activate the
 two-lock fallback. Return to CTO."* — nothing was landed: `R2` has not moved,
@@ -86,9 +93,12 @@ Flooding `BOOT_N`'s reachable free space from `U1.27` at the enforced rules:
 So releasing the `+3V3` detour opens a great deal — and **`U1.27` then reaches
 `R2.2` directly.** With `R2` at home and only that detour released, the
 `U1.27` ↔ `R2.2` link routes in **6 segments on B.Cu, no vias, at ordinary
-0.20/0.20 rules**, and `+3V3` re-joins `R2.1` in **3.373 mm with one via, also
-at ordinary rules** — meaning `E6_R2_1` could simply be **deleted**, not
-re-derived.
+0.20/0.20 rules**, and `+3V3` re-joins `R2.1` in 3.373 mm with one via.
+
+> **Corrected in §7.2:** that `+3V3` re-join is *not* at ordinary rules. `+3V3`
+> carries the `P3V3` netclass, which requires 0.40 mm width on the outer layers
+> and a 0.40 mm via drill; the router had used the 0.20 mm default. `E6_R2_1`
+> cannot be deleted.
 
 But that 9 728-cell region is a **sealed pocket**. `SW1.1` reaches 2 826 267
 cells — effectively the whole board. The pocket and the board are separate
@@ -215,3 +225,117 @@ single-release reachability tests; three end-to-end release-and-re-land proofs.
 Not done, deliberately: `R2` has not moved; `E6_R2_1` is unchanged; no `BOOT_N`
 copper exists on the board; the two-lock fallback was not activated; no DRU rule
 was changed; no component was moved.
+
+---
+
+## 7. Option W, ratified and attempted — and why it does not land
+
+### 7.1 The replay reproduced exactly
+
+Fresh scratch from the current board, releasing `/WAKE_INT_N` (15 segments,
+4 vias, 68.633 mm) and the R2-local `+3V3` escape (18 segments, 1 via,
+5.528 mm) — 38 removal UUIDs in total:
+
+| net | result | length | objects | islands |
+|---|---|---|---|---|
+| `BOOT_N` | routed | **52.445 mm** | 67 seg, 5 via | **1** — `U1.27`, `R2.2`, both `SW1.1` halves |
+| `/WAKE_INT_N` re-land | routed | 97.588 mm | 178 seg, 4 via | **1** — all five fitted pads: `R3.1`, `R66.1`, `U1.23`, `U2.1`, `U3.1` |
+| `+3V3` `R2.1` re-join | routed | 3.373 mm | 10 seg, 1 via | `+3V3` island count 42 → 42, `R2.1` on the same island as before |
+
+**WAKE function is preserved**: all five `WAKE_INT_N` pads are fitted, none
+disappears, and `R66.1` — the J5 `WAKE_ATTN_N_HDR` path — stays on the single
+island. The J5 ESD side is a *different* net (`WAKE_ATTN_N_HDR`, `D7`), so no
+ESD-DNP branch was ever treated as required connectivity.
+
+Exact analytic validation of all 255 new segments and 10 vias: **PASS**, 0
+violations, tightest figure 0.2000 mm against a 0.200 mm limit. (Getting there
+required fixing a validator defect — released *vias* were not being excluded
+from the obstacle set, only released segments. The defect was over-strict, so
+it produced false failures and could never have hidden a real one.)
+
+### 7.2 The scratch gate rejected it
+
+KiCad DRC on the scratch, zones refilled: **11 errors.** All of them on the
+replacement `+3V3` escape:
+
+| rule | violations |
+|---|---|
+| `P3V3 minimum width on the outer layers` — min 0.40 mm | 10 tracks at 0.20 mm |
+| `POWER-class vias use the 0.40 mm drill` — min hole 0.40 mm | 1 via at 0.30 mm |
+
+**This corrects a claim in the previous report.** That report said the `R2.1`
+`+3V3` re-join routed "at ordinary rules". It did not. The router had used the
+0.20 mm default width; `+3V3` carries the `P3V3` netclass, which requires
+**0.40 mm on the outer layers** and a **0.40 mm via drill**. The rules were
+never relaxed — the model simply was not asked the right question.
+
+### 7.3 What the real `P3V3` rules allow at `R2.1`
+
+Re-measured with the correct figures, releasing the same objects:
+
+| track width | via | `R2.1` reachable set | escapes its pocket |
+|---|---|---|---|
+| 0.40 mm | 0.60 / 0.30 standard | 118 884 cells, reaches F.Cu | **yes** |
+| 0.40 mm | 0.65 / 0.40 (the smallest legal `P3V3` via: 0.40 drill + 0.125 mm annular floor) | 1 621 cells, B.Cu only | **no** |
+| 0.40 / 0.30 / 0.25 / 0.20 / 0.15 mm | 0.65 / 0.40 | 1 621 – 2 372 cells | **no, at every width** |
+| any width, **no via at all** | — | B.Cu pocket contains **zero** other `+3V3` copper | **no** |
+
+So the track width is not the problem — **the via is**. A compliant `P3V3` via
+needs 0.325 mm of copper radius plus 0.200 mm of clearance; nowhere in `R2.1`'s
+reachable pocket is there room. The threshold is sharp: a 0.60 mm via (radius
+0.300) fits, a 0.65 mm via (radius 0.325) does not.
+
+Measured: **the largest clearance at which a fully compliant 0.65/0.40 via
+escapes `R2.1` is 0.175 mm.** That is what a replacement exception would have
+to grant — against the 0.100 mm clearance plus 0.15 mm neck that `E6_R2_1`
+grants today. It would be a *much weaker* exception, but it is still a new
+scoped rule, and creating one is a STOP condition.
+
+### 7.4 The two demands want the same 1 mm²
+
+`E6_R2_1_CLR` is the square (22.800, 35.500)–(23.800, 36.500). Reserving just
+that square while everything else stays released:
+
+| state | `U1.27` reachable set | `U1.27` → `SW1.1` |
+|---|---|---|
+| WAKE + the `+3V3` escape released (Option W) | 2 972 215 cells | **yes** |
+| the same, but `E6_R2_1_CLR` reserved | **751 cells** | no |
+| WAKE released, `+3V3` escape kept | 779 cells | no |
+
+`BOOT_N`'s only escape from `U1.27` runs **through** the exact pocket the
+`+3V3` power via needs. They are mutually exclusive.
+
+Option **G** (`/CC1101_GDO0`) fails for the same reason — it also requires the
+`+3V3` escape released.
+
+### 7.5 `BTN_HOME_N` checked, and it does not work either
+
+`BTN_HOME_N` was not named in the ruling, and it is the only other release that
+opens `U1.27` with the `+3V3` escape left intact. Measured:
+
+| release, `+3V3` escape KEPT | `U1.27` → `SW1.1` | `U1.27` → `R2.2` | `R2.2` reachable set |
+|---|---|---|---|
+| `/08_…/BTN_HOME_N` | yes | **no** | 4 304 cells, sealed |
+| `/08_…/BTN_RIGHT_N` | yes | yes | 2 952 612 cells |
+
+With `BTN_HOME_N` released, `U1.27` reaches the switch but `R2.2` is sealed in
+its own pocket, so `BOOT_N` still cannot be one island. **`BTN_RIGHT_N` remains
+the only release that completes `BOOT_N` with the `+3V3` escape and `E6_R2_1`
+untouched** — and it is ruled DO NOT PURSUE.
+
+### 7.6 Where that leaves `BOOT_N`
+
+| option | completes `BOOT_N`? | cost |
+|---|---|---|
+| **W** — `/WAKE_INT_N` + the `+3V3` escape | yes, but only with a **new scoped via-clearance exception at 0.175 mm** | replaces `E6_R2_1` with a weaker exception |
+| **G** — `/CC1101_GDO0` + the `+3V3` escape | same blocker | 4× the released length of W |
+| **B** — `/08_…/BTN_RIGHT_N` alone | yes, **no `+3V3` or `E6` change at all**; `BOOT_N` proven at 57.905 mm / 102 seg / 3 via, one island | its own re-land is unproven and needs a negotiated-congestion program |
+| `BTN_HOME_N` alone | **no** — `R2.2` stays sealed | — |
+| R2 micro-move | **no** — 278 legal positions, none escapes | — |
+
+`E6_R2_1` is **KEPT**: the ruling's condition — *"only if ordinary-rule R2.1
++3V3 connectivity is fully proven"* — is measurably not met.
+
+Nothing from Option W was landed. `R2` has not moved, `E6_R2_1` is unchanged,
+`BOOT_N` still has zero copper, `/WAKE_INT_N` is untouched and remains one
+island with all five fitted pads.

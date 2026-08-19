@@ -1,60 +1,50 @@
 # AQROOT Beta DM — intentional-unrouted ledger
 
 Every ratsnest line on the Beta-DM board is accounted for here. The point of
-this file is that **nothing is unexplained**: at any DM audit, the remaining
-unconnected count must equal the sum of these four buckets, and any line that
-does not fall into one of them is a defect, not a deferral.
+this file is that **nothing is unexplained**: at any DM audit the remaining
+unconnected count must equal the sum of the three buckets below, and any line
+that falls into none of them is a defect, not a deferral.
 
-Measured on the Beta-DM board after the residual-copper and GND-stitching
-commits. Total unconnected: **230**.
+Measured on the board at the display-backlight and header-link commits.
+**Total unconnected: 223.**
 
-| bucket | ratsnest lines | nets |
+| bucket | ratsnest lines | what it is |
 |---|---|---|
-| A — intentional DM deferral (DNP function) | **52** | 36 |
-| B — GND, pours pending | **130** | 1 |
-| C — must-work still open (see the blockers document) | **48** | 33 |
-| **total** | **230** | **70** |
+| A — intentional DM deferral (DNP function) | **53** | at least one endpoint is a pad of a DNP part, or the whole net belongs to a deferred block |
+| B — GND, pours pending | **130** | one net; the plane and stitching program |
+| C — must-work, still open | **40** | see [BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md) |
+| **total** | **223** | |
 
-History: 281 after the I2S landed → 278 → **264** after FAST_IO, the USB-C CC
-pair, the shield and the critical power controls → **239** after GND stitching
-at both radios and the microphone → **230** after stitching the USB-C connector,
-the MCU and the pull-to-ground parts. The total is unchanged by the `D2`–`D7`
-DNP reclassification — **15 signal lines moved from bucket C to bucket A**, and
-the 8 GND lines on those six parts stay in bucket B with the other DNP grounds.
+Buckets are assigned **per ratsnest line**, not per net: several header nets
+have one line to a DNP ESD diode (bucket A) and another to a fitted resistor
+(bucket C), and counting them per net would blur exactly the distinction this
+ledger exists to make.
 
-Bucket C is enumerated and evidenced in
-[BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md): `BOOT_N` (3) is
-**solvable and returned for ruling** — see
-[BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md); the J5/F4
-header interconnect (26, after the ESD reclassification) needs a dedicated
-program; the display backlight (5) completes at a 0.25 mm scoped exception —
-see [BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md); and 14
-power/status/test lines are blocked by local congestion. **Nothing in bucket C
-is unexplained.**
+History: 281 after the I2S landed → 264 after `FAST_IO`, the USB-C CC pair, the
+shield and the critical power controls → 239 after GND stitching at both radios
+and the microphone → 230 after stitching the USB-C connector, the MCU and the
+pull-to-ground parts → **225** after the display backlight closed its five
+lines → **223** after `XGPIO2_HDR` and `XGPIO3_HDR`.
+
+The `D2`–`D7` DNP reclassification did not change the total; it moved 15 signal
+lines from bucket C to bucket A.
 
 ---
 
-## A — intentional DM deferral: 52 lines, 36 nets
+## A — intentional DM deferral: 53 lines
 
 These are unrouted **because the function is DNP on the Demo Model**. They are
 not defects and must not be "fixed" by routing them. Every one restores for the
 Final product.
 
-### A.1 NFC front end and its 5 V PA rail — `U9`, `U13` block DNP
-
-| net | lines | why unrouted |
+| block | lines | nets |
 |---|---|---|
-| `/NFC_CS_N` | 2 | U9 DNP. Also the net whose absence makes a fitted U9 unsafe. |
-| `/NFC_IRQ` | 1 | U9 DNP |
-| `/04_SPI_B_RADIOS_NFC/NFC_VDD_D` | 2 | U9 regulator output, U9 DNP |
-| `/04_SPI_B_RADIOS_NFC/NFC_VDD_A` | 2 | U9 regulator output, U9 DNP |
-| `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` | 3 | U9 regulator output, U9 DNP |
-| `/04_SPI_B_RADIOS_NFC/NFC_VDD_AM` | 2 | U9 regulator output, U9 DNP |
-| `/04_SPI_B_RADIOS_NFC/NFC_AGDC` | 2 | U9 reference, U9 DNP |
-| `/NFC_5V_PA_PENDING` | 5 | boost output, U13 DNP and no load |
-| `/NFC_5V_EN` | 3 | boost enable, U13 DNP |
+| NFC front end and its 5 V PA rail — `U9`, `U13` block DNP | 21 | `NFC_CS_N`, `NFC_IRQ`, `NFC_VDD_D/A/RF/AM`, `NFC_AGDC`, `NFC_5V_PA_PENDING`, `NFC_5V_EN` |
+| J5 community-header ESD arrays — `D2`–`D7` DNP | 16 | one line per protected header net, plus `XGPIO11_HDR` and `XGPIO13_HDR` whose only remaining line is the diode link |
+| IR transmitter and receiver — deferred | 8 | `IR_GATE`, `IR_LED_A`, `IR_LED_K`, `IR_RX_VS_LOCAL`, `IR_TX_GPIO16`, `IR_RX_GPIO44` |
+| Speaker — `U5`, `J6` DNP | 8 | `SPK_P`, `SPK_N`, `AMP_SD_MODE` sink, `I2S_SPK_DOUT`, plus the single `U5` pad each on `I2S_BCLK` and `I2S_LRCLK` |
 
-Also permanently unrouted by DRU rule, and carrying **no** ratsnest because they
+Also permanently unrouted by DRU rule and carrying **no** ratsnest because they
 are single-node nets: `NFC_RFO1_TBD`, `NFC_RFO2_TBD`, `NFC_RFI1_TBD`,
 `NFC_RFI2_TBD`, `NFC_AAT_A_TBD`, `NFC_AAT_B_TBD`, `NFC_EXT_LM_TBD`,
 `NFC_CSI_TBD`, `NFC_CSO_TBD`, `NFC_XIN_TBD`, `NFC_XOUT_TBD`,
@@ -64,108 +54,64 @@ designed; the `RF_DEFERRED_NFC` netclass makes routing them a DRC error.
 `Net-(U13-FB)` and `Net-(U13-SW)` have no ratsnest because every node on them is
 DNP — they are entirely dead on DM.
 
-### A.2 Speaker — `U5`, `J6` DNP
+### The two permanent I2S residuals
 
-| net | lines | why unrouted |
-|---|---|---|
-| `/I2S_SPK_DOUT` | 1 | sink U5.1 is DNP |
-| `/AMP_SD_MODE` | 2 | no amplifier to mute; R15 stays fitted but has nothing to hold off |
-| `/06_AUDIO/SPK_P` | 1 | both nodes DNP |
-| `/06_AUDIO/SPK_N` | 1 | both nodes DNP |
+`I2S_BCLK` and `I2S_LRCLK` each report two islands: the fitted circuit, and one
+isolated `U5` amplifier pad. **That is the correct DM state and it does not
+change.** `I2S_MIC_DIN` is one island with zero ratsnest.
 
-### A.2b The two permanent I2S residuals — `U5` DNP
+### The microphone is unaffected
 
-| net | lines | why unrouted |
-|---|---|---|
-| `/I2S_BCLK` | 1 | the routed net connects U1.32 to MK1.4; the remaining line is the **U5.16 amplifier pad**, which the DNP ledger says not to route |
-| `/I2S_LRCLK` | 1 | same — the remaining line is **U5.14** |
-
-KiCad's connectivity engine reports each of these nets as two islands: the
-fitted circuit, and a single isolated `U5` pad. That is the correct DM state and
-it does not change. `/I2S_MIC_DIN` is **one island** with zero ratsnest.
-
-### A.3 IR — transmitter and receiver deferred
-
-| net | lines | why unrouted |
-|---|---|---|
-| `/IR_TX_GPIO16` | 1 | IR TX deferred. `U1.9` also has **zero** escape cells and needs a two-object release. |
-| `/IR_RX_GPIO44` | 1 | IR RX deferred. `U1.36` has **zero** escape cells and **no** single-object release exists. |
-| `/07_IR/IR_GATE` | 2 | Q1/R22/R23 DNP |
-| `/07_IR/IR_LED_A` | 1 | D1/R24 DNP |
-| `/07_IR/IR_LED_K` | 1 | D1/Q1 DNP |
-| `/07_IR/IR_RX_VS_LOCAL` | 2 | U6/R21/C11 DNP |
-
-### A.4 J5 community-header ESD arrays — `D2`–`D7` DNP
-
-15 signal lines, one per protected header net. Each is the link from a J5 header
-net to its ESD array pin; the array is unfitted on the Demo Model, so the link
-is a deliberate non-connection.
-
-| net group | lines |
-|---|---|
-| `XGPIO0_HDR`, `XGPIO1_HDR`, `XGPIO4_HDR`, `XGPIO5_HDR`, `XGPIO7_HDR`, `XGPIO8_HDR`, `XGPIO9_HDR`, `XGPIO10_HDR`, `XGPIO11_HDR`, `XGPIO12_HDR`, `XGPIO13_HDR` | 11 |
-| `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` | 2 |
-| `WAKE_ATTN_N_HDR` | 1 |
-| `FAST_IO_GPIO43_HDR` | 1 |
-
-The 8 `GND` lines on `D2`–`D7` stay in bucket B with the other DNP grounds.
-**FINAL RESTORE REQUIRED** — the Final product fits and routes header ESD.
+`MK1` (ICS-43434) and `C8` are fitted and all three microphone I2S nets are
+routed. Nothing in bucket A touches the demo audio-in path.
 
 ---
 
-## B — GND finalisation: 164 lines
+## B — GND finalisation: 130 lines
 
-One net. The `In1 GND REFERENCE` plane is drawn and filled and 27 GND stitching
-vias exist, but most SMD ground pads still need a stitch via and a short stub.
-This is board-wide work inherited from the Beta, not a DM cut, and it is the
-single largest remaining job on the board.
+One net. The `In1 GND REFERENCE` plane is drawn and filled, and both radios, the
+microphone, the USB-C connector, the MCU and the pull-to-ground parts are
+stitched, but most remaining SMD ground pads still need a stitch via and a short
+stub. This is board-wide work inherited from the Beta, not a DM cut, and it is
+the single largest remaining job.
 
-Concentrations: `J1` 55, `U8` 17, `U7` 15, `J2` 9, `U2` 9, `U4` 6, `U3` 5,
-`U5` 8 (DNP — those eight can be skipped), `U9` 4 (DNP), `MK1` 4, `U1` 4.
+Concentrations: `J1` 55, `J2` 9, `U2` 9, `U4` 6, `U3` 5, `U5` 8 (DNP —
+skippable), `U9` 4 (DNP).
 
-`MK1`'s four are now on the critical path: the microphone's data, clock and
-word-select are routed, so ground is the last thing between it and working.
-
-Both radios are gated on this: **`U8` needs 17 and `U7` needs 15** stitches
-before either can be brought up.
+**Pours are HELD** by CTO direction until every fitted must-work non-GND line is
+closed, so this bucket does not move in this pass.
 
 ---
 
-## C — DM routing still to do: 5 lines, 3 nets
+## C — must-work, still open: 40 lines
 
-The microphone bus is landed. What remains of the DM demand set is `BOOT_N` and
-`FAST_IO`, whose releases (R4 and R5) are already landed and whose escape sites
-are **held clear and verified open**.
-
-| net | lines | status |
+| group | lines | status |
 |---|---|---|
-| `/02_MCU_CORE/BOOT_N` | 3 | release R4 landed; escape site (23.750, 34.150) held and legal, **6 escape cells** |
-| `/FAST_IO_U0TXD_ROOTPROBE_CS` | 1 | release R5 landed; escape site (11.300, 34.100) held and legal, **54 escape cells** |
-| `/09_COMMUNITY_HEADER/FAST_IO_GPIO43_HDR` | 1 | header side of the same link |
+| J5 header interconnect — `XGPIO0`…`XGPIO13` (`U3` ↔ series resistor) | 14 | **congestion-blocked**; each endpoint sits in a sealed pocket of 1 000–3 000 cells |
+| `ACC_3V3_SW` | 4 | congestion-blocked, 6 fitted islands |
+| `BOOT_N` | 3 | **returned for ruling** — see [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md) |
+| `ACC_PWR_EN` | 3 | congestion-blocked, 4 fitted islands |
+| `Net-(SW9-A)` | 3 | congestion-blocked; hard-off switch to `U12.EN` |
+| `XGPIO6_HDR`, `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` | 3 | header-side links, congestion-blocked |
+| `Net-(U15-QOD)`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | 3 | congestion-blocked inside the header cluster |
+| `BQ25185_STAT1` / `STAT2`, `TEST_GPIO45` / `46` | 4 | status and test points, congestion-blocked |
+| `AMP_SD_MODE` (`U2` ↔ `R15`) | 1 | both parts fitted, but the amplifier they mute is DNP — see note |
+| track-to-track line on `NFC_5V_PA_PENDING` | 1 | DNP block; no pad at either end |
+| others in the header cluster | 1 | |
 
-The three `I2S` nets have left this bucket. `I2S_MIC_DIN` is fully connected;
-`I2S_BCLK` and `I2S_LRCLK` are fully connected in the fitted circuit and keep
-one line each for their DNP `U5` pad, which is bucket A.
+**Nothing in bucket C is unexplained**, and nothing in it is blocked by a rule
+or by a lock. `BOOT_N` is a ruling request; the rest are blocked by local
+congestion that needs a dedicated header and power completion program rather
+than opportunistic routing. Attempting all 29 candidates under the current
+locks routed 2 — `XGPIO2_HDR` (15.303 mm) and `XGPIO3_HDR` (14.793 mm), both
+landed — and confirmed the rest have no path at all: the endpoints flood into
+sealed pockets that do not touch.
 
----
-
-## D — other remaining board work: 72 lines, 53 nets
-
-Inherited from the full Beta. **Not DM cuts** — every one of these is Final
-scope too and will be routed.
-
-| group | lines |
-|---|---|
-| J5 community header: `XGPIO0..13` ↔ `XGPIO*_HDR` links | 28 |
-| `/09_COMMUNITY_HEADER/ACC_3V3_SW` | 7 |
-| `/ACC_PWR_EN` | 3 |
-| external I2C `I2C_SDA_EXT_HDR` / `I2C_SCL_EXT_HDR` | 4 |
-| `WAKE_ATTN_N_HDR` | 1 |
-| display backlight string `LED_A1..A4`, `LED_K` | 5 |
-| USB-C `J3` CC1 / CC2 / SHIELD | 6 |
-| power tree: `SW9-A`, `U12-PG`, `U12-PS_SYNC`, `U15-CT`, `U15-QOD`, `U1-EN`, `BQ25185_STAT1/2` | 14 |
-| I2C buffer `U16-SCLB` / `U16-SDAB` | 2 |
-| MCU test pins `TEST_GPIO45` / `TEST_GPIO46` | 2 |
+Note on `AMP_SD_MODE`: `R15` and `U2` are both fitted, so the line is
+fitted-to-fitted and is counted here rather than in bucket A — but the function
+it serves, holding the `U5` amplifier muted, has no amplifier to act on while
+`U5` is DNP. It is listed as must-work so that it is not silently forgotten,
+not because the demo needs it.
 
 ---
 
@@ -174,10 +120,10 @@ scope too and will be routed.
 At any Beta-DM audit:
 
 ```
-unconnected(measured)  ==  A(intentional deferral) + B(GND) + C(DM work) + D(inherited)
-        278            ==       37                 +   164   +      5     +      72
+unconnected(measured)  ==  A(intentional deferral) + B(GND) + C(must-work open)
+        223            ==       53                 + 130    +      40
 ```
 
-If the measured count exceeds the sum, something broke. If a net appears that is
-in none of the four buckets, it is a defect and must be explained before the
+If the measured count exceeds the sum, something broke. If a line appears that
+is in none of the three buckets, it is a defect and must be explained before the
 board moves forward.

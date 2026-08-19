@@ -10,18 +10,18 @@ elevated netclass applies), with no rule relaxed.
 
 | item | lines | status |
 |---|---|---|
-| `BOOT_N` | 3 | **SOLVABLE — ruling required.** Two complete solutions proven end to end, neither touching a hard lock. See [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md) |
-| J5/F4 header interconnect | 26 | **BLOCKED by congestion inside the hard-locked header region.** Was 41; the 15 ESD-array links moved to the intentional-deferral bucket when `D2`–`D7` became DNP |
-| display backlight string | 5 | **completes at a 0.25 mm scoped exception**, 4 of 6 at the enforced 0.30 mm. See [BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md) |
-| charger status, MCU test points, `SW9-A`, `U15-QOD` | 14 | blocked; local congestion |
-| **total must-work non-GND still open** | **48** | |
+| `BOOT_N` | 3 | **RULING REQUIRED.** The ratified Option W was attempted and rejected by the scratch gate: its replacement `+3V3` escape violates the `P3V3` width and via-drill rules, and no compliant escape exists at `R2.1`. `E6_R2_1` is **kept**. See [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md) §7 |
+| J5/F4 header interconnect | 24 | **BLOCKED by congestion.** Was 41; 15 ESD links moved to intentional deferral with `D2`–`D7`, and `XGPIO2_HDR` / `XGPIO3_HDR` are now routed |
+| display backlight string | 0 | **DONE.** All six nets one island at a scoped 0.250 mm; global `LED_BOOST` unchanged at 0.30 mm. See [BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md) §7 |
+| charger status, MCU test points, `SW9-A`, `ACC_PWR_EN`, `U15-QOD` | 13 | blocked; local congestion |
+| **total must-work non-GND still open** | **40** | |
 
 Nothing here is a defect in the copper already landed. Every one of these is a
 route that does not exist at the current geometry.
 
 ---
 
-## 1. `BOOT_N` — SUPERSEDED, and solvable
+## 1. `BOOT_N` — solvable, but every route needs a ruling
 
 `BOOT_N` is mandatory programming and recovery access: `U1.27` (IO0) ↔ `R2.2`
 (10 k pull-up) ↔ `SW1.1` (BOOT button). It still has **zero copper**.
@@ -39,16 +39,22 @@ The ratified `R2` micro-move was studied in full and **does not solve it**:
 connect `U1.27` to `R2.2`, and none escapes the pocket. Per the standing
 instruction, nothing was landed and the two-lock fallback was not activated.
 
-Two complete solutions are proven end to end, neither touching a hard lock —
-`WAKE_INT_N` (recommended) and `CC1101_GDO0` — plus a third, `BTN_RIGHT_N`
-alone, whose `BOOT_N` route is proven but whose re-land is not.
+`WAKE_INT_N` (Option W) was ratified and attempted. The route itself is
+correct — `BOOT_N` completes in 52.445 mm as one island, `WAKE_INT_N` re-lands
+as one island with all five fitted pads — but the **scratch gate rejected it**:
+releasing the R2-local `+3V3` escape forces a replacement, and no replacement
+satisfies the `P3V3` netclass (0.40 mm outer width and a 0.40 mm via drill).
+`BOOT_N`'s only escape from `U1.27` runs through the exact 1 mm² pocket the
+`+3V3` power via needs, so the two demands are mutually exclusive. `E6_R2_1`
+is therefore **kept**. `CC1101_GDO0` fails identically. `BTN_RIGHT_N` alone
+would work without touching `+3V3` at all, but is ruled DO NOT PURSUE.
 
 **Full evidence, candidate tables and the ruling request:
 [BETA-DM-R2-MICROMOVE-STUDY.md](BETA-DM-R2-MICROMOVE-STUDY.md).**
 
 ---
 
-## 2. J5 / F4 header interconnect — 26 lines, blocked by congestion
+## 2. J5 / F4 header interconnect — 24 lines, blocked by congestion
 
 The header cluster (x 30–52, y 9–14) holds two rows of series resistors between
 `U3`/`U15`/`U16` and the `D3`–`D7` ESD diodes, all inside the hard-locked
@@ -71,7 +77,14 @@ The three routable nets were **deliberately not landed**: landing 3 of 37 would
 consume space the remaining 34 need and make a proper header program harder.
 
 **This needs a dedicated header-completion program, not opportunistic routing.**
-**That ruling has since been given and implemented**: `D2`–`D7` are now DNP on
+Re-attempted after the `D2`–`D7` reclassification, on a regional grid, with
+only fitted islands as targets: **2 of 29 routed** — `XGPIO2_HDR` (15.303 mm,
+31 segments, 2 vias) and `XGPIO3_HDR` (14.793 mm, 21 segments, 2 vias), both
+landed. The other 27 fail immediately: flooding from each endpoint shows two
+sealed pockets of roughly 1 000–3 000 cells that never touch. This is
+congestion, not a rule and not a lock.
+
+**The ESD ruling has since been given and implemented**: `D2`–`D7` are now DNP on
 the Demo Model (commit `4ea1588`). Their 15 signal links moved out of this
 bucket into the intentional-deferral ledger, which is why this section is 26
 lines rather than 41. What remains here is the header interconnect proper —
@@ -80,7 +93,7 @@ external I2C and `U15-QOD` — and it still needs a dedicated program.
 
 ---
 
-## 3. Display backlight — SUPERSEDED, and solvable
+## 3. Display backlight — RESOLVED AND LANDED
 
 `LED_A1`…`LED_A4` and `LED_K` carry the `LED_BOOST` netclass, which the DRU
 gives an elevated 0.30 mm routed clearance on the stated premise that the
@@ -93,14 +106,17 @@ individually, every backlight net has a fully connected free region at
 takes the result from 2 of 6 to 4 of 6, and the whole string completes at a
 **0.25 mm** clearance in 53 segments and 5 vias.
 
-**Full analysis — operating voltage, fault voltage, `J1` geometry, the two
-proposed scoped areas, leak probes, IPC-2221 and JLCPCB comparisons:
-[BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md).** Nothing was
-landed and no rule was changed.
+**Implemented.** All six nets are one island each, at a 0.250 mm clearance
+scoped to two small named areas totalling 12.24 mm²; the global `LED_BOOST`
+figure is unchanged at 0.30 mm. The worst-case voltage basis is the TPS61169's
+`VOVP_SW` max of 39 V, verified from TI SNVSA40B, and `C44` is a 50 V X7R part.
+**Full record — operating and fault voltage, `J1` geometry, the landed areas,
+leak probes, IPC-2221 and JLCPCB margins:
+[BETA-DM-BACKLIGHT-ANALYSIS.md](BETA-DM-BACKLIGHT-ANALYSIS.md).**
 
 ---
 
-## 4. Remaining power / control — 14 lines
+## 4. Remaining power / control — 13 lines
 
 | net | lines | why open |
 |---|---|---|
@@ -124,9 +140,11 @@ allowed minimum.
 
 ## 5. What this means for pours
 
-Pours are explicitly last, and only after `BOOT_N` is complete. `BOOT_N` is
-still unrouted pending the ruling, and pours are separately **HELD** by the
-pass-4 directive, so **pours were not created**. That is also the right
+Pours are explicitly last, and only after every fitted must-work non-GND line
+is closed. 40 remain — `BOOT_N` pending a ruling, the rest congestion-blocked —
+so **pours were not created**. That is also the right engineering call: pouring
+now would have to be undone by whichever remedy the `BOOT_N` ruling selects and
+by the header program. That is also the right
 engineering call: pouring now would have to be undone by whichever remedy the
 `BOOT_N` ruling selects, and by the header program.
 
