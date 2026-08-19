@@ -1134,27 +1134,27 @@
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_BOOST"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_BOOST"
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_K"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_K"
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_A1"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A1"
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_A2"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A2"
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_A3"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A3"
       },
       {
         "netclass": "LED_BOOST",
-        "pattern": "*LED_A4"
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A4"
       },
       {
         "netclass": "SWITCH_NODE",
