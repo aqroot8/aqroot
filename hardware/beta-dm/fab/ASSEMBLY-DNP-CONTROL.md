@@ -17,7 +17,7 @@ The files in this directory are generated from it, not maintained by hand.
 |---|---|---|
 | `aqroot-Beta-DM-BOM-fitted.csv` | **the parts to buy and place** — DNP excluded | purchasing, kitting, placement |
 | `aqroot-Beta-DM-BOM-full.csv` | every part, with a `DNP` column | design review, Final-product restoration |
-| `aqroot-Beta-DM-DO-NOT-POPULATE.csv` | the 34 DNP refs with a reason each | assembly control / incoming check |
+| `aqroot-Beta-DM-DO-NOT-POPULATE.csv` | the 40 DNP refs with a reason each | assembly control / incoming check |
 | `aqroot-Beta-DM-pos-fitted.csv` | **placement data, DNP excluded** | pick-and-place |
 | `aqroot-Beta-DM-pos-all.csv` | placement data for every footprint | reference only — **do not feed to the machine** |
 | `aqroot-Beta-DM-assembly-top.pdf` | top assembly drawing | visual check; DNP parts are **crossed out** |
@@ -56,7 +56,7 @@ per-part reasons in this document.
 
 ---
 
-## 1. DO NOT POPULATE — 29 Demo Model parts
+## 1. DO NOT POPULATE — 35 Demo Model parts
 
 ### 1.1 `U9` ST25R3916 NFC front end — **BUS SAFETY, NOT OPTIONAL**
 
@@ -139,12 +139,34 @@ travel together. **If `Q1` is ever fitted, `R23` must be fitted with it.**
 | R21 | 100 R supply series |
 | C11 | 4.7 µF supply bypass |
 
+### 1.6 J5 community-header ESD arrays — deferred
+
+| ref | value | protects |
+|---|---|---|
+| D2 | TPD2E009DBZR | `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` |
+| D3 | TPD4E1B06DRLR | `XGPIO0_HDR` … `XGPIO3_HDR` |
+| D4 | TPD4E1B06DRLR | `XGPIO4_HDR` … `XGPIO7_HDR` |
+| D5 | TPD4E1B06DRLR | `XGPIO8_HDR` … `XGPIO11_HDR` |
+| D6 | TPD4E1B06DRLR | `XGPIO12_HDR`, `XGPIO13_HDR` |
+| D7 | TPD2E009DBZR | `WAKE_ATTN_N_HDR`, `FAST_IO_GPIO43_HDR` |
+
+**Every one of these is shunt-only.** Each signal pin touches exactly one net
+and pin 2 is `GND`; no signal passes *through* the device. Verified pin by pin
+on the board, not assumed from the part number. Unfitting them therefore
+removes protection and breaks no connection — the header still works.
+
+They are deferred because the J5 ESD network is entirely unrouted (see
+`../BETA-DM-RESIDUAL-BLOCKERS.md` §2): fitted, they would be unconnected parts
+on a bench demo board. **FINAL RESTORE REQUIRED** — the Final product ships
+with header ESD protection fitted and routed.
+
 ---
 
 ## 2. FITTED — parts that look droppable but are not
 
 | ref | value | why it stays |
 |---|---|---|
+| **U10** | USBLC6-2SC6 | **U10 MUST FIT — SERIES USB DATA PATH.** Both USB data lines pass *through* it: `USB_D_CONN_P/N` enter on pins 3/1 and leave on pins 4/6 as `USB_D_ESD_P/N`. Unfitting it open-circuits USB. It is an ESD part, but it is **not** in the D2–D7 class and must never be added to any ESD DNP list. |
 | **R14** | 100 k | `NFC_5V_EN` pull-down. Explicitly retained. If `U13` is ever fitted, this is what holds it off while the expander port is high-Z at power-up. |
 | **TP10** | test point | `NFC_5V_EN` probe point. Retained. |
 | **R74** | 100 k | `SX1262_RXEN` pull-down — holds the LoRa RF switch in CLOSE while the expander is high-Z. **Radio-critical.** |

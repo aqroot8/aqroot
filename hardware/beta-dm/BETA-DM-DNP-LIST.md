@@ -213,6 +213,49 @@ deferring it.
 
 ---
 
+## 4b. J5 community-header ESD arrays — CTO-ratified DM deferral
+
+`D2`–`D7` protect the J5 community header. Each was audited pin by pin on the
+board rather than inferred from the part number:
+
+| ref | part | pins that carry a net | GND pin | topology |
+|---|---|---|---|---|
+| D2 | TPD2E009DBZR | 1 `I2C_SCL_EXT_HDR`, 3 `I2C_SDA_EXT_HDR` | 2 | **shunt only** |
+| D3 | TPD4E1B06DRLR | 1/3/4/6 `XGPIO0..3_HDR` | 2 | **shunt only** |
+| D4 | TPD4E1B06DRLR | 1/3/4/6 `XGPIO4..7_HDR` | 2 | **shunt only** |
+| D5 | TPD4E1B06DRLR | 1/3/4/6 `XGPIO8..11_HDR` | 2 | **shunt only** |
+| D6 | TPD4E1B06DRLR | 1 `XGPIO12_HDR`, 3 `XGPIO13_HDR` | 2 | **shunt only** |
+| D7 | TPD2E009DBZR | 1 `WAKE_ATTN_N_HDR`, 3 `FAST_IO_GPIO43_HDR` | 2 | **shunt only** |
+
+No signal enters one pin and leaves another. Unfitting them removes ESD
+protection and **breaks no connection**. This is what makes the deferral safe,
+and it is the exact property that `U10` does not have.
+
+### 4b.1 `U10` USBLC6-2SC6 — MUST FIT, absolute exclusion
+
+`U10` is also an ESD part and must **never** be swept into an ESD DNP list:
+
+| pin | net | side |
+|---|---|---|
+| 1 | `USB_D_CONN_N` | connector |
+| 3 | `USB_D_CONN_P` | connector |
+| 6 | `USB_D_ESD_N` | MCU |
+| 4 | `USB_D_ESD_P` | MCU |
+| 5 | `USB_VBUS_RAW` | supply |
+| 2 | `GND` | — |
+
+Both USB data lines pass **through** the device — `USB_D_CONN_P` → pin 3,
+pin 4 → `USB_D_ESD_P` → `R34` (22 R) → `USB_D_MCU_P` → `U1.14`, and the same on
+the N side through `R33`. It is a **series** device. Unfitting it open-circuits
+USB, which is the only way to program and power this board.
+
+**`U10` MUST FIT — SERIES USB DATA PATH.**
+
+Also fitted and not in this class: `D8` (NSR0240) is the display backlight boost
+catch diode, not an ESD part.
+
+---
+
 ## 5. Roll-up: the exact DM DNP set
 
 **DNP (do not fit):**
@@ -223,7 +266,11 @@ U5  J6                                                speaker amplifier + connec
 U6  R21 C11                                           IR receiver
 U13 L2 R44 R45 C34 C35 C19 C55                        NFC 5 V PA boost  [ruling requested]
 D1  Q1 R22 R23 R24                                    IR transmitter    [deferred, see RF-AND-IR §2]
+D2  D3 D4 D5 D6 D7                                    J5 header ESD     [CTO-ratified, FINAL RESTORE REQUIRED]
 ```
+
+**MUST FIT, never DNP:** `U10` (USBLC6-2SC6) — series USB data path. `D8`
+(NSR0240) — backlight boost catch diode.
 
 **DNP-eligible but recommended to fit:** `C18`, `R29`, `C9`, `C10`, `R15`, `C12`
 (and `R14`, `TP10` follow the U13 ruling).
