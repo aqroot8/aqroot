@@ -5,17 +5,26 @@ this file is that **nothing is unexplained**: at any DM audit, the remaining
 unconnected count must equal the sum of these four buckets, and any line that
 does not fall into one of them is a defect, not a deferral.
 
-Measured on the Beta-DM board **after** the 4-object MCU release and the 3-net
-microphone I2S were landed. Total unconnected: **278** (was 281 before the I2S;
-the three lines that closed are the three U1→MK1 links).
+Measured on the Beta-DM board after the residual-copper and GND-stitching
+commits. Total unconnected: **239**.
 
 | bucket | ratsnest lines | nets |
 |---|---|---|
 | A — intentional DM deferral (DNP function) | **37** | 21 |
-| B — GND finalisation (board-wide, known) | **164** | 1 |
-| C — DM routing still to do | **5** | 3 |
-| D — other remaining board work (inherited from Beta, not a DM cut) | **72** | 53 |
-| **total** | **278** | **78** |
+| B — GND, pours pending | **139** | 1 |
+| C — must-work still open (see the blockers document) | **63** | 48 |
+| **total** | **239** | **70** |
+
+History: 281 after the I2S landed → 278 → **264** after FAST_IO, the USB-C CC
+pair, the shield and the critical power controls → **239** after GND stitching
+at both radios and the microphone.
+
+Bucket C is enumerated and evidenced in
+[BETA-DM-RESIDUAL-BLOCKERS.md](BETA-DM-RESIDUAL-BLOCKERS.md): `BOOT_N` (3) is
+blocked by hard-locked copper and returned for ruling; the J5/F4 header
+interconnect (41) needs a dedicated program; the display backlight (5) is
+partly blocked at its elevated 0.30 mm clearance; and 14 power/status/test lines
+are blocked by local congestion. **Nothing in bucket C is unexplained.**
 
 ---
 
