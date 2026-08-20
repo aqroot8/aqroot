@@ -48,11 +48,26 @@ via, legal only because of the two `E6_R2_1` areas.
 |---|---|---|---|---|
 | `BOOT_N` | **52.445 mm** | 67 seg, 5 via | F 32 / B 24 / In2 11 | **1** — `U1.27`, `R2.2`, both `SW1.1` |
 | `/WAKE_INT_N` re-land | **97.588 mm** | 178 seg, 4 via | F 68 / B 57 / In2 53 | **1** — `R3.1`, `R66.1`, `U1.23`, `U2.1`, `U3.1` all kept |
-| `+3V3` `R2.1` re-join | **3.531 mm** | 13 seg, 1 via | B.Cu 2, F.Cu 11 | rail **1** island |
+| `+3V3` `R2.1` re-join | **3.631 mm** | 13 seg, 1 via | B.Cu 2, F.Cu 11 | rail **1** island |
 
 The `+3V3` escape leaves `R2.1` on B.Cu at 0.40 mm, takes a **0.65 / 0.40 POWER
-via at (21.850, 37.400)** — annular ring 0.1250 mm, exactly the global floor —
+via at (21.900, 37.400)** — annular ring 0.1250 mm, exactly the global floor —
 and runs 0.40 mm F.Cu to the `x = 21.150` spine.
+
+> **The via was originally landed at (21.850, 37.400) and that geometry was
+> REJECTED on DFM.** It gave only a 0.075 mm solder-mask dam and overlapped the
+> `R2.1` pad copper by 0.050 mm. It was replaced by a minimum four-object edit —
+> three segments and the via — moving the via 0.050 mm east to
+> **(21.900, 37.400)**, which gives a **0.125 mm mask dam** and **zero copper
+> overlap** at the **ordinary 0.200 mm** clearance, with **no 0.175 mm exception
+> used**. Escape length 3.531 → 3.631 mm. `BOOT_N` and `WAKE_INT_N` were not
+> touched. Full audit:
+> [BETA-DM-R2-POWER-VIA-DFM.md](BETA-DM-R2-POWER-VIA-DFM.md); fabrication
+> consequences: [fab/BETA-DM-FABRICATION-NOTES.md](fab/BETA-DM-FABRICATION-NOTES.md).
+>
+> **Beta-DM solder mask is locked to GREEN for this fabrication build.** The
+> 0.125 mm dam is accepted under that constraint. Full Beta and the Final-product
+> colour decision are unaffected.
 
 ## 4. Why no exception was needed
 
@@ -168,7 +183,7 @@ reopened during DM closeout:
 |---|---|---|
 | `BOOT_N` | 67 segments, 5 vias, 52.445 mm, one island | `a5e10000` |
 | `/WAKE_INT_N` replacement | 178 segments, 4 vias, 97.588 mm, one island | `a5e10000` |
-| R2-local `+3V3` re-join | 13 segments, 1 POWER via at (21.850, 37.400), 3.531 mm | `a5e10000` |
+| R2-local `+3V3` re-join | 13 segments, 1 POWER via at **(21.900, 37.400)**, 3.631 mm | `a5e10000` + `f2b40000` |
 
 There is **no rule exception to lock**: the escape stands on the ordinary
 0.200 mm clearance, the 0.40 mm P3V3 outer-layer floor and the 0.65 / 0.40

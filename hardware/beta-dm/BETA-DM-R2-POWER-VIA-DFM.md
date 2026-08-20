@@ -1,13 +1,18 @@
 # Beta-DM — R2 power-via DFM gate
 
-**Analysis only in this pass. The real board was not modified.** Every number
-below is measured from `aqroot-Beta-DM.kicad_pcb` as it stands, not taken from
-any earlier report.
+**CLOSED.** The gate below was run as analysis; the CTO then rejected the
+landed geometry and approved candidate B, which **is now landed** by a minimum
+four-object edit (3 segments + the via). Measured on the real board after
+landing: mask dam **0.1250 mm**, copper overlap **0.0000 mm**, ordinary
+clearance **0.2000 mm**, KiCad DRC **0 errors**, `BOOT_N` / `WAKE_INT_N` /
+`+3V3` one island each and the first two untouched.
 
-**Verdict: the landed escape FAILS the DFM gate on solder-mask dam. A drop-in
-replacement that PASSES exists, needs no rule exception, and is validated in
-scratch at KiCad DRC 0.** It is not landed, because §2 of the ruling forbids a
-real-board replacement before the comparison is returned.
+Beta-DM solder mask is locked to **GREEN** for this fabrication build; the
+0.125 mm dam is accepted under that constraint. See
+[fab/BETA-DM-FABRICATION-NOTES.md](fab/BETA-DM-FABRICATION-NOTES.md).
+
+Every number below is measured from `aqroot-Beta-DM.kicad_pcb`, not taken from
+any earlier report.
 
 ---
 
@@ -28,7 +33,7 @@ exactly the pad copper**. Via tenting: **front yes, back yes**;
 `covering`, `plugging`, `capping`, `filling` are **all no**. The via record
 carries no tenting override, so it inherits the board default.
 
-### The landed via — (21.8500, 37.4000), 0.65 / 0.40, annular 0.1250 mm
+### The REJECTED via — (21.8500, 37.4000), 0.65 / 0.40, annular 0.1250 mm
 
 | measurement | value |
 |---|---|
@@ -92,7 +97,7 @@ exactly why this gate is separate.
 Both alternatives keep P3V3 ≥ 0.40 mm, the POWER via at 0.65 / 0.40, and touch
 neither `BOOT_N` nor `WAKE_INT_N`.
 
-| | **A — landed today** | **B — recommended** |
+| | **A — rejected** | **B — LANDED** |
 |---|---|---|
 | via | (21.8500, 37.4000) | **(21.9000, 37.4000)** — 0.050 mm east |
 | escape length | 3.531 mm, 13 seg, 1 via | 3.631 mm, 13 seg, 1 via |
@@ -168,8 +173,23 @@ there.
 
 ---
 
-## 5. Preservation in this pass
+## 5. Landing record
 
-Nothing was written to the board. `hardware/beta/` unchanged; `BOOT_N`,
-`WAKE_INT_N`, I2S, internal I²C, SPI-A, SPI-B, USB, RF, backlight, Edge.Cuts
-and the mounting holes all unchanged; no pours; the DRU is untouched.
+Candidate B was landed as the **minimum** change: 10 of the 13 escape segments
+were already common to both routes and were left alone.
+
+| | |
+|---|---|
+| removed | 3 segments + 1 via (`a5e10000-ac94…`, `a5e10000-7889…`, `a5e10000-ac7a…`, `a5e10000-e1e0…`) |
+| added | 3 segments + 1 via, UUID prefix `f2b40000` |
+| measured on the real board | via exactly (21.900000, 37.400000), 0.650000 / 0.400000, annular 0.1250 mm |
+| mask dam | **0.1250 mm** |
+| via copper vs `R2.1` | **0.0000 mm — tangent** |
+| ordinary clearance | tightest **0.2000 mm** (via vs `R2.2` pad) |
+| `R2.2` drill-edge clearance | 0.3250 mm |
+| via tenting | inherited, both sides, no per-via override |
+| paste over the via | none — drill edge 0.125 mm outside the paste aperture |
+| DRU | **unchanged** — no exception created |
+| preservation diff | 188 footprints, 776 pad keys, 44 zone definitions, Edge.Cuts identical; 0 objects modified in place |
+| `BOOT_N` / `WAKE_INT_N` | byte-identical — 67 seg/5 via/52.445 mm and 178 seg/4 via/97.588 mm |
+| `hardware/beta/` | unchanged; no pours
