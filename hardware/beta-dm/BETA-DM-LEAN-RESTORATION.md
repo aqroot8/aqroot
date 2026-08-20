@@ -52,14 +52,14 @@ the `U3` bottom pad row. Measured at the maximal-ordinary-release ceiling,
 `U3.14`–`U3.18` sit in **198-cell** pockets walled only by `PAD U3` (66 cells)
 and `SX1262_RXEN` (6 cells).
 
-**The Lean plan already pays this cost**, because `ACC_PWR_EN` needs it too. So
-after the Lean routing lands, `XGPIO9`–`XGPIO13` no longer face a hard-lock
-release — the release is already taken and RXEN is already re-landed elsewhere.
-Their marginal Full-Beta cost drops from "needs a hard-lock ruling" to "needs
-corridor capacity", which is the same class of problem as `XGPIO0`–`XGPIO3`.
+**The Lean-Core plan does NOT pay this cost.** `ACC_PWR_EN` is deferred, and
+the GPIO study measured that releasing `SX1262_RXEN` buys nothing for
+`XGPIO4`–`XGPIO7`, so it was never spent. `SX1262_RXEN` is **unchanged on the
+board**, and `XGPIO9`–`XGPIO13` still face a hard-lock ruling for Full Beta.
 
-That is the single most valuable thing the Lean pass does for Full Beta, and it
-is worth keeping visible.
+That is a real cost the Lean Demo Model leaves on the table, and it is worth
+keeping visible: the earlier expectation that Lean would pre-pay it no longer
+holds.
 
 ---
 
@@ -68,17 +68,41 @@ is worth keeping visible.
 | item | Lean-DM | Full Beta | what restoration costs |
 |---|---|---|---|
 | `XGPIO13_HDR` (`R64.2` ↔ J5-side track) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, header-side, congestion-sealed. Restore together with `XGPIO13` |
-| `XGPIO9_HDR` | **released, not re-landed** by the Lean routing plan | **RESTORE / REQUIRED** | re-route 6 objects / 7.057 mm. This is copper the Lean release removes to open the corridor; it was routed before and Full Beta needs it back |
-| `Net-(U15-QOD)` (`R46.1` ↔ `U15.5`) | LEAN DM NO ROUTE — audited safe | **RESTORE / REQUIRED** | 1 join inside the header cluster. Restores the accessory-rail quick-output-discharge behaviour. `R46` 100 k stays **fitted** |
-| `ACC_PWR_EN` sequencing feature | copper **routed** (dependency, see scope §1); the *feature* is not a demo requirement | **no hardware restoration needed** | firmware only — the Lean board can already switch accessory power |
-| `ACC_3V3_SW` switched-rail feature | copper **routed** (dependency); accessories may use plain `+3V3` on `J5.1` for the demo | **no hardware restoration needed** | firmware only |
+| `Net-(U15-QOD)` (`R46.1` ↔ `U15.5`) | LEAN DM NO ROUTE; `U15` now **DNP** | **RESTORE WITH U15** | clear `dnp` on `U15`, then 1 join inside the header cluster. `R46` 100 k stays **fitted** |
+| `ACC_PWR_EN` | LEAN DM NO ROUTE; `U15`/`U16` **DNP** | **RESTORE WITH U15 + U16** | clear `dnp`, then 3 joins: `U3.20` ↔ `U16.5` ↔ `U15.3` ↔ `R17.1`. `R17` 100 k stays **fitted** |
+| `ACC_3V3_SW` | LEAN DM NO ROUTE; partial copper on the board, and **the rest may be spent** by the GPIO routing | **RESTORE WITH U15** | clear `dnp`, re-route whatever the GPIO pass spent, then close the rail to `U16.8`, `C38`, `C42`, `TP12`, `J5.19` |
+| external I2C — `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | LEAN DM NO ROUTE; `U16` **DNP**; copper **may be spent** | **RESTORE WITH U16** | clear `dnp`, re-route whatever was spent, then close the four joins. `R47`/`R48` 22 R stay **fitted** |
+| `U15` TPS22918 | **DNP** | **RESTORE / REQUIRED** | population only — the footprint, pads and placement are untouched |
+| `U16` TCA9517A | **DNP** | **RESTORE / REQUIRED** | population only — the footprint, pads and placement are untouched |
 | `R49`, `R50` external-bus pull-ups | DNP — **pre-existing full Beta DNP**, not a DM decision | unchanged full-Beta matter | population only, if ever wanted |
 
-`U15` stays **FITTED** on the Lean Demo Model. See
-[BETA-DM-LEAN-SCOPE.md](BETA-DM-LEAN-SCOPE.md) §3 — the audit found no reason to
-DNP it and the DNP list is unchanged by this pass.
+`U15` and `U16` are **DNP** on the Lean Demo Model. The earlier "keep `U15`
+fitted" verdict is **withdrawn** — see
+[BETA-DM-LEAN-CORE-SCOPE.md](BETA-DM-LEAN-CORE-SCOPE.md) §4 for the audit that
+authorised both, run against KiCad's own connectivity engine.
+
+Support passives deliberately left **fitted** so restoration is population-only:
+`R17`, `C38`, `C39`, `C42`, `R46`, `R47`, `R48`.
 
 ---
+
+## 2a. BQ25185 status outputs — LEAN-CORE CLOSEOUT
+
+| item | Lean-DM | Full Beta | what restoration costs |
+|---|---|---|---|
+| `BQ25185_STAT1` (`TP6.1` ↔ `U11.9`) | **LEAN DM INTENTIONAL NO ROUTE** | **RESTORE IF STILL WANTED** | routes at **28.846 mm / 68 seg / 2 via** on a 7-object / 8.500 mm release (in-window `ISET` + the `U11.2` pad escape). This was **fully verified** — released nets re-landed, KiCad DRC 0 errors, DFM pass — before the ruling deferred it. The candidate is on record and can be replayed |
+| `BQ25185_STAT2` (`TP7.1` ↔ `U11.3`) | **LEAN DM INTENTIONAL NO ROUTE** | **RESTORE IF STILL WANTED** | needs a dedicated `U11` left-column pad-escape pass: `BQ25185_SYS`, `BAT_PROTECTED_P` and `STAT2` planned together as three parallel 0.20 mm lanes at y = 66.200 / 66.600 / 67.000, with the 0.80 mm BAT transition via placed clear of all three |
+
+Both are BQ25185 **open-drain status outputs exposed only as diagnostic test
+points**. They are not charger-control inputs, not safety dependencies, not MCU
+inputs, and not required for USB, boot/programming or any Demo-Model UI
+function. **The BQ25185 charger operates without these traces.**
+
+`TP6` and `TP7` remain fitted and in place. Neither was moved, and neither was
+DNP'd for bookkeeping. The `U11` power rail — `ISET`, `BAT_PROTECTED_P`,
+`BQ25185_SYS`, `BAT_MAIN` — was **not touched** to reach them.
+
+**LEAN DM CUT ONLY — FULL BETA RESTORE.**
 
 ## 3. Test and diagnostic points
 
@@ -124,7 +148,9 @@ Stated so the Full-Beta programme does not inherit phantom work:
 | `TEST_GPIO45` | 1 | RESTORE IF STILL WANTED |
 | `TEST_GPIO46` | 1 | RESTORE IF STILL WANTED |
 | `Net-(SW9-A)` → `TP13` | 1 | RESTORE IF STILL WANTED |
-| **bucket D total** | **15** | |
+| `BQ25185_STAT1` | 1 | RESTORE IF STILL WANTED — verified candidate on record |
+| `BQ25185_STAT2` | 1 | RESTORE IF STILL WANTED — needs a `U11` left-column pass |
+| **bucket D total** | **20** | |
 | `XGPIO9_HDR` | 0 today, **1 after the Lean routing lands** | RESTORE / REQUIRED |
 | `ACC_PWR_EN` feature | 0 — copper routed | firmware only |
 | `ACC_3V3_SW` feature | 0 — copper routed | firmware only |
