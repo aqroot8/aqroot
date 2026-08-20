@@ -34,8 +34,11 @@ hardware/beta-dm/
     01..09_*.kicad_sch           hierarchy (filenames unchanged from Beta)
     libraries/                   project symbol/footprint libraries (own copy)
     fp-lib-table, sym-lib-table  ${KIPRJMOD}-relative, so they resolve locally
-  BETA-DM-SCOPE-LEDGER.md        authoritative scope classification
-  BETA-DM-LEAN-SCOPE.md          LEAN Demo Model scope + U15 audit
+  BETA-DM-SCOPE-LEDGER.md        per-feature scope classification
+  BETA-DM-LEAN-CORE-SCOPE.md     AUTHORITATIVE Lean-Core scope + U15/U16 audit
+  BETA-DM-LEAN-CORE-LEDGER.md    AUTHORITATIVE ledger, 216 = A62+B130+C6+D18
+  BETA-DM-LEAN-CORE-ROUTING.md   AUTHORITATIVE Lean-Core scratch routing study
+  BETA-DM-LEAN-SCOPE.md          superseded in part - retained as evidence
   BETA-DM-LEAN-XGPIO-SELECTION.md  which four XGPIO stay active, and why
   BETA-DM-LEAN-ROUTING.md        Lean scratch routing study
   BETA-DM-LEAN-RESTORATION.md    Full-Beta restoration ledger for Lean cuts
@@ -44,12 +47,23 @@ hardware/beta-dm/
   BETA-DM-MCU-RELEASE.md         minimum MCU release recomputation
 ```
 
-## Lean Demo Model scope
+## Lean-Core Demo Model scope
 
-Beta-DM is a **Lean** demo model: the J5 expansion header stays physically
-complete and Full-Beta-restorable, but only **four** of the fourteen XGPIO are
-must-work for the demo, alongside external I2C, FAST_IO, WAKE and 3V3/GND
-header access. Start at [BETA-DM-LEAN-SCOPE.md](BETA-DM-LEAN-SCOPE.md).
+Beta-DM is a **Lean-Core** demo model. The J5 expansion header stays physically
+complete and Full-Beta-restorable, but the Demo-Model expansion requirement is
+only:
+
+* four XGPIO — `XGPIO4`, `XGPIO5`, `XGPIO6`, `XGPIO7`
+* `FAST_IO_GPIO43` and `WAKE_ATTN_N`
+* **direct** `+3V3` at `J5.1`, and GND
+
+Buffered external J5 I²C and the switched accessory rail are **deferred**, so
+`U15` (TPS22918) and `U16` (TCA9517A) are **DNP**. Internal I²C is a different
+net pair and remains MUST-WORK and hard-locked.
+
+Start at [BETA-DM-LEAN-CORE-SCOPE.md](BETA-DM-LEAN-CORE-SCOPE.md). The earlier
+`BETA-DM-LEAN-*.md` files are retained as study evidence with their superseded
+rulings marked.
 
 **Deliberately not copied** (documented rather than duplicated):
 
