@@ -438,9 +438,35 @@ active via that re-lands.
 
 ### A — 1-MINIMAL RELEASE
 
-Object-by-object refinement inside those 13 was still running when this pass
-closed. B is already small enough to land defensibly; A can only shrink it
-further, never grow it.
+> **7 objects (2 vias), 15.246 mm:**
+> `I2C_SCL_EXT_HDR` 6 objects / 15.246 mm, plus the `WAKE_ATTN_N_HDR` via.
+
+Every remaining object is individually necessary — restoring any one of them
+breaks the pair.
+
+### Why B is still the release to land
+
+A is 6 objects smaller, but it leaves **6 of `I2C_SCL_EXT_HDR`'s 12 in-window
+objects on the board**, in three disconnected pieces:
+
+```
+B.Cu    (34.460, 6.580) -> (35.280, 8.348)   1.949 mm  |  a stub at the J5 end
+B.Cu    (35.280, 8.348) -> (35.560, 9.250)   0.944 mm  |
+In2.Cu  (48.648,11.601) -> (49.474,11.177)   0.928 mm  |  a stub around the via
+In2.Cu  (49.474,11.177) -> (49.474,11.123)   0.053 mm  |  at (49.474, 11.123),
+B.Cu    (49.474,11.123) -> (49.600,11.825)   0.713 mm  |  with the via itself
+VIA     (49.474, 11.123)                               |  left floating
+```
+
+That is exactly the "orphan traces / floating vias / tiny isolated stubs"
+§8 warns against — including a 0.053 mm fragment and a via left with copper on
+both sides of it but no path anywhere. **B removes all 12 in-window objects,
+i.e. the complete run, leaving no fragment at all.**
+
+§8 says to prefer the clean practical release, and the geometry agrees: 6 extra
+objects buys a release with no pathological restoration geometry.
+
+**LANDING SET, if authorised: B — 13 objects, 19.834 mm.**
 
 ### Effect on the ledger
 
