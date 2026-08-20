@@ -7432,8 +7432,8 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(in_pos_files no)
+		(dnp yes)
 		(uuid "7a73238f-ff72-4ac8-96ce-2519e56003f2")
 		(property "Reference" "U16"
 			(at 232.156 87.376 0)
@@ -10335,8 +10335,8 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(in_pos_files no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "fc26a71c-40ad-472d-b2bd-65d4819af91d")
 		(property "Reference" "U15"

@@ -195,6 +195,44 @@ full-Beta matter and is unchanged.
 
 ---
 
+## 3a. LEAN-CORE additions: U15 and U16
+
+| ref | part | reason |
+|---|---|---|
+| `U15` | TPS22918DBVR load switch | switched accessory rail is Lean-DM deferred; a fitted part would sit with `ON` floating, because `ACC_PWR_EN` is unrouted and `R17` is on a different island |
+| `U16` | TCA9517ADGK I²C buffer | buffered external J5 I²C is Lean-DM deferred; the B side has no remaining Demo-Model function |
+
+Both were audited against KiCad's own connectivity engine by **deleting the
+footprint entirely** on a scratch copy. `+3V3`, `/I2C_SCL_INT` and
+`/I2C_SDA_INT` each stay at **one island** either way, so neither part is
+load-bearing for any live net and both DNPs are unconditional.
+
+Support passives are classified individually in
+[../BETA-DM-LEAN-CORE-SCOPE.md](../BETA-DM-LEAN-CORE-SCOPE.md) §4. `R17` stays
+**fitted**; `C38`, `C39`, `C42`, `R46`, `R47`, `R48` are DNP-ELIGIBLE and
+deliberately **kept**.
+
+### PASTE / STENCIL REQUIREMENT — new, and it applies to every DNP footprint
+
+**DNP footprints must receive no solder paste.** Either the stencil is cut
+without their apertures, or the assembler is instructed to skip them.
+
+This mattered less before, because the earlier DNP set sat on deferred nets.
+`U15` and `U16` are the first DNP parts whose pads are adjacent to **live,
+must-work** nets, so a stray solder ball on an unpopulated pad would bridge
+something that matters:
+
+| adjacency | pad-edge gap | what a bridge would short |
+|---|---:|---|
+| `U16.1` (`+3V3`) ↔ `U16.2` (`I2C_SCL_INT`) | **0.400 mm** | the 3.3 V rail onto the **internal I²C bus** |
+| `U16.2` (`I2C_SCL_INT`) ↔ `U16.3` (`I2C_SDA_INT`) | 0.400 mm | `SCL` to `SDA` |
+| `U15.1` (`+3V3`) ↔ `U15.2` (`GND`) | 0.650 mm | a short across the 3.3 V rail |
+
+This is a fabrication-package instruction, not a design change. It must appear
+in the fab notes before any board is built.
+
+---
+
 ## 4. Restoration
 
 Nothing was deleted. Every DNP footprint is still on the board in its original
