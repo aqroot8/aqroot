@@ -39,6 +39,12 @@ Defining features:
 
 ## 2. Dimensions & mass
 
+> [!warning] SUPERSEDED
+> The dimensions in this section are **superseded** by
+> [[17 - Enclosure Field Slate v4]]: the body target is now
+> **130 x 70 x 23.5 mm**. Everything else in this v3 document remains in
+> force. The table below is kept as the historical v3 record.
+
 | Property | Value |
 |---|---|
 | Body | ~122 x 61 x 23.5 mm |

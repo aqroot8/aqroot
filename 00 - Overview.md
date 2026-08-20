@@ -17,8 +17,9 @@ radio features sold as paid add-ons) by shipping ALL of these built-in, no paid 
 required, fully open-source hardware and firmware. The built-in dual-radio base (CC1101 +
 SX1262) is the core competitive wedge.
 
-Target scale: ~122x61x23.5mm ("Field Slate" v3 enclosure), 135-165g — a field tool, not a
-keyfob. See [[15 - Enclosure Field Slate v3]].
+Target scale: ~130x70x23.5mm ("Field Slate" v4 enclosure), 135-165g — a field tool, not a
+keyfob. See [[17 - Enclosure Field Slate v4]]. Note the current 74 x 155 mm PCB does
+not yet fit this envelope - see v4 §3.
 
 ## Links
 - [[01 - Hardware Core]]
@@ -35,6 +36,7 @@ keyfob. See [[15 - Enclosure Field Slate v3]].
 - [[12 - RF and Antenna Plan v0.1]]
 - [[13 - Power Budget and Battery Runtime v0.1]]
 - [[14 - RootProbe Interface v0.1]]
+- [[17 - Enclosure Field Slate v4]]
 - [[15 - Enclosure Field Slate v3]]
 - [[16 - AQROOT Journey]]
 - [[Alpha-Tests/HARDWARE-NOTES]]
