@@ -396,33 +396,55 @@ unilaterally. Option A is not taken because §5 instructs a STOP on exactly this
 finding.
 
 
-## 17. §8 release minimisation — partial
+## 17. §8 release minimisation — net phase COMPLETE
 
-Run against the corrected candidate, restoring whole released nets and
-re-testing that `XGPIO5` and `XGPIO6` both still close, separated, with
-`WAKE_ATTN_N_HDR` re-landing. **Not carried to completion** — the big-window
-solve is 35–70 s and a *failing* restoration costs two of them, so the net
-phase did not finish inside this pass and the object phase was not started.
-
-What is measured:
+Run against the corrected candidate: every released net restored in turn, then
+re-tested that `XGPIO5` and `XGPIO6` both still close, separated, with
+`WAKE_ATTN_N_HDR` re-landing.
 
 | released net | objects | restoring it |
 |---|---:|---|
-| `Net-(U15-CT)` | 56 | **RESTORED** — not needed |
-| `XGPIO2_HDR` | 41 | **RESTORED** — not needed |
-| `XGPIO3_HDR` | 29 | **RESTORED** — not needed |
-| `XGPIO12_HDR` | 18 | **RESTORED** — not needed |
-| `ACC_3V3_SW` | 15 | **RESTORED** — not needed |
-| `I2C_SDA_EXT_HDR` | 13 | **RESTORED** — not needed |
-| `I2C_SCL_EXT_HDR` | 12 | **load-bearing — must stay released** |
-| `XGPIO10_HDR` | 11 | **RESTORED** — not needed |
-| `XGPIO0_HDR`, `XGPIO11_HDR`, `XGPIO13_HDR`, `XGPIO9_HDR`, `XGPIO8_HDR`, `XGPIO1_HDR`, `WAKE_ATTN_N_HDR` | 49 | **not yet tested** |
+| `Net-(U15-CT)` | 56 | **RESTORED** |
+| `XGPIO2_HDR` | 41 | **RESTORED** |
+| `XGPIO3_HDR` | 29 | **RESTORED** |
+| `XGPIO12_HDR` | 18 | **RESTORED** |
+| `ACC_3V3_SW` | 15 | **RESTORED** |
+| `I2C_SDA_EXT_HDR` | 13 | **RESTORED** |
+| **`I2C_SCL_EXT_HDR`** | **12** | **load-bearing — stays released** |
+| `XGPIO10_HDR` | 11 | **RESTORED** |
+| `XGPIO11_HDR` | 10 | **RESTORED** |
+| `XGPIO0_HDR` | 10 | **RESTORED** |
+| `XGPIO13_HDR` | 9 | **RESTORED** |
+| `XGPIO9_HDR` | 7 | **RESTORED** |
+| `XGPIO8_HDR` | 6 | **RESTORED** |
+| `XGPIO1_HDR` | 6 | **RESTORED** |
+| **`WAKE_ATTN_N_HDR`** | **1** | **load-bearing — stays released** |
 
-**183 of 244 objects are already proven restorable.** The diagnostic release is
-therefore a large over-estimate of the implementation scope, exactly as §7
-anticipated: the landing set is at most 61 objects and probably far fewer once
-the remaining seven nets are tested.
+### B — CLEAN PRACTICAL RELEASE
 
-This is preparatory work for a landing that §5 stopped, so it was not pursued
-further. It should be completed before any landing, and it will be cheap to
-finish once the router constraint set is final.
+> **13 objects, 19.834 mm, two nets:**
+> `I2C_SCL_EXT_HDR` (12 objects, 19.834 mm) and the single
+> `WAKE_ATTN_N_HDR` via.
+
+**231 of the 244 diagnostic objects are restored — a 95 % reduction.** The
+203.662 mm diagnostic release was an artefact of proving *four* XGPIO; the
+two-net requirement needs almost none of it. Twelve of the ten deferred
+`XGPIO*_HDR` routes, the whole `Net-(U15-CT)` run, `ACC_3V3_SW` and
+`I2C_SDA_EXT_HDR` all stay on the board untouched.
+
+This is the preferred landing set: it is contiguous per net, leaves no orphan
+copper, and spends exactly one deferred function (`I2C_SCL_EXT_HDR`) plus one
+active via that re-lands.
+
+### A — 1-MINIMAL RELEASE
+
+Object-by-object refinement inside those 13 was still running when this pass
+closed. B is already small enough to land defensibly; A can only shrink it
+further, never grow it.
+
+### Effect on the ledger
+
+Only `I2C_SCL_EXT_HDR` is now spent, so the post-landing prediction changes
+sharply. Instead of +17 deferred openings the board gains roughly **+1**, and
+`XGPIO5` / `XGPIO6` close for −2. **Nothing may be assumed here** — the ledger
+must be rebuilt from the landed board, per §16.
