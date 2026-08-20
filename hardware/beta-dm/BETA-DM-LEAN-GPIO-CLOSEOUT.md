@@ -394,3 +394,35 @@ manufacturing judgement:
 Option B is a scope change below the stated minimum and is not taken
 unilaterally. Option A is not taken because §5 instructs a STOP on exactly this
 finding.
+
+
+## 17. §8 release minimisation — partial
+
+Run against the corrected candidate, restoring whole released nets and
+re-testing that `XGPIO5` and `XGPIO6` both still close, separated, with
+`WAKE_ATTN_N_HDR` re-landing. **Not carried to completion** — the big-window
+solve is 35–70 s and a *failing* restoration costs two of them, so the net
+phase did not finish inside this pass and the object phase was not started.
+
+What is measured:
+
+| released net | objects | restoring it |
+|---|---:|---|
+| `Net-(U15-CT)` | 56 | **RESTORED** — not needed |
+| `XGPIO2_HDR` | 41 | **RESTORED** — not needed |
+| `XGPIO3_HDR` | 29 | **RESTORED** — not needed |
+| `XGPIO12_HDR` | 18 | **RESTORED** — not needed |
+| `ACC_3V3_SW` | 15 | **RESTORED** — not needed |
+| `I2C_SDA_EXT_HDR` | 13 | **RESTORED** — not needed |
+| `I2C_SCL_EXT_HDR` | 12 | **load-bearing — must stay released** |
+| `XGPIO10_HDR` | 11 | **RESTORED** — not needed |
+| `XGPIO0_HDR`, `XGPIO11_HDR`, `XGPIO13_HDR`, `XGPIO9_HDR`, `XGPIO8_HDR`, `XGPIO1_HDR`, `WAKE_ATTN_N_HDR` | 49 | **not yet tested** |
+
+**183 of 244 objects are already proven restorable.** The diagnostic release is
+therefore a large over-estimate of the implementation scope, exactly as §7
+anticipated: the landing set is at most 61 objects and probably far fewer once
+the remaining seven nets are tested.
+
+This is preparatory work for a landing that §5 stopped, so it was not pursued
+further. It should be completed before any landing, and it will be cheap to
+finish once the router constraint set is final.
