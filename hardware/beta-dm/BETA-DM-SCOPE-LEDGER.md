@@ -26,23 +26,37 @@ DM ruling) and the only thing that changes is population and routing effort.
 | # | function | DM status | routed today | remaining DM work | Final |
 |---|---|---|---|---|---|
 | 1 | ESP32-S3 boot / core (U1) | MUST WORK | core rails, SPI **and `BOOT_N`** routed | none | same |
-| 2 | Display + touch (SPI-A, J1) | MUST WORK | SPI_A_*, DISP_*, TOUCH_RST_N routed | backlight string `LED_A1..4`, `LED_K` (5 rats); J1 GND (55 rats) | same |
-| 3 | Battery / charging (BQ25185, MAX17048, TPS63020) | MUST WORK | rails routed | `BQ25185_STAT1/2` (2), `SW9-A` (4), `U12-PG`/`PS_SYNC` (4), `U15-CT`/`QOD` (2), GND | same |
-| 4 | USB / programming (J3, USB_D pair) | MUST WORK | USB pair routed through E4 | `J3-CC1/CC2` (2), `J3-SHIELD` (4), GND | same |
-| 5 | Buttons (SW2..SW9 + U2 TCA9535) | MUST WORK | E2 closed out, button ratsnest 0 | none for buttons; `WAKE_ATTN_N_HDR` (1) | same |
-| 6 | microSD (J2) | MUST WORK | SPI_A + SD_CS_N routed | J2 GND (9 rats) | same |
+| 2 | Display + touch (SPI-A, J1) | MUST WORK | SPI_A_*, DISP_*, TOUCH_RST_N **and the whole backlight string** routed — `LED_BOOST`, `LED_K`, `LED_A1..4` all one island, 0 rats | J1 GND (**31** rats) | same |
+| 3 | Battery / charging (BQ25185, MAX17048, TPS63020) | MUST WORK | rails routed; `U12-PG`, `PS_SYNC`, `U15-CT` **closed, 0 rats**; `SW9-A` switch path `SW9.1`↔`U12.12`↔`R43.1` routed | `BQ25185_STAT1/2` (2), `Net-(U15-QOD)` (1), `SW9-A` `TP13` (1), GND | same |
+| 4 | USB / programming (J3, USB_D pair) | MUST WORK | USB pair through E4, **`J3-CC1/CC2` and `J3-SHIELD` closed, 0 rats**; `U10` USBLC6-2SC6 **fitted** | J3 GND (1), U10 GND (1) | same |
+| 5 | Buttons (SW2..SW9 + U2 TCA9535) | MUST WORK | E2 closed out, button ratsnest 0; `WAKE_ATTN_N_HDR` fitted path `R66.2`→`J5.13` **connected** | none — the one `WAKE_ATTN_N_HDR` line left goes to the DNP `D7` | same |
+| 6 | microSD (J2) | MUST WORK | SPI_A + SD_CS_N routed | J2 GND (**7** rats) | same |
 | 7 | Wi-Fi / BLE | MUST WORK | module onboard antenna, no board RF | nothing electrical; enclosure keep-out only | same |
-| 8 | SX1262 915 (U8) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U8 GND (17 rats); flex antenna install; `RXEN` re-land for R6 | same |
+| 8 | SX1262 915 (U8) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats; **U8 GND stitching complete, 0 GND rats** | flex antenna install only | same |
 | 9 | 915 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP890 flex on module IPEX | same |
 | 10 | AQROOT↔AQROOT LoRa | MUST WORK | depends on 1,8,9,4 | firmware | same |
-| 11 | CC1101 433 (U7) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats | U7 GND (15 rats); flex antenna install | same |
+| 11 | CC1101 433 (U7) | MUST WORK | **all** control + SPI + 3V3 routed, 0 signal rats; **U7 GND stitching complete, 0 GND rats** | flex antenna install only | same |
 | 12 | 433 RF path / antenna | MUST WORK | by design **no board RF trace** | mechanical: FXP450 flex on module IPEX | same |
-| 13 | IMU (U4 BMI270) | BASIC BRING-UP | I2C/strap routed | `U4-INT2`, `OCSB`, `OSDO` are NC by design; GND (6) | same |
-| 14 | Microphone (MK1 ICS-43434) | MUST WORK | 0 tracks | 3-net I2S **solved and validated in scratch** (263.795 mm, 21 vias, DRC 0 errors) but **not landed**; needs releases R1 + R2-alt + R6 and their re-lands — see MCU release doc §7.3; MK1 GND (4) | same |
-| 15 | J5 / F4 community header | MUST WORK — **PINS ACTIVE, keep as routed** | 19/19 escapes landed; `XGPIO6_HDR` and one `ACC_3V3_SW` join closed | 23 J5-active lines, all congestion-sealed: `XGPIO0`…`XGPIO13` (14), `ACC_3V3_SW` (3), `ACC_PWR_EN` (3), ext-I2C + `XGPIO13_HDR` (3) | same |
+| 13 | IMU (U4 BMI270) | BASIC BRING-UP | I2C/strap routed | `U4-INT2`, `OCSB`, `OSDO` are NC by design; GND (**4**) | same |
+| 14 | Microphone (MK1 ICS-43434) | MUST WORK | **LANDED** — the 3-net I2S is on the board; `I2S_MIC_DIN` one island, `I2S_BCLK`/`I2S_LRCLK` complete on the fitted circuit; **MK1 GND stitching complete, 0 GND rats** | none | same |
+| 15 | J5 / F4 community header | **POPULATION/SCOPE: PASS. FUNCTIONAL CONNECTIVITY: INCOMPLETE** | 19/19 escapes landed; 13 of 14 `XGPIO*_HDR` resistor→J5 paths complete; `FAST_IO_GPIO43_HDR` and `WAKE_ATTN_N_HDR` complete; `XGPIO6_HDR` and one `ACC_3V3_SW` join closed this pass | **23 J5-active lines still open**, all congestion-sealed: `XGPIO0`…`XGPIO13` (14), `ACC_3V3_SW` (3), `ACC_PWR_EN` (3), ext-I2C + `XGPIO13_HDR` (3) | same |
 | 16 | BOOT / programming access (SW1, R2) | MUST WORK | **`BOOT_N` routed** — Option W, 52.445 mm, one island | none | same |
-| 17 | Safety / protection (D3..D7 ESD, R27/R28/R74) | MUST WORK | pull-ups and R74 in place | ESD-diode GND stitching | same |
-| 18 | GND finalisation | MUST WORK | In1 plane filled, 27 GND vias | **164 GND rats** — the single largest remaining DM job | same |
+| 17 | Safety / protection (ESD arrays, R27/R28/R74) | MUST WORK | pull-ups and R74 in place | none on DM — **`D2`–`D7` are all DNP**, so their branches and their GND stitching are intentionally isolated (bucket A) | RESTORE `D2`–`D7` |
+| 18 | GND finalisation | MUST WORK | `In1 GND REFERENCE` plane drawn and filled, **61 GND vias**; `U7`, `U8`, `MK1`, the USB-C connector, the MCU and the pull-to-ground parts stitched | **130 GND rats** — the single largest remaining DM job; **HELD until the fitted must-work non-GND residual is zero** | same |
+
+## 1a. J5 status, stated three ways
+
+The three are not the same thing and must not be collapsed into one verdict.
+
+| question | status | basis |
+|---|---|---|
+| **J5 population / active scope** | **PASS** | `J5` and every series resistor, `XGPIO` path, ext-I²C, `FAST_IO`, `WAKE`, `ACC_3V3_SW`, `+3V3` and `GND` pin is **fitted**. Nothing J5-related is DNP except the `D2`–`D7` shunt ESD arrays, which were already approved as DNP |
+| **J5 functional connectivity** | **INCOMPLETE** | the header pins are not yet electrically reachable from the expander: `XGPIO0`…`XGPIO13` are open at `U3` ↔ series resistor |
+| **J5 active unconnected** | **23** | see bucket C of [BETA-DM-UNROUTED-LEDGER.md](BETA-DM-UNROUTED-LEDGER.md) |
+
+**J5 must not be reported as functionally PASS while those 23 joins remain.**
+
+---
 
 ## 2. DM DNP / deferred set
 

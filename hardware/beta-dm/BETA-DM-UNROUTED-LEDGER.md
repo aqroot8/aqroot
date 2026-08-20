@@ -38,18 +38,31 @@ lines from bucket C to bucket A.
 
 ---
 
-## A — intentional DM deferral: 53 lines
+## A — intentional DM deferral: 55 lines
 
 These are unrouted **because the function is DNP on the Demo Model**. They are
 not defects and must not be "fixed" by routing them. Every one restores for the
 Final product.
 
-| block | lines | nets |
+Assignment rule, applied line by line: a line is bucket A if **a pad at either
+end belongs to a DNP part**, or if **the net belongs to a block that is DNP as a
+whole** (NFC front end, IR, speaker). The counts below are measured from the
+board, not carried forward.
+
+| block | lines | detail |
 |---|---|---|
-| NFC front end and its 5 V PA rail — `U9`, `U13` block DNP | 21 | `NFC_CS_N`, `NFC_IRQ`, `NFC_VDD_D/A/RF/AM`, `NFC_AGDC`, `NFC_5V_PA_PENDING`, `NFC_5V_EN` |
-| J5 community-header ESD arrays — `D2`–`D7` DNP | 16 | one line per protected header net, plus `XGPIO11_HDR` and `XGPIO13_HDR` whose only remaining line is the diode link |
-| IR transmitter and receiver — deferred | 8 | `IR_GATE`, `IR_LED_A`, `IR_LED_K`, `IR_RX_VS_LOCAL`, `IR_TX_GPIO16`, `IR_RX_GPIO44` |
-| Speaker — `U5`, `J6` DNP | 8 | `SPK_P`, `SPK_N`, `AMP_SD_MODE` sink, `I2S_SPK_DOUT`, plus the single `U5` pad each on `I2S_BCLK` and `I2S_LRCLK` |
+| NFC front end and its 5 V PA rail — `U9`, `U13` DNP | **22** | `NFC_5V_PA_PENDING` 5, `NFC_5V_EN` 3, `NFC_VDD_RF` 3, `NFC_AGDC` 2, `NFC_CS_N` 2, `NFC_VDD_A` 2, `NFC_VDD_AM` 2, `NFC_VDD_D` 2, `NFC_IRQ` 1 |
+| Header ESD arrays and other DNP-pad links — `D2`–`D7`, `R49`, `R50`, `R68`, `U5` | **20** | `XGPIO0/1/4/5/7/8/9/10/11/12_HDR` 1 each, `I2C_SCL_EXT_HDR` 1, `I2C_SDA_EXT_HDR` 1, `FAST_IO_GPIO43_HDR` 1, `WAKE_ATTN_N_HDR` 1, `ACC_3V3_SW` 3 (to `R49`/`R50`), `Net-(SW9-A)` 1 (to `R68`), `I2S_BCLK` 1 and `I2S_LRCLK` 1 (the isolated `U5` pad) |
+| IR transmitter and receiver — deferred | **8** | `IR_GATE` 2, `IR_RX_VS_LOCAL` 2, `IR_LED_A` 1, `IR_LED_K` 1, `IR_RX_GPIO44` 1, `IR_TX_GPIO16` 1 |
+| Speaker — `U5`, `J6` DNP | **5** | `AMP_SD_MODE` 2, `I2S_SPK_DOUT` 1, `SPK_N` 1, `SPK_P` 1 |
+| **total A** | **55** | |
+
+`AMP_SD_MODE` carries two lines: `U5.4`–`U2.7`, which has a DNP pad, and
+`U2.7`–`R15.1`, where both parts are fitted. The second is filed here anyway
+because the function it serves — holding the DNP `U5` amplifier muted — is
+deferred as a whole. It is listed so it is not silently forgotten, not because
+the demo needs it. `NFC_5V_PA_PENDING` likewise includes one track-to-track
+line with no pad at either end, inside a block that is DNP throughout.
 
 Also permanently unrouted by DRU rule and carrying **no** ratsnest because they
 are single-node nets: `NFC_RFO1_TBD`, `NFC_RFO2_TBD`, `NFC_RFI1_TBD`,
@@ -80,10 +93,11 @@ One net. The `In1 GND REFERENCE` plane is drawn and filled, and both radios, the
 microphone, the USB-C connector, the MCU and the pull-to-ground parts are
 stitched, but most remaining SMD ground pads still need a stitch via and a short
 stub. This is board-wide work inherited from the Beta, not a DM cut, and it is
-the single largest remaining job.
+the single largest remaining job. 61 GND vias are placed.
 
-Concentrations: `J1` 55, `J2` 9, `U2` 9, `U4` 6, `U3` 5, `U5` 8 (DNP —
-skippable), `U9` 4 (DNP).
+Concentrations, measured: `J1` 31, `J2` 7, `U5` 7 (DNP — skippable), `U2` 6,
+`U4` 4, `U9` 4 (DNP), `C56` 4, `U3` 3, `U15` 3, `J3` 1, `U10` 1.
+`U7`, `U8` and `MK1` are **fully stitched — 0 GND lines each**.
 
 **Pours are HELD** by CTO direction until every fitted must-work non-GND line is
 closed, so this bucket does not move in this pass.
@@ -105,18 +119,19 @@ closed, so this bucket does not move in this pass.
 | ~~`XGPIO6_HDR`~~ | ~~1~~ | **CLOSED** — 1.613 mm |
 
 **Nothing in bucket C is unexplained**, and nothing in it is blocked by a rule
-or by a lock. `BOOT_N` is a ruling request; the rest are blocked by local
-congestion that needs a dedicated header and power completion program rather
-than opportunistic routing. Attempting all 29 candidates under the current
-locks routed 2 — `XGPIO2_HDR` (15.303 mm) and `XGPIO3_HDR` (14.793 mm), both
-landed — and confirmed the rest have no path at all: the endpoints flood into
-sealed pockets that do not touch.
+or by a lock. Every one of the 31 is blocked by local congestion: each endpoint
+was flooded over the whole board on all three routing layers with via
+transitions honoured, and no pair shares a free region. Closing them needs a
+dedicated header-and-power release programme, not opportunistic routing.
 
-Note on `AMP_SD_MODE`: `R15` and `U2` are both fitted, so the line is
-fitted-to-fitted and is counted here rather than in bucket A — but the function
-it serves, holding the `U5` amplifier muted, has no amplifier to act on while
-`U5` is DNP. It is listed as must-work so that it is not silently forgotten,
-not because the demo needs it.
+**23 of the 31 are J5-active** — `XGPIO0`…`XGPIO13` (14), `ACC_3V3_SW` (3),
+`ACC_PWR_EN` (3), `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR` and `XGPIO13_HDR` (3).
+The other 8 are `BQ25185_STAT1`/`STAT2`, `TEST_GPIO45`/`46`,
+`Net-(U15-QOD)`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` and `Net-(SW9-A)` `TP13`.
+
+`AMP_SD_MODE` is **no longer counted here**. Both of its lines are in bucket A:
+one has a DNP `U5` pad, and the other is filed with the speaker block because
+the function is deferred as a whole. See the note under bucket A.
 
 ---
 
