@@ -117,3 +117,103 @@ should treat the current Beta-DM board as fitting inside it.
 * [[14 - RootProbe Interface v0.1]] — expansion-zone location
 * [[05 - Design Decisions Log]] — historical record; earlier dimension entries
   are deliberately left as written
+
+---
+
+## 6. Two mechanical states — read this before using any number above
+
+There are now **two** distinct mechanical states, and they must not be
+conflated.
+
+### A. Current Beta-DM electrical demo PCB
+
+| | |
+|---|---|
+| PCB | **155 × 74 mm** |
+| status | electrically complete; released for fabrication data |
+| resize / re-place / re-route for enclosure reasons | **not permitted** |
+| Edge.Cuts | unchanged |
+| enclosure | a **temporary prototype shell**, larger than the product target |
+
+The Demo-Model enclosure is deliberately not locked here. CAD determines the
+minimum practical shell around the 155 × 74 mm board. As a **planning estimate
+only** — not a lock — a body in the **~162 × 81 mm minimum class** follows from
+2 mm walls plus ~1.5 mm clearance per side. Do not order or model to that
+number until wall thickness, connector protrusions, button travel and internal
+clearances have been analysed in CAD.
+
+### B. Future AQROOT Beta / Full-Beta / product target
+
+| | |
+|---|---|
+| external enclosure | **130 × 70 × 23.5 mm — LOCKED** |
+| requires | a future PCB placement and routing revision |
+| current PCB fits this body | **NO** |
+
+The current board cannot fit 130 × 70 mm, and nothing in this repository should
+claim otherwise. §3 above records the measurements.
+
+---
+
+## 7. Locked external layout for the NEXT PCB revision
+
+CTO-locked mechanical direction. It constrains placement on the next revision
+and must be satisfied **before** routing begins, not retrofitted after.
+
+### Top
+
+* external **433 MHz antenna connector**
+* exact top position remains RF/DFM dependent
+* the connector must not compromise the internal 433 / 915 / WiFi antenna
+  keepouts
+* the IR aperture stays associated with the crown as appropriate
+
+### Left side
+
+* external **antenna storage / holder channel** for the stowed whip
+* keep this side substantially free
+* **do not** place the community GPIO connector here
+
+### Right side — upper / middle
+
+* **community expansion / J5 interface**
+* preferably **recessed and/or keyed** in the final product
+* the authoritative electrical **F4 26-pin J5 map is unchanged** unless a later
+  explicit electrical revision says otherwise
+
+### Right side — lower
+
+* **Volume +**, **Volume −**, **Power**
+
+This group **may move further down toward the lower third** where that improves
+visual spacing, ergonomics, connector clearance, anti-crowding or internal
+mechanical clearance. Do not force the controls into the middle if it looks
+crowded: **clean industrial design outranks any arbitrary vertical
+coordinate.**
+
+### Bottom
+
+* **microSD** access, preferably toward bottom-left
+* **USB-C** charge/data, preferably near bottom-centre
+* exact positions driven by the next PCB revision and enclosure CAD
+
+### Rear
+
+* clean, **metal-free NFC target zone** preserved
+* branding
+* **no stored metal antenna across the NFC target** — the antenna holder stays
+  on the left side and does **not** move to the rear
+
+---
+
+## 8. Community header — future mechanical direction
+
+The public electrical interface remains the **26-pin F4 `J5` map**. Nothing is
+repinned, and the current Beta-DM `J5` is untouched.
+
+For the product, the physical expansion interface should **exit through the
+right side** of the enclosure, implemented as a **recessed and/or keyed
+connector** rather than permanently exposed male pins.
+
+The next Full-Beta PCB revision must place the `U61` / `J5` cluster around this
+mechanical requirement **before routing begins**.
