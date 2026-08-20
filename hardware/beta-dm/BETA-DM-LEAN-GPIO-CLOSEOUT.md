@@ -156,7 +156,12 @@ what §11 requires. Negotiated congestion was not used again — §6.
 |---|---|---|
 | 4/5/6/7 | **NOT COMPLETED** | the exhaustive 24-permutation big-window run was abandoned on time after the smaller results made 4 implausible. **This is an unmeasured gap, not a FAIL** |
 | 4/5/6 | **FAIL** — open 1 | `XGPIO4` OK 108.0 mm · `XGPIO5` OK 25.8 mm · `XGPIO6` FAIL |
-| 4/5/7, 5/6/7, 4/6/7 | **NOT COMPLETED** | same reason |
+| 4/5/7 | **FAIL** — open 1 | `XGPIO4` OK 108.0 mm · `XGPIO5` OK 25.8 mm · `XGPIO7` FAIL |
+| 5/6/7, 4/6/7 | **NOT COMPLETED** | same reason |
+
+Both measured triples fail with the **same signature**: `XGPIO4` and `XGPIO5`
+close at exactly the same lengths, and the third pin — whichever it is — does
+not. The pair is the stable core; the third is what the corridor refuses.
 | **4 + 5** | **PASS** | `XGPIO4` **108.0 mm**, `XGPIO5` **25.8 mm**, WAKE re-landed |
 
 **MAXIMUM CLEAN XGPIO COUNT DEMONSTRATED: 2. SELECTED: `XGPIO4`, `XGPIO5`.**
@@ -213,7 +218,7 @@ Two stricter router constraints were tried and **both cost the second GPIO**:
 | constraint | fitted regions blocked | result |
 |---|---:|---|
 | no via inside any fitted **courtyard** | 131 | `45` open 1 — `XGPIO5` FAILS |
-| no via under any fitted **body** (Fab outline, or courtyard − 0.25 mm) | 131 | `45` open 1 — `XGPIO5` FAILS; `56` open 1 — `XGPIO6` FAILS, `XGPIO5` alone routes at 90.3 mm |
+| no via under any fitted **body** (Fab outline, or courtyard − 0.25 mm) | 131 | **no pair closes at all** — `45` open 1, `56` open 1 (`XGPIO5` alone 90.3 mm), `67` open 1 (`XGPIO6` alone 94.5 mm) |
 
 So this is not a router preference that can simply be tightened away:
 **`XGPIO5`'s escape from `U3.9` requires a via under `U3`'s own body.** With
