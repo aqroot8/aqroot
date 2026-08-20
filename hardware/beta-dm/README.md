@@ -35,9 +35,21 @@ hardware/beta-dm/
     libraries/                   project symbol/footprint libraries (own copy)
     fp-lib-table, sym-lib-table  ${KIPRJMOD}-relative, so they resolve locally
   BETA-DM-SCOPE-LEDGER.md        authoritative scope classification
+  BETA-DM-LEAN-SCOPE.md          LEAN Demo Model scope + U15 audit
+  BETA-DM-LEAN-XGPIO-SELECTION.md  which four XGPIO stay active, and why
+  BETA-DM-LEAN-ROUTING.md        Lean scratch routing study
+  BETA-DM-LEAN-RESTORATION.md    Full-Beta restoration ledger for Lean cuts
+  BETA-DM-UNROUTED-LEDGER.md     every ratsnest line, A/B/C/D buckets
   BETA-DM-DNP-LIST.md            exact DNP set + U9 bus-safety audit
   BETA-DM-MCU-RELEASE.md         minimum MCU release recomputation
 ```
+
+## Lean Demo Model scope
+
+Beta-DM is a **Lean** demo model: the J5 expansion header stays physically
+complete and Full-Beta-restorable, but only **four** of the fourteen XGPIO are
+must-work for the demo, alongside external I2C, FAST_IO, WAKE and 3V3/GND
+header access. Start at [BETA-DM-LEAN-SCOPE.md](BETA-DM-LEAN-SCOPE.md).
 
 **Deliberately not copied** (documented rather than duplicated):
 
