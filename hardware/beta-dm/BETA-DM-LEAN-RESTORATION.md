@@ -76,7 +76,8 @@ holds.
 | `Net-(U15-QOD)` (`R46.1` ↔ `U15.5`) | LEAN DM NO ROUTE; `U15` now **DNP** | **RESTORE WITH U15** | clear `dnp` on `U15`, then 1 join inside the header cluster. `R46` 100 k stays **fitted** |
 | `ACC_PWR_EN` | LEAN DM NO ROUTE; `U15`/`U16` **DNP** | **RESTORE WITH U15 + U16** | clear `dnp`, then 3 joins: `U3.20` ↔ `U16.5` ↔ `U15.3` ↔ `R17.1`. `R17` 100 k stays **fitted** |
 | `ACC_3V3_SW` | LEAN DM NO ROUTE; partial copper on the board, and **the rest may be spent** by the GPIO routing | **RESTORE WITH U15** | clear `dnp`, re-route whatever the GPIO pass spent, then close the rail to `U16.8`, `C38`, `C42`, `TP12`, `J5.19` |
-| external I2C — `I2C_SCL_EXT_HDR`, `I2C_SDA_EXT_HDR`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | LEAN DM NO ROUTE; `U16` **DNP**; copper **may be spent** | **RESTORE WITH U16** | clear `dnp`, re-route whatever was spent, then close the four joins. `R47`/`R48` 22 R stay **fitted** |
+| **`I2C_SCL_EXT_HDR`** | LEAN DM NO ROUTE; `U16` **DNP**; **its local run was SPENT and REMOVED on the real board** to open the `XGPIO5`/`XGPIO6` corridor | **RESTORE WITH U16 / REQUIRED** | clear `dnp` on `U16`, then **re-route 12 objects / 19.834 mm** — the complete in-window run between `J5.16`, `R47.2` and `R50.1`. This is the one deferred function the Lean GPIO landing actually consumed |
+| `I2C_SDA_EXT_HDR`, `Net-(U16-SCLB)`, `Net-(U16-SDAB)` | LEAN DM NO ROUTE; `U16` **DNP**; copper **untouched** | **RESTORE WITH U16** | clear `dnp` and close the joins. `R47`/`R48` 22 R stay **fitted** |
 | `U15` TPS22918 | **DNP** | **RESTORE / REQUIRED** | population only — the footprint, pads and placement are untouched |
 | `U16` TCA9517A | **DNP** | **RESTORE / REQUIRED** | population only — the footprint, pads and placement are untouched |
 | `R49`, `R50` external-bus pull-ups | DNP — **pre-existing full Beta DNP**, not a DM decision | unchanged full-Beta matter | population only, if ever wanted |

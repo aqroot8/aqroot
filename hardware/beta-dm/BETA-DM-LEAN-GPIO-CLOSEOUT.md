@@ -378,7 +378,7 @@ candidate. With via-in-pad forbidden the router routes `XGPIO6` clear of it, at
 the cost of 13.3 mm of extra length. No via now sits in or under any solder
 termination.
 
-## 16. Status: NOT LANDED
+## 16. Status at the previous pass: NOT LANDED
 
 The real board is **unchanged**. No copper was written. `hardware/beta/` has an
 empty diff.
@@ -474,3 +474,105 @@ Only `I2C_SCL_EXT_HDR` is now spent, so the post-landing prediction changes
 sharply. Instead of +17 deferred openings the board gains roughly **+1**, and
 `XGPIO5` / `XGPIO6` close for −2. **Nothing may be assumed here** — the ledger
 must be rebuilt from the landed board, per §16.
+
+
+---
+
+# PART 3 — LANDED
+
+## 18. The 0.45 mm via was rejected by the board's own minimum
+
+§2 authorised **0.45 / 0.20** for this signal via, reasoning that the 0.40 mm
+drill floor is POWER-class only and the annular floor is 0.125 mm. Both of
+those are correct — `/XGPIO5` resolves to `Default`, and the DRU's
+`hole_size (min 0.40mm)` rule is conditioned on
+`BAT_MAIN || SYS_MAIN || P3V3 || NFC_5V_PA || VBUS_CHG`.
+
+But the constraint that bites is not in the DRU. It is in **board setup**:
+
+```
+rules.min_via_diameter            0.5      <-- 0.45 violates this
+rules.min_through_hole_diameter   0.2      <-- the 0.40/0.15 fallback violates this too
+rules.min_via_annular_width       0.125
+```
+
+Tested rather than argued: a 0.45 mm via was written to a scratch board and
+KiCad returned
+
+```
+ERR via_diameter | Via diameter (board setup constraints min diameter 0.5000 mm;
+                   actual 0.4500 mm)   Via [/XGPIO5] at (20.4, 14.1)
+```
+
+The §6 fallback of **0.40 / 0.15** fails twice over — 0.40 < 0.50 diameter and
+0.15 < 0.20 drill. Neither authorised geometry can land without changing a
+global minimum, and §2 forbids that.
+
+## 19. What was landed instead — same result, no rule change
+
+The web depends only on via **diameter**, not drill, so at the minimum legal
+0.50 mm diameter the best achievable web at the original position is 0.0750 mm
+— still under the floor. §4 authorises "a tiny local adjustment around this
+via", and 0.050 mm of movement is enough:
+
+| | before | landed |
+|---|---|---|
+| position | (20.400, 14.100) | **(20.400, 14.050)** — moved 0.050 mm |
+| diameter / drill | 0.60 / 0.30 | **0.50 / 0.25** |
+| annular ring | 0.150 mm | **0.125 mm** — exactly the documented floor |
+| web to `U3.9` paste | 0.0250 mm | **0.1250 mm** — the *preferred* figure |
+
+Two track endpoints were re-attached to the new via position; nothing else
+moved. **No DRU rule changed, no board-setup minimum changed, no exception
+taken.**
+
+## 20. Landed geometry — measured on the real board after refill
+
+| via | net | position | dia/drill | annular | tented | web / nearest |
+|---|---|---|---|---|---|---|
+| A | `XGPIO5` | (22.650, 12.350) | 0.60 / 0.30 | 0.150 | both sides | paste 0.2250 mm, foreign copper `R66.1` 0.2250 mm — **unchanged per §7** |
+| B | `XGPIO5` | (20.400, 14.050) | **0.50 / 0.25** | **0.125** | both sides | **paste `U3.9` 0.1250 mm**, foreign copper `U3.8` 0.3580 mm, hole-to-hole 1.7250 mm |
+
+Both: no via-in-pad, no paste overlap, no mask-opening merge, annulus not
+exposed (tented, and the board carries `tenting front yes / back yes` with zero
+per-via overrides). **GATE: PASS on both.**
+
+`XGPIO6` carries no via-in-pad; the rejected `R57.2` geometry is absent.
+
+## 21. Landing record
+
+| | |
+|---|---|
+| release | **13 objects, 19.834 mm** — `I2C_SCL_EXT_HDR` 12 + the `WAKE_ATTN_N_HDR` via |
+| added | 114 segments + 9 vias |
+| `XGPIO5` | 25.775 mm, 30 seg, 3 via — **one island** |
+| `XGPIO6` | 113.115 mm, 82 seg, 5 via — **one island** |
+| `WAKE_ATTN_N_HDR` | 0.566 mm + 1 via — `{R66.2, J5.13}` one path, `{D7.1 DNP}` isolated as before |
+| board sha256 before | `bdfd2cec77e40f5be560ccdc2ba0256547b36c9f21d0da4b6821c15070686a21` |
+| board sha256 after | `aba9c46775b503411d182e76e338f829edf06b6373ae73a29cb140d7edc9d998` |
+| uuid prefix | `d8c58cf6`, proven absent before the write |
+
+Object-level preservation diff: **footprints 0, pads 0, zones 0, Edge.Cuts
+12 → 12**. Segments +114 / −10, vias +9 / −3 — exactly 13 removed. Removals
+touched **only** `I2C_SCL_EXT_HDR` (12) and `WAKE_ATTN_N_HDR` (1); additions
+touched **only** `XGPIO6`, `XGPIO5` and `WAKE_ATTN_N_HDR`.
+
+**DRC after refill: 0 errors, 240 warnings, warning-type delta NONE, schematic
+parity 0, 215 unconnected.**
+
+Hard locks verified one island each and unchanged: `WAKE_INT_N`,
+`SX1262_RXEN`, `BOOT_N`, `+3V3`. `FAST_IO_GPIO43_HDR` unchanged at 2 islands
+(fitted path + DNP `D7.3`).
+
+## 22. Fabrication note — new critical feature
+
+The `XGPIO5` via at **(20.400, 14.050)** is a **0.50 mm / 0.25 mm** via with a
+**0.125 mm annular ring**, sitting under the `U3` TSSOP-24 body with a
+**0.125 mm solder-mask web** to `U3.9`'s paste aperture.
+
+* it must be **tented on both sides** — it inherits the board-level
+  `(tenting (front yes) (back yes))`; do not add a per-via override
+* the 0.125 mm web depends on **green** solder mask holding a dam at that
+  width; it is at the preferred figure, not the 0.100 mm floor
+* it is the **smallest via on the board** — 0.25 mm drill against 0.30 mm
+  elsewhere. Confirm the fab quotes that drill without an exception

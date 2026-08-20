@@ -11,6 +11,10 @@ Marking a part DNP does **not** change the ratsnest — KiCad keeps DNP pads in
 connectivity — so the total is unchanged at 216. What changed is the
 classification of 7 lines that now have a DNP pad at one end.
 
+> **LANDED.** `XGPIO5` and `XGPIO6` are on the board. The equation below is
+> the pre-landing state; the post-landing ledger is §Landed at the foot of this
+> file.
+>
 > **UPDATED by the final GPIO implementation ruling.** `BQ25185_STAT1` /
 > `STAT2` and now `XGPIO4` / `XGPIO7` are **LEAN-DM INTENTIONAL NO ROUTE** and
 > move from C to D. Re-measured on the real board:
@@ -116,3 +120,38 @@ Those are targets, not measurements. **Nothing has landed.**
 At any Beta-DM audit the measured unconnected count must equal A + B + C + D.
 If a line appears that is in none of the four buckets, it is a defect and must
 be explained before the board moves forward.
+
+
+---
+
+## LANDED — post-landing ledger, measured on the real board
+
+Board after the `XGPIO5` / `XGPIO6` landing, DRC re-run, zones refilled:
+
+```
+unconnected(measured)  ==  A + B + C + D
+        215            ==  63 + 130 + 0 + 22
+```
+
+**C = 0. The Lean-DM must-work non-GND residual is closed.**
+
+Every line of the 216 → 215 change is accounted for:
+
+| net | delta | why |
+|---|---:|---|
+| `/XGPIO5` | **−1** | closed — one island, 25.775 mm |
+| `/XGPIO6` | **−1** | closed — one island, 113.115 mm |
+| `I2C_SCL_EXT_HDR` | **+1** | its local run was spent for the GPIO corridor |
+| **total** | **−1** | 216 → **215** |
+
+`I2C_SCL_EXT_HDR` went from 2 open lines to 3, and the split is worth recording
+because it moves a line between buckets:
+
+| before | after |
+|---|---|
+| track ↔ `D2.1` *(A — DNP pad)* | `J5.16` ↔ `D2.1` *(A — DNP pad)* |
+| `R47.2` ↔ track *(D — both fitted)* | `J5.16` ↔ `R47.2` *(D — both fitted)* |
+| | `R47.2` ↔ `R50.1` *(A — `R50` is DNP)* |
+
+So **A gains 1** (62 → 63) and **D is unchanged at 22**. Nothing is
+unexplained.

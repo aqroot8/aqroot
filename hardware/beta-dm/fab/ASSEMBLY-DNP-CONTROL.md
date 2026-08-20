@@ -233,6 +233,28 @@ in the fab notes before any board is built.
 
 ---
 
+## 3b. LEAN GPIO LANDING — new critical fabrication feature
+
+The `XGPIO5` via at **(20.400, 14.050)** is the smallest via on the board:
+
+| | |
+|---|---|
+| diameter / drill | **0.50 mm / 0.25 mm** (every other via is 0.60 / 0.30 or larger) |
+| annular ring | **0.125 mm** — exactly the board's documented floor |
+| location | beneath the `U3` TSSOP-24 body, B.Cu side |
+| solder-mask web to `U3.9` paste | **0.125 mm** — the preferred figure, not the 0.100 mm floor |
+
+Requirements:
+
+* **tented both sides.** It inherits the board-level
+  `(tenting (front yes) (back yes))`; no per-via override exists and none may
+  be added.
+* the 0.125 mm web depends on **green** solder mask holding a dam at that
+  width. A different mask colour or a relaxed mask process invalidates it.
+* confirm the fab quotes a **0.25 mm drill** without an exception.
+
+---
+
 ## 4. Restoration
 
 Nothing was deleted. Every DNP footprint is still on the board in its original
