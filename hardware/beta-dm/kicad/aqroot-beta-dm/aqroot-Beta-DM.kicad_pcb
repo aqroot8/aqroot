@@ -63044,37 +63044,6 @@
 	)
 	(zone
 		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
-		(uuid "e6a00000-0000-4000-8000-000000000006")
-		(name "E6_R2_1_CLR")
-		(hatch edge 0.5)
-		(connect_pads
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 22.8 35.5) (xy 23.8 35.5) (xy 23.8 36.5) (xy 22.8 36.5)
-			)
-		)
-	)
-	(zone
-		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
 		(uuid "e6a00000-0000-4000-8000-0000000000b1")
 		(name "E6_BL_FANOUT_CLR")
 		(hatch edge 0.5)
@@ -63411,37 +63380,6 @@
 		(polygon
 			(pts
 				(xy 20.4 3.65) (xy 54.25 3.65) (xy 54.25 9.4) (xy 20.4 9.4)
-			)
-		)
-	)
-	(zone
-		(layer "B.Cu")
-		(uuid "a0da4024-783a-440b-afa2-0c347c62f63e")
-		(name "E6_R2_1_WIDTH")
-		(hatch edge 0.5)
-		(connect_pads
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(keepout
-			(tracks allowed)
-			(vias allowed)
-			(pads allowed)
-			(copperpour allowed)
-			(footprints allowed)
-		)
-		(placement
-			(enabled no)
-			(sheetname "")
-		)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 20.625 35.8) (xy 23.45 35.8) (xy 23.45 38.125) (xy 20.625 38.125)
 			)
 		)
 	)

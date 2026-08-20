@@ -643,11 +643,6 @@
 	(constraint clearance (min 0.140mm))
 	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R11_1_CLR')"))
 
-# E6_R2_1     R2.1    TIER B - measured 0.100 mm; JLCPCB gate PASS (0.100 >= 0.09)
-(rule "E6_R2_1: measured local +3V3 clearance 0.100 mm"
-	(constraint clearance (min 0.100mm))
-	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R2_1_CLR')"))
-
 # E6_R29_1    R29.1   TIER A - measured 0.160 mm; JLCPCB gate n/a (Tier A)
 (rule "E6_R29_1_CLR: measured local +3V3 clearance 0.160 mm"
 	(constraint clearance (min 0.160mm))
@@ -748,7 +743,11 @@
 # onto the measured regions.  Tight containment: each holds ONLY the
 # reduced-clearance region, not the whole narrow track.
 #
-#   E6_R2_1   x 22.800-23.800  y 35.500-36.500  F/In1/In2/B
+#   E6_R2_1   RETIRED (GND/pour closeout) - rule and area removed;
+#             the R2 candidate-B escape meets the global P3V3 rules
+#             without it, and DRC proved 0 objects depended on it.
+#             Historical measurement, for the record:
+#             x 22.800-23.800  y 35.500-36.500  F/In1/In2/B
 #             VIA-SITE relief, through via (23.300, 36.000)
 #             hole-edge to In2 /WAKE_INT_N = 0.100 + 0.200 ring
 #             = 0.300 mm  vs  JLCPCB 0.200 mm  ->  +0.100 mm
@@ -822,10 +821,6 @@
 # /SX1262_BUSY and In2 /I2C_SCL_INT (hole-referenced 0.400 mm, +0.200).
 # Its clearance rule was deleted; the via uses normal rules only.
 # =====================================================================
-
-(rule "E6_R2_1_WIDTH: +3V3 escape neck width, clearance stays global"
-	(constraint track_width (min 0.15mm) (opt 0.60mm))
-	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R2_1_WIDTH')"))
 
 (rule "E6_J1_40_WIDTH: +3V3 escape neck width, clearance stays global"
 	(constraint track_width (min 0.15mm) (opt 0.60mm))
