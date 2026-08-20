@@ -157,14 +157,37 @@ what §11 requires. Negotiated congestion was not used again — §6.
 | 4/5/6/7 | **NOT COMPLETED** | the exhaustive 24-permutation big-window run was abandoned on time after the smaller results made 4 implausible. **This is an unmeasured gap, not a FAIL** |
 | 4/5/6 | **FAIL** — open 1 | `XGPIO4` OK 108.0 mm · `XGPIO5` OK 25.8 mm · `XGPIO6` FAIL |
 | 4/5/7 | **FAIL** — open 1 | `XGPIO4` OK 108.0 mm · `XGPIO5` OK 25.8 mm · `XGPIO7` FAIL |
-| 5/6/7, 4/6/7 | **NOT COMPLETED** | same reason |
+| 5/6/7 | **FAIL** — open 1 | `XGPIO5` OK 25.8 mm · `XGPIO6` OK **94.5 mm** · `XGPIO7` FAIL |
+| 4/6/7 | **NOT COMPLETED** | the big window makes each solve 3–5× slower and this one did not finish |
 
-Both measured triples fail with the **same signature**: `XGPIO4` and `XGPIO5`
-close at exactly the same lengths, and the third pin — whichever it is — does
-not. The pair is the stable core; the third is what the corridor refuses.
-| **4 + 5** | **PASS** | `XGPIO4` **108.0 mm**, `XGPIO5` **25.8 mm**, WAKE re-landed |
+Three of the four triples are measured and all fail. The constant across every
+one of them is **`XGPIO5`**, which closes at 25.8 mm in all three. The second
+pin can be either `XGPIO4` (108.0 mm) or `XGPIO6` (94.5 mm). **`XGPIO7` has
+never closed in any configuration.**
 
-**MAXIMUM CLEAN XGPIO COUNT DEMONSTRATED: 2. SELECTED: `XGPIO4`, `XGPIO5`.**
+That third triple is what changed the selection — see below.
+| 4 + 5 | **PASS** | `XGPIO4` 108.0 mm, `XGPIO5` 25.8 mm, WAKE re-landed |
+| **5 + 6** | **PASS — SELECTED** | `XGPIO5` **25.8 mm**, `XGPIO6` **94.5 mm**, WAKE re-landed |
+
+**MAXIMUM CLEAN XGPIO COUNT DEMONSTRATED: 2. SELECTED: `XGPIO5`, `XGPIO6`.**
+
+### Why `5 + 6` and not `4 + 5`
+
+Both pairs verify at DRC 0 errors with no warning delta and the same 231
+unconnected. §5's tie-breakers decide, in order:
+
+| tie-breaker | `4 + 5` | `5 + 6` | winner |
+|---|---|---|---|
+| 1. least release length | 243 obj / 203.662 mm + 1 WAKE via | identical | tie |
+| 2. fewest released active objects | 1 (the WAKE via) | identical | tie |
+| 3. fewest vias | 9 | 9 | tie |
+| 4. shortest replacement routes | 133.7 mm, 115 segments | **120.3 mm, 74 segments** | **`5 + 6`** |
+| 5. best physical grouping on J5 | `J5.8` + `J5.9`, spanning two columns | **`J5.9` + `J5.10`, one full column at x = 42.080** | **`5 + 6`** |
+
+`5 + 6` wins the first tie-breaker that separates them and the one after it:
+**13.4 mm shorter, 41 fewer segments, and a tidier header footprint** — two
+pins in a single column, one on each row, which is a cleaner 1-output /
+1-input accessory landing than a pair straddling two columns.
 
 That meets §3's minimum and clears the "return to CTO" threshold.
 
@@ -196,9 +219,10 @@ Every line of the 216 → 231 change is accounted for:
 | `Net-(U15-CT)` | +1 | dead once `U15` is DNP, spent |
 | **net change** | **+15** | 216 − 2 + 17 = **231** |
 
-`XGPIO4` at **108.0 mm** is long for a low-speed GPIO. It is electrically fine
-and DRC-legal, but it is the price of the southern detour, and it is worth the
-CTO seeing the number rather than only the PASS.
+`XGPIO6` at **94.5 mm** is long for a low-speed GPIO — as is `XGPIO4` at
+108.0 mm in the rejected pair. Both are electrically fine and DRC-legal, but
+the length is the price of the southern detour and is worth seeing rather than
+only the PASS. `XGPIO5` is the cheap one at 25.8 mm in every configuration.
 
 ## 10. DFM — one exception that needs a ruling
 
@@ -209,6 +233,11 @@ mask dams 0.47–0.57 mm. **Two are not:**
 |---|---|---|---|
 | A | `XGPIO5` | (22.650, 12.350) | inside `U3`'s courtyard at local (−0.050, 0.650) — **essentially at U3's centre, under the package body** |
 | B | `XGPIO5` | (20.400, 14.100) | inside `U3`'s courtyard at local (−1.800, −1.600) — **under the package body** |
+| C | `XGPIO6` | (41.700, 11.800) | inside `R57`'s courtyard — a 0402 resistor, not a body concern; nearest foreign pad `U15.2` at 0.5000 mm, mask dam 0.4487 mm |
+
+Vias A and B belong to **`XGPIO5`'s escape from `U3.9`** and are therefore
+present in *both* candidate pairs — the choice between `4+5` and `5+6` does not
+affect this question.
 
 `U3` is a `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm` on B.Cu. Neither via is under
 `U1`'s Fab body — both sit outside its ±9.000 × ±12.750 mm outline.
