@@ -154,13 +154,22 @@ Negotiated congestion, 6 commodities, grid 1081 × 561 at 0.05 mm:
 | 6 | 20.41 | 1 743 | **0** |
 | 7 | 36.73 | 1 530 | **0** |
 | 9 | 119.02 | 1 436 | **0** |
-| 10 | 214.23 | 1 465 | **0** |
-| 11 | 385.61 | 1 504 | **0** |
 | 12 | 694.10 | 1 464 | **0** |
+| 19 | 42 494 | 1 467 | **0** |
+| 21 | 137 681 | 1 514 | **0** |
+| 23 | 446 086 | 1 457 | **0** |
+| 25 | **1 445 320** | 1 542 | **0** |
 
-Residual conflicts plateau at **1 440–1 540** from iteration 7 onward while the
-present-cost factor rises **1 150×**. That is saturation, not an under-resourced
-search: a longer run was started and abandoned once the plateau was unambiguous.
+A full **26-iteration** run was carried to completion. Residual conflicts sit in
+a **1 436 – 1 842** band from the first iteration to the last while the
+present-cost factor is raised from 0.60 to **1 445 320 — a factor of 2.4
+million**. `unjoined` is 0 at every single iteration.
+
+That is as conclusive as this method gets: **search budget is not the missing
+ingredient.** The final iteration's routes are
+`XGPIO4` 34.336 mm / `XGPIO5` 32.942 mm / `XGPIO6` 31.665 mm /
+`XGPIO7` 31.367 mm, `WAKE_ATTN_N_HDR` one via, `FAST_IO_U0TXD_ROOTPROBE_CS`
+7.277 mm — the same topology, never separated.
 
 Joined but not separated, so it is not DRC-clean and it is **not a landable
 candidate**. It was deliberately **not** written to a scratch board — with
@@ -274,3 +283,9 @@ all untouched — `SX1262_RXEN` was never released, in scratch or otherwise.
    released net comes home.
 3. **Forbid new via sites inside fitted-footprint courtyards** in the router,
    so candidates are DFM-clean by construction rather than by audit.
+
+Ranked by what the 26-iteration evidence says: **more negotiation budget is
+ruled out**. The lever is either extra lane capacity (spend deferred-function
+copper and re-land it, which §15 permits) or a different separation strategy —
+reserving one lane per XGPIO before routing, rather than negotiating four nets
+into a corridor that measurably cannot separate them.
