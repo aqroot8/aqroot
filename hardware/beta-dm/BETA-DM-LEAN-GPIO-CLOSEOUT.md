@@ -271,3 +271,126 @@ I2S, internal I2C, SPI-A, SPI-B, USB data and CC, the backlight, the buttons,
 `CC1101`, **`SX1262_RXEN` and the RXEN In2/E5 crossing**, `FAST_IO_GPIO43_HDR`,
 direct `+3V3`, the GND architecture, Edge.Cuts and the mounting holes are all
 untouched.
+
+
+---
+
+# PART 2 — FINAL IMPLEMENTATION PASS
+
+## 12. Final scope
+
+`XGPIO5` + `XGPIO6` are the final Lean-DM GPIO set. `XGPIO4` and `XGPIO7` join
+the other unused XGPIO as **LEAN DM CUT ONLY — FULL BETA RESTORE**. No
+footprint moved, no series resistor DNP'd, no `J5` pin renumbered.
+
+Ledger re-derived on the real board:
+
+```
+216 = A62 + B130 + C2 + D22
+```
+
+**C = 2**: `XGPIO5` (`U3.9`↔`R56.1`), `XGPIO6` (`U3.10`↔`R57.2`).
+
+## 13. A via-in-pad defect the earlier DFM tool missed
+
+The verified `{5,6}` candidate placed the `XGPIO6` via at (41.700, 11.800) —
+**inside `R57.2`'s SMD pad, 0.3000 mm inside that pad's paste aperture.**
+
+KiCad does not flag via-in-pad, and the router placed it because a net's **own**
+pads are exempt from clearance, so nothing upstream caught it. The earlier DFM
+tool missed it too: it skipped same-net pads deliberately, to avoid reporting a
+via landing on its own test point as a mask-dam violation.
+
+The §5/§6 gate caught it: `via-in-pad: YES`, `paste over via: −0.3000 mm`.
+
+**Fixed in the router**, not argued about: new vias may not overlap any paste
+aperture. Re-solved, `{5,6}` still closes — `XGPIO5` 25.8 mm, `XGPIO6`
+**107.8 mm** (up from 94.5 mm, the cost of leaving the pad), 9 vias, DRC
+**0 errors**, no warning delta, 231 unconnected.
+
+## 14. §5 U3 under-body via gate
+
+Board facts read from the `.kicad_pcb` setup block, not assumed:
+
+```
+(tenting (front yes) (back yes))    -> every via tented BOTH sides
+0 vias in the file carry a per-via (tenting ...) override
+(pad_to_mask_clearance 0)           -> a pad's mask opening IS its copper outline
+```
+
+Two vias sit under `U3` (`Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm`, B.Cu, no
+exposed thermal pad):
+
+| | via A | via B |
+|---|---|---|
+| net | `XGPIO5` | `XGPIO5` |
+| centre | (22.650, 12.350) | (20.400, 14.100) |
+| diameter / drill | 0.60 / **0.30 mm** | 0.60 / **0.30 mm** |
+| annular ring | 0.150 mm | 0.150 mm |
+| side | through — F.Cu…B.Cu | through — F.Cu…B.Cu |
+| tented F.Cu / B.Cu | **YES / YES** | **YES / YES** |
+| mask opening on the via | **NONE** (tented) | **NONE** (tented) |
+| annulus exposed | **NO** | **NO** |
+| paste over the via | **NONE** | **NONE** |
+| via-in-pad | **NO** | **NO** |
+| nearest foreign pad copper | `R66.1` (`WAKE_INT_N`) **0.2250 mm** to via edge | `U3.8` (`XGPIO4`) **0.2755 mm** to via edge |
+| nearest paste aperture | `R66.1` 0.2250 mm | **`U3.9` 0.0250 mm** |
+| nearest pad mask opening | `R66.1` 0.2250 mm | `U3.8` 0.2755 mm |
+| nearest drilled hole | 0.7300 mm | 1.7304 mm |
+| beneath the plastic body | yes | yes |
+| min electrical clearance | 0.2250 mm — **PASS** | 0.2755 mm — **PASS** |
+
+Every listed §5 criterion passes: drill 0.30 ≤ 0.40, tented both sides, no
+paste over the via, no via-in-pad, no merged opening, clearance PASS.
+
+### The number that stops it
+
+**Via B sits 0.0250 mm from `U3.9`'s paste aperture.**
+
+`U3.9` is 1.475 × 0.400 mm, long axis vertical, at (20.375, 15.163) — it
+extends down to y = 14.4255, and the via edge is 25 µm below that. `U3.9` is
+`XGPIO5`'s **own** pad, so there is **no short risk**. The failure mode is
+different: at 25 µm the solder-mask tent cannot be relied on. Mask registration
+tolerance alone is typically ±50–75 µm, so after registration error the via
+annulus can sit partly inside `U3.9`'s opening, and solder from that joint
+wicks into the barrel — a **starved or open joint on a 0.65 mm pitch TSSOP
+pin**.
+
+§5's floor for a mask web is **0.125 mm preferred, 0.100 mm absolute**. 0.025 mm
+is a quarter of the absolute floor.
+
+### What happens if a real web is enforced
+
+The constraint was put into the router and the pair re-solved:
+
+| mask web enforced | result |
+|---|---|
+| none (as verified) | `XGPIO5` 25.8 mm + `XGPIO6` 107.8 mm — **both close** |
+| **0.100 mm** (absolute floor) | **only ONE closes** — `XGPIO5` alone 91.5 mm, or `XGPIO6` alone 107.8 mm |
+| **0.125 mm** (preferred) | **only ONE closes** — same |
+
+**§5's STOP therefore applies: the pair is not landed.**
+
+## 15. R57 via — resolved
+
+The `XGPIO6` via inside `R57`'s courtyard is **gone** from the corrected
+candidate. With via-in-pad forbidden the router routes `XGPIO6` clear of it, at
+the cost of 13.3 mm of extra length. No via now sits in or under any solder
+termination.
+
+## 16. Status: NOT LANDED
+
+The real board is **unchanged**. No copper was written. `hardware/beta/` has an
+empty diff.
+
+The decision needed is not a rule exception — DRC is 0 either way — but a
+manufacturing judgement:
+
+| option | GPIO | cost |
+|---|---|---|
+| **A** — accept via B at 0.0250 mm from `U3.9`'s paste | **2** | risk of a starved/open joint on `U3.9`, a 0.65 mm pitch TSSOP pin. Same-net, so no short |
+| **B** — enforce the 0.100 mm mask-web floor | **1** | `XGPIO5` alone at 91.5 mm, or `XGPIO6` alone at 107.8 mm. Below the previously ruled minimum of 2 |
+
+Option B is a scope change below the stated minimum and is not taken
+unilaterally. Option A is not taken because §5 instructs a STOP on exactly this
+finding.

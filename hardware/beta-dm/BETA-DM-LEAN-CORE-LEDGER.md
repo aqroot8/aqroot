@@ -11,49 +11,48 @@ Marking a part DNP does **not** change the ratsnest — KiCad keeps DNP pads in
 connectivity — so the total is unchanged at 216. What changed is the
 classification of 7 lines that now have a DNP pad at one end.
 
-> **UPDATED by the final GPIO closeout ruling.** `BQ25185_STAT1` and
-> `BQ25185_STAT2` are now **LEAN-DM INTENTIONAL NO ROUTE** and move from C to
-> D. Re-measured on the real board:
+> **UPDATED by the final GPIO implementation ruling.** `BQ25185_STAT1` /
+> `STAT2` and now `XGPIO4` / `XGPIO7` are **LEAN-DM INTENTIONAL NO ROUTE** and
+> move from C to D. Re-measured on the real board:
 
 ```
 unconnected(measured)  ==  A + B + C + D
-        216            ==  62 + 130 + 4 + 20
+        216            ==  62 + 130 + 2 + 22
 ```
 
-C is now **4**: `XGPIO4`, `XGPIO5`, `XGPIO6`, `XGPIO7`. Nothing else fitted
-remains must-work outside D. The previous equation, `216 = A62 + B130 + C6 +
-D18`, is kept below for the record; only the two STAT lines moved, and no
-copper changed.
+C is now **2**: `XGPIO5` and `XGPIO6` — the final Lean-DM GPIO set. Nothing
+else fitted remains must-work outside D. The earlier equations
+(`C6 + D18`, then `C4 + D20`) are superseded; only classifications moved and
+**no copper changed** to reach any of them.
 
 | bucket | lines | what it is |
 |---|---:|---|
 | A — DNP-function / component deferral | **62** | a pad at either end belongs to a DNP part, or the whole net belongs to a block that is DNP as a whole |
 | B — GND, pours pending | **130** | one net; the plane and stitching programme |
-| C — **Lean MUST-WORK non-GND** | **4** | the Lean demo fails without these |
-| D — Lean-DM fitted, intentionally unrouted | **20** | both ends fitted, deliberately unrouted; every one has a restoration entry |
+| C — **Lean MUST-WORK non-GND** | **2** | the Lean demo fails without these |
+| D — Lean-DM fitted, intentionally unrouted | **22** | both ends fitted, deliberately unrouted; every one has a restoration entry |
 
-**C = 4, re-derived, not assumed.** It matches the ruling's projection exactly.
+**C = 2, re-derived, not assumed.** It matches the ruling's projection exactly.
 
 ---
 
-## C — Lean MUST-WORK non-GND: 4 lines
+## C — Lean MUST-WORK non-GND: 2 lines
 
 | net | endpoints |
 |---|---|
-| `/XGPIO4` | `U3.8` ↔ `R55.1` |
 | `/XGPIO5` | `U3.9` ↔ `R56.1` |
 | `/XGPIO6` | `U3.10` ↔ `R57.2` |
-| `/XGPIO7` | `U3.11` ↔ `R58.2` |
 
 Nothing else fitted remains open outside D. `FAST_IO_GPIO43_HDR`,
 `WAKE_ATTN_N_HDR` and `+3V3` at `J5.1` are already routed and carry no
 must-work line; their only open lines go to the DNP `D6`/`D7` ESD arrays and
 are bucket A.
 
-## D — Lean-DM fitted, intentionally unrouted: 20 lines
+## D — Lean-DM fitted, intentionally unrouted: 22 lines
 
 | group | lines | net(s) |
 |---|---:|---|
+| **deferred XGPIO from the final ruling** | **2** | `XGPIO4` (`U3.8`↔`R55.1`), `XGPIO7` (`U3.11`↔`R58.2`) — the Demo Model needs two GPIO, not four |
 | **BQ25185 status test points** | **2** | `BQ25185_STAT1` (`TP6.1`↔`U11.9`), `BQ25185_STAT2` (`TP7.1`↔`U11.3`) — open-drain diagnostic outputs, not charger control, not safety, not MCU inputs, not boot/USB/UI. The charger operates without these traces |
 | ten deferred XGPIO | 10 | `XGPIO0`, `1`, `2`, `3`, `8`, `9`, `10`, `11`, `12`, `13` (`U3` ↔ series resistor) |
 | deferred header link | 1 | `XGPIO13_HDR` |
@@ -61,7 +60,7 @@ are bucket A.
 | accessory rail, fitted-to-fitted part | 2 | `ACC_3V3_SW`: track ↔ `C38.1`, and `R46.2` ↔ track |
 | MCU test points | 2 | `TEST_GPIO45`, `TEST_GPIO46` |
 | SW9 diagnostic branch | 1 | `Net-(SW9-A)` → `TP13.1` |
-| **total D** | **20** | |
+| **total D** | **22** | |
 
 ## A — 62 lines, composition
 
@@ -86,12 +85,12 @@ are bucket A.
 A went 55 → 62 with the `U15`/`U16` DNP. D went 15 → 18 there (gained the two
 ext-I2C header links and the two fitted-to-fitted `ACC_3V3_SW` lines, lost
 `Net-(U15-QOD)` to A), then **18 → 20** when the closeout ruling deferred
-`BQ25185_STAT1` and `BQ25185_STAT2`. C went 16 → 6 → **4**.
-`62 + 130 + 4 + 20 = 216`.
+`BQ25185_STAT1` and `BQ25185_STAT2`. C went 16 → 6 → 4 → **2**.
+`62 + 130 + 2 + 22 = 216`.
 
-**No line was reclassified to manufacture the C4 count, and no copper was
-touched to reach it.** C4 is what remains once the ruling's scope is applied to
-the measured board: the four lines listed above are exactly the ones the Lean
+**No line was reclassified to manufacture the C2 count, and no copper was
+touched to reach it.** C2 is what remains once the ruling's scope is applied to
+the measured board: the two lines listed above are exactly the ones the Lean
 demo cannot work without.
 
 ---

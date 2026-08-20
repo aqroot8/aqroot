@@ -24,7 +24,7 @@ This ledger covers the **Lean** cuts only. The earlier DNP-function cuts
 
 ---
 
-## 1. The ten deferred XGPIO
+## 1. The twelve deferred XGPIO
 
 | item | Lean-DM | Full Beta | what restoration costs |
 |---|---|---|---|
@@ -32,7 +32,9 @@ This ledger covers the **Lean** cuts only. The earlier DNP-function cuts
 | `XGPIO1` (`U3.5` ↔ `R52.1`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, **22 objects / 87.476 mm** |
 | `XGPIO2` (`U3.6` ↔ `R53.2`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, **19 objects / 84.258 mm** |
 | `XGPIO3` (`U3.7` ↔ `R54.2`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, **24 objects / 85.587 mm** |
-| `XGPIO8` (`U3.13` ↔ `R59.1`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, **11 objects / 10.918 mm** — the cheapest of the ten, and the named alternate to `XGPIO4` |
+| **`XGPIO4`** (`U3.8` ↔ `R55.1`) | **LEAN DM NO ROUTE** (final GPIO ruling) | **RESTORE / REQUIRED** | 1 join. Measured routable at **108.0 mm** in the rejected `{4,5}` pair, so its cost is known |
+| **`XGPIO7`** (`U3.11` ↔ `R58.2`) | **LEAN DM NO ROUTE** (final GPIO ruling) | **RESTORE / REQUIRED** | 1 join. **Never closed in any measured configuration** — the hardest of the four originally selected |
+| `XGPIO8` (`U3.13` ↔ `R59.1`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join, **11 objects / 10.918 mm** — the cheapest of the ten |
 | `XGPIO9` (`U3.14` ↔ `R60.1`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | 1 join. **Needs the `SX1262_RXEN` release** — no ordinary release of any size opens `U3.14` |
 | `XGPIO10` (`U3.15` ↔ `R61.2`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | as `XGPIO9` |
 | `XGPIO11` (`U3.16` ↔ `R62.2`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | as `XGPIO9` |
@@ -40,9 +42,12 @@ This ledger covers the **Lean** cuts only. The earlier DNP-function cuts
 | `XGPIO13` (`U3.18` ↔ `R64.1`) | LEAN DM NO ROUTE | **RESTORE / REQUIRED** | as `XGPIO9`, **plus** the `XGPIO13_HDR` join below |
 
 Nothing is removed: `R51`–`R64` all stay **fitted**, all fourteen `J5` header
-pins keep their nets, and all fourteen `U3` port assignments are unchanged.
+pins keep their nets, and all fourteen `U3` port assignments are unchanged. No
+footprint moved, no series resistor DNP'd for bookkeeping, no `J5` pin
+renumbered.
 
 **Full-Beta XGPIO preserved: 14 / 14.**
+**Lean-DM active: 2 — `XGPIO5` and `XGPIO6`.**
 
 ### The shared prerequisite the Full-Beta programme inherits
 
@@ -150,7 +155,9 @@ Stated so the Full-Beta programme does not inherit phantom work:
 | `Net-(SW9-A)` → `TP13` | 1 | RESTORE IF STILL WANTED |
 | `BQ25185_STAT1` | 1 | RESTORE IF STILL WANTED — verified candidate on record |
 | `BQ25185_STAT2` | 1 | RESTORE IF STILL WANTED — needs a `U11` left-column pass |
-| **bucket D total** | **20** | |
+| `XGPIO4` | 1 | RESTORE / REQUIRED — routable at 108.0 mm |
+| `XGPIO7` | 1 | RESTORE / REQUIRED — never closed in any measured configuration |
+| **bucket D total** | **22** | |
 | `XGPIO9_HDR` | 0 today, **1 after the Lean routing lands** | RESTORE / REQUIRED |
 | `ACC_PWR_EN` feature | 0 — copper routed | firmware only |
 | `ACC_3V3_SW` feature | 0 — copper routed | firmware only |
