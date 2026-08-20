@@ -1,0 +1,35 @@
+Drill report for aqroot-Beta-DM.kicad_pcb
+Created on 2026-08-20T19:01:50
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  In1.Cu                    in1
+    L3 :  In2.Cu                    in2
+    L4 :  B.Cu                      back
+
+
+Drill file 'aqroot-Beta-DM-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.200mm  0.0079"  (12 holes))
+    T2  0.250mm  0.0098"  (40 holes))
+    T3  0.300mm  0.0118"  (334 holes))
+    T4  0.400mm  0.0157"  (50 holes))
+    T5  0.600mm  0.0236"  (4 holes)  (with 4 slots)
+    T6  0.750mm  0.0295"  (4 holes))
+    T7  0.900mm  0.0354"  (2 holes))
+    T8  1.020mm  0.0402"  (26 holes))
+    T9  1.100mm  0.0433"  (3 holes))
+
+    Total plated holes count 475
+
+
+Drill file 'aqroot-Beta-DM-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  0.500mm  0.0197"  (1 hole)
+    T2  0.650mm  0.0256"  (2 holes))
+    T3  0.900mm  0.0354"  (2 holes))
+
+    Total unplated holes count 5
