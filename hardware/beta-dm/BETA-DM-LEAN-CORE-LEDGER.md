@@ -155,3 +155,29 @@ because it moves a line between buckets:
 
 So **A gains 1** (62 → 63) and **D is unchanged at 22**. Nothing is
 unexplained.
+
+---
+
+## Post-GND-closeout ledger
+
+```
+137 = A63 + B1(15) + B2(37) + C0 + D22
+```
+
+The GND closeout landed 134 segments and 55 vias, removed and changed nothing,
+and took the board from **215 → 137** unconnected items. The whole change is in
+bucket B: GND **130 → 52**.
+
+Bucket B is now split, because "GND" was hiding two very different obligations:
+
+| bucket | meaning | count |
+|---|---|---:|
+| **B1** | GND on a **fitted** part not yet on the main GND island — **owes copper** | **15** |
+| **B2** | GND whose only ungrounded endpoint is a **DNP** part — owes nothing | **37** |
+
+A, C and D are unchanged: **A63**, **C0**, **D22**.
+
+The 15 remaining B1 lines are the fine-pitch pockets around `U2`, `U3`, `U4`
+and `J3` plus the passives sitting in them. They are pour-resolvable, not
+via-resolvable, and are itemised with per-pad measurements in
+[`BETA-DM-GND-CLOSEOUT.md`](BETA-DM-GND-CLOSEOUT.md) §5.

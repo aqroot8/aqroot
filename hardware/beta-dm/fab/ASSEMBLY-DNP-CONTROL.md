@@ -235,14 +235,23 @@ in the fab notes before any board is built.
 
 ## 3b. LEAN GPIO LANDING — new critical fabrication feature
 
-The `XGPIO5` via at **(20.400, 14.050)** is the smallest via on the board:
+The `XGPIO5` via at **(20.400, 14.050)** sits at the board's smallest via size
+**and** at its tightest solder-mask web. The web is what makes it critical.
+
+> **Correction (GND closeout pass).** An earlier revision of this section called
+> this via *"the smallest via on the board — every other via is 0.60 / 0.30 or
+> larger."* That was wrong when written. The board already carried four
+> 0.50 / 0.25 vias (`Net-(U13-FB)` ×2, `ISET` ×2) and thirty 0.55 / 0.25 vias.
+> The GND closeout added two more 0.50 / 0.25 vias (`GND`, at (16.050, 13.700)
+> and (27.400, 13.000)). The size is therefore **not** unique; the 0.125 mm mask
+> web under a fitted TSSOP body is.
 
 | | |
 |---|---|
-| diameter / drill | **0.50 mm / 0.25 mm** (every other via is 0.60 / 0.30 or larger) |
+| diameter / drill | **0.50 mm / 0.25 mm** — the board's smallest size class, shared with 6 other vias |
 | annular ring | **0.125 mm** — exactly the board's documented floor |
 | location | beneath the `U3` TSSOP-24 body, B.Cu side |
-| solder-mask web to `U3.9` paste | **0.125 mm** — the preferred figure, not the 0.100 mm floor |
+| solder-mask web to `U3.9` paste | **0.125 mm** — the preferred figure, not the 0.100 mm floor; the tightest web on the board |
 
 Requirements:
 
