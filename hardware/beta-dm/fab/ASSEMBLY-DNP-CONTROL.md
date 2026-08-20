@@ -264,6 +264,50 @@ Requirements:
 
 ---
 
+---
+
+## 3c. FINAL COPPER CLOSEOUT — outer GND pours
+
+The board now carries two outer-layer GND pours in addition to the In1.Cu
+reference plane:
+
+| zone | layer | outline | pad connection |
+|---|---|---|---|
+| `F.Cu GND POUR` | F.Cu | 0.6 mm inset from the board outline | **solid** |
+| `B.Cu GND POUR` | B.Cu | same | **solid** |
+
+Fabrication and assembly consequences:
+
+* **Pad connection is solid, not thermal relief.** Every fitted GND
+  termination on an outer layer is tied directly into the pour. This was a
+  measured decision: thermal relief left 15 `starved_thermal` DRC errors,
+  because the fine-pitch pockets around `U2`, `U3` and `U4` cannot fit the two
+  spokes the zone requires.
+* **Reflow profile note for assembly:** solid outer copper on small 0402/0603
+  GND terminations is a heat-sink consideration. Use a normal profile for a
+  four-layer 1.6 mm board with a full ground plane; do not treat these as
+  isolated pads. No pad geometry was modified to achieve this.
+* **Copper balance changed.** Both outer layers are now largely poured, where
+  previously they carried only tracks. Expect the usual etch-compensation and
+  a more uniform copper distribution than the earlier revision.
+* **RF and reserved areas remain copper-free on every layer they name:**
+  `NFC RESERVED`, `WROOM ANTENNA KEEPOUT`, `HEADER RESERVED`, `915 KEEPOUT`,
+  `433 KEEPOUT` and the west off-board area. Verified against the filled
+  polygons, not merely against the rule flags: deepest penetration is
+  0.000000 mm.
+* Minimum pour copper to the board edge is **0.600 mm**; to a mounting-hole
+  edge, **0.501 mm**.
+
+Two design-rule exceptions were **retired** in the same pass and no longer
+appear in the DRU: `E6_R2_1_CLR` (0.100 mm local P3V3 clearance) and
+`E6_R2_1_WIDTH` (0.15 mm P3V3 neck). All P3V3 copper now meets the ordinary
+0.200 mm clearance and 0.600 mm width. **There is no longer any sub-0.200 mm
+clearance exception at R2 to call out to the fabricator.**
+
+The `XGPIO5` critical via described in §3b is unchanged by this pass.
+
+---
+
 ## 4. Restoration
 
 Nothing was deleted. Every DNP footprint is still on the board in its original

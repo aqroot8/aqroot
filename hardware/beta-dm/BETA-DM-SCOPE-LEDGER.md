@@ -140,3 +140,38 @@ Two restoration facts worth keeping visible:
    R1. That is a shared prerequisite, not a conflict: with R1 already landed,
    IR TX's marginal cost drops from two release objects to one.
 
+
+---
+
+## Copper status after the final copper closeout (2026-08-20)
+
+The Beta-DM copper work is complete for the must-work set.
+
+| | |
+|---|---|
+| Lean must-work non-GND still unrouted | **0** |
+| Fitted GND pads not on the main GND island | **0** |
+| DRC | **0 errors**, 240 warnings, 0 schematic-parity issues |
+| Ledger | `103 = A64 + B1(0) + B2(18) + C0 + D21` |
+
+What changed in this pass, beyond the ground work:
+
+* the obsolete `E6_R2_1_CLR` and `E6_R2_1_WIDTH` exceptions and their two rule
+  areas are **removed** — the R2 candidate-B escape meets the global P3V3
+  rules without them, and 0 objects depended on either;
+* `F.Cu GND POUR` and `B.Cu GND POUR` were added, solid-connected. In1.Cu is
+  untouched and is still the continuous board-wide reference.
+
+**Board area and outline are unchanged.** The DM board, the Final board and the
+frozen Full-Beta board all share the same 74 × 155 mm outline, the same
+placement and the same four mounting holes. Nothing in this pass reclaimed or
+resized area.
+
+The enclosure target moved to **130 × 70 × 23.5 mm**
+([`../17 - Enclosure Field Slate v4.md`](../17%20-%20Enclosure%20Field%20Slate%20v4.md)),
+superseding 122 × 61 × 23.5 mm. That document records an unresolved conflict:
+the 74 × 155 mm PCB does not fit the new envelope either. It is a product /
+industrial-design target, not a constraint the current board satisfies, and it
+has no effect on the copper above.
+
+Next: final PCB DFM, then the fabrication package. Neither has been started.

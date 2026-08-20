@@ -235,3 +235,187 @@ An untracked directory `hardware/beta/mechanical/` exists on disk, dated
 It is **not** part of this pass, it modifies no tracked frozen file, and it has
 deliberately been left uncommitted. It is flagged here for a CTO decision on
 whether it belongs in the repository.
+
+---
+---
+
+# Part 2 — Final Copper Closeout (E6 retirement + outer GND pours)
+
+The GND closeout above left 15 fitted GND islands open and concluded they were
+**pour-resolvable, not via-resolvable**. This part records the pass that tested
+that conclusion. It held: **B1 is now 0.**
+
+## 9. E6_R2_1 retirement
+
+`E6_R2_1_CLR` granted P3V3 copper a 0.100 mm local clearance and
+`E6_R2_1_WIDTH` granted it a 0.15 mm neck, both scoped by rule areas at the R2
+escape. Both are now removed, along with the two rule areas that existed solely
+to carry them.
+
+Verified before removal, on the current board:
+
+| check | result |
+|---|---|
+| objects relying on the reduced clearance | **0** |
+| enclosed P3V3 copper below the ordinary 0.60 mm width | **0** |
+| `BOOT_N` inherits the rules | **no** — Default netclass; the rules are `hasNetclass('P3V3')`-scoped |
+| `WAKE_INT_N` inherits the rules | **no** — same reason |
+| R2 candidate-B escape legal without them | **yes** |
+
+After removal and refill, before any pour: **DRC 0 errors, 137 unconnected
+(unchanged), zero new warning types**, and `R2 +3V3`, `BOOT_N`, `WAKE_INT_N`,
+`XGPIO5`, `XGPIO6` each still one island. Copper was not touched: 0 segments,
+vias, pads or footprints added, removed or modified.
+
+The measured-area comment table in the DRU keeps the E6_R2_1 figures, marked
+RETIRED, so the history is not lost. No other E6/E5/RF rule was touched.
+
+## 10. The outer pours
+
+The board had **no outer copper zones at all** — In1.Cu carried the only plane.
+Two zones were added:
+
+| zone | layer | outline | pad connection |
+|---|---|---|---|
+| `F.Cu GND POUR` | F.Cu | the In1 outline exactly: 0.6 mm inset octagon | solid |
+| `B.Cu GND POUR` | B.Cu | same | solid |
+
+In1.Cu is untouched and remains the continuous board-wide reference. The outer
+pours are supplementary — local return, shielding, pad grounding, stitching
+support. No split-ground domain exists.
+
+## 11. Solid vs thermal relief — decided on measurement
+
+Both were built and filled. This is the comparison:
+
+| | thermal relief | **solid** |
+|---|---:|---:|
+| DRC errors | **15** `starved_thermal` | **0** |
+| B1 (fitted GND pads off the main island) | 4 | **0** |
+| GND ratsnest | 19 | **18** |
+| total unconnected | 104 | **103** |
+
+Thermal relief fails on this board for a concrete reason: the fine-pitch
+pockets around `U2`, `U3` and `U4` cannot fit the two spokes the zone requires,
+so KiCad reports `zone min spoke count 2; actual 1` fifteen times, and four
+fitted pads stay unconnected anyway. Lowering the required spoke count would be
+a board-rule change, which this pass is not authorised to make.
+
+Solid is therefore the choice, and it is also the right one on the merits:
+
+* it matches the convention the In1 plane already uses (`connect_pads yes`);
+* for the categories the ruling calls out — USB shell and shield, connector
+  shell tabs, power exposed pads, RF-module ground structures — solid is the
+  preferred low-impedance connection anyway;
+* the board is fully reflow-assembled, so the hand-rework argument for thermals
+  is weak here.
+
+**Assembly note, recorded rather than glossed over:** solid outer copper on
+small 0402/0603 GND terminations is a reflow heat-sink consideration and
+marginally raises tombstoning risk. It is mitigated by the fact that these pads
+already sit over the In1 plane, and the stencil is already under explicit
+control via `fab/ASSEMBLY-DNP-CONTROL.md`. No vendor footprint pad geometry was
+altered, and no GND thermal setting was changed globally.
+
+## 12. RF and reserved-area containment
+
+The RF and reserved rule areas already carry `copperpour: not_allowed`, so
+KiCad's filler subtracts them. That flag was **not taken on trust** — the
+filled polygons were measured directly against every prohibited area:
+
+| area | layers | result |
+|---|---|---|
+| `NFC RESERVED` | F/B/In1/In2 | clean |
+| `WROOM ANTENNA KEEPOUT` | F/B/In1/In2 | clean |
+| `HEADER RESERVED` | F/B/In2 | clean |
+| `915 KEEPOUT` | F/B/In2 | clean |
+| `433 KEEPOUT` | F/B/In2 | clean |
+| west off-board area (unnamed) | all | clean |
+
+**Deepest penetration of any prohibited area by any filled pour vertex:
+0.000000 mm.** The 23 vertices that a naive point-in-polygon test flags all sit
+exactly *on* a keepout boundary — that is where the fill was clipped, not
+copper inside the area. E5 corridors, E4 lanes and the remaining E6 areas are
+`copperpour: allowed` and were not disturbed.
+
+Edge and hole clearance: minimum pour vertex to board edge **0.600 mm**, to a
+mounting-hole edge **0.501 mm**.
+
+## 13. Preservation
+
+| | |
+|---|---|
+| segments added / removed / changed | 0 / 0 / 0 |
+| vias added / removed / changed | 0 / 0 / 0 |
+| pads, footprints | 0 / 0 / 0 |
+| zones | **+2** (the two pours); 2 rule areas removed in the E6 step |
+| Edge.Cuts | 12 to 12, unchanged |
+
+* **All 55 GND stitch vias from the GND pass are preserved.** None was deleted
+  or relocated; the pours provide an additional path, not a replacement.
+* **The `XGPIO5` critical via is unchanged**: (20.400, 14.050), 0.50/0.25 mm,
+  0.125 mm annular ring, tented both sides, F/In1/In2/B.
+* No hole was added, so the corrected all-nets hole-to-hole model from the GND
+  pass has nothing new to check; the existing minimum stands at 0.4818 mm
+  against a 0.250 mm floor.
+
+## 14. Final connectivity
+
+DRC on the landed board: **240 violations, 0 errors, 103 unconnected,
+0 schematic-parity issues, zero new warning types** against the state at the
+start of this pass.
+
+All hard-lock nets hold, with **0 must-work non-GND rats**: `BOOT_N`,
+`WAKE_INT_N`, R2 `+3V3`, `XGPIO5`, `XGPIO6`, `WAKE_ATTN_N_HDR`,
+`SX1262_RXEN`, SPI-A, SPI-B, internal I2C, USB, I2S, backlight, buttons,
+FAST_IO. Where one of these shows an open line it is a bucket-A DNP endpoint or
+a bucket-D Lean deferral.
+
+Ground, measured with KiCad's connectivity engine rather than polygon
+proximity: **fitted GND pads not on the main GND island: 0.** 186 pads are on
+the main island, up from 139.
+
+## 15. Post-pour ledger
+
+```
+103 = A64 + B1(0) + B2(18) + C0 + D21
+```
+
+| bucket | meaning | count |
+|---|---|---:|
+| **A** | DNP-function deferral | 64 |
+| **B1** | GND, fitted, must ground | **0** |
+| **B2** | GND, DNP-only — no copper owed | 18 |
+| **C** | Lean must-work, non-GND | **0** |
+| **D** | Lean fitted-but-deferred | 21 |
+
+GND went 52 to 18; every remaining GND line is DNP-only. No via was added for a
+DNP part, and B2 was rebuilt from the board rather than preserved by force —
+it fell from 37 to 18 because the pours legitimately reached many DNP GND pads,
+which is electrically harmless and does not make any of those parts required.
+
+**A note on the A/D shift (63/22 to 64/21).** No non-GND net changed: a per-net
+ratsnest diff shows GND 52 to 18 and *every other net identical*. Two rats
+changed only which endpoint KiCad names as the representative, and one of them
+— `XGPIO13_HDR` — flipped from being reported as `R64 to track` to `D6 to R64`.
+`D6` is DNP, so the endpoint-based rule moves that line from D to A. Same line,
+same obligation, both buckets intentional deferrals. Nothing new is owed.
+
+**On the B1 measurement.** A ledger rule of "is either endpoint fitted" reports
+B1 = 1, naming `C42`. That is the over-count documented in Part 1 section 7:
+the line is `D4.2 (DNP)` to `C42.1`, and `C42.1` is on the main GND island. The
+correct test — "is either endpoint a fitted pad *not* on the main GND island" —
+returns **0**, and a direct enumeration of every fitted GND pad confirms the
+off-island set is empty.
+
+## 16. What this pass did not do
+
+No Gerbers, no fab package, no component movement, no signal reroute, no
+Edge.Cuts change, no PCB resize, no rule change beyond the E6_R2_1 removal, and
+no write into the frozen `hardware/beta/`. The untracked
+`hardware/beta/mechanical/` directory was listed and left untouched.
+
+The enclosure envelope moved to 130 x 70 x 23.5 mm in
+`17 - Enclosure Field Slate v4.md`. That document records an open conflict this
+pass did not resolve: the PCB is 74 x 155 mm and does not fit the new envelope
+either.

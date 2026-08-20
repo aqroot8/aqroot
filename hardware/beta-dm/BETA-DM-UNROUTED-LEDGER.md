@@ -165,3 +165,44 @@ unconnected(measured)  ==  A(DNP deferral) + B(GND) + C(Lean must-work) + D(Lean
 If the measured count exceeds the sum, something broke. If a line appears that
 is in none of the four buckets, it is a defect and must be explained before the
 board moves forward.
+
+---
+
+## Current state after the final copper closeout (2026-08-20)
+
+The audit rule above is stated against the 216-line board it was written for.
+The equation still holds; only the numbers have moved. Measured on the landed
+board after the GND closeout, the E6_R2_1 retirement and the outer GND pours:
+
+```
+unconnected(measured)  ==  A(DNP deferral) + B(GND) + C(Lean must-work) + D(Lean deferral)
+        103            ==       64         +  18    +         0         +      21
+```
+
+with **B split** as the GND closeout requires:
+
+| bucket | meaning | count |
+|---|---|---:|
+| A | DNP-function deferral | 64 |
+| **B1** | **GND on a fitted part — must ground** | **0** |
+| B2 | GND on DNP parts only — no copper owed | 18 |
+| **C** | **Lean must-work, non-GND** | **0** |
+| D | Lean fitted-but-deferred | 21 |
+
+The trajectory across the recent passes:
+
+| stage | total | GND | C |
+|---|---:|---:|---:|
+| before the Lean GPIO landing | 216 | 130 | 16 |
+| after XGPIO5 + XGPIO6 landed | 215 | 130 | 0 |
+| after the GND stitching pass | 137 | 52 | 0 |
+| **after the outer GND pours** | **103** | **18** | **0** |
+
+**Both must-be-zero buckets are now zero.** Every one of the 103 remaining
+lines is an intentional deferral: 64 terminate on a DNP part, 18 are GND lines
+whose only ungrounded endpoint is a DNP pad, and 21 are Lean-deferred functions
+on fitted parts. Nothing is unexplained.
+
+Full detail, including the solid-vs-thermal decision and the RF containment
+measurements, is in
+[`BETA-DM-GND-CLOSEOUT.md`](BETA-DM-GND-CLOSEOUT.md) Part 2.
