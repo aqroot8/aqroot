@@ -70,6 +70,64 @@ endings, one header row, no duplicate headers, no ragged rows, no embedded
 newlines, no blank designators, no NaN or infinite coordinates, every row has a
 side and a rotation.
 
+## V3 — CTO rulings applied, E list closed (2026-08-21)
+
+**`AQROOT-Beta-DM-JLC-BOM-v3.csv` is the file to upload.** V1 and V2 are kept as
+history. All three share identical designators, comments and footprints; only the
+`JLCPCB Part #` column differs.
+
+| class | groups |
+|---|---:|
+| A EXACT APPROVED | 26 |
+| B SAFE GENERIC | 37 |
+| C WRONG MATCH | 0 |
+| D MANUAL SOURCE | 3 |
+| **E CTO REVIEW** | **0** |
+
+**128 of 131 designators are pinned.** The three that are not — `D8`, `J1`, `J5` —
+are in [`JLC-MANUAL-SOURCE.csv`](JLC-MANUAL-SOURCE.csv); none has a purchasable
+JLC code, so none was invented.
+
+What changed from V2:
+
+- **`D8`** locked to onsemi **`NSR0240HT1G`** (SOD-323). The previous
+  `NSR0240V2T5G` is a SOD-523 part and never fitted the frozen land. JLC's
+  `C152519` is not pinned: stock 13 against a 116-piece minimum purchase.
+- **`SW1`–`SW8`** locked to one part, C&K **`PTS645SM43SMTR92LFS`** / `C221880`,
+  1.6 N — the Beta-DM feel baseline, revisitable after hands-on testing.
+- **`C26`/`C27`** pinned to Murata **`GRM31CR71E106KA12L`** / `C77093`,
+  10 µF 25 V X7R 1206. Murata DC-bias data gives **9.000 µF at 4.5 V** per
+  capacitor (−17.60 %), so 18.0 µF combined — 1.80× both floors, still 1.62× with
+  tolerance and 1.38× with X7R temperature on top.
+- **`R32`/`R35`/`R42`** pinned to `C21189`. TI SLUSF65A §8.2.2.1 fixes the
+  BQ25185 input current limit at **500 mA** for our 18 k `R_ILIM/VSET`, and the
+  UNI-ROYAL ZW jumper is rated 1 A — 2× margin on `R35`, the only power-node
+  jumper of the three.
+
+## V2 — explicit part numbers after auditing JLC's matches (2026-08-21)
+
+`AQROOT-Beta-DM-JLC-BOM-v2.csv` supersedes V1 for upload. V1 is kept as the
+unpinned baseline; designators, comments and footprints are **identical** between
+them — V2 only fills the `JLCPCB Part #` column.
+
+| file | what it is |
+|---|---|
+| `AQROOT-Beta-DM-JLC-BOM-v2.csv` | **upload this.** 66 rows / 131 designators, 115 pinned to an audited LCSC code |
+| `AQROOT-Beta-DM-JLC-CPL.csv` | unchanged — still the correct placement file |
+| `JLC-MATCH-AUDIT.csv` | every JLC auto-match, its verdict, the class, and why |
+| `JLC-MANUAL-SOURCE.csv` | the 13 groups JLC cannot supply or that need a CTO decision |
+
+**V2 dropped the `Manufacturer` and `Manufacturer Part Number` columns** and uses
+exactly the four columns of JLCPCB's official sample —
+`Comment, Designator, Footprint, JLCPCB Part #`. V1 carried those extras and JLC's
+uploader ingested none of the part numbers, including `C24`'s: the workbook's
+"Your BOM / JLCPCB Part #" column came back empty on every row. The four-column
+layout removes the ambiguity. Manufacturer and MPN for every line live in
+`JLC-MATCH-AUDIT.csv` and in the released BOM, which remain the authorities.
+
+**On upload, confirm the column mapping shows `JLCPCB Part #` mapped** before
+continuing — that is the step that silently failed last time.
+
 ## Before uploading
 
 `C24` must be fitted as Murata **`GRM188R61E106KA73D`** — the PCB's internal
