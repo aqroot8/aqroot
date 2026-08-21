@@ -193,19 +193,67 @@ DNP-ing C24 would leave no bulk within 8 mm of the pin.
 | height | `C24` is at (64.0, 70.0) on F.Cu — **clear of the display shadow (X 12–62) and of the bottom-side battery shadow**, so no height conflict |
 | resulting total SYS nominal | 10 + 10 + 10 + 10 + 0.1 = **40.1 µF**, inside TI's 1–100 µF |
 
-**One verification remains and it has not been done.** TI's floor is >1 µF
-*effective*. Murata's DC-bias curve for this part could not be retrieved — the
-datasheet fetch timed out — so the effective figure is **not proven and is not
-claimed here**. The margin is nonetheless large: 4.5 V is **18 % of the 25 V
-rating**, a mild bias point, and the part would have to lose **more than 90 %**
-of its capacitance to fail TI's floor. Realistic loss for a 25 V X5R 0603 at
-18 % of rating is well under half.
+### DC-bias gate — CLOSED against official Murata data (2026-08-21)
 
-**Per §5 the value change is NOT landed.** The schematic still reads
-`22uF 25V X7R` and the BOM still carries that value. Landing the substitution
-requires the Murata DC-bias curve at 4.5 V; the schematic value should then be
-corrected in an electrical revision, since `22 µF / 25 V / 0603` is not a
-buildable part in any case.
+The verification that was outstanding is now done, from the manufacturer, not
+from a distributor description.
+
+**Source.** Murata SimSurfing characteristic data, retrieved from Murata's own
+characteristic service `https://ds.murata.com/simserve/characsvdownload` for
+part number `GRM188R61E106KA73#` — the same data set the SimSurfing viewer
+plots. Two characteristics were pulled, `c_dcbias_capacitance` (absolute) and
+`c_dcbias_capchange` (percentage), both at the stated measurement condition
+**25 °C, AC 1 Vrms**, over 0–25 V in 0.125 V steps. Both files are archived
+verbatim in [`datasheets/`](datasheets/), together with the AC-drive curve.
+The Murata Reference Sheet `GRM188R61E106KA73-01A` (Jun 16 2026) supplies the
+ratings and confirms the part identity; it carries no DC-bias curve, which is
+why the characteristic service is the authority here.
+
+**Measured curve at the operating point.**
+
+| DC bias | capacitance | change |
+|---:|---:|---:|
+| 0 V | 9.8005 µF | 0 % |
+| 4.0 V | 5.2321 µF | −46.6 % |
+| **4.5 V (VSYS_REG)** | **4.6773 µF** | **−52.275 %** |
+| 5.0 V | 4.1936 µF | −57.2 % |
+| 25 V (rated) | 0.7212 µF | −92.6 % |
+
+Retention at 4.5 V is **47.7 %** of the measured 0 V value, **46.8 %** of the
+10 µF nominal. TI's floor is **>1 µF effective**, so the typical part clears it
+by **4.68×**.
+
+**Conservative lower bound.** Each factor is stacked multiplicatively, which
+over-derates on purpose — the AC-drive term in particular is measured at 0 V
+bias, where the dielectric is most drive-sensitive, and flattens under bias.
+
+| stage | factor | result | margin vs 1 µF |
+|---|---|---:|---:|
+| Murata typical, 4.5 V, 25 °C, AC 1 Vrms | — | **4.677 µF** | 4.68× |
+| − initial tolerance | ×0.90 (±10 %) | **4.210 µF** | 4.21× |
+| − X5R temperature variation, −55…+85 °C | ×0.85 (±15 %) | **3.578 µF** | 3.58× |
+| − small-signal AC drive (6.820/9.801 µF at 0 V) | ×0.696 | **2.490 µF** | 2.49× |
+| − Class-II aging allowance | ×0.90 | **2.241 µF** | **2.24×** |
+
+Even with all four derations applied at once, effective capacitance stays at
+**2.24 µF — more than double TI's floor**. The requirement in §2 is met with
+comfortable margin.
+
+**Verdict: PASS. `C24` = Murata `GRM188R61E106KA73D`, 10 µF / 25 V / X5R /
+0603, LOCKED, FITTED.**
+
+**Value change LANDED.** The schematic symbol now reads `10uF 25V X5R` and
+carries `Manufacturer = Murata`, `MPN = GRM188R61E106KA73D`; the regenerated
+BOMs follow. **No PCB change was made** — copper, footprints, Edge.Cuts, the
+DRU and all seventeen Gerber/drill artifacts are byte-identical, proven by
+SHA-256 in [BETA-DM-FINAL-DESIGN-RELEASE.md](BETA-DM-FINAL-DESIGN-RELEASE.md).
+Because the board is frozen, the `C24` value text on `F.Fab` still reads
+`22uF 25V X7R`. That is **stale metadata only** — `F.Fab` is not exported in
+the copper, mask, paste, silkscreen or drill set. Both CPL files were
+post-processed so the assembler-facing value column reads `10uF 25V X5R`,
+changing that one field and nothing else. **The BOM and the MPN ledger are the
+procurement and assembly authority for `C24`**; nothing assembler-facing
+carries the old value. The board text is corrected in Full-Beta, not here.
 
 **`C24` remains FITTED — it is not DNP — and no PCB change was made.**
 
@@ -215,7 +263,7 @@ buildable part in any case.
 
 | ref | value | pkg | net | max operating V | rated V | documented requirement | verdict |
 |---|---|---|---|---:|---:|---|---|
-| `C24` | 22 µF X7R | **0603** | `BQ25185_SYS` | ~4.5 V | 25 V | none | **ISSUE — §4** |
+| `C24` | **10 µF X5R** | 0603 | `BQ25185_SYS` | ~4.5 V | 25 V | **CSYS**: >1 µF effective after DC-bias derating | **PASS — 4.677 µF at 4.5 V, Murata data, §4** |
 | `C26` | 10 µF X7R | 1206 | `BQ25185_SYS` | ~4.5 V | 10 V | **CIN1**: combined effective CIN ≥ 10 µF at 4.5 V, each ≥ ~5 µF derated | **PASS on spec**, MPN open |
 | `C27` | 10 µF X7R | 1206 | `BQ25185_SYS` | ~4.5 V | 10 V | **CIN2**: as above | **PASS on spec**, MPN open |
 | `C33` | 10 µF X7R | 0805 | `BQ25185_SYS` | ~4.5 V | 10 V | none | PASS |

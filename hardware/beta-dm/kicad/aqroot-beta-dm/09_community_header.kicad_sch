@@ -6517,6 +6517,28 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Samtec"
+			(at 257.81 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TSW-113-08-G-D-RA"
+			(at 257.81 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "12"
 			(uuid "2a02a192-14ca-457f-9e2f-27d6255df5b2")
 		)

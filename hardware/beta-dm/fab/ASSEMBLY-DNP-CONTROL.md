@@ -34,14 +34,14 @@ From `hardware/beta-dm/kicad/aqroot-beta-dm/`:
 
 ```
 kicad-cli sch export bom  --output ../../fab/aqroot-Beta-DM-BOM-full.csv \
-    --fields 'Reference,Value,Footprint,${QUANTITY},${DNP},MPN,Manufacturer,LCSC' \
-    --labels 'Refs,Value,Footprint,Qty,DNP,MPN,Manufacturer,LCSC' \
+    --fields 'Reference,Value,Footprint,MPN,Manufacturer,${QUANTITY},${DNP}' \
+    --labels 'Refs,Value,Footprint,MPN,Manufacturer,Qty,DNP' \
     --group-by 'Value,Footprint,${DNP}' aqroot-Beta-DM.kicad_sch
 
 kicad-cli sch export bom  --output ../../fab/aqroot-Beta-DM-BOM-fitted.csv --exclude-dnp \
-    --fields 'Reference,Value,Footprint,${QUANTITY},MPN,Manufacturer,LCSC' \
-    --labels 'Refs,Value,Footprint,Qty,MPN,Manufacturer,LCSC' \
-    --group-by 'Value,Footprint' aqroot-Beta-DM.kicad_sch
+    --fields 'Reference,Value,Footprint,Manufacturer,MPN,${QUANTITY}' \
+    --labels 'Refs,Value,Footprint,Manufacturer,MPN,Qty' \
+    --group-by 'Value,Footprint' --ref-range-delimiter '' aqroot-Beta-DM.kicad_sch
 
 kicad-cli pcb export pos --output ../../fab/aqroot-Beta-DM-pos-fitted.csv \
     --format csv --units mm --side both --exclude-dnp aqroot-Beta-DM.kicad_pcb
@@ -51,8 +51,48 @@ kicad-cli pcb export pdf --output ../../fab/aqroot-Beta-DM-assembly-top.pdf \
     aqroot-Beta-DM.kicad_pcb
 ```
 
-`aqroot-Beta-DM-DO-NOT-POPULATE.csv` is derived from the full BOM with the
-per-part reasons in this document.
+**These commands are the ones that actually reproduce the released files** —
+verified 2026-08-21. The recipe printed here previously did not: its column
+order and `LCSC` field did not match the released CSVs, and its
+`--group-by` was recorded correctly but had not been used, which is how seven
+**fitted** parts (`C1`, `C12`, `C18`, `C43`, `C56`, `R43`, `R46`) came to be
+tagged `DNP` in the full BOM. Grouping by `${DNP}` keeps fitted and DNP
+instances of the same value in separate rows and fixes that.
+
+### Two manual post-steps
+
+1. **`LS1` is pulled out of the fitted BOM.** It is an off-board 8 Ω speaker
+   with no footprint, so it exports into the fitted BOM but must not reach the
+   assembler's placement list. Remove its row and keep it in
+   `aqroot-Beta-DM-OFF-BOARD.csv`. This is why the fitted BOM totals **146**
+   parts while the schematic has 147 non-DNP parts.
+2. **`aqroot-Beta-DM-DO-NOT-POPULATE.csv`** is derived from the full BOM's
+   `DNP` rows with the per-part reasons in this document. After regenerating,
+   check that its reference set still matches the full BOM's `DNP` set exactly
+   — 42 parts across 28 rows.
+3. **`C24`'s value is overridden in both CPL files.** `kicad-cli` takes the
+   `Val` column from the frozen board, so a raw export writes
+   `22uF 25V X7R`. After exporting, replace that one field with
+   `10uF 25V X5R` in `aqroot-Beta-DM-pos-fitted.csv` and
+   `aqroot-Beta-DM-pos-all.csv`. **Only the `Val` field of the `C24` row may
+   change** — `Ref`, `Package`, `PosX`, `PosY`, `Rot` and `Side` are identical
+   and no other row moves. Both files are one line long in `git diff`
+   afterwards; if more changed, the export is wrong.
+
+### `C24` value text — two different things
+
+| where | reads | authority |
+|---|---|---|
+| PCB `F.Fab` value text | `22uF 25V X7R` | **stale metadata only** — not a manufacturing layer, board is frozen |
+| CPL `Val` column (both `pos` files) | **`10uF 25V X5R`** | corrected, post-step 3 above |
+| BOM + MPN ledger | **`10uF 25V X5R`, Murata `GRM188R61E106KA73D`** | **authoritative for procurement and assembly** |
+
+The part to fit is Murata **`GRM188R61E106KA73D`, 10 µF / 25 V / X5R / 0603**.
+Nothing assembler-facing carries the old value any more. The `F.Fab` text stays
+stale because the PCB is byte-frozen and `F.Fab` is not exported in the copper,
+mask, paste, silkscreen or drill set; it is corrected in Full-Beta, not here.
+KiCad's schematic-parity check reports the board/schematic mismatch as one
+WARNING (`Value (C24) doesn't match symbol value`) and it is **intentional**.
 
 ---
 

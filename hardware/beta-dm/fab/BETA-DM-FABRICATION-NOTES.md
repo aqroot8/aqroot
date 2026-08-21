@@ -107,13 +107,19 @@ GND closeout and pour passes.
 **Ready to order the bare PCB: yes**, with the POFV process of §5 and the ENIG
 finish of §8 on the order.
 
-**Ready for PCBA: not yet.** Two gates remain, both external:
+**Design-side ready for PCBA: yes.** One gate remains, and it is external:
 
 1. the manufacturer must confirm **in writing** that they will fill and cap all
    **59** vias, that 4-layer POFV is available and quoted, and that ENIG is
-   compatible (§5);
-2. **`C24`** needs the Murata DC-bias curve confirming >1 µF effective at 4.5 V
-   before its 0603 assembly value is landed.
+   compatible (§5).
+
+The former second gate is **closed**. `C24` was verified on 2026-08-21 against
+official Murata SimSurfing characteristic data: **4.677 µF effective at 4.5 V**
+against TI's >1 µF floor, **2.24 µF** even with tolerance, X5R temperature,
+small-signal AC drive and aging all derated at once. `C24` is locked to Murata
+`GRM188R61E106KA73D`, 10 µF / 25 V / X5R / 0603, and the value is landed in the
+schematic and the BOM with no PCB change. See
+[BETA-DM-FINAL-DESIGN-RELEASE.md](BETA-DM-FINAL-DESIGN-RELEASE.md).
 
 The generic passive groups are **not** a blocker — they are released under the
 written purchasing rule in
