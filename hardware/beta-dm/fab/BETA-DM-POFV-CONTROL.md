@@ -72,7 +72,7 @@ Every selected via was measured against the process limits below.
 **Drill diameter and via outer diameter are reported separately and are never
 interchangeable.**
 
-| parameter | measured across the 59 | assumed limit | result |
+| parameter | measured across the 59 | gate | result |
 |---|---|---|---|
 | **drill diameter** | 0.25 – 0.40 mm | 0.20 – 0.60 mm | PASS |
 | **via outer diameter** | 0.55 – 0.80 mm | (not a fill limit; recorded for plating) | — |
@@ -85,11 +85,28 @@ interchangeable.**
 Drill population: 0.40 mm ×5, 0.30 mm ×41, 0.25 mm ×13 (by intersection:
 0.40 ×5, 0.30 ×41, 0.25 ×16).
 
-**The limits above are assumed mainstream 4-layer capability and are stated so
-they can be checked against the chosen fabricator's real process sheet. They
-are not a vendor quotation.** If the fabricator's actual capability excludes
-any listed via — particularly the thirteen 0.25 mm drills — **stop and return
-the query**; do not substitute a different process.
+**Vendor-grounded confirmation.** The gate figures above are checked against
+JLCPCB's published material (accessed 2026-08-21):
+
+| vendor statement | AQROOT worst case | result |
+|---|---|---|
+| filled-and-capped vias "compatible with via diameters from **0.15 to 0.55 mm**" | drills 0.25–0.40 mm | **PASS** |
+| "recommends **≤ 0.5 mm finished diameter** for reliable filling" | largest drill 0.40 mm | **PASS** |
+| "non-conductive fill uses standard epoxy resin … followed by leveling and copper over-plating" | the specified process | **matches** |
+| POFV free on 6-layer and above | this is a **4-layer** board | chargeable — confirm at quote |
+
+The 0.15–0.55 mm range must be read as **hole** diameter, not pad: the same
+source lists minimum via *hole* 0.15 mm and minimum via *diameter* 0.25 mm, and
+a 0.15 mm pad is impossible. This matters, because our via **outer** diameters
+reach 0.80 mm and would fail on a pad reading. **Confirm this in writing** —
+it is question 2 in the ordering note.
+
+If the fabricator's actual capability excludes any listed via — particularly
+the thirteen 0.25 mm drills — **stop and return the query**; do not substitute
+a different process.
+
+Sources: <https://jlcpcb.com/capabilities/pcb-capabilities> ·
+<https://jlcpcb.com/blog/via-filling-explained>
 
 ---
 
