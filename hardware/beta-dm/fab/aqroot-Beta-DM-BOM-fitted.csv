@@ -16,7 +16,7 @@
 "C40,C42","100 nF X7R","Capacitor_SMD:C_0603_1608Metric","","","2"
 "C44","1uF","Capacitor_SMD:C_0805_2012Metric","","","1"
 "D8","NSR0240","Diode_SMD:D_SOD-323","onsemi","NSR0240HT1G","1"
-"J1","CH280QV10-CT_50P","AQROOT_Beta:Hirose_FH69-50S-0.5SH","Shenzhen ChengHao Optoelectronic","CH280QV10-CT","1"
+"J1","FH69-50S-0.5SH","AQROOT_Beta:Hirose_FH69-50S-0.5SH","Hirose","FH69-50S-0.5SH","1"
 "J2","Molex_5025700893","AQROOT_Beta:Molex_5025700893","Molex","5025700893","1"
 "J3","USB_C_Receptacle_USB2.0_16P","Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal","GCT (Global Connector Technology)","USB4105-GF-A-120","1"
 "J4","JST-PH-2 BATTERY","Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical","JST","B2B-PH-K-S(LF)(SN)","1"

@@ -70,6 +70,38 @@ endings, one header row, no duplicate headers, no ragged rows, no embedded
 newlines, no blank designators, no NaN or infinite coordinates, every row has a
 side and a rotation.
 
+## V4 — J1 identity corrected (2026-08-21)
+
+**`AQROOT-Beta-DM-JLC-BOM-v4.csv` is the file to upload.**
+
+`J1` had been carrying the identity of the **display module** rather than the
+part soldered to the board. Every earlier pass searched JLC for
+`CH280QV10-CT` — a ChengHao 2.8″ TFT+CTP assembly — and correctly found it
+discontinued, which is why `J1` sat in manual source. J1 is actually the
+**PCB-side FPC connector, Hirose `FH69-50S-0.5SH`**, and JLC stocks it:
+**`C25955556`, 1,072 pcs, minimum purchase 1, $1.69.**
+
+| class | groups |
+|---|---:|
+| A EXACT APPROVED | 27 |
+| B SAFE GENERIC | 37 |
+| C WRONG MATCH | 0 |
+| D MANUAL SOURCE | 2 |
+| E CTO REVIEW | 0 |
+
+**129 of 131 designators pinned.** Only `D8` and `J5` remain manual source.
+
+The land was already `VERIFIED_VENDOR_EXACT` and was re-measured this pass
+against the Hirose catalogue Recommended PCB Layout — signal 0.30 × 1.23 at
+0.5 pitch spanning C = 24.5, hold-downs 0.36 × 4.25 at E = 28.73
+centre-to-centre, depth 7.38 — every value exact. The display module now lives
+in [`../aqroot-Beta-DM-OFF-BOARD.csv`](../aqroot-Beta-DM-OFF-BOARD.csv).
+
+**`J1`'s `Comment` changed** from `CH280QV10-CT_50P` to `FH69-50S-0.5SH`, the
+only V-to-V change to a comment. The frozen PCB keeps the old `F.Fab` string, so
+the CPL `Val` column still reads `CH280QV10-CT_50P` for `J1` — the same class of
+metadata-only divergence as `C24`, and the second of exactly two.
+
 ## V3 — CTO rulings applied, E list closed (2026-08-21)
 
 **`AQROOT-Beta-DM-JLC-BOM-v3.csv` is the file to upload.** V1 and V2 are kept as

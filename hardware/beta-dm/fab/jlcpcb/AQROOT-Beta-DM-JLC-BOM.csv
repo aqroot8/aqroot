@@ -16,7 +16,7 @@
 "100 nF X7R","C40,C42","C_0603_1608Metric","","",""
 "1uF","C44","C_0805_2012Metric","","",""
 "NSR0240","D8","D_SOD-323","","onsemi","NSR0240HT1G"
-"CH280QV10-CT_50P","J1","Hirose_FH69-50S-0.5SH","","Shenzhen ChengHao Optoelectronic","CH280QV10-CT"
+"FH69-50S-0.5SH","J1","Hirose_FH69-50S-0.5SH","","Hirose","FH69-50S-0.5SH"
 "Molex_5025700893","J2","Molex_5025700893","","Molex","5025700893"
 "USB_C_Receptacle_USB2.0_16P","J3","USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal","","GCT (Global Connector Technology)","USB4105-GF-A-120"
 "JST-PH-2 BATTERY","J4","JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical","C131337","JST","B2B-PH-K-S(LF)(SN)"

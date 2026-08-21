@@ -28,7 +28,7 @@
 "D2,D7","TPD2E009DBZR","Package_TO_SOT_SMD:SOT-23","TPD2E009DBZR","Texas Instruments","2","DNP"
 "D3-D6","TPD4E1B06DRLR","Package_TO_SOT_SMD:SOT-563","TPD4E1B06DRLR","Texas Instruments","4","DNP"
 "D8","NSR0240","Diode_SMD:D_SOD-323","NSR0240HT1G","onsemi","1",""
-"J1","CH280QV10-CT_50P","AQROOT_Beta:Hirose_FH69-50S-0.5SH","CH280QV10-CT","Shenzhen ChengHao Optoelectronic","1",""
+"J1","FH69-50S-0.5SH","AQROOT_Beta:Hirose_FH69-50S-0.5SH","FH69-50S-0.5SH","Hirose","1",""
 "J2","Molex_5025700893","AQROOT_Beta:Molex_5025700893","5025700893","Molex","1",""
 "J3","USB_C_Receptacle_USB2.0_16P","Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal","USB4105-GF-A-120","GCT (Global Connector Technology)","1",""
 "J4","JST-PH-2 BATTERY","Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical","B2B-PH-K-S(LF)(SN)","JST","1",""
