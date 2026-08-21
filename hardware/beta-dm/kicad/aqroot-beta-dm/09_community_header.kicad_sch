@@ -6484,7 +6484,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical"
+		(property "Footprint" "AQROOT_Beta:Samtec_TSW-113-08-G-D-RA"
 			(at 257.81 124.46 0)
 			(hide yes)
 			(show_name no)

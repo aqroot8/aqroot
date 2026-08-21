@@ -107,9 +107,19 @@ GND closeout and pour passes.
 **Ready to order the bare PCB: yes**, with the POFV process of §5 and the ENIG
 finish of §8 on the order.
 
-**Ready for PCBA: not yet.** Two gates remain: the manufacturer must confirm in
-writing that they will fill and cap all 59 vias (§5), and the 40 generic passive
-procurement groups still marked MPN SELECTION REQUIRED must be resolved (§8).
+**Ready for PCBA: not yet.** Two gates remain, both external:
+
+1. the manufacturer must confirm **in writing** that they will fill and cap all
+   **59** vias, that 4-layer POFV is available and quoted, and that ENIG is
+   compatible (§5);
+2. **`C24`** needs the Murata DC-bias curve confirming >1 µF effective at 4.5 V
+   before its 0603 assembly value is landed.
+
+The generic passive groups are **not** a blocker — they are released under the
+written purchasing rule in
+[BETA-DM-PROCUREMENT-RELEASE.md](BETA-DM-PROCUREMENT-RELEASE.md) §7.
+`J5` is resolved to Samtec `TSW-113-08-G-D-RA`, with its body offset to confirm
+against a vendor drawing before the connector is ordered.
 
 ---
 

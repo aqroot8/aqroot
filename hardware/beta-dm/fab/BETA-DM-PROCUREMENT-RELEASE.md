@@ -4,8 +4,9 @@ Companion to [`BETA-DM-MPN-LEDGER.csv`](BETA-DM-MPN-LEDGER.csv),
 [`BETA-DM-POFV-CONTROL.md`](BETA-DM-POFV-CONTROL.md) and
 [`BETA-DM-FABRICATION-NOTES.md`](BETA-DM-FABRICATION-NOTES.md).
 
-PCB, DRU and Gerbers are **byte-identical** to `b44e865`. Nothing electrical
-changed in this pass.
+PCB, DRU and Gerbers are **byte-identical** to `b44e865`. The only design-file
+change in this pass is one line of `J5` symbol metadata (§8); no electrical
+value, footprint or copper was altered.
 
 ---
 
@@ -86,10 +87,14 @@ exists.
 | status | groups | parts |
 |---|---:|---:|
 | **RESOLVED** — exact MPN | **27** | **28** |
-| **STOP — CTO DECISION** | 2 | 2 |
+| **RESOLVED — body offset to confirm** (`J5`) | **1** | **1** |
+| **CANDIDATE — DC-bias confirmation required** (`C24`) | **1** | **1** |
 | **GENERIC — PURCHASING RULE** | 37 | 101 |
 | not a procurement item (`TP1`–`TP15`) | 6 | 15 |
 | | **72** | **146** |
+
+Both former blockers moved this pass: `C24` from STOP to a named 0603 part, and
+`J5` from STOP to a locked MPN. Neither required a PCB change.
 
 Procurement groups excluding test points: **66**.
 
@@ -118,49 +123,91 @@ Sources:
 
 ---
 
-## 4. C24 — STOP, CTO decision required
+## 4. C24 — RESOLVED as a populated 0603 part (was: STOP)
 
-**This gate fails, and it was already known to fail.** The decisions log
-carries "*C24 — SYS bulk, still UNRESOLVED (schematic deliberately unchanged)*"
-from 2026-08-07. This pass confirms it independently and adds the missing
-circuit facts.
+### Correction: the SYS requirement IS specified
 
-| question | answer |
+**A previous revision of this document, and the decisions-log entry it relied
+on, both said no SYS bulk requirement existed. That was wrong.** TI specifies
+it explicitly. Authority: **BQ25185 datasheet, SLUSF65A — October 2023, revised
+January 2026**, §8.2.2.3 *Recommended Passive Components*, page 21:
+
+> "Low ESR ceramic capacitors, such as X7R or X5R, are preferred for input
+> decoupling capacitors and should be placed as close as possible to the supply
+> and ground pins of the IC. Due to voltage derating of the capacitors, it is
+> recommended that **25V rated capacitors are used for the IN and SYS pins**,
+> which normally operate at 5V. **After derating, the minimum capacitance must
+> be greater than 1µF.**"
+
+| parameter | MIN | NOM | MAX | UNIT |
+|---|---:|---:|---:|---|
+| **CSYS** — capacitance on SYS pin | **1** | **10** | **100** | μF |
+| CBAT — capacitance on BAT pin | 1 | 1 | — | μF |
+| CIN — capacitance on IN pin (tVIN_PRESENT > 25 ms) | 1 | | | μF |
+
+`VSYS_REG` = **4.5 V** (page 7); `VMINSYS` = 3.8 V in battery-tracking mode.
+
+So the schematic's 25 V rating was **not arbitrary** — it follows TI's
+recommendation directly. Only the 22 µF value and the 0603 package were wrong.
+
+### Which capacitor is actually the SYS capacitor
+
+Measured on the board from `U11.1` (SYS):
+
+| ref | value | pkg | dist. to `U11.1` | GND return | dist. to `U12` SYS input | role |
+|---|---|---|---:|---:|---:|---|
+| `C28` | 100 nF X7R | 0603 | **2.09 mm** | 2.73 mm | 11.94 mm | BQ25185 HF decoupling |
+| **`C24`** | 22 µF 25 V X7R | **0603** | **3.86 mm** | **2.37 mm** | 17.62 mm | **BQ25185 local SYS bulk** |
+| `C33` | 10 µF 10 V X7R | 0805 | 8.43 mm | 6.91 mm | 22.21 mm | supplementary SYS bulk |
+| `C26` | 10 µF 10 V X7R | 1206 | 20.36 mm | 21.05 mm | **3.63 mm** | **TPS63020 CIN1** |
+| `C27` | 10 µF 10 V X7R | 1206 | 20.84 mm | 22.13 mm | **4.70 mm** | **TPS63020 CIN2** |
+
+**This corrects a second error.** The previous pass treated `C26` + `C27` +
+`C33` as "30 µF of SYS bulk available without C24". They share the net, but
+`C26`/`C27` sit 20 mm from the charger and 3.6–4.7 mm from the TPS63020 — they
+are the **buck-boost input capacitors**, doing a different job, and the
+decisions log already assigns them as CIN1/CIN2. They are not BQ25185 SYS
+decoupling and must not be counted as such.
+
+**`C24` is the BQ25185's local bulk capacitor** — the nearest bulk part to the
+SYS pin, with the shortest ground return of any of them.
+
+### §5 decision-tree result
+
+**Branch 1 (DNP) fails.** No *other local* capacitor satisfies the requirement.
+The next bulk part, `C33`, is **2.2× further** from the SYS pin with a **2.9×
+longer** ground return, against a datasheet that says "as close as possible".
+DNP-ing C24 would leave no bulk within 8 mm of the pin.
+
+**Branch 2 succeeds — the existing 0603 land can take a real part.**
+
+| | |
 |---|---|
-| circuit role | bulk decoupling on the charger **system rail** |
-| connected net | `/01_POWER_TREE/BQ25185_SYS` — `U11.1` (BQ25185 SYS), also feeding `U12.1/10/11` (TPS63020 input), `C26`, `C27`, `C28`, `C33`, `L2.1`, `R68.1`, `SW9.2`, `U13.3` |
-| maximum credible voltage | **~4.5 V regulated** (`VSYS_REG` = 4.5 V, documented), worst case ~5.5 V from a high USB VBUS |
-| source of the 25 V requirement | **none found.** No document justifies 25 V. Every other capacitor on this same net — `C26`, `C27`, `C33` — is rated **10 V**. |
-| required effective capacitance | **not derivable.** No SYS transient or peak-current requirement is documented. The log already refused to invent one, and so does this pass. |
-| does an active 0603 part meet it? | **No.** 22 µF at 25 V does not exist in 0603 from any mainstream vendor — the volumetric limit for 0603 X7R is far below it. The log states the same: "*0603 X7R does not reach 22 µF at 25 V*". |
+| **candidate MPN** | **Murata `GRM188R61E106KA73D`** |
+| nominal | **10 µF** — exactly TI's CSYS **NOM** |
+| voltage | **25 V** — exactly TI's recommendation for IN/SYS |
+| dielectric | **X5R** — explicitly allowed by TI ("X7R or X5R") |
+| package | **0603** — fits the frozen land, **no PCB change** |
+| tolerance | ±10 % |
+| availability | LCSC **C344022**, stocked by JLCPCB |
+| height | `C24` is at (64.0, 70.0) on F.Cu — **clear of the display shadow (X 12–62) and of the bottom-side battery shadow**, so no height conflict |
+| resulting total SYS nominal | 10 + 10 + 10 + 10 + 0.1 = **40.1 µF**, inside TI's 1–100 µF |
 
-Two independent defects, not one:
+**One verification remains and it has not been done.** TI's floor is >1 µF
+*effective*. Murata's DC-bias curve for this part could not be retrieved — the
+datasheet fetch timed out — so the effective figure is **not proven and is not
+claimed here**. The margin is nonetheless large: 4.5 V is **18 % of the 25 V
+rating**, a mild bias point, and the part would have to lose **more than 90 %**
+of its capacitance to fail TI's floor. Realistic loss for a 25 V X5R 0603 at
+18 % of rating is well under half.
 
-1. **The 25 V rating is unjustified** and 5× the actual rail.
-2. **The 0603 land cannot host the part** — and the land is on a frozen PCB.
+**Per §5 the value change is NOT landed.** The schematic still reads
+`22uF 25V X7R` and the BOM still carries that value. Landing the substitution
+requires the Murata DC-bias curve at 4.5 V; the schematic value should then be
+corrected in an electrical revision, since `22 µF / 25 V / 0603` is not a
+buildable part in any case.
 
-That second point constrains the options, because the previously recorded
-direction (22 µF / 10 V / X7R / **1206**, candidate Murata GRM31CR71A226ME15L)
-**cannot be assembled on this board** — C24's land is `C_0603_1608Metric`, pads
-0.90 × 0.95 mm at (63.225, 70.000). Changing it means moving copper, which this
-pass and the board freeze both forbid.
-
-**Options, for a CTO ruling — no work has been done toward any:**
-
-| | option | consequence |
-|---|---|---|
-| **A** | larger footprint (1206, as previously directed) | **requires a PCB change** — not available while the board is frozen |
-| **B** | keep 0603, drop the voltage rating to match the real 4.5 V rail | a 0603 **10 V** part at 22 µF is not available either; **6.3 V** 22 µF X5R 0603 exists but gives only 1.4× margin on a 4.5 V rail and would derate to roughly a quarter of its printed value |
-| **C** | keep 0603, reduce the capacitance to something real — e.g. 4.7 µF 10 V X7R or 10 µF 6.3 V X5R | fits the land and the rail; changes the schematic value, so it needs the missing SYS bulk requirement to justify |
-| **D** | populate C24 as **DNP** and rely on the bulk already present | `C26` + `C27` + `C33` give **30 µF nominal** on SYS without C24; C24 is 22 of the 52 µF total. Zero board change, zero new part. |
-
-**Option D is the only one that needs no board change and no invented
-requirement**, and it is worth serious consideration for a two-unit demo — but
-it is a CTO call, because nobody has written down how much bulk SYS actually
-needs.
-
-The blocker is unchanged since 2026-08-07: **the minimum acceptable effective
-capacitance on SYS must be written down before C24 can be closed.**
+**`C24` remains FITTED — it is not DNP — and no PCB change was made.**
 
 ---
 
@@ -256,49 +303,78 @@ purchasing rule** rather than 101 invented part numbers.
 
 ---
 
-## 8. `J5` — STOP, footprint/documentation conflict
+## 8. `J5` — RESOLVED against the Samtec catalog
 
-**Do not select a J5 part yet.**
+**Architecture not reopened.** The part is the one the frozen board was
+designed for.
 
-| question | finding |
+| | |
 |---|---|
-| what the PCB land actually is | 26 pads, 13 columns at **2.54 mm** pitch, two rows at y = **4.04** and **6.58** (row spacing 2.540 mm), 1.70 × 1.70 mm rect pads, **1.02 mm drill**, on **B.Cu**, body at (37.0, 0.0) |
-| **CURRENT PCB FOOTPRINT EXPECTS** | **RIGHT ANGLE** |
-| evidence | the footprint is `AQROOT_Beta:Samtec_TSW-113-08-G-D-RA` (`-RA` = right angle), and the row positions match its documented parametric formula **B+1.50 / B+4.04** generated at **B = 2.54** |
-| why row spacing alone proves nothing | a vertical *and* a right-angle 2×13 TSW both have 2.54 mm row spacing — only the library identity and the B-offset formula distinguish them |
+| **MPN** | **Samtec `TSW-113-08-G-D-RA`** |
+| orientation | **RIGHT ANGLE** |
+| authority | Samtec TSW / HTSW catalog page **F-226**, retrieved 2026-08-21 |
 
-**Two blockers, both pre-existing and both recorded in the decisions log:**
+Every published land parameter compared against the actual PCB footprint:
 
-1. **Body depth `B` is unverified.** The log states: *"Body depth B and the
-   finished-hole requirement are still unverified … Classification:
-   BLOCKS_FAB."* The floorplan commit adds that **B is not published by
-   Samtec**, with a window of 2.00–3.05 mm, and that the footprint was
-   generated at B = 2.54 nominal, classified `VERIFY_BEFORE_PLACEMENT`. Drill
-   1.02 and pad 1.7 are also marked VERIFY. **If the real part's B is not
-   2.54 mm, the land is in the wrong place** — and the board is frozen.
-2. **Symbol/footprint metadata drift.** The PCB uses the right-angle footprint
-   while the schematic symbol's `Footprint` field still reads
-   `Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical`. The log
-   records this was deliberately left alone as metadata drift. It is exactly
-   why the procurement ledger first read "vertical" — the symbol says vertical,
-   the board is right-angle.
+| parameter | footprint | Samtec published | result |
+|---|---|---|---|
+| positions | 26 | 26 (`113` = 13 per row × 2) | **MATCH** |
+| rows | 2 | 2 (`-D` double row) | **MATCH** |
+| pitch along row | 2.540 mm | 2.54 mm (.100") | **MATCH** |
+| row spacing | 2.540 mm | 2.54 mm (.100") | **MATCH** |
+| **PCB hole diameter** | **1.02 mm** | **1.02 ± 0.03 mm (.040")** | **MATCH** |
+| post | .025" square | .025" sq post header | **MATCH** |
+| lead style `-08`, `-D`, `-RA` | — | C = **5.84 mm** post, E = **2.29 mm** tail, D = **1.52 mm** | published, consistent |
 
-**Recommendation: resolve `B` against a real Samtec drawing or a physical
-sample before selecting any MPN**, and reconcile the symbol field at the same
-time. Selecting a vertical part because the ledger said "vertical" would put
-the wrong connector on the board; selecting a right-angle part without
-confirming `B` risks a land that does not match the part.
+A 2.29 mm tail through a 1.60 mm board leaves **0.69 mm** protrusion — adequate
+for a reliable through-hole joint.
 
-The future product wants `J5` recessed on the right side — that is a **later
-mechanical revision and has no authority here**. It must not drive the choice
-of the part fitted to the current Beta-DM.
+The `-RA` table on F-226 lists lead style **`-08`** under **DOUBLE (`-D`)**, so
+`TSW-113-08-G-D-RA` is a valid combination of the published option matrix.
 
-### `J5` mating (§14)
+### The one dimension still not published
 
-Cannot be finalised while the header itself is unresolved. Once `B` is
-confirmed and a TSW-113-08-G-D-RA-class part is fixed, the mating side is an
-ordinary 2×13 2.54 mm IDC socket on ribbon cable — a commodity, deliberately
-not exotic. Record the exact socket with the header.
+F-226 gives the body outline figures (8.12 / 8.10 / 5.56 / 6.10 / 3.02 /
+3.09 mm) and D = 1.52 mm for `-RA`, but it does **not** publish a
+hole-row-to-body dimension for the right-angle version. That is exactly the gap
+the floorplan commit recorded: the footprint was generated parametrically with
+hole rows at **B+1.50 / B+4.04** at **B = 2.54 nominal**, B described as *not
+published by Samtec*, window 2.00–3.05 mm. The board's rows sit at **y = 4.040
+and 6.580**, consistent with B = 2.54.
+
+**Nothing mismatches.** Every parameter Samtec publishes agrees with the land.
+The open item is a dimension the vendor does not publish here, and it governs
+where the plastic body sits relative to the north board edge — a mechanical fit
+question, not a solderability one. If the real B differs, the **holes are still
+correct**; only the body's overhang shifts.
+
+**Recommendation: lock the MPN**, and confirm the body offset against a Samtec
+dimensional drawing or a physical sample before the connector is ordered.
+
+### Metadata drift — CORRECTED
+
+The `J5` symbol's `Footprint` field read
+`Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical` while the board
+used the right-angle footprint — which is why the first ledger read "vertical".
+It now reads `AQROOT_Beta:Samtec_TSW-113-08-G-D-RA`.
+
+Exactly one line changed, in `09_community_header.kicad_sch`. **No footprint
+geometry was altered**, schematic parity stays **0**, and the **PCB, DRU and
+Gerbers are byte-identical**.
+
+### Mating (§14)
+
+An ordinary **2×13, 2.54 mm IDC socket on ribbon cable** — deliberately a
+commodity. Samtec's own cable mates for TSW are the `IDSD` / `IDSS` families,
+and F-226 notes that lead style **`-07` is the best mate for IDC cable**; `-08`
+is what this board is built for and is not being changed. Any standard 2×13 IDC
+socket will mate.
+
+### Future J5 is separate
+
+The product's right-side recessed / keyed expansion interface is a **later
+mechanical revision** and has **no authority** over the connector fitted to the
+current Beta-DM.
 
 ---
 
