@@ -98,24 +98,22 @@ design is accepted as proven.
 
 ---
 
-## 5. The one finding that needs a decision
+## 5. The one finding — now closed by a process ruling
 
 `R2.1`'s critical mask dam measures **+0.125 mm** exactly as the fab notes
-document — the same measurement method confirms it. Applying that method to the
-whole board found **63 vias whose drill barrel falls inside a paste aperture**,
-of which **20 pads across 17 fitted references are small discretes or
-fine-pitch pads with no dam at all**.
+document. Applying that same drill-edge criterion board-wide found vias whose
+barrel sits inside a paste aperture with no dam at all.
 
-Worst cases are `C13.1` and `R9.1`: 0603 `+3V3` terminations with a 0.40 mm
-barrel open 0.200 mm inside the paste aperture.
+**Resolved.** The CTO process ruling is **non-conductive epoxy fill,
+planarised, copper capped (POFV)** on the complete selected set. Re-derived
+from the released board: **62 intersections across 59 distinct vias**. The
+capability gate passes on every one. Solder-mask plugging, tenting alone and
+accept-and-inspect were all rejected, and no copper was modified.
 
-All are **same-net** fan-out vias, so there is no short risk; the risk is solder
-wicking at reflow — precisely the mechanism §2 of the fabrication notes
-protects `R2.1` against. This is a process decision, not a board defect, and no
-copper was changed. The options and the full table are in
-[`fab/BETA-DM-FABRICATION-NOTES.md`](fab/BETA-DM-FABRICATION-NOTES.md) §5:
-resin-plug and cap the vias, reduce the stencil apertures locally, or accept
-and inspect for a two-unit demo build.
+Full detail: [`fab/BETA-DM-POFV-CONTROL.md`](fab/BETA-DM-POFV-CONTROL.md) and
+[`fab/BETA-DM-POFV-VIAS.csv`](fab/BETA-DM-POFV-VIAS.csv).
+
+**Open barrels inside a fitted paste aperture after the process: 0.**
 
 ---
 
@@ -204,22 +202,57 @@ Validated by reading the exported files:
 
 ---
 
-## 10. Open order choices — none of these are decided
+## 10. Procurement and remaining order choices
 
-Surface finish (ENIG is the sensible default for the fine-pitch parts, but is
-not chosen), copper weight, **impedance control (not specified — no controlled
-stack-up is declared and the RF paths were not designed against one)**, via
-plugging (§5), panelisation and fiducials (none in the data), IPC class and
-E-test, and **MPN / manufacturer fields, which are empty on every BOM line**.
-Part selection is not captured in the schematic and must be supplied before any
-assembly quote.
+**Correction to an earlier statement in this document.** A previous revision
+said the MPN fields were "empty on every BOM line". That was wrong — it was
+based on looking only at the first few passive rows. **37 of 189 schematic
+symbols carry an MPN property**, and most of the critical parts are fully
+specified.
 
----
+The full ledger is [`fab/BETA-DM-MPN-LEDGER.csv`](fab/BETA-DM-MPN-LEDGER.csv).
+Fitted parts only, test points excluded as non-procurement items:
+
+| status | groups | parts |
+|---|---:|---:|
+| **RESOLVED** — exact MPN from the schematic | 22 | 22 |
+| **PART LOCKED / ORDER CODE TO CONFIRM** | 4 | 5 |
+| **MPN SELECTION REQUIRED** — generic value only | 40 | 104 |
+| (not procurement: `TP1`–`TP15`) | 6 | 15 |
+
+Hard-lock components, verified individually — all resolved: `U4` BMI270
+(Bosch), `U7` E07-400M10S and `U8` E22-900M22S (Ebyte), `U11` BQ25185DLHR,
+`U12` TPS63020DSJR, `U17` TPS61169DCKR, `U16` TCA9517ADGKR, `U15` TPS22918DBVR
+(TI), `U14` MAX17048G+T10 (ADI), `J1` CH280QV10-CT display connector, `J2`
+Molex 5025700893 microSD, `J3` GCT USB4105-GF-A-120 USB-C, `L1`/`L3` Coilcraft
+XFL4020.
+
+Four are part-locked but need an order code, and **none was guessed**:
+
+| ref | value | what is missing |
+|---|---|---|
+| `U1` | ESP32-S3-WROOM-1 | flash / PSRAM variant suffix — a real procurement decision, not a transcription gap |
+| `U2`, `U3` | TCA9535PWR | reel/packaging suffix |
+| `U10` | USBLC6-2SC6 | confirm `-2SC6` vs `-2SC6Y` |
+| `MK1` | ICS-43434 | tape-and-reel order code |
+
+The 40 open groups are generic passives (`10k`, `100nF`, `22uF 10V X7R` …)
+plus two connectors that were never selected: `J4` (battery JST-PH-2) and `J5`
+(the 2×13 community header). These are marked **MPN SELECTION REQUIRED**
+rather than filled with a plausible part.
+
+Other order choices still open: panelisation, tooling strips and fiducials
+(none in the data), IPC class and electrical test. **Settled this pass:**
+surface finish is **ENIG**, copper weight **1 oz outer / 0.5 oz inner**, via
+fill **POFV**, and controlled impedance is **deliberately not ordered** —
+no authoritative document specifies a stack-up and the RF paths were not
+designed against one.
 
 ## 11. Verdict
 
 | | |
 |---|---|
 | DFM | **PASS** |
-| Ready to order the PCB | **YES** |
-| Ready for assembly | **NOT YET** — §5 must be decided, and MPNs supplied |
+| POFV capability gate | **PASS** — 59 vias |
+| Ready to order the bare PCB | **YES**, with POFV and ENIG on the order |
+| Ready for PCBA | **NO** — needs the manufacturer's written POFV confirmation and the 40 open passive MPN groups resolved |

@@ -104,70 +104,40 @@ The earlier note here - "not yet released, 31 fitted must-work non-GND
 connections remain open" - is superseded. Those closed across the Lean GPIO,
 GND closeout and pour passes.
 
-**Ready to order the PCB: yes.** **Ready to assemble: not until section 5 is
-decided.**
+**Ready to order the bare PCB: yes**, with the POFV process of §5 and the ENIG
+finish of §8 on the order.
+
+**Ready for PCBA: not yet.** Two gates remain: the manufacturer must confirm in
+writing that they will fill and cap all 59 vias (§5), and the 40 generic passive
+procurement groups still marked MPN SELECTION REQUIRED must be resolved (§8).
 
 ---
 
-## 5. Open via barrels inside paste apertures — ASSEMBLY DECISION REQUIRED
+## 5. Open via barrels inside paste apertures — RESOLVED BY POFV
 
-§2 protects the `R2.1` mask dam because printed paste with a path into a
-through-barrel starves the joint. That reasoning is right, and the final DFM
-sweep found it applies to **more pads than `R2.1`**.
+**CTO process ruling: the selected vias are NON-CONDUCTIVE EPOXY FILLED,
+PLANARISED and COPPER CAPPED (POFV).**
 
-Measured on the released board, by the same criterion §2 uses — distance from
-the **drill edge** to the pad's paste aperture:
+The board carries **62 via / paste-aperture intersections across 59 distinct
+vias**, re-derived from the released board by the same drill-edge criterion §2
+uses for `R2.1`. Solder-mask ink plugging, tenting alone, and
+accept-and-inspect are **not** acceptable resolutions, and no copper was
+modified to avoid the process.
 
-| | |
-|---|---|
-| `R2.1` (the documented critical feature) | **+0.125 mm dam** — barrel is outside the aperture, as designed |
-| vias whose **barrel falls inside** a paste aperture | **63** |
-| of those, on exposed/thermal pads | 11 — normal practice, not a concern |
-| of those, on large IC / connector pads | 32 — low risk, large paste volume |
-| **of those, on small fitted discrete or fine-pitch pads** | **20 pads across 17 references** |
+The complete list, the capability gate, the fabricator communication
+requirements and the post-POFV stencil policy are in
+[BETA-DM-POFV-CONTROL.md](BETA-DM-POFV-CONTROL.md) and
+[BETA-DM-POFV-VIAS.csv](BETA-DM-POFV-VIAS.csv).
 
-The 17 references, worst first:
+Capability gate result: **PASS** — drills 0.25–0.40 mm, via outer diameters
+0.55–0.80 mm, annular 0.150–0.200 mm, aspect ratio 4.0:1–6.4:1, minimum
+hole-to-hole 0.400 mm.
 
-| ref/pad | pad | drill | barrel inside aperture by | net |
-|---|---|---:|---:|---|
-| `C13.1` | 0.90×0.95 | 0.40 | **0.200 mm** | `+3V3` |
-| `R9.1` | 0.80×0.95 | 0.40 | **0.200 mm** | `+3V3` |
-| `R5.1` | 0.80×0.95 | 0.40 | 0.150 mm | `+3V3` |
-| `J3.A12`, `J3.B1` | 0.60×1.15 | 0.30 | 0.150 mm | `GND` |
-| `R70.2` | 0.80×0.95 | 0.30 | 0.150 mm | `LED_A1` |
-| `R26.2` | 0.80×0.95 | 0.30 | 0.150 mm | `DISP_CS_N` |
-| `R42.2` | 0.80×0.95 | 0.30 | 0.150 mm | `U12-PS_SYNC` |
-| `C1.2` | 0.90×0.95 | 0.30 | 0.150 mm | `U1-EN` |
-| `R2.2` | 0.80×0.95 | 0.30 | 0.150 mm | `BOOT_N` |
-| `U12.14` | 0.24×0.60 | 0.30 | 0.120 mm | `U12-PG` |
-| `C16.2` | 0.90×0.95 | 0.30 | 0.085 mm | `GND` |
-| `C8.2` | 0.90×0.95 | 0.30 | 0.075 mm | `GND` |
-| `R26.1` | 0.80×0.95 | 0.40 | 0.041 mm | `+3V3` |
-| `U14` (shield pad) | 0.34×0.62 | 0.25 | 0.033 mm | — |
-| `C1.1` | 0.90×0.95 | 0.30 | 0.025 mm | `GND` |
-| `R42.1` | 0.80×0.95 | 0.30 | 0.025 mm | `GND` |
+After POFV, **open barrels inside a fitted paste aperture: 0.**
 
-Every one is **same-net** — these are deliberate fan-out vias placed in their
-own pads, so there is no short risk. The risk is solder wicking at reflow, and
-it is worst on `C13.1`, `R9.1` and `R5.1`, which are 0603 `+3V3` terminations
-over a 0.40 mm barrel.
-
-**This is not a board defect and no copper was changed to address it.** It is a
-process choice, and it must be made before assembly. Two ways to close it, in
-order of preference:
-
-1. **Resin-plug and cap-plate the vias** (JLCPCB "via in pad" / POFV option, or
-   equivalent). This removes the wicking path entirely, helps `R2.1` as well
-   (§2 already welcomes it), and needs no data change. It carries cost and
-   schedule.
-2. **Local stencil aperture reduction** over the 20 pads listed above, so paste
-   is not printed across the barrel. A stencil-only change; the PCB data is
-   untouched. Use this if plugging is not available.
-
-Doing nothing is a third option and is defensible for a two-unit demo build
-where every joint can be inspected and reworked — but it must be a decision,
-not an oversight. `U12.14` is the one to watch: a 0.30 mm barrel in a
-0.24 × 0.60 mm fine-pitch pad is the least reworkable of the set.
+`R2.1` itself is *not* in the set — its barrel sits 0.125 mm outside the paste
+aperture, exactly as §2 documents. Including it in the same fill operation is
+recommended but optional.
 
 ---
 
@@ -201,7 +171,7 @@ capability for a routed edge.
 
 ---
 
-## 8. Fabrication stack and remaining order choices
+## 8. Fabrication stack, surface finish and remaining order choices
 
 Verified against the board file:
 
@@ -210,6 +180,9 @@ Verified against the board file:
 | layers | 4 (`F.Cu`, `In1.Cu`, `In2.Cu`, `B.Cu`) | board |
 | finished thickness | **1.6 mm** | board |
 | solder mask | **GREEN** | §1, CTO ruling |
+| **surface finish** | **ENIG** | **CTO target** |
+| copper weight | **1 oz outer / 0.5 oz inner** | project architecture |
+| via fill | **POFV on 59 vias** | §5, CTO ruling |
 | min track width | 0.150 mm | measured |
 | min drill | **0.20 mm** | measured, 9 PTH tools |
 | min via | 0.50 / 0.25 mm | measured |
@@ -217,18 +190,29 @@ Verified against the board file:
 | min hole-to-hole | 0.400 mm | measured |
 | min mask web, different nets | 0.150 mm | measured |
 | mask expansion | `pad_to_mask_clearance = 0` | board |
-| via tenting | front and back, no per-via override | board |
+| **controlled impedance** | **NOT ordered** | see below |
 
-**Order choices that are NOT decided and must not be assumed:**
+**ENIG** is the selected finish: it gives the flat surface the 0.5 mm-pitch and
+fine-pitch parts need, and it is the normal companion to filled-and-capped
+via-in-pad structures. No incompatibility between ENIG and a 4-layer POFV
+process is known. **If the fabricator's actual quote or configuration makes
+ENIG incompatible with the selected 4-layer POFV process, stop and report — do
+not silently accept HASL**, which would defeat both the fine-pitch assembly and
+the flat capped-via surface.
 
-* surface finish (ENIG vs HASL) — ENIG is the sensible default for the
-  0.5 mm-pitch and fine-pitch parts on this board, but it is not chosen here
-* outer / inner copper weight (1 oz assumed, not stated anywhere)
-* impedance control — **not specified**; no controlled-impedance stack-up has
-  been declared, and the RF paths have not been designed against one
-* via plugging / POFV — see §5
-* panelisation, tooling strips, fiducials — none present in the data
-* IPC class and E-test — not specified
-* MPN / manufacturer fields in the BOM are **empty** for every line; part
-  selection is not captured in the schematic and must be supplied before any
-  assembly quote
+**Controlled impedance is deliberately NOT ordered.** No authoritative AQROOT
+document specifies a controlled stack-up, and the RF paths were not designed
+against one. Adding an impedance requirement after routing is complete would be
+inventing a specification the board was never designed to meet.
+
+**Remaining order choices, still open:**
+
+* panelisation, tooling strips and fiducials — none present in the data
+* IPC class and electrical test
+* solder-mask and silkscreen colour of the legend (mask colour itself is locked
+  green by §1)
+* **procurement**: see [BETA-DM-MPN-LEDGER.csv](BETA-DM-MPN-LEDGER.csv). Of 66
+  fitted procurement groups, 22 carry an exact MPN, 4 have the part locked with
+  only an order code or variant to confirm, and 40 generic passive groups
+  covering 104 parts are marked **MPN SELECTION REQUIRED**. No MPN has been
+  invented.
