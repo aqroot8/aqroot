@@ -10,8 +10,8 @@ placement. This is the design-gate the three-way review flagged as blocking PCB 
 NOT final tuning (that needs RF simulation + measurement on real hardware). This defines
 antenna TYPE, rough LOCATION, and KEEP-OUT rules per radio, plus coexistence strategy.
 
-Target: pocket handheld (~130 x 70 x 23.5mm, plastic PC+ABS shell, separate RF crown at top).
-Envelope updated by [[17 - Enclosure Field Slate v4]]; the antenna zoning below is
+Target: pocket handheld (~160 x 80 x 23mm, plastic PC+ABS shell, separate RF crown at top).
+Envelope updated by [[18 - Enclosure Field Slate v5]]; the antenna zoning below is
 unchanged and still derives from [[15 - Enclosure Field Slate v3]] §4-§7.
 
 ---

@@ -17,7 +17,7 @@ tags: [research, competitors]
 | Mic/speaker | No | Built-in | Built-in (ICS-43434 + MAX98357A) |
 | GPIO | Yes (14-pin) | Yes (12 GPIO + magnetic connector) | Hybrid header: 14 LOW-SPEED expander GPIO (XGPIO0-13, **all genuinely bidirectional**, off a TI TCA9535PWR) + native I2C/IRQ/fast pin + switched accessory power, 3.3V + reserved high-speed RootProbe interface |
 | Battery | ~2000mAh | 500mAh | 2000mAh |
-| Dimensions | 100x43x20mm | 73x43x15mm | ~130x70x23.5mm |
+| Dimensions | 100x43x20mm | 73x43x15mm | ~160x80x23mm |
 | Status | Shipping, mature | Crowdfunding, $3.25M+ raised, ships July 2026 | Concept/prototype stage |
 
 ## The gap

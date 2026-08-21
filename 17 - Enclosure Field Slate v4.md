@@ -6,6 +6,13 @@ supersedes: "[[15 - Enclosure Field Slate v3]] §2 (Dimensions & mass)"
 
 # AQROOT Enclosure — "Field Slate" v4 (envelope update)
 
+> [!warning] SUPERSEDED ENVELOPE
+> The **130 × 70 × 23.5 mm** envelope in this document is superseded by
+> [[18 - Enclosure Field Slate v5]], which locks **160 × 80 × 23 mm** and
+> carries the dimension authority table. The layout locks in §7–§8 below are
+> unchanged and were carried forward into v5 §5. This document is retained as
+> the historical record of the v4 step.
+
 **This document is the authoritative source for the AQROOT enclosure envelope.**
 It supersedes **§2 Dimensions & mass** of [[15 - Enclosure Field Slate v3]] and
 nothing else. Every other section of v3 — concept, materials and manufacturing
