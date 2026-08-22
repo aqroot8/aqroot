@@ -9,6 +9,51 @@ an entry.
 
 ---
 
+## 2026-08-22 — Power architecture closed to a single open decision (FBV2-PWR-001)
+
+Documentation only. No design file touched.
+
+**Expander family locked** (D-061): both `U2` and `U3` become NXP
+`PCAL9535APW,118` (LCSC C2669683) — an architecture lock, with the land-pattern
+audit still required before fabrication. **Native pair locked** (D-063):
+`NATIVE_A` = GPIO38, `NATIVE_B` = GPIO47, with `SX1262_DIO1` moving to the
+internal expander and `BUSY` staying native. GPIO43 leaves the public connector.
+
+**The SX1262 lock condition was met from a primary source.** Semtech
+`DS.SX1261-2.W.APP` Rev. 1.2 §13.3.4 states verbatim that a DIO mapped to one IRQ
+clears when that flag clears, and that with several IRQs mapped *"the DIO remains
+set to one until all bits mapped to the DIO in the IRQ register are cleared."*
+DIO1 is level-held, so an expander input with no capture register can service it.
+
+**Two prior positions were corrected by the full LTC4368 datasheet.** P-13 is
+**closed**: inrush is a designed parameter, `I_INRUSH = (C_OUT/C_GATE) ×
+I_GATE(UP)`, giving ≈350 mA against a 3.33 A trip — and RETRY latch-off applies
+to *forward* overcurrent only, while reverse faults reconnect automatically once
+VOUT falls 100 mV below VIN. The earlier concern rested on an incomplete reading.
+
+**The fuse-and-clamp language correction (D-064) was justified, and the analysis
+vindicates it.** At the 20–25 A a 1S pack can deliver, a Schottky clamp sits at
+≈0.8–1.0 V — about **3× the BQ25185 `BAT` −0.3 V absolute maximum**. The clamp
+improves the excursion roughly fourfold but does **not** bring it inside the
+limit. Both elements remain **REQUIRED** — the fuse because without it the clamp
+is a permanent short across a Li-ion cell — but the residual is now named (P-12)
+rather than assumed away. A **PTC is rejected** for this position: too slow, and
+its auto-retry re-applies the fault every cycle.
+
+**Dead-cell recovery is now the only thing blocking FBV2-A1.** The LTC4368 cannot
+help here — VIN is the supply pin with a 2.2 V UVLO, and VOUT is a sense input
+whose charge-pump role only engages above ~5 V, so system-side power cannot run
+the controller. A single MOSFET also cannot distinguish a 0 V cell from a
+reversed one: **both turn it more on**, so an explicit GND-referenced sensing
+element is mandatory. Four candidates analysed; **Candidate B** — a
+hardware-qualified comparator interlock, no firmware dependency, ~0 A into a
+reversed cell — is recommended for the product, with service-only accepted as
+defensible for the first five boards. **Not approved, so the gate is not passed.**
+
+Progress 13% → 15%. **FBV2-A1 FAIL, 5 of 6 criteria closed.**
+
+---
+
 ## 2026-08-22 — Critical architecture reconciled; no-respin policy established (FBV2-ARCH-002)
 
 Documentation only. No design file touched.

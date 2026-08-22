@@ -74,6 +74,7 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [audits/2026-08-22-pre-design-engineering-audit.md](audits/2026-08-22-pre-design-engineering-audit.md) | 2026-08-22 |
 | [audits/2026-08-22-architecture-verification.md](audits/2026-08-22-architecture-verification.md) | 2026-08-22 |
 | [audits/2026-08-22-architecture-reconciliation.md](audits/2026-08-22-architecture-reconciliation.md) | 2026-08-22 |
+| [audits/2026-08-22-battery-protection-closeout.md](audits/2026-08-22-battery-protection-closeout.md) | 2026-08-22 |
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | 2026-08-22 |
 | [reviews/2026-08-22-independent-cto-power-nfc-review.md](reviews/2026-08-22-independent-cto-power-nfc-review.md) | 2026-08-22 |
 | [transcripts/2026-08-22-session-01.md](transcripts/2026-08-22-session-01.md) | 2026-08-22 |

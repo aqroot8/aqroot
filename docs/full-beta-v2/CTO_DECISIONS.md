@@ -428,6 +428,92 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8e. Expander family — LOCKED (FBV2-PWR-001)
+
+| # | decision | date |
+|---|---|---|
+| D-061 | **Replace BOTH `U2` and `U3` TCA9535PWR with NXP `PCAL9535APW,118`** (LCSC **C2669683**). **This is an ARCHITECTURE lock, not a fabrication footprint signoff** — the land pattern must still be audited against the current NXP package drawing before fabrication. | 2026-08-22 |
+
+**Mandatory firmware changes** (recorded as a binding contract):
+
+- Interrupt mask registers **power up masked** — initialise the required masks explicitly, or the device sees no interrupts at all.
+- Use the **interrupt status registers** to identify the source.
+- Use **input latch** selectively.
+- **Do not rely on programmable pulls for critical hardware safe states.**
+
+**External safe-state resistors on critical control outputs remain mandatory.**
+
+> **Verification (FBV2-PWR-001): PASS WITH FIRMWARE CHANGES. No pin or package
+> incompatibility found.** The CTO-supplied pinout matches TCA9535 PW verified
+> from SCPS201E Figure 5-1, pin for pin, and matches every measured `U2`/`U3` pad
+> on the board. Both are TSSOP24 4.4 mm body, so **footprint retention holds in
+> principle.**
+>
+> **Evidential bound:** the PCAL9535A PDF could not be retrieved from this
+> environment (NXP 404 direct and via browser; Digi-Key 410; Mouser/LCSC/Diodes
+> mirrors returned HTML). Four facts — **pull enables disabled at POR, 400 kHz
+> support, output drive current, and the Agile I/O command byte addresses** —
+> rest on NXP product-page text rather than a page-cited datasheet read. None can
+> change the architecture decision, but **all four must be closed at the
+> land-pattern audit.** "All interrupts masked at POR" and "legacy PCA9535
+> register block retained" are confirmed from NXP documentation.
+
+---
+
+## 8f. Native GPIO pair — LOCKED (FBV2-PWR-001)
+
+| # | decision | date |
+|---|---|---|
+| D-062 | 20-pin resource architecture **LOCKED**: 11 XGPIO · 2 native ESP32 GPIO · 2 external I²C · 1 WAKE/ATTN · 1 protected switched accessory 3V3 · 3 GND = 20. **No raw permanent +3V3.** | 2026-08-22 |
+| D-063 | **`NATIVE_A` = GPIO38, `NATIVE_B` = GPIO47. LOCKED.** GPIO43 is fallback only. `SX1262_DIO1` moves to the **internal** PCAL9535A — never the public/community expander. **`BUSY` remains directly connected to the ESP32.** | 2026-08-22 |
+
+> **Verification (FBV2-PWR-001): CONFIRMED — the lock condition is met.**
+> Semtech SX1261/2 datasheet `DS.SX1261-2.W.APP` Rev. 1.2, §13.3.4, p. 81,
+> verbatim:
+>
+> *"If a DIO is mapped to one single IRQ source, the DIO is cleared if the
+> corresponding bit in the IRQ register is cleared. If DIO is set to 0 with
+> several IRQ sources, then the DIO remains set to one until all bits mapped to
+> the DIO in the IRQ register are cleared."*
+>
+> **DIO1 is level-held, not a pulse**, so an expander input with no capture
+> register can service it safely. The condition that blocked OPTION G38 in
+> FBV2-ARCH-002 is closed, and GPIO43 leaves the public connector.
+>
+> **Caveat:** this is Rev. 1.2 (June 2019). The current revision is **V2.2
+> (2025-04-07)**, identified but not retrievable. Confirm against V2.2 and
+> against the **E22-900M22S module** datasheet before fabrication.
+>
+> Firmware handling contract — including the **second PCAL edge when DIO1 returns
+> low**, and the documented `GetIrqStatus`/`ClearIrqStatus` race — is recorded in
+> the closeout audit §8.1.
+
+---
+
+## 8g. Battery protection — language correction (FBV2-PWR-001)
+
+| # | decision | date |
+|---|---|---|
+| D-064 | **LTC4368-1 remains the PREFERRED battery-protection controller architecture.** The **fuse + Schottky clamp is a CANDIDATE defence-in-depth topology pending exact fault-energy analysis** — it is **not** locked merely because a previous audit recommended it. It may become mandatory only if the complete circuit and fault behaviour support that conclusion. | 2026-08-22 |
+
+> **The correction was justified, and the analysis vindicates it.** At realistic
+> fault currents (20–25 A from a 1S pack) a Schottky clamp sits at **≈0.8–1.0 V**,
+> roughly **3× the BQ25185 `BAT` −0.3 V absolute maximum**. The clamp reduces the
+> excursion from ≈−3.7 V to ≈−1 V — a 4× improvement — but **does not bring the
+> node inside the absolute maximum.** Recording it as "locked" would have implied
+> a proof that does not exist.
+>
+> **Both elements are still REQUIRED** — the fuse because without it the clamp is
+> a permanent short across a Li-ion cell, the clamp because it is what holds the
+> node while the fuse clears — but the **residual is named (P-12)** rather than
+> assumed away. A **PTC is REJECTED** for this position: too slow, and its
+> auto-retry re-applies the fault on every cycle.
+>
+> Full analysis, including the complete element-by-element topology, is in
+> [`audits/2026-08-22-battery-protection-closeout.md`](audits/2026-08-22-battery-protection-closeout.md) §2 and §5.
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -448,9 +534,9 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-02** | **Freeze the 20-pin connector.** C2 is the provisional direction per D-046. Verification substituted **GPIO47** for GPIO18 as `NATIVE_B` and moved `DISP_BL_CTL` to GPIO46. Approve the substitution, or fall back to C1. | Gates the connector sheet, the `U3` pin assignment and the right-side mechanical exit. **Shape verified; identity of `NATIVE_B` awaiting approval.** | 2026-08-22 |
 | ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
-| **P-11** | **Dead-cell recovery architecture.** Below the LTC4368's 1.8–2.4 V UVLO both gates are off and the body diodes are anti-series, so a pack at ~0 V can never be recharged. Recommended: a firmware-gated ~10 kΩ trickle across the pass FETs plus a `BAT_RAW` ADC divider. **Not approved.** | **BLOCKS FBV2-A1.** It is a power-tree change, not a value change. Per instruction, no dead-cell solution is invented — options presented, analysis stops. | 2026-08-22 |
+| **P-11** | **Dead-cell recovery: Candidate B or Candidate D?** **B** — a *hardware-qualified* precharge from `SYS` to `BAT_RAW`, gated by a GND-referenced comparator interlock so a reversed cell draws ≈0 A; no firmware, works with a corrupted image; ~8–10 parts, 1–3 µA. **D** — no recovery path; deeply discharged packs are serviced. **Recommendation: B for the product, D acceptable for the first five boards.** | **THE ONLY ITEM BLOCKING FBV2-A1.** A single MOSFET cannot distinguish 0 V from −3.7 V — both turn it *more* on — so an explicit level-sensing element is mandatory and this is a genuine new power-tree branch. *(Supersedes the earlier firmware-gated proposal: the CTO prefers safety not to depend on firmware, and that is the better position.)* | 2026-08-22 |
 | **P-12** | **BQ25185 BAT survivability of a brief ~−0.35 V excursion** during the shorted-FET + reversed-cell case, while the fuse clears. | Absolute maximum is a **DC** limit, not an energy limit. Bench measurement, not a datasheet lookup. | 2026-08-22 |
-| **P-13** | **Latch-off vs hot-insertion inrush.** Latch-off is right for a reversed cell; but if hot-insertion inrush trips the same latch, plugging the battery in with USB connected leaves an apparently dead board until a power cycle. | **BLOCKS FBV2-A1.** May force different retry strapping or an inrush element. Unresolvable on paper. | 2026-08-22 |
+| ~~**P-13**~~ | ~~Latch-off vs hot-insertion inrush.~~ **CLOSED 2026-08-22 by FBV2-PWR-001.** The LTC4368 datasheet gives `I_INRUSH = (C_OUT/C_GATE) × I_GATE(UP)` and the design rule `I_OC,FWD > I_INRUSH + I_OUT` — inrush is designed, ≈350 mA against a 3.33 A trip. Separately, **RETRY latch-off applies to FORWARD overcurrent only**; reverse faults reconnect automatically once VOUT falls 100 mV below VIN. Both halves of the objection fall away. | closed | 2026-08-22 |
 | **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
 | **P-15** | **3V3 rail budget under simultaneous worst case** — NFC TX + audio + LoRa + backlight + Wi-Fi against a 2 A TPS63020 with current-limit foldback. | Foldback means brownout resets and SD corruption rather than a clean fault. May force firmware mutual-exclusion. | 2026-08-22 |
 | **P-16** | **Repurpose one XGPIO as `ACC_DETECT`?** Firmware currently cannot know an accessory is present before enabling the switched rail or choosing pull configurations. | Changes the published count from 11 XGPIO to 10. Free once PCAL9535A programmable pull-ups exist. **Not adopted** — ruling D specifies 11. | 2026-08-22 |

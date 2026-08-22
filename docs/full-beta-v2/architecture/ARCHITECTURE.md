@@ -103,7 +103,7 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
 | Charger / power path | `U11` BQ25185DLHR | Linear. Thermals matter in a sealed enclosure; start at 500 mA charge current. |
 | 3V3 rail | `U12` TPS63020DSJR | Buck-boost, FB 1M / 180k = 3.28 V. EN driven by the physical switch, **never firmware** — the MCU cannot restore its own disabled rail. |
 | Fuel gauge | `U14` MAX17048G+T10 | On internal I2C at 0x36. ALRT reaches a test point only. |
-| **Reverse polarity** | **LTC4368-1 + dual N-FET + fuse + Schottky clamp** | Topology chosen (D-050…D-054). VIN on the **cell side** — the documented reverse-VIN gate mechanism lives on that pin. `-1` suffix load-bearing: `-2` blocks charging. **Dead-cell recovery (P-11) and inrush/latch interaction (P-13) still open.** |
+| **Reverse polarity** | **LTC4368-1 + independent dual N-FET (common source) + R_SENSE 15 mΩ + R_GATE 22 kΩ + C_GATE 1 nF + OV divider + RETRY→GND + SHDN pull-up to VIN + FAULT + fuse + clamp** | Topology complete (D-050…D-054, D-064). VIN on the **cell side** — the documented reverse-VIN gate mechanism lives on that pin. `-1` suffix load-bearing: `-2` trips at −3 mV and blocks charging. **UV recommended UNUSED** (tie to VIN via 510 kΩ): using it would deepen the dead-cell lockout. **P-13 CLOSED.** **Dead-cell recovery branch (P-11) still open — the only FBV2-A1 blocker.** |
 | **NFC supply** | **`+3V3` direct on the first build**, with a DNP TPS61023 boost branch behind a 0 Ω source selector | D-055 / D-056. Two mutually exclusive links; sources can never be shorted. |
 | Switched accessory rail | **`TPS22950C`** | Replaces TPS22918, which has no reverse blocking, no current limit and no thermal shutdown. |
 
@@ -122,7 +122,8 @@ pull.**
 |---|---|
 | Pin count | **20 pins.** CTO-locked (D-059). |
 | Allocation | **11 XGPIO + 2 native + 2 I²C + 1 WAKE/ATTN + 1 switched accessory 3V3 + 3 GND = 20.** No permanent raw `+3V3` (D-057). No duplicate GPIO. |
-| Native pair | **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`)** recommended. GPIO43 removed from the connector — it emits ROM UART traffic at every reset. **Gated on unverified SX1262 DIO1 behaviour.** |
+| Native pair | **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`) — LOCKED** (D-063). GPIO43 removed from the connector (ROM UART traffic every reset) and becomes an internal debug test pad. DIO1 level-hold **confirmed** from Semtech §13.3.4. |
+| Expanders | **NXP PCAL9535APW,118** replaces TCA9535PWR on **both** `U2` and `U3` (D-061). Pin-for-pin against TCA9535 PW; land-pattern audit still required pre-fab. Firmware **must** unmask interrupts explicitly — they power up masked. |
 | External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is the switched accessory rail — verified high-Z when unpowered (SCPS245E). |
 | Switched accessory power | **TPS22950C**, leaded SOT-23-thin: RCB, adjustable limit, short-circuit and thermal protection, 500 kΩ internal pull-down **plus a mandatory external pull-down**. R<sub>ILIM</sub> 600–800 mA recommended; not locked. |
 | Mechanical | **Keyed, shrouded/polarized and recessed**, right-side exit. |

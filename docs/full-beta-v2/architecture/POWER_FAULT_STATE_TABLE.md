@@ -2,9 +2,28 @@
 
 **Status: MANDATORY ARTEFACT. Must be signed before schematic work begins.**
 
-Date: 2026-08-22
-Task: FBV2-ARCH-002
+Date: 2026-08-22 (revised by FBV2-PWR-001)
+Task: FBV2-ARCH-002, revised FBV2-PWR-001
 Scope: analysis only. No schematic, PCB or hardware file was created or modified.
+
+> ## Revision note — FBV2-PWR-001
+>
+> The full **LTC4368 datasheet (`4368f`)** was obtained after this table was first
+> written, and it changes two entries. Both are recorded here rather than
+> silently edited:
+>
+> - **Case 11 / F9 (hot insertion) is no longer UNRESOLVED.** Inrush is a designed
+>   parameter: `I_INRUSH = (C_OUT / C_GATE) × I_GATE(UP)` with `I_GATE(UP)` = 35 µA,
+>   and the datasheet states the design inequality `I_OC,FWD > I_INRUSH + I_OUT`.
+>   With C_OUT ≈ 10 µF and C_GATE = 1 nF, inrush ≈ **350 mA** against a 3.33 A
+>   trip. There is also a **32 ms gate turn-on delay** (t_D(ON) 22/32/45 ms).
+> - **Latch-off does not trap a corrected reversed cell.** RETRY latching applies
+>   to **forward** overcurrent only; after a **reverse** current fault the part
+>   reconnects automatically once VOUT falls 100 mV below VIN. The two mechanisms
+>   are independent.
+>
+> **P-13 is CLOSED.** Case 4 (dead cell) remains the blocker. See
+> [`../audits/2026-08-22-battery-protection-closeout.md`](../audits/2026-08-22-battery-protection-closeout.md).
 
 ---
 
@@ -316,6 +335,10 @@ CTO decisions (**P-11**, **P-12**).
 
 > ### ⚠ UNRESOLVED — BLOCKS SCHEMATIC LOCK
 >
+> **[SUPERSEDED 2026-08-22 by FBV2-PWR-001 — P-13 CLOSED. Text retained as the
+> historical record; the reasoning below was based on an incomplete reading of
+> the LTC4368 and is no longer the position.]**
+>
 > **Latch-off and hot-insertion interact badly and the brief has not reconciled
 > them.** Latch-off is right for a reversed cell (the board should stop, not
 > chatter). But if hot-insertion inrush trips the same latch, a user who plugs the
@@ -327,6 +350,24 @@ CTO decisions (**P-11**, **P-12**).
 > Options are (a) size the sense resistor so inrush stays under the trip, (b) add
 > series inrush limiting, or (c) accept auto-retry and lose latch-off on the
 > reversed-cell case. Tracked as **P-13**.
+
+> ### ✅ CURRENT POSITION — Case 11 is OK. P-13 CLOSED.
+>
+> Two facts from the LTC4368 datasheet (`4368f`) dissolve the concern:
+>
+> 1. **Inrush is a designed parameter.** `I_INRUSH = (C_OUT / C_GATE) × I_GATE(UP)`
+>    with I_GATE(UP) = 35 µA, and the datasheet states the design inequality
+>    `I_OC,FWD > I_INRUSH + I_OUT`. At C_OUT ≈ 10 µF and **C_GATE = 1 nF**, inrush
+>    ≈ **350 mA** against a **3.33 A** trip (R_SENSE = 15 mΩ) — better than 9×
+>    margin. The VIN pin is explicitly **hot-swappable**.
+> 2. **The two mechanisms are independent.** RETRY latch-off applies to **forward**
+>    overcurrent only. After a **reverse** current fault the part reconnects
+>    **automatically** once VOUT falls 100 mV below VIN. Grounding RETRY therefore
+>    does not trap the board once a reversed cell is corrected.
+>
+> A **32 ms gate turn-on delay** (t_D(ON) 22/32/45 ms) additionally debounces
+> insertion. The only carry-forward is that **C_GATE must be sized in the
+> schematic**, and `R_GATE = 22 kΩ` per the datasheet's recommendation.
 
 ---
 
@@ -386,7 +427,7 @@ peak system current budget, and the clamp's surge rating from the fuse's I²t.
 |---|---|---|---|
 | 1 | **Dead-cell recovery architecture not chosen** | 4 | **P-11** |
 | 2 | **BQ25185 BAT survivability of a brief −0.35 V excursion** — abs max is a DC limit, not an energy limit | 7 | **P-12** |
-| 3 | **Latch-off vs hot-insertion inrush interaction** | 11 | **P-13** |
+| ~~3~~ | ~~Latch-off vs hot-insertion inrush interaction~~ | 11 | **P-13 — CLOSED by FBV2-PWR-001** |
 | 4 | **No-battery STAT2 toggle rate** — TI publishes none; decides how urgent the expander change is | 3 | measure |
 | 5 | **MAX17048 sense point** — cell side (exposed to the reversed-cell fault) vs protected side (~51 mΩ of uncompensable IR drop; ~51 mV at 1 A, several % SOC) | 1, 2 | **P-14** |
 | 6 | **3V3 rail budget under simultaneous worst case** — NFC TX + audio + LoRa + backlight + Wi-Fi against a 2 A TPS63020 with foldback | all | **P-15** |
