@@ -514,6 +514,56 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8h. Dead-cell recovery and single-fault battery safety (FBV2-PWR-002)
+
+| # | decision | date |
+|---|---|---|
+| D-065 | **Candidate B SELECTED: autonomous hardware-qualified dead-cell recovery.** Service-only Candidate D is **rejected** as the normal architecture. The recovery system must operate with USB present, require **no working ESP32 firmware**, work with blank/corrupted flash, identify a correctly oriented near-0 V pack, **reject a reversed pack**, provide controlled limited current, hand off automatically to the LTC4368-1/BQ25185 path, return to a low-Iq inactive state, and **not create a dangerous bypass around reverse protection.** Rationale: Full Beta v2 must behave like a product, not a bench prototype needing service after a normal deep-discharge event. | 2026-08-22 |
+| D-066 | **PCAL9535APW,118 LOCKED for both `U2` and `U3`.** NXP Rev 2 independently verified by the CTO: 400 kHz Fast-mode, 25 mA output capability, all interrupts masked at POR, mask registers 4Ah/4Bh, status registers 4Ch/4Dh, programmable pull enable/selection, input latch, Agile I/O, all channels inputs at power-up. **Do not reopen** unless a footprint/procurement gate finds a concrete problem. | 2026-08-22 |
+| D-067 | **GPIO38 + GPIO47 remain LOCKED.** `SX1262_DIO1` moves to the internal PCAL9535A. Pre-fab confirmation against the then-current Semtech datasheet and the exact E22 module is still required but **no longer blocks architecture.** | 2026-08-22 |
+| D-068 | **New single-fault objective: no single external pass-MOSFET short may cause BQ25185 `BAT` to exceed its negative absolute maximum under the mandatory reversed-battery + USB fault. Prefer prevention/isolation over relying on fault-clearing time.** A protection circuit may **not** be declared compliant merely because a fuse clears after the IC has already exceeded absolute maximum. | 2026-08-22 |
+
+> **D-066 closes the four facts the previous audit could not verify** — pull-enable
+> POR state, 400 kHz, output drive current and the Agile I/O register addresses.
+> Recorded as CTO-verified from NXP Rev 2. The **land-pattern audit remains a
+> separate pre-fabrication gate.**
+
+> **Verification result (FBV2-PWR-002): D-068 is MET, by isolation.**
+>
+> The pass path becomes **P2** — two back-to-back N-FET stages in series, in **two
+> separate packages**. Any single drain-source short leaves one complete
+> back-to-back pair intact, so a reversed cell never reaches `BAT_PROTECTED_P`.
+> The single-package alternative was rejected because two die sharing one
+> leadframe and molding cannot be claimed independent against a package-level
+> failure.
+>
+> Precise finding on the old architecture: **P1 fails one of the two single-FET
+> cases, not both.** A short on the `BAT_RAW`-side FET is already blocked by the
+> survivor; a short on the **`BAT_PROT`-side** FET is the dangerous one.
+>
+> **The previous fuse + clamp compliance argument is withdrawn.** A Schottky at
+> ≈0.8–1.0 V does not protect a −0.3 V absolute maximum, and ruling D was right to
+> reject it. Consequences: the **clamp is demoted to USEFUL SECONDARY protection**
+> (ESD, transient, double-fault) and the **fuse is resized 3 A → ≈5 A** because it
+> is now a backstop that must not pre-empt the 3.33 A electronic breaker. **PTC
+> remains REJECTED.**
+>
+> **Candidate B is specified to component level** — ratiometric bridge polarity
+> detection (threshold at V_BAT = 0, supply-independent by construction), TLV7032
+> dual comparator, three-input series AND terminating at the LTC4368 `FAULT` pin
+> for a free hardware handoff, P-FET switch with a series Schottky, and 5–10 mA
+> recovery current. Full analysis in
+> [`audits/2026-08-22-dead-cell-and-single-fault-closeout.md`](audits/2026-08-22-dead-cell-and-single-fault-closeout.md).
+>
+> **Honest residual:** Candidate B is **not** tolerant to every single failure —
+> four failures each individually enable recovery current into a reversed cell.
+> It **meets the requirement as written** because `R_LIM` bounds every one to
+> **≤13 mA (~0.007 C)**, which is not a high-current path. A redundant variation
+> is documented; it is **not** recommended, because it trades that bounded
+> residual for a permanent oscillation in the far more common battery-absent state.
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -534,8 +584,9 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-02** | **Freeze the 20-pin connector.** C2 is the provisional direction per D-046. Verification substituted **GPIO47** for GPIO18 as `NATIVE_B` and moved `DISP_BL_CTL` to GPIO46. Approve the substitution, or fall back to C1. | Gates the connector sheet, the `U3` pin assignment and the right-side mechanical exit. **Shape verified; identity of `NATIVE_B` awaiting approval.** | 2026-08-22 |
 | ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
-| **P-11** | **Dead-cell recovery: Candidate B or Candidate D?** **B** — a *hardware-qualified* precharge from `SYS` to `BAT_RAW`, gated by a GND-referenced comparator interlock so a reversed cell draws ≈0 A; no firmware, works with a corrupted image; ~8–10 parts, 1–3 µA. **D** — no recovery path; deeply discharged packs are serviced. **Recommendation: B for the product, D acceptable for the first five boards.** | **THE ONLY ITEM BLOCKING FBV2-A1.** A single MOSFET cannot distinguish 0 V from −3.7 V — both turn it *more* on — so an explicit level-sensing element is mandatory and this is a genuine new power-tree branch. *(Supersedes the earlier firmware-gated proposal: the CTO prefers safety not to depend on firmware, and that is the better position.)* | 2026-08-22 |
-| **P-12** | **BQ25185 BAT survivability of a brief ~−0.35 V excursion** during the shorted-FET + reversed-cell case, while the fuse clears. | Absolute maximum is a **DC** limit, not an energy limit. Bench measurement, not a datasheet lookup. | 2026-08-22 |
+| ~~**P-11**~~ | ~~Dead-cell recovery: Candidate B or Candidate D?~~ **CLOSED 2026-08-22 by D-065 — Candidate B selected**, and specified to component level in the FBV2-PWR-002 closeout. **This was the last item blocking FBV2-A1, which now PASSES.** | closed | 2026-08-22 |
+| ~~superseded~~ | ~~**Dead-cell recovery: Candidate B or Candidate D?**~~ **B** — a *hardware-qualified* precharge from `SYS` to `BAT_RAW`, gated by a GND-referenced comparator interlock so a reversed cell draws ≈0 A; no firmware, works with a corrupted image; ~8–10 parts, 1–3 µA. **D** — no recovery path; deeply discharged packs are serviced. **Recommendation: B for the product, D acceptable for the first five boards.** | **THE ONLY ITEM BLOCKING FBV2-A1.** A single MOSFET cannot distinguish 0 V from −3.7 V — both turn it *more* on — so an explicit level-sensing element is mandatory and this is a genuine new power-tree branch. *(Supersedes the earlier firmware-gated proposal: the CTO prefers safety not to depend on firmware, and that is the better position.)* | 2026-08-22 |
+| ~~**P-12**~~ | ~~BQ25185 BAT survivability of a brief negative excursion.~~ **LARGELY RETIRED 2026-08-22 by FBV2-PWR-002.** Under the P2 pass architecture the excursion **does not occur under any single fault**. It survives only as a double-fault consideration and is no longer an architecture item. | schematic-phase note only | 2026-08-22 |
 | ~~**P-13**~~ | ~~Latch-off vs hot-insertion inrush.~~ **CLOSED 2026-08-22 by FBV2-PWR-001.** The LTC4368 datasheet gives `I_INRUSH = (C_OUT/C_GATE) × I_GATE(UP)` and the design rule `I_OC,FWD > I_INRUSH + I_OUT` — inrush is designed, ≈350 mA against a 3.33 A trip. Separately, **RETRY latch-off applies to FORWARD overcurrent only**; reverse faults reconnect automatically once VOUT falls 100 mV below VIN. Both halves of the objection fall away. | closed | 2026-08-22 |
 | **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
 | **P-15** | **3V3 rail budget under simultaneous worst case** — NFC TX + audio + LoRa + backlight + Wi-Fi against a 2 A TPS63020 with current-limit foldback. | Foldback means brownout resets and SD corruption rather than a clean fault. May force firmware mutual-exclusion. | 2026-08-22 |

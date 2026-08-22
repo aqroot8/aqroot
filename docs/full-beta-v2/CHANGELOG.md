@@ -9,6 +9,63 @@ an entry.
 
 ---
 
+## 2026-08-22 — Battery safety architecture finalised; **FBV2-A1 PASSED** (FBV2-PWR-002)
+
+Documentation only. No design file touched.
+
+**FBV2-A1 = PASS** — the first gate to pass since FBV2-A0, and the largest
+remaining architecture unknown. All six criteria closed, all 13 power/fault cases
+defined, no power-tree branch TBD. Next gate: **FBV2-A2, mechanical interface
+freeze.**
+
+**Candidate B selected and specified to component level** (D-065). The design
+turns on one structural fact: **no passive switch can distinguish a 0 V cell from
+a reversed one** — an N-FET referenced to a positive rail sees V_GS ≈ +3 V at 0 V
+and ≈ +6.7 V at −3.7 V, so a reversed cell turns it *harder on*; the P-FET
+arrangement fails the same way. An active, GND-referenced comparison is therefore
+mandatory. The chosen sensing network is a **matched ratiometric bridge** whose
+trip condition reduces to **V_BAT = 0 independent of VBUS** — supply-independence
+by construction rather than by trimming. Handoff is taken from the **LTC4368
+`FAULT` pin**, which is asserted precisely while VIN is below UVLO, so the
+protection controller itself decides when it has taken over — no extra threshold,
+no possibility of both paths being active. Recovery current **5–10 mA** (~0.004 C),
+supplied from **VBUS rather than SYS** so the branch is dead by construction
+without USB and costs **zero battery-side standby**.
+
+**The pass path changes to P2** — two back-to-back stages in **two separate
+packages**. A precise finding corrected the earlier account: **P1 fails one of the
+two single-FET-short cases, not both.** A short on the `BAT_RAW`-side FET is
+already blocked by its partner; it is specifically the **`BAT_PROT`-side** FET
+whose short lets a reversed cell through. P2 leaves one complete back-to-back pair
+intact under any single short, and additionally keeps the LTC4368's electronic
+breaker functional with a FET shorted. Two die sharing one leadframe cannot be
+called independent, so the two stages must not share a package.
+
+**The previous fuse-and-clamp compliance argument is withdrawn as invalid.** A
+Schottky sitting at ≈0.8–1.0 V does not protect a −0.3 V absolute maximum, and
+ruling D was right to refuse it. With isolation doing the work, the **clamp is
+demoted to secondary** duty (ESD, transient, double-fault) and the **fuse is
+resized 3 A → ≈5 A**, because it is now a backstop that must not pre-empt the
+3.33 A electronic breaker. Its one genuinely irreplaceable role is a harness short
+between `BAT_RAW` and GND *upstream* of the FETs, where the breaker cannot act.
+**PTC remains rejected.**
+
+**Honest residual, recorded rather than smoothed over:** Candidate B is *not*
+tolerant to every single failure — four failures each individually enable current
+into a reversed cell. It meets the requirement as written because `R_LIM` bounds
+every one to **≈13 mA (~0.007 C)**, `D_REC` keeps the branch unidirectional under
+all faults, and the condition is self-annunciating. A fully redundant variation is
+documented and **not** recommended: it would trade that bounded residual for a
+permanent oscillation in the far more common battery-absent state.
+
+**PCAL9535APW,118 locked for both expanders** (D-066), closing the four facts the
+previous audit could not verify. **GPIO38 + GPIO47 remain locked** (D-067).
+
+Progress 15% → 20%, held deliberately low: two of twelve gates, both paper, with
+mechanical untouched.
+
+---
+
 ## 2026-08-22 — Power architecture closed to a single open decision (FBV2-PWR-001)
 
 Documentation only. No design file touched.

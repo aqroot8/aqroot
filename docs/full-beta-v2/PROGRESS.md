@@ -54,7 +54,27 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~15%**
+### Overall Full Beta v2: **~20%**
+
+**FBV2-A1 PASSED** (2026-08-22, FBV2-PWR-002) — the first gate to pass since
+FBV2-A0, and the largest remaining architecture unknown. All six criteria closed;
+all 13 power/fault cases have defined safe behaviour; no power-tree branch remains
+TBD.
+
+Raised five points, and **deliberately not more.** Two of twelve gates have
+passed and both are paper gates — no schematic exists, no board exists, and
+**FBV2-A2 (mechanical) has not started**, with an internal cavity that has never
+existed in this repository. Architecture certainty is not the same as progress
+toward a working unit.
+
+<details>
+<summary>Superseded estimates</summary>
+
+**~15%** — FBV2-PWR-001. **~13%** — FBV2-ARCH-002. **~10%** — FBV2-ARCH-001.
+**~8%** — FBV2-DOC-001.
+</details>
+
+### Previous estimate: ~15%
 
 Raised from ~13% by **two points** for FBV2-PWR-001: five of the six FBV2-A1
 criteria are now closed, the complete battery-protection topology is specified
@@ -102,8 +122,8 @@ work.
 | gate | description | status | date |
 |---|---|---|---|
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
-| **FBV2-A1** | CTO architecture decisions | **IN PROGRESS — FAIL. 5 of 6 criteria closed; ONE decision (P-11) blocks it** | — |
-| **FBV2-A2** | Mechanical interface freeze | **NOT STARTED — RECOMMENDED NEXT GATE** | — |
+| **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
+| **FBV2-A2** | Mechanical interface freeze | **NOT STARTED — NEXT GATE** | — |
 | **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED** | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
@@ -176,7 +196,25 @@ decision or a mandatory gate.
 
 ---
 
-### FBV2-A1 gate assessment (2026-08-22, FBV2-PWR-001) — CURRENT
+### FBV2-A1 gate assessment (2026-08-22, FBV2-PWR-002) — **PASS**
+
+| criterion | status |
+|---|---|
+| Dead-cell recovery topology explicit | **YES** — Candidate B specified to component level: ratiometric bridge, thresholds, defaults, 3-input AND, FAULT handoff, full failure analysis |
+| Main reverse protection single-FET-short tolerant | **YES** — P2, two back-to-back stages in **two separate packages**. Isolation, not fault-clearing time |
+| All power/fault states have defined safe behaviour | **YES** — 13 of 13 |
+| No additional power-tree branch remains TBD | **YES** — the recovery branch was the last one |
+
+**FBV2-A1 = PASS.** Component-value optimisation (exact `R_LIM`, FET MPN, fuse
+rating, divider trim) moves to schematic design.
+
+**Next gate: FBV2-A2 — MECHANICAL INTERFACE FREEZE.** Long pole, nothing blocks
+it. **Do not start FBV2-S1 before the placement constraints exist.**
+
+<details>
+<summary>Superseded — FBV2-A1 assessment (FBV2-PWR-001, FAIL)</summary>
+
+### FBV2-A1 gate assessment (2026-08-22, FBV2-PWR-001)
 
 | # | criterion | status |
 |---|---|---|
@@ -197,6 +235,18 @@ the gate merely because a preferred idea exists"* — the gate is not passed.
 **One decision closes it.** Selecting Candidate B or Candidate D closes criterion
 6; P-12 then carries into the schematic phase as a bench item, since it changes
 no topology.
+
+</details>
+
+### Blockers added or changed by FBV2-PWR-002 (2026-08-22)
+
+| # | blocker | status |
+|---|---|---|
+| ~~B-20~~ | Dead-cell lockout created by the reverse protection | **CLOSED** — autonomous hardware-qualified recovery branch (D-065), specified to component level. No firmware dependency |
+| ~~B-21~~ | Shorted pass FET reproduces the guarded fault | **CLOSED by isolation** — P2, two stages, two packages. The old fuse+clamp compliance argument is **withdrawn as invalid** |
+| ~~B-23~~ | PCAL9535A facts unverified | **CLOSED** — CTO verified NXP Rev 2 (D-066). Land-pattern audit remains a separate pre-fab gate |
+| **B-26** | **Pack-protector release current.** Recovery injects ~8 mA; a 1S protector needing more than ~10 mA to release its over-discharge latch would not be revived | **OPEN — part-dependent.** Verify against the chosen pack. Does not change topology |
+| **B-27** | **Recovery branch is not tolerant to every single failure** — four failures each enable current into a reversed cell | **ACCEPTED, BOUNDED.** `R_LIM` caps every case at ≈13 mA (~0.007 C); `D_REC` keeps the branch unidirectional; the fault is self-annunciating |
 
 <details>
 <summary>Superseded — FBV2-A1 gate assessment (FBV2-ARCH-002)</summary>
@@ -266,3 +316,4 @@ DS12484 tables; every other footprint remains unverified.
 | 2026-08-22 | FBV2-ARCH-001. Overall raised 8% → 10%; **no gate passed.** B-07 retired as incorrect. B-17/B-18/B-19 added. FBV2-A2 marked as the recommended next gate. |
 | 2026-08-22 | FBV2-ARCH-002. Overall raised 10% → 13%; **no gate passed. FBV2-A1 assessed CANNOT PASS** (4 of 8 criteria). B-18 closed, B-25 closed. B-20…B-24 added. P-11…P-18 opened. Standing **NO-RESPIN RECOVERY POLICY** (D-049) established. |
 | 2026-08-22 | FBV2-PWR-001. Overall raised 13% → 15%; **no gate passed. FBV2-A1 FAIL, 5 of 6 criteria closed.** D-061…D-064 recorded. **P-13 and B-24 closed** by primary-source evidence; B-22 closed. Complete battery-protection topology specified. Fuse **REQUIRED**, clamp **REQUIRED**, PTC **REJECTED**. |
+| 2026-08-22 | FBV2-PWR-002. Overall raised 15% → 20%. **FBV2-A1 = PASS** — first gate since A0. D-065…D-068 recorded. Pass path changed to **P2** (4 FETs, 2 packages). Dead-cell recovery specified to component level. **P-11, P-12, B-20, B-21, B-23 closed**; B-26/B-27 opened. Clamp **demoted to secondary**, fuse **resized 3 A → ≈5 A**. Next gate: **FBV2-A2**. |

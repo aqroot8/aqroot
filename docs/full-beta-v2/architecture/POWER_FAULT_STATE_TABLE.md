@@ -25,6 +25,53 @@ Scope: analysis only. No schematic, PCB or hardware file was created or modified
 > **P-13 is CLOSED.** Case 4 (dead cell) remains the blocker. See
 > [`../audits/2026-08-22-battery-protection-closeout.md`](../audits/2026-08-22-battery-protection-closeout.md).
 
+> ## Revision note 2 — FBV2-PWR-002 · **ALL 13 CASES NOW DEFINED**
+>
+> The architecture changed in three ways that resolve the two remaining open
+> cases. Earlier text below is **retained as the historical record** and is
+> superseded by this note and by
+> [`../audits/2026-08-22-dead-cell-and-single-fault-closeout.md`](../audits/2026-08-22-dead-cell-and-single-fault-closeout.md).
+>
+> 1. **Pass path is now P2** — two back-to-back stages in **two separate
+>    packages** (4 FETs). Any single D-S short leaves one complete pair intact, so
+>    a reversed cell is **isolated** rather than clamped. **Case 7/8 is solved by
+>    prevention, not by fault-clearing time.**
+> 2. **Dead-cell recovery exists** — an autonomous, hardware-qualified branch from
+>    VBUS, gated by a ratiometric polarity comparator, a handoff comparator and the
+>    LTC4368 `FAULT` pin. **Case 4 is solved.** No firmware involvement.
+> 3. **Clamp demoted, fuse resized.** The clamp is **secondary** (ESD /
+>    transient / double-fault) — the previous claim that a Schottky protects a
+>    −0.3 V absolute maximum was **not a valid compliance argument and is
+>    withdrawn**. The fuse moves **3 A → ≈5 A** because it is now a backstop that
+>    must not pre-empt the 3.33 A electronic breaker.
+>
+> **P-12 is largely retired**: under P2 the negative excursion does not occur
+> under any single fault. **All 13 cases have defined safe behaviour.**
+
+---
+
+## CURRENT CASE SUMMARY (FBV2-PWR-002)
+
+| # | case | behaviour | status |
+|---|---|---|---|
+| 1 | Normal battery, no USB | Both stages on (~55 mΩ); recovery branch unpowered, **zero standby draw** | **OK** |
+| 2 | Normal battery + USB | Charge current passes (reverse direction, −50 mV threshold — the `-1` suffix); `FAULT` released → recovery off | **OK** |
+| 3 | No battery + USB | Runs from USB; BQ25185 no-battery limit cycle, **STAT2 toggles** (maskable on PCAL9535A); recovery parks at the ~2.8 V handoff bound — slow, low-duty, ≤8 mA into an open node | **OK** |
+| 4 | **0 V / dead battery + USB** | **Recovery ON at ~8 mA** → cell rises → LTC4368 closes at ~2.2 V → `FAULT` releases → recovery OFF → BQ25185 precharges | **OK — SOLVED** |
+| 5 | Pack protection-open + USB | Terminals ≈0 V → recovery ON; most 1S protectors release on charger-voltage detect. ⚠ Verify the chosen pack's release current against 8 mA | **OK, one part-dependent caveat** |
+| 6 | Reversed battery, no USB | GATE auto-tied to negative VIN; both stages block; recovery unpowered | **BLOCKED correctly** |
+| 7 | Reversed battery + USB | Both stages block; comparator A holds recovery off; **board boots from USB** so the fault is diagnosable | **OK** |
+| 8 | **One pass FET short + reversed battery + USB** | Surviving back-to-back stage **isolates**; `BAT_PROTECTED_P` never goes negative; the electronic breaker remains functional | **OK — SOLVED by isolation** |
+| 9 | **Recovery switch stuck on + reversed battery + USB** | `R_LIM` bounds to **≈13 mA (~0.007 C)**; `D_REC` keeps the branch unidirectional; self-annunciating | **BOUNDED — not a high-current path** |
+| 10 | Battery inserted while USB present | 32 ms turn-on delay debounces; C_GATE 4.7 nF bounds inrush to ~35 mA against a 3.33 A trip | **OK** |
+| 11 | **USB removed during dead-cell recovery** | VBUS collapses → `Q_REC` source at 0 V → V_GS = 0 → **OFF**; `D_REC` independently blocks any pack drain | **OK — clean stop** |
+| 12 | Accessory short while enabled | TPS22950C current limit + auto-retry + thermal shutdown; core `+3V3` holds | **OK** |
+| 13 | Externally powered accessory, AQROOT off | TPS22950C reverse blocking active while disabled; TCA9517A high-Z when unpowered; **no permanent raw `+3V3` pin exists** | **OK** |
+
+**13 of 13 defined. No case is architecture-undefined.**
+
+---
+
 ---
 
 ## Purpose and reading rules
