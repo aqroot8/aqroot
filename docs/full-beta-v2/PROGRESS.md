@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-22 (updated after FBV2-ARCH-001)
-Repository HEAD at last update: `890db0b` (pushed to `origin/master`)
+Date: 2026-08-23 (updated after FBV2-DISP-002)
+Repository HEAD at last update: `42a5e0a`
 
 ---
 
@@ -54,7 +54,25 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~25%**
+### Overall Full Beta v2: **~28%**
+
+**No gate in the twelve-gate table passed.** FBV2-DISP-LOCK is a *task* gate, not
+one of the twelve, and it **PASSED** (2026-08-23, FBV2-DISP-002).
+
+Raised three points, and **only** three, for a specific reason: this is the first
+task in the programme that locked a **physical part with a purchasable MPN, a
+mating connector proven from both manufacturers' drawings, and a driver circuit
+re-derived to component values.** Everything before it was architecture on paper.
+The three points are for **M-06 and M-07 closing**, which removes the last gate on
+FBV2-S1 — sheet `03_spi_a_display_sd` is now unblocked and every sheet in the
+migration can start.
+
+It is **not** more than three because nothing was built: no schematic exists, no
+board exists, `hardware/beta-v2/` does not exist, and the mating pair is proven on
+paper rather than by a mated sample.
+
+<details>
+<summary>Superseded — the ~25% assessment (FBV2-MECH-001)</summary>
 
 **FBV2-A2 PASSED** (2026-08-22, FBV2-MECH-001). Three of twelve gates now pass.
 Every dimensional dependency that could have forced a late PCB redesign is
@@ -65,11 +83,13 @@ Raised five points and **no more**. All three passed gates remain paper gates �
 **no schematic exists, no PCB exists, no CAD exists**, and every mechanical figure
 is TARGET (derived) rather than LOCKED (measured in CAD).
 
+</details>
+
 <details>
 <summary>Superseded estimates</summary>
 
-**~20%** — FBV2-PWR-002. **~15%** — FBV2-PWR-001. **~13%** — FBV2-ARCH-002.
-**~10%** — FBV2-ARCH-001. **~8%** — FBV2-DOC-001.
+**~25%** — FBV2-MECH-001. **~20%** — FBV2-PWR-002. **~15%** — FBV2-PWR-001.
+**~13%** — FBV2-ARCH-002. **~10%** — FBV2-ARCH-001. **~8%** — FBV2-DOC-001.
 </details>
 
 ### Previous estimate: ~20%
@@ -142,7 +162,7 @@ work.
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
 | **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
 | **FBV2-A2** | Mechanical interface freeze | **PASS** | 2026-08-22 |
-| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED — NEXT GATE.** ⚠ Sheet `03_spi_a_display_sd` is gated on **M-06**; all other sheets are unblocked | — |
+| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED — NEXT GATE. FULLY UNBLOCKED** as of 2026-08-23: **M-06 and M-07 are closed**, so sheet `03_spi_a_display_sd` is no longer gated | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
 | **FBV2-P2** | Routing | **NOT STARTED** | — |
@@ -256,6 +276,25 @@ no topology.
 
 </details>
 
+### Blockers added or changed by FBV2-DISP-002 (2026-08-23)
+
+| # | blocker | status |
+|---|---|---|
+| ~~M-06~~ | Display MPN and FPC interface | **CLOSED** — `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin, 0.50 mm, **bottom contact**, 0.30 ± 0.03 mm; FT6236 @ 0x38 (D-074/D-075) |
+| ~~M-07~~ | Backlight driver re-derivation | **CLOSED** — TPS61169 retained from `+3V3`; `R69` = 1.87 R, `R70`–`R73` = 4 × 33 R; switch-peak margin 4.6× (D-079) |
+| **B-28** | **ILI9488 `SDO` on the shared SPI-A bus is unverified.** Mitigated by design: fit a 0 R `R_SDO` isolation link plus a test point so the display can be made write-only without a respin | **OPEN, mitigated.** Closes at FBV2-B2 |
+| **B-29** | **`J1` footprint must be redrawn** on the FH12-horizontal / FH52E standard land pattern (D-077) and verified with a per-footprint pad-overlap assertion against **both** connector drawings | **OPEN.** Closes at FBV2-S2 — folds into B-03 |
+| **B-30** | The datasheet does not name which FPC pin feeds the FT6236 VDD. Immaterial here — VDDI, VCI and the CTP supply are all `+3V3` | **OPEN, informational.** First article |
+| **B-31** | Display FPC contact plating is not stated; Hirose recommends gold | **OPEN, low.** PO / first article |
+| **B-32** | Confirm ≥ 4.7 µF X5R input decoupling local to `U17` `VIN` — input ripple current rises ~47 % | **OPEN, low.** FBV2-S1 |
+| **B-33** | **The 2.3 mm `J1` cannot sit in the display shadow** (0.8 mm limit). It competes for the 70.04 mm below the panel with the D-pad, A/B and the mic aperture | **OPEN.** Placement coupling; closes at FBV2-P1 (tracked as M-08 in the mechanical spec) |
+
+**Two MEDIUM procurement risks remain and neither is a design change:** the vendor
+also sells a CST340 touch panel for this size, so the purchase order must name
+`ER-TPC035-6`; and the datasheet carries a "Backlight Update" revision, so
+Rev 2.0 (18-Aug-2025) must be archived in-repo and cited by revision in the MPN
+ledger.
+
 ### Blockers added or changed by FBV2-PWR-002 (2026-08-22)
 
 | # | blocker | status |
@@ -336,4 +375,5 @@ DS12484 tables; every other footprint remains unverified.
 | 2026-08-22 | FBV2-PWR-001. Overall raised 13% → 15%; **no gate passed. FBV2-A1 FAIL, 5 of 6 criteria closed.** D-061…D-064 recorded. **P-13 and B-24 closed** by primary-source evidence; B-22 closed. Complete battery-protection topology specified. Fuse **REQUIRED**, clamp **REQUIRED**, PTC **REJECTED**. |
 | 2026-08-22 | FBV2-DISP-001. **No gate passed — percentage holds at 25%.** D-071/D-072/D-073 recorded. Display size LOCKED at **3.5″**; battery envelope LOCKED. **Display MPN and J1 deliberately NOT locked** — old-J1 compatibility is **UNPROVEN**. ESP32-S3 SPI verdict **PASS** (FSPI IO_MUX, 80 MHz, no bus merge). M-01/M-02 closed; **M-06/M-07 opened.** |
 | 2026-08-22 | FBV2-MECH-001. Overall raised 20% → 25%. **FBV2-A2 = PASS.** D-069/D-070 recorded; cavity **75.0 × 155.0 × 18.5 mm** derived; PCB target **70 × 148**; **P-07 closed**; M-01/M-02 opened. Beta-DM 74 × 155 outline ruled **RE-FLOORPLAN REQUIRED**. Next gate: **FBV2-S1**. |
+| 2026-08-23 | FBV2-DISP-002. Overall raised 25% → 28%. **No gate in the twelve-gate table passed**; the task gate **FBV2-DISP-LOCK = PASS**. **Display LOCKED** — EastRising `ER-TFT035IPS-6` + `ER-TPC035-6` (ILI9488 + FT6236 @ 0x38), 56.54 × 84.96 × 3.95 mm, one 50-pin 0.50 mm **bottom-contact** 0.30 mm FPC. **`J1` LOCKED** — Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings, on the FH12/FH52E land pattern for a JLC second source. **Backlight closed** — TPS61169 retained, `R69` 2.55 R → **1.87 R**, `R70`–`R73` 4 × 39 R → **4 × 33 R**. D-074…D-080 recorded. **M-06 and M-07 CLOSED**; B-28…B-33 opened. ST7796S formally rejected on availability (D-078). |
 | 2026-08-22 | FBV2-PWR-002. Overall raised 15% → 20%. **FBV2-A1 = PASS** — first gate since A0. D-065…D-068 recorded. Pass path changed to **P2** (4 FETs, 2 packages). Dead-cell recovery specified to component level. **P-11, P-12, B-20, B-21, B-23 closed**; B-26/B-27 opened. Clamp **demoted to secondary**, fuse **resized 3 A → ≈5 A**. Next gate: **FBV2-A2**. |

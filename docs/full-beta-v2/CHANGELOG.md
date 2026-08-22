@@ -9,6 +9,123 @@ an entry.
 
 ---
 
+## 2026-08-23 — Display, connector and backlight LOCKED (FBV2-DISP-002)
+
+Documentation only. No design file touched. `hardware/beta-v2/` was not created.
+
+**FBV2-DISP-LOCK = PASS. M-06 CLOSED. M-07 CLOSED.** Sheet
+`03_spi_a_display_sd` is unblocked, which removes the last gate on FBV2-S1.
+
+**Display LOCKED: EastRising `ER-TFT035IPS-6` + `ER-TPC035-6`** (D-074) — 3.5″
+IPS 320×480, **ILI9488** COG, **FocalTech FT6236** capacitive touch at **I²C
+0x38**, assembled outline **56.54 × 84.96 × 3.95 ± 0.25 mm**, active
+48.96 × 73.44 mm, 300 cd/m², 500:1, 80/80/80/80.
+
+**FPC LOCKED (D-075): one 50-pin tail, 0.50 mm pitch, BOTTOM CONTACT,
+0.30 ± 0.03 mm thick, 25.5 ± 0.15 mm wide, 30 ± 0.5 mm free length.** Display
+*and* touch leave on that single tail — touch on pins 44–47. All three of the
+parameters D-049 forbids guessing are printed in the vendor's own datasheet
+(Rev 2.0, 18-Aug-2025). No second connector, no soldered flying lead.
+
+**`J1` LOCKED: Hirose `FH69-50S-0.5SH`** (D-076). The compatibility argument is
+the point: it is made from **both manufacturers' drawings**, not from a matching
+pin count. The display tail is 0.30 ± 0.03 mm and the connector requires
+0.30 ± 0.05 mm; the tail is bottom-contact and **FH69 accepts top *and* bottom
+contacts** on a 2-point design. **The classic dead-first-article failure — an FPC
+facing the wrong way — cannot occur with this pair.** Digi-Key: Active, 1,907 in
+stock, US$2.16 @ 1, MOQ 1.
+
+**`J1` is laid out on the FH12-horizontal / FH52E standard land pattern, not on
+FH69's dedicated pattern** (D-077). Hirose states FH69 fits that pattern, and
+doing so makes **`FH52E-50S-0.5SH` (LCSC `C7465440`, JLCPCB-orderable)** a genuine
+drop-in second source with no board change. That is D-049 applied to a connector.
+
+**D-073 is resolved, and the answer is that the connector was never the problem.**
+As a by-product, `ER-TFT035-6` with CTP measures **56.54 × 84.96 mm** — the same
+figures to 0.01 mm as Chenghao's `CH350HV40A-CT`, with the same active area and
+the same 6-LED parallel backlight. The two are, to a high confidence, the same
+glass from the same upstream supplier, and Chenghao's *"pin pitch 0.3 ~ 0.4 mm"*
+is very likely a datasheet defect conflating tail thickness (0.3 mm) and conductor
+width (0.35 mm) with pitch. **That is an inference, not a proof**, and Chenghao
+stays rejected — a supplier that cannot state its own pitch cannot be designed
+against. What it does retire is the fear that the *family* uses a sub-0.5 mm
+pitch. It does not.
+
+**ST7796S is formally rejected on availability, not on merit** (D-078). Eleven
+suppliers were surveyed — Newhaven, Riverdi, EastRising, Winstar, Raystar, Focus
+LCDs, DisplayModule, VIEWE, Chenghao and the hobby vendors. **No ST7796S / ST7796U
+3.5″ 320×480 IPS module with a capacitive touch panel, a named touch controller
+and a complete public FPC specification exists from a production supplier.**
+ST7796S appears only on hobby breakouts (excluded by the brief), on touch-less
+LCMs, or with ambiguous FPC data. Every candidate that meets the full requirement
+set carries ILI9488. The cost is quantified: **+50 % SPI-A traffic; 46 ms
+(21.7 fps) for a full 320×480 frame at 80 MHz FSPI IO_MUX against 31 ms for
+ST7796S.** Accepted for menus, graphs, logs and status screens.
+
+**Rejections, each on a recorded ground:** Riverdi `RVT35HITNWC00-B` — 59.56 ×
+**93.34 × 5.66 mm** and a **10-LED, 14–16 V, 100 mA** backlight (~1.5 W). Focus
+LCDs' IPS parts — **End of Life / NRND**, US$109 for 8 pcs. Focus `E35RG73248…-C`
+— 61.90 × 91.04 mm and **two** connectors. Winstar `WF35UTYAIDNN0` and Raystar
+`RFI350U-AYW-DNN` — excellent LCMs, **no touch variant**. Newhaven — current 3.5″
+IPS is **640×480 MIPI DSI**, which the ESP32-S3 cannot drive. DisplayModule
+`DM-TFT35-431` — ST7796S but **no documented touch controller**.
+
+**Backlight closed (D-079). The TPS61169 stays, and for a structural reason:**
+`U17` boosts from **`+3V3`**, not from the battery. A 6-LED *parallel* array sits
+at only ~3.0–3.2 V, and a boost cannot regulate below its own input — had the
+driver been fed from `VSYS` (3.0–4.35 V) this panel would have forced a buck-boost
+or a linear sink. From a fixed 3.3 V, a modest ballast lifts the output to
+~4.15 V and the converter stays firmly in boost at every corner.
+
+New values: **`R69` (RSET) 2.55 R → 1.87 R ±1 %** → 109 mA typ, 100.5–117.6 mA
+over the VREF band, always under the panel's 120 mA maximum. **`R70`–`R73`
+4 × 39 R → 4 × 33 R, all in parallel on the single `LED_A` net** = 8.25 R, which
+reuses the existing footprint group, quarters per-part dissipation to 24.6 mW and
+leaves three DNP-able trim steps. Margins: **switch peak 263 mA against a 1.2 A
+limit (4.6×)**; `L3` 12.5×; `D8` 2.1×; `C44` unchanged at 1.28× against the 39 V
+OVP worst case. `L3`, `D8` and `C44` are all retained.
+
+**The backlight is cheaper than FBV2-DISP-001 feared.** That audit assumed
+6 × 20 mA and predicted roughly +50 %. The real panel is specified at **120 mA
+maximum / 90 mA life point across six chips**, so per-LED current *falls* from
+20 mA to 15 mA. At default brightness the pack sees **129 mA against Beta-DM's
+118 mA — about +9 %** for 1.56× the screen area and 2× the pixels, and LED life
+improves rather than degrades.
+
+**Electrically the migration is free** (D-080). 4-wire SPI is selected by hard-tying
+IM2/IM1/IM0 = 1/1/1 to VDDI, and the panel's SCK/MOSI/MISO/CS/DC/RESET land on the
+existing GPIO12/11/13/10/14 and `U60 P04`; touch lands on the existing I²C bus with
+the **same FT6236 at the same 0x38**, `TOUCH_RST_N` still on `U60 P00`. **Zero new
+native GPIO. No new rail. No level shifting. No SPI bus merge.** B-10 is unaffected.
+
+**One caution, mitigated by design:** the ILI9488's `SDO` behaviour on a bus shared
+with microSD is not stated in the datasheet, and ILI9488 modules have a field
+reputation for holding SDO driven. A **0 R `R_SDO` series link plus a test point**
+lets the display be made write-only at bring-up without a respin, a trace cut or a
+bodge (B-28).
+
+**Mechanical PASS with margin.** 56.54 × 84.96 × **4.20 mm max** inside the
+60 × 90 × 4.5 envelope; 9.23 mm of cavity each side; **70.04 mm** of the 155 mm
+cavity height left for the D-pad, A/B and the mic aperture; front stack 7.30 mm
+plus the 8.0 mm battery = 15.30 mm of the 18.5 mm cavity, **3.20 mm spare**. The
+6 mm FPC bend corridor is retained and is generous against the ≥3 mm a 0.30 mm
+tail needs. **One new placement coupling:** at 2.3 mm the connector cannot sit in
+the display shadow (0.8 mm limit), so it competes for the space below the panel
+(B-33 / M-08).
+
+**Procurement risk LOW**, with two MEDIUM items that are closed on the purchase
+order rather than in the design: the vendor also sells a **CST340** touch panel
+for this size, so the PO must name `ER-TPC035-6`; and the datasheet carries a
+**"Backlight Update" revision**, so Rev 2.0 must be archived in-repo and cited by
+revision in the MPN ledger. Against that, EastRising publishes a written
+**≥10-year continuity-supply commitment** — the only candidate in the survey that
+does — at **MOQ 1**, in stock, **US$15.57 per display in prototype quantity**.
+
+Full analysis:
+[`audits/2026-08-23-display-procurement-lock.md`](audits/2026-08-23-display-procurement-lock.md).
+
+---
+
 ## 2026-08-22 — Display size ruled 3.5″; MPN deliberately not locked (FBV2-DISP-001)
 
 Documentation only. No design file touched.

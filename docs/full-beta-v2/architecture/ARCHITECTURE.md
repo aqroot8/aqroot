@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-22
+Date: 2026-08-23 (display and connector lock, FBV2-DISP-002)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
@@ -26,7 +26,7 @@ Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
 
 | element | implementation |
 |---|---|
-| **TFT / touch** | **3.5 inch 320×480 IPS + capacitive touch (D-072).** Leading candidate **CH350HV40A-CT** (56.54 × 84.96 × 3.97 mm, active 48.96 × 73.44, ILI9488, 6-LED backlight) — **MPN NOT LOCKED (M-06)**: vendor quotes pitch as a range and never names the CTP. **ST7796S-class preferred** — ILI9488 cannot send RGB565 over SPI. **`J1` is NOT locked**; compatibility of the old FH69-50S-0.5SH with the 2.8″ panel is **UNPROVEN**. Backlight via `U17` TPS61169 — `RSET` must be re-derived for 6 LEDs (M-07). |
+| **TFT / touch** | **LOCKED (D-074…D-078).** **EastRising `ER-TFT035IPS-6`** 3.5″ IPS 320×480, **ILI9488** (COG), with **`ER-TPC035-6`** capacitive touch, **FocalTech `FT6236` @ I²C 0x38**. Assembled outline **56.54 × 84.96 × 3.95 ± 0.25 mm**, active 48.96 × 73.44 mm. **One 50-pin FPC — 0.50 mm pitch, bottom contact, 0.30 ± 0.03 mm thick, 25.5 ± 0.15 mm wide** — carries display *and* touch (touch on pins 44–47). **`J1` = Hirose `FH69-50S-0.5SH`** (top *and* bottom 2-point contact, accepts 0.30 ± 0.05 mm FPC), laid out on the **FH12/FH52E standard land pattern** so `FH52E-50S-0.5SH` (LCSC C7465440) is a drop-in second source (D-077). ST7796S was preferred and does not exist in a documented CTP module (D-078); the cost is **+50 % SPI-A traffic**, 46 ms full frame at 80 MHz. Backlight: **6 LEDs in parallel, one anode**, 2.9–3.2 V, 120 mA max / 90 mA life point — `U17` TPS61169 retained from `+3V3`, **`R69` = 1.87 R**, **`R70`–`R73` = 4 × 33 R in parallel** (D-079). |
 | **D-pad** | `SW2`-`SW5` on internal expander `U2` P10-P13. |
 | **A / B** | `SW6` / `SW7` on `U2` P14 / P15. |
 | **Microphone** | `MK1` ICS-43434 I2S MEMS. Front opening. |
@@ -197,7 +197,8 @@ Authoritative source: [`../mechanical/MECHANICAL_INTERFACE_SPEC.md`](../mechanic
 | Internal cavity | **75.0 × 155.0 × 18.5 mm** | TARGET |
 | PCB target | **70.0 × 148.0 mm** × 1.6 mm | TARGET |
 | Battery envelope | **60 × 75 × 8.0 mm** (~2500–3000 mAh) | **LOCKED** (D-071) |
-| Display size / envelope | **3.5 inch**; module ≤ 60 × 90 × 4.5 mm | **LOCKED** (D-072) / TARGET |
+| Display size / envelope | **3.5 inch**; module ≤ 60 × 90 × 4.5 mm. Fitted part **56.54 × 84.96 × 4.20 max** | **LOCKED** (D-072, D-074) |
+| Display MPN / FPC / connector | `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin 0.5 mm bottom-contact 0.30 mm FPC; `J1` = `FH69-50S-0.5SH` | **LOCKED** (D-074…D-077) |
 | NFC zone | **45 × 45 mm**, rear upper third, **zero battery overlap** | TARGET |
 | Z verdict | **PASS** — 19.5 of 23.0 mm on the governing column | — |
 

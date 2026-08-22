@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-22 (FBV2-ARCH-002)
+Last updated: 2026-08-23 (FBV2-DISP-002)
 
 ---
 
@@ -652,6 +652,49 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8k. Display, connector and backlight LOCK (FBV2-DISP-002)
+
+| # | decision | date |
+|---|---|---|
+| D-074 | **DISPLAY LOCKED: EastRising `ER-TFT035IPS-6` (3.5" IPS 320x480, ILI9488, COG) with `ER-TPC035-6` capacitive touch panel (FocalTech `FT6236`, I2C, address `0x38`).** Assembled outline **56.54 x 84.96 x 3.95 ± 0.25 mm**, active area 48.96 x 73.44 mm. | 2026-08-23 |
+| D-075 | **FPC INTERFACE LOCKED: one 50-pin tail, 0.50 mm pitch, BOTTOM CONTACT, tail thickness 0.30 ± 0.03 mm, tail width 25.5 ± 0.15 mm, free length 30 ± 0.5 mm.** Display **and** touch leave the module on that single tail (touch on pins 44–47). All three no-guess parameters are printed in the vendor datasheet, Rev 2.0 of 18-Aug-2025. | 2026-08-23 |
+| D-076 | **`J1` LOCKED: Hirose `FH69-50S-0.5SH` (HRS CL0580-5008-0-00).** 0.5 mm pitch, 50 pos, **top *and* bottom 2-point contact**, applicable FPC **0.30 ± 0.05 mm**, 2.3 mm height, backflip ZIF, 0.5 A / 50 V, −55…+125 °C. Compatibility is proven from **both manufacturers' drawings**, not from a matching pin count. D-073's concern is resolved: the connector was never the problem, and FH69 is contact-side agnostic so the classic dead-first-article failure cannot occur. | 2026-08-23 |
+| D-077 | **`J1` is laid out on the FH12-horizontal / FH52E-50S-0.5SH STANDARD land pattern, not on FH69's dedicated pattern.** Hirose states FH69 fits that pattern; doing so makes **`FH52E-50S-0.5SH` (LCSC `C7465440`, JLCPCB-orderable)** a true drop-in second source with no board change. Beta-DM's FH69-dedicated footprint is retained in the library but is not the v2 footprint. | 2026-08-23 |
+| D-078 | **ILI9488 is ACCEPTED in place of the preferred ST7796S/U.** No ST7796S 3.5" 320x480 IPS module with a capacitive touch panel, a named touch controller and a complete public FPC specification exists from a production supplier — ST7796S appears only on hobby breakouts, on touch-less LCMs, or with ambiguous FPC data. The cost is quantified and bounded: **+50 % SPI-A traffic; 46 ms (21.7 fps) full-frame at 80 MHz** against 31 ms for ST7796S. Acceptable for menus, graphs, logs and status screens. | 2026-08-23 |
+| D-079 | **BACKLIGHT ARCHITECTURE UNCHANGED. `U17` TPS61169DCKR REMAINS**, boosting from `+3V3` as on Beta-DM. New values: **`R69` (RSET) = 1.87 R ±1 %** → 109 mA typ, 100.5–117.6 mA over the VREF band, always under the panel's 120 mA maximum; **`R70`–`R73` = 4 x 33 R in parallel = 8.25 R** on the single `LED_A` net. `L3`, `D8` and `C44` are all retained with verified margin (switch peak 263 mA against a 1.2 A limit, **4.6x**). Normal brightness is set by PWM on `DISP_BL_CTL`. | 2026-08-23 |
+| D-080 | **Panel supply is `+3V3` for both VCI and VDDI. No 2.8 V rail, no level shifting, no new native GPIO.** 3.3 V is the top of the recommended range against a 4.6 V absolute maximum (1.39x). The interface-mode strap IM2/IM1/IM0 = 1/1/1 is hard-tied to VDDI and consumes no GPIO. | 2026-08-23 |
+
+> **Result (FBV2-DISP-002).** Full analysis:
+> [`audits/2026-08-23-display-procurement-lock.md`](audits/2026-08-23-display-procurement-lock.md).
+>
+> **FBV2-DISP-LOCK = PASS. M-06 CLOSED. M-07 CLOSED.** Schematic sheet
+> `03_spi_a_display_sd` is unblocked; FBV2-S1 has no remaining display gate.
+>
+> **Fallback ranking.** #1 `ER-TFT035IPS-6`. **#2 `ER-TFT035-6`** — the same
+> vendor's TN sibling, dimensionally and electrically identical (56.54 x 84.96,
+> ILI9488, same 50-pin 0.5 mm bottom-contact tail, same FT6236 CTP), a true
+> drop-in at the cost of IPS optics. **#3 VIEWE `UE035HV-RB40-A118`** — ST7365P +
+> CHSC6540, conditional only, because at **61.5 mm** it is 1.5 mm over the width
+> envelope. Riverdi `RVT35HITNWC00-B`, Focus LCDs `E35RG*`, Winstar
+> `WF35UTYAIDNN0`, Raystar `RFI350U-AYW-DNN`, Newhaven's 3.5" line and
+> DisplayModule `DM-TFT35-431` were each evaluated and rejected on a recorded,
+> evidenced ground.
+>
+> **The backlight is cheaper than feared.** FBV2-DISP-001 assumed 6 x 20 mA and
+> predicted roughly +50 % backlight draw. The real panel is specified at
+> **120 mA maximum / 90 mA life point across six chips**, so per-LED current
+> *falls* from 20 mA to 15 mA. At default brightness the pack sees
+> **129 mA against Beta-DM's 118 mA — about +9 %** for 1.56x the area and 2x the
+> pixels.
+>
+> **Two MEDIUM procurement risks remain, and both are closed on the purchase
+> order rather than in the design:** the vendor also sells a CST340 touch panel
+> for this size, so the PO must name `ER-TPC035-6`; and the datasheet carries a
+> "Backlight Update" revision, so Rev 2.0 (18-Aug-2025) must be archived in-repo
+> and cited by revision in the MPN ledger.
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -682,8 +725,8 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I²C segmentation — buffer alone, or add a mux?** | An accessory holding SDA low blinds the fuel gauge **and** all XGPIO simultaneously; nothing prevents address collision on 0x36 or 0x20–0x27. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
-| **M-06** | **Display MPN and FPC interface not locked.** Requires the full vendor spec: single pitch, pin table, tail thickness, contact side, CTP part number and address, backlight pin arrangement. | **Blocks schematic sheet `03_spi_a_display_sd`, J1 selection and FBV2-P1.** Does **not** block the rest of FBV2-S1. | 2026-08-22 |
-| **M-07** | **Backlight driver re-derivation.** `RSET` (2.55R on Beta-DM) and the TPS61169 current capability for a **6-LED** panel rather than 4. | Display sheet only. | 2026-08-22 |
+| ~~**M-06**~~ | ~~Display MPN and FPC interface not locked.~~ **CLOSED 2026-08-23 by D-074…D-078 (FBV2-DISP-002).** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin, 0.5 mm, bottom contact, 0.30 ± 0.03 mm; FT6236 @ 0x38; `J1` = Hirose `FH69-50S-0.5SH`. | closed | 2026-08-22 |
+| ~~**M-07**~~ | ~~Backlight driver re-derivation.~~ **CLOSED 2026-08-23 by D-079.** TPS61169 retained; `R69` = 1.87 R, `R70`–`R73` = 4 x 33 R; switch-peak margin 4.6x; `L3`/`D8`/`C44` unchanged. | closed | 2026-08-22 |
 | ~~**M-01**~~ | ~~Display size / panel MPN.~~ **CLOSED 2026-08-22 by D-072 - 3.5 inch ruled.** Replaced by M-06. | closed | 2026-08-22 |
 | ~~superseded~~ | ~~**Display size / panel MPN.**~~ 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally**. A 50 × 69 mm module in an 80 × 160 front is modest — the cavity comfortably accepts **3.2″ or 3.5″**. | Does **not** block FBV2-A2 or schematic migration. **Does** block PCB floorplanning (FBV2-P1): display size sets the front layout, which sets the rear free area, which sets the NFC zone. | 2026-08-22 |
 | ~~**M-02**~~ | ~~Battery capacity target.~~ **CLOSED 2026-08-22 by D-071** - 60 x 75 x 8.0 mm, ~2500-3000 mAh. | closed | 2026-08-22 |
@@ -695,6 +738,8 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 
 | # | closed by | outcome |
 |---|---|---|
+| **M-06** | D-074…D-078 | **Display and connector LOCKED.** `ER-TFT035IPS-6` + `ER-TPC035-6`, `J1` = Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings. |
+| **M-07** | D-079 | **Backlight LOCKED.** TPS61169 retained; `R69` 2.55 R -> **1.87 R**; `R70`–`R73` 4 x 39 R -> **4 x 33 R in parallel** on one anode. |
 | **P-10** | D-055 | NFC runs at 3.3 V on the first build (was "N1"), **with** a no-respin 5 V fallback per D-056. |
 | **P-01** | D-050…D-054 | Reverse-polarity **topology** chosen: LTC4368-1 + dual N-FET + fuse + clamp. Component values and dead-cell recovery remain open as P-11…P-13. |
 | **P-05** | D-037 | RGB architecture removed; three expander pins freed. |

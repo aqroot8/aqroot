@@ -2,7 +2,7 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002 — display and connector LOCKED)
 Task: FBV2-MECH-001
 Gate: **FBV2-A2**
 Status: interface freeze. **No CAD exists yet. No PCB outline has been drawn.**
@@ -38,7 +38,7 @@ value is TARGET, however confident the arithmetic.
 | 5 | **PCB_TARGET** | **70.0 × 148.0 mm** | **TARGET** | §4 — recommended outline |
 | 6 | **PCB_THICKNESS** | **1.6 mm** | **LOCKED** | carried from Beta-DM; measured |
 | 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh | **LOCKED** | **D-071** (2026-08-22) |
-| 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. Candidate CH350HV40A-CT: **56.54 × 84.96 × 3.97 mm**, active 48.96 × 73.44 | **TARGET** | **D-072 — 3.5 inch.** Revised by FBV2-DISP-001; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
+| 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. **Fitted part `ER-TFT035IPS-6` + `ER-TPC035-6`: 56.54 × 84.96 × 3.95 ± 0.25 mm (4.20 max)**, active 48.96 × 73.44 | **LOCKED** | **D-072 / D-074.** Locked by FBV2-DISP-002; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
 | 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 4.0 mm** or **15 × 11 × 3.5 mm**, + **1.5–2.0 cm³** rear cavity | **TARGET** | §7 |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **24 × 10 × 9 mm** incl. shroud; 2×10 @ 2.00 mm, right-angle, right wall | **TARGET** | §5. **MPN not locked** |
@@ -50,8 +50,8 @@ value is TARGET, however confident the arithmetic.
 | 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
 | 18 | Device orientation | **portrait** — 80 wide × 160 tall | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
 | 19 | Display size | **3.5 inch** | **LOCKED** | **D-072** |
-| 20 | Display panel MPN / FPC | leading candidate CH350HV40A-CT | **TBD** | **M-06** — pitch stated as a *range*, CTP unnamed, ILI9488 costs 1.5× SPI traffic |
-| 21 | J1 mating connector | conditional on the panel's pitch / pin count / contact side | **TBD** | **M-06.** Existing FH69-50S-0.5SH reusable only if the panel proves 50-pin 0.5 mm |
+| 20 | Display panel MPN / FPC | **`ER-TFT035IPS-6` + `ER-TPC035-6`** — one **50-pin, 0.50 mm pitch, bottom-contact** FPC, **0.30 ± 0.03 mm** thick, 25.5 ± 0.15 mm wide, 30 ± 0.5 mm free length; CTP **FT6236 @ 0x38** on pins 44–47 of the same tail | **LOCKED** | **D-074 / D-075.** M-06 closed |
+| 21 | J1 mating connector | **Hirose `FH69-50S-0.5SH`** — 0.5 mm, 50 pos, **top *and* bottom contact**, FPC **0.30 ± 0.05 mm**, height **2.3 mm**, right-angle, backflip ZIF. Laid out on the **FH12 / FH52E standard land pattern**; second source `FH52E-50S-0.5SH` (LCSC C7465440) | **LOCKED** | **D-076 / D-077.** Mating proven from both manufacturers' drawings |
 | 22 | Battery SKU | — | **TBD** | envelope LOCKED instead (row 7) |
 
 ---
@@ -64,8 +64,8 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 | item | part | dimensions | notes |
 |---|---|---|---|
-| **Display** | **3.5″ 320×480 IPS + CTP** (D-072). Leading candidate **CH350HV40A-CT** | **56.54 × 84.96 × 3.97 mm**, active **48.96 × 73.44 mm**, dot pitch 0.153 mm, **50-pin FPC**, **6 LED parallel** backlight, ILI9488 | ⚠ **NOT LOCKED (M-06).** Vendor states pitch as a **range “0.3 ~ 0.4 mm”**, names no touch controller, and quotes thickness inconsistently (3.97 vs 2.4 mm). **ST7796S-class preferred** — ILI9488 cannot send RGB565 over SPI |
-| Display connector | **TBD (M-06)** | conditional on the panel's pitch, pin count and contact side | The existing **FH69-50S-0.5SH** is reusable **only** if the panel proves 50-pin 0.5 mm. **Compatibility with the old 2.8″ panel is UNPROVEN** — no source states its pitch. Reserve a **6 mm FPC bend corridor** behind the panel edge regardless |
+| **Display** | **3.5″ 320×480 IPS + CTP** (D-072). **`ER-TFT035IPS-6` + `ER-TPC035-6`** | **56.54 × 84.96 × 3.95 ± 0.25 mm**, active **48.96 × 73.44 mm**, dot pitch 0.153 mm, **one 50-pin 0.5 mm bottom-contact FPC**, **6 LED parallel** backlight (2.9–3.2 V, 120 mA max), ILI9488 + FT6236 | **LOCKED (D-074).** ST7796S was preferred and does not exist in a documented CTP module at this size (D-078); the cost is +50 % SPI-A traffic |
+| Display connector | **Hirose `FH69-50S-0.5SH`** | 0.5 mm, 50 pos, **top and bottom contact**, FPC 0.30 ± 0.05 mm, **2.3 mm high**, right-angle | **LOCKED (D-076).** ⚠ At 2.3 mm it **cannot sit under the panel** (0.8 mm display-shadow limit) — it must be placed in the 70.04 mm below the display, alongside the D-pad, A/B and mic aperture (**B-33**). The **6 mm FPC bend corridor** is retained and is generous against the ≥3 mm needed for a 0.30 mm tail |
 | **Front controls** | SW2–SW7 PTS645SM43SMTR92LFS | 6.0 × 6.0 × **4.3 mm** (typical), ~0.25 mm travel | 6 switches: D-pad ×4, A, B. **Tallest top-side class.** Needs a plunger/keypad stack of ~1.0 mm above the actuator |
 | **Power** | SW9 JS102011SAQN | SPDT slide, ~4.7 × 2.9 × 2.0 mm body + actuator (typical) | Right wall, lower third |
 | **USB-C** | GCT USB4105-GF-A-120 | ~9.2 × 7.35 × **3.26 mm** (typical), top-mount horizontal | Bottom edge; shell aperture must clear the receptacle mouth |
@@ -124,7 +124,7 @@ Computed with real clearances, not nominal sums.
 | layer | mm |
 |---|---|
 | Front shell | 2.0 |
-| CTP + TFT stack (3.5″ candidate, was 2.9 for the 2.8″) | **3.97** |
+| CTP + TFT stack (`ER-TFT035IPS-6` + `ER-TPC035-6`, was 2.9 for the 2.8″) | **3.95 ± 0.25 → 4.20 max** |
 | Adhesive / support | 0.5 |
 | PCB top components (display shadow limit) | 0.8 |
 | PCB | 1.6 |
@@ -133,7 +133,7 @@ Computed with real clearances, not nominal sums.
 | NFC loop (flex) | 0.2 |
 | Clearance | 0.5 |
 | Rear shell | 2.0 |
-| **Total** | **12.9 mm** — 10.1 mm spare *(revised by FBV2-DISP-001 for the 3.5″ stack)* |
+| **Total** | **13.1 mm** — 9.9 mm spare *(revised by FBV2-DISP-002 for the locked 4.20 mm max module)* |
 
 **Column B — control region (rear: battery)** ← governing column
 
@@ -403,8 +403,9 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 |---|---|---|
 | ~~M-01~~ | ~~Display size~~ | **CLOSED by D-072 — 3.5 inch.** |
 | ~~M-02~~ | ~~Battery capacity target~~ | **CLOSED by D-071 — 60 × 75 × 8.0 mm, ~2500–3000 mAh.** |
-| **M-06** | **Display MPN and FPC interface** | Needs a full vendor spec: single pitch, pin table, tail thickness, contact side, CTP part and address, backlight pin arrangement. **Blocks the display schematic sheet, J1 selection and FBV2-P1** |
-| **M-07** | **Backlight driver re-derivation** | 6 LEDs rather than 4: `RSET` (2.55R on Beta-DM) and the TPS61169 current capability must be re-derived |
+| ~~M-06~~ | ~~Display MPN and FPC interface~~ | **CLOSED 2026-08-23 by D-074…D-078.** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin 0.5 mm bottom contact, 0.30 ± 0.03 mm; `J1` = `FH69-50S-0.5SH` |
+| ~~M-07~~ | ~~Backlight driver re-derivation~~ | **CLOSED 2026-08-23 by D-079.** TPS61169 retained from `+3V3`; `R69` = 1.87 R, `R70`–`R73` = 4 × 33 R |
+| **M-08** | **Connector placement below the display** | The 2.3 mm `J1` competes with the D-pad, A/B and the mic aperture for the 70.04 mm of cavity height under the panel. **Blocks nothing before FBV2-P1** (B-33) |
 | M-03 | Community connector MPN | Envelope frozen; part selection at schematic time |
 | M-04 | Battery SKU | Envelope frozen; SKU at procurement |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
@@ -432,7 +433,10 @@ FBV2_PCB_THICKNESS_MM:   1.6               LOCKED
 FBV2_BATTERY_MM:         60 x 75 x 8.0     LOCKED (D-071)
 FBV2_DISPLAY_SIZE_IN:    3.5               LOCKED (D-072)
 FBV2_DISPLAY_ENVELOPE_MM: 60 x 90 x 4.5    TARGET
-FBV2_DISPLAY_MPN:        not locked        TBD (M-06)
+FBV2_DISPLAY_ACTUAL_MM:  56.54 x 84.96 x 3.95+/-0.25   LOCKED (D-074)
+FBV2_DISPLAY_MPN:        ER-TFT035IPS-6 + ER-TPC035-6  LOCKED (D-074)
+FBV2_DISPLAY_FPC:        50 pin / 0.50 mm / bottom contact / 0.30+/-0.03 mm   LOCKED (D-075)
+FBV2_DISPLAY_CONNECTOR:  Hirose FH69-50S-0.5SH         LOCKED (D-076)
 FBV2_NFC_ZONE_MM:        45 x 45           TARGET
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
 FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)
