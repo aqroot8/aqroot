@@ -605,6 +605,53 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8j. Display and FPC interface (FBV2-DISP-001)
+
+| # | decision | date |
+|---|---|---|
+| D-071 | **Battery envelope LOCKED: 60 x 75 x 8.0 mm, target ~2500-3000 mAh.** | 2026-08-22 |
+| D-072 | **Full Beta v2 display size target is 3.5 inch.** | 2026-08-22 |
+| D-073 | **Do NOT blindly reuse CH280QV10-CT or J1 FH69-50S-0.5SH.** A possible incompatibility exists between the old 50-pin display FPC geometry/pitch and the current 0.5 mm J1 connector. | 2026-08-22 |
+
+> **Verification result (FBV2-DISP-001).** Full analysis:
+> [`audits/2026-08-22-display-interface-closeout.md`](audits/2026-08-22-display-interface-closeout.md).
+>
+> **D-073 is well founded, and the answer is UNPROVEN rather than NO.** No source
+> obtainable to this audit states the CH280QV10-CT's FPC pitch - the Phase-1
+> mechanical audit independently recorded the same gap. **J1 was selected without
+> a display FPC drawing on file and has never been proven to mate.** Its footprint
+> is verified against the *Hirose* drawing, which proves the connector footprint is
+> right and proves nothing about the display. The suspicion is strengthened by the
+> successor part in the same family quoting **0.3-0.4 mm**, not 0.5 mm.
+>
+> **The 3.5-inch candidate CH350HV40A-CT is verified and fits, but is NOT locked.**
+> 320 x 480 IPS, **ILI9488**, module **56.54 x 84.96 x 3.97 mm**, active
+> 48.96 x 73.44 mm, **50 pins**, **6 LED parallel** backlight. Four defects prevent
+> locking: (1) **ILI9488 cannot send RGB565 over SPI** - it takes 3 bytes/pixel,
+> a 1.5x bandwidth penalty an ST7796S-class part avoids; (2) the vendor states
+> **"pin pitch 0.3 ~ 0.4 mm"** - a range, which directly violates D-049's *"no
+> dependence on undocumented pin pitch"*; (3) module thickness is quoted
+> inconsistently as 3.97 and 2.4 mm in the same document; (4) **the touch
+> controller is never named.**
+>
+> **What is locked instead is the interface requirement**: 3.5-inch IPS 320x480,
+> **ST7796S/ST7796U preferred**, I2C CTP of the FT6336U class with a published
+> address, and a **single documented FPC pitch - 0.5 mm strongly preferred**.
+>
+> **The mating connector cannot be selected until the display's pitch, pin count
+> and contact side are confirmed.** Choosing one now would repeat exactly the
+> mistake this audit found. If the panel proves 50-pin 0.5 mm the existing
+> FH69-50S-0.5SH is reusable; if 40-pin 0.5 mm, Hirose FH12-40S-0.5SH(55) is the
+> candidate.
+>
+> **D-071 survives D-072 unchanged** - the larger display consumes front area, not
+> rear volume, and the battery lives behind the PCB. The two rulings also offset
+> each other on power: the 6-LED backlight raises browsing draw from ~100 mA to
+> ~130 mA, while the larger pack takes capacity from 2000 mAh to ~2750 mAh, leaving
+> runtime **flat to slightly better**.
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -635,8 +682,12 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I²C segmentation — buffer alone, or add a mux?** | An accessory holding SDA low blinds the fuel gauge **and** all XGPIO simultaneously; nothing prevents address collision on 0x36 or 0x20–0x27. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
-| **M-01** | **Display size / panel MPN.** 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally**. A 50 × 69 mm module in an 80 × 160 front is modest — the cavity comfortably accepts **3.2″ or 3.5″**. | Does **not** block FBV2-A2 or schematic migration. **Does** block PCB floorplanning (FBV2-P1): display size sets the front layout, which sets the rear free area, which sets the NFC zone. | 2026-08-22 |
-| **M-02** | **Battery capacity target.** The confirmed 3.5 mm of Z margin supports an **8.0 mm** pack (~2500–3000 mAh) against the **2000 mAh** assumed in the power budget. | Either answer fits. Confirm the target, then re-derive runtime in [[13 - Power Budget and Battery Runtime v0.1]]. | 2026-08-22 |
+| **M-06** | **Display MPN and FPC interface not locked.** Requires the full vendor spec: single pitch, pin table, tail thickness, contact side, CTP part number and address, backlight pin arrangement. | **Blocks schematic sheet `03_spi_a_display_sd`, J1 selection and FBV2-P1.** Does **not** block the rest of FBV2-S1. | 2026-08-22 |
+| **M-07** | **Backlight driver re-derivation.** `RSET` (2.55R on Beta-DM) and the TPS61169 current capability for a **6-LED** panel rather than 4. | Display sheet only. | 2026-08-22 |
+| ~~**M-01**~~ | ~~Display size / panel MPN.~~ **CLOSED 2026-08-22 by D-072 - 3.5 inch ruled.** Replaced by M-06. | closed | 2026-08-22 |
+| ~~superseded~~ | ~~**Display size / panel MPN.**~~ 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally**. A 50 × 69 mm module in an 80 × 160 front is modest — the cavity comfortably accepts **3.2″ or 3.5″**. | Does **not** block FBV2-A2 or schematic migration. **Does** block PCB floorplanning (FBV2-P1): display size sets the front layout, which sets the rear free area, which sets the NFC zone. | 2026-08-22 |
+| ~~**M-02**~~ | ~~Battery capacity target.~~ **CLOSED 2026-08-22 by D-071** - 60 x 75 x 8.0 mm, ~2500-3000 mAh. | closed | 2026-08-22 |
+| ~~superseded~~ | ~~**Battery capacity target.**~~ The confirmed 3.5 mm of Z margin supports an **8.0 mm** pack (~2500–3000 mAh) against the **2000 mAh** assumed in the power budget. | Either answer fits. Confirm the target, then re-derive runtime in [[13 - Power Budget and Battery Runtime v0.1]]. | 2026-08-22 |
 | ~~**P-07**~~ | ~~Exact mechanical internal cavity.~~ **CLOSED 2026-08-22 by FBV2-MECH-001** — cavity derived at **75.0 × 155.0 × 18.5 mm** and recorded as TARGET in the mechanical interface spec. | closed | 2026-08-22 |
 | ~~superseded~~ | ~~**Exact mechanical internal cavity.**~~ Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. **Now the long-pole item.** | 2026-08-22 |
 

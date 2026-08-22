@@ -9,6 +9,58 @@ an entry.
 
 ---
 
+## 2026-08-22 — Display size ruled 3.5″; MPN deliberately not locked (FBV2-DISP-001)
+
+Documentation only. No design file touched.
+
+**Battery envelope LOCKED** at 60 × 75 × 8.0 mm, ~2500–3000 mAh (D-071).
+**Display size LOCKED at 3.5 inch** (D-072). **Display MPN and J1 are deliberately
+NOT locked** (D-073), and the reasoning matters more than the conclusion.
+
+**Was the old J1 ever compatible? UNPROVEN — not YES, not NO.** No source
+obtainable to this audit states the CH280QV10-CT's FPC pitch, and the Phase-1
+mechanical audit independently recorded the same gap. **J1 was selected without a
+display FPC drawing on file and has never been proven to mate.** Its footprint is
+verified against the *Hirose* drawing, which proves the connector footprint is
+right and proves nothing about the display. The CTO's suspicion is strengthened by
+the successor part in the same family quoting **0.3–0.4 mm**, not 0.5 mm — if that
+is the family convention, the 2.8″ part may never have mated either.
+
+**The 3.5″ candidate CH350HV40A-CT was verified and it fits** — 320×480 IPS,
+ILI9488, 56.54 × 84.96 × 3.97 mm, active 48.96 × 73.44 mm, 50-pin, 6-LED parallel
+backlight. It clears the ≤60 × 90 × 4.5 mm envelope and leaves 70 mm of the
+155 mm cavity height for the controls. **Four defects stop it being locked:**
+ILI9488 **cannot send RGB565 over SPI** and takes 3 bytes/pixel, a 1.5× bandwidth
+penalty an ST7796S-class part simply does not have; the vendor states **"pin pitch
+0.3 ~ 0.4 mm"**, a *range*, which directly violates D-049's *"no dependence on
+undocumented pin pitch"*; module thickness is quoted as both 3.97 and 2.4 mm in the
+same document; and the touch controller is never named.
+
+**What is locked instead is the interface requirement** — 3.5″ IPS 320×480,
+ST7796S/ST7796U preferred, I²C CTP of the FT6336U class, single documented FPC
+pitch with 0.5 mm strongly preferred. **The mating connector cannot be chosen
+until the panel's pitch, pin count and contact side are confirmed**; choosing one
+now would repeat the exact mistake this audit found.
+
+**ESP32-S3 SPI verdict: PASS, with no bus merge and no radio change.** The panel
+touches only SPI-A; SPI-B keeps the radios and NFC. Usefully, `SPI_A_MOSI`/`SCK`/
+`MISO` sit on GPIO11/12/13 and `DISP_CS` on GPIO10 — exactly the ESP32-S3 **FSPI
+IO_MUX** pins, so the display bus already has the 80 MHz fast path rather than the
+40 MHz matrix route. At 80 MHz an ST7796S-class controller writes a full 320×480
+RGB565 frame in ~31 ms, the same as today's 2.8″ panel at 40 MHz — **the user
+experience does not regress.** With ILI9488 it is ~46 ms instead.
+
+**Backlight rises from 4 LEDs to 6 (+50 %)**, taking browsing draw from ~100 mA to
+~130 mA — but D-071's larger pack takes capacity from 2000 mAh to ~2750 mAh, so
+**runtime is flat to slightly better.** Neither ruling alone would have achieved
+that. The TPS61169 `RSET` (2.55R) and its current capability must be re-derived for
+six LEDs (M-07).
+
+M-01 and M-02 closed. **M-06** (display MPN / FPC) and **M-07** opened. FBV2-A2
+stays PASS. **No gate passed, so the percentage holds at 25 %.**
+
+---
+
 ## 2026-08-22 — Mechanical interfaces frozen; **FBV2-A2 PASSED** (FBV2-MECH-001)
 
 Documentation only. No design file touched. `hardware/beta/mechanical/` was read

@@ -26,7 +26,7 @@ Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
 
 | element | implementation |
 |---|---|
-| **TFT / touch** | Off-board CH280QV10-CT 2.8 inch 240x320 TFT + capacitive touch, mated through `J1` Hirose FH69-50S-0.5SH 50-pin FPC. Backlight driven by `U17` TPS61169 boost. Touch is FT6236-class on internal I2C, polled. |
+| **TFT / touch** | **3.5 inch 320×480 IPS + capacitive touch (D-072).** Leading candidate **CH350HV40A-CT** (56.54 × 84.96 × 3.97 mm, active 48.96 × 73.44, ILI9488, 6-LED backlight) — **MPN NOT LOCKED (M-06)**: vendor quotes pitch as a range and never names the CTP. **ST7796S-class preferred** — ILI9488 cannot send RGB565 over SPI. **`J1` is NOT locked**; compatibility of the old FH69-50S-0.5SH with the 2.8″ panel is **UNPROVEN**. Backlight via `U17` TPS61169 — `RSET` must be re-derived for 6 LEDs (M-07). |
 | **D-pad** | `SW2`-`SW5` on internal expander `U2` P10-P13. |
 | **A / B** | `SW6` / `SW7` on `U2` P14 / P15. |
 | **Microphone** | `MK1` ICS-43434 I2S MEMS. Front opening. |
@@ -196,7 +196,8 @@ Authoritative source: [`../mechanical/MECHANICAL_INTERFACE_SPEC.md`](../mechanic
 | External enclosure | **80 × 160 × 23 mm**, portrait | LOCKED |
 | Internal cavity | **75.0 × 155.0 × 18.5 mm** | TARGET |
 | PCB target | **70.0 × 148.0 mm** × 1.6 mm | TARGET |
-| Battery envelope | **60 × 75 × 8.0 mm** (~2500–3000 mAh) | TARGET |
+| Battery envelope | **60 × 75 × 8.0 mm** (~2500–3000 mAh) | **LOCKED** (D-071) |
+| Display size / envelope | **3.5 inch**; module ≤ 60 × 90 × 4.5 mm | **LOCKED** (D-072) / TARGET |
 | NFC zone | **45 × 45 mm**, rear upper third, **zero battery overlap** | TARGET |
 | Z verdict | **PASS** — 19.5 of 23.0 mm on the governing column | — |
 

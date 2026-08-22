@@ -37,8 +37,8 @@ value is TARGET, however confident the arithmetic.
 | 4 | **PCB_MAX** | **72.0 × 152.0 mm** | **TARGET** | §4 |
 | 5 | **PCB_TARGET** | **70.0 × 148.0 mm** | **TARGET** | §4 — recommended outline |
 | 6 | **PCB_THICKNESS** | **1.6 mm** | **LOCKED** | carried from Beta-DM; measured |
-| 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm** | **TARGET** | §6. ~2500–3000 mAh class |
-| 8 | **DISPLAY_ENVELOPE** | module ≤ **52 × 71 mm**, stack ≤ **3.0 mm** | **TARGET** | §2. Beta-DM panel shadow measured 50 × 69 mm |
+| 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh | **LOCKED** | **D-071** (2026-08-22) |
+| 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. Candidate CH350HV40A-CT: **56.54 × 84.96 × 3.97 mm**, active 48.96 × 73.44 | **TARGET** | **D-072 — 3.5 inch.** Revised by FBV2-DISP-001; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
 | 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 4.0 mm** or **15 × 11 × 3.5 mm**, + **1.5–2.0 cm³** rear cavity | **TARGET** | §7 |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **24 × 10 × 9 mm** incl. shroud; 2×10 @ 2.00 mm, right-angle, right wall | **TARGET** | §5. **MPN not locked** |
@@ -49,8 +49,10 @@ value is TARGET, however confident the arithmetic.
 | 16 | **MOUNTING_BOSSES** | **6 × M2**, Ø6.0 mm keepout, 4 corners + 2 mid-span | **TARGET** | §4 |
 | 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
 | 18 | Device orientation | **portrait** — 80 wide × 160 tall | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
-| 19 | Display size / panel MPN | 2.8″ CH280QV10-CT assumed | **TBD** | **CTO decision — see §10** |
-| 20 | Battery SKU | — | **TBD** | envelope frozen instead (row 7) |
+| 19 | Display size | **3.5 inch** | **LOCKED** | **D-072** |
+| 20 | Display panel MPN / FPC | leading candidate CH350HV40A-CT | **TBD** | **M-06** — pitch stated as a *range*, CTP unnamed, ILI9488 costs 1.5× SPI traffic |
+| 21 | J1 mating connector | conditional on the panel's pitch / pin count / contact side | **TBD** | **M-06.** Existing FH69-50S-0.5SH reusable only if the panel proves 50-pin 0.5 mm |
+| 22 | Battery SKU | — | **TBD** | envelope LOCKED instead (row 7) |
 
 ---
 
@@ -62,8 +64,8 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 | item | part | dimensions | notes |
 |---|---|---|---|
-| **Display** | CH280QV10-CT, 2.8″ 240×320 IPS + CTP | panel shadow **50 × 69 mm (measured**, Beta-DM keepout X12–62 / Y9–78**)**; stack ~2.9 mm (typical); active ~43.2 × 57.6 (typical) | ⚠ **Exact outline, thickness and FPC bend stack are NOT archived locally** (Phase-1 audit, open item). Envelope set to 52 × 71 × 3.0 mm to absorb the uncertainty |
-| Display connector | J1 Hirose FH69-50S-0.5SH | 50-pin 0.5 mm FPC | Footprint VERIFIED_VENDOR_EXACT. FPC exits the panel and folds back under — **reserve a 6 mm bend corridor** behind the panel edge |
+| **Display** | **3.5″ 320×480 IPS + CTP** (D-072). Leading candidate **CH350HV40A-CT** | **56.54 × 84.96 × 3.97 mm**, active **48.96 × 73.44 mm**, dot pitch 0.153 mm, **50-pin FPC**, **6 LED parallel** backlight, ILI9488 | ⚠ **NOT LOCKED (M-06).** Vendor states pitch as a **range “0.3 ~ 0.4 mm”**, names no touch controller, and quotes thickness inconsistently (3.97 vs 2.4 mm). **ST7796S-class preferred** — ILI9488 cannot send RGB565 over SPI |
+| Display connector | **TBD (M-06)** | conditional on the panel's pitch, pin count and contact side | The existing **FH69-50S-0.5SH** is reusable **only** if the panel proves 50-pin 0.5 mm. **Compatibility with the old 2.8″ panel is UNPROVEN** — no source states its pitch. Reserve a **6 mm FPC bend corridor** behind the panel edge regardless |
 | **Front controls** | SW2–SW7 PTS645SM43SMTR92LFS | 6.0 × 6.0 × **4.3 mm** (typical), ~0.25 mm travel | 6 switches: D-pad ×4, A, B. **Tallest top-side class.** Needs a plunger/keypad stack of ~1.0 mm above the actuator |
 | **Power** | SW9 JS102011SAQN | SPDT slide, ~4.7 × 2.9 × 2.0 mm body + actuator (typical) | Right wall, lower third |
 | **USB-C** | GCT USB4105-GF-A-120 | ~9.2 × 7.35 × **3.26 mm** (typical), top-mount horizontal | Bottom edge; shell aperture must clear the receptacle mouth |
@@ -122,7 +124,7 @@ Computed with real clearances, not nominal sums.
 | layer | mm |
 |---|---|
 | Front shell | 2.0 |
-| CTP + TFT stack | 2.9 |
+| CTP + TFT stack (3.5″ candidate, was 2.9 for the 2.8″) | **3.97** |
 | Adhesive / support | 0.5 |
 | PCB top components (display shadow limit) | 0.8 |
 | PCB | 1.6 |
@@ -131,7 +133,7 @@ Computed with real clearances, not nominal sums.
 | NFC loop (flex) | 0.2 |
 | Clearance | 0.5 |
 | Rear shell | 2.0 |
-| **Total** | **11.8 mm** — 11.2 mm spare |
+| **Total** | **12.9 mm** — 10.1 mm spare *(revised by FBV2-DISP-001 for the 3.5″ stack)* |
 
 **Column B — control region (rear: battery)** ← governing column
 
@@ -399,8 +401,10 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 
 | # | item | why it is open |
 |---|---|---|
-| **M-01** | **Display size / panel MPN** | The 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally** (Phase-1 audit open item). Separately, a 50 × 69 mm module in an 80 × 160 front is modest — the cavity would comfortably accept a **3.2″ or 3.5″** panel. **CTO decision** |
-| **M-02** | **Battery capacity target** | The Z margin supports 8.0 mm (~2500–3000 mAh) against the 2000 mAh assumed in the power budget. Confirm the target, then re-derive runtime. **CTO decision** |
+| ~~M-01~~ | ~~Display size~~ | **CLOSED by D-072 — 3.5 inch.** |
+| ~~M-02~~ | ~~Battery capacity target~~ | **CLOSED by D-071 — 60 × 75 × 8.0 mm, ~2500–3000 mAh.** |
+| **M-06** | **Display MPN and FPC interface** | Needs a full vendor spec: single pitch, pin table, tail thickness, contact side, CTP part and address, backlight pin arrangement. **Blocks the display schematic sheet, J1 selection and FBV2-P1** |
+| **M-07** | **Backlight driver re-derivation** | 6 LEDs rather than 4: `RSET` (2.55R on Beta-DM) and the TPS61169 current capability must be re-derived |
 | M-03 | Community connector MPN | Envelope frozen; part selection at schematic time |
 | M-04 | Battery SKU | Envelope frozen; SKU at procurement |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
@@ -425,7 +429,10 @@ FBV2_INTERNAL_CAVITY_MM: 75.0 x 155.0 x 18.5   TARGET
 FBV2_PCB_MAX_MM:         72.0 x 152.0      TARGET
 FBV2_PCB_TARGET_MM:      70.0 x 148.0      TARGET
 FBV2_PCB_THICKNESS_MM:   1.6               LOCKED
-FBV2_BATTERY_MM:         60 x 75 x 8.0     TARGET
+FBV2_BATTERY_MM:         60 x 75 x 8.0     LOCKED (D-071)
+FBV2_DISPLAY_SIZE_IN:    3.5               LOCKED (D-072)
+FBV2_DISPLAY_ENVELOPE_MM: 60 x 90 x 4.5    TARGET
+FBV2_DISPLAY_MPN:        not locked        TBD (M-06)
 FBV2_NFC_ZONE_MM:        45 x 45           TARGET
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
 FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)

@@ -78,6 +78,7 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [audits/2026-08-22-battery-protection-closeout.md](audits/2026-08-22-battery-protection-closeout.md) | 2026-08-22 |
 | [audits/2026-08-22-dead-cell-and-single-fault-closeout.md](audits/2026-08-22-dead-cell-and-single-fault-closeout.md) | 2026-08-22 |
 | [audits/2026-08-22-mechanical-interface-freeze.md](audits/2026-08-22-mechanical-interface-freeze.md) | 2026-08-22 |
+| [audits/2026-08-22-display-interface-closeout.md](audits/2026-08-22-display-interface-closeout.md) | 2026-08-22 |
 | **[mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md)** | 2026-08-22 |
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | 2026-08-22 |
 | [reviews/2026-08-22-independent-cto-power-nfc-review.md](reviews/2026-08-22-independent-cto-power-nfc-review.md) | 2026-08-22 |
