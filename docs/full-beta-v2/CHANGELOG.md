@@ -9,6 +9,66 @@ an entry.
 
 ---
 
+## 2026-08-22 — Mechanical interfaces frozen; **FBV2-A2 PASSED** (FBV2-MECH-001)
+
+Documentation only. No design file touched. `hardware/beta/mechanical/` was read
+only and is unmodified.
+
+**FBV2-A2 = PASS.** Three of twelve gates now pass. New authoritative pre-CAD
+source: `mechanical/MECHANICAL_INTERFACE_SPEC.md`, with every row marked LOCKED,
+TARGET or TBD — and **nothing marked LOCKED on the strength of derivation alone.**
+
+**Device orientation was resolved, not assumed.** The Beta-DM board is 74 × 155
+(portrait) and the external target is 80 × 160; the axes map one to one. The
+device is portrait, so the front is display-above-controls.
+
+**23 mm passes with 3.5 mm spare**, and the interesting question was what to do
+with the margin. The governing column is the control region with the battery
+behind it: 19.5 mm of 23.0 mm. Left as air the margin is wasted; allocated to the
+battery it raises the pack from the 5–6 mm a 2000 mAh cell needs to **8.0 mm**,
+i.e. the **2500–3000 mAh class** — a 25–50% runtime gain for zero external size
+change.
+
+**The Beta-DM outline cannot be reused, and the reason is stark.** Against the
+derived 75 × 155 mm cavity, the 74 × 155 mm board leaves 1.0 mm of clearance in X
+and **zero in Y**. There is no room for the shell lip, six bosses, ribs or
+assembly access. Combined with the v2 content changes — 20-pin connector, P2
+four-FET stage, dead-cell recovery branch, NFC crystal and matching, restored IR,
+new expanders — the verdict is **re-floorplan with a different outline**, targeting
+**70 × 148 mm**. This is the PCB revision Field Slate v3 required in July and never
+received.
+
+**NFC and battery are separated in plan rather than stacked.** Because the display
+occupies the front upper third, the rear upper third is free — NFC loop there
+(45 × 45 mm), battery in the rear lower two-thirds. **Zero overlap is the policy,
+not a mitigation.** Ferrite is still specified, because once the battery moves away
+the PCB ground pour becomes the dominant near-field threat. The loop grows from
+Beta-DM's measured 26 × 20 mm to 45 × 45 mm — a **3.9× area increase**, which is
+where the range lost to 3.3 V NFC operation (D-055) is won back. Two constraints
+fall out: the mid-span bosses and the left-side antenna storage channel must both
+stay below Y = 100 mm.
+
+**Acoustics and IR specified to interface level.** The ICS-43434 is bottom-port, so
+the mic path is PCB hole → gasket → shell aperture with the tunnel ≤2.5 mm; longer
+tunnels roll off exactly the frequencies that carry speech. Speaker rear-firing,
+Ø20 × 4 mm, with a 1.5–2.0 cm³ **sealed** rear cavity, ≥60 mm from the mic and on
+the opposite face. IR emitter and receiver ≥15 mm apart on the top edge with a
+**mandatory opaque barrier** — separation alone does not fix self-blinding,
+because the internal reflection path is the one that actually causes it.
+
+**Honest limits recorded rather than glossed:** nothing is CAD-verified, several
+component figures are class-typical, and the display is the weakest input — its
+50 × 69 mm figure is a measured *keepout*, not a vendor outline, and the FPC bend
+stack is unknown. That is why display size is raised as an open item.
+
+Two CTO decisions opened: **M-01 display size** (the cavity comfortably accepts
+3.2″ or 3.5″; blocks PCB floorplanning but not schematic migration) and **M-02
+battery capacity target**. **P-07 closed.**
+
+Progress 20% → 25%. Next gate: **FBV2-S1, schematic migration.**
+
+---
+
 ## 2026-08-22 — Battery safety architecture finalised; **FBV2-A1 PASSED** (FBV2-PWR-002)
 
 Documentation only. No design file touched.

@@ -54,7 +54,25 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~20%**
+### Overall Full Beta v2: **~25%**
+
+**FBV2-A2 PASSED** (2026-08-22, FBV2-MECH-001). Three of twelve gates now pass.
+Every dimensional dependency that could have forced a late PCB redesign is
+resolved: cavity, PCB envelope, battery, NFC/battery separation, connector exit,
+antenna-vs-IR, USB/microSD, acoustics and mounting bosses.
+
+Raised five points and **no more**. All three passed gates remain paper gates —
+**no schematic exists, no PCB exists, no CAD exists**, and every mechanical figure
+is TARGET (derived) rather than LOCKED (measured in CAD).
+
+<details>
+<summary>Superseded estimates</summary>
+
+**~20%** — FBV2-PWR-002. **~15%** — FBV2-PWR-001. **~13%** — FBV2-ARCH-002.
+**~10%** — FBV2-ARCH-001. **~8%** — FBV2-DOC-001.
+</details>
+
+### Previous estimate: ~20%
 
 **FBV2-A1 PASSED** (2026-08-22, FBV2-PWR-002) — the first gate to pass since
 FBV2-A0, and the largest remaining architecture unknown. All six criteria closed;
@@ -123,8 +141,8 @@ work.
 |---|---|---|---|
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
 | **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
-| **FBV2-A2** | Mechanical interface freeze | **NOT STARTED — NEXT GATE** | — |
-| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED** | — |
+| **FBV2-A2** | Mechanical interface freeze | **PASS** | 2026-08-22 |
+| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED — NEXT GATE** | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
 | **FBV2-P2** | Routing | **NOT STARTED** | — |
@@ -140,7 +158,7 @@ work.
 |---|---|
 | FBV2-A0 | A read-only audit pinned to a repository HEAD exists in `audits/`. **Met 2026-08-22.** |
 | FBV2-A1 | Every item in the Pending CTO Decisions table of [CTO_DECISIONS.md](CTO_DECISIONS.md) is closed into a locked `D-xxx` ruling. |
-| FBV2-A2 | Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance are published; `tools/check_mechanical_consistency.py` reports a real fit verdict rather than UNKNOWN. |
+| FBV2-A2 | Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance are published, and every dimensional dependency that could force a late PCB redesign is resolved. **Met 2026-08-22** via [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md). ⚠ **`tools/check_mechanical_consistency.py` still reports UNKNOWN** — it parses the Field Slate v5 block, and FBV2-MECH-001 had **no authority** to modify `tools/` or the Field Slate. Reconciling the guard is a follow-up task, not a gate condition, because the guard reads a Beta-DM-era document rather than the v2 spec. |
 | FBV2-S1 | `hardware/beta-v2/` exists, forked from Beta-DM with a byte-equivalence proof, and every schematic change in the migration order is landed. |
 | FBV2-S2 | 0 ERC errors, 0 schematic-parity issues, and every project-library footprint verified against a vendor drawing with a per-footprint pad-overlap assertion. |
 | FBV2-P1 | Outline derived from the published cavity; all mechanical keepouts instantiated; IR TX/RX escapes proven at placement time; U3/connector cluster placed at the right-side exit. |
@@ -316,4 +334,5 @@ DS12484 tables; every other footprint remains unverified.
 | 2026-08-22 | FBV2-ARCH-001. Overall raised 8% → 10%; **no gate passed.** B-07 retired as incorrect. B-17/B-18/B-19 added. FBV2-A2 marked as the recommended next gate. |
 | 2026-08-22 | FBV2-ARCH-002. Overall raised 10% → 13%; **no gate passed. FBV2-A1 assessed CANNOT PASS** (4 of 8 criteria). B-18 closed, B-25 closed. B-20…B-24 added. P-11…P-18 opened. Standing **NO-RESPIN RECOVERY POLICY** (D-049) established. |
 | 2026-08-22 | FBV2-PWR-001. Overall raised 13% → 15%; **no gate passed. FBV2-A1 FAIL, 5 of 6 criteria closed.** D-061…D-064 recorded. **P-13 and B-24 closed** by primary-source evidence; B-22 closed. Complete battery-protection topology specified. Fuse **REQUIRED**, clamp **REQUIRED**, PTC **REJECTED**. |
+| 2026-08-22 | FBV2-MECH-001. Overall raised 20% → 25%. **FBV2-A2 = PASS.** D-069/D-070 recorded; cavity **75.0 × 155.0 × 18.5 mm** derived; PCB target **70 × 148**; **P-07 closed**; M-01/M-02 opened. Beta-DM 74 × 155 outline ruled **RE-FLOORPLAN REQUIRED**. Next gate: **FBV2-S1**. |
 | 2026-08-22 | FBV2-PWR-002. Overall raised 15% → 20%. **FBV2-A1 = PASS** — first gate since A0. D-065…D-068 recorded. Pass path changed to **P2** (4 FETs, 2 packages). Dead-cell recovery specified to component level. **P-11, P-12, B-20, B-21, B-23 closed**; B-26/B-27 opened. Clamp **demoted to secondary**, fuse **resized 3 A → ≈5 A**. Next gate: **FBV2-A2**. |

@@ -1,0 +1,432 @@
+# AQROOT Full Beta v2 — Mechanical Interface Specification
+
+**AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
+
+Date: 2026-08-22
+Task: FBV2-MECH-001
+Gate: **FBV2-A2**
+Status: interface freeze. **No CAD exists yet. No PCB outline has been drawn.**
+
+> This document supersedes, for Full Beta v2 only, the dimensional content of
+> *Enclosure Field Slate v3/v4/v5*. Those remain the historical record and the
+> source of the concept, zoning, RF crown and control-set direction.
+> `hardware/beta/mechanical/` was **read only** and is unmodified.
+
+---
+
+## 0. How to read this document
+
+| marking | meaning |
+|---|---|
+| **LOCKED** | CTO ruling, or measured from a repository artefact. Do not change without a CTO decision. |
+| **TARGET** | Derived here from a locked input plus stated assumptions. Binding for design work until CAD refutes it. |
+| **TBD** | Genuinely undetermined. Must not be treated as a constraint. |
+
+**Nothing is marked LOCKED on the strength of derivation alone.** Every derived
+value is TARGET, however confident the arithmetic.
+
+---
+
+## 1. Dimension authority table
+
+| # | key | value | status | source |
+|---|---|---|---|---|
+| 1 | **EXTERNAL_ENCLOSURE** | **80 × 160 × 23 mm** (X × Y × Z, portrait) | **LOCKED** | CTO ruling. *External only — not PCB, not cavity* |
+| 2 | **WALL_THICKNESS** | **2.0 mm** nominal, all faces | **TARGET** | §3 |
+| 3 | **INTERNAL_CAVITY** | **75.0 × 155.0 × 18.5 mm** nominal envelope | **TARGET** | §3 |
+| 4 | **PCB_MAX** | **72.0 × 152.0 mm** | **TARGET** | §4 |
+| 5 | **PCB_TARGET** | **70.0 × 148.0 mm** | **TARGET** | §4 — recommended outline |
+| 6 | **PCB_THICKNESS** | **1.6 mm** | **LOCKED** | carried from Beta-DM; measured |
+| 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm** | **TARGET** | §6. ~2500–3000 mAh class |
+| 8 | **DISPLAY_ENVELOPE** | module ≤ **52 × 71 mm**, stack ≤ **3.0 mm** | **TARGET** | §2. Beta-DM panel shadow measured 50 × 69 mm |
+| 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
+| 10 | **SPEAKER_ENVELOPE** | **Ø20 × 4.0 mm** or **15 × 11 × 3.5 mm**, + **1.5–2.0 cm³** rear cavity | **TARGET** | §7 |
+| 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **24 × 10 × 9 mm** incl. shroud; 2×10 @ 2.00 mm, right-angle, right wall | **TARGET** | §5. **MPN not locked** |
+| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; ≥15 mm from the IR windows | **TARGET** | §8 |
+| 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
+| 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
+| 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
+| 16 | **MOUNTING_BOSSES** | **6 × M2**, Ø6.0 mm keepout, 4 corners + 2 mid-span | **TARGET** | §4 |
+| 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
+| 18 | Device orientation | **portrait** — 80 wide × 160 tall | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
+| 19 | Display size / panel MPN | 2.8″ CH280QV10-CT assumed | **TBD** | **CTO decision — see §10** |
+| 20 | Battery SKU | — | **TBD** | envelope frozen instead (row 7) |
+
+---
+
+## 2. Component dimensional inventory
+
+Values marked **(measured)** come from repository artefacts. Values marked
+**(typical)** are class-typical figures used to size envelopes; they are adequate
+for interface freeze and must be replaced by vendor drawings at CAD time.
+
+| item | part | dimensions | notes |
+|---|---|---|---|
+| **Display** | CH280QV10-CT, 2.8″ 240×320 IPS + CTP | panel shadow **50 × 69 mm (measured**, Beta-DM keepout X12–62 / Y9–78**)**; stack ~2.9 mm (typical); active ~43.2 × 57.6 (typical) | ⚠ **Exact outline, thickness and FPC bend stack are NOT archived locally** (Phase-1 audit, open item). Envelope set to 52 × 71 × 3.0 mm to absorb the uncertainty |
+| Display connector | J1 Hirose FH69-50S-0.5SH | 50-pin 0.5 mm FPC | Footprint VERIFIED_VENDOR_EXACT. FPC exits the panel and folds back under — **reserve a 6 mm bend corridor** behind the panel edge |
+| **Front controls** | SW2–SW7 PTS645SM43SMTR92LFS | 6.0 × 6.0 × **4.3 mm** (typical), ~0.25 mm travel | 6 switches: D-pad ×4, A, B. **Tallest top-side class.** Needs a plunger/keypad stack of ~1.0 mm above the actuator |
+| **Power** | SW9 JS102011SAQN | SPDT slide, ~4.7 × 2.9 × 2.0 mm body + actuator (typical) | Right wall, lower third |
+| **USB-C** | GCT USB4105-GF-A-120 | ~9.2 × 7.35 × **3.26 mm** (typical), top-mount horizontal | Bottom edge; shell aperture must clear the receptacle mouth |
+| **microSD** | Molex 5025700893 | ~14.0 × 14.5 × **1.85 mm** (typical), push-pull | Bottom edge; card protrudes during insertion — reserve **+18 mm** insertion travel outside the shell |
+| **Microphone** | MK1 ICS-43434 | 3.5 × 2.65 × 0.98 mm | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part. Path is PCB hole → gasket → front shell aperture |
+| **Speaker** | LS1, off-board | **Ø20 × 4.0 mm** or 15 × 11 × 3.5 mm, 8 Ω, ≤1 W | §7 |
+| **IR emitter** | TSAL6200 class | 5 mm THT lens, **±17° half-angle** | Top edge. Consider a side-view SMD emitter to reduce Z |
+| **IR receiver** | TSOP38238 | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall** |
+| **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
+| **Community connector** | 20-pin, MPN not locked | envelope 24 × 10 × 9 mm | §5 |
+| Expanders / protection | PCAL9535APW (TSSOP24), LTC4368 (MSOP-10), 2 × dual FET (SOIC-8) | ≤1.2 mm | All low-profile; no Z impact |
+
+### 2.1 Height census
+
+| side | tallest | height | constraint |
+|---|---|---|---|
+| **Top** | TSOP38238 IR receiver | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
+| Top (display shadow) | passives only | **≤0.8 mm** | **measured** Beta-DM limit — retain |
+| Top (control area) | PTS645 tact switch | **4.3 mm** | |
+| **Bottom** | Molex microSD | **1.85 mm** | |
+| Bottom (battery shadow) | — | **≤1.2 mm** | **measured** Beta-DM limit — retain |
+
+---
+
+## 3. Enclosure stack-up and cavity derivation
+
+### 3.1 Wall thickness
+
+**2.0 mm nominal.** Suits SLA/CNC prototypes and is a normal ABS/PC injection wall
+for a handheld of this size. Below 1.5 mm a 160 mm-long shell flexes noticeably;
+above 2.5 mm the cavity loses volume for no structural gain.
+
+### 3.2 Cavity
+
+```
+INTERNAL_CAVITY_X = 80  − 2(2.0 wall) − 1.0 (seam/assembly tol) = 75.0 mm
+INTERNAL_CAVITY_Y = 160 − 2(2.0 wall) − 1.0                     = 155.0 mm
+INTERNAL_CAVITY_Z = 23  − 2(2.0 wall) − 0.5                     = 18.5 mm
+```
+
+**This is the nominal envelope only.** Local intrusions reduce it:
+
+| intrusion | typical |
+|---|---|
+| Shell lip / tongue-and-groove at the seam | 1.0–1.5 mm inward, full perimeter |
+| Mounting bosses | Ø6.0 mm × full height, 6 places |
+| Stiffening ribs | 1.5 mm × 3 mm tall, as needed on the 160 mm spans |
+| Connector aperture reinforcement | local |
+
+### 3.3 Z stack-up — three worst-case columns
+
+Computed with real clearances, not nominal sums.
+
+**Column A — display region (rear: NFC)**
+
+| layer | mm |
+|---|---|
+| Front shell | 2.0 |
+| CTP + TFT stack | 2.9 |
+| Adhesive / support | 0.5 |
+| PCB top components (display shadow limit) | 0.8 |
+| PCB | 1.6 |
+| Rear air gap | 1.0 |
+| NFC ferrite | 0.3 |
+| NFC loop (flex) | 0.2 |
+| Clearance | 0.5 |
+| Rear shell | 2.0 |
+| **Total** | **11.8 mm** — 11.2 mm spare |
+
+**Column B — control region (rear: battery)** ← governing column
+
+| layer | mm |
+|---|---|
+| Front shell | 2.0 |
+| Keypad / plunger + travel | 1.0 |
+| PTS645 tact switch | 4.3 |
+| PCB | 1.6 |
+| **Battery** | **8.0** |
+| Clearance | 0.6 |
+| Rear shell | 2.0 |
+| **Total** | **19.5 mm** — **3.5 mm spare** |
+
+**Column C — speaker region**
+
+| layer | mm |
+|---|---|
+| Front shell + air | 2.5 |
+| PCB top components | 1.5 |
+| PCB | 1.6 |
+| Speaker driver | 4.0 |
+| Rear acoustic cavity | 2.0 |
+| Rear shell | 2.0 |
+| **Total** | **13.6 mm** — 9.4 mm spare |
+
+### 3.4 Verdict on 23 mm
+
+## **PASS** — not tight.
+
+The governing column consumes 19.5 mm of 23 mm, leaving **3.5 mm**. That margin
+should be spent deliberately, not left as air:
+
+- **Recommended:** allocate it to the **battery**, which is why the envelope is set
+  at **8.0 mm** rather than the 5–6 mm a 2000 mAh pack would need. This raises the
+  practical capacity to the **2500–3000 mAh** class.
+- The device could be made thinner (≈20 mm) if industrial design prefers, at the
+  cost of that capacity. **Not recommended** — runtime is a headline feature and
+  23 mm is already a comfortable handheld thickness.
+
+---
+
+## 4. PCB envelope
+
+```
+MAX_PCB_X = 75.0 − 2(1.5 edge clearance) = 72.0 mm
+MAX_PCB_Y = 155.0 − 2(1.5)               = 152.0 mm
+
+RECOMMENDED_PCB_X = 70.0 mm
+RECOMMENDED_PCB_Y = 148.0 mm
+```
+
+The recommendation deliberately leaves **2.5 mm per side** beyond the minimum, for
+shell lips, boss intrusion, rib clearance, connector-to-wall tolerance and
+assembly access. A board that fills the cavity to the millimetre has no recovery
+path if any of those grows.
+
+### 4.1 Comparison with Beta-DM (74 × 155 × 1.6 mm, measured)
+
+| axis | Beta-DM | derived cavity | verdict |
+|---|---|---|---|
+| X | **74.0** | 75.0 | **1.0 mm total clearance** — no room for bosses, lips or ribs |
+| Y | **155.0** | 155.0 | **0.0 mm clearance** — the board *is* the cavity |
+
+## Verdict: **SHOULD BE RE-FLOORPLANNED WITH A DIFFERENT OUTLINE.**
+
+Not merely "needs reduction". Two independent reasons:
+
+1. **Dimensionally it does not fit.** 155 mm of board in a 155 mm cavity leaves
+   nothing for the shell lip, six bosses, ribs, or assembly clearance. Reduction of
+   **−4 mm X and −7 mm Y** is the minimum.
+2. **Its content has changed.** Full Beta v2 removes HOME and the RGB nets,
+   changes both expanders, changes the connector from 26 to 20 pins, adds the
+   P2 four-FET protection stage plus the dead-cell recovery branch, adds the NFC
+   crystal, matching network and antenna, restores IR TX/RX, and adds the TPS22950C
+   accessory switch. Reusing a floorplan built around a different component set
+   would inherit the very constraints that made IR TX and IR RX unroutable on
+   Beta-DM.
+
+**Re-floorplanning from the cavity is the correct action**, and it is what the
+Field Slate v3 requirement ("the envelope must drive at least one PCB revision")
+originally asked for and never received.
+
+### 4.2 Mounting
+
+| item | value |
+|---|---|
+| Count | **6 × M2** — 4 corners plus 2 mid-span at Y ≈ 50 mm and Y ≈ 100 mm |
+| Why 6 | A 148 mm span on 1.6 mm FR4 with a battery behind it will flex under button pressure with corner support alone |
+| Boss keepout | **Ø6.0 mm** copper-and-component free |
+| Corner inset | 5.0 mm from each board edge |
+| Board edge clearance | **≥1.5 mm** to any cavity wall |
+
+Beta-DM used **four Ø2.4 mm holes (measured)**; v2 adds two mid-span.
+
+---
+
+## 5. Community expansion connector
+
+| property | value | status |
+|---|---|---|
+| Pin count | **20** | **LOCKED** (D-059/D-062) |
+| Organisation | **2 × 10** | **TARGET** — best length/height compromise; 1×20 would be 40 mm long at 2.0 mm pitch and dominate the right wall |
+| Pitch | **2.00 mm** | **TARGET** — 2.54 mm makes the body 22.9 mm long for no benefit at these signal counts |
+| Body envelope | **24 × 10 × 9 mm** including shroud and latch | **TARGET** |
+| Orientation | **right-angle, side-exit through the right wall** | **TARGET** |
+| Recess | **1.5 mm** below the outer wall face | **TARGET** |
+| Keying / polarisation | **mandatory** — shrouded with a polarising key | **LOCKED** (D-041) |
+| Position | right wall, **upper/middle third**, above the Power control | **TARGET** |
+| MPN | — | **TBD — not locked** |
+
+**Wall aperture:** 26 × 12 mm nominal, with 0.3 mm clearance to the connector
+shroud on all sides.
+
+---
+
+## 6. Rear architecture — NFC and battery
+
+### 6.1 The decision: separate them in plan, do not stack them
+
+The cleanest resolution to "battery detunes the NFC loop" is **not** to engineer a
+shielding stack — it is to **not put them in the same place**.
+
+```
+   REAR VIEW (looking at the back of the device)
+   ┌─────────────────────────────────────┐ Y = 160 (top)
+   │  antenna connector │  IR windows    │
+   ├─────────────────────────────────────┤
+   │                                     │
+   │        NFC LOOP ZONE                │   rear UPPER third
+   │        45 × 45 mm                    │   (behind the display)
+   │        metal-free, ferrite-backed    │
+   │                                     │
+   ├─────────────────────────────────────┤ Y ≈ 100
+   │                                     │
+   │        BATTERY                       │   rear LOWER two-thirds
+   │        60 × 75 × 8.0 mm              │   (behind the controls)
+   │                                     │
+   │                          ┌────────┐ │
+   │                          │SPEAKER │ │
+   │                          └────────┘ │
+   └─────────────────────────────────────┘ Y = 0 (bottom)
+     USB-C            microSD
+```
+
+**Because the display occupies the front upper third, the rear upper third is
+free** — the PCB is the only thing between it and the rear shell. That is the
+natural home for the NFC loop, and it costs nothing.
+
+### 6.2 Rules
+
+| rule | value | status |
+|---|---|---|
+| NFC loop envelope | **45 × 45 mm** minimum | **TARGET** |
+| Loop location | rear upper third, centred in X | **TARGET** |
+| **Battery / NFC overlap** | **ZERO overlap permitted** | **TARGET** — this is the policy, not a mitigation |
+| Ferrite | **0.3 mm layer between the loop and the PCB**, full loop footprint | **TARGET** — the PCB ground pour is the near-field threat once the battery is moved away |
+| Metal keepout | no metal within **5 mm** of the loop perimeter, including screws, bosses and shielding cans | **TARGET** |
+| Screw/boss keepout | the two mid-span bosses must sit **below** Y = 100, i.e. outside the loop zone | **TARGET** |
+| Matching network | on the PCB, **within 15 mm** of the loop feed point | **TARGET** |
+| Speaker separation | ≥20 mm from the loop perimeter; the magnet is the largest ferrous mass in the device | **TARGET** |
+| **Stored antenna** | the left-side holder channel **must not cross the loop zone**. With a 45 mm loop in a 75 mm cavity there is ~15 mm of margin each side — route the channel in that margin | **TARGET** |
+
+### 6.3 Battery
+
+| property | value |
+|---|---|
+| Envelope | **60 × 75 × 8.0 mm** (TARGET) |
+| Volume | ~36 cm³ |
+| Practical capacity | **~2500–3000 mAh**, 1S Li-ion/LiPo pouch |
+| Chemistry / SKU | **TBD** — envelope frozen instead |
+| Retention | adhesive pad plus a moulded rib pocket; **no compression against the shell** |
+| PCB features under the battery | **≤1.2 mm** (measured Beta-DM limit, retained) |
+| Connector | JST-PH 2-pin, service loop routed away from the NFC zone |
+
+This raises the assumed pack from the 2000 mAh used in the power budget
+([[13 - Power Budget and Battery Runtime v0.1]]) to the 2500–3000 mAh class, which
+is a **direct consequence of the 3.5 mm of Z margin** found in §3.
+
+---
+
+## 7. Acoustics
+
+### 7.1 Microphone — the higher priority
+
+| requirement | value |
+|---|---|
+| Part | ICS-43434, **bottom-port** |
+| Path | PCB acoustic hole → compressible gasket → front shell aperture |
+| PCB hole | **Ø0.8–1.0 mm**, no solder mask in the port pad ring |
+| Gasket | closed-cell silicone or poron, **compressed 20–30%**, forming a sealed tunnel |
+| Shell aperture | **Ø0.8–1.0 mm**, or 3–5 holes of Ø0.5 mm, with acoustic mesh behind |
+| Tunnel length | **≤2.5 mm** — longer tunnels roll off the high frequencies that carry speech intelligibility |
+| Location | **front face, bottom third, opposite corner from the speaker** |
+
+### 7.2 Speaker
+
+| requirement | value |
+|---|---|
+| Driver | **Ø20 × 4.0 mm** round, or 15 × 11 × 3.5 mm rectangular; **8 Ω, ≤1 W** |
+| Firing | **rear-firing** (CTO layout) |
+| Rear cavity | **1.5–2.0 cm³ sealed** behind the driver — without it, low-mid output collapses and speech sounds thin |
+| Grille | ≥25% open area; hole pattern Ø0.8–1.0 mm; acoustic mesh behind |
+| Location | **rear, lower-right**, diagonally opposite the microphone |
+| Separation from mic | **≥60 mm** and on opposite faces |
+
+**Deliberately not over-engineered.** No ported enclosure, no tuned volume, no
+resonance targeting. The requirement is intelligible speech and alerts, and a
+sealed rear cavity plus honest separation from the microphone achieves it.
+
+### 7.3 Feedback control
+
+Speaker rear + microphone front + ~60 mm of diagonal separation + a sealed mic
+tunnel gives adequate acoustic isolation for half-duplex voice. **Full-duplex
+echo cancellation is a firmware matter and is not a mechanical requirement.**
+
+---
+
+## 8. Top edge — IR and antenna
+
+```
+   TOP EDGE (80 mm wide)
+   ┌──────────────────────────────────────────────┐
+   │  [ANTENNA]        │ barrier │ [IR TX] [IR RX]│
+   │   connector       │         │                │
+   └──────────────────────────────────────────────┘
+     ← left half →                → right half →
+        ≥15 mm from IR windows      ≥15 mm apart
+```
+
+| requirement | value | reason |
+|---|---|---|
+| IR emitter location | top edge, right of centre | Natural remote-pointing posture |
+| IR receiver location | top edge, right end | |
+| **Emitter ↔ receiver separation** | **≥15 mm** | The TSOP38238 is extremely sensitive; a ±17° emitter cone at close range saturates it |
+| **Opaque barrier** | **mandatory**, full height between the two windows, bonded to both shells | Blocks the internal reflection path, which is the one that actually causes self-blinding |
+| Emitter axis | **normal to the top face**, ±0° | |
+| Receiver FOV | ±45° about the top-face normal | |
+| Windows | IR-transmissive (visibly opaque acceptable), recessed 0.5 mm | |
+| **Antenna ↔ IR separation** | **≥15 mm** | A fitted whip must not shadow the emitter cone |
+| Antenna connector | panel/bulkhead, **left half of the top edge** | |
+| Pigtail | u.FL → bulkhead, **minimum bend radius 5 mm**, **service loop ≥15 mm** | Per D-040: no controlled-impedance RF on the main PCB |
+
+**Antenna storage** runs along the **left wall**, sized for the stowed whip, and
+**must terminate below Y = 100 mm** so it never crosses the NFC loop zone (§6.2).
+
+---
+
+## 9. Face summary
+
+| face | contents |
+|---|---|
+| **Front** | Display/touch (upper), D-pad (lower left), A + B (lower right), microphone aperture (bottom, opposite the speaker) |
+| **Top** | Antenna bulkhead connector (left half), IR TX + IR RX windows (right half) with an opaque barrier |
+| **Left** | Antenna storage channel, terminating below Y = 100 mm |
+| **Right** | 20-pin keyed recessed community connector (upper/middle), Power control (lower), recessed BOOT access |
+| **Bottom** | USB-C (centre), microSD (left of USB-C) |
+| **Rear** | NFC loop zone (upper third), battery (lower two-thirds), speaker opening (lower right), branding |
+
+**REMOVED and not to reappear:** HOME, Volume Up, Volume Down.
+
+---
+
+## 10. Open items
+
+| # | item | why it is open |
+|---|---|---|
+| **M-01** | **Display size / panel MPN** | The 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally** (Phase-1 audit open item). Separately, a 50 × 69 mm module in an 80 × 160 front is modest — the cavity would comfortably accept a **3.2″ or 3.5″** panel. **CTO decision** |
+| **M-02** | **Battery capacity target** | The Z margin supports 8.0 mm (~2500–3000 mAh) against the 2000 mAh assumed in the power budget. Confirm the target, then re-derive runtime. **CTO decision** |
+| M-03 | Community connector MPN | Envelope frozen; part selection at schematic time |
+| M-04 | Battery SKU | Envelope frozen; SKU at procurement |
+| M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
+
+---
+
+## 11. Consistency guard
+
+`tools/check_mechanical_consistency.py` parses the machine-readable block in
+*Enclosure Field Slate v5*. That block still reports
+`INTERNAL_CAVITY_MM: not published` and `PCB_FIT_STATUS: UNVERIFIED`, which was
+**true when written and is now superseded for Full Beta v2 by this document.**
+
+`hardware/beta/mechanical/` and the Field Slate documents were **not modified** —
+this task had no authority to touch them. Reconciling the guard script and the
+Field Slate block is a follow-up task requiring authority over those files.
+
+```
+FBV2_EXTERNAL_MM:        80 x 160 x 23     LOCKED
+FBV2_WALL_MM:            2.0               TARGET
+FBV2_INTERNAL_CAVITY_MM: 75.0 x 155.0 x 18.5   TARGET
+FBV2_PCB_MAX_MM:         72.0 x 152.0      TARGET
+FBV2_PCB_TARGET_MM:      70.0 x 148.0      TARGET
+FBV2_PCB_THICKNESS_MM:   1.6               LOCKED
+FBV2_BATTERY_MM:         60 x 75 x 8.0     TARGET
+FBV2_NFC_ZONE_MM:        45 x 45           TARGET
+FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
+FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)
+```

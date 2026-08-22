@@ -564,6 +564,47 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8i. Mechanical interface freeze (FBV2-MECH-001)
+
+| # | decision | date |
+|---|---|---|
+| D-069 | **External enclosure 80 × 160 × 23 mm (portrait). LOCKED.** External only — **not** PCB, **not** internal cavity, **not** usable volume. The Full Beta v2 PCB outline is **derived from** the mechanical architecture, never inherited. | 2026-08-22 |
+| D-070 | **Six-face layout LOCKED.** Front: display/touch, D-pad, A, B, mic aperture. Top: antenna bulkhead + IR TX/RX windows. Left: antenna storage. Right: recessed keyed 20-pin connector, Power, recessed BOOT. Bottom: USB-C, microSD. Rear: NFC target, speaker opening, branding. **HOME, Volume Up and Volume Down are removed and must not reappear.** | 2026-08-22 |
+
+> **Derived interface freeze (FBV2-MECH-001).** Authoritative pre-CAD source:
+> [`mechanical/MECHANICAL_INTERFACE_SPEC.md`](mechanical/MECHANICAL_INTERFACE_SPEC.md).
+>
+> | key | value | status |
+> |---|---|---|
+> | Internal cavity | **75.0 × 155.0 × 18.5 mm** | TARGET |
+> | Wall thickness | 2.0 mm | TARGET |
+> | PCB max / **target** | 72.0 × 152.0 / **70.0 × 148.0 mm** | TARGET |
+> | Battery envelope | **60 × 75 × 8.0 mm** (~2500–3000 mAh) | TARGET |
+> | NFC zone | **45 × 45 mm**, rear upper third | TARGET |
+> | Z verdict | **PASS** — 19.5 of 23.0 mm on the governing column | — |
+>
+> **23 mm PASSES with 3.5 mm spare, and the margin is allocated to the battery**
+> rather than left as air — raising the pack from the 2000 mAh the power budget
+> assumes to the 2500–3000 mAh class at no external size cost.
+>
+> **The Beta-DM 74 × 155 mm outline must NOT be reused.** Against a 75 × 155 mm
+> cavity it leaves 1.0 mm of clearance in X and **zero in Y** — no room for the
+> shell lip, six bosses, ribs or assembly access. Combined with the v2 content
+> changes (20-pin connector, P2 four-FET stage, recovery branch, NFC crystal and
+> matching, restored IR, new expanders), the verdict is
+> **SHOULD BE RE-FLOORPLANNED WITH A DIFFERENT OUTLINE.** This is the PCB revision
+> Field Slate v3 required in July and never received.
+>
+> **NFC and battery are separated in plan, not stacked.** The display occupies the
+> front upper third, so the rear upper third is free: NFC loop there, battery in
+> the rear lower two-thirds. **Zero overlap is the policy, not a mitigation.**
+> Ferrite is still specified because the PCB ground pour becomes the dominant
+> near-field threat once the battery is moved away. The loop grows from Beta-DM's
+> measured 26 × 20 mm to 45 × 45 mm — a **3.9× area increase**, which is where the
+> range lost to 3.3 V operation (D-055) is won back.
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -594,7 +635,10 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I²C segmentation — buffer alone, or add a mux?** | An accessory holding SDA low blinds the fuel gauge **and** all XGPIO simultaneously; nothing prevents address collision on 0x36 or 0x20–0x27. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
-| **P-07** | **Exact mechanical internal cavity.** Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. **Now the long-pole item.** | 2026-08-22 |
+| **M-01** | **Display size / panel MPN.** 2.8″ CH280QV10-CT is inherited from Beta-DM, and its exact outline, thickness and FPC bend stack **are not archived locally**. A 50 × 69 mm module in an 80 × 160 front is modest — the cavity comfortably accepts **3.2″ or 3.5″**. | Does **not** block FBV2-A2 or schematic migration. **Does** block PCB floorplanning (FBV2-P1): display size sets the front layout, which sets the rear free area, which sets the NFC zone. | 2026-08-22 |
+| **M-02** | **Battery capacity target.** The confirmed 3.5 mm of Z margin supports an **8.0 mm** pack (~2500–3000 mAh) against the **2000 mAh** assumed in the power budget. | Either answer fits. Confirm the target, then re-derive runtime in [[13 - Power Budget and Battery Runtime v0.1]]. | 2026-08-22 |
+| ~~**P-07**~~ | ~~Exact mechanical internal cavity.~~ **CLOSED 2026-08-22 by FBV2-MECH-001** — cavity derived at **75.0 × 155.0 × 18.5 mm** and recorded as TARGET in the mechanical interface spec. | closed | 2026-08-22 |
+| ~~superseded~~ | ~~**Exact mechanical internal cavity.**~~ Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. **Now the long-pole item.** | 2026-08-22 |
 
 ### Closed since 2026-08-22
 

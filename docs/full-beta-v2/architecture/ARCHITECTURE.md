@@ -186,8 +186,23 @@ in Field Slate v5 §5 was an industrial-design leftover.
 | **Bottom** | USB-C, microSD |
 | **Rear** | NFC target, speaker opening, branding |
 
-`hardware/beta/mechanical/` was not touched and remains untracked. The internal
-cavity is still unpublished — **P-07**, gate FBV2-A2.
+`hardware/beta/mechanical/` was not touched and remains untracked.
+
+**The internal cavity is now derived (FBV2-MECH-001, gate FBV2-A2 PASS).**
+Authoritative source: [`../mechanical/MECHANICAL_INTERFACE_SPEC.md`](../mechanical/MECHANICAL_INTERFACE_SPEC.md).
+
+| key | value | status |
+|---|---|---|
+| External enclosure | **80 × 160 × 23 mm**, portrait | LOCKED |
+| Internal cavity | **75.0 × 155.0 × 18.5 mm** | TARGET |
+| PCB target | **70.0 × 148.0 mm** × 1.6 mm | TARGET |
+| Battery envelope | **60 × 75 × 8.0 mm** (~2500–3000 mAh) | TARGET |
+| NFC zone | **45 × 45 mm**, rear upper third, **zero battery overlap** | TARGET |
+| Z verdict | **PASS** — 19.5 of 23.0 mm on the governing column | — |
+
+**The Beta-DM 74 × 155 mm outline must not be reused** — it leaves zero clearance
+in Y against the derived cavity. Verdict: **re-floorplan with a different
+outline.**
 
 ---
 
