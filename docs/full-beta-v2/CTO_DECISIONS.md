@@ -7,7 +7,49 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-22
+Last updated: 2026-08-22 (FBV2-ARCH-002)
+
+---
+
+## ⭐ STANDING POLICY — FIRST FIVE FULL BETA PCBAs: NO-RESPIN RECOVERY POLICY
+
+**D-049 · Permanent requirement · established 2026-08-22 · applies to every
+subsequent design decision until explicitly revoked.**
+
+Full Beta v2 will be ordered as approximately **five assembled PCBAs**. We must
+not fabricate five boards and then discover that a reasonable first-revision
+architecture adjustment requires all five to be reordered.
+
+**Full Beta v2 Revision 1 must be designed for recoverability.** Where an
+important architecture choice is still reasonably uncertain, prefer:
+
+- DNP/FIT options
+- 0 Ω source-selection links
+- accessible tuning passives
+- test points
+- preserved alternate footprints where the area/cost penalty is reasonable
+- controlled hand rework
+
+and **avoid** fallback paths that require trace cuts, bodge wires, or an entirely
+new PCB revision for a predictable configuration change.
+
+**This does NOT authorise:** unsafe redundant circuitry · mutually active power
+sources · keeping every abandoned concept · compromising signal integrity ·
+fallback hardware with no plausible use · weakening protection circuitry.
+
+**Two different standards apply, and they must not be confused:**
+
+| system class | rule |
+|---|---|
+| **Safety-critical power paths** (battery reverse protection) | **Do NOT create ad-hoc bypasses merely for reworkability.** Protection integrity outranks convenience. |
+| **Performance-uncertain, non-safety-critical** (NFC supply, IR drive, EMI filtering, current limits) | **Design a clean first-revision fallback** where technically sensible. |
+
+**Intent:** the first five PCBAs should maximise the probability that every major
+showcase feature can be made functional through normal component rework if the
+first configuration underperforms.
+
+Reasonable configuration and performance uncertainty should be recoverable
+through **planned** component rework whenever practical.
 
 ---
 
@@ -238,6 +280,154 @@ P07 (RGB) and P17 (RootProbe IRQ), plus P16 already freed by removing HOME (D-01
 
 ---
 
+## 8a. Battery reverse protection (FBV2-ARCH-002)
+
+| # | decision | date |
+|---|---|---|
+| D-050 | **LTC4368-1 is the preferred controller architecture**, with VIN on the cell side. | 2026-08-22 |
+| D-051 | **LTC4368-2 is REJECTED** for this application: its reverse-current threshold interferes with the normal charger-to-battery current direction when VIN is on the cell side. *(Verified: −3 mV vs the -1's symmetric ±50 mV. A `-2` discharges normally and never charges.)* **The suffix must appear in the schematic symbol, the BOM, the assembly note and the bring-up checklist.** | 2026-08-22 |
+| D-052 | **Bare back-to-back MOSFETs are NOT a complete solution** and must not be treated as one. *(Verified unrealisable at 1S: available V<sub>GS</sub> is 0.3–1.5 V; the P-channel variant turns hard on into a reversed cell.)* | 2026-08-22 |
+| D-053 | **Mandatory fault case: REVERSED BATTERY WHILE USB POWERS THE SYSTEM.** Additionally evaluate **single pass-MOSFET short + reversed battery + USB present.** | 2026-08-22 |
+| D-054 | **No single plausible protection-component failure may place meaningful negative voltage onto BQ25185 BAT** without another protection mechanism clearing or limiting the fault. | 2026-08-22 |
+
+**Still OPEN before schematic lock** (per ruling A): exact MOSFET selection ·
+sense resistor / current threshold · UV/OV divider · fuse requirement · reverse
+clamp requirement · dead-cell recovery.
+
+> **Verification result (FBV2-ARCH-002).** D-054 is **not met by LTC4368-1 +
+> dual N-FET alone** — a shorted pass FET is the dominant MOSFET failure mode and
+> reproduces the exact fault the protection guards. A **series fuse plus a
+> Schottky clamp at the cell connector** are therefore **required**, not optional.
+> Separately, the protection **creates** a new failure mode: below the LTC4368's
+> 1.8–2.4 V UVLO both gates are off and the body diodes are anti-series, so a
+> deeply discharged pack can never be recharged. See **P-11**, **P-12**, **P-13**
+> and [`architecture/POWER_FAULT_STATE_TABLE.md`](architecture/POWER_FAULT_STATE_TABLE.md).
+
+---
+
+## 8b. NFC supply — default 3.3 V with a no-respin 5 V fallback (FBV2-ARCH-002)
+
+| # | decision | date |
+|---|---|---|
+| D-055 | **Default first build: `NFC_SUPPLY` = `+3V3`.** ST25R3916 `VDD` = `VDD_TX` = `NFC_SUPPLY`; `VDD_IO` = `+3V3`; configure the documented 3.3 V mode (`sup3V`). **NFC must be FITTED and functional on the first fabrication.** *(Supersedes the N1/N2 choice in P-10, which is now closed.)* | 2026-08-22 |
+| D-056 | **The PCB MUST preserve a practical conversion path to boosted ~5 V WITHOUT REORDERING THE PCB**, via `SYS → TPS61023 → source selector → NFC_SUPPLY`. **Hard requirement** unless a serious electrical/RF/layout penalty is proven. **Do not delete the fallback merely to save PCB area.** | 2026-08-22 |
+
+**Hard requirements on the fallback** (all verified achievable — see the audit §G):
+
+1. `VDD` and `VDD_TX` always tied together on `NFC_SUPPLY`.
+2. `VDD_IO` remains `+3V3`.
+3. The `+3V3` and boosted sources must be **mutually exclusive**.
+4. It must be **impossible** under the intended BOM to short `+3V3` to the boost output.
+5. First fab: 3.3 V source FITTED · 5 V activation path DNP · ST25R3916 FITTED · matching network FITTED for 3.3 V · antenna FITTED.
+6. Conversion of one board requires only: moving 0 Ω links · populating DNP boost parts · changing accessible matching passives · a firmware change.
+7. Conversion must **NOT** require: PCB reorder · trace cutting · bodge wiring · replacing the ST25R3916 · modifying `VDD_IO` routing.
+8. Test points on `NFC_SUPPLY`, the boost output, and key NFC power/debug nodes.
+9. Matching/tuning components must stay physically accessible for prototype rework.
+
+> **Verification result.** Requirements 1–9 are all satisfiable. Two 0 Ω select
+> links guarantee mutual exclusion **by construction** — exactly one is ever
+> fitted, so requirement 4 holds with no BOM configuration able to violate it.
+> **Pre-fit the inductor, the FB divider and both boost capacitors; keep the
+> TPS61023 and the 5 V select link DNP.** Conversion is **3–9 soldering
+> operations, exactly one of which is fine-pitch** (TPS61023, SOT-563, 0.5 mm) —
+> practical with hot air, iron and tweezers, no BGA/QFN rework. **No serious
+> penalty found: KEEP THE FALLBACK.** Full FIT/DNP matrix in the audit §G.2–G.4.
+>
+> **Two conditions not in the ruling and not to be lost:** do not tap
+> `VDD`/`VDD_TX` straight off the 3V3 plane (ferrite/0 Ω plus substantial local
+> bulk — this is the biggest risk in the 3.3 V configuration), and **re-scale the
+> RFI receiver divider**, which is the most commonly missed consequence of
+> dropping the supply.
+
+---
+
+## 8c. Community accessory power (FBV2-ARCH-002)
+
+| # | decision | date |
+|---|---|---|
+| D-057 | **REMOVE the permanent raw `+3V3` pin from the public community connector.** There will be **no unprotected always-live `+3V3` tap exposed to users.** Keep one protected switched accessory rail. | 2026-08-22 |
+| D-058 | **TPS22950C (leaded package) is the preferred investigation direction** for the switched rail: 3.3 V operation · default OFF · hardware pull-down on ON/EN · reverse-current blocking · adjustable current limit · short-circuit protection · thermal shutdown. Target initial limit ≈ 500 mA. **Do not lock R<sub>ILIM</sub>** until the accessory/system power budget is derived. | 2026-08-22 |
+
+**Requirements:** an externally powered accessory must not back-power AQROOT, and
+a shorted accessory must not collapse the core `+3V3` rail.
+
+> **Verification result.** TPS22950**C** meets every requirement — SLVSFJ2B §5
+> confirms **RCB = Yes** for the C variant (and **No** for the L variant, which
+> must never be substituted). Package is **DDC SOT-23-thin**, leaded. Internal
+> smart pull-down is 500 kΩ, **but Table 6-1 still says "Do not leave floating",
+> so the external pull-down remains mandatory.**
+>
+> **One caveat on the 500 mA target:** the C variant's adjustable range **starts
+> at 0.5 A**, so 500 mA is the extreme bottom of the range. The base TPS22950
+> reaches 0.05 A but is WCSP-only and fails the leaded requirement.
+> **Recommend 600–800 mA.** Also route the open-drain `FLT` output to a spare
+> internal expander input — it converts an invisible fault into a UI message.
+
+---
+
+## 8d. Community connector — 20-pin allocation (FBV2-ARCH-002)
+
+| # | decision | date |
+|---|---|---|
+| D-059 | **New target: 11 × independent XGPIO · 2 × independent native ESP32 GPIO · 2 × external I²C · 1 × WAKE/ATTN · 1 × protected switched accessory 3V3 · 3 × GND = 20.** No permanent raw `+3V3`. No duplicate GPIO. | 2026-08-22 |
+| D-060 | Native pins should preferably have **no strapping role, no ROM boot traffic**, be bidirectional high-speed GPIO, and be safe on ESP32-S3-WROOM-1-N16R8. **GPIO47 remains approved.** **GPIO43 is FALLBACK ONLY**, because U0TXD may emit ROM/boot traffic. | 2026-08-22 |
+
+> **Verification result.** The 20-pin count is satisfied exactly. Recommended
+> native pair is **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`)**, which removes
+> GPIO43 from the connector entirely. GPIO38 is priority-2 unrestricted, has no
+> strapping role, no boot traffic and no published power-up glitch.
+> **Gated on unverified SX1262 DIO1 behaviour** — see the audit §B.2.
+
+### Ruling E — GPIO46 (conditional)
+
+Moving `DISP_BL_CTL` to GPIO46 remains a **conditional** option requiring: an
+external hardware pull-down · the backlight driver must not pull GPIO46 high
+during strap sampling · GPIO46 must remain LOW for Joint Download Boot · the safe
+strap state must not depend on firmware · verify the pull structure in the chosen
+backlight driver.
+
+> **Verification result — the blocking condition is CLOSED.** The TPS61169 `CTRL`
+> pin has an **internal pull-down** (TI datasheet, `R_PD`), not a pull-up, so it
+> reinforces GPIO46's own weak pull-down rather than fighting it. **GPIO46 is
+> cleared to host `DISP_BL_CTL`** subject to: 10 kΩ external pull-down · **no RC
+> filter and no bulk capacitance on the net** · strap hold ≥ 3 ms · document that
+> GPIO46 cannot retain level through deep sleep · verify per unit via the ROM
+> `boot:0xNN` log (bit `0x04` is the latched GPIO46 level).
+
+### Ruling F — Expanders
+
+**PCAL9535A is the preferred investigation candidate to replace TCA9535.**
+**Do NOT replace it yet.** Investigate replacing **both** `U2` and `U3` so AQROOT
+uses one expander family. Desired: per-pin interrupt mask · interrupt status ·
+input latch · programmable pulls · clean charger-status handling · clean
+community-input interrupt handling.
+
+**Critical hardware safe-state pull resistors remain EXTERNAL. Do not rely on
+programmable expander pulls for safety-critical startup states.**
+
+> **Verification result: PASS WITH SCHEMATIC/FIRMWARE CHANGES**, and **yes,
+> change both.** Not "drop-in": the PCAL9535A pin table could not be retrieved
+> from a primary source (three routes failed), and **firmware must change or it
+> silently sees no interrupts at all** — the PCAL9535A powers up with every
+> interrupt masked, the exact opposite of the TCA9535. Audit §A.
+
+### Ruling G — Charger status
+
+**Preserve both `STAT1` and `STAT2`.** The previous STAT1-only recommendation is
+**rejected**. If PCAL9535A is adopted, use interrupt masking/status logic so the
+no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
+
+> **Verification result — the ruling is correct and my earlier reading was wrong.**
+> SLUSF65A §7.3.10 verbatim: *"**When no battery is present**, the device charges
+> the capacitor on the BAT pin and toggles between charging and charge completed
+> states. During this condition, the STAT1 pin remains stable, while the STAT2 pin
+> toggles between HIGH and LOW."* Table 7-2 confirms charge-complete, sleep and
+> charge-disabled are **one state with both pins HIGH**. STAT1 alone therefore
+> conveys only fault/no-fault. **Pull both to `+3V3` with 20 kΩ** (datasheet range
+> 1 k–20 k, maximum pull-up rail 5 V).
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -258,13 +448,23 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-02** | **Freeze the 20-pin connector.** C2 is the provisional direction per D-046. Verification substituted **GPIO47** for GPIO18 as `NATIVE_B` and moved `DISP_BL_CTL` to GPIO46. Approve the substitution, or fall back to C1. | Gates the connector sheet, the `U3` pin assignment and the right-side mechanical exit. **Shape verified; identity of `NATIVE_B` awaiting approval.** | 2026-08-22 |
 | ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
-| **P-10** | **NFC supply topology.** **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
+| **P-11** | **Dead-cell recovery architecture.** Below the LTC4368's 1.8–2.4 V UVLO both gates are off and the body diodes are anti-series, so a pack at ~0 V can never be recharged. Recommended: a firmware-gated ~10 kΩ trickle across the pass FETs plus a `BAT_RAW` ADC divider. **Not approved.** | **BLOCKS FBV2-A1.** It is a power-tree change, not a value change. Per instruction, no dead-cell solution is invented — options presented, analysis stops. | 2026-08-22 |
+| **P-12** | **BQ25185 BAT survivability of a brief ~−0.35 V excursion** during the shorted-FET + reversed-cell case, while the fuse clears. | Absolute maximum is a **DC** limit, not an energy limit. Bench measurement, not a datasheet lookup. | 2026-08-22 |
+| **P-13** | **Latch-off vs hot-insertion inrush.** Latch-off is right for a reversed cell; but if hot-insertion inrush trips the same latch, plugging the battery in with USB connected leaves an apparently dead board until a power cycle. | **BLOCKS FBV2-A1.** May force different retry strapping or an inrush element. Unresolvable on paper. | 2026-08-22 |
+| **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
+| **P-15** | **3V3 rail budget under simultaneous worst case** — NFC TX + audio + LoRa + backlight + Wi-Fi against a 2 A TPS63020 with current-limit foldback. | Foldback means brownout resets and SD corruption rather than a clean fault. May force firmware mutual-exclusion. | 2026-08-22 |
+| **P-16** | **Repurpose one XGPIO as `ACC_DETECT`?** Firmware currently cannot know an accessory is present before enabling the switched rail or choosing pull configurations. | Changes the published count from 11 XGPIO to 10. Free once PCAL9535A programmable pull-ups exist. **Not adopted** — ruling D specifies 11. | 2026-08-22 |
+| **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
+| **P-18** | **Accessory I²C segmentation — buffer alone, or add a mux?** | An accessory holding SDA low blinds the fuel gauge **and** all XGPIO simultaneously; nothing prevents address collision on 0x36 or 0x20–0x27. | 2026-08-22 |
+| ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
 | **P-07** | **Exact mechanical internal cavity.** Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. **Now the long-pole item.** | 2026-08-22 |
 
 ### Closed since 2026-08-22
 
 | # | closed by | outcome |
 |---|---|---|
+| **P-10** | D-055 | NFC runs at 3.3 V on the first build (was "N1"), **with** a no-respin 5 V fallback per D-056. |
+| **P-01** | D-050…D-054 | Reverse-polarity **topology** chosen: LTC4368-1 + dual N-FET + fuse + clamp. Component values and dead-cell recovery remain open as P-11…P-13. |
 | **P-05** | D-037 | RGB architecture removed; three expander pins freed. |
 | **P-06** | D-038 | Dedicated RootProbe IRQ retired; `U2.P17` freed. |
 | **P-08** | D-040 | IPEX → pigtail → bulkhead. No new main-PCB RF routing. |

@@ -62,7 +62,9 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [PROGRESS.md](PROGRESS.md) | Living status dashboard: gates, percentages, blockers. |
 | [CHANGELOG.md](CHANGELOG.md) | Chronological engineering changes and why they happened. |
 | [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) | High-level architecture snapshot and known architecture defects. |
+| [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | **Mandatory before schematic work.** Eleven fault cases across USB, battery, power-switch and accessory states. |
 | [audits/](audits/) | Dated engineering audits, each pinned to a repository HEAD. |
+| [reviews/](reviews/) | Independent second opinions. **Advisory — not automatically authoritative.** |
 | [transcripts/](transcripts/) | Append-only verbatim CTO prompts and Claude Code responses. |
 
 ### Current contents
@@ -70,7 +72,17 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | file | date |
 |---|---|
 | [audits/2026-08-22-pre-design-engineering-audit.md](audits/2026-08-22-pre-design-engineering-audit.md) | 2026-08-22 |
+| [audits/2026-08-22-architecture-verification.md](audits/2026-08-22-architecture-verification.md) | 2026-08-22 |
+| [audits/2026-08-22-architecture-reconciliation.md](audits/2026-08-22-architecture-reconciliation.md) | 2026-08-22 |
+| [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | 2026-08-22 |
+| [reviews/2026-08-22-independent-cto-power-nfc-review.md](reviews/2026-08-22-independent-cto-power-nfc-review.md) | 2026-08-22 |
 | [transcripts/2026-08-22-session-01.md](transcripts/2026-08-22-session-01.md) | 2026-08-22 |
+
+### Standing policy
+
+**[FIRST FIVE FULL BETA PCBAs — NO-RESPIN RECOVERY POLICY](CTO_DECISIONS.md)**
+(D-049) applies to every design decision until explicitly revoked. Read it before
+proposing any architecture choice.
 
 ---
 

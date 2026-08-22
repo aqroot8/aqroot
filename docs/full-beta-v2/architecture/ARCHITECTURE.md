@@ -103,9 +103,9 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
 | Charger / power path | `U11` BQ25185DLHR | Linear. Thermals matter in a sealed enclosure; start at 500 mA charge current. |
 | 3V3 rail | `U12` TPS63020DSJR | Buck-boost, FB 1M / 180k = 3.28 V. EN driven by the physical switch, **never firmware** — the MCU cannot restore its own disabled rail. |
 | Fuel gauge | `U14` MAX17048G+T10 | On internal I2C at 0x36. ALRT reaches a test point only. |
-| **Reverse polarity** | **TBD — BLOCKER** | `BAT_CONNECTOR_P` is a dead single-pad net. LTC4368-1 + back-to-back N-FETs is the candidate. Pending P-01. |
-| **NFC boost** | **TBD** | `U13` TPS61023 exists but the rail architecture is wrong (see defects). Pending P-03. |
-| Switched accessory rail | `U15` TPS22918 | With slew-control cap and quick-output-discharge. |
+| **Reverse polarity** | **LTC4368-1 + dual N-FET + fuse + Schottky clamp** | Topology chosen (D-050…D-054). VIN on the **cell side** — the documented reverse-VIN gate mechanism lives on that pin. `-1` suffix load-bearing: `-2` blocks charging. **Dead-cell recovery (P-11) and inrush/latch interaction (P-13) still open.** |
+| **NFC supply** | **`+3V3` direct on the first build**, with a DNP TPS61023 boost branch behind a 0 Ω source selector | D-055 / D-056. Two mutually exclusive links; sources can never be shorted. |
+| Switched accessory rail | **`TPS22950C`** | Replaces TPS22918, which has no reverse blocking, no current limit and no thermal shutdown. |
 
 **Safe-state discipline (carry forward).** Both TCA9535 expanders power up with
 all ports high-Z, so every safety-relevant control net carries an external pull
@@ -120,10 +120,11 @@ pull.**
 
 | item | status |
 |---|---|
-| Pin count | **Target 20 pins** (from 26). CTO-locked. |
-| Final pinout | **TBD.** C1 / C2 / C3 proposed; none approved. Pending P-02. |
-| External I2C | **Retained**, behind a buffer whose B-side supply is the switched accessory rail. Part re-verification required. |
-| Switched accessory power | **Retained** unless the CTO changes it. Load switch with slew control and output discharge. |
+| Pin count | **20 pins.** CTO-locked (D-059). |
+| Allocation | **11 XGPIO + 2 native + 2 I²C + 1 WAKE/ATTN + 1 switched accessory 3V3 + 3 GND = 20.** No permanent raw `+3V3` (D-057). No duplicate GPIO. |
+| Native pair | **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`)** recommended. GPIO43 removed from the connector — it emits ROM UART traffic at every reset. **Gated on unverified SX1262 DIO1 behaviour.** |
+| External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is the switched accessory rail — verified high-Z when unpowered (SCPS245E). |
+| Switched accessory power | **TPS22950C**, leaded SOT-23-thin: RCB, adjustable limit, short-circuit and thermal protection, 500 kΩ internal pull-down **plus a mandatory external pull-down**. R<sub>ILIM</sub> 600–800 mA recommended; not locked. |
 | Mechanical | **Keyed, shrouded/polarized and recessed**, right-side exit. |
 | Native vs expander | Must be documented distinctly everywhere. Expander GPIO are I2C-mediated: roughly 70 microseconds per output change at 400 kHz, with input-change latency of hundreds of microseconds and no source register. They cannot do UART, SPI, PWM, RMT/IR, 1-Wire or WS2812. |
 
@@ -166,8 +167,49 @@ speculative; each cites what was measured.
 
 ---
 
+---
+
+## Mechanical — external product direction
+
+**Volume Up and Volume Down are removed from the Full Beta v2 mechanical
+requirements** (FBV2-ARCH-002). They never existed electrically; their presence
+in Field Slate v5 §5 was an industrial-design leftover.
+
+| face | contents |
+|---|---|
+| **Front** | display / touch, D-pad, A/B, microphone aperture |
+| **Top** | panel antenna connector, IR TX/RX optical area |
+| **Left** | antenna storage |
+| **Right** | recessed/keyed 20-pin community connector, Power, hidden/recessed BOOT access if appropriate |
+| **Bottom** | USB-C, microSD |
+| **Rear** | NFC target, speaker opening, branding |
+
+`hardware/beta/mechanical/` was not touched and remains untracked. The internal
+cavity is still unpublished — **P-07**, gate FBV2-A2.
+
+---
+
+## First-revision reworkability (D-049)
+
+Rework provisions planned under the no-respin policy. Full rationale in the
+reconciliation audit §H.
+
+| class | items |
+|---|---|
+| **HIGH — include** | IR LED current-limit resistor · IR LED source-select link (`+3V3` vs `SYS`) · NFC matching network · TPS22950C R<sub>ILIM</sub> · speaker EMI-filter footprints · VBUS-sense divider · reverse-protection sense resistor |
+| **MEDIUM — if area permits** | charger status pull-ups · RF module control pulls · strap/pull values · external antenna pigtail (already inherently reworkable) |
+| **LOW — omit** | alternate footprints for major ICs · alternate expander footprint |
+
+**Signal-integrity guard:** no rework provisions on the two native connector
+pins, either SPI bus, the I²S group or the USB pair.
+
+---
+
 ## Related documents
 
 - [CTO_DECISIONS.md](../CTO_DECISIONS.md) — source of truth
 - [PROGRESS.md](../PROGRESS.md) — gates and blockers
+- [POWER_FAULT_STATE_TABLE.md](POWER_FAULT_STATE_TABLE.md) — **mandatory**, eleven fault cases
+- [audits/2026-08-22-architecture-reconciliation.md](../audits/2026-08-22-architecture-reconciliation.md) — FBV2-ARCH-002
+- [reviews/2026-08-22-independent-cto-power-nfc-review.md](../reviews/2026-08-22-independent-cto-power-nfc-review.md) — independent, **advisory**
 - [audits/2026-08-22-pre-design-engineering-audit.md](../audits/2026-08-22-pre-design-engineering-audit.md) — the measurements behind every finding here

@@ -9,6 +9,66 @@ an entry.
 
 ---
 
+## 2026-08-22 — Critical architecture reconciled; no-respin policy established (FBV2-ARCH-002)
+
+Documentation only. No design file touched.
+
+**New standing policy: FIRST FIVE FULL BETA PCBAs — NO-RESPIN RECOVERY POLICY
+(D-049).** Full Beta v2 Revision 1 must be designed so that reasonable
+configuration and performance uncertainty is recoverable through *planned*
+component rework — DNP/FIT options, 0 Ω source-selection links, accessible tuning
+passives, test points — rather than through a board respin. Safety-critical power
+paths are explicitly excluded: no ad-hoc bypasses around battery protection
+merely for reworkability.
+
+**An independent second-opinion review was archived verbatim** at
+`reviews/2026-08-22-independent-cto-power-nfc-review.md`, marked
+**ADVISORY — NOT AUTOMATICALLY AUTHORITATIVE**. It corrected the primary
+engineering work on three points, and the corrections were accepted:
+
+- **Discrete back-to-back N-FET reverse protection is withdrawn.** It is not
+  under-specified but *unrealisable at 1S* — available V<sub>GS</sub> from any rail
+  on this board is 0.3–1.5 V, and the P-channel variant that avoids a charge pump
+  turns both FETs hard on into a reversed cell, creating the fault it was added to
+  prevent. **LTC4368-1 adopted** (the `-2`'s −3 mV reverse trip would block
+  charging outright).
+- **"STAT1 only" was wrong, and so was the premise behind it.** BQ25185 SLUSF65A
+  §7.3.10 places the STAT2 toggle in the **battery-absent** limit cycle, not in
+  charge-complete/sleep — those are one state with both pins HIGH. STAT1 alone
+  conveys only fault/no-fault. **Both are exposed**, with the wake-storm solved by
+  changing the expander rather than by dropping a signal.
+- **TPS22913B/C was the wrong replacement** for TPS22918 — DSBGA 0.9 × 0.9 mm only,
+  and no current limit. **TPS22950C** adopted: RCB confirmed for the C variant
+  (the L variant has none), leaded SOT-23-thin, adjustable limit, thermal
+  shutdown.
+
+**Verified this pass.** The TPS61169 `CTRL` pin has an internal **pull-down**,
+which closes the last blocking condition on moving `DISP_BL_CTL` to GPIO46 and
+frees GPIO47. **GPIO38 replaces GPIO43** as `NATIVE_A`, removing ROM-UART
+push-pull contention from the public connector entirely.
+
+**The mandatory power/fault state table now exists** — eleven cases across USB,
+battery, power-switch and accessory states. Cases 1, 2, 5, 6, 8, 9 and 10 are OK
+or correctly blocked. **Case 4 (dead cell) and Case 11 (hot insertion) are
+UNRESOLVED and block schematic lock**, and Case 7 (shorted pass FET + reversed
+cell) is only survivable with a series fuse and a Schottky clamp, which are
+therefore required rather than optional.
+
+**NFC ships at 3.3 V with a full no-respin 5 V fallback.** Two mutually exclusive
+0 Ω links guarantee the sources can never be shorted. Pre-fit the inductor, the
+FB divider and both boost capacitors; keep the TPS61023 and the 5 V link DNP.
+Conversion is 3–9 soldering operations with exactly one fine-pitch part — no BGA
+or QFN rework, no trace cuts, no bodge wires.
+
+**Volume Up/Down removed from the Full Beta v2 mechanical requirements.**
+
+**FBV2-A1 assessed: CANNOT PASS.** Four of eight criteria are resolved (20-pin
+map, default NFC, NFC fallback, accessory power). Four remain — expander family,
+native pair, reverse-protection topology completeness, and power-tree stability —
+and three of those close with document reads. Progress 10% → 13%.
+
+---
+
 ## 2026-08-22 — Architecture direction locked, blockers verified (FBV2-ARCH-001)
 
 Documentation only. No design file touched. Commit `890db0b` pushed to
