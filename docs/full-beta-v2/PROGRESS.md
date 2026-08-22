@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-23 (updated after FBV2-COMM-001)
-Repository HEAD at last update: `c2ef26c`
+Date: 2026-08-23 (updated after FBV2-COMM-002)
+Repository HEAD at last update: `d96d152`
 
 ---
 
@@ -56,6 +56,25 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 
 ### Overall Full Beta v2: **~31%**
 
+**Held at 31%.** FBV2-COMM-002 **corrected an error rather than adding progress**:
+the connector locked by FBV2-COMM-001, Harwin `M20-7881242`, turned out to be
+obsolete, and has been replaced by Samtec **`BCS-112-S-D-HE`**. The percentage does
+not rise for repairing something that should not have been recorded as locked.
+
+It does not fall either. Nothing that was genuinely achieved has been lost: the
+24-contact allocation, the pin ordering, both accessory rails, the expander
+architecture and the firmware contract all stand unchanged, and the replacement is
+better on every measured axis — active and next-day stocked, a lower 5.33 mm
+profile (Z spare 0.70 mm → **3.47 mm**), 4.6 A per contact, and extended-life
+plating available. Three CTO opportunity rulings (O-1, O-2, O-3) were also
+implemented.
+
+**The percentage rule was applied honestly in both directions**: a correction is
+not progress, and a corrected error is not a regression in what was actually built.
+
+<details>
+<summary>Superseded — the ~31% assessment as first written (FBV2-COMM-001)</summary>
+
 **No gate in the twelve-gate table passed.** FBV2-COMM-LOCK is a *task* gate, not
 one of the twelve, and it **PASSED** (2026-08-23, FBV2-COMM-001).
 
@@ -72,6 +91,8 @@ It is **not** more than three because nothing was built, `hardware/beta-v2/` sti
 does not exist, and the design now has **zero spare expander capacity anywhere**
 (B-37) — a constraint that will bite the first time a new I²C-mediated signal is
 wanted.
+
+</details>
 
 <details>
 <summary>Superseded — the ~28% assessment (FBV2-DISP-002)</summary>
@@ -299,6 +320,30 @@ no topology.
 
 </details>
 
+### Blockers added or changed by FBV2-COMM-002 (2026-08-23)
+
+| # | blocker | status |
+|---|---|---|
+| ~~D-083~~ | **Harwin `M20-7881242` REJECTED as obsolete** — `harwin.com` returns HTTP 404 for it. The MPN had been *configured from the catalogue ordering scheme*, and FBV2-COMM-001 §15 had flagged exactly that risk | **CORRECTED.** Replaced by Samtec `BCS-112-S-D-HE` (D-093) |
+| **D-096** | **New standing rule:** a part number configured from an ordering scheme is a hypothesis, not a selection. Every MPN written into a locked document must first be confirmed against a live manufacturer or distributor record showing lifecycle and stock | **STANDING** |
+| **B-39** | **Mating-cycle rating unconfirmed.** Only **100 cycles** is formally qualified for BCS; the **2 500-cycle** E.L.P. figure is **by similarity at 30 µin gold**. Confirm the rated count for `BCS-112-S-D-HE` with Samtec before production | **OPEN, medium.** Procurement |
+| **B-40** | Which mating row terminates in which PTH row of the 7.87 mm pattern must be read off the Samtec print, not assumed | **OPEN, low.** FBV2-S2 |
+| **B-29** | **Re-scoped.** The footprint must now be drawn to Samtec FIG 3 `BCS-1XX-XXX-D-HE`: 2 × 12 PTH, **2.54 mm within a row, 7.87 ± 0.05 mm between rows, 0.71 mm drill** — *not* interchangeable with any vertical 2×12 pattern | **OPEN, medium.** FBV2-S2 |
+| **B-37** | Zero spare expander capacity | **HALF CLOSED by O-1.** `U3` now holds one `RESERVED_SPARE` (P16, test pad + 100 kΩ pull-up, no function assigned). **`U2` remains 16/16 with zero spare** |
+| **M-09** | Connector body height | **DOWNGRADED to LOW.** Z column falls from 22.30 mm to **19.53 mm of 23.0 — 3.47 mm spare**; it is no longer the sole governing column. Confirm 5.33 mm against the Samtec 3D model at FBV2-P1 |
+| **M-10** | Insertion load path | **DOWNGRADED.** ≈ **33 N average** (was ≈ 48 N max), peak higher. Enclosure boss still required (D-097) |
+| **P-19** | The 24Cxx family spans `0x50`–`0x57`; only `0x50` is reserved. May need widening if multi-EEPROM accessories appear | **OPEN, low.** CTO, with P-18 |
+| ~~O-1~~ | Wire-OR the `FLT` lines | **APPROVED and implemented** (D-094) |
+| ~~O-2~~ | Accessory-ID EEPROM address `0x50` | **APPROVED and implemented** (D-095) |
+| ~~O-3~~ | Share the accessory boost with the NFC fallback | **REJECTED and struck** (D-095) |
+
+**Two NEW opportunities are flagged for a CTO ruling and were deliberately NOT
+locked:** **N-1** publish an accessory reference design (footprint, the 4.34–6.35 mm
+post-length rule, the detect-strap pattern, the shared-rail current rule, a board
+template) — high value, documentation-only; **N-2** accessory retention — withdrawal
+force is only ≈ 20 N average with no latch, so an enclosure detent or captive
+fastener is worth considering.
+
 ### Blockers added or changed by FBV2-COMM-001 (2026-08-23)
 
 | # | blocker | status |
@@ -420,6 +465,7 @@ DS12484 tables; every other footprint remains unverified.
 | 2026-08-22 | FBV2-PWR-001. Overall raised 13% → 15%; **no gate passed. FBV2-A1 FAIL, 5 of 6 criteria closed.** D-061…D-064 recorded. **P-13 and B-24 closed** by primary-source evidence; B-22 closed. Complete battery-protection topology specified. Fuse **REQUIRED**, clamp **REQUIRED**, PTC **REJECTED**. |
 | 2026-08-22 | FBV2-DISP-001. **No gate passed — percentage holds at 25%.** D-071/D-072/D-073 recorded. Display size LOCKED at **3.5″**; battery envelope LOCKED. **Display MPN and J1 deliberately NOT locked** — old-J1 compatibility is **UNPROVEN**. ESP32-S3 SPI verdict **PASS** (FSPI IO_MUX, 80 MHz, no bus merge). M-01/M-02 closed; **M-06/M-07 opened.** |
 | 2026-08-22 | FBV2-MECH-001. Overall raised 20% → 25%. **FBV2-A2 = PASS.** D-069/D-070 recorded; cavity **75.0 × 155.0 × 18.5 mm** derived; PCB target **70 × 148**; **P-07 closed**; M-01/M-02 opened. Beta-DM 74 × 155 outline ruled **RE-FLOORPLAN REQUIRED**. Next gate: **FBV2-S1**. |
-| 2026-08-23 | FBV2-COMM-001. Overall raised 28% → 31%. **No gate in the twelve-gate table passed**; the task gate **FBV2-COMM-LOCK = PASS**. **The 20-pin community port is SUPERSEDED.** New port **2×12, 24 active contacts, FEMALE device side**, `Harwin M20-7881242` (2.54 mm, right-angle, 3 A/contact, 300 cycles), keying and shroud from the enclosure. Pin ordering locked with every power contact GND-paired so no row swap can put 5 V on a logic pin. **New 5 V accessory rail** `SYS → TPS61023 → TPS22950C → ACC_5V_SW`, and `+3V3 → TPS22950C → ACC_3V3_SW`; **one load-switch MPN and one boost MPN across both rails**. D-081…D-092 recorded. **P-02, P-15, P-16 and B-08 CLOSED**; B-34…B-38, M-09, M-10 opened. **Zero spare expander capacity now remains anywhere.** |
+| 2026-08-23 | FBV2-COMM-002. **Overall HELD at 31% — a correction is not progress.** **Harwin `M20-7881242` REJECTED as obsolete** (404 on harwin.com; the MPN had been configured from an ordering scheme, which FBV2-COMM-001 had flagged). **Connector re-locked: Samtec `BCS-112-S-D-HE`** — 2×12 female Tiger Claw, horizontal entry, through-hole, 30 µin gold, ACTIVE, 385 pcs next-day, MOQ 1, 4.6 A/contact. `-S` chosen over the proposed `-L` because Samtec qualifies **both** platings at only **100 cycles** and the **2 500-cycle** extended-life data exists **only at 30 µin gold** — +$2.88/board. **Z column improves 22.30 → 19.53 mm of 23.0 (3.47 mm spare).** Pin ordering and electrical architecture **unchanged**. **O-1 approved** (`FLT` wire-OR → `ACC_POWER_FAULT_N`, `U3` P16 = `RESERVED_SPARE`), **O-2 approved** (I²C `0x50` reserved for an accessory-ID EEPROM), **O-3 rejected**. D-093…D-098 recorded; B-39, B-40, P-19 opened; B-37, M-09, M-10 downgraded. |
+| 2026-08-23 | FBV2-COMM-001. Overall raised 28% → 31%. **No gate in the twelve-gate table passed**; the task gate **FBV2-COMM-LOCK = PASS**. **The 20-pin community port is SUPERSEDED.** New port **2×12, 24 active contacts, FEMALE device side**, ~~`Harwin M20-7881242`~~ *(rejected as obsolete 2026-08-23 — see FBV2-COMM-002)*, keying and shroud from the enclosure. Pin ordering locked with every power contact GND-paired so no row swap can put 5 V on a logic pin. **New 5 V accessory rail** `SYS → TPS61023 → TPS22950C → ACC_5V_SW`, and `+3V3 → TPS22950C → ACC_3V3_SW`; **one load-switch MPN and one boost MPN across both rails**. D-081…D-092 recorded. **P-02, P-15, P-16 and B-08 CLOSED**; B-34…B-38, M-09, M-10 opened. **Zero spare expander capacity now remains anywhere.** |
 | 2026-08-23 | FBV2-DISP-002. Overall raised 25% → 28%. **No gate in the twelve-gate table passed**; the task gate **FBV2-DISP-LOCK = PASS**. **Display LOCKED** — EastRising `ER-TFT035IPS-6` + `ER-TPC035-6` (ILI9488 + FT6236 @ 0x38), 56.54 × 84.96 × 3.95 mm, one 50-pin 0.50 mm **bottom-contact** 0.30 mm FPC. **`J1` LOCKED** — Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings, on the FH12/FH52E land pattern for a JLC second source. **Backlight closed** — TPS61169 retained, `R69` 2.55 R → **1.87 R**, `R70`–`R73` 4 × 39 R → **4 × 33 R**. D-074…D-080 recorded. **M-06 and M-07 CLOSED**; B-28…B-33 opened. ST7796S formally rejected on availability (D-078). |
 | 2026-08-22 | FBV2-PWR-002. Overall raised 15% → 20%. **FBV2-A1 = PASS** — first gate since A0. D-065…D-068 recorded. Pass path changed to **P2** (4 FETs, 2 packages). Dead-cell recovery specified to component level. **P-11, P-12, B-20, B-21, B-23 closed**; B-26/B-27 opened. Clamp **demoted to secondary**, fuse **resized 3 A → ≈5 A**. Next gate: **FBV2-A2**. |

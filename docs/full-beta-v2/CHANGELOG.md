@@ -9,6 +9,180 @@ an entry.
 
 ---
 
+## 2026-08-23 — Community connector CORRECTED and final-locked (FBV2-COMM-002)
+
+Documentation only. No design file touched. `hardware/beta-v2/` was not created.
+
+**This entry corrects an error rather than adding progress, and the percentage is
+held at 31% accordingly.**
+
+### Harwin `M20-7881242` is rejected
+
+The CTO's lifecycle finding stands and is corroborated:
+**`harwin.com/products/M20-7881242` returns HTTP 404** — the part number does not
+resolve to a live catalogue item.
+
+It should never have been recorded as locked. **The MPN was configured from the
+Harwin catalogue's ordering scheme** (`M20-78` + `8` for double row + `12` per row
++ `42` for gold+tin) rather than taken from a live listing, and FBV2-COMM-001's own
+limitations section said so in as many words: *"It should be verified against a
+live distributor listing before the BOM is issued."* The flag was right; the part
+was written into the locked documents anyway.
+
+That gap is now closed by rule rather than by intention. **D-096: a part number
+configured from an ordering scheme is a hypothesis, not a selection. Every MPN
+entering a locked document must first be confirmed against a live manufacturer or
+distributor record showing lifecycle status and stock.** It applies to every
+subsequent selection in the programme.
+
+`M20-7881242` has been struck through in place — not deleted — in
+`CTO_DECISIONS.md`, `ARCHITECTURE.md`, `MECHANICAL_INTERFACE_SPEC.md`,
+`PROGRESS.md` and the FBV2-COMM-001 changelog entry.
+
+### Connector re-locked: Samtec `BCS-112-S-D-HE`
+
+.100 in / 2.54 mm, **2 × 12 / 24 contacts**, **FEMALE** Tiger Claw™ dual-beam
+receptacle, **horizontal (right-angle) entry**, **through-hole**, **30 µin
+selective gold** in the contact area with matte tin on the tail (D-093).
+
+**ACTIVE**, with **385 pieces shipping next-day** from Samtec at **MOQ 1**
+($7.314 @ 1, $5.667 @ 100). Digi-Key lists the series as *Active*. Body
+**30.48 (L) × 8.13 (D) × 5.33 (H) mm**. **4.6 A per contact** mated with TSW,
+450 VAC / 636 VDC, **−55 to +125 °C**, glass-filled LCP UL94 V-0, UL E111594,
+halogen-free, MSL 1.
+
+**The footprint is new and is not interchangeable with anything already drawn:**
+2 × 12 plated through-holes, 2.54 mm within a row, **7.87 ± 0.05 mm *between*
+rows** — the horizontal-entry tails splay outward — with **0.71 mm drills** and a
+27.94 mm end-hole span. B-29 is re-scoped to this pattern.
+
+### Why the locked MPN is `-S` and not the `-L` that was proposed
+
+This is what verifying the extended-life information was for.
+
+Samtec's own design-qualification report (187544 Rev 1) gives **100 mating cycles
+for BOTH** the 10 µin (`-L`) and 30 µin (`-S`) gold options. The E.L.P.
+extended-durability data — **2 500 cycles** — is qualified **by similarity at
+30 µin gold only**.
+
+So at `-L` the community port would have been rated **100 cycles**, which is
+*worse* than the 300 gold cycles of the part just rejected. For a
+**user-swappable community port on a maker platform, mating-cycle life is a
+first-order product parameter**, not a detail. The `-S` upgrade costs **$2.88 per
+board at quantity one — roughly $14 across the first five boards** — for the only
+plating with extended-life evidence behind it. Same body, same footprint, one
+character of the part number. **`BCS-112-L-D-HE` is retained as a plating-only
+cost-down alternate requiring no board change.**
+
+**Recorded honestly as B-39:** the 2 500-cycle figure is **by similarity**, and the
+only count formally qualified for BCS itself is **100 cycles**. Samtec must confirm
+the rating for `BCS-112-S-D-HE` before the production run. The design assumption
+for the first five boards is *"≥ 100 cycles qualified, 2 500 supported by
+similarity at 30 µin gold."* **It is not claimed as 2 500.**
+
+### Commodity 2.54 mm compatibility is preserved — with one rule
+
+BCS accepts standard **0.64 mm (.025 in) square posts**, and the horizontal-entry
+engagement window is **4.34 mm to 6.35 mm**. An ordinary 2 × 12 2.54 mm header with
+a ~6.0 mm post qualifies. **Extra-long-pin headers (8.13 mm / .320 in posts) must
+NOT be used** — they exceed the window. Reference accessory mate:
+**`TSW-112-07-L-D`** (5.84 mm post), or a `-RA` right-angle variant for a coplanar
+accessory. That one sentence is what preserves the entire reason for choosing
+2.54 mm in the first place.
+
+### Enclosure keying and load path locked (D-097)
+
+The connector carries **no integrated key** — the BCS polarized-position option
+exists but consumes a contact, which D-081 forbids. So: the socket face is recessed
+**≥ 1.5 mm** behind the right wall and the recess walls form the shroud; an
+**asymmetric rib/step on the upper edge only** blocks upside-down insertion (the
+two mating rows are just 2.54 mm apart, so the key must be unambiguous rather than
+a chamfer); the recess is **closed at both ends** with ≤ 0.3 mm clearance so a
+one-column offset is mechanically impossible; a moulded **shelf and backing rib
+capture the connector body**; and the accessory shell bottoms on an **enclosure
+boss** so the insertion force is never carried by the 24 solder joints.
+
+Insertion force is **≈ 33 N average** (24 × 1.39 N) with **withdrawal ≈ 20 N
+average** — better than the ≈ 48 N maximum of the rejected part. These are Samtec
+*averages*; Samtec's own note explains the peak occurs during the contact-spreading
+stage and exceeds the average, so the load path is sized with that acknowledged
+rather than assumed away.
+
+### Z-stack rechecked, and it improves
+
+| layer | Harwin (rejected) | **Samtec BCS** |
+|---|---|---|
+| Connector body above PCB | 8.10 mm | **5.33 mm** |
+| **Column total of the 23.0 mm external budget** | **22.30 mm** | **19.53 mm** |
+| **Spare** | **0.70 mm** | **3.47 mm** |
+
+**The connector region is no longer the sole governing column** — it is now level
+with the control region's 19.5 mm. **3.47 mm is real, usable clearance**, which is
+the standard the ruling demanded. The 5.33 mm figure is read from the Samtec series
+print and cross-checked three ways (the `-S-HE` view differs by exactly one 2.54 mm
+row pitch; the vertical `-D-TE` body width is .20 in; the vertical insulation height
+of 7.37 mm matches). It must still be confirmed against the individual 3D model at
+FBV2-P1 — **M-09, downgraded to LOW**, and the conclusion survives even a 2.8 mm
+error.
+
+### Electrical allocation unchanged
+
+The BCS has the same 2 × 12 topology with the mating rows stacked vertically, so
+**D-082 and D-084 transfer unchanged.** Power and ground remain distributed across
+columns 2, 5, 8 and 11; every power contact is still vertically GND-paired; all
+3.3 V is in row A and all 5 V in row B; both native pins still flank the GND at
+pin 9; the detect strap is still one 0 Ω link between pins 21 and 23. **The entire
+mis-insertion argument carries over intact.**
+
+### The three opportunity rulings
+
+**O-1 APPROVED** (D-094). The two TPS22950C `FLT` outputs are open-drain and are
+**wire-OR'd into `ACC_POWER_FAULT_N`** — one 100 kΩ pull-up, one PCAL9535A input at
+`U3` P15. **`U3` P16 becomes `RESERVED_SPARE` with no function assigned**, brought
+out to a test pad with a 100 kΩ pull-up so it reads a defined level and can be
+pressed into service by a wire and a firmware change rather than a respin. Rev 1
+now retains an expander resource for recovery. Rail attribution is by **controlled
+isolation** (MX-5a): disable one rail and observe whether the fault clears. **B-37
+is half closed** — `U2` still has zero spare.
+
+**O-2 APPROVED** (D-095). **External I²C address `0x50` is reserved** for an
+optional AQROOT accessory-identification EEPROM — **protocol reservation only, no
+main-board hardware, and no accessory is required to carry one.** It joins the
+reserved table with 0x38, 0x68, 0x36, 0x20 and 0x21. One thing flagged rather than
+locked (**P-19**): the 24Cxx family spans **0x50–0x57**, so an AQROOT ID EEPROM
+must strap A0–A2 = 0, and 0x51–0x57 remain unreserved.
+
+**O-3 REJECTED** (D-095). The accessory TPS61023 5 V rail is **not** connected to
+the NFC fallback — no DNP link, no shared node beyond `SYS`. Sharing the TPS61023
+*device family* is the extent of the BOM consolidation, exactly as D-056 intended.
+
+### Accessory limits, and the rule most likely to be misread
+
+**`ACC_3V3_SW` = 400 mA total. `ACC_5V_SW` = 300 mA total** for the first five
+boards (D-098). Later targets of 600–800 mA and 500 mA require measured bring-up
+and a CTO ruling; the hardware change is one 0603 resistor per rail.
+
+> **The duplicate contacts SHARE the rail limit. They do not double it.**
+> `ACC_5V` pin 10 + pin 22 = **300 mA combined, not 300 mA each.** There is one load
+> switch and one current limit per rail; the second contact halves contact
+> resistance and eases routing, and adds no current budget. This must appear in
+> accessory documentation in these words.
+
+### Two new opportunities, flagged not locked
+
+**N-1** — publish an accessory reference design: the 2 × 12 footprint, the
+4.34–6.35 mm post-length rule, the detect-strap pattern, the shared-rail current
+rule and a board-outline template that fits the recess. High value,
+documentation-only, zero main-board cost — but it is a deliverable this task was
+not authorized to create. **N-2** — accessory retention: withdrawal force is only
+≈ 20 N average with no latch, so an enclosure friction detent or a captive fastener
+is worth considering; it is a mechanical and ergonomic trade-off for enclosure CAD.
+
+Full analysis:
+[`audits/2026-08-23-community-connector-correction.md`](audits/2026-08-23-community-connector-correction.md).
+
+---
+
 ## 2026-08-23 — Community expansion port and accessory power LOCKED (FBV2-COMM-001)
 
 Documentation only. No design file touched. `hardware/beta-v2/` was not created.
@@ -32,7 +206,14 @@ ground are duplicated, each a single net; **no GPIO is duplicated**. XGPIO falls
 from 11 to 10, and **that one surrendered pin is exactly what pays for the fifth
 accessory-control expander pin** — the arithmetic is tight to the pin.
 
-### Connector: Harwin `M20-7881242`, and why keying comes from the enclosure
+### ~~Connector: Harwin `M20-7881242`~~ — **CORRECTED 2026-08-23, see FBV2-COMM-002**
+
+> **This selection was WRONG and is superseded.** `M20-7881242` is obsolete and
+> `harwin.com` returns HTTP 404 for it. The MPN had been configured from the
+> catalogue ordering scheme rather than taken from a live listing — which the same
+> entry's own limitations section had flagged. **The connector is now Samtec
+> `BCS-112-S-D-HE`.** The reasoning below about *why keying must come from the
+> enclosure at 2.54 mm* remains correct and still applies.
 
 2.54 mm, 2×12, **female horizontal (right-angle) PC-tail socket**, through-hole
 with two-point solder fixing, gold+tin. **3 A per contact, 300 mating cycles,

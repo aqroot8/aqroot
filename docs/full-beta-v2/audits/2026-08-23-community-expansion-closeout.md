@@ -3,6 +3,24 @@
 Date: **2026-08-23**
 Task: **FBV2-COMM-001**
 Repository HEAD at audit: `c2ef26c`
+> ## ⚠ SUPERSEDED IN PART — THE CONNECTOR SELECTION IN THIS AUDIT IS WRONG.
+>
+> **Harwin `M20-7881242` (§4) is OBSOLETE and was REJECTED on 2026-08-23.**
+> `harwin.com` returns HTTP 404 for it. The MPN was **configured from the Harwin
+> catalogue's ordering scheme** rather than taken from a live listing — the risk
+> this audit itself flagged in §15 item 2.
+>
+> **The connector is now Samtec `BCS-112-S-D-HE`.** See
+> [`2026-08-23-community-connector-correction.md`](2026-08-23-community-connector-correction.md)
+> (FBV2-COMM-002) and D-093.
+>
+> **Everything else in this audit stands**: the 24-contact allocation, the pin
+> ordering and its mis-insertion proof, both accessory rails, the expander
+> architecture, the power budget and the firmware contract. The reasoning in §4.2
+> about *why* keying must come from the enclosure at 2.54 mm also stands.
+>
+> This audit is a dated snapshot and is **not** rewritten. Only this banner is added.
+
 Scope: **documentation only.** No KiCad, PCB, firmware, mechanical CAD or fabrication
 file was created or modified. `hardware/beta-v2/` was not created.
 

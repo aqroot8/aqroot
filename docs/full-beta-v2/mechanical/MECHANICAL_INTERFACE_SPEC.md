@@ -2,7 +2,7 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002 and FBV2-COMM-001 — display, display connector and community port LOCKED)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED)
 Task: FBV2-MECH-001
 Gate: **FBV2-A2**
 Status: interface freeze. **No CAD exists yet. No PCB outline has been drawn.**
@@ -41,7 +41,7 @@ value is TARGET, however confident the arithmetic.
 | 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. **Fitted part `ER-TFT035IPS-6` + `ER-TPC035-6`: 56.54 × 84.96 × 3.95 ± 0.25 mm (4.20 max)**, active 48.96 × 73.44 | **LOCKED** | **D-072 / D-074.** Locked by FBV2-DISP-002; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
 | 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 4.0 mm** or **15 × 11 × 3.5 mm**, + **1.5–2.0 cm³** rear cavity | **TARGET** | §7 |
-| 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.68 × 7.87 × 8.10 mm** body; **2×12 @ 2.54 mm**, FEMALE, right-angle, right wall. Harwin **`M20-7881242`** | **LOCKED** | §5. **D-081/D-083.** Supersedes the 24 × 10 × 9 mm 2×10 @ 2.00 mm target |
+| 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.48 × 8.13 × 5.33 mm** body; **2×12 @ 2.54 mm**, FEMALE, horizontal entry, right wall. Samtec **`BCS-112-S-D-HE`** | **LOCKED** | §5. **D-081/D-093.** Harwin `M20-7881242` **REJECTED as obsolete** |
 | 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; ≥15 mm from the IR windows | **TARGET** | §8 |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
@@ -75,7 +75,7 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **IR emitter** | TSAL6200 class | 5 mm THT lens, **±17° half-angle** | Top edge. Consider a side-view SMD emitter to reduce Z |
 | **IR receiver** | TSOP38238 | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall** |
 | **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
-| **Community connector** | **2×12, 24 active contacts, 2.54 mm, FEMALE** — Harwin `M20-7881242` | body **30.68 × 7.87 × 8.10 mm**, right-angle | §5. Keying and shroud come from the **enclosure recess** |
+| **Community connector** | **2×12, 24 active contacts, 2.54 mm, FEMALE** — Samtec `BCS-112-S-D-HE` | body **30.48 × 8.13 × 5.33 mm**, horizontal entry | §5. Keying and shroud come from the **enclosure recess** |
 | Expanders / protection | PCAL9535APW (TSSOP24), LTC4368 (MSOP-10), 2 × dual FET (SOIC-8) | ≤1.2 mm | All low-profile; no Z impact |
 
 ### 2.1 Height census
@@ -243,17 +243,20 @@ Beta-DM used **four Ø2.4 mm holes (measured)**; v2 adds two mid-span.
 | Organisation | **2 rows × 12** | **LOCKED** (D-081) |
 | Pitch | **2.54 mm** | **LOCKED** (D-083) — chosen so commodity male pin headers mate; that is the whole point for a maker platform |
 | Gender | **FEMALE on the device**, male on the accessory | **LOCKED** (D-081) |
-| **MPN** | **Harwin `M20-7881242`** — female horizontal PC-tail socket, through-hole, two-point solder fixing, gold+tin | **LOCKED** (D-083) |
-| Body envelope | **30.68 (L) × 7.87 (D) × 8.10 (H) mm**; PCB pattern length 30.68 mm | **LOCKED**, height to be re-confirmed at FBV2-P1 (**M-09**) |
+| **MPN** | **Samtec `BCS-112-S-D-HE`** — female Tiger Claw dual-beam receptacle, **horizontal entry**, through-hole, **30 µin gold**. **ACTIVE**, MOQ 1, next-day from Samtec | **LOCKED** (D-093) |
+| Cost-down alternate | `BCS-112-L-D-HE` (10 µin gold) — identical body, identical footprint, **no board change**; 100-cycle life instead of the 30 µin extended-life data | **recorded** |
+| **PCB pattern** | **2 × 12 PTH, 2.54 mm within a row, 7.87 ± 0.05 mm BETWEEN rows, 0.71 mm drill**, 27.94 mm end-hole span (Samtec FIG 3) — **not** interchangeable with a vertical 2×12 pattern | **LOCKED**, footprint to be drawn (B-29) |
+| Mating pin | **0.64 mm (.025″) square post, engagement 4.34–6.35 mm.** Reference mate `TSW-112-07-L-D` (5.84 mm post). **Extra-long-pin headers (8.13 mm posts) must not be used** | **LOCKED** |
+| Body envelope | **30.48 (L) × 8.13 (D) × 5.33 (H) mm** | **LOCKED**, height to be re-confirmed at FBV2-P1 (**M-09**, now LOW) |
 | Orientation | **right-angle, side-exit through the right wall** | **LOCKED** |
 | Recess | **≥ 1.5 mm** below the outer wall face | **TARGET** |
-| **Keying / polarisation / shroud** | **FROM THE ENCLOSURE.** Asymmetric recess profile plus one off-centre lead-in rib, so the accessory seats in exactly one orientation. **The recess must be CLOSED AT BOTH ENDS** so a one-column lateral shift is mechanically impossible | **LOCKED** (D-041 satisfied, D-081) |
+| **Keying / polarisation / shroud** | **FROM THE ENCLOSURE (D-097).** An **asymmetric rib/step on the UPPER edge only** — the two mating rows are just 2.54 mm apart, so the key must be unambiguous, not a chamfer. **The recess must be CLOSED AT BOTH ENDS** (≤ 0.3 mm clearance) so a one-column lateral shift is mechanically impossible. A moulded **shelf and backing rib capture the connector body**; the accessory shell bottoms on an **enclosure boss** | **LOCKED** (D-041 satisfied, D-081, D-097) |
 | Lead-in | chamfer on all four recess walls | **TARGET** |
-| **Insertion load** | up to **48 N** (24 × 2.0 N max). Must be carried by an enclosure boss/rib | **M-10** |
+| **Insertion load** | **≈ 33 N average** (24 × 1.39 N), peak higher; withdrawal ≈ 20 N average. Must be carried by an enclosure boss/rib | **M-10** |
 | Position | right wall, **below the display band**, above the Power control | **TARGET** — the 7.87 mm body depth exceeds the 6.73 mm of PCB clear of the display, so it cannot sit beside the panel |
 | Marking | pin-1 triangle; **"COMMUNITY PORT — 3V3 LOGIC ONLY"** and **"5V PIN IS POWER OUTPUT ONLY"** | **LOCKED** (D-090) |
 
-**Wall aperture:** 33 × 10 mm nominal, with 0.3 mm clearance to the connector body
+**Wall aperture:** 34 × 10 mm nominal, with 0.3 mm clearance to the accessory shell
 on all sides, plus the keying rib.
 
 ### 5.1 Z column — the connector region now governs
@@ -261,17 +264,19 @@ on all sides, plus the keying rib.
 | layer | mm |
 |---|---|
 | Front shell | 2.00 |
-| **Community connector body** | **8.10** |
+| **Community connector body** | **5.33** |
 | PCB | 1.60 |
 | Battery | 8.00 |
 | Clearance | 0.60 |
 | Rear shell | 2.00 |
-| **Total** | **22.30 mm of the 23.0 mm external budget — 0.70 mm spare** |
+| **Total** | **19.53 mm of the 23.0 mm external budget — 3.47 mm spare** |
 
-**This displaces the control region (19.5 mm) as the governing column.** Relief is
-available: the battery is 60 mm wide in a 75 mm cavity, so the outer ~5 mm of each
-PCB edge has nothing behind it. Placing the socket hard against the right edge
-recovers most of the 8.0 mm. **Confirm at FBV2-P1 (M-09).**
+**With `BCS-112-S-D-HE` the connector region is level with the control region
+(19.5 mm) and is no longer the sole governing column** — it was 22.30 mm with the
+rejected Harwin part. **3.47 mm is real, usable clearance.** Further relief remains
+uncounted: the battery is 60 mm wide in a 75 mm cavity, so the outer ~5 mm of each
+PCB edge has nothing behind it. **Confirm the 5.33 mm body height against the
+Samtec 3D model at FBV2-P1 (M-09, now LOW).**
 
 ---
 
@@ -431,9 +436,9 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 | ~~M-06~~ | ~~Display MPN and FPC interface~~ | **CLOSED 2026-08-23 by D-074…D-078.** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin 0.5 mm bottom contact, 0.30 ± 0.03 mm; `J1` = `FH69-50S-0.5SH` |
 | ~~M-07~~ | ~~Backlight driver re-derivation~~ | **CLOSED 2026-08-23 by D-079.** TPS61169 retained from `+3V3`; `R69` = 1.87 R, `R70`–`R73` = 4 × 33 R |
 | **M-08** | **Connector placement below the display** | The 2.3 mm `J1` competes with the D-pad, A/B and the mic aperture for the 70.04 mm of cavity height under the panel. **Blocks nothing before FBV2-P1** (B-33) |
-| ~~M-03~~ | ~~Community connector MPN~~ | **CLOSED 2026-08-23 by D-083** — Harwin `M20-7881242`. |
-| **M-09** | **The connector region is the governing Z column** | 2.0 shell + **8.10 connector** + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell = **22.30 mm of 23.0 external**, 0.70 mm spare. Place the socket hard against the right edge, where the 60 mm-wide battery leaves ~5 mm of PCB with nothing behind it. **Confirm the 8.10 mm figure against the individual Harwin drawing at FBV2-P1** |
-| **M-10** | **Insertion load path** | Up to **48 N** (24 contacts × 2.0 N max). The enclosure must carry it on a boss or rib; the socket's two-point solder fixing is not sufficient alone |
+| ~~M-03~~ | ~~Community connector MPN~~ | **CLOSED 2026-08-23 by D-093** — Samtec `BCS-112-S-D-HE`. *(The D-083 Harwin selection was rejected as obsolete and replaced.)* |
+| **M-09** | Confirm the connector body height | **DOWNGRADED to LOW 2026-08-23.** With `BCS-112-S-D-HE` the column is 2.0 shell + **5.33 connector** + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell = **19.53 mm of 23.0 external, 3.47 mm spare** — level with the control region and **no longer the sole governing column**. The 5.33 mm figure is read from the Samtec series print and cross-checked three ways; **confirm against the individual 3D model at FBV2-P1** |
+| **M-10** | **Insertion load path** | **~33 N average** (24 contacts × 1.39 N avg), **peak higher** — Samtec publishes averages, and its own note states the peak occurs during the spreading stage. The enclosure must carry it on a boss or rib (D-097) |
 | M-04 | Battery SKU | Envelope frozen; SKU at procurement |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
 
@@ -466,10 +471,11 @@ FBV2_DISPLAY_FPC:        50 pin / 0.50 mm / bottom contact / 0.30+/-0.03 mm   LO
 FBV2_DISPLAY_CONNECTOR:  Hirose FH69-50S-0.5SH         LOCKED (D-076)
 FBV2_COMM_CONTACTS:      24 active (2 x 12)            LOCKED (D-081)
 FBV2_COMM_PITCH_MM:      2.54                          LOCKED (D-083)
-FBV2_COMM_CONNECTOR:     Harwin M20-7881242 (female)   LOCKED (D-083)
-FBV2_COMM_BODY_MM:       30.68 x 7.87 x 8.10           LOCKED (D-083)
-FBV2_COMM_KEYING:        enclosure recess + rib        LOCKED (D-081)
-FBV2_Z_GOVERNING_COLUMN: connector region 22.30 of 23.0  TARGET (M-09)
+FBV2_COMM_CONNECTOR:     Samtec BCS-112-S-D-HE (female)  LOCKED (D-093)
+FBV2_COMM_BODY_MM:       30.48 x 8.13 x 5.33           LOCKED (D-093)
+FBV2_COMM_FOOTPRINT:     2x12 PTH, 2.54 in-row, 7.87 row-to-row, 0.71 drill   LOCKED (D-093)
+FBV2_COMM_KEYING:        enclosure recess + upper rib  LOCKED (D-097)
+FBV2_Z_CONNECTOR_COLUMN: 19.53 of 23.0 (3.47 spare)    TARGET (M-09)
 FBV2_NFC_ZONE_MM:        45 x 45           TARGET
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
 FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)

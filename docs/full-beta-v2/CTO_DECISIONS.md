@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-COMM-001)
+Last updated: 2026-08-23 (FBV2-COMM-002)
 
 ---
 
@@ -708,13 +708,13 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 |---|---|---|
 | D-081 | **NEW COMMUNITY PORT LOCKED: 2 rows x 12 positions, 24 ACTIVE contacts, no NC and no key contact.** Device side is **FEMALE**, recessed into the enclosure; the accessory side uses **standard MALE 2.54 mm pins**. **Mechanical keying, polarization and shrouding are provided by the ENCLOSURE**, not by the connector - see D-083. | 2026-08-23 |
 | D-082 | **24-CONTACT ALLOCATION LOCKED: 10 x XGPIO + 2 x native ESP32 GPIO + 2 x external I2C + 1 x WAKE/ATTN + 2 x protected switched 3.3 V + 2 x protected switched 5 V + 4 x GND + 1 x `ACC_DETECT_N` = 24.** The duplicated contacts are **only** the two rails and ground, each a single electrical net, duplicated for contact resistance and accessory routing. **No GPIO is duplicated.** XGPIO falls from 11 to **10**, and that surrendered pin is exactly what pays for the fifth accessory-control expander pin. | 2026-08-23 |
-| D-083 | **CONNECTOR LOCKED: Harwin `M20-7881242`** - M20 series, **2.54 mm**, 2 x 12, **female horizontal (right-angle) PC-tail socket**, through-hole with two-point solder fixing, gold+tin finish (code 42). **3 A per contact, 300 mating cycles (gold), 30 mOhm, 800 V AC proof, -40...+105 C, UL94V-0.** Body approximately **30.68 (L) x 7.87 (D) x 8.10 (H) mm**. Mates with any standard 2x12 0.64 mm square-post male header. **2.54 mm is retained** because commodity male pins are the entire point for a maker platform. Samtec Mini Mate `IPL1` (wrong gender, proprietary mate) and 2.00 mm keyed systems (abandon commodity pins) were evaluated and **rejected**. | 2026-08-23 |
+| ~~D-083~~ | ~~**CONNECTOR LOCKED: Harwin `M20-7881242`**~~ **REJECTED AND SUPERSEDED 2026-08-23 by D-093 (FBV2-COMM-002).** Current manufacturer/distributor lifecycle information shows the part is obsolete; `harwin.com/products/M20-7881242` returns **HTTP 404**. The MPN had been *configured from the catalogue ordering scheme* rather than taken from a live listing, and FBV2-COMM-001 had flagged it for exactly this verification. **It must not appear anywhere as the production connector.** | 2026-08-23 |
 | D-084 | **PIN ORDERING LOCKED** (odd pins = row A, even = row B): `1 XGPIO0`, `2 EXT_SCL`, `3 ACC_3V3_SW`, `4 GND`, `5 XGPIO1`, `6 EXT_SDA`, `7 NATIVE_A (GPIO38)`, `8 XGPIO2`, `9 GND`, `10 ACC_5V_SW`, `11 NATIVE_B (GPIO47)`, `12 XGPIO3`, `13 XGPIO4`, `14 WAKE_ATTN_N`, `15 ACC_3V3_SW`, `16 GND`, `17 XGPIO5`, `18 XGPIO6`, `19 XGPIO7`, `20 XGPIO8`, `21 GND`, `22 ACC_5V_SW`, `23 ACC_DETECT_N`, `24 XGPIO9`. **Every power contact is vertically paired with GND**, so no row-swap mis-insertion can put 5 V or 3.3 V onto a logic pin. **All 3.3 V is in row A and all 5 V in row B.** Both native pins flank the GND at pin 9. | 2026-08-23 |
 | D-085 | **`ACC_DETECT_N` CONVENTION LOCKED.** The accessory asserts detect by shorting **pin 23 to the adjacent GND at pin 21** (one 0 Ohm link); AQROOT provides a 100 k pull-up to `+3V3`. **Detection works with both accessory rails OFF**, because the pull-up and the expander run from `+3V3`. **Neither rail may be enabled unless `ACC_DETECT_N` is asserted** - which is also what makes a flipped accessory passively safe: it cannot ground pin 23, so it never receives power. | 2026-08-23 |
 | D-086 | **3.3 V ACCESSORY RAIL: `+3V3` -> `TPS22950C` -> `ACC_3V3_SW`.** Verified against SLVSFJ2B: `VIN` 1.8-5.5 V, RCB **Yes**, `ILIM` 0.5-3.5 A adjustable, auto-retry, TSD 170 C, `FLT` open-drain, DDC SOT-23-thin. Default OFF with a **mandatory external 100 k pull-down** on `ON`. **`R_ILIM` = 1.5 k (approx. 0.76 A typ) RECOMMENDED, NOT fabrication-locked**; published limit **400 mA continuous** for the first five boards. | 2026-08-23 |
 | D-087 | **5 V ACCESSORY RAIL (NEW): `BQ25185_SYS` -> a SECOND `TPS61023` at 5.0 V -> a SECOND `TPS22950C` -> `ACC_5V_SW`.** It is **not** USB `VBUS`, **not** the NFC fallback rail, and tied to neither; the only shared node is `SYS` on the input side. **`R_ILIM` = 1.65 k (approx. 0.69 A typ) RECOMMENDED, NOT fabrication-locked**; published limit **300 mA continuous** for the first five boards. Inductor **1 uH, I_sat >= 3 A**. | 2026-08-23 |
 | D-088 | **BOM CONSOLIDATION LOCKED. One `TPS22950C` MPN on BOTH rails** - only `R_ILIM` differs. **`TPS61023` is REUSED** as the accessory boost, sharing inductor, feedback divider and capacitors with the DNP NFC fallback (D-056). One boost family and one load-switch family to validate, source, stock and rework. | 2026-08-23 |
-| D-089 | **EXPANDER ALLOCATION LOCKED. `U3` = 16/16**: `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`, `ACC_3V3_FAULT`, `ACC_5V_FAULT`, `SX1262_RXEN`. **`U2` = 16/16**: the five pins freed by D-010/D-037/D-038 are exactly consumed by `BQ25185_STAT1/2`, `MAX17048_ALRT_N`, `VBUS_PRESENT` and `SX1262_DIO1`. **All five accessory signals fit cleanly, and there is now ZERO spare expander capacity anywhere in the design** (B-37). `ACC_5V_EN` drives the boost `EN` and the 5 V switch `ON` from one pin. Five new external safe-state pulls are mandatory. | 2026-08-23 |
+| D-089 | **EXPANDER ALLOCATION LOCKED.** **`U3`**: `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`, **`ACC_POWER_FAULT_N`** and `SX1262_RXEN` = **15 assigned + 1 `RESERVED_SPARE`** *(amended 2026-08-23 by D-094 - the two `FLT` lines are wire-OR'd, freeing P16)*. **`U2` = 16/16**: the five pins freed by D-010/D-037/D-038 are exactly consumed by `BQ25185_STAT1/2`, `MAX17048_ALRT_N`, `VBUS_PRESENT` and `SX1262_DIO1`. **`U2` still has ZERO spare** (B-37, half closed). `ACC_5V_EN` drives the boost `EN` and the 5 V switch `ON` from one pin. Five new external safe-state pulls are mandatory. | 2026-08-23 |
 | D-090 | **ALL COMMUNITY SIGNALS ARE 3.3 V CMOS ONLY. The 5 V power contact does NOT make any signal 5 V-tolerant.** Protection: **100 Ohm series on every XGPIO and both native pins**, 22 Ohm on the buffered I2C pair, 330 Ohm on WAKE, plus a **low-capacitance TVS array on `NATIVE_A`, `NATIVE_B`, `EXT_SDA`, `EXT_SCL`** - the natives are the only contacts with a direct path to the MCU. **Bidirectional level translators are REJECTED**: they do not protect the A-side, they add direction ambiguity on bidirectional GPIO, and they would imply 5 V logic is supported, which it is not. Silkscreen: *"COMMUNITY PORT - 3V3 LOGIC ONLY / 5V PIN IS POWER OUTPUT ONLY"*. | 2026-08-23 |
 | D-091 | **`WAKE_ATTN_N` ISOLATION GATE - closes B-08.** A single N-channel MOSFET pass gate (2N7002 / BSS138 class) between `WAKE_ATTN_N_HDR` and `WAKE_INT_N`, **gate driven by `ACC_3V3_SW`**. With accessory power off - the default - a shorted accessory pin can no longer hold `WAKE_INT_N` low, so internal button wake can never be blocked. **Consequence:** accessory-initiated wake requires `ACC_3V3_SW` to remain enabled during sleep (B-36). | 2026-08-23 |
 | D-092 | **FIRMWARE MUTUAL-EXCLUSION CONTRACT - BINDING (closes P-15).** MX-1 at most ONE of {Wi-Fi TX, LoRa TX +22 dBm, sub-GHz TX, NFC field} at a time. MX-2 speaker <= 50 % during any MX-1 transmit. MX-3 rails enabled only while `ACC_DETECT_N` is asserted. MX-4 3.3 V before 5 V by >= 5 ms, reverse on disable. MX-5 on `FLT`, disable within 100 ms, report, require user action - **do not leave the switch auto-retrying into a short**. MX-6 on detect loss, disable both within 100 ms. MX-7 disable 5 V below `V_BAT` 3.4 V and 3.3 V below 3.2 V. MX-8 microSD and display must not transact simultaneously on SPI-A. MX-9 mask `U3` XGPIO interrupts by default, unmask only detect and the two `FLT`. | 2026-08-23 |
@@ -745,14 +745,77 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 > thermal envelope is invisible to the host. Firmware must not treat `FLT` as a
 > complete overcurrent indication (B-35).
 >
-> **Three opportunities are FLAGGED, NOT LOCKED, and need a CTO ruling:**
-> **O-1** wire-OR the two `FLT` lines to free one expander pin (slack versus
-> per-rail diagnostics - the design currently has zero spare anywhere);
-> **O-2** reserve an I2C address for an accessory-ID EEPROM (zero hardware cost,
-> but a product/protocol decision that interacts with P-18);
-> **O-3** a DNP 0 Ohm link letting the accessory boost also serve the NFC 5 V
-> fallback (saves a part, but couples NFC PA current to the accessory load, which
-> is exactly what D-056 avoided).
+> **The three flagged opportunities were RULED ON 2026-08-23 (FBV2-COMM-002):**
+> **O-1 APPROVED** - the two `FLT` lines are wire-OR'd into `ACC_POWER_FAULT_N`
+> and `U3` P16 becomes `RESERVED_SPARE` (D-094).
+> **O-2 APPROVED** - external I2C address `0x50` reserved for an optional
+> accessory-ID EEPROM, protocol only (D-095).
+> **O-3 REJECTED** - the accessory 5 V rail stays electrically independent of the
+> NFC fallback; sharing the TPS61023 *family* is the extent of the consolidation
+> (D-095).
+
+---
+
+## 8m. Community connector CORRECTION and final lock (FBV2-COMM-002)
+
+> ### ⚠ HARWIN `M20-7881242` IS REJECTED.
+> D-083 is struck. Current lifecycle information shows the part is obsolete, and
+> `harwin.com/products/M20-7881242` returns **HTTP 404**. The MPN had been
+> **configured from the catalogue ordering scheme** rather than taken from a live
+> listing - FBV2-COMM-001 flagged exactly that risk and it materialised. **The
+> community-port ELECTRICAL architecture is unaffected and remains locked.**
+
+| # | decision | date |
+|---|---|---|
+| D-093 | **CONNECTOR LOCKED: Samtec `BCS-112-S-D-HE`** - .100 in / 2.54 mm, **2 x 12 / 24 contacts**, **FEMALE** Tiger Claw dual-beam receptacle, **horizontal (right-angle) entry**, **through-hole**, **30 uin selective gold** in the contact area with matte tin on the tail. **ACTIVE**; 385 pieces ship next-day from Samtec, **MOQ 1**, $7.314 @ 1 / $5.667 @ 100. Body **30.48 (L) x 8.13 (D) x 5.33 (H) mm**. Footprint: **2 x 12 PTH, 2.54 mm within a row, 7.87 +/-0.05 mm BETWEEN rows, 0.71 mm drill** - *not* interchangeable with any vertical 2x12 pattern. **4.6 A per contact** mated with TSW, 450 VAC / 636 VDC, **-55 to +125 C**, UL E111594, halogen-free, MSL 1. **`BCS-112-L-D-HE` (10 uin gold) is a plating-only cost-down alternate with an identical body and identical footprint - no board change.** | 2026-08-23 |
+| D-094 | **O-1 APPROVED. The two TPS22950C open-drain `FLT` outputs are WIRE-OR'd into `ACC_POWER_FAULT_N`** - one 100 k pull-up, one PCAL9535A input (`U3` P15). **`U3` P16 becomes `RESERVED_SPARE`: no function is assigned to it.** It is brought out to a **test pad with a 100 k pull-up** so it reads a defined level and can be pressed into service by a wire and a firmware change rather than a respin. Rev 1 must retain at least one expander resource for recovery. **Rail attribution is by controlled isolation** (MX-5a): on a fault, disable one rail and observe whether `ACC_POWER_FAULT_N` clears. | 2026-08-23 |
+| D-095 | **O-2 APPROVED, O-3 REJECTED.** **External I2C address `0x50` is RESERVED** for an optional AQROOT accessory-identification EEPROM - **protocol reservation only, no main-board hardware, and no accessory is required to carry one.** It joins the reserved table with 0x38 / 0x68 / 0x36 / 0x20 / 0x21. **O-3 is REJECTED: the accessory TPS61023 5 V rail must NOT be connected to the NFC fallback** - no DNP link, no shared node beyond `SYS`. Sharing the TPS61023 *device family* is the extent of the BOM consolidation. | 2026-08-23 |
+| D-096 | **STANDING PROCUREMENT RULE.** A part number **configured from an ordering scheme is a hypothesis, not a selection.** Every MPN written into a locked document must first be confirmed against a **live manufacturer or distributor record showing lifecycle status and stock**. This rule is created by the `M20-7881242` failure and applies to every subsequent selection. | 2026-08-23 |
+| D-097 | **ENCLOSURE KEYING AND LOAD PATH LOCKED.** The connector carries **no integrated key** - the BCS polarized-position option exists but consumes a contact, which D-081 forbids. Instead: socket face recessed **>= 1.5 mm** behind the right wall; recess walls form the shroud; **an asymmetric rib/step on the UPPER edge only** prevents upside-down insertion (the two mating rows are only 2.54 mm apart, so the key must be unambiguous); the recess is **CLOSED AT BOTH ENDS** with <= 0.3 mm clearance so a one-column offset is mechanically impossible; a moulded **shelf and backing rib capture the connector body**; and the accessory shell bottoms on an **enclosure boss** so the **~33 N average insertion force (peak higher)** is never carried by the 24 solder joints. Wall aperture **34 x 10 mm** nominal plus the key. | 2026-08-23 |
+| D-098 | **ACCESSORY LIMITS AND THE SHARED-RAIL RULE.** First five boards: **`ACC_3V3_SW` = 400 mA TOTAL**, **`ACC_5V_SW` = 300 mA TOTAL**. Later validation targets, **only after measured bring-up and a CTO ruling**: 600-800 mA and 500 mA respectively. **THE TWO DUPLICATE CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT - they do not double it.** `ACC_5V` pin 10 + pin 22 = 300 mA combined, **not** 300 mA each. There is one load switch and one current limit per rail. This must appear in accessory-facing documentation in these words. | 2026-08-23 |
+
+> **Result (FBV2-COMM-002).** Full analysis:
+> [`audits/2026-08-23-community-connector-correction.md`](audits/2026-08-23-community-connector-correction.md).
+>
+> **CONNECTOR LOCK = PASS. The 24-contact allocation (D-082) and the pin ordering
+> (D-084) are UNCHANGED** - the BCS has the same 2 x 12 topology with the mating
+> rows stacked vertically, so the whole mis-insertion argument carries over intact.
+>
+> **Why the locked MPN is `-S` and not the `-L` the CTO proposed.** Samtec's own
+> design-qualification report (187544 Rev 1) gives **100 mating cycles for BOTH**
+> the 10 uin (`-L`) and 30 uin (`-S`) gold options, and the E.L.P. extended-durability
+> data - **2 500 cycles** - is qualified **by similarity at 30 uin gold only**. At
+> `-L` the port would be rated **100 cycles**, which is *worse* than the rejected
+> Harwin part's 300. For a **user-swappable community port**, mating-cycle life is a
+> first-order product parameter. The `-S` upgrade costs **$2.88 per board at
+> quantity one - about $14 across the first five boards.** Same body, same
+> footprint, one character of the MPN.
+>
+> **Residual, B-39:** the 2 500-cycle figure is **by similarity**; the only figure
+> formally qualified for BCS itself is **100 cycles**. Samtec must confirm the rated
+> count for `BCS-112-S-D-HE` before the production run. The design assumption for
+> the first five boards is *">= 100 cycles qualified, 2 500 supported by similarity
+> at 30 uin gold"* - it is **not** claimed as 2 500.
+>
+> **Commodity compatibility is preserved, with one rule accessory builders must
+> follow.** BCS accepts standard **0.64 mm (.025 in) square posts**, and the
+> horizontal-entry engagement window is **4.34 mm to 6.35 mm**. An ordinary
+> 2 x 12 2.54 mm header with a ~6.0 mm post qualifies; **extra-long-pin headers
+> (8.13 mm / .320 in posts) must NOT be used.** Recommended reference mate:
+> **`TSW-112-07-L-D`** (5.84 mm post), or a right-angle `-RA` variant for a
+> coplanar accessory.
+>
+> **Z-stack improves.** The connector region falls from **22.30 mm to 19.53 mm** of
+> the 23.0 mm external budget - **3.47 mm of real spare** - and is no longer the
+> sole governing column; it is now level with the control region's 19.5 mm.
+>
+> **Two NEW opportunities are FLAGGED, NOT LOCKED:** **N-1** publish an accessory
+> reference design (footprint, post-length rule, detect-strap pattern, shared-rail
+> current rule, board-outline template) - high value, documentation-only, but it is
+> a deliverable this task was not authorized to create; **N-2** accessory retention
+> - withdrawal force is only ~20 N average with no latch, so an enclosure detent or
+> captive fastener is worth considering, but it is a mechanical/ergonomic trade-off
+> for enclosure CAD.
 
 ---
 
