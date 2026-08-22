@@ -61,6 +61,7 @@ in this file.
 | D-015 | **Keep physical BOOT / recovery capability, but hide/recess it.** It stays a real, reachable switch — it is the last-resort recovery path when flash is blank or hard-bricked. | 2026-08-22 |
 | D-016 | **Also provide software recovery where technically appropriate.** | 2026-08-22 |
 | D-017 | **ROM download recovery and firmware/OTA recovery must never be treated as the same mechanism.** They are separate, they fail in different situations, and product/UI copy must not conflate them. See the detail below. | 2026-08-22 |
+| D-018 | **Physical BOOT must remain electrically real.** The final actuator is hidden/recessed, but the circuit is not weakened, gated or made conditional on any other subsystem's state. | 2026-08-22 |
 
 ### D-017 detail — the two recovery mechanisms
 
@@ -93,6 +94,7 @@ Both are required. Neither replaces the other.
 | D-023 | **Prefer the simplest technically sound speech-output implementation.** | 2026-08-22 |
 | D-024 | **Current leading architecture is MAX98357A-style I2S Class-D**, unless later review disproves it. | 2026-08-22 |
 | D-025 | **Do not downgrade to buzzer-only output.** | 2026-08-22 |
+| D-026 | **Carry forward the audit recommendations to evaluate** speaker EMI filtering, speaker current / brownout impact, gain configuration, and the mechanical speaker cavity. | 2026-08-22 |
 
 **Supporting audit finding (not a decision):** the ESP32-S3 has **no DAC**, so
 every analog-amplifier alternative needs a PWM pin the design does not have and
@@ -109,6 +111,31 @@ option.
 | D-030 | **IR is an internal core product feature.** | 2026-08-22 |
 | D-031 | **Do not remove it.** | 2026-08-22 |
 | D-032 | **Do not move it to an accessory.** | 2026-08-22 |
+| D-033 | **IR TX and IR RX are mandatory Full Beta v2 features and must be POPULATED in the first Full Beta v2 fabrication.** No DNP. | 2026-08-22 |
+| D-034 | Powering a stronger IR TX pulse from `SYS` rather than loading the `+3V3` logic rail is a **DESIGN DIRECTION, not a final resistor/current lock.** | 2026-08-22 |
+
+---
+
+## 5a. NFC
+
+| # | decision | date |
+|---|---|---|
+| D-035 | **NFC is mandatory in the FIRST Full Beta v2 fabrication. No DNP showcase shortcut.** | 2026-08-22 |
+| D-036 | Intended direction: digital/core supplies coherent with the 3.3 V logic domain; boost only the transmitter/PA rail that actually requires it. **Exact pin-to-rail assignment NOT locked until verified against the official ST datasheet.** Crystal, matching network and antenna must all be real designs before fabrication; **no `*_TBD` dangling NFC nets may remain at release.** | 2026-08-22 |
+
+> **⚠ VERIFICATION OVERTURNED THE SUPPLY-SPLIT PART OF D-036 (2026-08-22, FBV2-ARCH-001).**
+> ST25R3916 datasheet **DS12484 Rev 3**, p. 39, states plainly: *"VDD and VDD_TX
+> must be connected to the same power supply."* Table 118 caps **VDD − VDD_TX at
+> ±0.3 V absolute maximum**; Table 119 caps it at **±0.2 V operating**. On this
+> part the core supply is VDD and the transmitter supply is VDD_TX, so the
+> requested 3.3 V / 5 V split would place **1.7 V** across that pair — **5.7× the
+> absolute maximum** — and would damage the device.
+>
+> **The as-built schematic (VDD + VDD_TX both on the boosted rail, VDD_IO on
+> `+3V3`) is CORRECT.** VDD_IO is genuinely independent (1.65–5.5 V, level
+> shifters). D-036's *intent* — supplies that stay coherent — is preserved by a
+> different route and is now tracked as **P-10**. The clause requiring datasheet
+> verification before locking did its job.
 
 ---
 
@@ -122,6 +149,19 @@ option.
 | D-043 | **The C1 / C2 / C3 connector proposals from the pre-design audit are NOT yet CTO-locked.** | 2026-08-22 |
 | D-044 | **"14 GPIO-capable lines" was a target to investigate, not a requirement.** | 2026-08-22 |
 | D-045 | **Native ESP32 GPIO and TCA9535 XGPIO must be documented distinctly** — in the pinout, on the silkscreen, and in all accessory-facing material. They are not the same currency. | 2026-08-22 |
+| D-046 | **C2 is the PROVISIONAL architecture direction**: 10 independent TCA9535 XGPIO, 2 independent native ESP32 GPIO, external I²C SDA/SCL, WAKE/ATTN, switched accessory +3V3, permanent +3V3, and sufficient GND (3 in the C2 proposal). | 2026-08-22 |
+| D-047 | **Do not pursue "14 GPIO-capable pins"** if it requires merging SPI-A and SPI-B, exposing unsafe boot-strapping pins, duplicating physical pins onto the same GPIO, or degrading core product functionality. **Protocol capability outranks marketing pin count.** | 2026-08-22 |
+| D-048 | **C2 is NOT electrically frozen** until the native-GPIO reclaim is independently verified. | 2026-08-22 |
+
+> **Verification result against D-048 (2026-08-22, FBV2-ARCH-001).** The reclaim as
+> proposed — `NATIVE_B` = GPIO18, freed by moving `NFC_IRQ` to GPIO46 — **FAILED**
+> and must not be built: a latched-high NFC IRQ would block Joint Download Boot
+> and make ROM-download recovery conditional on NFC state, violating D-015.
+> A substitute **PASSES with circuit conditions**: move `DISP_BL_CTL` to GPIO46
+> and expose **GPIO47** as `NATIVE_B`. C2's shape (10 + 2 + I²C + WAKE + 2 rails +
+> 3 GND = 20) is unchanged. See
+> [`audits/2026-08-22-architecture-verification.md`](audits/2026-08-22-architecture-verification.md) §B.
+> **Still not frozen** — the substitution is a recommendation, not a lock.
 
 ---
 
@@ -132,6 +172,58 @@ option.
 | D-050 | **External I2C remains desired.** | 2026-08-22 |
 | D-051 | **It must not be connected directly in a way that lets a bad accessory take down the internal I2C bus.** The internal bus carries touch, the IMU, the fuel gauge and both GPIO expanders — i.e. the button cluster and every internal control signal. | 2026-08-22 |
 | D-052 | **Buffer/isolation and backfeed behaviour must be verified before architecture lock.** Specifically: powered-off high-impedance on the external side, and no back-powering of the accessory side through I/O or protection diodes. | 2026-08-22 |
+
+---
+
+## 7a. Removed and retired architecture
+
+| # | decision | date |
+|---|---|---|
+| D-037 | **REMOVE the dangling `RGB_R/G/B_CTL` architecture.** There is no approved Full Beta v2 RGB status-light product feature. **Do not add an LED merely because these nets existed.** Free the corresponding expander resources. *(Closes P-05.)* | 2026-08-22 |
+| D-038 | **Retire the orphaned dedicated `ROOTPROBE_IRQ_READY_N` architecture.** KEEP the useful FAST_IO / native expansion capability. Future RootProbe and community accessories use the normal WAKE/ATTN mechanism rather than consuming a dedicated IRQ. *(Closes P-06.)* | 2026-08-22 |
+
+Between them, D-037 and D-038 free **five** internal expander pins: `U2` P05, P06,
+P07 (RGB) and P17 (RootProbe IRQ), plus P16 already freed by removing HOME (D-010).
+
+---
+
+## 7b. Charger telemetry
+
+| # | decision | date |
+|---|---|---|
+| D-039 | **Investigate** using the expander pins freed by HOME removal and RootProbe IRQ retirement for `BQ25185` `STAT1` and `STAT2`. **Do not wire them yet** — verify electrical behaviour and open-drain requirements first. | 2026-08-22 |
+
+> **Verification result (2026-08-22, FBV2-ARCH-001).** BQ25185 datasheet
+> **SLUSF65A** Table 5-1: both pins are **open-drain**, pull-up **1 kΩ–20 kΩ**,
+> **maximum pull-up voltage 5 V**, 20 mA sink, "can be left floating if unused".
+> 10 kΩ to `+3V3` is in spec and feeding TCA9535 inputs is appropriate.
+> **However** §8.3.10 / Table 7-2 record that in the charge-complete/sleep state
+> **`STAT2` toggles** — which on `U2` would repeatedly assert `/INT` → `WAKE_INT_N`
+> → GPIO21 and wake the MCU for as long as the unit sits on a full charger.
+> **Recommendation: connect `STAT1` only** (to the freed `U2.P16`); leave `STAT2`
+> on its test point; use `U2.P17` for a VBUS-present sense, which the product
+> currently lacks entirely. Not implemented, per this ruling.
+
+---
+
+## 7c. External antenna
+
+| # | decision | date |
+|---|---|---|
+| D-040 | **Prefer module RF connector / IPEX / U.FL → short RF pigtail → panel/bulkhead external antenna connector.** Do not introduce new controlled-impedance RF routing onto the main PCB unless a later mechanical/RF review proves the pigtail approach unacceptable. *(Closes P-08.)* | 2026-08-22 |
+
+---
+
+## 7d. LoRa deep-sleep wake
+
+| # | decision | date |
+|---|---|---|
+| D-041 | **Wake-on-LoRa-packet from deep sleep is NOT a Beta v2 showcase requirement.** Do not remap core interfaces solely to make `SX1262_DIO1` RTC-wake-capable. *(Closes P-09.)* | 2026-08-22 |
+
+> This ruling is what makes the §B connector substitution free of cost: the
+> replacement native pin (GPIO47) is outside the RTC range, and nothing needs it
+> to be inside, because `WAKE_ATTN_N` on GPIO21 is already the RTC-capable
+> accessory wake line.
 
 ---
 
@@ -163,14 +255,20 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | # | pending decision | why it blocks | raised |
 |---|---|---|---|
 | **P-01** | **Reverse-polarity architecture.** Approve the LTC4368-1 + back-to-back N-channel FET path, or name an alternative. | Fabrication blocker. A board built as-is will not run from battery at all. | 2026-08-22 |
-| **P-02** | **Final 20-pin connector architecture.** C1 (13 GPIO-capable: 1 native + 12 expander), C2 (12 GPIO-capable: 2 native + 10 expander, **recommended**), or C3 (14 GPIO-capable but requires an SPI bus merge or exposing strapping pins). | Gates the connector sheet, the U3 pin assignment and the right-side mechanical exit. | 2026-08-22 |
-| **P-03** | **NFC core / PA rail architecture.** Move the ST25R3916 main VDD to `+3V3` and boost only the PA, or keep the current arrangement? | Gates the NFC sheet and the power budget. Current arrangement leaves the core unpowered while VDD_IO sits at 3.3 V. | 2026-08-22 |
+| **P-02** | **Freeze the 20-pin connector.** C2 is the provisional direction per D-046. Verification substituted **GPIO47** for GPIO18 as `NATIVE_B` and moved `DISP_BL_CTL` to GPIO46. Approve the substitution, or fall back to C1. | Gates the connector sheet, the `U3` pin assignment and the right-side mechanical exit. **Shape verified; identity of `NATIVE_B` awaiting approval.** | 2026-08-22 |
+| ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
-| **P-05** | **RGB LED: implement or delete.** Three nets and three U2 pins exist; no LED part exists. | Three dangling ERC errors. Cannot remain in this state. | 2026-08-22 |
-| **P-06** | **RootProbe: complete or retire/redefine.** `ROOTPROBE_IRQ_READY_N` reaches only a pull-up and U2.P17 — it has **no header pin**, so RootProbe cannot connect as drawn. | Retiring it frees U2.P17 for charge-status telemetry. | 2026-08-22 |
-| **P-07** | **Exact mechanical internal cavity.** Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. | 2026-08-22 |
-| **P-08** | **External antenna mechanical path.** (a) u.FL pigtail from the module IPEX to a panel-mount SMA/RP-SMA — preserves the no-RF-on-main-PCB doctrine (**recommended**); or (b) a board-level RF connector requiring controlled-impedance routing and matching. | Gates the top-crown mechanical design and the RF scope. | 2026-08-22 |
-| **P-09** | **Is LoRa packet wake required?** If yes, `SX1262_DIO1` must move to an RTC-capable GPIO (0-21). It currently sits on GPIO38, which is not RTC-capable and therefore cannot serve as an `ext0`/`ext1` deep-sleep wake source. | Gates the MCU pin remap and the standby power story. | 2026-08-22 |
+| **P-10** | **NFC supply topology.** **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
+| **P-07** | **Exact mechanical internal cavity.** Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance have **never existed** in this repository. | Blocks the v2 outline, and therefore all placement and routing. **Now the long-pole item.** | 2026-08-22 |
+
+### Closed since 2026-08-22
+
+| # | closed by | outcome |
+|---|---|---|
+| **P-05** | D-037 | RGB architecture removed; three expander pins freed. |
+| **P-06** | D-038 | Dedicated RootProbe IRQ retired; `U2.P17` freed. |
+| **P-08** | D-040 | IPEX → pigtail → bulkhead. No new main-PCB RF routing. |
+| **P-09** | D-041 | LoRa deep-sleep packet wake is not a v2 requirement. |
 
 ### How a pending decision closes
 

@@ -9,6 +9,52 @@ an entry.
 
 ---
 
+## 2026-08-22 — Architecture direction locked, blockers verified (FBV2-ARCH-001)
+
+Documentation only. No design file touched. Commit `890db0b` pushed to
+`origin/master` (`b8b5ebd..890db0b`).
+
+**CTO rulings A–K recorded** as D-018, D-026, D-033…D-041, D-046…D-048. Four
+pending decisions closed: P-05 (RGB removed), P-06 (RootProbe IRQ retired),
+P-08 (IPEX → pigtail → bulkhead), P-09 (LoRa deep-sleep wake not required).
+
+**Verification against vendor datasheets changed three things.**
+
+- **The NFC supply split cannot be built.** ST25R3916 DS12484 Rev 3 p. 39: *"VDD
+  and VDD_TX must be connected to the same power supply"*, with the difference
+  capped at ±0.3 V absolute maximum. The requested 3.3 V / 5 V split would apply
+  1.7 V across that pair. **The as-built rail assignment is correct**, and the
+  pre-design audit's recommendation to change it was wrong and is withdrawn. The
+  real residual question — what VDD does while the boost is off — is now P-10,
+  with a 3.3 V-only NFC option that would delete eight components.
+- **The proposed native-GPIO reclaim would have broken recovery.** Moving
+  `NFC_IRQ` to GPIO46 makes ROM download boot conditional on NFC interrupt state,
+  because the ST25R3916 IRQ is active-high, latches until read over SPI, and is
+  not reset by an ESP32 reset. Substituted: move `DISP_BL_CTL` to GPIO46 and
+  expose **GPIO47** as `NATIVE_B`. GPIO47 is strictly better — no power-up glitch,
+  20 mA drive, unrestricted priority — and D-041 removed the only reason to want
+  GPIO18's RTC capability.
+- **`TPS22918` fails the accessory-isolation requirement.** Its integrated body
+  diode conducts VOUT→VIN, so a powered accessory can back-power `+3V3`.
+  Replacement identified in the TPS22913B/C class.
+
+**Two prior findings were confirmed wrong and are corrected in the record:** the
+TCA9517A *does* guarantee high-impedance pins when powered off and 5.5 V
+tolerance while unpowered, so it passes; and the TPS61023 *does* provide true
+load disconnect plus integrated output OVP.
+
+Reverse-polarity architecture compared across three candidates and **discrete
+back-to-back N-FETs recommended** over the LTC4368-1, primarily on quiescent
+current (sub-µA vs ~80 µA) — flagged for independent second opinion as
+instructed. A reverse-current-blocking load switch was evaluated and
+**disqualified for this position**: it would block the charging direction.
+
+Progress raised 8% → 10%. **No gate passed.** FBV2-A1 remains IN PROGRESS with
+P-01, P-02, P-04, P-07 and P-10 open. **FBV2-A2 (mechanical interface freeze)
+recommended as the next gate** — it is the long pole and nothing blocks it.
+
+---
+
 ## 2026-08-22 — Full Beta v2 engineering record established (FBV2-DOC-001)
 
 Documentation infrastructure only. No design file was touched.
