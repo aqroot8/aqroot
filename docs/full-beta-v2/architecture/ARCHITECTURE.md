@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (display and connector lock, FBV2-DISP-002)
+Date: 2026-08-23 (community expansion lock, FBV2-COMM-001)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
@@ -95,7 +95,10 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
                                                       |
                                     MCU, radios, display logic, I2C, audio, NFC VDD_IO
                                                       |
-                                        (NFC PA rail) TPS61023 boost ─> NFC_5V_PA
+                                        (NFC PA rail) TPS61023 boost ─> NFC_5V_PA  [DNP on build 1]
+                                                      |
+                              BQ25185_SYS ─> TPS61023 boost 5.0V ─> TPS22950C ─> ACC_5V_SW
+                              +3V3        ─> TPS22950C ─────────────────────> ACC_3V3_SW
 ```
 
 | block | part | notes |
@@ -106,7 +109,8 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
 | **Reverse polarity (main path)** | **LTC4368-1 + P2: TWO back-to-back N-FET stages in TWO SEPARATE PACKAGES** (4 FETs) + R_SENSE 15 mΩ + R_GATE 22 kΩ + **C_GATE 4.7 nF** + OV divider + RETRY→GND + SHDN pull-up to VIN + FAULT + **≈5 A backstop fuse** + secondary clamp | **Single-FET-short tolerant by isolation** (D-068 met). VIN on the **cell side**. `-1` suffix load-bearing: `-2` trips at −3 mV and blocks charging. **UV deliberately UNUSED** (510 kΩ to VIN) — using it would deepen the dead-cell lockout. Stages must not share a package: two die on one leadframe are not independent. |
 | **Dead-cell recovery** | **Autonomous, hardware-qualified** (D-065). VBUS-supplied · ratiometric bridge polarity comparator (trip at V_BAT = 0, supply-independent) · handoff comparator · **LTC4368 `FAULT` as a third series qualifier** · P-FET + series Schottky · **5–10 mA** | **No firmware dependency** — works with blank/corrupted flash. Zero battery-side standby (dead by construction without USB). Bounded to ≈13 mA into a reversed cell under any single failure |
 | **NFC supply** | **`+3V3` direct on the first build**, with a DNP TPS61023 boost branch behind a 0 Ω source selector | D-055 / D-056. Two mutually exclusive links; sources can never be shorted. |
-| Switched accessory rail | **`TPS22950C`** | Replaces TPS22918, which has no reverse blocking, no current limit and no thermal shutdown. |
+| Switched accessory rail (3.3 V) | **`TPS22950C`** | Replaces TPS22918, which has no reverse blocking, no current limit and no thermal shutdown. `VIN` 1.8-5.5 V, RCB, `ILIM` 0.5-3.5 A, auto-retry, TSD 170 C, `FLT`. `R_ILIM` 1.5 k recommended (D-086). |
+| **Accessory 5 V rail (NEW)** | **`TPS61023` (2nd instance) + `TPS22950C` (2nd instance)** | `SYS` -> 5.0 V boost -> protected switch -> `ACC_5V_SW`. Separate from USB VBUS and from the NFC fallback. Loads `SYS`, **not** `+3V3` (D-087/D-088). |
 
 **Safe-state discipline (carry forward).** Both TCA9535 expanders power up with
 all ports high-Z, so every safety-relevant control net carries an external pull
@@ -119,16 +123,28 @@ pull.**
 
 ## COMMUNITY EXPANSION
 
+> **The 20-pin architecture (D-059 / D-062) is SUPERSEDED.** Do not cite it.
+
 | item | status |
 |---|---|
-| Pin count | **20 pins.** CTO-locked (D-059). |
-| Allocation | **11 XGPIO + 2 native + 2 I²C + 1 WAKE/ATTN + 1 switched accessory 3V3 + 3 GND = 20.** No permanent raw `+3V3` (D-057). No duplicate GPIO. |
-| Native pair | **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`) — LOCKED** (D-063). GPIO43 removed from the connector (ROM UART traffic every reset) and becomes an internal debug test pad. DIO1 level-hold **confirmed** from Semtech §13.3.4. |
-| Expanders | **NXP PCAL9535APW,118** replaces TCA9535PWR on **both** `U2` and `U3` (D-061). Pin-for-pin against TCA9535 PW; land-pattern audit still required pre-fab. Firmware **must** unmask interrupts explicitly — they power up masked. |
-| External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is the switched accessory rail — verified high-Z when unpowered (SCPS245E). |
-| Switched accessory power | **TPS22950C**, leaded SOT-23-thin: RCB, adjustable limit, short-circuit and thermal protection, 500 kΩ internal pull-down **plus a mandatory external pull-down**. R<sub>ILIM</sub> 600–800 mA recommended; not locked. |
-| Mechanical | **Keyed, shrouded/polarized and recessed**, right-side exit. |
-| Native vs expander | Must be documented distinctly everywhere. Expander GPIO are I2C-mediated: roughly 70 microseconds per output change at 400 kHz, with input-change latency of hundreds of microseconds and no source register. They cannot do UART, SPI, PWM, RMT/IR, 1-Wire or WS2812. |
+| Contact count | **2 rows x 12 = 24 ACTIVE contacts.** No NC, no key contact. **LOCKED (D-081).** |
+| Allocation | **10 XGPIO + 2 native + 2 I2C + 1 WAKE/ATTN + 2 switched 3.3 V + 2 switched 5 V + 4 GND + 1 `ACC_DETECT_N` = 24.** **LOCKED (D-082).** Only the rails and ground are duplicated, each one net; **no GPIO is duplicated** (D-042). No permanent raw `+3V3` (D-057). |
+| **Connector** | **Harwin `M20-7881242`** - 2.54 mm, 2x12, **FEMALE**, right-angle through-hole PC tail, two-point solder fixing, gold+tin. **3 A/contact, 300 mating cycles, 30 mOhm, -40...+105 C.** Body ~30.68 x 7.87 x 8.10 mm. Mates with any standard 2x12 0.64 mm square-post male header. **LOCKED (D-083).** |
+| Keying / shroud | **From the ENCLOSURE** - asymmetric recess, lead-in rib, closed at both ends. No mainstream board-mount *female* 2.54 mm part carries an integrated key; the alternative was to abandon commodity male pins, which is the whole reason for the pitch. |
+| Pin ordering | **LOCKED (D-084).** Odd = row A, even = row B. `1 XGPIO0 / 2 EXT_SCL / 3 ACC_3V3_SW / 4 GND / 5 XGPIO1 / 6 EXT_SDA / 7 NATIVE_A / 8 XGPIO2 / 9 GND / 10 ACC_5V_SW / 11 NATIVE_B / 12 XGPIO3 / 13 XGPIO4 / 14 WAKE_ATTN_N / 15 ACC_3V3_SW / 16 GND / 17 XGPIO5 / 18 XGPIO6 / 19 XGPIO7 / 20 XGPIO8 / 21 GND / 22 ACC_5V_SW / 23 ACC_DETECT_N / 24 XGPIO9`. |
+| Mis-insertion safety | **Every power contact is vertically paired with GND**, so a row swap can only produce a current-limited rail-to-ground short - never 5 V on a logic pin. **All 3.3 V in row A, all 5 V in row B.** A one-column shift is prevented mechanically by the closed-ended recess. |
+| Native pair | **GPIO38 (`NATIVE_A`) + GPIO47 (`NATIVE_B`) - LOCKED** (D-063). Both flank the GND at pin 9. |
+| **Accessory detect** | `ACC_DETECT_N` (pin 23), 100 k pull-up to `+3V3`, asserted by a **single 0 Ohm link to the GND at pin 21**. **Works with both rails OFF**; **both rails are gated on it** (D-085). Also gives hot-plug interrupt/wake for free through `U3` `/INT` -> `WAKE_INT_N` -> GPIO21. |
+| **3.3 V accessory rail** | `+3V3` -> **`TPS22950C`** -> `ACC_3V3_SW`. Default OFF, external 100 k pull-down mandatory, RCB, auto-retry, TSD, `FLT`. `R_ILIM` **1.5 k recommended (~0.76 A typ), not locked**; **published 400 mA continuous** on build 1 (D-086). |
+| **5 V accessory rail (NEW)** | `BQ25185_SYS` -> **second `TPS61023`** at 5.0 V -> **second `TPS22950C`** -> `ACC_5V_SW`. Not USB VBUS, not the NFC fallback rail, tied to neither. `R_ILIM` **1.65 k recommended (~0.69 A typ), not locked**; **published 300 mA continuous** on build 1. Inductor 1 uH, I_sat >= 3 A (D-087). **It loads `SYS`, not `+3V3`, so it consumes none of the TPS63020's 2 A budget.** |
+| BOM consolidation | One `TPS22950C` MPN on both rails; `TPS61023` reused from the NFC fallback with identical passives (D-088). |
+| Expanders | **NXP PCAL9535APW,118** on both `U2` and `U3` (D-061). **`U2` = 16/16, `U3` = 16/16 - ZERO spare expander capacity anywhere** (D-089, B-37). `U3`: `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`, `ACC_3V3_FAULT`, `ACC_5V_FAULT`, `SX1262_RXEN`. |
+| External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is `ACC_3V3_SW` - verified high-Z when unpowered (SCPS245E). Because that rail is now default-OFF and detect-gated, a dead accessory can no longer hang the internal bus. **Address collision remains open (P-18).** |
+| **Logic safety** | **3.3 V CMOS ONLY on every signal contact.** 100 Ohm series on XGPIO and both natives, 22 Ohm on I2C, 330 Ohm on WAKE, plus a low-capacitance TVS array on the natives and I2C. **Bidirectional level translators REJECTED** (D-090). Silkscreen must say so. |
+| **WAKE isolation** | N-FET pass gate between `WAKE_ATTN_N_HDR` and `WAKE_INT_N`, gate = `ACC_3V3_SW`. **Closes B-08.** Consequence: accessory wake needs the rail held up in sleep (B-36). |
+| Firmware contract | **MX-1...MX-9 binding** (D-092): one high-power radio at a time, audio capped during TX, rails detect-gated and sequenced, `FLT` handled within 100 ms, low-battery cut-offs, SPI-A arbitration, interrupt masking. |
+| Mechanical | **Keyed, shrouded/polarized and recessed**, right-side exit. **The connector region is now the governing Z column: 22.30 mm of the 23.0 mm external budget** (M-09). Up to **48 N** insertion force must be carried by the enclosure (M-10). |
+| Native vs expander | Must be documented distinctly everywhere (D-045). Expander GPIO are I2C-mediated: roughly 70 microseconds per output change at 400 kHz, input-change latency of hundreds of microseconds, no source register. They cannot do UART, SPI, PWM, RMT/IR, 1-Wire or WS2812. |
 
 ---
 

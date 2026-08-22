@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-DISP-002)
+Last updated: 2026-08-23 (FBV2-COMM-001)
 
 ---
 
@@ -369,7 +369,7 @@ a shorted accessory must not collapse the core `+3V3` rail.
 
 | # | decision | date |
 |---|---|---|
-| D-059 | **New target: 11 × independent XGPIO · 2 × independent native ESP32 GPIO · 2 × external I²C · 1 × WAKE/ATTN · 1 × protected switched accessory 3V3 · 3 × GND = 20.** No permanent raw `+3V3`. No duplicate GPIO. | 2026-08-22 |
+| ~~D-059~~ | ~~**New target: 11 × independent XGPIO · 2 × independent native ESP32 GPIO · 2 × external I²C · 1 × WAKE/ATTN · 1 × protected switched accessory 3V3 · 3 × GND = 20.**~~ **SUPERSEDED 2026-08-23 by D-081/D-082 — the port is now 2×12 / 24 active contacts.** The *principles* survive: no permanent raw `+3V3`, no duplicate GPIO. | 2026-08-22 |
 | D-060 | Native pins should preferably have **no strapping role, no ROM boot traffic**, be bidirectional high-speed GPIO, and be safe on ESP32-S3-WROOM-1-N16R8. **GPIO47 remains approved.** **GPIO43 is FALLBACK ONLY**, because U0TXD may emit ROM/boot traffic. | 2026-08-22 |
 
 > **Verification result.** The 20-pin count is satisfied exactly. Recommended
@@ -464,7 +464,7 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 | # | decision | date |
 |---|---|---|
-| D-062 | 20-pin resource architecture **LOCKED**: 11 XGPIO · 2 native ESP32 GPIO · 2 external I²C · 1 WAKE/ATTN · 1 protected switched accessory 3V3 · 3 GND = 20. **No raw permanent +3V3.** | 2026-08-22 |
+| ~~D-062~~ | ~~20-pin resource architecture **LOCKED**: 11 XGPIO · 2 native ESP32 GPIO · 2 external I²C · 1 WAKE/ATTN · 1 protected switched accessory 3V3 · 3 GND = 20.~~ **SUPERSEDED 2026-08-23 by D-082.** **No raw permanent +3V3 still holds.** | 2026-08-22 |
 | D-063 | **`NATIVE_A` = GPIO38, `NATIVE_B` = GPIO47. LOCKED.** GPIO43 is fallback only. `SX1262_DIO1` moves to the **internal** PCAL9535A — never the public/community expander. **`BUSY` remains directly connected to the ESP32.** | 2026-08-22 |
 
 > **Verification (FBV2-PWR-001): CONFIRMED — the lock condition is met.**
@@ -695,6 +695,67 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8l. Community expansion port and accessory power — LOCKED (FBV2-COMM-001)
+
+> ### ⚠ THE 20-PIN COMMUNITY PORT ARCHITECTURE IS SUPERSEDED.
+> **D-059 and D-062 no longer describe this product.** Nothing downstream may cite
+> the 20-pin allocation. What survives from sections 8c/8d and is carried forward
+> explicitly: **D-042** (no duplicate GPIO), **D-045** (native and XGPIO documented
+> distinctly), **D-057** (no permanent raw `+3V3`), **D-058** (TPS22950C),
+> **D-060/D-063** (native pair = GPIO38 + GPIO47).
+
+| # | decision | date |
+|---|---|---|
+| D-081 | **NEW COMMUNITY PORT LOCKED: 2 rows x 12 positions, 24 ACTIVE contacts, no NC and no key contact.** Device side is **FEMALE**, recessed into the enclosure; the accessory side uses **standard MALE 2.54 mm pins**. **Mechanical keying, polarization and shrouding are provided by the ENCLOSURE**, not by the connector - see D-083. | 2026-08-23 |
+| D-082 | **24-CONTACT ALLOCATION LOCKED: 10 x XGPIO + 2 x native ESP32 GPIO + 2 x external I2C + 1 x WAKE/ATTN + 2 x protected switched 3.3 V + 2 x protected switched 5 V + 4 x GND + 1 x `ACC_DETECT_N` = 24.** The duplicated contacts are **only** the two rails and ground, each a single electrical net, duplicated for contact resistance and accessory routing. **No GPIO is duplicated.** XGPIO falls from 11 to **10**, and that surrendered pin is exactly what pays for the fifth accessory-control expander pin. | 2026-08-23 |
+| D-083 | **CONNECTOR LOCKED: Harwin `M20-7881242`** - M20 series, **2.54 mm**, 2 x 12, **female horizontal (right-angle) PC-tail socket**, through-hole with two-point solder fixing, gold+tin finish (code 42). **3 A per contact, 300 mating cycles (gold), 30 mOhm, 800 V AC proof, -40...+105 C, UL94V-0.** Body approximately **30.68 (L) x 7.87 (D) x 8.10 (H) mm**. Mates with any standard 2x12 0.64 mm square-post male header. **2.54 mm is retained** because commodity male pins are the entire point for a maker platform. Samtec Mini Mate `IPL1` (wrong gender, proprietary mate) and 2.00 mm keyed systems (abandon commodity pins) were evaluated and **rejected**. | 2026-08-23 |
+| D-084 | **PIN ORDERING LOCKED** (odd pins = row A, even = row B): `1 XGPIO0`, `2 EXT_SCL`, `3 ACC_3V3_SW`, `4 GND`, `5 XGPIO1`, `6 EXT_SDA`, `7 NATIVE_A (GPIO38)`, `8 XGPIO2`, `9 GND`, `10 ACC_5V_SW`, `11 NATIVE_B (GPIO47)`, `12 XGPIO3`, `13 XGPIO4`, `14 WAKE_ATTN_N`, `15 ACC_3V3_SW`, `16 GND`, `17 XGPIO5`, `18 XGPIO6`, `19 XGPIO7`, `20 XGPIO8`, `21 GND`, `22 ACC_5V_SW`, `23 ACC_DETECT_N`, `24 XGPIO9`. **Every power contact is vertically paired with GND**, so no row-swap mis-insertion can put 5 V or 3.3 V onto a logic pin. **All 3.3 V is in row A and all 5 V in row B.** Both native pins flank the GND at pin 9. | 2026-08-23 |
+| D-085 | **`ACC_DETECT_N` CONVENTION LOCKED.** The accessory asserts detect by shorting **pin 23 to the adjacent GND at pin 21** (one 0 Ohm link); AQROOT provides a 100 k pull-up to `+3V3`. **Detection works with both accessory rails OFF**, because the pull-up and the expander run from `+3V3`. **Neither rail may be enabled unless `ACC_DETECT_N` is asserted** - which is also what makes a flipped accessory passively safe: it cannot ground pin 23, so it never receives power. | 2026-08-23 |
+| D-086 | **3.3 V ACCESSORY RAIL: `+3V3` -> `TPS22950C` -> `ACC_3V3_SW`.** Verified against SLVSFJ2B: `VIN` 1.8-5.5 V, RCB **Yes**, `ILIM` 0.5-3.5 A adjustable, auto-retry, TSD 170 C, `FLT` open-drain, DDC SOT-23-thin. Default OFF with a **mandatory external 100 k pull-down** on `ON`. **`R_ILIM` = 1.5 k (approx. 0.76 A typ) RECOMMENDED, NOT fabrication-locked**; published limit **400 mA continuous** for the first five boards. | 2026-08-23 |
+| D-087 | **5 V ACCESSORY RAIL (NEW): `BQ25185_SYS` -> a SECOND `TPS61023` at 5.0 V -> a SECOND `TPS22950C` -> `ACC_5V_SW`.** It is **not** USB `VBUS`, **not** the NFC fallback rail, and tied to neither; the only shared node is `SYS` on the input side. **`R_ILIM` = 1.65 k (approx. 0.69 A typ) RECOMMENDED, NOT fabrication-locked**; published limit **300 mA continuous** for the first five boards. Inductor **1 uH, I_sat >= 3 A**. | 2026-08-23 |
+| D-088 | **BOM CONSOLIDATION LOCKED. One `TPS22950C` MPN on BOTH rails** - only `R_ILIM` differs. **`TPS61023` is REUSED** as the accessory boost, sharing inductor, feedback divider and capacitors with the DNP NFC fallback (D-056). One boost family and one load-switch family to validate, source, stock and rework. | 2026-08-23 |
+| D-089 | **EXPANDER ALLOCATION LOCKED. `U3` = 16/16**: `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`, `ACC_3V3_FAULT`, `ACC_5V_FAULT`, `SX1262_RXEN`. **`U2` = 16/16**: the five pins freed by D-010/D-037/D-038 are exactly consumed by `BQ25185_STAT1/2`, `MAX17048_ALRT_N`, `VBUS_PRESENT` and `SX1262_DIO1`. **All five accessory signals fit cleanly, and there is now ZERO spare expander capacity anywhere in the design** (B-37). `ACC_5V_EN` drives the boost `EN` and the 5 V switch `ON` from one pin. Five new external safe-state pulls are mandatory. | 2026-08-23 |
+| D-090 | **ALL COMMUNITY SIGNALS ARE 3.3 V CMOS ONLY. The 5 V power contact does NOT make any signal 5 V-tolerant.** Protection: **100 Ohm series on every XGPIO and both native pins**, 22 Ohm on the buffered I2C pair, 330 Ohm on WAKE, plus a **low-capacitance TVS array on `NATIVE_A`, `NATIVE_B`, `EXT_SDA`, `EXT_SCL`** - the natives are the only contacts with a direct path to the MCU. **Bidirectional level translators are REJECTED**: they do not protect the A-side, they add direction ambiguity on bidirectional GPIO, and they would imply 5 V logic is supported, which it is not. Silkscreen: *"COMMUNITY PORT - 3V3 LOGIC ONLY / 5V PIN IS POWER OUTPUT ONLY"*. | 2026-08-23 |
+| D-091 | **`WAKE_ATTN_N` ISOLATION GATE - closes B-08.** A single N-channel MOSFET pass gate (2N7002 / BSS138 class) between `WAKE_ATTN_N_HDR` and `WAKE_INT_N`, **gate driven by `ACC_3V3_SW`**. With accessory power off - the default - a shorted accessory pin can no longer hold `WAKE_INT_N` low, so internal button wake can never be blocked. **Consequence:** accessory-initiated wake requires `ACC_3V3_SW` to remain enabled during sleep (B-36). | 2026-08-23 |
+| D-092 | **FIRMWARE MUTUAL-EXCLUSION CONTRACT - BINDING (closes P-15).** MX-1 at most ONE of {Wi-Fi TX, LoRa TX +22 dBm, sub-GHz TX, NFC field} at a time. MX-2 speaker <= 50 % during any MX-1 transmit. MX-3 rails enabled only while `ACC_DETECT_N` is asserted. MX-4 3.3 V before 5 V by >= 5 ms, reverse on disable. MX-5 on `FLT`, disable within 100 ms, report, require user action - **do not leave the switch auto-retrying into a short**. MX-6 on detect loss, disable both within 100 ms. MX-7 disable 5 V below `V_BAT` 3.4 V and 3.3 V below 3.2 V. MX-8 microSD and display must not transact simultaneously on SPI-A. MX-9 mask `U3` XGPIO interrupts by default, unmask only detect and the two `FLT`. | 2026-08-23 |
+
+> **Result (FBV2-COMM-001).** Full analysis:
+> [`audits/2026-08-23-community-expansion-closeout.md`](audits/2026-08-23-community-expansion-closeout.md).
+>
+> **COMMUNITY PORT LOCK = PASS. P-02, P-15 and P-16 CLOSED. B-08 CLOSED.**
+>
+> **Why the published accessory limits are below the CTO's targets on build 1.**
+> Nothing about the switch or the connector prevents 800 mA - the TPS22950C is a
+> 3.2 A part and the contacts are rated 3 A each. **The TPS63020 does.** A *shorted*
+> accessory holds the load switch at `ILIM` until thermal shutdown; stacked on the
+> internal worst case, `R_ILIM` = 1.15 k (600 mA published) reaches **101 % of the
+> regulator's 2 A rating** - foldback, brownout, SD corruption. At 1.5 k the same
+> fault reaches **86 %**. The target is met by changing one 0603 resistor once the
+> internal worst case is measured on real boards. That is D-049 applied exactly as
+> intended.
+>
+> **A structural advantage worth recording:** because the 5 V rail is boosted from
+> `SYS` rather than derived from `+3V3`, it consumes **none** of the TPS63020's 2 A
+> budget. Deriving it from `+3V3` would have cost roughly 500 mA of that budget.
+>
+> **One honest caveat on fault visibility.** SLVSFJ2B Table 9-1: `FLT` asserts on
+> **thermal shutdown and reverse current only** - an output short leaves `FLT`
+> Hi-Z while the device current-limits. In practice a hard short reaches TSD within
+> tens of milliseconds and is then reported, but a **partial** overload inside the
+> thermal envelope is invisible to the host. Firmware must not treat `FLT` as a
+> complete overcurrent indication (B-35).
+>
+> **Three opportunities are FLAGGED, NOT LOCKED, and need a CTO ruling:**
+> **O-1** wire-OR the two `FLT` lines to free one expander pin (slack versus
+> per-rail diagnostics - the design currently has zero spare anywhere);
+> **O-2** reserve an I2C address for an accessory-ID EEPROM (zero hardware cost,
+> but a product/protocol decision that interacts with P-18);
+> **O-3** a DNP 0 Ohm link letting the accessory boost also serve the NFC 5 V
+> fallback (saves a part, but couples NFC PA current to the accessory load, which
+> is exactly what D-056 avoided).
+
+---
+
 ## 9. Safety
 
 | # | decision | date |
@@ -712,7 +773,7 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | # | pending decision | why it blocks | raised |
 |---|---|---|---|
 | **P-01** | **Reverse-polarity architecture.** Approve the LTC4368-1 + back-to-back N-channel FET path, or name an alternative. | Fabrication blocker. A board built as-is will not run from battery at all. | 2026-08-22 |
-| **P-02** | **Freeze the 20-pin connector.** C2 is the provisional direction per D-046. Verification substituted **GPIO47** for GPIO18 as `NATIVE_B` and moved `DISP_BL_CTL` to GPIO46. Approve the substitution, or fall back to C1. | Gates the connector sheet, the `U3` pin assignment and the right-side mechanical exit. **Shape verified; identity of `NATIVE_B` awaiting approval.** | 2026-08-22 |
+| ~~**P-02**~~ | ~~Freeze the 20-pin connector.~~ **CLOSED 2026-08-23 by D-081...D-085 (FBV2-COMM-001).** The 20-pin architecture is **superseded**, not frozen: the port is now **2 x 12, 24 active contacts, female device side**, connector `Harwin M20-7881242`, pin ordering locked, `U3` allocation 16/16. | closed | 2026-08-22 |
 | ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
 | ~~**P-11**~~ | ~~Dead-cell recovery: Candidate B or Candidate D?~~ **CLOSED 2026-08-22 by D-065 — Candidate B selected**, and specified to component level in the FBV2-PWR-002 closeout. **This was the last item blocking FBV2-A1, which now PASSES.** | closed | 2026-08-22 |
@@ -720,10 +781,10 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | ~~**P-12**~~ | ~~BQ25185 BAT survivability of a brief negative excursion.~~ **LARGELY RETIRED 2026-08-22 by FBV2-PWR-002.** Under the P2 pass architecture the excursion **does not occur under any single fault**. It survives only as a double-fault consideration and is no longer an architecture item. | schematic-phase note only | 2026-08-22 |
 | ~~**P-13**~~ | ~~Latch-off vs hot-insertion inrush.~~ **CLOSED 2026-08-22 by FBV2-PWR-001.** The LTC4368 datasheet gives `I_INRUSH = (C_OUT/C_GATE) × I_GATE(UP)` and the design rule `I_OC,FWD > I_INRUSH + I_OUT` — inrush is designed, ≈350 mA against a 3.33 A trip. Separately, **RETRY latch-off applies to FORWARD overcurrent only**; reverse faults reconnect automatically once VOUT falls 100 mV below VIN. Both halves of the objection fall away. | closed | 2026-08-22 |
 | **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
-| **P-15** | **3V3 rail budget under simultaneous worst case** — NFC TX + audio + LoRa + backlight + Wi-Fi against a 2 A TPS63020 with current-limit foldback. | Foldback means brownout resets and SD corruption rather than a clean fault. May force firmware mutual-exclusion. | 2026-08-22 |
-| **P-16** | **Repurpose one XGPIO as `ACC_DETECT`?** Firmware currently cannot know an accessory is present before enabling the switched rail or choosing pull configurations. | Changes the published count from 11 XGPIO to 10. Free once PCAL9535A programmable pull-ups exist. **Not adopted** — ruling D specifies 11. | 2026-08-22 |
+| ~~**P-15**~~ | ~~3V3 rail budget under simultaneous worst case.~~ **CLOSED 2026-08-23 by D-092.** It does force firmware mutual exclusion, and the contract is now binding (MX-1...MX-9). Naive simultaneity reaches **85-90 %** of the TPS63020's 2 A; the enforced design case reaches **58-66 %**; an accessory hard short at the recommended `R_ILIM` reaches **86 %**. | closed | 2026-08-22 |
+| ~~**P-16**~~ | ~~Repurpose one XGPIO as `ACC_DETECT`?~~ **CLOSED 2026-08-23 by D-082/D-085.** No XGPIO is repurposed: `ACC_DETECT_N` is a **dedicated connector contact (pin 23) and a dedicated `U3` input**. The published XGPIO count does fall to 10, but by CTO product ruling, not by theft. | closed | 2026-08-22 |
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
-| **P-18** | **Accessory I²C segmentation — buffer alone, or add a mux?** | An accessory holding SDA low blinds the fuel gauge **and** all XGPIO simultaneously; nothing prevents address collision on 0x36 or 0x20–0x27. | 2026-08-22 |
+| **P-18** | **Accessory I2C segmentation - buffer alone, or add a mux?** | **HALF ANSWERED 2026-08-23 (FBV2-COMM-001).** The `U16` TCA9517A B-side supply is `ACC_3V3_SW`, which is now **default OFF and detect-gated**, so a dead or absent accessory cannot hold SDA low - the *bus-hang* half is closed. **Address collision on 0x36 / 0x20-0x27 is NOT solved by a buffer** and still needs a ruling: mux, or a published reserved-address policy. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
 | ~~**M-06**~~ | ~~Display MPN and FPC interface not locked.~~ **CLOSED 2026-08-23 by D-074…D-078 (FBV2-DISP-002).** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin, 0.5 mm, bottom contact, 0.30 ± 0.03 mm; FT6236 @ 0x38; `J1` = Hirose `FH69-50S-0.5SH`. | closed | 2026-08-22 |
 | ~~**M-07**~~ | ~~Backlight driver re-derivation.~~ **CLOSED 2026-08-23 by D-079.** TPS61169 retained; `R69` = 1.87 R, `R70`–`R73` = 4 x 33 R; switch-peak margin 4.6x; `L3`/`D8`/`C44` unchanged. | closed | 2026-08-22 |
@@ -738,7 +799,10 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 
 | # | closed by | outcome |
 |---|---|---|
-| **M-06** | D-074…D-078 | **Display and connector LOCKED.** `ER-TFT035IPS-6` + `ER-TPC035-6`, `J1` = Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings. |
+| **P-02** | D-081...D-085 | **Community port superseded and re-locked.** 2 x 12, 24 active contacts, female device side, `Harwin M20-7881242`, pin ordering and detect convention locked. |
+| **P-15** | D-092 | **Rail budget closed by a binding firmware mutual-exclusion contract** (MX-1...MX-9). |
+| **P-16** | D-082 / D-085 | **`ACC_DETECT_N` is a dedicated contact and a dedicated expander pin.** No XGPIO repurposed. |
+| **M-06** | D-074...D-078 | **Display and connector LOCKED.** `ER-TFT035IPS-6` + `ER-TPC035-6`, `J1` = Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings. |
 | **M-07** | D-079 | **Backlight LOCKED.** TPS61169 retained; `R69` 2.55 R -> **1.87 R**; `R70`–`R73` 4 x 39 R -> **4 x 33 R in parallel** on one anode. |
 | **P-10** | D-055 | NFC runs at 3.3 V on the first build (was "N1"), **with** a no-respin 5 V fallback per D-056. |
 | **P-01** | D-050…D-054 | Reverse-polarity **topology** chosen: LTC4368-1 + dual N-FET + fuse + clamp. Component values and dead-cell recovery remain open as P-11…P-13. |

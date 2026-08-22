@@ -9,6 +9,230 @@ an entry.
 
 ---
 
+## 2026-08-23 — Community expansion port and accessory power LOCKED (FBV2-COMM-001)
+
+Documentation only. No design file touched. `hardware/beta-v2/` was not created.
+**This was the last architecture closeout before schematic implementation.**
+
+**COMMUNITY PORT LOCK = PASS. P-02, P-15, P-16 and B-08 all CLOSED.** No
+architecture item now gates any schematic sheet.
+
+### The 20-pin community port architecture is superseded
+
+**D-059 and D-062 no longer describe this product** and nothing downstream may
+cite them. The principles that survive are carried forward explicitly rather than
+inherited: no duplicate GPIO (D-042), native and XGPIO documented distinctly
+(D-045), no permanent raw `+3V3` (D-057), TPS22950C (D-058), native pair GPIO38 +
+GPIO47 (D-063).
+
+**New port: 2 rows × 12, 24 ACTIVE contacts, FEMALE on the device, male on the
+accessory** (D-081). **10 XGPIO + 2 native + 2 I²C + 1 WAKE/ATTN + 2 switched
+3.3 V + 2 switched 5 V + 4 GND + 1 `ACC_DETECT_N`** (D-082). Only the rails and
+ground are duplicated, each a single net; **no GPIO is duplicated**. XGPIO falls
+from 11 to 10, and **that one surrendered pin is exactly what pays for the fifth
+accessory-control expander pin** — the arithmetic is tight to the pin.
+
+### Connector: Harwin `M20-7881242`, and why keying comes from the enclosure
+
+2.54 mm, 2×12, **female horizontal (right-angle) PC-tail socket**, through-hole
+with two-point solder fixing, gold+tin. **3 A per contact, 300 mating cycles,
+30 mΩ, 800 V AC proof, −40…+105 °C, UL94V-0.** Body ≈ 30.68 × 7.87 × 8.10 mm.
+Mates with **any standard 2×12 0.64 mm square-post male header** (D-083).
+
+A finding worth stating plainly: **at 2.54 mm there is effectively no mainstream
+board-mount FEMALE connector with an integrated shroud and key.** The ubiquitous
+shrouded, polarized 2.54 mm part is the *male* IDC box header, which is the wrong
+gender. Samtec's Mini Mate `IPL1` is properly keyed, shrouded and latching — and
+is a male box header whose mate is a Samtec part, so makers could not build
+accessories from commodity components. 2.00 mm systems (Hirose DF11, Molex
+Milli-Grid) do give a connector-side key and are ~20 % shorter, but they abandon
+standard 2.54 mm male pins, which is the entire reason the pitch was chosen.
+
+**So the key and the shroud come from the enclosure** — an asymmetric recess with
+an off-centre lead-in rib, closed at both ends. That is explicitly permitted by
+the ruling, it costs nothing in BOM, and it preserves the US$0.10 pin header as
+the accessory interface.
+
+### Pin ordering, and the mis-insertion proof
+
+`1 XGPIO0 · 2 EXT_SCL · 3 ACC_3V3_SW · 4 GND · 5 XGPIO1 · 6 EXT_SDA ·
+7 NATIVE_A · 8 XGPIO2 · 9 GND · 10 ACC_5V_SW · 11 NATIVE_B · 12 XGPIO3 ·
+13 XGPIO4 · 14 WAKE_ATTN_N · 15 ACC_3V3_SW · 16 GND · 17 XGPIO5 · 18 XGPIO6 ·
+19 XGPIO7 · 20 XGPIO8 · 21 GND · 22 ACC_5V_SW · 23 ACC_DETECT_N · 24 XGPIO9`
+(D-084).
+
+The ordering is not cosmetic. **Every power contact is vertically paired with
+GND**, which is the constraint that forced power into columns 2, 5, 8 and 11 — so
+**a row-swapped accessory can only ever produce a current-limited rail-to-ground
+short, never 5 V on a logic pin.** All 3.3 V lives in row A and all 5 V in row B,
+so a row-to-row bridge inside an accessory can short a rail to ground but never
+5 V to 3.3 V. Both native fast pins flank the single GND at pin 9, which serves as
+their return reference and separates them from each other. The I²C pair flanks the
+GND at pin 4 for the same reason.
+
+**The detect strap is one 0 Ω link between pins 21 and 23**, at the very end of the
+row — the simplest accessory implementation possible. And because a flipped
+accessory's strap lands in the other row, **a flipped accessory cannot assert
+`ACC_DETECT_N`, so neither rail is ever enabled.** The mis-insertion case is
+passively safe and self-announcing: the accessory simply does not come up.
+
+A one-column lateral shift cannot be prevented electrically and is prevented
+mechanically — the recess must be closed at both ends.
+
+### Accessory detect
+
+`ACC_DETECT_N` is pulled up to `+3V3` by AQROOT and grounded by the accessory
+(D-085). Because the pull-up and the expander both run from `+3V3`, **detection
+works with both accessory rails off**, which is the ordering the ruling demanded
+and is what makes the flipped-accessory argument hold. **Neither rail may be
+enabled unless detect is asserted.** As a free by-product, `U3`'s `/INT` is
+wired-OR onto `WAKE_INT_N` → GPIO21, so **plugging or unplugging an accessory
+raises an interrupt and can wake the device** at zero hardware cost.
+
+### 3.3 V rail: TPS22950C confirmed line by line
+
+`+3V3 → TPS22950C → ACC_3V3_SW` (D-086). Verified against SLVSFJ2B: `VIN`
+1.8–5.5 V (so the same part works at 5 V too), **RCB = Yes** for the C variant,
+`ILIM` **0.5–3.5 A** adjustable, auto-retry, TSD 170 °C, open-drain `FLT`, DDC
+SOT-23-thin, 41 mΩ at 3.3 V, 550 µs slow turn-on so enabling the rail cannot step
+`+3V3`. Default OFF with a **mandatory external 100 kΩ pull-down** — the internal
+500 kΩ smart pull-down exists but the datasheet still says *"do not leave
+floating"*.
+
+### 5 V rail: a second TPS61023 and a second TPS22950C
+
+`BQ25185_SYS → TPS61023 @ 5.0 V → TPS22950C → ACC_5V_SW` (D-087). **Not USB VBUS,
+not the NFC fallback rail, tied to neither**; the only shared node is `SYS` on the
+input side.
+
+**Yes, reuse the TPS61023 — it is the right part, not merely the convenient one.**
+0.5–5.5 V in, 2.2–5.5 V out, **3.7 A valley switch limit**, 94 % at 3.6 V → 5 V,
+**true input-to-output disconnection in shutdown** at 0.1 µA, OVP, short-circuit
+and thermal protection, SOT-563. Computed capability at 5 V is **≈ 2.3 A from a
+3.0 V battery and ≈ 2.8 A from 3.6 V** — six to ten times what is being asked of
+it. The limiter is the inductor, not the IC, so **1 µH with `I_sat` ≥ 3 A** is
+specified (B-38). It shares its inductor, feedback divider and capacitors with the
+DNP NFC fallback boost, so both circuits are one BOM line.
+
+**Yes, use TPS22950C on both rails** (D-088). Same MPN, same footprint, same
+safe-state pull-down, same `FLT` handling — **only `R_ILIM` differs**.
+
+**Every back-feed path is closed**: accessory → boost (RCB, and constant reverse
+blocking whenever `ON` is low, which is the default); `ACC_5V` → USB `VBUS`
+(three series barriers — the switch's RCB, the boost's true disconnection, and the
+BQ25185 power path); `ACC_5V` → `NFC_SUPPLY` (physically separate boost, separate
+net, NFC on `+3V3` with its boost DNP on build 1).
+
+### Why the published limits are below the CTO's targets on build 1
+
+Recommended, **not fabrication-locked**: `R_ILIM` = **1.5 kΩ** on 3.3 V (≈ 0.76 A
+typ) with a **published 400 mA continuous**, and **1.65 kΩ** on 5 V (≈ 0.69 A typ)
+with a **published 300 mA continuous**.
+
+Nothing about the switch or the connector prevents 800 mA — the TPS22950C is a
+3.2 A part and the contacts are rated 3 A each. **The TPS63020 does.** The
+TPS22950C is a *constant-current* limiter, so a shorted accessory holds `ILIM`
+until thermal shutdown. Stacked on the internal worst case, `R_ILIM` = 1.15 kΩ
+(600 mA published) drives `+3V3` to **101 % of the regulator's 2 A rating** —
+foldback, brownout, SD corruption. At 1.5 kΩ the same fault reaches **86 %**. The
+CTO's 600–800 mA target is met by changing one 0603 resistor once the internal
+worst case is measured on real boards. That is D-049 applied exactly as intended.
+
+**A structural advantage worth recording:** because the 5 V rail is boosted from
+`SYS` rather than derived from `+3V3`, it consumes **none** of the TPS63020's 2 A
+budget. Deriving it from `+3V3` would have cost roughly 500 mA of that budget.
+
+### One honest caveat on fault visibility
+
+SLVSFJ2B Table 9-1 is explicit: **`FLT` asserts on thermal shutdown and reverse
+current only.** An output short leaves `FLT` **Hi-Z** while the device
+current-limits. In practice a hard short dissipates 2.5–3.5 W in a SOT-23-thin
+package and reaches the 170 °C TSD within tens of milliseconds, at which point
+`FLT` does assert — but a **partial** overload that stays inside the thermal
+envelope is invisible to the host. Firmware must not treat `FLT` as a complete
+overcurrent indication (B-35). This is recorded because the ruling asked for
+exactly this honesty rather than an invented fault output.
+
+### Expander verdict: all five fit — exactly, with nothing left over
+
+`U3` = **16/16**: `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`,
+`ACC_3V3_FAULT`, `ACC_5V_FAULT`, `SX1262_RXEN`. `U2` = **16/16**: the five pins
+freed by removing HOME, the RGB LED and the RootProbe IRQ are exactly consumed by
+`BQ25185_STAT1/2`, `MAX17048_ALRT_N`, `VBUS_PRESENT` and `SX1262_DIO1` (D-089).
+Nothing was stolen — GPIO38 and GPIO47 remain the published natives, and SPI, I²S
+and every internal MCU signal are untouched. One expander pin drives both the 5 V
+boost `EN` and the 5 V switch `ON`.
+
+**The design now has zero spare expander capacity anywhere (B-37).** That is the
+price of fitting five accessory signals, and it is recorded as a standing
+constraint rather than buried.
+
+### Logic safety
+
+**Every signal contact is 3.3 V CMOS. The 5 V power contact does not make any
+signal 5 V-tolerant** (D-090). 100 Ω series on every XGPIO and both natives, 22 Ω
+on the buffered I²C pair, 330 Ω on WAKE, plus a low-capacitance TVS array on the
+two natives and the I²C pair — **the natives are the only contacts with a direct
+path to the MCU**, and 5 V through 100 Ω is ≈ 11 mA into the clamp, inside
+tolerance but with no sacrificial part in between. **Bidirectional level
+translators are rejected**: they do not protect the A-side, they add direction
+ambiguity on genuinely bidirectional GPIO, and they would imply 5 V logic is
+supported, which it is not.
+
+### B-08 closed with one MOSFET
+
+A single N-channel pass gate between `WAKE_ATTN_N_HDR` and `WAKE_INT_N`, **gate
+driven by `ACC_3V3_SW`** (D-091). The signal is only ever pulled low, so an N-FET
+pass gate is sufficient. With accessory power off — the default — **a shorted
+accessory pin can no longer hold `WAKE_INT_N` low, so internal button wake can
+never be blocked.** Consequence, stated rather than hidden: accessory-initiated
+wake now requires the rail to stay enabled during sleep (B-36).
+
+### Power budget and the binding firmware contract
+
+Naive simultaneity reaches **1 698 mA at `+3V3` = 85 % of the TPS63020's 2 A**
+before transients — the P-15 concern, now quantified. With mutual exclusion
+enforced the design case is **1 169 mA (58 %)**, or 1 314 mA (66 %) at the Wi-Fi
+peak, and **1.65 A at the pack** (≈ 0.60 C on the 2 750 mAh class cell).
+
+**MX-1…MX-9 are binding** (D-092): one high-power radio at a time; audio capped
+during any transmit; rails detect-gated; 3.3 V enabled before 5 V by ≥ 5 ms; `FLT`
+handled within 100 ms with a user action required rather than an endless
+auto-retry into a short; both rails dropped on detect loss; 5 V disabled below
+`V_BAT` 3.4 V and 3.3 V below 3.2 V; SPI-A arbitration; `U3` XGPIO interrupts
+masked by default.
+
+**A new thermal finding:** at 1.75 A the BQ25185 BATFET (115 mΩ) plus the
+reverse-protection path costs **≈ 0.70 W and ≈ 0.40 V** inside a sealed
+enclosure (B-34). BQ25185 supports 3.125 A discharge so the current is in spec,
+but the loss and the `SYS` droop near a flat battery are real and are a further
+argument for conservative first-build accessory limits.
+
+### Mechanical: the connector region is now the governing Z column
+
+2.0 shell + **8.10 connector** + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell =
+**22.30 mm of the 23.0 mm external budget — 0.70 mm spare** (M-09). That displaces
+the control region's 19.5 mm. Relief exists: the battery is 60 mm wide in a 75 mm
+cavity, so the outer ~5 mm of each PCB edge has nothing behind it. The 8.10 mm
+figure is read from the series catalogue and **must be re-confirmed against the
+individual part drawing at FBV2-P1**. Insertion force reaches **48 N** (24 × 2.0 N
+max) and must be carried by an enclosure boss, not by the PCB joints (M-10).
+
+### Three opportunities flagged, deliberately not locked
+
+**O-1** wire-OR the two `FLT` lines to recover one expander pin — slack versus
+per-rail diagnostics, in a design that now has zero spare anywhere. **O-2** reserve
+an I²C address for an accessory-ID EEPROM — zero hardware cost, but a
+product/protocol decision that interacts with P-18. **O-3** a DNP 0 Ω link letting
+the accessory boost also serve the NFC 5 V fallback — saves a part, but couples
+NFC PA current to the accessory load, which is exactly what D-056 avoided. All
+three need a CTO ruling.
+
+Full analysis:
+[`audits/2026-08-23-community-expansion-closeout.md`](audits/2026-08-23-community-expansion-closeout.md).
+
+---
+
 ## 2026-08-23 — Display, connector and backlight LOCKED (FBV2-DISP-002)
 
 Documentation only. No design file touched. `hardware/beta-v2/` was not created.

@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-23 (updated after FBV2-DISP-002)
-Repository HEAD at last update: `42a5e0a`
+Date: 2026-08-23 (updated after FBV2-COMM-001)
+Repository HEAD at last update: `c2ef26c`
 
 ---
 
@@ -54,7 +54,27 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~28%**
+### Overall Full Beta v2: **~31%**
+
+**No gate in the twelve-gate table passed.** FBV2-COMM-LOCK is a *task* gate, not
+one of the twelve, and it **PASSED** (2026-08-23, FBV2-COMM-001).
+
+Raised three points. This was **the last architecture closeout before schematic
+implementation**, and it earns three points for a specific reason: it closes the
+final three pending CTO decisions that gated a schematic sheet — **P-02** (the
+connector), **P-15** (the rail budget) and **P-16** — plus the long-standing
+**B-08** WAKE-isolation defect, and it does so with a purchasable connector MPN, a
+locked 24-contact pin ordering with a written mis-insertion proof, two protection
+ICs verified line by line against their datasheets, and a binding firmware
+mutual-exclusion contract.
+
+It is **not** more than three because nothing was built, `hardware/beta-v2/` still
+does not exist, and the design now has **zero spare expander capacity anywhere**
+(B-37) — a constraint that will bite the first time a new I²C-mediated signal is
+wanted.
+
+<details>
+<summary>Superseded — the ~28% assessment (FBV2-DISP-002)</summary>
 
 **No gate in the twelve-gate table passed.** FBV2-DISP-LOCK is a *task* gate, not
 one of the twelve, and it **PASSED** (2026-08-23, FBV2-DISP-002).
@@ -70,6 +90,8 @@ migration can start.
 It is **not** more than three because nothing was built: no schematic exists, no
 board exists, `hardware/beta-v2/` does not exist, and the mating pair is proven on
 paper rather than by a mated sample.
+
+</details>
 
 <details>
 <summary>Superseded — the ~25% assessment (FBV2-MECH-001)</summary>
@@ -88,8 +110,9 @@ is TARGET (derived) rather than LOCKED (measured in CAD).
 <details>
 <summary>Superseded estimates</summary>
 
-**~25%** — FBV2-MECH-001. **~20%** — FBV2-PWR-002. **~15%** — FBV2-PWR-001.
-**~13%** — FBV2-ARCH-002. **~10%** — FBV2-ARCH-001. **~8%** — FBV2-DOC-001.
+**~28%** — FBV2-DISP-002. **~25%** — FBV2-MECH-001. **~20%** — FBV2-PWR-002.
+**~15%** — FBV2-PWR-001. **~13%** — FBV2-ARCH-002. **~10%** — FBV2-ARCH-001.
+**~8%** — FBV2-DOC-001.
 </details>
 
 ### Previous estimate: ~20%
@@ -162,7 +185,7 @@ work.
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
 | **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
 | **FBV2-A2** | Mechanical interface freeze | **PASS** | 2026-08-22 |
-| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED — NEXT GATE. FULLY UNBLOCKED** as of 2026-08-23: **M-06 and M-07 are closed**, so sheet `03_spi_a_display_sd` is no longer gated | — |
+| **FBV2-S1** | Schematic migration / rearchitecture | **NOT STARTED — NEXT GATE. FULLY UNBLOCKED** as of 2026-08-23: M-06/M-07 closed (display sheet) and **P-02/P-15/P-16 closed (connector sheet)**. **No architecture item gates any schematic sheet.** | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
 | **FBV2-P2** | Routing | **NOT STARTED** | — |
@@ -276,6 +299,28 @@ no topology.
 
 </details>
 
+### Blockers added or changed by FBV2-COMM-001 (2026-08-23)
+
+| # | blocker | status |
+|---|---|---|
+| ~~P-02~~ | Freeze the 20-pin connector | **CLOSED** — the 20-pin architecture is **superseded**; the port is 2×12 / 24 active contacts, female, `Harwin M20-7881242` (D-081…D-085) |
+| ~~P-15~~ | 3V3 rail budget under simultaneous worst case | **CLOSED** — binding mutual-exclusion contract MX-1…MX-9 (D-092) |
+| ~~P-16~~ | Repurpose one XGPIO as `ACC_DETECT`? | **CLOSED** — dedicated contact (pin 23) and dedicated `U3` input (D-082/D-085) |
+| ~~B-08~~ | **WAKE line has no isolation gate** — a shorted accessory pin can permanently block internal button wake | **CLOSED** — one N-FET pass gate, gate driven by `ACC_3V3_SW` (D-091) |
+| **B-34** | ≈ **0.70 W of series loss and ≈ 0.40 V of drop** in the BQ25185 BATFET (115 mΩ) + reverse-protection path at 1.75 A, inside a sealed enclosure | **OPEN, medium.** FBV2-S1 thermal review |
+| **B-35** | **`TPS22950C` `FLT` does not assert on plain current limiting** — only on thermal shutdown and reverse current. A hard short reaches TSD in tens of ms and is then reported; a **partial** overload is invisible to the host | **OPEN, documented.** Firmware contract |
+| **B-36** | Accessory-initiated wake now requires `ACC_3V3_SW` to remain enabled during sleep — a consequence of the B-08 gate | **OPEN, policy.** FBV2-B2 |
+| **B-37** | **ZERO spare expander capacity on BOTH `U2` (16/16) and `U3` (16/16).** Any new I²C-mediated signal must displace an existing one | **OPEN — standing constraint** |
+| **B-38** | The 5 V boost inductor must be **1 µH with `I_sat` ≥ 3 A** to survive a fault at the load switch's worst-high limit | **OPEN, low.** FBV2-S1 |
+| **M-09** | The **connector region is the new governing Z column** — 22.30 mm of 23.0 mm external, 0.70 mm spare | **OPEN.** FBV2-P1 |
+| **M-10** | Up to **48 N** insertion force; the enclosure must carry it on a boss/rib | **OPEN.** Enclosure CAD |
+| **P-18** | External-I²C segmentation | **HALF ANSWERED.** The bus-hang half is closed (the buffer's B-side rides `ACC_3V3_SW`, now default-OFF and detect-gated). **Address collision still needs a CTO ruling** |
+
+**Three opportunities are flagged for a CTO ruling and were deliberately NOT
+locked:** wire-OR the two `FLT` lines to recover one expander pin; reserve an I²C
+address for an accessory-ID EEPROM; a DNP 0 Ω link letting the accessory boost also
+serve the NFC 5 V fallback.
+
 ### Blockers added or changed by FBV2-DISP-002 (2026-08-23)
 
 | # | blocker | status |
@@ -375,5 +420,6 @@ DS12484 tables; every other footprint remains unverified.
 | 2026-08-22 | FBV2-PWR-001. Overall raised 13% → 15%; **no gate passed. FBV2-A1 FAIL, 5 of 6 criteria closed.** D-061…D-064 recorded. **P-13 and B-24 closed** by primary-source evidence; B-22 closed. Complete battery-protection topology specified. Fuse **REQUIRED**, clamp **REQUIRED**, PTC **REJECTED**. |
 | 2026-08-22 | FBV2-DISP-001. **No gate passed — percentage holds at 25%.** D-071/D-072/D-073 recorded. Display size LOCKED at **3.5″**; battery envelope LOCKED. **Display MPN and J1 deliberately NOT locked** — old-J1 compatibility is **UNPROVEN**. ESP32-S3 SPI verdict **PASS** (FSPI IO_MUX, 80 MHz, no bus merge). M-01/M-02 closed; **M-06/M-07 opened.** |
 | 2026-08-22 | FBV2-MECH-001. Overall raised 20% → 25%. **FBV2-A2 = PASS.** D-069/D-070 recorded; cavity **75.0 × 155.0 × 18.5 mm** derived; PCB target **70 × 148**; **P-07 closed**; M-01/M-02 opened. Beta-DM 74 × 155 outline ruled **RE-FLOORPLAN REQUIRED**. Next gate: **FBV2-S1**. |
+| 2026-08-23 | FBV2-COMM-001. Overall raised 28% → 31%. **No gate in the twelve-gate table passed**; the task gate **FBV2-COMM-LOCK = PASS**. **The 20-pin community port is SUPERSEDED.** New port **2×12, 24 active contacts, FEMALE device side**, `Harwin M20-7881242` (2.54 mm, right-angle, 3 A/contact, 300 cycles), keying and shroud from the enclosure. Pin ordering locked with every power contact GND-paired so no row swap can put 5 V on a logic pin. **New 5 V accessory rail** `SYS → TPS61023 → TPS22950C → ACC_5V_SW`, and `+3V3 → TPS22950C → ACC_3V3_SW`; **one load-switch MPN and one boost MPN across both rails**. D-081…D-092 recorded. **P-02, P-15, P-16 and B-08 CLOSED**; B-34…B-38, M-09, M-10 opened. **Zero spare expander capacity now remains anywhere.** |
 | 2026-08-23 | FBV2-DISP-002. Overall raised 25% → 28%. **No gate in the twelve-gate table passed**; the task gate **FBV2-DISP-LOCK = PASS**. **Display LOCKED** — EastRising `ER-TFT035IPS-6` + `ER-TPC035-6` (ILI9488 + FT6236 @ 0x38), 56.54 × 84.96 × 3.95 mm, one 50-pin 0.50 mm **bottom-contact** 0.30 mm FPC. **`J1` LOCKED** — Hirose `FH69-50S-0.5SH`, mating proven from both manufacturers' drawings, on the FH12/FH52E land pattern for a JLC second source. **Backlight closed** — TPS61169 retained, `R69` 2.55 R → **1.87 R**, `R70`–`R73` 4 × 39 R → **4 × 33 R**. D-074…D-080 recorded. **M-06 and M-07 CLOSED**; B-28…B-33 opened. ST7796S formally rejected on availability (D-078). |
 | 2026-08-22 | FBV2-PWR-002. Overall raised 15% → 20%. **FBV2-A1 = PASS** — first gate since A0. D-065…D-068 recorded. Pass path changed to **P2** (4 FETs, 2 packages). Dead-cell recovery specified to component level. **P-11, P-12, B-20, B-21, B-23 closed**; B-26/B-27 opened. Clamp **demoted to secondary**, fuse **resized 3 A → ≈5 A**. Next gate: **FBV2-A2**. |
