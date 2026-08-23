@@ -1,0 +1,896 @@
+(version 1)
+
+# =====================================================================
+# AQROOT Beta - PRE-ROUTING RULE SET
+#
+# Authority:   "AQROOT - FINAL PRE-ROUTING CTO / RF RULING"
+# Fabrication: JLCPCB JLC04161H-7628, 4 layer, 1.6 mm finished,
+#              1 oz outer / 0.5 oz (H) inner, 7628 prepreg 0.2104 mm
+#              L1->L2 and L3->L4, 1.065 mm core.
+#
+# Layer architecture
+#   F.Cu    signals + components
+#   In1.Cu  SOLID, CONTINUOUS, BOARD-WIDE GND REFERENCE - no splits
+#   In2.Cu  power distribution, slow/control routing, E5 crossings only
+#   B.Cu    signals + components
+#
+# Pour prohibitions are carried by the rule areas in the board file,
+# because a "disallow zone" rule would flag the rule areas themselves.
+# Everything net-aware or layer-aware lives here. Every exception is
+# narrow and named; there are no blanket exclusions.
+#
+# ROUTING IS NOT AUTHORISED. These rules exist so that routing can
+# begin against a rule system that has actually been checked.
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# 1. FINE-PITCH MANUFACTURER LAND PATTERNS
+#
+# 0.20 mm is the global ROUTING clearance target, not a land-pattern
+# target. Vendor-verified fine-pitch land patterns legitimately place
+# adjacent pads closer. Each rule below is scoped to pad-vs-pad inside
+# one named footprint, so no routing clearance anywhere is weakened.
+#
+# Measured intra-footprint copper gaps (DRC baseline 2026-08-11):
+#   U9  ST25R3916-AQET   QFN-32 0.5 mm pitch
+#                        lead -> exposed pad   0.1750 mm
+#                        corner lead -> lead   0.0621 mm   -> 0.05 mm
+#   U13 TPS61023         SOT-563 0.5 mm pitch  0.1500 mm   -> 0.13 mm
+#   U16 TCA9517ADGK      VSSOP-8 0.65 mm pitch 0.1500 mm   -> 0.13 mm
+#   D3 D4 D5 D6 TPD4E1B06DRLR SOT-563          0.1500 mm   -> 0.13 mm
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# 2. J2 microSD SHELL - VENDOR LAND PATTERN REACHES THE BOARD EDGE
+#
+# Molex 5025700893 shell ground tab sits 0.213 mm from Edge.Cuts by
+# vendor geometry; the shell is meant to align with the card opening.
+# 0.20 mm is the mainstream-fab copper-to-outline floor. Scoped to J2,
+# and carried as a FAB confirmation item - not a relaxation of the
+# 0.5 mm board-wide edge rule.
+# ---------------------------------------------------------------------
+
+(rule "J2 microSD shell edge clearance (vendor land pattern)"
+	(constraint edge_clearance (min 0.20mm))
+	(condition "A.memberOfFootprint('J2')"))
+
+
+# ---------------------------------------------------------------------
+# 2b. PAD-ESCAPE NECKING INSIDE FINE-PITCH POWER PACKAGES
+#
+# Added during Routing Pass 1, and deliberately placed HERE: KiCad applies
+# the FIRST matching rule, so this must precede the elevated rail
+# clearances in section 10 or it would never win.
+#
+#   U11 BQ25185  DLH0010A WSON-10, 0.40 mm pitch, 0.20 mm tall pads
+#   U12 TPS63020 DSJ VSON-14,      0.50 mm pitch, 0.24 mm wide pads
+#   U13 TPS61023 SOT-563,          0.50 mm pitch
+#   U14 MAX17048 T822,             0.50 mm pitch
+#   U17 TPS61169 SOT-353
+#
+# A 1.00 mm BAT_MAIN track cannot land on a 0.20 mm pad, and SYS and BAT
+# leaving adjacent pins of a 0.40 mm pitch WSON cannot hold 0.30 mm from
+# each other.  Inside these five courtyards the VENDOR PITCH governs, so
+# width and clearance both fall back to the 0.20 mm global figure - which
+# is still 2.2x the fab floor.  Outside the courtyard the full rail width
+# and the elevated routed clearances apply again, unchanged.
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# 3. In1.Cu IS THE GND REFERENCE PLANE
+#
+# One continuous reference for digital, audio, RF, NFC and power - no
+# split by function. No signal routing and no power routing on In1.
+# Through vias legitimately pass through In1 and are NOT disallowed
+# here; in-band vias are handled in section 4.
+# ---------------------------------------------------------------------
+
+(rule "In1.Cu carries GND only - no signal or power tracks"
+	(layer "In1.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+
+# ---------------------------------------------------------------------
+# 4. 915 MHz BAND  full board X, Y 88..114   ("915 KEEPOUT")
+#    433 MHz BAND  X 0..52.5, Y 115..138     ("433 KEEPOUT")
+#
+# F.Cu accepted exceptions, both bands:
+#   E2  SW2 SW3 SW4 SW5 SW6 SW8 button pads + GND pads, and short F.Cu
+#       escapes for the three buttons whose bodies sit inside a band
+#       (BTN_UP_N, BTN_LEFT_N, BTN_RIGHT_N -> netclass E2_BUTTON_ESCAPE)
+#   J1  FH69-50S body copper already cleared by geometry (pads only)
+# Pads are not disallowed on F.Cu, so both exceptions hold without a
+# rule. No track, via or pour inherits them.
+#
+# B.Cu has NO exceptions of any kind.
+# ---------------------------------------------------------------------
+
+(rule "RF bands: F.Cu carries no ordinary copper"
+	(layer "F.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "(A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')) && !A.hasNetclass('E2_BUTTON_ESCAPE') && !((A.NetName == '/08_BUTTONS_EXPANDERS/BTN_DOWN_N' && A.enclosedByArea('E2_ESC_DOWN')) || (A.NetName == '/08_BUTTONS_EXPANDERS/BTN_A_N' && A.enclosedByArea('E2_ESC_A')) || (A.NetName == '/08_BUTTONS_EXPANDERS/BTN_HOME_N' && A.enclosedByArea('E2_ESC_HOME')) || (A.NetName == 'GND' && (A.enclosedByArea('E2_GND_SW2') || A.enclosedByArea('E2_GND_SW3') || A.enclosedByArea('E2_GND_SW4A') || A.enclosedByArea('E2_GND_SW4B') || A.enclosedByArea('E2_GND_SW5A') || A.enclosedByArea('E2_GND_SW5B') || A.enclosedByArea('E2_GND_SW6'))))"))
+
+# E2 ESCAPE EXCEPTION (post-I2C §5, completed).  BTN_UP/LEFT/RIGHT carry the
+# netclass E2_BUTTON_ESCAPE and are exempt board-wide in-band.  BTN_DOWN/A/HOME
+# and the SW2-SW6 button-side GND escapes are exempt ONLY inside their own tight
+# named area, by net name.  CONTAINMENT: enclosedByArea(), never
+# intersectsArea() - a track that leaks out of its area while still in-band is
+# not enclosed and stays illegal.  B.Cu, In2 and in-band vias gain nothing here;
+# their rules are untouched.  No generic GND permission is created.
+
+(rule "RF bands: B.Cu is pristine - no tracks, no pads, no exceptions"
+	(layer "B.Cu")
+	(severity error)
+	(constraint disallow track pad)
+	(condition "A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')"))
+
+(rule "RF bands: no vias in band on any layer"
+	(severity error)
+	(constraint disallow via)
+	(condition "A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')"))
+
+(rule "RF bands: In2 crossings must lie wholly inside a named E5 corridor"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "(A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT')) && !A.enclosedByArea('E5 CORRIDOR C-W') && !A.enclosedByArea('E5 CORRIDOR E4') && !A.enclosedByArea('E5 CORRIDOR C-E')"))
+
+
+# ---------------------------------------------------------------------
+# 5. E5 - INNER-LAYER DIGITAL CROSSING (In2.Cu only)
+#
+#   C-W   X  8.0 .. 20.0   crosses 915 and 433
+#   E4    X 53.0 .. 56.5   crosses 915 only (east of the 433 band)
+#   C-E   X 58.0 .. 70.0   crosses 915 only
+#
+# Corridor rule areas are drawn 4 mm past each band in Y so that a
+# segment entering or leaving a band is still wholly enclosed by its
+# corridor. The X geometry - what the ruling fixes and what matters to
+# the antennas - is exact.
+#
+# Authorised occupants, and nothing else:
+#   E5_CROSSING  18 signal nets (SPI-A + SD_CS_N, SPI-B, CC1101 x2,
+#                SX1262 x5, BTN_A/B/DOWN/HOME)
+#   P3V3         narrow controlled trace, width rule below
+#   USB_D        E4 only
+#   VBUS_CHG     E4 only
+# No I2C, no unrelated GPIO, no test points, no switch nodes, no
+# inductor nets, no pours, no stubs, no in-band vias.
+# ---------------------------------------------------------------------
+
+(rule "E5: only authorised netclasses may enter a crossing corridor"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "(A.intersectsArea('E5 CORRIDOR C-W') || A.intersectsArea('E5 CORRIDOR E4') || A.intersectsArea('E5 CORRIDOR C-E')) && !A.hasNetclass('E5_CROSSING') && !A.hasNetclass('P3V3') && !A.hasNetclass('USB_D') && !A.hasNetclass('VBUS_CHG')"))
+
+(rule "E5: USB pair is authorised in E4 only"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('USB_D') && (A.intersectsArea('E5 CORRIDOR C-W') || A.intersectsArea('E5 CORRIDOR C-E'))"))
+
+(rule "E5: VBUS_CHG is authorised in E4 only"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('VBUS_CHG') && (A.intersectsArea('E5 CORRIDOR C-W') || A.intersectsArea('E5 CORRIDOR C-E'))"))
+
+# +3V3 crossing width: the current that must actually cross the 915 band
+# is the sum of the loads south of Y=88 - U8 SX1262 TX burst ~118 mA,
+# J2 microSD write ~100 mA, U7 CC1101 RX ~17 mA, plus pull-ups. Worst
+# credible concurrency ~235 mA, +30 % margin -> 305 mA design current.
+# IPC-2221B on 0.5 oz inner copper needs 0.30 mm for 305 mA at dT=10 K.
+# 0.60 mm is the chosen Beta target: ~1.8 K rise at 235 mA and ~10 mV
+# drop over the 26 mm crossing, still a controlled trace rather than a
+# pour. NOT the full 1.0 A rail current - that never crosses the band.
+(rule "E5: +3V3 crossing is a narrow controlled trace, never a pour"
+	(layer "In2.Cu")
+	(constraint track_width (min 0.50mm) (opt 0.60mm) (max 1.00mm))
+	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E5 CORRIDOR C-W') || A.intersectsArea('E5 CORRIDOR E4') || A.intersectsArea('E5 CORRIDOR C-E'))"))
+
+
+# ---------------------------------------------------------------------
+# 6. E4 FINAL RULE - X 53.0..56.5, Y 88..114, In2.Cu
+#
+#   USB pair   west lane   X 53.00 .. 54.30
+#   guard      centre      X 54.30 .. 55.40   1.10 mm, no copper
+#   VBUS_CHG   east lane   X 55.40 .. 56.50
+#
+# Reference is the continuous In1 GND plane. There is NO isolated GND
+# finger and NO stitching via inside Y 88..114 - section 4 already
+# forbids any in-band via.
+#
+# Impedance: on F.Cu over In1 (h = 0.2104 mm, Dk 4.4, t = 35 um) the
+# 90 ohm pair is W = 0.30 mm / S = 0.20 mm -> 89.3 ohm. On In2 the only
+# continuous reference is In1 across the 1.065 mm core, so the same
+# geometry presents ~133 ohm; even 0.60/0.40 only reaches ~117 ohm and
+# would not fit the corridor beside VBUS. The deliberate choice is to
+# KEEP the F.Cu geometry through E4: coupling and intra-pair skew stay
+# constant, and at 7.2 ps/mm the 26 mm traverse is ~190 ps one way -
+# electrically short for Full Speed USB (Gamma ~ 0.19). Keep the total
+# In2 excursion at or below 30 mm.
+# ---------------------------------------------------------------------
+
+(rule "E4: USB pair stays in the west lane"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('USB_D') && A.intersectsArea('E5 CORRIDOR E4') && !A.enclosedByArea('E4 USB LANE')"))
+
+(rule "E4: VBUS_CHG stays in the east lane"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('VBUS_CHG') && A.intersectsArea('E5 CORRIDOR E4') && !A.enclosedByArea('E4 VBUS LANE')"))
+
+(rule "E4: USB pair to VBUS_CHG separation >= 1.0 mm on In2"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint clearance (min 1.0mm))
+	(condition "A.hasNetclass('USB_D') && B.hasNetclass('VBUS_CHG')"))
+
+(rule "E4: USB differential geometry on In2"
+	(layer "In2.Cu")
+	(constraint track_width (min 0.23mm) (opt 0.25mm) (max 0.27mm))
+	(condition "A.hasNetclass('USB_D') && A.intersectsArea('E5 CORRIDOR E4')"))
+
+# At the approved 0.25/0.20 geometry the In2 section reads ~139.8 ohm against the
+# 90 ohm F.Cu target (reflection coefficient 0.22).  The section is ~216 ps one
+# way and USB here is Full Speed, so it is accepted BY ANALYSIS ONLY:
+# USB E4 IMPEDANCE DISCONTINUITY -> BETA SIGNAL-INTEGRITY / BRING-UP VERIFY.
+# Not production-validated.
+
+(rule "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
+	(layer outer)
+	(constraint diff_pair_gap (min 0.18mm) (opt 0.20mm) (max 0.24mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+(rule "USB 2.0 trace width on the outer layers"
+	(layer outer)
+	(constraint track_width (min 0.23mm) (opt 0.25mm) (max 0.27mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+# Uncoupled budget for the pair.  The J3 fanout, the C20 west/east split and the
+# via splays are all legitimately uncoupled; declaring the budget is honest where
+# pretending the pair stays coupled through them would not be.
+(rule "USB uncoupled length budget"
+	(constraint diff_pair_uncoupled (max 25mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+
+# ---------------------------------------------------------------------
+# 7. WROOM ANTENNA KEEPOUT - MANUFACTURER PRECEDENCE
+#
+# ESP32-S3-WROOM-1 antenna zone, board X 0..6, Y 17..35, taken from the
+# module footprint's own B.Fab antenna boundary at local X = 6 mm.
+#
+# Espressif requires no copper on ANY layer in the antenna area. That
+# includes In1: this is the single authorised void in the otherwise
+# continuous GND reference and it OVERRIDES the In1 continuity policy
+# locally. Copper, via, pad and pour prohibition is carried by the rule
+# area itself. Footprints are left "allowed" in the area only because
+# U1's own oversized courtyard overlaps it and would self-report;
+# component keepout is a placement rule and placement is locked.
+# ---------------------------------------------------------------------
+
+(rule "WROOM antenna keepout: no track on any layer"
+	(severity error)
+	(constraint disallow track via pad)
+	(condition "A.intersectsArea('WROOM ANTENNA KEEPOUT')"))
+
+
+# ---------------------------------------------------------------------
+# 8. RF NETS THAT MUST NOT BE ROUTED AT ALL
+#
+# U7 / U8 use native IPEX connectors. The pin-21 stamp RF pads exist as
+# copper but carry NO PCB RF feed. U9 NFC loop, matching network,
+# crystal and capacitive-sensing nets are DEFERRED by project
+# documentation and stay deferred until that documentation says
+# otherwise.
+#
+# RF_DO_NOT_ROUTE  CC1101_ANT_TBD, RF_ANT_TBD, SX1262_RF_TBD
+# RF_DEFERRED_NFC  RFO1 RFO2 RFI1 RFI2 AAT_A AAT_B EXT_LM CSI CSO
+#                  XIN XOUT MCU_CLK
+#
+# U9's digital and power side - SPI_B, NFC_CS_N, NFC_IRQ, +3V3,
+# NFC_5V_PA_PENDING, NFC_VDD_*, AGDC, GND - is deliberately NOT in
+# these classes and may be routed when routing is authorised.
+# ---------------------------------------------------------------------
+
+(rule "RF_DO_NOT_ROUTE: U7/U8 pin-21 stamp RF pads carry no PCB feed"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('RF_DO_NOT_ROUTE')"))
+
+(rule "RF_DEFERRED_NFC: U9 loop / matching / crystal / cap-sense are deferred"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('RF_DEFERRED_NFC')"))
+
+
+# ---------------------------------------------------------------------
+# 9. SWITCHING CONVERTER SWITCH NODES - KEEP SMALL, KEEP LOCAL
+#
+#   U12 TPS63020   Net-(L1-Pad1), Net-(L1-Pad2)
+#   U13 TPS61023   Net-(U13-SW)
+#   U17 TPS61169   BL_SW
+#   U11 BQ25185    linear power path - no switch node
+#
+# Encoded: no switch node in an antenna band, none over the microphone
+# or the audio amplifier, and a low-impedance minimum width.
+# Not encodable and therefore carried into the routing pass: minimum
+# loop area, no routing on adjacent layers directly beneath L1/L2/L3,
+# and In1 kept solid under each inductor.
+# ---------------------------------------------------------------------
+
+(rule "SWITCH_NODE: never inside an antenna band"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE') && (A.intersectsArea('915 KEEPOUT') || A.intersectsArea('433 KEEPOUT'))"))
+
+(rule "SWITCH_NODE: keep clear of the microphone and the audio amplifier"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE') && (A.intersectsCourtyard('MK1') || A.intersectsCourtyard('U5'))"))
+
+(rule "SWITCH_NODE: low impedance, minimum width 0.40 mm"
+	(constraint track_width (min 0.40mm) (opt 0.60mm))
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+
+# ---------------------------------------------------------------------
+# 10. POWER RAILS - WIDTH FLOORS FROM IPC-2221B AT THE REAL COPPER
+#
+# 1 oz outer (35 um), 0.5 oz inner (17.4 um), dT = 10 K:
+#
+#   net / class        design current      outer min   inner min
+#   BAT_PROTECTED_P    1.5 A sustained      0.525 mm    2.734 mm
+#     NOTE: IBAT_OCP = 3.125 A is a FAULT TRIP THRESHOLD, not a routing
+#     design current.  The earlier 1.00/1.50 mm floor was derived from it
+#     and made U11's 0.40 mm-pitch west flank unroutable.  CTO ruling
+#     2026-08-11: size normal copper for the sustained case.
+#   BQ25185_SYS        1.0 A                0.300 mm    1.563 mm
+#   +3V3               1.0 A design         0.300 mm    1.563 mm
+#                      0.64 A measured pk   0.162 mm    0.844 mm
+#   VBUS_CHG           0.5 A (ILIM500)      0.115 mm    0.601 mm
+#   NFC_5V_PA_PENDING  0.5 A TX burst       0.115 mm    0.601 mm
+#   LED_BOOST          0.05 A at >20 V      clearance-driven, not width
+#
+# The floors below sit well above the thermal minimum, and both rails are
+# OUTER-LAYER BY POLICY.  Do NOT distribute BAT_MAIN on In2: at 0.5 oz,
+# 1.5 A needs 2.73 mm, which defeats the point of using In2 at all.
+# SYS_MAIN is outer-layer by preference; if an In2 segment ever proves
+# unavoidable, size it separately from the actual SYS current at 0.5 oz -
+# never inherit the outer-layer width onto inner copper.
+# ---------------------------------------------------------------------
+
+(rule "BAT_MAIN minimum width"
+	(constraint track_width (min 0.60mm) (opt 1.00mm))
+	(condition "A.hasNetclass('BAT_MAIN')"))
+
+(rule "SYS_MAIN minimum width"
+	(constraint track_width (min 0.50mm) (opt 0.80mm))
+	(condition "A.hasNetclass('SYS_MAIN')"))
+
+(rule "P3V3 minimum width on the outer layers"
+	(layer outer)
+	(constraint track_width (min 0.40mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3')"))
+
+(rule "VBUS_CHG minimum width"
+	(constraint track_width (min 0.35mm) (opt 0.50mm))
+	(condition "A.hasNetclass('VBUS_CHG')"))
+
+(rule "NFC_5V_PA minimum width"
+	(constraint track_width (min 0.35mm) (opt 0.60mm))
+	(condition "A.hasNetclass('NFC_5V_PA')"))
+
+# Elevated clearances below are ROUTING clearances: they are scoped to
+# non-pad copper so that vendor land patterns (J1 FH69 0.5 mm pitch, J3
+# USB-C, U11 WSON 0.4 mm pitch, U12 VSON, U14 WLP) are judged against the
+# 0.20 mm global figure they actually satisfy, not against a routing target.
+# IPC-2221 needs only ~0.1 mm at the backlight string's <30 V, so nothing
+# electrical is lost by leaving pad-to-pad at 0.20 mm.
+
+(rule "LED_BOOST routed clearance - backlight string runs above 20 V"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "BAT_MAIN routed clearance"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "SWITCH_NODE routed clearance"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "SYS_MAIN routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('SYS_MAIN') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "VBUS_CHG routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('VBUS_CHG') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "NFC_5V_PA routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('NFC_5V_PA') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+
+# ---------------------------------------------------------------------
+# 11. VIA CLASSES - MAINSTREAM THROUGH VIAS ONLY
+#
+#   GENERAL_SIGNAL  0.30 mm drill / 0.60 mm pad / 0.150 mm ring
+#   POWER           0.40 mm drill / 0.80 mm pad / 0.200 mm ring
+#   THERMAL         0.25 mm drill / 0.55 mm pad / 0.150 mm ring
+#
+# JLCPCB 4-layer floor is 0.20 mm drill and ~0.1275 mm ring, so none of
+# these sits at the fab minimum. No microvias, no blind or buried vias.
+# ---------------------------------------------------------------------
+
+(rule "No microvias on this board"
+	(severity error)
+	(constraint disallow micro_via))
+
+(rule "No blind vias on this board"
+	(severity error)
+	(constraint disallow blind_via))
+
+(rule "No buried vias on this board"
+	(severity error)
+	(constraint disallow buried_via))
+
+(rule "Via annular ring floor"
+	(constraint annular_width (min 0.125mm)))
+
+(rule "POWER-class vias use the 0.40 mm drill"
+	(constraint hole_size (min 0.40mm))
+	(condition "A.Type == 'Via' && (A.hasNetclass('BAT_MAIN') || A.hasNetclass('SYS_MAIN') || A.hasNetclass('P3V3') || A.hasNetclass('NFC_5V_PA') || A.hasNetclass('VBUS_CHG'))"))
+
+# =====================================================================
+# PRECEDENCE TAIL - ORDER HERE IS LOAD-BEARING
+#
+# KiCad applies the LAST matching custom rule, not the first.  That was
+# established empirically during Routing Pass 1: with the necking rules
+# at the end of the file they beat the section-10 rail clearances, and
+# when they were moved to the front the section-1 land-pattern rules
+# stopped winning and U13 reported four false 0.15 mm pad-pair errors.
+#
+# Required order, weakest first:
+#   1. sections 3-12 above  - RF policy, rails, vias
+#   2. pad-escape necking   - vendor pitch governs inside 6 courtyards
+#   3. land-pattern rules   - vendor land pattern governs pad-vs-pad
+# Moving either block earlier silently breaks the one below it.
+# =====================================================================
+
+(rule "Pad-escape necking - width, fine-pitch power packages"
+	(constraint track_width (min 0.20mm))
+	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')"))
+
+(rule "Pad-escape necking - clearance, fine-pitch power packages"
+	(constraint clearance (min 0.20mm))
+	(condition "(A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')) && (B.intersectsCourtyard('U11') || B.intersectsCourtyard('U12') || B.intersectsCourtyard('U13') || B.intersectsCourtyard('U14') || B.intersectsCourtyard('U17') || B.intersectsCourtyard('U9'))"))
+
+
+(rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
+	(constraint clearance (min 0.05mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
+
+(rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U13') && B.memberOfFootprint('U13')"))
+
+(rule "FP-U16 TCA9517ADGK VSSOP-8 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U16') && B.memberOfFootprint('U16')"))
+
+(rule "FP-D3 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D3') && B.memberOfFootprint('D3')"))
+
+(rule "FP-D4 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D4') && B.memberOfFootprint('D4')"))
+
+(rule "FP-D5 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D5') && B.memberOfFootprint('D5')"))
+
+(rule "FP-D6 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D6') && B.memberOfFootprint('D6')"))
+
+# ---------------------------------------------------------------------
+# 12. USB_VBUS_RAW ESCAPE VIAS
+#
+# The POWER-class drill floor assumes every VBUS_CHG-class via is a bulk
+# power via.  USB_VBUS_RAW's two escape vias are not.  C20 pad 1 sits in a
+# 1.050 mm pocket where an 0.80 mm POWER pad fits only by overlapping the
+# pad itself - via-in-pad, which is not allowed for Beta.  These vias use
+# the already-approved 0.25/0.55 geometry (the USB and THERMAL classes both
+# use it); at 500 mA a 0.25 mm barrel is far inside its rating.
+#
+# Scoped to this ONE net and to hole_size only, and placed at the very end
+# so that last-match precedence puts it after the POWER drill rule without
+# disturbing the PRECEDENCE TAIL above (those are width/clearance rules).
+# ---------------------------------------------------------------------
+
+(rule "USB_VBUS_RAW escape vias use the approved 0.25/0.55 geometry"
+	(constraint hole_size (min 0.25mm) (max 0.55mm))
+	(condition "A.Type == 'Via' && A.NetName == '/01_POWER_TREE/USB_VBUS_RAW'"))
+
+
+# =====================================================================
+# 13. E6 +3V3 PAD ESCAPE  and  U3_21_ESCAPE
+#
+# CTO-approved.  These are PAD-SCOPED escape pockets, not a netclass
+# relaxation.  Each exists only so a +3V3 feed can enter one specific
+# trapped pad.  They are NOT transit corridors, they do NOT authorise
+# 0.15 mm trunks, and they do NOT relax clearance generally.
+#
+#   standard E6 pockets  width >= 0.15 mm, clearance UNCHANGED at 0.20 mm
+#   E6_U9_1              width >= 0.15 mm, clearance 0.10 mm
+#                        VERIFY-AT-FAB-LOCK - no copper may use the
+#                        0.10 mm figure until the selected 4-layer, 1 oz
+#                        outer process publishes a spacing capability
+#                        <= 0.10 mm.  The rule exists; the permission
+#                        does not, until that is confirmed.
+#   U3_21_ESCAPE         width >= 0.15 mm, clearance UNCHANGED at 0.20 mm
+#
+# PROCEDURAL, DELIBERATELY NOT ENCODED (reviewed geometrically at routing
+# time - KiCad's net-length constraint is the wrong instrument for this):
+#   - reduced-width neck <= 2.0 mm
+#   - single-pad feed only; no aggregate current; no transit
+#   - widen to >= 0.30 mm, preferably 0.60 mm, immediately after escaping
+#
+# SCOPE WARNING: KiCad evaluates intersectsArea per OBJECT, so a track
+# that merely clips one of these areas inherits the relaxed rule along
+# its WHOLE length.  Every E6 neck must therefore be written as its own
+# short segment, never as part of a longer run.
+#
+# These rules are LAST in the file on purpose.  KiCad applies the last
+# matching rule, so inside these areas they must beat both the P3V3
+# outer-layer width floor (section 10) and the land-pattern block that
+# closes the PRECEDENCE TAIL.  Moving them earlier silently disables them.
+# =====================================================================
+
+(rule "E6: +3V3 pad-escape neck width"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && (A.intersectsArea('E6_U9_1'))"))
+
+(rule "U3_21_ESCAPE: +3V3 escape neck width"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.intersectsArea('U3_21_ESCAPE')"))
+
+(rule "E6_U9_1: measured local +3V3 clearance 0.160 mm"
+	(constraint clearance (min 0.160mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_U9_1')"))
+
+# =====================================================================
+# 14. HEADER RESERVED - ENFORCEMENT CONVERTED FROM ZONE KEEPOUT TO RULE
+#
+# HEADER RESERVED used to be enforced by the rule area's own keepout flags
+# (tracks not_allowed / vias not_allowed).  A zone keepout cannot carry a
+# net-conditional exception, so the track/via prohibition is re-imposed here
+# as a DRU rule with identical geometry (the same 'HEADER RESERVED' area,
+# x 18.5-55.5, y 0-8.5) and identical layer coverage - F.Cu, B.Cu and In2.Cu,
+# the layers the area is drawn on.  The zone still carries
+# copperpour not_allowed, so pour protection never lapsed, and pads stay
+# allowed, which is what lets the J5 land pattern live inside the reservation.
+# J5's own fanout exception is unchanged: it was never a track/via rule.
+#
+# The single exception is the CTO-approved U3.21 escape.  U3.21 is the
+# TCA9535PWR A0 address-strap input - TI SCPS201E table 5-1: "Address input 0.
+# Connect directly to VCC or ground" - so it must be tied to a rail and is not
+# NC-capable.  Its pocket is sealed by U3.20 and U3.22 at 0.250 mm, by
+# I2C_SCL_INT at 0.350 mm, and on the fourth side by this reservation at
+# 0.200 mm, so the only escape is a short hop north into the reservation and
+# back out into U3.24's +3V3 copper.
+#
+# CONTAINMENT: the exception uses enclosedByArea(), NOT intersectsArea().  A
+# track that merely clips U3_21_ESCAPE and then continues on through the
+# reservation is not enclosed by it, so it stays disallowed.  That is the
+# property which makes this exception leak-proof, and it is verified by an
+# explicit leak probe rather than assumed.
+# =====================================================================
+
+(rule "HEADER RESERVED: no tracks or vias, except the scoped U3.21 +3V3 escape and J5 self-fanout"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.intersectsArea('HEADER RESERVED') && !((A.NetName == '+3V3' && A.enclosedByArea('U3_21_ESCAPE')) || (A.enclosedByArea('J5_SELF_FANOUT') && (A.NetName == '+3V3' || A.NetName == '/09_COMMUNITY_HEADER/ACC_3V3_SW' || A.NetName == '/09_COMMUNITY_HEADER/FAST_IO_GPIO43_HDR' || A.NetName == '/09_COMMUNITY_HEADER/I2C_SCL_EXT_HDR' || A.NetName == '/09_COMMUNITY_HEADER/I2C_SDA_EXT_HDR' || A.NetName == '/09_COMMUNITY_HEADER/RESERVED_NC' || A.NetName == '/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO0_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO10_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO11_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO12_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO13_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO1_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO2_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO3_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO4_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO5_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO6_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO7_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO8_HDR' || A.NetName == '/09_COMMUNITY_HEADER/XGPIO9_HDR')))"))
+
+# ---------------------------------------------------------------------
+# 15. PER-PAD E6 CLEARANCES - MEASURED, NOT ASSUMED
+#
+# Fab locked to JLCPCB: 4-layer, 1.6 mm finished, 1 oz outer / 0.5 oz inner,
+# stackup JLC04161H-7628.  Published capability for multilayer at 1 oz is
+# 0.09 mm minimum track width and 0.09 mm minimum spacing (3.5 / 3.5 mil).
+# JLCPCB's own recommended production baseline is 4 mil (0.1016 mm), so the
+# Tier-B pockets below sit between JLCPCB's floor and its comfort figure and
+# should be treated as DFM-review items at fab submission.
+#
+# Every pocket carries its OWN measured clearance - no pad inherits another's.
+# Each figure is the largest clearance at which a 0.15 mm neck can still reach
+# the +3V3 tree, measured on the current board.  Width stays at the 0.15 mm
+# E6 floor from section 13.
+#
+# CONTAINMENT: these clearance rules use enclosedByArea(), so only a neck
+# lying wholly inside its own pocket gets the relief.  A track that merely
+# clips a pocket keeps the ordinary 0.20 mm netclass clearance.
+# ---------------------------------------------------------------------
+# E6_J1_40    J1.40   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_40: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_40_CLR')"))
+
+# E6_J1_41    J1.41   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_41: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_41_CLR')"))
+
+# E6_J1_42    J1.42   TIER B - measured 0.120 mm; JLCPCB gate PASS (0.120 >= 0.09)
+(rule "E6_J1_42: measured local +3V3 clearance 0.120 mm"
+	(constraint clearance (min 0.120mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_J1_42_CLR')"))
+
+# E6_R11_1    R11.1   TIER B - measured 0.140 mm; JLCPCB gate PASS (0.140 >= 0.09)
+(rule "E6_R11_1: measured local +3V3 clearance 0.140 mm"
+	(constraint clearance (min 0.140mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R11_1_CLR')"))
+
+# E6_R29_1    R29.1   TIER A - measured 0.160 mm; JLCPCB gate n/a (Tier A)
+(rule "E6_R29_1_CLR: measured local +3V3 clearance 0.160 mm"
+	(constraint clearance (min 0.160mm))
+	(condition "A.hasNetclass('P3V3') && A.Type != 'Pad' && A.enclosedByArea('E6_R29_1_CLR')"))
+
+# E6_U9_1     U9.1    TIER A - measured 0.160 mm; rule written above in section 13.
+
+# =====================================================================
+# 16. WIDTH-ONLY +3V3 ESCAPE POCKETS
+#
+# Four pads measured on the current board cannot be escaped at the 0.40 mm
+# P3V3 outer-layer minimum, but - unlike the section-13/15 E6 pockets - they
+# are limited by WIDTH ALONE.  Each one works at the ordinary 0.20 mm
+# clearance once the trace narrows.  U4.12 and J1.35 additionally have pads
+# only 0.250 mm and 0.300 mm across, so a 0.40 mm centreline cannot land on
+# them at all.
+#
+# These rules therefore constrain WIDTH ONLY and deliberately carry NO
+# clearance term, so the pockets can never silently diverge from the global
+# 0.20 mm figure.  Clearance is left entirely to the P3V3 netclass.  That
+# makes these a strictly weaker concession than the E6 clearance pockets:
+# there is no fab-capability question and no pairwise blast radius.
+#
+#   E6_R3_2    R3.2   >= 0.15 mm   R3 is a 10k pull-up on WAKE_INT_N; the
+#                                  neck carries ~330 uA
+#                                  RELOCATED 2026-08-14 (B5 corrective audit):
+#                                  x 18.300-20.025 y 42.200-45.475  ->
+#                                  x 17.705-19.445 y 48.605-48.845, B.Cu.
+#                                  The old pocket belonged to an abandoned
+#                                  topology whose only landing was R11.1's
+#                                  0.15 mm neck - a forbidden narrow-to-narrow
+#                                  merge.  The ratified route leaves the pad at
+#                                  0.40 mm, runs 6.4 mm south at full width, and
+#                                  needs relief ONLY for a 1.602 mm squeeze at
+#                                  y ~ 48.7 before landing on C4.1.  The two
+#                                  rectangles do not overlap: this is a
+#                                  relocation, not an extension, and no dormant
+#                                  width relief is left in the old region.
+#
+# NARROW-ESCAPE SEARCH DOCTRINE (CTO standing law, 2026-08-14):  when solving
+# any reduced-width escape, EVERY sub-0.40 mm +3V3 object on the board -
+# including other pads' relief necks - is an OBSTACLE, never a SOURCE.  Only
+# >= 0.40 mm-class copper (pads, vias, >= 0.40 mm track) may terminate a narrow
+# escape.  Same-net contact with another pad's neck is a narrow-to-narrow merge
+# and is forbidden however clean the DRC looks.
+#   E6_U4_5    U4.5   >= 0.30 mm   BMI270 VDDIO, sub-mA single-device supply
+#   E6_U4_12   U4.12  >= 0.20 mm   BMI270 CSB, an I2C-mode strap - leakage only
+#   E6_J1_35   J1.35  >= 0.15 mm   one of seven parallel display +3V3 pins;
+#                                  see the merge rule below
+#
+# PROCEDURAL, NOT ENCODED (reviewed geometrically at routing time):
+#   - reduced-width neck <= 2.0 mm
+#   - single-pad feed only; no transit; no aggregate current
+#   - no in-pocket via unless individually proven
+#   - widen to >= 0.30 mm, preferably 0.60 mm, immediately after escaping
+#
+# J1.35 MERGE RULE: J1.35 is one of seven parallel +3V3 pins on the display
+# FPC (J1.7, .8, .9, .35, .40, .41, .42).  Its 0.15 mm neck feeds J1.35 and
+# nothing else.  Once clear of the FPC pad field it must merge immediately
+# into the normal-width display +3V3 branch at >= 0.30 mm, preferably
+# 0.60 mm.  No shared display current may flow through the neck itself.
+#
+# U4.12 NOTE: CSB is strapped high to select I2C.  If the BMI270 is ever
+# moved to SPI, CSB becomes an active chip select - that is a schematic
+# function change, not a routing-only change, and this pocket must be
+# re-reviewed rather than reused.
+#
+# CONTAINMENT: these use enclosedByArea(), so only a neck lying wholly inside
+# its own pocket gets the relief.  A track that merely clips a pocket keeps
+# the ordinary 0.40 mm P3V3 outer-layer minimum.
+#
+# Ordering: these sit in the specific-E6 tail at the end of the file so that
+# inside their named areas they beat the section-10 P3V3 width floor.  Outside
+# them P3V3 is unchanged.
+# =====================================================================
+(rule "E6_R3_2: R3.2 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R3_2')"))
+
+(rule "E6_U4_5: U4.5 width-only escape, clearance stays global"
+	(constraint track_width (min 0.30mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_U4_5')"))
+
+(rule "E6_U4_12: U4.12 width-only escape, clearance stays global"
+	(constraint track_width (min 0.20mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_U4_12')"))
+
+(rule "E6_J1_35: J1.35 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_35')"))
+
+
+# =====================================================================
+# 17. E6 AREA GEOMETRY - CORRECTED 2026-08-14 (rules-only, no copper)
+#
+# The section 13 pockets were pad-centred; the measured sub-0.20 mm
+# clearance regions are NOT pad-centred, so the areas below were moved
+# onto the measured regions.  Tight containment: each holds ONLY the
+# reduced-clearance region, not the whole narrow track.
+#
+#   E6_R2_1   RETIRED (GND/pour closeout) - rule and area removed;
+#             the R2 candidate-B escape meets the global P3V3 rules
+#             without it, and DRC proved 0 objects depended on it.
+#             Historical measurement, for the record:
+#             x 22.800-23.800  y 35.500-36.500  F/In1/In2/B
+#             VIA-SITE relief, through via (23.300, 36.000)
+#             hole-edge to In2 /WAKE_INT_N = 0.100 + 0.200 ring
+#             = 0.300 mm  vs  JLCPCB 0.200 mm  ->  +0.100 mm
+#             reduced-clearance TRACK length: 0.000 mm
+#   E6_J1_40  x 30.950-31.800  y 78.150-78.550  F.Cu   0.641 mm east
+#   E6_J1_41  x 25.500-26.500  y 80.850-81.200  F.Cu   0.771 mm west
+#   E6_J1_42  x 30.400-31.550  y 80.850-82.000  F.Cu   1.541 mm south
+#   E6_R11_1  x 18.150-18.800  y 45.800-46.350  B.Cu   0.504 mm east
+#
+#   E6_C18_1  UNCHANGED - measures 0.000 mm reduced-clearance track and
+#             its via site already meets 0.200 mm.  Awaiting a ruling.
+#   E6_R29_1  UNCHANGED - stays an E6 clearance-relief pad.  The earlier
+#             width-only reclassification was withdrawn.
+#
+# NECK DOCTRINE (CTO, 2026-08-14):
+#   2.0 mm HARD cap = length of copper BELOW NORMAL CLEARANCE.
+#   It is NOT a cap on sub-0.40 mm-width length.
+#   Any single narrow-width run > 6.0 mm needs a new ruling first.
+#
+# Comments only - no rule is defined in this section, so the
+# last-match precedence tail is unaffected.
+# =====================================================================
+
+# =====================================================================
+# 18. WIDTH-ONLY AREAS PAIRED WITH THE E6 CLEARANCE POCKETS
+#
+# Each paired case now has TWO areas:
+#   *_CLR    holds ONLY the measured reduced-clearance region
+#   *_WIDTH  wraps the WHOLE 0.15 mm route, endpoints included
+#
+# Both use enclosedByArea().  intersectsArea() is deliberately NOT used
+# here: a touching-only width exemption lets one narrow track clip the
+# area and stay narrow outside it.  Routing discipline: split every
+# track segment at the area boundary.
+#
+# END-CAP MARGIN: KiCad extends a track cap by width/2 past the
+# endpoint, so a 0.15 mm neck needs >= 0.075 mm of overhang or the cap
+# pokes out and enclosedByArea() fails.  Every *_WIDTH rectangle below
+# overhangs the route bbox by 0.150 mm, which also absorbs the 0.075 mm
+# half-width and the 0.05 mm measurement grid.
+#
+# CAP SEMANTICS (standing law):
+#   clearance-relief run   HARD cap        <= 2.0 mm
+#   total narrow-width run REVIEW trigger   > 6.0 mm
+#   These are different metrics.  The 2.0 mm cap does NOT apply to
+#   total narrow-width length.
+#
+# J1 NORTH-ESCAPE EDGE - CTO rulings 2026-08-14 (comment only, the rule
+# terms below are unchanged).  E6_J1_42_WIDTH and E6_J1_41_WIDTH both moved
+# their north edge 79.385 -> 79.245, a 0.140 mm extension each, so the J1.42
+# and J1.41 escapes can hand off to normal width north of the J1 pad row.
+# The first legal 0.40 mm handoff is y = 79.320 (KiCad-verified limit 79.342;
+# analytic 79.3414 from the 0.20 mm clearance to the GND pad J1.43 corner at
+# 28.900, 79.535), and a 0.15 mm neck end cap needs the area to reach 79.245.
+# Both areas therefore overhang by 0.290 mm on their north edge, not the
+# 0.150 mm stated above - the documented exception, scoped to these two.
+#
+# PAD SCOPE (standing law, made explicit by the B3 deviation ruling):  these
+# rectangles overlap each other and several neighbouring J1 pads, and always
+# have.  Geometric exclusivity is NOT the test.  The test is OWN-AREA
+# SUFFICIENCY: every pad-escape neck must be enclosed by the WIDTH area named
+# for ITS OWN pad, on its own.  Incidental coverage by a neighbour area is
+# permitted; DEPENDING on one is not.  J1.41 briefly depended on
+# E6_J1_42_WIDTH and that is why E6_J1_41_WIDTH was extended to match.
+#
+# No clearance relief was added by either extension: E6_J1_41_CLR and
+# E6_J1_42_CLR are untouched at 0.771 / 1.541 mm and 0.120 mm.
+#
+# C18.1 is width-only: it measures 0.000 mm of reduced-clearance track
+# and its via at (18.900, 19.400) already clears 0.200 mm to both B.Cu
+# /SX1262_BUSY and In2 /I2C_SCL_INT (hole-referenced 0.400 mm, +0.200).
+# Its clearance rule was deleted; the via uses normal rules only.
+# =====================================================================
+
+(rule "E6_J1_40_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_40_WIDTH')"))
+
+(rule "E6_J1_41_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_41_WIDTH')"))
+
+(rule "E6_J1_42_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_J1_42_WIDTH')"))
+
+(rule "E6_R11_1_WIDTH: +3V3 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R11_1_WIDTH')"))
+
+(rule "E6_C18_1_WIDTH: C18.1 width-only escape, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_C18_1_WIDTH')"))
+
+# ---------------------------------------------------------------------
+# 19. R29.1 PAIRED AREAS - the old combined E6_R29_1 sat around the pad,
+# but the relief is needed ~6 mm west where the escape actually pinches.
+#   E6_R29_1_CLR    x 11.700-12.000 y 18.750-19.400  F.Cu  clearance 0.160 mm
+#                   constrained run 0.350 mm, requires 0.1753 mm
+#   E6_R29_1_WIDTH  x 11.550-12.000 y 17.550-19.850  F.Cu  width 0.15 mm
+#                   narrow run 1.991 mm, handoff (11.700, 19.700)
+# 2.0 mm cap = reduced-clearance length; 6.0 mm trigger = narrow-width run.
+# ---------------------------------------------------------------------
+
+(rule "E6_R29_1_WIDTH: R29.1 escape neck width, clearance stays global"
+	(constraint track_width (min 0.15mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3') && A.enclosedByArea('E6_R29_1_WIDTH')"))
+
+# =====================================================================
+# 20. DISPLAY BACKLIGHT LOCAL CLEARANCE - Beta-DM only
+# The LED_BOOST string is a TPS61169 boost from +3V3 driving FOUR
+# PARALLEL panel LEDs through 39 R ballasts, sensed by 2.55 R into the
+# 204 mV FB pin: 80 mA total, 20 mA per branch, so LED_BOOST sits at
+# 3.884-4.484 V in normal operation.  The elevated 0.30 mm figure is
+# justified only by the open-LED fault, where TI SNVSA40B gives
+# VOVP_SW = 36 / 37.5 / 39 V before the part latches off; 39 V is the
+# worst-case basis used here.  C44 is 50 V X7R, above that.
+#
+# The four anodes fan out from a B.Cu resistor column at x = 49.575 to
+# F.Cu connector pads on a 0.500 mm pitch with 0.200 mm gaps, in a
+# corridor bounded to the north by USB_D_MCU_N at y = 78.725.  At the
+# global 0.30 mm only four of six nets route; at 0.250 mm all six do.
+# Measured minimum in the landed geometry: 0.2500 mm exactly.
+#
+# IPC-2221 at 31-50 V: 0.13 mm (B4, external under permanent polymer
+# coating) -> 1.92x margin.  At the 0-15 V operating band: 0.05 mm ->
+# 5.0x.  JLCPCB 4-layer minimum spacing 0.09 mm -> 2.78x.
+#
+# GLOBAL LED_BOOST CLEARANCE IS UNCHANGED AT 0.30 mm.  These two areas
+# are the only places it is reduced, they are last in the file so they
+# take precedence.  Pads are excluded on BOTH sides, exactly as the
+# global LED_BOOST rule does: pad clearance stays at the 0.200 mm
+# global figure and is never raised to 0.250 by this exception.
+# take precedence, and the exception is one-sided: only LED_BOOST copper
+# WHOLLY INSIDE an area gets it, and pads never do.
+#   E6_BL_FANOUT_CLR  x 47.575-50.776  y 79.025-82.675  F/In1/In2/B
+#   E6_BL_KVIA_CLR    x 51.775-52.525  y 79.025-79.775  F/In1/In2/B
+# =====================================================================
+
+(rule "E6_BL_FANOUT: measured local backlight clearance 0.250 mm"
+	(constraint clearance (min 0.250mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad' && A.enclosedByArea('E6_BL_FANOUT_CLR')"))
+
+(rule "E6_BL_KVIA: measured local backlight clearance 0.250 mm"
+	(constraint clearance (min 0.250mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad' && A.enclosedByArea('E6_BL_KVIA_CLR')"))
