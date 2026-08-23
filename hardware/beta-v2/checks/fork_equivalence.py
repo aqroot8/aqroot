@@ -30,7 +30,6 @@ assert len(DM_PROJ) == len(V2_PROJ)
 # Sheets still inherited verbatim from Beta-DM.  A sheet leaves this list the
 # moment its FBV2-S1 migration lands, and moves into FILES as 'changed'.
 SHEETS = [
-    '04_spi_b_radios_nfc',
     '05_i2c_devices', '06_audio', '07_ir', '08_buttons_expanders',
     '09_community_header',
 ]
@@ -45,6 +44,7 @@ FILES = (
         ('01_power_tree.kicad_sch', '01_power_tree.kicad_sch', 'changed'),
         ('02_mcu_core.kicad_sch', '02_mcu_core.kicad_sch', 'changed'),
         ('03_spi_a_display_sd.kicad_sch', '03_spi_a_display_sd.kicad_sch', 'changed'),
+        ('04_spi_b_radios_nfc.kicad_sch', '04_spi_b_radios_nfc.kicad_sch', 'changed'),
         ('%s.kicad_pcb' % DM_PROJ, '%s.kicad_pcb' % V2_PROJ, 'bit'),
         ('%s.kicad_dru' % DM_PROJ, '%s.kicad_dru' % V2_PROJ, 'bit'),
         ('%s.kicad_sch' % DM_PROJ, '%s.kicad_sch' % V2_PROJ, 'changed'),

@@ -1333,7 +1333,7 @@
 		)
 		(uuid "2f88652d-230a-4ea2-848a-9cba3556e2b2")
 	)
-	(label "NFC_5V_PA_PENDING"
+	(label "NFC_SUPPLY"
 		(at 107.95 52.07 0)
 		(effects
 			(font
@@ -1443,7 +1443,7 @@
 		)
 		(uuid "43c426e3-01ef-442b-8440-1afbb56048b5")
 	)
-	(label "NFC_5V_PA_PENDING"
+	(label "NFC_SUPPLY"
 		(at 320.04 34.29 180)
 		(effects
 			(font
@@ -2537,7 +2537,7 @@
 				(justify right)
 			)
 		)
-		(pin "NFC_5V_PA_PENDING" input
+		(pin "NFC_SUPPLY" input
 			(at 322.58 34.29 180)
 			(uuid "af75876d-39fe-4711-bce8-88cab9b25221")
 			(effects
@@ -2633,7 +2633,7 @@
 				(justify left)
 			)
 		)
-		(pin "NFC_5V_PA_PENDING" output
+		(pin "NFC_SUPPLY" output
 			(at 105.41 52.07 0)
 			(uuid "2464393c-e735-49c0-98f3-dc05d2561c43")
 			(effects

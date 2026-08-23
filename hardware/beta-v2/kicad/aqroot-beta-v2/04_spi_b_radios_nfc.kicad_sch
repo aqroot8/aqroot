@@ -3,8 +3,592 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "c9c5bda1-3956-427a-b3ae-972c71997504")
-	(paper "A4")
+	(paper "A2")
 	(lib_symbols
+		(symbol "Device:Crystal_GND24"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Y"
+				(at 3.175 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Crystal_GND24"
+				(at 3.175 3.175 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Four pin crystal, GND on pins 2 and 4"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property private "KLC_S3.3" "The rectangle is not a symbol body but a graphical element"
+				(at 0 -12.7 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property private "KLC_S4.1" "Some pins are on 50mil grid to make the symbol small"
+				(at 0 -15.24 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "quartz ceramic resonator oscillator"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Crystal*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Crystal_GND24_0_1"
+				(polyline
+					(pts
+						(xy -2.54 2.286) (xy -2.54 3.556) (xy 2.54 3.556) (xy 2.54 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 0) (xy -2.032 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -2.286) (xy -2.54 -3.556) (xy 2.54 -3.556) (xy 2.54 -2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -1.27) (xy -2.032 1.27)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.143 2.54)
+					(end 1.143 -2.54)
+					(stroke
+						(width 0.3048)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 -3.556)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 0) (xy 2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 -1.27) (xy 2.032 1.27)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Crystal_GND24_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 1.27)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 1.27)
+					(hide yes)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:L"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "L"
+				(at -1.27 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "L"
+				(at 1.905 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Inductor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "inductor choke coil reactor magnetic"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "L_0_1"
+				(arc
+					(start 0 2.54)
+					(mid 0.6323 1.905)
+					(end 0 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 1.27)
+					(mid 0.6323 0.635)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0)
+					(mid 0.6323 -0.635)
+					(end 0 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -1.27)
+					(mid 0.6323 -1.905)
+					(end 0 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "L_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "AQROOT_Beta:ST25R3916-AQET"
 			(pin_names
 				(offset 0.508)
@@ -2290,16 +2874,6 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 63.5) (xy 241.3 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "262fae59-88c4-4037-a609-a531596fa9bd")
-	)
-	(wire
-		(pts
 			(xy 256.54 81.28) (xy 256.54 82.55)
 		)
 		(stroke
@@ -2440,16 +3014,6 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 57.15) (xy 109.22 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c5e61c67-47fb-4773-8206-b9cb46c510d0")
-	)
-	(wire
-		(pts
 			(xy 266.7 93.98) (xy 266.7 95.25)
 		)
 		(stroke
@@ -2467,16 +3031,6 @@
 			(type default)
 		)
 		(uuid "ce8cecfc-915c-4ff2-a26f-e0f2aa9e53ec")
-	)
-	(label "SX1262_RF_TBD"
-		(at 241.3 63.5 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "05d7c383-469e-4456-9b4d-abb779ef0f48")
 	)
 	(label "NFC_CS_N"
 		(at 142.24 162.56 270)
@@ -2508,17 +3062,7 @@
 		)
 		(uuid "a3e82884-29e6-4021-bd66-b2ad0c941aa7")
 	)
-	(label "CC1101_RF_TBD"
-		(at 109.22 57.15 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d0c3c9f7-aec1-4967-999d-760b67d144eb")
-	)
-	(label "NFC_5V_PA_PENDING"
+	(label "NFC_SUPPLY"
 		(at 170.18 128.27 90)
 		(effects
 			(font
@@ -2583,7 +3127,7 @@
 		)
 		(uuid "21e729ae-2f5f-438c-b0fc-dd59fea7e6e9")
 	)
-	(hierarchical_label "NFC_5V_PA_PENDING"
+	(hierarchical_label "NFC_SUPPLY"
 		(shape input)
 		(at 63.5 140.97 180)
 		(effects
@@ -5509,26 +6053,6 @@
 	)
 	(wire
 		(pts
-			(xy 234.95 72.39) (xy 242.57 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ea071cc1-88f2-4252-9aea-e39acd6f5f1a")
-	)
-	(label "RF_ANT_TBD"
-		(at 242.57 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9ac49ba7-afb0-4d6f-8cea-bf9276ac3089")
-	)
-	(wire
-		(pts
 			(xy 234.95 74.93) (xy 240.03 74.93)
 		)
 		(stroke
@@ -6699,26 +7223,6 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 66.04) (xy 113.03 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f82715e2-9072-4961-adc2-17308d0b1f42")
-	)
-	(label "CC1101_ANT_TBD"
-		(at 113.03 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3c534a06-53bb-46bc-9b5b-e5678ca66dab")
-	)
-	(wire
-		(pts
 			(xy 105.41 68.58) (xy 110.49 68.58)
 		)
 		(stroke
@@ -7066,26 +7570,6 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 125.73) (xy 63.5 125.73)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bb74939a-838d-46e2-a2da-a62ce1e557c1")
-	)
-	(label "NFC_CSO_TBD"
-		(at 63.5 125.73 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "0e23aa75-a3c8-4e86-9394-c31ab24de9d3")
-	)
-	(wire
-		(pts
 			(xy 71.12 128.27) (xy 63.5 128.27)
 		)
 		(stroke
@@ -7114,7 +7598,7 @@
 		)
 		(uuid "b8b11206-8b62-42b3-943f-b92df5e9fb36")
 	)
-	(label "NFC_XOUT_TBD"
+	(label "NFC_XOUT"
 		(at 63.5 130.81 180)
 		(effects
 			(font
@@ -7134,7 +7618,7 @@
 		)
 		(uuid "8d24ed8b-76b6-44b5-bbb0-7b758767206e")
 	)
-	(label "NFC_XIN_TBD"
+	(label "NFC_XIN"
 		(at 63.5 133.35 180)
 		(effects
 			(font
@@ -7279,7 +7763,7 @@
 		)
 		(uuid "ff76092c-2713-4c52-b4b2-0aa61c7276ab")
 	)
-	(label "NFC_5V_PA_PENDING"
+	(label "NFC_SUPPLY"
 		(at 63.5 146.05 180)
 		(effects
 			(font
@@ -7394,7 +7878,7 @@
 		)
 		(uuid "f5c869c9-6fbd-4ce8-85fd-588c5e0f65aa")
 	)
-	(label "NFC_RFO1_TBD"
+	(label "NFC_RFO1"
 		(at 63.5 153.67 180)
 		(effects
 			(font
@@ -7434,7 +7918,7 @@
 		)
 		(uuid "6bfc2b85-f735-4254-b17e-6429f43a5ca1")
 	)
-	(label "NFC_RFO2_TBD"
+	(label "NFC_RFO2"
 		(at 63.5 158.75 180)
 		(effects
 			(font
@@ -7518,66 +8002,6 @@
 				)
 			)
 		)
-	)
-	(wire
-		(pts
-			(xy 71.12 163.83) (xy 63.5 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ebc7ba74-6470-4154-a301-5d46547c0ee3")
-	)
-	(label "NFC_EXT_LM_TBD"
-		(at 63.5 163.83 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c5627309-6f3b-4433-a71b-503277fa80df")
-	)
-	(wire
-		(pts
-			(xy 111.76 123.19) (xy 119.38 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3c1c0304-fbe4-487e-bcbf-5144c111e026")
-	)
-	(label "NFC_AAT_A_TBD"
-		(at 119.38 123.19 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7e7837ac-6975-4aa2-80e0-b2e39379b439")
-	)
-	(wire
-		(pts
-			(xy 111.76 125.73) (xy 119.38 125.73)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2977cbb4-02d4-496f-b464-5ec4bb23d5fb")
-	)
-	(label "NFC_AAT_B_TBD"
-		(at 119.38 125.73 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "971e684c-8adf-40ce-ad7a-23513a5a27d2")
 	)
 	(wire
 		(pts
@@ -7739,7 +8163,7 @@
 		)
 		(uuid "6206fba1-bc17-4188-b059-66c1ac71beeb")
 	)
-	(label "NFC_RFI1_TBD"
+	(label "NFC_RFI1"
 		(at 119.38 133.35 0)
 		(effects
 			(font
@@ -7759,7 +8183,7 @@
 		)
 		(uuid "8b06b2ff-f12a-4a2d-b79c-f1a7003e7d1b")
 	)
-	(label "NFC_RFI2_TBD"
+	(label "NFC_RFI2"
 		(at 119.38 135.89 0)
 		(effects
 			(font
@@ -7788,26 +8212,6 @@
 			(justify left bottom)
 		)
 		(uuid "5745cfd7-54b0-41a7-ba29-b4c6f1544049")
-	)
-	(wire
-		(pts
-			(xy 111.76 140.97) (xy 119.38 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e741faec-e9d2-464b-b3f1-f4d342437c56")
-	)
-	(label "NFC_CSI_TBD"
-		(at 119.38 140.97 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "82d349ff-3e3c-4fe0-a931-7dcc6558c2b2")
 	)
 	(wire
 		(pts
@@ -7893,26 +8297,6 @@
 			(type default)
 		)
 		(uuid "da3cc474-b554-4e4c-b47c-121d26805ab4")
-	)
-	(wire
-		(pts
-			(xy 111.76 148.59) (xy 119.38 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1b3237d5-2490-4332-9316-dbfe9da3933a")
-	)
-	(label "NFC_MCU_CLK_TBD"
-		(at 119.38 148.59 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f8fc8579-79e1-4685-8d93-37f7009cdb87")
 	)
 	(wire
 		(pts
@@ -9966,7 +10350,7 @@
 			)
 		)
 	)
-	(label "NFC_5V_PA_PENDING"
+	(label "NFC_SUPPLY"
 		(at 157.48 128.27 90)
 		(effects
 			(font
@@ -10073,5 +10457,3030 @@
 				)
 			)
 		)
+	)
+	(no_connect
+		(at 71.12 125.73)
+		(uuid "fb040000-f000-4f00-9f00-000000000000")
+	)
+	(no_connect
+		(at 71.12 163.83)
+		(uuid "fb040001-f001-4f01-9f01-000000000001")
+	)
+	(no_connect
+		(at 111.76 123.19)
+		(uuid "fb040002-f002-4f02-9f02-000000000002")
+	)
+	(no_connect
+		(at 111.76 125.73)
+		(uuid "fb040003-f003-4f03-9f03-000000000003")
+	)
+	(no_connect
+		(at 111.76 140.97)
+		(uuid "fb040004-f004-4f04-9f04-000000000004")
+	)
+	(no_connect
+		(at 111.76 148.59)
+		(uuid "fb040005-f005-4f05-9f05-000000000005")
+	)
+	(no_connect
+		(at 105.41 66.04)
+		(uuid "fb040100-f100-4f10-9f10-000000000100")
+	)
+	(no_connect
+		(at 234.95 72.39)
+		(uuid "fb040101-f101-4f11-9f11-000000000101")
+	)
+	(wire
+		(pts
+			(xy 308.61 66.04) (xy 316.23 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041001-a001-4a01-9a01-000000000001")
+	)
+	(label "NFC_XOUT"
+		(at 308.61 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb041002-a002-4a02-9a02-000000000002")
+	)
+	(wire
+		(pts
+			(xy 323.85 66.04) (xy 331.47 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041003-a003-4a03-9a03-000000000003")
+	)
+	(label "NFC_XIN"
+		(at 331.47 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041004-a004-4a04-9a04-000000000004")
+	)
+	(symbol
+		(lib_id "Device:Crystal_GND24")
+		(at 320.04 66.04 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042000-b000-4b00-9b00-0000000020000")
+		(property "Reference" "Y1"
+			(at 322.58000000000004 64.77000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "27.12MHz 10pF 3225-4P"
+			(at 322.58000000000004 67.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm"
+			(at 320.04 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 320.04 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 320.04 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042000-b000-4b00-9b00-0000000020001")
+		)
+		(pin "2"
+			(uuid "fb042000-b000-4b00-9b00-0000000020002")
+		)
+		(pin "3"
+			(uuid "fb042000-b000-4b00-9b00-0000000020003")
+		)
+		(pin "4"
+			(uuid "fb042000-b000-4b00-9b00-0000000020004")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "Y1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 312.42 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041005-a005-4a05-9a05-000000000005")
+	)
+	(wire
+		(pts
+			(xy 312.42 66.04) (xy 312.42 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041006-a006-4a06-9a06-000000000006")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 312.42 74.93 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042001-b001-4b01-9b01-0000000020010")
+		(property "Reference" "C79"
+			(at 314.96000000000004 73.66000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10pF 50V C0G TUNE"
+			(at 314.96000000000004 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042001-b001-4b01-9b01-0000000020011")
+		)
+		(pin "2"
+			(uuid "fb042001-b001-4b01-9b01-0000000020012")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C79")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 312.42 78.74) (xy 312.42 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041007-a007-4a07-9a07-000000000007")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 312.42 82.55 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042002-b002-4b02-9b02-0000000020020")
+		(property "Reference" "#PWR0401"
+			(at 312.42 88.89999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 312.42 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 312.42 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 312.42 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042002-b002-4b02-9b02-0000000020021")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 327.66 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041008-a008-4a08-9a08-000000000008")
+	)
+	(wire
+		(pts
+			(xy 327.66 66.04) (xy 327.66 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041009-a009-4a09-9a09-000000000009")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 327.66 74.93 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042003-b003-4b03-9b03-0000000020030")
+		(property "Reference" "C80"
+			(at 330.20000000000005 73.66000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10pF 50V C0G TUNE"
+			(at 330.20000000000005 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042003-b003-4b03-9b03-0000000020031")
+		)
+		(pin "2"
+			(uuid "fb042003-b003-4b03-9b03-0000000020032")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C80")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 327.66 78.74) (xy 327.66 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041010-a010-4a10-9a10-000000000010")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 327.66 82.55 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042004-b004-4b04-9b04-0000000020040")
+		(property "Reference" "#PWR0402"
+			(at 327.66 88.89999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 327.66 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 327.66 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 327.66 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042004-b004-4b04-9b04-0000000020041")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 320.04 71.12) (xy 320.04 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041011-a011-4a11-9a11-000000000011")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 320.04 82.55 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042005-b005-4b05-9b05-0000000020050")
+		(property "Reference" "#PWR0403"
+			(at 320.04 88.89999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 320.04 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 320.04 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 320.04 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042005-b005-4b05-9b05-0000000020051")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0403")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 297.18 129.54) (xy 304.8 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041020-a020-4a20-9a20-000000000020")
+	)
+	(label "NFC_RFO1"
+		(at 297.18 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb041021-a021-4a21-9a21-000000000021")
+	)
+	(symbol
+		(lib_id "Device:L")
+		(at 308.61 129.54 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042010-b010-4b10-9b10-0000000020100")
+		(property "Reference" "L5"
+			(at 311.15000000000003 128.26999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220nH TUNE"
+			(at 311.15000000000003 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Inductor_SMD:L_0603_1608Metric"
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042010-b010-4b10-9b10-0000000020101")
+		)
+		(pin "2"
+			(uuid "fb042010-b010-4b10-9b10-0000000020102")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "L5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 312.42 129.54) (xy 340.36 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041022-a022-4a22-9a22-000000000022")
+	)
+	(label "NFC_EMCA"
+		(at 316.23 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041023-a023-4a23-9a23-000000000023")
+	)
+	(junction
+		(at 321.31 129.54)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041024-a024-4a24-9a24-000000000024")
+	)
+	(wire
+		(pts
+			(xy 321.31 129.54) (xy 321.31 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041025-a025-4a25-9a25-000000000025")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 321.31 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042011-b011-4b11-9b11-0000000020110")
+		(property "Reference" "C69"
+			(at 323.85 135.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220pF 50V C0G TUNE"
+			(at 323.85 138.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042011-b011-4b11-9b11-0000000020111")
+		)
+		(pin "2"
+			(uuid "fb042011-b011-4b11-9b11-0000000020112")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C69")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 321.31 140.97) (xy 321.31 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041026-a026-4a26-9a26-000000000026")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 321.31 144.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042016-b016-4b16-9b16-0000000020160")
+		(property "Reference" "#PWR0410"
+			(at 321.31 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 321.31 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 321.31 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042016-b016-4b16-9b16-0000000020161")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0410")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 332.74 129.54)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041027-a027-4a27-9a27-000000000027")
+	)
+	(wire
+		(pts
+			(xy 332.74 129.54) (xy 332.74 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041028-a028-4a28-9a28-000000000028")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 332.74 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042012-b012-4b12-9b12-0000000020120")
+		(property "Reference" "C73"
+			(at 335.28000000000003 135.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100pF 50V C0G TUNE"
+			(at 335.28000000000003 138.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042012-b012-4b12-9b12-0000000020121")
+		)
+		(pin "2"
+			(uuid "fb042012-b012-4b12-9b12-0000000020122")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C73")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 332.74 140.97) (xy 332.74 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041029-a029-4a29-9a29-000000000029")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 332.74 144.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042017-b017-4b17-9b17-0000000020170")
+		(property "Reference" "#PWR0411"
+			(at 332.74 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 332.74 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 332.74 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 332.74 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042017-b017-4b17-9b17-0000000020171")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0411")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 344.17 129.54 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042013-b013-4b13-9b13-0000000020130")
+		(property "Reference" "C71"
+			(at 346.71000000000004 128.26999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100pF 50V C0G TUNE"
+			(at 346.71000000000004 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042013-b013-4b13-9b13-0000000020131")
+		)
+		(pin "2"
+			(uuid "fb042013-b013-4b13-9b13-0000000020132")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C71")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 347.98 129.54) (xy 355.6 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041030-a030-4a30-9a30-000000000030")
+	)
+	(label "NFC_MATCH_A"
+		(at 349.25 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041031-a031-4a31-9a31-000000000031")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 359.41 129.54 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042014-b014-4b14-9b14-0000000020140")
+		(property "Reference" "R114"
+			(at 361.95000000000005 128.26999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R TUNE"
+			(at 361.95000000000005 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042014-b014-4b14-9b14-0000000020141")
+		)
+		(pin "2"
+			(uuid "fb042014-b014-4b14-9b14-0000000020142")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "R114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 363.22 129.54) (xy 374.65 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041032-a032-4a32-9a32-000000000032")
+	)
+	(label "NFC_ANT_A"
+		(at 365.76 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041033-a033-4a33-9a33-000000000033")
+	)
+	(wire
+		(pts
+			(xy 374.65 129.54) (xy 374.65 125.72999999999999)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041034-a034-4a34-9a34-000000000034")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 374.65 125.72999999999999 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042015-b015-4b15-9b15-0000000020150")
+		(property "Reference" "TP37"
+			(at 377.19 124.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NFC_ANT_A_TEST"
+			(at 377.19 126.99999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 374.65 125.72999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 374.65 125.72999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 374.65 125.72999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042015-b015-4b15-9b15-0000000020151")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "TP37")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 297.18 175.26) (xy 304.8 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041040-a040-4a40-9a40-000000000040")
+	)
+	(label "NFC_RFO2"
+		(at 297.18 175.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb041041-a041-4a41-9a41-000000000041")
+	)
+	(symbol
+		(lib_id "Device:L")
+		(at 308.61 175.26 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042020-b020-4b20-9b20-0000000020200")
+		(property "Reference" "L6"
+			(at 311.15000000000003 173.98999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220nH TUNE"
+			(at 311.15000000000003 176.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Inductor_SMD:L_0603_1608Metric"
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042020-b020-4b20-9b20-0000000020201")
+		)
+		(pin "2"
+			(uuid "fb042020-b020-4b20-9b20-0000000020202")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "L6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 312.42 175.26) (xy 340.36 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041042-a042-4a42-9a42-000000000042")
+	)
+	(label "NFC_EMCB"
+		(at 316.23 175.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041043-a043-4a43-9a43-000000000043")
+	)
+	(junction
+		(at 321.31 175.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041044-a044-4a44-9a44-000000000044")
+	)
+	(wire
+		(pts
+			(xy 321.31 175.26) (xy 321.31 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041045-a045-4a45-9a45-000000000045")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 321.31 182.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042021-b021-4b21-9b21-0000000020210")
+		(property "Reference" "C70"
+			(at 323.85 181.60999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220pF 50V C0G TUNE"
+			(at 323.85 184.15 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042021-b021-4b21-9b21-0000000020211")
+		)
+		(pin "2"
+			(uuid "fb042021-b021-4b21-9b21-0000000020212")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C70")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 321.31 186.69) (xy 321.31 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041046-a046-4a46-9a46-000000000046")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 321.31 190.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042026-b026-4b26-9b26-0000000020260")
+		(property "Reference" "#PWR0412"
+			(at 321.31 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 321.31 195.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 321.31 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042026-b026-4b26-9b26-0000000020261")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0412")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 332.74 175.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041047-a047-4a47-9a47-000000000047")
+	)
+	(wire
+		(pts
+			(xy 332.74 175.26) (xy 332.74 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041048-a048-4a48-9a48-000000000048")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 332.74 182.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042022-b022-4b22-9b22-0000000020220")
+		(property "Reference" "C74"
+			(at 335.28000000000003 181.60999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100pF 50V C0G TUNE"
+			(at 335.28000000000003 184.15 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042022-b022-4b22-9b22-0000000020221")
+		)
+		(pin "2"
+			(uuid "fb042022-b022-4b22-9b22-0000000020222")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C74")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 332.74 186.69) (xy 332.74 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041049-a049-4a49-9a49-000000000049")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 332.74 190.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042027-b027-4b27-9b27-0000000020270")
+		(property "Reference" "#PWR0413"
+			(at 332.74 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 332.74 195.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 332.74 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 332.74 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042027-b027-4b27-9b27-0000000020271")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0413")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 344.17 175.26 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042023-b023-4b23-9b23-0000000020230")
+		(property "Reference" "C72"
+			(at 346.71000000000004 173.98999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100pF 50V C0G TUNE"
+			(at 346.71000000000004 176.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042023-b023-4b23-9b23-0000000020231")
+		)
+		(pin "2"
+			(uuid "fb042023-b023-4b23-9b23-0000000020232")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C72")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 347.98 175.26) (xy 355.6 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041050-a050-4a50-9a50-000000000050")
+	)
+	(label "NFC_MATCH_B"
+		(at 349.25 175.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041051-a051-4a51-9a51-000000000051")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 359.41 175.26 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042024-b024-4b24-9b24-0000000020240")
+		(property "Reference" "R115"
+			(at 361.95000000000005 173.98999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R TUNE"
+			(at 361.95000000000005 176.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042024-b024-4b24-9b24-0000000020241")
+		)
+		(pin "2"
+			(uuid "fb042024-b024-4b24-9b24-0000000020242")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "R115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 363.22 175.26) (xy 374.65 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041052-a052-4a52-9a52-000000000052")
+	)
+	(label "NFC_ANT_B"
+		(at 365.76 175.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041053-a053-4a53-9a53-000000000053")
+	)
+	(wire
+		(pts
+			(xy 374.65 175.26) (xy 374.65 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041054-a054-4a54-9a54-000000000054")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 374.65 171.45 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042025-b025-4b25-9b25-0000000020250")
+		(property "Reference" "TP38"
+			(at 377.19 170.17999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NFC_ANT_B_TEST"
+			(at 377.19 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 374.65 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 374.65 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 374.65 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042025-b025-4b25-9b25-0000000020251")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "TP38")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 297.18 220.98) (xy 304.8 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041060-a060-4a60-9a60-000000000060")
+	)
+	(label "NFC_ANT_A"
+		(at 297.18 220.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb041061-a061-4a61-9a61-000000000061")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 308.61 220.98 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042030-b030-4b30-9b30-0000000020300")
+		(property "Reference" "C75"
+			(at 311.15000000000003 219.70999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47pF 50V C0G TUNE"
+			(at 311.15000000000003 222.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042030-b030-4b30-9b30-0000000020301")
+		)
+		(pin "2"
+			(uuid "fb042030-b030-4b30-9b30-0000000020302")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C75")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 312.42 220.98) (xy 331.47 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041062-a062-4a62-9a62-000000000062")
+	)
+	(label "NFC_RXA"
+		(at 314.96 220.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041063-a063-4a63-9a63-000000000063")
+	)
+	(junction
+		(at 321.31 220.98)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041064-a064-4a64-9a64-000000000064")
+	)
+	(wire
+		(pts
+			(xy 321.31 220.98) (xy 321.31 224.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041065-a065-4a65-9a65-000000000065")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 321.31 228.6 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042031-b031-4b31-9b31-0000000020310")
+		(property "Reference" "C76"
+			(at 323.85 227.32999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220pF 50V C0G TUNE"
+			(at 323.85 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042031-b031-4b31-9b31-0000000020311")
+		)
+		(pin "2"
+			(uuid "fb042031-b031-4b31-9b31-0000000020312")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C76")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 321.31 232.41) (xy 321.31 236.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041066-a066-4a66-9a66-000000000066")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 321.31 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042033-b033-4b33-9b33-0000000020330")
+		(property "Reference" "#PWR0414"
+			(at 321.31 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 321.31 241.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 321.31 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042033-b033-4b33-9b33-0000000020331")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0414")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 335.28 220.98 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042032-b032-4b32-9b32-0000000020320")
+		(property "Reference" "R116"
+			(at 337.82 219.70999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k TUNE"
+			(at 337.82 222.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042032-b032-4b32-9b32-0000000020321")
+		)
+		(pin "2"
+			(uuid "fb042032-b032-4b32-9b32-0000000020322")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "R116")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 339.09 220.98) (xy 346.71 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041067-a067-4a67-9a67-000000000067")
+	)
+	(label "NFC_RFI1"
+		(at 346.71 220.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041068-a068-4a68-9a68-000000000068")
+	)
+	(wire
+		(pts
+			(xy 297.18 254.0) (xy 304.8 254.0)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041080-a080-4a80-9a80-000000000080")
+	)
+	(label "NFC_ANT_B"
+		(at 297.18 254.0 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb041081-a081-4a81-9a81-000000000081")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 308.61 254.0 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042034-b034-4b34-9b34-0000000020340")
+		(property "Reference" "C77"
+			(at 311.15000000000003 252.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47pF 50V C0G TUNE"
+			(at 311.15000000000003 255.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042034-b034-4b34-9b34-0000000020341")
+		)
+		(pin "2"
+			(uuid "fb042034-b034-4b34-9b34-0000000020342")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C77")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 312.42 254.0) (xy 331.47 254.0)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041082-a082-4a82-9a82-000000000082")
+	)
+	(label "NFC_RXB"
+		(at 314.96 254.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041083-a083-4a83-9a83-000000000083")
+	)
+	(junction
+		(at 321.31 254.0)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb041084-a084-4a84-9a84-000000000084")
+	)
+	(wire
+		(pts
+			(xy 321.31 254.0) (xy 321.31 257.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041085-a085-4a85-9a85-000000000085")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 321.31 261.62 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042035-b035-4b35-9b35-0000000020350")
+		(property "Reference" "C78"
+			(at 323.85 260.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220pF 50V C0G TUNE"
+			(at 323.85 262.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042035-b035-4b35-9b35-0000000020351")
+		)
+		(pin "2"
+			(uuid "fb042035-b035-4b35-9b35-0000000020352")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "C78")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 321.31 265.43) (xy 321.31 269.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041086-a086-4a86-9a86-000000000086")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 321.31 269.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042037-b037-4b37-9b37-0000000020370")
+		(property "Reference" "#PWR0415"
+			(at 321.31 275.59000000000003 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 321.31 274.32 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 321.31 269.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 321.31 269.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042037-b037-4b37-9b37-0000000020371")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "#PWR0415")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 335.28 254.0 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb042036-b036-4b36-9b36-0000000020360")
+		(property "Reference" "R117"
+			(at 337.82 252.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k TUNE"
+			(at 337.82 255.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb042036-b036-4b36-9b36-0000000020361")
+		)
+		(pin "2"
+			(uuid "fb042036-b036-4b36-9b36-0000000020362")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "R117")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 339.09 254.0) (xy 346.71 254.0)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb041087-a087-4a87-9a87-000000000087")
+	)
+	(label "NFC_RFI2"
+		(at 346.71 254.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb041088-a088-4a88-9a88-000000000088")
+	)
+	(text "=== FBV2-S1 RADIOS + NFC (FBV2-S1-004) - RF ARCHITECTURE LOCKED ==="
+		(exclude_from_sim no)
+		(at 20.0 195.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041200-a200-4a00-9a00-000000000200")
+	)
+	(text "433 MHz: INTERNAL Taoglas FXP450.07.0100C flex (410-470 MHz, 47 x 17 x 0.28 mm, 100 mm 1.37 mm coax, IPEX MHF-I) onto the U7 module socket. 915 MHz: EXTERNAL - U8 IPEX -> short pigtail -> top-panel SMA bulkhead. NEITHER band has a board RF trace, a matching network or an RF switch. Module pin 21 (stamp hole) is the alternative feed and stays NC on both modules."
+		(exclude_from_sim no)
+		(at 20.0 199.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041201-a201-4a01-9a01-000000000201")
+	)
+	(text "The U7 IPEX socket must stay SERVICE-ACCESSIBLE with the enclosure open: if internal 433 performance disappoints on the first units, the flex unplugs and an external pigtail goes in its place with NO PCB respin (D-049)."
+		(exclude_from_sim no)
+		(at 20.0 205.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041202-a202-4a02-9a02-000000000202")
+	)
+	(text "=== NFC FRONT END - TOPOLOGY IS REAL, VALUES ARE NOT FINAL ==="
+		(exclude_from_sim no)
+		(at 300.0 300.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041203-a203-4a03-9a03-000000000203")
+	)
+	(text "Every part marked TUNE is an INITIAL VALUE. The matching and RX-divider values cannot be finalised until the 45 x 45 mm antenna impedance is measured and the ST antenna matching tool (STSW-ST25R004) is run against it. TP37/TP38 are the measurement points - probe NFC_ANT_A / NFC_ANT_B with a VNA before fitting a final set. All tuning parts are 0603 so they can be reworked by hand."
+		(exclude_from_sim no)
+		(at 300.0 304.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041204-a204-4a04-9a04-000000000204")
+	)
+	(text "TX chain per side: RFOx -> L_EMC -> [C_EMC + C_p to GND] -> C_s -> R_q -> antenna. C_EMC and C_p are two separate shunt footprints on the same node ON PURPOSE: it gives two trim positions instead of one. R_q is fitted 0 R and is raised to widen bandwidth / lower Q if the read range needs it."
+		(exclude_from_sim no)
+		(at 300.0 312.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041205-a205-4a05-9a05-000000000205")
+	)
+	(text "RX chain per side: antenna -> C_rx_series -> [C_rx_shunt to GND] -> R_rx -> RFIx. The divider must keep RFIx inside its input range at full field; it is sized with the same tool run."
+		(exclude_from_sim no)
+		(at 300.0 318.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041206-a206-4a06-9a06-000000000206")
+	)
+	(text "NOT FITTED on the first build, and the pins are explicitly NC: AAT_A / AAT_B (automatic antenna tuning needs external varactors, and DS12484 warns against combining AAT with hardware wake-up), CSI / CSO (capacitive sensing), EXT_LM (external load-modulation MOSFET - the internal load modulator is used), MCU_CLK (the ESP32-S3 has its own clocks)."
+		(exclude_from_sim no)
+		(at 300.0 324.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041207-a207-4a07-9a07-000000000207")
+	)
+	(text "SUPPLY: VDD (pin 8) and VDD_TX (pin 10) now sit on NFC_SUPPLY, not on the Beta-DM boost output - this closes B-41. NFC_SUPPLY is +3V3 on the first build through the R106 FIT link on sheet 01; the R107 DNP link is the no-respin 5 V fallback. VDD_IO (pin 1) stays on +3V3. FIRMWARE MUST SET sup3V."
+		(exclude_from_sim no)
+		(at 300.0 332.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041208-a208-4a08-9a08-000000000208")
+	)
+	(text "ONE HIGH-POWER TRANSMITTER AT A TIME (MX-1). CC1101 TX, SX1262 +22 dBm TX and the NFC field are mutually exclusive until measurement proves concurrency safe."
+		(exclude_from_sim no)
+		(at 300.0 340.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb041209-a209-4a09-9a09-000000000209")
 	)
 )

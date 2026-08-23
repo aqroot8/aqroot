@@ -8319,14 +8319,13 @@
 		)
 		(uuid "9ef31eeb-5838-447f-ab61-c1075bd84918")
 	)
-	(hierarchical_label "NFC_5V_PA_PENDING"
-		(shape output)
+	(label "NFC_5V_PA_PENDING"
 		(at 147.32 168.91 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify left bottom)
 		)
 		(uuid "a4a6f7be-3812-4e47-9cda-524284fd4e53")
 	)
@@ -31361,14 +31360,15 @@
 		)
 		(uuid "2799f2ca-70ea-300f-2e3d-084297c59423")
 	)
-	(label "NFC_SUPPLY"
+	(hierarchical_label "NFC_SUPPLY"
+		(shape output)
 		(at 488.95 400.05 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "d02e8c3d-9528-226e-9ee3-b62093adaf91")
 	)
@@ -31672,6 +31672,105 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "TP34")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 527.05 396.24) (xy 527.05 400.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb043001-c001-4c01-9c01-000000043001")
+	)
+	(label "NFC_SUPPLY"
+		(at 527.05 400.05 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb043002-c002-4c02-9c02-000000043002")
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 527.05 396.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb043003-c003-4c03-9c03-0000000430030")
+		(property "Reference" "#FLG614"
+			(at 529.5899999999999 394.97 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 529.5899999999999 397.51 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 527.05 396.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 527.05 396.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 527.05 396.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb043003-c003-4c03-9c03-0000000430031")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#FLG614")
 					(unit 1)
 				)
 			)
