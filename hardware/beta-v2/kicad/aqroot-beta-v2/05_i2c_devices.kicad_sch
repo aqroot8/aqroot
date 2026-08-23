@@ -1050,7 +1050,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "GPIO3 STRAP PROTECTION\n\nINT1 SERIES RESISTOR: 220R\nNO FIXED PULL FITTED\n\nREQUIREMENT:\nDO NOT BURN ESP32-S3 STRAP_JTAG_SEL EFUSE\nWITHOUT REASSESSING THIS CIRCUIT\n\nVALIDATE COLD BOOT + BMI270 INTERRUPT ON BETA\n\nFOOTPRINT NOT FAB-APPROVED\nDO NOT ROUTE UNTIL BMI270 LAND PATTERN IS REVIEWED"
+	(text "GPIO3 STRAP + BMI270 INT1 - AUDITED FBV2-S1-005\n\nR18 220R SERIES. NO PULL ON THIS SHEET.\nTHE STRAP IS DEFINED BY R110 10k PULL-DOWN, SHEET 02.\n\nBOOT SAFETY - PROVEN, NOT ASSUMED:\nINT1_IO_CTRL RESET = 0x00 -> OUTPUT DISABLED.\nINT1 IS HIGH-Z UNTIL FIRMWARE ENABLES IT, WHICH\nCANNOT HAPPEN BEFORE THE 8 kB CONFIG UPLOAD.\nESP32-S3 STRAP HOLD TIME tH = 3 ms MIN.\nTHE IMU CANNOT REACH THE STRAP WINDOW.\n\nFIRMWARE CONTRACT - MANDATORY:\n  INT1_IO_CTRL.od  = 0   PUSH-PULL\n  INT1_IO_CTRL.lvl = 1   ACTIVE HIGH\nOPEN-DRAIN IS FORBIDDEN HERE. IT CANNOT DRIVE\nAGAINST R110 PULL-DOWN AND NO EDGE WOULD APPEAR.\n\nGPIO3 = RTC_GPIO3, SO EXT0/EXT1 DEEP-SLEEP WAKE\nWORKS. ACTIVE-HIGH INTO A PULL-DOWN IS THE\nCORRECT WAKE POLARITY FOR WAKE-ON-MOTION.\n\nBMI270 PAD DRIVE IOH/IOL <= 2 mA, VOH >= 0.8*VDDIO.\nLOAD = 3.3 V / 10.22k = 323 uA. 6x MARGIN. B-44 CLOSED.\n\nLAND PATTERN VERIFIED AGAINST DS SECTION 8.3.\nDO NOT BURN EFUSE_STRAP_JTAG_SEL WITHOUT\nREASSESSING THIS CIRCUIT."
 		(exclude_from_sim no)
 		(at 124.968 141.732 0)
 		(effects
@@ -1060,7 +1060,7 @@
 		)
 		(uuid "64a7d195-5d5c-43e9-8524-5f4fd70fdf6e")
 	)
-	(text "INTERNAL I2C BUS\n\nSDA/SCL PULL-UPS: 4.7k TO +3V3\nONE INTENTIONAL INTERNAL PULL-UP PAIR ONLY\n\nREMOVE OR ACCOUNT FOR DUPLICATE MODULE PULL-UPS\nINITIAL BETA BRING-UP: 100 kHz\nVERIFY 400 kHz AFTER FULL BUS VALIDATION"
+	(text "INTERNAL I2C BUS - AUDITED FBV2-S1-005\n\nONE PULL-UP PAIR ONLY: R19 / R20 TO +3V3.\n4.7k -> 2.2k (D-139). NO OTHER PULL-UP MAY BE\nFITTED ON THIS NET. R49 / R50 BELONG TO THE\nSWITCHED ACCESSORY SEGMENT ON SHEET 09.\n\nWORST-CASE BUS LOAD ~85 pF:\n  ESP32-S3 5, U2 10, U3 10, U4 5, U14 10,\n  U16 A-SIDE 13, J1 + CTP FLEX 18, TP 2, TRACE 12\n\nt_r = 0.8473 * R * C\n  4.7k -> 338 ns   FAILS THE 300 ns Fm LIMIT\n  2.2k -> 158 ns   PASSES WITH 47% MARGIN\nSINK = 1.32 mA AT VOL 0.4 V, INSIDE EVERY DEVICE\n(BMI270 2 mA, TCA9535 SDA 6 mA, I2C SPEC 3 mA).\n\nBRING-UP AT 100 kHz, THEN 400 kHz.\n\nRESERVED ADDRESSES - DO NOT DUPLICATE:\n  0x20 U2    0x21 U3    0x36 U14   0x38 CTP\n  0x68 U4    0x50 ACCESSORY ID EEPROM (EXTERNAL)"
 		(exclude_from_sim no)
 		(at 170.688 106.934 0)
 		(effects
@@ -1191,16 +1191,6 @@
 			(type default)
 		)
 		(uuid "4a77df99-21bd-4f93-ba66-62556b54fd05")
-	)
-	(wire
-		(pts
-			(xy 77.47 86.36) (xy 78.74 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "54019e83-ac89-4194-b95b-277a87b02cb1")
 	)
 	(wire
 		(pts
@@ -1426,85 +1416,6 @@
 		(uuid "eb2da5f3-49e6-4a43-90f0-67f0beaddb08")
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 77.47 86.36 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "03d3884d-771d-4dcc-9484-103d1fbdb970")
-		(property "Reference" "#PWR056"
-			(at 71.12 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 73.66 86.3599 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 77.47 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 77.47 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 77.47 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b11f3073-a6be-4e36-80db-282d00b9e561")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fa5a90a1-de6d-4d92-8e4a-e952373b3599"
-					(reference "#PWR056")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "AQROOT_Beta:BMI270")
 		(at 91.44 87.63 0)
 		(unit 1)
@@ -1593,6 +1504,17 @@
 				)
 			)
 		)
+		(property "Note" "Verified against BST-BMI270-DS000-08 Rev 1.6 (March 2026) in FBV2-S1-005. I2C mode: pin 1 SDO to GND selects the default address 0x68 (0x69 with SDO to VDDIO); pin 12 CSB hard-wired to VDDIO, which Bosch explicitly recommends for I2C; pins 13/14 are SCL/SDA. Pins 2 ASDx and 3 ASCx are the unused secondary interface and are tied to VDDIO - Bosch states they may go to VDDIO or be left open and MUST NOT be tied to GND. Pins 9 INT2, 10 OCSB and 11 OSDO are unused and are left DNC exactly as Bosch instructs. C6 and C7 are the recommended 100 nF at pin 5 VDDIO and pin 8 VDD; one cap must be placed at each pin. VDD 1.71-3.6 V, VDDIO 1.2-3.6 V, no supply-sequencing constraint and no slew-rate constraint. INT1_IO_CTRL resets to 0x00, so INT1 is high-Z until firmware enables it; the pin is push-pull or open-drain by INT1_IO_CTRL.od and active high or low by .lvl. Output pads are specified at IOH/IOL under 2 mA with VOH at least 0.8 x VDDIO. FIFO 2048 bytes. Accel-only low-power mode down to 4 uA plus about 3 uA for advanced features; suspend 3.5 uA. The device has NO tap or double-tap feature; raise-to-wake is the wrist-wear-wakeup feature. Land pattern verified against datasheet section 8.3, measured from the drawing: side pads 0.475 x 0.25 at x = plus/minus 1.1625, end pads 0.25 x 0.475 at y = plus/minus 0.9125, 0.50 mm pitch, and the printed 0.925 / 0.675 / 0.475 / 0.25 dimensions all reproduce. Bosch order code 0 273 017 008."
+			(at 91.44 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "5"
 			(uuid "9dc316ba-ac0c-44d9-bf14-bafc8d0b799d")
 		)
@@ -1667,7 +1589,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7k"
+		(property "Value" "2.2k"
 			(at 140.97 80.0099 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2618,7 +2540,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7k"
+		(property "Value" "2.2k"
 			(at 184.15 80.0099 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3306,5 +3228,391 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 78.74 86.36) (xy 55.88 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000201")
+	)
+	(wire
+		(pts
+			(xy 55.88 86.36) (xy 55.88 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000202")
+	)
+	(wire
+		(pts
+			(xy 55.88 86.36) (xy 55.88 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000203")
+	)
+	(wire
+		(pts
+			(xy 55.88 74.93) (xy 55.88 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000204")
+	)
+	(wire
+		(pts
+			(xy 55.88 97.79) (xy 55.88 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000205")
+	)
+	(junction
+		(at 55.88 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb050100-d100-4d10-9d10-0000000206")
+	)
+	(label "BMI270_SDO_ADDR"
+		(at 66.04 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000207")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 55.88 78.74 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "fb050100-d100-4d10-9d10-0000000120")
+		(property "Reference" "R119"
+			(at 58.42 77.47 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R DNP"
+			(at 58.42 80.00999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 55.88 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 55.88 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb050100-d100-4d10-9d10-0000000121")
+		)
+		(pin "1"
+			(uuid "fb050100-d100-4d10-9d10-0000000122")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fa5a90a1-de6d-4d92-8e4a-e952373b3599"
+					(reference "R119")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 55.88 93.98 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb050100-d100-4d10-9d10-0000000110")
+		(property "Reference" "R118"
+			(at 58.42 92.71000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R"
+			(at 58.42 95.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 55.88 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 55.88 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb050100-d100-4d10-9d10-0000000111")
+		)
+		(pin "1"
+			(uuid "fb050100-d100-4d10-9d10-0000000112")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fa5a90a1-de6d-4d92-8e4a-e952373b3599"
+					(reference "R118")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 55.88 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb050100-d100-4d10-9d10-0000000130")
+		(property "Reference" "#PWR0641"
+			(at 55.88 80.00999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 55.88 78.74 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb050100-d100-4d10-9d10-0000000131")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fa5a90a1-de6d-4d92-8e4a-e952373b3599"
+					(reference "#PWR0641")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 55.88 99.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb050100-d100-4d10-9d10-0000000140")
+		(property "Reference" "#PWR0642"
+			(at 55.88 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 55.88 104.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb050100-d100-4d10-9d10-0000000141")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fa5a90a1-de6d-4d92-8e4a-e952373b3599"
+					(reference "#PWR0642")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "BMI270 ADDRESS STRAP - FIT ONE ONLY\n\n  R118 0R TO GND   FITTED -> 0x68 (DEFAULT)\n  R119 0R TO +3V3  DNP    -> 0x69 (REWORK)\n\nNEVER FIT BOTH: THAT SHORTS +3V3 TO GND.\n\n0x68 IS THE MOST COLLISION-PRONE ADDRESS ON A\nCOMMUNITY I2C BUS (MPU6050, ICM-20948, DS3231).\nTHIS PAIR IS THE NO-RESPIN ESCAPE UNDER D-049.\nIT REPLACES A HARD-WIRED SDO-TO-GND CONNECTION."
+		(exclude_from_sim no)
+		(at 20.0 130.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000208")
+	)
+	(text "BMI270 STRAP AUDIT - BST-BMI270-DS000-08 REV 1.6\n\nPIN 1  SDO  -> GND VIA R118  = 0x68\nPIN 12 CSB  -> VDDIO         = I2C MODE.\n       BOSCH: HARD-WIRE THE CSB LINE TO VDDIO.\nPIN 2  ASDx -> VDDIO  |  SECONDARY I/F UNUSED.\nPIN 3  ASCx -> VDDIO  |  BOSCH: DO NOT CONNECT\n                      |  TO GND.\nPIN 9  INT2 -> DNC    = BOSCH INSTRUCTION\nPIN 10 OCSB -> DNC    = OIS UNUSED\nPIN 11 OSDO -> DNC    = OIS UNUSED\n\nC6 / C7 100nF: ONE AT PIN 5, ONE AT PIN 8.\nTHAT IS A PLACEMENT REQUIREMENT, NOT A NET.\n\nVDD 1.71-3.6 V, VDDIO 1.2-3.6 V, EITHER ORDER,\nNO SLEW CONSTRAINT. tPO 2 ms. FIFO 2048 BYTES.\nI2C 100 k / 400 k / 1 M (Fm+). Cin 5 pF.\n\nBMI270 HAS NO TAP OR DOUBLE-TAP FEATURE.\nRAISE-TO-WAKE = THE WRIST-WEAR-WAKEUP FEATURE.\n\nALWAYS POWERED FROM +3V3. NO LOAD SWITCH:\nACCEL LOW-POWER + FEATURES ~7-10 uA, AND A\nSWITCH WOULD DESTROY WAKE-ON-MOTION."
+		(exclude_from_sim no)
+		(at 215.0 40.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb050100-d100-4d10-9d10-0000000209")
 	)
 )

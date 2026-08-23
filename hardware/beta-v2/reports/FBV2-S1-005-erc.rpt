@@ -1,0 +1,186 @@
+ERC report (2026-08-23T02:35:58, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+[label_dangling]: Label not connected
+    ; error
+    @(353.06 mm, 191.77 mm): Label 'ROOTPROBE_IRQ_READY_N'
+[label_dangling]: Label not connected
+    ; error
+    @(156.21 mm, 144.78 mm): Label 'RESERVED_NC'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(52.07 mm, 257.81 mm): Label 'FAST_IO_U0TXD_ROOTPROBE_CS'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(204.47 mm, 74.93 mm): Label 'NATIVE_A'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(204.47 mm, 77.47 mm): Label 'NATIVE_B'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(293.37 mm, 95.25 mm): Label 'TOUCH_INT_N'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(365.76 mm, 107.95 mm): Label 'RGB_R_CTL'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(370.84 mm, 113.03 mm): Label 'RGB_G_CTL'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(375.92 mm, 110.49 mm): Label 'RGB_B_CTL'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(391.16 mm, 64.77 mm): Label 'SX1262_DIO1'
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(160.02 mm, 125.73 mm): Horizontal Wire, length 2.54 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(160.02 mm, 129.54 mm): Horizontal Wire, length 2.54 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(281.94 mm, 165.10 mm): Hierarchical Label 'FAST_IO_U0TXD_ROOTPROBE_CS'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(149.86 mm, 99.06 mm): Hierarchical Label 'NATIVE_A'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(149.86 mm, 116.84 mm): Hierarchical Label 'NATIVE_B'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(130.81 mm, 168.91 mm): Hierarchical Label 'TOUCH_INT_N'
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(87.63 mm, 45.72 mm): Vertical Wire, length 1.27 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(87.63 mm, 78.74 mm): Vertical Wire, length 1.27 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(217.17 mm, 49.53 mm): Vertical Wire, length 1.27 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(217.17 mm, 90.17 mm): Vertical Wire, length 1.27 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(242.57 mm, 52.07 mm): Hierarchical Label 'SX1262_DIO1'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(101.60 mm, 67.31 mm): Hierarchical Label 'RGB_R_CTL'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(101.60 mm, 69.85 mm): Hierarchical Label 'RGB_G_CTL'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(101.60 mm, 72.39 mm): Hierarchical Label 'RGB_B_CTL'
+
+***** Sheet /01_POWER_TREE/
+
+***** Sheet /02_MCU_CORE/
+
+***** Sheet /03_SPI_A_DISPLAY_SD/
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 153.67 mm): Symbol J1 Pin 15 [DB17, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 156.21 mm): Symbol J1 Pin 16 [DB16, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 158.75 mm): Symbol J1 Pin 17 [DB15, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 161.29 mm): Symbol J1 Pin 18 [DB14, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 163.83 mm): Symbol J1 Pin 19 [DB13, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 166.37 mm): Symbol J1 Pin 20 [DB12, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 168.91 mm): Symbol J1 Pin 21 [DB11, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 171.45 mm): Symbol J1 Pin 22 [DB10, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 173.99 mm): Symbol J1 Pin 23 [DB9, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 176.53 mm): Symbol J1 Pin 24 [DB8, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(67.31 mm, 179.07 mm): Symbol J1 Pin 25 [DB7, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 118.11 mm): Symbol J1 Pin 26 [DB6, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 120.65 mm): Symbol J1 Pin 27 [DB5, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 123.19 mm): Symbol J1 Pin 28 [DB4, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 125.73 mm): Symbol J1 Pin 29 [DB3, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 128.27 mm): Symbol J1 Pin 30 [DB2, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 130.81 mm): Symbol J1 Pin 31 [DB1, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(123.19 mm, 133.35 mm): Symbol J1 Pin 32 [DB0, Bidirectional, Line]
+    @(40.64 mm, 185.42 mm): Symbol #FLG0105 Pin 1 [Power output, Line]
+
+***** Sheet /04_SPI_B_RADIOS_NFC/
+
+***** Sheet /05_I2C_DEVICES/
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(104.14 mm, 78.74 mm): Symbol U4 Pin 2 [ASDx, Bidirectional, Line]
+    @(269.24 mm, 57.15 mm): Symbol U12 Pin 4 [VOUT, Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(104.14 mm, 81.28 mm): Symbol U4 Pin 3 [ASCx, Bidirectional, Line]
+    @(269.24 mm, 57.15 mm): Symbol U12 Pin 4 [VOUT, Power output, Line]
+
+***** Sheet /06_AUDIO/
+[pin_to_pin]: Pins of type Unspecified and Power input are connected
+    ; warning
+    @(222.25 mm, 92.71 mm): Symbol U5 Pin 17 [PAD, Unspecified, Line]
+    @(222.25 mm, 93.98 mm): Symbol #PWR068 Pin 1 [Power input, Line]
+
+***** Sheet /07_IR/
+
+***** Sheet /08_BUTTONS_EXPANDERS/
+
+***** Sheet /09_COMMUNITY_HEADER/
+
+ ** ERC messages: 45  Errors 2  Warnings 43
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

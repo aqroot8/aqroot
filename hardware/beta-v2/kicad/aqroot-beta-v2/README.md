@@ -9,17 +9,24 @@ remains the preserved fallback and manufacturing baseline (D-005) and is **read-
 > embedded project name, and which FBV2-S1 deliberately changed. The pinned result is
 > `reports/FBV2-S1-fork-equivalence.md`.
 
-## Current design state (2026-08-23, after FBV2-S1-004C)
+## Current design state (2026-08-23, after FBV2-S1-005)
 
 * Digital pin architecture: LOCKED to Beta Pin Map v0.2.4
-* Schematic capture: **`01_POWER_TREE`, `02_MCU_CORE`, `03_SPI_A_DISPLAY_SD` and
-  `04_SPI_B_RADIOS_NFC` carry the Full Beta v2 architecture. Sheets 05-09 are inherited from
-  Beta-DM, unmodified, and still carry the Beta-DM architecture**
-* ERC: **RUN.** **2 errors** and 66 warnings (`reports/FBV2-S1-004-erc.rpt`) against a
-  Beta-DM baseline of 5 errors / 53 warnings. **Zero introduced by any migration task, and
-  FBV2-S1-004 removed eighteen violations including two errors.** The remaining warnings are
-  mostly root-sheet `isolated_pin_label` entries on cross-sheet signals whose far end is an
-  unmigrated sheet. This is not "ERC clean" — see FBV2-S2
+* Schematic capture: **`01_POWER_TREE`, `02_MCU_CORE`, `03_SPI_A_DISPLAY_SD`,
+  `04_SPI_B_RADIOS_NFC` and `05_I2C_DEVICES` carry the Full Beta v2 architecture. Sheets 06-09
+  are inherited from Beta-DM, unmodified, and still carry the Beta-DM architecture**
+* ERC: **RUN.** **2 errors and 43 warnings, 45 messages total**
+  (`reports/FBV2-S1-005-erc.rpt`) against a Beta-DM baseline of 5 errors / 53 warnings.
+  **Zero introduced by any migration task.** The remaining warnings are mostly root-sheet
+  `isolated_pin_label` entries on cross-sheet signals whose far end is an unmigrated sheet.
+  This is not "ERC clean" — see FBV2-S2.
+  **Read the counts with the right flags:** every figure in this programme is
+  `kicad-cli sch erc --severity-error --severity-warning`, matching the reports' own
+  *"Report includes: Errors, Warnings"* header. Adding `--severity-all` also counts
+  **Exclusions** and reports **104** on the same unmodified design. **The "66 warnings" and
+  "ERC 68" figures quoted here and in FBV2-S1-004 / 004B / 004C were transcription errors,
+  corrected in FBV2-S1-005; the stored reports say 46 messages / 2 errors / 44 warnings.
+  The reported deltas were always right**
 * PCB placement and routing: **NOT STARTED. DO NOT START.** `aqroot-Beta-v2.kicad_pcb` is
   still a bit-identical copy of the Beta-DM board and does not match this schematic
 * Schematic freeze: BLOCKED pending the remaining sheet migrations, ERC closeout, the
@@ -48,7 +55,7 @@ report a SPECIFIED block as captured, drawn, complete, or done.
 | `02_MCU_CORE` | **CAPTURED — FBV2-S1 MCU-CORE MIGRATION** | 14 parts. `GPIO38 = NATIVE_A`, `GPIO47 = NATIVE_B`, `GPIO46 = DISP_BL_CTL` with a 10 k strap pull-down + 0 R isolation link + strap pad, `GPIO43` withdrawn from the community port (UART0 TXD + `TP35`), `GPIO3` strap pull-down (**B-09 closed**), `GPIO45` pull-down placed **DNP**. See [`GPIO_LEDGER.md`](../../../../docs/full-beta-v2/architecture/GPIO_LEDGER.md) |
 | `03_SPI_A_DISPLAY_SD` | **CAPTURED — FBV2-S1 DISPLAY / TOUCH / microSD MIGRATION** | 21 parts. New `ER-TFT035IPS-6_50P` symbol with the vendor pin table verbatim — **the inherited 2.8-inch table had the backlight anode/cathode reversed and SCL / D-CX swapped**. `LED_A1..A4` collapse to one `LED_A`; backlight `R69` **1.87 R**, `R70`-`R73` **4 x 33 R** (109 mA typ, 117.6 mA worst case vs a 120 mA panel max); `TOUCH_INT_N` added (panel pin 46); `R112` 0 R **DNP** isolates the display SDO from the shared SPI-A, with `TP36`; `SD_CARD_DETECT_TBD` becomes **`SD_CARD_DETECT_N`** with `R113` 100 k. `J1` stays on the **FH69-dedicated** land pattern (**B-47**) |
 | `04_SPI_B_RADIOS_NFC` | **CAPTURED — FBV2-S1 RADIOS / NFC MIGRATION** | 40 parts, A2 sheet. RF architecture locked: 433 MHz internal Taoglas `FXP450.07.0100C` on the `U7` IPEX, 915 MHz external to a top-panel SMA bulkhead, **no board RF trace in either band**; both module stamp-hole pins explicit NC. NFC: **`VDD`/`VDD_TX` moved to `NFC_SUPPLY` (B-41 closed)**, `Y1` 27.12 MHz crystal, full differential matching + RX divider with every value `TUNE`, `TP37`/`TP38` on the antenna terminals, `AAT`/`CSI`/`CSO`/`EXT_LM`/`MCU_CLK` explicit NC. `SX1262_DIO1` published for sheet `08`. **Zero `*_TBD` nets remain.** NFC IC and antenna **LOCKED**: `ST25R3916-AQET` non-B; Taoglas **`FXC.46.52.0075X.B.dg`** (reverse ferrite, adhesive to the inner rear shell) off-board on `J7` JST `BM02B-ACHSS-GAN-ETF` — replaceable without soldering. **First-build matching set calculated** (FBV2-S1-004C): target ≈ 36 Ω differential, `Q` ≈ 25, EMC cut-off 20.1 MHz, RFI divider fixed from 4.4 V pk-pk to 1.03 V pk-pk. Every value is a CALCULATED FIRST-BUILD VALUE, not a final tuned value |
-| `05_I2C_DEVICES` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | BMI270 + bus pull-ups + strap protection |
+| `05_I2C_DEVICES` | **CAPTURED — FBV2-S1 I²C / IMU MIGRATION** | 11 parts. `U4` BMI270 re-derived line by line against `BST-BMI270-DS000-08` Rev 1.6 — **every inherited strap proved correct** (D-136). Address strap made reworkable: **`R118` 0 Ω FIT to GND = 0x68, `R119` 0 Ω DNP to `+3V3` = 0x69, fit one only** (D-140). Internal I²C pull-ups `R19`/`R20` **4.7 kΩ → 2.2 kΩ** — 4.7 kΩ gave `t_r` 338 ns against the 300 ns fast-mode limit at the measured ≈ 85 pF (D-139). `INT1` stays on native GPIO3 with a **proven** boot-safe window and a mandatory push-pull / active-high firmware contract (D-137); `INT2` stays DNC (D-138). IMU permanently powered, no load switch (D-141). **B-44 CLOSED**; land pattern verified against §8.3 (D-143). Address map: `docs/full-beta-v2/architecture/I2C_ADDRESS_REGISTRY.md` |
 | `06_AUDIO` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | ICS-43434 + MAX98357A + differential speaker. `LS1` is the one part in the project with no footprint (off-board speaker) |
 | `07_IR` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | TSOP38238 RX + TSAL6200 low-side NMOS TX |
 | `08_BUTTONS_EXPANDERS` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | U60/U61 TCA9535PWR, 7 buttons, safe-state pulls |
@@ -63,7 +70,7 @@ Board-level status:
 | Item | Status |
 |---|---|
 | PCB (`aqroot-Beta-v2.kicad_pcb`) | **INHERITED, BIT-IDENTICAL TO BETA-DM** — it is the Beta-DM board and **does not match this schematic**. No v2 placement or routing has been performed |
-| ERC | **RUN 2026-08-23** — `reports/FBV2-S1-004C-erc.rpt`, **2 errors** / 66 warnings; **zero introduced**, and FBV2-S1-004 removed two inherited errors |
+| ERC | **RUN 2026-08-23** — `reports/FBV2-S1-005-erc.rpt`, **2 errors / 43 warnings (45 messages)**; **zero introduced** by any migration task, and FBV2-S1-004 removed two inherited errors. Counts are `--severity-error --severity-warning`; `--severity-all` also counts Exclusions and reports 104 |
 | Footprints assigned | **300 of 301 components** (`LS1`, the off-board speaker, is the exception). Assigned is not verified — the per-footprint pad-overlap audit against vendor drawings is **FBV2-S2** and has not run |
 
 > The old claim that this project was an empty PCB with seven footprints and a never-run ERC
