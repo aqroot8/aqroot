@@ -9,6 +9,159 @@ an entry.
 
 ---
 
+## 2026-08-23 — Display, touch, backlight and microSD migrated (FBV2-S1-003)
+
+**Overall 37% → 40%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-DISPLAY-SD = PASS**. FBV2-S1 is **3 of 9 sheets**. Full analysis:
+[`audits/2026-08-23-s1-display-sd-implementation.md`](audits/2026-08-23-s1-display-sd-implementation.md).
+
+### The inherited `J1` would have produced a dead display, twice over
+
+`J1` still used the **2.8-inch `CH280QV10_CT_50P`** pin table while its Value and
+Footprint fields already read `FH69-50S-0.5SH`. Pin count matched, connector matched,
+ERC was silent. The pin **functions** did not match the locked `ER-TFT035IPS-6`:
+
+| panel pin | old symbol | ER-TFT035IPS-6 | consequence |
+|---|---|---|---|
+| 1 / 2 / 3 | LEDK / LED-A1 / LED-A2 | **LEDA / LEDK / LEDK** | **backlight reverse-biased — no light** |
+| 4, 5, 6 | LED-A3, LED-A4, IM0 | **NC** | anodes driven into NC pins |
+| 7, 8, 9 | IM1, IM2, IM3 | **IM0, IM1, IM2** | by luck all three were already `+3V3` = `1 1 1` |
+| **36 / 37** | WR_RS → `DISP_DC` / RS_SCL → `SPI_A_SCK` | **WRX(SCL) / D-CX** | **clock and D/C swapped — no valid command ever reaches the panel** |
+| 46 | CTP_IRQ, unused | CTP IRQ | touch interrupt not represented at all |
+
+**Neither fault is visible from a pin count, a connector MPN or an ERC run.** A new
+project-library symbol **`ER-TFT035IPS-6_50P`** was authored with the vendor's table
+verbatim, deliberately keeping the old pin geometry so the migration is a
+pin-function change rather than a redraw. `CH280QV10_CT_50P` stays in the library —
+Beta-DM still uses it — and is dropped from sheet `03`'s symbol cache.
+
+**The PO must name BOTH `ER-TFT035IPS-6` and `ER-TPC035-6`. The vendor's CST340 touch
+variant is NOT authorised without a new engineering review** — the FT6236 address,
+the driver and the `TOUCH_RST_N` enumeration pulse are all locked around FT6236.
+
+### `R111` fitted — GPIO45 closed (D-111)
+
+10 kΩ, `GPIO45_VDDSPI_STRAP` → GND. VDD_SPI is now held LOW deterministically instead
+of relying on the chip's internal pull-down alone. `TP1` retained, no capacitance on
+the net, no peripheral on GPIO45.
+
+### B-43 closed with a primary source (D-116)
+
+TPS61169 datasheet **SNVSA40B**: **`R_PD` — CTRL pin internal pull-down resistor —
+300 kΩ**, with `V_H`/`V_L` = 1.2 / 0.4 V and `t_SD` = 2.5 ms.
+
+**`CTRL`'s only internal element pulls DOWN.** There is no mechanism by which the
+backlight driver can raise the GPIO46 strap. With `R108` 10 kΩ in parallel GPIO46 sees
+**9.68 kΩ to GND** — stronger than the strap provision alone — and the backlight is off
+through reset by construction. `R109` is retained: its strap-escape justification is
+retired, but a fitted 0 Ω costs nothing as a general isolation point. **GPIO46 strap
+safety was not weakened for backlight convenience.**
+
+### Backlight re-derived, not copied (D-115)
+
+From SNVSA40B `V_REF` = **188 / 204 / 220 mV**:
+
+* **`R69` = 1.87 Ω ±1 %** — an E96 stocked value, so no substitution was needed.
+  **I_LED = 100.5 / 109.1 / 117.6 mA.** The panel is rated **120 mA maximum** with a
+  90 mA life point: the worst-case corner sits **2.0 % below the maximum and never
+  above it**. Per-LED current *falls* from 20 mA to 18.2 mA, so LED life improves.
+* **`R70`–`R73` = 4 × 33 Ω in parallel = 8.25 Ω** on the single `LED_A` node. Four
+  footprints retained and repurposed: quarter the per-part dissipation (24.6 mW in an
+  0603 rated 100 mW) and three DNP-able trim steps available as pure rework.
+* **Peak switch current 263 mA at 1.2 MHz (4.6×) and 309 mA at the 0.75 MHz minimum
+  (3.9×)** against the 1.2 A minimum limit. `L3` 10.7×. **`D8` NSR0240 at 2.1× is the
+  tightest item and is retained**; a same-footprint 0.5 A uprate is recommended, not
+  required. **B-32 closed** — `C43` 4.7 µF X5R sits on `U17` `VIN`.
+
+### Display SDO — **DNP**, and the reasoning is on the record (D-114)
+
+The vendor says of pin 33 *"leave the pin open when not in use"* and does **not**
+specify SDO's high-Z behaviour while `CSX` is high. SPI-A is shared with the microSD.
+
+**The risk is asymmetric: fitting `R112` puts a core feature at risk of bus contention
+to gain a feature nothing uses — AQROOT never reads the display.** `R112` is therefore
+**0 Ω DNP**, with `TP36` on the panel side so SDO release can be characterised on the
+first board without fitting anything. This closes **B-28** with the *opposite* default
+to the one FBV2-DISP-002 sketched, which wrote "fit a 0 R" before weighing which of the
+two features is load-bearing. **No series resistance was added to the `SPI_A_MISO` bus
+itself** — the microSD `DAT0` path stays direct.
+
+### Touch gains an interrupt
+
+`CTP_IRQ` (panel pin 46) was not represented at all on Beta-DM. It now leaves the sheet
+as **`TOUCH_INT_N`** and lands on an internal PCAL9535A input with sheet `08`. FT6236 at
+**0x38** and the `TOUCH_RST_N` safe state are unchanged. **No second I²C pull-up pair
+was added** — the internal bus keeps its single locked `R19`/`R20` pair, and a
+panel-side pair would halve the effective pull-up for nothing. **`RESERVED_SPARE` was
+not consumed.**
+
+### microSD — the `*_TBD` net is gone (D-117)
+
+`SD_CARD_DETECT_TBD` was a **one-pad net**: a switch terminal with no pull and no
+destination. It is now **`SD_CARD_DETECT_N`** — `J2.10` DET-SW with **`R113` 100 kΩ to
+`+3V3`**, `J2.11` DETECT_LEVER grounded — a real two-state signal whose destination is
+an internal PCAL9535A input on sheet `08`. Polarity assumes the usual push-push
+convention (**LOW = card present**); the Molex drawing would not load, so this is
+assumed, not confirmed (**B-46**) — and the exposure is nil, because polarity is a
+firmware constant on an expander input, never a board change.
+
+Molex `5025700893` is **retained** — no lifecycle, mechanical or electrical reason to
+change it was found. DAT1/DAT2 stay NC as validated on Beta-DM.
+
+### `J1` footprint audit (D-113)
+
+Measured from the footprint file: **50 pads, 0.500 mm pitch with no drift across all 49
+gaps, 24.500 mm span, 0.300 × 1.230 mm pads, 2 hold-downs at ±14.365 mm.** Every
+measurable parameter **PASSES** against the archived Hirose figures.
+
+**FH52E is NOT claimed as a drop-in and `J1` did NOT move to the FH52E land pattern.**
+FBV2-DISP-002 proposed that on the strength of a Hirose note that FH69 *also* fits the
+FH52E pattern — which proves one direction only. Full footprint **and mechanical**
+equivalence was not demonstrated from both drawings, so it is not asserted.
+**Consequence: there is currently no JLCPCB assembly path for `J1`** (FH69 is not in
+LCSC; FH52E is, as `C7465440`). **B-47** — settle at FBV2-S2, before placement.
+
+### SPI-A stays passive
+
+Both chip selects are pulled to `+3V3`, so display and microSD are deselected through
+reset. **No bus mux and no series damping were added** — damping belongs with real trace
+lengths, which do not exist until FBV2-P1. The ILI9488's 18-bit / 3-byte-per-pixel SPI
+writes are accepted with **no architecture change and no new native GPIO**.
+
+### Battery target unchanged
+
+The backlight is the only load this task moved: **+11 mA at the pack** at default
+brightness (118 → 129 mA). Runtime improves for any baseline browsing current above
+**44 mA**, and the Beta-DM backlight alone draws 118 mA — so **60 × 75 × 8 mm /
+~2500–3000 mAh gives equal or better runtime by a wide margin.** At a representative
+250 mA the ratio is 1.20 at 2500 mAh and 1.44 at 3000 mAh.
+
+### A latent defect caught by inspection, not by a check
+
+The `LED_BOOST` netclass listed the four old anode nets by exact name and had no entry
+for the new single `LED_A`, so the anode would have fallen to **Default clearance** at
+FBV2-P2. `netclass_probe.py` reads the *board*, which is still Beta-DM, so no probe
+would have caught it. `/03_SPI_A_DISPLAY_SD/LED_A` was added to `LED_BOOST`.
+
+### ERC
+
+**4 errors → 4 errors; the error report is byte-identical to after FBV2-S1-002.** Total
+63 → 64: two `isolated_pin_label` warnings added for the `TOUCH_INT_N` crossing, one
+removed because `SD_CARD_DETECT_TBD` ceased to exist.
+
+Sheet `03` carries **18 inherited `pin_to_pin` warnings** — DB17–DB0 tied to a flagged
+`GND` net. The count is unchanged from Beta-DM and **they were deliberately not
+silenced**: re-typing the panel's parallel data pins as `passive` would clear all 18 and
+would also make the symbol lie about the part.
+
+### Not done, and not claimed
+
+Sheets `04`–`09` untouched. PCB untouched and still **bit-identical** to Beta-DM. No
+footprint verified against a vendor drawing with a pad-overlap assertion (**B-29**). No
+MPN newly locked. **B-15** unchanged.
+
+---
+
 ## 2026-08-23 — Power-tree rulings closed, MCU core migrated (FBV2-S1-002)
 
 **Overall 34% → 37%. No gate in the twelve-gate table passed**; the task gate

@@ -4,10 +4,10 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-002, MCU-core migration)
+Date: 2026-08-23 (after FBV2-S1-003, display / microSD migration)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Sheets `03`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
+> **Sheets `04`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
 > may terminate on a *Beta-DM* peripheral until that sheet is migrated. Where the
 > v2 destination differs, the row says so.
 
@@ -53,7 +53,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 35 | GPIO42 | `I2S_MIC_DIN` | audio | input | — | no | also MTMS |
 | 37 | **GPIO43** | `UART0_TXD_DBG` | debug | output | — | **NO (withdrawn)** | **CHANGED FBV2-S1-002.** Was `FAST_IO_U0TXD_ROOTPROBE_CS` on the connector. Now internal only, `TP35` |
 | 36 | GPIO44 | `IR_RX_GPIO44` | IR | input | — | no | U0RXD is consumed by IR, so UART0 is **TX-only** |
-| 26 | **GPIO45** | `GPIO45_VDDSPI_STRAP` | VDD_SPI | strap | **YES** | no | `TP1`. **`R111` 10 k pull-down fitted DNP (new)** — see §3 |
+| 26 | **GPIO45** | `GPIO45_VDDSPI_STRAP` | VDD_SPI | strap | **YES** | no | `TP1`. **`R111` 10 k pull-down FITTED (D-111)** — see §3 |
 | 16 | **GPIO46** | `DISP_BL_CTL_STRAP` → `R109` → `DISP_BL_CTL` | display | output | **YES** | no | **CHANGED FBV2-S1-002.** `R108` 10 k pull-down + `R109` 0 Ω isolation link + `TP2` |
 | 25 | GPIO48 | `SD_CS_N` | microSD | output | — | no | |
 
@@ -95,8 +95,8 @@ bulk capacitance on strapping pins.
 |---|---|---|---|---|---|
 | **GPIO0** | HIGH for SPI boot, LOW for download | `R2` 10 k to `+3V3`; `SW1` shorts to GND | none | no — nothing else drives it | held LOW at reset → Joint Download Boot. This is the deliberate recovery entry |
 | **GPIO3** | **LOW** | **`R110` 10 k to GND (new)** | BMI270 `INT1` through `R18` 220 Ω | **not at reset** — BMI270 `INT1` is high-Z until firmware enables it, so the strap is defined by `R110` alone | LOW selects the **USB Serial/JTAG** source when `EFUSE_STRAP_JTAG_SEL` is burned. HIGH would select external JTAG on MTMS/MTDI/MTCK/MTDO = **GPIO39–42, which are the I²S bus** — external JTAG is not merely unused here, it is unusable |
-| **GPIO45** | **LOW** (VDD_SPI = 3.3 V) | **`R111` 10 k to GND, DNP** | none — `TP1` only | n/a | HIGH at reset would select VDD_SPI = 1.8 V and the 3.3 V flash/PSRAM would not boot. Today the level is held only by the chip's internal pull-down and an exposed test pad sits on the net |
-| **GPIO46** | **LOW** | **`R108` 10 k to GND (new)** | TPS61169 `CTRL` (`U17.4`), through **`R109` 0 Ω** | **bounded** — see below | HIGH at reset makes **Joint Download Boot unreachable**: GPIO0 = 0 alone is not enough, GPIO46 must also be 0 |
+| **GPIO45** | **LOW** (VDD_SPI = 3.3 V) | **`R111` 10 k to GND, FITTED (D-111)** | none — `TP1` only | n/a | HIGH at reset would select VDD_SPI = 1.8 V and the 3.3 V flash/PSRAM would not boot. **The level is now held deterministically by `R111`, not by the chip's internal pull-down alone.** No capacitance on the net; no peripheral on the pin |
+| **GPIO46** | **LOW** | **`R108` 10 k to GND (new)** | TPS61169 `CTRL` (`U17.4`), through **`R109` 0 Ω** | **NO — proven.** `CTRL`'s only internal element is a **300 kΩ pull-down** (SNVSA40B, D-116) | HIGH at reset makes **Joint Download Boot unreachable**: GPIO0 = 0 alone is not enough, GPIO46 must also be 0 |
 
 ### GPIO46 — why 10 kΩ, and why the 0 Ω link
 
@@ -109,10 +109,12 @@ Three things make that safe:
 1. **`R108` 10 kΩ pull-down at the MCU pin.** This is the value Espressif's own
    hardware design guidelines call "a strong pull-down" against the chip's 45 kΩ
    internal pull. GPIO46 reads LOW even in the worst case.
-2. **`R109` 0 Ω FIT in series to `U17` `CTRL`.** If the TPS61169 `CTRL` input ever
-   turns out to source current, lifting one 0 Ω resistor isolates the strap
-   completely — a no-respin escape under D-049. The cost of the escape is that the
-   backlight stays off, which is the safe direction.
+2. **`R109` 0 Ω FIT in series to `U17` `CTRL`.** Its original justification — a
+   no-respin escape against an unknown `CTRL` pull — is **retired**: `CTRL` is now
+   known to contain a **300 kΩ internal pull-down and nothing else**, so it can only
+   pull GPIO46 *down*. `R109` is retained because a fitted 0 Ω costs nothing and
+   remains a general isolation and rework point. With `R108` in parallel the node
+   sees **9.68 kΩ to GND**, and the backlight is off through reset by construction.
 3. **`TP2` probes the strap node directly**, so the level is measurable on the
    first board rather than inferred.
 
@@ -120,9 +122,13 @@ Three things make that safe:
 0.825 V. With `R108` = 10 kΩ, any internal pull-up on `CTRL` of **≥ 30 kΩ** keeps
 the node below that. `CTRL` leakage of ±1 µA moves the node by only ±10 mV.
 
-> **`B-43` — the TPS61169 `CTRL` internal-pull specification was NOT retrieved.**
-> TI's PDF text layer would not extract this session. The 10 kΩ + 0 Ω arrangement
-> is designed to be safe without it, but the number must be confirmed at FBV2-S2.
+> **`B-43` CLOSED 2026-08-23 (D-116).** The TPS61169 datasheet **SNVSA40B** specifies
+> **`R_PD`, a 300 kΩ internal pull-down on `CTRL`**, with `V_H`/`V_L` = 1.2 / 0.4 V and
+> `t_SD` = 2.5 ms. **`CTRL`'s only internal element pulls DOWN — there is no mechanism by
+> which the backlight driver can raise the strap**, so GPIO46 safety is proven by
+> construction rather than bounded by margin. With `R108` in parallel the node sees
+> **9.68 kΩ to GND**, and the backlight is off through reset. `R109` is retained as a
+> general isolation and rework point, no longer as the strap defence.
 
 ### GPIO3 — the pull-down and the BMI270
 
@@ -151,7 +157,7 @@ pull-down and must not be used on this pin.
 | LoRa `DIO1` | `SX1262_DIO1` | **no longer the MCU** — routes to the internal expander `U2` (D-089) | n/a |
 | sub-GHz (`CC1101`) | `CC1101_GDO0` | GPIO15 | none |
 | IMU (`BMI270`) | `BMI270_INT1_STRAP` | GPIO3 | **strap pin** — defined by `R110`, and the IMU is high-Z at reset |
-| touch (`FT6236`) | not represented | — | sheet `03` work; the display and its FPC are being replaced by D-074…D-078 |
+| touch (`FT6236`) | **`TOUCH_INT_N`** — panel pin 46 | **not the MCU** — an internal PCAL9535A input (sheet `08`) | **captured 2026-08-23 (FBV2-S1-003).** Not represented at all on Beta-DM |
 
 **LoRa deep-sleep packet wake remains NOT REQUIRED** (D-041). No GPIO was remapped
 to gain RTC wake capability, and none should be.

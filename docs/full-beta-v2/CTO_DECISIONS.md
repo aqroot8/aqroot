@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-002)
+Last updated: 2026-08-23 (FBV2-S1-003)
 
 ---
 
@@ -901,6 +901,51 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > and PSRAM do not boot. **Recommendation: fit it.** It is DNP rather than fitted because
 > changing the electrical design of a strapping pin is a CTO call, not a capture decision.
 
+## 8p. Display, touch, backlight and microSD — FBV2-S1-003 (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-111 | **`R111` FITTED — 10 kΩ, `GPIO45_VDDSPI_STRAP` to GND** (closes the pending `R111` item). GPIO45 selects VDD_SPI and **LOW = 3.3 V**, which is what the WROOM-1's flash and PSRAM require; a GPIO45 that reads HIGH at reset selects 1.8 V and the module does not boot. **The internal pull-down is no longer relied on alone.** `TP1` is retained on the strap, **no capacitance** is present on the net, and GPIO45 carries **no peripheral**. | 2026-08-23 |
+| D-112 | **DISPLAY SYMBOL REPLACED — `ER-TFT035IPS-6_50P`, pin table verbatim from the vendor datasheet Rev 2.0 §4.1.** The inherited `J1` still used the **2.8-inch `CH280QV10_CT_50P`** pin table while its Value and Footprint already said FH69, and it was **wrong in two dead-on-arrival ways**: panel pin 1 is **LEDA** with **LEDK on 2 and 3** (the old symbol had LEDK on 1 and four anodes on 2–5, so the backlight would have been **reverse-biased**), and pins **36/37 are WRX(SCL)/D-CX** (the old symbol had them reversed, so **the panel would never have received a valid command**). Neither fault is visible from a pin count, a connector MPN or an ERC run. **The PO must name BOTH `ER-TFT035IPS-6` and `ER-TPC035-6`; the vendor's CST340 touch variant is NOT authorised without a new engineering review** — the FT6236 address, driver and reset pulse are all locked around FT6236. | 2026-08-23 |
+| D-113 | **`J1` STAYS ON THE FH69-DEDICATED LAND PATTERN, and FH52E IS NOT CLAIMED AS A DROP-IN.** FBV2-DISP-002 proposed migrating to the FH52E/FH12 standard pattern on the strength of a Hirose note that **FH69 also fits the FH52E pattern** — that proves one direction only. Full footprint **and mechanical** equivalence was not demonstrated from both manufacturers' drawings, so it is not asserted. **Primary first-build connector remains `FH69-50S-0.5SH`,** for which the drawn pattern is unambiguously correct: **measured 50 pads, 0.500 mm pitch with no drift, 24.500 mm span, 0.300 × 1.230 mm pads, 2 hold-downs.** **Consequence: there is currently no JLCPCB assembly path for `J1`** (FH69 is not in LCSC; FH52E is, as `C7465440`). **B-47** — settle at FBV2-S2, before placement makes the pattern expensive to change. | 2026-08-23 |
+| D-114 | **DISPLAY `SDO` ISOLATION `R112` = 0 Ω, DNP BY DEFAULT** (closes **B-28**, with the **opposite** default to the one FBV2-DISP-002 sketched). The vendor says of pin 33 *"leave the pin open when not in use"* and does **not** specify SDO's high-Z behaviour while `CSX` is high; SPI-A is shared with the microSD. **The risk is asymmetric: fitting it puts a core feature (microSD) at risk of bus contention to gain a feature nothing uses (AQROOT never reads the display).** `TP36` observes SDO on the panel side, so the behaviour can be characterised on the first board without fitting anything. **No series resistance was added to the `SPI_A_MISO` bus itself** — the microSD `DAT0` path stays direct. | 2026-08-23 |
+| D-115 | **BACKLIGHT RE-DERIVED FROM THE DATASHEET. `R69` = 1.87 Ω ±1 % (E96, stocked); `R70`–`R73` = 4 × 33 Ω in parallel = 8.25 Ω on the single `LED_A` node.** From SNVSA40B `V_REF` = 188/204/220 mV: **I_LED = 100.5 / 109.1 / 117.6 mA**, i.e. **109 mA typical and 117.6 mA worst case against the panel's 120 mA maximum** — 2.0 % of headroom, never exceeded. Per-LED current **falls** from 20 mA to 18.2 mA, so LED life improves. Peak switch current **263 mA at 1.2 MHz (4.6×) and 309 mA at the 0.75 MHz minimum (3.9×)** against the 1.2 A minimum limit. **`D8` NSR0240 at 2.1× is the tightest item and is retained**; a same-footprint 0.5 A uprate is recommended, not required. **B-32 CLOSED** — `C43` 4.7 µF X5R sits on `U17` `VIN`. | 2026-08-23 |
+| D-116 | **GPIO46 STRAP SAFETY PROVEN — B-43 CLOSED.** TPS61169 SNVSA40B specifies **`R_PD`, a 300 kΩ internal pull-down on `CTRL`**, with `V_H`/`V_L` = 1.2 / 0.4 V and `t_SD` = 2.5 ms. **`CTRL`'s only internal element pulls DOWN; there is no mechanism by which the backlight driver can raise the strap.** With `R108` 10 kΩ in parallel GPIO46 sees **9.68 kΩ to GND** — stronger than the strap provision alone — and the backlight is off through reset by construction. **`R109` 0 Ω is retained**: its strap-escape justification is retired, but a fitted 0 Ω costs nothing and remains a general isolation and rework point. GPIO46 strap safety was **not** weakened for backlight convenience. | 2026-08-23 |
+| D-117 | **`SD_CARD_DETECT_TBD` IS RETIRED. The signal is `SD_CARD_DETECT_N`** — `J2.10` DET-SW with **`R113` 100 kΩ to `+3V3`** and `J2.11` DETECT_LEVER grounded, so a one-pad net becomes a real two-state signal. **Its destination is an internal PCAL9535A input on sheet `08`.** Polarity assumes the usual push-push convention (switch closes on insertion, **LOW = card present**); the Molex drawing would not load, so this is **assumed, not confirmed** (**B-46**) — and the exposure is nil, because polarity is a firmware constant on an expander input, never a board change. **No `*_TBD` net remains on sheet `03`.** | 2026-08-23 |
+
+> **Result (FBV2-S1-003).** Full analysis:
+> [`audits/2026-08-23-s1-display-sd-implementation.md`](audits/2026-08-23-s1-display-sd-implementation.md).
+>
+> **Task gate FBV2-S1-DISPLAY-SD = PASS. The programme gate FBV2-S1 remains OPEN — 3 of 9
+> sheets.**
+>
+> **ERC: 4 errors → 4 errors, the error report byte-identical to after FBV2-S1-002.** Total
+> 63 → 64: two `isolated_pin_label` warnings added for the new `TOUCH_INT_N` crossing, one
+> removed because `SD_CARD_DETECT_TBD` ceased to exist.
+>
+> **Touch gains an interrupt.** `CTP_IRQ` (panel pin 46) was not represented at all on
+> Beta-DM; it now leaves the sheet as `TOUCH_INT_N` and lands on an internal PCAL9535A input
+> with sheet `08`. FT6236 at **0x38** and the `TOUCH_RST_N` safe state are unchanged, and
+> **no second I²C pull-up pair was added** — the internal bus keeps its single locked pair.
+> **`RESERVED_SPARE` was not consumed.**
+>
+> **SPI-A stays passive and simple.** Both chip selects are pulled to `+3V3` so display and
+> microSD are deselected through reset; **no bus mux and no series damping were added**, and
+> damping is deferred to FBV2-P1 where real trace lengths exist. The ILI9488's 18-bit /
+> 3-byte-per-pixel SPI writes are accepted with no architecture change and **no new native
+> GPIO**.
+>
+> **The battery target is unchanged.** The backlight is the only load this task moved:
+> **+11 mA at the pack** at default brightness. Runtime improves for any baseline browsing
+> current above **44 mA**, and the Beta-DM backlight alone draws 118 mA — so **60 × 75 × 8 mm
+> / ~2500–3000 mAh delivers equal or better runtime by a wide margin.**
+>
+> **One latent defect was caught by inspection rather than by any check:** the `LED_BOOST`
+> netclass listed the four old anode nets by exact name and had no entry for the new single
+> `LED_A`, so it would have fallen to Default clearance at FBV2-P2. `netclass_probe.py` reads
+> the *board*, which is still Beta-DM, so no probe would have caught it.
+> `/03_SPI_A_DISPLAY_SD/LED_A` was added to `LED_BOOST`.
+
 ## 9. Safety
 
 | # | decision | date |
@@ -920,6 +965,7 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-01** | **Reverse-polarity architecture.** Approve the LTC4368-1 + back-to-back N-channel FET path, or name an alternative. | Fabrication blocker. A board built as-is will not run from battery at all. | 2026-08-22 |
 | ~~**P-02**~~ | ~~Freeze the 20-pin connector.~~ **CLOSED 2026-08-23 by D-081...D-085 (FBV2-COMM-001).** The 20-pin architecture is **superseded**, not frozen: the port is now **2 x 12, 24 active contacts, female device side**, connector `Harwin M20-7881242`, pin ordering locked, `U3` allocation 16/16. | closed | 2026-08-22 |
 | ~~**P-03**~~ | ~~NFC core / PA rail architecture.~~ **RESOLVED — the question was mis-framed.** DS12484 Rev 3 requires VDD and VDD_TX to share one supply (±0.2 V operating). The rails cannot be split and the as-built assignment is correct. | Superseded by **P-10**. | closed 2026-08-22 |
+| **B-47** | **Does the FH52E second source survive, and does `J1` move to the FH52E standard land pattern?** FBV2-DISP-002 ruled it should; FBV2-S1-003 declined to assert drop-in equivalence without both Hirose drawings. | **There is currently no JLCPCB assembly path for `J1`.** Settle at FBV2-S2, before placement makes the land pattern expensive to change. | 2026-08-23 |
 | **P-04** | **NFC first-fab inclusion, and antenna implementation.** Is NFC in v2's first fabrication, or a populate-later block? The 27.12 MHz crystal, the matching network and the antenna are **undesigned**, not merely unrouted. | Gates the schematic migration schedule and the rear-half floorplan. | 2026-08-22 |
 | ~~**P-11**~~ | ~~Dead-cell recovery: Candidate B or Candidate D?~~ **CLOSED 2026-08-22 by D-065 — Candidate B selected**, and specified to component level in the FBV2-PWR-002 closeout. **This was the last item blocking FBV2-A1, which now PASSES.** | closed | 2026-08-22 |
 | ~~superseded~~ | ~~**Dead-cell recovery: Candidate B or Candidate D?**~~ **B** — a *hardware-qualified* precharge from `SYS` to `BAT_RAW`, gated by a GND-referenced comparator interlock so a reversed cell draws ≈0 A; no firmware, works with a corrupted image; ~8–10 parts, 1–3 µA. **D** — no recovery path; deeply discharged packs are serviced. **Recommendation: B for the product, D acceptable for the first five boards.** | **THE ONLY ITEM BLOCKING FBV2-A1.** A single MOSFET cannot distinguish 0 V from −3.7 V — both turn it *more* on — so an explicit level-sensing element is mandatory and this is a genuine new power-tree branch. *(Supersedes the earlier firmware-gated proposal: the CTO prefers safety not to depend on firmware, and that is the better position.)* | 2026-08-22 |
@@ -950,6 +996,10 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 
 | # | closed by | outcome |
 |---|---|---|
+| **R111** | D-111 | **Fitted, 10 kΩ.** GPIO45 no longer relies on the internal pull-down alone to hold VDD_SPI at 3.3 V. |
+| **B-28** | D-114 | **`R112` 0 Ω DNP.** The display is off SPI-A by default; `TP36` characterises SDO without fitting anything. |
+| **B-32** | D-115 | **`C43` 4.7 µF X5R on `U17` `VIN`** confirmed. |
+| **B-43** | D-116 | **TPS61169 `CTRL` has a 300 kΩ internal PULL-DOWN.** It cannot raise the GPIO46 strap. |
 | **P-20** | D-105 | **`R95` = 560 Ω.** Recovery 8.36 mA nominal (7.93–8.80 mA). B-27's single-fault ceiling **amended to ≈ 15.9 mA**, not left reading 13 mA. |
 | **P-21** | D-104 | **OV trip 4.63 V nominal**, 4.48–4.78 V, derived from the datasheet 492.5/500/507.5 mV threshold. Removes a BOM line. |
 | **P-22** | D-107 | **Scripted KiCad edits permitted under eight conditions**, and never as a substitute for engineering review. |

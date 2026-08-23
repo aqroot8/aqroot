@@ -1,14 +1,19 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (MCU-core migration, FBV2-S1-002)
+Date: 2026-08-23 (display / microSD migration, FBV2-S1-003)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**Two blocks are no longer intent.** As of 2026-08-23 the **power tree** and the
-**MCU core** are CAPTURED in
-`hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch` and
-`02_mcu_core.kicad_sch` (FBV2-S1-001, FBV2-S1-002). Every other block on this page is
-still intent only, and the PCB is untouched.
+**Three blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
+**MCU core** and the **display / touch / microSD** sheet are CAPTURED in
+`01_power_tree.kicad_sch`, `02_mcu_core.kicad_sch` and `03_spi_a_display_sd.kicad_sch`
+(FBV2-S1-001 … FBV2-S1-003). Every other block on this page is still intent only, and
+the PCB is untouched.
+
+> **The display symbol was wrong until 2026-08-23.** `J1` carried the 2.8-inch panel's
+> pin table while its Value already read FH69: the backlight anode and cathode were
+> reversed and the SPI clock and D/C lines were swapped. Both faults were
+> dead-on-arrival and invisible to ERC. See D-112.
 
 The measured pin ledger and the full strapping-pin audit now live in
 [GPIO_LEDGER.md](GPIO_LEDGER.md) and are read from the schematic, not transcribed.

@@ -2,7 +2,15 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003)
+
+> **Capture note — FBV2-S1-003.** The locked display and connector are now **captured in
+> the schematic**: `J1` uses a new `ER-TFT035IPS-6_50P` symbol whose pin table is the
+> vendor's own, replacing the 2.8-inch table it had inherited. **`J1` remains on the
+> FH69-dedicated land pattern** — the FH52E/FH12 migration proposed by FBV2-DISP-002 was
+> **not** performed, because full footprint and mechanical equivalence was not
+> demonstrated from both Hirose drawings (**B-47**). The 2.3 mm connector height and the
+> B-33 placement constraint are unchanged. **Nothing dimensional in this document changed.**
 Task: FBV2-MECH-001
 Gate: **FBV2-A2**
 Status: interface freeze. **No CAD exists yet. No PCB outline has been drawn.**

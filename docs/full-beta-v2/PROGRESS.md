@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-23 (updated after FBV2-S1-002)
-Repository HEAD at last update: `8650d5a`
+Date: 2026-08-23 (updated after FBV2-S1-003)
+Repository HEAD at last update: `b24a4ab`
 
 ---
 
@@ -48,13 +48,39 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | Requirements / product direction | **100%** |
 | Pre-design audit | **100%** |
 | Architecture freeze | **IN PROGRESS** |
-| Schematic migration | **25%** — `01_POWER_TREE` and `02_MCU_CORE` landed; sheets `03`-`09` still Beta-DM |
+| Schematic migration | **38%** — `01_POWER_TREE`, `02_MCU_CORE` and `03_SPI_A_DISPLAY_SD` landed; sheets `04`-`09` still Beta-DM |
 | PCB placement | **0%** |
 | PCB routing | **0%** |
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~37%**
+### Overall Full Beta v2: **~40%**
+
+**Raised 37% → 40% by FBV2-S1-003.** **No gate in the twelve-gate table passed.**
+The task gate **FBV2-S1-DISPLAY-SD = PASS** (2026-08-23).
+
+**The most valuable thing this task produced is a fault it found.** The inherited
+`J1` still carried the **2.8-inch panel's pin table** while its Value and Footprint
+already read FH69. Against the locked `ER-TFT035IPS-6` it was wrong in **two
+independent dead-on-arrival ways**: the backlight anode and cathode were reversed
+(pin 1 is LEDA, not LEDK), and the SPI clock and data/command lines were swapped
+(pins 36/37). **Neither is visible from a pin count, a connector MPN or an ERC
+run.** A new symbol was authored with the vendor pin table verbatim.
+
+`R111` is **FITTED** (D-111), closing the GPIO45 item. **B-43 is CLOSED with a
+primary source** — the TPS61169 `CTRL` pin has a **300 kΩ internal pull-down**, so
+it cannot raise the GPIO46 strap under any condition (D-116). **B-32 and B-28 are
+also closed**, the latter with `R112` **DNP** rather than fitted, because the
+display SDO risks the microSD to gain a feature AQROOT never uses.
+
+**ERC: 4 errors → 4 errors, the error report byte-identical to after FBV2-S1-002.**
+Total 63 → 64.
+
+Full analysis:
+[`audits/2026-08-23-s1-display-sd-implementation.md`](audits/2026-08-23-s1-display-sd-implementation.md).
+
+<details>
+<summary>Superseded — the ~37% assessment (FBV2-S1-002)</summary>
 
 **Raised 34% → 37% by FBV2-S1-002.** **No gate in the twelve-gate table passed.**
 The task gate **FBV2-S1-MCU-CORE = PASS** (2026-08-23).
@@ -83,6 +109,8 @@ Full analysis:
 [`audits/2026-08-23-s1-mcu-core-implementation.md`](audits/2026-08-23-s1-mcu-core-implementation.md).
 Measured pin ledger and strap audit:
 [`architecture/GPIO_LEDGER.md`](architecture/GPIO_LEDGER.md).
+
+</details>
 
 <details>
 <summary>Superseded — the ~34% assessment (FBV2-S1-001)</summary>
@@ -278,7 +306,7 @@ work.
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
 | **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
 | **FBV2-A2** | Mechanical interface freeze | **PASS** | 2026-08-22 |
-| **FBV2-S1** | Schematic migration / rearchitecture | **IN PROGRESS — 2 of 9 sheets.** `hardware/beta-v2/` forked from Beta-DM with a re-runnable byte-equivalence proof; `01_POWER_TREE` **CAPTURED** (FBV2-S1-001) and `02_MCU_CORE` **MIGRATED** (FBV2-S1-002); task gates **FBV2-S1-POWER-TREE** and **FBV2-S1-MCU-CORE** both **PASS**. Sheets `03`-`09` are byte-equivalent Beta-DM copies and still carry the Beta-DM architecture. **The gate does not pass until every sheet in the migration order is landed.** | — |
+| **FBV2-S1** | Schematic migration / rearchitecture | **IN PROGRESS — 3 of 9 sheets.** `hardware/beta-v2/` forked from Beta-DM with a re-runnable byte-equivalence proof; `01_POWER_TREE` (FBV2-S1-001), `02_MCU_CORE` (FBV2-S1-002) and `03_SPI_A_DISPLAY_SD` (FBV2-S1-003) carry the v2 architecture; task gates **FBV2-S1-POWER-TREE**, **FBV2-S1-MCU-CORE** and **FBV2-S1-DISPLAY-SD** all **PASS**. Sheets `04`-`09` are byte-equivalent Beta-DM copies and still carry the Beta-DM architecture. **The gate does not pass until every sheet in the migration order is landed.** | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
 | **FBV2-P2** | Routing | **NOT STARTED** | — |
@@ -295,7 +323,7 @@ work.
 | FBV2-A0 | A read-only audit pinned to a repository HEAD exists in `audits/`. **Met 2026-08-22.** |
 | FBV2-A1 | Every item in the Pending CTO Decisions table of [CTO_DECISIONS.md](CTO_DECISIONS.md) is closed into a locked `D-xxx` ruling. |
 | FBV2-A2 | Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance are published, and every dimensional dependency that could force a late PCB redesign is resolved. **Met 2026-08-22** via [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md). ⚠ **`tools/check_mechanical_consistency.py` still reports UNKNOWN** — it parses the Field Slate v5 block, and FBV2-MECH-001 had **no authority** to modify `tools/` or the Field Slate. Reconciling the guard is a follow-up task, not a gate condition, because the guard reads a Beta-DM-era document rather than the v2 spec. |
-| FBV2-S1 | `hardware/beta-v2/` exists, forked from Beta-DM with a byte-equivalence proof, and every schematic change in the migration order is landed. **Half met 2026-08-23:** the fork and its proof exist (`hardware/beta-v2/checks/fork_equivalence.py`, `hardware/beta-v2/reports/FBV2-S1-fork-equivalence.md`); **2 of 9 sheets** are landed. |
+| FBV2-S1 | `hardware/beta-v2/` exists, forked from Beta-DM with a byte-equivalence proof, and every schematic change in the migration order is landed. **Half met 2026-08-23:** the fork and its proof exist (`hardware/beta-v2/checks/fork_equivalence.py`, `hardware/beta-v2/reports/FBV2-S1-fork-equivalence.md`); **3 of 9 sheets** are landed. |
 | FBV2-S2 | 0 ERC errors, 0 schematic-parity issues, and every project-library footprint verified against a vendor drawing with a per-footprint pad-overlap assertion. |
 | FBV2-P1 | Outline derived from the published cavity; all mechanical keepouts instantiated; IR TX/RX escapes proven at placement time; U3/connector cluster placed at the right-side exit. |
 | FBV2-P2 | Ratsnest zero including GND; no pin-specific budget exceptions. |
@@ -489,6 +517,17 @@ protoboard experiment (P-13).
 
 </details>
 
+### Blockers added or changed by FBV2-S1-003 (2026-08-23)
+
+| # | blocker | status |
+|---|---|---|
+| ~~**B-43**~~ | TPS61169 `CTRL` internal-pull specification not retrieved | **CLOSED 2026-08-23 by D-116.** SNVSA40B: **`R_PD` = 300 kΩ internal PULL-DOWN**, `V_H`/`V_L` 1.2/0.4 V. `CTRL` can only pull GPIO46 down — the strap is safe by construction, not merely by margin |
+| ~~**B-32**~~ | Confirm ≥ 4.7 µF X5R local to `U17` `VIN` | **CLOSED** — `C43` 4.7 µF 0805 on `+3V3` at `U17.5`, marked `4.7uF 10V X5R` |
+| ~~**B-28**~~ | ILI9488 `SDO` on a shared bus | **CLOSED by D-114** — `R112` 0 Ω **DNP**, `TP36` on the panel side. Opposite default to the one FBV2-DISP-002 sketched, because fitting risks the microSD to gain a feature nothing uses |
+| **B-46** | **microSD detect-switch polarity assumed, not confirmed** — the Molex drawing would not load. `SD_CARD_DETECT_N` assumes switch-closes-on-insertion | **OPEN, low.** Firmware constant on a PCAL9535A input; never a board change |
+| **B-47** | **FH52E second source and land-pattern migration unresolved.** Drop-in equivalence was **not** asserted without both Hirose drawings, so `J1` stays on the FH69-dedicated pattern | **OPEN, medium. There is currently no JLCPCB assembly path for `J1`.** Settle at FBV2-S2, before placement |
+| **B-29** | `J1` land pattern verified with a pad-overlap assertion | **STILL OPEN, advanced.** Pad geometry measured: 50 pads, 0.500 mm pitch with no drift, 24.500 mm span, 0.300 × 1.230 mm pads, 2 hold-downs. The assertion itself is FBV2-S2 |
+
 ### Blockers added or changed by FBV2-S1-002 (2026-08-23)
 
 | # | blocker | status |
@@ -560,7 +599,7 @@ DS12484 tables; every other footprint remains unverified.
 
 | date | change |
 |---|---|
-| 2026-08-23 | FBV2-S1-002. Overall raised 34% → 37%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-MCU-CORE = PASS**. **P-20, P-21 and P-22 CLOSED** (D-104…D-110). `R95` locked at **560 Ω** — recovery **8.36 mA** nominal, and **B-27's ceiling amended to ≈ 15.9 mA** because 680 Ω was the value that produced its old ≈ 13 mA figure. LTC4368 **OV trip derived to 4.63 V** (`R77` 3.65 M / `R78` 442 k) from the datasheet's 492.5/500/507.5 mV threshold; **removes a BOM line**. Scripted KiCad edits permitted under an **eight-condition** standing rule. **`02_MCU_CORE` MIGRATED:** GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, GPIO46 = `DISP_BL_CTL` with `R108` 10 kΩ strap pull-down + `R109` 0 Ω isolation link + `TP2`, GPIO43 withdrawn from the community port (`TP35` UART0 TXD), **GPIO3 strap closed — B-09 retired**, `R111` 10 kΩ GPIO45 pull-down placed **DNP**. **ERC 5 errors → 4, zero new; `02_MCU_CORE` clean.** B-43, B-44, B-45 opened. **NO NEW DEBUG HARDWARE** — USB Serial/JTAG is the service interface. PCB untouched and still bit-identical to Beta-DM. | Overall raised 31% → 34%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-POWER-TREE = PASS**. **First Full Beta v2 design-file work.** `hardware/beta-v2/` forked from Beta-DM with a **re-runnable** byte-equivalence proof; **`01_POWER_TREE` CAPTURED** — P2 reverse protection with `U18` LTC4368-1, autonomous dead-cell recovery, `ACC_3V3`/`ACC_5V` on one consolidated boost + load-switch BOM, NFC 3V3-FIT/5V-DNP select, `VBUS_PRESENT` telemetry, 19 test points, 136 parts. **ERC 58 baseline → 55, zero introduced** (three inherited violations retired). **B-01 closed at schematic level.** `U18` package corrected from a policy-violating DFN-10 to MSOP-10. Inherited `R_FB_TOP 1M` net label renamed `V3V3_FB`. **D-099…D-103 recorded; B-41, B-42, P-20, P-21, P-22 opened.** PCB untouched and still bit-identical to Beta-DM. |
+| 2026-08-23 | FBV2-S1-003. Overall raised 37% → 40%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-DISPLAY-SD = PASS**. **`R111` FITTED** (D-111). **`03_SPI_A_DISPLAY_SD` MIGRATED:** new `ER-TFT035IPS-6_50P` symbol with the vendor pin table verbatim, **catching two dead-on-arrival faults in the inherited `J1`** — reversed backlight anode/cathode and swapped SCL / D-CX. Touch gains `TOUCH_INT_N` (panel pin 46, previously unrepresented). Backlight re-derived: `R69` **1.87 Ω**, `R70`–`R73` **4 × 33 Ω**, I_LED **109 mA typ / 117.6 mA worst case** against a 120 mA panel maximum; peak switch current 4.6× (3.9× at f_SW min). `SD_CARD_DETECT_TBD` → **`SD_CARD_DETECT_N`** with a 100 kΩ pull-up. `R112` 0 Ω **DNP** isolates the display SDO from the shared SPI-A. **B-43, B-32, B-28 CLOSED; B-46, B-47 opened.** `/03_SPI_A_DISPLAY_SD/LED_A` added to the `LED_BOOST` netclass — a latent FBV2-P2 defect no probe would have caught. **ERC 4 errors → 4 errors, error report byte-identical.** PCB untouched and still bit-identical to Beta-DM. | Overall raised 34% → 37%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-MCU-CORE = PASS**. **P-20, P-21 and P-22 CLOSED** (D-104…D-110). `R95` locked at **560 Ω** — recovery **8.36 mA** nominal, and **B-27's ceiling amended to ≈ 15.9 mA** because 680 Ω was the value that produced its old ≈ 13 mA figure. LTC4368 **OV trip derived to 4.63 V** (`R77` 3.65 M / `R78` 442 k) from the datasheet's 492.5/500/507.5 mV threshold; **removes a BOM line**. Scripted KiCad edits permitted under an **eight-condition** standing rule. **`02_MCU_CORE` MIGRATED:** GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, GPIO46 = `DISP_BL_CTL` with `R108` 10 kΩ strap pull-down + `R109` 0 Ω isolation link + `TP2`, GPIO43 withdrawn from the community port (`TP35` UART0 TXD), **GPIO3 strap closed — B-09 retired**, `R111` 10 kΩ GPIO45 pull-down placed **DNP**. **ERC 5 errors → 4, zero new; `02_MCU_CORE` clean.** B-43, B-44, B-45 opened. **NO NEW DEBUG HARDWARE** — USB Serial/JTAG is the service interface. PCB untouched and still bit-identical to Beta-DM. | Overall raised 31% → 34%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-POWER-TREE = PASS**. **First Full Beta v2 design-file work.** `hardware/beta-v2/` forked from Beta-DM with a **re-runnable** byte-equivalence proof; **`01_POWER_TREE` CAPTURED** — P2 reverse protection with `U18` LTC4368-1, autonomous dead-cell recovery, `ACC_3V3`/`ACC_5V` on one consolidated boost + load-switch BOM, NFC 3V3-FIT/5V-DNP select, `VBUS_PRESENT` telemetry, 19 test points, 136 parts. **ERC 58 baseline → 55, zero introduced** (three inherited violations retired). **B-01 closed at schematic level.** `U18` package corrected from a policy-violating DFN-10 to MSOP-10. Inherited `R_FB_TOP 1M` net label renamed `V3V3_FB`. **D-099…D-103 recorded; B-41, B-42, P-20, P-21, P-22 opened.** PCB untouched and still bit-identical to Beta-DM. |
 | 2026-08-22 | Created. FBV2-A0 recorded as PASS. Initial blocker set B-01 through B-16 imported from the pre-design audit. |
 | 2026-08-22 | FBV2-ARCH-001. Overall raised 8% → 10%; **no gate passed.** B-07 retired as incorrect. B-17/B-18/B-19 added. FBV2-A2 marked as the recommended next gate. |
 | 2026-08-22 | FBV2-ARCH-002. Overall raised 10% → 13%; **no gate passed. FBV2-A1 assessed CANNOT PASS** (4 of 8 criteria). B-18 closed, B-25 closed. B-20…B-24 added. P-11…P-18 opened. Standing **NO-RESPIN RECOVERY POLICY** (D-049) established. |
