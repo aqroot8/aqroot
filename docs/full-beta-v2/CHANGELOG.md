@@ -9,6 +9,149 @@ an entry.
 
 ---
 
+## 2026-08-23 — Infrared migrated (FBV2-S1-007)
+
+**Overall 51% → 53%. No gate in the twelve-gate table passed**; the task gate **FBV2-S1-IR =
+PASS**. Full analysis:
+[`audits/2026-08-23-s1-ir-implementation.md`](audits/2026-08-23-s1-ir-implementation.md).
+
+**ERC 45 → 45: zero added, zero removed.** Errors unchanged at 2, both inherited.
+311 components, 0 duplicate references, 0 without a footprint, 0 `*_TBD` nets.
+
+### The whole subsystem arrived DNP — for the fourth sheet running
+
+`U6`, `D1`, `Q1`, `R21`, `R22`, `R23`, `R24` and `C11` all came from Beta-DM marked **`DNP`**.
+Only `C12` was fitted — decoupling for a transmitter that was not there, exactly the pattern
+found on sheet 06 with `C9`/`C10`. The brief opens with *"Full Beta v2 IR is a mandatory internal
+feature"*, so **all eight are now fitted**.
+
+**This is the fourth consecutive migrated sheet where an inherited `DNP` was load-bearing**
+(sheet 09's `U16`/`R49`/`R50`/`U15`/`D2`/`D3`, sheet 06's `U5`/`J6`, now all of sheet 07). It is
+no longer a coincidence: **a `DNP` on a Beta-DM sheet describes what was populated on that
+reduced build, not what the architecture requires. Sheets 08 and 09 must be assumed to carry the
+same trap.**
+
+### The rating that binds is not the one that looks biggest
+
+**`IFSM` = 1.5 A is a single-pulse surge for t ≤ 5 µs. It is not a remote-control rating.** The
+figure that governs a 38 kHz burst train is **`IFM` = 200 mA**, specified at tp/T = 0.5 with
+tp = 100 µs — a *longer* pulse at the same duty than a 38 kHz carrier produces, so the carrier
+is less stressful than the specified condition, not more.
+
+| candidate | % of `IFM` | avg LED power over an NEC frame | ΔTj | verdict |
+|---|---|---|---|---|
+| 100 mA | 50 % | 15 mW | 3.4 K | safe, leaves range on the table |
+| **150 mA** | **75 %** | **25 mW** | **5.7 K** | **SELECTED** |
+| 200 mA | 100 % | 35 mW | 8.1 K | **no tolerance margin left** |
+| 300 mA | **150 %** | — | — | **REJECTED — out of spec** |
+
+**Thermally none of these is difficult** — 25 mW against a 160 mW limit on a 230 K/W part. The
+constraint is the repetitive rating, and it is hard. **Range is not the constraint either**: the
+receiver datasheet quotes **45 m transmission distance using a TSAL6200 at only 50 mA**, and the
+TSAL6100 at 150 mA is roughly 20× that intensity. Current buys off-axis margin, not headline
+range.
+
+### The supply preference is reversed — `+3V3`, not `SYS`
+
+| | **`+3V3` (selected)** | `SYS` |
+|---|---|---|
+| resistor for 150 mA | **12 Ω** | 22 Ω |
+| **peak across all tolerances** | **118–170 mA (1.44 : 1)** | **64–166 mA (2.6 : 1)** |
+| as the battery drains | **nothing changes** | **IR range visibly shortens** |
+| resistor dissipation | 0.27 W | 0.53 W |
+| 38 kHz on the shared rail | ≈ 40 mV pk-pk | none |
+
+**The noise objection that motivated `SYS` is real but bounded, and the one device that genuinely
+cares is already behind 41 dB.** Everything else on `+3V3` lives with the audio amplifier's
+**230 mA peaks** at 330 kHz, a 60 mA NFC field and ~100 mA of backlight boost. A 150 mA peak /
+50 mA average IR load is the *smallest* pulsed load on the rail.
+
+> **Scope, stated as fact and not as the reason:** `BQ25185_SYS` is a **sheet-01-local net**, so
+> routing it to sheet 07 needs a sheet-01 edit this task is not authorised to make. **Had `SYS`
+> won the analysis it would have been reported as blocked rather than quietly avoided.** It did
+> not. The `ARCHITECTURE.md` source-select link is carried as **B-65**.
+
+### `C12` was three times too small
+
+Per carrier period the reservoir must supply `Q = I·D·(1−D)·T = 0.88 µC`, so ripple = 0.88 µC / C:
+
+| `C` | ripple | % of rail |
+|---|---|---|
+| **4.7 µF (inherited)** | **218 mV** | 6.6 % |
+| **22 µF (selected)** | **40 mV** | **1.2 %** |
+| 47 µF | 19 mV | 0.6 % |
+
+The package and voltage are specified deliberately — **1210 X7R 16 V** — because the requirement
+is **≥ 15 µF *effective* at 3.3 V DC bias**, and a 6.3 V 0805 part would derate to roughly half
+its marked value.
+
+### The receiver's inherited filter turns out to be the load-bearing part of the sheet
+
+`TSOP38238` → `TSOP38438` is a **pure MPN change** — same Minicast package, same pinning
+1 = OUT / 2 = GND / 3 = VS, same footprint. `VS` 2.0–5.5 V, output **active low with an internal
+30 kΩ pull-up**, so `OUT` drives GPIO44 directly and no external pull-up is needed.
+
+`R21` 100 Ω + `C11` 4.7 µF match Vishay's application circuit exactly, and **Vishay prints the
+topology but no values** — so ours had to be justified rather than inherited:
+
+```
+fc = 1 / (2 pi x 100 x 4.7u) = 339 Hz   ->   41 dB at 38 kHz
+```
+
+**Why that matters more than it looks:** datasheet **Fig. 7** shows the receiver's threshold
+irradiance degrading from roughly **10 mV RMS of supply ripple *at the carrier frequency*** and
+doubling by ≈ 50 mV — and our own transmitter runs at exactly that frequency. 40 mV pk-pk on the
+rail becomes **≈ 0.1 mV RMS at `VS`, about 90× margin**. **This is what makes sharing `+3V3`
+safe. Do not shrink `C11` for area without redoing this calculation.**
+
+### Two inherited open items closed
+
+**The AO3400A pinout is confirmed.** The AOS datasheet's SOT-23 top and bottom views show the
+lone pin as **Drain** and the paired pins as **Gate** then **Source** — **1 = G, 2 = S, 3 = D**,
+exactly what the symbol maps and the inherited wiring used.
+
+**The `"Footprint BLOCKED: needs the official AOS recommended land pattern"` note asked for a
+document that does not exist.** AOS publishes no land pattern in the AO3400A datasheet, so the
+industry-standard IPC SOT-23 pattern applies and it becomes an ordinary FBV2-S2 item.
+
+**Safe-OFF is proven, not assumed:** `R23` 100 kΩ with `IGSS` ≤ 100 nA holds the gate at
+≤ **10 mV** against a **650 mV** minimum threshold — a 65× margin, so there is no IR emission at
+boot, reset, GPIO high-impedance or a firmware crash.
+
+### Protocol coverage — and a conflict inside the brief
+
+`f0` = 38 kHz, 3 dB bandwidth `f0`/10 → 36.1–39.9 kHz. NEC / Samsung / Sharp / Mitsubishi sit at
+full sensitivity; RC5/RC6 at 36 kHz and Sony at 40 kHz cost ~13–15 % of range, the ordinary
+single-receiver compromise.
+
+**But the brief §1 locks `TSOP38438` while §9 lists Sony/SIRC, and Vishay's suitable-data-format
+table says those cannot both be true:** AGC4 is marked **"No" for Sony code** where the AGC2
+`TSOP38238` is **"Yes"**. AGC4 is *"Preferred"* for NEC, RC5/RC6, Thomson RCA, Sharp and
+Mitsubishi and adds **high-modulation fluorescent suppression (Fig. 15)** AGC2 lacks. Vishay's
+framing: *"the higher the AGC, the better noise is suppressed, but the lower the code
+compatibility."*
+
+**The lock is a defensible trade, not an error.** Two things shrink it: **it is receive-only —
+transmitting Sony/SIRC is completely unaffected**, and **reverting is a `lib_id` change** because
+the `TSOP38238` symbol was deliberately retained in the project library. **Raised as O-5.**
+
+### Power budget
+
+150 mA nominal / 170 mA worst-case peak, 50 mA averaged over a burst, **≈ 17 mA averaged over a
+whole NEC command**; receiver 0.35 mA continuous. **No new mutual-exclusion rule is proposed** —
+MX-1 already covers concurrent high-power radio operation, and the brief says not to create rules
+the power budget does not need.
+
+### Nothing else was added
+
+No second IR LED, no external IR accessory requirement, no multiple emitter angles, no extra
+optical channels, no second receiver, no exotic carrier frequency, no dedicated LED-driver IC,
+no RF-style test connectors, no analog optical detector, no new GPIO. `TP39` (LED current via the
+drop across `R24`) and `TP40` (receiver output) added; `R123` DNP trim added with a hard 10 Ω
+floor. **B-65 and B-66 opened.**
+
+---
+
 ## 2026-08-23 — Audio migrated: microphone replaced, speaker locked (FBV2-S1-006)
 
 **Overall 49% → 51%. No gate in the twelve-gate table passed**; the task gate

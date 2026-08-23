@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-006)
+Last updated: 2026-08-23 (FBV2-S1-007)
 
 ---
 
@@ -1163,6 +1163,58 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > bit-identical and none was deleted**, and that **every addition is declared** in an
 > `ADDED_FOOTPRINTS` table naming the task that added it. An undeclared footprint is still a
 > failure — the check got stricter about what it actually cares about, not looser.
+
+## 8v. Infrared — FBV2-S1-007 (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-153 | **THE WHOLE IR SUBSYSTEM ARRIVED FROM BETA-DM MARKED `DNP` AND IS NOW FITTED.** `U6`, `D1`, `Q1`, `R21`, `R22`, `R23`, `R24` and `C11` were all `DNP`; only `C12` was fitted — decoupling for a transmitter that was not there, the same pattern as `C9`/`C10` on sheet 06. The brief opens with *IR is a mandatory internal feature*, so all eight are fitted. **THIS IS THE FOURTH CONSECUTIVE MIGRATED SHEET WHERE AN INHERITED `DNP` WAS LOAD-BEARING** (sheet 09's `U16`/`R49`/`R50`/`U15`/`D2`/`D3`, sheet 06's `U5`/`J6`, now all of sheet 07). **It is now a rule rather than a coincidence: a `DNP` on a Beta-DM sheet describes what was populated on that reduced build, not what the architecture requires. Sheets 08 and 09 must be assumed to carry the same trap.** | 2026-08-23 |
+| D-154 | **IR EMITTER LOCKED: Vishay `TSAL6100`** (doc 81009 Rev 1.8), replacing the inherited TSAL6200. 940 nm GaAlAs MQW, T-1¾ Ø5 mm leaded, **`Ie` 170 mW/sr typ at 100 mA**, **half-intensity angle ±10°**, `Φe` 40 mW, `VF` 1.35/1.6 V at 100 mA, `tr`/`tf` 15 ns. **THE TSAL6200 FALLBACK IS A PROVEN DROP-IN, NOT AN ASSUMPTION**: identical T-1¾ package and footprint, **identical `VF` 1.35/1.6 at 100 mA and identical `IFM` 200 mA**, so **`R24` does not change** — only `Ie` (170 → 72 mW/sr) and beam (±10° → ±17°) differ, and the two emit similar total power redistributed (`Ie` × φ² ≈ 17 000 vs 20 800). **The real risk in the TSAL6100 is the beam, not the power**: ±10° is narrow for a handheld pointing device, and that is exactly what the authorised fallback exists for (**B-66**, first article). | 2026-08-23 |
+| D-155 | **IR PEAK CURRENT = 150 mA, AND THE RATING THAT BINDS IS `IFM`, NOT `IFSM`.** **`IFSM` = 1.5 A is a SINGLE-PULSE surge for t ≤ 5 µs and cannot justify carrier current.** The governing rating for a 38 kHz burst train is **`IFM` = 200 mA at tp/T = 0.5, tp = 100 µs** — a *longer* pulse at the same duty than a 38 kHz carrier produces, so the carrier is less stressful than the specified condition. Candidates evaluated over a standard NEC frame (≈11 % LED-on): **100 mA** = 50 % of `IFM`, 15 mW, ΔTj 3.4 K; **150 mA = 75 % of `IFM`, 25 mW, ΔTj 5.7 K — SELECTED**; **200 mA** = 100 % of `IFM`, which leaves nothing for rail, `VF` and resistor tolerance and would push the worst case past the rating; **300 mA = 150 % of `IFM` — REJECTED as out of spec** however comfortable the thermals look. **Thermally none of them is difficult** (160 mW `PV` limit, 230 K/W); the constraint is the repetitive rating and it is hard. **Range is not the constraint either** — the TSOP384xx datasheet quotes **45 m using a TSAL6200 at only 50 mA**, and the TSAL6100 at 150 mA is roughly 20× that intensity, so current buys off-axis margin rather than headline range. | 2026-08-23 |
+| D-156 | **IR LED SUPPLY = `+3V3`, REVERSING THE PREVIOUS PREFERENCE FOR `SYS`.** On the regulated rail a 12 Ω resistor gives **118–170 mA across every tolerance, a 1.44 : 1 spread**. On `SYS` (≈3.2–5.0 V) a resistor sized to keep the top inside `IFM` gives **64–166 mA, a 2.6 : 1 spread — IR range would visibly shorten as the battery drains**, and the worst case sits near the rating. `+3V3` also halves the resistor dissipation. **The noise objection that motivated `SYS` is real but bounded and is answered by two facts**: `C12` holds the 38 kHz ripple to ≈ 40 mV (1.2 % of rail), and **the only device in the system whose sensitivity is specified against supply ripple at the carrier frequency — the IR receiver — already sits behind 41 dB** (D-160). Everything else on `+3V3` already lives with the audio amplifier's 230 mA peaks. **Scope, stated as fact and not as the reason:** `BQ25185_SYS` is a sheet-01-local net, so routing it here needs a sheet-01 edit this task cannot make — **had `SYS` won the analysis it would have been reported as blocked rather than quietly avoided.** The `ARCHITECTURE.md` source-select link is carried as **B-65**. | 2026-08-23 |
+| D-157 | **CURRENT-LIMIT NETWORK: `R24` 18 Ω → 12 Ω 1 % 0805, plus `R123` DNP 0805 parallel trim.** `I = (3.3 − 1.50 − 0.005) / 12 = 150 mA`, with `VF` interpolated to 1.50 V at 150 mA between the datasheet's 1.35 V at 100 mA and 2.2 V at 1 A, and the AO3400A contributing ≈ 5 mV. Worst case **170 mA (85 % of `IFM`)** and **118 mA**. Dissipation 0.27 W instantaneous, ≈ 30 mW over a frame against a 125 mW 0805. **`R123` trim table, every entry inside `IFM`:** 12 Ω alone 150 mA, ‖220 Ω 158 mA, ‖100 Ω 168 mA, ‖68 Ω 176 mA, ‖47 Ω 188 mA. **NEVER BELOW 10 Ω TOTAL.** It is the first thing to reach for if the TSAL6200 fallback is fitted. Trimming *down* needs no provision — `R24` is an accessible 0805 and can be swapped. | 2026-08-23 |
+| D-158 | **LOCAL RESERVOIR `C12`: 4.7 µF → 22 µF, 0805 → 1210, X7R 16 V.** Per carrier period the capacitor must supply `Q = I·D·(1−D)·T = 0.88 µC`, so ripple = 0.88 µC / C: **4.7 µF gives 218 mV (6.6 % of rail — three times too small)**, 10 µF 88 mV, **22 µF 40 mV (1.2 %)**, 47 µF 19 mV. Target is ≤ ~1.5 % of rail. **The package and voltage are specified deliberately: the requirement is ≥ 15 µF EFFECTIVE at 3.3 V DC bias**, and a 6.3 V 0805 part would derate to roughly half its marked value. The burst envelope — a 50 mA step on a millisecond timescale — is the regulator's job, not this capacitor's. | 2026-08-23 |
+| D-159 | **DRIVER `Q1` AO3400A RETAINED, AND ITS OPEN PINOUT ITEM IS CLOSED.** AOS doc Rev 3.1, July 2023: the SOT-23 top and bottom views show the lone pin as **Drain** and the paired pins as **Gate** then **Source**, i.e. **1 = G, 2 = S, 3 = D** — exactly what `Transistor_FET:Q_NMOS_GSD` maps and what the inherited wiring used. `VGS(th)` 0.65/1.05/**1.45 V** so it is fully enhanced by a 3.3 V gate; `RDS(on)` < 48 mΩ at 2.5 V gives ≈ 5 mV at 150 mA; `ID` 5.7 A / `IDM` 30 A make it ~38× over-specified, and it is kept because **it is already in the design on sheet 01**. Switching at 38 kHz is a non-event: with `R22` 100 Ω the edge is under 100 ns, about 0.3 % of the carrier period, so `R22` buys gate damping and lower radiated EMI at no cost. **SAFE-OFF IS PROVEN, NOT ASSUMED: `R23` 100 kΩ with `IGSS` ≤ 100 nA holds the gate at ≤ 10 mV against a 650 mV minimum threshold — 65× margin, so there is no IR emission at boot, reset, GPIO high-impedance or a firmware crash.** **Footprint de-blocked: AOS publishes NO recommended land pattern**, so the old *needs the official AOS pattern* note asked for a document that does not exist; the IPC SOT-23 pattern applies and it becomes an ordinary FBV2-S2 item. | 2026-08-23 |
+| D-160 | **RECEIVER LOCKED `TSOP38438` per the CTO, AND THE EXISTING SUPPLY FILTER IS QUANTIFIED AND KEPT.** Vishay doc 82491 Rev 2.1, 27-May-2025: TSOP382.. and TSOP384.. share **the same Minicast package, the same pinning 1 = OUT / 2 = GND / 3 = VS and the same body**, so `TSOP38238 → TSOP38438` is a **pure MPN change with no footprint impact**. `VS` **2.0–5.5 V**, `ISD` 0.35 mA typ, **output active low with an internal 30 kΩ pull-up** so no external pull-up is needed and `OUT` drives GPIO44 directly, directivity ±45°. **`R21` 100 Ω + `C11` 4.7 µF RETAINED and now justified rather than inherited**: the topology matches Vishay's application circuit exactly, Vishay prints **no values**, and ours give `fc` = 339 Hz = **41 dB at 38 kHz**. **That matters more than it looks** — datasheet Fig. 7 shows the receiver degrades from roughly **10 mV RMS of supply ripple AT THE CARRIER FREQUENCY** and doubles its threshold by ≈ 50 mV, and our own transmitter runs at exactly that frequency. 40 mV pk-pk on the rail becomes **≈ 0.1 mV RMS at `VS`, about 90× margin**. **This is what makes D-156 safe. Do not shrink `C11` for area without redoing this calculation.** | 2026-08-23 |
+| D-161 | **NO NEW MUTUAL-EXCLUSION RULE FOR IR.** The transmitter draws 150 mA nominal / 170 mA worst-case peak, 50 mA averaged over a burst and **≈ 17 mA averaged over a whole NEC command**; the receiver draws 0.35 mA continuously. The same rail already carries **230 mA audio peaks**, a 60 mA NFC field and ~100 mA of backlight boost, so **IR is the smallest pulsed load on `+3V3`**. MX-1 already covers concurrent high-power radio operation and IR does not need to join it. The brief says not to create rules the power budget does not need, and it does not need one. Thermally: 30 mW in `R24`, 0.8 mW in `Q1`, 25 mW in the LED. | 2026-08-23 |
+| D-162 | **SELF-BLINDING IS SOLVED MECHANICALLY, AND THE NARROWER BEAM TIGHTENS THE REQUIREMENT RATHER THAN RELAXING IT.** The electrical half — the transmitter modulating the receiver's supply at its own carrier frequency — is already answered by the 41 dB filter (D-160). Mechanically: emitter and receiver both on the top edge, **≥ 15 mm apart**, receiver **outside the LED emission cone**, **opaque optical barrier between them**, and the TX current loop kept away from the receiver supply and return. **The ±15 mm figure was written against a ±17° TSAL6200; the TSAL6100 is 2.4× brighter on axis, so stray and internally-reflected energy reaching the receiver goes UP even though the direct cone is narrower.** Firmware may additionally gate RX during local TX; none is implemented here. **Test provisions added:** `TP39` on `IR_LED_A` (LED current from the drop across `R24`, the only non-invasive way to confirm the 38 kHz peak on a built board) and `TP40` on the receiver output. | 2026-08-23 |
+
+> **Result (FBV2-S1-007).** Full analysis:
+> [`audits/2026-08-23-s1-ir-implementation.md`](audits/2026-08-23-s1-ir-implementation.md).
+>
+> **Task gate FBV2-S1-IR = PASS. ERC 45 → 45: zero added, zero removed.** Errors unchanged at 2,
+> both inherited. 311 components, 0 duplicate references, 0 without a footprint, 0 `*_TBD` nets.
+> `fork_equivalence.py` PASS, `netclass_probe.py` PASS, PCB still bit-identical to Beta-DM.
+>
+> ### O-5 — NEW, REQUIRES A CTO DECISION: the receiver lock conflicts with the protocol list
+>
+> **The brief §1 locks `TSOP38438`. The brief §9 lists Sony/SIRC among the protocols the hardware
+> should support. Vishay's own suitable-data-format table says those two cannot both be true.**
+> Verbatim from doc 82491 Rev 2.1, the AGC4 column is marked **"No" for Sony code** where the
+> AGC2 `TSOP38238` is marked **"Yes"**; AGC4 is marked *"Preferred"* for NEC, RC5/RC6, Thomson
+> RCA, Sharp and Mitsubishi and additionally suppresses **high-modulation fluorescent
+> interference (Fig. 15)** that AGC2 does not. Vishay's framing: *"the higher the AGC, the better
+> noise is suppressed, but the lower the code compatibility."* The mechanism is Fig. 8 — above
+> 35 cycles/burst AGC4 collapses to ~7 % maximum envelope duty cycle and demands a gap of
+> **> 15 × burst length** against AGC2's **> 5 ×**, which SIRC's long header violates.
+>
+> **The lock is a defensible trade, not an error — but it is a trade the CTO should make
+> knowingly.** Two facts make it much smaller than it first looks: **(1) it is RECEIVE-ONLY —
+> transmitting Sony/SIRC is completely unaffected**, because the transmitter is only a carrier
+> and a timing pattern from the MCU; only *learning* a Sony code from an original remote is at
+> risk. **(2) Reverting is a `lib_id` change and nothing else** — same package, same pinout, same
+> footprint, same supply filter — and **the `TSOP38238` symbol has been deliberately retained in
+> the project library** so the swap costs one line. **Implemented as locked (`TSOP38438`) pending
+> the ruling.**
+>
+> **B-65 and B-66 opened.** B-65: the `ARCHITECTURE.md` `+3V3`/`SYS` source-select link needs a
+> sheet-01 edit to publish `BQ25185_SYS` — a provision, not a fix, since `+3V3` is the
+> analysed-correct choice. B-66: the TSAL6100's ±10° beam ergonomics are unvalidated and are the
+> one real risk in the emitter choice; the authorised TSAL6200 fallback is a drop-in.
+>
+> **Nothing else was added:** no second IR LED, no external IR accessory requirement, no multiple
+> emitter angles, no extra optical channels, no second receiver, no exotic carrier frequency, no
+> dedicated LED-driver IC, no RF-style test connectors, no analog optical detector, no new GPIO.
 
 ## 9. Safety
 

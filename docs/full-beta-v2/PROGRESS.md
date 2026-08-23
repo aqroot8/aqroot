@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-23 (updated after FBV2-S1-006)
-Repository HEAD at last update: `024ac38`
+Date: 2026-08-23 (updated after FBV2-S1-007)
+Repository HEAD at last update: `b1d2d0d`
 
 ---
 
@@ -54,7 +54,70 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~51%**
+### Overall Full Beta v2: **~53%**
+
+**Raised 51% → 53% by FBV2-S1-007.** **No gate in the twelve-gate table passed.**
+The task gate **FBV2-S1-IR = PASS** (2026-08-23).
+
+**The whole IR subsystem arrived DNP — for the fourth sheet running.** `U6`,
+`D1`, `Q1`, `R21`, `R22`, `R23`, `R24` and `C11` were all marked `DNP`; only the
+local bulk capacitor was fitted, decoupling a transmitter that was not there.
+All eight are now fitted (D-153). **This is no longer a coincidence: a `DNP` on a
+Beta-DM sheet describes what was populated on that reduced build, not what the
+architecture requires. Sheets 08 and 09 must be assumed to carry the same trap.**
+
+**The rating that binds an IR LED is not the one that looks biggest.** `IFSM` =
+1.5 A is a **single-pulse surge for t ≤ 5 µs** and cannot justify carrier current;
+the governing figure for a 38 kHz burst train is **`IFM` = 200 mA**. Peak current
+is set at **150 mA — 75 % of `IFM`** — with 200 mA rejected for leaving no
+tolerance margin and **300 mA rejected as out of spec** however comfortable the
+thermals look (D-155). Thermally none of them is hard: 25 mW against a 160 mW
+limit, ΔTj under 6 K. Range is not the constraint either — the receiver
+datasheet quotes **45 m using a TSAL6200 at only 50 mA**.
+
+**The supply preference is reversed: `+3V3`, not `SYS`** (D-156). On the
+regulated rail 12 Ω gives **118–170 mA across every tolerance**; on `SYS` the
+same job gives **64–166 mA**, so **IR range would visibly shorten as the battery
+drains**. The noise objection that motivated `SYS` is answered by `C12` (40 mV of
+38 kHz, 1.2 % of rail) and by the fact that **the only device specified against
+carrier-frequency supply ripple — the IR receiver — already sits behind 41 dB**.
+
+**`C12` was three times too small.** 4.7 µF gives 218 mV of carrier ripple;
+**22 µF gives 40 mV**, and the part is specified 1210 X7R 16 V because the
+requirement is ≥ 15 µF *effective* at 3.3 V bias (D-158).
+
+**Two inherited open items closed.** The **AO3400A pinout is confirmed
+1 = G, 2 = S, 3 = D** from the AOS datasheet, matching the existing wiring; and
+the *"needs the official AOS land pattern"* blocker asked for a document that
+**does not exist**, so it becomes an ordinary FBV2-S2 footprint item (D-159).
+Safe-OFF is now proven rather than assumed: `R23` holds the gate at ≤ 10 mV
+against a 650 mV threshold, a 65× margin.
+
+**The receiver's existing supply filter turns out to be the load-bearing part of
+the sheet.** `R21`/`C11` give **41 dB at 38 kHz**, and datasheet Fig. 7 shows the
+receiver degrading from roughly **10 mV RMS of supply ripple at the carrier
+frequency**. 40 mV on the rail becomes 0.1 mV at `VS` — **~90× margin**, and that
+is what makes sharing `+3V3` safe (D-160).
+
+**ERC 45 → 45: zero added, zero removed.** 311 components, 0 duplicates,
+0 without a footprint, 0 `*_TBD` nets.
+
+> **O-5 — NEW, REQUIRES A CTO DECISION. The receiver lock conflicts with the
+> protocol list.** The brief locks `TSOP38438`; the brief also lists Sony/SIRC.
+> **Vishay marks AGC4 "No" for Sony code** where the AGC2 `TSOP38238` is "Yes".
+> The lock is a defensible trade — AGC4 is *"Preferred"* on five of six protocols
+> and suppresses high-modulation fluorescent interference AGC2 cannot — but it is
+> a trade. **It is receive-only: transmitting Sony is unaffected**, and reverting
+> is a `lib_id` change because **the `TSOP38238` symbol was deliberately kept in
+> the library**. Implemented as locked pending the ruling.
+
+**B-65, B-66 opened.**
+
+Full analysis:
+[`audits/2026-08-23-s1-ir-implementation.md`](audits/2026-08-23-s1-ir-implementation.md).
+
+<details>
+<summary>Superseded — the ~51% assessment (FBV2-S1-006)</summary>
 
 **Raised 49% → 51% by FBV2-S1-006.** **No gate in the twelve-gate table passed.**
 The task gate **FBV2-S1-AUDIO = PASS** (2026-08-23).
@@ -113,6 +176,8 @@ called confirmed.
 
 Full analysis:
 [`audits/2026-08-23-s1-audio-implementation.md`](audits/2026-08-23-s1-audio-implementation.md).
+
+</details>
 
 <details>
 <summary>Superseded — the ~49% assessment (FBV2-S1-005)</summary>
@@ -542,7 +607,7 @@ work.
 | **FBV2-A0** | Pre-design audit | **PASS** | 2026-08-22 |
 | **FBV2-A1** | CTO architecture decisions | **PASS** | 2026-08-22 |
 | **FBV2-A2** | Mechanical interface freeze | **PASS** | 2026-08-22 |
-| **FBV2-S1** | Schematic migration / rearchitecture | **IN PROGRESS — 6 of 9 sheets.** `hardware/beta-v2/` forked from Beta-DM with a re-runnable byte-equivalence proof; `01_POWER_TREE`, `02_MCU_CORE`, `03_SPI_A_DISPLAY_SD`, `04_SPI_B_RADIOS_NFC`, `05_I2C_DEVICES` and `06_AUDIO` carry the v2 architecture (FBV2-S1-001 … 006); all six task gates **PASS**. Sheets `07`-`09` are byte-equivalent Beta-DM copies and still carry the Beta-DM architecture. **The gate does not pass until every sheet in the migration order is landed.** | — |
+| **FBV2-S1** | Schematic migration / rearchitecture | **IN PROGRESS — 7 of 9 sheets.** `hardware/beta-v2/` forked from Beta-DM with a re-runnable byte-equivalence proof; `01_POWER_TREE`, `02_MCU_CORE`, `03_SPI_A_DISPLAY_SD`, `04_SPI_B_RADIOS_NFC`, `05_I2C_DEVICES`, `06_AUDIO` and `07_IR` carry the v2 architecture (FBV2-S1-001 … 007); all seven task gates **PASS**. Sheets `08`-`09` are byte-equivalent Beta-DM copies and still carry the Beta-DM architecture. **The gate does not pass until every sheet in the migration order is landed.** | — |
 | **FBV2-S2** | ERC + footprint audit | **NOT STARTED** | — |
 | **FBV2-P1** | Floorplan / placement | **NOT STARTED** | — |
 | **FBV2-P2** | Routing | **NOT STARTED** | — |
@@ -559,7 +624,7 @@ work.
 | FBV2-A0 | A read-only audit pinned to a repository HEAD exists in `audits/`. **Met 2026-08-22.** |
 | FBV2-A1 | Every item in the Pending CTO Decisions table of [CTO_DECISIONS.md](CTO_DECISIONS.md) is closed into a locked `D-xxx` ruling. |
 | FBV2-A2 | Internal cavity X/Y/Z, wall thickness and PCB-to-wall clearance are published, and every dimensional dependency that could force a late PCB redesign is resolved. **Met 2026-08-22** via [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md). ⚠ **`tools/check_mechanical_consistency.py` still reports UNKNOWN** — it parses the Field Slate v5 block, and FBV2-MECH-001 had **no authority** to modify `tools/` or the Field Slate. Reconciling the guard is a follow-up task, not a gate condition, because the guard reads a Beta-DM-era document rather than the v2 spec. |
-| FBV2-S1 | `hardware/beta-v2/` exists, forked from Beta-DM with a byte-equivalence proof, and every schematic change in the migration order is landed. **Half met 2026-08-23:** the fork and its proof exist (`hardware/beta-v2/checks/fork_equivalence.py`, `hardware/beta-v2/reports/FBV2-S1-fork-equivalence.md`); **6 of 9 sheets** are landed. |
+| FBV2-S1 | `hardware/beta-v2/` exists, forked from Beta-DM with a byte-equivalence proof, and every schematic change in the migration order is landed. **Half met 2026-08-23:** the fork and its proof exist (`hardware/beta-v2/checks/fork_equivalence.py`, `hardware/beta-v2/reports/FBV2-S1-fork-equivalence.md`); **7 of 9 sheets** are landed. |
 | FBV2-S2 | 0 ERC errors, 0 schematic-parity issues, and every project-library footprint verified against a vendor drawing with a per-footprint pad-overlap assertion. |
 | FBV2-P1 | Outline derived from the published cavity; all mechanical keepouts instantiated; IR TX/RX escapes proven at placement time; U3/connector cluster placed at the right-side exit. |
 | FBV2-P2 | Ratsnest zero including GND; no pin-specific budget exceptions. |
@@ -808,6 +873,8 @@ protoboard experiment (P-13).
 | **B-43** | **TPS61169 `CTRL` internal-pull specification not retrieved** — TI's PDF text layer would not extract this session | **OPEN, low.** The GPIO46 strap is safe for any internal pull-up ≥ 30 kΩ with `R108` = 10 kΩ, and `R109` 0 Ω is the isolation escape. Confirm at FBV2-S2 |
 | ~~**B-44**~~ | BMI270 `INT` pad drive current not retrieved | **CLOSED 2026-08-23 by D-136.** `BST-BMI270-DS000-08` Rev 1.6 Table 1: **`IOH`/`IOL` ≤ 2 mA, `VOH` ≥ 0.8·VDDIO, `VOL` ≤ 0.2·VDDIO.** The `R18` + `R110` load draws **323 µA — 6× inside spec** — and GPIO3 settles at 3.23 V. The 47 kΩ fallback is not needed. |
 | **B-59** | **`ER-TPC035-6` touch-flex I²C pull-ups unknown.** If the module carries its own, the effective internal pull-up drops below 2.2 kΩ | **OPEN, low.** Direction is safe (faster edges); sink current stays inside every device even at a 1 kΩ equivalent. **First-article measurement** |
+| **B-65** | **The `+3V3` / `SYS` IR source-select link listed in `ARCHITECTURE.md` cannot be built without a sheet-01 edit.** `BQ25185_SYS` is a sheet-01-local net, not published hierarchically. Building it is one hierarchical label on sheet 01 plus a DNP resistor on sheet 07 | **OPEN, low.** A provision, not a fix — `+3V3` is the analysed-correct choice (D-156) |
+| **B-66** | **TSAL6100 ±10° beam ergonomics unvalidated.** The narrow cone is the one real risk in the emitter choice | **OPEN, medium.** First article: if aiming is fussy, fit the **TSAL6200** — a proven drop-in with identical package, `VF` and `IFM`, so `R24` is unchanged and `R123` trims the current back up |
 | **B-61** | **`AS02008MR-LW152-R` availability not confirmed from a live listing.** PUI's product page would not render here after three attempts and Digi-Key search is bot-protected. The datasheet is served live from PUI's API today and the sibling `AS02008MR-R` is catalogued — but **D-096 asks for a live listing and that is not one** | **OPEN, medium.** Procurement, before the BOM gate |
 | **B-62** | **AWG #32 into JST PH `SPH-002T-P0.5S` is the small end of the #32–#24 applicable range.** Inside spec, but a crimp pull test belongs at first article | **OPEN, low.** First article |
 | **B-63** | **The PCB acoustic hole and the pad-4 paste pullback are not in the microphone footprint.** Ø1.05 mm NPTH concentric with pad 4, and a stencil aperture kept back from the hole edge so solder cannot wick into the port | **OPEN.** PCB stage / FBV2-S2 |
@@ -877,6 +944,7 @@ DS12484 tables; every other footprint remains unverified.
 
 | date | change |
 |---|---|
+| 2026-08-23 | FBV2-S1-007. Overall raised 51% → 53%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-IR = PASS**. **`07_IR` MIGRATED.** **The whole IR subsystem arrived DNP — eight parts — and is now FITTED** (D-153), **the fourth consecutive sheet with a load-bearing inherited DNP; sheets 08 and 09 must be assumed to carry the same trap**. **IR TX locked Vishay `TSAL6100`**, with the **TSAL6200 fallback proven a true drop-in** — identical package, `VF` and `IFM`, so `R24` is unchanged (D-154). **Peak current 150 mA = 75 % of `IFM`**: `IFSM` 1.5 A is a **single-pulse ≤ 5 µs surge and cannot justify carrier current**; 200 mA leaves no tolerance margin and **300 mA is out of spec** (D-155). **Supply preference REVERSED to `+3V3`, not `SYS`** — regulated gives 118–170 mA against 64–166 mA on `SYS`, where **IR range would visibly shorten as the battery drains** (D-156). **`R24` 18 Ω → 12 Ω plus `R123` DNP parallel trim, never below 10 Ω total** (D-157). **`C12` 4.7 µF → 22 µF**: 4.7 µF gave 218 mV of carrier ripple, 22 µF gives 40 mV (D-158). **AO3400A pinout CONFIRMED 1 = G / 2 = S / 3 = D and the "needs the official AOS land pattern" blocker CLOSED — AOS publishes none**; safe-OFF proven at 10 mV against a 650 mV threshold (D-159). **Receiver `TSOP38238` → `TSOP38438`, a pure MPN change**, and the inherited `R21`/`C11` filter is now **quantified at 41 dB at 38 kHz against a Fig. 7 knee of ~10 mV RMS — ~90× margin, and it is what makes sharing `+3V3` safe** (D-160). **No new mutual-exclusion rule** — IR averages 17 mA against the audio amplifier’s 230 mA peaks (D-161). `TP39`/`TP40` added. **O-5 raised for CTO: Vishay marks AGC4 "No" for Sony code**, conflicting with the brief’s own protocol list; receive-only, and reverting is a `lib_id` change because the `TSOP38238` symbol was kept. **B-65, B-66 opened.** **ERC 45 → 45, zero added, zero removed.** PCB untouched and still bit-identical to Beta-DM. |
 | 2026-08-23 | FBV2-S1-006. Overall raised 49% → 51%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-AUDIO = PASS**. **`06_AUDIO` MIGRATED.** **`U5` and `J6` arrived from Beta-DM marked DNP — the speaker output path had never been built — and are now FITTED** (D-144), the third load-bearing inherited DNP in two tasks. **Microphone locked: PUI `DMM-4026-B-I2S-R` replacing the obsolete ICS-43434 — SEVEN pads, not six, so a new symbol and footprint were built from the manufacturer drawing**; `CONFIG`→GND is mandatory and has no ICS equivalent; **`R120` 100 kΩ on `I2S_MIC_DIN` is a data-sheet requirement the inherited sheet lacked**; **no 1.8 V rail is needed** despite the 1.8 V rating (D-145). **The brief’s 16 kHz cannot be run on the wire**: the microphone needs BCLK 2.048–4.096 MHz, so **the bus runs 48 kHz × 64 = 3.072 MHz and firmware decimates** (D-146). **MAX98357A retained, PRODUCTION, MPN `MAX98357AETE+T`; `GAIN_SLOT` GND → VDD (12 dB → 6 dB)** because at 12 dB the top **6.8 dB of digital range was clipped by the 3.3 V rail** (D-147). **Speaker locked: PUI `AS02008MR-LW152-R`**, Ø20 × 3 mm, 8 Ω, 0.5/0.8 W, 500–4000 Hz voice band, AWG #32 leads crimping straight into the existing `J6` — replaceable without soldering (D-148). **Default max software volume −6 dBFS → 0.17 W, ≈ 57 mA**; 0 dBFS is 0.68 W / 230 mA and must not be continuous (D-149). **EMI: nothing fitted** — the data sheet’s Figure 14 shows compliance with 12 in of cable and no filter; `R121`/`R122` 0 Ω fitted, `C81`/`C82` 1 nF DNP (D-150). Acoustic interface measured from the drawing: **Ø1.05 mm PCB hole, bottom port, mic on the face opposite the aperture** (D-151). No hardware AEC; `SD_MODE` is already a hardware mute for half-duplex voice (D-152). **B-61–B-64 opened.** **ERC 45 → 45, zero added, zero removed.** PCB untouched and still bit-identical to Beta-DM. |
 | 2026-08-23 | FBV2-S1-005. Overall raised 47% → 49%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-I2C-IMU = PASS**. **`05_I2C_DEVICES` MIGRATED.** **Reported-ERC correction: FBV2-S1-004 / 004B / 004C quoted "68"; the stored reports say 46** — the deltas were always right, the absolute number was not. **BMI270 re-derived from `BST-BMI270-DS000-08` Rev 1.6 and every inherited strap proved correct** (D-136); **B-44 CLOSED** (`IOH`/`IOL` ≤ 2 mA vs a 323 µA load). **The BMI270 has NO tap or double-tap feature in any configuration** — stated because the brief asked for it. **GPIO3 boot safety is now a timing proof**: `INT1_IO_CTRL` resets to output-disabled, `tH` = 3 ms, GPIO3 defaults Floating, so **the IMU cannot reach the strap window**; the pull-down makes **push-pull + active-high mandatory and open-drain forbidden** (D-137). **`INT2` stays DNC; `RESERVED_SPARE` untouched** (D-138). **Internal I²C pull-ups 4.7 kΩ → 2.2 kΩ** — at ≈ 85 pF measured, 4.7 kΩ gives `t_r` **338 ns and FAILS the 300 ns fast-mode limit**; 2.2 kΩ gives 158 ns at 1.32 mA sink (D-139). **BMI270 address made strappable: `R118` 0 Ω FIT → 0x68, `R119` 0 Ω DNP → 0x69, fit one only** (D-140). **IMU permanently powered, no load switch** — saves 9 µA, costs wake-on-motion (D-141). **`I2C_ADDRESS_REGISTRY.md` created and normative** (D-142). **BMI270 land pattern verified against §8.3 by rendering and measuring the drawing — "DO NOT ROUTE" discharged** (D-143). **B-59, B-60 opened.** **O-4 flagged for CTO: TCA4307-class hot-swap buffer with stuck-bus recovery at Sheet 09** — nothing implemented. **ERC 46 → 45, zero added, one removed.** PCB untouched and still bit-identical to Beta-DM. |
 | 2026-08-23 | FBV2-S1-004C. Overall raised 45% → 47%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-NFC-MATCHING = PASS**. **Antenna corrected A → B: `FXC.46.52.0075X.B.dg`, reverse ferrite**, bonds adhesive-side to the **inner rear shell**, ferrite facing inward — with the A version the ferrite would have sat between the coil and the tag (D-131). Board unaffected. **B-version parameters adopted**: `La` 1.10 µH, `Rs` 1.50 Ω, `Q` 60.37, `SRF` 395 MHz (D-132). **Target impedance DERIVED from the D-130 current budget — ≈ 36 Ω differential, Q ≈ 25 — the earlier 20 Ω/side assumption is discarded** (D-133). **First-build set calculated**: `R_q` 1R1 (Q 25.3), `C_s` 300 pF, `C_p` 1.5 nF, EMC **39 nH / 100 pF → f_c 20.1 MHz** — **B-56 CLOSED**, the old pair sat at 7.6 MHz below the carrier (D-134). **RFI SAFETY DEFECT FOUND AND FIXED**: the placeholder 47 pF / 220 pF divider would have put ≈ **4.4 V pk-pk on RFI against a 3.0 V rail**; new 27 pF / 620 pF gives ≈ 1.03 V pk-pk (D-135). **B-48 closed on substance**; **B-57, B-58 opened**. First-article tuning **required** with rear shell, antenna, PCB and battery all installed. **ERC 68 → 68, zero added, zero removed.** *(the 68 is a transcription error corrected in FBV2-S1-005; the stored reports say 46 → 46. The delta was right.)* | Overall raised 43% → 45%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-NFC-ANTENNA-LOCK = PASS**. **NFC IC LOCKED `ST25R3916-AQET`, non-B — P-17 CLOSED** (D-126). **NFC antenna LOCKED Taoglas `FXC.46.52.0075X.A.dg`, off-board** — 13.56 MHz, 46 mm circular flex, 0.27 mm with ferrite, 3M peel-and-stick, 75 mm 28 AWG twisted pair, ACH(F), 40 mm typical read distance, all verified verbatim from `SPE-22-8-131-C` — **B-53 CLOSED** (D-127). **`J7` = JST `BM02B-ACHSS-GAN-ETF`** added between the matching network and the antenna; mating **proven** via `ACHR-02V-S` = the antenna's own ACH(F) housing, so **the antenna is replaceable without soldering** (D-128). **Brief corrected: JST classes ACH as TOP ENTRY, not right-angle** — the part is right, `J7` needs mating clearance above it. **Matching re-derived against the real antenna**: `R_q` 0 R → **1R0** (`Q` 58 → 25.8, derived from the antenna alone), `C_s` → **300 pF**, `C_p` → **1.8 nF** from an L-match with a stated assumption; **`L5`/`L6` + `C69`/`C70` deliberately NOT re-derived and flagged unbuildable (B-56)** (D-129). **NFC field current estimated ≤ 150 mA at 3.3 V; B-54 downgraded** (D-130). **B-06 CLOSED.** Mechanical: NFC clear region **48 × 48 mm**. **ERC 68 → 68, zero added, zero removed.** *(the 68 is a transcription error corrected in FBV2-S1-005; the stored reports say 46 → 46. The delta was right.)* B-55, B-56 opened. One item flagged for CTO: the **ferrite is directional** and Taoglas sells a reverse-ferrite variant — zero board change, but it must be settled against the enclosure stack before antennas are ordered. | Overall raised 40% → 43%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-RADIOS-NFC = PASS**. **`04_SPI_B_RADIOS_NFC` MIGRATED.** **RF architecture locked (D-118):** 433 MHz internal Taoglas `FXP450.07.0100C` (IPEX MHF-I mating **proven** against the module's IPEX-1 socket), 915 MHz external to a top-panel **SMA female** bulkhead; **no board RF trace, matching network, switch or diplexer in either band**; the `U7` IPEX must stay service-accessible. Both module stamp-hole pins are explicit no-connects. **NFC: B-41 CLOSED** — `VDD`/`VDD_TX` moved to `NFC_SUPPLY` = `+3V3` (D-122, `sup3V` firmware requirement); **`Y1` 27.12 MHz crystal** + load caps (D-123); **real differential matching and RX-divider topology** with every value `TUNE` and two trim positions per TX leg (D-124); `AAT`, `CSI/CSO`, `EXT_LM`, `MCU_CLK` explicit no-connects with recorded reasons. **`SX1262_DIO1` published for sheet 08.** **Zero `*_TBD` nets remain in the project.** **ERC 4 errors → 2, total 64 → 46, zero added** — the first migration task to reduce the error count. **P-17 recommended for closure (keep the non-B); B-53 opened** (antenna architecture). B-48, B-49, B-50, B-51, B-52, B-54 opened. PCB untouched and still bit-identical to Beta-DM. | Overall raised 37% → 40%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-DISPLAY-SD = PASS**. **`R111` FITTED** (D-111). **`03_SPI_A_DISPLAY_SD` MIGRATED:** new `ER-TFT035IPS-6_50P` symbol with the vendor pin table verbatim, **catching two dead-on-arrival faults in the inherited `J1`** — reversed backlight anode/cathode and swapped SCL / D-CX. Touch gains `TOUCH_INT_N` (panel pin 46, previously unrepresented). Backlight re-derived: `R69` **1.87 Ω**, `R70`–`R73` **4 × 33 Ω**, I_LED **109 mA typ / 117.6 mA worst case** against a 120 mA panel maximum; peak switch current 4.6× (3.9× at f_SW min). `SD_CARD_DETECT_TBD` → **`SD_CARD_DETECT_N`** with a 100 kΩ pull-up. `R112` 0 Ω **DNP** isolates the display SDO from the shared SPI-A. **B-43, B-32, B-28 CLOSED; B-46, B-47 opened.** `/03_SPI_A_DISPLAY_SD/LED_A` added to the `LED_BOOST` netclass — a latent FBV2-P2 defect no probe would have caught. **ERC 4 errors → 4 errors, error report byte-identical.** PCB untouched and still bit-identical to Beta-DM. | Overall raised 34% → 37%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-MCU-CORE = PASS**. **P-20, P-21 and P-22 CLOSED** (D-104…D-110). `R95` locked at **560 Ω** — recovery **8.36 mA** nominal, and **B-27's ceiling amended to ≈ 15.9 mA** because 680 Ω was the value that produced its old ≈ 13 mA figure. LTC4368 **OV trip derived to 4.63 V** (`R77` 3.65 M / `R78` 442 k) from the datasheet's 492.5/500/507.5 mV threshold; **removes a BOM line**. Scripted KiCad edits permitted under an **eight-condition** standing rule. **`02_MCU_CORE` MIGRATED:** GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, GPIO46 = `DISP_BL_CTL` with `R108` 10 kΩ strap pull-down + `R109` 0 Ω isolation link + `TP2`, GPIO43 withdrawn from the community port (`TP35` UART0 TXD), **GPIO3 strap closed — B-09 retired**, `R111` 10 kΩ GPIO45 pull-down placed **DNP**. **ERC 5 errors → 4, zero new; `02_MCU_CORE` clean.** B-43, B-44, B-45 opened. **NO NEW DEBUG HARDWARE** — USB Serial/JTAG is the service interface. PCB untouched and still bit-identical to Beta-DM. | Overall raised 31% → 34%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-POWER-TREE = PASS**. **First Full Beta v2 design-file work.** `hardware/beta-v2/` forked from Beta-DM with a **re-runnable** byte-equivalence proof; **`01_POWER_TREE` CAPTURED** — P2 reverse protection with `U18` LTC4368-1, autonomous dead-cell recovery, `ACC_3V3`/`ACC_5V` on one consolidated boost + load-switch BOM, NFC 3V3-FIT/5V-DNP select, `VBUS_PRESENT` telemetry, 19 test points, 136 parts. **ERC 58 baseline → 55, zero introduced** (three inherited violations retired). **B-01 closed at schematic level.** `U18` package corrected from a policy-violating DFN-10 to MSOP-10. Inherited `R_FB_TOP 1M` net label renamed `V3V3_FB`. **D-099…D-103 recorded; B-41, B-42, P-20, P-21, P-22 opened.** PCB untouched and still bit-identical to Beta-DM. |

@@ -1,15 +1,16 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (audio, FBV2-S1-006)
+Date: 2026-08-23 (infrared, FBV2-S1-007)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**Six blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
+**Seven blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
 **MCU core**, the **display / touch / microSD** sheet, the **radios / NFC** sheet, the
-**I²C devices / IMU** sheet and the **audio** sheet are CAPTURED in `01_power_tree.kicad_sch`,
-`02_mcu_core.kicad_sch`, `03_spi_a_display_sd.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch`,
-`05_i2c_devices.kicad_sch` and `06_audio.kicad_sch`
-(FBV2-S1-001 … FBV2-S1-006). Every other block on this page is still intent only, and
+**I²C devices / IMU** sheet, the **audio** sheet and the **infrared** sheet are CAPTURED in
+`01_power_tree.kicad_sch`, `02_mcu_core.kicad_sch`, `03_spi_a_display_sd.kicad_sch`,
+`04_spi_b_radios_nfc.kicad_sch`, `05_i2c_devices.kicad_sch`, `06_audio.kicad_sch`
+and `07_ir.kicad_sch`
+(FBV2-S1-001 … FBV2-S1-007). Every other block on this page is still intent only, and
 the PCB is untouched.
 
 > **RF architecture locked 2026-08-23 (D-118).** 433 MHz is an **internal** Taoglas
@@ -113,8 +114,8 @@ from the product concept but never existed electrically.
 | **433 MHz** | `U7` Ebyte E07-400M10S (CC1101) on SPI-B | Module IPEX; Taoglas FXP450 flex (u.FL / MHF I only) |
 | **915 MHz LoRa** | `U8` Ebyte E22-900M22S (SX1262) on SPI-B | Module IPEX; Taoglas FXP890 flex (u.FL / MHF I only) |
 | **NFC** | `U9` ST25R3916-AQET on SPI-B + boost — **architecture unresolved** | **Undesigned** |
-| **IR TX** | `D1` TSAL6200 5 mm THT, low-side `Q1` AO3400A, RMT on GPIO16 | Top crown aperture |
-| **IR RX** | `U6` TSOP38238 with supply RC filter, RMT capture on GPIO44 | Top crown aperture, optically isolated from `D1` |
+| **IR TX** | **CAPTURED 2026-08-23 (FBV2-S1-007).** `D1` **Vishay `TSAL6100`** 5 mm THT (940 nm, `Ie` 170 mW/sr, **±10°**), low-side `Q1` AO3400A (**pinout confirmed 1 = G / 2 = S / 3 = D**), RMT on GPIO16. **Peak 150 mA = 75 % of the `IFM` 200 mA REPETITIVE rating** — `IFSM` 1.5 A is a single-pulse ≤ 5 µs surge and is not a carrier rating (D-155). **Supply `+3V3`, not `SYS`** (D-156): regulated gives 118–170 mA against 64–166 mA on `SYS`, where IR range would shorten as the battery drains. `R24` **12 Ω** + `R123` DNP trim, **never below 10 Ω total** (D-157). `C12` **22 µF 1210** holds the 38 kHz carrier to 40 mV on the rail (D-158). `R23` 100 kΩ holds the gate at ≤ 10 mV against a 650 mV threshold — **no IR at boot, reset or crash**. **TSAL6200 is a proven drop-in fallback**: identical package, `VF` and `IFM`, so `R24` is unchanged (D-154, B-66). |
+| **IR RX** | **CAPTURED 2026-08-23 (FBV2-S1-007).** `U6` **Vishay `TSOP38438`** (38 kHz, **AGC4**) with the `R21`/`C11` supply RC filter, RMT capture on GPIO44. Same Minicast package and pinning as the TSOP38238 it replaces, so it is a pure MPN change. `VS` 2.0–5.5 V, **output active low with an internal 30 kΩ pull-up** so no external pull-up is needed, ±45° acceptance. **The filter is the load-bearing part: 339 Hz corner = 41 dB at 38 kHz, against a datasheet Fig. 7 degradation knee of ~10 mV RMS of carrier-frequency supply ripple — ~90× margin, and it is what makes sharing `+3V3` with the transmitter safe** (D-160). **O-5 OPEN: Vishay marks AGC4 "No" for Sony code**; receive-only, and the `TSOP38238` symbol is retained so reverting is a `lib_id` change. Top crown aperture, optically isolated from `D1`. |
 
 **Board-level RF scope:** by design, no 433/915 RF signal reaches the main PCB —
 no matching networks, no RF traces, no controlled-impedance routing. NFC is the
@@ -315,7 +316,7 @@ reconciliation audit §H.
 
 | class | items |
 |---|---|
-| **HIGH — include** | IR LED current-limit resistor · IR LED source-select link (`+3V3` vs `SYS`) · NFC matching network · TPS22950C R<sub>ILIM</sub> · speaker EMI-filter footprints · VBUS-sense divider · reverse-protection sense resistor |
+| **HIGH — include** | IR LED current-limit resistor **(built: `R24` 12 Ω + `R123` DNP trim, D-157)** · IR LED source-select link (`+3V3` vs `SYS`) **(NOT built — needs `BQ25185_SYS` published from sheet 01, B-65)** · NFC matching network · TPS22950C R<sub>ILIM</sub> · speaker EMI-filter footprints · VBUS-sense divider · reverse-protection sense resistor |
 | **MEDIUM — if area permits** | charger status pull-ups · RF module control pulls · strap/pull values · external antenna pigtail (already inherently reworkable) |
 | **LOW — omit** | alternate footprints for major ICs · alternate expander footprint |
 

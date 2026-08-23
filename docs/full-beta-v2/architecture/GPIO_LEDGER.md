@@ -4,10 +4,10 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-006, audio migration)
+Date: 2026-08-23 (after FBV2-S1-007, infrared migration)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Sheets `07`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
+> **Sheets `08`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
 > may terminate on a *Beta-DM* peripheral until that sheet is migrated. Where the
 > v2 destination differs, the row says so.
 
@@ -37,7 +37,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 21 | GPIO13 | `SPI_A_MISO` | SPI-A | input | — | no | |
 | 22 | GPIO14 | `DISP_DC` | display | output | — | no | |
 | 8 | GPIO15 | `CC1101_GDO0` | sub-GHz | input | — | no | |
-| 9 | GPIO16 | `IR_TX_GPIO16` | IR | output | — | no | low-side NMOS drive |
+| 9 | GPIO16 | `IR_TX_GPIO16` | IR | output | — | no | low-side NMOS drive into `R22` 100 Ω. **FBV2-S1-007: this is now a real 150 mA load** — `Q1` AO3400A switching a TSAL6100 at 38 kHz. **`R23` 100 kΩ to GND holds the gate at ≤ 10 mV against a 650 mV threshold, so the pin being high-Z at boot, reset or crash cannot emit IR** (D-159) |
 | 10 | GPIO17 | `SX1262_CS_N` | LoRa | output | — | no | |
 | 11 | GPIO18 | `NFC_IRQ` | NFC | input | — | no | **must never move to GPIO46** (B-19). Confirmed still here |
 | 13 | GPIO19 | `USB_D_MCU_N` | USB | native USB D− | — | no | USB Serial/JTAG |
@@ -52,7 +52,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 34 | GPIO41 | `I2S_SPK_DOUT` | audio | output | — | no | also MTDI. To `U5` `DIN` only |
 | 35 | GPIO42 | `I2S_MIC_DIN` | audio | input | — | no | also MTMS. From `MK1` `SD` only. **`R120` 100 kΩ pull-down added FBV2-S1-006 — a data-sheet requirement: `SD` tri-states for the whole unused half of every frame (D-145)** |
 | 37 | **GPIO43** | `UART0_TXD_DBG` | debug | output | — | **NO (withdrawn)** | **CHANGED FBV2-S1-002.** Was `FAST_IO_U0TXD_ROOTPROBE_CS` on the connector. Now internal only, `TP35` |
-| 36 | GPIO44 | `IR_RX_GPIO44` | IR | input | — | no | U0RXD is consumed by IR, so UART0 is **TX-only** |
+| 36 | GPIO44 | `IR_RX_GPIO44` | IR | input | — | no | U0RXD is consumed by IR, so UART0 is **TX-only**. **FBV2-S1-007: `U6` `OUT` is ACTIVE LOW with a 30 kΩ INTERNAL pull-up, so it drives this pin directly and no external pull-up exists or is needed** (D-160). `TP40` probes it |
 | 26 | **GPIO45** | `GPIO45_VDDSPI_STRAP` | VDD_SPI | strap | **YES** | no | `TP1`. **`R111` 10 k pull-down FITTED (D-111)** — see §3 |
 | 16 | **GPIO46** | `DISP_BL_CTL_STRAP` → `R109` → `DISP_BL_CTL` | display | output | **YES** | no | **CHANGED FBV2-S1-002.** `R108` 10 k pull-down + `R109` 0 Ω isolation link + `TP2` |
 | 25 | GPIO48 | `SD_CS_N` | microSD | output | — | no | |

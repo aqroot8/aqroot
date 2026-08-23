@@ -2,7 +2,7 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table)
 
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
 > **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
@@ -116,8 +116,8 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **microSD** | Molex 5025700893 | ~14.0 × 14.5 × **1.85 mm** (typical), push-pull | Bottom edge; card protrudes during insertion — reserve **+18 mm** insertion travel outside the shell |
 | **Microphone** | **MK1 PUI `DMM-4026-B-I2S-R`** | **4.00 × 3.00 × 1.00 mm** ±0.10 | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part, so **the microphone is soldered to the face OPPOSITE the shell aperture**. Path is shell aperture → gasket → **Ø1.05 mm PCB hole** → Ø0.25 mm port. **LOCKED D-145 / D-151** |
 | **Speaker** | **LS1 PUI `AS02008MR-LW152-R`**, off-board | **Ø20 ± 0.2 × 3 ± 0.2 mm**, 8 Ω ±15 %, 0.5 W rated / 0.8 W max | §7. **LOCKED D-148.** 152 mm AWG #32 leads to `J6`; Nd-Fe-B magnet |
-| **IR emitter** | TSAL6200 class | 5 mm THT lens, **±17° half-angle** | Top edge. Consider a side-view SMD emitter to reduce Z |
-| **IR receiver** | TSOP38238 | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall** |
+| **IR emitter** | **Vishay `TSAL6100`** | T-1¾, **Ø5 mm** leaded, 2.54 mm lead pitch, **±10° half-angle** | Top edge. **LOCKED D-154.** Beam is **narrower** than the ±17° the layout was first written against and **2.4× brighter on axis** — see §8. Fallback **TSAL6200** (±17°) is a drop-in in the same footprint (**B-66**). Consider a side-view SMD emitter to reduce Z |
+| **IR receiver** | **Vishay `TSOP38438`** | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall.** **LOCKED D-160**; same package and pinning as the TSOP38238 it replaces |
 | **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
 | **Community connector** | **2×12, 24 active contacts, 2.54 mm, FEMALE** — Samtec `BCS-112-S-D-HE` | body **30.48 × 8.13 × 5.33 mm**, horizontal entry | §5. Keying and shroud come from the **enclosure recess** |
 | Expanders / protection | PCAL9535APW (TSSOP24), LTC4368 (MSOP-10), 2 × dual FET (SOIC-8) | ≤1.2 mm | All low-profile; no Z impact |
@@ -126,7 +126,7 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 | side | tallest | height | constraint |
 |---|---|---|---|
-| **Top** | TSOP38238 IR receiver | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
+| **Top** | **TSOP38438** IR receiver | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
 | Top (display shadow) | passives only | **≤0.8 mm** | **measured** Beta-DM limit — retain |
 | Top (control area) | PTS645 tact switch | **4.3 mm** | |
 | **Bottom** | Molex microSD | **1.85 mm** | |
@@ -454,7 +454,7 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 |---|---|---|
 | IR emitter location | top edge, right of centre | Natural remote-pointing posture |
 | IR receiver location | top edge, right end | |
-| **Emitter ↔ receiver separation** | **≥15 mm** | The TSOP38238 is extremely sensitive; a ±17° emitter cone at close range saturates it |
+| **Emitter ↔ receiver separation** | **≥15 mm**, plus an **OPAQUE OPTICAL BARRIER** between them, receiver **outside the LED emission cone** | The TSOP38438 is extremely sensitive. **REVISED 2026-08-23 (D-162): the ≥15 mm figure was written against a ±17° TSAL6200. The locked TSAL6100 is 2.4× brighter on axis, so stray and internally-reflected energy reaching the receiver goes UP even though the direct cone is narrower — the narrower beam tightens this requirement rather than relaxing it.** Keep the TX current loop away from the receiver supply and return. The electrical half of self-blinding is already solved by the 41 dB `R21`/`C11` filter |
 | **Opaque barrier** | **mandatory**, full height between the two windows, bonded to both shells | Blocks the internal reflection path, which is the one that actually causes self-blinding |
 | Emitter axis | **normal to the top face**, ±0° | |
 | Receiver FOV | ±45° about the top-face normal | |
