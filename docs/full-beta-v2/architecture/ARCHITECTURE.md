@@ -1,15 +1,15 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (I²C devices and IMU, FBV2-S1-005)
+Date: 2026-08-23 (audio, FBV2-S1-006)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**Five blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
-**MCU core**, the **display / touch / microSD** sheet, the **radios / NFC** sheet and the
-**I²C devices / IMU** sheet are CAPTURED in `01_power_tree.kicad_sch`,
-`02_mcu_core.kicad_sch`, `03_spi_a_display_sd.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch`
-and `05_i2c_devices.kicad_sch`
-(FBV2-S1-001 … FBV2-S1-005). Every other block on this page is still intent only, and
+**Six blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
+**MCU core**, the **display / touch / microSD** sheet, the **radios / NFC** sheet, the
+**I²C devices / IMU** sheet and the **audio** sheet are CAPTURED in `01_power_tree.kicad_sch`,
+`02_mcu_core.kicad_sch`, `03_spi_a_display_sd.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch`,
+`05_i2c_devices.kicad_sch` and `06_audio.kicad_sch`
+(FBV2-S1-001 … FBV2-S1-006). Every other block on this page is still intent only, and
 the PCB is untouched.
 
 > **RF architecture locked 2026-08-23 (D-118).** 433 MHz is an **internal** Taoglas
@@ -84,8 +84,10 @@ Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
 | **TFT / touch** | **LOCKED (D-074…D-078).** **EastRising `ER-TFT035IPS-6`** 3.5″ IPS 320×480, **ILI9488** (COG), with **`ER-TPC035-6`** capacitive touch, **FocalTech `FT6236` @ I²C 0x38**. Assembled outline **56.54 × 84.96 × 3.95 ± 0.25 mm**, active 48.96 × 73.44 mm. **One 50-pin FPC — 0.50 mm pitch, bottom contact, 0.30 ± 0.03 mm thick, 25.5 ± 0.15 mm wide** — carries display *and* touch (touch on pins 44–47). **`J1` = Hirose `FH69-50S-0.5SH`** (top *and* bottom 2-point contact, accepts 0.30 ± 0.05 mm FPC), laid out on the **FH12/FH52E standard land pattern** so `FH52E-50S-0.5SH` (LCSC C7465440) is a drop-in second source (D-077). ST7796S was preferred and does not exist in a documented CTP module (D-078); the cost is **+50 % SPI-A traffic**, 46 ms full frame at 80 MHz. Backlight: **6 LEDs in parallel, one anode**, 2.9–3.2 V, 120 mA max / 90 mA life point — `U17` TPS61169 retained from `+3V3`, **`R69` = 1.87 R**, **`R70`–`R73` = 4 × 33 R in parallel** (D-079). |
 | **D-pad** | `SW2`-`SW5` on internal expander `U2` P10-P13. |
 | **A / B** | `SW6` / `SW7` on `U2` P14 / P15. |
-| **Microphone** | `MK1` ICS-43434 I2S MEMS. Front opening. |
-| **Speaker** | MAX98357A-style I2S Class-D into an off-board 8 ohm speaker via `J6`. Rear opening. |
+| **Microphone** | **CAPTURED 2026-08-23 (FBV2-S1-006).** `MK1` **PUI Audio `DMM-4026-B-I2S-R`**, bottom-port I2S MEMS, replacing the obsolete ICS-43434 (D-145). **Seven pads, not six — not a drop-in**, so a new symbol and footprint were built from the manufacturer drawing. `LR`→GND = left slot; **`CONFIG`→GND mandatory**, no ICS equivalent; `VDD` **1.62–3.63 V from `+3V3`, so NO 1.8 V rail** despite the 1.8 V rating; `C8` 100 nF local; **`R120` 100 kΩ on `I2S_MIC_DIN` is a data-sheet requirement**. 820–1000 µA normal, 5 µA sleep, 20 ms startup, −26 dBFS, 64 dB(A) SNR. Front opening; the acoustic hole is in the PCB, so the part sits on the face **opposite** the aperture. |
+| **Speaker** | **CAPTURED 2026-08-23 (FBV2-S1-006).** `U5` **`MAX98357AETE+T`** I2S Class-D (PRODUCTION) into `LS1` **PUI Audio `AS02008MR-LW152-R`** — Ø20 × 3 mm, 8 Ω, 0.5 W rated / 0.8 W max, **500–4000 Hz voice band**, 152 mm AWG #32 leads — off-board via `J6` JST PH, **crimping straight in with `PHR-2` + `SPH-002T-P0.5S`, so it is replaceable without soldering** (D-148). **`U5` and `J6` arrived from Beta-DM marked DNP and are now FITTED (D-144): the speaker output path had never been built.** `GAIN_SLOT` → VDD = **6 dB**, because at the inherited 12 dB the top 6.8 dB of digital range was clipped by the 3.3 V rail (D-147). **0.68 W peak / 230 mA at 0 dBFS; default maximum software volume −6 dBFS → 0.17 W, ≈ 57 mA** (D-149). `AMP_SD_MODE` low = shutdown at 0.6 µA, held there through reset by `R15`, and doubles as the **hardware mute for half-duplex voice** (D-152). Rear opening. |
+| **Audio I2S bus** | **The bus rate is set by the microphone, not the amplifier (D-146).** `BCLK` and `LRCLK` are shared; `I2S_MIC_DIN` and `I2S_SPK_DOUT` are separate; one ESP32-S3 controller in master full duplex. The microphone needs **BCLK 2.048–4.096 MHz**, so a 16 kHz frame (1.024 MHz) is out of spec: **the bus runs 48 kHz × 64 BCLK = 3.072 MHz and firmware decimates to 16 kHz.** **Firmware must never remove LRCLK while BCLK is running** — the amplifier can then put DC on the speaker. |
+| **Speaker EMI** | Filterless Class D, and **nothing is fitted by default**: the MAX98357A data sheet’s Figure 14 shows compliance with **12 in of speaker cable and no filter**, and AQROOT’s lead is half that. `R121`/`R122` **0 Ω FITTED** (a plain wire) with `C81`/`C82` **1 nF DNP** as the no-respin recovery (D-150). **PCB: `SPK_P`/`SPK_N` must be a tight, equal-length differential pair from `U5` to `J6`.** |
 | **Power** | `SW9` SPDT hard switch on the TPS63020 enable. **Not a GPIO** — a hung or unflashed firmware can still power the unit down. |
 | **Hidden / recessed BOOT** | `SW1` on GPIO0 with a 10k pull-up. Circuit unchanged; actuator becomes recessed. |
 

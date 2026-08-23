@@ -2,7 +2,7 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table)
 
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
 > **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
@@ -84,7 +84,7 @@ value is TARGET, however confident the arithmetic.
 | 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh | **LOCKED** | **D-071** (2026-08-22) |
 | 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. **Fitted part `ER-TFT035IPS-6` + `ER-TPC035-6`: 56.54 × 84.96 × 3.95 ± 0.25 mm (4.20 max)**, active 48.96 × 73.44 | **LOCKED** | **D-072 / D-074.** Locked by FBV2-DISP-002; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
 | 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
-| 10 | **SPEAKER_ENVELOPE** | **Ø20 × 4.0 mm** or **15 × 11 × 3.5 mm**, + **1.5–2.0 cm³** rear cavity | **TARGET** | §7 |
+| 10 | **SPEAKER_ENVELOPE** | **Ø20 × 3.0 mm** + **1.5–2.0 cm³** rear cavity | **LOCKED** | **D-148.** Fitted part **PUI `AS02008MR-LW152-R`**, Ø20 ± 0.2 × 3 ± 0.2 mm. Supersedes the Ø20 × 4.0 / 15 × 11 × 3.5 targets and **releases 1 mm of Z** in the speaker column. The rear-cavity requirement is unchanged |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.48 × 8.13 × 5.33 mm** body; **2×12 @ 2.54 mm**, FEMALE, horizontal entry, right wall. Samtec **`BCS-112-S-D-HE`** | **LOCKED** | §5. **D-081/D-093.** Harwin `M20-7881242` **REJECTED as obsolete** |
 | 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; ≥15 mm from the IR windows | **TARGET** | §8 |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
@@ -114,8 +114,8 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **Power** | SW9 JS102011SAQN | SPDT slide, ~4.7 × 2.9 × 2.0 mm body + actuator (typical) | Right wall, lower third |
 | **USB-C** | GCT USB4105-GF-A-120 | ~9.2 × 7.35 × **3.26 mm** (typical), top-mount horizontal | Bottom edge; shell aperture must clear the receptacle mouth |
 | **microSD** | Molex 5025700893 | ~14.0 × 14.5 × **1.85 mm** (typical), push-pull | Bottom edge; card protrudes during insertion — reserve **+18 mm** insertion travel outside the shell |
-| **Microphone** | MK1 ICS-43434 | 3.5 × 2.65 × 0.98 mm | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part. Path is PCB hole → gasket → front shell aperture |
-| **Speaker** | LS1, off-board | **Ø20 × 4.0 mm** or 15 × 11 × 3.5 mm, 8 Ω, ≤1 W | §7 |
+| **Microphone** | **MK1 PUI `DMM-4026-B-I2S-R`** | **4.00 × 3.00 × 1.00 mm** ±0.10 | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part, so **the microphone is soldered to the face OPPOSITE the shell aperture**. Path is shell aperture → gasket → **Ø1.05 mm PCB hole** → Ø0.25 mm port. **LOCKED D-145 / D-151** |
+| **Speaker** | **LS1 PUI `AS02008MR-LW152-R`**, off-board | **Ø20 ± 0.2 × 3 ± 0.2 mm**, 8 Ω ±15 %, 0.5 W rated / 0.8 W max | §7. **LOCKED D-148.** 152 mm AWG #32 leads to `J6`; Nd-Fe-B magnet |
 | **IR emitter** | TSAL6200 class | 5 mm THT lens, **±17° half-angle** | Top edge. Consider a side-view SMD emitter to reduce Z |
 | **IR receiver** | TSOP38238 | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall** |
 | **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
@@ -393,26 +393,38 @@ is a **direct consequence of the 3.5 mm of Z margin** found in §3.
 
 ### 7.1 Microphone — the higher priority
 
+**LOCKED 2026-08-23 (FBV2-S1-006, D-145 / D-151).** The port geometry below is measured from
+the PUI manufacturer drawing, not estimated: §8.3 is a raster drawing, so it was rendered and
+the pads measured programmatically, and the result closes against the printed dimensions to
+**0.01 mm**.
+
 | requirement | value |
 |---|---|
-| Part | ICS-43434, **bottom-port** |
-| Path | PCB acoustic hole → compressible gasket → front shell aperture |
-| PCB hole | **Ø0.8–1.0 mm**, no solder mask in the port pad ring |
-| Gasket | closed-cell silicone or poron, **compressed 20–30%**, forming a sealed tunnel |
+| Part | **PUI Audio `DMM-4026-B-I2S-R`**, 4.00 × 3.00 × 1.00 mm, **bottom-port** |
+| Port in the can | **Ø0.25 ± 0.05 mm**, on the package **width centreline**, **1.00 mm** from the short edge |
+| Mounting face | **the face OPPOSITE the shell aperture** — sound enters through the PCB, not past the part |
+| Path | shell aperture → compressible gasket → **PCB acoustic hole** → microphone port |
+| **PCB hole** | **Ø1.05 mm NPTH, concentric with pad 4** — the manufacturer's number, superseding the earlier Ø0.8–1.0 mm estimate |
+| PCB keepout | no copper, no solder mask and no component inside **Ø1.65 mm** (the pad-4 GND ring); **Ø2.5 mm** component keepout on the microphone side |
+| Gasket | closed-cell silicone or poron, **compressed 20–30%**, **ID ≥ 1.5 mm, OD 4–5 mm**, forming a sealed tunnel |
 | Shell aperture | **Ø0.8–1.0 mm**, or 3–5 holes of Ø0.5 mm, with acoustic mesh behind |
 | Tunnel length | **≤2.5 mm** — longer tunnels roll off the high frequencies that carry speech intelligibility |
 | Location | **front face, bottom third, opposite corner from the speaker** |
+| Solder | keep the stencil aperture back from the hole edge so solder cannot wick into the port (**B-63**, PCB stage) |
 
 ### 7.2 Speaker
 
 | requirement | value |
 |---|---|
-| Driver | **Ø20 × 4.0 mm** round, or 15 × 11 × 3.5 mm rectangular; **8 Ω, ≤1 W** |
+| Driver | **PUI Audio `AS02008MR-LW152-R`** — **Ø20 ± 0.2 × 3 ± 0.2 mm**, **8 Ω ±15 %**, **0.5 W rated / 0.8 W max**, 86 ± 3 dBA at 0.1 W / 0.1 m, **500–4000 Hz**, metal housing, Mylar cone, **Nd-Fe-B magnet**, 2.4 g |
+| Leads and connector | **152 ± 10 mm UL1571 AWG #32, RED (+) / BLACK (−)**, crimped into a **JST `PHR-2` housing with `SPH-002T-P0.5S` contacts** mating `J6`. **Replaceable without soldering.** AWG #32 is the small end of the PH #32–#24 range — pull-test at first article (**B-62**) |
+| Polarity | the cone moves **forward** on a positive voltage at the **RED** lead = `SPK_P` = `J6` pin 1 |
 | Firing | **rear-firing** (CTO layout) |
 | Rear cavity | **1.5–2.0 cm³ sealed** behind the driver — without it, low-mid output collapses and speech sounds thin |
 | Grille | ≥25% open area; hole pattern Ø0.8–1.0 mm; acoustic mesh behind |
 | Location | **rear, lower-right**, diagonally opposite the microphone |
 | Separation from mic | **≥60 mm** and on opposite faces |
+| Magnet clearance | the **Nd-Fe-B magnet must stay clear of the NFC zone** as well as of the microphone — it is the largest ferrous mass in the device |
 
 **Deliberately not over-engineered.** No ported enclosure, no tuned volume, no
 resonance targeting. The requirement is intelligible speech and alerts, and a

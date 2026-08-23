@@ -9,6 +9,192 @@ an entry.
 
 ---
 
+## 2026-08-23 — Audio migrated: microphone replaced, speaker locked (FBV2-S1-006)
+
+**Overall 49% → 51%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-AUDIO = PASS**. Full analysis:
+[`audits/2026-08-23-s1-audio-implementation.md`](audits/2026-08-23-s1-audio-implementation.md).
+
+**ERC 45 → 45: zero added, zero removed.** Errors unchanged at 2, both inherited.
+308 components, 0 duplicate references, 0 without a footprint, 0 `*_TBD` nets.
+
+### The finding that was not on the brief
+
+**`U5` (the MAX98357A) and `J6` (the speaker connector) arrived from Beta-DM marked `DNP`.**
+Nobody wrote that down — it is in the inherited file. It means **the entire speaker output path
+has never been populated on any AQROOT board**, while `C9` and `C10` *were* fitted, decoupling
+an amplifier that was not there.
+
+The brief says voice output remains required and Full Beta v2 is the feature-complete design,
+so **both are now fitted**. Everything below — the power budget, the speaker choice, the EMI
+provision — describes a path being built for the first time, and bring-up should read it that
+way.
+
+**This is the third load-bearing inherited `DNP` in two tasks** (`U16`, `R49`/`R50`, `U15`,
+`D2`/`D3` on sheet 09 at FBV2-S1-005). **A `DNP` on a Beta-DM sheet is a statement about the
+reduced build, not about the architecture.** Every migrated sheet has to re-decide it.
+
+### The microphone is not a drop-in
+
+| | ICS-43434 | **DMM-4026-B-I2S-R** |
+|---|---|---|
+| pads | **6** | **7** |
+| body | 3.5 × 2.65 × 0.98 mm | **4.00 × 3.00 × 1.00 mm** |
+| extra pin | — | **`CONFIG`** — no ICS equivalent |
+
+**The pin count differs**, so both a new symbol and a new footprint were built from the PUI
+drawing (Rev A, 5/26/2021). The brief's instruction not to reuse the ICS-43434 footprint was
+right for a stronger reason than size.
+
+Every pin re-derived from the data sheet: `LR`→GND selects the **left** slot; **`CONFIG`→GND
+is mandatory** (*"Pull to ground. The state of this pin is used at power-up."*); `VDD`
+1.62–3.63 V with `C8` 100 nF; and **`R120` 100 kΩ on `I2S_MIC_DIN` is a data-sheet
+requirement** — *"The SD trace should have a 100 kΩ pull down resistor to discharge the line
+during the time that all microphones on the bus have tri-stated their outputs."* With one
+microphone the line still tri-states for the entire unused half of every frame, and the
+inherited sheet had no pull-down at all.
+
+**No 1.8 V rail is needed, and that was the single largest risk in the substitution.** The part
+is *rated* 1.8 V and PUI's catalogue line reads *"MICROPHONE -26DB 1.8VDC"* — a 1.8 V-only
+microphone would have forced a regulator the brief forbids. The data sheet gives an operating
+range of **1.5–3.6 V** (pin table 1.62–3.63 V), so `+3V3` and the existing decoupling are the
+whole supply design. 820–1000 µA normal, **5 µA sleep**, 20 ms startup, −26 dBFS, 64 dB(A).
+
+### The brief's suggested sample rate cannot be run on the wire
+
+**The microphone's normal-mode input clock is 2.048–4.096 MHz**, and below 320 kHz it sleeps.
+
+| frame | BCLK | verdict |
+|---|---|---|
+| 16 kHz × 32 | 0.512 MHz | **outside normal mode** |
+| 16 kHz × 64 | 1.024 MHz | **outside normal mode** |
+| 32 kHz × 64 | 2.048 MHz | exactly on the limit |
+| **48 kHz × 64** | **3.072 MHz** | **the data sheet typical, and the MAX98357A's own test condition** |
+
+The amplifier independently restricts LRCLK to 8/16/32/44.1/48/88.2/96 kHz, and 48 kHz is on
+that list. **The bus runs at 3.072 MHz and firmware decimates to 16 kHz.** 16 kHz is still the
+right *application* rate — it is not a legal *wire* rate for this part. On the bench this would
+have looked like *"the microphone sometimes returns silence"*, which is what sleep mode looks
+like.
+
+**Everything else about the I²S architecture is valid unchanged**: `BCLK` and `LRCLK` shared,
+`MIC_DIN` and `SPK_DOUT` separate, one ESP32-S3 controller in master full duplex. **No pin, net
+or GPIO change**, so the GPIO ledger is untouched.
+
+### A gain strap that was mismatched to the rail
+
+Gain is referenced to a 2.1 dBV full-scale DAC output, so `output (dBV) = input (dBFS) + 2.1 +
+gain`:
+
+| `GAIN_SLOT` | gain | 0 dBFS asks for | 3.3 V rail gives | result |
+|---|---|---|---|---|
+| **GND (inherited)** | **12 dB** | **5.07 Vrms** | 2.33 Vrms | **clips above −6.8 dBFS** |
+| **VDD (selected)** | **6 dB** | **2.54 Vrms** | 2.33 Vrms | **0 dBFS ≈ the rail** |
+
+At 12 dB the **top 6.8 dB of the digital range was unusable** — clipped by the supply, not the
+amplifier. At 6 dB the whole range is usable and the noise floor is lower. **Maximum acoustic
+output is identical either way: it is rail-limited, not gain-limited.** One net, no BOM impact.
+
+`SD_MODE` needs **no series resistor** — the data sheet requires ~2 kΩ only when
+`VDD < VDDIO`, and here both are the same `+3V3` net. Recorded because it is exactly the part
+that gets added "just in case". `R15` 100 kΩ to GND holds shutdown through reset and boot.
+
+**Firmware safety rule, verbatim:** *"Do not remove LRCLK while BCLK is present … can cause
+unexpected output behavior, including a large DC output voltage."* Into an 8 Ω voice coil that
+is a burnt speaker.
+
+### Speaker — PUI `AS02008MR-LW152-R`
+
+Ø20 ± 0.2 mm × **3 ± 0.2 mm**, **8 Ω ± 15 %**, **0.5 W rated / 0.8 W max**, 86 ± 3 dBA at
+0.1 W / 0.1 m, 5 % max distortion, resonance 500 Hz, **response 500–4000 Hz**, metal housing,
+Mylar cone, Nd-Fe-B magnet, 2.4 g, **152 mm UL1571 AWG #32 leads, RED (+) / BLACK (−)**.
+
+**The 500–4000 Hz response is the reason to choose it, not a limitation to apologise for.** The
+brief asked for intelligible speech and explicitly not music; a driver that puts all of its
+0.5 W into the speech band is louder where it matters than a wider-range driver the same size.
+It also fits the existing `SPEAKER_ENVELOPE` with 1 mm of depth to spare.
+
+**`J6` is retained** — JST `B2B-PH-K-S` was already the right connector. Mating side
+**`PHR-2` + `SPH-002T-P0.5S`**, and JST's applicable wire range is **AWG #32 to #24**, so the
+speaker's leads crimp straight in: **no soldering to fit it, no soldering to replace it** — the
+same serviceability principle as the NFC antenna (D-128). AWG #32 is the small end of that
+range, carried as **B-62** for a first-article pull test rather than asserted.
+
+### Power and the volume ceiling
+
+```
+rail limit     3.3 / sqrt(2) = 2.33 Vrms  ->  2.33^2 / 8 = 0.68 W peak
+cross-check    data sheet 0.93 W at 3.7 V x (3.3/3.7)^2  = 0.74 W     consistent
+current        0.68 W / 0.90 / 3.3 V                      = 230 mA
+```
+
+| level | output | +3V3 | vs the 0.5 W rating |
+|---|---|---|---|
+| 0 dBFS | 0.68 W | 230 mA | above rated, under the 0.8 W max — short alerts only |
+| **−6 dBFS (default)** | **0.17 W** | **57 mA** | comfortably inside, ≈ 89 dB SPL at 0.1 m |
+| shutdown | — | **0.6 µA** | — |
+
+**No new mutual-exclusion rule is proposed**: MX-1 already covers concurrent high-power
+operations, and voice does not need maximum output during radio TX. Thermally irrelevant —
+~75 mW in a 1666 mW package.
+
+### EMI — nothing fitted, everything recoverable
+
+The decisive evidence is the data sheet's own **Figure 14, "EMI with 12 in of Speaker Cable and
+No Output Filtering"**. AQROOT's lead is 152 mm, **half** that, and the part already uses
+edge-rate control plus spread-spectrum modulation around 330 kHz.
+
+**First build: `R121`/`R122` fitted as 0 Ω — the speaker path is a plain wire — with
+`C81`/`C82` 1 nF DNP.** If emissions ever need taming, swap the 0 Ω for a ferrite bead and
+populate the shunts: four 0603 positions, no respin. A 0603 0 Ω adds ~50 mΩ, i.e. 15 mV at
+300 mA against 8 Ω.
+
+**PCB requirement: `SPK_P`/`SPK_N` as a tight, equal-length differential pair from `U5` to
+`J6`** whatever is fitted — the most effective EMI control on a filterless Class D output, and
+free.
+
+### Acoustics, measured from the drawing
+
+§8.3 is a raster drawing; it was rendered and the pads measured programmatically, and the
+geometry closes against the printed dimensions to **0.01 mm**. Pads 0.60 × 0.40 mm, columns
+±1.075 mm, rows 0.65 mm, **pad 4 is a GND ring ID 1.05 / OD 1.65 mm**, port on the width
+centreline 1.28 mm from the nearest row and 1.00 mm from the short edge, port in the can
+Ø0.25 mm.
+
+**It is a bottom-port part: sound enters through a hole in the PCB, so the microphone sits on
+the face OPPOSITE the shell aperture.** PCB hole **Ø1.05 mm NPTH** concentric with pad 4 (the
+spec previously said Ø0.8–1.0 mm — this is now the manufacturer's number), Ø1.65 mm mask and
+copper keepout, Ø2.5 mm component keepout, gasket ID ≥ 1.5 mm, tunnel ≤ 2.5 mm, ≥ 60 mm from
+the speaker on opposite faces. **The Nd-Fe-B speaker magnet must also stay clear of the NFC
+zone.**
+
+### Echo — no hardware, one free lever
+
+`SD_MODE` is a **hardware mute**: shutdown puts the outputs high-Z at 0.6 µA and removes the
+amplifier's own noise floor from the microphone's environment, which a digital mute cannot do.
+**First firmware should be half-duplex**, muting via `SD_MODE` while listening; ramp the
+digital data down first, because there is no volume ramp-down on entering shutdown. Software
+AEC later if barge-in is wanted.
+
+### Nothing added, and no new CTO decision
+
+No codec, no DAC, no analog microphone amplifier, no 1.8 V rail, no acoustic wake detector, no
+buzzer, no headphone jack, no second speaker, no hardware AEC, no alternate footprint, no new
+GPIO. **BOM consolidation, free: the microphone and the speaker are now both PUI Audio.**
+
+**B-61–B-64 opened.** The microphone is confirmed in live distributor stock (DigiKey 2 807,
+Arrow 10 000). **The speaker is not** — PUI's product page would not render here after three
+attempts and Digi-Key search is bot-protected. Its datasheet is served live from PUI's API
+today, but D-096 asks for a live listing and that is not one, so it is carried as **B-61**.
+
+**One probe was extended rather than silenced.** `fork_equivalence.py` asserted the `.pretty`
+directory was bit-identical to Beta-DM's, which stopped being true the moment a migrated sheet
+locked a new part. It now asserts every **inherited** footprint is still bit-identical and none
+was deleted, and that every **addition is declared** in an `ADDED_FOOTPRINTS` table naming the
+task that added it. An undeclared footprint is still a failure.
+
+---
+
 ## 2026-08-23 — I²C devices and IMU migrated (FBV2-S1-005)
 
 **Overall 47% → 49%. No gate in the twelve-gate table passed**; the task gate

@@ -4,10 +4,10 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-005, I²C devices and IMU migration)
+Date: 2026-08-23 (after FBV2-S1-006, audio migration)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Sheets `06`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
+> **Sheets `07`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
 > may terminate on a *Beta-DM* peripheral until that sheet is migrated. Where the
 > v2 destination differs, the row says so.
 
@@ -47,10 +47,10 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 29 | GPIO36 | — | — | **UNUSABLE** | — | no | as above |
 | 30 | GPIO37 | — | — | **UNUSABLE** | — | no | as above |
 | 31 | **GPIO38** | **`NATIVE_A`** | community | bidirectional | — | **YES** | **CHANGED FBV2-S1-002.** Was `SX1262_DIO1` |
-| 32 | GPIO39 | `I2S_BCLK` | audio | output | — | no | also MTCK — external JTAG is therefore unusable |
-| 33 | GPIO40 | `I2S_LRCLK` | audio | output | — | no | also MTDO |
-| 34 | GPIO41 | `I2S_SPK_DOUT` | audio | output | — | no | also MTDI |
-| 35 | GPIO42 | `I2S_MIC_DIN` | audio | input | — | no | also MTMS |
+| 32 | GPIO39 | `I2S_BCLK` | audio | output | — | no | also MTCK — external JTAG is therefore unusable. **Shared by `MK1` and `U5`. FBV2-S1-006: must run 2.048–4.096 MHz or the microphone leaves normal mode — 48 kHz × 64 = 3.072 MHz (D-146)** |
+| 33 | GPIO40 | `I2S_LRCLK` | audio | output | — | no | also MTDO. **Shared by `MK1` and `U5`. 48 kHz. FIRMWARE: never stop LRCLK while BCLK runs — the amplifier can then put DC on the speaker (D-147)** |
+| 34 | GPIO41 | `I2S_SPK_DOUT` | audio | output | — | no | also MTDI. To `U5` `DIN` only |
+| 35 | GPIO42 | `I2S_MIC_DIN` | audio | input | — | no | also MTMS. From `MK1` `SD` only. **`R120` 100 kΩ pull-down added FBV2-S1-006 — a data-sheet requirement: `SD` tri-states for the whole unused half of every frame (D-145)** |
 | 37 | **GPIO43** | `UART0_TXD_DBG` | debug | output | — | **NO (withdrawn)** | **CHANGED FBV2-S1-002.** Was `FAST_IO_U0TXD_ROOTPROBE_CS` on the connector. Now internal only, `TP35` |
 | 36 | GPIO44 | `IR_RX_GPIO44` | IR | input | — | no | U0RXD is consumed by IR, so UART0 is **TX-only** |
 | 26 | **GPIO45** | `GPIO45_VDDSPI_STRAP` | VDD_SPI | strap | **YES** | no | `TP1`. **`R111` 10 k pull-down FITTED (D-111)** — see §3 |
