@@ -3,8 +3,305 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "a73152c8-d664-401f-b839-01a31edb3ff2")
-	(paper "A4")
+	(paper "A3")
 	(lib_symbols
+		(symbol "AQROOT_Beta:TSOP38438"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TSOP38438"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.vishay.com/doc?82491"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "38 kHz IR remote-control receiver module, AGC4"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "Vishay"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "TSOP38438"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Package" "Minicast leaded, 5.0 W x 6.95 H x 4.8 D mm, 1 = OUT, 2 = GND, 3 = VS"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Note" "Verified against Vishay document 82491 Rev 2.1, 27-May-2025 (TSOP382.., TSOP384..) in FBV2-S1-007. Same Minicast package, same pinning 1 = OUT, 2 = GND, 3 = VS and the same footprint as the TSOP38238 it replaces, so this is a pure MPN change. VS 2.0 to 5.5 V, ISD 0.25 / 0.35 / 0.45 mA at 3.3 V, output ACTIVE LOW with a 30 kOhm INTERNAL pull-up shown in the block diagram, so no external pull-up is required and OUT drives a GPIO directly. VOSL 30 mV typ at 0.5 mA. Directivity plus/minus 45 degrees. Absolute maximum VS 6 V, IO 5 mA. Carrier 38 kHz with a 3 dB bandwidth of f0/10, i.e. f0 plus/minus 5 percent, so 36.1 to 39.9 kHz; relative responsivity is about 0.75 at 36 kHz (RC5/RC6) and about 0.72 at 40 kHz (Sony), which costs roughly 13 to 15 percent of range on those carriers. THE 4 IN TSOP38438 IS THE AGC VARIANT, NOT A PACKAGE CODE. AGC4 is the higher AGC setting: Vishay states that the higher the AGC the better noise is suppressed but the lower the code compatibility. In the suitable-data-format table AGC4 is marked Preferred for NEC, RC5/RC6, Thomson RCA, Sharp and Mitsubishi and adds Fig. 15 high-modulation fluorescent suppression that AGC2 does not have - but it is marked NO for Sony code, where the AGC2 TSOP38238 is marked Yes. This affects RECEIVE ONLY. Transmitting Sony SIRC is unaffected because the transmitter is just a carrier and timing from the MCU. The TSOP38238 symbol is retained in this library so switching back to AGC2 is a lib_id change and nothing else."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "IR receiver infrared remote control 38kHz demodulator TSOP Minicast Vishay AGC4"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Vishay*TSOP382xx*Minicast*3Pin*"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TSOP38438_0_1"
+				(rectangle
+					(start -7.62 5.08)
+					(end 7.62 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TSOP38438_1_1"
+				(pin power_in line
+					(at 0 7.62 270)
+					(length 2.54)
+					(name "VS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin open_collector line
+					(at 10.16 0 180)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "AQROOT_Beta:TSOP38238"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1346,9 +1643,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "IR TRANSMITTER - PARTS PENDING\n\nQ1 LOGIC-LEVEL NMOS NOT SELECTED\nR22 = 100R GATE SERIES\nR23 = 100k GATE PULL-DOWN\n\nR24 CURRENT-LIMIT VALUE PENDING\nIR_LED_SUPPLY RAIL PENDING\nLOCAL BULK CAPACITOR VALUE PENDING\n\nDO NOT CONNECT TSAL6200 DIRECTLY TO A POWER RAIL\nDO NOT ROUTE UNTIL PULSE CURRENT IS SELECTED"
+	(text "IR TRANSMITTER - MIGRATED FBV2-S1-007\n\nD1 = VISHAY TSAL6100  940 nm, +/-10 deg, Ie 170 mW/sr\n  FALLBACK TSAL6200 IS A DROP-IN: SAME PACKAGE,\n  SAME VF, SAME IFM, SAME R24. Ie 72 mW/sr, +/-17 deg.\n\nPEAK CURRENT = 150 mA.\n  THE LIMIT IS IFM = 200 mA, THE REPETITIVE RATING\n  AT tp/T = 0.5. IFSM = 1.5 A IS A SINGLE PULSE OF\n  <= 5 us AND MUST NOT BE USED FOR 38 kHz CARRIER.\n  100 mA  50% of IFM   170 mW/sr\n  150 mA  75% of IFM   ~255 mW/sr   <-- SELECTED\n  200 mA  100% of IFM  no tolerance margin left\n  300 mA  150% of IFM  OUT OF SPEC, REJECTED\n\nSUPPLY = +3V3, NOT SYS.\n  REGULATED +/-2% GIVES 118-170 mA ACROSS ALL\n  TOLERANCES. ON SYS 3.2-5.0 V THE SAME RESISTOR\n  GIVES 64-166 mA, A 2.6:1 SWING, AND IR RANGE\n  WOULD VISIBLY SHORTEN AS THE BATTERY DRAINS.\n  THE 38 kHz DISTURBANCE IS BOUNDED BY C12 AND THE\n  ONLY 38 kHz-SENSITIVE PART, U6, SITS BEHIND 41 dB.\n\nR24 = 12R 1% 0805   I = (3.3 - 1.50 - 0.005) / 12\nR123 = DNP PARALLEL TRIM. NEVER BELOW 10R TOTAL.\nC12 = 22 uF 1210, >= 15 uF EFFECTIVE AT 3.3 V BIAS\n  -> ~40 mV OF 38 kHz ON THE RAIL.\n\nQ1 AO3400A CONFIRMED 1=G 2=S 3=D FROM THE AOS\nDATASHEET. R23 100k HOLDS THE GATE AT <= 10 mV\nAGAINST A 650 mV THRESHOLD: NO IR AT BOOT OR RESET."
 		(exclude_from_sim no)
-		(at 250.444 74.168 0)
+		(at 340 60 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1356,9 +1653,9 @@
 		)
 		(uuid "bc571da3-1e81-440e-93a9-596905c531bf")
 	)
-	(text "IR RECEIVER PLACEMENT\n\nKEEP TSOP38238 PHYSICALLY SEPARATED\nFROM TSAL6200\n\nKEEP RECEIVER OUTSIDE THE LED DIRECT EMISSION CONE\nKEEP TX CURRENT LOOP AWAY FROM RECEIVER SUPPLY/RETURN"
+	(text "IR RECEIVER - MIGRATED FBV2-S1-007\n\nU6 = VISHAY TSOP38438  38 kHz, AGC4\n  VS 2.0-5.5 V, 0.35 mA TYP, OUTPUT ACTIVE LOW,\n  30k INTERNAL PULL-UP SO NO EXTERNAL ONE IS NEEDED.\n  ACCEPTANCE +/-45 deg.  SAME FOOTPRINT AS TSOP38238.\n\nSUPPLY FILTER R21 100R + C11 4.7uF IS CORRECT AND\nIS THE REASON THE TX CAN SHARE +3V3:\n  fc = 339 Hz  ->  41 dB AT 38 kHz\n  DATASHEET FIG 7: THE RECEIVER DEGRADES FROM ABOUT\n  10 mV RMS OF SUPPLY RIPPLE AT THE CARRIER, AND\n  DOUBLES ITS THRESHOLD BY 50 mV. 40 mV ON THE RAIL\n  BECOMES 0.1 mV HERE. ~90x MARGIN.\n\nBANDWIDTH: 3 dB AT f0/10, SO 36.1-39.9 kHz.\n  38 kHz NEC/SAMSUNG/SHARP/MITSUBISHI  1.00\n  36 kHz RC5/RC6                       ~0.75\n  40 kHz SONY                          ~0.72\n\nAGC4 IS MARKED **NO** FOR SONY CODE BY VISHAY.\nAGC2 (TSOP38238) IS MARKED YES FOR SONY.\nTHIS IS RECEIVE ONLY - SENDING SIRC IS UNAFFECTED.\nOPEN CTO ITEM: SEE FBV2-S1-007.\n\nPLACEMENT (MECHANICAL, NOT ELECTRICAL):\nKEEP U6 PHYSICALLY SEPARATED FROM D1, OUTSIDE THE\nLED EMISSION CONE, BEHIND AN OPAQUE BARRIER,\n>= 15 mm APART. KEEP THE TX CURRENT LOOP AWAY FROM\nTHE RECEIVER SUPPLY AND RETURN."
 		(exclude_from_sim no)
-		(at 181.864 108.204 0)
+		(at 340 165 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1932,7 +2229,7 @@
 		)
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:TSOP38238")
+		(lib_id "AQROOT_Beta:TSOP38438")
 		(at 99.06 72.39 0)
 		(unit 1)
 		(body_style 1)
@@ -1940,7 +2237,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0c3059ee-ebd8-4125-8964-2ae25f0f68a7")
 		(property "Reference" "U6"
@@ -1954,7 +2251,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "TSOP38238"
+		(property "Value" "TSOP38438"
 			(at 90.17 73.6599 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1976,7 +2273,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/82491/tsop382.pdf"
+		(property "Datasheet" "https://www.vishay.com/doc?82491"
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -1987,7 +2284,7 @@
 				)
 			)
 		)
-		(property "Description" "38 kHz IR remote-control receiver module"
+		(property "Description" "38 kHz IR remote-control receiver module, AGC4"
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -2009,7 +2306,29 @@
 				)
 			)
 		)
-		(property "MPN" "TSOP38238"
+		(property "MPN" "TSOP38438"
+			(at 99.06 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Minicast leaded, 5.0 W x 6.95 H x 4.8 D mm, 1 = OUT, 2 = GND, 3 = VS"
+			(at 99.06 72.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "RECEIVER MPN CHANGED TSOP38238 -> TSOP38438 in FBV2-S1-007 per the CTO lock. Same Minicast package, same pinning 1 = OUT / 2 = GND / 3 = VS, same footprint, so it is a pure MPN change. Verified against Vishay document 82491 Rev 2.1, 27-May-2025. VS 2.0 to 5.5 V; ISD 0.35 mA typ, 0.45 mA max at 3.3 V; output ACTIVE LOW with a 30 kOhm INTERNAL pull-up in the block diagram, so no external pull-up is needed and OUT drives GPIO44 directly; directivity plus/minus 45 deg. CARRIER AND BANDWIDTH: f0 = 38 kHz, 3 dB bandwidth f0/10, i.e. 36.1 to 39.9 kHz. Relative responsivity is 1.0 at 38 kHz (NEC, Samsung, Sharp, Mitsubishi), about 0.75 at 36 kHz (RC5/RC6) and about 0.72 at 40 kHz (Sony), costing roughly 13 to 15 percent of range on those carriers. THE 4 IS THE AGC VARIANT, NOT A PACKAGE CODE, AND IT COSTS SONY RECEPTION. Vishay marks AGC4 Preferred for NEC, RC5/RC6, Thomson RCA, Sharp and Mitsubishi and it additionally suppresses high-modulation fluorescent interference (Fig. 15) that AGC2 does not - but the same table marks AGC4 NO for Sony code, where the AGC2 TSOP38238 is marked Yes. THIS IS RECEIVE ONLY: sending Sony SIRC is unaffected because the transmitter is only a carrier and timing from the MCU. The TSOP38238 symbol is retained in the project library, so reverting to AGC2 is a lib_id change and nothing else. See FBV2-S1-007 for the open CTO item."
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -2047,7 +2366,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "221343f1-511d-4028-848c-37052bf9d4bb")
 		(property "Reference" "R22"
@@ -2103,6 +2422,17 @@
 				)
 			)
 		)
+		(property "Note" "IR gate series resistor. RETAINED at 100 R. It damps the gate loop and slows the edge to well under 100 ns, which is about 0.3 percent of the 26.3 us carrier period, so it costs no switching performance while reducing radiated EMI from the LED current loop."
+			(at 175.26 35.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "65f76606-b8ca-4eeb-8712-2b052b9c42c5")
 		)
@@ -2141,7 +2471,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.7uF"
+		(property "Value" "22uF"
 			(at 222.25 93.9799 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2152,7 +2482,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
 			(at 217.4748 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -2185,7 +2515,7 @@
 				)
 			)
 		)
-		(property "Voltage" "10V"
+		(property "Voltage" "16V"
 			(at 218.44 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2207,7 +2537,7 @@
 				)
 			)
 		)
-		(property "Package" "0805 (2012 metric)"
+		(property "Package" "1210 (3225 metric)"
 			(at 218.44 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2229,7 +2559,7 @@
 				)
 			)
 		)
-		(property "Note" "Local IR pulse reservoir on the +3V3 IR LED branch; supplies the ~100 mA 38 kHz burst locally so the carrier does not modulate the shared +3V3 rail."
+		(property "Note" "LOCAL IR RESERVOIR, re-derived in FBV2-S1-007. 4.7 uF -> 22 uF, 0805 -> 1210. The 38 kHz carrier draws 150 mA at about one third duty, so the capacitor must supply I x D x (1-D) x T = 0.15 x 0.333 x 0.667 x 26.3 us = 0.88 uC per carrier period. Ripple = 0.88 uC / C: 4.7 uF gives 218 mV, 10 uF gives 88 mV, 22 uF gives 40 mV, 47 uF gives 19 mV. The design target is to keep the carrier below about 1.5 percent of the rail, so 22 uF is the first-build value; the requirement is at least 15 uF EFFECTIVE at 3.3 V DC bias, which is why the part is specified X7R 16 V in 1210 rather than a heavily derated 6.3 V 0805. This capacitor protects the shared +3V3 rail. The IR RECEIVER is protected separately and far harder by R21/C11, which give 41 dB at 38 kHz - see the R21 note."
 			(at 218.44 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2264,7 +2594,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3536b7cd-3fe7-4565-a1cb-ac8cdae11394")
 		(property "Reference" "R24"
@@ -2277,7 +2607,7 @@
 				)
 			)
 		)
-		(property "Value" "18R"
+		(property "Value" "12R"
 			(at 175.26 88.9 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2353,7 +2683,7 @@
 				)
 			)
 		)
-		(property "Note" "IR LED current limit on the +3V3 IR branch. Rail 3.3 V, TSAL6200 Vf ~1.35 V typ / ~1.6 V high, AO3400A drop negligible at this current, so I = (3.3 - Vf) / 18R gives ~108 mA at Vf 1.35 V and ~94 mA at Vf 1.6 V, target ~100 mA. Peak dissipation in R24 is I^2*R, about 0.21 W at 108 mA and 0.18 W at 100 mA; the drive is 38 kHz pulsed at low duty so average power is far below that, and 0805 is chosen for pulse-energy headroom rather than average power. Do NOT raise IR current - longer-range IR tuning is deferred post-Kickstarter."
+		(property "Note" "IR LED CURRENT LIMIT, re-derived in FBV2-S1-007 for a 150 mA first-build peak on the regulated +3V3 rail. 18R -> 12R 1 percent 0805. VF of the TSAL6100 at 150 mA is about 1.50 V typical, interpolated between the datasheet 1.35 V at 100 mA and 2.2 V at 1 A; the AO3400A adds about 5 mV at RDS(on) under 48 mOhm with a 3.3 V gate. I = (3.3 - 1.50 - 0.005) / 12 = 150 mA. Worst case high, rail +2 percent and VF 1.35 and R -1 percent: 170 mA, which is 85 percent of the 200 mA IFM. Worst case low, rail -2 percent and VF 1.80 and R +1 percent: 118 mA. Dissipation: 0.27 W instantaneous, about 90 mW during a burst at one third carrier duty and about 30 mW averaged over an NEC frame, against a 125 mW 0805 rating. R123 is a DNP parallel trim position. Allowed combinations, all inside IFM: 12R alone 150 mA, 12R || 220R 158 mA, 12R || 100R 168 mA, 12R || 68R 176 mA, 12R || 47R 188 mA. NEVER GO BELOW 10 OHM TOTAL - that would exceed the repetitive rating."
 			(at 175.26 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2388,7 +2718,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7f2e76ce-af6e-40a6-af9a-413b30a7d03f")
 		(property "Reference" "R23"
@@ -2436,6 +2766,17 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 173.99 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR gate pull-down. RETAINED at 100 k. This is the safe-OFF guarantee: with the AO3400A IGSS at most 100 nA the gate can only reach 10 mV, far below the 650 mV minimum threshold, so the LED cannot emit during boot, reset, GPIO high-impedance or a firmware crash."
 			(at 173.99 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2548,7 +2889,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "872e6a5a-6267-4834-be15-1a8eb46d375b")
 		(property "Reference" "Q1"
@@ -2595,7 +2936,7 @@
 				)
 			)
 		)
-		(property "Note" "IR LED low-side driver. Symbol Transistor_FET:Q_NMOS_GSD maps pin 1 Gate / 2 Source / 3 Drain, matching the existing wiring (1 -> IR_GATE, 2 -> GND, 3 -> IR_LED_K). VERIFY that AO3400A pin order is G/S/D against the AOS datasheet before assigning a footprint. Vds/Id/Rds(on) NOT recorded here."
+		(property "Note" "IR LED low-side driver, RETAINED after audit in FBV2-S1-007 against AOS document AO3400A Rev 3.1, July 2023. PINOUT VERIFICATION CLOSED: the datasheet SOT-23 top and bottom views show the lone pin as Drain and the paired pins as Gate then Source, i.e. 1 = G, 2 = S, 3 = D, which is exactly what Transistor_FET:Q_NMOS_GSD maps and what the existing wiring uses. VGS(th) 0.65 / 1.05 / 1.45 V, so it is fully enhanced by a 3.3 V gate. RDS(on) under 48 mOhm at VGS = 2.5 V, giving about 5 mV at 150 mA - negligible against the LED VF. ID 5.7 A and IDM 30 A, so the part is roughly 38 times over-specified for this job; it is kept because it is already in the design on sheet 01 and is a jellybean. Switching loss at 38 kHz is negligible: with R22 100 R and Ciss of a few hundred pF the edge is well under 100 ns, about 0.3 percent of the carrier period, and conduction loss is 0.15^2 x 0.036 = 0.8 mW. SAFE OFF STATE IS PROVEN, NOT ASSUMED: R23 100 k to GND with IGSS 100 nA maximum gives at most 10 mV on the gate, far below the 650 mV minimum threshold, so there is no IR emission during boot, reset, GPIO high-impedance or a firmware crash. FOOTPRINT: AOS publishes no recommended land pattern in this datasheet, so the industry-standard IPC SOT-23 pattern applies and Package_TO_SOT_SMD:SOT-23 is the IPC-7351 derived KiCad footprint. That makes it an ordinary FBV2-S2 footprint-audit item rather than a blocker."
 			(at 196.85 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -2606,7 +2947,7 @@
 				)
 			)
 		)
-		(property "Package" "SOT-23-3 - LOCKED. Footprint BLOCKED: needs the official AOS recommended land pattern."
+		(property "Package" "SOT-23-3, pin 1 = G, 2 = S, 3 = D (confirmed from the AOS datasheet)"
 			(at 196.85 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -2755,7 +3096,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8d00b57-5307-488e-802e-e33aad159a0e")
 		(property "Reference" "D1"
@@ -2768,7 +3109,7 @@
 				)
 			)
 		)
-		(property "Value" "TSAL6200"
+		(property "Value" "TSAL6100"
 			(at 195.2625 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2789,7 +3130,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.vishay.com/docs/81009/tsal6100.pdf"
 			(at 196.85 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -2800,7 +3141,7 @@
 				)
 			)
 		)
-		(property "Description" "Light emitting diode"
+		(property "Description" "High-power 940 nm IR emitting diode, T-1 3/4"
 			(at 196.85 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -2812,6 +3153,50 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
+			(at 196.85 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Vishay"
+			(at 196.85 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TSAL6100"
+			(at 196.85 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "T-1 3/4 leaded, 5 mm diameter, 2.54 mm lead pitch"
+			(at 196.85 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR EMITTER LOCKED TSAL6100 in FBV2-S1-007, replacing the inherited TSAL6200. Verified against Vishay document 81009 Rev 1.8. 940 nm GaAlAs MQW, T-1 3/4 leaded, 5 mm diameter. Ie 170 mW/sr typ (80 min) at IF = 100 mA, ANGLE OF HALF INTENSITY plus/minus 10 degrees, radiant power 40 mW, tr/tf 15 ns. VF 1.35 V typ / 1.6 V max at 100 mA. THE BINDING LIMIT FOR 38 kHz REMOTE USE IS IFM = 200 mA, the REPETITIVE peak rating at tp/T = 0.5 with tp = 100 us. IFSM = 1.5 A is a SINGLE-PULSE surge for t <= 5 us and MUST NOT be used to justify repetitive carrier current. Continuous IF is 100 mA, PV 160 mW, RthJA 230 K/W, Tj 100 C. Selected first-build peak is 150 mA, 75 percent of IFM; worst case across rail, VF and resistor tolerance is 170 mA, still 15 percent below IFM. Average LED power over an NEC frame is about 25 mW against a 160 mW limit, so Tj rises about 6 K. TSAL6200 IS A DROP-IN FALLBACK: identical T-1 3/4 package and footprint, identical VF 1.35/1.6 at 100 mA and identical IFM 200 mA, so R24 needs no change. It trades Ie 170 -> 72 mW/sr for a beam of plus/minus 17 instead of plus/minus 10 degrees. Fit it if first-article testing shows the TSAL6100 cone is too narrow to aim comfortably."
 			(at 196.85 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -3002,7 +3387,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c0e5b693-6597-48f0-b33b-1e5a85c6fc4b")
 		(property "Reference" "C11"
@@ -3050,6 +3435,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 154.94 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR RECEIVER SUPPLY FILTER, shunt element. RETAINED at 4.7 uF after audit in FBV2-S1-007. With R21 100 R this gives a 339 Hz corner and 41 dB at the 38 kHz carrier, which is what keeps the transmitter out of the receiver front end - see the R21 note and datasheet Fig. 7. Do not reduce this value to save area without redoing that calculation."
 			(at 154.94 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -3162,7 +3558,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d8aac764-f8cc-42da-89d4-ae39bee06348")
 		(property "Reference" "R21"
@@ -3210,6 +3606,17 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 138.43 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR RECEIVER SUPPLY FILTER, series element. RETAINED at 100 R after audit in FBV2-S1-007. The topology matches the Vishay application circuit exactly - R1 in series with VS and C1 from VS to ground - and the datasheet recommends it wherever there is ripple or spikes on the supply. Vishay prints the topology but no values, so the values are ours and are justified here. With C11 4.7 uF the corner is 1 / (2 pi x 100 x 4.7u) = 339 Hz, which is 41 dB of attenuation at the 38 kHz carrier. THAT MATTERS MORE THAN IT LOOKS: datasheet Fig. 7 shows the receiver threshold irradiance starts degrading at roughly 10 mV RMS of supply ripple AT THE CARRIER FREQUENCY and has doubled by about 50 mV, and our own transmitter runs at exactly that frequency. With 40 mV pk-pk on the rail the receiver sees about 0.1 mV RMS, roughly 90 times margin. DC drop is 0.45 mA x 100 R = 45 mV, so VS sits at about 3.25 V, comfortably inside 2.0 to 5.5 V."
 			(at 138.43 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -3312,5 +3719,356 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 175.26 106.68 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "fb070100-d100-4d10-9d10-0000000300")
+		(property "Reference" "R123"
+			(at 177.79999999999998 96.52000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100R DNP"
+			(at 177.79999999999998 99.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 175.26 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 175.26 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 175.26 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR LED CURRENT TRIM, DNP. No-respin provision under D-049. Fitting it in parallel with R24 raises the LED peak current without removing the fitted part: 12R alone 150 mA, 12R || 220R 158 mA, 12R || 100R 168 mA, 12R || 68R 176 mA, 12R || 47R 188 mA. NEVER LET THE PARALLEL COMBINATION FALL BELOW 10 OHM - that exceeds the 200 mA IFM repetitive rating of the TSAL6100 and TSAL6200. It is the obvious first move if the TSAL6200 fallback is fitted, since its Ie is 72 mW/sr against 170."
+			(at 175.26 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb070100-d100-4d10-9d10-0000000301")
+		)
+		(pin "1"
+			(uuid "fb070100-d100-4d10-9d10-0000000302")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/d14ac91a-547d-41d4-b6d8-03779253a1ea"
+					(reference "R123")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 171.45 92.71) (xy 171.45 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000401")
+	)
+	(wire
+		(pts
+			(xy 179.07 92.71) (xy 179.07 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000402")
+	)
+	(junction
+		(at 171.45 92.71)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb070100-d100-4d10-9d10-0000000403")
+	)
+	(junction
+		(at 179.07 92.71)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb070100-d100-4d10-9d10-0000000404")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 166.37 85.09 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb070100-d100-4d10-9d10-0000000310")
+		(property "Reference" "TP39"
+			(at 168.91 74.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IR_LED_I_TEST"
+			(at 168.91 77.47 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 166.37 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 166.37 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 166.37 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR LED current measurement. Probe this against any +3V3 test point: the difference is the voltage across R24, so I_LED = V(R24) / 12 R. That is the only non-invasive way to confirm the 38 kHz peak current on a built board without breaking the loop."
+			(at 166.37 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb070100-d100-4d10-9d10-0000000311")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/d14ac91a-547d-41d4-b6d8-03779253a1ea"
+					(reference "TP39")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 166.37 85.09) (xy 166.37 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000405")
+	)
+	(wire
+		(pts
+			(xy 166.37 92.71) (xy 170.18 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000406")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 116.84 64.77 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb070100-d100-4d10-9d10-0000000320")
+		(property "Reference" "TP40"
+			(at 119.38000000000001 54.61 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IR_RX_TEST"
+			(at 119.38000000000001 57.15 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 116.84 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 116.84 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "IR receiver demodulated output. Active low, idles high on the internal 30 k pull-up. Scoping this shows the decoded envelope directly and separates a receiver problem from a firmware decode problem."
+			(at 116.84 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb070100-d100-4d10-9d10-0000000321")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/d14ac91a-547d-41d4-b6d8-03779253a1ea"
+					(reference "TP40")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 110.49 72.39) (xy 116.84 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000407")
+	)
+	(wire
+		(pts
+			(xy 116.84 72.39) (xy 116.84 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb070100-d100-4d10-9d10-0000000408")
+	)
+	(junction
+		(at 110.49 72.39)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb070100-d100-4d10-9d10-0000000409")
 	)
 )

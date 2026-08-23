@@ -30,7 +30,7 @@ assert len(DM_PROJ) == len(V2_PROJ)
 # Sheets still inherited verbatim from Beta-DM.  A sheet leaves this list the
 # moment its FBV2-S1 migration lands, and moves into FILES as 'changed'.
 SHEETS = [
-    '07_ir', '08_buttons_expanders',
+    '08_buttons_expanders',
     '09_community_header',
 ]
 
