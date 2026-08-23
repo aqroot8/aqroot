@@ -9594,13 +9594,14 @@
 		)
 		(uuid "fb030012-d012-4d12-9d12-000000000012")
 	)
-	(label "SD_CARD_DETECT_N"
+	(hierarchical_label "SD_CARD_DETECT_N"
+		(shape output)
 		(at 165.1 81.28 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "fb030013-d013-4d13-9d13-000000000013")
 	)

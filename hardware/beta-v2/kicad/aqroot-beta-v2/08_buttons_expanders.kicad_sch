@@ -3,8 +3,131 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "fbb3d9f2-3145-4dad-bdbb-dd7e5248dd97")
-	(paper "A4")
+	(paper "A3")
 	(lib_symbols
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -300,29 +423,23 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Interface_Expansion:TCA9535PWR"
+		(symbol "AQROOT_Beta:PCAL9535APW"
 			(pin_names
 				(offset 1.016)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "U"
-				(at -11.43 24.13 0)
-				(show_name no)
-				(do_not_autoplace no)
+				(at 0 24.13 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "TCA9535PWR"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
+			(property "Value" "PCAL9535APW"
+				(at 0 -25.4 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -330,31 +447,7 @@
 				)
 			)
 			(property "Footprint" "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm"
-				(at 26.67 -25.4 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tca9535.pdf"
-				(at -12.7 22.86 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "16-bit I/O expander, I2C and SMBus interface, interrupts, w/o pull-ups, TSSOP-24 package"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -362,10 +455,53 @@
 					)
 				)
 			)
-			(property "ki_keywords" "ti parallel port"
+			(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Low-voltage 16-bit I2C-bus I/O port with interrupt and Agile I/O, TSSOP-24; pin-to-pin replacement for PCA9535/PCA9535A/TCA9535"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "NXP Semiconductors"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "PCAL9535APW,118"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Note" "AQROOT FBV2-S1-008. NXP data sheet Rev. 2, 23 January 2015 (SOT355-1, TSSOP24, body width 4.4 mm). VDD 1.65-5.5 V, 5 V-tolerant I/O, 400 kHz Fast-mode. Slave address 0 1 0 0 A2 A1 A0 -> 0x20 with A0=A1=A2=GND. Outputs sink 25 mA for direct LED drive (abs max 50 mA continuous per I/O, 200 mA total ISS, 200 mW Ptot). POWER-UP STATE, FROM THE COMMAND-BYTE TABLE: Configuration 06h/07h = FFh so every pin is a high-impedance INPUT; Output port 02h/03h = FFh so a pin drives HIGH the instant it is made an output; pull-up/pull-down ENABLE 46h/47h = 00h so the internal 100 k resistors are DISABLED; Interrupt mask 4Ah/4Bh = FFh so ALL interrupts are masked. P-port input leakage IIH/IIL <= 1 uA. AGILE I/O over the TCA9535: programmable 100 k pull-up/pull-down, interrupt mask, interrupt STATUS registers 4Ch/4Dh that identify the changed input, input latch, and four output drive strengths."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "nxp pcal9535a i2c gpio expander agile io interrupt"
+				(at 0 0 0)
 				(hide yes)
 				(effects
 					(font
@@ -375,8 +511,6 @@
 			)
 			(property "ki_fp_filters" "TSSOP*4.4x7.8mm*P0.65mm*"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -384,7 +518,7 @@
 					)
 				)
 			)
-			(symbol "TCA9535PWR_0_1"
+			(symbol "PCAL9535APW_0_1"
 				(rectangle
 					(start -12.7 22.86)
 					(end 12.7 -22.86)
@@ -397,7 +531,7 @@
 					)
 				)
 			)
-			(symbol "TCA9535PWR_1_1"
+			(symbol "PCAL9535APW_1_1"
 				(pin open_collector line
 					(at -17.78 15.24 0)
 					(length 5.08)
@@ -833,6 +967,548 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "AQROOT_Beta:MHPA3528RGBCT"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MHPA3528RGBCT"
+				(at 0 -8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/product-detail/C409779.html"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "RGB LED, COMMON ANODE, SMD3528-4P PLCC-4 3.5x2.8x1.85 mm, top view, water-clear lens, 120 deg"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "MEIHUA (Lianyungang Meihua Electronic Technology)"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "MHPA3528RGBCT"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C409779"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Note" "AQROOT FBV2-S1-008. Data sheet Issue LPDS-0001719 Rev.2, 2018-09-25. PIN 1 = COMMON ANODE, 2 = BLUE cathode, 3 = GREEN cathode, 4 = RED cathode - NOT the order used by Device:LED_ARGB (2=RK, 4=BK), which would swap red and blue. VF at 20 mA: R 1.7-2.3 V, G 2.7-3.3 V, B 2.7-3.4 V. IF continuous R 50 mA, G 30 mA, B 30 mA; IFP 100 mA at 1/10 duty. Iv at 20 mA: R 715-1420, G 1120-2250, B 285-715 mcd. Dominant wavelength R 622, G 515-530, B 460-470 nm. ESD HBM: RED 2000 V but GREEN and BLUE only 150 V - handling and assembly must treat this as an ESD-sensitive part. Tj -40 to +85 C, 2000 pcs/reel."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "RGB LED common anode 3528 PLCC-4 status indicator"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "LED*PLCC*3.5x2.8*"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MHPA3528RGBCT_0_0"
+				(text "R"
+					(at -1.905 3.81 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(text "G"
+					(at -1.905 -1.27 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(text "B"
+					(at -1.905 -6.35 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "MHPA3528RGBCT_0_1"
+				(polyline
+					(pts
+						(xy -1.27 6.35) (xy -1.27 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 6.35) (xy -1.27 3.81) (xy -1.27 3.81)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 5.08) (xy -2.54 5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 5.08) (xy 1.27 5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 -1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -3.81) (xy -1.27 -6.35)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -5.08) (xy -2.54 -5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -5.08) (xy 1.27 -5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 6.35) (xy 0.508 7.874) (xy -0.254 7.874) (xy 0.508 7.874) (xy 0.508 7.112)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 1.27) (xy 0.508 2.794) (xy -0.254 2.794) (xy 0.508 2.794) (xy 0.508 2.032)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 -3.81) (xy 0.508 -2.286) (xy -0.254 -2.286) (xy 0.508 -2.286) (xy 0.508 -3.048)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 6.35) (xy 1.524 7.874) (xy 0.762 7.874) (xy 1.524 7.874) (xy 1.524 7.112)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 1.524 2.794) (xy 0.762 2.794) (xy 1.524 2.794) (xy 1.524 2.032)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 1.524 -2.286) (xy 0.762 -2.286) (xy 1.524 -2.286) (xy 1.524 -3.048)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 6.35) (xy 1.27 3.81) (xy -1.27 5.08) (xy 1.27 6.35)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 1.27 6.35)
+					(end 1.27 6.35)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 1.27 3.81)
+					(end 1.27 6.35)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 1.27 1.27)
+					(end 1.27 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy 2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 1.27 -1.27)
+					(end 1.27 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -3.81) (xy 1.27 -6.35) (xy -1.27 -5.08) (xy 1.27 -3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -5.08) (xy 2.032 -5.08) (xy 2.032 5.08) (xy 1.27 5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 0)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start 2.794 8.382)
+					(end -2.794 -7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "MHPA3528RGBCT_1_1"
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 5.08 0)
+					(length 2.54)
+					(name "RK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "GK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 2.54)
+					(name "BK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers
 				(hide yes)
@@ -1252,37 +1928,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "RGB OUTPUT IMPLEMENTATION PENDING\n\nRGB_R_CTL / RGB_G_CTL / RGB_B_CTL\nLED TYPE, POLARITY, CURRENT RESISTORS\nAND SAFE-STATE PULL DIRECTION NOT SELECTED\n\nDO NOT ROUTE"
-		(exclude_from_sim no)
-		(at 223.52 116.332 0)
-		(effects
-			(font
-				(face "KiCad Font")
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "29cb8a79-e713-4156-abc7-d4121be8f266")
-	)
-	(text "U61 COMMUNITY EXPANDER\nI2C ADDRESS 0x21\nARCHITECTURE LOCKED"
-		(exclude_from_sim no)
-		(at 168.402 33.274 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "331d1223-b089-473f-811e-29225401fa78")
-	)
-	(text "U60 INTERNAL EXPANDER\nI2C ADDRESS 0x20\nARCHITECTURE LOCKED"
-		(exclude_from_sim no)
-		(at 82.804 33.782 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "c66c535d-ec80-4e1d-888c-4447384adcb6")
-	)
 	(junction
 		(at 82.55 144.78)
 		(diameter 0)
@@ -1318,22 +1963,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f27599f4-8cbc-44ba-a9aa-9987b1fcaae9")
-	)
-	(junction
-		(at 168.91 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fc0855cc-ebb8-4ef3-b52c-1e229902157c")
-	)
-	(wire
-		(pts
-			(xy 185.42 87.63) (xy 186.69 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "017eb619-36f8-43fb-9bb2-ea6f9ce25949")
 	)
 	(wire
 		(pts
@@ -1547,16 +2176,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 85.09) (xy 186.69 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "215874c4-f84c-43ea-beda-49a88e52811e")
-	)
-	(wire
-		(pts
 			(xy 38.1 177.8) (xy 38.1 179.07)
 		)
 		(stroke
@@ -1747,16 +2366,6 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 132.08) (xy 168.91 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5908fd79-4af4-4cf1-be24-6000566893f0")
-	)
-	(wire
-		(pts
 			(xy 148.59 158.75) (xy 148.59 160.02)
 		)
 		(stroke
@@ -1867,16 +2476,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 82.55) (xy 186.69 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7df6ff4a-4352-4d03-8773-1645a12bf8f2")
-	)
-	(wire
-		(pts
 			(xy 62.23 90.17) (xy 64.77 90.17)
 		)
 		(stroke
@@ -1927,16 +2526,6 @@
 	)
 	(wire
 		(pts
-			(xy 38.1 41.91) (xy 38.1 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8bfd0770-5ae7-4b22-91ea-e33e06e8bd64")
-	)
-	(wire
-		(pts
 			(xy 100.33 69.85) (xy 101.6 69.85)
 		)
 		(stroke
@@ -1977,16 +2566,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 90.17) (xy 186.69 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9aaa4344-e062-4bc3-8317-c12c18c2ad03")
-	)
-	(wire
-		(pts
 			(xy 82.55 177.8) (xy 82.55 179.07)
 		)
 		(stroke
@@ -2007,16 +2586,6 @@
 	)
 	(wire
 		(pts
-			(xy 38.1 31.75) (xy 38.1 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa27f955-8a69-44cb-8db0-e3a06211fea2")
-	)
-	(wire
-		(pts
 			(xy 147.32 59.69) (xy 149.86 59.69)
 		)
 		(stroke
@@ -2027,16 +2596,6 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 144.78) (xy 168.91 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bc7314a5-c74c-44c1-babb-9e0719c493bf")
-	)
-	(wire
-		(pts
 			(xy 44.45 85.09) (xy 44.45 87.63)
 		)
 		(stroke
@@ -2044,16 +2603,6 @@
 			(type default)
 		)
 		(uuid "be115330-209c-423c-a387-eb4f20068655")
-	)
-	(wire
-		(pts
-			(xy 167.64 144.78) (xy 168.91 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bece5ad9-f343-4103-90d8-4403ba17f2e9")
 	)
 	(wire
 		(pts
@@ -2084,16 +2633,6 @@
 			(type default)
 		)
 		(uuid "c4eb4a5c-2951-486a-8279-53110bcd6e44")
-	)
-	(wire
-		(pts
-			(xy 168.91 140.97) (xy 168.91 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c64191d3-3620-47e4-a49c-b41ad8ab70e6")
 	)
 	(wire
 		(pts
@@ -2204,16 +2743,6 @@
 			(type default)
 		)
 		(uuid "de0eb12c-9aa6-484c-a1da-ee7eed6bd7e1")
-	)
-	(wire
-		(pts
-			(xy 168.91 158.75) (xy 168.91 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "de85f993-1460-427d-bae0-baeb77e0704c")
 	)
 	(wire
 		(pts
@@ -2375,16 +2904,6 @@
 		)
 		(uuid "1326f7f3-adbb-4459-859a-ee1521a7b7ce")
 	)
-	(label "ROOTPROBE_IRQ_READY_N"
-		(at 38.1 41.91 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "170d6758-ed89-43c2-b89a-2591d5f3059b")
-	)
 	(label "BTN_DOWN_N"
 		(at 58.42 144.78 180)
 		(effects
@@ -2424,16 +2943,6 @@
 			(justify left bottom)
 		)
 		(uuid "5903baf1-6940-4781-a483-ce8daab38037")
-	)
-	(label "BTN_HOME_N"
-		(at 167.64 144.78 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "78a6a0ee-5c77-4689-9440-e079e55db6b4")
 	)
 	(label "BTN_B_N"
 		(at 147.32 144.78 180)
@@ -2549,17 +3058,6 @@
 		)
 		(uuid "1fafe9ef-ac3e-4f3f-9356-fef31dcf0313")
 	)
-	(hierarchical_label "XGPIO11"
-		(shape bidirectional)
-		(at 186.69 85.09 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "2083cefb-7e1e-446b-a4b0-8b2e5b3e9307")
-	)
 	(hierarchical_label "XGPIO9"
 		(shape bidirectional)
 		(at 186.69 80.01 0)
@@ -2581,17 +3079,6 @@
 			(justify left)
 		)
 		(uuid "30f99a9c-8222-4de7-9de4-0c4f330efa2d")
-	)
-	(hierarchical_label "RGB_G_CTL"
-		(shape output)
-		(at 101.6 69.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "314cf88c-f676-42c5-b889-f4119f56808a")
 	)
 	(hierarchical_label "ACC_PWR_EN"
 		(shape output)
@@ -2615,28 +3102,6 @@
 		)
 		(uuid "4f52a383-f38a-454f-af3c-f05cbbdab565")
 	)
-	(hierarchical_label "XGPIO13"
-		(shape bidirectional)
-		(at 186.69 90.17 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "50128422-c68d-4f3f-9c03-47d225c709e3")
-	)
-	(hierarchical_label "XGPIO10"
-		(shape bidirectional)
-		(at 186.69 82.55 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "5b74f599-8137-44be-84d3-0a91547ca806")
-	)
 	(hierarchical_label "XGPIO1"
 		(shape bidirectional)
 		(at 187.96 57.15 0)
@@ -2647,17 +3112,6 @@
 			(justify left)
 		)
 		(uuid "5db9e45f-a7c7-4b5d-94c0-c7d74e086a7e")
-	)
-	(hierarchical_label "XGPIO12"
-		(shape bidirectional)
-		(at 186.69 87.63 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "6a983630-e844-4f9f-829d-b59178374ada")
 	)
 	(label "BTN_UP_N"
 		(at 101.6 77.47 0)
@@ -2679,17 +3133,6 @@
 			(justify left)
 		)
 		(uuid "7c890b48-e646-472e-8888-dda3a1d3594c")
-	)
-	(hierarchical_label "RGB_R_CTL"
-		(shape output)
-		(at 101.6 67.31 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "8810c901-d8c5-400e-87c1-b8d6fcb76e74")
 	)
 	(label "BTN_RIGHT_N"
 		(at 101.6 85.09 0)
@@ -2755,17 +3198,6 @@
 			(justify right)
 		)
 		(uuid "aa5d8c33-9d3e-48fa-b4bd-9f4976b44334")
-	)
-	(hierarchical_label "RGB_B_CTL"
-		(shape output)
-		(at 101.6 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ab4c33d4-99a0-4771-9302-516d25899834")
 	)
 	(hierarchical_label "XGPIO6"
 		(shape bidirectional)
@@ -2852,16 +3284,6 @@
 		)
 		(uuid "cd498d5f-3cc0-44f8-8592-02f7bd4f6d38")
 	)
-	(label "BTN_HOME_N"
-		(at 101.6 92.71 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "d464267e-9134-40a8-98e1-2dfe8e3635fe")
-	)
 	(hierarchical_label "XGPIO0"
 		(shape bidirectional)
 		(at 187.96 54.61 0)
@@ -2894,17 +3316,6 @@
 			(justify left)
 		)
 		(uuid "f3e1be51-3d6d-4d3e-ab93-0d6645bffd81")
-	)
-	(hierarchical_label "ROOTPROBE_IRQ_READY_N"
-		(shape input)
-		(at 101.6 95.25 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "f531aa3f-166a-414a-84e1-6f9bb27b76b7")
 	)
 	(hierarchical_label "WAKE_INT_N"
 		(shape output)
@@ -3382,243 +3793,6 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
 					(reference "#PWR041")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_Push")
-		(at 168.91 153.67 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "20037106-0c7f-452c-bec9-d253d9478158")
-		(property "Reference" "SW8"
-			(at 172.72 152.3999 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "HOME"
-			(at 172.72 154.9399 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92"
-			(at 173.99 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 173.99 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Push button switch, generic, two pins"
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "C&K / Littelfuse"
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "PTS645SM43SMTR92LFS"
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "6.0 x 6.0 mm tactile switch, straight SMT gull-wing, 4 terminals"
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mounting" "BOARD_MOUNTED"
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "BOM_Status" "C&K / Littelfuse PTS645 family, 6 mm SMD, top-actuated. FINAL SUFFIX VERIFY AT BOM LOCK - 160gf TARGET, ~5mm ACTUATOR TARGET, ~0.25 mm travel and 100,000 operation class are the selection targets, not a quoted commercial suffix. FOOTPRINT LOCKED / BOM SUFFIX VERIFY."
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint_Provenance" "Land pattern VERIFIED_VENDOR_EXACT against the C&K / Littelfuse PTS645 series datasheet (Revised VL 01/29/26), RECOMMENDED PCB LAYOUT / PCB LAYOUT panels. The drawing gives 9.5 outer-edge to outer-edge and 6.4 inner-edge to inner-edge in X, and 5.8 outer to 3.2 inner in Y, which yields pads 1.55 (X) x 1.30 (Y) on centres of +/-3.975 (X) and +/-2.25 (Y). KiCad Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92 implements 1.55 x 1.30 at (+/-3.98, +/-2.25) - exact on pad size and on the Y centre, with a 0.005 mm rounding on the X centre that is far inside any fabrication tolerance. The same land pattern is published for both the 4.3 mm SMT G Type and the 7.3 mm straight SMT variants, which is why the footprint can be locked before the actuator-height suffix is. Four physical pads; C&K numbers them 1 and 2 on the top row and 3 and 4 on the bottom row with 1-2 tied and 3-4 tied, so the KiCad footprint maps its pad 1 to the top pair and pad 2 to the bottom pair, matching the 2-pin Switch:SW_Push symbol."
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "User-facing button; receives an individual plastic cap. ENCLOSURE DESIGN TARGETS - these are AQROOT enclosure targets, NOT C&K switch specifications: individual plastic button caps, no membrane for Beta; 0.1-0.3 mm rest gap above the actuator with no preload; enclosure hard stop sized for ~0.3-0.4 mm total cap travel so the user cannot drive the tactile switch past its own travel."
-			(at 168.91 153.67 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "96b8e26a-bcc7-474a-b4fa-a44f5a5f164e")
-		)
-		(pin "2"
-			(uuid "3a45f3d4-c302-4a58-83b9-e27610ec3cce")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "SW8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 168.91 160.02 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "22a7508e-34d3-4dce-9a98-3c44b755b4c2")
-		(property "Reference" "#PWR037"
-			(at 168.91 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 168.91 165.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 168.91 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 168.91 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 168.91 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a2f7883a-a37e-4686-ac74-d7023b124dd1")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -4899,7 +5073,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Interface_Expansion:TCA9535PWR")
+		(lib_id "AQROOT_Beta:PCAL9535APW")
 		(at 167.64 74.93 0)
 		(unit 1)
 		(body_style 1)
@@ -4921,7 +5095,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TCA9535PWR"
+		(property "Value" "PCAL9535APW"
 			(at 169.7833 49.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4943,7 +5117,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tca9535.pdf"
+		(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf"
 			(at 154.94 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -4954,7 +5128,7 @@
 				)
 			)
 		)
-		(property "Description" "16-bit I/O expander, I2C and SMBus interface, interrupts, w/o pull-ups, TSSOP-24 package"
+		(property "Description" "Low-voltage 16-bit I2C-bus I/O port with interrupt and Agile I/O, TSSOP-24"
 			(at 167.64 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -4965,7 +5139,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Texas Instruments"
+		(property "Manufacturer" "NXP Semiconductors"
 			(at 194.31 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -4976,8 +5150,30 @@
 				)
 			)
 		)
-		(property "MPN" "TCA9535PWR"
+		(property "MPN" "PCAL9535APW,118"
 			(at 194.31 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "I2C_Address" "0x21"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S1-008: TCA9535PWR -> NXP PCAL9535APW,118. PIN-TO-PIN IDENTICAL - NXP data sheet Rev. 2, 23-Jan-2015 calls the part a pin-to-pin replacement for the PCA9535 and the TSSOP24 pinning matches the inherited symbol exactly, so no wire moved. Address 0 1 0 0 A2 A1 A0. THE SWAP IS NOT COSMETIC, and it is what makes this sheet work: (1) programmable 100 k pull-up/pull-down per bit (46h/47h enable, 48h/49h select) so RESERVED and unused pins need no external resistors, which the TCA9535 cannot do; (2) an interrupt MASK (4Ah/4Bh) and a read-only interrupt STATUS register (4Ch/4Dh) that names the changed input, where the TCA9535 forces firmware to read every port of both devices and still cannot tell which bit moved; (3) all interrupts MASKED at power-up, so bring-up is free of spurious INT; (4) four output drive strengths (40h-43h) to slow edges for EMI. POWER-UP REGISTER STATE THAT THE SAFE-STATE ANALYSIS DEPENDS ON: Configuration 06h/07h = FFh (all pins high-impedance INPUTS); Output port 02h/03h = FFh, so a pin DRIVES HIGH the instant firmware makes it an output; pull-up/pull-down enable 46h/47h = 00h, so the internal resistors are OFF and the only current at a high-Z pin is the 1 uA IIH/IIL leakage limit. FIRMWARE CONTRACT: write the Output port register BEFORE the Configuration register, or the five active-low resets and AMP_SD_MODE will glitch to their inactive state on the write that makes them outputs. Outputs sink 25 mA each for direct LED drive; abs max 50 mA per I/O, 200 mA ISS, 200 mW Ptot. Standby 1.0 uA typ at 3.3 V."
+			(at 0 0 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5390,7 +5586,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Interface_Expansion:TCA9535PWR")
+		(lib_id "AQROOT_Beta:PCAL9535APW")
 		(at 82.55 74.93 0)
 		(unit 1)
 		(body_style 1)
@@ -5412,7 +5608,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TCA9535PWR"
+		(property "Value" "PCAL9535APW"
 			(at 84.6933 49.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5434,7 +5630,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tca9535.pdf"
+		(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf"
 			(at 69.85 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -5445,7 +5641,7 @@
 				)
 			)
 		)
-		(property "Description" "16-bit I/O expander, I2C and SMBus interface, interrupts, w/o pull-ups, TSSOP-24 package"
+		(property "Description" "Low-voltage 16-bit I2C-bus I/O port with interrupt and Agile I/O, TSSOP-24"
 			(at 82.55 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -5456,7 +5652,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Texas Instruments"
+		(property "Manufacturer" "NXP Semiconductors"
 			(at 109.22 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -5467,8 +5663,30 @@
 				)
 			)
 		)
-		(property "MPN" "TCA9535PWR"
+		(property "MPN" "PCAL9535APW,118"
 			(at 109.22 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "I2C_Address" "0x20"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S1-008: TCA9535PWR -> NXP PCAL9535APW,118. PIN-TO-PIN IDENTICAL - NXP data sheet Rev. 2, 23-Jan-2015 calls the part a pin-to-pin replacement for the PCA9535 and the TSSOP24 pinning matches the inherited symbol exactly, so no wire moved. Address 0 1 0 0 A2 A1 A0. THE SWAP IS NOT COSMETIC, and it is what makes this sheet work: (1) programmable 100 k pull-up/pull-down per bit (46h/47h enable, 48h/49h select) so RESERVED and unused pins need no external resistors, which the TCA9535 cannot do; (2) an interrupt MASK (4Ah/4Bh) and a read-only interrupt STATUS register (4Ch/4Dh) that names the changed input, where the TCA9535 forces firmware to read every port of both devices and still cannot tell which bit moved; (3) all interrupts MASKED at power-up, so bring-up is free of spurious INT; (4) four output drive strengths (40h-43h) to slow edges for EMI. POWER-UP REGISTER STATE THAT THE SAFE-STATE ANALYSIS DEPENDS ON: Configuration 06h/07h = FFh (all pins high-impedance INPUTS); Output port 02h/03h = FFh, so a pin DRIVES HIGH the instant firmware makes it an output; pull-up/pull-down enable 46h/47h = 00h, so the internal resistors are OFF and the only current at a high-Z pin is the 1 uA IIH/IIL leakage limit. FIRMWARE CONTRACT: write the Output port register BEFORE the Configuration register, or the five active-low resets and AMP_SD_MODE will glitch to their inactive state on the write that makes them outputs. Outputs sink 25 mA each for direct LED drive; abs max 50 mA per I/O, 200 mA ISS, 200 mW Ptot. Standby 1.0 uA typ at 3.3 V."
+			(at 0 0 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5869,84 +6087,6 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
 					(reference "#PWR015")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 168.91 132.08 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8209fbba-99c9-43a5-b491-3f8f772e68cd")
-		(property "Reference" "#PWR038"
-			(at 168.91 135.89 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 168.91 127 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 168.91 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 168.91 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 168.91 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "affeffd0-8ab5-4e20-bbaa-7549fd83f8ce")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "#PWR038")
 					(unit 1)
 				)
 			)
@@ -6905,166 +7045,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 168.91 137.16 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b19bd920-7ce0-47af-90f8-8191d6d9f4ba")
-		(property "Reference" "R10"
-			(at 171.45 135.8899 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10k"
-			(at 171.45 138.4299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 167.132 137.16 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 168.91 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 168.91 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bc9c2b38-2a22-4276-b742-b96de1c99ba2")
-		)
-		(pin "2"
-			(uuid "87a6b06b-b9a9-4f1e-b71f-7f6d1b447b73")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "R10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 38.1 31.75 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "be3c4007-4866-4cca-9e9e-5c4c391657ee")
-		(property "Reference" "#PWR039"
-			(at 38.1 35.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 38.1 26.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 38.1 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 38.1 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 38.1 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "21790d4c-ad7f-470f-96fe-f9a3cd7a5918")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "#PWR039")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 204.47 53.34 0)
 		(unit 1)
@@ -7854,88 +7834,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 38.1 36.83 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "dc27e9aa-87e4-4aaf-b293-31d9d204f77d")
-		(property "Reference" "R11"
-			(at 40.64 35.5599 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10K"
-			(at 40.64 38.0999 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 36.322 36.83 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 38.1 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 38.1 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1f1815bc-4003-4cab-aef5-1909d56381d3")
-		)
-		(pin "2"
-			(uuid "3b160abb-47f0-470a-8d5f-3bad407eba28")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 59.69 153.67 270)
 		(unit 1)
@@ -8587,5 +8485,3002 @@
 			)
 		)
 		(uuid "074f7f23-c810-46d9-94c1-8c22f2cccbbf")
+	)
+	(hierarchical_label "TOUCH_INT_N"
+		(shape input)
+		(at 101.6 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000004")
+	)
+	(hierarchical_label "SX1262_DIO1"
+		(shape input)
+		(at 101.6 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000005")
+	)
+	(symbol
+		(lib_id "AQROOT_Beta:MHPA3528RGBCT")
+		(at 322.58 245.11 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080008-0808-48b8-9808-000000000c80")
+		(property "Reference" "D13"
+			(at 325.12 243.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MHPA3528RGBCT"
+			(at 325.12 246.38000000000002 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm"
+			(at 322.58 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/product-detail/C409779.html"
+			(at 322.58 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 322.58 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "MEIHUA"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "MHPA3528RGBCT"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C409779"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FRONT RGB STATUS LIGHT, FBV2-S1-008. MEIHUA MHPA3528RGBCT, LCSC C409779, COMMON ANODE, SMD3528-4P 3.5 x 2.8 x 1.85 mm, top view, water-clear, 120 deg. PIN 1 = ANODE, 2 = BLUE K, 3 = GREEN K, 4 = RED K - this is NOT the order used by Device:LED_ARGB (2 = red, 4 = blue), so that stock symbol would have swapped red and blue. Driven directly by three PCAL9535A outputs on U2 port 0; the nets are ACTIVE LOW because the anode is the common terminal. SAFE STATE IS PROVEN, NOT ASSUMED: at power-up every PCAL pin is a high-impedance input (Configuration 06h/07h = FFh) AND the internal pull-up/pull-down is DISABLED (46h/47h = 00h), so the only current available to the LED is the data-sheet IIH/IIL leakage limit of 1 uA - roughly 1/1500 of the operating current and about 0.05 mcd, far below the threshold of visibility. When firmware then makes the pin an output it drives HIGH first, because Output port 02h/03h = FFh, so the LED stays dark through the transition and NO external pull-up is needed on any cathode node. ESD: the GREEN and BLUE dice are rated only 150 V HBM against 2000 V for RED - treat as an ESD-sensitive part in assembly and rework. Mechanically this is a single front indicator behind a diffuser; see MECHANICAL_INTERFACE_SPEC.md."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080008-0808-48b8-9808-000000000c81")
+		)
+		(pin "2"
+			(uuid "fb080008-0808-48b8-9808-000000000c82")
+		)
+		(pin "3"
+			(uuid "fb080008-0808-48b8-9808-000000000c83")
+		)
+		(pin "4"
+			(uuid "fb080008-0808-48b8-9808-000000000c84")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "D13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 307.34 240.03 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080008-0808-48b8-9808-000000000d20")
+		(property "Reference" "R124"
+			(at 309.88 238.76 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 309.88 241.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 307.34 240.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 307.34 240.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 240.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "RED channel current-set resistor, FBV2-S1-008. R = (3.30 - VF - VOL) / IF with VF ~ 1.75 V read off the data-sheet Fig. 4 forward-current curve AT THE OPERATING CURRENT, not the 20 mA table value, and VOL ~ 0.05 V (the PCAL9535A guarantees <= 0.25 V at 8 mA, so 0.05 V is conservative at 1.5 mA). 1.500 mA nominal; 1.70 mA at the high corner (3.366 V rail, VF 1.65) and 1.18 mA at the low corner (3.234 V rail, VF 1.95, VOL 0.10). Red gets the LEAST current of the three because it is by far the most efficient - 1070 mcd typ at 20 mA against 500 mcd for blue."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080008-0808-48b8-9808-000000000d21")
+		)
+		(pin "2"
+			(uuid "fb080008-0808-48b8-9808-000000000d22")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R124")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 307.34 245.11 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080008-0808-48b8-9808-000000000dc0")
+		(property "Reference" "R125"
+			(at 309.88 243.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "680R"
+			(at 309.88 246.38000000000002 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 307.34 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 307.34 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 245.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "GREEN channel current-set resistor, FBV2-S1-008. The tabulated VF of 2.7 to 3.3 V is quoted AT 20 mA and would leave almost no headroom on a 3.3 V rail; the data-sheet Fig. 4 curve gives VF ~ 2.55 V at about 1 mA, which is what this value is derived from. 1.03 mA nominal, 1.32 mA high corner, 0.57 mA low corner. Green is the brightest die per mA (1685 mcd typ at 20 mA) so it is deliberately run the leanest. The 2.4:1 corner spread is inherent to driving a 2.55 V die from 3.3 V with only ~0.7 V across the resistor; perceived brightness goes roughly as the cube root of current, so it is a small visible change behind a diffuser."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080008-0808-48b8-9808-000000000dc1")
+		)
+		(pin "2"
+			(uuid "fb080008-0808-48b8-9808-000000000dc2")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R125")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 307.34 250.19 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080008-0808-48b8-9808-000000000e60")
+		(property "Reference" "R126"
+			(at 309.88 248.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "390R"
+			(at 309.88 251.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 307.34 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 307.34 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "BLUE channel current-set resistor, FBV2-S1-008. VF ~ 2.60 V at ~1.7 mA from the data-sheet Fig. 4 curve (the 2.7 to 3.4 V table figure is at 20 mA). 1.67 mA nominal, 2.17 mA high corner, 0.86 mA low corner. Blue gets the MOST current of the three because it is the dimmest die - 500 mcd typ at 20 mA against 1685 for green - which brings the three channels to roughly 80 / 87 / 42 mcd and gives a usable white through a diffuser. This is indicator balance, not colorimetry."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080008-0808-48b8-9808-000000000e61")
+		)
+		(pin "2"
+			(uuid "fb080008-0808-48b8-9808-000000000e62")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R126")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 327.66 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080008-0808-48b8-9808-000000000f00")
+		(property "Reference" "#PWR0648"
+			(at 327.66 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 327.66 241.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 327.66 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 327.66 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080008-0808-48b8-9808-000000000f01")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0648")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 327.66 236.22) (xy 327.66 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000a")
+	)
+	(wire
+		(pts
+			(xy 311.15 240.03) (xy 317.5 240.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000b")
+	)
+	(wire
+		(pts
+			(xy 311.15 245.11) (xy 317.5 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000c")
+	)
+	(wire
+		(pts
+			(xy 311.15 250.19) (xy 317.5 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 298.45 240.03) (xy 303.53 240.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000e")
+	)
+	(wire
+		(pts
+			(xy 298.45 245.11) (xy 303.53 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-00000000000f")
+	)
+	(wire
+		(pts
+			(xy 298.45 250.19) (xy 303.53 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000010")
+	)
+	(label "FRONT_RGB_R_N"
+		(at 298.45 240.03 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000011")
+	)
+	(label "FRONT_RGB_G_N"
+		(at 298.45 245.11 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000012")
+	)
+	(label "FRONT_RGB_B_N"
+		(at 298.45 250.19 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000013")
+	)
+	(text "BUTTONS - MIGRATED FBV2-S1-008\n\nSIX BUTTONS: UP, DOWN, LEFT, RIGHT, A/SELECT, B/BACK.\nHOME (SW8) AND ITS PULL-UP R10 ARE REMOVED - THE SIX-BUTTON\nSET IS THE LOCKED ONE. VOLUME BUTTONS NEVER EXISTED\nELECTRICALLY AND ARE NOT INVENTED HERE.\n\nACTIVE LOW: 10 k EXTERNAL PULL-UP TO +3V3, SWITCH TO GND.\nTHE PULL-UPS STAY EXTERNAL EVEN THOUGH THE PCAL9535A HAS\nINTERNAL 100 k ONES - 100 k WITH THE PCAL 1 uA LEAKAGE AND\nPCB CONTAMINATION IS A WEAK HIGH, AND AN EXTERNAL 10 k IS\nDEFINED BEFORE FIRMWARE HAS WRITTEN A SINGLE REGISTER.\nSTEADY CURRENT WHEN A BUTTON IS HELD: 0.33 mA.\n\nNO RC DEBOUNCE. THE PTS645 BOUNCES <= 5 ms AND THE INPUT IS\nREAD OVER I2C AFTER AN INTERRUPT - HUNDREDS OF MICROSECONDS\nOF LATENCY ALREADY - SO A CAPACITOR WOULD ADD PARTS AND\nSOLVE NOTHING. DEBOUNCE IN FIRMWARE. THE PCAL INPUT LATCH\n(44h/45h) IS AVAILABLE IF A SHORT PRESS IS EVER MISSED."
+		(exclude_from_sim no)
+		(at 25.4 245.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb080008-0808-4808-9808-000000000014")
+	)
+
+	(wire
+		(pts
+			(xy 101.6 67.31) (xy 113.03 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000001")
+	)
+
+	(hierarchical_label "BQ25185_STAT1"
+		(shape input)
+		(at 113.03 67.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000002")
+	)
+
+	(symbol
+		(lib_id "Device:R")
+		(at 113.03 60.96 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000003")
+		(property "Reference" "R127"
+			(at 115.57 59.69 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 115.57 62.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 113.03 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 113.03 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 113.03 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "BQ25185 STAT1 pull-up, FBV2-S1-008. SLUSF65A Table 5-1: STAT1 and STAT2 are OPEN-DRAIN, pull-up resistor 1 kOhm to 20 kOhm, maximum pull-up rail 5 V, 20 mA sink, and either may be left floating if unused. 10 kOhm is inside that window and is chosen over the 20 kOhm of Ruling G for the same reason the button pull-ups are 10 kOhm and not the PCAL internal 100 kOhm: the expander input leaks up to 1 uA and the board will be handled, so a stiffer high is worth 0.33 mA - and that current only flows while the charger is actually holding the pin LOW. CHARGER STATE DECODE, SLUSF65A Table 7-2: STAT1 LOW = charging; STAT1 HIGH with STAT2 LOW = fault; both HIGH is ONE combined state covering charge complete, sleep and charge disabled. WITH NO BATTERY FITTED the device cycles the BAT-pin capacitor and STAT2 TOGGLES while STAT1 stays stable - which is why both pins are landed, and why firmware must leave the STAT2 interrupt mask bit SET and poll instead."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000004")
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-000000000005")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R127")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 113.03 64.77) (xy 113.03 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000006")
+	)
+
+	(wire
+		(pts
+			(xy 113.03 57.15) (xy 113.03 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000007")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 113.03 55.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000008")
+		(property "Reference" "#PWR0649"
+			(at 113.03 59.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 113.03 49.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 113.03 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 113.03 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 113.03 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000009")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0649")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 101.6 69.85) (xy 129.54 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000000a")
+	)
+
+	(hierarchical_label "BQ25185_STAT2"
+		(shape input)
+		(at 129.54 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000000b")
+	)
+
+	(symbol
+		(lib_id "Device:R")
+		(at 129.54 60.96 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000000c")
+		(property "Reference" "R128"
+			(at 132.08 59.69 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 132.08 62.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 129.54 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 129.54 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 129.54 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "BQ25185 STAT2 pull-up, FBV2-S1-008. Same 10 kOhm to +3V3 as R127 and the same SLUSF65A 1 k to 20 k window. STAT2 carries the fault distinction: STAT1 HIGH with STAT2 LOW is a fault, both HIGH is the combined charge-complete / sleep / charge-disabled state, so STAT1 alone would convey only fault/no-fault. STAT2 is also the pin that toggles continuously when no battery is present, so it is landed on an interrupt-capable PCAL input whose mask bit is SET by hardware default - the PCAL9535A powers up with 4Ah/4Bh = FFh - and firmware must leave it masked and poll. That is what let Ruling G reverse the earlier STAT1-only recommendation without importing a wake storm."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000000d")
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-00000000000e")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R128")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 129.54 64.77) (xy 129.54 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000000f")
+	)
+
+	(wire
+		(pts
+			(xy 129.54 57.15) (xy 129.54 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000010")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 129.54 55.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000011")
+		(property "Reference" "#PWR0650"
+			(at 129.54 59.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 129.54 49.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 129.54 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 129.54 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 129.54 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000012")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0650")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 101.6 72.39) (xy 113.03 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000013")
+	)
+
+	(hierarchical_label "SD_CARD_DETECT_N"
+		(shape input)
+		(at 113.03 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000014")
+	)
+
+	(wire
+		(pts
+			(xy 185.42 82.55) (xy 186.69 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000015")
+	)
+
+	(hierarchical_label "ACC_3V3_EN"
+		(shape output)
+		(at 186.69 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000016")
+	)
+
+	(wire
+		(pts
+			(xy 185.42 85.09) (xy 186.69 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000017")
+	)
+
+	(hierarchical_label "ACC_5V_EN"
+		(shape output)
+		(at 186.69 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000018")
+	)
+
+	(wire
+		(pts
+			(xy 185.42 90.17) (xy 186.69 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000019")
+	)
+
+	(hierarchical_label "ACC_POWER_FAULT_N"
+		(shape input)
+		(at 186.69 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000001a")
+	)
+
+	(wire
+		(pts
+			(xy 185.42 87.63) (xy 210.82 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000001b")
+	)
+
+	(label "ACC_DETECT_N"
+		(at 210.82 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000001c")
+	)
+
+	(symbol
+		(lib_id "Device:R")
+		(at 210.82 81.28 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000001d")
+		(property "Reference" "R129"
+			(at 213.36 80.01 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 213.36 82.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 210.82 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 210.82 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 210.82 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ACC_DETECT_N pull-up, FBV2-S1-008. D-085 locks the convention: the accessory asserts detect by shorting community-port pin 23 to the adjacent GND at pin 21 with ONE 0 Ohm link, and AQROOT provides the 100 kOhm pull-up to +3V3. The pull-up and the expander both run from +3V3, so DETECTION WORKS WITH BOTH ACCESSORY RAILS OFF - which is what makes MX-3 implementable (neither rail may be enabled unless ACC_DETECT_N is asserted) and what makes a flipped accessory passively safe: it cannot ground pin 23, so it never receives power. THE RESISTOR IS PLACED HERE, AT THE EXPANDER, rather than on sheet 09, so the input has a defined level before the connector sheet is migrated. SHEET 09 MUST NOT ADD A SECOND PULL-UP - it adds only the connector contact to this same net."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000001e")
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-00000000001f")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R129")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 210.82 85.09) (xy 210.82 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000020")
+	)
+
+	(wire
+		(pts
+			(xy 210.82 77.47) (xy 210.82 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000021")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 210.82 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000022")
+		(property "Reference" "#PWR0651"
+			(at 210.82 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 210.82 69.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 210.82 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 210.82 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 210.82 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000023")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0651")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(symbol
+		(lib_id "AQROOT_Beta:PCAL9535APW")
+		(at 200.66 250.19 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000024")
+		(property "Reference" "U23"
+			(at 202.8033 222.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PCAL9535APW"
+			(at 202.8033 224.79 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm"
+			(at 227.33 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf"
+			(at 187.96 227.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-voltage 16-bit I2C-bus I/O port with interrupt and Agile I/O, TSSOP-24"
+			(at 200.66 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "NXP Semiconductors"
+			(at 227.33 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PCAL9535APW,118"
+			(at 227.33 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "I2C_Address" "0x22"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "AQROOT FBV2-S1-008. THIRD PCAL9535A, I2C 0x22 (A2=0, A1=1, A0=0 -> slave address 0100 010). IT EXISTS BECAUSE THE ALLOCATION RAN OUT, NOT BECAUSE AN LED WANTED A DRIVER. U2 and U3 are 16/16 and 16/16 on core, community and safety functions alone; the committed demand is 35 signals and two devices are 32 pins. The escape the brief named - a WS2812-class smart LED - is impossible here: it needs RMT on a native GPIO and the ESP32-S3-WROOM-1-N16R8 has ZERO free native pins, GPIO35/36/37 being the octal PSRAM. A dedicated I2C LED driver would have been a new part family for one indicator. A third PCAL9535APW,118 adds NO new MPN, NO new footprint, NO new firmware driver and NO new rail, and it retires B-37 permanently by leaving 12 spare I/O. ROLE: three RGB sink outputs plus the D-094 RESERVED_SPARE, and nothing else - so deleting U23 costs the status light and nothing else. IT HOLDS NO INTERRUPT SOURCE: every interrupt-capable input in the design stays on U2 or U3, so U23 keeps the FFh power-up mask and the host never reads it while servicing WAKE_INT_N. Its /INT is still wire-OR'd onto WAKE_INT_N so the reserved spare can become an interrupting input by firmware alone."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-000000000025")
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000026")
+		)
+		(pin "5"
+			(uuid "fb080108-0801-4b08-9b08-000000000027")
+		)
+		(pin "21"
+			(uuid "fb080108-0801-4b08-9b08-000000000028")
+		)
+		(pin "23"
+			(uuid "fb080108-0801-4b08-9b08-000000000029")
+		)
+		(pin "7"
+			(uuid "fb080108-0801-4b08-9b08-00000000002a")
+		)
+		(pin "20"
+			(uuid "fb080108-0801-4b08-9b08-00000000002b")
+		)
+		(pin "15"
+			(uuid "fb080108-0801-4b08-9b08-00000000002c")
+		)
+		(pin "4"
+			(uuid "fb080108-0801-4b08-9b08-00000000002d")
+		)
+		(pin "8"
+			(uuid "fb080108-0801-4b08-9b08-00000000002e")
+		)
+		(pin "17"
+			(uuid "fb080108-0801-4b08-9b08-00000000002f")
+		)
+		(pin "14"
+			(uuid "fb080108-0801-4b08-9b08-000000000030")
+		)
+		(pin "6"
+			(uuid "fb080108-0801-4b08-9b08-000000000031")
+		)
+		(pin "12"
+			(uuid "fb080108-0801-4b08-9b08-000000000032")
+		)
+		(pin "10"
+			(uuid "fb080108-0801-4b08-9b08-000000000033")
+		)
+		(pin "9"
+			(uuid "fb080108-0801-4b08-9b08-000000000034")
+		)
+		(pin "3"
+			(uuid "fb080108-0801-4b08-9b08-000000000035")
+		)
+		(pin "18"
+			(uuid "fb080108-0801-4b08-9b08-000000000036")
+		)
+		(pin "11"
+			(uuid "fb080108-0801-4b08-9b08-000000000037")
+		)
+		(pin "16"
+			(uuid "fb080108-0801-4b08-9b08-000000000038")
+		)
+		(pin "13"
+			(uuid "fb080108-0801-4b08-9b08-000000000039")
+		)
+		(pin "19"
+			(uuid "fb080108-0801-4b08-9b08-00000000003a")
+		)
+		(pin "22"
+			(uuid "fb080108-0801-4b08-9b08-00000000003b")
+		)
+		(pin "24"
+			(uuid "fb080108-0801-4b08-9b08-00000000003c")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "U23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 200.66 222.25) (xy 200.66 219.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000003d")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 200.66 219.71 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000003e")
+		(property "Reference" "#PWR0652"
+			(at 200.66 223.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 200.66 213.36 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 200.66 219.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 200.66 219.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 200.66 219.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000003f")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0652")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 200.66 278.13) (xy 200.66 281.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000040")
+	)
+
+	(symbol
+		(lib_id "power:GND")
+		(at 200.66 281.94 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000041")
+		(property "Reference" "#PWR0653"
+			(at 200.66 285.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 200.66 288.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 200.66 281.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 200.66 281.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 200.66 281.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000042")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0653")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 182.88 229.87) (xy 180.34 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000043")
+	)
+
+	(hierarchical_label "I2C_SDA_INT"
+		(shape bidirectional)
+		(at 180.34 229.87 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000044")
+	)
+
+	(wire
+		(pts
+			(xy 182.88 232.41) (xy 180.34 232.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000045")
+	)
+
+	(hierarchical_label "I2C_SCL_INT"
+		(shape input)
+		(at 180.34 232.41 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000046")
+	)
+
+	(wire
+		(pts
+			(xy 182.88 234.95) (xy 180.34 234.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000047")
+	)
+
+	(hierarchical_label "WAKE_INT_N"
+		(shape output)
+		(at 180.34 234.95 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000048")
+	)
+
+	(wire
+		(pts
+			(xy 182.88 265.43) (xy 180.34 265.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000049")
+	)
+
+	(symbol
+		(lib_id "power:GND")
+		(at 180.34 265.43 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000004a")
+		(property "Reference" "#PWR0654"
+			(at 180.34 269.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 176.53 265.43 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 180.34 265.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 265.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 180.34 265.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000004b")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0654")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 182.88 267.97) (xy 179.07 267.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000004c")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 179.07 267.97 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000004d")
+		(property "Reference" "#PWR0655"
+			(at 179.07 271.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 175.26 267.97 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 179.07 267.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 179.07 267.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 179.07 267.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000004e")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0655")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 182.88 270.51) (xy 180.34 270.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000004f")
+	)
+
+	(symbol
+		(lib_id "power:GND")
+		(at 180.34 270.51 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000050")
+		(property "Reference" "#PWR0656"
+			(at 180.34 274.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 176.53 270.51 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 180.34 270.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 270.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 180.34 270.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000051")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0656")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 218.44 229.87) (xy 219.71 229.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000052")
+	)
+
+	(label "FRONT_RGB_R_N"
+		(at 219.71 229.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000053")
+	)
+
+	(wire
+		(pts
+			(xy 218.44 232.41) (xy 219.71 232.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000054")
+	)
+
+	(label "FRONT_RGB_G_N"
+		(at 219.71 232.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000055")
+	)
+
+	(wire
+		(pts
+			(xy 218.44 234.95) (xy 219.71 234.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000056")
+	)
+
+	(label "FRONT_RGB_B_N"
+		(at 219.71 234.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000057")
+	)
+
+	(wire
+		(pts
+			(xy 218.44 237.49) (xy 240.03 237.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000058")
+	)
+
+	(label "RESERVED_SPARE"
+		(at 222.25 237.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000059")
+	)
+
+	(junction
+		(at 231.14 237.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb080108-0801-4b08-9b08-00000000005a")
+	)
+
+	(symbol
+		(lib_id "Device:R")
+		(at 231.14 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-00000000005b")
+		(property "Reference" "R130"
+			(at 233.68 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 233.68 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 231.14 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 231.14 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 231.14 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "RESERVED_SPARE pull-up, FBV2-S1-008. D-094: Rev 1 must retain at least one expander resource for recovery, it must read a DEFINED level rather than float, and it must be reachable by a wire and a firmware change rather than a respin. 100 kOhm to +3V3 gives the level; TP41 gives the wire. No function is assigned to U23 P03. D-094 placed RESERVED_SPARE on U3 P16; U3 is now 16/16 because ACC_PWR_EN is still fitted pending the sheet 09 ruling on the external-I2C buffer, so the reservation moves to U23 - where it is stronger, because twelve further I/O sit beside it on the same die."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-00000000005c")
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-00000000005d")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "R130")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 231.14 234.95) (xy 231.14 237.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000005e")
+	)
+
+	(wire
+		(pts
+			(xy 231.14 227.33) (xy 231.14 226.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000005f")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 231.14 226.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000060")
+		(property "Reference" "#PWR0657"
+			(at 231.14 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 231.14 219.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 231.14 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 231.14 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 231.14 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000061")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0657")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 240.03 237.49 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000062")
+		(property "Reference" "TP41"
+			(at 242.03 235.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 242.03 234.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 242.03 232.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" ""
+			(at 242.03 231.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 242.03 229.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000063")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "TP41")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(no_connect
+		(at 218.44 240.03)
+		(uuid "fb080108-0801-4b08-9b08-000000000064")
+	)
+
+	(no_connect
+		(at 218.44 242.57)
+		(uuid "fb080108-0801-4b08-9b08-000000000065")
+	)
+
+	(no_connect
+		(at 218.44 245.11)
+		(uuid "fb080108-0801-4b08-9b08-000000000066")
+	)
+
+	(no_connect
+		(at 218.44 247.65)
+		(uuid "fb080108-0801-4b08-9b08-000000000067")
+	)
+
+	(no_connect
+		(at 218.44 252.73)
+		(uuid "fb080108-0801-4b08-9b08-000000000068")
+	)
+
+	(no_connect
+		(at 218.44 255.27)
+		(uuid "fb080108-0801-4b08-9b08-000000000069")
+	)
+
+	(no_connect
+		(at 218.44 257.81)
+		(uuid "fb080108-0801-4b08-9b08-00000000006a")
+	)
+
+	(no_connect
+		(at 218.44 260.35)
+		(uuid "fb080108-0801-4b08-9b08-00000000006b")
+	)
+
+	(no_connect
+		(at 218.44 262.89)
+		(uuid "fb080108-0801-4b08-9b08-00000000006c")
+	)
+
+	(no_connect
+		(at 218.44 265.43)
+		(uuid "fb080108-0801-4b08-9b08-00000000006d")
+	)
+
+	(no_connect
+		(at 218.44 267.97)
+		(uuid "fb080108-0801-4b08-9b08-00000000006e")
+	)
+
+	(no_connect
+		(at 218.44 270.51)
+		(uuid "fb080108-0801-4b08-9b08-00000000006f")
+	)
+
+	(symbol
+		(lib_id "Device:C")
+		(at 170.18 219.71 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000070")
+		(property "Reference" "C83"
+			(at 173.99 218.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 173.99 220.98 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 171.1452 223.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 170.18 219.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 170.18 219.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "U23 local decoupling, FBV2-S1-008. One 100 nF X7R 0603 at the VCC pin, identical to C4 on U2 and C5 on U3. The PCAL9535A draws 25 uA static and its only dynamic loads are the I2C interface and three 1-2 mA LED sinks, so this is a placement requirement rather than a bulk one: it belongs against pin 24 with the shortest possible return to pin 12."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb080108-0801-4b08-9b08-000000000071")
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000072")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "C83")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 170.18 213.36) (xy 170.18 215.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000073")
+	)
+
+	(symbol
+		(lib_id "power:+3V3")
+		(at 170.18 213.36 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000074")
+		(property "Reference" "#PWR0658"
+			(at 170.18 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 170.18 207.01 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 170.18 213.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 170.18 213.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 170.18 213.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000075")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0658")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 170.18 223.52) (xy 170.18 226.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000076")
+	)
+
+	(symbol
+		(lib_id "power:GND")
+		(at 170.18 226.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb080108-0801-4b08-9b08-000000000077")
+		(property "Reference" "#PWR0659"
+			(at 170.18 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 170.18 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 170.18 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 170.18 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 170.18 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb080108-0801-4b08-9b08-000000000078")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/a2b57515-bc82-4ee5-9733-a58f7ce408be"
+					(reference "#PWR0659")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(text "PIN BUDGET - READ THIS BEFORE ADDING ANYTHING\n\nTWO PCAL9535A ARE 32 PINS. COMMITTED DEMAND IS 35:\n   5 SAFE-STATE CONTROL OUTPUTS      U2 P00-P04\n   6 USER BUTTONS                    U2 P10-P15\n   5 TRANSITIONAL / TELEMETRY INPUTS\n     TOUCH_INT_N, SX1262_DIO1, SD_CARD_DETECT_N,\n     BQ25185_STAT1, BQ25185_STAT2\n  10 XGPIO                           U3, D-082\n   4 ACCESSORY CONTROL / STATUS      U3 P12-P15\n   1 SX1262_RXEN  +  1 ACC_PWR_EN    U3 P16/P17\n   1 RESERVED_SPARE                  D-094\n   3 FRONT RGB\n\n35 AGAINST 32, AND NOTHING ABOVE IS OPTIONAL: D-082\nLOCKS TEN XGPIO, D-094 LOCKS THE SPARE, D-117 LOCKS\nSD_CARD_DETECT_N TO A PCAL INPUT, RULING G LOCKS\nBOTH STAT PINS, AND THE BRIEF LOCKS THE RGB.\n\nNO NATIVE ESP32-S3 GPIO IS AVAILABLE AS AN ESCAPE:\nIO35/36/37 ARE THE OCTAL PSRAM ON THE N16R8 MODULE.\nTHAT ALSO KILLS THE WS2812 ESCAPE - A SMART LED\nNEEDS RMT ON A NATIVE PIN AND AN EXPANDER CANNOT\nDO IT (ROUGHLY 70 us PER OUTPUT CHANGE AT 400 kHz).\n\nRESOLVED BY U23, A THIRD PCAL9535APW,118 AT 0x22.\nSAME MPN, SAME FOOTPRINT, SAME DRIVER, NO NEW RAIL.\nIT CARRIES THE RGB AND THE RESERVED SPARE ONLY, SO\nIF IT IS EVER DELETED THE PRODUCT LOSES THE STATUS\nLIGHT AND NOTHING ELSE - CORE, COMMUNITY AND SAFETY\nFUNCTIONS WERE PLACED FIRST, BY CONSTRUCTION.\n\nMAX17048_ALRT_N AND VBUS_PRESENT REMAIN TEST-POINT\nONLY. D-089 HAD PENCILLED THEM ONTO U2; TOUCH_INT_N\nAND SD_CARD_DETECT_N ARRIVED LATER AND OUTRANK THEM\nON A SHIPPING PRODUCT. TWELVE U23 PINS ARE FREE IF\nTHAT IS EVER REVISITED."
+		(exclude_from_sim no)
+		(at 320.04 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-000000000079")
+	)
+
+	(text "U2 INTERNAL EXPANDER - MIGRATED FBV2-S1-008\nNXP PCAL9535APW,118   I2C ADDRESS 0x20\nA0 = A1 = A2 = GND\n\nPORT 0 = P00-P04 OUT, P05-P07 IN  (06h = E0h)\nPORT 1 = 8 INPUTS                 (07h = FFh)\n16 / 16 USED - ZERO SPARE\n\nP00 TOUCH_RST_N       OUT  ACTIVE LOW\nP01 SX1262_RST_N      OUT  ACTIVE LOW\nP02 NFC_5V_EN         OUT  ACTIVE HIGH\nP03 AMP_SD_MODE       OUT  ACTIVE HIGH\nP04 DISP_RST_N        OUT  ACTIVE LOW\nP05 BQ25185_STAT1     IN   R127 10k UP\nP06 BQ25185_STAT2     IN   R128 10k UP\nP07 SD_CARD_DETECT_N  IN   R113 100k UP, SHEET 03\nP10-P13 D-PAD UP/DOWN/LEFT/RIGHT  IN  10k UP\nP14 BTN_A_N   P15 BTN_B_N         IN  10k UP\nP16 TOUCH_INT_N       IN   FT6236, ACTIVE LOW\nP17 SX1262_DIO1       IN   ACTIVE HIGH\n\nEVERY P05-P17 INPUT IS INTERRUPT-CAPABLE AND EVERY\nONE POWERS UP MASKED (4Ah/4Bh = FFh). FIRMWARE\nUNMASKS THE SIX BUTTONS, TOUCH_INT_N, SX1262_DIO1\nAND SD_CARD_DETECT_N, AND LEAVES BQ25185_STAT2\nMASKED - IT TOGGLES CONTINUOUSLY WHEN NO BATTERY IS\nFITTED AND WOULD OTHERWISE WAKE THE MCU FOREVER."
+		(exclude_from_sim no)
+		(at 82.804 33.782 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000007a")
+	)
+
+	(text "U3 COMMUNITY EXPANDER - MIGRATED FBV2-S1-008\nNXP PCAL9535APW,118   I2C ADDRESS 0x21\nA0 = +3V3, A1 = A2 = GND\n\nP00-P07 XGPIO0-7      COMMUNITY, BIDIRECTIONAL\nP10 XGPIO8    P11 XGPIO9\nP12 ACC_3V3_EN        OUT  R98 100k DOWN, SHEET 01\nP13 ACC_5V_EN         OUT  R102 100k DOWN, SHEET 01\nP14 ACC_DETECT_N      IN   R129 100k UP, HERE\nP15 ACC_POWER_FAULT_N IN   R103 100k UP, SHEET 01\nP16 SX1262_RXEN       OUT  R74 PULL-DOWN, SHEET 04\nP17 ACC_PWR_EN        OUT  R17 100k DOWN, HERE\n16 / 16 USED - ZERO SPARE\n\nXGPIO10-13 ARE RETIRED - THE PORT IS LOCKED AT TEN\nXGPIO (D-082). SHEET 09 STILL CARRIES THE FOUR OLD\nHEADER PINS AND THEY DANGLE UNTIL IT MIGRATES.\n\nACC_PWR_EN IS INHERITED, NOT DESIGNED. IT DRIVES\nONLY U15 AND U16, WHICH ARE BOTH DNP, AND IT IS THE\nPIN THE SHEET-09 O-4 RULING MAY RETIRE. IT IS KEPT\nBECAUSE REMOVING IT WOULD LEAVE TWO SHEET-09 INPUTS\nUNDRIVEN, AND SHEET 09 IS OUT OF SCOPE HERE.\n\nMX-9: U3 XGPIO INTERRUPTS ARE MASKED BY DEFAULT SO\nAN ACCESSORY CANNOT HOLD THE SHARED WAKE LINE AND\nSTARVE THE BUTTONS. ONLY ACC_DETECT_N AND\nACC_POWER_FAULT_N ARE UNMASKED."
+		(exclude_from_sim no)
+		(at 168.402 33.274 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000007b")
+	)
+
+	(text "FRONT RGB STATUS LIGHT - IMPLEMENTED FBV2-S1-008\n\nD13 = MEIHUA MHPA3528RGBCT  (LCSC C409779)\n  COMMON ANODE, SMD3528-4P 3.5 x 2.8 x 1.85 mm,\n  120 deg, WATER CLEAR, 69k IN STOCK, $0.084/2k.\n  PIN 1 = A, 2 = BLUE K, 3 = GREEN K, 4 = RED K.\n  NOTE THIS IS **NOT** Device:LED_ARGB ORDER\n  (THAT SYMBOL HAS 2 = RED, 4 = BLUE).\n\nTHREE RESISTORS, CALCULATED SEPARATELY FROM THE\nLOW-CURRENT Fig.4 CURVES - THE TABULATED VF IS\nQUOTED AT 20 mA AND IS USELESS AT 1-2 mA:\n\n        VF      R      NOM     HIGH    LOW\n  RED   1.75  1k00   1.50mA  1.70mA  1.18mA\n  GRN   2.55   680   1.03mA  1.32mA  0.57mA\n  BLU   2.60   390   1.67mA  2.17mA  0.86mA\n  WHITE            4.20mA  5.18mA  2.60mA\n\nCORNERS = 3.234/3.366 V RAIL, VF SPREAD, VOL\n0.02-0.10 V. BLUE GETS THE MOST CURRENT AND RED\nTHE LEAST BECAUSE Iv AT 20 mA IS R 1070 / G 1685\n/ B 500 mcd TYP; THE RESULT IS ~80 / 87 / 42 mcd.\n\nNO TRANSISTORS, NO DRIVER IC, NO EXTRA RAIL.\nTHE PCAL9535A SINKS 25 mA PER PIN FOR DIRECT LED\nDRIVE (ABS MAX 50 mA/PIN, 200 mA ISS, 200 mW).\nWORST PIN IS 2.17 mA = 11x MARGIN; THE PACKAGE\nSEES 5.2 mA = 38x MARGIN AND ~0.35 mW.\n\nSAFE STATE - THE ACTUAL CIRCUIT ANALYSIS:\n  POWER-UP  CONFIG 06h = FFh -> PIN IS HIGH-Z,\n            PULL ENABLE 46h = 00h -> INTERNAL\n            100k IS **OFF**, SO THE ONLY CURRENT\n            IS THE 1 uA IIH/IIL LEAKAGE LIMIT\n            = ~0.05 mcd = INVISIBLE.\n  TRANSITION OUTPUT PORT 02h = FFh, SO THE PIN\n            DRIVES **HIGH** THE INSTANT IT\n            BECOMES AN OUTPUT. NO GLITCH.\n  THEREFORE NO EXTERNAL PULL-UP IS NEEDED ON ANY\n  CATHODE NODE. ADDING ONE WOULD BE THREE PARTS\n  THAT DO NOTHING.\n\nESD: GREEN AND BLUE ARE ONLY 150 V HBM (RED IS\n2000 V). TREAT D13 AS ESD SENSITIVE IN ASSEMBLY.\n\nTHE THREE SINKS ARE U23 P00/P01/P02, NOT U2.\nSEE THE PIN BUDGET NOTE: U2 AND U3 ARE FULL OF CORE,\nCOMMUNITY AND SAFETY FUNCTIONS, AND THE RGB IS THE\nLOWEST-PRIORITY FUNCTION ON THE SHEET, SO IT IS THE\nONE THAT MOVED ONTO THE ADDED DEVICE.\n\nFRONT-FACING BY REQUIREMENT, EXACT POSITION NOT\nLOCKED: UPPER BEZEL, LOWER BEZEL, BESIDE THE DISPLAY\nOR NEAR THE CONTROLS ARE ALL ACCEPTABLE. IT IS NOT\nA TOP-EDGE PART. IT MUST SIT BEHIND A DIFFUSER OR\nLIGHT PIPE - NO PROTRUDING BARE LED. PLACEMENT AND\nCAD OWN THE FINAL POSITION."
+		(exclude_from_sim no)
+		(at 223.52 116.332 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000007c")
+	)
+
+	(text "U23 THIRD EXPANDER - ADDED FBV2-S1-008\n\nNXP PCAL9535APW,118   I2C ADDRESS 0x22\nA1 = +3V3, A0 = A2 = GND   (0100 010)\n0x22 IS FREE: THE INTERNAL BUS HOLDS 0x20 U2,\n0x21 U3, 0x36 MAX17048, 0x38 FT6236, 0x68 BMI270.\n\nP00 FRONT_RGB_R_N  OUT, SINKS 1.50 mA VIA R124 1k\nP01 FRONT_RGB_G_N  OUT, SINKS 1.03 mA VIA R125 680R\nP02 FRONT_RGB_B_N  OUT, SINKS 1.67 mA VIA R126 390R\nP03 RESERVED_SPARE R130 100k UP + TP41  (D-094)\nP04-P07, P10-P17   12 SPARE, NC\n\nWHY IT EXISTS: SEE THE PIN BUDGET NOTE. IT ADDS NO\nNEW MPN, NO NEW FOOTPRINT, NO NEW DRIVER, NO RAIL.\n\nSAFE STATE: CONFIG 06h/07h = FFh SO ALL SIXTEEN PINS\nCOME UP HIGH-Z; PULL ENABLE 46h/47h = 00h SO THE\nINTERNAL 100k IS OFF; OUTPUT PORT 02h/03h = FFh SO A\nPIN DRIVES HIGH THE INSTANT IT IS MADE AN OUTPUT.\nTHE RGB IS THEREFORE DARK FROM POWER-ON THROUGH TO\nTHE FIRST DELIBERATE WRITE, WITH NO GLITCH AT THE\nINPUT-TO-OUTPUT TRANSITION.\n\nTHE 12 SPARE PINS ARE LEFT AS INPUTS. FIRMWARE MUST\nENABLE THE INTERNAL PULLS ON THEM (46h/47h) OR DRIVE\nTHEM AS OUTPUTS: FLOATING CMOS INPUTS BURN CROWBAR\nCURRENT. THAT IS A FIRMWARE CONTRACT, NOT A BOARD\nCHANGE - THE PCAL CARRIES THE RESISTORS ON DIE.\n\nU23 HOLDS NO INTERRUPT SOURCE. ITS MASK STAYS AT THE\nFFh POWER-UP DEFAULT, SO SERVICING WAKE_INT_N NEVER\nCOSTS A THIRD I2C READ. /INT IS STILL WIRED SO THE\nRESERVED SPARE CAN BECOME AN INTERRUPTING INPUT\nWITHOUT TOUCHING THE BOARD.\n\nBUS LOADING: THE INTERNAL I2C NOW CARRIES SIX\nDEVICES. THE PCAL9535A ADDS Ci <= 6 pF ON EACH LINE,\nSO THE MEASURED ~85 pF BECOMES ROUGHLY 95 pF AND THE\nR19/R20 2k2 RISE TIME GOES FROM 158 ns TO ABOUT\n177 ns AGAINST THE 300 ns FAST-MODE LIMIT."
+		(exclude_from_sim no)
+		(at 137.16 250.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-00000000007d")
+	)
+
+	(text "EXPANDER INTERRUPTS - FBV2-S1-008\n\nALL THREE /INT PINS ARE OPEN-DRAIN AND WIRE-OR ONTO\nWAKE_INT_N, WHICH R3 10 k PULLS TO +3V3 AND WHICH REACHES\nGPIO21. THE PULL-UP IS MANDATORY - THE DATA SHEET SAYS SO -\nAND IT IS WHAT MAKES THE LINE DETERMINISTIC (INACTIVE HIGH)\nBEFORE ANY REGISTER IS WRITTEN. GPIO21 IS NOT A STRAPPING\nPIN, SO A HELD INTERRUPT CANNOT BLOCK ROM DOWNLOAD.\n\nPCAL9535A POWERS UP WITH **ALL INTERRUPTS MASKED**\n(4Ah/4Bh = FFh), SO BRING-UP IS FREE OF SPURIOUS INT AND\nFIRMWARE UNMASKS ONLY WHAT IT WANTS. THE READ-ONLY STATUS\nREGISTERS 4Ch/4Dh - WHICH THE TCA9535 DOES NOT HAVE - NAME\nTHE CHANGED BIT DIRECTLY INSTEAD OF FORCING A READ OF EVERY\nPORT REGISTER ON EVERY DEVICE.\n\nDISCOVERY ORDER ON A WAKE: READ 4Ch/4Dh ON U2, THEN ON U3.\nU23 CARRIES NO INTERRUPT SOURCE - THREE LED OUTPUTS AND ONE\nRESERVED SPARE - SO ITS MASK STAYS AT THE FFh DEFAULT AND IT\nIS NEVER READ IN THE INTERRUPT PATH. ADDING THE THIRD DEVICE\nTHEREFORE COSTS ZERO EXTRA I2C TRAFFIC PER EVENT.\n\nINT CLEARS ON A READ OF THE INPUT PORT REGISTER, SO FIRMWARE\nMUST READ 00h/01h AFTER THE STATUS REGISTER OR THE LINE\nSTAYS LOW AND NO FURTHER EDGE IS SEEN.\n\nMASK POLICY. UNMASKED: THE SIX BUTTONS, TOUCH_INT_N,\nSX1262_DIO1, SD_CARD_DETECT_N ON U2; ACC_DETECT_N AND\nACC_POWER_FAULT_N ON U3. MASKED: BQ25185_STAT2, WHICH\nTOGGLES FOREVER WITH NO BATTERY FITTED, AND ALL TEN XGPIO,\nWHICH IS MX-9 - AN ACCESSORY MUST NOT BE ABLE TO HOLD THE\nSHARED WAKE LINE AND STARVE THE BUTTONS.\n\nTHE INPUT LATCH (44h/45h) IS AVAILABLE IF A SHORT PRESS IS\nEVER MISSED BETWEEN THE INTERRUPT AND THE I2C READ."
+		(exclude_from_sim no)
+		(at 215.9 30.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "fb080108-0801-4b08-9b08-0000000dbba1")
 	)
 )

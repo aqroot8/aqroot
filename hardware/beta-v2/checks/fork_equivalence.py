@@ -30,7 +30,6 @@ assert len(DM_PROJ) == len(V2_PROJ)
 # Sheets still inherited verbatim from Beta-DM.  A sheet leaves this list the
 # moment its FBV2-S1 migration lands, and moves into FILES as 'changed'.
 SHEETS = [
-    '08_buttons_expanders',
     '09_community_header',
 ]
 
@@ -38,6 +37,8 @@ SHEETS = [
 # added them.  An addition that is not listed here is a probe failure.
 ADDED_FOOTPRINTS = {
     'PUI_DMM-4026-B-I2S_4.0x3.0mm.kicad_mod': 'FBV2-S1-006, PUI microphone replacing the ICS-43434',
+    'MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm.kicad_mod':
+        'FBV2-S1-008, MEIHUA MHPA3528RGBCT common-anode RGB front status light',
 }
 
 # (dm name, v2 name, expectation)
@@ -51,6 +52,7 @@ FILES = (
         ('02_mcu_core.kicad_sch', '02_mcu_core.kicad_sch', 'changed'),
         ('03_spi_a_display_sd.kicad_sch', '03_spi_a_display_sd.kicad_sch', 'changed'),
         ('04_spi_b_radios_nfc.kicad_sch', '04_spi_b_radios_nfc.kicad_sch', 'changed'),
+        ('08_buttons_expanders.kicad_sch', '08_buttons_expanders.kicad_sch', 'changed'),
         ('%s.kicad_pcb' % DM_PROJ, '%s.kicad_pcb' % V2_PROJ, 'bit'),
         ('%s.kicad_dru' % DM_PROJ, '%s.kicad_dru' % V2_PROJ, 'bit'),
         ('%s.kicad_sch' % DM_PROJ, '%s.kicad_sch' % V2_PROJ, 'changed'),

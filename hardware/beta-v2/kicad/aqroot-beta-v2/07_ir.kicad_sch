@@ -1653,7 +1653,7 @@
 		)
 		(uuid "bc571da3-1e81-440e-93a9-596905c531bf")
 	)
-	(text "IR RECEIVER - MIGRATED FBV2-S1-007\n\nU6 = VISHAY TSOP38438  38 kHz, AGC4\n  VS 2.0-5.5 V, 0.35 mA TYP, OUTPUT ACTIVE LOW,\n  30k INTERNAL PULL-UP SO NO EXTERNAL ONE IS NEEDED.\n  ACCEPTANCE +/-45 deg.  SAME FOOTPRINT AS TSOP38238.\n\nSUPPLY FILTER R21 100R + C11 4.7uF IS CORRECT AND\nIS THE REASON THE TX CAN SHARE +3V3:\n  fc = 339 Hz  ->  41 dB AT 38 kHz\n  DATASHEET FIG 7: THE RECEIVER DEGRADES FROM ABOUT\n  10 mV RMS OF SUPPLY RIPPLE AT THE CARRIER, AND\n  DOUBLES ITS THRESHOLD BY 50 mV. 40 mV ON THE RAIL\n  BECOMES 0.1 mV HERE. ~90x MARGIN.\n\nBANDWIDTH: 3 dB AT f0/10, SO 36.1-39.9 kHz.\n  38 kHz NEC/SAMSUNG/SHARP/MITSUBISHI  1.00\n  36 kHz RC5/RC6                       ~0.75\n  40 kHz SONY                          ~0.72\n\nAGC4 IS MARKED **NO** FOR SONY CODE BY VISHAY.\nAGC2 (TSOP38238) IS MARKED YES FOR SONY.\nTHIS IS RECEIVE ONLY - SENDING SIRC IS UNAFFECTED.\nOPEN CTO ITEM: SEE FBV2-S1-007.\n\nPLACEMENT (MECHANICAL, NOT ELECTRICAL):\nKEEP U6 PHYSICALLY SEPARATED FROM D1, OUTSIDE THE\nLED EMISSION CONE, BEHIND AN OPAQUE BARRIER,\n>= 15 mm APART. KEEP THE TX CURRENT LOOP AWAY FROM\nTHE RECEIVER SUPPLY AND RETURN."
+	(text "IR RECEIVER - MIGRATED FBV2-S1-007\nRECEIVER CORRECTED FBV2-S1-008\n\nU6 = VISHAY TSOP38238  38 kHz, AGC2\n  VS 2.0-5.5 V, 0.35 mA TYP, OUTPUT ACTIVE LOW,\n  30k INTERNAL PULL-UP SO NO EXTERNAL ONE IS NEEDED.\n  ACCEPTANCE +/-45 deg.\n  TSOP38438 (AGC4) IS A DOCUMENTED DROP-IN FALLBACK:\n  SAME MINICAST BODY, SAME 1=OUT/2=GND/3=VS PINNING,\n  SAME FOOTPRINT, SAME ELECTRICAL TABLE.\n\nSUPPLY FILTER R21 100R + C11 4.7uF IS CORRECT AND\nIS THE REASON THE TX CAN SHARE +3V3:\n  fc = 339 Hz  ->  41 dB AT 38 kHz\n  DATASHEET FIG 7: THE RECEIVER DEGRADES FROM ABOUT\n  10 mV RMS OF SUPPLY RIPPLE AT THE CARRIER, AND\n  DOUBLES ITS THRESHOLD BY 50 mV. 40 mV ON THE RAIL\n  BECOMES 0.1 mV HERE. ~90x MARGIN.\n\nBANDWIDTH: 3 dB AT f0/10, SO 36.1-39.9 kHz.\n  38 kHz NEC/SAMSUNG/SHARP/MITSUBISHI  1.00\n  36 kHz RC5/RC6                       ~0.75\n  40 kHz SONY                          ~0.72\n\nO-5 IS CLOSED. THE CTO RULED FOR AGC2.\nAGC2 IS MARKED YES FOR ALL SIX LISTED PROTOCOLS\nINCLUDING SONY; AGC4 IS MARKED **NO** FOR SONY.\nMECHANISM: AFTER A BURST > 10 CYCLES AGC2 NEEDS A\nGAP > 5x THE BURST AND TAKES 10-70 CYCLES/BURST,\nAGC4 NEEDS > 15x AND TAKES ONLY 10-35. SIRC BREAKS\nTHE AGC4 LIMIT.\nCOST OF THE REVERT: AGC4 FIG 15 HIGH-MODULATION\nFLUORESCENT SUPPRESSION IS LOST. AGC2 HAS FIG 14.\n\nPLACEMENT (MECHANICAL, NOT ELECTRICAL):\nKEEP U6 PHYSICALLY SEPARATED FROM D1, OUTSIDE THE\nLED EMISSION CONE, BEHIND AN OPAQUE BARRIER,\n>= 15 mm APART. KEEP THE TX CURRENT LOOP AWAY FROM\nTHE RECEIVER SUPPLY AND RETURN."
 		(exclude_from_sim no)
 		(at 340 165 0)
 		(effects
@@ -2229,7 +2229,7 @@
 		)
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:TSOP38438")
+		(lib_id "AQROOT_Beta:TSOP38238")
 		(at 99.06 72.39 0)
 		(unit 1)
 		(body_style 1)
@@ -2251,7 +2251,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "TSOP38438"
+		(property "Value" "TSOP38238"
 			(at 90.17 73.6599 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2284,7 +2284,7 @@
 				)
 			)
 		)
-		(property "Description" "38 kHz IR remote-control receiver module, AGC4"
+		(property "Description" "38 kHz IR remote-control receiver module, AGC2"
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -2306,7 +2306,7 @@
 				)
 			)
 		)
-		(property "MPN" "TSOP38438"
+		(property "MPN" "TSOP38238"
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -2328,7 +2328,7 @@
 				)
 			)
 		)
-		(property "Note" "RECEIVER MPN CHANGED TSOP38238 -> TSOP38438 in FBV2-S1-007 per the CTO lock. Same Minicast package, same pinning 1 = OUT / 2 = GND / 3 = VS, same footprint, so it is a pure MPN change. Verified against Vishay document 82491 Rev 2.1, 27-May-2025. VS 2.0 to 5.5 V; ISD 0.35 mA typ, 0.45 mA max at 3.3 V; output ACTIVE LOW with a 30 kOhm INTERNAL pull-up in the block diagram, so no external pull-up is needed and OUT drives GPIO44 directly; directivity plus/minus 45 deg. CARRIER AND BANDWIDTH: f0 = 38 kHz, 3 dB bandwidth f0/10, i.e. 36.1 to 39.9 kHz. Relative responsivity is 1.0 at 38 kHz (NEC, Samsung, Sharp, Mitsubishi), about 0.75 at 36 kHz (RC5/RC6) and about 0.72 at 40 kHz (Sony), costing roughly 13 to 15 percent of range on those carriers. THE 4 IS THE AGC VARIANT, NOT A PACKAGE CODE, AND IT COSTS SONY RECEPTION. Vishay marks AGC4 Preferred for NEC, RC5/RC6, Thomson RCA, Sharp and Mitsubishi and it additionally suppresses high-modulation fluorescent interference (Fig. 15) that AGC2 does not - but the same table marks AGC4 NO for Sony code, where the AGC2 TSOP38238 is marked Yes. THIS IS RECEIVE ONLY: sending Sony SIRC is unaffected because the transmitter is only a carrier and timing from the MCU. The TSOP38238 symbol is retained in the project library, so reverting to AGC2 is a lib_id change and nothing else. See FBV2-S1-007 for the open CTO item."
+		(property "Note" "RECEIVER REVERTED TSOP38438 -> TSOP38238 in FBV2-S1-008 by CTO ruling on the O-5 item raised at FBV2-S1-007. TSOP38238 is the AGC2 part and is the FITTED first build; TSOP38438 (AGC4) is retained as a DOCUMENTED DROP-IN FALLBACK and its symbol stays in the project library. Verified against Vishay document 82491 Rev 2.1, 27-May-2025: both MPNs appear in the SAME parts table sharing the Minicast package, the pinning 1 = OUT / 2 = GND / 3 = VS, the body 5.0 W x 6.95 H x 4.8 D mm, leaded mounting and one shared electrical table - so this is a pure MPN change and the footprint, the R21/C11 supply filter and every FBV2-S1-007 calculation are unaffected. VS 2.0 to 5.5 V; ISD 0.25 / 0.35 / 0.45 mA at VS = 3.3 V; output ACTIVE LOW with a 30 kOhm INTERNAL pull-up so OUT drives GPIO44 directly and no external pull-up is needed; directivity plus/minus 45 deg; f0 = 38 kHz with a 3 dB bandwidth of f0/10, i.e. 36.1 to 39.9 kHz. WHY AGC2 IS THE RIGHT FIRST BUILD: the suitable-data-format table marks AGC2 Yes for NEC, RC5/RC6, Thomson RCA 56 kHz, Sharp, SONY and Mitsubishi, where AGC4 is marked NO for Sony code. The mechanism is the gap requirement - after a burst longer than 10 cycles AGC2 needs a gap of more than 5 x the burst length and accepts 10 to 70 cycles per burst, while AGC4 needs more than 15 x and accepts only 10 to 35 - and Sony SIRC violates the AGC4 limit. WHAT IS GIVEN UP: AGC4 adds the Fig. 15 suppression of high-modulation fluorescent-lamp interference that AGC2 (Fig. 14 only) does not have. That is the whole cost of the revert, and it is a fluorescent-lighting robustness margin rather than a protocol."
 			(at 99.06 72.39 0)
 			(hide yes)
 			(show_name no)

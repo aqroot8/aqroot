@@ -8086,13 +8086,14 @@
 		)
 		(uuid "8e6e5bb3-ee36-469a-9452-a6465df1e984")
 	)
-	(label "BQ25185_STAT1"
+	(hierarchical_label "BQ25185_STAT1"
+		(shape output)
 		(at 73.66 107.95 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "968f83d6-0118-4fa5-a466-f54f17f4b965")
 	)
@@ -8146,13 +8147,14 @@
 		)
 		(uuid "b9634be6-97e0-427c-8204-c36ec9a7dc52")
 	)
-	(label "BQ25185_STAT2"
+	(hierarchical_label "BQ25185_STAT2"
+		(shape output)
 		(at 73.66 110.49 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "c72f76f8-13ec-40b4-8a79-0888a0ec5927")
 	)
@@ -26554,14 +26556,14 @@
 		)
 		(uuid "f1b601e3-a05c-71c4-051a-359a667ccdf0")
 	)
-	(label "ACC_3V3_EN"
+	(hierarchical_label "ACC_3V3_EN"
+		(shape input)
 		(at 441.96 254.0 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "99d9aded-c694-3d64-a533-2f51c8c5497e")
 	)
@@ -27621,14 +27623,14 @@
 		)
 		(uuid "64e5a98c-3734-7ed8-869f-4bbc28c4b6e7")
 	)
-	(label "ACC_POWER_FAULT_N"
+	(hierarchical_label "ACC_POWER_FAULT_N"
+		(shape output)
 		(at 378.46 284.48 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "9be8531c-e7ca-a8ec-782f-f78080b9854f")
 	)
@@ -29674,14 +29676,14 @@
 		)
 		(uuid "c00ea638-3957-823b-e3f7-d9e5d8551b4e")
 	)
-	(label "ACC_5V_EN"
+	(hierarchical_label "ACC_5V_EN"
+		(shape input)
 		(at 532.13 340.36 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "acd239be-c981-e9cf-a4cd-97daaa5898a8")
 	)
