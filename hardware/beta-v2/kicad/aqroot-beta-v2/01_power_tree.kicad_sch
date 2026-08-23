@@ -27018,14 +27018,14 @@
 		)
 		(uuid "1986294d-4d56-ddf1-a7f3-4a768a4ea09e")
 	)
-	(label "ACC_3V3_SW"
+	(hierarchical_label "ACC_3V3_SW"
+		(shape output)
 		(at 486.41 254.0 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "e5d14ffc-c30a-91e9-94f5-1105de70ff38")
 	)
@@ -27797,7 +27797,7 @@
 		)
 		(uuid "52b14670-1439-aa35-750b-36c931031cf6")
 	)
-	(label "ACC_5V_EN"
+	(label "ACC_5V_BOOST_EN"
 		(at 342.9 322.58 0)
 		(fields_autoplaced yes)
 		(effects
@@ -28092,7 +28092,7 @@
 		)
 		(uuid "1a546403-202f-78f1-e429-cb20c256fd08")
 	)
-	(label "ACC_5V_EN"
+	(label "ACC_5V_SW_EN"
 		(at 411.48 314.96 0)
 		(fields_autoplaced yes)
 		(effects
@@ -29676,7 +29676,7 @@
 		)
 		(uuid "c00ea638-3957-823b-e3f7-d9e5d8551b4e")
 	)
-	(hierarchical_label "ACC_5V_EN"
+	(hierarchical_label "ACC_5V_BOOST_EN"
 		(shape input)
 		(at 532.13 340.36 0)
 		(effects
@@ -29872,14 +29872,14 @@
 		)
 		(uuid "caaa32f8-ff40-0cbb-eb67-d3c7ae2f63b3")
 	)
-	(label "ACC_5V_SW"
+	(hierarchical_label "ACC_5V_SW"
+		(shape output)
 		(at 556.26 340.36 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.0 1.0)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "f9d0dccf-4a18-2e21-45f0-715769acd7a4")
 	)
@@ -30269,7 +30269,7 @@
 		)
 		(uuid "645705f9-1f47-e7b6-0dbd-fe5274de45f6")
 	)
-	(label "ACC_5V_EN"
+	(label "ACC_5V_BOOST_EN"
 		(at 378.46 345.44 0)
 		(fields_autoplaced yes)
 		(effects
@@ -31773,6 +31773,318 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#FLG614")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 419.1 350.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb090208-0902-4908-9908-000000000003")
+		(property "Reference" "TP47"
+			(at 421.1 348.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 421.1 347.42 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 421.1 345.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" ""
+			(at 421.1 344.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 421.1 342.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "fb090208-0902-4908-9908-000000000004")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "TP47")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 419.1 350.52) (xy 419.1 358.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090208-0902-4908-9908-000000000005")
+	)
+
+	(hierarchical_label "ACC_5V_SW_EN"
+		(shape input)
+		(at 419.1 358.14 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb090208-0902-4908-9908-000000000006")
+	)
+
+	(symbol
+		(lib_id "Device:R")
+		(at 419.1 361.95 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb090208-0902-4908-9908-000000000007")
+		(property "Reference" "R131"
+			(at 421.64 360.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 421.64 363.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 419.1 361.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 419.1 361.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 419.1 361.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "ACC_5V_SW_EN safe-state pull-down, ADDED FBV2-S1-009. The CTO split the single ACC_5V_EN into ACC_5V_BOOST_EN (U3 P13 -> U21 EN) and ACC_5V_SW_EN (U23 P04 -> U22 ON), so the new net needs its own 100 k to ground. THE PULL-DOWN IS MANDATORY, NOT A CONVENIENCE: SLVSFJ2B specifies a 500 kOhm smart pull-down inside the TPS22950C and STILL REQUIRES AN EXTERNAL ONE, and the PCAL9535A powers up with every pin high-impedance - so without this resistor the 5 V accessory contact would be defined only by leakage between power-on and the first firmware write. 100 k matches R98 and R102 and costs 33 uA when the pin is driven high."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb090208-0902-4908-9908-000000000008")
+		)
+		(pin "2"
+			(uuid "fb090208-0902-4908-9908-000000000009")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "R131")
+					(unit 1)
+				)
+			)
+		)
+	)
+
+	(wire
+		(pts
+			(xy 419.1 365.76) (xy 419.1 368.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090208-0902-4908-9908-00000000000a")
+	)
+
+	(symbol
+		(lib_id "power:GND")
+		(at 419.1 368.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb090208-0902-4908-9908-00000000000b")
+		(property "Reference" "#PWR0731"
+			(at 419.1 372.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 419.1 374.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 419.1 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 419.1 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 419.1 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb090208-0902-4908-9908-00000000000c")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0731")
 					(unit 1)
 				)
 			)

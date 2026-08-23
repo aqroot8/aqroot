@@ -15,16 +15,6 @@
 	(lib_symbols)
 	(wire
 		(pts
-			(xy 133.35 250.19) (xy 135.89 250.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "009473c0-46d4-44ea-bea2-4833d80955e0")
-	)
-	(wire
-		(pts
 			(xy 144.78 105.41) (xy 144.78 107.95)
 		)
 		(stroke
@@ -455,16 +445,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 261.62) (xy 135.89 261.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63712ac0-4ace-4645-8bbe-c9bbca968de0")
-	)
-	(wire
-		(pts
 			(xy 334.01 115.57) (xy 334.01 113.03)
 		)
 		(stroke
@@ -635,16 +615,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 257.81) (xy 135.89 257.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c4e093c-08b6-41fe-a839-3403d2ec3e1e")
-	)
-	(wire
-		(pts
 			(xy 223.52 38.1) (xy 226.06 38.1)
 		)
 		(stroke
@@ -702,16 +672,6 @@
 			(type default)
 		)
 		(uuid "9e8498f1-866b-460d-9fe1-124860ecd783")
-	)
-	(wire
-		(pts
-			(xy 52.07 257.81) (xy 54.61 257.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f8bb9e0-7f5a-43dc-81e6-53790c6b4feb")
 	)
 	(wire
 		(pts
@@ -1012,16 +972,6 @@
 			(type default)
 		)
 		(uuid "ef7404b2-08c9-4962-8d7d-7c42417d81bf")
-	)
-	(wire
-		(pts
-			(xy 133.35 254) (xy 135.89 254)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f132969b-5754-4a89-a5c7-6d034c1a2af5")
 	)
 	(wire
 		(pts
@@ -1703,16 +1653,6 @@
 		)
 		(uuid "9bf31246-a915-4f8d-a586-1c4955b3acf6")
 	)
-	(label "XGPIO10"
-		(at 135.89 250.19 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9da30a75-e19a-4318-b7e3-f4ddf85421c0")
-	)
 	(label "XGPIO9"
 		(at 391.16 157.48 0)
 		(effects
@@ -1722,16 +1662,6 @@
 			(justify left bottom)
 		)
 		(uuid "9dc846f4-ac26-46a9-ba65-cdbace1b3112")
-	)
-	(label "XGPIO13"
-		(at 135.89 261.62 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9efb31d5-35b2-452f-a438-322741b4927f")
 	)
 	(label "I2S_BCLK"
 		(at 144.78 107.95 0)
@@ -2023,16 +1953,6 @@
 		)
 		(uuid "efc55086-964f-44ba-8bbc-6c7225bc8d81")
 	)
-	(label "FAST_IO_U0TXD_ROOTPROBE_CS"
-		(at 52.07 257.81 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "f0e6a9fe-ff8c-44cb-bf4e-be894a9d1bfb")
-	)
 	(label "ACC_PWR_EN"
 		(at 52.07 218.44 180)
 		(effects
@@ -2042,16 +1962,6 @@
 			(justify right bottom)
 		)
 		(uuid "f13858b2-4e52-4599-ad92-96ce61785363")
-	)
-	(label "XGPIO11"
-		(at 135.89 254 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f4222bbc-6f84-4004-a454-48fb3dc37ab2")
 	)
 	(label "DISP_RST_N"
 		(at 358.14 110.49 0)
@@ -2082,16 +1992,6 @@
 			(justify left bottom)
 		)
 		(uuid "f6ab59c0-d3cb-473a-b024-14389799b0cc")
-	)
-	(label "XGPIO12"
-		(at 135.89 257.81 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fa3fa60e-6297-48b1-b9f2-da1252b8ed8a")
 	)
 	(label "XGPIO8"
 		(at 391.16 154.94 0)
@@ -2533,7 +2433,7 @@
 			)
 			(uuid "fb080e01-0801-4e08-9e08-00000000001c")
 		)
-		(pin "ACC_5V_EN" input
+		(pin "ACC_5V_BOOST_EN" input
 			(at 105.41 74.93 0)
 			(effects
 				(font
@@ -2552,6 +2452,36 @@
 				(justify right)
 			)
 			(uuid "fb080e01-0801-4e08-9e08-00000000001e")
+		)
+		(pin "ACC_5V_SW_EN" input
+			(at 105.41 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000016")
+		)
+		(pin "ACC_3V3_SW" output
+			(at 105.41 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000017")
+		)
+		(pin "ACC_5V_SW" output
+			(at 105.41 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000018")
 		)
 		(instances
 			(project "aqroot-Beta-v2"
@@ -2869,7 +2799,7 @@
 			)
 			(uuid "fb080e01-0801-4e08-9e08-000000000009")
 		)
-		(pin "ACC_5V_EN" output
+		(pin "ACC_5V_BOOST_EN" output
 			(at 388.62 185.42 0)
 			(effects
 				(font
@@ -2878,6 +2808,26 @@
 				(justify right)
 			)
 			(uuid "fb080e01-0801-4e08-9e08-00000000000a")
+		)
+		(pin "ACC_5V_SW_EN" output
+			(at 388.62 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000010")
+		)
+		(pin "ACC_DETECT_N" input
+			(at 388.62 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000011")
 		)
 		(instances
 			(project "aqroot-Beta-v2"
@@ -3253,16 +3203,6 @@
 				(justify left)
 			)
 		)
-		(pin "FAST_IO_U0TXD_ROOTPROBE_CS" input
-			(at 54.61 257.81 180)
-			(uuid "b378e584-ee0b-41be-a64d-e2718540d56f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "I2C_SCL_INT" input
 			(at 54.61 243.84 180)
 			(uuid "e8ca5d86-1996-4711-bc1b-c2bde361477c")
@@ -3393,45 +3333,55 @@
 				(justify right)
 			)
 		)
-		(pin "XGPIO10" bidirectional
+		(pin "NATIVE_A" bidirectional
 			(at 133.35 250.19 0)
-			(uuid "274a8846-ca4b-4c0f-bee2-fe3c291c4775")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
+			(uuid "fb090308-0903-4908-9908-000000000001")
 		)
-		(pin "XGPIO11" bidirectional
+		(pin "NATIVE_B" bidirectional
 			(at 133.35 254 0)
-			(uuid "7a65697b-bf68-4fa8-a267-5082dba88333")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
+			(uuid "fb090308-0903-4908-9908-000000000002")
 		)
-		(pin "XGPIO12" bidirectional
+		(pin "ACC_3V3_SW" input
 			(at 133.35 257.81 0)
-			(uuid "f8ad08f2-da9e-4f4c-aea1-2332b0519440")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
+			(uuid "fb090308-0903-4908-9908-000000000003")
 		)
-		(pin "XGPIO13" bidirectional
+		(pin "ACC_5V_SW" input
 			(at 133.35 261.62 0)
-			(uuid "b6210dfd-437c-44ae-925b-8112fb4f3b17")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
+			(uuid "fb090308-0903-4908-9908-000000000004")
+		)
+		(pin "ACC_DETECT_N" output
+			(at 133.35 265.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb090308-0903-4908-9908-000000000005")
 		)
 		(instances
 			(project "aqroot-Beta-v2"
@@ -4057,7 +4007,7 @@
 		(uuid "fb080e02-0e02-4e02-9e02-000000000016")
 	)
 
-	(label "ACC_5V_EN"
+	(label "ACC_5V_BOOST_EN"
 		(at 391.16 185.42 0)
 		(effects
 			(font
@@ -4147,7 +4097,7 @@
 		(uuid "fb080e02-0e02-4e02-9e02-000000000025")
 	)
 
-	(label "ACC_5V_EN"
+	(label "ACC_5V_BOOST_EN"
 		(at 107.95 74.93 0)
 		(effects
 			(font
@@ -4178,5 +4128,225 @@
 			(justify left bottom)
 		)
 		(uuid "fb080e02-0e02-4e02-9e02-000000000028")
+	)
+
+	(wire
+		(pts
+			(xy 133.35 250.19) (xy 135.89 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000006")
+	)
+
+	(label "NATIVE_A"
+		(at 135.89 250.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000007")
+	)
+
+	(wire
+		(pts
+			(xy 133.35 254) (xy 135.89 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000008")
+	)
+
+	(label "NATIVE_B"
+		(at 135.89 254 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000009")
+	)
+
+	(wire
+		(pts
+			(xy 133.35 257.81) (xy 135.89 257.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000a")
+	)
+
+	(label "ACC_3V3_SW"
+		(at 135.89 257.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000b")
+	)
+
+	(wire
+		(pts
+			(xy 133.35 261.62) (xy 135.89 261.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000c")
+	)
+
+	(label "ACC_5V_SW"
+		(at 135.89 261.62 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000d")
+	)
+
+	(wire
+		(pts
+			(xy 133.35 265.43) (xy 135.89 265.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000e")
+	)
+
+	(label "ACC_DETECT_N"
+		(at 135.89 265.43 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000000f")
+	)
+
+	(wire
+		(pts
+			(xy 388.62 172.72) (xy 391.16 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000012")
+	)
+
+	(label "ACC_5V_SW_EN"
+		(at 391.16 172.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000013")
+	)
+
+	(wire
+		(pts
+			(xy 388.62 187.96) (xy 391.16 187.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000014")
+	)
+
+	(label "ACC_DETECT_N"
+		(at 391.16 187.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000015")
+	)
+
+	(wire
+		(pts
+			(xy 105.41 82.55) (xy 107.95 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-000000000019")
+	)
+
+	(label "ACC_5V_SW_EN"
+		(at 107.95 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000001a")
+	)
+
+	(wire
+		(pts
+			(xy 105.41 86.36) (xy 107.95 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000001b")
+	)
+
+	(label "ACC_3V3_SW"
+		(at 107.95 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000001c")
+	)
+
+	(wire
+		(pts
+			(xy 105.41 90.17) (xy 107.95 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000001d")
+	)
+
+	(label "ACC_5V_SW"
+		(at 107.95 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb090308-0903-4908-9908-00000000001e")
 	)
 )
