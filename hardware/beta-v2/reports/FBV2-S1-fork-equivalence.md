@@ -19,9 +19,9 @@ FORK EQUIVALENCE PROBE: PASS   (exit 0)
 |---|---|
 | Source tree | `hardware/beta-dm/kicad/aqroot-beta-dm/` |
 | Fork target | `hardware/beta-v2/kicad/aqroot-beta-v2/` |
-| Repository HEAD at proof time | `8556683` |
-| HEAD (full) | `8556683102240734bf809556f8e0588158842fc5` |
-| HEAD subject | docs: record Full Beta v2 display and microSD migration (FBV2-S1-003) |
+| Repository HEAD at proof time | `09cf768` |
+| HEAD (full) | `09cf768be8fa458c43de1538e51485326b16433e` |
+| HEAD subject | docs: record Full Beta v2 radios and NFC migration (FBV2-S1-004) |
 | Project-name substitution | `aqroot-Beta-DM` -> `aqroot-Beta-v2` (equal length, so no length drift) |
 
 The hashes below describe the working tree at the time of the most recent FBV2-S1 commit.
@@ -99,11 +99,11 @@ parts in the battery-protection and recovery circuitry).
 | `01_power_tree.kicad_sch` | `7e2c1f5e828d080305d0de95` | `a38b7127d40a5364f788b35a` | Full Beta v2 power-tree implementation (FBV2-S1-001); P-20 / P-21 value corrections (FBV2-S1-002); `NFC_SUPPLY` exported and given a `PWR_FLAG` (FBV2-S1-004) |
 | `02_mcu_core.kicad_sch` | `13fc2eca5286d33ed2ef7552` | `fbb198e4f3037f67f7892225` | Full Beta v2 MCU-core migration (FBV2-S1-002); `R111` fitted by CTO ruling (FBV2-S1-003) |
 | `03_spi_a_display_sd.kicad_sch` | `d67bf716f9d4a8d3aa478b55` | `e5e8b920b27cab967479c8a8` | Full Beta v2 display / touch / microSD migration (FBV2-S1-003) |
-| `04_spi_b_radios_nfc.kicad_sch` | `ce7e1441bab39930f31da39c` | `93a91fa568297fb2ea310b14` | Full Beta v2 radios / NFC migration — see `docs/full-beta-v2/audits/2026-08-23-s1-radios-nfc-implementation.md` |
+| `04_spi_b_radios_nfc.kicad_sch` | `ce7e1441bab39930f31da39c` | `f87ee2c32fb9e2daeed551b8` | Full Beta v2 radios / NFC migration — see `docs/full-beta-v2/audits/2026-08-23-s1-radios-nfc-implementation.md` |
 | `aqroot-Beta-v2.kicad_sch` | `7f03a5519c96b0066a2a1a1b` | `1501ecf9f62015247a65b8f1` | title / rev / comment; project name; removal of the now-local `BAT_PROTECTED_P` hierarchical pin and its orphaned root stub |
 | `aqroot-Beta-v2.kicad_pro` | `098fa6f8ebcf89f455167037` | `b15388e4afb494933adc56c5` | project name, plus one netclass pattern: `/03_SPI_A_DISPLAY_SD/LED_A` added to `LED_BOOST` because the 6-LED panel has a single anode. **No design rule was altered.** |
 | `aqroot-Beta-v2.kicad_prl` | `8c8e7cb6fdf413d69627e356` | `71b7a035f5b92fc09e12b2be` | project name only (local UI state; normalised hashes match) |
-| `README.md` | `40b4b42e8b86b9aa8bbac58a` | `0c11bd0cd7c042249c7286c3` | stale Beta-DM capture status corrected to the measured Full Beta v2 state |
+| `README.md` | `40b4b42e8b86b9aa8bbac58a` | `663b1b838180237984e44612` | stale Beta-DM capture status corrected to the measured Full Beta v2 state |
 
 ---
 

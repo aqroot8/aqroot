@@ -5,6 +5,164 @@
 	(uuid "c9c5bda1-3956-427a-b3ae-972c71997504")
 	(paper "A2")
 	(lib_symbols
+		(symbol "Connector_Generic:Conn_01x02"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x02_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:Crystal_GND24"
 			(pin_names
 				(offset 1.016)
@@ -7376,7 +7534,7 @@
 				)
 			)
 		)
-		(property "Package" "UFQFPN32 5x5x0.55, 0.5 mm pitch, 32 lands + exposed pad 33. Normal internal RF-regulator mode: VDD_IO on +3V3; VDD and VDD_TX both on NFC_5V_PA_PENDING; I2C_EN grounded to select SPI; VDD_DR sourced from the VDD_RF regulated node - NOT tied to VDD_TX, which would be the regulator-bypass configuration and is not used for Beta. Regulator outputs VDD_D, VDD_A, VDD_RF and VDD_AM plus reference AGDC each carry ST-specified local decoupling. Exposed pad grounded per ST. RF, oscillator and AAT/EXT_LM/CSI pins are on explicit named TBD nets - DO NOT ROUTE until NFC antenna and matching design."
+		(property "Package" "UFQFPN32 5x5x0.55, 0.5 mm pitch, 32 lands + exposed pad 33. LOCKED 2026-08-23 (FBV2-S1-004B): ST25R3916-AQET, NOT the B variant. Normal internal RF-regulator mode: VDD_IO on +3V3; VDD and VDD_TX both on NFC_SUPPLY, which is +3V3 on the first build through the R106 FIT link with the R107 DNP link as the no-respin 5 V fallback; I2C_EN grounded to select SPI; VDD_DR sourced from the VDD_RF regulated node - NOT tied to VDD_TX, which would be the regulator-bypass configuration and is not used. Regulator outputs VDD_D, VDD_A, VDD_RF and VDD_AM plus reference AGDC each carry ST-specified local decoupling. Exposed pad grounded per ST. FIRMWARE MUST SET sup3V. AAT_A/AAT_B, CSI/CSO, EXT_LM and MCU_CLK are explicit no-connects. RF front end and 27.12 MHz crystal are captured; every matching value is TUNE until STSW-ST25R004 is run."
 			(at 91.44 143.51 0)
 			(hide yes)
 			(effects
@@ -10597,6 +10755,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Yajingxin"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TXM27.12M0004322DBBDO00T"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C362365"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "CANDIDATE against a live LCSC listing, not a lock (D-096). 27.12 MHz, 10 pF load, +/-10 ppm, ESR 30 R, -40..+85 C"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "fb042000-b000-4b00-9b00-0000000020001")
 		)
@@ -11381,7 +11583,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100pF 50V C0G TUNE"
+		(property "Value" "1.8nF 50V C0G TUNE"
 			(at 335.28000000000003 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11540,7 +11742,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100pF 50V C0G TUNE"
+		(property "Value" "300pF 50V C0G TUNE"
 			(at 346.71000000000004 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11642,7 +11844,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0R TUNE"
+		(property "Value" "1R0 TUNE"
 			(at 361.95000000000005 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12146,7 +12348,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100pF 50V C0G TUNE"
+		(property "Value" "1.8nF 50V C0G TUNE"
 			(at 335.28000000000003 184.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12305,7 +12507,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100pF 50V C0G TUNE"
+		(property "Value" "300pF 50V C0G TUNE"
 			(at 346.71000000000004 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12407,7 +12609,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0R TUNE"
+		(property "Value" "1R0 TUNE"
 			(at 361.95000000000005 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13482,5 +13684,215 @@
 			(justify left top)
 		)
 		(uuid "fb041209-a209-4a09-9a09-000000000209")
+	)
+	(wire
+		(pts
+			(xy 387.35 129.54) (xy 394.97 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb044001-e001-4e01-9e01-000000000001")
+	)
+	(label "NFC_ANT_A"
+		(at 387.35 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb044002-e002-4e02-9e02-000000000002")
+	)
+	(wire
+		(pts
+			(xy 387.35 132.08) (xy 394.97 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb044003-e003-4e03-9e03-000000000003")
+	)
+	(label "NFC_ANT_B"
+		(at 387.35 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb044004-e004-4e04-9e04-000000000004")
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 400.05 129.54 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb045000-e500-4e50-9e50-0000000050000")
+		(property "Reference" "J7"
+			(at 402.59000000000003 128.26999999999998 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "BM02B-ACHSS-GAN-ETF"
+			(at 402.59000000000003 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical"
+			(at 400.05 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 400.05 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 400.05 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BM02B-ACHSS-GAN-ETF"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mates" "ACHR-02V-S housing = the ACH(F) connector on the FXC.46 antenna cable"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Board-side NFC antenna interface. Off-board antenna: Taoglas FXC.46.52.0075X.A.dg"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb045000-e500-4e50-9e50-0000000050001")
+		)
+		(pin "2"
+			(uuid "fb045000-e500-4e50-9e50-0000000050002")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/78fa5fdc-06e3-464e-80f7-774b6b1fc81b"
+					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "=== NFC ANTENNA INTERFACE - LOCKED OFF-BOARD (FBV2-S1-004B) ==="
+		(exclude_from_sim no)
+		(at 380.0 100.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb044020-e020-4e20-9e20-000000000020")
+	)
+	(text "J7 BM02B-ACHSS-GAN-ETF, JST ACH, 2 circuits, 1.2 mm, SMT, gold, 2.0 A. It mates the ACHR-02V-S housing, which is the ACH(F) connector already fitted to the antenna cable - so the antenna is REPLACEABLE WITHOUT SOLDERING. JST classes ACH as TOP ENTRY: the socket drops on vertically and the wires leave horizontally. Leave vertical clearance above J7 for mating."
+		(exclude_from_sim no)
+		(at 380.0 104.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb044021-e021-4e21-9e21-000000000021")
+	)
+	(text "Antenna: Taoglas FXC.46.52.0075X.A.dg - 13.56 MHz circular flex, 46 mm diameter, 0.27 mm thick WITH FERRITE, peel-and-stick 3M adhesive, 75 mm twisted pair 28 AWG, ACH(F) connector, typical interrogation distance 40 mm. IT DOES NOT GO ON THE PCB."
+		(exclude_from_sim no)
+		(at 380.0 112.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb044022-e022-4e22-9e22-000000000022")
+	)
+	(text "MATCHING BASIS: L = 1.09 uH, Rs = 1.6 R, Q0 = 58 at 13.56 MHz. R_q 1R0 per leg brings Q to about 26 for ISO14443 bandwidth - that value is derived from the antenna alone and is the most solid number here. C_s 300pF and C_p 1.8nF come from an L-match to an ASSUMED 20 R per side driver target; the EMC pair L5/L6 + C69/C70 has NOT been re-derived against the new shunt and is NOT yet a working filter. EVERYTHING STAYS TUNE UNTIL STSW-ST25R004 IS RUN. Do not build to these values."
+		(exclude_from_sim no)
+		(at 380.0 118.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb044023-e023-4e23-9e23-000000000023")
 	)
 )
