@@ -4,7 +4,7 @@
 bus and the external community segment. Where an older audit, transcript or README disagrees,
 this file wins; [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks it.
 
-Established: 2026-08-23 (FBV2-S1-005). Updated 2026-08-23 (FBV2-S1-008 — `U23` at `0x22`).
+Established: 2026-08-23 (FBV2-S1-005). Updated 2026-08-23 (FBV2-S1-008 — `U23` at `0x22`; FBV2-S1-009 — TCA4307, P-18 closed, bus-scan list corrected).
 Derived from a `kicad-cli` netlist export of `hardware/beta-v2/kicad/aqroot-beta-v2/`, not from
 a pin-map document. **Regenerate it the same way before quoting it.**
 
@@ -27,12 +27,14 @@ All addresses are **7-bit**. Every device on the design is 7-bit addressed; none
         ├─ U14  MAX17048        0x36
         ├─ J1 pins 44/45 -> ER-TPC035-6 / FT6236   0x38
         ├─ TP4 / TP5
-        └─ U16  TCA9517A  A-side
-                   │  VCCB = ACC_3V3_SW, EN = ACC_PWR_EN   (U16 is DNP today)
-                   │  unpowered => BOTH sides high-Z
-                   ▼  B-side
-        R47 / R48 22 R  ──  J5 community header    ..... EXTERNAL SEGMENT
-        R49 / R50 4.7 k to ACC_3V3_SW  (DNP)
+        └─ U16  TCA4307DGKR   IN side (SDAIN / SCLIN)      <-- FBV2-S1-009, FITTED
+                   │  VCC = ACC_3V3_SW, EN = ACC_PWR_EN
+                   │  unpowered => BOTH sides high-Z (datasheet property)
+                   │  1 V precharge; IN is not joined to OUT until STOP or bus idle
+                   │  stuck-bus disconnect at 25 ms MIN, then up to 16 SCL recovery pulses
+                   ▼  OUT side (SDAOUT / SCLOUT)
+        R49 / R50 1.5 k to ACC_3V3_SW  (FITTED)
+        R47 / R48 22 R  ──  J5 community port, contacts 2 and 6  ..... EXTERNAL SEGMENT
 ```
 
 **The two segments are one address space whenever the accessory rail is on.** The buffer is
@@ -53,7 +55,7 @@ reason this registry exists.
 | **0x68** | 6-axis IMU BMI270 | `U4` | `SDO` → GND through **`R118` 0 Ω FIT** | **datasheet, this task** — *"The default I²C address of the device is 0b1101000 (0x68). It is used if the SDO pin is pulled to GND."* |
 | *(0x69)* | *same device, rework only* | `U4` | remove `R118`, fit **`R119` 0 Ω** to `+3V3` | **datasheet, this task** — *"The alternative address 0b1101001 (0x69) is selected by pulling the SDO pin to VDDIO."* |
 
-**`U16` TCA9517A has no address.** It is a repeater, not a target.
+**`U16` TCA4307 has no address.** It is a buffer, not a target. **It does not isolate addressing and is not meant to**: see §3 and D-178.
 
 ### Collision audit
 
@@ -83,9 +85,18 @@ reason this registry exists.
 > **`0x50` is NOT used internally and must not become an internal address.** That is a standing
 > constraint, not a preference.
 
-**P-19 remains open:** the 24Cxx EEPROM family occupies **`0x50`–`0x57`** depending on its
-`A0`–`A2` straps. Only `0x50` is reserved. If multi-EEPROM accessories appear, the reservation
-may have to widen to the full block. Flagged for CTO with P-18.
+**P-19 remains FUTURE PROTOCOL SCOPE, not an open hardware question:** the 24Cxx EEPROM family
+occupies **`0x50`–`0x57`** depending on its `A0`–`A2` straps. **Only `0x50` is reserved and
+D-178 declined to widen it** — there is no concrete multi-EEPROM need today, and reserving eight
+addresses against a hypothetical costs accessory authors seven usable addresses.
+
+> **P-18 IS CLOSED — 2026-08-23, D-178 (FBV2-S1-009). NO I²C MUX.** The bus-hang half was already
+> answered by the detect-gated rail; the **TCA4307** now answers it structurally, disconnecting a
+> stuck bus after 25 ms and clocking it free. **Address collision is not an electrical problem
+> and a mux is the wrong tool for it.** The external segment stays one logical address space with
+> the internal bus, and allocation is governed by this file. Putting the whole internal AQROOT bus
+> behind a mux would add a part, a failure mode and a firmware dependency to solve something a
+> published reserved-address policy already solves.
 
 ---
 
@@ -134,5 +145,14 @@ limit — see [`../audits/2026-08-23-s1-i2c-imu-implementation.md`](../audits/20
 The BMI270 additionally supports Fm+ at 1 MHz; nothing else on the bus is qualified for it and
 1 MHz is **not** a supported AQROOT bus speed.
 
-**First-article bus scan must report exactly:** `0x20`, `0x21`, `0x36`, `0x38`, `0x68` with no
-accessory attached. Any other responder is a defect, not a curiosity.
+**First-article bus scan must report exactly:** `0x20`, `0x21`, **`0x22`**, `0x36`, `0x38`,
+`0x68` with no accessory attached. Any other responder is a defect, not a curiosity.
+
+> **CORRECTED 2026-08-23 (FBV2-S1-009).** This list previously omitted **`0x22`**, which has been
+> a live internal device since `U23` landed at FBV2-S1-008. A bring-up engineer following the old
+> list would have treated the third expander as an unexpected responder — i.e. as a defect.
+
+**The accessory segment is scanned separately**, after `ACC_3V3_SW` is enabled and the TCA4307
+reports `READY` high on `TP44`. **Anything answering there at `0x20`, `0x21`, `0x22`, `0x36`,
+`0x38`, `0x68` or `0x69` is a non-compliant accessory** (§4), and the buffer will not save it:
+the two segments are one address space whenever the rail is on.

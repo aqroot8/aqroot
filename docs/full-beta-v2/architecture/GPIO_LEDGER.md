@@ -4,19 +4,21 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-008, buttons / expanders / front RGB)
+Date: 2026-08-23 (after FBV2-S1-009 — **the schematic migration is complete**)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Only sheet `09` is still Beta-DM.** Sheet `08` was migrated at FBV2-S1-008, so
-> every expander-bound net below now terminates on a v2 peripheral. A net that
-> reaches the community connector still terminates on a *Beta-DM* sheet-`09`
-> footprint until that sheet is migrated.
+> **No sheet is still Beta-DM.** All nine are migrated as of FBV2-S1-009, so
+> **every net below terminates on a v2 peripheral, including the two that reach
+> the community connector.** `fork_equivalence.py`'s "still Beta-DM" list is
+> empty.
 
 > **The expander pin ledger is no longer in this file.** `U2` (0x20), `U3` (0x21)
 > and the new `U23` (0x22) are mapped pin by pin — function, direction, polarity,
 > external pull, power-up safe state, interrupt and community exposure — in
 > [`../audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md`](../audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md) §10.
-> **48 expander pins, 39 assigned, 12 spare, all on `U23`.**
+> **48 expander pins, 37 assigned, 11 spare, all on `U23`** — plus the formal
+> `RESERVED_SPARE` on `U23` P03. **`U23` P04 became `ACC_5V_SW_EN` at
+> FBV2-S1-009** (D-186). **B-37 is retired.**
 
 ---
 
@@ -53,7 +55,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 28 | GPIO35 | — | — | **UNUSABLE** | — | no | octal PSRAM (N16R8). NC |
 | 29 | GPIO36 | — | — | **UNUSABLE** | — | no | as above |
 | 30 | GPIO37 | — | — | **UNUSABLE** | — | no | as above |
-| 31 | **GPIO38** | **`NATIVE_A`** | community | bidirectional | — | **YES** | **CHANGED FBV2-S1-002.** Was `SX1262_DIO1` |
+| 31 | **GPIO38** | **`NATIVE_A`** | community | bidirectional | — | **YES** | **CHANGED FBV2-S1-002.** Was `SX1262_DIO1`. **FBV2-S1-009: it now actually reaches the connector** — `R61` 100 Ω to `J5` contact 7, with a `D2` TVS channel. Not a strapping pin |
 | 32 | GPIO39 | `I2S_BCLK` | audio | output | — | no | also MTCK — external JTAG is therefore unusable. **Shared by `MK1` and `U5`. FBV2-S1-006: must run 2.048–4.096 MHz or the microphone leaves normal mode — 48 kHz × 64 = 3.072 MHz (D-146)** |
 | 33 | GPIO40 | `I2S_LRCLK` | audio | output | — | no | also MTDO. **Shared by `MK1` and `U5`. 48 kHz. FIRMWARE: never stop LRCLK while BCLK runs — the amplifier can then put DC on the speaker (D-147)** |
 | 34 | GPIO41 | `I2S_SPK_DOUT` | audio | output | — | no | also MTDI. To `U5` `DIN` only |
@@ -79,16 +81,17 @@ architecture intends:
 
 | contact | net | GPIO |
 |---|---|---|
-| `NATIVE_A` | `NATIVE_A` | **GPIO38** |
-| `NATIVE_B` | `NATIVE_B` | **GPIO47** |
+| `NATIVE_A` | `NATIVE_A` → `R61` 100 Ω → `J5` contact **7** | **GPIO38** |
+| `NATIVE_B` | `NATIVE_B` → `R62` 100 Ω → `J5` contact **11** | **GPIO47** |
 
 `GPIO43` is **withdrawn** (D-106). Every other community contact is an expander
 `XGPIO`, the buffered I²C pair, `WAKE_ATTN_N`, `ACC_DETECT_N`, or power.
 
-> D-090's protection — 100 Ω series on both native pins plus the low-capacitance
-> TVS array — belongs physically next to the connector and is therefore **sheet
-> `09` work**. It does not exist yet. Until it does, `NATIVE_A` / `NATIVE_B` run
-> from the MCU to a sheet-`09` boundary that has not been drawn.
+> **D-090's protection now EXISTS (FBV2-S1-009).** `R61`/`R62` 100 Ω sit next to
+> the connector and both natives share a `TPD4E1B06DRLR` channel with the
+> buffered I²C pair. **Neither native is a strapping pin**, so no accessory can
+> affect boot mode. The two contacts flank the GND at position 9 exactly as
+> D-084 requires.
 
 ---
 

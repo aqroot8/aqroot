@@ -9,6 +9,191 @@ an entry.
 
 ---
 
+## 2026-08-23 — Community expansion port, and the schematic migration is complete (FBV2-S1-009)
+
+**Overall 55% → 62%. FBV2-S1 = PASS — the first twelve-gate entry to pass since FBV2-A2.** Task
+gate **FBV2-S1-COMMUNITY = PASS**. Full analysis:
+[`audits/2026-08-23-s1-community-sheet09-implementation.md`](audits/2026-08-23-s1-community-sheet09-implementation.md);
+programme closeout:
+[`audits/2026-08-23-s1-schematic-migration-closeout.md`](audits/2026-08-23-s1-schematic-migration-closeout.md).
+
+**ERC 42 / 1 / 41 → 27 / 0 / 27. THE DESIGN HAS ZERO ERC ERRORS FOR THE FIRST TIME.** 321
+components, 0 duplicate references, 0 without a footprint, 224 nets, 0 `*_TBD`.
+`fork_equivalence.py` PASS with an **empty** "still Beta-DM" list, `netclass_probe.py` PASS, PCB
+still bit-identical to Beta-DM.
+
+> **FBV2-S1 = PASS means SCHEMATIC MIGRATION COMPLETE. It does not mean fabrication ready.**
+> No placement, no routing, no outline, no DFM, no mechanical CAD, no physical validation.
+
+### Three CTO rulings recorded first
+
+**O-6 RATIFIED (D-175).** `U23`, the third `PCAL9535APW,118` at `0x22`, and the front RGB status
+light are now **locked architecture**. **B-37 — "zero expander spare", carried since the first
+audit — is retired**: 37 of 48 expander pins are used and eleven are free.
+
+**O-4 APPROVED (D-176).** `U16` TCA9517A → **TI `TCA4307DGKR`, LCSC C880333**, verified live per
+D-096 at 3 248 in stock. **It is FITTED; the TCA9517A was DNP.**
+
+**P-18 CLOSED (D-178). No I²C mux.** The external segment stays one logical address space with
+the internal bus. **The TCA4307 solves *electrical* fault isolation; the address registry solves
+*address* allocation.** A mux would add a part, a failure mode and a firmware dependency to
+answer a problem a published reserved-address policy already answers. `0x50` is not widened.
+
+### Sheet 09 was rebuilt, not patched, and what it was hiding
+
+Almost nothing in the inherited Beta-DM community sheet survived contact with the locked v2
+architecture — and two of its defects were serious:
+
+- **`J5` contact 1 carried permanent raw `+3V3`**, against D-057.
+- **The community port had no power at all.** `01:ACC_3V3_SW` — the real switched rail at `U20` —
+  and `09:ACC_3V3_SW`, fed by a **second, DNP** TPS22918 (`U15`) that nobody had noticed was
+  there, were **different nets**. `01:ACC_5V_SW` reached nothing outside sheet 01.
+- 26-pin 2×13 **male** header, fourteen XGPIO, `FAST_IO_GPIO43_HDR` (withdrawn by D-106),
+  `RESERVED_NC`, and `R66` wired straight through with **no isolation FET**.
+
+**This is the sixth consecutive migrated sheet on which an inherited `DNP` was load-bearing** —
+`U16`, `R49`, `R50` and six TVS arrays. The pattern first recorded at FBV2-S1-007 held to the
+last sheet without a single exception.
+
+### The connector footprint was re-derived from the drawing
+
+`J5` = Samtec **`BCS-112-S-D-HE`**, re-confirmed live: ACTIVE, 385 pieces ship tomorrow. The land
+pattern comes from the Samtec **RECOMMENDED PCB LAYOUT, REVISION B, FIG 3** — the
+`BCS-1XX-XXX-D-HE-XXX` figure specifically: **2.54 mm within a row, row-to-row .310 ±.002 in =
+7.87 ±0.05 mm, .028 in = 0.71 mm PTH**, 27.94 mm pin field. **A vertical 2×12 pattern is not a
+substitute — its rows sit 2.54 mm apart.** Odd = row A, even = row B, verified pin by pin against
+the netlist; all 24 contacts match D-084. If JLC cannot place a through-hole part automatically
+it becomes **manual/secondary assembly for the first five boards**; the connector architecture is
+not compromised for SMT convenience.
+
+### The buffer change is not cosmetic
+
+The community port is **hot-plug** and its external segment is **3.3 V only**, so the TCA9517A's
+level translation was never used while its hot-insertion and stuck-bus weaknesses were. From
+SCPS270B, read in this session: the IN side is not joined to the OUT side until a **STOP or
+bus-idle**; **1 V precharge** on all four SDA/SCL pins; **stuck-bus recovery at
+`tSTUCKBUS` 25 ms MIN / 40 typ / 65 MAX** followed by **up to 16 pulses on SCLOUT**; **powered-off
+high-impedance I²C pins**; 400 kHz max — **fast mode, not 1 MHz**.
+
+**The circular dependency is broken.** `ARCHITECTURE.md` recorded it plainly: *"its disable
+control, `ACC_PWR_EN` = `U3` P17, sits behind the bus it protects."* A wedged accessory required
+the MCU to command the expander **over the very bus that was wedged**. The buffer now disconnects
+and clocks the bus free by itself; `ACC_PWR_EN` is a second, manual lever rather than the only
+one.
+
+> **Normative accessory rule (D-177): never hold `EXT_SDA` or `EXT_SCL` low for longer than
+> 25 ms** — the `tSTUCKBUS` **minimum**, not the typical. That is a hard limit on clock stretching
+> and on slow bit-banged accessory firmware.
+
+### The inherited pull-ups could not have worked
+
+`R49`/`R50` were **4.7 kΩ and DNP**. With `tr` = 0.8473 × R × C and a 200 pF external bus —
+≈ 20 pF board, 5 pF connector, ≈ 100 pF for 300 mm of cable, 50 pF module — 4.7 kΩ gives **796 ns
+against a 300 ns fast-mode budget: it fails 400 kHz by 2.7× and only ever worked at 100 kHz.**
+
+**1.5 kΩ gives 254 ns and passes fast mode on the static pull-up alone**, with the TCA4307's
+2–5 mA rise-time accelerator as margin rather than as the mechanism. Static sink 1.93 mA, inside
+the 3 mA an I²C device must sink. **Published accessory rule: ≤ 200 pF for 400 kHz, ≤ 400 pF for
+100 kHz bring-up.** The internal bus keeps `R19`/`R20` 2.2 kΩ as its only pair (D-139); nothing
+was added there, and no 1 MHz claim is made anywhere.
+
+### Both current limits were re-derived rather than copied
+
+SLVSFJ2B gives **`ILIM` = 1.18 × (R_ILIM in kΩ)^−1.072**, verified against three datasheet rows,
+±25 % band.
+
+**3.3 V rail — 1.5 kΩ retained, and it survived a budget that has grown.** The IR transmitter
+(+50 mA burst average; its 150 mA peaks come from `C12` 22 µF, not the rail) and the front RGB
+(+4.2 mA) push the internal worst case from 769 mA to **≈ 823 mA**. An accessory hard short at the
+0.955 A worst-high limit now puts `+3V3` at **1 778 mA = 89 % of the TPS63020's 2 A** — margin
+narrowed from 86 %, **still no foldback**. 1.21 kΩ would reach 102 %. Worst-low 0.573 A against
+the published 400 mA leaves 43 % headroom.
+
+**5 V rail — 1.65 kΩ retained**, 0.690 A typ / 0.52–0.86 A, 73 % headroom over the published
+300 mA and inside the boost's 3.7 A switch limit. Setpoint re-checked at **4.99 V**; peak inductor
+current **2.19 A** at `V_SYS` 3.0 V, so **`I_sat` ≥ 3 A is a requirement to confirm at BOM lock
+(B-68)**. **Verified from the netlist to be electrically independent of USB `VBUS` and of the NFC
+5 V fallback** — only `SYS` and the TPS61023 device family are shared.
+
+**Published limits for the first five boards remain 400 mA and 300 mA TOTAL — the duplicate
+contacts share one rail limit and do not multiply it.**
+
+### Splitting the 5 V enables buys more than tidiness
+
+`ACC_5V_EN` becomes **`ACC_5V_BOOST_EN` (`U3` P13 → boost `EN`)** and **`ACC_5V_SW_EN`
+(`U23` P04 → switch `ON`)**, each with its own 100 kΩ pull-down — `R102` and the new **`R131`**,
+which is mandatory because the TPS22950C's internal 500 kΩ smart pull-down does not satisfy its
+own datasheet.
+
+Two gains beyond the obvious. **Two independent series disconnects**: the TPS61023 has *true*
+input-to-output disconnection in shutdown and the load switch adds reverse-current blocking, so a
+single stuck enable can no longer energise the contact. And **the start-up time becomes a board
+constant** — with the load switch still off, the boost starts into a known **44 µF** of
+`C65`/`C66` instead of an unknown hot-plugged accessory.
+
+The **5 ms** settle delay is derived, not guessed: the TPS61023 soft start is **700 µs typical
+with no published maximum**, so the first build uses 7× typical and measures it (**B-69**).
+**No PGOOD IC was added.**
+
+### B-08 exists in copper for the first time
+
+`Q10` 2N7002 between the WAKE contact and `WAKE_INT_N`, gate on `ACC_3V3_SW`. **Orientation is
+load-bearing: source to the connector, drain to the internal line**, so with the rail off an
+accessory pulling the contact down **reverse-biases the body diode** against the internal 3.3 V.
+Reverse the FET and the body diode alone defeats the arrangement. A shorted or hostile accessory
+therefore **cannot hold `WAKE_INT_N` low and cannot starve the internal buttons**. `R63` 10 kΩ
+must pull to `ACC_3V3_SW`, not `+3V3`, or the contact stays live with the rail off. Recorded
+honestly: a hostile accessory *driving* the contact to 5 V injects **≈ 3 mA** through the body
+diode and `R66` — bounded, inside every clamp, and the reason `R66` is 330 Ω.
+
+### The ESD arrays were all DNP; they are now fitted
+
+**TI `TPD4E1B06DRLR`** — 4-channel bidirectional, **±12 kV contact / ±15 kV air-gap**, **0.7 pF**
+I/O capacitance, 0.5 nA leakage, `VRWM` ±5.5 V. Four arrays cover all sixteen exposed signal
+contacts. D-090 protected only the natives and the I²C pair, on the reasoning that the natives are
+the only contacts with a direct MCU path; **that under-weighted the XGPIO**, which reach a
+PCAL9535A whose destruction costs a board rather than a $0.55 chip. **Deliberately no TVS on
+either power rail** — `VRWM` 5.5 V against a 5.0 V nominal rail leaves no working margin, and a
+clamp that close leaks and ages. **`TPD2E009DBZR` leaves the BOM**: one TVS MPN now covers
+everything.
+
+An inconsistency in D-090 was also closed: **`ACC_DETECT_N` had no series resistor** despite being
+exposed and running straight to a PCAL input. It now has 100 Ω like every other signal contact.
+
+### Detect bounce is a firmware problem, and an RC would make it worse
+
+Debounce is **20 ms assert / 20 ms de-assert in firmware**. A passive filter cannot be asymmetric:
+the same time constant that suppresses insertion chatter **delays removal detection**, and removal
+is the safety-critical edge because **MX-6 requires both rails down within 100 ms of detect loss**.
+No RC was added.
+
+### Eighteen abuse cases, none unacceptable
+
+The full matrix is in the audit. Nothing lands on NOT ACCEPTABLE; two rows are firmware-dependent
+by design and both are already binding clauses of D-092. Highlights: a reversed accessory cannot
+ground contact 23, so **detect never asserts and neither rail is ever enabled**; a one-column
+offset is prevented mechanically by the closed-ended recess; `EXT_SDA` or `EXT_SCL` held low is
+disconnected within 25–65 ms and clocked free; and 5 V on a logic contact is clamped by the TVS
+with 100 Ω limiting the residual into a **5 V-tolerant** PCAL input.
+
+### A correction worth recording
+
+Rebuilding sheet 09 deleted **`#FLG0105`**, a `PWR_FLAG` sitting on the Beta-DM community sheet
+that turned out to be **the only power-output driver on the entire GND net**. Its loss made every
+GND `power_in` pin in the design undriven. It has been **re-created on sheet 09 with the same
+reference and a note explaining its role**, so it is never deleted by accident again. This is not
+a fake power flag added to silence a check — it is the restoration of the check's only legitimate
+satisfier.
+
+### One new item for the CTO
+
+**O-7:** `R49`/`R50` are 1.5 kΩ sized for a **200 pF** external bus, and that capacitance is an
+estimate rather than a measurement. Accept 200 pF as the published 400 kHz ceiling, or drop to
+1.0 kΩ and cover 300 pF for 1 mA more static sink. **One 0603 either way, footprint fitted**, so
+it closes on the first measured board.
+
+---
+
 ## 2026-08-23 — Buttons, expanders and the front RGB status light (FBV2-S1-008)
 
 **Overall 53% → 55%. No gate in the twelve-gate table passed**; the task gate

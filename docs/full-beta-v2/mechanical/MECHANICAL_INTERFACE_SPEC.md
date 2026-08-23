@@ -2,7 +2,7 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12)
 
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
 > **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
@@ -300,6 +300,39 @@ Beta-DM used **four Ø2.4 mm holes (measured)**; v2 adds two mid-span.
 | Position | right wall, **below the display band**, above the Power control | **TARGET** — the 7.87 mm body depth exceeds the 6.73 mm of PCB clear of the display, so it cannot sit beside the panel |
 | Marking | pin-1 triangle; **"COMMUNITY PORT — 3V3 LOGIC ONLY"** and **"5V PIN IS POWER OUTPUT ONLY"** | **LOCKED** (D-090) |
 
+**Footprint built and verified 2026-08-23 (FBV2-S1-009, D-179).**
+`AQROOT_Beta:Samtec_BCS-112-S-D-HE`, taken from the Samtec **RECOMMENDED PCB LAYOUT,
+REVISION B, FIG 3 (`BCS-1XX-XXX-D-HE-XXX`)** — the horizontal dual-row figure specifically:
+
+| dimension | drawing | footprint |
+|---|---|---|
+| pitch within a row | .100 in / **2.54 mm** | 2.54 mm |
+| **row to row** | **.310 ± .002 in = 7.87 ± 0.05 mm** | 7.87 mm |
+| finished hole | **.028 in = 0.71 mm PTH** | 0.71 mm drill, 1.30 mm pad |
+| pin-field length | positions × .100 − .100 = **27.94 mm** | 27.94 mm |
+
+**A vertical 2 × 12 pattern is NOT a substitute — its rows sit 2.54 mm apart, not
+7.87 mm.** B-29 is closed.
+
+**PCB envelope required, for FBV2-P1 floorplanning:**
+
+| item | value |
+|---|---|
+| pin field | **27.94 (X) × 7.87 (Y) mm** |
+| to the outside of the 1.30 mm pads | **29.24 × 9.17 mm** |
+| body | **30.48 × 8.13 × 5.33 mm** |
+| courtyard | **31.48 × 9.13 mm** |
+| holes | **24 × Ø0.71 mm PTH** |
+
+> **This is the only through-hole field on an otherwise all-SMD board, and it
+> constrains routing on every layer beneath it.** Odd contacts are row A, even are
+> row B; pad 1 is rectangular with a silkscreen tick and a `PIN 1` legend; the
+> F.Fab layer carries a `MATES ->` direction mark.
+
+**Assembly:** if the JLC service cannot place this through-hole part
+automatically, it becomes a **manual / secondary assembly operation for the first
+five boards**. The connector architecture is not compromised for SMT convenience.
+
 **Wall aperture:** 34 × 10 mm nominal, with 0.3 mm clearance to the accessory shell
 on all sides, plus the keying rib.
 
@@ -475,7 +508,7 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 | **Front** | Display/touch (upper), D-pad (lower left), A + B (lower right), microphone aperture (bottom, opposite the speaker), **RGB status light (position deliberately not locked — see M-11)** |
 | **Top** | Antenna bulkhead connector (left half), IR TX + IR RX windows (right half) with an opaque barrier |
 | **Left** | Antenna storage channel, terminating below Y = 100 mm |
-| **Right** | **24-contact (2×12) keyed recessed community connector** (upper/middle), Power control (lower), recessed BOOT access |
+| **Right** | **24-contact (2×12) keyed recessed community connector** (upper/middle) — **built and footprint-verified, 30.48 × 8.13 × 5.33 mm body over a 27.94 × 7.87 mm through-hole field** — Power control (lower), recessed BOOT access |
 | **Bottom** | USB-C (centre), microSD (left of USB-C) |
 | **Rear** | NFC loop zone (upper third), battery (lower two-thirds), speaker opening (lower right), branding |
 
@@ -496,6 +529,7 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 | **M-09** | Confirm the connector body height | **DOWNGRADED to LOW 2026-08-23.** With `BCS-112-S-D-HE` the column is 2.0 shell + **5.33 connector** + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell = **19.53 mm of 23.0 external, 3.47 mm spare** — level with the control region and **no longer the sole governing column**. The 5.33 mm figure is read from the Samtec series print and cross-checked three ways; **confirm against the individual 3D model at FBV2-P1** |
 | **M-10** | **Insertion load path** | **~33 N average** (24 contacts × 1.39 N avg), **peak higher** — Samtec publishes averages, and its own note states the peak occurs during the spreading stage. The enclosure must carry it on a boss or rib (D-097) |
 | **M-11** | **Front RGB status-light aperture — NEW 2026-08-23 (FBV2-S1-008)** | **The requirement is FRONT-FACING and visible; the exact front position is deliberately NOT locked.** Upper bezel, lower bezel, beside the display or near the controls are all acceptable. **It is NOT a top-edge part** — the top crown is the IR and antenna region. `D13` is a **surface-mount PLCC-4, 3.50 × 2.80 × 1.85 mm, 120° emission, water-clear lens** on the **front-facing PCB surface**, so the enclosure must provide a **diffuser or light pipe: no protruding bare LED, and no direct line of sight to the die.** A water-clear 120° source behind a bare hole is a point glare source; the diffuser is what makes it read as a status light. **Delivered output is roughly 80 / 87 / 42 mcd (R/G/B)** at 1.0–1.7 mA per channel, so the optical path must not be lossy — budget for a short pipe or a thin diffuser, not a deep light guide. **Placement and CAD own the final position.** Does not block FBV2-A2 |
+| **M-12** | **Community connector land field — NEW 2026-08-23 (FBV2-S1-009)** | The footprint is verified against the manufacturer drawing (§5), so this is **not** a dimensional unknown. It is a **floorplanning constraint**: **24 × Ø0.71 mm plated through-holes in a 27.94 × 7.87 mm field**, the only THT field on the board, blocking routing on every layer beneath it, on the **right edge** where the recess and its asymmetric key also live. Combined with M-10's ~33 N insertion load and M-08's contest for the space under the display, **the right-hand strip is now the most constrained region of the PCB.** Does not block FBV2-A2; **must be resolved first at FBV2-P1** |
 | M-04 | Battery SKU | Envelope frozen; SKU at procurement |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
 
