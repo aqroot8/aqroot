@@ -4760,7 +4760,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c40d9e89-64a6-4742-b985-1d549e452498")
 		(property "Reference" "C19"
@@ -4862,7 +4862,7 @@
 				)
 			)
 		)
-		(property "Note" "ST25R3916 external VDD / VDD_TX high-frequency decoupling: NFC_5V_PA_PENDING -> C19 -> GND. Remains the HF decoupler and is NOT replaced by the bulk capacitor; C55 supplies bulk charge alongside it. Finalised for Beta - the previous 100nF_PLACEHOLDER wording is retired."
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
 			(at 170.18 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -7461,7 +7461,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "be3987f0-2ee7-4e2b-996f-affa37e3eed3")
 		(property "Reference" "U9"
@@ -7474,6 +7474,17 @@
 		)
 		(property "Value" "ST25R3916-AQET"
 			(at 91.44 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. `U9` AND ITS ENTIRE SUPPLY-DECOUPLING NETWORK ARRIVED FROM BETA-DM MARKED DNP, WHICH DIRECTLY CONTRADICTS TWO STANDING CTO DECISIONS: D-035, 'NFC is mandatory in the FIRST Full Beta v2 fabrication. No DNP showcase shortcut', and D-055, 'NFC must be FITTED and functional on the first fabrication'. The board would otherwise have been built with a complete, fitted 13.56 MHz matching network, crystal, antenna connector and SPI wiring - and no NFC chip. FITTED WITH IT: C19 and C55 on NFC_SUPPLY, C45/C46 on VDD_D, C47/C48 on VDD_A, C49/C50 on VDD_RF, C51/C52 on VDD_AM and C53/C54 on AGDC - twelve parts that are all mandatory supply decoupling in DS12484, not options. Part is ST25R3916-AQET, LCSC C5267441 (D-126). Six pins remain deliberately unconnected - CSO, EXT_LM, AAT_A, AAT_B, CSI and MCU_CLK - because capacitive sensing, external load modulation, antenna auto-tuning and the MCU clock output are all optional features this product does not use; each carries a recorded ERC exclusion."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8578,7 +8589,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "08a73fc3-416b-4f14-97c2-19a85674ca6e")
 		(property "Reference" "C45"
@@ -8591,6 +8602,17 @@
 		)
 		(property "Value" "2.2uF"
 			(at 190.5 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8758,7 +8780,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "837703e8-c429-4950-bc4d-e8b9946a044f")
 		(property "Reference" "C46"
@@ -8771,6 +8793,17 @@
 		)
 		(property "Value" "10nF"
 			(at 203.2 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8938,7 +8971,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "abd3c891-5d25-46a7-baa9-0b0decc679b1")
 		(property "Reference" "C47"
@@ -8951,6 +8984,17 @@
 		)
 		(property "Value" "2.2uF"
 			(at 190.5 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9118,7 +9162,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8c4fca38-3f35-47af-982a-421f75b6772f")
 		(property "Reference" "C48"
@@ -9131,6 +9175,17 @@
 		)
 		(property "Value" "10nF"
 			(at 203.2 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9298,7 +9353,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6fe75713-d6fb-4986-a54a-c26a31f5dd84")
 		(property "Reference" "C49"
@@ -9311,6 +9366,17 @@
 		)
 		(property "Value" "2.2uF"
 			(at 190.5 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9478,7 +9544,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "755883f2-eaee-418d-81cc-07acd8664238")
 		(property "Reference" "C50"
@@ -9491,6 +9557,17 @@
 		)
 		(property "Value" "10nF"
 			(at 203.2 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9658,7 +9735,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0e079068-892d-4b5d-99d2-b32cc2d4edb7")
 		(property "Reference" "C51"
@@ -9671,6 +9748,17 @@
 		)
 		(property "Value" "2.2uF"
 			(at 190.5 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9838,7 +9926,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "84038a27-e2ac-4030-9257-a6f8b66d9a61")
 		(property "Reference" "C52"
@@ -9851,6 +9939,17 @@
 		)
 		(property "Value" "1nF"
 			(at 203.2 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10018,7 +10117,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fc1c2eac-6411-4fa0-a6f6-5bd485616ca3")
 		(property "Reference" "C53"
@@ -10031,6 +10130,17 @@
 		)
 		(property "Value" "1uF"
 			(at 190.5 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10198,7 +10308,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e46714bd-71c5-4efc-a9db-507d1133ccd2")
 		(property "Reference" "C54"
@@ -10211,6 +10321,17 @@
 		)
 		(property "Value" "10nF"
 			(at 203.2 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10380,7 +10501,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d7f63fd9-7e5e-43b3-945e-64f56f2e28aa")
 		(property "Reference" "C55"
@@ -10482,7 +10603,7 @@
 				)
 			)
 		)
-		(property "Note" "ST25R3916 VDD / VDD_TX local BULK decoupling for pulsed NFC transmitter current: NFC_5V_PA_PENDING -> C55 -> GND, placed electrically at the external supply input alongside the C19 HF decoupler. LOCKED VALUE FOR BETA, but VALUE TO BE RECONFIRMED DURING ST REFERENCE / BOM REVIEW. 2026-08-11 pre-routing pass: package changed 0805 -> 0603 and the part moved from (10.0, 19.0) to (22.225, 29.40) rot 270, giving 4.875 mm to U9 pin 8 and 4.469 mm to pin 10 (CTO target was <=3.0 mm; NOT met - C50 and C52 hold the only closer space and placement is locked). The new position is inside the TOP panel shadow X12-62 Y9-78, so C55 now carries the <=0.80 mm panel ceiling. NO 2.2uF >=10V X7R MLCC in 0603 or 0805 has a documented MAX height <=0.80 mm (0603 is 0.80+/-0.10 -> 0.90 max; Murata GRM21BR71E225KA73 0805 is 1.25+/-0.15 -> 1.40 max), so height is an OPEN BOM/MECH item shared with the other 0603s already in the panel shadow. DC-bias requirement: >=1.2 uF effective at 5.0 V - 16 V X7R 0603 is specified for that margin."
+		(property "Note" "FBV2-S2-001: **DNP -> FIT**. ST25R3916 supply decoupling, mandatory in DS12484 and not an option. It was inherited DNP together with `U9` itself, which contradicted D-035 and D-055 - NFC is mandatory and fitted on the first fabrication. See the `U9` note."
 			(at 157.48 133.35 0)
 			(hide yes)
 			(show_name no)

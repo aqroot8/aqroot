@@ -8397,6 +8397,17 @@
 				(justify left)
 			)
 		)
+		(property "Note" "FBV2-S2-001: **DNP AND IT MUST STAY DNP. THIS IS NOT A TUNING OPTION.** `R68` is a 0 Ohm bypass ACROSS `SW9`, the hard power switch on the TPS63020 enable. Fitting it wires the unit permanently ON and DEFEATS THE ONE PROVISION THAT LETS A USER POWER DOWN A HUNG OR UNFLASHED BOARD - the architecture is explicit that `SW9` is not a GPIO for exactly that reason. It exists only as a bench provision for characterising the regulator with the switch removed from the loop. It arrived from Beta-DM with no note at all, which is why it is documented here rather than deleted."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 182.372 63.5 90)
 			(hide yes)
@@ -9582,6 +9593,17 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DEAD PAD - DNP, AND ONE TERMINAL IS DELIBERATELY UNCONNECTED (no-connect flagged).** This is a reserved 0603 rework pad next to the USB block: fitting the capacitor alone does nothing, because pin 1 goes to no net. It can only be pressed into service by cutting a trace and bridging to it at bring-up. It arrived from Beta-DM with no note, and is documented rather than deleted because the area cost is trivial - but it is a legitimate deletion candidate at PCB placement if the floorplan is tight. SEE THE FBV2-S2 SIMPLIFICATION SCAN."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -11363,7 +11385,7 @@
 				)
 			)
 		)
-		(property "Note" "Wurth datasheet for 74438357010 (WE-MAPI 4030): 1 uH +/-20%; RDC 11.6 mOhm typ / 13.5 max; Isat 6.2 A (10% drop) / 12.5 A (30%); IRP,40K 10.25 A max; fres 59 MHz. Body 4.1 x 4.1 mm +/-0.2, height 3.1 mm max. Marked with start-of-winding. These ratings supersede the earlier 'take from datasheet' placeholder and satisfy the outstanding check that L2 be rated for the TI TPS61023 5V boost. FOOTPRINT STILL BLOCKED: recommended land pattern prints 1.39 / 3.35 / 3.7 mm but which is the span is not recoverable from text; prefer Wurth's own EDA/KiCad asset."
+		(property "Note" "Wurth datasheet for 74438357010 (WE-MAPI 4030): 1 uH +/-20%; RDC 11.6 mOhm typ / 13.5 max; Isat 6.2 A (10% drop) / 12.5 A (30%); IRP,40K 10.25 A max; fres 59 MHz. Body 4.1 x 4.1 mm +/-0.2, height 3.1 mm max. Marked with start-of-winding. **FBV2-S2-001: THE 'FOOTPRINT STILL BLOCKED' NOTE THAT USED TO SIT HERE IS STALE AND IS WITHDRAWN** - the land pattern was built from the same datasheet's 'Recommended Land Pattern' (rev 003.001, 2024-02-27) with the dimensions read off the drawing leader lines. **THIS PART IS DNP HERE** - it is the NFC 5 V fallback inductor (D-055/D-056) - **but the SAME MPN IS FITTED AS `L4` on the accessory 5 V boost, and its Isat of 6.2 A closes B-68**: the accessory boost peak inductor current is 2.19 A at the 0.86 A worst-high current limit with V_SYS at 3.0 V, so the margin is 2.8x on Isat and 4.7x on IRP."
 			(at 133.35 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -13827,7 +13849,7 @@
 				)
 			)
 		)
-		(property "Note" "Coilcraft doc 745-1 rev 03/10/26: 1.5 uH +/-20%; DCR 14.40 mOhm typ / 15.80 max; SRF 59 MHz typ; Isat 4.1 A (10% drop) / 4.4 A (20%) / 4.6 A (30%); Irms 6.7 A (20K rise) / 9.1 A (40K). Body 4.0 x 4.0 mm +/-0.3, height 2.10 mm max, terminals 0.82 x 1.57 mm. LCSC C3033018. Coilcraft marks the start (short) lead - connect high dv/dt there for lowest EMI; the footprint must carry that orientation marker. FOOTPRINT STILL BLOCKED: the recommended land pattern prints 0.98 / 2.37 / 3.4 mm but text extraction does not reveal which dimension is the span, so pad centres cannot be fixed without reading the drawing."
+		(property "Note" "Coilcraft doc 745-1 rev 03/10/26: 1.5 uH +/-20%; DCR 14.40 mOhm typ / 15.80 max; SRF 59 MHz typ; Isat 4.1 A (10% drop) / 4.4 A (20%) / 4.6 A (30%); Irms 6.7 A (20K rise) / 9.1 A (40K). Body 4.0 x 4.0 mm +/-0.3, height 2.10 mm max, terminals 0.82 x 1.57 mm. LCSC C3033018. Coilcraft marks the start (short) lead - connect high dv/dt there for lowest EMI, and the footprint carries that orientation marker. **FBV2-S2-001: THE 'FOOTPRINT STILL BLOCKED' NOTE THAT USED TO SIT HERE IS STALE AND IS WITHDRAWN.** The land pattern was subsequently built from Coilcraft document 745-3 rev 03/10/26 'Recommended Land Pattern' with the dimensions read off the drawing leader lines rather than inferred from text order: pad 0.98 mm wide x 3.4 mm long at 2.37 mm centre-to-centre. **HEADROOM CHECK, FBV2-S2-001:** at the TPS63020 worst case - 2 A out of 3.3 V from a 3.0 V cell - the average inductor current is about 2.44 A and the peak about 2.9 A, against Isat 4.1 A at the 10 % inductance-drop point. That is 1.4x on Isat and 2.7x on Irms: adequate, and the tightest magnetics margin on the board. Measure the inductor current at first article before raising any published rail limit."
 			(at 248.92 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -14356,6 +14378,17 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(property "Note" "FBV2-S2-001: **DEAD PAD - DNP, AND ONE TERMINAL IS DELIBERATELY UNCONNECTED (no-connect flagged).** This is a reserved 0603 rework pad next to the USB block: fitting the capacitor alone does nothing, because pin 1 goes to no net. It can only be pressed into service by cutting a trace and bridging to it at bring-up. It arrived from Beta-DM with no note, and is documented rather than deleted because the area cost is trivial - but it is a legitimate deletion candidate at PCB placement if the floorplan is tight. SEE THE FBV2-S2 SIMPLIFICATION SCAN."
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
@@ -17714,6 +17747,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "Nexperia"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PMEG2010AEH,115"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Diode_SMD:D_SOD-123"
 			(at 134.08 255.75 0)
 			(hide yes)
@@ -17750,7 +17805,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "SECONDARY clamp only - P2 isolation is the primary defence (D-068)"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name only, which D-096 does not accept as a selection. PMEG2010AEH,115 is the Nexperia SOD-123F 1 A / 20 V low-VF Schottky. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 134.08 251.25 0)
 			(hide yes)
 			(show_name no)
@@ -20500,6 +20555,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "onsemi"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BSS138LT1G"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 277.59 295.12 0)
 			(hide yes)
@@ -20536,7 +20613,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "open-drain SHDN pull-down; NEVER sources from +3V3"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 277.59 290.62 0)
 			(hide yes)
 			(show_name no)
@@ -24657,6 +24734,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "onsemi"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BSS138LT1G"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 291.56 380.21 0)
 			(hide yes)
@@ -24693,7 +24792,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "AND input 1 - pack polarity correct"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 291.56 375.71 0)
 			(hide yes)
 			(show_name no)
@@ -24819,6 +24918,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "onsemi"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BSS138LT1G"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 332.2 380.21 0)
 			(hide yes)
@@ -24855,7 +24976,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "AND input 2 - pack below handoff threshold"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 332.2 375.71 0)
 			(hide yes)
 			(show_name no)
@@ -24981,6 +25102,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "onsemi"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BSS138LT1G"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 371.57 380.21 0)
 			(hide yes)
@@ -25017,7 +25160,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "AND input 3 - LTC4368 FAULT asserted"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 371.57 375.71 0)
 			(hide yes)
 			(show_name no)
@@ -25213,6 +25356,28 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "onsemi"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BSS138LT1G"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 412.21 380.21 0)
 			(hide yes)
@@ -25249,7 +25414,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "inverts active-low FAULT for the AND chain"
+		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 412.21 375.71 0)
 			(hide yes)
 			(show_name no)
