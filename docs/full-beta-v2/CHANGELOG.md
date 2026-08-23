@@ -9,6 +9,121 @@ an entry.
 
 ---
 
+## 2026-08-23 — Full Beta v2 power tree CAPTURED (FBV2-S1-001)
+
+**The first Full Beta v2 design-file work.** `hardware/beta-v2/` is created, forked
+from Beta-DM, and `01_power_tree.kicad_sch` now carries the Full Beta v2 power
+architecture. Full analysis:
+[`audits/2026-08-23-s1-power-tree-implementation.md`](audits/2026-08-23-s1-power-tree-implementation.md).
+
+**Overall 31% → 34%. FBV2-S1 does NOT pass.** Its exit criterion requires *every*
+schematic change in the migration order to be landed. One sheet of nine carries the
+v2 architecture; the other eight are byte-equivalent copies of Beta-DM. What passes
+is the task gate **FBV2-S1-POWER-TREE**.
+
+### What is now in the file
+
+136 parts on `01_POWER_TREE`, all with footprints assigned:
+
+* **Battery reverse protection, P2** — `J4` → `F1` 5 A → `BAT_RAW` → `Q2` (stage A)
+  → `BAT_MID` → `Q3` (stage B) → `BAT_SENSE` → `R75` 15 mΩ → `BAT_PROTECTED_P` →
+  `U11` BAT. Controller `U18` LTC4368-1: `RETRY` grounded (latch-off), `UV` unused
+  via 510 k to VIN per the datasheet, `OV` divider, 22 k/4.7 nF gate RC, `SHDN`
+  pull-up with an N-FET pull-down, `D9` secondary negative clamp. Two stages in
+  **two packages**, common-source pairs — **B-01 is closed at schematic level.**
+* **Autonomous dead-cell recovery** — `U19` TLV7032 with a ratiometric polarity
+  bridge (matched `D10`/`D11` Schottkys make the trip supply-independent at
+  `BAT_RAW` = 0 and block pack drain when USB is absent), a handoff comparator
+  asserting below ≈ 2.63 V of pack, a three-input **series** AND (`Q6`/`Q7`/`Q8`),
+  `Q9` inverting `FAULT`, and `Q5`/`R95`/`D12` injecting current-limited,
+  unidirectional charge. USB-powered and firmware-independent.
+* **Accessory power** — `+3V3` → `U20` TPS22950C → `ACC_3V3_SW` and `BQ25185_SYS` →
+  `U21` TPS61023 (4.99 V) → `U22` TPS22950C → `ACC_5V_SW`, both `FLT` pins wire-ORed
+  onto `ACC_POWER_FAULT_N`. **D-088 BOM consolidation honoured exactly**: `L4` is the
+  same Würth MPN as `L2`, `R99`/`R100` are the same 732 k/100 k divider as `R44`/`R45`,
+  `C65`/`C66` mirror `C34`/`C35`. One boost family, one load-switch family, differing
+  only in `R_ILIM` (1.5 k and 1.65 k, the values D-086/D-087 specify).
+* **NFC no-respin source select** — `R106` 0 Ω **FIT** from `+3V3`, `R107` 0 Ω **DNP**
+  from the boost.
+* **Telemetry** — `VBUS_PRESENT` divided to 2.97 V at VBUS 5.0 V, so raw VBUS never
+  reaches the expander; `LTC4368_FAULT_N`; `ACC_POWER_FAULT_N`; 19 test points.
+
+### ERC: zero introduced
+
+Beta-DM baseline **58** → Beta-v2 at resume **60** → Beta-v2 now **55**. The lists were
+diffed, not counted. **Nothing was added.** Three inherited violations were retired: a
+dangling root `BAT_PROTECTED_P` label, and two `isolated_pin_label` on
+`BAT_CONNECTOR_P`, which was a one-pad net in Beta-DM and is now real.
+
+**This is not "ERC clean" and must not be quoted as such.** 55 inherited violations
+remain on the unmigrated sheets and belong to FBV2-S2.
+
+Three defects were closed to get there: the missing `BAT_PROTECTED_P` label on the
+`U11` pin-2 stub; a `PWR_FLAG` on `VREC_VCC`, whose drive arrives through `R84` and so
+cannot be inferred by ERC — the electrical connection to VBUS was already correct and
+no net was joined, split or renamed; and an orphaned wire and label left on the **root**
+sheet when the `BAT_PROTECTED_P` hierarchical pin was removed.
+
+### `U18` package corrected — a locked decision had been contradicted
+
+`U18` LTC4368-1 had been assigned a **DFN-10 with an exposed pad**. FBV2-PWR-002 locks
+the package policy for this circuitry: *"leaded and inspectable … no BGA, no WLCSP, no
+bottom-terminated parts."* A DFN-10 is bottom-terminated, on the most safety-critical
+part on the board. Corrected to `Package_SO:MSOP-10_3x3mm_P0.5mm` (the locked candidate
+is `LTC4368IMS-1#PBF`, MSOP-10) in both the sheet and the project symbol library.
+**The land pattern is still unverified** — that is FBV2-S2.
+
+### `R_FB_TOP 1M` — an inherited net-name defect, fixed in v2
+
+A literal net label reading `R_FB_TOP 1M` — a value annotation placed as a label.
+`R39` is indeed 1 MΩ. The net is the TPS63020 `+3V3` feedback midpoint; renamed
+**`V3V3_FB`** in `hardware/beta-v2/` only. Beta-DM is frozen and keeps it. All 56 labels
+on the sheet were audited for embedded values, spaces, near-duplicate rails and isolated
+single-pin nets; nothing else was found, and no correct name was touched.
+
+### Fork provenance is now measured, not asserted
+
+`checks/fork_equivalence.py` re-derives the classification of every forked file from
+disk; `reports/FBV2-S1-fork-equivalence.md` pins the result. Sheets `02`–`09` are
+byte-equivalent after normalising the project name **only**; `.kicad_pcb`, `.kicad_dru`,
+both lib-tables and all 12 project footprints are **bit-identical**; `.kicad_pro` differs
+by project name alone, so no design rule or netclass changed. `hardware/beta-dm/`,
+`hardware/beta/` and `hardware/beta/mechanical/` are unchanged.
+
+`checks/netclass_probe.py` had been copied without repointing and was still testing
+**Beta-DM's** files from inside the v2 tree. Repointed; still PASS.
+
+### Opened
+
+**B-41** `NFC_SUPPLY` has no consumer — `U9` `VDD`/`VDD_TX` are still on
+`NFC_5V_PA_PENDING` on sheet `04`, which this task could not modify. The v2 NFC supply
+architecture is **half implemented**.
+**B-42** the NFC source select is mutually exclusive **by fit state only**; fitting both
+0 Ω links shorts `+3V3` to the boost output. Needs an assembly-note requirement.
+**P-20** `R95` = 680 R against a locked 560 R. Injection falls to ≈ 6.9 mA, moving the
+wrong way against **B-26**. Recorded, **not** silently changed — a value in a locked
+architecture is changed by a ruling, not by a capture task.
+**P-21** `OV` trip captured at 5.05 V against a documented ≈ 4.6 V.
+**P-22** the standing *"no automatic KiCad file generation"* rule was overtaken: this
+capture was scripted. Recorded in place and flagged for ratification or reinstatement
+rather than treated as repealed.
+
+### Recorded
+
+**D-099** `U18` package corrected to MSOP-10. **D-100** net names describe nets, not
+component values. **D-101** `TP34` added on `BAT_CONNECTOR_P`. **D-102** `PWR_FLAG` is
+permitted only where a rail is genuinely driven and KiCad cannot infer it — never to
+silence an error. **D-103** `BAT_PROTECTED_P` is local to `01_POWER_TREE`.
+
+### Not done, and not claimed
+
+No PCB work of any kind — `aqroot-Beta-v2.kicad_pcb` is still the Beta-DM board, bit for
+bit, and does not match this schematic. No footprint verified. No MPN locked. Sheets
+`02`–`09` untouched. `B-15` stays open: the `VBUS_PRESENT` divider exists but no charge
+or VBUS telemetry crossing to `U2`/`U3` does.
+
+---
+
 ## 2026-08-23 — Community connector CORRECTED and final-locked (FBV2-COMM-002)
 
 Documentation only. No design file touched. `hardware/beta-v2/` was not created.

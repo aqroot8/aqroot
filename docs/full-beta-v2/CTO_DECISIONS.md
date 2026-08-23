@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-COMM-002)
+Last updated: 2026-08-23 (FBV2-S1-001)
 
 ---
 
@@ -819,6 +819,48 @@ no-battery `STAT2` behaviour does not cause repeated MCU wakeups.
 
 ---
 
+## 8n. Power-tree capture — FBV2-S1-001 (2026-08-23)
+
+**This section records what the first Full Beta v2 design-file work found and
+changed. It does not lock anything new.** The architecture it captured was already
+locked by D-050…D-068 and D-086…D-094; what follows is the delta between those
+rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch`.
+
+| # | decision | date |
+|---|---|---|
+| D-099 | **`U18` LTC4368-1 PACKAGE CORRECTED — `Package_SO:MSOP-10_3x3mm_P0.5mm`.** The capture had assigned `Package_DFN_QFN:DFN-10-1EP_3x3mm_P0.5mm_EP1.65x2.38mm`. FBV2-PWR-002 locks the package policy for the battery-protection and recovery circuitry: *"every new safety-critical part is leaded and inspectable — MSOP-10, SOIC-8, SOT-23-8, SOT-23, SOT-363. No BGA, no WLCSP, **no bottom-terminated parts**."* A DFN-10 with an exposed pad is bottom-terminated, and this is the single most safety-critical part on the board. The locked candidate is **`LTC4368IMS-1#PBF`, MSOP-10**. Corrected in both the sheet and the project symbol-library default. **The land pattern remains UNVERIFIED — correcting a package is not verifying a footprint.** | 2026-08-23 |
+| D-100 | **NET NAMES DESCRIBE NETS, NOT COMPONENT VALUES.** The inherited Beta-DM net label `R_FB_TOP 1M` — a value annotation placed as a label — is renamed **`V3V3_FB`** in `hardware/beta-v2/` only; it is the TPS63020 `+3V3` feedback midpoint (`R39` 1 M / `R40` 180 k, 3.278 V). Beta-DM is frozen and keeps the defect. **Standing rule:** a net name may not contain a component value or a space. Value annotations belong in on-sheet **text**, never in a label — a name like this also makes netclass patterns and every downstream net-name match fragile. | 2026-08-23 |
+| D-101 | **`TP34` ADDED ON `BAT_CONNECTOR_P`.** The FBV2-PWR-002 block diagram calls for a test point on **each** side of `F1` — *"the two together make fuse state observable"* — and only the `BAT_RAW` side existed. Adding it also made `BAT_CONNECTOR_P` a real net, retiring two inherited ERC violations. | 2026-08-23 |
+| D-102 | **`PWR_FLAG` IS PERMITTED ONLY WHERE A RAIL IS GENUINELY DRIVEN AND KICAD CANNOT INFER IT** — a connector pin, a battery, or a rail reached through a passive. `#FLG613` on `VREC_VCC` qualifies: the comparator supply is VBUS through `R84` 100 R with `C60`, and ERC does not propagate a driver across a resistor. **A `PWR_FLAG` may never be used to silence an error by joining, splitting or renaming a net**, and none was. The design now carries four, all for this reason: `USB_VBUS_CHG`, `BAT_PROTECTED_P`, `BAT_RAW`, `VREC_VCC`. | 2026-08-23 |
+| D-103 | **`BAT_PROTECTED_P` IS LOCAL TO `01_POWER_TREE`.** Its root-sheet hierarchical pin is removed, along with the orphaned stub and label the removal left behind. **No sheet outside the power tree may reference the raw or protected battery node.** | 2026-08-23 |
+
+> **Result (FBV2-S1-001).** Full analysis:
+> [`audits/2026-08-23-s1-power-tree-implementation.md`](audits/2026-08-23-s1-power-tree-implementation.md).
+>
+> **Task gate FBV2-S1-POWER-TREE = PASS. The programme gate FBV2-S1 does NOT pass** —
+> it requires every sheet in the migration order, and one of nine is landed.
+>
+> **B-01 is closed at schematic level only.** `BAT_CONNECTOR_P` is no longer a
+> one-pad net and the full P2 chain to `BAT_PROTECTED_P` exists. The PCB is
+> untouched and still bit-identical to Beta-DM, so nothing is closed at board level.
+>
+> **ERC: 58 Beta-DM baseline → 55, zero introduced.** Not "ERC clean".
+>
+> **Two value deviations were found and deliberately NOT changed:** `R95` = 680 R
+> against a locked 560 R (**P-20**), and an `OV` trip of 5.05 V against a documented
+> ≈ 4.6 V (**P-21**). **A value in a locked architecture is changed by a ruling, not
+> by a capture task.** Both are ratio-preserving observations rather than wiring
+> faults, and neither blocks the task gate — but P-20 moves the wrong way against
+> **B-26**, so it should be ruled on before the BOM is issued.
+>
+> **A standing rule was overtaken and is NOT treated as repealed.** The Beta-DM
+> README says *"Do not generate or modify KiCad schematic or PCB files
+> automatically. KiCad files will be created manually in KiCad 10.0.3."*
+> FBV2-S1-001 captured `01_POWER_TREE` **as a scripted migration**, then verified it
+> with `kicad-cli` ERC and a netlist export rather than by eye. The rule is recorded
+> in place, scoped to its Beta-DM origin, and **awaits ratification or
+> reinstatement** — see the pending table.
+
 ## 9. Safety
 
 | # | decision | date |
@@ -846,6 +888,9 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
 | ~~**P-15**~~ | ~~3V3 rail budget under simultaneous worst case.~~ **CLOSED 2026-08-23 by D-092.** It does force firmware mutual exclusion, and the contract is now binding (MX-1...MX-9). Naive simultaneity reaches **85-90 %** of the TPS63020's 2 A; the enforced design case reaches **58-66 %**; an accessory hard short at the recommended `R_ILIM` reaches **86 %**. | closed | 2026-08-22 |
 | ~~**P-16**~~ | ~~Repurpose one XGPIO as `ACC_DETECT`?~~ **CLOSED 2026-08-23 by D-082/D-085.** No XGPIO is repurposed: `ACC_DETECT_N` is a **dedicated connector contact (pin 23) and a dedicated `U3` input**. The published XGPIO count does fall to 10, but by CTO product ruling, not by theft. | closed | 2026-08-22 |
+| **P-22** | **Ratify or reinstate the "no automatic KiCad file generation" rule.** The Beta-DM README forbids generating or modifying KiCad files automatically; FBV2-S1-001 captured `01_POWER_TREE` by script and verified it with `kicad-cli` ERC plus a netlist export. | Every remaining FBV2-S1 sheet migration depends on the answer. The rule is recorded unaltered and is **not** treated as repealed by having been overtaken. | 2026-08-23 |
+| **P-20** | **`R95` recovery current limit: 680 R as captured, or 560 R as locked?** | Injection into a 0 V pack falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V. **This moves the wrong way against B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Not a wiring fault; a value that must be ruled, not assumed. | 2026-08-23 |
+| **P-21** | **`OV` trip: 5.05 V as captured, or ≈ 4.6 V as documented?** | Captured as `R77` 4.02 M / `R78` 442 k against the FBV2-PWR-002 diagram's *"divider ≈ 4.6 V"*. 5.05 V sits above a 4.2 V pack with margin and below the USB ceiling, so it is plausible and probably deliberate — but it is not the documented number, and the documented number is what a reviewer will check. | 2026-08-23 |
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I2C segmentation - buffer alone, or add a mux?** | **HALF ANSWERED 2026-08-23 (FBV2-COMM-001).** The `U16` TCA9517A B-side supply is `ACC_3V3_SW`, which is now **default OFF and detect-gated**, so a dead or absent accessory cannot hold SDA low - the *bus-hang* half is closed. **Address collision on 0x36 / 0x20-0x27 is NOT solved by a buffer** and still needs a ruling: mux, or a published reserved-address policy. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |

@@ -2,9 +2,32 @@
 
 **Status: MANDATORY ARTEFACT. Must be signed before schematic work begins.**
 
-Date: 2026-08-22 (revised by FBV2-PWR-001)
+Date: 2026-08-22 (revised by FBV2-PWR-001); annotated 2026-08-23 after FBV2-S1-001
 Task: FBV2-ARCH-002, revised FBV2-PWR-001
-Scope: analysis only. No schematic, PCB or hardware file was created or modified.
+Scope: analysis only. No schematic, PCB or hardware file was created or modified
+**by this document**.
+
+> ## Capture note — FBV2-S1-001 (2026-08-23)
+>
+> **The topology this table analyses is now CAPTURED**, in
+> `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch`: `U18` LTC4368-1,
+> `Q2`/`Q3` as the P2 pass path in two packages, `R75` 15 mΩ, `F1` 5 A, `D9` secondary
+> clamp, and the full Candidate-B recovery branch on `U19`. **This table remains the
+> authority for behaviour** — the capture does not supersede a single case, and no case
+> has been re-derived against the captured values.
+>
+> **Two captured values differ from the numbers analysed here and are NOT ratified:**
+> `R95` = **680 R** against `R_LIM` **560 R** (recovery injection ≈ 6.9 mA rather than
+> ≈ 8.4 mA — **P-20**, and it moves the wrong way against **B-26**), and the `OV` trip
+> captured at **5.05 V** against the documented ≈ 4.6 V (**P-21**). **Any case whose
+> outcome depends on either number must be re-checked once they are ruled on.**
+>
+> The one structural detail worth adding to the record: `LTC4368_FAULT_N` carries **both**
+> `R81` 1 M to `+3V3` and `R82` 1 M to GND. With a dead pack there is no `+3V3`, so the
+> node sits at 0 V, `Q9` is off and recovery is **enabled** — the branch does not depend
+> on the rail it exists to restore.
+>
+> Analysis: [`../audits/2026-08-23-s1-power-tree-implementation.md`](../audits/2026-08-23-s1-power-tree-implementation.md).
 
 > ## Revision note — FBV2-PWR-001
 >

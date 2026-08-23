@@ -1,8 +1,12 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (community connector correction, FBV2-COMM-002)
+Date: 2026-08-23 (power-tree capture, FBV2-S1-001)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
+
+**One block is no longer intent.** As of 2026-08-23 the **power tree is CAPTURED** in
+`hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch` (FBV2-S1-001). Every
+other block on this page is still intent only, and the PCB is untouched.
 
 Authority: [CTO_DECISIONS.md](../CTO_DECISIONS.md) outranks this document.
 Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
@@ -83,7 +87,9 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
                                                       |
                                           BQ25185 (linear charger + power path)
                                                       |
-   BAT_CONNECTOR_P ─X─ [ REVERSE POLARITY: DOES NOT EXIST ] ─X─ BAT_PROTECTED_P
+   BAT_CONNECTOR_P ─> F1 5A ─> BAT_RAW ─> Q2 ═ Q3 ─> R75 15m ─> BAT_PROTECTED_P
+             (CAPTURED, FBV2-S1-001: LTC4368-1 U18, P2, two packages;
+              autonomous USB-powered dead-cell recovery on U19)
                                                       |         |
                                                       |    MAX17048 fuel gauge
                                                       |
@@ -158,7 +164,7 @@ speculative; each cites what was measured.
 
 | # | defect | evidence | disposition |
 |---|---|---|---|
-| 1 | **Reverse-polarity gap.** `BAT_CONNECTOR_P` has exactly one pad (`J4.1`). Nothing bridges it to `BAT_PROTECTED_P`. A board built as-is will not run from battery at all and has no defence against a reversed pack. | PCB pad-to-net map | Pending P-01 |
+| ~~1~~ | ~~**Reverse-polarity gap.**~~ **CLOSED AT SCHEMATIC LEVEL 2026-08-23 (FBV2-S1-001).** `BAT_CONNECTOR_P` = `J4.1` + `F1.1` + `TP34.1`; the full P2 chain to `BAT_PROTECTED_P` is captured with `U18` LTC4368-1, `Q2`/`Q3` in two packages, `R75` 15 mΩ sense and `D9` secondary clamp. **NOT closed at board level** — the PCB is still bit-identical to Beta-DM. | schematic netlist, `BAT_PROTECTED_P` = 10 pads | P-01 closed by D-050…D-054; captured by FBV2-S1-001 |
 | 2 | **NFC clock / matching / antenna incomplete.** No 27.12 MHz crystal exists anywhere in the BOM. No matching network. No antenna. 13 nets on `U9` have exactly one pad: XIN, XOUT, RFO1, RFO2, RFI1, RFI2, AAT_A, AAT_B, EXT_LM, CSI, CSO, MCU_CLK. | 13 single-pad nets on `U9` | Pending P-04 |
 | 3 | **Enclosure internal cavity unpublished.** `INTERNAL_CAVITY_MM: not published`. `PCB_FIT_STATUS: UNVERIFIED`. The v2 outline is a derived number and cannot be derived. | Field Slate v5 authority table | Pending P-07 |
 
@@ -167,7 +173,7 @@ speculative; each cites what was measured.
 | # | defect | evidence | disposition |
 |---|---|---|---|
 | 4 | **NFC supply sequencing.** **REVISED 2026-08-22 by datasheet verification.** The rail *assignment* is **correct**: DS12484 Rev 3 p. 39 requires VDD (pin 8) and VDD_TX (pin 10) to share one supply, capped at ±0.2 V operating, with VDD_IO (pin 1) independent at 1.65–5.5 V. The earlier "rail split" recommendation was wrong and is withdrawn. The **real** defect is sequencing: TPS61023 true load disconnect is confirmed, so with the boost off VDD = VDD_TX = 0 V while VDD_IO = 3.3 V — below the 2.4 V VDD minimum and nowhere authorised. | DS12484 Rev 3 Tables 2 / 118 / 119; SLVSF14B §7.3.2 | **Pending P-10** — N1 (3.3 V-only NFC, delete the boost) recommended |
-| 5 | **Accessory power reverse blocking absent.** The accessory rail comes from a plain NMOS load switch with no reverse blocking; an accessory back-driving it pushes current through the body diode into `+3V3`, and the external I2C pull-ups referenced to that rail give a second path. | Load-switch topology + pull-up references | Fix in migration |
+| 5 | **Accessory power reverse blocking absent.** The accessory rail came from a plain NMOS load switch with no reverse blocking; an accessory back-driving it pushed current through the body diode into `+3V3`, and the external I2C pull-ups referenced to that rail gave a second path. | Load-switch topology + pull-up references | **CAPTURED on the power tree 2026-08-23 (FBV2-S1-001):** both accessory rails now use `TPS22950C` (`U20`, `U22`), whose reverse-current blocking is confirmed for the C variant (D-058), with the 5 V rail fed from `SYS` through its own `TPS61023`. **The Beta-DM `TPS22918` path on sheet `09` is untouched and still carries the defect.** |
 | 6 | **WAKE isolation missing.** The mandated open-drain gate powered from switched accessory power was never implemented. The header leg is only a 330R series resistor. A shorted accessory pin divides the wake net to roughly 0.1 V and **permanently blocks internal button wake** — the unit appears dead to its own buttons. | `WAKE_ATTN_N_HDR` = `D7.1`, `J5.13`, `R66.2` | Fix in migration |
 | 7 | **GPIO3 strap definition missing.** The pin map declared a strap-defining pull mandatory. The net carries only a 220R series resistor, a test pad and the MCU pin. Hazard is currently low because the S3 ignores the GPIO3 strap unless the `JTAG_SEL_ENABLE` eFuse is burned, but it leaves a CMOS input floating at reset. | `BMI270_INT1_STRAP` = `R18.2`, `TP3.1`, `U1.15` | Fix in migration |
 
