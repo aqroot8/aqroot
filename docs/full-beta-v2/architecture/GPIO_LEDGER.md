@@ -4,12 +4,19 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-007, infrared migration)
+Date: 2026-08-23 (after FBV2-S1-008, buttons / expanders / front RGB)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Sheets `08`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
-> may terminate on a *Beta-DM* peripheral until that sheet is migrated. Where the
-> v2 destination differs, the row says so.
+> **Only sheet `09` is still Beta-DM.** Sheet `08` was migrated at FBV2-S1-008, so
+> every expander-bound net below now terminates on a v2 peripheral. A net that
+> reaches the community connector still terminates on a *Beta-DM* sheet-`09`
+> footprint until that sheet is migrated.
+
+> **The expander pin ledger is no longer in this file.** `U2` (0x20), `U3` (0x21)
+> and the new `U23` (0x22) are mapped pin by pin — function, direction, polarity,
+> external pull, power-up safe state, interrupt and community exposure — in
+> [`../audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md`](../audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md) §10.
+> **48 expander pins, 39 assigned, 12 spare, all on `U23`.**
 
 ---
 
@@ -42,7 +49,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 11 | GPIO18 | `NFC_IRQ` | NFC | input | — | no | **must never move to GPIO46** (B-19). Confirmed still here |
 | 13 | GPIO19 | `USB_D_MCU_N` | USB | native USB D− | — | no | USB Serial/JTAG |
 | 14 | GPIO20 | `USB_D_MCU_P` | USB | native USB D+ | — | no | USB Serial/JTAG |
-| 23 | GPIO21 | `WAKE_INT_N` | expanders | interrupt in | — | via gate | wire-OR of both expander `INT` pins, `R3` 10 k pull-up. **Not** a strapping pin |
+| 23 | GPIO21 | `WAKE_INT_N` | expanders | interrupt in | — | via gate | **FBV2-S1-008: wire-OR of ALL THREE expander `INT` pins** (`U2`, `U3`, `U23`), `R3` 10 k pull-up. **Not** a strapping pin, so a held interrupt cannot block ROM download. The pull-up is mandatory and is what makes the line deterministic — inactive HIGH — before any register is written. **`U23` carries no interrupt source and is never read in the interrupt path, so the third device costs zero extra I²C traffic per event** (D-171) |
 | 28 | GPIO35 | — | — | **UNUSABLE** | — | no | octal PSRAM (N16R8). NC |
 | 29 | GPIO36 | — | — | **UNUSABLE** | — | no | as above |
 | 30 | GPIO37 | — | — | **UNUSABLE** | — | no | as above |
@@ -169,10 +176,23 @@ pull-down and must not be used on this pin.
 | LoRa `DIO1` | `SX1262_DIO1` | **no longer the MCU** — routes to the internal expander `U2` (D-089) | n/a |
 | sub-GHz (`CC1101`) | `CC1101_GDO0` | GPIO15 | none |
 | IMU (`BMI270`) | `BMI270_INT1_STRAP` | GPIO3 | **strap pin** — defined by `R110`, and the IMU is high-Z at reset |
-| touch (`FT6236`) | **`TOUCH_INT_N`** — panel pin 46 | **not the MCU** — an internal PCAL9535A input (sheet `08`) | **captured 2026-08-23 (FBV2-S1-003).** Not represented at all on Beta-DM |
+| touch (`FT6236`) | **`TOUCH_INT_N`** — panel pin 46 | **`U2` P16**, landed FBV2-S1-008 | **captured 2026-08-23 (FBV2-S1-003).** Not represented at all on Beta-DM |
+| microSD card detect | **`SD_CARD_DETECT_N`** — `J2.10` | **`U2` P07**, landed FBV2-S1-008 | D-117 required a PCAL input; it now has one. `R113` 100 k pull-up on sheet `03`. Polarity assumed (B-46) |
+| charger (`BQ25185`) | **`BQ25185_STAT1` / `STAT2`** | **`U2` P05 / P06**, landed FBV2-S1-008 | Ruling G / D-170. 10 k pull-ups. **`STAT2` stays interrupt-MASKED** — it toggles forever with no battery fitted |
+| accessory detect / fault | `ACC_DETECT_N`, `ACC_POWER_FAULT_N` | **`U3` P14 / P15**, landed FBV2-S1-008 | the only two `U3` interrupts left unmasked; the ten XGPIO are masked by MX-9 |
 
 **LoRa deep-sleep packet wake remains NOT REQUIRED** (D-041). No GPIO was remapped
 to gain RTC wake capability, and none should be.
+
+**Interrupt discovery order (FBV2-S1-008, D-171).** On a `WAKE_INT_N` assertion,
+read the PCAL9535A **interrupt status registers `4Ch`/`4Dh` on `U2`, then on `U3`**;
+they name the changed bit directly, where the TCA9535 would have forced a read of
+every port register on every device. **`U23` is never read** — it holds only three
+LED outputs and the reserved spare. **`INT` clears on a read of the INPUT PORT
+register (`00h`/`01h`)**, so firmware must read it after the status register or the
+line stays LOW and no further edge appears. **Every interrupt is masked at
+power-up** (`4Ah`/`4Bh` = `FFh`); firmware must unmask explicitly or it sees
+nothing at all.
 
 **No interrupt sits on a strapping pin in a way that can block recovery.** The one
 interrupt that does share a strapping pin — the IMU on GPIO3 — is high-impedance at

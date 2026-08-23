@@ -9,6 +9,173 @@ an entry.
 
 ---
 
+## 2026-08-23 — Buttons, expanders and the front RGB status light (FBV2-S1-008)
+
+**Overall 53% → 55%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-BUTTONS = PASS**. Full analysis:
+[`audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md`](audits/2026-08-23-s1-buttons-expanders-rgb-implementation.md).
+
+**ERC 42 messages / 1 error / 41 warnings — the violation set is identical, line for line, to
+the working tree this task resumed from, and better than the 45 / 2 / 43 that stood before
+sheet 08 was touched.** Zero new errors. 319 components, 0 duplicate references, 0 without a
+footprint, 0 `*_TBD` nets. `fork_equivalence.py` PASS, `netclass_probe.py` PASS, PCB still
+bit-identical to Beta-DM. **Sheet 09 untouched.**
+
+### This task was interrupted by a session limit and resumed, not restarted
+
+All FBV2-S1-008 work existed as **uncommitted working-tree change** — nothing staged, no local
+commits, local `master` equal to `origin/master` at `d894913`. The interrupted session had done
+good work and it was kept: both expanders genuinely converted to `PCAL9535APW,118` with a
+purpose-built symbol rather than a rename, addresses `0x20`/`0x21` preserved, HOME deleted
+outright, volume buttons not invented, `TOUCH_INT_N` and `SX1262_DIO1` landed with matching root
+plumbing, and the RGB part selected, symbolised and footprinted from the manufacturer drawing.
+Zero DNP anywhere on the sheet — **the fifth consecutive sheet did not repeat the inherited-DNP
+trap**.
+
+It had also written an honest note into the schematic saying the pin budget did not close and
+needed a ruling. **That diagnosis was correct**, and closing it is what this entry is about.
+
+### 35 signals, 32 pins — the allocation genuinely fails
+
+| group | pins | held down by |
+|---|---:|---|
+| safe-state control outputs | 5 | inherited, each with an external pull |
+| user buttons | 6 | product lock |
+| `TOUCH_INT_N` · `SX1262_DIO1` · `SD_CARD_DETECT_N` | 3 | FBV2-S1-003, D-108, **D-117** |
+| `BQ25185_STAT1` · `BQ25185_STAT2` | 2 | **Ruling G** |
+| `XGPIO0-9` | 10 | **D-082** |
+| accessory control/status | 4 | D-089 / D-094 |
+| `SX1262_RXEN` · `ACC_PWR_EN` | 2 | requirement / inherited |
+| `RESERVED_SPARE` | 1 | **D-094** |
+| front RGB | 3 | this brief |
+| **total** | **35** | against **32** |
+
+**Every escape route is closed.** There is **zero free native GPIO** — the ledger measures 33 of
+33 assigned and GPIO35/36/37 are the octal PSRAM (B-10) — which also makes **the brief's own
+WS2812 escape impossible**, because a smart LED needs RMT on a native pin and an expander cannot
+produce it. `RESERVED_SPARE` is mandated by D-094. The ten XGPIO are locked by D-082, which
+already surrendered the eleventh to pay for the fifth accessory-control pin. A dedicated I²C LED
+driver would be a new part family, a new footprint and a new driver for one indicator.
+
+### The answer is a third expander of the same part number
+
+**`U23` = NXP `PCAL9535APW,118` at `0x22`** (D-165). It adds **no new MPN, no new footprint, no
+new firmware driver and no new rail**, costs about $0.55 plus one 0603, and **retires B-37** by
+leaving 12 spare I/O — the first slack this programme has ever had. Bus loading goes from five
+devices to six: +6 pF maximum per line, ≈ 85 → 95 pF, rise time **158 → ~177 ns against the
+300 ns fast-mode limit**.
+
+**It carries the front RGB and the reserved spare, and nothing else** (D-166). That is how the
+brief's rule *"preserve core/community/safety functionality before RGB when assigning pins"* is
+satisfied **by construction**: delete `U23`, `D13` and `R124`–`R126` and the product loses its
+status light and **not one other function**. Had the RGB kept `U2` P05–P07 and the charger
+telemetry moved to the new part, declining it would have cost charge state and card detect —
+exactly backwards. **Raised as O-6 for ratification.**
+
+**It holds no interrupt source**, so it keeps the `FF` power-up mask and is never read while
+servicing `WAKE_INT_N`. The third device costs **zero extra I²C traffic per event**.
+
+### `RESERVED_SPARE` did not exist until now
+
+D-094 has required a reserved expander resource since 2026-08-23 and **no sheet had implemented
+it**. It exists now on `U23` P03 with `R130` 100 kΩ and `TP41`, which is where it belongs: a
+reserve is worth more sitting beside twelve other free pins than alone on a full device.
+
+`ACC_PWR_EN` is kept on `U3` P17 even though it drives only the DNP `U15`/`U16`, because
+retiring it would leave two sheet-09 inputs undriven and sheet 09 is out of scope. **It is the
+pin O-4 is expected to free.**
+
+### The RGB is dark by construction, with no parts added to make it so
+
+**`D13` = MEIHUA `MHPA3528RGBCT`, LCSC `C409779`** — confirmed live per D-096: in stock, 69 270
+pieces. Common anode, PLCC-4 3.50 × 2.80 × 1.85 mm, 120°, water clear. **Pin 1 = anode,
+2 = BLUE, 3 = GREEN, 4 = RED — not the `Device:LED_ARGB` order, which would have swapped red and
+blue**, so a dedicated symbol and footprint were built from the manufacturer drawing.
+
+The three resistors are **calculated separately and are deliberately unequal**, because the V_F
+in the parts table is quoted at 20 mA and is useless at 1–2 mA; the numbers come off the Fig. 4
+low-current curves:
+
+| channel | R | V_F | nominal | corners |
+|---|---|---:|---:|---|
+| RED | **1 kΩ** | 1.75 V | **1.50 mA** | 1.18 – 1.70 mA |
+| GREEN | **680 Ω** | 2.55 V | **1.03 mA** | 0.57 – 1.32 mA |
+| BLUE | **390 Ω** | 2.60 V | **1.67 mA** | 0.86 – 2.17 mA |
+| white | — | — | **4.20 mA** | 2.60 – 5.18 mA |
+
+**Red gets the least current because it is the most efficient die** — 1070 mcd typ at 20 mA
+against 500 for blue — giving roughly 80 / 87 / 42 mcd delivered.
+
+**Default-off needs no external pull-ups.** Configuration 06h = `FF` at power-up makes the three
+pins high-impedance inputs, so the cathode path is open and the only current is the **1 µA
+leakage limit ≈ 0.05 mcd, invisible**; pull enable 46h = `00`, so the on-die 100 kΩ cannot light
+it either; and Output port 02h = `FF`, so the pin **drives HIGH the instant it becomes an
+output** — the anode potential — hence no glitch on the transition. **Three external pull-ups
+would be three parts that do nothing** (D-169).
+
+**ESD warning recorded in the symbol, the footprint and on the sheet: red is 2000 V HBM but
+green and blue are only 150 V.**
+
+**Front-facing is a requirement; the exact front position is deliberately NOT locked** — upper
+bezel, lower bezel, beside the display or near the controls are all acceptable, it is **not** a
+top-edge part, and it **must** sit behind a diffuser or light pipe with no protruding bare LED.
+Placement and CAD own the final position.
+
+### The PCAL9535A conversion is behavioural, and firmware must change
+
+Verified against the primary source, **PCAL9535A Rev. 2, 23 January 2015**, retrieved and read
+in this session. The pin-out is identical to the TCA9535 and no wire moved, but **the PCAL9535A
+powers up with every interrupt masked, the exact opposite of the TCA9535 — unchanged firmware
+sees no interrupts at all** (D-164). Two more contracts are now recorded: **write the Output
+port register before the Configuration register**, or the five active-low resets and
+`AMP_SD_MODE` glitch to their inactive state on the write that makes them outputs; and **`INT`
+clears on a read of the input port register**, so firmware must read 00h/01h after the status
+register or the line stays LOW and no further edge appears (D-171).
+
+### Both charger status pins are landed, at 10 kΩ rather than Ruling G's 20 kΩ
+
+SLUSF65A permits 1 kΩ–20 kΩ, so both are legal; 10 kΩ is a stiffer high against 1 µA of expander
+leakage, reuses a value already dominant on the sheet, and its 0.33 mA flows only while the
+charger is actually holding the pin LOW (D-170). **The decode is now recorded for firmware:**
+STAT1 LOW = charging, STAT1 HIGH + STAT2 LOW = fault, both HIGH is **one** combined state
+covering charge-complete, sleep and charge-disabled — which is why STAT1 alone was never enough.
+**With no battery fitted STAT2 toggles forever**, so its interrupt mask bit stays SET by hardware
+default and firmware polls it. That is precisely the capability the TCA9535 lacked, and it is
+what makes D-061's family change load-bearing rather than cosmetic.
+
+### The IR receiver reverts to AGC2 — O-5 closed
+
+`U6` is **`TSOP38238`**, with **`TSOP38438` retained as a documented drop-in fallback** whose
+symbol stays in the library (D-163). AGC2 is marked *Yes* for all six listed formats including
+Sony, where AGC4 is marked **No**; the mechanism is the gap requirement — AGC2 needs > 5 × the
+burst and takes 10–70 cycles per burst, AGC4 needs > 15 × and takes only 10–35, and SIRC breaks
+the AGC4 limit. **The cost of the revert is the Fig. 15 high-modulation fluorescent suppression**
+— a lighting-robustness margin, not a protocol. Every FBV2-S1-007 number survives untouched.
+
+### Smaller findings
+
+- **The switch MPN is real.** `PTS645SM43SMTR92LFS` appears as an orderable line: 1.6 N ± 0.3
+  (~163 gf), 100 000 operations, 0.30 mm travel, SPST N.O. momentary, silver gull-wing SMD. The
+  0.33 mA held current is **33× the datasheet's 10 µA minimum wetting current**, which had not
+  previously been checked.
+- **B-67 opened:** Littelfuse publishes **no bounce time** for the PTS645, so the schematic's
+  earlier "≤ 5 ms" was not datasheet-backed. Use a 10–20 ms firmware window and measure.
+- **Six root-sheet UUIDs were written with the prefix `fb080r00-`.** "r" is not a hex digit and
+  KiCad silently reassigns invalid UUIDs on save, which would have destroyed pass traceability
+  with no visible failure. Repaired.
+- **Sheets 01 and 03 were touched only to publish nets the brief requires landing** — five and
+  one local labels promoted to hierarchical, 28 and 5 lines of diff, no component, value,
+  topology or DNP state changed (D-174). Without it, STAT1/STAT2 and card detect could not reach
+  a PCAL input at all.
+- **`MAX17048_ALRT_N` and `VBUS_PRESENT` remain test-point only.** D-089 had pencilled them onto
+  `U2`; `TOUCH_INT_N` and `SD_CARD_DETECT_N` arrived later and outrank them. Twelve `U23` pins
+  are free if that is ever revisited (D-166).
+- **Noted, not actioned:** the project file still carries six stale ERC exclusion comments
+  naming the retired `RGB_*_CTL` architecture and an unallocated `SD_CARD_DETECT`. They suppress
+  nothing now; removing them strengthens ERC and is a separate hygiene task.
+
+---
+
 ## 2026-08-23 — Infrared migrated (FBV2-S1-007)
 
 **Overall 51% → 53%. No gate in the twelve-gate table passed**; the task gate **FBV2-S1-IR =

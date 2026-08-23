@@ -4,7 +4,7 @@
 bus and the external community segment. Where an older audit, transcript or README disagrees,
 this file wins; [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks it.
 
-Established: 2026-08-23 (FBV2-S1-005)
+Established: 2026-08-23 (FBV2-S1-005). Updated 2026-08-23 (FBV2-S1-008 — `U23` at `0x22`).
 Derived from a `kicad-cli` netlist export of `hardware/beta-v2/kicad/aqroot-beta-v2/`, not from
 a pin-map document. **Regenerate it the same way before quoting it.**
 
@@ -22,6 +22,7 @@ All addresses are **7-bit**. Every device on the design is 7-bit addressed; none
    I2C_SDA_INT / I2C_SCL_INT   ..... INTERNAL SEGMENT
         ├─ U2   expander        0x20
         ├─ U3   expander        0x21
+        ├─ U23  expander        0x22   (NEW, FBV2-S1-008 / D-165)
         ├─ U4   BMI270          0x68   (0x69 available by rework, D-140)
         ├─ U14  MAX17048        0x36
         ├─ J1 pins 44/45 -> ER-TPC035-6 / FT6236   0x38
@@ -46,6 +47,7 @@ reason this registry exists.
 |---|---|---|---|---|
 | **0x20** | 16-bit I/O expander | `U2` | `A0` = `A1` = `A2` = GND | **datasheet, this task** — `0 1 0 0 A2 A1 A0` (TI TCA9535 §7.5.2); PCAL9535A shares the base |
 | **0x21** | 16-bit I/O expander | `U3` | `A0` = `+3V3`, `A1` = `A2` = GND | **datasheet, this task** |
+| **0x22** | 16-bit I/O expander | `U23` | `A1` = `+3V3`, `A0` = `A2` = GND | **datasheet, FBV2-S1-008** — `0 1 0 0 A2 A1 A0`, PCAL9535A Rev. 2 §7.1 |
 | **0x36** | fuel gauge MAX17048 | `U14` | fixed, no strap | **carried** — see §5 |
 | **0x38** | capacitive touch, FT6236 in the `ER-TPC035-6` | via `J1` 44/45 | fixed in the module | **carried** — see §5 |
 | **0x68** | 6-axis IMU BMI270 | `U4` | `SDO` → GND through **`R118` 0 Ω FIT** | **datasheet, this task** — *"The default I²C address of the device is 0b1101000 (0x68). It is used if the SDO pin is pulled to GND."* |
@@ -55,11 +57,16 @@ reason this registry exists.
 
 ### Collision audit
 
-- The six live values `0x20, 0x21, 0x36, 0x38, 0x68` are **pairwise distinct**. No collision.
+- The six live values `0x20, 0x21, 0x22, 0x36, 0x38, 0x68` are **pairwise distinct**. No
+  collision. **`0x22` was taken by `U23` at FBV2-S1-008 (D-165)**; it was previously listed as an
+  at-risk adjacent-family address and is now a live internal device.
 - None falls in the I²C reserved ranges **`0x00`–`0x07`** or **`0x78`–`0x7F`**.
 - The general-call address `0x00` is not used by any device here.
-- Both expanders occupy **one** address each; the family spans `0x20`–`0x27`, so `0x22`–`0x27`
-  are *adjacent-family* addresses and are treated as at-risk (§4).
+- The **three** expanders occupy one address each; the family spans `0x20`–`0x27`, so
+  **`0x23`–`0x27`** remain *adjacent-family* addresses and are treated as at-risk (§4).
+- **Bus loading with the third device:** the PCAL9535A adds C_i ≤ 6 pF per line, so the measured
+  ≈ 85 pF becomes roughly **95 pF** and the rise time with `R19`/`R20` = 2.2 kΩ moves from
+  **158 ns to about 177 ns**, against the 300 ns fast-mode limit.
 - The IMU's alternate `0x69` is held in reserve and must not be assigned to anything else.
 
 ---
@@ -69,7 +76,7 @@ reason this registry exists.
 | addr | reservation | authority |
 |---|---|---|
 | **0x50** | optional **AQROOT accessory-identification EEPROM**. Protocol reservation only — no main-board hardware, and **no accessory is required to carry one**. | **D-095 / O-2** |
-| 0x20, 0x21, 0x36, 0x38, 0x68 | **RESERVED — an accessory MUST NOT use these.** They are live internal devices and a duplicate would make the touch panel, fuel gauge or expanders unreachable. | D-142 |
+| 0x20, 0x21, **0x22**, 0x36, 0x38, 0x68 | **RESERVED — an accessory MUST NOT use these.** They are live internal devices and a duplicate would make the touch panel, fuel gauge or expanders unreachable. **`0x22` joined the list at FBV2-S1-008 (D-165).** | D-142 / D-165 |
 | 0x69 | **RESERVED** — the IMU's rework address. | D-140 |
 | 0x00–0x07, 0x78–0x7F | reserved by the I²C specification. | I²C-bus spec |
 
@@ -84,8 +91,8 @@ may have to widen to the full block. Flagged for CTO with P-18.
 
 ## 4. Rules for community accessories
 
-1. **Do not use a reserved address.** The set is `0x20`, `0x21`, `0x36`, `0x38`, `0x50`, `0x68`,
-   `0x69`, plus the I²C-specification reserved ranges.
+1. **Do not use a reserved address.** The set is `0x20`, `0x21`, **`0x22`**, `0x36`, `0x38`,
+   `0x50`, `0x68`, `0x69`, plus the I²C-specification reserved ranges.
 2. **Prefer `0x40`–`0x4F` or `0x58`–`0x67`.** These are clear of everything AQROOT uses and
    clear of the expander family's `0x20`–`0x27` block.
 3. **Treat `0x22`–`0x27` as at-risk.** They are unassigned today, but they belong to the same
