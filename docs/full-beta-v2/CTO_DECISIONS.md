@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-004B)
+Last updated: 2026-08-23 (FBV2-S1-004C)
 
 ---
 
@@ -1021,6 +1021,45 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > it shields. **Zero board and schematic change either way; it is a purchasing line item** —
 > but ordering the wrong orientation costs a lead time, not a rework, so it must be settled
 > against the actual enclosure stack before the first antennas are ordered.
+
+## 8s. NFC ferrite orientation and first-build matching — FBV2-S1-004C (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-131 | **NFC ANTENNA CORRECTED: `FXC.46.52.0075X.A.dg` is SUPERSEDED; `FXC.46.52.0075X.B.dg` is LOCKED.** Verified verbatim from Taoglas `SPE-24-8-104-B`: *"NFC Flex Antenna (46*0.3mm) with a **Reverse Ferrite Layer** and adhesive backing"*, *"13.56 MHz Antenna"*, *"Diameter: 46mm"*, *"FXC.46.52.0075X.B.dg - NFC with ferrite and 75mm Twisted Pair 28AWG cable with ACH(F) connector"*, *"Peel and stick 3M adhesive"*. Per APN-24-8-001 the variants differ **only in stack order**: **A** is *flex / ferrite / adhesive*, for bonding **onto a PCB or component surface**; **B** is *adhesive / flex / ferrite*, for bonding **to the INSIDE of the enclosure and reading through it**. **AQROOT bonds to the inner rear shell and reads outward — the B case exactly.** With the A version the ferrite would sit **between the coil and the tag**, which is the one place a flux director must never be. **Connector, cable, diameter, adhesive and interface are unchanged, so `J7` and the board are unaffected** — this is a purchasing-line change caught before antennas were ordered, which is precisely why FBV2-S1-004B flagged it. **No `…A.dg` reference remains anywhere in `hardware/beta-v2/`.** | 2026-08-23 |
+| D-132 | **B-VERSION PARAMETERS ADOPTED: `La` = 1.10 µH, `Rs` = 1.50 Ω, `Q` = 60.37, `SRF` = 395 MHz.** `ωL` = 93.72 Ω at 13.56 MHz. **The published triple is coherent to ~3 %** — `Q` 60.37 with 1.10 µH implies `Rs` 1.55 Ω rather than 1.50 Ω — which is ordinary rounding between separately-published figures and is recorded rather than smoothed over; `Rs` = 1.50 Ω is used for damping because it is the resistance that physically adds to `R_q`. **The 395 MHz SRF is a large improvement on the A version's 148 MHz**, so the coil behaves as a clean inductor across the band. | 2026-08-23 |
+| D-133 | **TARGET IMPEDANCE DERIVED FROM THE CURRENT BUDGET, NOT ASSUMED. The previous 20 Ω/side figure is DISCARDED.** AN5276 offers two design intents — maximum power transfer, or *"a certain current consumption"* — and AQROOT has a locked budget (D-130: ≤ 150 mA from `+3V3` with the field on, ~20–30 mA of it reader overhead), so the second intent **determines** the target: 115 mA × 3.3 V = 0.380 W in, ~65 % driver efficiency → 0.247 W RF; a differential square wave at `VDD_TX` = 3.3 V has a 2.971 V RMS fundamental, so **Z = 8.827 / 0.247 = 35.7 Ω differential**. **First-build target: Z ≈ 36 Ω differential (18 Ω per side), Q ≈ 25.** No EMVCo constraint applies, so Q is set purely by ISO/IEC 14443 bandwidth at 106 kbit/s. | 2026-08-23 |
+| D-134 | **FIRST-BUILD MATCHING SET — CALCULATED, AND DELIBERATELY BIASED TO THE SAFE SIDE. B-56 CLOSED.** `R_q` **1R0 → 1R1 1%** (`Q` 62.5 → **25.3**; still the most trustworthy value on the sheet because it depends on the antenna alone). `C_s` **300 pF** per leg: the ideal is 284 pF, and **the E24 neighbours are not close in effect — 270 pF gives ≈ 16 Ω and 257 mA (over budget), 300 pF gives ≈ 68 Ω and ≈ 60 mA.** 300 pF is chosen **on purpose**: on a first board an under-driven antenna is a one-component swap while an over-driven one risks the driver and the rail, and 187 mA of coil current in a 46 mm loop is still a serviceable field. `C_p` **1.8 nF → 1.5 nF**, re-solved for the resulting match. **EMC filter `L5`/`L6` 220 nH → 39 nH and `C69`/`C70` 220 pF → 100 pF**: with the 1.6 nF total shunt that puts the cut-off at **20.1 MHz**, outside AN5276's forbidden 13–14 MHz band — **the previous pair sat at 7.6 MHz, BELOW the carrier**, and also presented 18.7 Ω of series reactance that was badly perturbing the match. **Every value remains `TUNE`, but `TUNE` now means "expected to move at first article", not "unknown": each is a CALCULATED FIRST-BUILD VALUE with its arithmetic recorded. CALCULATED FIRST-BUILD VALUE is not FINAL TUNED VALUE.** | 2026-08-23 |
+| D-135 | **RFI INPUT SAFETY — A REAL DEFECT WAS FOUND AND FIXED.** At full field the first-build network puts **49.5 V pk-pk differential** across the coil, i.e. **24.8 V pk-pk per side**. **The previous 47 pF / 220 pF divider has a ratio of 0.176 and would therefore have placed ≈ 4.4 V pk-pk on `RFI1`/`RFI2` — against a 3.0 V regulated analog rail.** That is a part-stress condition, not a tuning imperfection, and it had been carried as a placeholder without ever being checked against a real antenna voltage. **New divider `C75`/`C77` 47 pF → 27 pF and `C76`/`C78` 220 pF → 620 pF**, ratio 0.0417 → **≈ 1.03 V pk-pk per side, over 3× headroom to the rail**. Purely capacitive, no DC path; it adds ≈ 26 pF of shunt at the antenna node, small against `C_p` = 1.5 nF. **No 5 V reference divider was reused blindly** — the ratio comes from this design's own antenna voltage at 3.3 V. The receiver's exact linear range could not be extracted from DS12484 (**B-58**), so §8 step 6 of the tuning plan is a **pass/fail gate**, not an optimisation. | 2026-08-23 |
+
+> **Result (FBV2-S1-004C).** Full analysis:
+> [`audits/2026-08-23-s1-nfc-matching-closeout.md`](audits/2026-08-23-s1-nfc-matching-closeout.md).
+>
+> **Task gate FBV2-S1-NFC-MATCHING = PASS. ERC 68 → 68, zero added, zero removed.**
+>
+> **The 5 V fallback is preserved and was NOT tuned for.** The first-build network is a
+> 3.3 V design. Moving to ~5 V later needs a firmware supply-configuration change (clear
+> `sup3V`), **revalidation of matching, damping and the RFI divider** — the driver amplitude
+> rises ~1.5×, so `RFI` would sit near 1.5 V pk-pk, still inside the rail but it must be
+> re-checked rather than assumed — and possibly a passive retune. **It needs no PCB respin,
+> no antenna replacement and no ST25R3916 replacement.**
+>
+> **B-48 is closed on substance, not on process.** ST's design rules were obtained and
+> applied and the target is now derived rather than assumed, but **the AN5276 Rev 6 PDF
+> still would not load in this environment** — st.com and the Mouser mirrors timed out and a
+> direct download returned bot-protection HTML. **The `STSW-ST25R004` run against a
+> *measured* antenna impedance has not been performed and is carried as B-57.**
+>
+> **First-article tuning is REQUIRED before any value may be called final**, and it must be
+> done with the **rear shell fitted, the antenna adhered in its final position, the PCB
+> installed, the battery installed and the ferrite in its final orientation** — every
+> conductor and dielectric within a few centimetres is part of an inductive near-field
+> antenna, so bench tuning on a bare board proves nothing about the product.
+>
+> **No new CTO decision is requested.** The one candidate considered — an E48 280 pF `C_s`
+> to land exactly on 36 Ω instead of 68 Ω — was rejected for the first build because it
+> commits to a target impedance nobody has measured yet. It is a first-article component
+> choice.
 
 ## 9. Safety
 

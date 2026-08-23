@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (NFC IC and antenna lock, FBV2-S1-004B)
+Date: 2026-08-23 (NFC matching closeout, FBV2-S1-004C)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
@@ -29,6 +29,16 @@ the PCB is untouched.
 > `BM02B-ACHSS-GAN-ETF`** whose `ACHR-02V-S` mate is the antenna's own housing, so the
 > antenna is **replaceable without soldering**. **B-06 is closed**: NFC is no longer
 > undesigned, only untuned.
+>
+> **Antenna variant corrected 2026-08-23 (D-131): the locked part is the `.B.dg` REVERSE
+> FERRITE version.** It bonds **adhesive-side to the inner rear shell** and reads outward
+> with the **ferrite facing inward** at the PCB and battery. The `.A.dg` version is for
+> bonding onto a PCB or component surface and would put the ferrite between the coil and
+> the tag. **First-build matching set calculated (D-133 / D-134)**: target ≈ 36 Ω
+> differential derived from the NFC current budget, `Q` ≈ 25, EMC cut-off **20.1 MHz**. **An
+> RFI over-drive defect was found and fixed (D-135)** — the placeholder divider would have
+> put ≈ 4.4 V pk-pk on a 3.0 V rail. **Every value is a CALCULATED FIRST-BUILD VALUE, not a
+> final tuned value**; final tuning happens with the shell, PCB and battery installed.
 
 > **The display symbol was wrong until 2026-08-23.** `J1` carried the 2.8-inch panel's
 > pin table while its Value already read FH69: the backlight anode and cathode were

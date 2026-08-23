@@ -2,8 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-23 (updated after FBV2-S1-004B)
-Repository HEAD at last update: `09cf768`
+Date: 2026-08-23 (updated after FBV2-S1-004C)
+Repository HEAD at last update: `3debec8`
 
 ---
 
@@ -54,7 +54,41 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
-### Overall Full Beta v2: **~45%**
+### Overall Full Beta v2: **~47%**
+
+**Raised 45% → 47% by FBV2-S1-004C.** **No gate in the twelve-gate table passed.**
+The task gate **FBV2-S1-NFC-MATCHING = PASS** (2026-08-23).
+
+**Two defects were found that were not on the brief.**
+
+**The RX divider would have over-driven the receiver.** At full field the antenna
+sits at 24.8 V pk-pk per side; the placeholder 47 pF / 220 pF divider would have
+put **≈ 4.4 V pk-pk on `RFI1`/`RFI2` against a 3.0 V regulated rail**. That is
+part stress, not mistuning. The new 27 pF / 620 pF divider gives **≈ 1.0 V pk-pk,
+over 3× headroom** (D-135).
+
+**The E24 grid is brutally steep at the series matching capacitor.** 270 pF and
+300 pF per leg bracket the ideal 284 pF and give **16 Ω and 68 Ω** differential —
+a 4× swing in load for one step on the grid. **300 pF was chosen on purpose**, the
+low-current side: an under-driven antenna is a component swap, an over-driven one
+risks the driver and the rail on first power-up (D-134).
+
+**The antenna variant is corrected — A → B.** `FXC.46.52.0075X.**B**.dg`, reverse
+ferrite, bonds **adhesive-side to the inner rear shell** and reads outward with the
+ferrite facing **inward**. With the A version the ferrite would have sat between
+the coil and the tag (D-131). **Board unaffected — `J7`, cable and connector are
+identical.**
+
+**B-56 CLOSED:** the EMC filter moved from a cut-off of **7.6 MHz — below the
+carrier** — to **20.1 MHz**, outside AN5276's forbidden 13–14 MHz band.
+
+**ERC 68 → 68: zero added, zero removed.**
+
+Full analysis:
+[`audits/2026-08-23-s1-nfc-matching-closeout.md`](audits/2026-08-23-s1-nfc-matching-closeout.md).
+
+<details>
+<summary>Superseded — the ~45% assessment (FBV2-S1-004B)</summary>
 
 **Raised 43% → 45% by FBV2-S1-004B.** **No gate in the twelve-gate table passed.**
 The task gate **FBV2-S1-NFC-ANTENNA-LOCK = PASS** (2026-08-23).
@@ -81,6 +115,8 @@ network waits on `STSW-ST25R004`.
 
 Full analysis:
 [`audits/2026-08-23-s1-nfc-antenna-closeout.md`](audits/2026-08-23-s1-nfc-antenna-closeout.md).
+
+</details>
 
 <details>
 <summary>Superseded — the ~43% assessment (FBV2-S1-004)</summary>
@@ -579,6 +615,17 @@ protoboard experiment (P-13).
 
 </details>
 
+### Blockers added or changed by FBV2-S1-004C (2026-08-23)
+
+| # | blocker | status |
+|---|---|---|
+| ~~**B-56**~~ | EMC filter values inconsistent; cut-off below the carrier | **CLOSED.** 39 nH / 100 pF → **f_c = 20.1 MHz**, outside AN5276's forbidden 13-14 MHz band. The old pair sat at **7.6 MHz** and also presented 18.7 Ω of series reactance that was perturbing the match |
+| ~~**B-48**~~ | AN5276 not retrieved; the driver target impedance was an assumption | **CLOSED ON SUBSTANCE.** ST's design rules were obtained and applied and the target is now **derived from the D-130 current budget** (≈ 36 Ω differential) rather than assumed. **The Rev 6 PDF still would not load in this environment** — see B-57 |
+| **B-57** | **`STSW-ST25R004` / eDesignSuite run against a MEASURED antenna impedance has not been performed** | **OPEN, high.** Required before fabrication. It also closes most of B-55 |
+| **B-58** | **`RFI` receiver linear-range spec not extracted** from DS12484 — the table is an image. The ≈ 1 V pk-pk working point is a conventional level with > 3× rail margin, not a figure quoted against a limit | **OPEN, medium.** First-article step 6 is a **pass/fail gate**, not an optimisation |
+| **B-55** | `La`/`Rs`/`Q` not independently re-extracted | **OPEN, low.** The B-version published triple is coherent to ~3 % (`Q` 60.37 with 1.10 µH implies `Rs` 1.55 Ω, not 1.50 Ω). The network is re-derived from measurement anyway |
+| **B-54** | ST25R3916 field current at 3.3 V | **OPEN, downgraded further.** The first-build network draws **≈ 60 mA at the driver**, comfortably inside the ≤ 150 mA budget. Measure at first article |
+
 ### Blockers added or changed by FBV2-S1-004B (2026-08-23)
 
 | # | blocker | status |
@@ -686,7 +733,7 @@ DS12484 tables; every other footprint remains unverified.
 
 | date | change |
 |---|---|
-| 2026-08-23 | FBV2-S1-004B. Overall raised 43% → 45%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-NFC-ANTENNA-LOCK = PASS**. **NFC IC LOCKED `ST25R3916-AQET`, non-B — P-17 CLOSED** (D-126). **NFC antenna LOCKED Taoglas `FXC.46.52.0075X.A.dg`, off-board** — 13.56 MHz, 46 mm circular flex, 0.27 mm with ferrite, 3M peel-and-stick, 75 mm 28 AWG twisted pair, ACH(F), 40 mm typical read distance, all verified verbatim from `SPE-22-8-131-C` — **B-53 CLOSED** (D-127). **`J7` = JST `BM02B-ACHSS-GAN-ETF`** added between the matching network and the antenna; mating **proven** via `ACHR-02V-S` = the antenna's own ACH(F) housing, so **the antenna is replaceable without soldering** (D-128). **Brief corrected: JST classes ACH as TOP ENTRY, not right-angle** — the part is right, `J7` needs mating clearance above it. **Matching re-derived against the real antenna**: `R_q` 0 R → **1R0** (`Q` 58 → 25.8, derived from the antenna alone), `C_s` → **300 pF**, `C_p` → **1.8 nF** from an L-match with a stated assumption; **`L5`/`L6` + `C69`/`C70` deliberately NOT re-derived and flagged unbuildable (B-56)** (D-129). **NFC field current estimated ≤ 150 mA at 3.3 V; B-54 downgraded** (D-130). **B-06 CLOSED.** Mechanical: NFC clear region **48 × 48 mm**. **ERC 68 → 68, zero added, zero removed.** B-55, B-56 opened. One item flagged for CTO: the **ferrite is directional** and Taoglas sells a reverse-ferrite variant — zero board change, but it must be settled against the enclosure stack before antennas are ordered. | Overall raised 40% → 43%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-RADIOS-NFC = PASS**. **`04_SPI_B_RADIOS_NFC` MIGRATED.** **RF architecture locked (D-118):** 433 MHz internal Taoglas `FXP450.07.0100C` (IPEX MHF-I mating **proven** against the module's IPEX-1 socket), 915 MHz external to a top-panel **SMA female** bulkhead; **no board RF trace, matching network, switch or diplexer in either band**; the `U7` IPEX must stay service-accessible. Both module stamp-hole pins are explicit no-connects. **NFC: B-41 CLOSED** — `VDD`/`VDD_TX` moved to `NFC_SUPPLY` = `+3V3` (D-122, `sup3V` firmware requirement); **`Y1` 27.12 MHz crystal** + load caps (D-123); **real differential matching and RX-divider topology** with every value `TUNE` and two trim positions per TX leg (D-124); `AAT`, `CSI/CSO`, `EXT_LM`, `MCU_CLK` explicit no-connects with recorded reasons. **`SX1262_DIO1` published for sheet 08.** **Zero `*_TBD` nets remain in the project.** **ERC 4 errors → 2, total 86 → 68, zero added** — the first migration task to reduce the error count. **P-17 recommended for closure (keep the non-B); B-53 opened** (antenna architecture). B-48, B-49, B-50, B-51, B-52, B-54 opened. PCB untouched and still bit-identical to Beta-DM. | Overall raised 37% → 40%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-DISPLAY-SD = PASS**. **`R111` FITTED** (D-111). **`03_SPI_A_DISPLAY_SD` MIGRATED:** new `ER-TFT035IPS-6_50P` symbol with the vendor pin table verbatim, **catching two dead-on-arrival faults in the inherited `J1`** — reversed backlight anode/cathode and swapped SCL / D-CX. Touch gains `TOUCH_INT_N` (panel pin 46, previously unrepresented). Backlight re-derived: `R69` **1.87 Ω**, `R70`–`R73` **4 × 33 Ω**, I_LED **109 mA typ / 117.6 mA worst case** against a 120 mA panel maximum; peak switch current 4.6× (3.9× at f_SW min). `SD_CARD_DETECT_TBD` → **`SD_CARD_DETECT_N`** with a 100 kΩ pull-up. `R112` 0 Ω **DNP** isolates the display SDO from the shared SPI-A. **B-43, B-32, B-28 CLOSED; B-46, B-47 opened.** `/03_SPI_A_DISPLAY_SD/LED_A` added to the `LED_BOOST` netclass — a latent FBV2-P2 defect no probe would have caught. **ERC 4 errors → 4 errors, error report byte-identical.** PCB untouched and still bit-identical to Beta-DM. | Overall raised 34% → 37%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-MCU-CORE = PASS**. **P-20, P-21 and P-22 CLOSED** (D-104…D-110). `R95` locked at **560 Ω** — recovery **8.36 mA** nominal, and **B-27's ceiling amended to ≈ 15.9 mA** because 680 Ω was the value that produced its old ≈ 13 mA figure. LTC4368 **OV trip derived to 4.63 V** (`R77` 3.65 M / `R78` 442 k) from the datasheet's 492.5/500/507.5 mV threshold; **removes a BOM line**. Scripted KiCad edits permitted under an **eight-condition** standing rule. **`02_MCU_CORE` MIGRATED:** GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, GPIO46 = `DISP_BL_CTL` with `R108` 10 kΩ strap pull-down + `R109` 0 Ω isolation link + `TP2`, GPIO43 withdrawn from the community port (`TP35` UART0 TXD), **GPIO3 strap closed — B-09 retired**, `R111` 10 kΩ GPIO45 pull-down placed **DNP**. **ERC 5 errors → 4, zero new; `02_MCU_CORE` clean.** B-43, B-44, B-45 opened. **NO NEW DEBUG HARDWARE** — USB Serial/JTAG is the service interface. PCB untouched and still bit-identical to Beta-DM. | Overall raised 31% → 34%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-POWER-TREE = PASS**. **First Full Beta v2 design-file work.** `hardware/beta-v2/` forked from Beta-DM with a **re-runnable** byte-equivalence proof; **`01_POWER_TREE` CAPTURED** — P2 reverse protection with `U18` LTC4368-1, autonomous dead-cell recovery, `ACC_3V3`/`ACC_5V` on one consolidated boost + load-switch BOM, NFC 3V3-FIT/5V-DNP select, `VBUS_PRESENT` telemetry, 19 test points, 136 parts. **ERC 58 baseline → 55, zero introduced** (three inherited violations retired). **B-01 closed at schematic level.** `U18` package corrected from a policy-violating DFN-10 to MSOP-10. Inherited `R_FB_TOP 1M` net label renamed `V3V3_FB`. **D-099…D-103 recorded; B-41, B-42, P-20, P-21, P-22 opened.** PCB untouched and still bit-identical to Beta-DM. |
+| 2026-08-23 | FBV2-S1-004C. Overall raised 45% → 47%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-NFC-MATCHING = PASS**. **Antenna corrected A → B: `FXC.46.52.0075X.B.dg`, reverse ferrite**, bonds adhesive-side to the **inner rear shell**, ferrite facing inward — with the A version the ferrite would have sat between the coil and the tag (D-131). Board unaffected. **B-version parameters adopted**: `La` 1.10 µH, `Rs` 1.50 Ω, `Q` 60.37, `SRF` 395 MHz (D-132). **Target impedance DERIVED from the D-130 current budget — ≈ 36 Ω differential, Q ≈ 25 — the earlier 20 Ω/side assumption is discarded** (D-133). **First-build set calculated**: `R_q` 1R1 (Q 25.3), `C_s` 300 pF, `C_p` 1.5 nF, EMC **39 nH / 100 pF → f_c 20.1 MHz** — **B-56 CLOSED**, the old pair sat at 7.6 MHz below the carrier (D-134). **RFI SAFETY DEFECT FOUND AND FIXED**: the placeholder 47 pF / 220 pF divider would have put ≈ **4.4 V pk-pk on RFI against a 3.0 V rail**; new 27 pF / 620 pF gives ≈ 1.03 V pk-pk (D-135). **B-48 closed on substance**; **B-57, B-58 opened**. First-article tuning **required** with rear shell, antenna, PCB and battery all installed. **ERC 68 → 68, zero added, zero removed.** | Overall raised 43% → 45%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-NFC-ANTENNA-LOCK = PASS**. **NFC IC LOCKED `ST25R3916-AQET`, non-B — P-17 CLOSED** (D-126). **NFC antenna LOCKED Taoglas `FXC.46.52.0075X.A.dg`, off-board** — 13.56 MHz, 46 mm circular flex, 0.27 mm with ferrite, 3M peel-and-stick, 75 mm 28 AWG twisted pair, ACH(F), 40 mm typical read distance, all verified verbatim from `SPE-22-8-131-C` — **B-53 CLOSED** (D-127). **`J7` = JST `BM02B-ACHSS-GAN-ETF`** added between the matching network and the antenna; mating **proven** via `ACHR-02V-S` = the antenna's own ACH(F) housing, so **the antenna is replaceable without soldering** (D-128). **Brief corrected: JST classes ACH as TOP ENTRY, not right-angle** — the part is right, `J7` needs mating clearance above it. **Matching re-derived against the real antenna**: `R_q` 0 R → **1R0** (`Q` 58 → 25.8, derived from the antenna alone), `C_s` → **300 pF**, `C_p` → **1.8 nF** from an L-match with a stated assumption; **`L5`/`L6` + `C69`/`C70` deliberately NOT re-derived and flagged unbuildable (B-56)** (D-129). **NFC field current estimated ≤ 150 mA at 3.3 V; B-54 downgraded** (D-130). **B-06 CLOSED.** Mechanical: NFC clear region **48 × 48 mm**. **ERC 68 → 68, zero added, zero removed.** B-55, B-56 opened. One item flagged for CTO: the **ferrite is directional** and Taoglas sells a reverse-ferrite variant — zero board change, but it must be settled against the enclosure stack before antennas are ordered. | Overall raised 40% → 43%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-RADIOS-NFC = PASS**. **`04_SPI_B_RADIOS_NFC` MIGRATED.** **RF architecture locked (D-118):** 433 MHz internal Taoglas `FXP450.07.0100C` (IPEX MHF-I mating **proven** against the module's IPEX-1 socket), 915 MHz external to a top-panel **SMA female** bulkhead; **no board RF trace, matching network, switch or diplexer in either band**; the `U7` IPEX must stay service-accessible. Both module stamp-hole pins are explicit no-connects. **NFC: B-41 CLOSED** — `VDD`/`VDD_TX` moved to `NFC_SUPPLY` = `+3V3` (D-122, `sup3V` firmware requirement); **`Y1` 27.12 MHz crystal** + load caps (D-123); **real differential matching and RX-divider topology** with every value `TUNE` and two trim positions per TX leg (D-124); `AAT`, `CSI/CSO`, `EXT_LM`, `MCU_CLK` explicit no-connects with recorded reasons. **`SX1262_DIO1` published for sheet 08.** **Zero `*_TBD` nets remain in the project.** **ERC 4 errors → 2, total 86 → 68, zero added** — the first migration task to reduce the error count. **P-17 recommended for closure (keep the non-B); B-53 opened** (antenna architecture). B-48, B-49, B-50, B-51, B-52, B-54 opened. PCB untouched and still bit-identical to Beta-DM. | Overall raised 37% → 40%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-DISPLAY-SD = PASS**. **`R111` FITTED** (D-111). **`03_SPI_A_DISPLAY_SD` MIGRATED:** new `ER-TFT035IPS-6_50P` symbol with the vendor pin table verbatim, **catching two dead-on-arrival faults in the inherited `J1`** — reversed backlight anode/cathode and swapped SCL / D-CX. Touch gains `TOUCH_INT_N` (panel pin 46, previously unrepresented). Backlight re-derived: `R69` **1.87 Ω**, `R70`–`R73` **4 × 33 Ω**, I_LED **109 mA typ / 117.6 mA worst case** against a 120 mA panel maximum; peak switch current 4.6× (3.9× at f_SW min). `SD_CARD_DETECT_TBD` → **`SD_CARD_DETECT_N`** with a 100 kΩ pull-up. `R112` 0 Ω **DNP** isolates the display SDO from the shared SPI-A. **B-43, B-32, B-28 CLOSED; B-46, B-47 opened.** `/03_SPI_A_DISPLAY_SD/LED_A` added to the `LED_BOOST` netclass — a latent FBV2-P2 defect no probe would have caught. **ERC 4 errors → 4 errors, error report byte-identical.** PCB untouched and still bit-identical to Beta-DM. | Overall raised 34% → 37%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-MCU-CORE = PASS**. **P-20, P-21 and P-22 CLOSED** (D-104…D-110). `R95` locked at **560 Ω** — recovery **8.36 mA** nominal, and **B-27's ceiling amended to ≈ 15.9 mA** because 680 Ω was the value that produced its old ≈ 13 mA figure. LTC4368 **OV trip derived to 4.63 V** (`R77` 3.65 M / `R78` 442 k) from the datasheet's 492.5/500/507.5 mV threshold; **removes a BOM line**. Scripted KiCad edits permitted under an **eight-condition** standing rule. **`02_MCU_CORE` MIGRATED:** GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, GPIO46 = `DISP_BL_CTL` with `R108` 10 kΩ strap pull-down + `R109` 0 Ω isolation link + `TP2`, GPIO43 withdrawn from the community port (`TP35` UART0 TXD), **GPIO3 strap closed — B-09 retired**, `R111` 10 kΩ GPIO45 pull-down placed **DNP**. **ERC 5 errors → 4, zero new; `02_MCU_CORE` clean.** B-43, B-44, B-45 opened. **NO NEW DEBUG HARDWARE** — USB Serial/JTAG is the service interface. PCB untouched and still bit-identical to Beta-DM. | Overall raised 31% → 34%. **No gate in the twelve-gate table passed**; the task gate **FBV2-S1-POWER-TREE = PASS**. **First Full Beta v2 design-file work.** `hardware/beta-v2/` forked from Beta-DM with a **re-runnable** byte-equivalence proof; **`01_POWER_TREE` CAPTURED** — P2 reverse protection with `U18` LTC4368-1, autonomous dead-cell recovery, `ACC_3V3`/`ACC_5V` on one consolidated boost + load-switch BOM, NFC 3V3-FIT/5V-DNP select, `VBUS_PRESENT` telemetry, 19 test points, 136 parts. **ERC 58 baseline → 55, zero introduced** (three inherited violations retired). **B-01 closed at schematic level.** `U18` package corrected from a policy-violating DFN-10 to MSOP-10. Inherited `R_FB_TOP 1M` net label renamed `V3V3_FB`. **D-099…D-103 recorded; B-41, B-42, P-20, P-21, P-22 opened.** PCB untouched and still bit-identical to Beta-DM. |
 | 2026-08-22 | Created. FBV2-A0 recorded as PASS. Initial blocker set B-01 through B-16 imported from the pre-design audit. |
 | 2026-08-22 | FBV2-ARCH-001. Overall raised 8% → 10%; **no gate passed.** B-07 retired as incorrect. B-17/B-18/B-19 added. FBV2-A2 marked as the recommended next gate. |
 | 2026-08-22 | FBV2-ARCH-002. Overall raised 10% → 13%; **no gate passed. FBV2-A1 assessed CANNOT PASS** (4 of 8 criteria). B-18 closed, B-25 closed. B-20…B-24 added. P-11…P-18 opened. Standing **NO-RESPIN RECOVERY POLICY** (D-049) established. |

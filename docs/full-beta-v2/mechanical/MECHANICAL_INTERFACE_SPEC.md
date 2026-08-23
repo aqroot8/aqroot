@@ -5,9 +5,17 @@
 Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003)
 
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
-> The NFC antenna is **off-board and locked**: Taoglas `FXC.46.52.0075X.A.dg`, **46 mm
-> diameter, 0.27 mm thick with integrated ferrite**, 3M peel-and-stick, on a **75 mm 28 AWG
-> twisted pair with an ACH(F) connector** that mates `J7` on the board.
+> **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
+> FERRITE variant.** The NFC antenna is **off-board and locked**: Taoglas
+> **`FXC.46.52.0075X.B.dg`**, **46 mm diameter, 0.3 mm thick, reverse ferrite layer**, 3M
+> peel-and-stick, on a **75 mm 28 AWG twisted pair with an ACH(F) connector** that mates
+> `J7` on the board.
+> **Mounting is now fully specified: the ADHESIVE SIDE bonds directly against the INNER REAR
+> enclosure surface; the field reads OUTWARD through the rear plastic shell; the FERRITE
+> FACES INWARD**, toward the PCB and battery. Per Taoglas APN-24-8-001 the `.A.dg` variant
+> has the opposite stack and is intended for bonding onto a PCB or component surface — with
+> it the ferrite would sit between the coil and the tag. **The connector, cable, diameter and
+> interface are identical, so the board is unaffected.**
 > **Clear region: 48 × 48 mm minimum** — the 46 mm antenna plus installation tolerance.
 > Rear upper region; **no battery overlap**; **ferrite face toward the internal electronics
 > and ground plane**, per the manufacturer's stack orientation for the `.dg` variant; no
