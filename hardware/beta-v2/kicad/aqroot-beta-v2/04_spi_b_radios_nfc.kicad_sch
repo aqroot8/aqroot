@@ -11290,7 +11290,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220nH TUNE"
+		(property "Value" "39nH TUNE"
 			(at 311.15000000000003 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11408,7 +11408,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220pF 50V C0G TUNE"
+		(property "Value" "100pF 50V C0G TUNE"
 			(at 323.85 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11583,7 +11583,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1.8nF 50V C0G TUNE"
+		(property "Value" "1.5nF 50V C0G TUNE"
 			(at 335.28000000000003 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11844,7 +11844,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1R0 TUNE"
+		(property "Value" "1R1 1% TUNE"
 			(at 361.95000000000005 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12055,7 +12055,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220nH TUNE"
+		(property "Value" "39nH TUNE"
 			(at 311.15000000000003 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12173,7 +12173,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220pF 50V C0G TUNE"
+		(property "Value" "100pF 50V C0G TUNE"
 			(at 323.85 184.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12348,7 +12348,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1.8nF 50V C0G TUNE"
+		(property "Value" "1.5nF 50V C0G TUNE"
 			(at 335.28000000000003 184.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12609,7 +12609,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1R0 TUNE"
+		(property "Value" "1R1 1% TUNE"
 			(at 361.95000000000005 176.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12820,7 +12820,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "47pF 50V C0G TUNE"
+		(property "Value" "27pF 50V C0G TUNE"
 			(at 311.15000000000003 222.25 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12938,7 +12938,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220pF 50V C0G TUNE"
+		(property "Value" "620pF 50V C0G TUNE"
 			(at 323.85 229.87 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13219,7 +13219,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "47pF 50V C0G TUNE"
+		(property "Value" "27pF 50V C0G TUNE"
 			(at 311.15000000000003 255.27 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13337,7 +13337,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "220pF 50V C0G TUNE"
+		(property "Value" "620pF 50V C0G TUNE"
 			(at 323.85 262.89 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13825,7 +13825,7 @@
 				)
 			)
 		)
-		(property "Note" "Board-side NFC antenna interface. Off-board antenna: Taoglas FXC.46.52.0075X.A.dg"
+		(property "Note" "Board-side NFC antenna interface. Off-board antenna: Taoglas FXC.46.52.0075X.B.dg (REVERSE ferrite, adhesive to the inner rear shell)"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -13873,7 +13873,7 @@
 		)
 		(uuid "fb044021-e021-4e21-9e21-000000000021")
 	)
-	(text "Antenna: Taoglas FXC.46.52.0075X.A.dg - 13.56 MHz circular flex, 46 mm diameter, 0.27 mm thick WITH FERRITE, peel-and-stick 3M adhesive, 75 mm twisted pair 28 AWG, ACH(F) connector, typical interrogation distance 40 mm. IT DOES NOT GO ON THE PCB."
+	(text "Antenna: Taoglas FXC.46.52.0075X.B.dg - the B VERSION, REVERSE FERRITE LAYER (SPE-24-8-104-B). 13.56 MHz, 46 mm diameter, 0.3 mm, peel-and-stick 3M adhesive, 75 mm twisted pair 28 AWG, ACH(F). Stack order is ADHESIVE / FLEX ANTENNA / FERRITE, so it bonds ADHESIVE-SIDE to the INNER REAR SHELL and reads OUTWARD through the plastic with the ferrite facing INWARD at the PCB and battery (Taoglas APN-24-8-001). The A version is for bonding onto a PCB or component surface and is NOT the right part here. IT DOES NOT GO ON THE PCB."
 		(exclude_from_sim no)
 		(at 380.0 112.0 0)
 		(effects
@@ -13884,7 +13884,7 @@
 		)
 		(uuid "fb044022-e022-4e22-9e22-000000000022")
 	)
-	(text "MATCHING BASIS: L = 1.09 uH, Rs = 1.6 R, Q0 = 58 at 13.56 MHz. R_q 1R0 per leg brings Q to about 26 for ISO14443 bandwidth - that value is derived from the antenna alone and is the most solid number here. C_s 300pF and C_p 1.8nF come from an L-match to an ASSUMED 20 R per side driver target; the EMC pair L5/L6 + C69/C70 has NOT been re-derived against the new shunt and is NOT yet a working filter. EVERYTHING STAYS TUNE UNTIL STSW-ST25R004 IS RUN. Do not build to these values."
+	(text "MATCHING BASIS (FBV2-S1-004C, AN5276 Rev 6 workflow): FXC.46.B published La 1.10 uH, Rs 1.50 R, Q 60.37, SRF 395 MHz. wL = 93.72 R at 13.56 MHz. CALCULATED FIRST-BUILD SET, not final tuning: R_q 1R1 per leg -> R_total 3.70 R -> Q 25.3. C_s 300pF per leg (ideal 284pF; 300pF is the E24 neighbour on the SAFE, lower-current side) -> about 68 R differential, 0.13 W, coil current about 187 mA, driver about 60 mA. C_p 1.5nF completes the L-match. EMC: L 39nH with the 1.6nF total shunt gives f_c 20.1 MHz - AN5276 forbids a cut-off between 13 and 14 MHz, and the old 220nH pair sat at 7.6 MHz, BELOW the carrier. RX divider 27pF / 620pF holds RFI at about 1.0 Vpp per side against a 3.0 V regulated rail; the previous 47pF / 220pF would have driven it to about 4.4 Vpp, ABOVE the rail. FINAL VALUES COME FROM A VNA WITH THE REAR SHELL, PCB AND BATTERY IN PLACE."
 		(exclude_from_sim no)
 		(at 380.0 118.0 0)
 		(effects
