@@ -16976,7 +16976,7 @@
 		)
 		(uuid "e36358b5-6c74-e7d4-f57f-d3913fb9b52e")
 	)
-	(text "LTC4368-1 ONLY (the -2 trips at -3 mV and blocks charging). RETRY grounded = latch-off; SHDN toggled low-then-high clears it. UV unused: 510k to VIN per datasheet. VALUE TO VERIFY items are marked in the audit."
+	(text "LTC4368-1 ONLY (the -2 trips at -3 mV and blocks charging). RETRY grounded = latch-off; SHDN toggled low-then-high clears it. UV unused: 510k to VIN per datasheet (V_UV/V_OV = 492.5 / 500 / 507.5 mV, hysteresis 20 / 25 / 32 mV).\nOV TRIP (P-21, D-104): R77 3.65M / R78 442k -> 4.63 V nominal, 4.48-4.78 V over comparator + 1% resistor tolerance. Release 4.40 V nominal. Above a 4.35 V-class pack, well below the 5.05 V first capture."
 		(exclude_from_sim no)
 		(at 20 239.5 0)
 		(effects
@@ -18232,7 +18232,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.02M 1%"
+		(property "Value" "3.65M 1%"
 			(at 210.28 257.25 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21334,7 +21334,7 @@
 		)
 		(uuid "04dbb653-2871-9b7b-6b84-f467c49fc137")
 	)
-	(text "Q6/Q7/Q8 in series form the AND. Q9 inverts FAULT (active-low) so FAULT-ASSERTED becomes a positive enable. Recovery current = (VBUS - Vf) / R95; single-fault ceiling into a reversed cell = (VBUS - Vf + 4.2) / R95."
+	(text "Q6/Q7/Q8 in series form the AND. Q9 inverts FAULT (active-low) so FAULT-ASSERTED becomes a positive enable. Recovery current = (VBUS - Vf) / R95; single-fault ceiling into a reversed cell = (VBUS - Vf + 4.2) / R95.\nR95 = 560R LOCKED (P-20, D-105): 8.4 mA nominal at VBUS 5.0 V into a 0 V pack (7.9-8.9 mA over 4.75-5.25 V), inside the accepted 5-10 mA band. Single-fault ceiling rises to 15.9 mA nominal / 16.6 mA worst case - B-27 restated, still ~0.007 C."
 		(exclude_from_sim no)
 		(at 20 332.5 0)
 		(effects
@@ -23733,7 +23733,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680R 1% 1206"
+		(property "Value" "560R 1% 1206"
 			(at 175.99 381.71 0)
 			(show_name no)
 			(do_not_autoplace no)

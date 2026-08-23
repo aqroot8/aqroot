@@ -2268,7 +2268,7 @@
 		)
 		(uuid "fc6c6f1a-896e-47be-a24d-e03958005709")
 	)
-	(label "TEST_GPIO46"
+	(label "DISP_BL_CTL_STRAP"
 		(at 190.5 113.03 0)
 		(effects
 			(font
@@ -2288,7 +2288,7 @@
 		)
 		(uuid "6e785c07-225b-420c-ae6d-6568121d7b37")
 	)
-	(label "TEST_GPIO45"
+	(label "GPIO45_VDDSPI_STRAP"
 		(at 168.91 113.03 0)
 		(effects
 			(font
@@ -2298,7 +2298,7 @@
 		)
 		(uuid "9f4edd3d-97ee-44bd-84cb-51c0623a9bee")
 	)
-	(label "TEST_GPIO46"
+	(label "DISP_BL_CTL_STRAP"
 		(at 149.86 114.3 0)
 		(effects
 			(font
@@ -2308,7 +2308,7 @@
 		)
 		(uuid "c0a9e59d-72a4-4f4a-b7d8-6de6b6a2f34e")
 	)
-	(label "TEST_GPIO45"
+	(label "GPIO45_VDDSPI_STRAP"
 		(at 149.86 111.76 0)
 		(effects
 			(font
@@ -2350,8 +2350,7 @@
 		)
 		(uuid "121c3e30-4fc6-498c-b28d-ea39f37333ae")
 	)
-	(hierarchical_label "FAST_IO_U0TXD_ROOTPROBE_CS"
-		(shape output)
+	(label "UART0_TXD_DBG"
 		(at 149.86 73.66 0)
 		(effects
 			(font
@@ -2394,8 +2393,8 @@
 		)
 		(uuid "3961fe7b-3751-4d05-a02f-18e03bfefb8a")
 	)
-	(hierarchical_label "SX1262_DIO1"
-		(shape input)
+	(hierarchical_label "NATIVE_A"
+		(shape bidirectional)
 		(at 149.86 99.06 0)
 		(effects
 			(font
@@ -2570,8 +2569,8 @@
 		)
 		(uuid "a053621e-0301-4fe5-b49d-5578f794af9b")
 	)
-	(hierarchical_label "DISP_BL_CTL"
-		(shape output)
+	(hierarchical_label "NATIVE_B"
+		(shape bidirectional)
 		(at 149.86 116.84 0)
 		(effects
 			(font
@@ -2997,7 +2996,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "GPIO46_TEST"
+		(property "Value" "GPIO46_STRAP_TEST"
 			(at 190.5 109.7279 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3768,7 +3767,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "GPIO45_TEST"
+		(property "Value" "GPIO45_STRAP_TEST"
 			(at 170.18 109.7279 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4381,5 +4380,794 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 149.86 114.3) (xy 170.18 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020001-b001-4b01-9b01-000000000001")
+	)
+	(junction
+		(at 158.75 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb020002-b002-4b02-9b02-000000000002")
+	)
+	(wire
+		(pts
+			(xy 158.75 114.3) (xy 158.75 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020003-b003-4b03-9b03-000000000003")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 158.75 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020100-b100-4b10-9b10-0000000100")
+		(property "Reference" "R108"
+			(at 161.29 120.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 161.29 123.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 158.75 121.92 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 158.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 158.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb020100-b100-4b10-9b10-0000000101")
+		)
+		(pin "1"
+			(uuid "fb020100-b100-4b10-9b10-0000000102")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "R108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 158.75 125.73) (xy 158.75 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020004-b004-4b04-9b04-000000000004")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 158.75 129.54 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020200-b200-4b20-9b20-0000000200")
+		(property "Reference" "#PWR0220"
+			(at 158.75 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 158.75 134.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 158.75 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 158.75 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb020200-b200-4b20-9b20-0000000201")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "#PWR0220")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 173.99 114.3 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020101-b101-4b11-9b11-0000000110")
+		(property "Reference" "R109"
+			(at 176.53 113.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R FIT"
+			(at 176.53 115.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 173.99 114.3 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 173.99 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 173.99 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb020101-b101-4b11-9b11-0000000111")
+		)
+		(pin "1"
+			(uuid "fb020101-b101-4b11-9b11-0000000112")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "R109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 177.8 114.3) (xy 180.34 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020005-b005-4b05-9b05-000000000005")
+	)
+	(hierarchical_label "DISP_BL_CTL"
+		(shape output)
+		(at 180.34 114.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb020006-b006-4b06-9b06-000000000006")
+	)
+	(label "BMI270_INT1_STRAP"
+		(at 80.01 107.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb020007-b007-4b07-9b07-000000000007")
+	)
+	(wire
+		(pts
+			(xy 80.01 107.95) (xy 80.01 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020008-b008-4b08-9b08-000000000008")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 80.01 115.57 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020102-b102-4b12-9b12-0000000120")
+		(property "Reference" "R110"
+			(at 82.55000000000001 114.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 82.55000000000001 116.83999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 80.01 115.57 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 80.01 115.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 80.01 115.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb020102-b102-4b12-9b12-0000000121")
+		)
+		(pin "1"
+			(uuid "fb020102-b102-4b12-9b12-0000000122")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "R110")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 80.01 119.38) (xy 80.01 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020009-b009-4b09-9b09-000000000009")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 80.01 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020201-b201-4b21-9b21-0000000210")
+		(property "Reference" "#PWR0221"
+			(at 80.01 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 80.01 127.0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 80.01 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 80.01 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb020201-b201-4b21-9b21-0000000211")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "#PWR0221")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "GPIO45_VDDSPI_STRAP"
+		(at 100.33 107.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb020010-b010-4b10-9b10-000000000010")
+	)
+	(wire
+		(pts
+			(xy 100.33 107.95) (xy 100.33 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020011-b011-4b11-9b11-000000000011")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 100.33 115.57 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "fb020103-b103-4b13-9b13-0000000130")
+		(property "Reference" "R111"
+			(at 102.87 114.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k DNP"
+			(at 102.87 116.83999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 100.33 115.57 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 115.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 100.33 115.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb020103-b103-4b13-9b13-0000000131")
+		)
+		(pin "1"
+			(uuid "fb020103-b103-4b13-9b13-0000000132")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "R111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 100.33 119.38) (xy 100.33 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020012-b012-4b12-9b12-000000000012")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 100.33 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020202-b202-4b22-9b22-0000000220")
+		(property "Reference" "#PWR0222"
+			(at 100.33 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 100.33 127.0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb020202-b202-4b22-9b22-0000000221")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "#PWR0222")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 149.86 73.66) (xy 160.02 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020013-b013-4b13-9b13-000000000013")
+	)
+	(wire
+		(pts
+			(xy 160.02 73.66) (xy 160.02 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb020014-b014-4b14-9b14-000000000014")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 160.02 71.12 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb020300-b300-4b30-9b30-0000000300")
+		(property "Reference" "TP35"
+			(at 162.56 69.85000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "UART0_TXD_TEST"
+			(at 162.56 72.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 160.02 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 160.02 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 160.02 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb020300-b300-4b30-9b30-0000000301")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fda8fff3-e345-4d43-b538-c1821ed3e79b"
+					(reference "TP35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "=== FBV2-S1 MCU CORE (FBV2-S1-002) - GPIO38/47 RELEASED TO THE COMMUNITY PORT, GPIO46 TAKES THE BACKLIGHT ==="
+		(exclude_from_sim no)
+		(at 20.0 30.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb020020-b020-4b20-9b20-000000000020")
+	)
+	(text "GPIO38 = NATIVE_A and GPIO47 = NATIVE_B leave this sheet as the two native community fast-IO signals (D-084). SX1262_DIO1 no longer reaches the MCU: it terminates on the internal PCAL9535A U2 (D-089), which is sheet 08 and is NOT migrated yet."
+		(exclude_from_sim no)
+		(at 20.0 34.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb020021-b021-4b21-9b21-000000000021")
+	)
+	(text "GPIO43 (U0TXD) is withdrawn from the community port (D-106) and is internal debug only - TP35 carries the ROM boot log, which is the only view of a first board whose USB does not enumerate. GPIO44 (U0RXD) is IR RX, so UART0 is TX-only; ROM download recovery is via the native USB Serial/JTAG on GPIO19/20, not UART0."
+		(exclude_from_sim no)
+		(at 20.0 38.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb020022-b022-4b22-9b22-000000000022")
+	)
+	(text "STRAPS. GPIO0: R2 10k pull-up + SW1 direct to GND, no capacitor (Espressif forbids bulk C here). GPIO46: R108 10k pull-down at the pin, and R109 0R FIT isolates the TPS61169 CTRL so the strap survives even if CTRL sources current - GPIO46 MUST be LOW at reset or Joint Download Boot is unreachable. GPIO3: R110 10k pull-down, LOW selects the USB Serial/JTAG source; external JTAG would land on GPIO39-42, which are I2S. GPIO45: R111 10k DNP, VDD_SPI stays 3.3 V; fit it if the internal pull-down is ever in doubt."
+		(exclude_from_sim no)
+		(at 20.0 42.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb020023-b023-4b23-9b23-000000000023")
 	)
 )

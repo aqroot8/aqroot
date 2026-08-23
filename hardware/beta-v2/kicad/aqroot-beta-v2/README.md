@@ -9,13 +9,17 @@ remains the preserved fallback and manufacturing baseline (D-005) and is **read-
 > embedded project name, and which FBV2-S1 deliberately changed. The pinned result is
 > `reports/FBV2-S1-fork-equivalence.md`.
 
-## Current design state (2026-08-23, after FBV2-S1-001)
+## Current design state (2026-08-23, after FBV2-S1-002)
 
 * Digital pin architecture: LOCKED to Beta Pin Map v0.2.4
-* Schematic capture: **`01_POWER_TREE` CAPTURED for Full Beta v2. Sheets 02-09 are inherited
-  from Beta-DM, unmodified, and still carry the Beta-DM architecture**
-* ERC: **RUN.** 55 violations, all inherited from Beta-DM; **zero introduced by FBV2-S1**
-  (`reports/FBV2-S1-erc.rpt`). This is not "ERC clean" — see FBV2-S2
+* Schematic capture: **`01_POWER_TREE` and `02_MCU_CORE` carry the Full Beta v2
+  architecture. Sheets 03-09 are inherited from Beta-DM, unmodified, and still carry the
+  Beta-DM architecture**
+* ERC: **RUN.** 4 errors and 59 warnings (`reports/FBV2-S1-002-erc.rpt`) against a Beta-DM
+  baseline of 5 errors / 53 warnings. **Zero errors introduced; `02_MCU_CORE` reports
+  nothing at all.** The eight extra warnings are root-sheet `isolated_pin_label` entries on
+  cross-sheet signals whose far end is an unmigrated sheet. This is not "ERC clean" — see
+  FBV2-S2
 * PCB placement and routing: **NOT STARTED. DO NOT START.** `aqroot-Beta-v2.kicad_pcb` is
   still a bit-identical copy of the Beta-DM board and does not match this schematic
 * Schematic freeze: BLOCKED pending the remaining sheet migrations, ERC closeout, the
@@ -40,8 +44,8 @@ report a SPECIFIED block as captured, drawn, complete, or done.
 
 | Sheet | Status | Notes |
 |---|---|---|
-| `01_POWER_TREE` | **CAPTURED — FBV2-S1 POWER-TREE IMPLEMENTATION** | 136 parts, all with footprints. Reverse protection (P2) + LTC4368-1, autonomous dead-cell recovery, ACC_3V3 / ACC_5V accessory power, NFC 3V3-FIT / 5V-DNP select, VBUS_PRESENT and fault telemetry, 19 test points |
-| `02_MCU_CORE` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | ESP32-S3-WROOM-1, EN/BOOT networks, strap test points |
+| `01_POWER_TREE` | **CAPTURED — FBV2-S1 POWER-TREE IMPLEMENTATION** | 136 parts, all with footprints. Reverse protection (P2) + LTC4368-1, autonomous dead-cell recovery, ACC_3V3 / ACC_5V accessory power, NFC 3V3-FIT / 5V-DNP select, VBUS_PRESENT and fault telemetry, 19 test points. `R95` = 560 R and the OV divider = 3.65 M / 442 k (4.63 V) per D-104 / D-105 |
+| `02_MCU_CORE` | **CAPTURED — FBV2-S1 MCU-CORE MIGRATION** | 14 parts. `GPIO38 = NATIVE_A`, `GPIO47 = NATIVE_B`, `GPIO46 = DISP_BL_CTL` with a 10 k strap pull-down + 0 R isolation link + strap pad, `GPIO43` withdrawn from the community port (UART0 TXD + `TP35`), `GPIO3` strap pull-down (**B-09 closed**), `GPIO45` pull-down placed **DNP**. See [`GPIO_LEDGER.md`](../../../../docs/full-beta-v2/architecture/GPIO_LEDGER.md) |
 | `03_SPI_A_DISPLAY_SD` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | display placeholder + microSD, both CS pull-ups. v2 display (`ER-TFT035IPS-6` + Hirose `FH69-50S-0.5SH`) **not yet migrated** |
 | `04_SPI_B_RADIOS_NFC` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | CC1101 / SX1262 / ST25R3916 placeholders, 3 CS pull-ups. **`U9` VDD/VDD_TX still sit on `NFC_5V_PA_PENDING`, not on `NFC_SUPPLY`** |
 | `05_I2C_DEVICES` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | BMI270 + bus pull-ups + strap protection |
@@ -51,15 +55,15 @@ report a SPECIFIED block as captured, drawn, complete, or done.
 | `09_COMMUNITY_HEADER` | **CAPTURED — INHERITED, BETA-DM ARCHITECTURE** | the 20-pin Beta-DM port. **Superseded by the 2x12 Samtec `BCS-112-S-D-HE` port (D-093); not yet migrated** |
 
 **CAPTURED here means the symbols, wires and nets exist in the file.** It does not mean the
-sheet carries the Full Beta v2 architecture. Only `01_POWER_TREE` does.
+sheet carries the Full Beta v2 architecture. Only `01_POWER_TREE` and `02_MCU_CORE` do.
 
 Board-level status:
 
 | Item | Status |
 |---|---|
 | PCB (`aqroot-Beta-v2.kicad_pcb`) | **INHERITED, BIT-IDENTICAL TO BETA-DM** — it is the Beta-DM board and **does not match this schematic**. No v2 placement or routing has been performed |
-| ERC | **RUN 2026-08-23** — `reports/FBV2-S1-erc.rpt`, 55 violations, all inherited, zero introduced by FBV2-S1 |
-| Footprints assigned | **271 of 272 components.** Assigned is not verified — the per-footprint pad-overlap audit against vendor drawings is **FBV2-S2** and has not run |
+| ERC | **RUN 2026-08-23** — `reports/FBV2-S1-002-erc.rpt`, 4 errors / 59 warnings; **zero errors introduced**, `02_MCU_CORE` clean |
+| Footprints assigned | **276 of 277 components** (`LS1`, the off-board speaker, is the exception). Assigned is not verified — the per-footprint pad-overlap audit against vendor drawings is **FBV2-S2** and has not run |
 
 > The old claim that this project was an empty PCB with seven footprints and a never-run ERC
 > described the Beta project at 2026-07-31. It is retained nowhere: it was false for Beta-DM

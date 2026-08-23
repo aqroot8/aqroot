@@ -265,16 +265,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 25.4) (xy 185.42 20.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "284d520c-00ed-42b7-8f98-057b3983f1f6")
-	)
-	(wire
-		(pts
 			(xy 388.62 152.4) (xy 391.16 152.4)
 		)
 		(stroke
@@ -762,16 +752,6 @@
 			(type default)
 		)
 		(uuid "926c61a1-c4ac-4c21-ab65-c605dd57264f")
-	)
-	(wire
-		(pts
-			(xy 201.93 74.93) (xy 204.47 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "98cbff87-d917-4cce-b8ef-a1f6ca111de6")
 	)
 	(wire
 		(pts
@@ -2063,16 +2043,6 @@
 		)
 		(uuid "c43fd2cc-cc10-4715-b7a5-92ad3f63458c")
 	)
-	(label "SX1262_DIO1"
-		(at 204.47 74.93 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c5379297-a90f-4d8a-aa01-4f97a618682c")
-	)
 	(label "XGPIO0"
 		(at 391.16 132.08 0)
 		(effects
@@ -2172,16 +2142,6 @@
 			(justify left bottom)
 		)
 		(uuid "e57be0b7-d059-47d6-a81b-1ee4d9b4b806")
-	)
-	(label "FAST_IO_U0TXD_ROOTPROBE_CS"
-		(at 185.42 20.32 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "e593cc4a-2def-45ab-b893-ebb98752e3e7")
 	)
 	(label "I2C_SDA_INT"
 		(at 52.07 228.6 180)
@@ -3669,16 +3629,6 @@
 				(justify right)
 			)
 		)
-		(pin "FAST_IO_U0TXD_ROOTPROBE_CS" output
-			(at 185.42 25.4 90)
-			(uuid "163b5a30-bd64-4f66-a9a6-5331f7b9cab5")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "I2C_SCL_INT" output
 			(at 129.54 46.99 180)
 			(uuid "c2264b3f-19e1-4d2f-bb1f-029e46620bac")
@@ -3869,9 +3819,19 @@
 				(justify right)
 			)
 		)
-		(pin "SX1262_DIO1" input
+		(pin "NATIVE_A" bidirectional
 			(at 201.93 74.93 0)
-			(uuid "fe11e7da-6497-4d68-b595-3915603aaf63")
+			(uuid "fb021001-c001-4c01-9c01-000000021001")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "NATIVE_B" bidirectional
+			(at 201.93 77.47 0)
+			(uuid "fb021002-c002-4c02-9c02-000000021002")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3942,5 +3902,45 @@
 			(justify left bottom)
 		)
 		(uuid "5d93e31d-5f86-465a-a0be-4d2564ce0607")
+	)
+	(wire
+		(pts
+			(xy 201.93 74.93) (xy 204.47 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb021003-c003-4c03-9c03-000000021003")
+	)
+	(label "NATIVE_A"
+		(at 204.47 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb021004-c004-4c04-9c04-000000021004")
+	)
+	(wire
+		(pts
+			(xy 201.93 77.47) (xy 204.47 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb021005-c005-4c05-9c05-000000021005")
+	)
+	(label "NATIVE_B"
+		(at 204.47 77.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb021006-c006-4c06-9c06-000000021006")
 	)
 )
