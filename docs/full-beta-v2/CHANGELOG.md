@@ -9,13 +9,188 @@ an entry.
 
 ---
 
+## 2026-08-23 — I²C devices and IMU migrated (FBV2-S1-005)
+
+**Overall 47% → 49%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-I2C-IMU = PASS**. Full analysis:
+[`audits/2026-08-23-s1-i2c-imu-implementation.md`](audits/2026-08-23-s1-i2c-imu-implementation.md).
+New registry:
+[`architecture/I2C_ADDRESS_REGISTRY.md`](architecture/I2C_ADDRESS_REGISTRY.md).
+
+**ERC 46 → 45: zero added, one removed.** Errors unchanged at 2, both inherited.
+
+### First: a number this programme has been repeating is wrong
+
+FBV2-S1-004, 004B and 004C all quote **"ERC 68"**. The stored reports say **46**.
+
+| report | messages | errors | warnings |
+|---|---|---|---|
+| `FBV2-S1-004-erc.rpt` | 46 | 2 | 44 |
+| `FBV2-S1-004B-erc.rpt` | 46 | 2 | 44 |
+| `FBV2-S1-004C-erc.rpt` | 46 | 2 | 44 |
+| **`FBV2-S1-005-erc.rpt`** | **45** | **2** | **43** |
+
+The **deltas** those tasks reported — "zero added, zero removed" — are correct and
+reproducible from the stored files. Only the absolute figure was wrong, and it was carried
+for three tasks. Sheet `04`'s migration genuinely took the count **64 → 46**.
+
+A second trap, worth writing down because it will catch someone again:
+`kicad-cli sch erc --severity-all` also counts **Exclusions** and reports **104** on the same
+unmodified design. Every number in this programme is `--severity-error --severity-warning`,
+matching the stored reports' own `Report includes: Errors, Warnings` header.
+**Compare like with like or the gate is meaningless.**
+
+### The BMI270 was re-derived, and it was already right
+
+The brief said not to copy Beta-DM's straps blindly. Every one was checked against
+**`BST-BMI270-DS000-08` Rev 1.6** (150 pages, fetched and extracted in full):
+
+| pin | as drawn | Bosch |
+|---|---|---|
+| 1 `SDO` → GND | 0x68 | *"the default I²C address … 0b1101000 (0x68) … if the SDO pin is pulled to GND"* |
+| 12 `CSB` → VDDIO | I²C mode | *"it is recommended to hard-wire the CSB line to VDDIO"* |
+| 2 `ASDx` / 3 `ASCx` → VDDIO | secondary I/F unused | *"can be connected to VDDIO or left unconnected. **Do not connect to GND.**"* |
+| 9 `INT2`, 10 `OCSB`, 11 `OSDO` → DNC | unused | *"If INT1 and/or INT2 are not used, please do not connect them (DNC)."* |
+| `C6` / `C7` 100 nF at pins 5 and 8 | decoupling | *"recommended to use 100nF decoupling capacitors at pin 5 (VDDIO) and pin 8 (VDD)"* |
+
+**Nothing was wrong.** That is the honest outcome and it is worth stating rather than dressing
+up as a discovery (D-136). `VDD` 1.71–3.6 V, `VDDIO` 1.2–3.6 V, **no sequencing or slew-rate
+constraint**, `tPO` 2 ms, FIFO 2048 B, 8 kB config upload after every POR. **`B-44` CLOSED**:
+pad drive `IOH`/`IOL` ≤ 2 mA against a 323 µA load.
+
+**One capability the brief asked about does not exist: the BMI270 has NO tap or double-tap
+feature**, in any configuration. Its feature set is significant motion / any motion / motion
+detect / no motion / stationary detect / wrist wear wakeup / wrist-worn step counter and
+detector / activity change / push arm down / pivot up / wrist jiggle / flick in-out. So
+wake-on-motion, significant motion, orientation, raise-to-wake (*"wrist wear wakeup"*) and the
+FIFO are all supported; **tap is not**, and no hardware is proposed to compensate.
+
+### The real defect was on the bus
+
+Measured from the netlist rather than assumed — two expanders, the IMU, the fuel gauge, the
+TCA9517A A-side, the touch controller through the 50-pin display flex, two test points, ~120 mm
+of trace — the internal bus carries **≈ 85 pF worst case**.
+
+| `R` | `t_r` = 0.8473·R·C at 85 pF | 100 kHz (1000 ns) | 400 kHz (300 ns) |
+|---|---|---|---|
+| **4.7 kΩ inherited** | **338 ns** | pass | **FAIL** |
+| **2.2 kΩ selected** | **158 ns** | pass | **pass, 47 % margin** |
+
+At a *typical* 60 pF, 4.7 kΩ gives 239 ns and passes. **That is the worst kind of defect — it
+works on the bench and fails on the unit with the longest flex and the widest tolerances**, and
+the programme's own 100 kHz-then-400 kHz bring-up rule would have found it late, on hardware,
+as an intermittent. Sink current was checked before the change, as the brief required:
+**1.32 mA at `VOL` 0.4 V**, against BMI270 2 mA, expander SDA 6 mA, the I²C-specification
+minimum of 3 mA and an absolute floor of 967 Ω (D-139).
+
+**There is exactly one pull-up pair on the internal net.** `R49`/`R50` are DNP and sit on the
+switched accessory segment, on the far side of `U16`. The sheet note now says so, so nobody
+adds a second pair helpfully.
+
+### `0x68` becomes a rework instead of a respin
+
+`SDO` was **hard-wired to GND**. Under D-049 that made an address collision a trace cut at a
+0.25 mm pad. It is now `R118` 0 Ω **FIT** to GND (0x68) and `R119` 0 Ω **DNP** to `+3V3`
+(0x69) — **fit one only; fitting both shorts `+3V3` to GND**.
+
+**`0x68` is the single most collision-prone address on a community I²C bus.** MPU6050,
+MPU9250, ICM-20948 and the DS3231/DS1307 RTC families all default to it, and those are exactly
+the parts a hobbyist accessory is built from. **Reserving an address in a document does not stop
+a $2 module from arriving at it.** Two 0603 pads, one populated (D-140).
+
+### GPIO3: a timing proof, and a firmware constraint that falls out of it
+
+1. `INT1_IO_CTRL` **resets to `0x00`** — the output driver is **disabled** at POR.
+2. Firmware cannot enable it before the 8 kB config upload.
+3. ESP32-S3 strap hold time **`tH` = 3 ms min**, and **GPIO3 defaults to "Floating"** with no
+   internal pull, so `R110` alone defines the strap.
+
+**The IMU physically cannot reach the strapping window.** And because `R110` is a pull-**down**:
+**`INT1_IO_CTRL.od` = 0 (push-pull) and `.lvl` = 1 (active high) are MANDATORY; open-drain is
+FORBIDDEN** — an open-drain output into a pull-down never produces an edge, and the interrupt
+would be silently dead in a way that looks like a firmware bug for a week. GPIO3 = `RTC_GPIO3`,
+so **EXT0/EXT1 deep-sleep wake works**, and active-high into a pull-down is exactly the polarity
+it wants (D-137).
+
+**Moving the interrupt behind a PCAL9535A is rejected** — it would put motion wake behind an
+I²C transaction that cannot wake the SoC from deep sleep, `U2` is 16/16, and the boot-safety
+reason that might have justified it does not exist.
+
+### `INT2` stays DNC (D-138)
+
+Bosch instructs DNC for unused interrupt pins; one pin is sufficient because *"if just one
+interrupt pin is used all interrupts may be mapped to this interrupt pin"*, with the source read
+from `INT_STATUS_0`/`INT_STATUS_1`; and two pins in latched mode would import a mapping
+partition the design does not otherwise have. **`RESERVED_SPARE` is not consumed.** Pad 9 exists
+on the land pattern, so a future second interrupt is a wire — which is what D-049 asks for.
+
+### The IMU stays powered (D-141)
+
+Accel-only low power is **down to 4 µA** plus **≈ 3 µA** of advanced features (10 µA spec'd at
+25 Hz). A load switch would save **≈ 9 µA** while destroying wake-on-motion, forcing an 8 kB
+config upload on every resume, and consuming one of the design's last expander pins. Nine
+microamps is below the SoC's own deep-sleep floor.
+
+### Land pattern verified — the "DO NOT ROUTE" note is discharged (D-143)
+
+§8.3 is a **raster drawing**: no vector geometry, and nothing in the text layer but
+*"Pad tolerance: ±50 µm"*. It was rendered at 12× and the pads measured programmatically,
+calibrated on the printed 0.5 mm pitch. **Every printed dimension reproduces** — 0.5, 0.25,
+0.475, 0.675, 0.925, 3.0, 2.5 — as do the pad sizes, the ±1.1625 columns, the ±0.9125 rows
+and, critically, **the peripheral pin order 1–4 left / 5–7 bottom / 8–11 right / 12–14 top**.
+That last one is the error that would have been fatal and silent.
+
+### P-18 — characterised, not decided, and the characterisation moves the problem
+
+**`U16` TCA9517A, `R49`/`R50`, `U15` and `D2`/`D3` are ALL DNP.** There is no fitted external
+I²C path today, so whatever is chosen at Sheet 09 migration costs **no rework**.
+
+TI settles the powered-off case: *"**VCCA is only used to provide the 0.3 × VCCA reference** …
+**The TCA9517A logic and all I/Os are powered by the VCCB pin.**"* `VCCB` = `ACC_3V3_SW`, so a
+de-asserted accessory rail leaves the buffer **completely unpowered and high-Z on both sides** —
+a **harder** disconnect than an I²C mux, which stays powered.
+
+**The weakness is not the buffer. It is the location of its disable control.** `ACC_PWR_EN` is
+`U3` P17 — an expander output sitting behind the very bus a broken accessory would hold low. A
+9-clock recovery pulse train frees the common case for nothing; a hard short escapes only via a
+`+3V3` power cycle, because an MCU reset does not reset the expanders.
+
+> **O-4 — NEW, REQUIRES A CTO DECISION.** Evaluate replacing `U16` with a **TCA4307-class
+> hot-swap I²C buffer with stuck-bus recovery**, at Sheet 09 migration. The community header is
+> a **hot-plug connector by definition**, and this is the only option that both **pre-charges on
+> insertion** and **recovers a stuck bus without the host**. No rework cost, no net BOM, and the
+> TCA9517A's one unique capability — level translation — is unused, because sheet `09` already
+> declares *"COMMUNITY HEADER LOGIC = 3.3 V ONLY"* and `VCCB` is 3.3 V. Against: **not
+> pin-compatible**, so the `U16` area must be re-routed, and the MPN must come from a **live
+> listing** before any lock (D-096). **Nothing is implemented; `U16` remains TCA9517A.**
+
+**No buffer of any kind solves address collision.** A repeater, a hot-swap buffer and a mux all
+pass addresses through unchanged. That is a protocol problem, closed by the new registry (D-142)
+and the `0x50` ID EEPROM — not by silicon.
+
+### Blockers
+
+**B-44 CLOSED.** **B-59 opened** — `ER-TPC035-6` touch-flex pull-ups unknown; direction is safe,
+first-article measurement. **B-60 opened** — `0x36` and `0x38` are carried, not datasheet-cited;
+every Analog Devices and FocalTech fetch failed here, and **a first-article bus scan closes it in
+ten seconds**, which is more honest than editing a document.
+
+### One inherited discrepancy, recorded and left alone
+
+`U2`/`U3` still carry the schematic value **`TCA9535PWR`** while **D-061 locked NXP
+`PCAL9535APW,118`**. The address base is identical (`0100 A2A1A0`), so nothing here depends on
+it — and both parts live on **sheet 08**, which is not authorised in this task. Flagged now so
+it is not discovered at BOM time.
+
+---
+
 ## 2026-08-23 — NFC ferrite orientation corrected and first-build matching closed (FBV2-S1-004C)
 
 **Overall 45% → 47%. No gate in the twelve-gate table passed**; the task gate
 **FBV2-S1-NFC-MATCHING = PASS**. Full analysis:
 [`audits/2026-08-23-s1-nfc-matching-closeout.md`](audits/2026-08-23-s1-nfc-matching-closeout.md).
 
-**ERC 68 → 68: zero added, zero removed.**
+**ERC 68 → 68: zero added, zero removed.** *(the 68 is a transcription error corrected in FBV2-S1-005 — the stored reports say 46 → 46. The delta was right.)*
 
 ### Two defects found that were not on the brief
 
@@ -184,7 +359,7 @@ impedance nobody has measured yet. **It is a first-article component choice.**
 **FBV2-S1-NFC-ANTENNA-LOCK = PASS**. Full analysis:
 [`audits/2026-08-23-s1-nfc-antenna-closeout.md`](audits/2026-08-23-s1-nfc-antenna-closeout.md).
 
-**ERC 68 → 68: zero added, zero removed — the violation lists are identical.**
+**ERC 68 → 68: zero added, zero removed — the violation lists are identical.** *(the 68 is a transcription error corrected in FBV2-S1-005 — the stored reports say 46 → 46.)*
 301 components, 0 duplicate references, 0 without a footprint.
 
 ### B-06 is closed

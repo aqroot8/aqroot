@@ -1,14 +1,15 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (NFC matching closeout, FBV2-S1-004C)
+Date: 2026-08-23 (I²C devices and IMU, FBV2-S1-005)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**Four blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
-**MCU core**, the **display / touch / microSD** sheet and the **radios / NFC** sheet are
-CAPTURED in `01_power_tree.kicad_sch`, `02_mcu_core.kicad_sch`,
-`03_spi_a_display_sd.kicad_sch` and `04_spi_b_radios_nfc.kicad_sch`
-(FBV2-S1-001 … FBV2-S1-004). Every other block on this page is still intent only, and
+**Five blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
+**MCU core**, the **display / touch / microSD** sheet, the **radios / NFC** sheet and the
+**I²C devices / IMU** sheet are CAPTURED in `01_power_tree.kicad_sch`,
+`02_mcu_core.kicad_sch`, `03_spi_a_display_sd.kicad_sch`, `04_spi_b_radios_nfc.kicad_sch`
+and `05_i2c_devices.kicad_sch`
+(FBV2-S1-001 … FBV2-S1-005). Every other block on this page is still intent only, and
 the PCB is untouched.
 
 > **RF architecture locked 2026-08-23 (D-118).** 433 MHz is an **internal** Taoglas
@@ -125,8 +126,32 @@ SMA/RP-SMA, which preserves the no-RF-on-main-PCB doctrine. Pending P-08.
 
 ## SENSORS
 
-**`U4` BMI270 IMU** on internal I2C at 0x68, with INT1 through a 220R series
-resistor into GPIO3 (a strapping pin) and a test pad on the net.
+**`U4` BMI270 IMU — CAPTURED 2026-08-23 (FBV2-S1-005).** On the internal I2C bus at
+**0x68**, with `INT1` through `R18` 220 R into **GPIO3** and `TP3` on the net.
+Verified line by line against **`BST-BMI270-DS000-08` Rev 1.6**; every inherited
+Beta-DM strap proved correct (D-136).
+
+| item | state |
+|---|---|
+| address | **0x68**, set by `SDO` → GND through **`R118` 0 Ω FIT**. **`R119` 0 Ω DNP to `+3V3` gives 0x69 by rework** — fit one only (D-140) |
+| interface mode | I2C, `CSB` hard-wired to VDDIO exactly as Bosch recommends |
+| secondary I/F | unused; `ASDx`/`ASCx` → VDDIO. Bosch: ***"Do not connect to GND"*** |
+| OIS / `INT2` | `INT2`, `OCSB`, `OSDO` all **DNC**, which is Bosch's instruction for unused pins. **`INT2` stays NC and `RESERVED_SPARE` is not consumed** (D-138) |
+| decoupling | `C6` / `C7` 100 nF, **one at pin 5 and one at pin 8** — a placement requirement, not a net |
+| supply | `VDD` 1.71–3.6 V, `VDDIO` 1.2–3.6 V, **no sequencing or slew-rate constraint**. **Permanently powered; no load switch** (D-141) |
+| standby | accel-only low power **down to 4 µA** + ≈ 3 µA advanced features; suspend 3.5 µA |
+| interrupt contract | **`INT1_IO_CTRL.od` = 0 push-pull, `.lvl` = 1 active high, MANDATORY. Open-drain FORBIDDEN** — it cannot drive against `R110`'s pull-down and no edge would appear (D-137) |
+| boot safety | **proof, not margin**: `INT1_IO_CTRL` resets to output-disabled, firmware cannot enable it before the 8 kB config upload, and ESP32-S3 `tH` = 3 ms with GPIO3 defaulting to *Floating*. **The IMU cannot reach the strap window** |
+| deep-sleep wake | GPIO3 = `RTC_GPIO3` → **EXT0/EXT1 wake works**; active-high into a pull-down is the correct polarity |
+| pad drive | **`IOH`/`IOL` ≤ 2 mA**, `VOH` ≥ 0.8·VDDIO; the strap load draws **323 µA**, 6× inside spec. **B-44 CLOSED** |
+| FIFO | 2048 bytes |
+| features | significant motion, any motion, no motion, stationary detect, orientation, **wrist wear wakeup = raise-to-wake**, step counter/detector, activity change. **NO tap or double-tap feature exists on this part** |
+| land pattern | **VERIFIED against §8.3** by rendering and measuring the drawing; every printed dimension reproduces (D-143) |
+
+**Internal I2C pull-ups `R19`/`R20` = 2.2 kΩ to `+3V3` (D-139)**, the only pull-up pair
+on the net. 4.7 kΩ was **338 ns** against the 300 ns fast-mode limit at the measured
+≈ 85 pF; 2.2 kΩ is **158 ns** at 1.32 mA sink. Address map:
+[`I2C_ADDRESS_REGISTRY.md`](I2C_ADDRESS_REGISTRY.md) (D-142).
 
 ---
 
@@ -161,7 +186,7 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
 |---|---|---|
 | Charger / power path | `U11` BQ25185DLHR | Linear. Thermals matter in a sealed enclosure; start at 500 mA charge current. |
 | 3V3 rail | `U12` TPS63020DSJR | Buck-boost, FB 1M / 180k = 3.28 V. EN driven by the physical switch, **never firmware** — the MCU cannot restore its own disabled rail. |
-| Fuel gauge | `U14` MAX17048G+T10 | On internal I2C at 0x36. ALRT reaches a test point only. |
+| Fuel gauge | `U14` MAX17048G+T10 | On internal I2C at 0x36 (**carried, not datasheet-cited — B-60**). ALRT reaches a test point only. |
 | **Reverse polarity (main path)** | **LTC4368-1 + P2: TWO back-to-back N-FET stages in TWO SEPARATE PACKAGES** (4 FETs) + R_SENSE 15 mΩ + R_GATE 22 kΩ + **C_GATE 4.7 nF** + OV divider + RETRY→GND + SHDN pull-up to VIN + FAULT + **≈5 A backstop fuse** + secondary clamp | **Single-FET-short tolerant by isolation** (D-068 met). VIN on the **cell side**. `-1` suffix load-bearing: `-2` trips at −3 mV and blocks charging. **UV deliberately UNUSED** (510 kΩ to VIN) — using it would deepen the dead-cell lockout. Stages must not share a package: two die on one leadframe are not independent. |
 | **Dead-cell recovery** | **Autonomous, hardware-qualified** (D-065). VBUS-supplied · ratiometric bridge polarity comparator (trip at V_BAT = 0, supply-independent) · handoff comparator · **LTC4368 `FAULT` as a third series qualifier** · P-FET + series Schottky · **5–10 mA** | **No firmware dependency** — works with blank/corrupted flash. Zero battery-side standby (dead by construction without USB). Bounded to ≈13 mA into a reversed cell under any single failure |
 | **NFC supply** | **`+3V3` direct on the first build**, with a DNP TPS61023 boost branch behind a 0 Ω source selector | D-055 / D-056. Two mutually exclusive links; sources can never be shorted. |
@@ -196,7 +221,7 @@ pull.**
 | **5 V accessory rail (NEW)** | `BQ25185_SYS` -> **second `TPS61023`** at 5.0 V -> **second `TPS22950C`** -> `ACC_5V_SW`. Not USB VBUS, not the NFC fallback rail, tied to neither. `R_ILIM` **1.65 k recommended (~0.69 A typ), not locked**; **published 300 mA continuous** on build 1. Inductor 1 uH, I_sat >= 3 A (D-087). **It loads `SYS`, not `+3V3`, so it consumes none of the TPS63020's 2 A budget.** **O-3 REJECTED: no link of any kind to the NFC fallback** (D-095). |
 | BOM consolidation | One `TPS22950C` MPN on both rails; `TPS61023` reused from the NFC fallback with identical passives (D-088). |
 | Expanders | **NXP PCAL9535APW,118** on both `U2` and `U3` (D-061). **`U3` = 15 assigned + 1 `RESERVED_SPARE`** (D-094): `XGPIO0-9`, `ACC_3V3_EN`, `ACC_5V_EN`, `ACC_DETECT_N`, **`ACC_POWER_FAULT_N`** (wire-OR of both `FLT`), `SX1262_RXEN`. **`U2` = 16/16, still zero spare** (B-37, half closed). |
-| External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is `ACC_3V3_SW` - verified high-Z when unpowered (SCPS245E). Because that rail is now default-OFF and detect-gated, a dead accessory can no longer hang the internal bus. **Address collision remains open (P-18).** **Address `0x50` is RESERVED for an optional accessory-ID EEPROM** - protocol only, no main-board hardware, no accessory obliged to fit one (D-095). |
+| External I2C | **Retained**, behind `U16` TCA9517A whose B-side supply is `ACC_3V3_SW` - verified high-Z when unpowered (SCPS245E). Because that rail is now default-OFF and detect-gated, a dead accessory can no longer hang the internal bus. **Address collision remains open (P-18) — and no buffer of any kind solves it; see [`I2C_ADDRESS_REGISTRY.md`](I2C_ADDRESS_REGISTRY.md) (D-142).** **`U16`, `R49`/`R50`, `U15` and `D2`/`D3` are ALL DNP**, so nothing external is fitted today and the Sheet 09 choice costs no rework. TI SCPS245E: *"the TCA9517A logic and all I/Os are powered by the `VCCB` pin"*, so a de-asserted `ACC_3V3_SW` leaves it unpowered and high-Z on both sides. **The weakness is that its disable control, `ACC_PWR_EN` = `U3` P17, sits behind the bus it protects. O-4 (open): evaluate a TCA4307-class hot-swap buffer with stuck-bus recovery at Sheet 09 migration.** **Address `0x50` is RESERVED for an optional accessory-ID EEPROM** - protocol only, no main-board hardware, no accessory obliged to fit one (D-095). |
 | **Logic safety** | **3.3 V CMOS ONLY on every signal contact.** 100 Ohm series on XGPIO and both natives, 22 Ohm on I2C, 330 Ohm on WAKE, plus a low-capacitance TVS array on the natives and I2C. **Bidirectional level translators REJECTED** (D-090). Silkscreen must say so. |
 | **WAKE isolation** | N-FET pass gate between `WAKE_ATTN_N_HDR` and `WAKE_INT_N`, gate = `ACC_3V3_SW`. **Closes B-08.** Consequence: accessory wake needs the rail held up in sleep (B-36). |
 | Firmware contract | **MX-1...MX-9 binding** (D-092): one high-power radio at a time, audio capped during TX, rails detect-gated and sequenced, `FLT` handled within 100 ms, low-battery cut-offs, SPI-A arbitration, interrupt masking. |

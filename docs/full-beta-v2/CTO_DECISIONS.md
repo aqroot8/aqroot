@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-004C)
+Last updated: 2026-08-23 (FBV2-S1-005)
 
 ---
 
@@ -1035,7 +1035,9 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > **Result (FBV2-S1-004C).** Full analysis:
 > [`audits/2026-08-23-s1-nfc-matching-closeout.md`](audits/2026-08-23-s1-nfc-matching-closeout.md).
 >
-> **Task gate FBV2-S1-NFC-MATCHING = PASS. ERC 68 → 68, zero added, zero removed.**
+> **Task gate FBV2-S1-NFC-MATCHING = PASS. ERC 46 → 46, zero added, zero removed.**
+> *(Corrected in FBV2-S1-005: the "68" quoted here and in FBV2-S1-004 / 004B was a
+> transcription error. The stored reports say 46. The deltas were always right.)*
 >
 > **The 5 V fallback is preserved and was NOT tuned for.** The first-build network is a
 > 3.3 V design. Moving to ~5 V later needs a firmware supply-configuration change (clear
@@ -1060,6 +1062,62 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > to land exactly on 36 Ω instead of 68 Ω — was rejected for the first build because it
 > commits to a target impedance nobody has measured yet. It is a first-article component
 > choice.
+
+## 8t. I²C devices and IMU — FBV2-S1-005 (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-136 | **BMI270 RE-DERIVED FROM `BST-BMI270-DS000-08` REV 1.6, NOT INHERITED FROM BETA-DM.** Every strap was checked line by line against the datasheet: `SDO`→GND = **0x68**; `CSB`→VDDIO because Bosch says *"For using I2C, it is recommended to hard-wire the CSB line to VDDIO"*; `ASDx`/`ASCx`→VDDIO with the unused secondary interface, where Bosch explicitly writes ***"Do not connect to GND"***; `INT2`/`OCSB`/`OSDO` left **DNC**, which is Bosch's own instruction for unused pins; `C6`/`C7` 100 nF at pins 5 and 8 exactly as recommended. **The honest outcome of not copying Beta-DM is that Beta-DM was already right — nothing on the sheet was wrong.** `VDD` 1.71–3.6 V, `VDDIO` 1.2–3.6 V, **no sequencing and no slew-rate constraint**, `tPO` 2 ms, FIFO 2048 B, 8 kB config upload required after every POR. **MPN `BMI270` is a flat orderable part, not a configured ordering scheme, so D-096 does not bite**; Bosch order code 0 273 017 008. **`B-44` CLOSED**: pad drive is **`IOH`/`IOL` ≤ 2 mA, `VOH` ≥ 0.8·VDDIO**. **The BMI270 has NO tap or double-tap feature in any configuration** — the word does not appear in the datasheet. Wake-on-motion, significant motion, no-motion, orientation, step counting and raise-to-wake (*"wrist wear wakeup"*) all exist; tap does not, and no hardware is proposed to compensate. | 2026-08-23 |
+| D-137 | **THE MOTION INTERRUPT STAYS ON NATIVE `GPIO3`, AND THE PULL DIRECTION DICTATES THE FIRMWARE CONFIGURATION.** Boot safety is now a **timing proof, not a margin argument**: `INT1_IO_CTRL` resets to `0x00` so the output driver is **disabled** at POR; firmware cannot enable it before the 8 kB config upload; and the ESP32-S3 strap hold time is **`tH` = 3 ms minimum** with `GPIO3` defaulting to **"Floating"** (no internal pull), so `R110` alone defines the strap. **The IMU physically cannot reach the strapping window.** Consequently: **`INT1_IO_CTRL.od` = 0 (push-pull) and `.lvl` = 1 (active high) are MANDATORY. Open-drain is FORBIDDEN on this net** — an open-drain output into a pull-down never produces an edge, and the interrupt would be silently dead. `GPIO3` = `RTC_GPIO3`, so **EXT0/EXT1 deep-sleep wake works**, and active-high into a pull-down is exactly the polarity that wants. **Moving the interrupt behind a PCAL9535A is REJECTED**: it would put motion wake behind an I²C transaction that cannot wake the SoC from deep sleep, `U2` is 16/16, and the boot-safety reason that might have justified it does not exist. | 2026-08-23 |
+| D-138 | **`INT2` REMAINS DNC. `RESERVED_SPARE` IS NOT CONSUMED.** Bosch instructs DNC for unused interrupt pins; *"if just one interrupt pin is used all interrupts may be mapped to this interrupt pin"*, with the source read from `INT_STATUS_0`/`INT_STATUS_1` in one extra transaction the host is making anyway; and using two pins in latched mode would import a mapping partition the design does not otherwise have. A test point on `INT2` was considered and rejected — it puts a stub on a pin the manufacturer says to leave open, for a bench-only benefit. **Pad 9 exists on the land pattern, so a future second interrupt is a wire, which is what D-049 asks for.** | 2026-08-23 |
+| D-139 | **INTERNAL I²C PULL-UPS `R19`/`R20`: 4.7 kΩ → 2.2 kΩ.** The real bus was measured from the netlist — two expanders, the BMI270, the MAX17048, the TCA9517A A-side, the touch controller through the 50-pin display flex, two test points and ~120 mm of trace — giving a **worst case of ≈ 85 pF**. `t_r = 0.8473·R·C` then gives **338 ns at 4.7 kΩ, which FAILS the 300 ns fast-mode limit**, while a typical 60 pF gives 239 ns and passes. **That is the worst kind of defect: it works on the bench and fails on the unit with the longest flex.** 2.2 kΩ gives **158 ns, 47 % margin**. Sink current was checked before the change, as required: **1.32 mA at `VOL` 0.4 V**, against BMI270 2 mA, TCA9535 SDA 6 mA, the I²C-specification minimum of 3 mA, and an absolute floor of 967 Ω. **There is exactly one pull-up pair on the internal net** — `R49`/`R50` are DNP and belong to the switched accessory segment on the far side of `U16`. Bring-up remains 100 kHz then 400 kHz. | 2026-08-23 |
+| D-140 | **THE BMI270 ADDRESS BECOMES STRAPPABLE: `R118` 0 Ω FITTED to GND (0x68), `R119` 0 Ω DNP to `+3V3` (0x69). FIT ONE ONLY — fitting both shorts `+3V3` to GND.** `SDO` was hard-wired to GND, so under D-049 the only escape from an address collision was cutting a trace at a 0.25 mm pad. **`0x68` is the single most collision-prone address on a community I²C bus**: MPU6050, MPU9250, ICM-20948 and the DS3231/DS1307 RTCs all default to it, and those are exactly the parts a hobbyist accessory is built from. Reserving an address in a document does not stop a $2 module from arriving at it. **Two 0603 pads, one populated, convert a respin into a rework.** This is a hardware addition and is reported as one; it sits inside the brief's instruction to keep address/strap resistor footprints accessible. | 2026-08-23 |
+| D-141 | **THE IMU IS PERMANENTLY POWERED FROM `+3V3`. NO LOAD SWITCH.** Accel-only low-power mode draws **down to 4 µA** plus **≈ 3 µA** for advanced features (10 µA spec'd at 25 Hz); a load switch would save **≈ 9 µA** while **destroying wake-on-motion**, forcing an 8 kB config upload on every resume, and costing a load switch plus one of the design's last expander pins. Nine microamps is below the SoC's own deep-sleep floor and unmeasurable against self-discharge. **Trading away the reason the IMU is on the board would be a bad deal at any price.** | 2026-08-23 |
+| D-142 | **`architecture/I2C_ADDRESS_REGISTRY.md` IS CREATED AND IS NORMATIVE.** It carries the full internal map (0x20, 0x21, 0x36, 0x38, 0x68, with 0x69 held in reserve), the external reservations including **`0x50`, which must never become an internal address**, the collision audit (**no collision; nothing in the I²C reserved ranges**), and the rules for accessory authors. **It also records which addresses are datasheet-cited and which are carried**: 0x20/0x21 and 0x68/0x69 were confirmed from manufacturer datasheets in this task, while **0x36 and 0x38 could not be** — every Analog Devices and FocalTech fetch failed here — and are carried under **B-60**, to be closed by a first-article bus scan rather than by editing a document. | 2026-08-23 |
+| D-143 | **THE BMI270 LAND PATTERN IS VERIFIED AND THE "DO NOT ROUTE" GATE ON THIS PART IS DISCHARGED.** §8.3 of the datasheet is a raster drawing with no dimensions in the text layer, so it was rendered at 12× and the pads measured programmatically, calibrated on the printed 0.5 mm pitch. **Every printed dimension reproduces** — 0.5, 0.25, 0.475, 0.675, 0.925, 3.0 and 2.5 — as do the pad sizes (0.475 × 0.25 side, 0.25 × 0.475 end), the column at ±1.1625, the rows at ±0.9125 and, critically, **the peripheral pin order 1–4 left / 5–7 bottom / 8–11 right / 12–14 top**, which is the error that would have been fatal and silent. Paste-aperture and courtyard policy remain part of the FBV2-S2 footprint audit — a house-rules question, not a Bosch-conformance one. | 2026-08-23 |
+
+> **Result (FBV2-S1-005).** Full analysis:
+> [`audits/2026-08-23-s1-i2c-imu-implementation.md`](audits/2026-08-23-s1-i2c-imu-implementation.md).
+> Registry: [`architecture/I2C_ADDRESS_REGISTRY.md`](architecture/I2C_ADDRESS_REGISTRY.md).
+>
+> **Task gate FBV2-S1-I2C-IMU = PASS. ERC 46 → 45: zero added, one removed** (the `SDO`
+> power-output/bidirectional `pin_to_pin` warning, retired by `R118`). **Errors unchanged at 2,
+> both inherited.** 303 components, 0 duplicate references, 0 without a footprint.
+> `fork_equivalence.py` PASS, `netclass_probe.py` PASS, PCB still bit-identical to Beta-DM.
+>
+> **P-18 is UNCHANGED but is now precisely characterised, and the characterisation moves the
+> problem.** `U16` TCA9517A, `R49`/`R50`, `U15` and `D2`/`D3` are **all DNP** — there is no
+> fitted external I²C path at all today, so whatever is chosen at Sheet 09 migration costs no
+> rework. TI's own text settles the powered-off case: *"The TCA9517A logic and all I/Os are
+> powered by the `VCCB` pin"*, and `VCCB` is `ACC_3V3_SW`, so with the accessory rail off the
+> buffer is **completely unpowered and high-Z on both sides** — a harder disconnect than a mux,
+> which stays powered. **The real weakness is not the buffer, it is the location of its disable
+> control**: `ACC_PWR_EN` is `U3` P17, an expander output sitting behind the very bus that a
+> broken accessory would hold low. A 9-clock bus-recovery pulse train frees the common case for
+> free; a hard short escapes only through a `+3V3` power cycle, because an MCU reset does not
+> reset the expanders.
+>
+> **O-4 — NEW, REQUIRES A CTO DECISION.** Evaluate replacing `U16` with a **TCA4307-class
+> hot-swap I²C buffer with stuck-bus recovery**, *at Sheet 09 migration*. **For:** the community
+> header is a hot-plug connector by definition, and this is the only option that both
+> **pre-charges on insertion** and **recovers a stuck bus without the host** — exactly the
+> failure the TCA9517A cannot escape. No rework cost, no net BOM. The TCA9517A's one unique
+> capability, level translation, is unused: sheet `09` already declares *"COMMUNITY HEADER LOGIC
+> = 3.3 V ONLY"* and `VCCB` is 3.3 V. **Against:** it is **not pin-compatible**, so the `U16`
+> area must be re-routed, and the MPN must come from a **live listing** before any lock (D-096)
+> — the datasheet was obtained, the availability was not. **Nothing is implemented; `U16`
+> remains TCA9517A.** If O-4 is declined, the fallback is firmware-only and is adequate for
+> Beta v2.
+>
+> **No buffer of any kind solves address collision.** A repeater, a hot-swap buffer and a mux
+> all pass addresses through unchanged. Collision is a protocol problem, closed by D-142 and the
+> `0x50` ID EEPROM — not by silicon.
+>
+> **One inherited discrepancy is recorded and deliberately not touched:** `U2`/`U3` still carry
+> the schematic value **`TCA9535PWR`** while **D-061 locked NXP `PCAL9535APW,118`**. The address
+> base is identical (`0100 A2A1A0`), so nothing here depends on it, and both parts live on
+> **sheet 08**, which is not authorised in this task. It belongs to the Sheet 08 migration and is
+> flagged now so it is not discovered at BOM time.
 
 ## 9. Safety
 

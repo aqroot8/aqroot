@@ -4,10 +4,10 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-003, display / microSD migration)
+Date: 2026-08-23 (after FBV2-S1-005, I²C devices and IMU migration)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-> **Sheets `04`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
+> **Sheets `06`–`09` are still Beta-DM.** A net listed here as leaving sheet `02`
 > may terminate on a *Beta-DM* peripheral until that sheet is migrated. Where the
 > v2 destination differs, the row says so.
 
@@ -24,7 +24,7 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 27 | **GPIO0** | `BOOT_N` | boot | strap + button | **YES** | no | `R2` 10 k pull-up, `SW1` direct to GND. **No capacitor** — Espressif forbids bulk C here |
 | 39 | GPIO1 | `I2C_SDA_INT` | I²C | bidirectional | — | buffered only | internal bus; the connector sees the `U16` B-side, never this net |
 | 38 | GPIO2 | `I2C_SCL_INT` | I²C | output | — | buffered only | as above |
-| 15 | **GPIO3** | `BMI270_INT1_STRAP` | IMU | interrupt in | **YES** | no | **`R110` 10 k pull-down (new, FBV2-S1-002)** + `R18` 220 Ω series + `TP3`. Closes **B-09** |
+| 15 | **GPIO3** | `BMI270_INT1_STRAP` | IMU | interrupt in | **YES** | no | **`R110` 10 k pull-down** + `R18` 220 Ω series + `TP3`. Closes **B-09**. **FBV2-S1-005: also `RTC_GPIO3`, so EXT0/EXT1 deep-sleep wake works; `INT1` must be push-pull active-high, open-drain FORBIDDEN (D-137)** |
 | 4 | GPIO4 | `SPI_B_SCK` | SPI-B | output | — | no | radios + NFC bus |
 | 5 | GPIO5 | `SPI_B_MOSI` | SPI-B | output | — | no | |
 | 6 | GPIO6 | `SPI_B_MISO` | SPI-B | input | — | no | |
@@ -94,7 +94,7 @@ bulk capacitance on strapping pins.
 | pin | required reset state | external pull | peripheral on the net | can the peripheral overpower the strap? | recovery consequence |
 |---|---|---|---|---|---|
 | **GPIO0** | HIGH for SPI boot, LOW for download | `R2` 10 k to `+3V3`; `SW1` shorts to GND | none | no — nothing else drives it | held LOW at reset → Joint Download Boot. This is the deliberate recovery entry |
-| **GPIO3** | **LOW** | **`R110` 10 k to GND (new)** | BMI270 `INT1` through `R18` 220 Ω | **not at reset** — BMI270 `INT1` is high-Z until firmware enables it, so the strap is defined by `R110` alone | LOW selects the **USB Serial/JTAG** source when `EFUSE_STRAP_JTAG_SEL` is burned. HIGH would select external JTAG on MTMS/MTDI/MTCK/MTDO = **GPIO39–42, which are the I²S bus** — external JTAG is not merely unused here, it is unusable |
+| **GPIO3** | **LOW** | **`R110` 10 k to GND** | BMI270 `INT1` through `R18` 220 Ω | **PROVEN not at reset (FBV2-S1-005)** — `INT1_IO_CTRL` resets to `0x00` so the output driver is *disabled*; firmware cannot enable it before the 8 kB config upload; and ESP32-S3 `tH` = 3 ms with GPIO3 defaulting to *Floating*. **The IMU cannot reach the strap window**, and `R110` alone defines the level | LOW selects the **USB Serial/JTAG** source when `EFUSE_STRAP_JTAG_SEL` is burned. HIGH would select external JTAG on MTMS/MTDI/MTCK/MTDO = **GPIO39–42, which are the I²S bus** — external JTAG is not merely unused here, it is unusable |
 | **GPIO45** | **LOW** (VDD_SPI = 3.3 V) | **`R111` 10 k to GND, FITTED (D-111)** | none — `TP1` only | n/a | HIGH at reset would select VDD_SPI = 1.8 V and the 3.3 V flash/PSRAM would not boot. **The level is now held deterministically by `R111`, not by the chip's internal pull-down alone.** No capacitance on the net; no peripheral on the pin |
 | **GPIO46** | **LOW** | **`R108` 10 k to GND (new)** | TPS61169 `CTRL` (`U17.4`), through **`R109` 0 Ω** | **NO — proven.** `CTRL`'s only internal element is a **300 kΩ pull-down** (SNVSA40B, D-116) | HIGH at reset makes **Joint Download Boot unreachable**: GPIO0 = 0 alone is not enough, GPIO46 must also be 0 |
 
@@ -140,10 +140,22 @@ above `V_IH` = 0.75 × 3.3 V = 2.475 V.
 with `output_en` = 1, `od` = 0, `lvl` = 1. Open-drain is *incompatible* with a
 pull-down and must not be used on this pin.
 
-> **`B-44` — the BMI270 `INT` pad drive current was NOT retrieved** (Bosch PDF text
-> layer would not extract). 323 µA is modest for a CMOS pad but is unconfirmed.
-> **Fallback if Bosch specifies less: raise `R110` to 47 kΩ** (70 µA) — a value
-> change with no board change. Confirm at FBV2-S2.
+> **CONFIRMED FROM THE DATASHEET 2026-08-23 (FBV2-S1-005, D-137).** This requirement was
+> written here at FBV2-S1-002 from the pull direction alone. It is now backed by the register
+> definition: `INT1_IO_CTRL` bit 2 `od` selects push-pull (0) or open-drain (1) and bit 1 `lvl`
+> selects active-low (0) or active-high (1), and the register **resets to `0x00`** — which also
+> means bit 3 `output_en` = 0, so the pin is high-Z at power-on. It is now a **mandatory
+> firmware contract**, recorded on sheet `05` as well as here.
+
+> **`B-44` CLOSED 2026-08-23 (FBV2-S1-005).** `BST-BMI270-DS000-08` Rev 1.6 Table 1 specifies
+> the output pads at **`IOH`/`IOL` ≤ 2 mA with `VOH` ≥ 0.8·VDDIO and `VOL` ≤ 0.2·VDDIO**, so
+> the 323 µA load is **6× inside spec** and the 47 kΩ fallback below is not needed. The
+> original text is kept for the record:
+>
+> > **`B-44` — the BMI270 `INT` pad drive current was NOT retrieved** (Bosch PDF text
+> > layer would not extract). 323 µA is modest for a CMOS pad but is unconfirmed.
+> > **Fallback if Bosch specifies less: raise `R110` to 47 kΩ** (70 µA) — a value
+> > change with no board change. Confirm at FBV2-S2.
 
 ---
 
