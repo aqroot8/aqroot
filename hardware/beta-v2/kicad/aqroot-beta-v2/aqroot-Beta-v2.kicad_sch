@@ -3181,6 +3181,16 @@
 				(justify left)
 			)
 		)
+		(pin "TOUCH_INT_N" output
+			(at 290.83 95.25 0)
+			(uuid "fb031001-e001-4e01-9e01-000000031001")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(pin "TOUCH_RST_N" input
 			(at 290.83 90.17 0)
 			(uuid "253209d1-190c-4a62-800a-8bfdca825e5b")
@@ -3942,5 +3952,25 @@
 			(justify left bottom)
 		)
 		(uuid "fb021006-c006-4c06-9c06-000000021006")
+	)
+	(wire
+		(pts
+			(xy 290.83 95.25) (xy 293.37 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb031003-e003-4e03-9e03-000000031003")
+	)
+	(label "TOUCH_INT_N"
+		(at 293.37 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb031004-e004-4e04-9e04-000000031004")
 	)
 )

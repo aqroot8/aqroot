@@ -4877,7 +4877,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fb020103-b103-4b13-9b13-0000000130")
 		(property "Reference" "R111"
@@ -4891,7 +4891,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k DNP"
+		(property "Value" "10k"
 			(at 102.87 116.83999999999999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5159,7 +5159,7 @@
 		)
 		(uuid "fb020022-b022-4b22-9b22-000000000022")
 	)
-	(text "STRAPS. GPIO0: R2 10k pull-up + SW1 direct to GND, no capacitor (Espressif forbids bulk C here). GPIO46: R108 10k pull-down at the pin, and R109 0R FIT isolates the TPS61169 CTRL so the strap survives even if CTRL sources current - GPIO46 MUST be LOW at reset or Joint Download Boot is unreachable. GPIO3: R110 10k pull-down, LOW selects the USB Serial/JTAG source; external JTAG would land on GPIO39-42, which are I2S. GPIO45: R111 10k DNP, VDD_SPI stays 3.3 V; fit it if the internal pull-down is ever in doubt."
+	(text "STRAPS. GPIO0: R2 10k pull-up + SW1 direct to GND, no capacitor (Espressif forbids bulk C here). GPIO46: R108 10k pull-down at the pin, and R109 0R FIT isolates the TPS61169 CTRL so the strap survives even if CTRL sources current - GPIO46 MUST be LOW at reset or Joint Download Boot is unreachable. GPIO3: R110 10k pull-down, LOW selects the USB Serial/JTAG source; external JTAG would land on GPIO39-42, which are I2S. GPIO45: R111 10k FITTED (CTO ruling, FBV2-S1-003) so VDD_SPI is deterministic, not reliant on the internal pull-down alone. VDD_SPI stays 3.3 V. GPIO45 carries no peripheral and no capacitance - TP1 only."
 		(exclude_from_sim no)
 		(at 20.0 42.0 0)
 		(effects

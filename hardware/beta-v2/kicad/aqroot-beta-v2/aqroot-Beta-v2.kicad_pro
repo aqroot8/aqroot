@@ -1142,6 +1142,10 @@
       },
       {
         "netclass": "LED_BOOST",
+        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A"
+      },
+      {
+        "netclass": "LED_BOOST",
         "pattern": "/03_SPI_A_DISPLAY_SD/LED_A1"
       },
       {
