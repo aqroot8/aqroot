@@ -4,6 +4,19 @@
 
 Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003)
 
+> **RF antenna reservations — FBV2-S1-004 (2026-08-23, D-118 … D-120).**
+> **433 MHz:** the Taoglas `FXP450.07.0100C` body is **47 × 17 × 0.28 mm** on a 100 mm
+> cable and mounts by **adhesive against a plastic wall** in the **LEFT / LOWER-SIDE**
+> internal region. **It must NOT be laid on the PCB**, and must clear the LiPo, the NFC
+> loop and its ferrite, the speaker magnet, large ground pours, metal bosses and screws,
+> the USB shell, the 915 MHz bulkhead and pigtail, and the IR structures. **The `U7` IPEX
+> socket must remain reachable with the shell open** so the flex can be swapped for an
+> external pigtail without a respin. Record as an antenna keepout for FBV2-P1.
+> **915 MHz:** an **SMA female bulkhead on the top panel**, fed by a 100–150 mm pigtail
+> from the `U8` IPEX socket. **≥ 8 mm edge-to-edge between the SMA body and either IR
+> aperture**, and the pigtail must not cross the IR optical path (**B-52** — spacing is
+> recorded, **no CAD was created**). Nothing dimensional elsewhere in this document changed.
+
 > **Capture note — FBV2-S1-003.** The locked display and connector are now **captured in
 > the schematic**: `J1` uses a new `ER-TFT035IPS-6_50P` symbol whose pin table is the
 > vendor's own, replacing the 2.8-inch table it had inherited. **`J1` remains on the

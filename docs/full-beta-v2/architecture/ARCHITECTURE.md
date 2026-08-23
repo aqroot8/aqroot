@@ -1,14 +1,26 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (display / microSD migration, FBV2-S1-003)
+Date: 2026-08-23 (radios / NFC migration, FBV2-S1-004)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**Three blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
-**MCU core** and the **display / touch / microSD** sheet are CAPTURED in
-`01_power_tree.kicad_sch`, `02_mcu_core.kicad_sch` and `03_spi_a_display_sd.kicad_sch`
-(FBV2-S1-001 … FBV2-S1-003). Every other block on this page is still intent only, and
+**Four blocks are no longer intent.** As of 2026-08-23 the **power tree**, the
+**MCU core**, the **display / touch / microSD** sheet and the **radios / NFC** sheet are
+CAPTURED in `01_power_tree.kicad_sch`, `02_mcu_core.kicad_sch`,
+`03_spi_a_display_sd.kicad_sch` and `04_spi_b_radios_nfc.kicad_sch`
+(FBV2-S1-001 … FBV2-S1-004). Every other block on this page is still intent only, and
 the PCB is untouched.
+
+> **RF architecture locked 2026-08-23 (D-118).** 433 MHz is an **internal** Taoglas
+> `FXP450.07.0100C` flex on the `U7` IPEX socket; 915 MHz is **external**, `U8` IPEX to a
+> pigtail to a **top-panel SMA female bulkhead**. **Neither band has a board RF trace, a
+> matching network, an RF switch or a diplexer.** This supersedes the internal-FXP890 plan
+> for 915 MHz in `12 - RF and Antenna Plan v0.1`.
+>
+> **NFC stopped being a placeholder.** A real 27.12 MHz crystal and a real differential
+> matching topology exist (D-123 / D-124), with every value labelled `TUNE` because they
+> cannot be finalised without a measured antenna. **Zero `*_TBD` nets remain in the
+> project.**
 
 > **The display symbol was wrong until 2026-08-23.** `J1` carried the 2.8-inch panel's
 > pin table while its Value already read FH69: the backlight anode and cathode were
@@ -185,7 +197,7 @@ speculative; each cites what was measured.
 | # | defect | evidence | disposition |
 |---|---|---|---|
 | ~~1~~ | ~~**Reverse-polarity gap.**~~ **CLOSED AT SCHEMATIC LEVEL 2026-08-23 (FBV2-S1-001).** `BAT_CONNECTOR_P` = `J4.1` + `F1.1` + `TP34.1`; the full P2 chain to `BAT_PROTECTED_P` is captured with `U18` LTC4368-1, `Q2`/`Q3` in two packages, `R75` 15 mΩ sense and `D9` secondary clamp. **NOT closed at board level** — the PCB is still bit-identical to Beta-DM. | schematic netlist, `BAT_PROTECTED_P` = 10 pads | P-01 closed by D-050…D-054; captured by FBV2-S1-001 |
-| 2 | **NFC clock / matching / antenna incomplete.** No 27.12 MHz crystal exists anywhere in the BOM. No matching network. No antenna. 13 nets on `U9` have exactly one pad: XIN, XOUT, RFO1, RFO2, RFI1, RFI2, AAT_A, AAT_B, EXT_LM, CSI, CSO, MCU_CLK. | 13 single-pad nets on `U9` | Pending P-04 |
+| ~~2~~ | ~~**NFC clock / matching / antenna incomplete.**~~ **LARGELY CLOSED 2026-08-23 (FBV2-S1-004).** `Y1` 27.12 MHz + load caps captured; the ST differential matching and RX-divider topology captured with every value `TUNE`; `AAT_A/B`, `CSI/CSO`, `EXT_LM`, `MCU_CLK` are explicit no-connects with recorded reasons. **All 13 single-pad nets are gone.** Remaining: the antenna architecture choice (**B-53**) and the tuning values (**B-48**). | netlist: zero `*_TBD` nets | P-04 answered - NFC is fitted on the first build |
 | 3 | **Enclosure internal cavity unpublished.** `INTERNAL_CAVITY_MM: not published`. `PCB_FIT_STATUS: UNVERIFIED`. The v2 outline is a derived number and cannot be derived. | Field Slate v5 authority table | Pending P-07 |
 
 ### Architecture defects to fix in migration

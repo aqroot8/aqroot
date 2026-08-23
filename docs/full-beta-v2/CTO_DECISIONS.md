@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-003)
+Last updated: 2026-08-23 (FBV2-S1-004)
 
 ---
 
@@ -946,6 +946,46 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > the *board*, which is still Beta-DM, so no probe would have caught it.
 > `/03_SPI_A_DISPLAY_SD/LED_A` was added to `LED_BOOST`.
 
+## 8q. Radios and NFC — FBV2-S1-004 (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-118 | **RF ARCHITECTURE LOCKED. 433 MHz = INTERNAL flex; 915 MHz = EXTERNAL bulkhead.** `U7` IPEX → 100 mm coax → Taoglas `FXP450.07.0100C` against a plastic wall; `U8` IPEX → short pigtail → **top-panel SMA bulkhead**, user-changeable. **Neither band has a motherboard 50 Ω RF trace, a matching network, an RF switch or a diplexer** — both modules present their own matched 50 Ω port, so the board's RF involvement at 433/915 MHz is *zero copper*. **This supersedes the internal-FXP890 plan for 915 MHz** in `12 - RF and Antenna Plan v0.1`; 433 MHz is unchanged. **The `U7` IPEX socket must remain SERVICE-ACCESSIBLE with the shell open** — if internal 433 performance disappoints on the first units the flex unplugs and an external pigtail replaces it with **no PCB respin** (D-049). That is an FBV2-P1 placement constraint. | 2026-08-23 |
+| D-119 | **433 ANTENNA VERIFIED: `FXP450.07.0100C`.** Datasheet `SPE-23-8-180-A`, verbatim: *"410-470MHz Flexible PCB Antenna with 100mm 1.37 IPEX MHFI"*; **47 × 17 × 0.28 mm**; adhesive mount; gain −0.36 / −1.57 / −0.05 dBi; **Active, 54 in stock, $5.52 @ 1, MOQ 1**. **Connector mating is PROVEN, not assumed**: the antenna terminates in **IPEX MHF I** and Ebyte's manual lists the `E07-400M10S` interface as **IPEX-1 / stamp hole** — MHF I, IPEX-1 and U.FL are one interface. No cable variant is needed. **Mechanical reservation (FBV2-P1 keepout):** plastic wall, LEFT/LOWER-SIDE region, **NOT on the PCB**, clear of the LiPo, the NFC loop and ferrite, the speaker magnet, large ground pours, metal bosses, the USB shell, the 915 bulkhead/pigtail and the IR structures. | 2026-08-23 |
+| D-120 | **915 EXTERNAL INTERFACE DEFINED.** `U8` **IPEX-1/MHF-I plug** → **1.13 mm or RG-178, 100–150 mm** → **SMA FEMALE (jack) bulkhead, top panel**. **Female is deliberate**: the 915 MHz LoRa ecosystem is SMA-male antennas onto female jacks; RP-SMA is a Wi-Fi convention and would force an adapter for no benefit. Cable loss **≤ 0.3 dB** — negligible against +22 dBm. **No proprietary interface.** **The interface is locked; the assembly MPN is NOT** — under D-096 a pigtail part number must come from a live listing (B-51). **Top panel: ≥ 8 mm edge-to-edge between the SMA body and either IR aperture, and the pigtail must not cross the IR optical path** (B-52, no CAD created). | 2026-08-23 |
+| D-121 | **BOTH MODULE STAMP-HOLE FEEDS ARE EXPLICIT NO-CONNECTS.** `U7.21` and `U8.21` `ANT` are the alternative 50 Ω stamp-hole pads; AQROOT feeds both modules through their IPEX sockets, so the pads stay unconnected. `CC1101_ANT_TBD`, `RF_ANT_TBD`, `CC1101_RF_TBD` and `SX1262_RF_TBD` are **retired** — the last two were orphan labels on stubs connected to nothing and were **two of the project's four ERC errors**. | 2026-08-23 |
+| D-122 | **NFC SUPPLY MOVED — B-41 CLOSED.** `U9` pin 8 `VDD` and pin 10 `VDD_TX` leave the Beta-DM boost output and sit on **`NFC_SUPPLY`**; `VDD_IO` (pin 1) stays on `+3V3`. First build **`NFC_SUPPLY` = `+3V3`** through the `R106` FIT link; the `R107` DNP link remains the one-resistor, no-respin 5 V fallback. **NFC is never connected to the community 5 V rail.** **FIRMWARE MUST SET `sup3V`.** Sheet 01 received **two label changes and one `PWR_FLAG`, no component, value or topology change**: its `NFC_SUPPLY` label became hierarchical so the net can leave, and its `NFC_5V_PA_PENDING` hierarchical label became local because that net no longer needs to cross. The `PWR_FLAG` is **D-102-compliant** — the rail is genuinely `+3V3` through a 0 Ω link and KiCad cannot propagate a driver across a passive; **the netlist is unchanged by it**. | 2026-08-23 |
+| D-123 | **NFC CLOCK RESOLVED. `Y1` = 27.12 MHz, 10 pF load, SMD 3225 4-pad**, with `C79`/`C80` **10 pF 50 V C0G, TUNE**. DS12484 §2.2.8: *"The quartz crystal oscillator operates with 27.12 MHz crystals."* Candidate MPN **`TXM27.12M0004322DBBDO00T`, LCSC `C362365`** — ±10 ppm, ESR 30 Ω, −40…+85 °C, **3,420 in stock, $0.078** — a JLCPCB-compatible part, and a **candidate against a live listing, not a lock** (D-096). Load-cap sizing stated openly: `C_L` = `C/2 + C_stray` gives ≈ 14 pF ideal, **ST's own NUCLEO and DISCO boards populate 10 pF**, so the design starts at 10 pF and trims — the value depends on finished-board stray capacitance that does not exist yet. | 2026-08-23 |
+| D-124 | **NFC FRONT END: REAL TOPOLOGY, HONEST VALUES.** Captured per side: `RFOx → L_EMC → [C_EMC ∥ C_p to GND] → C_s → R_q → antenna`, and `antenna → C_rx_s → [C_rx_p to GND] → R_rx → RFIx`, terminating on `NFC_ANT_A`/`NFC_ANT_B` with **`TP37`/`TP38`** — the measurement points without which the network cannot be tuned at all. **Every part is 0603 and hand-reworkable; every RF capacitor is 50 V C0G** because the antenna tank swings far above the 3.3 V driver supply. Two deliberate choices: **`C_EMC` and `C_p` are two separate shunt footprints on one node** (two trim positions instead of one), and **`R_q` is fitted at 0 Ω rather than omitted** so damping is a component change and not a bodge. **ALL VALUES ARE INITIAL AND LABELLED `TUNE`** — they cannot be finalised until the antenna impedance is measured and **STSW-ST25R004** is run against it, and **AN5276 could not be retrieved this session** (B-48), so no value is presented as an ST reference figure. **Unused pins are explicit no-connects with recorded reasons:** `AAT_A`/`AAT_B` (AAT needs external varactors, and DS12484 warns against AAT with hardware wake-up), `CSI`/`CSO` (capacitive sensing unused), `EXT_LM` (internal load modulator is used), `MCU_CLK` (the ESP32-S3 has its own clocks). **No `*_TBD` net remains anywhere in the project.** | 2026-08-23 |
+| D-125 | **THE NFC FIELD CURRENT HAS CHANGED RAILS, AND THE BUDGET DOES NOT YET COVER IT.** With `VDD`/`VDD_TX` on `NFC_SUPPLY` = `+3V3`, the NFC PA load moves off `BQ25185_SYS`-via-`U13` and onto the **TPS63020**, drawing proportionally more current at 3.3 V for the same field power. **`I_VDD_TX` at 3 V supply mode was not extracted this session (B-54)**, so D-092's 58–66 % TPS63020 figure **must not be quoted as including the NFC field in this form**. **MX-1 is unchanged and binding: at most ONE of {Wi-Fi TX, LoRa TX +22 dBm, sub-GHz TX, NFC field} at a time.** Firmware constraints recorded by this sheet: set `sup3V`; enable SX1262 **DIO2-as-RF-switch** or `TXEN` never asserts and TX silently fails; configure the SX1262 driver for **TCXO** (`DIO3`, 2.2 V, internal); drive all three bus-B chip selects high before init and use a bus mutex. | 2026-08-23 |
+
+> **Result (FBV2-S1-004).** Full analysis:
+> [`audits/2026-08-23-s1-radios-nfc-implementation.md`](audits/2026-08-23-s1-radios-nfc-implementation.md).
+>
+> **Task gate FBV2-S1-RADIOS-NFC = PASS. The programme gate FBV2-S1 remains OPEN — 4 of 9
+> sheets.**
+>
+> **ERC: 4 errors → 2. Total 86 → 68. Zero added, eighteen removed.** This is the first
+> migration task to *reduce* the project's error count, and it did so by deleting
+> placeholder architecture rather than by suppressing anything.
+>
+> **`SX1262_DIO1` is published as a hierarchical net** for sheet `08` to land on the
+> internal PCAL9535A (D-089). It no longer reaches the MCU; GPIO38 is `NATIVE_A`.
+> Semtech §13.3.4 confirmed DIO1 is a level-holding, SPI-cleared IRQ, so a PCAL9535A input
+> is a safe destination and a stuck-high DIO1 can no longer touch a strapping pin — which
+> was the reason for moving it.
+>
+> **No ESD part was added on any RF interface, and that is the finding.** The 915 MHz
+> bulkhead sees only the E22's own matched front end through a shielded pigtail — there is
+> no board trace and no exposed IC pin. An RF TVS transparent enough not to cost link budget
+> at +22 dBm is a real choice with real loss; **measure before adding**. The NFC loop is
+> magnetically coupled with series capacitors as a DC block, and the module coax is internal
+> and shielded.
+>
+> **Two items are recommended, not locked, and need CTO sign-off** — see the pending table:
+> **P-17** (keep the non-B ST25R3916) and **B-53** (NFC antenna architecture; recommendation
+> is a purchased flex + ferrite).
+
 ## 9. Safety
 
 | # | decision | date |
@@ -980,7 +1020,8 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | ~~superseded~~ | ~~**`R95` recovery current limit: 680 R as captured, or 560 R as locked?**~~ | Injection into a 0 V pack falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V. **This moves the wrong way against B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Not a wiring fault; a value that must be ruled, not assumed. | 2026-08-23 |
 | ~~**P-21**~~ | ~~`OV` trip.~~ **CLOSED 2026-08-23 by D-104 — 4.63 V nominal**, `R77` 3.65 M / `R78` 442 k, derived from the datasheet 500 mV ±1.5 % threshold. |  | 2026-08-23 |
 | ~~superseded~~ | ~~**`OV` trip: 5.05 V as captured, or ≈ 4.6 V as documented?**~~ | Captured as `R77` 4.02 M / `R78` 442 k against the FBV2-PWR-002 diagram's *"divider ≈ 4.6 V"*. 5.05 V sits above a 4.2 V pack with margin and below the USB ceiling, so it is plausible and probably deliberate — but it is not the documented number, and the documented number is what a reviewer will check. | 2026-08-23 |
-| **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
+| **B-53** | **NFC antenna architecture: PCB loop on the main board, purchased flex + ferrite, or a daughter antenna?** | **Recommendation: flex + ferrite.** A main-board loop needs a **45 × 45 mm keepout in the ground plane on every layer** in the rear upper third, with the battery directly behind it — the highest first-board risk of the three. The schematic is neutral: whichever is chosen lands on `NFC_ANT_A`/`NFC_ANT_B` and the front end does not change. | 2026-08-23 |
+| **P-17** | **ST25R3916 or ST25R3916B?** **RECOMMENDED FOR CLOSURE 2026-08-23 (FBV2-S1-004): KEEP the non-B `ST25R3916-AQET`.** Same 32-UFQFPN package; Mouser 3,243 in stock; **LCSC `C5267441` at ~$3.37 gives a JLCPCB assembly path the B does not have**, at roughly half the unit cost. The B's advantages are EMVCo PCD L1 3.2a compliance and a better AWS implementation — **AQROOT is not an EMVCo terminal**, so neither serves a stated priority, and the B's `-AQWT` variant is a stock trap (0 units, restock quoted January 2028). Switching would also require AN5768 and re-proving footprint equivalence. **Not silently locked: it touches analog waveform quality and therefore read range at the margin, so it is flagged for ratification.** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I2C segmentation - buffer alone, or add a mux?** | **HALF ANSWERED 2026-08-23 (FBV2-COMM-001).** The `U16` TCA9517A B-side supply is `ACC_3V3_SW`, which is now **default OFF and detect-gated**, so a dead or absent accessory cannot hold SDA low - the *bus-hang* half is closed. **Address collision on 0x36 / 0x20-0x27 is NOT solved by a buffer** and still needs a ruling: mux, or a published reserved-address policy. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
 | ~~**M-06**~~ | ~~Display MPN and FPC interface not locked.~~ **CLOSED 2026-08-23 by D-074…D-078 (FBV2-DISP-002).** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin, 0.5 mm, bottom contact, 0.30 ± 0.03 mm; FT6236 @ 0x38; `J1` = Hirose `FH69-50S-0.5SH`. | closed | 2026-08-22 |
