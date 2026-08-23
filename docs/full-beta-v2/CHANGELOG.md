@@ -9,6 +9,130 @@ an entry.
 
 ---
 
+## 2026-08-23 — Power-tree rulings closed, MCU core migrated (FBV2-S1-002)
+
+**Overall 34% → 37%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-MCU-CORE = PASS**. FBV2-S1 itself is **2 of 9 sheets**. Full analysis:
+[`audits/2026-08-23-s1-mcu-core-implementation.md`](audits/2026-08-23-s1-mcu-core-implementation.md);
+measured pin ledger and strap audit:
+[`architecture/GPIO_LEDGER.md`](architecture/GPIO_LEDGER.md).
+
+### P-20 closed — `R95` = 560 Ω, and B-27 is amended rather than left wrong
+
+Recovery current recomputed from the captured circuit: **8.36 mA** at VBUS 5.0 V into
+a 0 V pack, **7.93–8.80 mA** across 4.75–5.25 V. That is inside the accepted 5–10 mA
+band and restores the ≈ 8 mA the architecture assumed, which is what **B-26** is
+measured against.
+
+**680 Ω was not an arbitrary capture value.** It is exactly the value that produces
+B-27's recorded ≈ 13 mA single-fault ceiling: `(5.00 − 0.32 + 4.2) / 680 = 13.06 mA`.
+With 560 Ω the ceiling becomes **≈ 15.9 mA nominal, ≈ 16.6 mA worst case** — 0.0066 C
+on a 2500 mAh pack, still bounded by `R95`, still unidirectional through `D12`, still
+self-annunciating. **B-27 is restated in place.** The trade is explicit: ~21 % more
+recovery current for ~22 % more single-fault current, and the CTO ruled for recovery.
+
+### P-21 closed — OV trip **derived**, not typed
+
+The datasheet threshold was obtained first (LTC4368, Farnell mirror `2243878`):
+`V_OV` **492.5 / 500 / 507.5 mV** rising, hysteresis **20 / 25 / 32 mV**, UV/OV leakage
+**10 nA max**, features page "Adjustable **±1.5 %**".
+
+`R77` **4.02 M → 3.65 M 1 %**, `R78` unchanged at 442 k:
+`0.500 × (3.65 M + 442 k) / 442 k` = **4.629 V**.
+
+| | |
+|---|---|
+| Nominal trip | **4.63 V** |
+| Comparator + 1 % resistors | **4.48 – 4.78 V** |
+| Including 10 nA max pin leakage | 4.44 – 4.82 V |
+| Release (25 mV hysteresis × 9.258) | **4.40 V** nominal |
+
+Above a 4.35 V-class pack with 129 mV of worst-case margin, 420 mV below the 5.05 V
+first capture, and **no lockout hazard** because release sits above the float voltage.
+`3.65 M` is already carried by `R91`, so this **removes** a BOM line.
+
+### P-22 closed — scripted KiCad edits, under eight conditions
+
+The blanket Beta-DM prohibition is superseded by **D-107**: deterministic; narrowly
+scoped; source-controlled and diffable; the project parses afterwards; netlist
+validation; ERC against a stated baseline; preservation checks; and the output
+reviewed against the CTO task item by item. **Scripts may not be used to bypass
+engineering review** — a script that cannot show all eight is an unreviewed change.
+
+### `02_MCU_CORE` migrated
+
+* **GPIO38 = `NATIVE_A`** and **GPIO47 = `NATIVE_B`** — the two native community
+  fast-IO signals (D-084/D-108). `SX1262_DIO1` **no longer reaches the MCU**; under
+  D-089 it terminates on the internal expander `U2`, which is sheet `08`.
+* **GPIO46 = `DISP_BL_CTL`.** GPIO46 is a strapping pin that **must read LOW at reset**
+  — GPIO0 = 0 alone does not select Joint Download Boot, GPIO46 = 0 is also required.
+  Three provisions make that safe: **`R108` 10 kΩ pull-down at the pin** (Espressif's
+  own "strong pull-down" against the 45 kΩ internal pull), **`R109` 0 Ω FIT** isolating
+  the TPS61169 `CTRL` so the strap survives even if `CTRL` sources current — failure
+  direction "backlight off" — and **`TP2` on the strap node** so the level is measured.
+  No capacitance was added; Espressif forbids bulk C on strapping pins.
+  Quantified: any `CTRL` internal pull-up **≥ 30 kΩ** keeps GPIO46 below `V_IL`.
+* **GPIO43 withdrawn from the community port** (D-106) — internal UART0 TXD only, with
+  **`TP35`**. Consequence recorded: GPIO44 is IR RX, so **UART0 is TX-only**, and ROM
+  download recovery is via the native **USB Serial/JTAG on GPIO19/20, never UART0**.
+* **GPIO3 strap defined — B-09 CLOSED** (D-109). `R110` 10 kΩ pull-down. LOW is the
+  only correct level: GPIO3 = 1 would select external JTAG on MTMS/MTDI/MTCK/MTDO =
+  **GPIO39–42, which are the I²S bus**. **BMI270 `INT1` is bound to push-pull
+  active-high; open-drain must never be configured on this pin.** The IMU cannot corrupt
+  the strap at reset — `INT1` is high-Z until firmware enables it.
+* **`R111` 10 kΩ GPIO45 pull-down placed DNP.** GPIO45 selects VDD_SPI (LOW = 3.3 V) and
+  today is held only by the chip's internal pull-down while an exposed test pad sits on
+  the net. Fitting it is referred to the CTO — see below.
+* `TEST_GPIO45` / `TEST_GPIO46` renamed to `GPIO45_VDDSPI_STRAP` / `DISP_BL_CTL_STRAP`
+  under D-100.
+
+**`NFC_IRQ` verified still on GPIO18.** B-19 holds: it must never move to GPIO46.
+
+### No new debug hardware
+
+**D-110.** The service interface is the native USB Serial/JTAG on GPIO19/20 — one
+USB-C cable gives console, ROM download and JTAG debug. No debug connector, no debug
+IC, no JTAG header, no new user-facing button; `SW1` BOOT stays electrically real and
+becomes mechanically recessed. **One test pad added — `TP35` on UART0 TXD** — because
+the ROM boot log is the only view of a board whose USB will not enumerate, which is the
+one failure USB cannot diagnose. An `EN` pad was considered and **rejected**.
+
+### ERC
+
+**5 errors on the Beta-DM baseline → 4. Zero new errors. `02_MCU_CORE` reports nothing
+at all.** Warnings 55 → 63. All eight additions are root-sheet `isolated_pin_label`
+entries on cross-sheet signals with one end drawn: `NATIVE_A`/`NATIVE_B` (await sheet
+`09`), `SX1262_DIO1` (awaits sheet `08`), `FAST_IO_U0TXD_ROOTPROBE_CS` (dies with the
+20-pin port). **Each was left standing deliberately** — silencing them by adding a test
+point to an orphaned net is the same anti-pattern as a `PWR_FLAG` that hides a missing
+driver.
+
+### Opened
+
+**B-43** TPS61169 `CTRL` internal-pull spec **not retrieved** — TI's PDF text layer
+would not extract. The design is safe for any pull-up ≥ 30 kΩ and `R109` is the escape,
+but the number is a blocker, not an assumption.
+**B-44** BMI270 `INT` pad drive current **not retrieved** — Bosch's PDF likewise.
+Fallback: `R110` → 47 kΩ, a value change with no board change.
+**B-45** `NATIVE_A`/`NATIVE_B` still have **no D-090 series resistors and no TVS**. They
+are the only two contacts with a direct MCU path. Sheet `09` work.
+
+### Referred to the CTO
+
+**Fit `R111`?** GPIO45 relies on the internal pull-down alone to hold VDD_SPI at 3.3 V,
+with an exposed test pad on the net; a GPIO45 that reads HIGH at reset selects 1.8 V and
+the 3.3 V flash and PSRAM do not boot. **Recommendation: fit it.** Placed DNP rather
+than fitted because changing the electrical design of a strapping pin is a CTO call, not
+a capture decision.
+
+### Not done, and not claimed
+
+Sheets `03`–`09` untouched. PCB untouched and still **bit-identical** to Beta-DM. No
+footprint verified. No MPN locked. **B-15** unchanged — no telemetry crossing to
+`U2`/`U3` exists.
+
+---
+
 ## 2026-08-23 — Full Beta v2 power tree CAPTURED (FBV2-S1-001)
 
 **The first Full Beta v2 design-file work.** `hardware/beta-v2/` is created, forked

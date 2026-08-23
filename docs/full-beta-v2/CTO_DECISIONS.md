@@ -7,7 +7,7 @@ this file, **this file wins.** Superseded rulings are struck through and kept,
 never deleted, so the history of the decision stays readable.
 
 Established: 2026-08-22
-Last updated: 2026-08-23 (FBV2-S1-001)
+Last updated: 2026-08-23 (FBV2-S1-002)
 
 ---
 
@@ -861,6 +861,46 @@ rulings and what is now in `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.
 > in place, scoped to its Beta-DM origin, and **awaits ratification or
 > reinstatement** — see the pending table.
 
+## 8o. Power-tree rulings closed and MCU core migrated — FBV2-S1-002 (2026-08-23)
+
+| # | decision | date |
+|---|---|---|
+| D-104 | **LTC4368-1 OV TRIP LOCKED at 4.63 V nominal** (closes **P-21**). `R77` **4.02 M → 3.65 M 1%**, `R78` unchanged at 442 k. **Derived, not typed:** the datasheet OV threshold is **492.5 / 500 / 507.5 mV** with 20 / 25 / 32 mV hysteresis and 10 nA max pin leakage (LTC4368 datasheet, Farnell mirror `2243878`; the features page states "Adjustable ±1.5 % Undervoltage and Overvoltage Thresholds"). 0.500 V × (3.65 M + 442 k)/442 k = **4.629 V**; tolerance band **4.48 – 4.78 V**, or 4.44 – 4.82 V including worst-case pin leakage; release **4.40 V** nominal. Above a 4.35 V-class pack with 129 mV of worst-case margin, 420 mV below the 5.05 V first capture, and **no lockout hazard** because release sits above the float voltage. `3.65 M` is already carried by `R91`, so this **removes** a BOM line rather than adding one. | 2026-08-23 |
+| D-105 | **`R95` RECOVERY LIMIT LOCKED at 560 Ω** (closes **P-20**). Recovery current recomputed from the captured circuit: **8.36 mA** nominal at VBUS 5.0 V into a 0 V pack, **7.93 – 8.80 mA** over 4.75 – 5.25 V, inside the accepted 5 – 10 mA band. **B-27 IS AMENDED IN PLACE, NOT LEFT STANDING:** 680 Ω was the value that produced B-27's recorded ≈ 13 mA single-fault ceiling, and 560 Ω raises it to **≈ 15.9 mA nominal / ≈ 16.6 mA worst case** — 0.0066 C on a 2500 mAh pack, still bounded by `R95`, still unidirectional through `D12`, still self-annunciating. **The trade is explicit: ~21 % more recovery current for ~22 % more single-fault current, and the CTO ruled for recovery.** | 2026-08-23 |
+| D-106 | **GPIO43 IS WITHDRAWN FROM THE COMMUNITY PORT.** `FAST_IO_U0TXD_ROOTPROBE_CS` no longer leaves the MCU sheet; GPIO43 is **internal UART0 TXD / debug only**, with `TP35`. The connector-side remnant (`R67`, `D7`, `J5.23`) is sheet `09` and dies with the 20-pin port. **Consequence recorded:** GPIO44 (U0RXD) is IR RX, so **UART0 is TX-only**, and ROM download recovery is therefore via the **native USB Serial/JTAG on GPIO19/20 — never over UART0**. | 2026-08-23 |
+| D-107 | **STANDING ENGINEERING-PROCESS RULE — SCRIPTED KICAD EDITS** (closes **P-22**, supersedes the blanket Beta-DM prohibition). A scripted edit of a KiCad file is permitted **only when all eight hold**: (1) deterministic; (2) narrowly scoped; (3) source-controlled and diffable; (4) the project parses and opens afterwards; (5) netlist / connectivity validation performed; (6) ERC performed and diffed against a stated baseline; (7) preservation checks performed; (8) the output reviewed against the CTO task item by item. **Scripts may not be used to bypass engineering review.** A script that cannot show all eight is not a permitted edit — it is an unreviewed change. | 2026-08-23 |
+| D-108 | **NATIVE COMMUNITY PINS LOCKED: GPIO38 = `NATIVE_A`, GPIO47 = `NATIVE_B`, and GPIO46 TAKES `DISP_BL_CTL`.** `SX1262_DIO1` leaves the MCU entirely and terminates on the internal expander `U2` (D-089). **GPIO46 is a strapping pin and MUST read LOW at reset** — GPIO0 = 0 alone does not select Joint Download Boot, GPIO46 = 0 is also required — so the backlight line carries three mandatory provisions: a **dedicated `R108` 10 kΩ pull-down at the MCU pin**, an **`R109` 0 Ω FIT isolation link** to the TPS61169 `CTRL` (a D-049 no-respin escape whose failure direction is "backlight off"), and **`TP2` on the strap node** so the level is measured, not assumed. **No capacitance may be added to this net.** | 2026-08-23 |
+| D-109 | **GPIO3 STRAP DEFINED — `R110` 10 kΩ PULL-DOWN** (closes **B-09**). LOW is the only correct level: with `EFUSE_STRAP_JTAG_SEL` burned, GPIO3 = 0 selects the USB Serial/JTAG source, while GPIO3 = 1 would select external JTAG on MTMS/MTDI/MTCK/MTDO = **GPIO39–42, which are the I²S bus** — external JTAG is unusable on this board. **BINDING CONFIGURATION RULE: BMI270 `INT1` must be push-pull, active-high** (`INT1_IO_CTRL`: `output_en` = 1, `od` = 0, `lvl` = 1). **Open-drain is incompatible with a pull-down and must never be configured on this pin.** The IMU cannot corrupt the strap at reset because `INT1` is high-impedance until firmware enables it. | 2026-08-23 |
+| D-110 | **NO NEW DEBUG HARDWARE. The service interface is the native USB Serial/JTAG on GPIO19/20** — one USB-C cable gives console, ROM download and JTAG debug. No debug connector, no debug IC, no FTDI, no JTAG header, and **no new user-facing button**; `SW1` BOOT stays electrically real and becomes mechanically recessed. **One test pad is added: `TP35` on UART0 TXD**, because the ROM boot log is the only view of a first board whose USB will not enumerate, which is the one failure USB itself cannot diagnose. An `EN` pad was considered and **rejected** as duplicating USB-side reset. | 2026-08-23 |
+
+> **Result (FBV2-S1-002).** Full analysis:
+> [`audits/2026-08-23-s1-mcu-core-implementation.md`](audits/2026-08-23-s1-mcu-core-implementation.md);
+> measured pin ledger and strap audit:
+> [`architecture/GPIO_LEDGER.md`](architecture/GPIO_LEDGER.md).
+>
+> **Task gate FBV2-S1-MCU-CORE = PASS. The programme gate FBV2-S1 remains OPEN — 2 of 9
+> sheets.**
+>
+> **ERC: 5 errors on the Beta-DM baseline → 4. Zero new errors. `02_MCU_CORE` reports
+> nothing at all.** Warnings rose 55 → 63; all eight are root-sheet `isolated_pin_label`
+> warnings on cross-sheet signals whose far end is an unmigrated sheet, and **each was
+> deliberately left standing** — silencing them by adding a test point to an orphaned net
+> would be the same anti-pattern as a `PWR_FLAG` that hides a missing driver.
+>
+> **Two datasheet facts could not be retrieved and are blockers, not assumptions:**
+> **B-43** the TPS61169 `CTRL` internal pull (the design is safe for any pull-up ≥ 30 kΩ
+> and `R109` is the escape) and **B-44** the BMI270 `INT` pad drive current (fallback:
+> `R110` → 47 kΩ, a value change with no board change). **B-45** opened: `NATIVE_A` /
+> `NATIVE_B` still have no D-090 series resistors or TVS — they are the only two contacts
+> with a direct MCU path, and the protection is sheet `09` work.
+>
+> **One item is referred to the CTO and was deliberately not decided here: whether to fit
+> `R111`**, the 10 kΩ pull-down placed **DNP** on GPIO45. GPIO45 selects VDD_SPI — LOW =
+> 3.3 V — and today it is held only by the chip's internal pull-down while an exposed test
+> pad sits on the net. A GPIO45 that reads HIGH at reset selects 1.8 V and the 3.3 V flash
+> and PSRAM do not boot. **Recommendation: fit it.** It is DNP rather than fitted because
+> changing the electrical design of a strapping pin is a CTO call, not a capture decision.
+
 ## 9. Safety
 
 | # | decision | date |
@@ -888,9 +928,12 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 | **P-14** | **MAX17048 sense point — cell side or protected side?** | The protection adds ~51 mΩ; at 1 A that is ~51 mV of IR drop the voltage-only gauge cannot compensate (several % SOC). Cell side avoids it but sits exposed to the reversed-cell fault. | 2026-08-22 |
 | ~~**P-15**~~ | ~~3V3 rail budget under simultaneous worst case.~~ **CLOSED 2026-08-23 by D-092.** It does force firmware mutual exclusion, and the contract is now binding (MX-1...MX-9). Naive simultaneity reaches **85-90 %** of the TPS63020's 2 A; the enforced design case reaches **58-66 %**; an accessory hard short at the recommended `R_ILIM` reaches **86 %**. | closed | 2026-08-22 |
 | ~~**P-16**~~ | ~~Repurpose one XGPIO as `ACC_DETECT`?~~ **CLOSED 2026-08-23 by D-082/D-085.** No XGPIO is repurposed: `ACC_DETECT_N` is a **dedicated connector contact (pin 23) and a dedicated `U3` input**. The published XGPIO count does fall to 10, but by CTO product ruling, not by theft. | closed | 2026-08-22 |
-| **P-22** | **Ratify or reinstate the "no automatic KiCad file generation" rule.** The Beta-DM README forbids generating or modifying KiCad files automatically; FBV2-S1-001 captured `01_POWER_TREE` by script and verified it with `kicad-cli` ERC plus a netlist export. | Every remaining FBV2-S1 sheet migration depends on the answer. The rule is recorded unaltered and is **not** treated as repealed by having been overtaken. | 2026-08-23 |
-| **P-20** | **`R95` recovery current limit: 680 R as captured, or 560 R as locked?** | Injection into a 0 V pack falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V. **This moves the wrong way against B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Not a wiring fault; a value that must be ruled, not assumed. | 2026-08-23 |
-| **P-21** | **`OV` trip: 5.05 V as captured, or ≈ 4.6 V as documented?** | Captured as `R77` 4.02 M / `R78` 442 k against the FBV2-PWR-002 diagram's *"divider ≈ 4.6 V"*. 5.05 V sits above a 4.2 V pack with margin and below the USB ceiling, so it is plausible and probably deliberate — but it is not the documented number, and the documented number is what a reviewer will check. | 2026-08-23 |
+| ~~**P-22**~~ | ~~Ratify or reinstate the "no automatic KiCad file generation" rule.~~ **CLOSED 2026-08-23 by D-107** — superseded by an eight-condition standing rule; scripts may not bypass engineering review. |  | 2026-08-23 |
+| ~~superseded~~ | ~~**Ratify or reinstate the "no automatic KiCad file generation" rule.**~~ The Beta-DM README forbids generating or modifying KiCad files automatically; FBV2-S1-001 captured `01_POWER_TREE` by script and verified it with `kicad-cli` ERC plus a netlist export. | Every remaining FBV2-S1 sheet migration depends on the answer. The rule is recorded unaltered and is **not** treated as repealed by having been overtaken. | 2026-08-23 |
+| ~~**P-20**~~ | ~~`R95` recovery current limit.~~ **CLOSED 2026-08-23 by D-105 — 560 Ω locked.** Recovery 8.36 mA nominal; **B-27 amended to ≈ 15.9 mA / ≈ 16.6 mA worst case**. |  | 2026-08-23 |
+| ~~superseded~~ | ~~**`R95` recovery current limit: 680 R as captured, or 560 R as locked?**~~ | Injection into a 0 V pack falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V. **This moves the wrong way against B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Not a wiring fault; a value that must be ruled, not assumed. | 2026-08-23 |
+| ~~**P-21**~~ | ~~`OV` trip.~~ **CLOSED 2026-08-23 by D-104 — 4.63 V nominal**, `R77` 3.65 M / `R78` 442 k, derived from the datasheet 500 mV ±1.5 % threshold. |  | 2026-08-23 |
+| ~~superseded~~ | ~~**`OV` trip: 5.05 V as captured, or ≈ 4.6 V as documented?**~~ | Captured as `R77` 4.02 M / `R78` 442 k against the FBV2-PWR-002 diagram's *"divider ≈ 4.6 V"*. 5.05 V sits above a 4.2 V pack with margin and below the USB ceiling, so it is plausible and probably deliberate — but it is not the documented number, and the documented number is what a reviewer will check. | 2026-08-23 |
 | **P-17** | **ST25R3916 or ST25R3916B?** | The B adds Active Wave Shaping and finer driver stepping (both recover margin at 3.3 V) but **removes capacitive sensing** on CSI/CSO, losing low-power capacitive tag detect. With AWS the VDD_AM capacitor changes to 10–50 nF. Schematic-time decision, product call. | 2026-08-22 |
 | **P-18** | **Accessory I2C segmentation - buffer alone, or add a mux?** | **HALF ANSWERED 2026-08-23 (FBV2-COMM-001).** The `U16` TCA9517A B-side supply is `ACC_3V3_SW`, which is now **default OFF and detect-gated**, so a dead or absent accessory cannot hold SDA low - the *bus-hang* half is closed. **Address collision on 0x36 / 0x20-0x27 is NOT solved by a buffer** and still needs a ruling: mux, or a published reserved-address policy. | 2026-08-22 |
 | ~~**P-10**~~ | ~~NFC supply topology.~~ **N1** — run NFC entirely at 3.3 V (`sup3V` option bit; VDD range 2.4–3.6 V) and **delete** U13, L2, R44, R45, C19, C34, C35, C55; or **N2** — keep the 5 V boost and never disable it while the system is on. Created by the DS12484 finding that VDD and VDD_TX cannot be split. | With true load disconnect confirmed on the TPS61023, disabling the boost leaves VDD = 0 V while VDD_IO = 3.3 V — a state the datasheet nowhere authorises. **N1 recommended**: deletes a converter, eight parts, the OVP question and the sequencing question. Price is RF range. | 2026-08-22 |
@@ -907,6 +950,9 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 
 | # | closed by | outcome |
 |---|---|---|
+| **P-20** | D-105 | **`R95` = 560 Ω.** Recovery 8.36 mA nominal (7.93–8.80 mA). B-27's single-fault ceiling **amended to ≈ 15.9 mA**, not left reading 13 mA. |
+| **P-21** | D-104 | **OV trip 4.63 V nominal**, 4.48–4.78 V, derived from the datasheet 492.5/500/507.5 mV threshold. Removes a BOM line. |
+| **P-22** | D-107 | **Scripted KiCad edits permitted under eight conditions**, and never as a substitute for engineering review. |
 | **P-02** | D-081...D-085 | **Community port superseded and re-locked.** 2 x 12, 24 active contacts, female device side, `Harwin M20-7881242`, pin ordering and detect convention locked. |
 | **P-15** | D-092 | **Rail budget closed by a binding firmware mutual-exclusion contract** (MX-1...MX-9). |
 | **P-16** | D-082 / D-085 | **`ACC_DETECT_N` is a dedicated contact and a dedicated expander pin.** No XGPIO repurposed. |

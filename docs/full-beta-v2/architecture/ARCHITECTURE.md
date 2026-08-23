@@ -1,12 +1,17 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (power-tree capture, FBV2-S1-001)
+Date: 2026-08-23 (MCU-core migration, FBV2-S1-002)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
-**One block is no longer intent.** As of 2026-08-23 the **power tree is CAPTURED** in
-`hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch` (FBV2-S1-001). Every
-other block on this page is still intent only, and the PCB is untouched.
+**Two blocks are no longer intent.** As of 2026-08-23 the **power tree** and the
+**MCU core** are CAPTURED in
+`hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch` and
+`02_mcu_core.kicad_sch` (FBV2-S1-001, FBV2-S1-002). Every other block on this page is
+still intent only, and the PCB is untouched.
+
+The measured pin ledger and the full strapping-pin audit now live in
+[GPIO_LEDGER.md](GPIO_LEDGER.md) and are read from the schematic, not transcribed.
 
 Authority: [CTO_DECISIONS.md](../CTO_DECISIONS.md) outranks this document.
 Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
@@ -23,6 +28,16 @@ Measured facts come from the 2026-08-22 pre-design audit at repository HEAD
 - Native USB on GPIO19/20 (D−/D+), each through a 22R series resistor at the MCU
   end. No PD, no CC controller — CC1/CC2 are static 5.1k pull-downs.
 - Console runs over native USB-CDC, which is what frees GPIO43/44.
+- **CAPTURED 2026-08-23 (FBV2-S1-002).** `GPIO38 = NATIVE_A`, `GPIO47 = NATIVE_B` —
+  the only two connector contacts with a direct MCU path. `GPIO46 = DISP_BL_CTL`, with
+  a dedicated 10 k strap pull-down, a 0 R isolation link to the TPS61169 `CTRL` and a
+  strap test pad; GPIO46 **must** read LOW at reset or Joint Download Boot is
+  unreachable. `GPIO43` is **withdrawn from the community port** and is internal UART0
+  TXD only, so **UART0 is TX-only** (GPIO44 is IR RX) and ROM download recovery runs
+  over the native USB Serial/JTAG, never over UART0. `GPIO3` now has its strap-defining
+  10 k pull-down.
+- The service interface is the **native USB Serial/JTAG**: one USB-C cable for console,
+  ROM download and JTAG debug. No debug connector, no debug IC, no JTAG header.
 
 ---
 
@@ -175,15 +190,15 @@ speculative; each cites what was measured.
 | 4 | **NFC supply sequencing.** **REVISED 2026-08-22 by datasheet verification.** The rail *assignment* is **correct**: DS12484 Rev 3 p. 39 requires VDD (pin 8) and VDD_TX (pin 10) to share one supply, capped at ±0.2 V operating, with VDD_IO (pin 1) independent at 1.65–5.5 V. The earlier "rail split" recommendation was wrong and is withdrawn. The **real** defect is sequencing: TPS61023 true load disconnect is confirmed, so with the boost off VDD = VDD_TX = 0 V while VDD_IO = 3.3 V — below the 2.4 V VDD minimum and nowhere authorised. | DS12484 Rev 3 Tables 2 / 118 / 119; SLVSF14B §7.3.2 | **Pending P-10** — N1 (3.3 V-only NFC, delete the boost) recommended |
 | 5 | **Accessory power reverse blocking absent.** The accessory rail came from a plain NMOS load switch with no reverse blocking; an accessory back-driving it pushed current through the body diode into `+3V3`, and the external I2C pull-ups referenced to that rail gave a second path. | Load-switch topology + pull-up references | **CAPTURED on the power tree 2026-08-23 (FBV2-S1-001):** both accessory rails now use `TPS22950C` (`U20`, `U22`), whose reverse-current blocking is confirmed for the C variant (D-058), with the 5 V rail fed from `SYS` through its own `TPS61023`. **The Beta-DM `TPS22918` path on sheet `09` is untouched and still carries the defect.** |
 | 6 | **WAKE isolation missing.** The mandated open-drain gate powered from switched accessory power was never implemented. The header leg is only a 330R series resistor. A shorted accessory pin divides the wake net to roughly 0.1 V and **permanently blocks internal button wake** — the unit appears dead to its own buttons. | `WAKE_ATTN_N_HDR` = `D7.1`, `J5.13`, `R66.2` | Fix in migration |
-| 7 | **GPIO3 strap definition missing.** The pin map declared a strap-defining pull mandatory. The net carries only a 220R series resistor, a test pad and the MCU pin. Hazard is currently low because the S3 ignores the GPIO3 strap unless the `JTAG_SEL_ENABLE` eFuse is burned, but it leaves a CMOS input floating at reset. | `BMI270_INT1_STRAP` = `R18.2`, `TP3.1`, `U1.15` | Fix in migration |
+| ~~7~~ | ~~**GPIO3 strap definition missing.**~~ **CLOSED 2026-08-23 by D-109 (FBV2-S1-002)** — `R110` 10 k pull-down at the MCU pin; BMI270 `INT1` bound to push-pull active-high. Original text: **GPIO3 strap definition missing.** The pin map declared a strap-defining pull mandatory. The net carries only a 220R series resistor, a test pad and the MCU pin. Hazard is currently low because the S3 ignores the GPIO3 strap unless the `JTAG_SEL_ENABLE` eFuse is burned, but it leaves a CMOS input floating at reset. | `BMI270_INT1_STRAP` = `R18.2`, `TP3.1`, `U1.15` | Fix in migration |
 
 ### Resource and documentation defects
 
 | # | defect | evidence | disposition |
 |---|---|---|---|
-| 8 | **No free native GPIO.** 29 assigned + 2 strapping test pads + 2 USB = 31 of 31 usable. Zero margin. At most one additional safe native pin is reclaimable without an architectural change. | U1 pad map | Constrains P-02 |
-| 9 | **GPIO18 / GPIO38 documentation mismatch.** The pin map states GPIO18 = SX1262 DIO1 and GPIO38 = NFC IRQ. The hardware is the reverse. | U1 pad map decoded against the WROOM-1 pin table | Fix docs + hardware in migration |
-| 10 | **Possible LoRa wake defect.** Only GPIO0-21 are RTC GPIO on the S3. `SX1262_DIO1` sits on GPIO38, so it cannot be an `ext0`/`ext1` deep-sleep wake source — wake-on-LoRa-packet is impossible in the current pinout. | Consequence of defect 9 | Pending P-09 |
+| 8 | **No free native GPIO.** **Re-measured 2026-08-23: 33 of 33 usable pins assigned** (GPIO35/36/37 unusable on the R8). Zero margin. At most one additional safe native pin is reclaimable without an architectural change. | U1 pad map | Constrains P-02 |
+| ~~9~~ | ~~**GPIO18 / GPIO38 documentation mismatch.**~~ **RESOLVED 2026-08-23 by D-108** — GPIO38 is now `NATIVE_A` and `SX1262_DIO1` leaves the MCU entirely (it terminates on `U2`, D-089). `NFC_IRQ` stays on GPIO18. Original text: **GPIO18 / GPIO38 documentation mismatch.** The pin map states GPIO18 = SX1262 DIO1 and GPIO38 = NFC IRQ. The hardware is the reverse. | U1 pad map decoded against the WROOM-1 pin table | Fix docs + hardware in migration |
+| ~~10~~ | ~~**Possible LoRa wake defect.**~~ **RETIRED** — D-041 makes LoRa deep-sleep packet wake a non-requirement, and D-108 moves `SX1262_DIO1` off the MCU altogether. Original text: **Possible LoRa wake defect.** Only GPIO0-21 are RTC GPIO on the S3. `SX1262_DIO1` sits on GPIO38, so it cannot be an `ext0`/`ext1` deep-sleep wake source — wake-on-LoRa-packet is impossible in the current pinout. | Consequence of defect 9 | Pending P-09 |
 | 11 | ~~RGB dangling design.~~ | 3 single-pad nets | **RESOLVED by D-037** — architecture removed, `U2` P05–P07 freed |
 | 12 | ~~RootProbe incomplete.~~ | Net = `R11.2`, `U2.20` | **RESOLVED by D-038** — dedicated IRQ retired, `U2` P17 freed |
 | 14 | **`TPS22918` has no reverse-current blocking.** Its integrated body diode conducts VOUT→VIN, so a powered accessory can back-power `+3V3` through `ACC_3V3_SW`. | TPS22918 datasheet §11 | **OPEN (B-18).** Replace with a TPS22913B/C-class switch with always-active reverse-current protection |

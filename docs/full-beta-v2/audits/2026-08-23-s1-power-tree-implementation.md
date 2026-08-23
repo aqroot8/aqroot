@@ -378,14 +378,22 @@ Every other new part was checked against the same policy and conforms: `Q2`/`Q3`
 
 ## 7. Deviations from the locked architecture — NOT resolved by this task
 
+> **CLOSED 2026-08-23 by FBV2-S1-002.** Both open deviations below were ruled on and
+> implemented: **`R95` → 560 Ω (D-105)** and **the OV divider → `R77` 3.65 M / `R78` 442 k,
+> 4.63 V nominal (D-104)**. The recomputation also showed that 680 Ω was *not* arbitrary —
+> it was the value that produced **B-27's ≈ 13 mA** single-fault ceiling, which is now
+> restated as **≈ 15.9 mA nominal / ≈ 16.6 mA worst case**. See
+> [`2026-08-23-s1-mcu-core-implementation.md`](2026-08-23-s1-mcu-core-implementation.md)
+> §1 and §2. The section is kept as written, because it is the record of what was found.
+
 These are recorded, not silently adopted and not silently "fixed". A value in a locked
 architecture document is changed by a CTO ruling, not by a capture task.
 
 | # | item | locked | captured | assessment |
 |---|---|---|---|---|
-| 1 | **`R95` recovery current limit** | `R_LIM` **560 R** | **680 R 1% 1206** | Injection falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V into a 0 V pack. **This moves the wrong way against open blocker B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Opened as **P-20** |
+| 1 | **`R95` recovery current limit** *(CLOSED — 560 R, D-105)* | `R_LIM` **560 R** | **680 R 1% 1206** | Injection falls from ≈ 8.4 mA to **≈ 6.9 mA** at VBUS 5.0 V into a 0 V pack. **This moves the wrong way against open blocker B-26**, which warns that a pack protector needing more than ~10 mA to release its over-discharge latch would not be revived. Opened as **P-20** |
 | 2 | **Bridge/reference resistors** | 1 MΩ 0.1 %, *"1 % acceptable"* | 2.2 MΩ 1 % | **Accepted.** The comparator thresholds are set by *ratios*, and both legs of every divider are the same value and tolerance, so threshold error tracks tolerance (1 %), not absolute value. 2.2 M halves the bridge current, which is strictly better for a dead pack. No ruling needed |
-| 3 | **`OV` trip** | *"divider ≈ 4.6 V"* | `R77` 4.02 M / `R78` 442 k → **5.05 V** | Above a 4.2 V pack with margin, and below the 5.5 V USB ceiling. Plausible and probably deliberate, but it is **not the documented number**. Opened as **P-21** |
+| 3 | **`OV` trip** *(CLOSED — 4.63 V, D-104)* | *"divider ≈ 4.6 V"* | `R77` 4.02 M / `R78` 442 k → **5.05 V** | Above a 4.2 V pack with margin, and below the 5.5 V USB ceiling. Plausible and probably deliberate, but it is **not the documented number**. Opened as **P-21** |
 
 None of the three is a connectivity fault, and none blocks the task gate.
 
