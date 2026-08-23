@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (radios / NFC migration, FBV2-S1-004)
+Date: 2026-08-23 (NFC IC and antenna lock, FBV2-S1-004B)
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 
@@ -21,6 +21,14 @@ the PCB is untouched.
 > matching topology exist (D-123 / D-124), with every value labelled `TUNE` because they
 > cannot be finalised without a measured antenna. **Zero `*_TBD` nets remain in the
 > project.**
+>
+> **NFC IC and antenna LOCKED 2026-08-23 (D-126 … D-128).** `ST25R3916-AQET`, non-B
+> (**P-17 closed**). Antenna: **Taoglas `FXC.46.52.0075X.A.dg`** — 13.56 MHz, 46 mm
+> circular flex, 0.27 mm with integrated ferrite, 3M peel-and-stick, 75 mm 28 AWG twisted
+> pair, ACH(F) — **off the main PCB** (**B-53 closed**), landing on **`J7` JST
+> `BM02B-ACHSS-GAN-ETF`** whose `ACHR-02V-S` mate is the antenna's own housing, so the
+> antenna is **replaceable without soldering**. **B-06 is closed**: NFC is no longer
+> undesigned, only untuned.
 
 > **The display symbol was wrong until 2026-08-23.** `J1` carried the 2.8-inch panel's
 > pin table while its Value already read FH69: the backlight anode and cathode were

@@ -9,6 +9,161 @@ an entry.
 
 ---
 
+## 2026-08-23 — NFC IC and antenna FINAL LOCK (FBV2-S1-004B)
+
+**Overall 43% → 45%. No gate in the twelve-gate table passed**; the task gate
+**FBV2-S1-NFC-ANTENNA-LOCK = PASS**. Full analysis:
+[`audits/2026-08-23-s1-nfc-antenna-closeout.md`](audits/2026-08-23-s1-nfc-antenna-closeout.md).
+
+**ERC 68 → 68: zero added, zero removed — the violation lists are identical.**
+301 components, 0 duplicate references, 0 without a footprint.
+
+### B-06 is closed
+
+*"NFC is undesigned, not merely unrouted"* has been on the blocker list since the
+pre-design audit. It is not true any more. **Crystal, matching topology, antenna,
+connector and supply all exist.** What remains is *tuning*, which is a bench activity,
+not a design gap.
+
+### NFC IC locked — P-17 CLOSED (D-126)
+
+**`ST25R3916-AQET`. The B variant is not adopted.** CTO reasons as given: non-B is active
+production; it **preserves capacitive low-power sensing**; AQROOT is not an EMVCo payment
+terminal; AWS is not worth trading sourcing simplicity and feature breadth for; and the
+first build already has 3.3 V operation plus a no-respin 5 V fallback. This agrees with
+FBV2-S1-004's recommendation on independent grounds — the non-B is the **only one of the
+two with an LCSC part number (`C5267441`)**, and therefore the only one with a JLCPCB
+assembly path, at roughly half the unit cost.
+
+**MPN metadata verified present in the schematic, not merely in prose:** `Value`, `MPN`,
+`Manufacturer` and `LCSC` all carry it.
+
+`U9`'s `Package` description was **rewritten**. It still named `NFC_5V_PA_PENDING` as the
+supply and told the reader the RF and oscillator pins were *"on explicit named TBD nets —
+DO NOT ROUTE"*. Both statements stopped being true in FBV2-S1-004.
+
+### NFC antenna locked — B-53 CLOSED (D-127)
+
+**Taoglas `FXC.46.52.0075X.A.dg`, off-board.** Verified verbatim from `SPE-22-8-131-C`:
+
+| | |
+|---|---|
+| Description | *"Circular Form Factor Flexible Near Field Communications Antenna"* |
+| Frequency | **13.56 MHz** |
+| Diameter | **46 mm** |
+| Ordering line | *"Thickness: 0.27 mm - FXC.46.52.0075X.A.dg - NFC with ferrite and 75mm Twisted Pair 28AWG cable with ACH(F) connector"* |
+| Adhesive | *"Peel and stick 3M adhesive"* |
+| Typical interrogation distance | **40 mm** |
+
+**This replaces the abstract 45 × 45 mm custom-antenna assumption.** It keeps the antenna
+**off the main PCB**, which is what avoids putting a 45 × 45 mm keepout through the ground
+plane of a board that already carries three radios.
+
+**The electrical triple — `L` = 1.09 µH, `Rs` = 1.6 Ω, `Q` ≈ 58 — is used as supplied, and
+it checks out internally:** `ωL/Rs` = 92.87 / 1.6 = **58.0 exactly**. It could **not** be
+re-extracted from the datasheet, whose electrical table is an image, so it is recorded for
+first-article confirmation (**B-55**) — which costs nothing, because the match has to be
+re-derived from measurement regardless.
+
+### Board-side connector — mating proven (D-128)
+
+**`J7` = JST `BM02B-ACHSS-GAN-ETF`.** ACH series, 2 circuits, 1.20 mm pitch, SMT, gold,
+**2.0 A / 50 V**, −25…+85 °C, 1.4 mm high × 4.3 mm wide; **Active, 30,004 in stock,
+$0.52 @ 1, MOQ 1**.
+
+**Mating is proven, not assumed:** the header's mating housing is **`ACHR-02V-S`** — an ACH
+receptacle, which is exactly the *"ACH(F) connector"* Taoglas fits to the `FXC.46` cable —
+and the antenna's 28 AWG wire is the gauge JST rates the series at. **The antenna is
+replaceable without soldering.** KiCad's footprint is named for this exact MPN.
+
+**Correction to the brief: JST classes ACH as a TOP-ENTRY header, not right-angle.** JST's
+own words: *"the socket half is mated with the header from the vertical direction, while
+the wires come out from the horizontal direction of the socket connector."* Digi-Key's
+parametric says "Right Angle", which most likely describes the cable exit; Newark, JST and
+KiCad's own footprint name all say top entry / vertical. **The part is right and
+unchanged** — the consequence is that **`J7` needs mating clearance above it** while the
+cable leaves horizontally. FBV2-P1 placement note.
+
+### Matching network — one number that can be trusted, and one that must not be built (D-129)
+
+**`R114`/`R115` (`R_q`): 0 Ω → `1R0 TUNE`. This is the solid value**, because it depends on
+the antenna alone:
+
+```
+Q0       = wL / Rs = 92.87 / 1.6      = 58.0     (far too high for ISO14443 bandwidth)
+R_total  = wL / 26                    = 3.57 ohm
+2 * R_q  = 3.57 - 1.6                 = 1.97 ohm  ->  R_q = 1R0 per leg,  Q = 25.8
+```
+
+**`C71`/`C72` (`C_s`): 100 pF → 300 pF. `C73`/`C74` (`C_p`): 100 pF → 1.8 nF.** Both follow
+from an L-match lifting the damped 1.8 Ω per side to an **assumed 20 Ω per side** driver
+target — the right shape and the right order of magnitude, **not a validated match**,
+because AN5276 still would not load.
+
+> **`L5`/`L6` and `C69`/`C70` were deliberately NOT re-derived, and are now inconsistent
+> with the network around them.** With `C_p` at 1.8 nF the shunt on that node rose by an
+> order of magnitude, and 220 nH against ~2 nF resonates near **7.6 MHz — below the
+> 13.56 MHz carrier**, which would attenuate the carrier rather than the harmonics.
+> **NOBODY MAY BUILD TO THE CURRENT EMC VALUES.** The on-sheet note says so in those words.
+> **B-56.**
+
+Everything stays `TUNE`, everything is 0603 and hand-reworkable, and **switching to the 5 V
+fallback is a re-tune of these same passives, never a respin**.
+
+### NFC field current — B-54 downgraded (D-130)
+
+DS12484's current tables still would not text-extract, so this is derived and labelled as
+such: a 3.3 V differential square-wave driver into the assumed 40 Ω differential match
+delivers ≈ **0.22 W** of RF; at 60–70 % driver efficiency that is **95–112 mA** from `+3V3`,
+plus ~20–30 mA of reader-mode overhead.
+
+> **Budget ≤ 150 mA from `+3V3` with the field on.**
+
+Against D-092's enforced case (1.16–1.32 A) that takes the TPS63020 to **≈ 66–74 % of 2 A**
+— comfortable — and **MX-1 means the NFC field is never concurrent with LoRa TX anyway.**
+**No simultaneous RF operation is claimed.** The datasheet figure or a bench measurement is
+still owed before fabrication.
+
+### Mechanical
+
+**NFC antenna clear region: 48 × 48 mm minimum** — 46 mm antenna plus installation
+tolerance. Rear upper region, no battery overlap, ferrite face toward the internal
+electronics and ground plane, no speaker-magnet overlap, no bosses or screws through the
+active zone, and the stored 433 MHz flex must not cross it. **No enclosure external-size
+change.**
+
+Two constraints follow from the parts rather than the zone: **`J7` needs vertical mating
+clearance**, and **the antenna cable is 75 mm**, so `J7` must sit within 75 mm of routed
+cable length of the antenna position — cheap to honour now, expensive after placement.
+
+### Nothing prohibited was added
+
+No full RF test connector, no AAT varactor network, no extra RF switches — no technical
+blocker required any of them. `TP37`/`TP38` on the antenna terminals, `TP32` on
+`NFC_SUPPLY` and the accessible `R106` FIT / `R107` DNP source-select links were already in
+place. `J7` is the interface the locked antenna requires, not an addition.
+
+**A reference collision was caught before it reached the netlist:** the new connector was
+first drawn as `J6`, which is already the speaker connector on sheet `06`. It is `J7`.
+
+### Flagged for CTO decision — the ferrite is directional
+
+Taoglas catalogues an otherwise identical **reverse-ferrite** version of this same 46 mm
+antenna with the same ACH(F) cable. Which one is correct depends on which face bonds to the
+enclosure wall: the ferrite must end up **between the coil and the metal it is shielding** —
+the PCB ground plane and the battery. **Zero board change and zero schematic change either
+way; it is a purchasing line item** — but ordering the wrong orientation costs a lead time,
+not a rework, so it must be settled against the actual enclosure stack **before the first
+antennas are ordered**.
+
+### Not done, and not claimed
+
+Sheets `05`–`09`, the PCB, mechanical CAD, firmware and the Beta-DM / frozen-Beta trees
+untouched. **No RF tuning performed and none claimed.** B-48, B-49, B-50, B-51 and B-52
+remain open from FBV2-S1-004.
+
+---
+
 ## 2026-08-23 — Radios and NFC migrated (FBV2-S1-004)
 
 **Overall 40% → 43%. No gate in the twelve-gate table passed**; the task gate

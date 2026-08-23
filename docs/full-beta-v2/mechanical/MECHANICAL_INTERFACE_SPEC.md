@@ -4,6 +4,21 @@
 
 Date: 2026-08-22 (updated 2026-08-23 by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003)
 
+> **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
+> The NFC antenna is **off-board and locked**: Taoglas `FXC.46.52.0075X.A.dg`, **46 mm
+> diameter, 0.27 mm thick with integrated ferrite**, 3M peel-and-stick, on a **75 mm 28 AWG
+> twisted pair with an ACH(F) connector** that mates `J7` on the board.
+> **Clear region: 48 × 48 mm minimum** — the 46 mm antenna plus installation tolerance.
+> Rear upper region; **no battery overlap**; **ferrite face toward the internal electronics
+> and ground plane**, per the manufacturer's stack orientation for the `.dg` variant; no
+> speaker-magnet overlap; **no metal bosses or screws through the active zone**; the stored
+> 433 MHz flex must not cross the NFC zone. **No enclosure external-size change** — this is
+> a keepout inside the existing cavity.
+> Two constraints follow from the parts rather than the zone: **`J7` needs vertical mating
+> clearance** (JST ACH is a top-entry header — the socket drops on from above and the wires
+> leave horizontally), and **the cable is 75 mm**, so `J7` must sit within 75 mm of routed
+> cable length of the antenna position, with the cable clear of the 433 MHz flex.
+
 > **RF antenna reservations — FBV2-S1-004 (2026-08-23, D-118 … D-120).**
 > **433 MHz:** the Taoglas `FXP450.07.0100C` body is **47 × 17 × 0.28 mm** on a 100 mm
 > cable and mounts by **adhesive against a plastic wall** in the **LEFT / LOWER-SIDE**
