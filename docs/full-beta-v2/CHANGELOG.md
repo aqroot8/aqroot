@@ -9,6 +9,143 @@ an entry.
 
 ---
 
+## 2026-08-23 — Pre-placement release audit, and NFC was still DNP (FBV2-S2-001)
+
+**Overall HELD at 62%. FBV2-S2 = FAIL on two of fourteen exit criteria** — and the audit earned
+its keep on the first one it looked at. Full analysis:
+[`audits/2026-08-23-s2-preplacement-release-audit.md`](audits/2026-08-23-s2-preplacement-release-audit.md).
+Working documents:
+[`assembly/FIRST_FIVE_POPULATION_MATRIX.md`](assembly/FIRST_FIVE_POPULATION_MATRIX.md) ·
+[`assembly/SOURCING_LEDGER.md`](assembly/SOURCING_LEDGER.md) ·
+[`assembly/FOOTPRINT_VERIFICATION_LEDGER.md`](assembly/FOOTPRINT_VERIFICATION_LEDGER.md) ·
+[`assembly/OFF_BOARD_BOM.md`](assembly/OFF_BOARD_BOM.md).
+
+**ERC 27 / 0 errors / 27 — unchanged. PCB untouched and still bit-identical to Beta-DM. No
+percentage was awarded, because no gate passed.**
+
+### The NFC chip was still marked DNP
+
+`U9` **ST25R3916-AQET** and its **twelve mandatory supply-decoupling capacitors** were inherited
+from Beta-DM marked `DNP` — against **D-035**, *"NFC is mandatory in the FIRST Full Beta v2
+fabrication. No DNP showcase shortcut"*, and **D-055**, *"NFC must be FITTED and functional on the
+first fabrication."*
+
+**Everything around the chip was already fitted**: the 27.12 MHz crystal, the complete differential
+matching network `C69`–`C80` / `L5` / `L6` / `R114`–`R117`, the antenna connector `J7`, the SPI
+wiring, the `NFC_SUPPLY` selector. **The first five boards would have been built with a finished
+13.56 MHz front end and no NFC chip on it.** All thirteen parts are now FIT.
+
+**This is the seventh consecutive sheet carrying a load-bearing inherited `DNP`, and it is the one
+that hid longest.** It survived four migrations because sheet 04's own migration
+(FBV2-S1-004/4B/4C) was about the antenna and the matching network — nobody re-read the population
+state of the IC underneath it. **The lesson is now a standing one: migrating a subsystem is not the
+same as auditing its population.**
+
+### Two carried numbers were wrong, and one register was full of ghosts
+
+**`D-077`'s display second source does not exist.** It states that `J1` is *"laid out on the
+FH12/FH52E standard land pattern so `FH52E-50S-0.5SH` is a drop-in second source."* Both Hirose
+land patterns were read. **FH69: signal land 0.30 × 1.23, hold-down 0.36 × 4.25 at 28.73 c/c,
+overall layout depth 7.38 mm, top-and-bottom two-point contact, back-flip actuator. FH52E: bottom
+contact only, front-flip actuator, 0.8 land, 4.6 mm depth datum** — and the FH52 catalogue says in
+its own words that its pattern is interchangeable with the **FH12**, not the FH69. **7.38 mm against
+4.6 mm: they cannot share pads. The claim is struck**, and `J1` is confirmed as **manual assembly**
+for the first five. Placement would otherwise have proceeded believing a second source existed.
+
+**The accessory boost settle delay was derived against the wrong capacitance.** FBV2-S1-009 quoted
+the TPS61023's 700 µs soft start as "seven times typical" for a 5 ms wait. The datasheet's
+condition line says that 700 µs is at **C_OUT_EFF = 10 µF**. `C65` + `C66` are 2 × 22 µF 10 V X7R
+0805, which at 5 V bias retain 40–60 % of nominal — **≈ 20 µF effective, twice the datasheet
+condition**. The real margin was **3.5×, not 7×**, and the datasheet publishes no maximum.
+**The first-build wait is raised to ≥ 10 ms** — a firmware constant, zero hardware cost, measured
+at first article.
+
+**Nine register entries were stale** and were closed on evidence: **P-01** (the reverse-polarity
+path is fully built and FBV2-A1 passed in August), **P-04** (NFC is fully designed — and now
+fitted), **B-45** (`NATIVE_A`/`NATIVE_B` gained their 100 Ω and TVS at FBV2-S1-009), **B-49**,
+**B-51**, **B-53**, **B-68**, plus **B-46** and **B-47** resolved below. A register that carries
+ghosts is a register nobody trusts.
+
+### P-14 — the fuel gauge stays where it is
+
+The CTO asked whether the MAX17048 should move to the clean node after the reverse-polarity FETs
+but before the 15 mΩ sense resistor. **It should not — and it was never on `BAT_RAW`.** Measured
+from the netlist, `U14` `CELL` and `VDD` are **already on `BAT_PROTECTED_P`**, the fully protected
+node.
+
+`BAT_SENSE` is the **LTC4368's precision current-sense input**. Hanging a gauge's `VDD` and its
+bypass capacitor there puts a **differential capacitance across `R75`** that distorts the
+reverse-current comparator during fast current steps, opens a deliberate blind spot in a protection
+measurement, and injects I²C transients onto the sense node. **What it would buy is inside the
+noise:** 15 mΩ costs 26 mV at the 1.75 A pack worst case, 4.5 mV at typical idle — **≤ 2.6 % SOC at
+peak load, < 0.5 % typical** — which is coarser than the MAX17048's own ModelGauge error and is
+**compensable in firmware by subtracting I × 15 mΩ**. **Safety outranks SOC accuracy.**
+
+### RF is now fully sourced
+
+**B-49 was never a risk:** Ebyte ships both the `E07-400M10S` and the `E22-900M22S` with **IPEX
+*and* stamp holes on the standard part number** — there is no variant selection to get wrong.
+
+**B-51 closed: Amphenol RF `095-902-568-150`**, Part Status **ACTIVE** — AMC right-angle plug →
+**SMA straight bulkhead jack, IP67**, RG-178, 50 Ω, **150 mm**, 6 GHz, and Amphenol documents the
+AMC series as **"compatible with Hirose U.FL and IPEX MHF1"**. **It is one assembly: pigtail and
+panel bulkhead in a single orderable part**, so no separate bulkhead MPN exists or is needed. Loss
+≈ 0.4 dB against a +22 dBm module. **433 MHz: Taoglas `FXP450.07.0100C`**, 410–470 MHz, MHF1,
+100 mm, stocked at DigiKey/Arrow/TTI.
+
+### B-46 closed, and the guess was right
+
+Molex sales drawing **SD-502570-001 Rev A**, note 4: **CARD INSERTING POSITION = CLOSE, NO CARD =
+OPEN.** With the detect lever grounded — the drawing's own pattern labels that land *"Vss :
+GROUND"* — and `R113` pulling up, **card present drives `SD_CARD_DETECT_N` LOW**, exactly as D-117
+assumed. **No firmware correction, no hardware change.**
+
+### Two undocumented placeholders, one of them dangerous
+
+**`R68` is a 0 Ω DNP bypass across `SW9`, the hard power switch.** Fitting it wires the unit
+permanently ON and **defeats the one provision that lets a user power down a hung or unflashed
+board** — the architecture is explicit that `SW9` is not a GPIO for exactly that reason. It arrived
+from Beta-DM **with no note at all**. It is now marked **DNP AND IT MUST STAY DNP**.
+
+**`C21`/`C22` are dead pads** — DNP with one terminal deliberately no-connect flagged, so fitting
+them does nothing. Reserved rework pads by the USB block, usable only by cutting a trace.
+Documented, and flagged as deletion candidates at placement.
+
+**Six missing MPNs were added** — `D9` → `PMEG2010AEH,115`, `Q4`/`Q6`–`Q9` → `BSS138LT1G`. **Every
+active and every connector now carries an exact MPN, and there are zero unexplained DNP.**
+
+### What fails the gate
+
+**B-03 — eight of twenty-eight critical footprints are traceable to a vendor part but have not been
+read against a manufacturer drawing:** the ESP32-S3-WROOM-1 module, the GCT USB-C receptacle, both
+JST families, the PTS645 and JS102011SAQN switches, the MAX98357A TQFN exposed pad and the NFC
+crystal. The standing instruction is explicit — *do not mark a footprint verified because the
+library name looks right* — so they are not marked verified. **They do not block placement; they
+block fabrication release.** Fifteen are properly verified, including `U11` BQ25185, checked in
+this task against TI's own `DLH0010A` board-layout drawing 4226298/A.
+
+**B-71 (new) — only 7 of 46 unique MPNs carry an LCSC code**, so the JLC Basic/Extended split, the
+assembly quote and the manual-placement list cannot be produced from the current metadata.
+**B-70 (new) — `L5`/`L6`, the 39 nH NFC EMC inductors, have no MPN at all**; a tuned RF inductor
+needs a specified part, not a value and an 0603 outline. **B-54 also sharpens: the ST25R3916 field
+current at 3.3 V is still not extracted, and that now loads a rail the part is actually fitted on.**
+
+### O-8 — one new item for the CTO
+
+**The 915 MHz external whip antenna MPN is not selected.** Everything from the module socket to the
+panel bulkhead is locked and orderable; the antenna that screws onto the outside is not.
+Accessory-class, no board impact — but a range test means nothing without it.
+
+### What was NOT done
+
+No PCB placement, no routing, no outline change, no mechanical CAD, no firmware, no Beta-DM, no
+frozen Beta. **No honest ERC warning was "fixed"** — no no-connect, power flag or pin-type was
+added or altered anywhere. All seven `PWR_FLAG`s were individually traced to a real supply.
+Passive values were **deliberately not consolidated**: doing that before the layout exists
+optimises the wrong thing.
+
+---
+
 ## 2026-08-23 — Community expansion port, and the schematic migration is complete (FBV2-S1-009)
 
 **Overall 55% → 62%. FBV2-S1 = PASS — the first twelve-gate entry to pass since FBV2-A2.** Task

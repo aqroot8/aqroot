@@ -4,7 +4,7 @@
 `hardware/beta-v2/kicad/aqroot-beta-v2/` via a `kicad-cli` netlist export, not
 transcribed from a pin-map document. Regenerate it the same way before quoting it.
 
-Date: 2026-08-23 (after FBV2-S1-009 — **the schematic migration is complete**)
+Date: 2026-08-23 (re-verified at FBV2-S2-001 — pre-placement release audit)
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
 > **No sheet is still Beta-DM.** All nine are migrated as of FBV2-S1-009, so
@@ -67,6 +67,11 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 | 25 | GPIO48 | `SD_CS_N` | microSD | output | — | no | |
 
 **33 of 33 usable pins are assigned. Zero free native GPIO — B-10 stands.**
+
+> **RE-READ AT FBV2-S2-001 (2026-08-23).** All 41 `U1` pins were re-exported from the netlist and
+> compared against this table. **Every row matches, no duplicate net appears on two `U1` pins, and
+> there is no boot-strap regression** — GPIO0, GPIO3, GPIO45 and GPIO46 all keep the external pulls
+> and test points recorded in §3, and no peripheral was added to any strap.
 GPIO35/36/37 are unusable on the R8 (octal PSRAM) part and stay NC.
 
 **No duplicate assignment exists.** Verified by netlist: every `U1` pin resolves to

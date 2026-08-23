@@ -4,7 +4,7 @@
 bus and the external community segment. Where an older audit, transcript or README disagrees,
 this file wins; [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks it.
 
-Established: 2026-08-23 (FBV2-S1-005). Updated 2026-08-23 (FBV2-S1-008 — `U23` at `0x22`; FBV2-S1-009 — TCA4307, P-18 closed, bus-scan list corrected).
+Established: 2026-08-23 (FBV2-S1-005). Updated 2026-08-23 (FBV2-S1-008 — `U23` at `0x22`; FBV2-S1-009 — TCA4307, P-18 closed, bus-scan list corrected; re-verified at FBV2-S2-001).
 Derived from a `kicad-cli` netlist export of `hardware/beta-v2/kicad/aqroot-beta-v2/`, not from
 a pin-map document. **Regenerate it the same way before quoting it.**
 
@@ -151,6 +151,10 @@ The BMI270 additionally supports Fm+ at 1 MHz; nothing else on the bus is qualif
 > **CORRECTED 2026-08-23 (FBV2-S1-009).** This list previously omitted **`0x22`**, which has been
 > a live internal device since `U23` landed at FBV2-S1-008. A bring-up engineer following the old
 > list would have treated the third expander as an unexpected responder — i.e. as a defect.
+
+> **RE-VERIFIED AT FBV2-S2-001 (2026-08-23)** against a fresh netlist export: `U2` A2/A1/A0 =
+> GND/GND/GND → **0x20**, `U3` = GND/GND/`+3V3` → **0x21**, `U23` = GND/`+3V3`/GND → **0x22**.
+> No fourth I²C target exists on the internal bus.
 
 **The accessory segment is scanned separately**, after `ACC_3V3_SW` is enabled and the TCA4307
 reports `READY` high on `TP44`. **Anything answering there at `0x20`, `0x21`, `0x22`, `0x36`,
