@@ -1,0 +1,208 @@
+(footprint "PUI_DMM-4026-B-I2S_4.0x3.0mm"
+	(version 20241229)
+	(generator "aqroot-beta-library")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "PUI Audio DMM-4026-B-I2S-R bottom-port MEMS I2S microphone. Body 4.00 x 3.00 x 1.00 mm. Land pattern reproduced from the PUI Audio DMM-4026-B-I2S-R data sheet (Rev A, 5/26/2021) Dimensions page and Suggested Pickup Tool Location and Land Pattern page: six 0.60 x 0.40 mm pads on two columns 2.15 mm apart with a 0.65 mm row pitch, plus pad 4 as the GND ring around the acoustic port, ID 1.05 mm / OD 1.65 mm, on the package width centreline 1.00 mm from the near short edge. Pin 1 is at the upper LEFT in this TOP view because the manufacturer drawing is a bottom view. THE PCB ACOUSTIC HOLE IS NOT PART OF THIS FOOTPRINT: drill a 1.05 mm non-plated hole concentric with pad 4 at PCB stage, and keep solder paste back from the hole edge so solder cannot wick into the acoustic port. Both are FBV2-S2 / PCB-stage items.")
+	(tags "microphone MEMS I2S PUI Audio DMM-4026 bottom port")
+	(attr smd)
+	(fp_text reference "REF**"
+		(at 0 -2.9 0)
+		(layer "F.SilkS")
+		(uuid "fb060001-d100-4d10-9d10-000000000001")
+		(effects
+			(font
+				(size 0.7 0.7)
+				(thickness 0.105)
+			)
+		)
+	)
+	(fp_text value "PUI_DMM-4026-B-I2S_4.0x3.0mm"
+		(at 0 2.9 0)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000002")
+		(effects
+			(font
+				(size 0.7 0.7)
+				(thickness 0.105)
+			)
+		)
+	)
+	(fp_line
+		(start -1.5 -2)
+		(end 1.5 -2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000010")
+	)
+	(fp_line
+		(start 1.5 -2)
+		(end 1.5 2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000011")
+	)
+	(fp_line
+		(start 1.5 2)
+		(end -1.5 2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000012")
+	)
+	(fp_line
+		(start -1.5 2)
+		(end -1.5 -2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000013")
+	)
+	(fp_circle
+		(center 0 1)
+		(end 0.525 1)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000014")
+	)
+	(fp_line
+		(start -1.75 -2.25)
+		(end 1.75 -2.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "fb060001-d100-4d10-9d10-000000000020")
+	)
+	(fp_line
+		(start 1.75 -2.25)
+		(end 1.75 2.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "fb060001-d100-4d10-9d10-000000000021")
+	)
+	(fp_line
+		(start 1.75 2.25)
+		(end -1.75 2.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "fb060001-d100-4d10-9d10-000000000022")
+	)
+	(fp_line
+		(start -1.75 2.25)
+		(end -1.75 -2.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "fb060001-d100-4d10-9d10-000000000023")
+	)
+	(fp_line
+		(start -1.6 -2.1)
+		(end -1.6 -1.9)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "fb060001-d100-4d10-9d10-000000000030")
+	)
+	(fp_line
+		(start -1.6 -2.1)
+		(end -1.4 -2.1)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "fb060001-d100-4d10-9d10-000000000031")
+	)
+	(fp_circle
+		(center -1.075 -1.95)
+		(end -0.975 -1.95)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+		(uuid "fb060001-d100-4d10-9d10-000000000032")
+	)
+	(pad "1" smd rect
+		(at -1.075 -1.58)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000101")
+	)
+	(pad "2" smd rect
+		(at -1.075 -0.93)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000102")
+	)
+	(pad "3" smd rect
+		(at -1.075 -0.28)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000103")
+	)
+	(pad "4" smd custom
+		(at 0 1)
+		(size 0.3 0.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(options
+			(clearance outline)
+			(anchor circle)
+		)
+		(primitives
+			(gr_circle
+				(center 0 0)
+				(end 0.675 0)
+				(width 0.3)
+				(fill no)
+			)
+		)
+		(uuid "fb060001-d100-4d10-9d10-000000000104")
+	)
+	(pad "5" smd rect
+		(at 1.075 -0.28)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000105")
+	)
+	(pad "6" smd rect
+		(at 1.075 -0.93)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000106")
+	)
+	(pad "7" smd rect
+		(at 1.075 -1.58)
+		(size 0.6 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fb060001-d100-4d10-9d10-000000000107")
+	)
+	(embedded_fonts no)
+)

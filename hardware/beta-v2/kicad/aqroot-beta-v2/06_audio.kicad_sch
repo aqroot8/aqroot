@@ -3,7 +3,7 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "ff1f488b-eaa5-40b8-9796-d37e93b5c53d")
-	(paper "A4")
+	(paper "A3")
 	(lib_symbols
 		(symbol "Audio:MAX98357A"
 			(exclude_from_sim no)
@@ -868,38 +868,171 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Sensor_Audio:ICS-43434"
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "AQROOT_Beta:DMM-4026-B-I2S"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
 			(property "Reference" "MK"
-				(at -7.62 6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
+				(at 0 10.16 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Value" "ICS-43434"
-				(at 1.27 6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
+			(property "Value" "DMM-4026-B-I2S"
+				(at 0 -10.16 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Footprint" "Sensor_Audio:InvenSense_ICS-43434-6_3.5x2.65mm"
+			(property "Footprint" "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -907,10 +1040,8 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.invensense.com/wp-content/uploads/2016/02/DS-000069-ICS-43434-v1.2.pdf"
+			(property "Datasheet" "https://api.puiaudio.com/filename/DMM-4026-B-I2S-R.pdf"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -918,10 +1049,8 @@
 					)
 				)
 			)
-			(property "Description" "TDK InvenSense MEMS Microphone, 24-bit I2S, 65 dBA SNR, LGA-6"
+			(property "Description" "PUI Audio bottom-port MEMS I2S microphone, 7-pad, 4.0 x 3.0 x 1.0 mm"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -929,10 +1058,8 @@
 					)
 				)
 			)
-			(property "ki_keywords" "microphone MEMS 24bit I2S ICS-43434 TDK InvenSense"
+			(property "Manufacturer" "PUI Audio"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -940,10 +1067,8 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "InvenSense*ICS*43434*"
+			(property "MPN" "DMM-4026-B-I2S-R"
 				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
 				(hide yes)
 				(effects
 					(font
@@ -951,7 +1076,43 @@
 					)
 				)
 			)
-			(symbol "ICS-43434_1_1"
+			(property "Package" "PUI 7-pad SMD, 4.00 x 3.00 x 1.00 mm, bottom acoustic port"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Note" "Verified against the PUI Audio DMM-4026-B-I2S-R data sheet (Rev A, 5/26/2021) in FBV2-S1-006. SEVEN pads, not six - it is not pin-compatible with the ICS-43434 it replaces. Pin 1 LR: low selects the LEFT I2S slot, high selects RIGHT. Pin 2 CONFIG: Bosch-style config strap - the data sheet says: Pull to ground. The state of this pin is used at power-up. It MUST be tied to GND. The ICS-43434 has no equivalent pin. Pin 3 VDD 1.62 to 3.63 V, decouple with 0.1 uF. Pin 4 GND is the ring pad around the acoustic port. Pin 7 SD tri-states when it is not driving its own channel, and the data sheet requires a 100 kOhm pull-down on the SD trace to discharge the line while all microphones on the bus are tri-stated. Normal-mode input clock 2.048 to 4.096 MHz; below 320 kHz the part enters sleep mode at 5 uA. Data is I2S 24-bit in a 32-bit word (mono) or 64-bit frame (stereo), 18-bit precision, six null bits. Supply current 820 to 1000 uA normal. Startup 20 ms. Sensitivity -26 dBFS, SNR 64 dB, omnidirectional. Bottom port, acoustic port diameter 0.25 mm in the can; the PCB needs a 1.05 mm hole concentric with pad 4."
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "microphone MEMS I2S PUI Audio DMM-4026 bottom port digital"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "PUI*DMM*4026*"
+				(at 0 0 0)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "DMM-4026-B-I2S_0_1"
 				(rectangle
 					(start -7.62 5.08)
 					(end 7.62 -5.08)
@@ -963,33 +1124,12 @@
 						(type background)
 					)
 				)
-				(polyline
-					(pts
-						(xy -5.08 1.27) (xy -5.08 -1.27)
-					)
-					(stroke
-						(width 0.381)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -3.81 0)
-					(radius 1.27)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
+			)
+			(symbol "DMM-4026-B-I2S_1_1"
 				(pin input line
-					(at 10.16 2.54 180)
+					(at -10.16 2.54 0)
 					(length 2.54)
-					(name "WS"
+					(name "LR"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1005,9 +1145,9 @@
 					)
 				)
 				(pin input line
-					(at -10.16 2.54 0)
+					(at -10.16 0 0)
 					(length 2.54)
-					(name "LR"
+					(name "CONFIG"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1015,42 +1155,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -7.62 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 10.16 0 180)
-					(length 2.54)
-					(name "SCK"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1068,7 +1172,61 @@
 							)
 						)
 					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 2.54 180)
+					(length 2.54)
+					(name "WS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 0 180)
+					(length 2.54)
+					(name "SCK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1086,7 +1244,7 @@
 							)
 						)
 					)
-					(number "6"
+					(number "7"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1095,7 +1253,6 @@
 					)
 				)
 			)
-			(embedded_fonts no)
 		)
 		(symbol "power:+3V3"
 			(power global)
@@ -1352,9 +1509,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "AUDIO ARCHITECTURE LOCKED\n\nICS-43434:\nLEFT I2S SLOT - LR PIN TIED TO GND\n\nMAX98357A:\n3.3V SUPPLY\nGAIN_SLOT TIED TO GND - 12 dB GAIN\nDIFFERENTIAL FILTERLESS SPEAKER OUTPUT\n\nSPEAKER IS OFF-BOARD - WIRED VIA J6 (JST PH 2.0 mm)\nVERIFY OUTPUT LEVEL AND THERMALS ON BETA\nSPEAKER SKU FINALISES WITH THE ENCLOSURE"
+	(text "AUDIO ARCHITECTURE - MIGRATED FBV2-S1-006\n\nMK1 PUI DMM-4026-B-I2S-R  (REPLACES ICS-43434)\n  LR    -> GND   = LEFT I2S SLOT\n  CONFIG-> GND   = MANDATORY, READ AT POWER-UP\n  VDD 1.62-3.63 V, C8 100nF LOCAL\n  SD TRI-STATES OFF-SLOT -> R120 100k PULL-DOWN\n           (DATA-SHEET REQUIREMENT, NOT A CHOICE)\n  7 PADS, NOT 6. NEW SYMBOL AND NEW FOOTPRINT.\n\nU5 MAX98357AETE+T   3.3 V, PRODUCTION\n  GAIN_SLOT -> VDD = 6 dB   (WAS GND = 12 dB)\n  AT 12 dB A 0 dBFS SAMPLE ASKS FOR 5.07 Vrms\n  AND THE RAIL ONLY GIVES 2.33 Vrms, SO EVERYTHING\n  ABOVE -6.8 dBFS CLIPPED. AT 6 dB 0 dBFS = THE RAIL.\n  SD_MODE: >1.4 V = LEFT, <0.16 V = SHUTDOWN.\n  R15 100k TO GND (SHEET 08) = OFF AT RESET.\n  NO SERIES R ON SD_MODE: VDD AND VDDIO ARE THE\n  SAME +3V3 NET, SO VDD < VDDIO CANNOT HAPPEN.\n\nSHARED I2S: BCLK AND LRCLK COMMON, MIC_DIN AND\nSPK_DOUT SEPARATE. FULL DUPLEX ON ONE CONTROLLER.\n\nBUS RATE IS SET BY THE MICROPHONE, NOT THE AMP:\n  MIC NORMAL MODE NEEDS BCLK 2.048-4.096 MHz.\n  16 kHz x 64 = 1.024 MHz IS OUT OF THAT RANGE.\n  RUN 48 kHz x 64 = 3.072 MHz AND DECIMATE TO\n  16 kHz IN FIRMWARE.\n\nFIRMWARE SAFETY: NEVER REMOVE LRCLK WHILE BCLK\nIS RUNNING - THE AMP CAN PUT DC ON THE SPEAKER."
 		(exclude_from_sim no)
-		(at 256.286 51.816 0)
+		(at 340 62 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1424,7 +1581,7 @@
 	)
 	(wire
 		(pts
-			(xy 232.41 72.39) (xy 236.22 72.39)
+			(xy 232.41 72.39) (xy 234.95 72.39)
 		)
 		(stroke
 			(width 0)
@@ -1544,7 +1701,7 @@
 	)
 	(wire
 		(pts
-			(xy 232.41 74.93) (xy 236.22 74.93)
+			(xy 232.41 74.93) (xy 234.95 74.93)
 		)
 		(stroke
 			(width 0)
@@ -1668,7 +1825,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0dfbb60e-a5de-490e-8185-b5ba70367df3")
 		(property "Reference" "U5"
@@ -1716,6 +1873,50 @@
 			)
 		)
 		(property "Description" "Mono DAC with amplifier, I2S, PCM, TDM, 32-bit, 96khz, 3.2W, TQFP-16"
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Analog Devices (Maxim)"
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "MAX98357AETE+T"
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "TQFN-16, 3 x 3 mm, 0.5 mm pitch, exposed pad"
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "RETAINED after a lifecycle check in FBV2-S1-006: analog.com lists the MAX98357A as PRODUCTION with a 1ku price, so there is no sourcing reason to move. Orderable MPN MAX98357AETE+T, 16-pin TQFN, -40 to +85 C, tape and reel. Supply 2.5 to 5.5 V, so 3.3 V is in range. GAIN_SLOT CHANGED FROM GND (12 dB) TO VDD (6 dB) in FBV2-S1-006: gain is referenced to a 2.1 dBV full-scale DAC output, so at 12 dB a 0 dBFS sample asks for 5.07 Vrms while the 3.3 V rail can only deliver 2.33 Vrms - everything above about -6.8 dBFS would clip. At 6 dB, 0 dBFS maps to 2.54 Vrms, essentially the rail, so the whole digital range is usable and the output noise floor is lower. Maximum output is rail-limited either way at about 0.68 W into 8 ohm. SD_MODE is a multi-level input: above the B2 trip point (1.4 V typ) selects LEFT, below B0 (0.16 V typ) is shutdown, so a plain push-pull 3.3 V drive gives exactly the two states this design needs. R15 100 k to GND on sheet 08 holds it in shutdown at reset and boot. No series resistor is needed on SD_MODE because VDD and VDDIO are the same +3V3 net, so the data sheet VDD < VDDIO case cannot occur. Quiescent 2.4 mA at 3.7 V, standby 340 uA with BCLK stopped, shutdown 0.6 uA. Turn-on 7 ms. Speaker current limit 2.8 A. Spread-spectrum modulation around 330 kHz. FIRMWARE RULE: do NOT remove LRCLK while BCLK is present - the data sheet warns this can produce a large DC output voltage, which would burn an 8 ohm voice coil. LRCLK must be one of 8, 16, 32, 44.1, 48, 88.2 or 96 kHz."
 			(at 219.71 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -1859,222 +2060,6 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
 					(reference "#PWR071")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 205.74 85.09 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1757589b-77b6-49d2-907d-2e50298a4fa1")
-		(property "Reference" "#PWR073"
-			(at 199.39 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 201.93 85.0899 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 205.74 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 205.74 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 205.74 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "da8b8436-5917-4935-9e16-82e544928e2a")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
-					(reference "#PWR073")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Speaker")
-		(at 241.3 72.39 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1ceb2234-888d-4cc0-b661-48072fbad413")
-		(property "Reference" "LS1"
-			(at 246.38 72.3899 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "8R_SPEAKER_OFFBOARD"
-			(at 246.38 74.9299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 241.3 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 241.046 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "OFF_BOARD / WIRED SPEAKER / 8R >=0.5W / SKU FINALIZES WITH ENCLOSURE. Implementation is OPTION C, off-board wired speaker. The MAX98357A differential output path is unchanged: U5 OUTP -> SPK_P and U5 OUTN -> SPK_N, brought to the board edge at J6 and out to the speaker on a crimped lead. LS1 is marked exclude-from-board, so it is intentionally footprintless and must NOT be counted as a missing board footprint. Target class 8 ohm, >=0.5 W, ~15 mm; exact SKU is deferred to enclosure/mechanical selection."
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "OFF_BOARD WIRED SPEAKER, 8 ohm, >=0.5 W, ~15 mm class. No PCB footprint by design - the speaker is enclosure-mounted and wired to the board through J6 (JST PH 2.0 mm)."
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "TBD - selected with the enclosure"
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKU FINALIZES WITH ENCLOSURE"
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Speaker"
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mounting" "OFF_BOARD"
-			(at 241.3 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "55262a5b-b0a7-40d6-84bf-a761bba47614")
-		)
-		(pin "2"
-			(uuid "7cd9a7a7-531c-4d6d-8881-9a94d7462f2f")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
-					(reference "LS1")
 					(unit 1)
 				)
 			)
@@ -3030,122 +3015,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Sensor_Audio:ICS-43434")
-		(at 116.84 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b61b0ebb-58b5-4380-b319-c91815d27089")
-		(property "Reference" "MK1"
-			(at 118.9833 71.12 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "ICS-43434"
-			(at 118.9833 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Sensor_Audio:InvenSense_ICS-43434-6_3.5x2.65mm"
-			(at 116.84 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.invensense.com/wp-content/uploads/2016/02/DS-000069-ICS-43434-v1.2.pdf"
-			(at 116.84 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "TDK InvenSense MEMS Microphone, 24-bit I2S, 65 dBA SNR, LGA-6"
-			(at 116.84 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "TDK InvenSense"
-			(at 116.84 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "ICS-43434"
-			(at 116.84 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "8c50d4d8-5027-49c1-91c7-385cff8958ac")
-		)
-		(pin "5"
-			(uuid "9df31bb1-daff-4ff1-a766-c6aa930fb267")
-		)
-		(pin "1"
-			(uuid "164eccea-2e3a-4688-94a9-f01659c71a0f")
-		)
-		(pin "3"
-			(uuid "00b2807b-832f-474a-a09c-6a313edf907b")
-		)
-		(pin "4"
-			(uuid "fe0fadf2-7449-42ec-a6c2-ded13fd363d3")
-		)
-		(pin "6"
-			(uuid "5f08baa8-05f4-45aa-84c4-4446fcefe53d")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
-					(reference "MK1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 271.78 101.6 0)
 		(unit 1)
@@ -3310,7 +3179,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6bb3aeb6-4f17-4fd8-ae66-78c6b4e3cb05")
 		(property "Reference" "J6"
@@ -3412,7 +3281,7 @@
 				)
 			)
 		)
-		(property "Note" "Board-side speaker connector. OFF-BOARD SPEAKER / 8R >=0.5W / JST PH 2.0 mm / ENCLOSURE-MOUNTED. Pin 1 = SPK_P and pin 2 = SPK_N, matching MAX98357A OUTP and OUTN; observe this polarity when crimping the speaker lead. Footprint Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical is the same land pattern already used for the J4 battery connector."
+		(property "Note" "Board-side speaker connector, RETAINED in FBV2-S1-006. J6 pin 1 = SPK_P = MAX98357A OUTP, J6 pin 2 = SPK_N = MAX98357A OUTN; observe polarity when crimping - the AS02008MR-LW152-R lead is RED positive and BLACK negative, and the cone moves forward on a positive voltage at the positive terminal. Mating side: JST PHR-2 housing with SPH-002T-P0.5S crimp contacts. The speaker lead is UL1571 AWG #32 and the PH applicable wire range is AWG #32 to #24, so AWG #32 is at the small end of the range but inside it - confirm the crimp at first article. The speaker is therefore replaceable without soldering. R121 / R122 and C81 / C82 sit between U5 and J6 as the EMI recovery positions."
 			(at 241.3 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -3460,56 +3329,1289 @@
 		)
 		(uuid "55d9d0fd-9539-46cb-8a58-37ce3307ed67")
 	)
-	(wire
-		(pts
-			(xy 236.22 110.49) (xy 232.41 110.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd33918e-cbe0-411d-85d7-7579c06a2c33")
-	)
-	(wire
-		(pts
-			(xy 236.22 113.03) (xy 232.41 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd86f7a5-7281-4566-bf3f-08910bd5a00a")
-	)
-	(label "SPK_P"
-		(at 232.41 110.49 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a1b9a46f-8d94-4f6e-9358-25529e42b39e")
-	)
-	(label "SPK_N"
-		(at 232.41 113.03 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "1f25b4fa-16ac-4159-99a7-d5d40b28f635")
-	)
-	(text "SPEAKER IS OFF-BOARD\n\nOFF-BOARD SPEAKER\n8R >=0.5W\nJST PH 2.0 mm\nENCLOSURE-MOUNTED\n\nLS1 represents the wired speaker beyond J6 and is EXCLUDED FROM THE BOARD.\nJ6 pin 1 = SPK_P = MAX98357A OUTP\nJ6 pin 2 = SPK_N = MAX98357A OUTN\nOBSERVE POLARITY WHEN CRIMPING\n\nSpeaker SKU finalises with the enclosure."
+	(text "SPEAKER - LOCKED FBV2-S1-006\n\nLS1 = PUI AUDIO AS02008MR-LW152-R\n  20 mm DIA x 3 mm, 8R +/-15%,\n  0.5 W RATED / 0.8 W MAX,\n  86 +/-3 dBA @ 0.1 W / 0.1 m,\n  500-4000 Hz  =  VOICE BAND, NOT MUSIC,\n  152 mm UL1571 AWG#32 LEADS, RED +, BLACK -.\n\nOFF-BOARD, ENCLOSURE-MOUNTED, WIRED VIA J6.\nLS1 IS EXCLUDED FROM THE BOARD (on_board no).\nJ6 pin 1 = SPK_P   J6 pin 2 = SPK_N\nMATING: JST PHR-2 + SPH-002T-P0.5S.\nAWG#32 IS INSIDE THE PH RANGE (#32 TO #24),\nSO NO SOLDERING IS NEEDED TO REPLACE IT.\nOBSERVE POLARITY - THE CONE MOVES FORWARD ON\nA POSITIVE VOLTAGE AT THE RED LEAD.\n\nPOWER AT 3.3 V INTO 8R:\n  RAIL LIMIT 2.33 Vrms -> 0.68 W PEAK\n  ~230 mA PEAK FROM +3V3 AT 90% EFFICIENCY\n  DEFAULT MAX SOFTWARE VOLUME -6 dBFS -> 0.17 W,\n  WELL INSIDE THE 0.5 W RATING, ~89 dB @ 0.1 m.\n\nEMI RECOVERY, NOT FITTED BY DEFAULT:\n  R121 / R122  0R FITTED  (PLAIN WIRE)\n  C81 / C82    1nF DNP\nMAX98357A DATA SHEET FIG 14 SHOWS COMPLIANCE\nWITH 12 in OF CABLE AND NO FILTER AT ALL.\nPCB: ROUTE SPK_P / SPK_N AS A TIGHT PAIR."
 		(exclude_from_sim no)
-		(at 256.286 105.41 0)
+		(at 340 150 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 		)
 		(uuid "14eadc76-8b9e-4bf0-9f6f-7d6db18cbb04")
+	)
+	(symbol
+		(lib_id "AQROOT_Beta:DMM-4026-B-I2S")
+		(at 116.84 81.28 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000300")
+		(property "Reference" "MK1"
+			(at 119.38000000000001 71.12 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DMM-4026-B-I2S"
+			(at 119.38000000000001 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://api.puiaudio.com/filename/DMM-4026-B-I2S-R.pdf"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "PUI Audio bottom-port MEMS I2S microphone, 7-pad, 4.0 x 3.0 x 1.0 mm"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "PUI Audio"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "DMM-4026-B-I2S-R"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "PUI 7-pad SMD, 4.00 x 3.00 x 1.00 mm, bottom acoustic port"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "REPLACES THE OBSOLETE ICS-43434 (FBV2-S1-006). Not a pin-compatible swap: the DMM-4026-B-I2S-R has SEVEN pads and a different land pattern, so both the symbol and the footprint are new. Verified against the PUI Audio data sheet Rev A, 5/26/2021. Pin 1 LR to GND selects the LEFT I2S slot. Pin 2 CONFIG has no ICS-43434 equivalent and MUST be tied to GND - the data sheet says Pull to ground, the state of this pin is used at power-up. Pin 3 VDD 1.62 to 3.63 V with C8 100 nF local. Pin 4 GND is the ring pad around the acoustic port. Pin 7 SD tri-states off-slot, and the data sheet requires a 100 kOhm pull-down on the SD trace - that is R120. CLOCK CONSTRAINT: normal mode needs BCLK between 2.048 and 4.096 MHz, so a 16 kHz / 64-BCLK frame (1.024 MHz) would NOT keep this microphone in normal mode. Run the shared I2S bus at 48 kHz with a 64-BCLK frame - 3.072 MHz, the data sheet typical - and decimate to 16 kHz in firmware. Below 320 kHz the part drops to sleep mode at 5 uA. Startup 20 ms. Supply current 820 to 1000 uA. BOTTOM PORT: acoustic port 0.25 mm diameter in the can; the PCB needs a 1.05 mm hole concentric with pad 4, and the enclosure tunnel must align to it."
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000301")
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000302")
+		)
+		(pin "3"
+			(uuid "fb060100-d100-4d10-9d10-0000000303")
+		)
+		(pin "4"
+			(uuid "fb060100-d100-4d10-9d10-0000000304")
+		)
+		(pin "5"
+			(uuid "fb060100-d100-4d10-9d10-0000000305")
+		)
+		(pin "6"
+			(uuid "fb060100-d100-4d10-9d10-0000000306")
+		)
+		(pin "7"
+			(uuid "fb060100-d100-4d10-9d10-0000000307")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "MK1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 105.41 81.28) (xy 106.68 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000401")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 105.41 81.28 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000310")
+		(property "Reference" "#PWR0643"
+			(at 105.41 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 105.41 86.36 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 105.41 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 105.41 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000311")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "#PWR0643")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 127.0 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb060100-d100-4d10-9d10-0000000402")
+	)
+	(wire
+		(pts
+			(xy 127.0 83.82) (xy 127.0 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000403")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 127.0 96.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000320")
+		(property "Reference" "R120"
+			(at 129.54 95.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k"
+			(at 129.54 97.78999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 127.0 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127.0 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 127.0 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000321")
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000322")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "R120")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 127.0 100.33) (xy 127.0 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000404")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127.0 101.6 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000330")
+		(property "Reference" "#PWR0644"
+			(at 127.0 107.94999999999999 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 127.0 106.67999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 127.0 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127.0 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000331")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "#PWR0644")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 205.74 85.09 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000340")
+		(property "Reference" "#PWR0645"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 205.74 90.17 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 205.74 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 205.74 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000341")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "#PWR0645")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SPK_P"
+		(at 196.85 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000405")
+	)
+	(wire
+		(pts
+			(xy 196.85 110.49) (xy 200.66 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000406")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 204.47 110.49 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000350")
+		(property "Reference" "R121"
+			(at 207.01 100.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R"
+			(at 207.01 102.86999999999999 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 204.47 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 204.47 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 204.47 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "EMI recovery position, FITTED 0 R for the first build so the speaker path is a plain wire. If conducted or radiated emissions from the filterless Class D output need taming, replace with a ferrite bead (600 R at 100 MHz class) and populate the matching shunt capacitor. The MAX98357A data sheet Figure 14 shows compliant emissions with 12 in of speaker cable and NO output filtering, and AQROOT wire is much shorter than that, so nothing is fitted by default."
+			(at 204.47 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000351")
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000352")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "R121")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 208.28 110.49) (xy 236.22 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000407")
+	)
+	(junction
+		(at 212.09 110.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb060100-d100-4d10-9d10-0000000408")
+	)
+	(wire
+		(pts
+			(xy 212.09 110.49) (xy 212.09 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000409")
+	)
+	(label "SPK_P_CONN"
+		(at 212.09 116.84 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000410")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 212.09 120.65 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000360")
+		(property "Reference" "C81"
+			(at 214.63 110.49000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF DNP"
+			(at 214.63 113.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 212.09 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 212.09 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Capacitor"
+			(at 212.09 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "EMI recovery position, DNP. Populate only together with a ferrite bead in the matching series position. 1 nF is the starting value for a filterless Class D output stage. Keep SPK_P and SPK_N tightly coupled and equal length from U5 to J6 regardless of what is fitted."
+			(at 212.09 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000361")
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000362")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "C81")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 212.09 124.46) (xy 212.09 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000411")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 212.09 125.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000370")
+		(property "Reference" "#PWR0646"
+			(at 212.09 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 212.09 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 212.09 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 212.09 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000371")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "#PWR0646")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "SPK_N"
+		(at 215.9 113.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000412")
+	)
+	(wire
+		(pts
+			(xy 215.9 113.03) (xy 226.06 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000413")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 229.87 113.03 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000380")
+		(property "Reference" "R122"
+			(at 232.41 102.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0R"
+			(at 232.41 105.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 229.87 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 229.87 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 229.87 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "EMI recovery position, FITTED 0 R for the first build so the speaker path is a plain wire. If conducted or radiated emissions from the filterless Class D output need taming, replace with a ferrite bead (600 R at 100 MHz class) and populate the matching shunt capacitor. The MAX98357A data sheet Figure 14 shows compliant emissions with 12 in of speaker cable and NO output filtering, and AQROOT wire is much shorter than that, so nothing is fitted by default."
+			(at 229.87 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000381")
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000382")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "R122")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 233.68 113.03) (xy 236.22 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000414")
+	)
+	(junction
+		(at 234.95 113.03)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fb060100-d100-4d10-9d10-0000000415")
+	)
+	(wire
+		(pts
+			(xy 234.95 113.03) (xy 234.95 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000416")
+	)
+	(label "SPK_N_CONN"
+		(at 234.95 116.84 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000417")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 234.95 120.65 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000390")
+		(property "Reference" "C82"
+			(at 237.48999999999998 110.49000000000001 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF DNP"
+			(at 237.48999999999998 113.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 234.95 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 234.95 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Capacitor"
+			(at 234.95 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "EMI recovery position, DNP. Populate only together with a ferrite bead in the matching series position. 1 nF is the starting value for a filterless Class D output stage. Keep SPK_P and SPK_N tightly coupled and equal length from U5 to J6 regardless of what is fitted."
+			(at 234.95 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000391")
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000392")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "C82")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 234.95 124.46) (xy 234.95 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000418")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 234.95 125.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000420")
+		(property "Reference" "#PWR0647"
+			(at 234.95 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 234.95 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 234.95 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 234.95 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000421")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "#PWR0647")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Speaker")
+		(at 247.65 140.97 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb060100-d100-4d10-9d10-0000000430")
+		(property "Reference" "LS1"
+			(at 250.19 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AS02008MR-LW152-R"
+			(at 250.19 133.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://api.puiaudio.com/filename/AS02008MR-LW152-R.pdf"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Off-board 20 mm 8 ohm voice-band speaker, 152 mm AWG 32 leads"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "PUI Audio"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "AS02008MR-LW152-R"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "OFF_BOARD wired speaker, 20 mm diameter x 3 mm, 152 mm flying leads"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mounting" "OFF_BOARD"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "OFF-BOARD, ENCLOSURE-MOUNTED, WIRED THROUGH J6. LS1 is drawn beyond the connector and is excluded from the board (on_board no); it carries no PCB footprint by design. LOCKED FBV2-S1-006 to PUI Audio AS02008MR-LW152-R, verified verbatim from the PUI drawing: 20 +/-0.2 mm diameter, 3 +/-0.2 mm deep, 8 ohm +/-15 %, 0.5 W rated and 0.8 W maximum, 86 +/-3 dBA at 0.1 W / 0.1 m, resonance 500 Hz +/-20 %, response 500 to 4000 Hz, 5 % maximum distortion, metal housing, Mylar cone, Nd-Fe-B magnet, 2.4 g, -20 to +55 C, RoHS. Leads are 152 +/-10 mm of UL1571 AWG #32, RED positive and BLACK negative, which crimp directly into JST PH SPH-002T-P0.5S contacts in a PHR-2 housing - AWG #32 is the small end of the PH applicable wire range, so the speaker is replaceable without soldering. The 500 to 4000 Hz response is a voice-band speaker chosen on purpose: intelligible speech, alerts and UI sounds, not music. The Nd-Fe-B magnet must stay clear of the NFC antenna zone."
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb060100-d100-4d10-9d10-0000000431")
+		)
+		(pin "2"
+			(uuid "fb060100-d100-4d10-9d10-0000000432")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/74cc17f2-e3bd-4f3f-b221-e9414b1e23ac"
+					(reference "LS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 238.76 140.97) (xy 242.57 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000451")
+	)
+	(wire
+		(pts
+			(xy 238.76 143.51) (xy 242.57 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000452")
+	)
+	(label "SPK_P_CONN"
+		(at 238.76 140.97 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000453")
+	)
+	(label "SPK_N_CONN"
+		(at 238.76 143.51 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb060100-d100-4d10-9d10-0000000454")
 	)
 )

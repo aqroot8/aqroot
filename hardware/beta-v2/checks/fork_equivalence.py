@@ -30,9 +30,15 @@ assert len(DM_PROJ) == len(V2_PROJ)
 # Sheets still inherited verbatim from Beta-DM.  A sheet leaves this list the
 # moment its FBV2-S1 migration lands, and moves into FILES as 'changed'.
 SHEETS = [
-    '06_audio', '07_ir', '08_buttons_expanders',
+    '07_ir', '08_buttons_expanders',
     '09_community_header',
 ]
+
+# Footprints that exist in Full Beta v2 and not in Beta-DM, with the task that
+# added them.  An addition that is not listed here is a probe failure.
+ADDED_FOOTPRINTS = {
+    'PUI_DMM-4026-B-I2S_4.0x3.0mm.kicad_mod': 'FBV2-S1-006, PUI microphone replacing the ICS-43434',
+}
 
 # (dm name, v2 name, expectation)
 #   'bit'   -> byte-for-byte identical
@@ -90,17 +96,25 @@ def main():
         if got != expect:
             fails.append('%s: expected %s, measured %s' % (v2_name, expect, got))
 
-    # Every footprint in the project library must still be bit-identical.
+    # Every INHERITED footprint must still be bit-identical.  Full Beta v2 is
+    # allowed to ADD footprints -- a migrated sheet that locks a new part needs
+    # one -- but it may never modify or delete a footprint it inherited, because
+    # those are what Beta-DM would be built from.  Additions must be declared
+    # here so a new file cannot appear silently.
     dm_pretty = os.path.join(DM, 'libraries', 'AQROOT_Beta.pretty')
     v2_pretty = os.path.join(V2, 'libraries', 'AQROOT_Beta.pretty')
     dm_mods = sorted(os.listdir(dm_pretty))
     v2_mods = sorted(os.listdir(v2_pretty))
-    if dm_mods != v2_mods:
-        fails.append('.pretty contents differ: %s vs %s' % (dm_mods, v2_mods))
-    else:
-        for m in dm_mods:
-            if sha(os.path.join(dm_pretty, m)) != sha(os.path.join(v2_pretty, m)):
-                fails.append('footprint changed: %s' % m)
+    missing = [m for m in dm_mods if m not in v2_mods]
+    added = [m for m in v2_mods if m not in dm_mods]
+    if missing:
+        fails.append('inherited footprint deleted: %s' % missing)
+    for m in added:
+        if m not in ADDED_FOOTPRINTS:
+            fails.append('undeclared footprint added: %s' % m)
+    for m in dm_mods:
+        if m in v2_mods and sha(os.path.join(dm_pretty, m)) != sha(os.path.join(v2_pretty, m)):
+            fails.append('inherited footprint changed: %s' % m)
 
     print('%-34s %-8s %-8s %-18s %s' % ('file', 'expect', 'measured', 'beta-dm sha256', 'beta-v2 sha256'))
     for r in rows:
@@ -108,7 +122,9 @@ def main():
     if fails:
         print('  footprint comparison: see failures below')
     else:
-        print('  %d project footprints compared, all bit-identical' % len(dm_mods))
+        print('  %d inherited footprints compared, all bit-identical' % len(dm_mods))
+        for m in added:
+            print('  + added by Full Beta v2: %s (%s)' % (m, ADDED_FOOTPRINTS[m]))
 
     if fails:
         for f in fails:

@@ -8872,4 +8872,250 @@
 			)
 		)
 	)
+	(symbol "DMM-4026-B-I2S"
+		(pin_names
+			(offset 0.508)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "MK"
+			(at 0 10.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DMM-4026-B-I2S"
+			(at 0 -10.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://api.puiaudio.com/filename/DMM-4026-B-I2S-R.pdf"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "PUI Audio bottom-port MEMS I2S microphone, 7-pad, 4.0 x 3.0 x 1.0 mm"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "PUI Audio"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "DMM-4026-B-I2S-R"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "PUI 7-pad SMD, 4.00 x 3.00 x 1.00 mm, bottom acoustic port"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Verified against the PUI Audio DMM-4026-B-I2S-R data sheet (Rev A, 5/26/2021) in FBV2-S1-006. SEVEN pads, not six - it is not pin-compatible with the ICS-43434 it replaces. Pin 1 LR: low selects the LEFT I2S slot, high selects RIGHT. Pin 2 CONFIG: Bosch-style config strap - the data sheet says: Pull to ground. The state of this pin is used at power-up. It MUST be tied to GND. The ICS-43434 has no equivalent pin. Pin 3 VDD 1.62 to 3.63 V, decouple with 0.1 uF. Pin 4 GND is the ring pad around the acoustic port. Pin 7 SD tri-states when it is not driving its own channel, and the data sheet requires a 100 kOhm pull-down on the SD trace to discharge the line while all microphones on the bus are tri-stated. Normal-mode input clock 2.048 to 4.096 MHz; below 320 kHz the part enters sleep mode at 5 uA. Data is I2S 24-bit in a 32-bit word (mono) or 64-bit frame (stereo), 18-bit precision, six null bits. Supply current 820 to 1000 uA normal. Startup 20 ms. Sensitivity -26 dBFS, SNR 64 dB, omnidirectional. Bottom port, acoustic port diameter 0.25 mm in the can; the PCB needs a 1.05 mm hole concentric with pad 4."
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "microphone MEMS I2S PUI Audio DMM-4026 bottom port digital"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "PUI*DMM*4026*"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "DMM-4026-B-I2S_0_1"
+			(rectangle
+				(start -7.62 5.08)
+				(end 7.62 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+		)
+		(symbol "DMM-4026-B-I2S_1_1"
+			(pin input line
+				(at -10.16 2.54 0)
+				(length 2.54)
+				(name "LR"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -10.16 0 0)
+				(length 2.54)
+				(name "CONFIG"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 7.62 270)
+				(length 2.54)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 10.16 2.54 180)
+				(length 2.54)
+				(name "WS"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 10.16 0 180)
+				(length 2.54)
+				(name "SCK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 10.16 -2.54 180)
+				(length 2.54)
+				(name "SD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
 )
