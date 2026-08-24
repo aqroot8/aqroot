@@ -3,7 +3,8 @@ AQROOT Full Beta v2 - FBV2-P1 floorplan metrics (doc datum: origin lower-left, Y
 BOARD OUTLINE                          72.000 x 148.000 mm            72.000 x 148.000          PASS
 FOOTPRINTS                             324 total, 322 schematic + 2 boss 322 schematic             PASS
 DUPLICATE REFERENCES                   0                              0                         PASS
-SIGNAL TRACKS / VIAS / ZONES           0 / 0 / 0 fills                0 / 0 / 0                 PASS
+SIGNAL TRACKS / VIAS / OUTER POURS     0 / 0 / 0                      0 / 0 / 0                 PASS
+In1.Cu GND REFERENCE                   1 zone(s), 1 island(s), net GND 1 zone, 1 island, GND     PASS
 
 -- NFC, circular geometry (D-220) ------------------------------------------------------------------------------------
 NFC CENTRE                             doc (31.800, 124.500)   identical for all three regions

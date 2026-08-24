@@ -9,6 +9,17 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md),
 > electrical copper pours. 499 unrouted connections is the correct state. This document is the
 > rule set routing will be judged against; it is not routing.
 
+> **ROUTING STATUS 2026-08-24 (FBV2-P2-001): the In1.Cu GND reference plane EXISTS and is
+> validated — one zone, one island, net GND, 93.3 % of the board — but the POWER TREE IS NOT
+> ROUTED.** The attempt produced 505 DRC violations and was reverted; **the board carries zero
+> tracks and zero signal vias.** F.Cu / B.Cu pours remain the LAST step of P2, after signals.
+> Everything in this plan stands unchanged; what it needs is an obstacle-aware router. See
+> [`FBV2_P2_POWER_ROUTING.md`](FBV2_P2_POWER_ROUTING.md) and
+> [`../audits/2026-08-24-p2-power-routing.md`](../audits/2026-08-24-p2-power-routing.md).
+> **One correction from that attempt: `BAT_PROTECTED_P` should be routed at 1.50 mm, not the
+> ledger's 1.00 mm target — at ≈ 71 mm it is 69 % of the whole protection path's copper
+> resistance (PR-2, pending a ruling).**
+>
 > **GATE RESULT: FBV2-P2 ENTRY = PASS (re-issued 2026-08-24 at FBV2-EXP-002).** PM-1, PM-2,
 > PM-3 and PT-1 are all **CLOSED**, so **no electrically required placement move remains**. The
 > board is now **72.000 x 148.000 mm**, `J5` is a **1 x 24** socket and `J8` **Qwiic** is new;

@@ -52,13 +52,26 @@ def main():
         '322 schematic', len(parts) - len(bosses) == 322)
     refs = [p['ref'] for p in parts]
     chk('DUPLICATE REFERENCES', str(len(refs) - len(set(refs))), '0', len(refs) == len(set(refs)))
-    chk('SIGNAL TRACKS / VIAS / ZONES',
-        '%d / %d / %d fills' % (sum(1 for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK'),
-                                sum(1 for t in b.GetTracks() if t.GetClass() == 'PCB_VIA'),
-                                sum(1 for z in b.Zones() if not z.GetIsRuleArea())),
-        '0 / 0 / 0',
-        not any(t.GetClass() in ('PCB_TRACK', 'PCB_VIA') for t in b.GetTracks())
-        and not any(not z.GetIsRuleArea() for z in b.Zones()))
+    # FBV2-P2-001 created the In1.Cu GND reference plane, so the "zero fills"
+    # expectation is retired: In1 is a POUR by design and the P1 gate never
+    # meant to forbid it, only to forbid routing.  The zero-track / zero-via
+    # expectation stands until a routing task legitimately lands copper, and
+    # any In1 pour must be GND and must be a SINGLE island -- a split reference
+    # is the defect this check now exists to catch.
+    ntr = sum(1 for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK')
+    nvia = sum(1 for t in b.GetTracks() if t.GetClass() == 'PCB_VIA')
+    pours = [z for z in b.Zones() if not z.GetIsRuleArea()]
+    outer = [z for z in pours if z.GetLayer() in (pcbnew.F_Cu, pcbnew.B_Cu)]
+    in1 = [z for z in pours if z.GetLayer() == pcbnew.In1_Cu]
+    isl = sum(z.GetFilledPolysList(z.GetLayer()).OutlineCount() for z in in1)
+    chk('SIGNAL TRACKS / VIAS / OUTER POURS',
+        '%d / %d / %d' % (ntr, nvia, len(outer)), '0 / 0 / 0',
+        ntr == 0 and nvia == 0 and not outer)
+    chk('In1.Cu GND REFERENCE',
+        '%d zone(s), %d island(s), net %s'
+        % (len(in1), isl, in1[0].GetNetname() if in1 else '-'),
+        '1 zone, 1 island, GND',
+        len(in1) == 1 and isl == 1 and in1[0].GetNetname() == 'GND')
 
     # -------------------------------------------------------- NFC geometry
     emit()

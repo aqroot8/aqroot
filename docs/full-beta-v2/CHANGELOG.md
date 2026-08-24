@@ -1,3 +1,83 @@
+## 2026-08-24 — the ground plane, and a routing attempt that was reverted (FBV2-P2-001)
+
+**FBV2-P2-001 = FAIL. The power tree is NOT routed.** No progress; PCB routing stays 0 %, overall
+stays 74 %. Full analysis:
+[`audits/2026-08-24-p2-power-routing.md`](audits/2026-08-24-p2-power-routing.md).
+New working document: [`pcb/FBV2_P2_POWER_ROUTING.md`](pcb/FBV2_P2_POWER_ROUTING.md).
+Pre-routing checkpoint tag **`beta-v2-p2-entry-pass` → `faa0c91`**, annotated and pushed.
+
+**The board still carries zero tracks and zero signal vias.** What it gained is the In1.Cu ground
+plane and two corrective placement passes that the routing exposed as prerequisites.
+
+### The ground plane exists, and the regression now knows what it is
+
+In1.Cu is one zone, **one island**, net GND, **9938.9 mm² of a 10656 mm² board — 93.3 %**, with a
+solid pad connection and no thermal relief. No split, no analog island, and its single authorised
+void — the ESP32 antenna keep-out — is cut by the four-layer rule area that already existed rather
+than by a polygon carved by hand. F.Cu and B.Cu pours were deliberately **not** created: they are
+the last step of FBV2-P2, and making them now would hide return paths rather than prove them.
+
+`p1_regression.py` had a blanket *"0 fills"* expectation, which was right when nothing was allowed
+to exist and wrong the moment a reference plane did. It now checks **0 tracks / 0 vias / 0 outer
+pours**, and separately that **In1 is exactly one GND zone of exactly one island** — so a split
+reference is a gate failure instead of an invisible mistake.
+
+### PM-2 was closed on incomplete evidence, and the routing is what found it
+
+FBV2-EXP-002 reported PM-2 closed on the chain: `J4 → F1 → Q2 → Q3 → R75 → U18`, 30.86 mm, Kelvin
+6.60 mm. **That measurement was real and it is not withdrawn.** But it was reported as though it
+closed the whole of PM-2, and it did not. The trip/gate and dead-cell support parts had been packed
+into regions chosen while the chain still sat in the right column, and were never re-homed when the
+chain moved. Measured on `faa0c91`, before this task touched anything: **`LTC_GATE` — a ≈ 20 µA
+charge-pump node holding four pass FETs enhanced — spanned 70.4 mm.** `BAT_SENSE` 61.4. `REF_POL`
+51.7. `REC_GATE_N` 50.6.
+
+Routing those as they stood would have knowingly built the defect PM-2 exists to prevent, so the
+support network was moved beside the chain it belongs to: **`LTC_GATE` 70.4 → 29.8 mm, `BAT_SENSE`
+61.4 → 24.3, `REF_POL` 51.7 → 9.7, `REC_GATE_N` 50.6 → 15.6, `N_POL` 46.4 → 8.3, `LTC_OV`/`LTC_UV`
+28.2/15.0 → 8.0/9.1.** No component value, no threshold, no topology and no net changed, and the
+1.5 A chain itself did not move.
+
+Twenty-nine power test points moved too. A test point 50 mm from its own net is not access, it is a
+stub — and on a 1.5 A net it is a stub that forces load current somewhere it should not go. `TP34`
+was 59 mm from `J4`; it is now 4.4 mm.
+
+### Why the routing failed, said plainly
+
+The first router computed a minimum spanning tree over each net's pads and drew each edge as a
+direct segment. Inside a compact PM-1 cell that is adequate. Across a board it is not: **it draws
+straight lines through other pads.** On 64 nets it produced **505 DRC violations — 102 shorting
+items, 112 track crossings, 204 solder-mask bridges, 45 clearance.**
+
+It was reverted in full. Committing 102 electrical shorts into the authoritative board, on the one
+task whose subject is the *safety-critical* battery path, was not a defensible option — and a
+partial pass would have been the asserted-rather-than-measured progress this file's own rules exist
+to prevent. What the next task needs is an obstacle-aware path search or verified hand polylines;
+the scope, the widths, the layer policy and the intended topology are all already settled and
+written down, so none of that has to be re-derived.
+
+### B-34, recomputed and still open
+
+From the *intended* geometry at ledger widths — **an estimate, not a measurement, and labelled as
+one**: copper 50.6 mΩ, fuse ≈ 25 mΩ, the two FETs ≈ 46 mΩ, and the BQ25185 BATFET's **115 mΩ**
+dominating. **≈ 355 mV / 532 mW at 1.5 A; ≈ 414 mV / 724 mW at 1.75 A.** Nothing there is clearly
+unsafe, so the escalate-and-halt condition did not fire — but an estimate from an unrouted board
+cannot close a blocker, so **B-34 stays open, physical validation required.**
+
+One number dominates: `BAT_PROTECTED_P` at ≈ 71 mm is **69 % of the copper resistance on its own**.
+Widening it 1.00 → 1.50 mm takes the copper to 38.9 mΩ, at the cost of board area on a face that
+has it.
+
+### E-7 closed, with the wording corrected
+
+**The battery envelope is 57 × 75 × 8.0 mm and that is a MAXIMUM reserved envelope.** 57 mm is not
+a minimum cell width and not "the lower bound of what fits" — the EXP-002 phrasing was wrong and is
+withdrawn. Both verified candidates are 50 mm wide. **The envelope is not shrunk to 50 mm:** the
+unused 7 mm preserves alternate- and future-cell flexibility at zero current placement cost, and
+reclaiming it would spend the only tolerance the design has against a different cell.
+
+---
+
 ## 2026-08-24 — the header, the cell, and the three moves done once (FBV2-EXP-002)
 
 **FBV2-P1 RE-ISSUED = PASS. FBV2-P2 ENTRY = PASS. PM-1, PM-2, PM-3 and PT-1 all CLOSED.**

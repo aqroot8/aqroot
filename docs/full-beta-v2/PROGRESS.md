@@ -2,7 +2,10 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-24 (updated after **FBV2-EXP-002 — standard expansion interface implemented and
+Date: 2026-08-24 (updated after **FBV2-P2-001 — power-routing attempt. **FAIL: the power tree is
+NOT routed and the attempt was reverted.** Delivered the In1.Cu GND plane and the PM-2 support /
+test-point placement corrections. **PCB routing stays 0 %; overall stays 74 %**; previously
+**FBV2-EXP-002 — standard expansion interface implemented and
 the combined re-floorplan executed. **FBV2-P1 RE-ISSUED = PASS, FBV2-P2 ENTRY = PASS, PM-1/PM-2/PM-3
 and PT-1 CLOSED. NO PROGRESS EARNED — P1 was re-earned, not newly earned; overall stays 74%**;
 previously **FBV2-EXP-001 — expansion ecosystem compatibility and
@@ -12,7 +15,7 @@ freeze. **FBV2-P2 ENTRY = FAIL** on one criterion of thirteen; **NO PROGRESS EAR
 74%**, FBV2-P1 = PASS unchanged**; previously **FBV2-P1-002 — P1 closeout; **FBV2-P1 PASSES**; overall 68% → 74%**; previously **FBV2-P1-001 — enclosure-driven floorplan built; **FBV2-P1 DOES NOT PASS** on the 915 MHz pigtail reach; overall stays 68%**; previously FBV2-MECH-002 — pre-floorplan authority reconciliation and final
 procurement sign-offs. NO PROGRESS EARNED: overall stays 68%, FBV2-S2 = PASS unchanged**; previously
 FBV2-S2-002 — S2 release closeout, FBV2-S2 = PASS)
-Repository HEAD at last update: `7515d57` (FBV2-EXP-001)
+Repository HEAD at last update: `faa0c91` (FBV2-EXP-002)
 
 ---
 
@@ -59,7 +62,7 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | Architecture freeze | **IN PROGRESS** |
 | Schematic migration | **100%** — **all nine sheets landed. `fork_equivalence.py`'s "still Beta-DM" list is EMPTY.** |
 | PCB placement | **100%** — **FBV2-P1 RE-ISSUED AND RE-PASSED on the new 72 × 148 outline (FBV2-EXP-002)** |
-| PCB routing | **0%** — **FBV2-P2 ENTRY GATE = PASS (FBV2-EXP-002).** PM-1, PM-2, PM-3 and PT-1 are CLOSED and **no electrically required placement move remains**. Routing has not begun |
+| PCB routing | **0%** — entry gate PASS (FBV2-EXP-002); **FBV2-P2-001 attempted the power tree and FAILED.** The **In1.Cu GND reference plane exists and is validated — one island, 93.3 %** — but there are **zero tracks and zero signal vias**: an MST router produced 505 DRC violations and was reverted rather than committed |
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 
