@@ -1,3 +1,81 @@
+## 2026-08-24 - a router that refuses to keep bad copper (FBV2-P2-002A)
+
+**FBV2-P2-002A = FAIL. The battery / protection block is NOT routed.** No progress; PCB routing
+stays 0 %, overall stays 74 %. Full analysis:
+[`audits/2026-08-24-p2-battery-protection-routing.md`](audits/2026-08-24-p2-battery-protection-routing.md).
+
+**The board still carries zero tracks and zero signal vias.** Two of twenty-nine nets came out
+DRC-clean; the other twenty-seven were reverted automatically, and the two clean ones went with
+them rather than be committed as an unrepresentative fragment.
+
+### The deliverable is the method, and that was the point
+
+FBV2-P2-001 failed because a minimum-spanning-tree router drew straight lines through other pads
+and produced 505 violations. Section 4 of this task forbade that class of approach outright. What
+replaced it:
+
+**Obstacle-aware A\* on a 0.10 mm grid**, rebuilt per connection from the real board - every
+foreign pad, every track already laid, every track-forbidding rule area including the one embedded
+inside `U1`'s own footprint, and the board edge, each inflated by (clearance + width/2) so that a
+legal path on the grid is a legal track on the board.
+
+**Pad-escape necking**, because a 1.00 mm `BAT_MAIN` trunk physically cannot land on `U18` - an
+MSOP-10 on 0.50 mm pitch whose pad-to-pad gap is **0.20 mm**. That is also why the first run
+reported "NO PATH" on a 2.44 mm hop: the destination was genuinely unreachable at trunk width,
+which is a property of the land pattern rather than a bug.
+
+**Per-net DRC gating.** After every net the board is saved to its own path - so DRC sees the
+project's own `.kicad_dru` and netclasses, which a scratch-file approach did not - and any new
+violation of any class reverts that net before the next one starts. Violations never accumulate.
+
+That last property is the one that matters: **the router refused to keep anything unclean, and the
+result is a board with no copper on it rather than a board with hidden shorts.**
+
+### Three defects remain, and all three are named
+
+**`track_dangling` on seventeen nets** - the escape neck and the trunk do not register as joined at
+the launch point. A geometry bug in the emitter, not an electrical problem, but a dangling end is
+exactly what must never be committed. **`track_width` on `BAT_MID` and `BAT_SENSE`** - the neck
+width is taken from the pad's short dimension and on an SO-8 that falls below the `BAT_MAIN`
+0.60 mm floor; **the rule is right and the router is wrong.** **`shorting_items` on six nets** - the
+neck is laid without consulting the obstacle grid, so it can cross a neighbour even where the trunk
+cannot.
+
+None of them is a reason to change placement, widths or topology.
+
+Two connections have no path at trunk width at all - `R86.2` to `R89.1` and `TP15.1` to `U14.2`,
+both in the dense left-margin resistor column. They need either a finer routing grid there or a
+2 mm placement nudge, and per section 9 that is **surfaced rather than taken**.
+
+### D-245: one net gets a wider trunk, and only one
+
+`BAT_PROTECTED_P` now has a **scoped per-net override - 1.50 mm target, 1.20 mm floor** - added to
+`.kicad_dru` and as row A2 of the ledger. **The `BAT_MAIN` class is untouched**: the other four
+battery nets keep 1.00 mm / 0.60 mm, because none of them carries the pack current over anything
+like the same distance.
+
+The arithmetic is the whole justification. At about 71 mm this net is **about 69 % of the entire
+protection path's copper resistance on its own** - 34.9 mOhm at 1.00 mm against 23.3 mOhm at
+1.50 mm - taking path copper from about 50.6 to about 38.9 mOhm and the 1.5 A copper loss from 114
+to 88 mW.
+
+The neckdown allowance that comes with it is written as a policy, not a loophole: shortest length
+that clears the package, never a traverse, length and width documented per pad, no thermal-relief
+or single-via bottleneck. **The 1.20 mm figure is the trunk floor, not a licence for a narrow run.**
+
+### B-34, with the unit confusion corrected
+
+The FBV2-P2-001 write-up's copper figure is **about 50.6 mOhm**, not 525 mOhm. With `F1` about
+25 mOhm, the two FETs about 46 mOhm and the BQ25185 BATFET's **115 mOhm**, the path is **about
+355 mV / 532 mW at 1.5 A** and **about 414 mV / 724 mW at 1.75 A**. Nothing is clearly unsafe.
+**B-34 stays open - physical validation required**, and D-245 takes the copper term to about
+38.9 mOhm once the net is actually routed.
+
+**PM-2 does not close.** Its placement correction is approved and retained; closure still waits on
+DRC-clean routing, which is what it always said it would.
+
+---
+
 ## 2026-08-24 — the ground plane, and a routing attempt that was reverted (FBV2-P2-001)
 
 **FBV2-P2-001 = FAIL. The power tree is NOT routed.** No progress; PCB routing stays 0 %, overall

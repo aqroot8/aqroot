@@ -404,6 +404,38 @@
 
 
 # ---------------------------------------------------------------------
+# 5b. BAT_PROTECTED_P LOCAL WIDTH OVERRIDE  (D-245, FBV2-P2-002A)
+#
+# BAT_PROTECTED_P is the DOMINANT PCB-copper resistance term in the whole
+# protection path: it is the one long run PM-2 predicted would remain, and at
+# ~71 mm it is roughly 69 % of the path's copper resistance on its own.  At the
+# BAT_MAIN class target of 1.00 mm that is 34.9 mOhm; at 1.50 mm it is
+# 23.3 mOhm, which takes the whole protection-path copper from ~50.6 to
+# ~38.9 mOhm and the 1.5 A copper loss from 114 to 88 mW.
+#
+# THE OVERRIDE IS SCOPED TO THIS ONE NET.  The BAT_MAIN class is NOT changed:
+# BAT_CONNECTOR_P, BAT_RAW, BAT_MID and BAT_SENSE keep the 1.00 mm target and
+# the 0.60 mm floor, because none of them carries the current over anything
+# like that distance.
+#
+# NECKDOWN POLICY, and it is a POLICY not a loophole: a fine-pitch land pattern
+# cannot accept a 1.50 mm - or even a 0.60 mm - track.  U18 is an MSOP-10 on
+# 0.50 mm pitch whose pad-to-pad gap is 0.20 mm.  A short ESCAPE NECK at the
+# pad is therefore mechanically unavoidable and is permitted, subject to:
+#   - the neck is the SHORTEST length that clears the package;
+#   - it is never a traverse;
+#   - its exact length and minimum width are DOCUMENTED per pad;
+#   - it carries no thermal-relief bottleneck and no single-via bottleneck.
+# The 1.20 mm floor below is the TRUNK floor.  Necks are measured and reported
+# individually in FBV2_P2_POWER_ROUTING.md rather than being waived here.
+# ---------------------------------------------------------------------
+
+(rule "BAT_PROTECTED_P trunk width - local override, D-245"
+	(constraint track_width (min 1.20mm) (opt 1.50mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P'"))
+
+
+# ---------------------------------------------------------------------
 # 6. USB 2.0 - FULL SPEED, ON F.Cu OVER In1, NO VIAS, NO THEATRE
 #
 # The ESP32-S3 has no High-Speed PHY: this link is USB 2.0 FULL SPEED,

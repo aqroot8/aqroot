@@ -3,6 +3,14 @@
 **Status: IN PROGRESS. FBV2-P2-001 = FAIL.** Created 2026-08-24 at **FBV2-P2-001**.
 Pre-routing checkpoint: tag **`beta-v2-p2-entry-pass`** → `faa0c91`.
 
+> **UPDATED 2026-08-24 at FBV2-P2-002A.** The battery / protection block was attempted with a
+> proper obstacle-aware router and **still is not routed**: 2 of 29 nets came out DRC-clean and
+> the other 27 were reverted automatically rather than committed. **D-245 is now ruled and
+> implemented**: `BAT_PROTECTED_P` gets a scoped 1.50 mm target / 1.20 mm floor, and the
+> `BAT_MAIN` class is unchanged. Three named router defects and two no-path connections are
+> carried in
+> [`../audits/2026-08-24-p2-battery-protection-routing.md`](../audits/2026-08-24-p2-battery-protection-routing.md).
+>
 > **The power tree is NOT routed.** The foundation was built and validated; the routing itself was
 > attempted, did not reach a DRC-clean state, and **was reverted rather than committed.** The board
 > at this commit carries **zero tracks and zero signal vias** — what it gained is the **In1.Cu GND
