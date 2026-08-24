@@ -1,6 +1,17 @@
 # AQROOT Full Beta v2 — FBV2-P1 floorplan inputs
 
-**Status: NORMATIVE HANDOFF.** Created 2026-08-23 at **FBV2-MECH-002**.
+**Status: CONSUMED BY FBV2-P1-001 (2026-08-24).** Created 2026-08-23 at **FBV2-MECH-002**.
+
+> **The floorplan now exists.** For the built geometry — datum, outline, coordinates, keepouts
+> and measured clearances — read [`../pcb/FBV2_P1_FLOORPLAN.md`](../pcb/FBV2_P1_FLOORPLAN.md),
+> [`../pcb/FBV2_P1_KEEPOUTS.md`](../pcb/FBV2_P1_KEEPOUTS.md) and
+> [`../pcb/FBV2_P1_COORDINATES.csv`](../pcb/FBV2_P1_COORDINATES.csv). **§9 below is resolved:**
+> **O-1 closed (D-214)** — `MK1` on B.Cu listening forward. **O-2 closed as a false conflict
+> (D-215)** — the battery itself creates the speaker-to-loop separation. **O-3 answered
+> (D-216)** — only **3 of 6** M2 bosses close, and only at a Ø4.5 mm keepout. **O-4 closed
+> (D-217)** — the rule is now **≥ 8 mm BODY edge-to-edge** and the board achieves 16.40 mm.
+> **O-5 ruled (D-218)** — the pigtail is `095-902-568-100`, **and P1 proves it does not reach**.
+> **O-6 closed (D-219)** — internal whip storage deleted; the left wall is the 433 flex's.
 Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md).
 
@@ -191,7 +202,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 |---|---|---|---|
 | C-1 | NFC antenna → `J7` | **75 mm** 28 AWG twisted pair, ACH(F) | **LOCKED** (part) |
 | C-2 | 433 antenna → `U7` | **100 mm** | **LOCKED** (part) |
-| C-3 | 915 `U8` → SMA bulkhead | **150 mm** RG-178 | **LOCKED** (part) — see §9 O-5 |
+| C-3 | 915 `U8` → SMA bulkhead | **100 mm** RG-178, `095-902-568-100` (D-218) | **LOCKED** (part) — ***but FBV2-P1 measures a ≈ 190 mm routed run: SHORT BY ≈ 90 mm. OPEN.*** |
 | C-4 | Speaker → `J6` | **152 ± 10 mm** UL1571 AWG #32, RED (+) / BLACK (−), JST `PHR-2` + `SPH-002T-P0.5S` | **LOCKED** (part) |
 | C-5 | Speaker polarity | cone moves **FORWARD** on positive at the **RED** lead = `SPK_P` = `J6` pin 1 | **LOCKED** |
 | C-6 | **Crossing rule** | **no antenna cable may cross another antenna's radiating element or the IR optical path**; the NFC pair must stay clear of the 433 flex | **LOCKED** |

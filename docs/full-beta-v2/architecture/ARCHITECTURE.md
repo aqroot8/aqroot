@@ -1,6 +1,19 @@
 # AQROOT Full Beta v2 — Architecture Snapshot
 
-Date: 2026-08-23 (infrared, FBV2-S1-007)
+Date: 2026-08-24 (physical architecture added, FBV2-P1-001; previously infrared, FBV2-S1-007)
+
+> **PHYSICAL ARCHITECTURE — LOCKED 2026-08-24 (FBV2-P1-001).**
+> **PCB 70.000 x 148.000 x 1.6 mm.** Datum: origin at the **lower-left board corner**, X right,
+> **Y up**; `Y_kicad = 148.000 - Y_doc`.
+> **`F.Cu` = FRONT** — display, `J1`, D-pad, A/B, RGB, IR, USB-C, microSD, community connector,
+> power switch, BOOT, ESP32-S3 (antenna facing the **right** wall).
+> **`B.Cu` = REAR** — battery side: `MK1` (bottom-port, **listening forward through the board**),
+> both radio modules, the NFC front end and most support ICs. **D-214.**
+> **Rear zoning, top to bottom: NFC 48 x 48 -> battery 60 x 75 x 8 -> speaker Ø20 x 3**, totalling
+> 143 mm of the 155 mm cavity. **D-215.**
+> **433 MHz flex on the LEFT cavity wall; 915 MHz SMA on the top panel.** The internal 915 whip
+> storage channel is **deleted** (D-219). **321 footprints: F.Cu 120 / B.Cu 201.**
+> **No routing exists.** See [`../pcb/FBV2_P1_FLOORPLAN.md`](../pcb/FBV2_P1_FLOORPLAN.md).
 Status: **PRE-FREEZE.** This is a snapshot of intended architecture, not a
 locked design. Nothing here authorizes a schematic or PCB edit.
 

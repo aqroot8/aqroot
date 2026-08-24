@@ -64,6 +64,9 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) | High-level architecture snapshot and known architecture defects. |
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | **Mandatory before schematic work.** Thirteen fault cases across USB, battery, power-switch and accessory states. |
 | [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md) | **Authoritative pre-CAD dimension source.** Cavity, PCB envelope, battery, NFC zone, acoustics, IR/antenna, mounting. |
+| [pcb/FBV2_P1_FLOORPLAN.md](pcb/FBV2_P1_FLOORPLAN.md) | **FBV2-P1 floorplan.** Datum, outline, board-side convention, placement by face, measured gate metrics, and why the gate does not pass. |
+| [pcb/FBV2_P1_KEEPOUTS.md](pcb/FBV2_P1_KEEPOUTS.md) | All 13 mechanical regions and 4 copper rule areas, with layers and enforced height limits. |
+| [pcb/FBV2_P1_COORDINATES.csv](pcb/FBV2_P1_COORDINATES.csv) | Every reference: side, X, Y, rotation, footprint, value, sheet, courtyard box. |
 | [mechanical/P1_FLOORPLAN_INPUTS.md](mechanical/P1_FLOORPLAN_INPUTS.md) | **FBV2-P1 handoff.** 120 current physical constraints only, each marked LOCKED / TARGET / CAD-TO-VERIFY, plus the six items that need a CTO ruling before floorplanning. No coordinates. |
 | [audits/](audits/) | Dated engineering audits, each pinned to a repository HEAD. |
 | [reviews/](reviews/) | Independent second opinions. **Advisory — not automatically authoritative.** |

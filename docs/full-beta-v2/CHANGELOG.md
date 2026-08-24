@@ -1,3 +1,98 @@
+## 2026-08-24 — the enclosure-driven floorplan, and the cable that cannot reach (FBV2-P1-001)
+
+**FBV2-P1 DOES NOT PASS. Overall stays 68%.** One gate criterion fails — the 100 mm 915 MHz
+pigtail does not reach the top-panel SMA — and the floorplan is otherwise complete and
+collision-free. Full analysis:
+[`audits/2026-08-24-p1-floorplan-implementation.md`](audits/2026-08-24-p1-floorplan-implementation.md).
+New working documents: [`pcb/FBV2_P1_FLOORPLAN.md`](pcb/FBV2_P1_FLOORPLAN.md),
+[`pcb/FBV2_P1_KEEPOUTS.md`](pcb/FBV2_P1_KEEPOUTS.md),
+[`pcb/FBV2_P1_COORDINATES.csv`](pcb/FBV2_P1_COORDINATES.csv), [`pcb/review/`](pcb/review/).
+
+**PCB modification was authorised for the first time, and the board is no longer Beta-DM.**
+
+### The board was rebuilt, not edited
+
+The pre-P1 PCB was still the inherited Beta-DM geometry — 188 footprints, 2,801 track segments,
+424 vias, 43 zones — and a floorplan built around a different component set is not a baseline. So
+the file was **stripped to its header, layer stack, `general` and `setup`**, keeping the design
+rules byte for byte, and **rebuilt from the current nine-sheet schematic**: 321 footprints, one per
+component, references and exact verified footprints preserved, **224 nets over 991 pads**, plus a
+70.000 × 148.000 mm outline, 13 named mechanical regions, 4 copper rule areas and 3 M2 bosses.
+
+**The schematic was never opened. ERC 27 / 0 errors, histogram byte-identical. Zero tracks, zero
+vias, zero pours. 499 unrouted connections — the correct P1 state.**
+
+**`fork_equivalence` now reports the v2 PCB as changed. That is the point of P1, not a failure**,
+and the same run confirms Beta-DM is untouched.
+
+### Six rulings, five clean
+
+**F.Cu is the front and B.Cu is the rear**, and `MK1` sits on **B.Cu listening forward through the
+board** — 1.21 mm clear of the LiPo, 67.42 mm from the speaker on the opposite face. The apparent
+front-face/bottom-face contradiction was a **nomenclature collision between the enclosure face and
+the PCB copper face**, not a requirement conflict.
+
+The rear packs **NFC → battery → speaker** at **48 + 75 + 20 = 143 mm in a 155 mm cavity**, with
+zero NFC/battery overlap, 81 mm from the speaker to the loop perimeter, and no attempt to squeeze a
+Ø20 driver beside a 60 mm battery in a 75 mm cavity.
+
+**USB-C to microSD achieved 16.40 mm body edge-to-edge** against the new ≥ 8 mm rule — twice what
+was asked, measured on verified courtyards rather than the approximate widths.
+
+**The internal 915 whip storage is deleted.** The locked `TI.92.2113` is 198 mm long and the
+cavity's longest internal diagonal is 172 mm; it never fitted. The freed left wall goes to the
+433 MHz flex, which restores D-118's *LEFT / LOWER-SIDE* placement exactly as locked.
+
+### Only three of six mounting bosses close
+
+A boss is a through-board feature. The display owns X 3.39–59.93 above Y 55, the battery owns
+X 6.00–66.00 from Y 23.5 to 98.5, and the NFC zone owns X 0.50–48.50 above Y 102 and forbids screws
+outright. **There is no 6 mm-wide side strip anywhere on a 70 mm board, and both top corners are
+inside the NFC zone.** A full-board search finds **three** legal M2 positions, and only at a Ø4.5 mm
+keepout. **Three fixings will not control flex on a 148 mm span with a battery behind it** — that is
+escalated, not accepted.
+
+### The 915 MHz feed is the blocker
+
+Every part taller than about 1.2 mm is excluded from the upper half: the front is display shadow
+(F.Cu ≤ 0.8 mm) and the rear is battery (≤ 1.2 mm) then NFC clear zone (≤ 1.0 mm, no shielding
+cans). The one free strip above the battery is 16.5 mm wide and already carries `J5`'s 31.6 mm
+through-hole field. **A 15.89 × 21.34 × 3.5 mm radio module fits nowhere above Y ≈ 55.**
+
+`U8` therefore sits at the bottom rear, and the routed run to a top-panel SMA is **≈ 190 mm**:
+**100 mm is short by ≈ 90 mm, and even the superseded 150 mm is short by ≈ 40 mm.** Length is only
+half of it — the SMA is locked to the top-edge **left** half and the NFC 48 × 48 zone owns the whole
+upper-left, so any coax from the bottom either crosses the NFC zone or runs inside the 5 mm metal
+keepout. **No pigtail length fixes this on its own.**
+
+The recommended resolution costs nothing dimensionally: **raise the display support by ≈ 3 mm.**
+Column A of the mechanical spec totals 13.1 mm of the 23 mm budget and carries **9.9 mm of unused
+Z**. Spending 3 mm of it puts a 3.5 mm module under the panel, frees the entire upper half, and
+lets a short pigtail reach.
+
+### Four things the floorplan found on its own
+
+**The display cannot be centred on the enclosure.** `J5` needs 9.2 mm of board on the right and
+cannot sit below the battery, so it takes Y 105–137 beside the display band, pushing the panel
+**3.34 mm left of centre**. Widening to 72 mm does not fix it.
+
+**`MK1`'s GND ring fails KiCad 10's padstack validator** — it is drawn as a stroked circle outline
+rather than a filled annulus. Dimensionally right, structurally invalid; it must be redrawn before
+fabrication.
+
+**The stock ESP32 footprint's twelve thermal vias are 0.2 mm**, below this board's 0.3 mm
+minimum-hole rule.
+
+**`netclass_probe` was measuring the wrong board.** Its expectation listed `LED_A1`…`LED_A4` —
+*Beta-DM* net names. The v2 schematic has one anode net, `/03_SPI_A_DISPLAY_SD/LED_A`, the net
+D-111 deliberately added to `LED_BOOST`. It only passed for the last nine tasks because the PCB was
+still Beta-DM's. The expectation now follows the schematic; **the guard — `LED_BOOST` must never
+capture the IR transmitter nets — is unchanged and still passes.**
+
+Also recorded, because it is written nowhere else: **`D1` and `U6` are flat-mount leaded parts
+whose optical axis is normal to the BOARD**, so both must be **formed 90° at assembly** to look out
+of the top panel.
+
 ## 2026-08-23 — pre-floorplan authority reconciliation, and a part that was never a series pair (FBV2-MECH-002)
 
 **NO PROGRESS EARNED. Overall stays 68%. FBV2-S2 = PASS is unchanged.** This is a reconciliation

@@ -4,6 +4,15 @@
 
 Date: 2026-08-22 (updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic port, M-14**; and by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12; **RF off-board interfaces sourced 2026-08-23 by FBV2-S2-001** — §8 and M-13; **PRE-FLOORPLAN AUTHORITY RECONCILIATION 2026-08-23 by FBV2-MECH-002** — NFC clear zone, `J1` land pattern and assembly route, SMA↔IR spacing datum, speaker Z column, §4.1 content list and the machine-readable block; companion handoff [`P1_FLOORPLAN_INPUTS.md`](P1_FLOORPLAN_INPUTS.md))
 
+> **P1 NOTE — FBV2-P1-001 (2026-08-24).** The floorplan now exists. **Board-side convention
+> LOCKED: `F.Cu` = FRONT (display, buttons), `B.Cu` = REAR (battery) — D-214.** Rear packing is
+> **NFC -> battery -> speaker, 48 + 75 + 20 = 143 mm in the 155 mm cavity — D-215.** The
+> **internal 915 MHz whip storage channel is DELETED — D-219**; the LEFT wall now belongs to the
+> 433 MHz flex. The **915 pigtail is `095-902-568-100` (100 mm) — D-218 — and the P1 geometry
+> proves it DOES NOT REACH** the top-panel SMA; see D-218 and the P1 floorplan. Coordinates,
+> keepouts and measured clearances live in [`../pcb/FBV2_P1_FLOORPLAN.md`](../pcb/FBV2_P1_FLOORPLAN.md)
+> and [`../pcb/FBV2_P1_KEEPOUTS.md`](../pcb/FBV2_P1_KEEPOUTS.md).
+
 > **AUTHORITY NOTE — FBV2-MECH-002 (2026-08-23).** This document is the authoritative pre-CAD dimension
 > source for **FBV2-P1** and **must not contain conflicting CURRENT requirements**. Where a superseded
 > figure is retained below it is marked ~~struck~~ or explicitly labelled **SUPERSEDED**, and the current
@@ -91,7 +100,7 @@ value is TARGET, however confident the arithmetic.
 | 9 | **NFC_ZONE** | **48 × 48 mm** minimum clear region, metal-free, rear upper third | **LOCKED** | **D-127 / D-128 / D-131** (FBV2-S1-004B/C) — 46 mm `FXC.46.52.0075X.B.dg` plus installation tolerance. ***The 45 × 45 mm figure carried here until FBV2-MECH-002 was STALE and is SUPERSEDED.*** §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 3.0 mm** + **1.5–2.0 cm³** rear cavity | **LOCKED** | **D-148.** Fitted part **PUI `AS02008MR-LW152-R`**, Ø20 ± 0.2 × 3 ± 0.2 mm. Supersedes the Ø20 × 4.0 / 15 × 11 × 3.5 targets and **releases 1 mm of Z** in the speaker column. The rear-cavity requirement is unchanged |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.48 × 8.13 × 5.33 mm** body; **2×12 @ 2.54 mm**, FEMALE, horizontal entry, right wall. Samtec **`BCS-112-S-D-HE`** | **LOCKED** | §5. **D-081/D-093.** Harwin `M20-7881242` **REJECTED as obsolete** |
-| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture**. **Both rules are current — see §8.1** | **LOCKED** (both rules) | **§8.1.** 15 mm: FBV2-MECH-001. 8 mm: **D-120**, restated by **M-13** (FBV2-S2-001) |
+| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; ***P1 FINDING (D-218): with `U8` at the bottom rear the routed coax run is ≈ 190 mm, so neither the 100 mm nor the 150 mm assembly reaches, and a top-LEFT SMA forces the coax across the NFC zone. OPEN for CTO ruling.***; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture**. **Both rules are current — see §8.1** | **LOCKED** (both rules) | **§8.1.** 15 mm: FBV2-MECH-001. 8 mm: **D-120**, restated by **M-13** (FBV2-S2-001) |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
 | 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
@@ -414,7 +423,7 @@ natural home for the NFC loop, and it costs nothing.
 | Screw/boss keepout | the two mid-span bosses must sit **below** Y = 100, i.e. outside the loop zone | **TARGET** |
 | Matching network | on the PCB, **within 15 mm** of the loop feed point | **TARGET** |
 | Speaker separation | ≥20 mm from the loop perimeter; the magnet is the largest ferrous mass in the device | **TARGET** |
-| **Stored antenna** | the left-side holder channel **must not cross the loop zone**. With a **48 mm** clear zone in a 75.0 mm cavity there is **~13.5 mm of margin each side** — route the channel in that margin | **TARGET** *(margin recomputed at FBV2-MECH-002 for the 48 mm zone)* |
+| ~~**Stored antenna**~~ | **DELETED 2026-08-24 (D-219).** There is no internal antenna storage channel. The left wall carries the **433 MHz flex** at board Y 1.5…48.5, which does not reach the loop zone | **CLOSED** |
 
 ### 6.3 Battery
 
@@ -517,8 +526,14 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 | Antenna connector | panel/bulkhead, **left half of the top edge** | |
 | Pigtail | u.FL → bulkhead, **minimum bend radius 5 mm**, **service loop ≥15 mm** | Per D-040: no controlled-impedance RF on the main PCB |
 
-**Antenna storage** runs along the **left wall**, sized for the stowed whip, and
-**must terminate below Y = 100 mm** so it never crosses the NFC loop zone (§6.2).
+~~**Antenna storage** runs along the **left wall**, sized for the stowed whip, and **must
+terminate below Y = 100 mm**.~~ **DELETED 2026-08-24 by D-219 (O-6 closed).** The locked
+915 MHz whip, Taoglas **`TI.92.2113`**, is **198 ± 3.3 mm × Ø13 mm** against a cavity whose
+longest internal diagonal is **≈ 172 mm** — **it never fitted inside the device in any
+orientation.** It is **removable and carried separately when detached**. **No internal storage
+channel, no left-side holder and no requirement forcing the antenna inside the enclosure
+remains current.** **The antenna MPN is unchanged.** The freed **LEFT internal wall now belongs
+to the 433 MHz flex, its cable and service access** (§8.2 / D-118).
 
 ### 8.1 915 MHz SMA ↔ IR spacing — authority trace (FBV2-MECH-002)
 
@@ -624,6 +639,17 @@ FBV2_SMA_IR_CENTRE_MM:   15.0 min c-c      LOCKED (FBV2-MECH-001, restated M-13)
 FBV2_SMA_IR_EDGE_MM:      8.0 min edge     LOCKED (D-120, restated M-13)
 FBV2_SPEAKER_Z_COLUMN:   12.6 of 23.0 (10.4 spare)   TARGET
 FBV2_MANUAL_ASSY_REFS:   J5, D1            LOCKED (D-206/D-207)
+FBV2_PCB_OUTLINE_MM:     70.0 x 148.0 x 1.6            LOCKED (D-220, FBV2-P1)
+FBV2_PCB_DATUM:          lower-left, X right, Y up     LOCKED (D-220)
+FBV2_SIDE_CONVENTION:    F.Cu = FRONT, B.Cu = REAR     LOCKED (D-214)
+FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)
+FBV2_REAR_STACK_MM:      NFC 48 + BAT 75 + SPK 20 = 143 of 155   LOCKED (D-215)
+FBV2_USB_SD_RULE:        >= 8.0 mm BODY edge-to-edge   LOCKED (D-217)
+FBV2_USB_SD_ACTUAL_MM:   16.40                         MEASURED (FBV2-P1)
+FBV2_BOSSES:             3 x M2 at dia 4.5 keepout     PARTIAL (D-216, target 6)
+FBV2_915_PIGTAIL:        095-902-568-100 (100 mm)      LOCKED (D-218) - DOES NOT REACH
+FBV2_915_WHIP_STORAGE:   NONE - deleted                LOCKED (D-219)
+FBV2_DISPLAY_OFFSET_MM:  3.34 LEFT of centre           OPEN (D-221)
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
 FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)
 ```
