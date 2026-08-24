@@ -19,13 +19,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PRO = os.path.join(HERE, '..', 'kicad', 'aqroot-beta-v2', 'aqroot-Beta-v2.kicad_pro')
 PCB = os.path.join(HERE, '..', 'kicad', 'aqroot-beta-v2', 'aqroot-Beta-v2.kicad_pcb')
 
+# UPDATED AT FBV2-P1-001.  Until P1 the PCB was still the inherited Beta-DM board,
+# whose backlight carried FOUR separate anode nets LED_A1..LED_A4.  The Full Beta v2
+# schematic captured at FBV2-S1-003 has ONE anode net -- `/03_SPI_A_DISPLAY_SD/LED_A`,
+# the net D-111/FBV2-S1-003 deliberately added to the LED_BOOST class -- feeding the
+# four 33 R ballast resistors R70..R73 in parallel.  The expectation therefore had to
+# follow the schematic once the P1 board was rebuilt from it.  THE GUARD ITSELF IS
+# UNCHANGED: LED_BOOST must still never capture the infrared transmitter nets.
 EXPECTED_LED_BOOST = {
     '/03_SPI_A_DISPLAY_SD/LED_BOOST',
     '/03_SPI_A_DISPLAY_SD/LED_K',
-    '/03_SPI_A_DISPLAY_SD/LED_A1',
-    '/03_SPI_A_DISPLAY_SD/LED_A2',
-    '/03_SPI_A_DISPLAY_SD/LED_A3',
-    '/03_SPI_A_DISPLAY_SD/LED_A4',
+    '/03_SPI_A_DISPLAY_SD/LED_A',
 }
 MUST_NOT_MATCH = {'/07_IR/IR_LED_K', '/07_IR/IR_LED_A'}
 
