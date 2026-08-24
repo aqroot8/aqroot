@@ -14,32 +14,47 @@ reports.  The companion script ``p1_apply.py`` is the only writer.
 """
 import math, json, sys, os
 
-BOARD_W, BOARD_H = 70.0, 148.0
-CAVITY = (-2.5, -3.5, 72.5, 151.5)          # x0,y0,x1,y1 in doc datum
+BOARD_W, BOARD_H = 72.0, 148.0
+CAVITY = (-1.5, -3.5, 73.5, 151.5)          # x0,y0,x1,y1 in doc datum
+#   FBV2-EXP-002: the board grew 70 -> 72 mm SYMMETRICALLY, so the wall gap
+#   falls 2.5 -> 1.5 mm on BOTH sides - the >= 1.5 mm rule met exactly, with
+#   nothing to spare.  Every part shifted +1.0 mm in X, so every part-to-part
+#   relationship is unchanged and only the edge margins moved.
 
 # ---------------------------------------------------------------- NFC (D-220)
-NFC_CX, NFC_CY = 30.8, 124.5                # circular geometry centre
+NFC_CX, NFC_CY = 31.8, 124.5                # circular geometry centre
 NFC_CLEAR_D   = 48.0                        # Oe48 metal-free CLEAR region
 NFC_METAL_D   = 58.0                        # Oe58 metal exclusion
 NFC_PLACE_BOX = 48.0                        # 48 x 48 placement/tolerance box
 
 # ---------------------------------------------------------------- reservations
-BATTERY = (6.0, 23.5, 66.0, 98.5)           # 60 x 75 x 8.0, unchanged
-SPEAKER = (48.0, 1.0, 68.0, 21.0)           # Oe20 x 3 + sealed cavity
-SPEAKER_C = (58.0, 11.0)
-DISPLAY = (3.39, 55.04, 59.93, 140.00)      # module envelope, FRONT
-DISPLAY_ACTIVE = (7.18, 60.80, 56.14, 134.24)
-ANT433  = (-2.40, 1.50, -0.20, 48.50)       # flex on the LEFT cavity wall
-USB_AP  = (36.0, -3.5, 48.0, 1.2)
-USD_AP  = (6.0, -21.0, 22.0, 1.2)
-IR_TX_OPT = (48.0, 140.0, 56.5, 148.0)
-IR_BARRIER= (57.5, 140.0, 60.5, 148.0)
-IR_RX_OPT = (61.5, 140.0, 70.0, 148.0)
-COMM_RECESS = (59.90, 104.0, 70.0, 138.0)
-MIC_ACOUSTIC = (0.5, 46.5, 5.5, 53.5)
+BATTERY = (7.0, 23.5, 64.0, 98.5)           # 57 x 75 x 8.0 MAX (D-239)
+#   Narrowed 60 -> 57 mm at FBV2-EXP-002.  That 3 mm is the entire price of the
+#   1 x 24 side header: a right-angle socket puts its tails 6.53 mm inboard of
+#   its own mating face, so the tail row must clear the cell by 0.5 mm + the
+#   0.8 mm pad radius.  Requirement (board right - cell right) >= 7.83 mm.
+SPEAKER = (49.0, 1.0, 69.0, 21.0)           # Oe20 x 3 + sealed cavity
+SPEAKER_C = (59.0, 11.0)
+DISPLAY = (4.39, 55.04, 60.93, 140.00)      # module envelope, FRONT
+DISPLAY_ACTIVE = (8.18, 60.80, 57.14, 134.24)
+ANT433  = (-1.40, 1.50, -0.60, 48.50)       # flex on the LEFT cavity wall
+#   RE-DERIVED at FBV2-EXP-002 from the flex's own 0.28 mm thickness plus
+#   adhesive, not from the old 2.2 mm reservation: with a 1.5 mm wall gap the
+#   old figure would not fit, and it never described anything real.  The flex
+#   is bonded to the WALL and projects inward only by its thickness.
+USB_AP  = (37.0, -3.5, 49.0, 1.2)
+USD_AP  = (7.0, -21.0, 23.0, 1.2)
+IR_TX_OPT = (49.0, 140.0, 57.5, 148.0)
+IR_BARRIER= (57.5, 140.0, 62.5, 148.0)
+IR_RX_OPT = (62.5, 140.0, 71.0, 148.0)
+COMM_RECESS = (65.40, 77.5, 72.0, 140.0)
+#   The recess is now 62.5 mm of internal length against a 60.96 mm mating male
+#   body: 1.54 mm of play against a 2.54 mm pitch, so a one-position lateral
+#   shift is PHYSICALLY IMPOSSIBLE and no proprietary shroud is needed.
+MIC_ACOUSTIC = (1.5, 46.5, 6.5, 53.5)
 
 # ---------------------------------------------------------------- 915 SMA
-SMA_X, SMA_Y = 5.0, 148.0                   # bulkhead hole centre, top panel
+SMA_X, SMA_Y = 6.0, 148.0                   # bulkhead hole centre, top panel
 SMA_HOLE_D   = 6.5                          # panel clearance hole
 SMA_HEX_AF   = 8.0                          # 8 HEX across flats  (drawing)
 SMA_HEX_AC   = SMA_HEX_AF / math.cos(math.radians(30))   # across corners
@@ -50,17 +65,17 @@ COAX_OD = 1.80          # RG-178 worst case (CAB.01034 1.32 mm coax is smaller)
 COAX_R  = COAX_OD / 2.0
 BEND_R_MIN = 5.0
 # U8 IPEX port, doc datum, after the U7/U8 swap
-U8_IPEX = (9.0, 16.6)
+U8_IPEX = (10.0, 16.6)
 
 COAX_PATH = [
-    (9.00,  16.60),   # U8 IPEX, U.FL right-angle plug
-    (5.40,  19.20),   # leaves the plug westward over U8's own body
-    (3.00,  25.50),   # enters the left rear channel, clear of the battery
-    (3.00, 108.00),   # straight north beside the battery, over MK1's sealed can
-    (0.30, 118.50),   # eases west around the Oe58 NFC metal exclusion
-    (0.30, 130.50),   # the pinch: 30.50 mm from the NFC centre
-    (5.00, 143.00),   # back east, clear of the exclusion, toward the bulkhead
-    (5.00, 148.00),   # SMA bulkhead, top panel
+    (10.00,  16.60),   # U8 IPEX, U.FL right-angle plug
+    (6.40,  19.20),   # leaves the plug westward over U8's own body
+    (4.00,  25.50),   # enters the left rear channel, clear of the battery
+    (4.00, 108.00),   # straight north beside the battery, over MK1's sealed can
+    (1.30, 118.50),   # eases west around the Oe58 NFC metal exclusion
+    (1.30, 130.50),   # the pinch: 30.50 mm from the NFC centre
+    (6.00, 143.00),   # back east, clear of the exclusion, toward the bulkhead
+    (6.00, 148.00),   # SMA bulkhead, top panel
 ]
 COAX_BEND_ALLOWANCE = 0.6   # mm added per interior vertex for the real radius
 COAX_SERVICE_LOOP   = 15.0  # T-6, must be carried by the chosen assembly
@@ -73,17 +88,17 @@ COAX_SERVICE_LOOP   = 15.0  # T-6, must be carried by the chosen assembly
 # (4.5, 21.5), on top of U8 - two shielded 50 ohm coaxes, neither crossing a
 # radiating element, so C-6 is satisfied.
 ANT433_PATH = [
-    (26.00, 16.60),   # U7 IPEX / MHF1
-    (22.00, 20.60),
-    (4.00, 21.60),
-    (-1.00, 19.00),
-    (-1.30, 6.00),    # flex tail on the left wall
+    (27.00, 16.60),   # U7 IPEX / MHF1
+    (23.00, 20.60),
+    (5.00, 21.60),
+    (0.00, 19.00),
+    (-0.30, 6.00),    # flex tail on the left wall
 ]
 
 # ---------------------------------------------------------------- bosses
 # U1's F.CrtYd bbox is the manufacturer ANTENNA KEEP-OUT polygon, not the module
 # body.  Collision review must use the body; the keep-out is tested separately.
-U1_BODY = (42.90, 9.90, 63.06, 30.10)
+U1_BODY = (43.90, 9.90, 64.06, 30.10)
 
 BOSS_M2_KEEPOUT_PREF = 6.0
 BOSS_M2_KEEPOUT_MIN  = 4.5

@@ -64,16 +64,16 @@ def build():
     # ---- cavity and board ------------------------------------------------
     rect(G.CAVITY, '#888', '#fbfbfb', dash='10 6', w=1.6)
     txt('ENCLOSURE CAVITY 75.0 x 155.0', (x0 + x1) / 2, y1 + 2.0, 3.0, '#666')
-    rect((0, 0, 70, 148), '#111', '#ffffff', w=2.4)
+    rect((0, 0, G.BOARD_W, G.BOARD_H), '#111', '#ffffff', w=2.4)
 
     # ---- rear reservations ------------------------------------------------
     rect(G.BATTERY, '#c98a00', '#ffd98a', op=0.45, w=1.4)
-    txt('BATTERY 60 x 75 x 8.0', 36, 62, 3.4, '#8a5f00', weight='bold')
+    txt('BATTERY 57 x 75 x 8.0 MAX', 36, 62, 3.4, '#8a5f00', weight='bold')
     txt('rear, B.Cu <= 1.2 mm, no compression', 36, 57, 2.6, '#8a5f00')
 
     rect(G.SPEAKER, '#7a4fbf', '#d9c6f2', op=0.5, w=1.4)
     circ(58, 11, 20, '#7a4fbf', 'none', w=1.2)
-    txt('SPEAKER D20 x 3', 58, 17.6, 2.6, '#4b2f80')
+    txt('SPEAKER D20 x 3', 59, 17.6, 2.6, '#4b2f80')
     txt('sealed cavity', 58, 4.0, 2.4, '#4b2f80')
 
     # ---- NFC --------------------------------------------------------------
@@ -138,10 +138,10 @@ def build():
         circ(bx, by, 4.5, '#8b0000', '#ffb3b3', w=1.6, op=0.9)
         circ(bx, by, 2.2, '#8b0000', '#ffffff', w=1.4)
         txt(nm, bx, by - 4.6, 2.6, '#8b0000', weight='bold')
-    for nm, r in (('RIB_R1', (66.20, 24.00, 69.70, 44.00)),
-                  ('RIB_R2', (66.20, 45.00, 69.70, 64.00)),
-                  ('RIB_R3', (66.20, 76.00, 69.70, 97.00)),
-                  ('RIB_B1', (44.00, 21.20, 47.60, 23.30))):
+    for nm, r in (('RIB_R1', (67.20, 24.00, 70.70, 44.00)),
+                  ('RIB_R2', (67.20, 45.00, 70.70, 64.00)),
+                  ('RIB_R3', (67.20, 76.00, 70.70, 97.00)),
+                  ('RIB_B1', (45.00, 21.20, 48.60, 23.30))):
         rect(r, '#0f7b6c', '#b9e6de', w=1.2, op=0.85)
         cx, cy = (r[0] + r[2]) / 2, (r[1] + r[3]) / 2
         txt(nm, cx, cy - 0.6, 2.2, '#0b5a4f')

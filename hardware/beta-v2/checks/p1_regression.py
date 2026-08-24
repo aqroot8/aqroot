@@ -43,13 +43,13 @@ def main():
     w, h = bb.GetWidth() / 1e6 - 0.1, bb.GetHeight() / 1e6 - 0.1
     emit('AQROOT Full Beta v2 - FBV2-P1 floorplan metrics (doc datum: origin lower-left, Y up)')
     emit('=' * 118)
-    chk('BOARD OUTLINE', '%.3f x %.3f mm' % (w, h), '70.000 x 148.000',
-        abs(w - 70) < 1e-3 and abs(h - 148) < 1e-3)
+    chk('BOARD OUTLINE', '%.3f x %.3f mm' % (w, h), '72.000 x 148.000',
+        abs(w - G.BOARD_W) < 1e-3 and abs(h - G.BOARD_H) < 1e-3)
 
     bosses = [p for p in parts if p['ref'].startswith('BOSS')]
     chk('FOOTPRINTS', '%d total, %d schematic + %d boss'
         % (len(parts), len(parts) - len(bosses), len(bosses)),
-        '321 schematic', len(parts) - len(bosses) == 321)
+        '322 schematic', len(parts) - len(bosses) == 322)
     refs = [p['ref'] for p in parts]
     chk('DUPLICATE REFERENCES', str(len(refs) - len(set(refs))), '0', len(refs) == len(set(refs)))
     chk('SIGNAL TRACKS / VIAS / ZONES',
@@ -147,7 +147,7 @@ def main():
     chk('microSD <-> USB-C courtyard edge', '%.3f mm' % e2e, '>= 8.0 (D-217)', e2e >= 8.0)
     fp5 = b.FindFootprintByReference('J5')
     padmax = max(pd.GetBoundingBox().GetRight() for pd in fp5.Pads()) / 1e6
-    chk('J5 copper to board edge', '%.3f mm' % (70.0 - padmax), '>= 0.5', 70.0 - padmax >= 0.5)
+    chk('J5 tail row to board edge', '%.3f mm' % (70.0 - padmax), '>= 0.5', 70.0 - padmax >= 0.5)
     emit('J5 COMMUNITY courtyard                 X %.3f..%.3f  Y %.3f..%.3f'
          % (j5['court'][0], j5['court'][2], j5['court'][1], j5['court'][3]))
 
@@ -230,10 +230,21 @@ def main():
     chk('side-aware courtyard collisions', str(len(coll)), '0', not coll)
     for a, c, k in coll[:12]:
         emit('   COLLISION %s <-> %s (%s)' % (a, c, k))
-    outb = [p['ref'] for p in parts if p['has_court'] and
-            (p['court'][0] < -0.01 or p['court'][2] > 70.01)]
-    chk('parts outside the board in X', str(len(outb)), '0 (courtyard may overhang Y at the edges)',
+    # J5's MATING FACE is meant to sit at the wall, so its courtyard legitimately
+    # overhangs the right edge by 0.43 mm; that is the whole point of a
+    # right-angle socket and it is checked separately below.  U1's courtyard IS
+    # the manufacturer antenna keep-out, two thirds of which is air beyond the
+    # board edge (D-231).  Everything else must be inside the outline.
+    EDGE_OK = {'J5', 'U1'}
+    outb = [p['ref'] for p in parts if p['has_court'] and p['ref'] not in EDGE_OK and
+            (p['court'][0] < -0.01 or p['court'][2] > G.BOARD_W + 0.01)]
+    chk('parts outside the board in X', str(len(outb)), '0 (J5 mating face and the U1 keep-out excepted)',
         not outb)
+    j5 = [p for p in parts if p['ref'] == 'J5']
+    if j5:
+        face = j5[0]['court'][2]
+        chk('J5 mating face vs the wall', '%.3f mm outboard of the edge' % (face - G.BOARD_W),
+            '<= 1.0 (fits the 1.5 mm wall gap)', face - G.BOARD_W <= 1.0)
 
     emit()
     emit('=' * 118)
