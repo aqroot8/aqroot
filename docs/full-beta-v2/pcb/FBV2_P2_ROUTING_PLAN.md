@@ -9,7 +9,16 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md),
 > electrical copper pours. 499 unrouted connections is the correct state. This document is the
 > rule set routing will be judged against; it is not routing.
 
-> **GATE RESULT: FBV2-P2 ENTRY = FAIL, ON ONE CRITERION.** Every rule, netclass, layer, ground,
+> **GATE RESULT: FBV2-P2 ENTRY = PASS (re-issued 2026-08-24 at FBV2-EXP-002).** PM-1, PM-2,
+> PM-3 and PT-1 are all **CLOSED**, so **no electrically required placement move remains**. The
+> board is now **72.000 x 148.000 mm**, `J5` is a **1 x 24** socket and `J8` **Qwiic** is new;
+> every rule, netclass, layer, ground, via, thermal, bus and escape decision below is unchanged
+> and still valid. **Community escape on the new connector: 23 inter-pad gaps x 3 usable layers =
+> 69 crossings against the 66 the 2 x 12 offered, the 7.87 mm dead band is gone and both ends of
+> the row are open** -- which is why the retired `HEADER RESERVED` / `J5_SELF_FANOUT` rules were
+> not re-created. Superseded gate result below.
+>
+> ~~**GATE RESULT: FBV2-P2 ENTRY = FAIL, ON ONE CRITERION.**~~ Every rule, netclass, layer, ground,
 > via, thermal, bus and escape question below is **closed**. What is not closed is §25's
 > requirement that *"no electrically required placement move remains"*. **Three remain, all
 > newly measured here, none of them fixable by routing: PM-1, PM-2 and PM-3 (§5).** They are

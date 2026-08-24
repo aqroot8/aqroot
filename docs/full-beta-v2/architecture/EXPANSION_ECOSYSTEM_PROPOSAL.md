@@ -1,12 +1,19 @@
 # AQROOT Full Beta v2 — Expansion ecosystem proposal
 
-**Status: PROPOSAL. PENDING CTO / OWNER RULING. NOT AUTHORITATIVE.**
+**Status: APPROVED AND IMPLEMENTED 2026-08-24 at FBV2-EXP-002 (D-237 ... D-242).**
+This document is now the RECORD OF THE PROPOSAL, not a live proposal. Where it differs from
+what was built, the built design wins: the owner approved the direction with **one pin-order
+correction**, so **ORDER-A below is SUPERSEDED BY ORDER-B** (D-240), which is safe under
+180 degree reversal as well as against a one-position shift. E-1 through E-6 were all taken;
+**E-2's predicted ~5 % capacity penalty did NOT materialise** -- both credible cells are
+50 mm wide, so the 57 mm limit binds neither (D-239). The built account is
+[`../audits/2026-08-24-expansion-and-refloorplan-implementation.md`](../audits/2026-08-24-expansion-and-refloorplan-implementation.md).
 Created 2026-08-24 at **FBV2-EXP-001**. Repository HEAD at task start: `24032a5`.
 
-> **NOTHING IN THIS DOCUMENT IS IMPLEMENTED.** `J5` is unchanged, the schematic is unchanged,
-> the PCB is byte-identical, no Qwiic connector exists, `BOOT` and `POWER` have not moved, and no
-> track exists. **D-081 / D-083 / D-093 / D-097 (the locked 2 × 12 community connector) remain in
-> force until the owner rules on this proposal.**
+> ~~**NOTHING IN THIS DOCUMENT IS IMPLEMENTED.**~~ **IT IS NOW ALL IMPLEMENTED (FBV2-EXP-002).**
+> `J5` is a 1 × 24 socket, `J8` Qwiic exists, `BOOT` has moved and the board is 72 × 148 mm.
+> **D-081 / D-083 / D-093 / D-097 are SUPERSEDED IN THEIR PHYSICAL HALF by D-237 / D-240** — the
+> electrical architecture they lock is untouched. Still zero routing.
 
 Evidence and measurements: [`../audits/2026-08-24-expansion-compatibility-audit.md`](../audits/2026-08-24-expansion-compatibility-audit.md).
 

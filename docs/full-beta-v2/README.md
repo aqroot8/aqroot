@@ -65,7 +65,7 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | **Mandatory before schematic work.** Thirteen fault cases across USB, battery, power-switch and accessory states. |
 | [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md) | **Authoritative pre-CAD dimension source.** Cavity, PCB envelope, battery, NFC zone, acoustics, IR/antenna, mounting. |
 | [pcb/FBV2_P1_FLOORPLAN.md](pcb/FBV2_P1_FLOORPLAN.md) | **FBV2-P1 floorplan.** Datum, outline, board-side convention, placement by face, and the measured gate metrics. **FBV2-P1 = PASS.** |
-| [pcb/FBV2_P1_KEEPOUTS.md](pcb/FBV2_P1_KEEPOUTS.md) | All 13 mechanical regions and 4 copper rule areas, with layers and enforced height limits. |
+| [pcb/FBV2_P1_KEEPOUTS.md](pcb/FBV2_P1_KEEPOUTS.md) | All 13 mechanical regions and 4 copper rule areas, with layers and enforced height limits. **Re-based to the 72 mm outline at FBV2-EXP-002.** |
 | [pcb/FBV2_P1_COORDINATES.csv](pcb/FBV2_P1_COORDINATES.csv) | Every reference: side, X, Y, rotation, footprint, value, sheet, courtyard box. |
 | [pcb/FBV2_P2_ROUTING_PLAN.md](pcb/FBV2_P2_ROUTING_PLAN.md) | **NORMATIVE for FBV2-P2.** Layer usage, ground strategy, per-class routing rules, converter/USB/NFC/bus/escape plans, via and thermal policy, routing order, first-route checklist. |
 | [pcb/FBV2_P2_NETCLASS_LEDGER.csv](pcb/FBV2_P2_NETCLASS_LEDGER.csv) | 19 routing classes: nets, design current, IPC-2221B minimum, target/min width, clearance, layers, via policy, return-path requirement, priority and basis. |

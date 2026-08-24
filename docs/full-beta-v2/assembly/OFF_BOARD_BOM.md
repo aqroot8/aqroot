@@ -111,7 +111,8 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 | item | qty | why |
 |---|---|---|
 | USB-C cable, USB 2.0 data-capable | 1 | The **only** service interface: console, ROM download **and** JTAG over the native USB Serial/JTAG. **A charge-only cable will look like a dead board** |
-| **Accessory reference mating header — Samtec `TSW-112-07-L-D`** or any 0.64 mm square-post 2 × 12 with a **4.34–6.35 mm** mating post | 1–2 | Required to validate the community port at all. **D-093 names `TSW-112-07-L-D` (5.84 mm post) as the reference mate** |
+| ~~Accessory reference mating header — Samtec `TSW-112-07-L-D` (2 × 12)~~ **SUPERSEDED by D-237.** **Accessory reference mating header — ANY ORDINARY 1 × 24, 2.54 mm MALE HEADER with a 0.635 mm (.025 in) SQUARE POST**, e.g. Samtec `TSW-124-07-x-S`, or 24 positions of ordinary breakaway strip | 1–2 | **The point of D-237 is that this is no longer a special part.** The socket's insertion depth is 3.68–6.35 mm, so any standard post in that range mates. **Ordinary male-to-female Dupont jumpers mate individual contacts directly and need no header at all** |
+| **Qwiic / STEMMA QT cable, 100 mm, 4-conductor JST-SH 1.0 mm** | 2 | **NEW at D-238.** Any SparkFun Qwiic or Adafruit STEMMA QT cable mates `J8`; the two ecosystems are interchangeable here. Needed to exercise the I²C port at first article |
 | microSD card | 1 | Card-detect and SPI-A validation |
 | NFC test tag (ISO 14443A) | 1 | NFC bring-up |
 

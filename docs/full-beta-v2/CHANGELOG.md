@@ -1,3 +1,137 @@
+## 2026-08-24 — the header, the cell, and the three moves done once (FBV2-EXP-002)
+
+**FBV2-P1 RE-ISSUED = PASS. FBV2-P2 ENTRY = PASS. PM-1, PM-2, PM-3 and PT-1 all CLOSED.**
+**No progress earned; overall stays 74%.** Full analysis:
+[`audits/2026-08-24-expansion-and-refloorplan-implementation.md`](audits/2026-08-24-expansion-and-refloorplan-implementation.md).
+New library part: `Samtec_SSQ-124-02-G-S-RA.kicad_mod`.
+
+**ZERO SIGNAL ROUTING.** 0 tracks, 0 signal vias, 0 electrical copper pours, 499 unrouted.
+
+### The battery gate ran first, and it made the headline claim wrong in the good direction
+
+Nothing authoritative was touched until the 57 × 75 × 8 mm envelope had been checked against cells
+somebody can actually buy. Two, from manufacturer datasheets rather than marketplace listings:
+**PKCELL `LP785060`** — 7.3 × 50 × 60 mm, 2500 mAh typical / 2375 minimum, PCM fitted with a ≈ 2.8 V
+cut-out, ships on a genuine 2-pin JST-PH — and **`LP755070`** — 7.5 × 50 × 70 mm, **3000 mAh
+minimum**, PCM fitted at 4.275 V ± 50 mV overcharge with a 2.50 V resume, 500 cycles to 80 %,
+0–45 °C charge.
+
+EXP-001 predicted a ≈ 5 % capacity penalty from scaling the volume. **That penalty does not
+materialise, and saying so is the point of running the gate: both candidates are 50 mm wide, so the
+57 mm limit binds neither of them, and `LP755070` lands at the TOP of D-071's 2500–3000 mAh
+target.** The envelope was always larger than the cells that fill it. The capacity target is
+unchanged, and the one new item this task raises is the mirror of that finding: **7 mm of the
+reservation is now unused** (E-7), which is either reclaimable area or tolerance for a wider cell —
+recorded, not decided.
+
+### What was built
+
+`J5` becomes a **Samtec `SSQ-124-02-G-S-RA`**, a 1 × 24 2.54 mm female right-angle socket —
+**the same manufacturer as the `BCS-112-S-D-HE` it replaces**, so the account and the small-quantity
+behaviour are already known. Body 61.47 mm, pin span 58.42 mm, mates a **.025″ square post**, which
+is the ordinary male-header and Dupont standard. `J8`, a **`JST SM04B-SRSS-TB`** Qwiic / STEMMA QT
+connector, joins it — **SMT and machine-placed**, so the manual-assembly list stays at two parts.
+
+**All 24 electrical functions are retained and not one protection component was removed.** Twelve
+100 Ω GPIO resistors, the 22 Ω I²C pair, the 330 Ω WAKE resistor, four TVS arrays, the TCA4307, both
+load switches, the boost, the FLT wire-OR, the `Q10` WAKE gate and the `ACC_DETECT_N` protection are
+all present and electrically identical. **The schematic change is a footprint swap plus a pin re-map
+on one sheet — no net was created, deleted, split or merged.** The old 2 × 12 footprint stays in the
+library: Beta-DM uses it, and it is the fallback if the owner ever reverses this.
+
+Qwiic costs **zero components**. It taps `EXT_SDA` / `EXT_SCL` — downstream of the TCA4307 and the
+22 Ω pair, at `D2`'s clamp, the same node as the header — so it inherits the buffer, the pull-ups,
+the series resistance and the ESD array. Its power is `ACC_3V3_SW`, and that is architectural rather
+than tidy: **`U16`'s own VCC already is**, so an unswitched feed would create a powered-device /
+unpowered-bus state. `ACC_5V_SW` is not on it and cannot be.
+
+### ORDER-B, because ORDER-A was safe against the wrong failure
+
+ORDER-A protected against a one-position slip. It did not protect against someone turning the
+accessory around. **ORDER-B is symmetric by construction**, so a full 24-pin accessory inserted
+180° maps 5V↔5V, GND↔GND, 3V3↔3V3, and 3.3 V logic to 3.3 V logic on every remaining contact.
+**Power-to-signal maps under reversal: zero** — proved pin by pin from the exported netlist, not
+argued.
+
+The lateral slip stays impossible for the same reason it always was: a mating male body is exactly
+60.96 mm, the closed-end recess is 62.5 mm, and 1.54 mm of play against a 2.54 mm pitch is 61 % of
+one position. **A pleasant consequence: D-097's asymmetric upper-edge key is no longer needed.**
+
+### The board grew symmetrically, and one reservation turned out to be fiction
+
+70 → 72 mm, **1.0 mm on each side**, so every part shifted +1.0 mm in X and **every part-to-part
+relationship on the board is preserved exactly.** Only the edge margins moved, to 1.5 mm on both
+sides — the ≥ 1.5 mm rule met exactly, with nothing to spare. The 80 × 160 × 23 enclosure is
+untouched.
+
+That last "nothing to spare" exposed something. `ANT433_REGION` was 2.2 mm wide, and 2.2 mm does not
+fit inside a 1.5 mm gap. **It never described anything real:** the 433 flex is **0.28 mm thick** and
+bonded flat to the cavity wall, so it projects inward by its thickness, not by 2.2 mm. The region is
+now re-derived from the part at X −1.40 … −0.60, with 0.6 mm of air to the board edge.
+
+And 3 mm of cell width is the entire price of the interface. A right-angle socket puts its tails
+**6.53 mm inboard of its own mating face** — it has to, because it must swallow a 6 mm post — so the
+requirement is (board right edge − cell right edge) ≥ 7.83 mm, against 4.00 mm before. Measured
+result: tail row at X 65.900, **1.100 mm clear of the cell**, mating face 0.430 mm outboard of the
+board edge with **1.070 mm to the wall** for the recess lip.
+
+### Three placement moves, done once
+
+**PM-1.** Converter IC-to-inductor spans fall from 12.96 / 28.56 / 30.50 / **45.90 mm** to
+**4.80 / 4.34 / 3.86 / 3.79 mm**. But the brief was explicit that moving the inductor and leaving
+the caps remote does not count, so each converter was rebuilt as a **complete power cell** in
+electrical order. The clearest case: `D8`, the backlight catch diode, sat **45.7 mm from its own
+inductor**; it is now 3.56 mm from `U17` and adjacent to `L3` and `C44`, so the loop that switches
+to 39 V on an open-LED fault is local instead of a 76 mm perimeter running 13 mm from the
+microphone.
+
+**PM-2.** The 1.5 A protection path goes from **116.7 mm to 30.86 mm** as one monotonic column —
+`J4` → `F1` → `Q2` → `Q3` → `R75` — with the Kelvin pair at 6.60 mm. **No FET, no threshold, no
+divider value and no recovery branch was altered. D-049 is untouched.** One part could not join the
+column and that is recorded rather than hidden: the left margin is also the mandatory 915 coax lane,
+which parts ≤ 2.0 mm may share because the cable lies over them, but a **5.75 mm JST-PH with a
+mating cable** cannot. `J4` therefore sits at the head of the column, north of the coax's western
+excursion, 8.59 mm from `F1`.
+
+**PM-3.** The NFC arms are mirrored about y = 118.000 at **Δx = 0.000 mm and arm-length Δ = 0.000
+mm** — same topology, same orientation, same stage order, every pair equidistant from the axis. The
+crystal's load capacitors moved from 13–15 mm away on the far side of the IC to beside `Y1`, which
+is now 5.40 mm from `U9`. No locked NFC value changed.
+
+**PT-1.** `U11` is out of the battery shadow, 3.5 mm clear of the cell, so its ≈ 0.65 W of charging
+dissipation spreads into copper with nothing behind it.
+
+### B-34 improves, and does not close
+
+The brief said not to claim routing losses are zero, so: at 1 oz and 1.0 mm the protection-path
+copper falls from **38.8 mΩ** (58 mV / 87 mW at 1.5 A) to **15.2 mΩ** (23 mV / 34 mW) — about 53 mW
+better at 1.5 A and 72 mW at 1.75 A. **That is a material improvement and it is not a closure.**
+B-34's ≈ 0.70 W is dominated by the BQ25185 BATFET's 115 mΩ and the FET R_DS(on), neither of which
+this task should have touched. The copper share of the figure falls from roughly 17 % to 7 %.
+
+### The rest
+
+`BOOT` moved to the bottom band on the **front** face — it is an SMD switch whose actuator faces out
+of the front shell, so its Ø2 mm service hole goes in the front wall and is therefore clear of both
+the microSD card path and the USB-C plug envelope. **Lower-left was rejected on RF**: that wall *is*
+the 433 flex region and the mandatory coax channel. `POWER` stays on the right wall. Retention is
+still two M2 — **widening the board did not buy a third, and none was chased.**
+
+Some numbers improved for free: NFC loop to `J5` metal **5.490 → 9.155 mm**, the NFC cable pair
+**41.73 → 31.23 mm**, and the display's off-centre offset **3.34 → 2.34 mm**, because symmetric
+growth halves it.
+
+**DRC 26 → 1.** The single survivor is the `MK1` netless-NPTH-inside-its-own-GND-ring artefact
+accepted at D-227 — still not excluded and still not suppressed. **ERC 0 errors / 27 warnings,
+histogram identical. 499 unrouted. Zero placement collisions.** `p1_regression`, `dru_probe`,
+`netclass_probe` and `fork_equivalence` all pass.
+
+One check had to be taught something: **`J5`'s courtyard legitimately overhangs the right edge by
+0.975 mm.** That is what a right-angle socket is *for*. `p1_regression.py` now measures the mating
+face against the wall gap explicitly instead of counting it as a part that has fallen off the board.
+
+---
+
 ## 2026-08-24 — the connector fits the users, not the board (FBV2-EXP-001)
 
 **AUDIT = PASS. AUDIT ONLY — no authoritative hardware changed, no progress earned; overall stays

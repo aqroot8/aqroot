@@ -324,6 +324,17 @@ front and the battery owns X 6.00 … 66.00 on the rear, leaving a 3.39 mm left 
 
 ## 5. Community expansion connector
 
+> **SUPERSEDED IN ITS PHYSICAL HALF 2026-08-24 by D-237 / D-240 (FBV2-EXP-002).** The port is
+> now a **standard 1 x 24, 2.54 mm, FEMALE, right-angle socket** -- Samtec
+> **`SSQ-124-02-G-S-RA`** -- presenting **one pin per line** down the right wall, mating an
+> ordinary male header or Dupont jumper. **All 24 electrical functions and every protection
+> component below are UNCHANGED**; what changed is the presentation and the pin order
+> (**ORDER-B**, which is safe under 180 deg reversal by construction). A **`JST
+> SM04B-SRSS-TB` Qwiic / STEMMA QT** connector is added on the protected external I2C node and
+> costs zero components. The **closed-end 62.5 mm recess** replaces the D-097 asymmetric key.
+> Everything about the 2 x 12 below is retained as the record of what it superseded.
+
+
 > **The 20-pin / 2×10 / 2.00 mm target is SUPERSEDED by D-081 and D-083
 > (FBV2-COMM-001).** The port is now 2×12 at 2.54 mm, female, with keying and
 > shrouding provided by the enclosure rather than by the connector.
@@ -644,9 +655,12 @@ FBV2_EXTERNAL_MM:        80 x 160 x 23     LOCKED
 FBV2_WALL_MM:            2.0               TARGET
 FBV2_INTERNAL_CAVITY_MM: 75.0 x 155.0 x 18.5   TARGET
 FBV2_PCB_MAX_MM:         72.0 x 152.0      TARGET
-FBV2_PCB_TARGET_MM:      70.0 x 148.0      TARGET
+FBV2_PCB_TARGET_MM:      72.0 x 148.0      LOCKED (D-239)
 FBV2_PCB_THICKNESS_MM:   1.6               LOCKED
-FBV2_BATTERY_MM:         60 x 75 x 8.0     LOCKED (D-071)
+FBV2_BATTERY_MM:         57 x 75 x 8.0 MAX  LOCKED (D-239, supersedes D-071 width)
+FBV2_BATTERY_CANDIDATES: PKCELL LP785060 7.3x50x60 2500mAh PCM+JST-PH;
+                         LP755070 7.5x50x70 3000mAh PCM+leads   VERIFIED (D-239)
+FBV2_BATTERY_TARGET_MAH: 2500-3000                     UNCHANGED (D-071)
 FBV2_DISPLAY_SIZE_IN:    3.5               LOCKED (D-072)
 FBV2_DISPLAY_ENVELOPE_MM: 60 x 90 x 4.5    TARGET
 FBV2_DISPLAY_ACTUAL_MM:  56.54 x 84.96 x 3.95+/-0.25   LOCKED (D-074)
@@ -656,32 +670,42 @@ FBV2_DISPLAY_CONNECTOR:  Hirose FH69-50S-0.5SH         LOCKED (D-076)
 FBV2_DISPLAY_CONN_LAND:  FH69 DEDICATED - not FH12/FH52E   LOCKED (D-194)
 FBV2_DISPLAY_CONN_2ND:   NONE - single source           LOCKED (D-194)
 FBV2_DISPLAY_CONN_ASSY:  MACHINE-PLACED at JLC          LOCKED (D-206/D-207)
-FBV2_COMM_CONTACTS:      24 active (2 x 12)            LOCKED (D-081)
+FBV2_COMM_CONTACTS:      24 active (1 x 24, one pin per line)  LOCKED (D-237)
 FBV2_COMM_PITCH_MM:      2.54                          LOCKED (D-083)
-FBV2_COMM_CONNECTOR:     Samtec BCS-112-S-D-HE (female)  LOCKED (D-093)
-FBV2_COMM_BODY_MM:       30.48 x 8.13 x 5.33           LOCKED (D-093)
-FBV2_COMM_FOOTPRINT:     2x12 PTH, 2.54 in-row, 7.87 row-to-row, 0.71 drill   LOCKED (D-093)
-FBV2_COMM_KEYING:        enclosure recess + upper rib  LOCKED (D-097)
+FBV2_COMM_CONNECTOR:     Samtec SSQ-124-02-G-S-RA (1x24 female RA)  LOCKED (D-237)
+FBV2_COMM_BODY_MM:       61.47 long, mates .025in square post  LOCKED (D-237)
+FBV2_COMM_FOOTPRINT:     1x24 PTH, 2.54 pitch, 1.02 drill, 58.42 pin span   LOCKED (D-237)
+FBV2_COMM_KEYING:        CLOSED-END recess 62.5 mm vs 60.96 male body =
+                         1.54 mm play on a 2.54 pitch; shift IMPOSSIBLE.
+                         D-097 asymmetric key NO LONGER REQUIRED   LOCKED (D-240)
+FBV2_COMM_PIN_ORDER:     ORDER-B, 180-deg-reversal safe, 0 power-to-signal  LOCKED (D-240)
+FBV2_QWIIC:              JST SM04B-SRSS-TB, 1 GND/2 3V3/3 SDA/4 SCL   LOCKED (D-238)
+FBV2_QWIIC_POWER:        ACC_3V3_SW - never ACC_5V_SW              LOCKED (D-238)
+FBV2_BOOT_POS:           doc (28.300, 6.000) FRONT face, front-wall tool hole  LOCKED (D-242)
+FBV2_POWER_SW_POS:       doc (66.700, 61.500) right wall           LOCKED (D-242)
 FBV2_Z_CONNECTOR_COLUMN: 19.53 of 23.0 (3.47 spare)    TARGET (M-09)
 FBV2_NFC_ZONE_MM:        48 x 48           LOCKED (D-127/D-128/D-131)
 FBV2_SMA_IR_CENTRE_MM:   15.0 min c-c      LOCKED (FBV2-MECH-001, restated M-13)
 FBV2_SMA_IR_EDGE_MM:      8.0 min edge     LOCKED (D-120, restated M-13)
 FBV2_SPEAKER_Z_COLUMN:   12.6 of 23.0 (10.4 spare)   TARGET
 FBV2_MANUAL_ASSY_REFS:   J5, D1            LOCKED (D-206/D-207)
-FBV2_PCB_OUTLINE_MM:     70.0 x 148.0 x 1.6            LOCKED (D-220, FBV2-P1)
+FBV2_PCB_OUTLINE_MM:     72.0 x 148.0 x 1.6            LOCKED (D-239, FBV2-EXP-002)
+FBV2_PCB_WALL_GAP_MM:    1.5 both sides - the >= 1.5 rule met EXACTLY   LOCKED (D-239)
 FBV2_PCB_DATUM:          lower-left, X right, Y up     LOCKED (D-220)
 FBV2_SIDE_CONVENTION:    F.Cu = FRONT, B.Cu = REAR     LOCKED (D-214)
 FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)
 FBV2_REAR_STACK_MM:      NFC 48 + BAT 75 + SPK 20 = 143 of 155   LOCKED (D-215)
 FBV2_USB_SD_RULE:        >= 8.0 mm BODY edge-to-edge   LOCKED (D-217)
 FBV2_USB_SD_ACTUAL_MM:   16.40                         MEASURED (FBV2-P1)
-FBV2_BOSSES:             2 x M2 at dia 4.5 keepout     LOCKED (D-226/D-232)
+FBV2_BOSSES:             2 x M2 at dia 4.5 keepout     LOCKED (D-226/D-232/D-242)
+                         re-searched on the 72 mm outline: dia6.0 = 0 sites,
+                         dia4.5 = 2. Widening bought NO third screw.
 FBV2_RETENTION:          rails + 4 ribs + 2 x M2 + J5 backing boss   LOCKED (D-232)
 FBV2_SUPPORT_RIBS:       RIB_R1 RIB_R2 RIB_R3 RIB_B1   LOCKED (D-232, non-metallic)
 FBV2_915_PIGTAIL:        RF Solutions CBA-UFLSMA20IP (200 mm)   LOCKED (D-223)
 FBV2_915_ROUTED_MM:      138.48 of 200, 46.52 spare    MEASURED (FBV2-P1-002)
 FBV2_915_WHIP_STORAGE:   NONE - deleted                LOCKED (D-219)
-FBV2_DISPLAY_OFFSET_MM:  3.34 LEFT of centre           ACCEPTED, INTENTIONAL (D-225)
+FBV2_DISPLAY_OFFSET_MM:  2.34 LEFT of centre           ACCEPTED, INTENTIONAL (D-225/D-239)
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
-FBV2_PCB_FIT_STATUS:     RE-FLOORPLANNED 70x148 (FBV2-P1 = PASS, D-222)
+FBV2_PCB_FIT_STATUS:     RE-FLOORPLANNED 72x148 (FBV2-P1 RE-ISSUED = PASS, D-242)
 ```

@@ -1,6 +1,23 @@
 # AQROOT Full Beta v2 — FBV2-P1 mechanical regions and keepouts
 
-**Status: NORMATIVE for FBV2-P2 and for the enclosure CAD.** Created 2026-08-24 at
+**Status: NORMATIVE for FBV2-P2 and for the enclosure CAD.**
+
+> **RE-BASED 2026-08-24 at FBV2-EXP-002.** The board is now **72.000 × 148.000 mm** and grew
+> **symmetrically**, so **every X coordinate below gains +1.0 mm** and `X_cavity = X_doc + 1.5`
+> (was +2.5). Three regions changed by more than the shift and are restated here; the machine
+> -generated current figures are [`FBV2_P1_METRICS.txt`](FBV2_P1_METRICS.txt).
+>
+> | region | now |
+> |---|---|
+> | `BATTERY_SHADOW` | **X 7.00 … 64.00, Y 23.50 … 98.50 — 57 × 75 × 8.0 mm MAX** (D-239). Rear height ≤ 1.2 mm, no through-hole lead |
+> | `NFC_CLEAR_D48` / `NFC_METAL_D58` / `NFC_PLACEMENT_BOX` | centre **doc (31.800, 124.500)**, diameters unchanged |
+> | `ANT433_REGION` | **X −1.40 … −0.60, Y 1.50 … 48.50 — RE-DERIVED, not shifted.** The old 2.2 mm reservation does not fit a 1.5 mm wall gap and never described anything real: the flex is **0.28 mm thick** and bonded flat to the wall, so it projects inward by its thickness plus adhesive. 0.6 mm of air remains to the board edge |
+> | `COMM_RECESS` | **X 65.40 … 72.00, Y 77.50 … 140.00** — the 1 × 24 socket recess. **Internal length 62.5 mm against a 60.96 mm male body: 1.54 mm of play on a 2.54 mm pitch, so a one-position shift is physically impossible. Both ends CLOSED. The D-097 asymmetric key is no longer required** |
+> | `COAX_915_CHANNEL` | **X −0.50 … 7.00, Y 24.00 … 110.00.** Clarified, not changed: it is a **CABLE lane, not a component keepout** — the Ø1.8 mm RG-178 lies over rear parts, so components **≤ 2.0 mm** may share it. What it forbids is anything the cable cannot lie over: a connector, a boss, a rib or an edge-capture rail |
+> | `USB_APERTURE` / `USD_APERTURE` / IR windows / `SMA_APPROACH` | shifted +1.0 mm in X, otherwise unchanged. The IR barrier is **X 57.50 … 62.50** |
+> | **`BOOT` service aperture — NEW** | **Ø2 mm recessed tool hole in the FRONT wall** at doc ≈ (28.3, 6.0). `SW1` is an SMD switch whose actuator faces out of the front shell, so the hole is **not** in the bottom wall and is therefore clear of both the microSD card-insertion path and the USB-C plug envelope |
+> | **Qwiic aperture — NEW** | right wall at doc Y 67.7 … 75.6, for the `JST SM04B-SRSS-TB` side-entry cable |
+ Created 2026-08-24 at
 **FBV2-P1-001**, **superseded in part 2026-08-24 at FBV2-P1-002**. All coordinates use the
 **P1 doc datum**: origin at the **lower-left board corner**, X → right, Y → **up**, millimetres.
 `Y_kicad = 148.000 − Y_doc`.

@@ -38,7 +38,9 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 
 | MPN | refs | class | evidence, dated |
 |---|---|---|---|
-| **BCS-112-S-D-HE** | `J5` | **C** | Samtec product page 2026-08-23: **Part Status ACTIVE, 385 pcs ship tomorrow**, $7.314 @1 / $5.667 @100, UL E111594, MSL 1. **Through-hole → manual/secondary assembly** |
+| **SSQ-124-02-G-S-RA** | `J5` | **C** | **NEW at D-237, superseding `BCS-112-S-D-HE`. SAME MANUFACTURER**, so the account, the lead-time behaviour and the small-quantity policy are already known. Samtec SSW/SSQ through-hole datasheet: 01–50 positions per row, `-S` single row, `-RA` right angle available with `-S`, body 61.47 mm, **mates .025 in (0.635 mm) square post**, 6.3 A per pin, 465 VAC / 655 VDC, −55…+125 °C with gold, 100 mating cycles. **Through-hole → manual / secondary assembly, unchanged: one THT part replaced one THT part and the count stays at 24** |
+| ~~**BCS-112-S-D-HE**~~ | ~~`J5`~~ | — | **SUPERSEDED by D-237, but the footprint is RETAINED in the library and NOT deleted**: Beta-DM still uses it and it is the fallback if D-237 is ever reversed. Samtec page 2026-08-23: ACTIVE, 385 pcs, $7.314 @1 / $5.667 @100 |
+| **SM04B-SRSS-TB(LF)(SN)** | `J8` | **NEW (D-238)** | JST SH series, 1.0 mm pitch, 4 circuit, side entry, **SMT — MACHINE-PLACED, so the manual-assembly list does NOT grow** and stays at `J5` + `D1`. 1.0 A, 50 V AC/DC, −25…+85 °C, 20 mΩ contact resistance. Widely second-sourced: it is the part the entire Qwiic / STEMMA QT ecosystem standardised on |
 | **TCA4307DGKR** | `U16` | **B** | LCSC **C880333** 2026-08-23: **3 248 in stock**, $2.51 @1 / $1.71 @1k |
 | **ST25R3916-AQET** | `U9` | **B** | LCSC **C5267441** (D-126) — the only one of the two NFC variants with an LCSC code and therefore a JLC path |
 | **MHPA3528RGBCT** | `D13` | **B** | LCSC **C409779** 2026-08-23: **69 270 in stock**, $0.1035 @500 |

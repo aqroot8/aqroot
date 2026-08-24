@@ -3,14 +3,14 @@
 <g font-family="DejaVu Sans, Verdana, sans-serif">
 <rect x="130.00" y="130.00" width="375.00" height="775.00" fill="#fbfbfb" fill-opacity="1.00" stroke="#888" stroke-width="1.60" stroke-dasharray="10 6"/>
 <text x="317.50" y="121.80" font-size="6.3" fill="#666" text-anchor="middle" font-weight="normal">ENCLOSURE CAVITY 75.0 x 155.0</text>
-<rect x="142.50" y="147.50" width="350.00" height="740.00" fill="#ffffff" fill-opacity="1.00" stroke="#111" stroke-width="2.40"/>
-<rect x="172.50" y="395.00" width="300.00" height="375.00" fill="#ffd98a" fill-opacity="0.45" stroke="#c98a00" stroke-width="1.40"/>
-<text x="322.50" y="579.54" font-size="7.1" fill="#8a5f00" text-anchor="middle" font-weight="bold">BATTERY 60 x 75 x 8.0</text>
-<text x="322.50" y="604.06" font-size="5.5" fill="#8a5f00" text-anchor="middle" font-weight="normal">rear, B.Cu &lt;= 1.2 mm, no compression</text>
+<rect x="137.50" y="147.50" width="360.00" height="740.00" fill="#ffffff" fill-opacity="1.00" stroke="#111" stroke-width="2.40"/>
+<rect x="172.50" y="395.00" width="285.00" height="375.00" fill="#ffd98a" fill-opacity="0.45" stroke="#c98a00" stroke-width="1.40"/>
+<text x="317.50" y="579.54" font-size="7.1" fill="#8a5f00" text-anchor="middle" font-weight="bold">BATTERY 57 x 75 x 8.0 MAX</text>
+<text x="317.50" y="604.06" font-size="5.5" fill="#8a5f00" text-anchor="middle" font-weight="normal">rear, B.Cu &lt;= 1.2 mm, no compression</text>
 <rect x="382.50" y="782.50" width="100.00" height="100.00" fill="#d9c6f2" fill-opacity="0.50" stroke="#7a4fbf" stroke-width="1.40"/>
-<circle cx="432.50" cy="832.50" r="50.00" fill="none" fill-opacity="1.00" stroke="#7a4fbf" stroke-width="1.20"/>
+<circle cx="427.50" cy="832.50" r="50.00" fill="none" fill-opacity="1.00" stroke="#7a4fbf" stroke-width="1.20"/>
 <text x="432.50" y="801.06" font-size="5.5" fill="#4b2f80" text-anchor="middle" font-weight="normal">SPEAKER D20 x 3</text>
-<text x="432.50" y="868.94" font-size="5.0" fill="#4b2f80" text-anchor="middle" font-weight="normal">sealed cavity</text>
+<text x="427.50" y="868.94" font-size="5.0" fill="#4b2f80" text-anchor="middle" font-weight="normal">sealed cavity</text>
 <circle cx="296.50" cy="265.00" r="145.00" fill="#cfe4fb" fill-opacity="0.45" stroke="#0b6bcb" stroke-width="2.00" stroke-dasharray="7 5"/>
 <circle cx="296.50" cy="265.00" r="120.00" fill="#9ccaf7" fill-opacity="0.45" stroke="#0b6bcb" stroke-width="2.40"/>
 <rect x="176.50" y="145.00" width="240.00" height="240.00" fill="none" fill-opacity="1.00" stroke="#0b6bcb" stroke-width="1.00" stroke-dasharray="3 4"/>
@@ -18,15 +18,15 @@
 <line x1="296.50" y1="280.00" x2="296.50" y2="250.00" stroke="#0b6bcb" stroke-width="1"/>
 <text x="296.50" y="222.16" font-size="7.6" fill="#08498c" text-anchor="middle" font-weight="bold">NFC CLEAR D48</text>
 <text x="296.50" y="244.80" font-size="6.3" fill="#08498c" text-anchor="middle" font-weight="normal">METAL EXCLUSION D58</text>
-<text x="296.50" y="294.18" font-size="5.9" fill="#08498c" text-anchor="middle" font-weight="normal">centre 30.8, 124.5</text>
+<text x="296.50" y="294.18" font-size="5.9" fill="#08498c" text-anchor="middle" font-weight="normal">centre 31.8, 124.5</text>
 <text x="296.50" y="316.56" font-size="5.5" fill="#3f83c9" text-anchor="middle" font-weight="normal">48 x 48 placement box</text>
 <rect x="159.45" y="187.50" width="282.70" height="424.80" fill="none" fill-opacity="1.00" stroke="#2f7d32" stroke-width="1.40" stroke-dasharray="6 4"/>
 <text x="300.80" y="598.98" font-size="5.9" fill="#2f7d32" text-anchor="middle" font-weight="normal">DISPLAY SHADOW (front)</text>
-<rect x="130.50" y="645.00" width="11.00" height="235.00" fill="#f6b3ba" fill-opacity="0.80" stroke="#b3202e" stroke-width="1.20"/>
-<text x="100.00" y="764.18" font-size="5.9" fill="#8c1622" text-anchor="middle" font-weight="normal">433 FLEX</text>
-<text x="100.00" y="781.44" font-size="5.0" fill="#8c1622" text-anchor="middle" font-weight="normal">47 x 17</text>
+<rect x="130.50" y="645.00" width="4.00" height="235.00" fill="#f6b3ba" fill-opacity="0.80" stroke="#b3202e" stroke-width="1.20"/>
+<text x="95.00" y="764.18" font-size="5.9" fill="#8c1622" text-anchor="middle" font-weight="normal">433 FLEX</text>
+<text x="95.00" y="781.44" font-size="5.0" fill="#8c1622" text-anchor="middle" font-weight="normal">47 x 17</text>
 <polyline points="272.50,804.50 252.50,784.50 162.50,779.50 137.50,792.50 136.00,857.50" fill="none" stroke="#b3202e" stroke-width="1.80" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 3"/>
-<text x="272.50" y="761.50" font-size="5.2" fill="#8c1622" text-anchor="middle" font-weight="normal">433 lead 44 / 100 mm</text>
+<text x="267.50" y="761.50" font-size="5.2" fill="#8c1622" text-anchor="middle" font-weight="normal">433 lead 44 / 100 mm</text>
 <polyline points="187.50,804.50 169.50,791.50 157.50,760.00 157.50,347.50 144.00,295.00 144.00,235.00 167.50,172.50 167.50,147.50" fill="none" stroke="#d2691e" stroke-width="3.20" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="187.50" cy="804.50" r="2.6" fill="#d2691e"/>
 <circle cx="169.50" cy="791.50" r="2.6" fill="#d2691e"/>
@@ -36,31 +36,31 @@
 <circle cx="144.00" cy="235.00" r="2.6" fill="#d2691e"/>
 <circle cx="167.50" cy="172.50" r="2.6" fill="#d2691e"/>
 <circle cx="167.50" cy="147.50" r="2.6" fill="#d2691e"/>
-<text x="230.00" y="449.42" font-size="6.7" fill="#a04b12" text-anchor="start" font-weight="bold">915 COAX CHANNEL</text>
-<text x="230.00" y="469.12" font-size="5.7" fill="#a04b12" text-anchor="start" font-weight="normal">CBA-UFLSMA20IP, 200 mm</text>
-<text x="230.00" y="486.62" font-size="5.7" fill="#a04b12" text-anchor="start" font-weight="normal">routed 138.5 mm</text>
+<text x="225.00" y="449.42" font-size="6.7" fill="#a04b12" text-anchor="start" font-weight="bold">915 COAX CHANNEL</text>
+<text x="225.00" y="469.12" font-size="5.7" fill="#a04b12" text-anchor="start" font-weight="normal">CBA-UFLSMA20IP, 200 mm</text>
+<text x="225.00" y="486.62" font-size="5.7" fill="#a04b12" text-anchor="start" font-weight="normal">routed 138.5 mm</text>
 <circle cx="167.50" cy="147.50" r="25.50" fill="#ffd9b3" fill-opacity="0.80" stroke="#d2691e" stroke-width="1.20"/>
 <circle cx="167.50" cy="147.50" r="16.25" fill="#ffffff" fill-opacity="1.00" stroke="#a04b12" stroke-width="1.60"/>
 <text x="222.50" y="141.80" font-size="6.3" fill="#a04b12" text-anchor="start" font-weight="bold">SMA</text>
-<text x="222.50" y="161.50" font-size="5.2" fill="#a04b12" text-anchor="start" font-weight="normal">D6.5 panel hole, x=5.0</text>
+<text x="222.50" y="161.50" font-size="5.2" fill="#a04b12" text-anchor="start" font-weight="normal">D6.5 panel hole, x=6.0</text>
 <rect x="382.50" y="147.50" width="42.50" height="40.00" fill="#eeeeee" fill-opacity="0.90" stroke="#444" stroke-width="1.20"/>
-<text x="403.75" y="171.56" font-size="5.5" fill="#333" text-anchor="middle" font-weight="normal">IR TX</text>
-<rect x="425.00" y="147.50" width="25.00" height="40.00" fill="#cccccc" fill-opacity="0.90" stroke="#000" stroke-width="1.40"/>
-<text x="437.50" y="171.32" font-size="4.6" fill="#000" text-anchor="middle" font-weight="normal">BARRIER</text>
+<text x="398.75" y="171.56" font-size="5.5" fill="#333" text-anchor="middle" font-weight="normal">IR TX</text>
+<rect x="420.00" y="147.50" width="25.00" height="40.00" fill="#cccccc" fill-opacity="0.90" stroke="#000" stroke-width="1.40"/>
+<text x="432.50" y="171.32" font-size="4.6" fill="#000" text-anchor="middle" font-weight="normal">BARRIER</text>
 <rect x="450.00" y="147.50" width="42.50" height="40.00" fill="#eeeeee" fill-opacity="0.90" stroke="#444" stroke-width="1.20"/>
-<text x="471.25" y="171.56" font-size="5.5" fill="#333" text-anchor="middle" font-weight="normal">IR RX</text>
+<text x="466.25" y="171.56" font-size="5.5" fill="#333" text-anchor="middle" font-weight="normal">IR RX</text>
 <rect x="322.50" y="881.50" width="60.00" height="23.50" fill="none" fill-opacity="1.00" stroke="#555" stroke-width="1.00" stroke-dasharray="4 3"/>
-<text x="352.50" y="899.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">USB-C</text>
+<text x="347.50" y="899.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">USB-C</text>
 <rect x="172.50" y="881.50" width="80.00" height="111.00" fill="none" fill-opacity="1.00" stroke="#555" stroke-width="1.00" stroke-dasharray="4 3"/>
-<text x="212.50" y="928.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">microSD + 22 mm card travel</text>
-<rect x="442.00" y="197.50" width="50.50" height="170.00" fill="none" fill-opacity="1.00" stroke="#555" stroke-width="1.00" stroke-dasharray="4 3"/>
-<text x="467.50" y="283.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">J5 COMMUNITY RECESS</text>
-<circle cx="342.50" cy="827.50" r="11.25" fill="#ffb3b3" fill-opacity="0.90" stroke="#8b0000" stroke-width="1.60"/>
-<circle cx="342.50" cy="827.50" r="5.50" fill="#ffffff" fill-opacity="1.00" stroke="#8b0000" stroke-width="1.40"/>
-<text x="342.50" y="852.06" font-size="5.5" fill="#8b0000" text-anchor="middle" font-weight="bold">BOSS1</text>
-<circle cx="437.50" cy="162.50" r="11.25" fill="#ffb3b3" fill-opacity="0.90" stroke="#8b0000" stroke-width="1.60"/>
-<circle cx="437.50" cy="162.50" r="5.50" fill="#ffffff" fill-opacity="1.00" stroke="#8b0000" stroke-width="1.40"/>
-<text x="437.50" y="187.06" font-size="5.5" fill="#8b0000" text-anchor="middle" font-weight="bold">BOSS2</text>
+<text x="207.50" y="928.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">microSD + 22 mm card travel</text>
+<rect x="464.50" y="187.50" width="33.00" height="312.50" fill="none" fill-opacity="1.00" stroke="#555" stroke-width="1.00" stroke-dasharray="4 3"/>
+<text x="462.50" y="283.94" font-size="5.0" fill="#555" text-anchor="middle" font-weight="normal">J5 COMMUNITY RECESS</text>
+<circle cx="337.50" cy="827.50" r="11.25" fill="#ffb3b3" fill-opacity="0.90" stroke="#8b0000" stroke-width="1.60"/>
+<circle cx="337.50" cy="827.50" r="5.50" fill="#ffffff" fill-opacity="1.00" stroke="#8b0000" stroke-width="1.40"/>
+<text x="337.50" y="852.06" font-size="5.5" fill="#8b0000" text-anchor="middle" font-weight="bold">BOSS1</text>
+<circle cx="432.50" cy="162.50" r="11.25" fill="#ffb3b3" fill-opacity="0.90" stroke="#8b0000" stroke-width="1.60"/>
+<circle cx="432.50" cy="162.50" r="5.50" fill="#ffffff" fill-opacity="1.00" stroke="#8b0000" stroke-width="1.40"/>
+<text x="432.50" y="187.06" font-size="5.5" fill="#8b0000" text-anchor="middle" font-weight="bold">BOSS2</text>
 <rect x="473.50" y="667.50" width="17.50" height="100.00" fill="#b9e6de" fill-opacity="0.85" stroke="#0f7b6c" stroke-width="1.20"/>
 <text x="482.25" y="721.82" font-size="4.6" fill="#0b5a4f" text-anchor="middle" font-weight="normal">RIB_R1</text>
 <rect x="473.50" y="567.50" width="17.50" height="95.00" fill="#b9e6de" fill-opacity="0.85" stroke="#0f7b6c" stroke-width="1.20"/>
@@ -69,16 +69,16 @@
 <text x="482.25" y="459.32" font-size="4.6" fill="#0b5a4f" text-anchor="middle" font-weight="normal">RIB_R3</text>
 <rect x="362.50" y="771.00" width="18.00" height="10.50" fill="#b9e6de" fill-opacity="0.85" stroke="#0f7b6c" stroke-width="1.20"/>
 <text x="371.50" y="780.57" font-size="4.6" fill="#0b5a4f" text-anchor="middle" font-weight="normal">RIB_B1</text>
-<rect x="135.00" y="337.50" width="37.50" height="430.00" fill="none" fill-opacity="1.00" stroke="#d2691e" stroke-width="1.00" stroke-dasharray="5 4"/>
-<text x="222.50" y="559.06" font-size="5.5" fill="#a04b12" text-anchor="start" font-weight="normal">COAX_915_CHANNEL</text>
-<rect x="147.78" y="773.52" width="79.45" height="106.70" fill="#ffffff" fill-opacity="0.00" stroke="#333" stroke-width="1.20"/>
-<text x="187.50" y="789.06" font-size="5.5" fill="#111" text-anchor="middle" font-weight="bold">U8 915</text>
-<rect x="232.78" y="773.52" width="79.45" height="106.70" fill="#ffffff" fill-opacity="0.00" stroke="#333" stroke-width="1.20"/>
-<text x="272.50" y="789.06" font-size="5.5" fill="#111" text-anchor="middle" font-weight="bold">U7 433</text>
+<rect x="130.00" y="337.50" width="37.50" height="430.00" fill="none" fill-opacity="1.00" stroke="#d2691e" stroke-width="1.00" stroke-dasharray="5 4"/>
+<text x="217.50" y="559.06" font-size="5.5" fill="#a04b12" text-anchor="start" font-weight="normal">COAX_915_CHANNEL</text>
+<rect x="142.78" y="773.52" width="79.45" height="106.70" fill="#ffffff" fill-opacity="0.00" stroke="#333" stroke-width="1.20"/>
+<text x="182.50" y="789.06" font-size="5.5" fill="#111" text-anchor="middle" font-weight="bold">U8 915</text>
+<rect x="227.78" y="773.52" width="79.45" height="106.70" fill="#ffffff" fill-opacity="0.00" stroke="#333" stroke-width="1.20"/>
+<text x="267.50" y="789.06" font-size="5.5" fill="#111" text-anchor="middle" font-weight="bold">U7 433</text>
 <circle cx="187.50" cy="804.50" r="3.2" fill="none" stroke="#d2691e" stroke-width="1.6"/>
-<text x="205.50" y="805.82" font-size="4.6" fill="#a04b12" text-anchor="start" font-weight="normal">IPEX</text>
-<rect x="148.53" y="626.02" width="17.95" height="22.95" fill="#ffffff" fill-opacity="0.00" stroke="#111" stroke-width="1.00"/>
-<text x="182.50" y="638.94" font-size="5.0" fill="#111" text-anchor="start" font-weight="normal">MK1</text>
+<text x="200.50" y="805.82" font-size="4.6" fill="#a04b12" text-anchor="start" font-weight="normal">IPEX</text>
+<rect x="143.53" y="626.02" width="17.95" height="22.95" fill="#ffffff" fill-opacity="0.00" stroke="#111" stroke-width="1.00"/>
+<text x="177.50" y="638.94" font-size="5.0" fill="#111" text-anchor="start" font-weight="normal">MK1</text>
 <text x="535.00" y="152.16" font-size="7.6" fill="#111" text-anchor="start" font-weight="bold">AQROOT FULL BETA v2 - FBV2-P1 MECHANICAL REVIEW</text>
 <text x="535.00" y="179.18" font-size="5.9" fill="#444" text-anchor="start" font-weight="normal">Doc datum: origin at the lower-left board corner, X right, Y up, mm.</text>
 <text x="535.00" y="200.18" font-size="5.9" fill="#444" text-anchor="start" font-weight="normal">Y_kicad = 148.000 - Y_doc.  NOTHING HERE IS ROUTED COPPER.</text>
