@@ -201,7 +201,7 @@ def main():
         emit('%-38s doc (%.3f, %.3f)   Oe4.5 mm keep-out, Oe2.2 NPTH'
              % (p['ref'], p['x'], p['y']))
     emit('SEARCH RESULT                          Oe6.0: 0 legal sites   Oe4.5: 2 legal sites')
-    emit('SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_B1 RIB_B2 + 915 SLACK COIL')
+    emit('SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_R3 RIB_B1')
 
     # ------------------------------------------------------------ collisions
     emit()

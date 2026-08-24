@@ -59570,5 +59570,36 @@
 			)
 		)
 	)
+	(zone
+		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
+		(uuid "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41")
+		(name "WROOM ANTENNA KEEPOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks not_allowed)
+			(vias not_allowed)
+			(pads not_allowed)
+			(copperpour not_allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 63.5 104) (xy 63.5 152) (xy 84.5 152) (xy 84.5 104)
+			)
+		)
+	)
 	(embedded_fonts no)
 )

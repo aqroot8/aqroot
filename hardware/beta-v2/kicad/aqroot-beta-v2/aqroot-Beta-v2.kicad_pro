@@ -855,63 +855,6 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "BAT_MAIN",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.0,
-        "tuning_profile": "",
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "E2_BUTTON_ESCAPE",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 9,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "E5_CROSSING",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 8,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
         "name": "GND",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 10,
@@ -931,14 +874,14 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "LED_BOOST",
+        "name": "BAT_MAIN",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 5,
+        "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
+        "track_width": 1.0,
         "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
         "wire_width": 6
       },
       {
@@ -950,11 +893,11 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "NFC_5V_PA",
+        "name": "SYS_MAIN",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 4,
+        "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.6,
+        "track_width": 0.8,
         "tuning_profile": "",
         "via_diameter": 0.8,
         "via_drill": 0.4,
@@ -988,14 +931,14 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "RF_DEFERRED_NFC",
+        "name": "ACC_3V3",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 11,
+        "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.5,
         "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
         "wire_width": 6
       },
       {
@@ -1007,11 +950,68 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "RF_DO_NOT_ROUTE",
+        "name": "ACC_5V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 12,
+        "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.6,
+        "tuning_profile": "",
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "VBUS_CHG",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 3,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5,
+        "tuning_profile": "",
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "NFC_5V_PA",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 4,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.6,
+        "tuning_profile": "",
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "LED_BOOST",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 5,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.3,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -1031,25 +1031,6 @@
         "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.6,
-        "tuning_profile": "",
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "SYS_MAIN",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.8,
         "tuning_profile": "",
         "via_diameter": 0.8,
         "via_drill": 0.4,
@@ -1083,14 +1064,109 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "VBUS_CHG",
+        "name": "NFC_RF",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 3,
+        "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
+        "track_width": 0.4,
         "tuning_profile": "",
         "via_diameter": 0.8,
         "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "NFC_RX",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "NFC_OSC",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "I2C",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "I2S",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "SPK_OUT",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.3,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
         "wire_width": 6
       }
     ],
@@ -1102,11 +1178,23 @@
     "netclass_patterns": [
       {
         "netclass": "BAT_MAIN",
-        "pattern": "/BAT_PROTECTED_P"
+        "pattern": "*BAT_CONNECTOR_P"
       },
       {
         "netclass": "BAT_MAIN",
-        "pattern": "*BAT_CONNECTOR_P"
+        "pattern": "*BAT_RAW"
+      },
+      {
+        "netclass": "BAT_MAIN",
+        "pattern": "*BAT_MID"
+      },
+      {
+        "netclass": "BAT_MAIN",
+        "pattern": "*BAT_SENSE"
+      },
+      {
+        "netclass": "BAT_MAIN",
+        "pattern": "*BAT_PROTECTED_P"
       },
       {
         "netclass": "SYS_MAIN",
@@ -1118,7 +1206,19 @@
       },
       {
         "netclass": "P3V3",
+        "pattern": "*NFC_SUPPLY"
+      },
+      {
+        "netclass": "ACC_3V3",
         "pattern": "*ACC_3V3_SW"
+      },
+      {
+        "netclass": "ACC_5V",
+        "pattern": "*ACC_5V_RAW"
+      },
+      {
+        "netclass": "ACC_5V",
+        "pattern": "*ACC_5V_SW"
       },
       {
         "netclass": "VBUS_CHG",
@@ -1130,7 +1230,7 @@
       },
       {
         "netclass": "NFC_5V_PA",
-        "pattern": "/NFC_5V_PA_PENDING"
+        "pattern": "*NFC_5V_PA_PENDING"
       },
       {
         "netclass": "LED_BOOST",
@@ -1143,22 +1243,6 @@
       {
         "netclass": "LED_BOOST",
         "pattern": "/03_SPI_A_DISPLAY_SD/LED_A"
-      },
-      {
-        "netclass": "LED_BOOST",
-        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A1"
-      },
-      {
-        "netclass": "LED_BOOST",
-        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A2"
-      },
-      {
-        "netclass": "LED_BOOST",
-        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A3"
-      },
-      {
-        "netclass": "LED_BOOST",
-        "pattern": "/03_SPI_A_DISPLAY_SD/LED_A4"
       },
       {
         "netclass": "SWITCH_NODE",
@@ -1175,6 +1259,10 @@
       {
         "netclass": "SWITCH_NODE",
         "pattern": "*BL_SW"
+      },
+      {
+        "netclass": "SWITCH_NODE",
+        "pattern": "*ACC_5V_LX"
       },
       {
         "netclass": "USB_D",
@@ -1201,148 +1289,116 @@
         "pattern": "*USB_D_ESD_N"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_A_SCK"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_RFO1"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_A_MOSI"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_RFO2"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_A_MISO"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_EMCA"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SD_CS_N"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_EMCB"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_B_SCK"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_MATCH_A"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_B_MOSI"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_MATCH_B"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SPI_B_MISO"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_ANT_A"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/CC1101_CS_N"
+        "netclass": "NFC_RF",
+        "pattern": "*NFC_ANT_B"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/CC1101_GDO0"
+        "netclass": "NFC_RX",
+        "pattern": "*NFC_RFI1"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SX1262_CS_N"
+        "netclass": "NFC_RX",
+        "pattern": "*NFC_RFI2"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SX1262_DIO1"
+        "netclass": "NFC_RX",
+        "pattern": "*NFC_RXA"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SX1262_BUSY"
+        "netclass": "NFC_RX",
+        "pattern": "*NFC_RXB"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SX1262_RST_N"
+        "netclass": "NFC_OSC",
+        "pattern": "*NFC_XIN"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "/SX1262_RXEN"
+        "netclass": "NFC_OSC",
+        "pattern": "*NFC_XOUT"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "*BTN_A_N"
+        "netclass": "I2C",
+        "pattern": "*I2C_SCL_INT"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "*BTN_B_N"
+        "netclass": "I2C",
+        "pattern": "*I2C_SDA_INT"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "*BTN_DOWN_N"
+        "netclass": "I2C",
+        "pattern": "*EXT_SCL"
       },
       {
-        "netclass": "E5_CROSSING",
-        "pattern": "*BTN_HOME_N"
+        "netclass": "I2C",
+        "pattern": "*EXT_SDA"
       },
       {
-        "netclass": "E2_BUTTON_ESCAPE",
-        "pattern": "*BTN_UP_N"
+        "netclass": "I2C",
+        "pattern": "*EXT_SCL_BUF"
       },
       {
-        "netclass": "E2_BUTTON_ESCAPE",
-        "pattern": "*BTN_LEFT_N"
+        "netclass": "I2C",
+        "pattern": "*EXT_SDA_BUF"
       },
       {
-        "netclass": "E2_BUTTON_ESCAPE",
-        "pattern": "*BTN_RIGHT_N"
+        "netclass": "I2S",
+        "pattern": "*I2S_BCLK"
       },
       {
-        "netclass": "RF_DO_NOT_ROUTE",
-        "pattern": "*CC1101_ANT_TBD"
+        "netclass": "I2S",
+        "pattern": "*I2S_LRCLK"
       },
       {
-        "netclass": "RF_DO_NOT_ROUTE",
-        "pattern": "*RF_ANT_TBD"
+        "netclass": "I2S",
+        "pattern": "*I2S_MIC_DIN"
       },
       {
-        "netclass": "RF_DO_NOT_ROUTE",
-        "pattern": "*SX1262_RF_TBD"
+        "netclass": "I2S",
+        "pattern": "*I2S_SPK_DOUT"
       },
       {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_RFO1_TBD"
+        "netclass": "SPK_OUT",
+        "pattern": "*SPK_P"
       },
       {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_RFO2_TBD"
+        "netclass": "SPK_OUT",
+        "pattern": "*SPK_N"
       },
       {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_RFI1_TBD"
+        "netclass": "SPK_OUT",
+        "pattern": "*SPK_P_CONN"
       },
       {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_RFI2_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_AAT_A_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_AAT_B_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_EXT_LM_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_CSI_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_CSO_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_XIN_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_XOUT_TBD"
-      },
-      {
-        "netclass": "RF_DEFERRED_NFC",
-        "pattern": "*NFC_MCU_CLK_TBD"
+        "netclass": "SPK_OUT",
+        "pattern": "*SPK_N_CONN"
       },
       {
         "netclass": "GND",
