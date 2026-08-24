@@ -17300,7 +17300,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Littelfuse 0466005.NR is LCSC C187597 with STOCK 0. The halogen-free 0466005.NRHF (C57525) has 29338 in stock and is the same 0466 5 A 1206 Nano2 fuse family, but it is a DIFFERENT ORDER CODE and is recorded as a CANDIDATE, not a substitution. Consign the .NR from a broadline distributor unless the .NRHF is signed off. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "PROCUREMENT LOCKED 2026-08-23 (FBV2-MECH-002, D-210). Littelfuse 0466005.NRHF, LCSC C57525 - the HALOGEN-FREE ORDERING OPTION of the same Littelfuse 466 / Nano2 family: 5 A, 32 VAC / 32 VDC, 50 A interrupting, fast acting, 1206. SAME FOOTPRINT AND SAME ELECTRICAL FUNCTION as the 0466005.NR it replaces - the HF suffix is a manufacturer ordering option, not an electrical redesign. F1 connectivity and footprint are UNCHANGED. The .NR order code (C187597) is STOCK 0; .NRHF verified live 2026-08-23 through the JLCPCB parts API at 29328 in stock, JLC EXTENDED - machine-placed, NO CONSIGNMENT. Stock is a snapshot, not a guarantee (D-096)."
 			(at 36.29 252.75 0)
 			(hide yes)
 			(show_name no)
@@ -17311,7 +17311,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C187597"
+		(property "LCSC" "C57525"
 			(at 36.29 252.75 0)
 			(hide yes)
 			(show_name no)
@@ -17334,7 +17334,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "0466005.NR"
+		(property "MPN" "0466005.NRHF"
 			(at 36.29 249.75 0)
 			(hide yes)
 			(show_name no)
@@ -24474,7 +24474,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "PROCUREMENT LOCKED 2026-08-23 (FBV2-MECH-002, D-211). Diodes Incorporated BAT54WS-7-F, LCSC C124205, verified live 2026-08-23 through the JLCPCB parts API: ONE INDEPENDENT Schottky diode, 30 V, 100 mA continuous, 600 mA surge, VF 1 V max at 100 mA, IR 2 uA at 25 V, SOD-323, 46819 in stock, JLC EXTENDED - machine-placed, NO CONSIGNMENT. CORRECTION TO THE EARLIER SOURCING NOTE: BAT54WS IS NOT A SERIES PAIR. SOD-323 is a TWO-TERMINAL package, every BAT54WS in the LCSC library from every manufacturer is listed as 1 Independent, and D10, D11 and D12 are each ONE diode on the two-pin Device:D_Schottky symbol. D10 and D11 form the ratiometric polarity bridge as TWO SEPARATE MATCHED COMPONENTS, so BAT54WS-7-F matches the actual architecture exactly. THE REAL REJECTION CRITERION FOR ANY ALTERNATE IS: single independent diode, SOD-323 land pattern, adequate VF / leakage / current, matched type for D10 and D11, and live sourcing. Nexperia BAT54W,115 (C8657) is rejected because it is a SOT-323 (SC-70) part - a FOOTPRINT MISMATCH against Diode_SMD:D_SOD-323 - NOT because of diode count. Stock is a snapshot, not a guarantee (D-096)."
 			(at 41.37 337.84 0)
 			(hide yes)
 			(show_name no)
@@ -24485,7 +24485,19 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Nexperia"
+		(property "LCSC" "C124205"
+			(at 41.37 337.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Diodes Incorporated"
 			(at 41.37 336.34 0)
 			(hide yes)
 			(show_name no)
@@ -24497,7 +24509,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "BAT54WS,115"
+		(property "MPN" "BAT54WS-7-F"
 			(at 41.37 334.84 0)
 			(hide yes)
 			(show_name no)
@@ -24635,7 +24647,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "PROCUREMENT LOCKED 2026-08-23 (FBV2-MECH-002, D-211). Diodes Incorporated BAT54WS-7-F, LCSC C124205, verified live 2026-08-23 through the JLCPCB parts API: ONE INDEPENDENT Schottky diode, 30 V, 100 mA continuous, 600 mA surge, VF 1 V max at 100 mA, IR 2 uA at 25 V, SOD-323, 46819 in stock, JLC EXTENDED - machine-placed, NO CONSIGNMENT. CORRECTION TO THE EARLIER SOURCING NOTE: BAT54WS IS NOT A SERIES PAIR. SOD-323 is a TWO-TERMINAL package, every BAT54WS in the LCSC library from every manufacturer is listed as 1 Independent, and D10, D11 and D12 are each ONE diode on the two-pin Device:D_Schottky symbol. D10 and D11 form the ratiometric polarity bridge as TWO SEPARATE MATCHED COMPONENTS, so BAT54WS-7-F matches the actual architecture exactly. THE REAL REJECTION CRITERION FOR ANY ALTERNATE IS: single independent diode, SOD-323 land pattern, adequate VF / leakage / current, matched type for D10 and D11, and live sourcing. Nexperia BAT54W,115 (C8657) is rejected because it is a SOT-323 (SC-70) part - a FOOTPRINT MISMATCH against Diode_SMD:D_SOD-323 - NOT because of diode count. Stock is a snapshot, not a guarantee (D-096)."
 			(at 41.37 351.81 0)
 			(hide yes)
 			(show_name no)
@@ -24646,7 +24658,19 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Nexperia"
+		(property "LCSC" "C124205"
+			(at 41.37 351.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Diodes Incorporated"
 			(at 41.37 350.31 0)
 			(hide yes)
 			(show_name no)
@@ -24658,7 +24682,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "BAT54WS,115"
+		(property "MPN" "BAT54WS-7-F"
 			(at 41.37 348.81 0)
 			(hide yes)
 			(show_name no)
@@ -24796,7 +24820,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "PROCUREMENT LOCKED 2026-08-23 (FBV2-MECH-002, D-211). Diodes Incorporated BAT54WS-7-F, LCSC C124205, verified live 2026-08-23 through the JLCPCB parts API: ONE INDEPENDENT Schottky diode, 30 V, 100 mA continuous, 600 mA surge, VF 1 V max at 100 mA, IR 2 uA at 25 V, SOD-323, 46819 in stock, JLC EXTENDED - machine-placed, NO CONSIGNMENT. CORRECTION TO THE EARLIER SOURCING NOTE: BAT54WS IS NOT A SERIES PAIR. SOD-323 is a TWO-TERMINAL package, every BAT54WS in the LCSC library from every manufacturer is listed as 1 Independent, and D10, D11 and D12 are each ONE diode on the two-pin Device:D_Schottky symbol. D10 and D11 form the ratiometric polarity bridge as TWO SEPARATE MATCHED COMPONENTS, so BAT54WS-7-F matches the actual architecture exactly. THE REAL REJECTION CRITERION FOR ANY ALTERNATE IS: single independent diode, SOD-323 land pattern, adequate VF / leakage / current, matched type for D10 and D11, and live sourcing. Nexperia BAT54W,115 (C8657) is rejected because it is a SOT-323 (SC-70) part - a FOOTPRINT MISMATCH against Diode_SMD:D_SOD-323 - NOT because of diode count. Stock is a snapshot, not a guarantee (D-096)."
 			(at 41.37 384.83 0)
 			(hide yes)
 			(show_name no)
@@ -24807,7 +24831,19 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Nexperia"
+		(property "LCSC" "C124205"
+			(at 41.37 384.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Diodes Incorporated"
 			(at 41.37 383.33 0)
 			(hide yes)
 			(show_name no)
@@ -24819,7 +24855,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "BAT54WS,115"
+		(property "MPN" "BAT54WS-7-F"
 			(at 41.37 381.83 0)
 			(hide yes)
 			(show_name no)
