@@ -1,3 +1,173 @@
+## 2026-08-24 — twenty-two rules that could never fire (FBV2-P2-000)
+
+**FBV2-P2 ENTRY GATE = FAIL on one criterion of thirteen. No progress earned; overall stays 74%.**
+Full analysis: [`audits/2026-08-24-p2-entry-audit.md`](audits/2026-08-24-p2-entry-audit.md).
+New working documents: [`pcb/FBV2_P2_ROUTING_PLAN.md`](pcb/FBV2_P2_ROUTING_PLAN.md),
+[`pcb/FBV2_P2_NETCLASS_LEDGER.csv`](pcb/FBV2_P2_NETCLASS_LEDGER.csv).
+New check: `hardware/beta-v2/checks/dru_probe.py`.
+
+**ZERO ROUTING WAS PERFORMED.** No track, no signal via, no electrical pour. 499 unrouted,
+unchanged. The only PCB edit is one board-level rule area.
+
+### The rule file had been lying, and there was no way to see it
+
+P2-O5 recorded that `.kicad_dru` *"still references E5/E6 rule areas that the P1 rebuild deleted."*
+That was true and it was an understatement. **The file referenced thirty-nine rule areas. The board
+contained none of them** — only `MIC_ACOUSTIC_KEEPOUT`, `BOSS1_KEEPOUT`, `BOSS2_KEEPOUT` and one
+**unnamed** zone embedded in `U1`. **Twenty-two of seventy-one rules could never fire**: not only
+the E6 pockets, but every RF-band rule, every E5/E4 corridor rule, the header reservation, the E2
+button escapes, **and the ESP32 antenna rule**.
+
+The reason nothing caught it is worth stating precisely, because it will happen again to somebody
+else: **KiCad's `intersectsArea()` and `enclosedByArea()` return `false` for an unknown area name.
+They do not warn and they do not error.** A rule whose condition can never be true produces no
+violations — which is exactly what a rule being satisfied looks like. DRC was reporting a clean
+result against protection that had been deleted three tasks earlier.
+
+The ESP32 antenna was never actually unprotected: the `U1` footprint carries its own embedded rule
+area with every keepout flag set on all four copper layers, and that has always been live. But the
+*file* said the protection came from a named area that did not exist, and **nothing in the
+toolchain could tell the difference.**
+
+**The rule set is rebuilt: 71 → 64 rules, every one checked against the current board, with a
+written retirement register (R1–R10) in the file header giving a reason for each of the twenty-two
+retirements.** Nothing was retired for convenience. Where the intent survived it was re-expressed
+against current objects; where the intent died with the Beta-DM geometry, that is stated as a
+finding rather than papered over. **The E6 escape-relief doctrine is explicitly NOT retired** —
+own-area sufficiency, `enclosedByArea()` never `intersectsArea()`, the 2.0 mm hard clearance-run
+cap kept separate from the 6.0 mm narrow-width review trigger, and last-in-file precedence — even
+though its Beta-DM measurements do not transfer to a differently sized, differently placed,
+unrouted board (D-233).
+
+**`checks/dru_probe.py` is the part that matters.** It fails if any rule reference stops resolving
+or any netclass pattern stops matching. P2-O5 cannot recur silently.
+
+### The highest-current net on the board was on the 0.20 mm default class
+
+The inherited `BAT_MAIN` pattern was the root-sheet path `/BAT_PROTECTED_P`, while every Full Beta
+v2 power net lives under `/01_POWER_TREE/`. **It matched nothing.** So
+`/01_POWER_TREE/BAT_PROTECTED_P` — 1.5 A sustained — had been routing at 0.20 mm since the fork,
+and `BAT_RAW`, `BAT_MID` and `BAT_SENSE`, which all carry the full pack current, were in no class
+at all. The same defect killed `NFC_5V_PA` outright: it captured **no net whatsoever**. And
+`ACC_5V_LX`, the `U21` accessory-boost switch node, had **never** been in `SWITCH_NODE` — a
+1.2 MHz switching node sitting on the ordinary signal class.
+
+**14 netclasses → 18; 62 patterns → 57; every surviving pattern now matches at least one board
+net.** Four dead classes were retired, all of which either matched nothing or carried Default
+values, so no net's electrical parameters were weakened by a retirement (D-234).
+
+### Retention is locked, and D-226's escalation is closed
+
+**Two currently legal M2 through-board screws are acceptable.** No component moved: the battery was
+not reduced, the display was not moved, the SMA was not relocated. Retention is a four-element
+architecture — moulded edge-capture rails, **four** rear non-metallic support ribs on reserved
+component-free pads, the two screws, and the `J5` backing boss carrying its ≈ 33 N insertion load
+into the enclosure rather than into solder joints. Every rib is outside the battery shadow, so no
+support compresses the cell; every rib is non-metallic and far outside the Ø58 NFC exclusion. USB
+and microSD insertion loads do not depend only on the screws — both connectors sit on the bottom
+edge, which carries a continuous rail. **All four routes to a third screw are declined** (D-232).
+
+Three stale mechanical-spec entries went with it: *"Count: 6 × M2"*, the `FBV2_BOSSES: 3 x M2 …
+PARTIAL` line, and `FBV2_915_PIGTAIL: 095-902-568-100 … DOES NOT REACH`, which D-223 superseded
+two tasks ago.
+
+### What the strategy freeze actually decided
+
+The 4-layer JLCPCB stack is **kept**, and the layer roles are now **enforced by rule rather than
+asserted**: In1 solid GND with `severity error` on any non-GND track, and USB, both NFC transmit
+arms, the NFC crystal, every switch node, the Class-D output and `BAT_MAIN` all **forbidden on
+In2**, because In2's only continuous reference is In1 across a 1.065 mm core. One authorised void
+in the plane — the ESP32 antenna keepout, a **6.5 × 44 mm notch on the right edge** in the same
+corner as `U1`, `U11`, `U18`, `R75` and `D10`, so every return path there must be planned around a
+plane edge.
+
+**The USB answer is short because the design is short.** The ESP32-S3 has no High-Speed PHY, so
+this is Full Speed at 12 Mbit/s with a 4–20 ns rise time and a 100 mm critical length. The measured
+path is **≈ 40 mm per side, entirely on F.Cu over solid In1**, with an intrinsic placement skew of
+2.4 mm = **17 ps** against a ≈ 1 ns budget. **No impedance control, no length matching, zero vias.**
+The 90 Ω geometry stays as good practice and is marked STACKUP-TO-CONFIRM for one honest reason:
+**the board file carries no physical stackup object at all**, so a fabricator would build to its own
+default (P2-O6).
+
+**No length-matching theatre anywhere else either.** SPI-A is 46.4 mm against Beta-DM's 126.5 —
+**63 % shorter** — and SPI-B is 113.1 against 144.0, **21 % shorter**. Both are shorter than
+versions that were already accepted, so neither gets matching or damping. **The one bus with a real
+derived constraint is internal I²C**, at `C_bus ≤ 161 pF` for 400 kHz on 2.2 k pull-ups — a number
+that ~100 mm of copper and eight devices is already close to — with 100 kHz as the recorded
+fallback (D-235).
+
+**The community-port escape was measured rather than feared.** `J5`'s inter-row channel is
+**6.570 mm × 27.94 mm** with eleven inter-pad gaps at two tracks each per layer, three usable
+layers, and both ends open: **10 crossings needed, 22 available on F.Cu alone.** M-12's warning
+that the right-hand strip was "the most constrained region of the PCB" is discharged. No nudge.
+
+### What fails the gate
+
+**Three electrically required placement moves, and routing must not begin until they are ruled on.**
+All three are new, all three are measured from the board, and **none of them existed in Beta-DM to
+be carried forward** — the battery-protection block and the NFC front end are both new in Full Beta
+v2. FBV2-P1 placed them into free rear pockets and verified every *mechanical* relationship by
+script. Nobody had yet looked at either *electrically*. That is what an entry gate is for.
+
+**PM-1 — all four switching converters have their inductor off the IC.** `U12`/`L1` 12.96 mm,
+`U13`/`L2` 28.56 mm, `U21`/`L4` 30.50 mm, `U17`/`L3` **45.90 mm**, against a ≤ 5 mm requirement.
+The backlight is the worst: `BL_SW` runs `U17.1` → `L3.2` while the catch diode `D8` sits **beside
+the IC, 45.7 mm from the inductor**, so the `L3 → D8 → C44` boost energy loop is **≈ 76 mm around**,
+switching at 1.2 MHz between 0 V and **up to 39 V** on the open-LED fault TI specifies — down the
+left margin, **13 mm from the microphone**, through the band the 433 flex sits against. All four
+inductors were placed in the left-margin column at x ≈ 3 while their ICs went elsewhere. That is
+systemic, not four coincidences, and **loop area is a placement property that no routing repairs.**
+
+**PM-2 — the single-fault battery-protection block is dispersed over 96 mm.** The 1.5 A path runs
+`J4` → `F1` → `Q2` → `Q3` → **79.0 mm** → `R75` → `U11`, ≈ 116.7 mm in total. What is *right* stays
+right and is worth saying first: **the Kelvin sense is sound** — `U18`'s SENSE and OUT pins both
+land on `R75`'s pads with the controller 4.2 mm away, so the 47 mV measurement across the 15 mΩ
+shunt at the 3.125 A trip is not corrupted. What is wrong is everything around it: `LTC_GATE` at
+**95.6 mm** is a ≈ 20 µA charge-pump node holding four pass FETs enhanced, with its RC damping
+31–45 mm from the FETs; `LTC_OV` and `LTC_UV` carry the **battery trip points** on 3.65 M and 510 k
+dividers over 78–82 mm; and `REF_HO`'s two divider halves are **38 mm apart** with the comparator
+52 mm from the top resistor. The block sits in three clusters with multi-megohm nodes strung
+between them. **Routing cannot make a 3.65 MΩ node that crosses four switching converters immune to
+coupled charge.** D-049 and the single-fault architecture are **not** compromised by this finding —
+the recommendation moves parts, not circuits — and it returns ≈ 0.13–0.18 W to open blocker B-34.
+
+**PM-3 — the NFC differential front end is not symmetric.** `NFC_MATCH_A` spans 24.18 mm against
+`NFC_MATCH_B`'s 34.21 — **10 mm of asymmetry before a single track is drawn.** `L5` and `L6` are
+19.8 mm apart on **opposite sides** of `U9`; the antenna nodes differ 8.82 vs 12.49 mm; each EMC
+filter node's three capacitors are spread over 13.6–17.2 mm; and the crystal load caps sit 13–15 mm
+from `Y1` on the far side of the IC, giving a ≈ 30 mm oscillator loop. With `R_q` at 1.1 Ω per arm
+and a network Q of ≈ 21, and mandatory first-article bench tuning, that is not something routing
+absorbs (D-236).
+
+A fourth item is recorded but ranked below them: **`U11` dissipates ≈ 0.65 W while charging from
+inside the battery shadow**, pressed against the cell it is charging, in a sealed unvented
+enclosure (PT-1). *Do not rely on the battery as a heatsink* — this is the one place the board
+currently does.
+
+### Validation
+
+**DRC 47 → 26**, and the 21 `clearance` violations closed by **naming the four vendor land patterns
+that cause them** — `D2`, `U18`, `U19`, `U21`, all stock KiCad footprints whose minimum pad gap is
+0.1500 mm by construction — **without weakening any routing clearance anywhere.** Residue is 24
+`silk_over_copper` + 1 `silk_edge_clearance`, which is finishing work P2 owns, and the one `MK1`
+`solder_mask_bridge` reviewed and accepted at D-227, still **not excluded and not suppressed**.
+**ERC 0 errors / 27 warnings, violation-type histogram identical.** `netclass_probe`,
+`p1_regression`, `fork_equivalence` and the new `dru_probe` all PASS. Board 70.000 × 148.000 mm,
+placement collisions 0, **499 unrouted, ZERO tracks, ZERO signal vias, ZERO electrical pours.**
+Beta-DM, the frozen Beta tree and `hardware/beta/mechanical/` untouched.
+
+### A dead end worth recording
+
+The first attempt to make the ESP32 antenna rule resolvable was to **name the rule area already
+embedded in the `U1` footprint**. It works — `pcbnew` reads the name back — but it edits the board
+copy of a library footprint, and DRC immediately reported `lib_footprint_mismatch` on `U1`, a class
+FBV2-P1-002 had driven to zero. **Tested, observed, reverted.** The board-level duplicate carries
+the identical polygon and flags, is visible in the board file, lets other rules name the region, and
+leaves the library relationship alone. The reasoning is written into `.kicad_dru` §3 so nobody
+re-tries the rename.
+
+---
+
 ## 2026-08-24 — the circular keepout that opened the 915 lane (FBV2-P1-002)
 
 **FBV2-P1 PASSES. Overall 68% → 74% — the third of the twelve gates.** Full analysis:

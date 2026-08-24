@@ -340,7 +340,12 @@ The arithmetic is not a preference:
 All four rib regions are drawn on **`User.3`** and were verified component-free on the rear face
 including every through-hole lead. **No copper pad was created for plastic support.**
 
-> **ESCALATED TO THE CTO, and the only new item from this task.** §9 sets **3 × M2 as the
+> **CLOSED 2026-08-24 by D-232 at FBV2-P2-000: TWO M2 IS ACCEPTABLE AND RETENTION IS LOCKED**
+> **as a four-element architecture — moulded edge-capture rails, four rear non-metallic**
+> **support ribs, the two M2 screws, and the `J5` backing boss. No major component moves for**
+> **a third screw. See `../mechanical/MECHANICAL_INTERFACE_SPEC.md` §4.2.**
+>
+> ~~**ESCALATED TO THE CTO, and the only new item from this task.**~~ §9 sets **3 × M2 as the
 > acceptable minimum**; this outline yields **2**. Delivering a third needs one of:
 > (a) a battery narrower than 60 mm, (b) a display narrower than 56.54 mm, (c) moving the SMA
 > off the top-left, or (d) accepting an M2 with only ~1.4 mm of board between the hole and the
@@ -452,7 +457,22 @@ courtyard**, because only a lead or a hole can reach the other face.
 | **P2-O2** | **`J7` serviceability improved incidentally.** The NFC connector is now 1.914 mm outside the Ø58 exclusion instead of sitting on the old rectangle's boundary, so the NFC pair can be unplugged without disturbing the antenna |
 | **P2-O3** | **Dead area reduced where it could be.** The four reclaimed Ø58 corners are all off-board or under the display; the only on-board area genuinely freed is X 0 … 6, Y 100 … 115, and the coax now uses it |
 | **P2-O4** | **The speaker lead is still 6× longer than its 29.3 mm run.** A shorter lead would remove slack from the battery region at no cost. Carried forward from P1-O9, unchanged |
-| **P2-O5** | **`.kicad_dru` still references E5/E6 rule areas that the P1 rebuild deleted.** Those rules are inert today. They must be re-created or retired before routing — **a P2 entry condition** |
+| ~~**P2-O5**~~ | ~~`.kicad_dru` still references E5/E6 rule areas that the P1 rebuild deleted.~~ **CLOSED 2026-08-24 at FBV2-P2-000 (D-233) — AND IT WAS FAR LARGER THAN THIS ENTRY SAID.** The file referenced **THIRTY-NINE** rule areas and the board contained **none** of them, so **22 of 71 rules were silently inert** — not only the E6 pockets but every RF-band rule, every E5/E4 corridor rule, the header reservation, the E2 button escapes **and the ESP32 antenna rule**. The rule set is rebuilt to **64 live rules** with a written retirement register, and `checks/dru_probe.py` now fails the build if any reference stops resolving |
+
+### 16.1 Dispositions recorded at FBV2-P2-000
+
+| # | disposition |
+|---|---|
+| **P2-O1** | **CLOSED / STALE.** Absorbed into D-232 — it is a statement of fact about the coax lane, not an open item |
+| **P2-O2** | **CLOSED / STALE.** An observation about `J7` serviceability |
+| **P2-O3** | **CLOSED / STALE.** An observation about reclaimed area |
+| **P2-O4** | **FIRST-ARTICLE ITEM, carried unchanged.** The speaker lead is still 152 mm for a 29.3 mm run — an assembly-cost item, not an electrical one |
+| **P2-O5** | **CLOSED (D-233).** See above |
+| **P2-O6** | **NEW — DFM / FIRST-ARTICLE ITEM.** The board file carries **no physical stackup object at all**, so a fabricator would build to its own default and no impedance control is ordered. It does not block routing — the one impedance-sensitive net on this board is Full-Speed USB over ≈ 40 mm — but it belongs in the release package |
+| **P2-R1** | **NEW — ROUTING-STAGE ITEM.** The 433 flex sits **0.2 mm outboard of the LEFT board edge** over 47 mm of it, so board copper in doc X 0 … 3.0 / Y 1.5 … 48.5 is an **aggressor into** it. Deliberately **not** instantiated as a rule area until PM-1 settles which parts occupy that band |
+| **PT-1** | **NEW — ROUTING-STAGE ITEM.** `U11` BQ25185 dissipates ≈ 0.65 W while charging from **inside `BATTERY_SHADOW`**, pressed against the cell it is charging in a sealed enclosure. Composes with PM-2 and B-34 |
+| **PM-1 / PM-2 / PM-3** | **NEW — P2 ENTRY BLOCKERS, SURFACED NOT DECIDED (D-236).** Four switching converters with their inductor 12.96–45.90 mm off the IC; the single-fault battery-protection block dispersed over 96 mm with multi-megΩ trip nodes and a μA gate node between three clusters; and a 10 mm asymmetry between the two NFC matching arms. **None is fixable by routing.** They are why **FBV2-P2 entry = FAIL** |
+| **B-63 / B-64** | **STALE — both already closed by this floorplan's own work** (D-203, D-227, and the P1 rebuild placing the PUI footprint). The register still lists them OPEN in a later table. **Do not carry them forward** |
 
 ---
 

@@ -90,7 +90,7 @@ FPC consumed of the 29.5 mm worst case 14.94 mm                       <= 29.5   
 BOSS1                                  doc (40.000, 12.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
 BOSS2                                  doc (59.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
 SEARCH RESULT                          Oe6.0: 0 legal sites   Oe4.5: 2 legal sites
-SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_B1 RIB_B2 + 915 SLACK COIL
+SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_R3 RIB_B1
 
 -- placement collision review ----------------------------------------------------------------------------------------
 side-aware courtyard collisions        0                              0                         PASS

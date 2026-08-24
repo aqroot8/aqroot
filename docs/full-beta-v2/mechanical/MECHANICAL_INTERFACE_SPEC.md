@@ -283,17 +283,42 @@ Not merely "needs reduction". Two independent reasons:
 Field Slate v3 requirement ("the envelope must drive at least one PCB revision")
 originally asked for and never received.
 
-### 4.2 Mounting
+### 4.2 Mounting and retention — **LOCKED 2026-08-24 (D-232)**
 
-| item | value |
-|---|---|
-| Count | **6 × M2** — 4 corners plus 2 mid-span at Y ≈ 50 mm and Y ≈ 100 mm |
-| Why 6 | A 148 mm span on 1.6 mm FR4 with a battery behind it will flex under button pressure with corner support alone |
-| Boss keepout | ~~**Ø6.0 mm** copper-and-component free~~ **SUPERSEDED by D-226: Ø4.5 mm. A Ø6.0 keep-out has ZERO legal sites on this outline** |
-| Corner inset | 5.0 mm from each board edge |
-| Board edge clearance | **≥1.5 mm** to any cavity wall |
+**Retention is a FOUR-ELEMENT architecture, not a screw count.** Three of the four elements are
+enclosure features and need no PCB hole. ~~6 × M2~~ ~~3 × M2~~ **— both superseded: this
+outline yields TWO legal through-board M2 positions and two is ACCEPTABLE (D-226, D-232).**
 
-Beta-DM used **four Ø2.4 mm holes (measured)**; v2 adds two mid-span.
+| element | value | status |
+|---|---|---|
+| **A. Moulded edge-capture rails** | continuous on the **RIGHT** and **BOTTOM** board edges; **segmented on the LEFT** to clear the 433 flex (Y 1.5 … 48.5) and the coax channel's western excursion (Y ≈ 112 … 137) | **LOCKED (D-232).** Constrains lateral PCB movement |
+| **B. Rear non-metallic support ribs** | **four**, bearing on reserved component-free pads: `RIB_R1` X 66.20…69.70 / Y 24.00…44.00 · `RIB_R2` X 66.20…69.70 / Y 45.00…64.00 · `RIB_R3` X 66.20…69.70 / Y 76.00…97.00 · `RIB_B1` X 44.00…47.60 / Y 21.20…23.30 | **LOCKED (D-232).** `RIB_R2` bears behind the A/B control area; `RIB_B1` + `RIB_R1` bracket the D-pad. **All four verified component-free including through-hole leads** |
+| **C. M2 through-board screws** | **TWO.** `BOSS1` doc (40.000, 12.000) · `BOSS2` doc (59.000, 145.000) | **LOCKED (D-226, D-232)** |
+| **D. `J5` backing / load path** | `COMM_RECESS` backing boss carries the ≈ 33 N average insertion load (peak higher) **into the ENCLOSURE, not into the PCB solder joints** | **LOCKED (D-097, M-10, D-232)** |
+| Boss keepout | ~~**Ø6.0 mm** copper-and-component free~~ **SUPERSEDED by D-226: Ø4.5 mm.** A Ø6.0 keep-out has **ZERO** legal sites on this outline | LOCKED |
+| Boss drill | **Ø2.2 mm NPTH** | LOCKED |
+| Board edge clearance | **≥ 1.5 mm** to any cavity wall (actual: 2.5 mm in X, 3.5 mm in Y) | LOCKED |
+
+**Constraints the architecture satisfies, verified at FBV2-P2-000:**
+
+* **no support compresses the LiPo** — every rib is outside `BATTERY_SHADOW`;
+* **no metal enters the NFC Ø58 exclusion** — every rib is non-metallic and all four are far
+  outside it;
+* **board flex under D-pad and A/B presses is carried by plastic**, not by 1.6 mm FR4 span;
+* **`J5` insertion load is carried by the enclosure**, not by solder joints;
+* **USB and microSD insertion loads do not depend only on the M2 screws** — `J3` and `J2` both
+  sit on the bottom edge, which carries a **continuous** edge-capture rail, with `BOSS1` 12 mm
+  above it. The rail takes the reaction along its whole length; the screw is a secondary path.
+
+**A third M2 may be added later ONLY if enclosure CAD produces a legal location without
+sacrificing existing geometry.** D-226's four routes to one — a battery narrower than 60 mm, a
+display narrower than 56.54 mm, the SMA off the top-left, or an M2 with ≈ 1.4 mm of board to the
+edge — are **all declined** (D-232).
+
+Beta-DM used **four Ø2.4 mm holes (measured)**. v2 trades screw count for a moulded retention
+architecture; the reason is arithmetic, not preference — the display owns X 3.39 … 59.93 on the
+front and the battery owns X 6.00 … 66.00 on the rear, leaving a 3.39 mm left sliver and a
+4.00 mm right sliver, both narrower than a Ø4.5 keep-out.
 
 ---
 
@@ -650,10 +675,13 @@ FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)
 FBV2_REAR_STACK_MM:      NFC 48 + BAT 75 + SPK 20 = 143 of 155   LOCKED (D-215)
 FBV2_USB_SD_RULE:        >= 8.0 mm BODY edge-to-edge   LOCKED (D-217)
 FBV2_USB_SD_ACTUAL_MM:   16.40                         MEASURED (FBV2-P1)
-FBV2_BOSSES:             3 x M2 at dia 4.5 keepout     PARTIAL (D-216, target 6)
-FBV2_915_PIGTAIL:        095-902-568-100 (100 mm)      LOCKED (D-218) - DOES NOT REACH
+FBV2_BOSSES:             2 x M2 at dia 4.5 keepout     LOCKED (D-226/D-232)
+FBV2_RETENTION:          rails + 4 ribs + 2 x M2 + J5 backing boss   LOCKED (D-232)
+FBV2_SUPPORT_RIBS:       RIB_R1 RIB_R2 RIB_R3 RIB_B1   LOCKED (D-232, non-metallic)
+FBV2_915_PIGTAIL:        RF Solutions CBA-UFLSMA20IP (200 mm)   LOCKED (D-223)
+FBV2_915_ROUTED_MM:      138.48 of 200, 46.52 spare    MEASURED (FBV2-P1-002)
 FBV2_915_WHIP_STORAGE:   NONE - deleted                LOCKED (D-219)
-FBV2_DISPLAY_OFFSET_MM:  3.34 LEFT of centre           OPEN (D-221)
+FBV2_DISPLAY_OFFSET_MM:  3.34 LEFT of centre           ACCEPTED, INTENTIONAL (D-225)
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
-FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)
+FBV2_PCB_FIT_STATUS:     RE-FLOORPLANNED 70x148 (FBV2-P1 = PASS, D-222)
 ```
