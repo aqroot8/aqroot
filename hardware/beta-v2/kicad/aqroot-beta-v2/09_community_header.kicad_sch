@@ -801,6 +801,222 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic:Conn_01x04"
+				(pin_names
+					(offset 1.016)
+					(hide yes)
+				)
+				(exclude_from_sim no)
+				(in_bom yes)
+				(on_board yes)
+				(in_pos_files yes)
+				(duplicate_pin_numbers_are_jumpers no)
+				(property "Reference" "J"
+					(at 0 5.08 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "Value" "Conn_01x04"
+					(at 0 -7.62 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "Footprint" ""
+					(at 0 0 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(hide yes)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "Datasheet" ""
+					(at 0 0 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(hide yes)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+					(at 0 0 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(hide yes)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "ki_keywords" "connector"
+					(at 0 0 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(hide yes)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(property "ki_fp_filters" "Connector*:*_1x??_*"
+					(at 0 0 0)
+					(show_name no)
+					(do_not_autoplace no)
+					(hide yes)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(symbol "Conn_01x04_1_1"
+					(rectangle
+						(start -1.27 3.81)
+						(end 1.27 -6.35)
+						(stroke
+							(width 0.254)
+							(type default)
+						)
+						(fill
+							(type background)
+						)
+					)
+					(rectangle
+						(start -1.27 2.667)
+						(end 0 2.413)
+						(stroke
+							(width 0.1524)
+							(type default)
+						)
+						(fill
+							(type none)
+						)
+					)
+					(rectangle
+						(start -1.27 0.127)
+						(end 0 -0.127)
+						(stroke
+							(width 0.1524)
+							(type default)
+						)
+						(fill
+							(type none)
+						)
+					)
+					(rectangle
+						(start -1.27 -2.413)
+						(end 0 -2.667)
+						(stroke
+							(width 0.1524)
+							(type default)
+						)
+						(fill
+							(type none)
+						)
+					)
+					(rectangle
+						(start -1.27 -4.953)
+						(end 0 -5.207)
+						(stroke
+							(width 0.1524)
+							(type default)
+						)
+						(fill
+							(type none)
+						)
+					)
+					(pin passive line
+						(at -5.08 2.54 0)
+						(length 3.81)
+						(name "Pin_1"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+						(number "1"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+					)
+					(pin passive line
+						(at -5.08 0 0)
+						(length 3.81)
+						(name "Pin_2"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+						(number "2"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+					)
+					(pin passive line
+						(at -5.08 -2.54 0)
+						(length 3.81)
+						(name "Pin_3"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+						(number "3"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+					)
+					(pin passive line
+						(at -5.08 -5.08 0)
+						(length 3.81)
+						(name "Pin_4"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+						(number "4"
+							(effects
+								(font
+									(size 1.27 1.27)
+								)
+							)
+						)
+					)
+				)
+				(embedded_fonts no)
+			)
 		(symbol "AQROOT_Beta:TPD4E1B06DRLR"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -2276,7 +2492,7 @@
 				)
 			)
 		)
-		(property "Value" "COMMUNITY_PORT_2x12"
+		(property "Value" "COMMUNITY_PORT_1x24"
 			(at 121.92 159.385 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2286,7 +2502,7 @@
 				)
 			)
 		)
-		(property "Footprint" "AQROOT_Beta:Samtec_BCS-112-S-D-HE"
+		(property "Footprint" "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA"
 			(at 120.65 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -2297,7 +2513,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.samtec.com/products/bcs-112-s-d-he"
+		(property "Datasheet" "https://www.samtec.com/products/ssq-124-02-g-s-ra"
 			(at 120.65 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -2476,7 +2692,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000001a")
 	)
-	(label "XGPIO0_HDR"
+	(label "ACC_5V_SW"
 		(at 107.95 128.27 180)
 		(effects
 			(font
@@ -2488,7 +2704,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 128.27) (xy 135.89 128.27)
+			(xy 128.27 128.27) (xy 130.81 128.27)
 		)
 		(stroke
 			(width 0)
@@ -2496,8 +2712,8 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000001c")
 	)
-	(label "EXT_SCL"
-		(at 135.89 128.27 0)
+	(label "EXT_SDA"
+		(at 135.89 130.81 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2528,7 +2744,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 130.81) (xy 130.81 130.81)
+			(xy 128.27 130.81) (xy 135.89 130.81)
 		)
 		(stroke
 			(width 0)
@@ -2538,7 +2754,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 130.81 130.81 90)
+		(at 130.81 128.27 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2549,7 +2765,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb090108-0901-4908-9908-000000000021")
 		(property "Reference" "#PWR0701"
-			(at 130.81 134.62 0)
+			(at 130.81 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2560,7 +2776,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 127 130.81 90)
+			(at 127 128.27 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2571,7 +2787,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 130.81 0)
+			(at 130.81 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2582,7 +2798,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 130.81 0)
+			(at 130.81 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2593,7 +2809,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 130.81 0)
+			(at 130.81 128.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2625,7 +2841,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000023")
 	)
-	(label "XGPIO1_HDR"
+	(label "EXT_SCL"
 		(at 107.95 133.35 180)
 		(effects
 			(font
@@ -2637,7 +2853,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 133.35) (xy 135.89 133.35)
+			(xy 128.27 133.35) (xy 130.81 133.35)
 		)
 		(stroke
 			(width 0)
@@ -2645,8 +2861,8 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000025")
 	)
-	(label "EXT_SDA"
-		(at 135.89 133.35 0)
+	(label "XGPIO7_HDR"
+		(at 135.89 146.05 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2685,7 +2901,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000029")
 	)
-	(label "XGPIO2_HDR"
+	(label "NATIVE_B_HDR"
 		(at 135.89 135.89 0)
 		(effects
 			(font
@@ -2697,7 +2913,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 138.43) (xy 113.03 138.43)
+			(xy 115.57 138.43) (xy 107.95 138.43)
 		)
 		(stroke
 			(width 0)
@@ -2707,7 +2923,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 113.03 138.43 270)
+		(at 113.03 151.13 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2718,7 +2934,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb090108-0901-4908-9908-00000000002c")
 		(property "Reference" "#PWR0702"
-			(at 113.03 142.24 0)
+			(at 113.03 154.94 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2729,7 +2945,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 109.22 138.43 90)
+			(at 109.22 151.13 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2740,7 +2956,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 113.03 138.43 0)
+			(at 113.03 151.13 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2751,7 +2967,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 113.03 138.43 0)
+			(at 113.03 151.13 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2762,7 +2978,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 113.03 138.43 0)
+			(at 113.03 151.13 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2794,7 +3010,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000002e")
 	)
-	(label "ACC_5V_SW"
+	(label "XGPIO1_HDR"
 		(at 135.89 138.43 0)
 		(effects
 			(font
@@ -2814,7 +3030,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000030")
 	)
-	(label "NATIVE_B_HDR"
+	(label "XGPIO2_HDR"
 		(at 107.95 140.97 180)
 		(effects
 			(font
@@ -2874,7 +3090,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000036")
 	)
-	(label "WAKE_ATTN_N_HDR"
+	(label "XGPIO5_HDR"
 		(at 135.89 143.51 0)
 		(effects
 			(font
@@ -2894,7 +3110,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000038")
 	)
-	(label "ACC_3V3_SW"
+	(label "XGPIO6_HDR"
 		(at 107.95 146.05 180)
 		(effects
 			(font
@@ -2906,7 +3122,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 146.05) (xy 130.81 146.05)
+			(xy 128.27 146.05) (xy 135.89 146.05)
 		)
 		(stroke
 			(width 0)
@@ -2916,7 +3132,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 130.81 146.05 90)
+		(at 130.81 133.35 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2927,7 +3143,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb090108-0901-4908-9908-00000000003b")
 		(property "Reference" "#PWR0703"
-			(at 130.81 149.86 0)
+			(at 130.81 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2938,7 +3154,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 127 146.05 90)
+			(at 127 133.35 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2949,7 +3165,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 146.05 0)
+			(at 130.81 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2960,7 +3176,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 146.05 0)
+			(at 130.81 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2971,7 +3187,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 146.05 0)
+			(at 130.81 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3003,7 +3219,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000003d")
 	)
-	(label "XGPIO5_HDR"
+	(label "XGPIO8_HDR"
 		(at 107.95 148.59 180)
 		(effects
 			(font
@@ -3023,7 +3239,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000003f")
 	)
-	(label "XGPIO6_HDR"
+	(label "XGPIO9_HDR"
 		(at 135.89 148.59 0)
 		(effects
 			(font
@@ -3035,7 +3251,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 151.13) (xy 107.95 151.13)
+			(xy 115.57 151.13) (xy 113.03 151.13)
 		)
 		(stroke
 			(width 0)
@@ -3043,8 +3259,8 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000041")
 	)
-	(label "XGPIO7_HDR"
-		(at 107.95 151.13 180)
+	(label "XGPIO0_HDR"
+		(at 107.95 138.43 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3063,7 +3279,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000043")
 	)
-	(label "XGPIO8_HDR"
+	(label "WAKE_ATTN_N_HDR"
 		(at 135.89 151.13 0)
 		(effects
 			(font
@@ -3075,7 +3291,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 153.67) (xy 113.03 153.67)
+			(xy 115.57 153.67) (xy 107.95 153.67)
 		)
 		(stroke
 			(width 0)
@@ -3085,7 +3301,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 113.03 153.67 270)
+		(at 113.03 156.21 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3096,7 +3312,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb090108-0901-4908-9908-000000000046")
 		(property "Reference" "#PWR0704"
-			(at 113.03 157.48 0)
+			(at 113.03 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3107,7 +3323,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 109.22 153.67 90)
+			(at 109.22 156.21 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3118,7 +3334,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 113.03 153.67 0)
+			(at 113.03 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3129,7 +3345,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 113.03 153.67 0)
+			(at 113.03 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3140,7 +3356,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 113.03 153.67 0)
+			(at 113.03 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3172,7 +3388,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000048")
 	)
-	(label "ACC_5V_SW"
+	(label "ACC_3V3_SW"
 		(at 135.89 153.67 0)
 		(effects
 			(font
@@ -3184,7 +3400,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 156.21) (xy 107.95 156.21)
+			(xy 115.57 156.21) (xy 113.03 156.21)
 		)
 		(stroke
 			(width 0)
@@ -3193,7 +3409,7 @@
 		(uuid "fb090108-0901-4908-9908-00000000004a")
 	)
 	(label "ACC_DETECT_N_HDR"
-		(at 107.95 156.21 180)
+		(at 107.95 153.67 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3212,7 +3428,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000004c")
 	)
-	(label "XGPIO9_HDR"
+	(label "ACC_5V_SW"
 		(at 135.89 156.21 0)
 		(effects
 			(font
@@ -9533,6 +9749,183 @@
 			)
 		)
 		(uuid "fb090108-0901-4908-9908-00000000017e")
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 176.53 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb090108-0901-4908-9908-000000000901")
+		(property "Reference" "J8"
+			(at 177.8 124.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "QWIIC_STEMMA_QT"
+			(at 177.8 138.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+			(at 176.53 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf"
+			(at 176.53 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Qwiic / STEMMA QT I2C connector, JST SM04B-SRSS-TB(LF)(SN), SH series 1.0 mm pitch, 4 circuit, SIDE ENTRY, surface mount, body 6.0 x 4.25 mm, 1.0 A, 50 V AC/DC, -25 to +85 C, contact resistance 20 mOhm initial. ADDED AT FBV2-EXP-002 (D-238). PIN ORDER IS THE ECOSYSTEM STANDARD, NOT A CHOICE: 1 GND (black), 2 3.3 V (red), 3 SDA (blue), 4 SCL (yellow) - identical for SparkFun Qwiic and Adafruit STEMMA QT, so every cable in either ecosystem mates it. IT ADDS NO COMPONENT: it lands on the PROTECTED EXTERNAL segment at EXT_SDA / EXT_SCL, downstream of U16 TCA4307 and of the R47/R48 22 ohm series pair and at D2's TPD4E1B06 clamp, so it inherits the hot-swap buffer, the R49/R50 1.5 k pull-ups, the series resistance and the ESD array. POWER IS ACC_3V3_SW AND THAT IS ARCHITECTURAL, NOT A PREFERENCE: U16's own VCC is already ACC_3V3_SW and the pull-ups pull to it, so feeding the port from unswitched +3V3 would create a powered-device / unpowered-bus state and invite back-feeding through the accessory's ESD diodes. ACC_5V_SW IS NEVER EXPOSED HERE."
+			(at 176.53 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fb090108-0901-4908-9908-000000000902")
+		)
+		(pin "2"
+			(uuid "fb090108-0901-4908-9908-000000000903")
+		)
+		(pin "3"
+			(uuid "fb090108-0901-4908-9908-000000000904")
+		)
+		(pin "4"
+			(uuid "fb090108-0901-4908-9908-000000000905")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
+					(reference "J8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 171.45 135.89) (xy 163.83 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090108-0901-4908-9908-000000000906")
+	)
+	(label "EXT_SDA"
+		(at 163.83 135.89 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb090108-0901-4908-9908-000000000907")
+	)
+	(wire
+		(pts
+			(xy 171.45 133.35) (xy 163.83 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090108-0901-4908-9908-000000000908")
+	)
+	(label "ACC_3V3_SW"
+		(at 163.83 133.35 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb090108-0901-4908-9908-000000000909")
+	)
+	(wire
+		(pts
+			(xy 171.45 130.81) (xy 163.83 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090108-0901-4908-9908-00000000090a")
+	)
+	(label "GND"
+		(at 163.83 130.81 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb090108-0901-4908-9908-00000000090b")
+	)
+	(wire
+		(pts
+			(xy 171.45 138.43) (xy 163.83 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb090108-0901-4908-9908-00000000090c")
+	)
+	(label "EXT_SCL"
+		(at 163.83 138.43 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb090108-0901-4908-9908-00000000090d")
+	)
+	(text "QWIIC / STEMMA QT - FBV2-EXP-002 (D-238)\n\nJ8 = JST SM04B-SRSS-TB(LF)(SN), SH 1.0 mm, 4 circuit,\nSIDE ENTRY SMT. 1 GND / 2 3V3 / 3 SDA / 4 SCL is the\nECOSYSTEM STANDARD ORDER - Qwiic and STEMMA QT are\nidentical here, so every cable in either ecosystem mates.\n\nIT ADDS NO COMPONENT. It taps the PROTECTED EXTERNAL\nsegment at EXT_SDA / EXT_SCL - downstream of U16 and of\nthe R47/R48 22 R pair, at D2's clamp - so it inherits the\nhot-swap buffer, the R49/R50 1.5 k pull-ups, the series\nresistance and the ESD array. NO second buffer, NO mux,\nNO repeater, NO extra pull-ups, NO second TVS.\n\nPOWER = ACC_3V3_SW, ARCHITECTURAL NOT PREFERENTIAL:\nU16's own VCC is already ACC_3V3_SW and the pull-ups pull\nto it, so an unswitched +3V3 feed would create a\npowered-device / unpowered-bus state.\n\nACC_5V_SW IS NEVER EXPOSED ON QWIIC.\n\nBUS BUDGET: <= 200 pF at 400 kHz on the 1.5 k pull-ups.\nOn-board copper ~20 pF + connector ~1 pF + a 100 mm cable\n~5-10 pF + a typical breakout ~10 pF; three daisy-chained\nboards ~55-75 pF. 100 kHz remains the fallback."
+		(exclude_from_sim no)
+		(at 163.0 108.0 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "fb090108-0901-4908-9908-000000000940")
 	)
 	(sheet_instances
 		(path "/"

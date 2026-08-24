@@ -42,6 +42,11 @@ ADDED_FOOTPRINTS = {
         'FBV2-S1-009, Samtec BCS-112-S-D-HE 2x12 horizontal community connector',
     'MountingBoss_M2_NPTH.kicad_mod':
         'FBV2-P1-002, Oe2.2 mm NPTH M2 enclosure retention point (mechanical, no BOM entry)',
+    'Samtec_SSQ-124-02-G-S-RA.kicad_mod':
+        'FBV2-EXP-002, Samtec SSQ-124-02-G-S-RA 1x24 right-angle 2.54 mm FEMALE expansion '
+        'header, superseding the BCS-112-S-D-HE 2x12 (D-237). The 2x12 footprint is RETAINED '
+        'in the library, not deleted: Beta-DM still uses it and it is the fallback if the '
+        'owner ever reverses D-237',
 }
 
 # (dm name, v2 name, expectation)
