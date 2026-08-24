@@ -1,3 +1,132 @@
+## 2026-08-24 — the connector fits the users, not the board (FBV2-EXP-001)
+
+**AUDIT = PASS. AUDIT ONLY — no authoritative hardware changed, no progress earned; overall stays
+74%.** Full analysis:
+[`audits/2026-08-24-expansion-compatibility-audit.md`](audits/2026-08-24-expansion-compatibility-audit.md).
+New working document:
+[`architecture/EXPANSION_ECOSYSTEM_PROPOSAL.md`](architecture/EXPANSION_ECOSYSTEM_PROPOSAL.md).
+
+**`J5` is unchanged, no sheet was opened, the PCB blob is byte-identical to `HEAD`, no Qwiic
+connector exists, `BOOT` and `POWER` have not moved and no PM part moved.** D-081 / D-083 / D-093 /
+D-097 remain in force; the proposed supersession is marked **PENDING CTO / OWNER RULING**.
+
+### The answer is yes, and the price is 3.83 millimetres of battery
+
+The owner's intent — ordinary 2.54 mm female sockets down the right side, one pin per line, Dupont
+jumpers, Qwiic boards that just plug in — is achievable, and **the electronics behind the connector
+need no architectural change whatsoever.** Every series resistor, every TVS array, the TCA4307, both
+load switches, the boost and the FLT wire-OR stay exactly as they are. The schematic change is a
+footprint swap and a pin re-map on sheet 09.
+
+What does not work is the geometry, and the reason is specific rather than vague. **A right-angle
+through-hole socket puts its solder tails 6.5–6.9 mm inboard of its own mating face** — it has to,
+because it must swallow a 6 mm male pin. For the mating face to reach the right wall, the tail row
+lands at x ≈ 63.5, and that is **inside `BATTERY_SHADOW`, which forbids any through-hole lead.**
+
+> **Requirement: (board right edge − battery right edge) ≥ 7.83 mm. Today it is 4.00 mm.
+> Shortfall 3.83 mm.**
+
+Above the battery, where the lead rule does not apply, the right wall offers **41.00 mm** between the
+cell and the IR receiver's optical corner. A 1 × 24 body is **61.47 mm**. The largest socket that
+fits there is a **1 × 15**, and it would leave nothing for the Qwiic connector or the power switch.
+Every other edge was measured and rejected: the left wall **is** the 433 flex region and the mandatory
+915 coax channel, the bottom edge is microSD, USB-C and both radio modules, and the top edge is the
+IR pair, the opaque barrier and the SMA. Mounting the socket on the rear face moves the conflict from
+its leads to its body and gains nothing.
+
+So the recommendation carries two conditions and they are the owner's to take: **PCB 70 → 72 mm**,
+which is *already* the documented `FBV2_PCB_MAX_MM` and leaves the 80 × 160 × 23 shell untouched, and
+**battery 60 → 57 mm wide — about 5 % of capacity.** With both, the margin is +1.17 mm and the wall
+carries the header, the Qwiic connector and the power switch. **Without the battery change the
+24-line side header cannot be delivered in this enclosure, and `J5` stays as it is.**
+
+### Two 1 × 12 sockets are rejected on arithmetic, not taste
+
+Both Samtec and Sullins build a 2.54 mm socket body **N × 2.54 + 0.51 mm** long — 1.525 mm of
+insulator past the end contact at each end. Butt two of them and their end contacts sit **3.050 mm
+apart against a required 2.540 mm pitch: a 0.510 mm interference.** They cannot form a continuous
+24-position grid at all. They also need **5.59 mm more wall length** than the single 1 × 24, need two
+recesses, and introduce a mis-plug mode the 1 × 24 does not have — a 12-way accessory in the wrong
+group. **One 1 × 24. Not two 1 × 12.**
+
+### The parts, verified
+
+**`SSQ-124-02-G-S-RA` (Samtec)** — and Samtec is *the same manufacturer as the present `J5`*, so the
+account and the small-quantity behaviour are already known. From the SSW/SSQ datasheet: 01–50
+positions per row, `-S` single row, `-RA` right angle available with `-S`, body 61.47 mm, socket-axis
+height selectable by lead style, insertion depth 3.68–6.35 mm, **mates .025″ (0.635 mm) square post**
+— the Dupont standard — 6.3 A per pin, −55 to +125 °C, 100 cycles at 10 µin Au.
+
+**`JST SM04B-SRSS-TB(LF)(SN)`** for Qwiic — SH series, **1.0 mm** pitch confirmed from JST's own
+`eSH.pdf`, 4 circuits, side entry, SMT, 6.0 × 4.25 mm, 1.0 A, 50 V. Pin order is the ecosystem's, not
+a choice: **1 GND, 2 3.3 V, 3 SDA, 4 SCL.**
+
+**Sullins `PPTC241LGBN-RC` was verified and deliberately not baselined.** Its drawing is
+authoritative and supplied the 6.53 mm depth figure the whole audit turns on — but DigiKey lists the
+non-RC variant obsolete at 0 stock, and the 19-way sibling is factory-order only at 1,000 pieces and
+11 weeks. **That is the third time this programme has met a catalogue part that is not a stocked
+part**, after the Harwin `M20-7881242` and the Amphenol `095-902-568-100`. D-096 keeps earning its
+keep.
+
+### Three things confirmed rather than assumed
+
+**Qwiic costs zero components.** It attaches at `EXT_SCL`/`EXT_SDA` — downstream of the 22 Ω
+resistors, at `D2`'s clamp, the same node as the header — and inherits the hot-swap buffer, the
+1.5 k pull-ups, the series resistance and the ESD array. Its power is `ACC_3V3_SW`, and that is
+architectural rather than preferential: **`U16`'s own VCC is already `ACC_3V3_SW`**, so an unswitched
+`+3V3` feed would create a powered-device / unpowered-bus state. `ACC_5V_SW` is never exposed.
+Three daisy-chained boards on 100 mm cables come to roughly 55–75 pF against a ≤ 200 pF budget —
+**no mux, no repeater, and none should be added.**
+
+**A Manual / Bench power mode needs no hardware change for either rail.** Traced pin by pin:
+`ACC_DETECT_N` goes through `R64` to `R129` and `U3.P17` and **nowhere else** — there is no AND gate,
+no interlock and no bypass between it and the three enables. Detect gating is one hundred percent
+firmware policy, while ILIM, reverse-current blocking, thermal shutdown and `FLT` stay in hardware,
+and permanent 5 V remains physically impossible because both 5 V enables default OFF through 100 k
+pull-downs. B-35 is carried forward unchanged: `FLT` still does not assert on plain current limiting,
+which is exactly why bench mode needs its warning.
+
+**BOOT can move without compromising anything.** `SW1` is **SMD**, and the bottom edge has a measured
+**11.04 mm** free window between the microSD shell and the USB-C receptacle, with a **14 mm** free
+span of enclosure wall for a Ø2 mm tool hole. **Lower-left is rejected on RF**: that wall *is*
+`ANT433_REGION`, with the flex bonded 0.2 mm outboard of the board edge, and it is also the mandatory
+`COAX_915_CHANNEL` — and P2-R1 already flags board copper in exactly that band as an aggressor.
+
+### The pin order removes two hazards it did not have to
+
+**ORDER-A** puts `3V3 / SDA / SCL / GND` at pins 3-4-5-6 — the same block every maker already knows
+from Qwiic — and puts **both 5 V contacts at the two physical ends of the row, each with `GND` as its
+only inboard neighbour.** No 5 V pin is adjacent to any signal. The present order has two such
+adjacencies. A one-position slip from either 5 V pin now lands on ground: a current-limited short
+with `FLT`, not 5 V into a 3.3 V input. All 24 functions are retained exactly — nothing added,
+removed or merged.
+
+And the mis-alignment problem turns out not to need a proprietary shroud at all. A mating 1 × 24 male
+body is exactly 60.96 mm; a **closed-end recess 62.5 mm long** leaves **1.54 mm of play against a
+2.54 mm pitch**, so a one-position shift is physically impossible. **The asymmetric upper-edge key of
+D-097 becomes unnecessary.**
+
+### What it costs, said plainly
+
+A single row has **no roll couple** — the 2 × 12 has 7.87 mm of it, which is the direction a
+leaned-on accessory actually loads a connector. In yaw the 1 × 24 is 2.09× better, but that is not the
+direction that matters. The mitigation is non-electrical: the recess floor, its closed ends, and a
+moulded ledge for the accessory board to rest on. **No new electrical connector, no new fastener, and
+the manual-assembly list does not grow — the Qwiic part is SMT and machine-placed.**
+
+And **two official full-header accessories should not be stacked.** One at a time; a second board
+uses Qwiic or jumper wires. **No AQROOT hub is required and none should be built.**
+
+### Do it once
+
+PM-2's fix is to consolidate the battery-protection block at the battery-entry corner — **exactly the
+corner the 1 × 24 now wants.** Deciding the connector separately from PM-1 / PM-2 / PM-3 / PT-1
+guarantees a second full placement cycle. The audit therefore ends with a combined sequence: rule on
+the changes, fix the outline and the reservations, place the right-wall stack, then PM-2, PT-1, PM-1,
+PM-3 and P2-R1 — and **re-issue FBV2-P1**, because a 70 → 72 mm outline change invalidates its PASS.
+
+---
+
 ## 2026-08-24 — twenty-two rules that could never fire (FBV2-P2-000)
 
 **FBV2-P2 ENTRY GATE = FAIL on one criterion of thirteen. No progress earned; overall stays 74%.**

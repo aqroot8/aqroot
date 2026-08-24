@@ -69,6 +69,7 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [pcb/FBV2_P1_COORDINATES.csv](pcb/FBV2_P1_COORDINATES.csv) | Every reference: side, X, Y, rotation, footprint, value, sheet, courtyard box. |
 | [pcb/FBV2_P2_ROUTING_PLAN.md](pcb/FBV2_P2_ROUTING_PLAN.md) | **NORMATIVE for FBV2-P2.** Layer usage, ground strategy, per-class routing rules, converter/USB/NFC/bus/escape plans, via and thermal policy, routing order, first-route checklist. |
 | [pcb/FBV2_P2_NETCLASS_LEDGER.csv](pcb/FBV2_P2_NETCLASS_LEDGER.csv) | 19 routing classes: nets, design current, IPC-2221B minimum, target/min width, clearance, layers, via policy, return-path requirement, priority and basis. |
+| [architecture/EXPANSION_ECOSYSTEM_PROPOSAL.md](architecture/EXPANSION_ECOSYSTEM_PROPOSAL.md) | **PROPOSAL, PENDING CTO / OWNER RULING.** Standard 2.54 mm 1 x 24 side header + Qwiic/STEMMA QT: connector MPNs, 24-pin ordering, mating safety, power-control verification, and the two owner rulings it depends on. |
 | [mechanical/P1_FLOORPLAN_INPUTS.md](mechanical/P1_FLOORPLAN_INPUTS.md) | **FBV2-P1 handoff.** 120 current physical constraints only, each marked LOCKED / TARGET / CAD-TO-VERIFY, plus the six items that need a CTO ruling before floorplanning. No coordinates. |
 | [audits/](audits/) | Dated engineering audits, each pinned to a repository HEAD. |
 | [reviews/](reviews/) | Independent second opinions. **Advisory — not automatically authoritative.** |
