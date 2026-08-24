@@ -64,6 +64,7 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) | High-level architecture snapshot and known architecture defects. |
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | **Mandatory before schematic work.** Thirteen fault cases across USB, battery, power-switch and accessory states. |
 | [mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md) | **Authoritative pre-CAD dimension source.** Cavity, PCB envelope, battery, NFC zone, acoustics, IR/antenna, mounting. |
+| [mechanical/P1_FLOORPLAN_INPUTS.md](mechanical/P1_FLOORPLAN_INPUTS.md) | **FBV2-P1 handoff.** 120 current physical constraints only, each marked LOCKED / TARGET / CAD-TO-VERIFY, plus the six items that need a CTO ruling before floorplanning. No coordinates. |
 | [audits/](audits/) | Dated engineering audits, each pinned to a repository HEAD. |
 | [reviews/](reviews/) | Independent second opinions. **Advisory — not automatically authoritative.** |
 | [transcripts/](transcripts/) | Append-only verbatim CTO prompts and Claude Code responses. |
@@ -82,7 +83,8 @@ CTO_DECISIONS.md  >  latest audit  >  ARCHITECTURE.md  >  older audits  >  trans
 | [audits/2026-08-23-display-procurement-lock.md](audits/2026-08-23-display-procurement-lock.md) | 2026-08-23 |
 | [audits/2026-08-23-community-expansion-closeout.md](audits/2026-08-23-community-expansion-closeout.md) | 2026-08-23 |
 | [audits/2026-08-23-community-connector-correction.md](audits/2026-08-23-community-connector-correction.md) | 2026-08-23 |
-| **[mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md)** | 2026-08-22 |
+| **[mechanical/MECHANICAL_INTERFACE_SPEC.md](mechanical/MECHANICAL_INTERFACE_SPEC.md)** | 2026-08-23 (FBV2-MECH-002) |
+| **[mechanical/P1_FLOORPLAN_INPUTS.md](mechanical/P1_FLOORPLAN_INPUTS.md)** | 2026-08-23 (FBV2-MECH-002) |
 | [architecture/POWER_FAULT_STATE_TABLE.md](architecture/POWER_FAULT_STATE_TABLE.md) | 2026-08-22 |
 | [reviews/2026-08-22-independent-cto-power-nfc-review.md](reviews/2026-08-22-independent-cto-power-nfc-review.md) | 2026-08-22 |
 | [transcripts/2026-08-22-session-01.md](transcripts/2026-08-22-session-01.md) | 2026-08-22 |

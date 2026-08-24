@@ -1,6 +1,16 @@
 # AQROOT Full Beta v2 — first-five assembly plan (B-71)
 
 **Status: NORMATIVE.** Created 2026-08-23 at **FBV2-S2-002**, closing **B-71**.
+**AMENDED 2026-08-23 at FBV2-MECH-002 (D-210 / D-211): two substitutions were SIGNED OFF and ADOPTED,
+and a factual error about `BAT54WS` was corrected.** See
+[`../audits/2026-08-23-pre-floorplan-authority-reconciliation.md`](../audits/2026-08-23-pre-floorplan-authority-reconciliation.md).
+
+> **CORRECTION — `BAT54WS` IS NOT A SERIES PAIR.** This file previously said so in §5 and §8. It is
+> wrong: **SOD-323 is a two-terminal package**, every `BAT54WS` in the LCSC library from every
+> manufacturer is catalogued **"1 Independent"**, and `D10`/`D11`/`D12` are each **one** two-pin
+> `Device:D_Schottky` on a two-pad `Diode_SMD:D_SOD-323`. **The design was never wrong** — only this
+> note was. Nexperia `BAT54W,115` remains correctly rejected, but **because it is a SOT-323 (SC-70)
+> part — a FOOTPRINT mismatch — not because of diode count.**
 
 > **This is not a requirement that every part be available from LCSC.** It is a requirement that
 > **every part has an explicit first-five assembly plan.** A part that cannot be bought from LCSC
@@ -77,6 +87,15 @@ thing, and that decision stands from FBV2-S2-001.
 | `BM02B-ACHSS-GAN-ETF(LF)(SN)` | `J7` | `C5118738` | 16,260 | 5 |
 | `TXM27.12M0004322DBBDO00T` | `Y1` | `C362365` | 3,421 | 5 |
 | `FH69-50S-0.5SH` | `J1` | JLC library, no public LCSC code | **1,072** | 5 |
+| **`0466005.NRHF`** Littelfuse | `F1` | **`C57525`** | **29,328** | 5 |
+| **`BAT54WS-7-F`** Diodes Incorporated | `D10`–`D12` | **`C124205`** | **46,819** | **15** |
+
+**`F1` and `D10`–`D12` moved into class B at FBV2-MECH-002.** Both substitutions were CTO-approved,
+verified live under D-096 and adopted: `F1` → **`0466005.NRHF`** (`C57525`, the halogen-free ordering
+option of the same Littelfuse 466 / Nano2 5 A 32 V 1206 fuse, same footprint, same electrical function)
+and `D10`–`D12` → **`BAT54WS-7-F`** (`C124205`, single independent 30 V / 100 mA / 600 mA-surge SOD-323
+Schottky — the topology the design actually uses). **Both are JLC EXTENDED, in stock, machine-placed.
+Neither needs consignment. Class D is now EMPTY.**
 
 **`J1` moved.** FBV2-S2-001 recorded the display connector as manual assembly. That ruling came
 from **B-47** — there is no drop-in second source — but it does not follow that JLC cannot place
@@ -93,10 +112,10 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 | part | ref | LCSC | stock | need | shortfall |
 |---|---|---|---|---|---|
 | **`PCAL9535APW,118`** NXP | `U2`, `U3`, `U23` | `C2669683` | **1** | **15** | **−14** |
+| ~~`0466005.NR` Littelfuse~~ `F1` | — | — | — | — | **LEFT CLASS C at FBV2-MECH-002 — now `0466005.NRHF` `C57525`, class B** |
 | **`NTMD4820NR2G`** onsemi | `Q2`, `Q3` | `C905372` | **0** | 10 | −10 |
 | **`TLV7032DDFR`** TI | `U19` | `C2871498` | **0** | 5 | −5 |
 | **`74438357010`** Würth | `L4` (`L2` **DNP**) | `C5542269` | **0** | **5** | **−5** |
-| **`0466005.NR`** Littelfuse | `F1` | `C187597` | **0** | 5 | −5 |
 | **`DMM-4026-B-I2S-R`** PUI | `MK1` | `C3171792` | **0** | 5 | −5 |
 | **`BCS-112-S-D-HE`** Samtec | `J5` | `C5575816` | **0** | 5 | −5 (also class E) |
 | **`LTC4368IDD-1#PBF`** ADI | `U18` | `C688397` | **4** | 5 | **−1** |
@@ -117,9 +136,11 @@ against a need of five is a build with **one** spare; **buy spares independently
 
 ## 5. Class D — not in the LCSC/JLC library
 
+## **CLASS D IS EMPTY as of FBV2-MECH-002.**
+
 | part | ref | finding | plan |
 |---|---|---|---|
-| **`BAT54WS,115`** Nexperia | `D10`–`D12` | **Not in the library at all.** A search for the string returns Nexperia **`BAT54W,115`** (`C8657`) — the **single** diode, **not the series pair** | Consign the Nexperia part **or** adopt **Diodes Inc. `BAT54WS-7-F`**, `C124205`, **46,819** in stock — same SOD-323 series-pair Schottky. **Documented, not adopted:** it needs a one-line sign-off before the order |
+| ~~**`BAT54WS,115`** Nexperia~~ | ~~`D10`–`D12`~~ | **RESOLVED 2026-08-23 (D-211).** The Nexperia string is not in the LCSC/JLC library, and it does not need to be: **`D10`, `D11` and `D12` are each ONE independent SOD-323 Schottky**, and **Diodes Incorporated `BAT54WS-7-F`, `C124205`, 46,819 in stock** is exactly that part. **ADOPTED after CTO sign-off** — verified electrically against the ratiometric bridge and the dead-cell recovery branch (audit §2.4, §2.5) | **Class B. JLC-sourced, machine-placed, no consignment** |
 
 ---
 
@@ -149,7 +170,7 @@ returns nothing.** Every one of these would have shipped silently.
 
 | ref | intended | what a loose search returns | why it is wrong |
 |---|---|---|---|
-| `D10`–`D12` | Nexperia `BAT54WS,115` | Nexperia **`BAT54W,115`** `C8657` | **`BAT54W` is a single diode; `BAT54WS` is a series pair.** Different device |
+| `D10`–`D12` | ~~Nexperia `BAT54WS,115`~~ → **Diodes Inc `BAT54WS-7-F`** (D-211) | Nexperia **`BAT54W,115`** `C8657` | **CORRECTED 2026-08-23.** Both are *single independent* diodes — **`BAT54WS` is NOT a series pair**. `BAT54W,115` is wrong because it is **SOT-323 (SC-70)**, a **footprint mismatch** against `Diode_SMD:D_SOD-323`, and it has **5 in stock** against a need of 15 |
 | `SW1`–`SW7` | C&K `PTS645SM43SMTR92LFS` | G-Switch **`GT-TC089A-H043-L1`** `C843623` | **Different manufacturer**, land pattern never checked against the C&K G-Type layout this footprint was built from — and it is **35 placements** |
 | `D8` | onsemi `NSR0240HT1G` | FUXINSEMI **`SD103AWS`** `C915626` | **Different part number entirely** |
 | `Q4`, `Q6`–`Q9` | onsemi `BSS138LT1G` | LRC **`LBSS138LT1G`** `C8490` | Different manufacturer — **and the genuine onsemi part has 762,522 in stock**, so there is no reason to accept it |
@@ -186,7 +207,7 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 | how many parts machine-placed? | **all but two per board** |
 | how many hand-soldered per board? | **2** — `J5` (24-pin THT) and `D1` (5 mm THT LED) |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many parts need consignment? | **10 (class C) + 1 (class D)** |
+| how many parts need consignment? | **9 (class C) + 0 (class D)** — **down from 11 at FBV2-MECH-002**, i.e. **4 fewer consigned placements per board, 20 across the first five**. **Class D is empty.** |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
 | does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
 
@@ -198,7 +219,9 @@ numbers is trivial against one failed board or one wrong-part respin.
 ## 11. What this plan does **not** claim
 
 - It does **not** claim any of these stock figures will still hold when the order is placed.
-- It does **not** adopt a single substitute part. `BAT54WS-7-F` and `0466005.NRHF` are recorded as
-  **candidates awaiting sign-off**, not as decisions.
+- ~~It does **not** adopt a single substitute part.~~ **SUPERSEDED 2026-08-23 (FBV2-MECH-002).**
+  **`BAT54WS-7-F` (`C124205`) and `0466005.NRHF` (`C57525`) are now CTO-APPROVED, ELECTRICALLY
+  VERIFIED AND ADOPTED** — D-211 and D-210. They are the only two substitutions this programme has
+  adopted, and no other substitution is authorised.
 - It does **not** cover the anonymous passive values, which stay unconsolidated until the layout
   exists.

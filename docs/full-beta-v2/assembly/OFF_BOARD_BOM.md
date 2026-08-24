@@ -66,9 +66,11 @@ separate bulkhead MPN is needed.** Loss at 915 MHz is ≈ **0.4 dB** (RG-178 ≈
 plus two interfaces) against a +22 dBm module — negligible.
 
 **Enclosure hardware:** the SMA bulkhead ships with its own nut and washer. The panel needs a
-**Ø6.5 mm** clearance hole on the **top edge, left half**, **≥ 15 mm from either IR window**
-(mechanical spec §8, B-52), and **≥ 8 mm edge-to-edge between the SMA body and either IR
-aperture**. The right-angle AMC plug is the correct choice for a module lying flat — it keeps the
+**Ø6.5 mm** clearance hole on the **top edge, left half**. **Two spacing rules apply and BOTH are
+current** — see mechanical spec **§8.1** (authority traced at FBV2-MECH-002): **≥ 15 mm
+CENTRE-TO-CENTRE** from the bulkhead hole to either IR window, **and ≥ 8 mm EDGE-TO-EDGE between the
+SMA body and either IR aperture** (B-52, still **OPEN** — spacing recorded, **no CAD**). **Satisfy
+whichever is larger once the real SMA body OD is measured.** The right-angle AMC plug is the correct choice for a module lying flat — it keeps the
 vertical stack low.
 
 **Module interface:** the `E22-900M22S` likewise ships with **IPEX and stamp holes**.

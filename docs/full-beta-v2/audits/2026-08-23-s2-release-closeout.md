@@ -183,7 +183,7 @@ returns nothing**. Six were caught by insisting on manufacturer *and* model, not
 
 | ref | intended | loose search returns | why it is wrong |
 |---|---|---|---|
-| `D10`–`D12` | Nexperia `BAT54WS,115` | Nexperia **`BAT54W,115`** | **single diode vs series pair** — a different device |
+| `D10`–`D12` | Nexperia `BAT54WS,115` | Nexperia **`BAT54W,115`** | ~~single diode vs series pair — a different device~~ ***CORRECTED 2026-08-23 by D-211: `BAT54WS` IS NOT A SERIES PAIR.* SOD-323 is a two-terminal package and `D10`–`D12` are each ONE independent diode; `BAT54W,115` is wrong because it is SOT-323 (SC-70) — a FOOTPRINT mismatch.** |
 | `SW1`–`SW7` | C&K `PTS645SM43SMTR92LFS` | G-Switch `GT-TC089A-H043-L1` | different manufacturer, land never checked — **35 placements** |
 | `D8` | onsemi `NSR0240HT1G` | FUXINSEMI `SD103AWS` | a different part number entirely |
 | `Q4`, `Q6`–`Q9` | onsemi `BSS138LT1G` | LRC `LBSS138LT1G` | different maker — **and the genuine part has 762,522 in stock** |
@@ -257,7 +257,7 @@ thing this project cannot afford to leave lying around.
   outline, no mechanical CAD, no firmware, no Beta-DM, no frozen Beta.
 - **No product feature was added.** No new rail, no new IC, no new connector, no speculative
   fallback circuitry.
-- **No substitute part was adopted.** `BAT54WS-7-F` and `0466005.NRHF` are recorded as **candidates
+- ~~**No substitute part was adopted.**~~ **SUPERSEDED 2026-08-23 by D-210 / D-211: BOTH WERE SIGNED OFF AND ADOPTED.** Original text: `BAT54WS-7-F` and `0466005.NRHF` are recorded as **candidates
   awaiting sign-off**.
 - **Passive values remain unconsolidated**, per FBV2-S2-001.
 

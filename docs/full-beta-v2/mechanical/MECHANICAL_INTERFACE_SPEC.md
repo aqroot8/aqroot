@@ -2,7 +2,12 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic port, M-14**; and by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12; **RF off-board interfaces sourced and `J1` confirmed manual-assembly 2026-08-23 by FBV2-S2-001** — §8 and M-13)
+Date: 2026-08-22 (updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic port, M-14**; and by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12; **RF off-board interfaces sourced 2026-08-23 by FBV2-S2-001** — §8 and M-13; **PRE-FLOORPLAN AUTHORITY RECONCILIATION 2026-08-23 by FBV2-MECH-002** — NFC clear zone, `J1` land pattern and assembly route, SMA↔IR spacing datum, speaker Z column, §4.1 content list and the machine-readable block; companion handoff [`P1_FLOORPLAN_INPUTS.md`](P1_FLOORPLAN_INPUTS.md))
+
+> **AUTHORITY NOTE — FBV2-MECH-002 (2026-08-23).** This document is the authoritative pre-CAD dimension
+> source for **FBV2-P1** and **must not contain conflicting CURRENT requirements**. Where a superseded
+> figure is retained below it is marked ~~struck~~ or explicitly labelled **SUPERSEDED**, and the current
+> value is stated next to it. Historical rationale is preserved; only current authority was changed.
 
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
 > **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
@@ -83,10 +88,10 @@ value is TARGET, however confident the arithmetic.
 | 6 | **PCB_THICKNESS** | **1.6 mm** | **LOCKED** | carried from Beta-DM; measured |
 | 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh | **LOCKED** | **D-071** (2026-08-22) |
 | 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. **Fitted part `ER-TFT035IPS-6` + `ER-TPC035-6`: 56.54 × 84.96 × 3.95 ± 0.25 mm (4.20 max)**, active 48.96 × 73.44 | **LOCKED** | **D-072 / D-074.** Locked by FBV2-DISP-002; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
-| 9 | **NFC_ZONE** | **45 × 45 mm** metal-free, rear upper third | **TARGET** | §6 |
+| 9 | **NFC_ZONE** | **48 × 48 mm** minimum clear region, metal-free, rear upper third | **LOCKED** | **D-127 / D-128 / D-131** (FBV2-S1-004B/C) — 46 mm `FXC.46.52.0075X.B.dg` plus installation tolerance. ***The 45 × 45 mm figure carried here until FBV2-MECH-002 was STALE and is SUPERSEDED.*** §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 3.0 mm** + **1.5–2.0 cm³** rear cavity | **LOCKED** | **D-148.** Fitted part **PUI `AS02008MR-LW152-R`**, Ø20 ± 0.2 × 3 ± 0.2 mm. Supersedes the Ø20 × 4.0 / 15 × 11 × 3.5 targets and **releases 1 mm of Z** in the speaker column. The rear-cavity requirement is unchanged |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.48 × 8.13 × 5.33 mm** body; **2×12 @ 2.54 mm**, FEMALE, horizontal entry, right wall. Samtec **`BCS-112-S-D-HE`** | **LOCKED** | §5. **D-081/D-093.** Harwin `M20-7881242` **REJECTED as obsolete** |
-| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; ≥15 mm from the IR windows | **TARGET** | §8 |
+| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture**. **Both rules are current — see §8.1** | **LOCKED** (both rules) | **§8.1.** 15 mm: FBV2-MECH-001. 8 mm: **D-120**, restated by **M-13** (FBV2-S2-001) |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
 | 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
@@ -95,7 +100,7 @@ value is TARGET, however confident the arithmetic.
 | 18 | Device orientation | **portrait** — 80 wide × 160 tall | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
 | 19 | Display size | **3.5 inch** | **LOCKED** | **D-072** |
 | 20 | Display panel MPN / FPC | **`ER-TFT035IPS-6` + `ER-TPC035-6`** — one **50-pin, 0.50 mm pitch, bottom-contact** FPC, **0.30 ± 0.03 mm** thick, 25.5 ± 0.15 mm wide, 30 ± 0.5 mm free length; CTP **FT6236 @ 0x38** on pins 44–47 of the same tail | **LOCKED** | **D-074 / D-075.** M-06 closed |
-| 21 | J1 mating connector | **Hirose `FH69-50S-0.5SH`** — 0.5 mm, 50 pos, **top *and* bottom contact**, FPC **0.30 ± 0.05 mm**, height **2.3 mm**, right-angle, backflip ZIF. Laid out on the **FH12 / FH52E standard land pattern**; second source `FH52E-50S-0.5SH` (LCSC C7465440) | **LOCKED** | **D-076 / D-077.** Mating proven from both manufacturers' drawings |
+| 21 | J1 mating connector | **Hirose `FH69-50S-0.5SH`** — 0.5 mm, 50 pos, **top *and* bottom contact**, FPC **0.30 ± 0.05 mm**, height **2.3 mm**, right-angle, backflip ZIF. **`J1` sits on a DEDICATED FH69 LAND PATTERN. There is NO drop-in second source: `FH52E-50S-0.5SH` does NOT share the FH69 land pattern and is NOT a second source. Single-source connector architecture.** **JLC stocks the genuine Hirose part and `J1` is MACHINE-PLACEABLE — re-check stock before ordering.** | **LOCKED** | **D-076.** ***D-077's "FH12 / FH52E standard land pattern, second source FH52E-50S-0.5SH, mating proven from both drawings" is SUPERSEDED — B-47 resolved NOT COMPATIBLE (D-194); machine-placement per D-206 / D-207.*** |
 | 22 | Battery SKU | — | **TBD** | envelope LOCKED instead (row 7) |
 
 ---
@@ -126,7 +131,7 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 | side | tallest | height | constraint |
 |---|---|---|---|
-| **Top** | **TSOP38238 / TSOP38438** IR receiver | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
+| **Top** | **TSOP38238** IR receiver (`TSOP38438` same-package fallback) | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
 | Top (display shadow) | passives only | **≤0.8 mm** | **measured** Beta-DM limit — retain |
 | Top (control area) | PTS645 tact switch | **4.3 mm** | |
 | **Bottom** | Molex microSD | **1.85 mm** | |
@@ -199,10 +204,10 @@ Computed with real clearances, not nominal sums.
 | Front shell + air | 2.5 |
 | PCB top components | 1.5 |
 | PCB | 1.6 |
-| Speaker driver | 4.0 |
+| Speaker driver (`AS02008MR-LW152-R`, ~~4.0~~) | **3.0** |
 | Rear acoustic cavity | 2.0 |
 | Rear shell | 2.0 |
-| **Total** | **13.6 mm** — 9.4 mm spare |
+| **Total** | **12.6 mm** — **10.4 mm spare** *(corrected FBV2-MECH-002: D-148 locked Ø20 × 3.0 mm and states it releases 1 mm of Z in this column; the column had not been updated)* |
 
 ### 3.4 Verdict on 23 mm
 
@@ -249,8 +254,12 @@ Not merely "needs reduction". Two independent reasons:
 1. **Dimensionally it does not fit.** 155 mm of board in a 155 mm cavity leaves
    nothing for the shell lip, six bosses, ribs, or assembly clearance. Reduction of
    **−4 mm X and −7 mm Y** is the minimum.
-2. **Its content has changed.** Full Beta v2 removes HOME and the RGB nets,
-   changes both expanders, changes the connector from 26 to 20 pins, adds the
+2. **Its content has changed.** Full Beta v2 removes HOME **and adds a FRONT RGB
+   status light `D13`** *(the RGB nets were removed from the Beta-DM control set and a
+   deliberate front status light was added instead — D-167, FBV2-S1-008; the earlier
+   "removes … the RGB nets" reading is **SUPERSEDED**)*,
+   changes both expanders, changes the community connector to **24 contacts in 2 × 12
+   at 2.54 mm** *(D-081 / D-083 — the earlier "26 to 20 pins" figure is **SUPERSEDED**)*, adds the
    P2 four-FET protection stage plus the dead-cell recovery branch, adds the NFC
    crystal, matching network and antenna, restores IR TX/RX, and adds the TPS22950C
    accessory switch. Reusing a floorplan built around a different component set
@@ -329,9 +338,12 @@ REVISION B, FIG 3 (`BCS-1XX-XXX-D-HE-XXX`)** — the horizontal dual-row figure 
 > row B; pad 1 is rectangular with a silkscreen tick and a `PIN 1` legend; the
 > F.Fab layer carries a `MATES ->` direction mark.
 
-**Assembly:** if the JLC service cannot place this through-hole part
-automatically, it becomes a **manual / secondary assembly operation for the first
-five boards**. The connector architecture is not compromised for SMT convenience.
+**Assembly — CURRENT TRUTH (D-206 / D-207, confirmed FBV2-MECH-002):** `J5` **IS** a
+**manual / secondary assembly operation for the first five boards** — it is one of
+**exactly two** hand-soldered parts per board, the other being `D1` (5 mm THT IR emitter).
+*(The earlier conditional phrasing — "if the JLC service cannot place this…" — is resolved:
+it cannot, and the part is class E.)* The connector architecture is not compromised for SMT
+convenience.
 
 **Wall aperture:** 34 × 10 mm nominal, with 0.3 mm clearance to the accessory shell
 on all sides, plus the keying rib.
@@ -371,7 +383,7 @@ shielding stack — it is to **not put them in the same place**.
    ├─────────────────────────────────────┤
    │                                     │
    │        NFC LOOP ZONE                │   rear UPPER third
-   │        45 × 45 mm                    │   (behind the display)
+   │        48 × 48 mm                    │   (behind the display)
    │        metal-free, ferrite-backed    │
    │                                     │
    ├─────────────────────────────────────┤ Y ≈ 100
@@ -394,7 +406,7 @@ natural home for the NFC loop, and it costs nothing.
 
 | rule | value | status |
 |---|---|---|
-| NFC loop envelope | **45 × 45 mm** minimum | **TARGET** |
+| NFC loop envelope | **48 × 48 mm** minimum clear region | **LOCKED** — D-127 / D-128 / D-131. *(~~45 × 45 mm~~ SUPERSEDED at FBV2-S1-004B; the stale figure survived here until FBV2-MECH-002)* |
 | Loop location | rear upper third, centred in X | **TARGET** |
 | **Battery / NFC overlap** | **ZERO overlap permitted** | **TARGET** — this is the policy, not a mitigation |
 | Ferrite | **0.3 mm layer between the loop and the PCB**, full loop footprint | **TARGET** — the PCB ground pour is the near-field threat once the battery is moved away |
@@ -402,7 +414,7 @@ natural home for the NFC loop, and it costs nothing.
 | Screw/boss keepout | the two mid-span bosses must sit **below** Y = 100, i.e. outside the loop zone | **TARGET** |
 | Matching network | on the PCB, **within 15 mm** of the loop feed point | **TARGET** |
 | Speaker separation | ≥20 mm from the loop perimeter; the magnet is the largest ferrous mass in the device | **TARGET** |
-| **Stored antenna** | the left-side holder channel **must not cross the loop zone**. With a 45 mm loop in a 75 mm cavity there is ~15 mm of margin each side — route the channel in that margin | **TARGET** |
+| **Stored antenna** | the left-side holder channel **must not cross the loop zone**. With a **48 mm** clear zone in a 75.0 mm cavity there is **~13.5 mm of margin each side** — route the channel in that margin | **TARGET** *(margin recomputed at FBV2-MECH-002 for the 48 mm zone)* |
 
 ### 6.3 Battery
 
@@ -442,7 +454,14 @@ the pads measured programmatically, and the result closes against the printed di
 | Gasket | closed-cell silicone or poron, **compressed 20–30%**, **ID ≥ 1.5 mm, OD 4–5 mm**, forming a sealed tunnel |
 | Shell aperture | **Ø0.8–1.0 mm**, or 3–5 holes of Ø0.5 mm, with acoustic mesh behind |
 | Tunnel length | **≤2.5 mm** — longer tunnels roll off the high frequencies that carry speech intelligibility |
-| Location | **front face, bottom third, opposite corner from the speaker** |
+| Location | **front face of the ENCLOSURE, bottom third, opposite corner from the speaker** |
+| **Face datum — CLARIFIED FBV2-MECH-002** | **The ENCLOSURE aperture is on the FRONT face.** M-14 says
+the acoustic path leaves on *the PCB's BOTTOM face* — that is a statement about the **board**, not the
+**enclosure**. The two are only consistent if **`MK1` is placed on the PCB copper face that points AWAY
+from the front shell**, listening forward through the Ø1.05 mm hole. **No floorplan exists, so which
+copper layer that is has not been fixed** — it is an **FBV2-P1 side-assignment constraint** and it is
+**raised for CTO ruling** in the FBV2-MECH-002 audit (§7, item O-1). Nothing here changes the part, the
+hole, the gasket or the tunnel length |
 | Solder | keep the stencil aperture back from the hole edge so solder cannot wick into the port (**B-63**, PCB stage) |
 
 ### 7.2 Speaker
@@ -480,24 +499,52 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
    │   connector       │         │                │
    └──────────────────────────────────────────────┘
      ← left half →                → right half →
-        ≥15 mm from IR windows      ≥15 mm apart
+        ≥15 mm c-c to IR window     ≥15 mm apart
+        AND ≥8 mm edge-to-edge      (emitter ↔ receiver)
+        (SMA body ↔ IR aperture)
 ```
 
 | requirement | value | reason |
 |---|---|---|
 | IR emitter location | top edge, right of centre | Natural remote-pointing posture |
 | IR receiver location | top edge, right end | |
-| **Emitter ↔ receiver separation** | **≥15 mm**, plus an **OPAQUE OPTICAL BARRIER** between them, receiver **outside the LED emission cone** | The TSOP38438 is extremely sensitive. **REVISED 2026-08-23 (D-162): the ≥15 mm figure was written against a ±17° TSAL6200. The locked TSAL6100 is 2.4× brighter on axis, so stray and internally-reflected energy reaching the receiver goes UP even though the direct cone is narrower — the narrower beam tightens this requirement rather than relaxing it.** Keep the TX current loop away from the receiver supply and return. The electrical half of self-blinding is already solved by the 41 dB `R21`/`C11` filter |
+| **Emitter ↔ receiver separation** | **≥15 mm**, plus an **OPAQUE OPTICAL BARRIER** between them, receiver **outside the LED emission cone** | The TSOP38238 (and its TSOP38438 fallback) is extremely sensitive. **REVISED 2026-08-23 (D-162): the ≥15 mm figure was written against a ±17° TSAL6200. The locked TSAL6100 is 2.4× brighter on axis, so stray and internally-reflected energy reaching the receiver goes UP even though the direct cone is narrower — the narrower beam tightens this requirement rather than relaxing it.** Keep the TX current loop away from the receiver supply and return. The electrical half of self-blinding is already solved by the 41 dB `R21`/`C11` filter |
 | **Opaque barrier** | **mandatory**, full height between the two windows, bonded to both shells | Blocks the internal reflection path, which is the one that actually causes self-blinding |
 | Emitter axis | **normal to the top face**, ±0° | |
 | Receiver FOV | ±45° about the top-face normal | |
 | Windows | IR-transmissive (visibly opaque acceptable), recessed 0.5 mm | |
-| **Antenna ↔ IR separation** | **≥15 mm** | A fitted whip must not shadow the emitter cone |
+| **Antenna ↔ IR separation** | **BOTH RULES ARE CURRENT: ≥15 mm centre-to-centre** (bulkhead hole ↔ IR window) **and ≥8 mm edge-to-edge** (SMA body ↔ IR aperture) | A fitted whip must not shadow the emitter cone (15 mm); the panel hardware must not crowd the aperture (8 mm). **See §8.1 for the authority trace — neither supersedes the other** |
 | Antenna connector | panel/bulkhead, **left half of the top edge** | |
 | Pigtail | u.FL → bulkhead, **minimum bend radius 5 mm**, **service loop ≥15 mm** | Per D-040: no controlled-impedance RF on the main PCB |
 
 **Antenna storage** runs along the **left wall**, sized for the stowed whip, and
 **must terminate below Y = 100 mm** so it never crosses the NFC loop zone (§6.2).
+
+### 8.1 915 MHz SMA ↔ IR spacing — authority trace (FBV2-MECH-002)
+
+Two spacing figures were in this document and they were read as a contradiction. **They are not.**
+They measure different things, and the later engineering ruling **added** the second without revoking
+the first.
+
+| rule | datum | first stated | latest restatement | status |
+|---|---|---|---|---|
+| **≥ 15 mm** | **centre-to-centre**, bulkhead clearance hole ↔ IR window | **FBV2-MECH-001**, 2026-08-22 — §8 and dimension row 12, written against a *generic* fitted whip shadowing the emitter cone | **M-13**, FBV2-S2-001, 2026-08-23: *"≥ 15 mm from either IR window"* | **CURRENT — LOCKED** |
+| **≥ 8 mm** | **edge-to-edge**, SMA **body** ↔ IR **aperture** | **D-120**, FBV2-S1-004, 2026-08-23, when the 915 MHz external interface was defined (B-52) | **M-13**, FBV2-S2-001, 2026-08-23, with the Amphenol `095-902-568-150` bulkhead known: *"≥ 8 mm edge-to-edge between the SMA body and either IR aperture"* | **CURRENT — LOCKED** |
+
+**Finding: the 8 mm rule did NOT supersede the 15 mm rule.** The most recent ruling to touch this (**M-13**, FBV2-S2-001) states **both, in the same sentence**, so the 15 mm figure is not stale —
+it was re-asserted after the 8 mm rule existed. Retaining only 8 mm would have discarded a live
+requirement; retaining only 15 mm would have discarded the panel-hardware clearance D-120 added.
+**Both are recorded, with their datums made explicit — that is the actual defect that was fixed here:
+neither figure previously said what it was measured between.**
+
+**Consistency check (CAD-TO-VERIFY, no CAD in this task).** A standard SMA bulkhead hex is roughly
+9.5 mm across flats / ~11 mm across corners, and an IR aperture for the Ø5 mm `TSAL6100` or the
+`TSOP38238` lens is roughly Ø5.5–6.0 mm. On those figures, **8 mm edge-to-edge implies ≈ 15.5–16.5 mm
+centre-to-centre**, i.e. the two rules are mutually consistent and **8 mm edge-to-edge is the binding
+one**. **The Amphenol `095-902-568-150` body OD is NOT measured here** — confirm it against the
+manufacturer drawing at FBV2-P1 / enclosure CAD. If the real body proves smaller than assumed, the
+15 mm centre rule becomes the binding one instead; **satisfy whichever is larger.** **B-52 stays OPEN**
+— spacing is recorded, **no CAD exists**.
 
 ---
 
@@ -531,7 +578,7 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
 | **M-11** | **Front RGB status-light aperture — NEW 2026-08-23 (FBV2-S1-008)** | **The requirement is FRONT-FACING and visible; the exact front position is deliberately NOT locked.** Upper bezel, lower bezel, beside the display or near the controls are all acceptable. **It is NOT a top-edge part** — the top crown is the IR and antenna region. `D13` is a **surface-mount PLCC-4, 3.50 × 2.80 × 1.85 mm, 120° emission, water-clear lens** on the **front-facing PCB surface**, so the enclosure must provide a **diffuser or light pipe: no protruding bare LED, and no direct line of sight to the die.** A water-clear 120° source behind a bare hole is a point glare source; the diffuser is what makes it read as a status light. **Delivered output is roughly 80 / 87 / 42 mcd (R/G/B)** at 1.0–1.7 mA per channel, so the optical path must not be lossy — budget for a short pipe or a thin diffuser, not a deep light guide. **Placement and CAD own the final position.** Does not block FBV2-A2 |
 | **M-12** | **Community connector land field — NEW 2026-08-23 (FBV2-S1-009)** | The footprint is verified against the manufacturer drawing (§5), so this is **not** a dimensional unknown. It is a **floorplanning constraint**: **24 × Ø0.71 mm plated through-holes in a 27.94 × 7.87 mm field**, the only THT field on the board, blocking routing on every layer beneath it, on the **right edge** where the recess and its asymmetric key also live. Combined with M-10's ~33 N insertion load and M-08's contest for the space under the display, **the right-hand strip is now the most constrained region of the PCB.** Does not block FBV2-A2; **must be resolved first at FBV2-P1** |
 | **M-14** | **Microphone acoustic port — NEW 2026-08-23 (FBV2-S2-002, D-203/B-63)** | `MK1` is a **BOTTOM-PORT** MEMS microphone. It sits on the **TOP** of the PCB and listens **THROUGH** the board, so **the acoustic path leaves on the BOTTOM face**. The board now carries a **Ø1.05 mm non-plated hole** concentric with pad 4 — the diameter is the PUI drawing's own pad-4 GND-ring inner diameter, i.e. the part's port aperture. **The enclosure aperture and any acoustic gasket belong on the BOTTOM face, not the component face.** The region marked by the dashed `B.Fab` circle in the footprint must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces** so the port can be sealed. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
-| **M-13** | **Manual-assembly and panel-hardware consequences — NEW 2026-08-23 (FBV2-S2-001)** | Three parts are **manual / secondary assembly** for the first five: **`J5`** (24 × Ø0.71 mm THT), **`D1`** (5 mm THT IR LED) and now **`J1`** — because **B-47 resolved as NOT COMPATIBLE (D-194)** and there is no auto-placeable second source for the display connector. **The 915 MHz interface is now one orderable assembly, Amphenol `095-902-568-150`**, which carries its own **SMA bulkhead with nut and washer**: the panel needs a **Ø6.5 mm clearance hole on the top edge, left half**, **≥ 15 mm from either IR window** and **≥ 8 mm edge-to-edge between the SMA body and either IR aperture** (B-52), with the **right-angle** AMC plug chosen to keep the vertical stack low over a flat-lying module. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
+| **M-13** | **Manual-assembly and panel-hardware consequences — NEW 2026-08-23 (FBV2-S2-001), AMENDED 2026-08-23 (FBV2-MECH-002)** | **CURRENT TRUTH: exactly TWO parts are manual / secondary assembly for the first five — `J5` (24 × Ø0.71 mm THT) and `D1` (5 mm THT IR LED).** ~~and now `J1`~~ — **`J1` IS NOT MANUAL. SUPERSEDED by D-206 / D-207: JLC carries the genuine Hirose `FH69-50S-0.5SH` (1,072 in stock, live 2026-08-23), so `J1` is MACHINE-PLACED.** B-47 / D-194 remains correct and unaffected: it says there is **no drop-in second source** for the display connector, which was never a statement about whether JLC can place it. **The 915 MHz interface is now one orderable assembly, Amphenol `095-902-568-150`**, which carries its own **SMA bulkhead with nut and washer**: the panel needs a **Ø6.5 mm clearance hole on the top edge, left half**, **≥ 15 mm from either IR window** and **≥ 8 mm edge-to-edge between the SMA body and either IR aperture** (B-52), with the **right-angle** AMC plug chosen to keep the vertical stack low over a flat-lying module. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
 | M-04 | Battery SKU | Envelope frozen; SKU at procurement |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
 
@@ -562,6 +609,9 @@ FBV2_DISPLAY_ACTUAL_MM:  56.54 x 84.96 x 3.95+/-0.25   LOCKED (D-074)
 FBV2_DISPLAY_MPN:        ER-TFT035IPS-6 + ER-TPC035-6  LOCKED (D-074)
 FBV2_DISPLAY_FPC:        50 pin / 0.50 mm / bottom contact / 0.30+/-0.03 mm   LOCKED (D-075)
 FBV2_DISPLAY_CONNECTOR:  Hirose FH69-50S-0.5SH         LOCKED (D-076)
+FBV2_DISPLAY_CONN_LAND:  FH69 DEDICATED - not FH12/FH52E   LOCKED (D-194)
+FBV2_DISPLAY_CONN_2ND:   NONE - single source           LOCKED (D-194)
+FBV2_DISPLAY_CONN_ASSY:  MACHINE-PLACED at JLC          LOCKED (D-206/D-207)
 FBV2_COMM_CONTACTS:      24 active (2 x 12)            LOCKED (D-081)
 FBV2_COMM_PITCH_MM:      2.54                          LOCKED (D-083)
 FBV2_COMM_CONNECTOR:     Samtec BCS-112-S-D-HE (female)  LOCKED (D-093)
@@ -569,7 +619,11 @@ FBV2_COMM_BODY_MM:       30.48 x 8.13 x 5.33           LOCKED (D-093)
 FBV2_COMM_FOOTPRINT:     2x12 PTH, 2.54 in-row, 7.87 row-to-row, 0.71 drill   LOCKED (D-093)
 FBV2_COMM_KEYING:        enclosure recess + upper rib  LOCKED (D-097)
 FBV2_Z_CONNECTOR_COLUMN: 19.53 of 23.0 (3.47 spare)    TARGET (M-09)
-FBV2_NFC_ZONE_MM:        45 x 45           TARGET
+FBV2_NFC_ZONE_MM:        48 x 48           LOCKED (D-127/D-128/D-131)
+FBV2_SMA_IR_CENTRE_MM:   15.0 min c-c      LOCKED (FBV2-MECH-001, restated M-13)
+FBV2_SMA_IR_EDGE_MM:      8.0 min edge     LOCKED (D-120, restated M-13)
+FBV2_SPEAKER_Z_COLUMN:   12.6 of 23.0 (10.4 spare)   TARGET
+FBV2_MANUAL_ASSY_REFS:   J5, D1            LOCKED (D-206/D-207)
 FBV2_Z_VERDICT:          PASS (19.5 of 23.0 on the governing column)
 FBV2_PCB_FIT_STATUS:     RE-FLOORPLAN REQUIRED (Beta-DM 74x155 does not fit)
 ```

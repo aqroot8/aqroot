@@ -51,6 +51,8 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 | **E07-400M10S** | `U7` | **B** | Ebyte product description confirms the module ships with **both IPEX and stamp-hole** antenna interfaces |
 | **095-902-568-150** | off-board | **E** | Amphenol RF product page 2026-08-23: **Part Status ACTIVE** — AMC R/A plug → **SMA straight bulkhead jack, IP67**, RG-178, 50 Ω, **150 mm**, 6 GHz max |
 | **FXP450.07.0100C** | off-board | **E** | Taoglas SPE-23-8-180-A; **410–470 MHz**, **I-PEX MHF1 (U.FL)**, 100 mm; stocked at DigiKey 21704215, Arrow, TTI |
+| **0466005.NRHF** | `F1` | **B** | LCSC **C57525** 2026-08-23 via the JLCPCB parts API: **29,328 in stock**, JLC **Extended**, 1206, **5 A, 32 VAC / 32 VDC, 50 A interrupting**, fast acting. **Halogen-free ordering option of the same Littelfuse 466 / Nano2 family as the `0466005.NR` it replaces — identical LCSC parametric string, identical footprint. ADOPTED, D-210** |
+| **BAT54WS-7-F** | `D10`–`D12` | **B** | LCSC **C124205** 2026-08-23 via the JLCPCB parts API: **46,819 in stock**, JLC **Extended**, **SOD-323**, **1 Independent**, **30 V**, **100 mA** continuous, **600 mA** surge, **V_F 1 V max @ 100 mA**, **I_R 2 µA @ 25 V**. **ADOPTED, D-211** — and see the correction below |
 | **FXC.46.52.0075X.B.dg** | off-board | **E** | Taoglas SPE-24-8-104-B; **B variant locked** — adhesive / flex / ferrite, for bonding **inside** the shell (D-131) |
 
 ---
@@ -64,8 +66,8 @@ each needs an LCSC code or an explicit external-purchase decision.**
 `ESP32-S3-WROOM-1-N16R8` · `PCAL9535APW,118` (×3) · `BQ25185DLHR` · `TPS63020DSJR` ·
 `TPS61023DRLR` (×2) · `MAX17048G+T10` · `LTC4368IDD-1#PBF` · `TLV7032DDFR` · `TPS61169DCKR` ·
 `MAX98357AETE+T` · `BMI270` · `USBLC6-2SC6` · `TPD4E1B06DRLR` (×4) · `NTMD4820NR2G` (×2) ·
-`AO3400A` · `AO3401A` · `2N7002` · `BSS138LT1G` (×5) · `PMEG2010AEH,115` · `BAT54WS,115` (×3) ·
-`NSR0240HT1G` · `TSAL6100` · `0466005.NR` · `USB4105-GF-A-120` · `B2B-PH-K-S(LF)(SN)` ·
+`AO3400A` · `AO3401A` · `2N7002` · `BSS138LT1G` (×5) · `PMEG2010AEH,115` ·
+`NSR0240HT1G` · `TSAL6100` · `USB4105-GF-A-120` · `B2B-PH-K-S(LF)(SN)` ·
 `B2B-PH-K-S` · `BM02B-ACHSS-GAN-ETF` · `JS102011SAQN` · `DMM-4026-B-I2S-R` ·
 `AS02008MR-LW152-R` · `FH69-50S-0.5SH` · `XFL4020-472MEC` · `GRM188R61E106KA73D`
 
@@ -83,6 +85,26 @@ as a selection:
 
 Both are jellybeans with many pin-compatible second sources in the same package, so substitution
 is a purchasing decision rather than a design change.
+
+---
+
+## 4.1 SUBSTITUTIONS ADOPTED AT FBV2-MECH-002 (2026-08-23)
+
+**Two, and only two. Both CTO-approved, both verified live under D-096, both electrically verified.**
+
+| ref | was | now | LCSC | why it is not a design change |
+|---|---|---|---|---|
+| `F1` | Littelfuse `0466005.NR` (`C187597`, **stock 0**) | **Littelfuse `0466005.NRHF`** | **`C57525`** (29,328) | Same **466 / Nano2** family, **5 A**, **32 VAC / 32 VDC**, **50 A interrupting**, **fast acting**, **1206**. The `HF` suffix is the manufacturer's **halogen-free ordering option**. Same footprint, same electrical function, **connectivity untouched**. D-210 |
+| `D10`–`D12` | Nexperia `BAT54WS,115` (not in the JLC library) | **Diodes Incorporated `BAT54WS-7-F`** | **`C124205`** (46,819) | **One independent Schottky, 30 V, 100 mA continuous, 600 mA surge, SOD-323** — which is **the topology AQROOT actually uses**. Verified against the `D10`/`D11` ratiometric bridge (≈ 1.1 µA per leg, absolute V_F cancels, only ΔV_F survives) and the `D12` dead-cell recovery branch (16.6 mA worst case against 100 mA, **6× margin**; D-105's 5–10 mA band unchanged). D-211 |
+
+> **CORRECTION carried into this ledger — `BAT54WS` IS NOT A SERIES PAIR.** Programme documents
+> stated this from FBV2-S2-002 onward. **SOD-323 is a two-terminal package**; every `BAT54WS` in the
+> LCSC library, from eight manufacturers, is catalogued **"1 Independent"**; and `D10`/`D11`/`D12`
+> are each **one** two-pin `Device:D_Schottky` on a two-pad footprint. **`D10` and `D11` form the
+> ratiometric matched-function pair as TWO SEPARATE COMPONENTS.** The **real** rejection criterion for
+> any alternate is: single independent diode · SOD-323 land · adequate V_F / leakage / current ·
+> matched type for `D10`/`D11` · live sourcing. **Nexperia `BAT54W,115` (`C8657`) stays rejected —
+> because it is SOT-323 (SC-70), a FOOTPRINT mismatch, not because of diode count.**
 
 ---
 

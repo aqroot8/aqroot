@@ -86,8 +86,8 @@ decoupling in DS12484; none is optional.
 | Microphone `MK1` | **FIT** |
 | IR TX + RX | **FIT** (all eight parts, corrected at FBV2-S1-007); `R123` **DNP** trim |
 | Radios `U7`, `U8` | **FIT**; antennas **OFF-BOARD** |
-| Dead-cell recovery | **FIT** — `U19`, `Q5`, `D8`, `D10`–`D12`, dividers; `R93` **DNP** hysteresis |
-| Reverse-polarity path | **FIT** — `U18` LTC4368-1, `Q2`, `Q3`, `R75`, `F1` |
+| Dead-cell recovery | **FIT** — `U19`, `Q5`, `D8`, **`D10`–`D12` = Diodes Inc `BAT54WS-7-F` (`C124205`), each ONE independent SOD-323 Schottky (D-211)**, dividers; `R93` **DNP** hysteresis |
+| Reverse-polarity path | **FIT** — `U18` LTC4368-1, `Q2`, `Q3`, `R75`, **`F1` = Littelfuse `0466005.NRHF` (`C57525`), 5 A 32 V 1206 fast-acting (D-210)** |
 | Accessory 3.3 V rail | **FIT** — `U20` + `R97` 1.5 kΩ + `R98` 100 kΩ down |
 | Accessory 5 V rail | **FIT** — `U21` + `L4` + `C64`–`C66` + `U22` + `R101` 1.65 kΩ + `R102`/`R131` 100 kΩ down |
 | `U16` TCA4307 | **FIT** — corrected at FBV2-S1-009 (was DNP as a TCA9517A) |

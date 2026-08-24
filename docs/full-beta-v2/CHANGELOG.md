@@ -1,3 +1,122 @@
+## 2026-08-23 — pre-floorplan authority reconciliation, and a part that was never a series pair (FBV2-MECH-002)
+
+**NO PROGRESS EARNED. Overall stays 68%. FBV2-S2 = PASS is unchanged.** This is a reconciliation
+and sign-off task, not a design phase. Full analysis:
+[`audits/2026-08-23-pre-floorplan-authority-reconciliation.md`](audits/2026-08-23-pre-floorplan-authority-reconciliation.md).
+New working document:
+[`mechanical/P1_FLOORPLAN_INPUTS.md`](mechanical/P1_FLOORPLAN_INPUTS.md).
+
+**ERC 27 / 0 errors / 27 — histogram identical. Netlist 224 nets / 991 nodes — IDENTICAL. The
+schematic diff is PROPERTY-ONLY. The PCB is byte-identical and still bit-identical to Beta-DM.**
+
+### `BAT54WS` is not a series pair, and this programme said it was six times
+
+FBV2-S2-002 wrote a reasonable-sounding inference into the record: `BAT54S` *is* a series pair, so
+`BAT54WS` "must be the SOD-323 version of it". **The `S` in `BAT54WS` is a package code, not a
+topology code**, and the claim then propagated into the assembly plan §5 and §8, this changelog,
+the progress log, **D-206**, and **the `D10`/`D11`/`D12` symbols themselves**. Each copy cited the
+others.
+
+**Three independent proofs that it is wrong:**
+
+- **SOD-323 is a two-terminal package.** A series pair needs three terminals.
+- **Every `BAT54WS` in the LCSC library, from eight manufacturers, is catalogued `1 Independent`** —
+  Diodes Inc, Changjing, Starsea, Hottech, PANJIT, AnBon. There is no series-pair `BAT54WS` in the
+  library to substitute *for*.
+- **AQROOT never used a pair.** `D10`, `D11` and `D12` are each one two-pin `Device:D_Schottky` on a
+  two-pad `Diode_SMD:D_SOD-323`, and `D10`/`D11` form the ratiometric bridge as **two separate
+  matched components**.
+
+**The design was never wrong.** That is exactly why nothing caught it — **the error lived only
+where nothing is validated by a tool.** The check that resolves it in one step is the one this task
+ran: read the distributor's own parametric field.
+
+Nexperia `BAT54W,115` stays rejected, **for the right reason**: it is **SOT-323 (SC-70)**, a
+**footprint** mismatch against `Diode_SMD:D_SOD-323`, and it has 5 in stock against a need of 15.
+
+### Two substitutions signed off, and the consignment list got shorter
+
+| ref | now | LCSC | live state | route |
+|---|---|---|---|---|
+| `F1` | **Littelfuse `0466005.NRHF`** | **`C57525`** | **29,328** in stock, JLC **Extended** | class C → **class B, machine-placed** |
+| `D10`–`D12` | **Diodes Inc `BAT54WS-7-F`** | **`C124205`** | **46,819** in stock, JLC **Extended** | class D → **class B, machine-placed** |
+
+`F1` is the **halogen-free ordering option of the same Littelfuse 466 / Nano2 family** — and the two
+LCSC records carry a **character-for-character identical parametric string**, so the distributor's
+own data does not distinguish them electrically at all. Same footprint, same function, **not one
+net, pin, wire, label or junction touched**.
+
+**The `D10`/`D11` bridge is structurally insensitive to the parameter that changed.**
+`INA+ − INA− = (BAT_RAW + V_F11 − V_F10) / 2` — the absolute Schottky drop **cancels**, and only the
+mismatch survives. Each leg runs **≈ 1.1 µA** through 4.4 MΩ, six orders of magnitude below the
+100 mA rating, and matching **improves** because both diodes now come from one MPN on one order
+line. `D12` carries **≈ 16.6 mA worst case against 100 mA continuous — 6×** — and re-solving D-105
+with this part's V_F gives **7.9–8.9 mA, still inside the accepted 5–10 mA band, so D-105 needs no
+revision.**
+
+**Consignment: 11 → 9 part numbers. Class D is now EMPTY. Hand-soldered parts per board: still
+exactly two, `J5` and `D1`.**
+
+### The mechanical spec disagreed with itself in six places
+
+`MECHANICAL_INTERFACE_SPEC.md` is the authority for FBV2-P1, so a stale row in it is a defect that
+propagates into a floorplan.
+
+- **NFC zone 45 × 45 → 48 × 48 mm, LOCKED.** The 48 mm figure was ruled at FBV2-S1-004B and already
+  sat in this document's own NFC banner. **Four places had never been updated — including the
+  machine-readable block a guard script parses.**
+- **`J1` land pattern.** Every current claim that `J1` uses the **FH12/FH52E standard land pattern**,
+  that **FH52E is a drop-in second source**, or that **mating equivalence was proven**, is removed.
+  Current truth: **FH69 dedicated footprint · FH52E not drop-in · single-source connector
+  architecture · the genuine Hirose is JLC machine-placeable · re-check stock before ordering.**
+- **`J1` is not manual assembly.** M-13 and the header both said it was; D-206/D-207 superseded that
+  the same day. **Exactly two parts are manual per board.**
+- **Speaker Z column 4.0 → 3.0 mm**, total **13.6 → 12.6 mm**. D-148 locked Ø20 × 3.0 and stated it
+  released 1 mm of Z — and the derived column in the same document still summed 4.0.
+- **§4.1 content list.** "changes the connector from **26 to 20 pins**" → **24 contacts, 2 × 12 at
+  2.54 mm**; "removes HOME **and the RGB nets**" → a **front RGB status light `D13` was added**.
+- **IR receiver naming** now puts the locked `TSOP38238` first and `TSOP38438` in parentheses.
+
+### The 8 mm / 15 mm spacing was not a contradiction — and it was not resolved by preference
+
+Both figures were in the document and it would have been easy to strike one. **The trace says
+neither is stale.** The **≥15 mm** rule is FBV2-MECH-001, 2026-08-22, **centre-to-centre**, written
+against a generic whip shadowing the emitter cone. The **≥8 mm** rule is **D-120**, 2026-08-23,
+**edge-to-edge, SMA body to IR aperture**. **M-13 — the latest ruling to touch this, written after
+D-120 and with the Amphenol bulkhead already chosen — states both in the same sentence.** So 15 mm
+was **re-asserted**, not superseded.
+
+**The actual defect was that neither figure said what it was measured between.** Both now carry an
+explicit datum in a new **§8.1 authority trace**, with the consistency check written out: on a
+~9.5–11 mm SMA hex body and a ~Ø5.5–6.0 mm aperture, **8 mm edge-to-edge implies ≈ 15.5–16.5 mm
+centre-to-centre**, so the two agree and **8 mm is the binding one — satisfy whichever is larger.**
+The Amphenol body OD is **CAD-TO-VERIFY**; **B-52 stays open and no CAD was created.**
+
+### Six things P1 cannot floorplan around, surfaced not decided
+
+The sharpest two are arithmetic, not opinion.
+
+**The rear face is over-constrained by ≈ 8 mm.** It must hold, in Y: battery **75** + NFC clear zone
+**48** + speaker **Ø20** + the **≥20 mm** speaker-to-loop separation = **163 mm against a 155 mm
+cavity**. Putting the speaker beside the battery does not rescue it — a 60 mm battery in a 75.0 mm
+cavity leaves **7.5 mm per side** against a Ø20 driver. And that is *before* the 5 mm NFC metal
+keepout, the shell lip and the bosses. **All four constraints are currently recorded as binding;
+one of them has to give.**
+
+**The internal antenna storage channel cannot hold the locked 915 antenna.** §8 reserves a left-wall
+channel *"sized for the stowed whip"*. The locked whip is Taoglas **`TI.92.2113`, 198 ± 3.3 mm ×
+Ø13 mm**; the cavity's longest internal diagonal is **≈ 172 mm**. **It does not fit in any
+orientation** — and that same left wall is the **LOCKED** mount region for the 433 MHz flex.
+Withdrawing the storage requirement would free the entire left wall, which is the largest single
+simplification available before floorplanning.
+
+Also raised: the **microphone board-face assignment** (front aperture + bottom-port part = `MK1`
+must sit on the copper face away from the front shell, and that side has never been assigned); the
+**mid-span boss at Y ≈ 100** now inside the grown NFC keepout; the **microSD ↔ USB-C "≥8 mm
+centre-to-centre"** figure, which is smaller than the two bodies physically allow (~11.6 mm before
+they touch); and the **150 mm 915 pigtail** in a 155 mm cavity. **No substitution is proposed for
+the pigtail — D-195 locked that MPN.**
+
 ## 2026-08-23 — S2 release closeout: the footprint that wasn't broken, and six wrong parts (FBV2-S2-002)
 
 **Overall raised 62% → 68%. FBV2-S2 = PASS** — the second of the twelve gates to pass. Full
@@ -54,7 +173,7 @@ enclosure aperture belongs on the **bottom** face — recorded as **M-14**.
 All 46 MPNs were checked against **live JLCPCB parts-API state**. A loose keyword search **returns
 a plausible wrong part more often than it returns nothing**:
 
-- **`BAT54W,115` offered for `BAT54WS,115`** — a **single diode** for a **series pair**
+- **`BAT54W,115` offered for `BAT54WS,115`** — ~~a **single diode** for a **series pair**~~ ***CORRECTED 2026-08-23 by D-211: `BAT54WS` IS NOT A SERIES PAIR.* SOD-323 is a two-terminal package and `D10`–`D12` are each ONE independent diode; `BAT54W,115` is wrong because it is SOT-323 (SC-70) — a FOOTPRINT mismatch.**
 - **G-Switch `GT-TC089A-H043-L1`** for **C&K `PTS645SM43SMTR92LFS`** — 35 placements
 - **FUXINSEMI `SD103AWS`** for **onsemi `NSR0240HT1G`**
 - **LRC `LBSS138LT1G`** for **onsemi `BSS138LT1G`**, which has 762,522 in stock
