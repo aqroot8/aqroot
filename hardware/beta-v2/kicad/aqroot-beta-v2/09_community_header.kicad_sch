@@ -2319,6 +2319,28 @@
 				)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Samtec BCS-112-S-D-HE is LCSC C5575816 with STOCK 0 at $15.54. It is a 24-contact through-hole strip and was already MANUAL/SECONDARY ASSEMBLY by CTO ruling at FBV2-S1-009; buy direct from Samtec or a broadline distributor. The connector architecture is NOT compromised for SMT assembly. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 120.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5575816"
+			(at 120.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Samtec"
 			(at 0 0 0)
 			(hide yes)
@@ -6801,6 +6823,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C8545"
+			(at 279.4 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "onsemi"
 			(at 0 0 0)
 			(hide yes)
@@ -8111,6 +8144,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C1972953"
+			(at 355.6 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 0 0 0)
 			(hide yes)
@@ -8400,6 +8444,17 @@
 			)
 		)
 		(property "Description" "TI TPD4E1B06 4-channel ultra-low-leakage bidirectional ESD array, SOT-563"
+			(at 355.6 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1972953"
 			(at 355.6 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -8709,6 +8764,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C1972953"
+			(at 355.6 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 0 0 0)
 			(hide yes)
@@ -8998,6 +9064,17 @@
 			)
 		)
 		(property "Description" "TI TPD4E1B06 4-channel ultra-low-leakage bidirectional ESD array, SOT-563"
+			(at 355.6 266.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1972953"
 			(at 355.6 266.7 0)
 			(hide yes)
 			(show_name no)

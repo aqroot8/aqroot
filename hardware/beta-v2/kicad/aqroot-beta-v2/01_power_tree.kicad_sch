@@ -10745,6 +10745,28 @@
 				)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). B2B-PH-K-S(LF)(SN) = LCSC C131337, stock 378913. J6 was normalised to this same string. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 252.73 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C131337"
+			(at 252.73 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "JST"
 			(at 252.73 132.08 0)
 			(hide yes)
@@ -11079,6 +11101,17 @@
 			)
 		)
 		(property "Description" "3 uA 1-cell Li+/Li-Po fuel gauge with ModelGauge algorithm; reports state-of-charge and cell voltage with no sense resistor, programmable low-SOC alert; I2C 7-bit slave address 0x36 (0x6C write / 0x6D read); 8-pin TDFN-EP (G package)"
+			(at 115.57 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2682616"
 			(at 115.57 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -11430,6 +11463,28 @@
 			)
 		)
 		(property "Description" "Inductor"
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
+			(at 133.35 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5542269"
 			(at 133.35 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -12075,6 +12130,17 @@
 			)
 		)
 		(property "Description" "Very low capacitance ESD protection diode, 2 data-line, SOT-23-6"
+			(at 146.05 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7519"
 			(at 146.05 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -12986,6 +13052,17 @@
 				)
 			)
 		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
+			(at 63.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "7aa22307-bc20-437f-973f-88f64de46150")
 		)
@@ -13212,6 +13289,17 @@
 			)
 		)
 		(property "Description" "High-efficiency single-inductor buck-boost converter with 4A switches; 1.8-5.5V input, adjustable 1.2-5.5V output, 2.4MHz fixed frequency, power-save mode and power-good; 14-pin VSON (DSJ) with exposed thermal pad"
+			(at 248.92 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C15483"
 			(at 248.92 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -13904,6 +13992,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C3033018"
+			(at 248.92 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "d3431dd8-b04e-4e91-9975-014a8e0e4401")
 		)
@@ -14068,6 +14167,28 @@
 				)
 			)
 		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
+			(at 133.35 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C919459"
+			(at 133.35 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 133.35 171.45 0)
 			(hide yes)
@@ -14183,6 +14304,17 @@
 			)
 		)
 		(property "Description" "1-cell 1A standalone linear Li-ion/LiPo battery charger with power path, factory mode and battery-tracking VINDPM; 10-pin WSON (DLH) with exposed thermal pad"
+			(at 53.34 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C19725033"
 			(at 53.34 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -14667,6 +14799,17 @@
 				)
 			)
 		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
+			(at 142.24 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f7b53642-727b-4a02-9489-f32b0caed310")
 		)
@@ -14818,6 +14961,17 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 151.13 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
 			(at 151.13 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -15734,6 +15888,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C221660"
+			(at 190.5 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "2328907b-55ed-4f9d-91c5-c1c60c1af463")
 		)
@@ -15819,6 +15984,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C344022"
+			(at 266.7 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "e1cb6304-0b02-4131-8f8c-e2e8761f3d25")
 		)
@@ -15891,6 +16067,17 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 156.21 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C344022"
 			(at 156.21 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -16075,6 +16262,17 @@
 			)
 		)
 		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
+			(at 30.48 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5184243"
 			(at 30.48 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -16799,6 +16997,17 @@
 				)
 			)
 		)
+		(property "Note2" "DNP BY DESIGN AND CORRECTLY SO - documented 2026-08-23 (FBV2-S2-002). This part belongs to the NFC 5 V BOOST BRANCH: U13 TPS61023 + L2 1 uH + R44/R45 feedback divider + C34/C35 output, producing NFC_5V_PA_PENDING from BQ25185_SYS. The whole branch is DNP on the first build because D-055/D-056 select NFC_SUPPLY = +3V3 through R106 (FITTED), and R107 (DNP) is the mutually exclusive link that would select the 5 V branch instead. THE BRANCH IS PRESERVED, NOT ABANDONED: if bench measurement shows the 3.3 V field is short, fitting these six parts plus R107 and lifting R106 moves the PA to 5 V with no respin (D-049). NEVER FIT R106 AND R107 TOGETHER. Checked against the netlist at FBV2-S2-002; verified NOT to be an inherited Beta-DM oversight."
+			(at 151.13 184.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "7374ef87-8739-48b1-a776-1024685cf24e")
 		)
@@ -17089,6 +17298,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Littelfuse 0466005.NR is LCSC C187597 with STOCK 0. The halogen-free 0466005.NRHF (C57525) has 29338 in stock and is the same 0466 5 A 1206 Nano2 fuse family, but it is a DIFFERENT ORDER CODE and is recorded as a CANDIDATE, not a substitution. Consign the .NR from a broadline distributor unless the .NRHF is signed off. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 36.29 252.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C187597"
+			(at 36.29 252.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Littelfuse"
@@ -17803,6 +18034,17 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "LCSC" "C110921"
+			(at 134.08 252.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name only, which D-096 does not accept as a selection. PMEG2010AEH,115 is the Nexperia SOD-123F 1 A / 20 V low-VF Schottky. CONFIRM THE LIVE LISTING AT BOM LOCK."
@@ -19497,6 +19739,28 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. onsemi NTMD4820NR2G is LCSC C905372 with STOCK 0. A VBsemi clone (C7525084) exists - DO NOT USE IT: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. Consign the onsemi part. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 61.69 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C905372"
+			(at 61.69 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "onsemi"
 			(at 61.69 290.62 0)
 			(hide yes)
@@ -19803,6 +20067,28 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. onsemi NTMD4820NR2G is LCSC C905372 with STOCK 0. A VBsemi clone (C7525084) exists - DO NOT USE IT: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. Consign the onsemi part. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 131.54 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C905372"
+			(at 131.54 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "onsemi"
 			(at 131.54 290.62 0)
 			(hide yes)
@@ -20107,6 +20393,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. LTC4368IDD-1#PBF is LCSC C688397 with STOCK 4 against a need of 5. Consign from a broadline distributor; MSOP-10 at 0.5 mm pitch stays machine-placed. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 216.63 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C688397"
+			(at 216.63 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Analog Devices"
@@ -20611,6 +20919,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi BSS138LT1G is LCSC C82045, stock 762522. A loose search returns LRC LBSS138LT1G (C8490) instead - a different manufacturer. The genuine part is abundant, so there is no reason to accept the substitute. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 277.59 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C82045"
+			(at 277.59 292.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
@@ -21491,6 +21821,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). TLV7032DDFR is LCSC C2871498 with STOCK 0, and the in-stock TLV7032DSGR (C3658407, 218) is a WSON-8, not the SOT-23-8 this footprint is built for - it is NOT a drop-in. Consign the DDF part. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 92.17 356.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2871498"
+			(at 92.17 356.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Texas Instruments"
@@ -24122,6 +24474,17 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 41.37 337.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Nexperia"
 			(at 41.37 336.34 0)
 			(hide yes)
@@ -24272,6 +24635,17 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 41.37 351.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Nexperia"
 			(at 41.37 350.31 0)
 			(hide yes)
@@ -24420,6 +24794,17 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). NEXPERIA BAT54WS,115 IS NOT IN THE LCSC/JLC LIBRARY AT ALL. A loose search for \"BAT54WS,115\" returns Nexperia BAT54W,115 (C8657) - that is the SINGLE diode, not the SERIES PAIR, and it must not be substituted. Two correct routes: buy the Nexperia part from a broadline distributor and consign it, or use the documented equivalent Diodes Incorporated BAT54WS-7-F, LCSC C124205, stock 46819 - same SOD-323 series-pair Schottky. THE EQUIVALENT IS DOCUMENTED, NOT ADOPTED: it needs a one-line sign-off before the order. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 41.37 384.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Nexperia"
@@ -24582,6 +24967,17 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "LCSC" "C15127"
+			(at 242.03 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Alpha & Omega"
@@ -24792,6 +25188,28 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi BSS138LT1G is LCSC C82045, stock 762522. A loose search returns LRC LBSS138LT1G (C8490) instead - a different manufacturer. The genuine part is abundant, so there is no reason to accept the substitute. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 291.56 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C82045"
+			(at 291.56 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 291.56 375.71 0)
 			(hide yes)
@@ -24976,6 +25394,28 @@
 				(justify left)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi BSS138LT1G is LCSC C82045, stock 762522. A loose search returns LRC LBSS138LT1G (C8490) instead - a different manufacturer. The genuine part is abundant, so there is no reason to accept the substitute. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 332.2 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C82045"
+			(at 332.2 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
 			(at 332.2 375.71 0)
 			(hide yes)
@@ -25158,6 +25598,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi BSS138LT1G is LCSC C82045, stock 762522. A loose search returns LRC LBSS138LT1G (C8490) instead - a different manufacturer. The genuine part is abundant, so there is no reason to accept the substitute. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 371.57 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C82045"
+			(at 371.57 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
@@ -25412,6 +25874,28 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi BSS138LT1G is LCSC C82045, stock 762522. A loose search returns LRC LBSS138LT1G (C8490) instead - a different manufacturer. The genuine part is abundant, so there is no reason to accept the substitute. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 412.21 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C82045"
+			(at 412.21 377.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Note" "FBV2-S2-001: exact order code added - the schematic previously carried the generic type name 'BSS138' only, which D-096 does not accept as a selection. BSS138LT1G is the onsemi SOT-23 50 V / 220 mA logic-level N-channel MOSFET. It is a jellybean with many pin-compatible second sources in the same package, so substitution is a purchasing decision rather than a design change. CONFIRM THE LIVE LISTING AT BOM LOCK."
@@ -26088,6 +26572,17 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "LCSC" "C7587833"
+			(at 361.41 254.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Manufacturer" "Texas Instruments"
@@ -27868,6 +28363,17 @@
 				(justify left)
 			)
 		)
+		(property "LCSC" "C919459"
+			(at 361.41 312.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 361.41 310.94 0)
 			(hide yes)
@@ -28196,6 +28702,17 @@
 				(justify left)
 			)
 		)
+		(property "LCSC" "C7587833"
+			(at 432.53 312.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 432.53 310.94 0)
 			(hide yes)
@@ -28512,7 +29029,29 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "Wurth"
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Wurth 74438357010 is LCSC C5542269 with STOCK 0. Consign from a broadline distributor; see L2. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 482.06 312.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5542269"
+			(at 482.06 312.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Wurth Elektronik"
 			(at 482.06 310.94 0)
 			(hide yes)
 			(show_name no)

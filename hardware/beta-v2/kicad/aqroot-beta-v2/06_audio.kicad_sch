@@ -1883,6 +1883,28 @@
 				)
 			)
 		)
+		(property "Note2" "B-03 FOOTPRINT VERIFIED TIER 1 2026-08-23 (FBV2-S2-002). Both cited Maxim documents were retrieved and read. Package outline 21-0136 gives 16L TQFN 3x3, e = 0.50 BSC, b = 0.20/0.25/0.30, L = 0.30/0.40/0.50, and lists EXPOSED PAD VARIATIONS in which T1633-5 is 1.50/1.60/1.70 while T1633-2/-4/-7C are 0.95/1.10/1.25. THAT LOOKED LIKE A CONTRADICTION with a 1.23 mm land and it is not: Maxim land pattern 90-0032 Rev E, titled \"PACKAGE LAND PATTERN, [T1633] 16L TQFN, 3X3 MM\", is issued for PKG CODES [T1633-5], [T1633-5C] AND [T1633-7C] together and specifies ONE land for all three - EP 1.23 x 1.23, perimeter pads 0.80 x 0.30, pitch 0.50, pad centreline span 2.85, IPC-7351A, tolerance +/-0.02. So the land question does not depend on which EP variant the MAX98357AETE+T carries. Numerical comparison with Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm: EP 1.23 x 1.23 EXACT; pitch 0.50 EXACT; pad INNER edge 1.025 EXACT (so EP-to-signal clearance is Maxim s own 0.410 mm); pad centre 1.4375 vs 1.425 (+0.0125, inside the drawing tolerance); pad length 0.825 vs 0.80 (+0.025 toe); pad WIDTH 0.25 vs 0.30 (-0.05, zero side fillet, but a 0.25 mm pad gap and a safer mask dam at 0.5 mm pitch). NO PROJECT-LOCAL FOOTPRINT IS NEEDED - the two deviations are <= 0.05 mm, IPC-7351B compliant, and both are on the safe side for a first build. EP paste is four 0.5 x 0.5 apertures = 66% coverage, which is correct QFN practice."
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C910544"
+			(at 219.71 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Analog Devices (Maxim)"
 			(at 219.71 80.01 0)
 			(hide yes)
@@ -3237,6 +3259,28 @@
 				)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). J4 and J6 are the same JST PH 2-pin header but carried two different MPN strings - J4 the (LF)(SN) plating suffix, J6 the bare code. That was not cosmetic: the bare code is LCSC C20504437 with STOCK 0 while B2B-PH-K-S(LF)(SN) is C131337 with 378913 in stock. Both are now the stocked string. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C131337"
+			(at 241.3 110.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "JST"
 			(at 241.3 110.49 0)
 			(hide yes)
@@ -3248,7 +3292,7 @@
 				)
 			)
 		)
-		(property "MPN" "B2B-PH-K-S"
+		(property "MPN" "B2B-PH-K-S(LF)(SN)"
 			(at 241.3 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -3396,6 +3440,28 @@
 			)
 		)
 		(property "Description" "PUI Audio bottom-port MEMS I2S microphone, 7-pad, 4.0 x 3.0 x 1.0 mm"
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). PUI Audio DMM-4026-B-I2S-R is in the LCSC catalogue as C3171792 but STOCK IS 0. Buy from Digi-Key/Mouser and consign - a 7-pad bottom-port MEMS microphone is not a hand-placement candidate. B-63 CLOSED at the same time: see the footprint file, which now carries the acoustic port, the paste pullback and the keepout. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 116.84 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3171792"
 			(at 116.84 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -4494,6 +4560,17 @@
 			)
 		)
 		(property "Description" "Off-board 20 mm 8 ohm voice-band speaker, 152 mm AWG 32 leads"
+			(at 247.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3311653"
 			(at 247.65 140.97 0)
 			(hide yes)
 			(show_name no)

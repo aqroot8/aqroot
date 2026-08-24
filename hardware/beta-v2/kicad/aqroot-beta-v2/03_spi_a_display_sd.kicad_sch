@@ -6746,6 +6746,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C71045"
+			(at 215.9 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Texas Instruments"
 			(at 215.9 146.05 0)
 			(hide yes)
@@ -7215,6 +7226,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C5156236"
+			(at 196.85 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Coilcraft"
 			(at 196.85 128.27 0)
 			(hide yes)
@@ -7409,6 +7431,28 @@
 		(property "Description" "Schottky barrier diode, 40V"
 			(at 247.65 135.89 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine onsemi NSR0240HT1G is LCSC C152519 but STOCK IS 7 against a need of 5 for the first five. A loose keyword search returns FUXINSEMI SD103AWS (C915626) instead - THAT IS A DIFFERENT PART AND MUST NOT BE ORDERED IN ITS PLACE. Buy from a broadline distributor and consign if LCSC stock has moved. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 247.65 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C152519"
+			(at 247.65 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9358,6 +9402,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 151.13 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "DNP BY DESIGN - documented 2026-08-23 (FBV2-S2-002). R112 is a 0 R link between the display module SDO (/03_SPI_A_DISPLAY_SD/DISP_SDO) and the shared /SPI_A_MISO bus. It is DNP so the display CANNOT drive the bus the microSD card also reads on; the display is written to, never read from, on the first build. Fitting it is a no-respin provision under D-049 for panel register read-back during bring-up, and it MUST NOT be fitted while MX-8 (microSD and display never transact simultaneously on SPI-A) is relied on for bus integrity. It had no note at all before FBV2-S2-002."
 			(at 151.13 135.89 0)
 			(hide yes)
 			(show_name no)

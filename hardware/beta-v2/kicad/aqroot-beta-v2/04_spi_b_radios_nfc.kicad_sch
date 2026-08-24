@@ -6548,6 +6548,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C2965513"
+			(at 87.63 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Ebyte (Chengdu Ebyte Electronic Technology)"
 			(at 87.63 57.15 0)
 			(hide yes)
@@ -7512,6 +7523,17 @@
 		(property "Description" "ST25R3916 high performance NFC universal device and EMVCo reader, UFQFPN-32"
 			(at 91.44 143.51 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). ST25R3916-AQET is LCSC C5267441 with STOCK 6 against a need of 5 - one spare, and this is a UFQFPN-32 5x5 with an exposed pad, i.e. the single part on this board that genuinely cannot be hand-placed. Buy spares from a broadline distributor and consign. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 91.44 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10909,7 +10931,7 @@
 				)
 			)
 		)
-		(property "Note" "CANDIDATE against a live LCSC listing, not a lock (D-096). 27.12 MHz, 10 pF load, +/-10 ppm, ESR 30 R, -40..+85 C"
+		(property "Note" "LOCKED 2026-08-23 (FBV2-S2-002). Yajingxin TXM27.12M0004322DBBDO00T, LCSC C362365, stock 3421 live on 2026-08-23. Manufacturer data sheet read: SMD3225-4P, 27.120000 MHz fundamental, CL 10 pF, ESR 30 R max, drive level 100 uW max, frequency tolerance +/-10 ppm at 25 C, stability +/-20 ppm over -40..+85 C, aging +/-5 ppm/year, Co 0..5 pF. Total +/-30 ppm is far inside the ISO/IEC 14443 carrier requirement (+/-7 kHz = +/-516 ppm at 13.56 MHz). B-03 FOOTPRINT VERIFIED TIER 1: the data sheet SUGGESTED LAYOUT gives 1.4 x 1.2 mm pads with a 0.8 mm column gap and a 0.5 mm row gap, i.e. centres at (+/-1.10, +/-0.85). Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm is 1.4 x 1.2 at (+/-1.10, +/-0.85) - EXACT MATCH. Package 3.20 +/-0.1 x 2.50 +/-0.1 x 0.70 +/-0.1; pins 1/3 are the crystal, 2/4 are GND."
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -11445,6 +11467,50 @@
 			)
 		)
 		(property "Description" ""
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "B-70 CLOSED 2026-08-23 (FBV2-S2-002). Murata LQW18AN39NG80D, 0603/1608 wire-wound ceramic, 39 nH +/-2% (G), Rdc 0.20 R max, SRF 3000 MHz min, Q 37 min, Irated 1 A. CHECKED AGAINST D-134, NOT LOCKED FROM HEADLINE SPECS: (1) SRF 3000 MHz is 74x the 40.68 MHz third harmonic and 149x the 20.1 MHz EMC corner, so the part is a pure inductor across the whole band of interest; (2) X_L = 3.32 R at 13.56 MHz, which is the reactance D-134 already solved the match against; (3) DCR IS NOT NEGLIGIBLE HERE - 0.20 R max sits in series with R_q = 1.1 R, so worst-case arm resistance is 1.30 R and the network Q falls from 25.3 to about 21.4, roughly -15%. That moves FURTHER INTO the safe, under-driven side D-134 deliberately chose, so it is not a stress condition, but the antenna MUST be tuned on the bench with this exact part fitted. If field strength is short at first article the first lever is R_q 1.1 R -> 0.9 R, NOT a change to 39 nH (D-134 forbids moving L without re-running the whole matching calculation); (4) coil current about 187 mA worst case against a 1 A rating, >5x margin. LCSC C2042966, stock 270 on 2026-08-23. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "LQW18AN39NG80D"
+			(at 308.61 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2042966"
 			(at 308.61 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -12210,6 +12276,50 @@
 			)
 		)
 		(property "Description" ""
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "B-70 CLOSED 2026-08-23 (FBV2-S2-002). Murata LQW18AN39NG80D, 0603/1608 wire-wound ceramic, 39 nH +/-2% (G), Rdc 0.20 R max, SRF 3000 MHz min, Q 37 min, Irated 1 A. CHECKED AGAINST D-134, NOT LOCKED FROM HEADLINE SPECS: (1) SRF 3000 MHz is 74x the 40.68 MHz third harmonic and 149x the 20.1 MHz EMC corner, so the part is a pure inductor across the whole band of interest; (2) X_L = 3.32 R at 13.56 MHz, which is the reactance D-134 already solved the match against; (3) DCR IS NOT NEGLIGIBLE HERE - 0.20 R max sits in series with R_q = 1.1 R, so worst-case arm resistance is 1.30 R and the network Q falls from 25.3 to about 21.4, roughly -15%. That moves FURTHER INTO the safe, under-driven side D-134 deliberately chose, so it is not a stress condition, but the antenna MUST be tuned on the bench with this exact part fitted. If field strength is short at first article the first lever is R_q 1.1 R -> 0.9 R, NOT a change to 39 nH (D-134 forbids moving L without re-running the whole matching calculation); (4) coil current about 187 mA worst case against a 1 A rating, >5x margin. LCSC C2042966, stock 270 on 2026-08-23. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "LQW18AN39NG80D"
+			(at 308.61 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2042966"
 			(at 308.61 175.26 0)
 			(hide yes)
 			(show_name no)
@@ -13913,6 +14023,28 @@
 				)
 			)
 		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). The bare order code BM02B-ACHSS-GAN-ETF resolves to LCSC C20088622 with STOCK 0; the identical part under JST s lead-free/tin plating suffix, BM02B-ACHSS-GAN-ETF(LF)(SN), is C5118738 with 16260 in stock. The MPN string was corrected to the stocked one. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 400.05 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5118738"
+			(at 400.05 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "JST"
 			(at 0 0 0)
 			(hide yes)
@@ -13924,7 +14056,7 @@
 				)
 			)
 		)
-		(property "MPN" "BM02B-ACHSS-GAN-ETF"
+		(property "MPN" "BM02B-ACHSS-GAN-ETF(LF)(SN)"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

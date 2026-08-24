@@ -1482,6 +1482,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C2836813"
+			(at 91.44 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Bosch Sensortec"
 			(at 91.44 87.63 0)
 			(hide yes)
@@ -3352,6 +3363,17 @@
 			)
 		)
 		(property "Description" ""
+			(at 55.88 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "DNP BY DESIGN - documented 2026-08-23 (FBV2-S2-002). R119 is the ALTERNATE-ADDRESS strap for the BMI270: it would pull BMI270_SDO_ADDR up to +3V3. R118 (FITTED, 0 R to GND) holds the strap LOW, so the IMU answers at 0x68, which is what I2C_ADDRESS_REGISTRY.md records. R118 and R119 ARE MUTUALLY EXCLUSIVE - fitting both shorts +3V3 to GND through two 0 R resistors. This pair is a no-respin address escape under D-049 in case of a future address collision. It had no note at all before FBV2-S2-002."
 			(at 55.88 78.74 0)
 			(hide yes)
 			(show_name no)

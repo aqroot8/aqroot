@@ -3119,6 +3119,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C2913202"
+			(at 133.35 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "Espressif Systems"
 			(at 133.35 93.98 0)
 			(hide yes)
@@ -4279,6 +4290,28 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Genuine C&K PTS645SM43SMTR92LFS is LCSC C221880, stock 8432. A loose keyword search returns G-Switch GT-TC089A-H043-L1 (C843623) instead - a DIFFERENT MANUFACTURER whose land pattern has not been checked against the C&K G-Type layout this footprint was built from. Seven buttons per board is 35 placements for the first five; do not let a search shortcut swap them. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+			(at 87.63 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C221880"
 			(at 87.63 95.25 0)
 			(hide yes)
 			(show_name no)

@@ -3,7 +3,7 @@
 	(generator "aqroot-beta-library")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "PUI Audio DMM-4026-B-I2S-R bottom-port MEMS I2S microphone. Body 4.00 x 3.00 x 1.00 mm. Land pattern reproduced from the PUI Audio DMM-4026-B-I2S-R data sheet (Rev A, 5/26/2021) Dimensions page and Suggested Pickup Tool Location and Land Pattern page: six 0.60 x 0.40 mm pads on two columns 2.15 mm apart with a 0.65 mm row pitch, plus pad 4 as the GND ring around the acoustic port, ID 1.05 mm / OD 1.65 mm, on the package width centreline 1.00 mm from the near short edge. Pin 1 is at the upper LEFT in this TOP view because the manufacturer drawing is a bottom view. THE PCB ACOUSTIC HOLE IS NOT PART OF THIS FOOTPRINT: drill a 1.05 mm non-plated hole concentric with pad 4 at PCB stage, and keep solder paste back from the hole edge so solder cannot wick into the acoustic port. Both are FBV2-S2 / PCB-stage items.")
+	(descr "PUI Audio DMM-4026-B-I2S-R bottom-port MEMS I2S microphone. Body 4.00 x 3.00 x 1.00 mm. Land pattern reproduced from the PUI Audio DMM-4026-B-I2S-R data sheet (Rev A, 5/26/2021) Dimensions page and Suggested Pickup Tool Location and Land Pattern page: six 0.60 x 0.40 mm pads on two columns 2.15 mm apart with a 0.65 mm row pitch, plus pad 4 as the GND ring around the acoustic port, ID 1.05 mm / OD 1.65 mm, on the package width centreline 1.00 mm from the near short edge. Pin 1 is at the upper LEFT in this TOP view because the manufacturer drawing is a bottom view. B-63 CLOSED 2026-08-23 (FBV2-S2-002) - THE ACOUSTIC PORT IS NOW PART OF THIS FOOTPRINT. (a) ACOUSTIC HOLE: a 1.05 mm NON-PLATED through hole concentric with pad 4. The diameter is not invented - it is the INNER DIAMETER of the manufacturer drawing s own pad-4 GND ring (ID 1.05 / OD 1.65), i.e. the port aperture of the part itself. Because it is drawn here, placement cannot forget it and DRC can see it. (b) PASTE PULLBACK: pad 4 no longer carries F.Paste. Its paste is a separate annular aperture, ID 1.25 / OD 1.65, i.e. PULLED BACK 0.10 mm from the copper inner edge so molten solder cannot wick into the port. 0.10 mm is a stated stencil design choice, NOT a drawing dimension. Coverage is about 72 % of the copper ring, which is right for a ring land. (c) KEEPOUT: the dashed B.Fab circle marks the underside region that must stay free of copper pours, traces, vias, silkscreen and any mask step, so the port can be sealed to the enclosure. Nothing may cross under the ring on either layer. (d) ORIENTATION: this is a BOTTOM-PORT microphone. The part sits on the TOP of the PCB and listens THROUGH the board, so the acoustic path leaves on the BOTTOM face - the enclosure aperture and any gasket belong on that face, not the component face. This is a mechanical interface constraint, recorded as such.")
 	(tags "microphone MEMS I2S PUI Audio DMM-4026 bottom port")
 	(attr smd)
 	(fp_text reference "REF**"
@@ -171,7 +171,7 @@
 	(pad "4" smd custom
 		(at 0 1)
 		(size 0.3 0.3)
-		(layers "F.Cu" "F.Mask" "F.Paste")
+		(layers "F.Cu" "F.Mask")
 		(options
 			(clearance outline)
 			(anchor circle)
@@ -203,6 +203,54 @@
 		(size 0.6 0.4)
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(uuid "fb060001-d100-4d10-9d10-000000000107")
+	)
+	(fp_circle
+		(center 0 1)
+		(end 1.0 1)
+		(stroke
+			(width 0.1)
+			(type dash)
+		)
+		(fill no)
+		(layer "B.Fab")
+		(uuid "fb060001-d100-4d10-9d10-000000000015")
+	)
+	(fp_text user "ACOUSTIC PORT - NO COPPER, VIAS, SILK OR MASK STEP EITHER SIDE"
+		(at 0 3.4 0)
+		(layer "User.Comments")
+		(uuid "fb060001-d100-4d10-9d10-000000000016")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.08)
+			)
+		)
+	)
+	(pad "4" smd custom
+		(at 0 1)
+		(size 0.3 0.3)
+		(layers "F.Paste")
+		(options
+			(clearance outline)
+			(anchor circle)
+		)
+		(primitives
+			(gr_circle
+				(center 0 0)
+				(end 0.725 0)
+				(width 0.2)
+				(fill no)
+			)
+		)
+		(uuid "fb060001-d100-4d10-9d10-000000000108")
+	)
+	(pad "" np_thru_hole circle
+		(at 0 1)
+		(size 1.05 1.05)
+		(drill 1.05)
+		(layers "F&B.Cu" "*.Mask")
+		(solder_mask_margin 0.05)
+		(uuid "fb060001-d100-4d10-9d10-000000000109")
 	)
 	(embedded_fonts no)
 )
