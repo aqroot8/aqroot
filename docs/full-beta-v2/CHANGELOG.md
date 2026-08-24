@@ -1,3 +1,107 @@
+## 2026-08-24 - the router on trial, and a rule that cannot be routed (FBV2-P2-002B)
+
+**ROUTER HARNESS QUALIFICATION = PASS.** No copper was committed; the authoritative PCB is
+byte-identical to `8b9efba`, zero tracks, zero signal vias. PCB routing stays 0 %, overall stays
+74 %. Full evidence:
+[`audits/2026-08-24-routing-harness-qualification.md`](audits/2026-08-24-routing-harness-qualification.md).
+
+### The scratch environment, first, because that was the last task's real bug
+
+FBV2-P2-002A spent an entire routing attempt reading a phantom `clearance: 73,
+lib_footprint_issues: 17` offset on every net. The cause: a `.kicad_pcb` copied on its own loses
+`.kicad_dru`, the `.kicad_pro` netclasses and `fp-lib-table`, and DRC then silently measures against
+KiCad **defaults**. Every board in this task is a **complete copy of the whole project directory**,
+and the harness refuses to run DRC unless all five of those are present beside it. Required proof
+holds exactly: authoritative and scratch baselines are both
+`{solder_mask_bridge: 1, unconnected_items: 499}`. **Phantom DRC offset: none.**
+
+### All three defects fixed, and a fourth found
+
+**`track_dangling`** had two causes, and the coordinate one was the smaller. The emitter is now
+**integer nanometres end to end**, so a neck's end and a trunk's start are the *same integer* rather
+than two floats that agree to a rounding step. But the bigger cause was that **the old router never
+checked which layer a pad was on** - it would start a `B.Cu` track at the centre of an `F.Cu`-only
+pad, which is a dangling end by construction. That is not hypothetical: **`TP34.1` is an `F.Cu`-only
+pad on the otherwise-`B.Cu` net `BAT_CONNECTOR_P`.**
+
+**`track_width`** is now governed by one rule: **the routing rule minimum wins.** The escape width
+ladder starts at the trunk width and stops at the applicable floor. It never derives a width from a
+pad's short dimension. If nothing at or above the floor can leave the pad, the pad is classified
+**NO LEGAL ESCAPE** and **nothing is emitted**.
+
+**`shorting_items`** is fixed by giving the neck the *same* obstacle set as the trunk - foreign pads
+as true rotated rounded rectangles rather than bounding boxes, tracks as capsules, every drilled
+hole on every layer, rule areas, the board edge - and checking it **analytically**, so a short neck
+gets a stricter test than the trunk rather than a weaker one.
+
+**And a fourth defect that was not on the list.** A* proves that *grid cells* are clear; the emitted
+track is a *continuous segment* between them and can pass three-quarters of a cell closer to an
+obstacle than either endpoint. It duly produced `actual 0.1718 mm` against a 0.2000 mm rule. Every
+obstacle now carries a **0.75 x grid guard band**. The price is honest: `R86.2 -> R89.1` no longer
+fits at 0.05 mm and needs the local 0.025 mm grid.
+
+### Six of eight cases route clean
+
+`Q2_CS` 5.500 mm, `Q3_CS` 5.500 mm, `BAT_MID` 24.860 mm, `LTC_GATE` 66.982 mm, `LTC_OV` 15.179 mm,
+`R86.2 -> R89.1` 45.274 mm. Each on its own fresh project-faithful copy, each with **zero** new DRC
+violations of any class, **one** connected copper component after a real save and reload, **no**
+foreign pad in the cluster, and the ratsnest falling by **exactly one edge per connection**.
+
+### The two that did not are a rule conflict, and it is the finding of the task
+
+Five pads cannot legally accept the width their rules demand. Bisected to 5 um against the
+project's own clearances, and the closed-form arithmetic matches to the bisection step:
+
+| pad | package | floor | widest legal escape |
+|---|---|---|---|
+| `U18.9` | MSOP-10, 0.50 mm pitch | 0.600 mm | **0.245 mm** |
+| `U18.8` | MSOP-10, 0.50 mm pitch | 1.200 mm | **0.245 mm** |
+| `U14.2` / `U14.3` | T822, 0.50 mm pitch | 1.200 mm | **0.295 mm** |
+| `U11.2` | WSON-10, 0.40 mm pitch | 1.200 mm | **0.195 mm** |
+
+**The problem is rule scope.** `BAT_MAIN`'s 0.60 mm floor and D-245's 1.20 mm floor are written as
+**whole-net** constraints, but `BAT_SENSE` is a Kelvin sense line carrying microamps, and
+`BAT_PROTECTED_P` carries the pack current *and* feeds the MAX17048's fuel-gauge sense input and a
+test point, neither of which carries any current at all. D-245's comment already anticipates a neck
+exception; **the rule body does not contain one**, so **as written D-245 makes `BAT_PROTECTED_P`
+unroutable.** Section 6 said not to invent an exception and section 17 said not to hide it by
+weakening rules. **Nothing in `.kicad_dru` was touched.** It is PR-7, and it needs a ruling.
+
+### What the 1.50 mm trunk actually costs
+
+`R75.2 -> U18.8 -> D9.1 -> C25.1` routes at **1.50 mm in 85.274 mm, 22 segments, B.Cu, ZERO vias**,
+every segment at full width except the two mandatory 0.245 mm `U18.8` escapes. Past `C25.1` the
+charger cluster caps the trunk at 0.60 mm and `U11.2`'s own land pattern caps it at 0.195 mm.
+
+**And D-245's arithmetic needs correcting.** It used the **71 mm placement span**; the measured
+route is **85.3 mm**, because copper goes around things. With the unavoidable `U18.8` neck at
+7.8 mOhm in 3.9 mm of copper, `BAT_PROTECTED_P` as actually routable is **~35.7 mOhm**, so the net
+gains **~6 mOhm rather than the predicted ~11.7 mOhm**. That does not argue against D-245 - it
+argues that the neck exception, when ruled, should carry a bounded length and a stated resistance
+budget.
+
+### No placement was moved, and none needed to be
+
+`R86.2 -> R89.1` routes legally at 1.00 mm (45.274 mm) and at 0.60 mm (16.848 mm). `TP15.1 ->
+U14.2` routes legally at 0.20 mm (8.82 mm) - it was never a geometry problem, so **moving `TP15`
+would not have helped and `U14` was never a candidate.** The <= 2.0 mm allowance was not spent.
+
+### Also landed
+
+**`hardware/beta-v2/checks/router_regression.py`** - 22 assertions across six guards, building and
+removing its own throwaway project-faithful workspace, and **pinning the five proved land-pattern
+conflicts by their exact widths** so that relaxing a rule or moving a part fails the test instead of
+passing silently. **ALL CHECKS PASS.** The router is committed beside it as `qrouter.py` so the two
+cannot drift apart.
+
+**Opportunity scan (section 19): no native installed routing mechanism exists.** `kicad-cli pcb` has
+no routing subcommand, `pcbnew` exposes no scriptable PNS, `kipy` is not installed, and Freerouting
+is not installed - and would be the wrong tool anyway, since Specctra DSN carries netclass width and
+clearance but **not** custom `.kicad_dru` rules, so D-245 and the rule areas would be invisible to
+it. **Keep the qualified harness.**
+
+---
+
 ## 2026-08-24 - a router that refuses to keep bad copper (FBV2-P2-002A)
 
 **FBV2-P2-002A = FAIL. The battery / protection block is NOT routed.** No progress; PCB routing

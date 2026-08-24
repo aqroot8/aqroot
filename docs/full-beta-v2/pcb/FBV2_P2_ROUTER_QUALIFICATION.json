@@ -1,0 +1,1643 @@
+{
+ "task": "FBV2-P2-002B",
+ "date": "2026-08-24",
+ "head_at_start": "8b9efba",
+ "note": "Raw machine evidence for docs/full-beta-v2/audits/2026-08-24-routing-harness-qualification.md. All measurements taken on project-faithful scratch copies of hardware/beta-v2/kicad/aqroot-beta-v2; nothing was committed as copper.",
+ "baseline": {
+  "authoritative": {
+   "solder_mask_bridge": 1,
+   "unconnected_items": 499
+  },
+  "scratch": {
+   "solder_mask_bridge": 1,
+   "unconnected_items": 499
+  },
+  "identical": true,
+  "pcbnew_ratsnest_edges": 781
+ },
+ "qualification_tests": [
+  {
+   "test": "T1  Q2_CS            (was PASS)",
+   "net": "/01_POWER_TREE/Q2_CS",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "Q2.3",
+     "b": "Q2.1",
+     "ok": true,
+     "mm": 5.5000847437665055,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q2.3",
+       0.25,
+       1.4750762692145787
+      ],
+      [
+       "Q2.1",
+       0.25,
+       1.475008474551926
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 5.5,
+   "segs": 3,
+   "min_grid": 0.05,
+   "min_width": 0.25,
+   "necks": [
+    [
+     "Q2.3",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q2.1",
+     0.25,
+     1.475008474551926
+    ]
+   ],
+   "secs": 2.9
+  },
+  {
+   "test": "T2  Q3_CS            (was PASS)",
+   "net": "/01_POWER_TREE/Q3_CS",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "Q3.3",
+     "b": "Q3.1",
+     "ok": true,
+     "mm": 5.5000847437665055,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q3.3",
+       0.25,
+       1.4750762692145787
+      ],
+      [
+       "Q3.1",
+       0.25,
+       1.475008474551926
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 5.5,
+   "segs": 3,
+   "min_grid": 0.05,
+   "min_width": 0.25,
+   "necks": [
+    [
+     "Q3.3",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q3.1",
+     0.25,
+     1.475008474551926
+    ]
+   ],
+   "secs": 2.9
+  },
+  {
+   "test": "T3  BAT_MID          (was width)",
+   "net": "/01_POWER_TREE/BAT_MID",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "Q2.5",
+     "b": "Q2.6",
+     "ok": true,
+     "mm": 5.100064934166889,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 1.0,
+     "necks": [
+      [
+       "Q2.5",
+       1.0,
+       1.9250064934955413
+      ],
+      [
+       "Q2.6",
+       1.0,
+       1.9250584406713476
+      ]
+     ]
+    },
+    {
+     "a": "Q2.6",
+     "b": "Q3.8",
+     "ok": true,
+     "mm": 14.659862908811554,
+     "segs": 6,
+     "grid": 0.05,
+     "minw": 1.0,
+     "necks": [
+      [
+       "Q2.6",
+       1.0,
+       1.9250584406713476
+      ],
+      [
+       "Q3.8",
+       1.0,
+       1.9250064934955413
+      ]
+     ]
+    },
+    {
+     "a": "Q3.8",
+     "b": "Q3.7",
+     "ok": true,
+     "mm": 5.100064934166889,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 1.0,
+     "necks": [
+      [
+       "Q3.8",
+       1.0,
+       1.9250064934955413
+      ],
+      [
+       "Q3.7",
+       1.0,
+       1.9250584406713476
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 24.86,
+   "segs": 12,
+   "min_grid": 0.05,
+   "min_width": 1.0,
+   "necks": [
+    [
+     "Q2.5",
+     1.0,
+     1.9250064934955413
+    ],
+    [
+     "Q2.6",
+     1.0,
+     1.9250584406713476
+    ],
+    [
+     "Q2.6",
+     1.0,
+     1.9250584406713476
+    ],
+    [
+     "Q3.8",
+     1.0,
+     1.9250064934955413
+    ],
+    [
+     "Q3.8",
+     1.0,
+     1.9250064934955413
+    ],
+    [
+     "Q3.7",
+     1.0,
+     1.9250584406713476
+    ]
+   ],
+   "secs": 3.3
+  },
+  {
+   "test": "T4  BAT_SENSE        (was width)",
+   "net": "/01_POWER_TREE/BAT_SENSE",
+   "ok": false,
+   "reason": "R75.1 -> U18.9 : NO_LEGAL_ESCAPE : U18.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U18.8 (x341), U18.6 (x164), board_edge (x79), U18.1 (x36)",
+   "conns": [
+    {
+     "a": "Q3.5",
+     "b": "Q3.6",
+     "ok": true,
+     "mm": 5.100064934166889,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 1.0,
+     "necks": [
+      [
+       "Q3.5",
+       1.0,
+       1.9250064934955413
+      ],
+      [
+       "Q3.6",
+       1.0,
+       1.9250584406713476
+      ]
+     ]
+    },
+    {
+     "a": "Q3.6",
+     "b": "R75.1",
+     "ok": true,
+     "mm": 17.84857574619799,
+     "segs": 6,
+     "grid": 0.05,
+     "minw": 1.0,
+     "necks": [
+      [
+       "Q3.6",
+       1.0,
+       1.9250584406713476
+      ],
+      [
+       "R75.1",
+       1.0,
+       1.5625
+      ]
+     ]
+    },
+    {
+     "a": "R75.1",
+     "b": "U18.9",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U18.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U18.8 (x341), U18.6 (x164), board_edge (x79), U18.1 (x36)",
+     "pad": "U18.9",
+     "necks": null
+    }
+   ],
+   "secs": 1.1
+  },
+  {
+   "test": "T5  LTC_GATE         (was shorting)",
+   "net": "/01_POWER_TREE/LTC_GATE",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "U18.10",
+     "b": "R76.1",
+     "ok": true,
+     "mm": 8.453668426483855,
+     "segs": 4,
+     "grid": 0.05,
+     "minw": 0.2,
+     "necks": [
+      [
+       "U18.10",
+       0.2,
+       1.2
+      ],
+      [
+       "R76.1",
+       0.25,
+       0.8503675675847474
+      ]
+     ]
+    },
+    {
+     "a": "U18.10",
+     "b": "Q3.4",
+     "ok": true,
+     "mm": 16.273893745722603,
+     "segs": 8,
+     "grid": 0.05,
+     "minw": 0.2,
+     "necks": [
+      [
+       "U18.10",
+       0.2,
+       1.2
+      ],
+      [
+       "Q3.4",
+       0.25,
+       1.475008474551926
+      ]
+     ]
+    },
+    {
+     "a": "Q3.4",
+     "b": "Q3.2",
+     "ok": true,
+     "mm": 5.5000847437665055,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q3.4",
+       0.25,
+       1.475008474551926
+      ],
+      [
+       "Q3.2",
+       0.25,
+       1.4750762692145787
+      ]
+     ]
+    },
+    {
+     "a": "Q3.2",
+     "b": "Q2.2",
+     "ok": true,
+     "mm": 13.332133053768622,
+     "segs": 7,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q3.2",
+       0.25,
+       1.4750762692145787
+      ],
+      [
+       "Q2.2",
+       0.25,
+       1.4750762692145787
+      ]
+     ]
+    },
+    {
+     "a": "Q2.2",
+     "b": "Q2.4",
+     "ok": true,
+     "mm": 5.5000847437665055,
+     "segs": 3,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q2.2",
+       0.25,
+       1.4750762692145787
+      ],
+      [
+       "Q2.4",
+       0.25,
+       1.475008474551926
+      ]
+     ]
+    },
+    {
+     "a": "Q2.4",
+     "b": "TP17.1",
+     "ok": true,
+     "mm": 17.921812217705472,
+     "segs": 4,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "Q2.4",
+       0.25,
+       1.475008474551926
+      ],
+      [
+       "TP17.1",
+       0.25,
+       0.95
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 66.982,
+   "segs": 29,
+   "min_grid": 0.05,
+   "min_width": 0.2,
+   "necks": [
+    [
+     "U18.10",
+     0.2,
+     1.2
+    ],
+    [
+     "R76.1",
+     0.25,
+     0.8503675675847474
+    ],
+    [
+     "U18.10",
+     0.2,
+     1.2
+    ],
+    [
+     "Q3.4",
+     0.25,
+     1.475008474551926
+    ],
+    [
+     "Q3.4",
+     0.25,
+     1.475008474551926
+    ],
+    [
+     "Q3.2",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q3.2",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q2.2",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q2.2",
+     0.25,
+     1.4750762692145787
+    ],
+    [
+     "Q2.4",
+     0.25,
+     1.475008474551926
+    ],
+    [
+     "Q2.4",
+     0.25,
+     1.475008474551926
+    ],
+    [
+     "TP17.1",
+     0.25,
+     0.95
+    ]
+   ],
+   "secs": 5.2
+  },
+  {
+   "test": "T6  LTC_OV           (was dangling)",
+   "net": "/01_POWER_TREE/LTC_OV",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "U18.3",
+     "b": "R77.2",
+     "ok": true,
+     "mm": 11.014696961967,
+     "segs": 4,
+     "grid": 0.05,
+     "minw": 0.2,
+     "necks": [
+      [
+       "U18.3",
+       0.2,
+       1.2
+      ],
+      [
+       "R77.2",
+       0.25,
+       0.875
+      ]
+     ]
+    },
+    {
+     "a": "R77.2",
+     "b": "R78.1",
+     "ok": true,
+     "mm": 4.163845198669771,
+     "segs": 5,
+     "grid": 0.05,
+     "minw": 0.25,
+     "necks": [
+      [
+       "R77.2",
+       0.25,
+       0.875
+      ],
+      [
+       "R78.1",
+       0.25,
+       0.8503675675847474
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 15.179,
+   "segs": 9,
+   "min_grid": 0.05,
+   "min_width": 0.2,
+   "necks": [
+    [
+     "U18.3",
+     0.2,
+     1.2
+    ],
+    [
+     "R77.2",
+     0.25,
+     0.875
+    ],
+    [
+     "R77.2",
+     0.25,
+     0.875
+    ],
+    [
+     "R78.1",
+     0.25,
+     0.8503675675847474
+    ]
+   ],
+   "secs": 3.2
+  },
+  {
+   "test": "T7  BAT_RAW R86.2->R89.1 (was NO PATH)",
+   "net": "/01_POWER_TREE/BAT_RAW",
+   "ok": true,
+   "reason": null,
+   "conns": [
+    {
+     "a": "R86.2",
+     "b": "R89.1",
+     "ok": true,
+     "mm": 45.27417323558718,
+     "segs": 11,
+     "grid": 0.025,
+     "minw": 1.0,
+     "necks": [
+      [
+       "R86.2",
+       1.0,
+       1.35
+      ],
+      [
+       "R89.1",
+       1.0,
+       1.35
+      ]
+     ]
+    }
+   ],
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "unconnected_delta": 0,
+   "mm": 45.274,
+   "segs": 11,
+   "min_grid": 0.025,
+   "min_width": 1.0,
+   "necks": [
+    [
+     "R86.2",
+     1.0,
+     1.35
+    ],
+    [
+     "R89.1",
+     1.0,
+     1.35
+    ]
+   ],
+   "secs": 146.9
+  },
+  {
+   "test": "T8  BAT_PROTECTED_P TP15.1->U14.2 (was NO PATH)",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "ok": false,
+   "reason": "TP15.1 -> U14.2 : NO_LEGAL_ESCAPE : U14.2: NO LEGAL ESCAPE at >= 1.200 mm; blocked by U14.1 (x289), board_edge (x189), TP11.1 (x19), R105.1 (x7)",
+   "conns": [
+    {
+     "a": "TP15.1",
+     "b": "U14.2",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U14.2: NO LEGAL ESCAPE at >= 1.200 mm; blocked by U14.1 (x289), board_edge (x189), TP11.1 (x19), R105.1 (x7)",
+     "pad": "U14.2",
+     "necks": null
+    }
+   ],
+   "secs": 0.6
+  },
+  {
+   "test": "T9  BAT_PROTECTED_P 1.50 mm traversal R75.2->U11.2",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "ok": false,
+   "reason": "R75.2 -> U18.8 : NO_LEGAL_ESCAPE : U18.8: NO LEGAL ESCAPE at >= 1.200 mm; blocked by U18.6 (x165), R75.1 (x148), board_edge (x108), U18.1 (x24)",
+   "conns": [
+    {
+     "a": "R75.2",
+     "b": "U18.8",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U18.8: NO LEGAL ESCAPE at >= 1.200 mm; blocked by U18.6 (x165), R75.1 (x148), board_edge (x108), U18.1 (x24)",
+     "pad": "U18.8",
+     "necks": null
+    }
+   ],
+   "secs": 0.5
+  }
+ ],
+ "escape_proof": [
+  {
+   "ref": "U18.9",
+   "net": "BAT_SENSE",
+   "pad_mm": "1.500 x 0.350",
+   "rule_floor_mm": 0.6,
+   "rule": "BAT_MAIN class floor",
+   "widest_legal_escape_mm": 0.245,
+   "shortfall_mm": 0.355,
+   "legal": false,
+   "nearest_foreign": [
+    [
+     "U18.10",
+     0.325
+    ],
+    [
+     "U18.8",
+     0.325
+    ],
+    [
+     "U18.7",
+     0.825
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "U18.8",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "1.500 x 0.350",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 0.245,
+   "shortfall_mm": 0.955,
+   "legal": false,
+   "nearest_foreign": [
+    [
+     "U18.7",
+     0.325
+    ],
+    [
+     "U18.9",
+     0.325
+    ],
+    [
+     "U18.10",
+     0.825
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "U14.2",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "0.700 x 0.300",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 0.295,
+   "shortfall_mm": 0.905,
+   "legal": false,
+   "nearest_foreign": [
+    [
+     "U14.1",
+     0.35
+    ],
+    [
+     "U14.9",
+     0.59
+    ],
+    [
+     "U14.4",
+     0.85
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "U14.3",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "0.700 x 0.300",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 0.295,
+   "shortfall_mm": 0.905,
+   "legal": false,
+   "nearest_foreign": [
+    [
+     "U14.4",
+     0.35
+    ],
+    [
+     "U14.9",
+     0.59
+    ],
+    [
+     "U14.1",
+     0.85
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "U11.2",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "0.750 x 0.200",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 0.195,
+   "shortfall_mm": 1.005,
+   "legal": false,
+   "nearest_foreign": [
+    [
+     "U11.1",
+     0.3
+    ],
+    [
+     "U11.3",
+     0.3
+    ],
+    [
+     "U11.11",
+     0.65
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "TP15.1",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "1.000 x 1.000",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "U14.7",
+     1.641
+    ],
+    [
+     "U14.6",
+     1.693
+    ],
+    [
+     "U14.8",
+     1.694
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "R75.2",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "1.225 x 3.350",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "Q3.3",
+     1.799
+    ],
+    [
+     "Q3.4",
+     1.929
+    ],
+    [
+     "Q3.2",
+     2.291
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "D9.1",
+   "net": "BAT_PROTECTED_P",
+   "pad_mm": "0.900 x 1.200",
+   "rule_floor_mm": 1.2,
+   "rule": "D-245 trunk floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "R77.2",
+     1.764
+    ],
+    [
+     "R76.2",
+     2.673
+    ],
+    [
+     "R78.2",
+     2.758
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "R75.1",
+   "net": "BAT_SENSE",
+   "pad_mm": "1.225 x 3.350",
+   "rule_floor_mm": 0.6,
+   "rule": "BAT_MAIN class floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "U18.8",
+     1.591
+    ],
+    [
+     "U18.7",
+     1.601
+    ],
+    [
+     "U18.6",
+     1.733
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "Q3.5",
+   "net": "BAT_SENSE",
+   "pad_mm": "1.950 x 0.600",
+   "rule_floor_mm": 0.6,
+   "rule": "BAT_MAIN class floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "Q2.4",
+     1.875
+    ],
+    [
+     "Q2.3",
+     2.164
+    ],
+    [
+     "Q3.7",
+     2.24
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "Q3.6",
+   "net": "BAT_SENSE",
+   "pad_mm": "1.950 x 0.600",
+   "rule_floor_mm": 0.6,
+   "rule": "BAT_MAIN class floor",
+   "widest_legal_escape_mm": 1.535,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "Q3.7",
+     0.97
+    ],
+    [
+     "Q2.3",
+     1.875
+    ],
+    [
+     "Q2.4",
+     2.164
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  },
+  {
+   "ref": "TP20.1",
+   "net": "BAT_SENSE",
+   "pad_mm": "1.000 x 1.000",
+   "rule_floor_mm": 0.6,
+   "rule": "BAT_MAIN class floor",
+   "widest_legal_escape_mm": 1.995,
+   "shortfall_mm": 0.0,
+   "legal": true,
+   "nearest_foreign": [
+    [
+     "R84.1",
+     1.836
+    ],
+    [
+     "R84.2",
+     1.881
+    ],
+    [
+     "TP18.1",
+     2.012
+    ]
+   ],
+   "pad_clearance_mm": 0.2
+  }
+ ],
+ "corridor_probe": [
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "R75.2",
+   "b": "U18.8",
+   "best": 1.5,
+   "mm": 15.137,
+   "tried": [
+    [
+     1.5,
+     true,
+     null,
+     15.14,
+     1.7
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "R75.2",
+     1.5,
+     1.812
+    ],
+    [
+     "U18.8",
+     0.245,
+     1.95
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "U18.8",
+   "b": "D9.1",
+   "best": 1.5,
+   "mm": 14.118,
+   "tried": [
+    [
+     1.5,
+     true,
+     null,
+     14.12,
+     1.4
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "U18.8",
+     0.245,
+     1.95
+    ],
+    [
+     "D9.1",
+     1.5,
+     1.65
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "D9.1",
+   "b": "C25.1",
+   "best": 1.5,
+   "mm": 56.02,
+   "tried": [
+    [
+     1.5,
+     true,
+     null,
+     56.02,
+     35.7
+    ]
+   ],
+   "grid": 0.025,
+   "necks": [
+    [
+     "D9.1",
+     1.5,
+     1.65
+    ],
+    [
+     "C25.1",
+     1.5,
+     1.65
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "C25.1",
+   "b": "C36.1",
+   "best": 1.2,
+   "mm": 80.61,
+   "tried": [
+    [
+     1.5,
+     false,
+     "NO_PATH",
+     0,
+     54.8
+    ],
+    [
+     1.2,
+     true,
+     null,
+     80.61,
+     71.2
+    ]
+   ],
+   "grid": 0.025,
+   "necks": [
+    [
+     "C25.1",
+     1.2,
+     1.5
+    ],
+    [
+     "C36.1",
+     1.2,
+     1.525
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "C36.1",
+   "b": "C58.1",
+   "best": 1.5,
+   "mm": 10.777,
+   "tried": [
+    [
+     1.5,
+     true,
+     null,
+     10.78,
+     0.3
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "C36.1",
+     1.5,
+     1.7
+    ],
+    [
+     "C58.1",
+     1.5,
+     1.7
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "C58.1",
+   "b": "U11.2",
+   "best": 0.6,
+   "mm": 16.949,
+   "tried": [
+    [
+     1.5,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     1.0
+    ],
+    [
+     1.2,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.8
+    ],
+    [
+     1.0,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.7
+    ],
+    [
+     0.6,
+     true,
+     null,
+     16.95,
+     1.2
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "C58.1",
+     0.6,
+     1.175
+    ],
+    [
+     "U11.2",
+     0.195,
+     0.9
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "D9.1",
+   "b": "TP15.1",
+   "best": 1.5,
+   "mm": 16.11,
+   "tried": [
+    [
+     1.5,
+     true,
+     null,
+     16.11,
+     0.6
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "D9.1",
+     1.5,
+     1.65
+    ],
+    [
+     "TP15.1",
+     1.5,
+     1.684
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "TP15.1",
+   "b": "U14.2",
+   "best": 0.2,
+   "mm": 8.817,
+   "tried": [
+    [
+     1.2,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.6
+    ],
+    [
+     0.6,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.4
+    ],
+    [
+     0.4,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.3
+    ],
+    [
+     0.3,
+     false,
+     "NO_PATH",
+     0,
+     80.4
+    ],
+    [
+     0.25,
+     false,
+     "NO_PATH",
+     0,
+     81.7
+    ],
+    [
+     0.2,
+     true,
+     null,
+     8.82,
+     41.9
+    ]
+   ],
+   "grid": 0.025,
+   "necks": [
+    [
+     "TP15.1",
+     0.2,
+     0.959
+    ],
+    [
+     "U14.2",
+     0.2,
+     0.767
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "U14.2",
+   "b": "U14.3",
+   "best": 0.3,
+   "mm": 2.305,
+   "tried": [
+    [
+     0.3,
+     true,
+     null,
+     2.3,
+     0.3
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "U14.2",
+     0.295,
+     0.821
+    ],
+    [
+     "U14.3",
+     0.295,
+     0.834
+    ]
+   ]
+  },
+  {
+   "net": "BAT_RAW",
+   "a": "R86.2",
+   "b": "R89.1",
+   "best": 1.0,
+   "mm": 45.274,
+   "tried": [
+    [
+     1.0,
+     true,
+     null,
+     45.27,
+     125.3
+    ]
+   ],
+   "grid": 0.025,
+   "necks": [
+    [
+     "R86.2",
+     1.0,
+     1.35
+    ],
+    [
+     "R89.1",
+     1.0,
+     1.35
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "D9.1",
+   "b": "U11.2",
+   "best": 0.6,
+   "mm": 69.75,
+   "tried": [
+    [
+     1.5,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     1.0
+    ],
+    [
+     1.2,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.8
+    ],
+    [
+     1.0,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.7
+    ],
+    [
+     0.6,
+     true,
+     null,
+     69.75,
+     1.4
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "D9.1",
+     0.6,
+     1.2
+    ],
+    [
+     "U11.2",
+     0.195,
+     0.9
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "U18.8",
+   "b": "U11.2",
+   "best": 0.6,
+   "mm": 74.794,
+   "tried": [
+    [
+     1.5,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     2.1
+    ],
+    [
+     1.2,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     1.7
+    ],
+    [
+     1.0,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     1.4
+    ],
+    [
+     0.6,
+     true,
+     null,
+     74.79,
+     2.2
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "U18.8",
+     0.245,
+     1.3
+    ],
+    [
+     "U11.2",
+     0.195,
+     0.9
+    ]
+   ]
+  },
+  {
+   "net": "BAT_PROTECTED_P",
+   "a": "C25.1",
+   "b": "U11.2",
+   "best": 0.6,
+   "mm": 20.755,
+   "tried": [
+    [
+     1.5,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     1.0
+    ],
+    [
+     1.2,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.8
+    ],
+    [
+     1.0,
+     false,
+     "NO_LEGAL_ESCAPE",
+     0,
+     0.7
+    ],
+    [
+     0.6,
+     true,
+     null,
+     20.75,
+     1.7
+    ]
+   ],
+   "grid": 0.05,
+   "necks": [
+    [
+     "C25.1",
+     0.6,
+     1.175
+    ],
+    [
+     "U11.2",
+     0.195,
+     0.9
+    ]
+   ]
+  }
+ ],
+ "feasibility": [
+  {
+   "run": "F1  BAT_PROTECTED_P trunk R75->U11, 1.50 mm",
+   "ok": false,
+   "reason": "C25.1->C36.1 NO_PATH no legal corridor at 1.500 mm wide from C25.1 to C36.1 at 0.05 or 0.025 mm grid"
+  },
+  {
+   "run": "F4  BAT_PROTECTED_P taps D9->TP15->U14, 0.295 mm",
+   "ok": false,
+   "reason": "TP15.1->U14.2 NO_PATH no legal corridor at 0.295 mm wide from TP15.1 to U14.2 at 0.05 or 0.025 mm grid"
+  },
+  {
+   "run": "F2  BAT_SENSE full net, 1.00 mm trunk",
+   "ok": true,
+   "reason": null,
+   "mm": 53.066,
+   "segs": 23,
+   "trunk_mm": 1.0,
+   "grid": 0.05,
+   "layer": "B.Cu",
+   "vias": 0,
+   "new_drc": {
+    "track_width": 1
+   },
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "ratsnest": 777,
+   "ratsnest_delta": -4,
+   "necks": [
+    [
+     "Q3.5",
+     1.0,
+     1.925
+    ],
+    [
+     "Q3.6",
+     1.0,
+     1.925
+    ],
+    [
+     "Q3.6",
+     1.0,
+     1.925
+    ],
+    [
+     "R75.1",
+     1.0,
+     1.562
+    ],
+    [
+     "R75.1",
+     1.0,
+     1.562
+    ],
+    [
+     "U18.9",
+     0.245,
+     1.45
+    ],
+    [
+     "Q3.5",
+     1.0,
+     1.925
+    ],
+    [
+     "TP20.1",
+     1.0,
+     1.45
+    ]
+   ],
+   "sub_floor_escapes": [
+    "U18.9"
+   ],
+   "drc_detail": {
+    "track_width": [
+     "Track width (rule 'BAT_MAIN minimum width' min width 0.6000 mm; actual 0.2450 mm)"
+    ]
+   }
+  },
+  {
+   "run": "F3  BAT_RAW R86.2->R89.1 at 0.60 mm (corridor study)",
+   "ok": true,
+   "reason": null,
+   "mm": 16.848,
+   "segs": 8,
+   "trunk_mm": 0.6,
+   "grid": 0.05,
+   "layer": "B.Cu",
+   "vias": 0,
+   "new_drc": {},
+   "connectivity": true,
+   "components": 1,
+   "foreign": [],
+   "ratsnest": 780,
+   "ratsnest_delta": -1,
+   "necks": [
+    [
+     "R86.2",
+     0.6,
+     1.15
+    ],
+    [
+     "R89.1",
+     0.6,
+     1.15
+    ]
+   ],
+   "sub_floor_escapes": [],
+   "drc_detail": {}
+  }
+ ],
+ "bat_protected_p_trunk_150": {
+  "length_mm": 85.274,
+  "segments": 22,
+  "trunk_mm": 1.5,
+  "min_segment_mm": 0.245,
+  "max_segment_mm": 1.5,
+  "layer": "B.Cu",
+  "vias": 0,
+  "new_drc": {
+   "track_width": 2
+  },
+  "drc_detail": {
+   "track_width": [
+    "Track width (rule 'BAT_PROTECTED_P trunk width - local override, D-245' min width 1.2000 mm; actual 0.2450 mm)",
+    "Track width (rule 'BAT_PROTECTED_P trunk width - local override, D-245' min width 1.2000 mm; actual 0.2450 mm)"
+   ]
+  },
+  "connectivity": true,
+  "components": 1,
+  "foreign": [],
+  "ratsnest_delta": -3,
+  "necks": [
+   [
+    "R75.2",
+    1.5,
+    1.812
+   ],
+   [
+    "U18.8",
+    0.245,
+    1.95
+   ],
+   [
+    "U18.8",
+    0.245,
+    1.95
+   ],
+   [
+    "D9.1",
+    1.5,
+    1.65
+   ],
+   [
+    "D9.1",
+    1.5,
+    1.65
+   ],
+   [
+    "C25.1",
+    1.5,
+    1.65
+   ]
+  ]
+ }
+}

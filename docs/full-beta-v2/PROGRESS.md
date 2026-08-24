@@ -2,7 +2,11 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-24 (updated after **FBV2-P2-002A — battery / protection routing attempt.
+Date: 2026-08-24 (updated after **FBV2-P2-002B — routing harness qualification.
+**HARNESS QUALIFICATION = PASS.** All three router defects fixed and proved fixed on real geometry;
+the two remaining cases are a **proved land-pattern / rule conflict** on five fine-pitch pads,
+surfaced for a CTO ruling. **No copper committed; the board is byte-identical to `8b9efba`.**
+**PCB routing stays 0 %; overall stays 74 %**; previously **FBV2-P2-002A — battery / protection routing attempt.
 **FAIL: the block is NOT routed and nothing was committed as copper.** Delivered D-245 and a
 working obstacle-aware router with per-net DRC gating. **PCB routing stays 0 %; overall stays
 74 %**; previously **FBV2-P2-001 — power-routing attempt. **FAIL: the power tree is
@@ -18,7 +22,7 @@ freeze. **FBV2-P2 ENTRY = FAIL** on one criterion of thirteen; **NO PROGRESS EAR
 74%**, FBV2-P1 = PASS unchanged**; previously **FBV2-P1-002 — P1 closeout; **FBV2-P1 PASSES**; overall 68% → 74%**; previously **FBV2-P1-001 — enclosure-driven floorplan built; **FBV2-P1 DOES NOT PASS** on the 915 MHz pigtail reach; overall stays 68%**; previously FBV2-MECH-002 — pre-floorplan authority reconciliation and final
 procurement sign-offs. NO PROGRESS EARNED: overall stays 68%, FBV2-S2 = PASS unchanged**; previously
 FBV2-S2-002 — S2 release closeout, FBV2-S2 = PASS)
-Repository HEAD at last update: `8b6e64e` (FBV2-P2-001)
+Repository HEAD at last update: `8b9efba` (FBV2-P2-002A)
 
 ---
 
@@ -65,7 +69,7 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | Architecture freeze | **IN PROGRESS** |
 | Schematic migration | **100%** — **all nine sheets landed. `fork_equivalence.py`'s "still Beta-DM" list is EMPTY.** |
 | PCB placement | **100%** — **FBV2-P1 RE-ISSUED AND RE-PASSED on the new 72 × 148 outline (FBV2-EXP-002)** |
-| PCB routing | **0%** — entry gate PASS; **two routing attempts, both correctly reverted.** FBV2-P2-001's MST router made 505 violations; **FBV2-P2-002A's obstacle-aware router with pad-escape necking and per-net DRC gating routed 2 of 29 battery nets cleanly and reverted the other 27** rather than commit them. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the board still has **zero tracks and zero signal vias** |
+| PCB routing | **0%** — entry gate PASS; **two routing attempts, both correctly reverted**, then the router itself put on trial and **QUALIFIED** at FBV2-P2-002B: six of eight real-geometry cases route with zero new DRC violations and correct connectivity after save/reload, and the two that do not are a **proved rule conflict**, not a router fault. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the board still has **zero tracks and zero signal vias** |
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 

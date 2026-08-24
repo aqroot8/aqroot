@@ -18,6 +18,28 @@ Pre-routing checkpoint: tag **`beta-v2-p2-entry-pass`** → `faa0c91`.
 > The honest account is in
 > [`../audits/2026-08-24-p2-power-routing.md`](../audits/2026-08-24-p2-power-routing.md).
 
+> **UPDATED 2026-08-24 at FBV2-P2-002B.** The router itself was put on trial before it was
+> allowed near the battery block again, and it **passed**. All three named defects are fixed and
+> proved fixed on real Full Beta v2 geometry: six of eight qualification cases route with **zero**
+> new DRC violations of any class, one connected copper component after a real save and reload, no
+> foreign pad in the cluster, and the ratsnest falling by exactly one edge per connection. A fourth
+> defect — a missing **grid guard band**, which let a proved-clear grid path become a 0.172 mm gap
+> on a 0.200 mm rule — was found and fixed during qualification.
+>
+> **The two cases that did not route are not router faults. They are a proved rule conflict.**
+> `U18.8`, `U18.9`, `U14.2`, `U14.3` and `U11.2` cannot legally accept the widths their rules
+> demand: their widest legal escapes are **0.195 mm to 0.295 mm** against floors of 0.60 mm and
+> 1.20 mm. **As written, D-245 makes `BAT_PROTECTED_P` unroutable** — the 1.20 mm floor lands on the
+> MAX17048's fuel-gauge sense tap and on a test point, neither of which carries any current. **This
+> is surfaced for a ruling, not fixed: no rule was touched.** See **PR-7** below and
+> [`../audits/2026-08-24-routing-harness-qualification.md`](../audits/2026-08-24-routing-harness-qualification.md).
+>
+> **`BAT_PROTECTED_P` at 1.50 mm is feasible for the traverse:** `R75.2 → U18.8 → D9.1 → C25.1`
+> routes in **85.274 mm, 22 segments, B.Cu, ZERO vias**, every segment at 1.50 mm except the two
+> mandatory 0.245 mm `U18.8` escapes. **`R86.2 → R89.1` and `TP15.1 → U14.2` both have legal
+> routes** — 45.274 mm at 1.00 mm and 8.82 mm at 0.20 mm — so **no placement move was proposed and
+> none was taken.** **Nothing was committed as copper; the board is byte-identical to `8b9efba`.**
+
 ---
 
 ## 1. What this task delivered
@@ -173,12 +195,20 @@ out-of-scope routing: zero, trivially, because no net is routed.**
 
 ---
 
-## 7. Open items carried to FBV2-P2-002
+## 7. Open items carried to FBV2-P2-002C
+
+**Updated 2026-08-24 at FBV2-P2-002B.**
 
 | # | item |
 |---|---|
-| **PR-1** | **The power tree still has to be routed.** A naive minimum-spanning-tree router produced **505 DRC violations** (102 shorting items, 112 crossings, 204 mask bridges) because it draws straight lines through other pads. The next task needs an **obstacle-aware** path search, or hand-drawn polylines per net with per-net DRC verification |
-| **PR-2** | **Widen `BAT_PROTECTED_P` to 1.50 mm** on its long traverse — §5. Ledger target stays 1.00 mm until ruled |
-| **PR-3** | **PM-2 was closed on incomplete evidence at FBV2-EXP-002.** The chain metric was real; it was reported as if it closed the whole of PM-2. Corrected here; recorded so the pattern is not repeated |
+| **PR-1** | **CLOSED.** The obstacle-aware harness is qualified: six of eight real-geometry cases route with zero new DRC violations, correct connectivity after save/reload, and no foreign-net contact. Regression-tested by `hardware/beta-v2/checks/router_regression.py` |
+| **PR-5** | **CLOSED as a router-implementation matter.** `track_dangling`, `track_width` and `shorting_items` all fixed and proved fixed; a fourth defect (grid guard band) found and fixed during qualification |
+| **PR-6** | **CLOSED.** `R86.2 → R89.1` routes legally at 1.00 mm (45.274 mm, 0.025 mm local grid) and at 0.60 mm (16.848 mm); `TP15.1 → U14.2` routes legally at 0.20 mm (8.82 mm). **No placement move needed, none proposed, none taken** |
+| **PR-7** | **NEEDS A CTO RULING.** `BAT_MAIN`'s 0.60 mm floor and D-245's 1.20 mm floor are **whole-net** constraints on nets that also carry zero-current sense and probe taps, and **five pads cannot legally accept them**: `U18.9` 0.245 mm vs 0.600, `U18.8` 0.245 mm vs 1.200, `U14.2`/`U14.3` 0.295 mm vs 1.200, `U11.2` 0.195 mm vs 1.200. **As written, D-245 makes `BAT_PROTECTED_P` unroutable.** No rule was touched |
+| **PR-8** | **`TP34.1` is an `F.Cu`-only pad on the otherwise-`B.Cu` net `BAT_CONNECTOR_P`.** Needs a via and an `F.Cu` stub, or the test point flipped to `B.Cu`. The only face-split net in the block |
+| **PR-9** | `R86.2 → R89.1` is **45.3 mm at 1.00 mm against 16.8 mm at the 0.60 mm floor** — shorter *and* lower-resistance at the narrower width (≈ 13.8 mΩ vs ≈ 22.2 mΩ). A routing decision for the next task |
+| **PR-10** | **D-245 delivers about half what its arithmetic predicted.** The measured 1.50 mm traverse is **85.3 mm**, not the 71 mm placement span, and the mandatory `U18.8` neck adds **≈ 7.8 mΩ in 3.9 mm of copper**. `BAT_PROTECTED_P` as actually routable is **≈ 35.7 mΩ**, so the net gains ≈ 6 mΩ rather than ≈ 11.7 mΩ. Feeds the PR-7 ruling |
+| **PR-2** | `BAT_PROTECTED_P` at 1.50 mm — **traverse feasibility demonstrated** (85.274 mm, B.Cu, zero vias); terminations blocked pending PR-7 |
+| **PR-3** | **PM-2 was closed on incomplete evidence at FBV2-EXP-002.** Corrected at FBV2-P2-001; recorded so the pattern is not repeated. Status remains **placement corrected, closure pending DRC-clean routing** |
 | **B-34** | **OPEN — physical validation required.** ≈ 355 mV / 532 mW at 1.5 A, ≈ 414 mV / 724 mW at 1.75 A, BATFET-dominated |
 | **PR-4** | F.Cu / B.Cu ground pours and perimeter stitching remain the **last** step of FBV2-P2, after signals |
