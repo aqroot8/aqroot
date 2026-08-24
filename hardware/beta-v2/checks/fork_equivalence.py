@@ -40,6 +40,8 @@ ADDED_FOOTPRINTS = {
         'FBV2-S1-008, MEIHUA MHPA3528RGBCT common-anode RGB front status light',
     'Samtec_BCS-112-S-D-HE.kicad_mod':
         'FBV2-S1-009, Samtec BCS-112-S-D-HE 2x12 horizontal community connector',
+    'MountingBoss_M2_NPTH.kicad_mod':
+        'FBV2-P1-002, Oe2.2 mm NPTH M2 enclosure retention point (mechanical, no BOM entry)',
 }
 
 # (dm name, v2 name, expectation)
@@ -55,8 +57,12 @@ FILES = (
         ('04_spi_b_radios_nfc.kicad_sch', '04_spi_b_radios_nfc.kicad_sch', 'changed'),
         ('08_buttons_expanders.kicad_sch', '08_buttons_expanders.kicad_sch', 'changed'),
         ('09_community_header.kicad_sch', '09_community_header.kicad_sch', 'changed'),
-        ('%s.kicad_pcb' % DM_PROJ, '%s.kicad_pcb' % V2_PROJ, 'bit'),
-        ('%s.kicad_dru' % DM_PROJ, '%s.kicad_dru' % V2_PROJ, 'bit'),
+        # FBV2-P1 rebuilt the board from the nine-sheet schematic and FBV2-P1-002
+        # added the U1 thermal-pad hole-size guard, so neither of these can be
+        # bit-identical to Beta-DM any longer.  The expectation moved with the
+        # design, not the other way round.
+        ('%s.kicad_pcb' % DM_PROJ, '%s.kicad_pcb' % V2_PROJ, 'changed'),
+        ('%s.kicad_dru' % DM_PROJ, '%s.kicad_dru' % V2_PROJ, 'changed'),
         ('%s.kicad_sch' % DM_PROJ, '%s.kicad_sch' % V2_PROJ, 'changed'),
         ('%s.kicad_pro' % DM_PROJ, '%s.kicad_pro' % V2_PROJ, 'changed'),
         ('%s.kicad_prl' % DM_PROJ, '%s.kicad_prl' % V2_PROJ, 'norm'),

@@ -2,14 +2,18 @@
 
 **AUTHORITATIVE PRE-CAD DIMENSION SOURCE.**
 
-Date: 2026-08-22 (updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic port, M-14**; and by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12; **RF off-board interfaces sourced 2026-08-23 by FBV2-S2-001** — §8 and M-13; **PRE-FLOORPLAN AUTHORITY RECONCILIATION 2026-08-23 by FBV2-MECH-002** — NFC clear zone, `J1` land pattern and assembly route, SMA↔IR spacing datum, speaker Z column, §4.1 content list and the machine-readable block; companion handoff [`P1_FLOORPLAN_INPUTS.md`](P1_FLOORPLAN_INPUTS.md))
+Date: 2026-08-22 (updated **2026-08-24 by FBV2-P1-002 — circular NFC geometry D-224, 915 feed and cable D-222/D-223, SMA and B-52 D-230, retention D-226, IR forming D-229**; previously updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic port, M-14**; and by FBV2-DISP-002, FBV2-COMM-001 and FBV2-COMM-002 — display, display connector and community connector LOCKED; annotated 2026-08-23 after FBV2-S1-003; **audio parts LOCKED 2026-08-23 by FBV2-S1-006** — §7 and the envelope table; **IR parts LOCKED 2026-08-23 by FBV2-S1-007** — §8 and the component table; **front RGB status light added 2026-08-23 by FBV2-S1-008** — §9 and M-11; **community connector footprint VERIFIED AND BUILT 2026-08-23 by FBV2-S1-009** — §5 and M-12; **RF off-board interfaces sourced 2026-08-23 by FBV2-S2-001** — §8 and M-13; **PRE-FLOORPLAN AUTHORITY RECONCILIATION 2026-08-23 by FBV2-MECH-002** — NFC clear zone, `J1` land pattern and assembly route, SMA↔IR spacing datum, speaker Z column, §4.1 content list and the machine-readable block; companion handoff [`P1_FLOORPLAN_INPUTS.md`](P1_FLOORPLAN_INPUTS.md))
 
 > **P1 NOTE — FBV2-P1-001 (2026-08-24).** The floorplan now exists. **Board-side convention
 > LOCKED: `F.Cu` = FRONT (display, buttons), `B.Cu` = REAR (battery) — D-214.** Rear packing is
 > **NFC -> battery -> speaker, 48 + 75 + 20 = 143 mm in the 155 mm cavity — D-215.** The
 > **internal 915 MHz whip storage channel is DELETED — D-219**; the LEFT wall now belongs to the
-> 433 MHz flex. The **915 pigtail is `095-902-568-100` (100 mm) — D-218 — and the P1 geometry
-> proves it DOES NOT REACH** the top-panel SMA; see D-218 and the P1 floorplan. Coordinates,
+> 433 MHz flex **and to the 915 coax channel**. ~~The **915 pigtail is `095-902-568-100`
+> (100 mm) — D-218 — and the P1 geometry proves it DOES NOT REACH** the top-panel SMA~~
+> **SUPERSEDED 2026-08-24 by D-223: the pigtail is RF Solutions `CBA-UFLSMA20IP`, 200 mm, IP67,
+> RG-178, U.FL right-angle → SMA(F) bulkhead, and the FBV2-P1-002 floorplan measures a 138.48 mm
+> routed run against it — 46.52 mm of spare beyond the 15 mm service loop. THE 915 FEED CLOSES
+> AND FBV2-P1 PASSES.** Coordinates,
 > keepouts and measured clearances live in [`../pcb/FBV2_P1_FLOORPLAN.md`](../pcb/FBV2_P1_FLOORPLAN.md)
 > and [`../pcb/FBV2_P1_KEEPOUTS.md`](../pcb/FBV2_P1_KEEPOUTS.md).
 
@@ -30,7 +34,7 @@ Date: 2026-08-22 (updated 2026-08-23 by FBV2-S2-002 — **microphone acoustic po
 > has the opposite stack and is intended for bonding onto a PCB or component surface — with
 > it the ferrite would sit between the coil and the tag. **The connector, cable, diameter and
 > interface are identical, so the board is unaffected.**
-> **Clear region: 48 × 48 mm minimum** — the 46 mm antenna plus installation tolerance.
+> ~~**Clear region: 48 × 48 mm minimum**~~ **SUPERSEDED 2026-08-24 by D-224. The clear region is Ø48 mm CIRCULAR and the metal exclusion is Ø58 mm CIRCULAR, both centred on doc (30.800, 124.500). The 48 × 48 square is RETAINED but only as the placement / positioning-tolerance envelope for the Ø46 antenna — never again as the metal-free shape. The Ø58 circle is INSCRIBED IN the superseded 58 × 51 rectangular keep-out, so the radial clearance was not reduced; only the four corners are reclaimed.**
 > Rear upper region; **no battery overlap**; **ferrite face toward the internal electronics
 > and ground plane**, per the manufacturer's stack orientation for the `.dg` variant; no
 > speaker-magnet overlap; **no metal bosses or screws through the active zone**; the stored
@@ -169,7 +173,7 @@ INTERNAL_CAVITY_Z = 23  − 2(2.0 wall) − 0.5                     = 18.5 mm
 | intrusion | typical |
 |---|---|
 | Shell lip / tongue-and-groove at the seam | 1.0–1.5 mm inward, full perimeter |
-| Mounting bosses | Ø6.0 mm × full height, 6 places |
+| Mounting bosses | ~~Ø6.0 mm × full height, 6 places~~ **SUPERSEDED by D-226: 2 places, Ø4.5 mm keep-out (moulded boss OD 4.0 mm + 0.25 mm per side), plus moulded edge-capture rails and four rear non-metallic support ribs that need no PCB holes** |
 | Stiffening ribs | 1.5 mm × 3 mm tall, as needed on the 160 mm spans |
 | Connector aperture reinforcement | local |
 
@@ -285,7 +289,7 @@ originally asked for and never received.
 |---|---|
 | Count | **6 × M2** — 4 corners plus 2 mid-span at Y ≈ 50 mm and Y ≈ 100 mm |
 | Why 6 | A 148 mm span on 1.6 mm FR4 with a battery behind it will flex under button pressure with corner support alone |
-| Boss keepout | **Ø6.0 mm** copper-and-component free |
+| Boss keepout | ~~**Ø6.0 mm** copper-and-component free~~ **SUPERSEDED by D-226: Ø4.5 mm. A Ø6.0 keep-out has ZERO legal sites on this outline** |
 | Corner inset | 5.0 mm from each board edge |
 | Board edge clearance | **≥1.5 mm** to any cavity wall |
 
@@ -419,8 +423,8 @@ natural home for the NFC loop, and it costs nothing.
 | Loop location | rear upper third, centred in X | **TARGET** |
 | **Battery / NFC overlap** | **ZERO overlap permitted** | **TARGET** — this is the policy, not a mitigation |
 | Ferrite | **0.3 mm layer between the loop and the PCB**, full loop footprint | **TARGET** — the PCB ground pour is the near-field threat once the battery is moved away |
-| Metal keepout | no metal within **5 mm** of the loop perimeter, including screws, bosses and shielding cans | **TARGET** |
-| Screw/boss keepout | the two mid-span bosses must sit **below** Y = 100, i.e. outside the loop zone | **TARGET** |
+| Metal keepout | no metal within **5 mm** of the loop perimeter, including screws, bosses and shielding cans — **now the Ø58 mm circle, D-224.** Recorded inside it and accepted: the battery pouch foil by 3.000 mm and `D1`'s TSAL6100 leadframe by 2.854 mm; **neither is a screw, a boss or a shielding can, and the Ø48 CLEAR region keeps 2.000 mm of zero-overlap gap to the battery** | **TARGET** |
+| Screw/boss keepout | **SUPERSEDED by D-226: there are no mid-span bosses. The outline yields exactly TWO legal through-board M2 positions — doc (40.000, 12.000) and (59.000, 145.000) — both far outside the Ø58 exclusion.** | **LOCKED by measurement** |
 | Matching network | on the PCB, **within 15 mm** of the loop feed point | **TARGET** |
 | Speaker separation | ≥20 mm from the loop perimeter; the magnet is the largest ferrous mass in the device | **TARGET** |
 | ~~**Stored antenna**~~ | **DELETED 2026-08-24 (D-219).** There is no internal antenna storage channel. The left wall carries the **433 MHz flex** at board Y 1.5…48.5, which does not reach the loop zone | **CLOSED** |

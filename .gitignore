@@ -27,3 +27,7 @@ _autosave-*
 # release packages, which we do want tracked.
 /hardware/beta/kicad/aqroot-beta.zip
 /hardware/beta/kicad.zip
+
+# Python bytecode from the hardware check scripts
+__pycache__/
+*.pyc

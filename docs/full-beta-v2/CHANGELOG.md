@@ -1,3 +1,113 @@
+## 2026-08-24 — the circular keepout that opened the 915 lane (FBV2-P1-002)
+
+**FBV2-P1 PASSES. Overall 68% → 74% — the third of the twelve gates.** Full analysis:
+[`audits/2026-08-24-p1-floorplan-closeout.md`](audits/2026-08-24-p1-floorplan-closeout.md).
+New working document: [`assembly/IR_LEAD_FORMING.md`](assembly/IR_LEAD_FORMING.md).
+
+### The 915 feed closes, and the reason is width, not length
+
+FBV2-P1-001 failed the gate on the 915 MHz pigtail, and the diagnosis in that audit was only half
+right. Length was never the binding constraint: **the SMA is locked to the top-panel LEFT half and
+the NFC region owned the entire upper-left**, so a 200 mm or a 300 mm cable would both have had to
+cross the clear zone or run inside the 5 mm metal keep-out.
+
+The circular geometry unlocks it — but **not because a circle is smaller than a square.** It is,
+only at the corners, and the corners were never in the way. It unlocks it because a circle can be
+**re-centred** against a hard right-hand limit in a way a 58-wide rectangle sitting at x −4.5 … 53.5
+could not. The width budget is the whole argument: **75 mm of cavity, 58 mm of Ø58 exclusion,
+12.1 mm owned by `J5` — 4.9 mm of coax lane, and only if the exclusion is pushed as far right as
+`J5` allows.** It now is, with the loop perimeter **5.490 mm** from `J5`'s copper against a ≥ 5 mm
+rule.
+
+**NFC clear Ø48, metal exclusion Ø58, both centred doc (30.800, 124.500)**; the 48 × 48 square is
+retained but only as the placement-tolerance envelope. The centre moved **+6.30 mm in X**, which is
+the 915 solution, and **−1.50 mm in Y**, which buys the SMA its margin (D-224).
+
+**Measured, not estimated: the route is 138.48 mm** including bend allowances, with a **7.42 mm**
+minimum available bend radius against the ≥ 5 mm rule and **0.600 mm** at its tightest point to the
+Ø58 exclusion — **zero violations** against the 433 flex, the battery, the speaker cavity, the
+microSD card-travel volume, the USB aperture, both IR optical regions, the barrier, the community
+recess and `J5` (D-222).
+
+**`U7` and `U8` are swapped.** The two Ebyte footprints are dimensionally identical, so the swap
+costs **zero plan area** and puts the length-critical 915 module beside the only north-south cable
+channel on the board. The 433 flex needs 44 of its 100 mm either way. **The SMA bulkhead moves from
+x 12.000 to x 5.000** — still top panel, left half, and the move only *improves* both SMA↔IR rules.
+
+### The cable, and a procurement fix that came free
+
+**`095-902-568-100` → RF Solutions `CBA-UFLSMA20IP`, 200 mm** (D-223). The CTO's own threshold
+decides it: 138.48 mm is comfortably ≤ 180 mm, so the 200 mm assembly locks and the 250 mm Taoglas
+`CAB.01034` stays a recorded fallback. Verified live under D-096 — DigiKey **ACTIVE, 296 in
+stock**; CPC **IP67**, 7 in stock; the manufacturer drawing confirms *UFL right angle · waterproof
+SMA female bulkhead straight · heatshrink · RG178*. **Mating verdict: COMPATIBLE** — Hirose U.FL
+and I-PEX MHF1 are the same interface and the plug gender is right for the `E22-900M22S` socket.
+**Spare 46.52 mm beyond the mandated 15 mm service loop. Feed loss ≈ 0.4 dB.**
+
+**And the superseded part was ACTIVE but 0 in stock on a 12-week factory lead.** The replacement is
+stocked at two distributors today.
+
+### Three findings the previous pass had wrong
+
+**The ESP32 thermal vias were never in violation.** The board's global floor is
+`min_through_hole_diameter` = **0.20 mm**, not 0.30. The twelve errors P1-001 attributed to them
+were **twelve `copper_edge_clearance` errors on `J5`**, whose PTH field ended 0.445 mm from the
+board edge against a 0.5 mm rule. `J5` moved **0.070 mm** west and all twelve went away. JLCPCB
+capability was verified live anyway — 0.20 mm holes in 0.60 mm pads are **supported at no
+premium** — and a **narrowly scoped guard** was added to `.kicad_dru` so the manufacturer's array
+stays legal if the global floor is ever raised. **The global minimum was not lowered** (D-228).
+
+**`BOSS2` was never legal.** P1-001 placed it at (59.5, 145.0), inside the **mandatory opaque IR
+barrier**. Corrected to (59.0, 145.0), with the barrier **widened 3.0 → 5.0 mm** to fill the whole
+inter-window gap — strictly better optically, touching neither window — so barrier and boss are now
+one moulded feature (D-226).
+
+**Writing the IR forming requirement found that the formed LED did not fit.** A formed `TSAL6100`
+occupies **0.6 mm of bend radius + 2.0 mm of straight lead (Vishay's stated minimum from the epoxy
+case) + 8.7 ± 0.3 mm of body = up to 11.6 mm** in +Y from its pads. At P1-001's Y = 143.600 the
+dome would have ended **1.2 mm outside the enclosure's external top face**. `D1` moved to
+(50.750, 141.400); `TP39` and `R123` moved 1.750 mm to clear it; `U6` needs ≈ 9.0 mm and fits
+unmoved (D-229).
+
+### Retention: the honest number is two, and it is escalated
+
+**Ø6.0 keep-out — zero legal sites. Ø4.5 — two.** The display owns X 3.39 … 59.93 on the front and
+the battery owns X 6.00 … 66.00 on the rear; between them they leave a **3.39 mm left sliver and a
+4.00 mm right sliver, both narrower than a Ø4.5 keep-out**. Only the 23.5 mm bottom band and the
+8 mm top band can host a through-board screw at all, and each yields exactly one. The top-left
+corner and the left margin are now the mandatory 915 coax channel.
+
+Structural support is completed by the enclosure and needs no PCB holes: moulded edge-capture rails
+plus four rear non-metallic support ribs on reserved component-free pads, all outside the battery
+shadow. **§9 sets three as the acceptable minimum and this outline yields two — escalated, and the
+only new item for CTO decision** (D-226).
+
+### `MK1`, and what did not change
+
+`padstack_invalid` **2 → 0**. The GND ring becomes a plain filled Ø1.65 mm SMD pad with the
+concentric Ø1.05 mm **non-plated** hole drilling the centre out — same annulus, no custom pad, no
+fake plated through-hole. The paste becomes one filled **C-shaped** polygon, the same ID 1.25 /
+OD 1.65 ring with a 20° web. **Acoustic opening, annulus dimensions, paste pullback, keep-out and
+microphone location all unchanged** (D-227).
+
+**The display Z stack was not spent.** P1-001's recommendation to raise the display support by
+≈ 3 mm as the primary 915 solution is **rejected and withdrawn** — the circular geometry closed the
+feed without touching Column A's 9.9 mm of unused Z. The **3.34 mm left offset is accepted as
+intentional** (D-225).
+
+### Numbers
+
+**DRC 64 → 47**, every one classified: 24 silkscreen, 21 vendor intra-footprint land patterns for
+the P2 rule pass, 1 `MK1` mask-aperture artefact left in place, 1 silk edge. **`padstack_invalid`
+2 → 0, `copper_edge_clearance` 12 → 0, `lib_footprint_issues` 3 → 0.** **Nothing was fake-cleaned:
+no DRC exclusion, no severity change, no relaxed global rule.** ERC **27 / 0 errors**, histogram
+byte-identical. Schematic connectivity **unchanged** — the sheets were not opened. Placement
+collisions **0**. **ZERO tracks, ZERO vias, ZERO copper pours; 499 unrouted, the correct P1 state.**
+`netclass_probe` **PASS**, `fork_equivalence` **PASS** with Beta-DM and the frozen Beta tree
+untouched. **FBV2-P2 has not begun.**
+
+---
+
 ## 2026-08-24 — the enclosure-driven floorplan, and the cable that cannot reach (FBV2-P1-001)
 
 **FBV2-P1 DOES NOT PASS. Overall stays 68%.** One gate criterion fails — the 100 mm 915 MHz

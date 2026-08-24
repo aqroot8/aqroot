@@ -894,3 +894,42 @@
 (rule "E6_BL_KVIA: measured local backlight clearance 0.250 mm"
 	(constraint clearance (min 0.250mm))
 	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad' && A.enclosedByArea('E6_BL_KVIA_CLR')"))
+
+
+# =====================================================================
+# 15. U1 ESP32-S3-WROOM-1 THERMAL-PAD VIAS  (P1-O5 RESOLVED, FBV2-P1-002)
+#
+# The stock RF_Module:ESP32-S3-WROOM-1 land pattern carries TWELVE plated
+# holes on pad 41, the exposed thermal pad: 0.20 mm DRILL in a 0.60 mm pad,
+# i.e. a 0.200 mm annular ring.  That geometry is the MANUFACTURER's, taken
+# from the Espressif recommended PCB land pattern, and it is what conducts
+# the module's dissipation into the In1.Cu ground plane.  It is NOT a
+# routing via and it must not be enlarged to suit a generic rule.
+#
+# FABRICATOR CAPABILITY, verified live 2026-08-24 against the JLCPCB PCB
+# capability table for multilayer boards:
+#     minimum via hole size            0.15 mm
+#     minimum via diameter (pad)       hole + 0.10 mm (0.15 mm preferred)
+#     surcharge threshold              "0.2 mm or 0.25 mm hole size WITH a
+#                                       via diameter LESS THAN 0.45 mm"
+# The footprint's 0.20 mm hole sits in a 0.60 mm pad, so it is above the
+# 0.45 mm surcharge threshold: SUPPORTED ON THE INTENDED 4-LAYER 1.6 mm
+# JLC04161H-7628 STACK AT NO PREMIUM.  No fabricator exception is required
+# and nothing about the footprint changes.
+#
+# The board's global floor is already min_through_hole_diameter = 0.20 mm,
+# so these twelve holes raise ZERO violations today - the FBV2-P1-001 audit
+# recorded twelve "0.2 mm via" errors that were in fact the twelve J5
+# board-edge clearance errors, now fixed by the 0.070 mm J5 nudge.
+#
+# This rule is therefore a GUARD, not a waiver.  It pins the manufacturer
+# geometry to U1's own pads so that if the global floor is ever raised to
+# 0.30 mm - which is the right floor for ROUTING vias - the thermal array
+# does not silently become illegal and get "corrected" away.  The global
+# minimum is NOT lowered by this rule and no other hole on the board is
+# affected.  Last-match precedence puts it after the POWER drill rule.
+# ---------------------------------------------------------------------
+
+(rule "FP-U1 ESP32-S3-WROOM-1 manufacturer thermal-pad vias (0.20 mm drill)"
+	(constraint hole_size (min 0.20mm) (max 0.20mm))
+	(condition "A.Type == 'Pad' && A.memberOfFootprint('U1') && A.Pad_Number == '41'"))

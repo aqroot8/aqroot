@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — FBV2-P1 floorplan inputs
 
-**Status: CONSUMED BY FBV2-P1-001 (2026-08-24).** Created 2026-08-23 at **FBV2-MECH-002**.
+**Status: CONSUMED BY FBV2-P1-001 AND CLOSED OUT BY FBV2-P1-002 (2026-08-24).** Created 2026-08-23 at **FBV2-MECH-002**.
 
 > **The floorplan now exists.** For the built geometry — datum, outline, coordinates, keepouts
 > and measured clearances — read [`../pcb/FBV2_P1_FLOORPLAN.md`](../pcb/FBV2_P1_FLOORPLAN.md),
@@ -10,7 +10,7 @@
 > (D-215)** — the battery itself creates the speaker-to-loop separation. **O-3 answered
 > (D-216)** — only **3 of 6** M2 bosses close, and only at a Ø4.5 mm keepout. **O-4 closed
 > (D-217)** — the rule is now **≥ 8 mm BODY edge-to-edge** and the board achieves 16.40 mm.
-> **O-5 ruled (D-218)** — the pigtail is `095-902-568-100`, **and P1 proves it does not reach**.
+> ~~**O-5 ruled (D-218)** — the pigtail is `095-902-568-100`, **and P1 proves it does not reach**.~~ **O-5 CLOSED 2026-08-24 (D-222/D-223): the pigtail is RF Solutions `CBA-UFLSMA20IP` (200 mm, IP67, RG-178) and the measured routed run is 138.48 mm with 46.52 mm of spare. O-3 SUPERSEDED (D-226): TWO M2 positions, not three, and the shortfall is escalated. **FBV2-P1 PASSES.**
 > **O-6 closed (D-219)** — internal whip storage deleted; the left wall is the 433 flex's.
 Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md).
@@ -159,7 +159,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 
 | # | constraint | value | status |
 |---|---|---|---|
-| N-1 | **NFC clear zone** | **48 × 48 mm MINIMUM CLEAR REGION**, metal-free | **LOCKED** (D-127/D-128/D-131) |
+| N-1 | **NFC clear zone** | ~~48 × 48 mm minimum clear region~~ **Ø48 mm CIRCULAR clear region, centre doc (30.800, 124.500); Ø58 mm CIRCULAR metal exclusion; the 48 × 48 square retained only as the placement-tolerance envelope** | **LOCKED** (D-127/D-128/D-131, **shape and centre superseded by D-224**) |
 | N-2 | Antenna | Taoglas **`FXC.46.52.0075X.B.dg`** — **Ø46 mm, 0.3 mm thick, REVERSE ferrite** | **LOCKED** |
 | N-3 | Mounting | **adhesive side bonds to the INNER REAR shell surface**; field reads **OUTWARD** through the rear plastic; **ferrite faces INWARD** toward the PCB and battery | **LOCKED** |
 | N-4 | Zone location | **rear upper third, centred in X** | **TARGET** |
@@ -202,7 +202,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 |---|---|---|---|
 | C-1 | NFC antenna → `J7` | **75 mm** 28 AWG twisted pair, ACH(F) | **LOCKED** (part) |
 | C-2 | 433 antenna → `U7` | **100 mm** | **LOCKED** (part) |
-| C-3 | 915 `U8` → SMA bulkhead | **100 mm** RG-178, `095-902-568-100` (D-218) | **LOCKED** (part) — ***but FBV2-P1 measures a ≈ 190 mm routed run: SHORT BY ≈ 90 mm. OPEN.*** |
+| C-3 | 915 `U8` → SMA bulkhead | ~~100 mm RG-178, `095-902-568-100`~~ **200 mm RG-178, RF Solutions `CBA-UFLSMA20IP`, IP67, U.FL right-angle → SMA(F) bulkhead (D-223)** | **LOCKED** — **FBV2-P1-002 measures a 138.48 mm routed run; 138.48 + 15 mm service loop = 153.48 of 200 mm, spare 46.52 mm. CLOSED.** |
 | C-4 | Speaker → `J6` | **152 ± 10 mm** UL1571 AWG #32, RED (+) / BLACK (−), JST `PHR-2` + `SPH-002T-P0.5S` | **LOCKED** (part) |
 | C-5 | Speaker polarity | cone moves **FORWARD** on positive at the **RED** lead = `SPK_P` = `J6` pin 1 | **LOCKED** |
 | C-6 | **Crossing rule** | **no antenna cable may cross another antenna's radiating element or the IR optical path**; the NFC pair must stay clear of the 433 flex | **LOCKED** |
@@ -212,7 +212,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 
 | # | constraint | value | status |
 |---|---|---|---|
-| M-1 | Count and size | **6 × M2** | **TARGET** |
+| M-1 | Count and size | ~~6 × M2~~ **2 × M2 through-board — the measured maximum on this outline (D-226). Escalated: §9 of the closeout task set 3 as the acceptable minimum** | **LOCKED by measurement** |
 | M-2 | Arrangement | **4 corners plus 2 mid-span**, nominally at **Y ≈ 50 mm and Y ≈ 100 mm** | **TARGET** — see §9 O-3 |
 | M-3 | Corner inset | **5.0 mm from each board edge** | **TARGET** |
 | M-4 | Boss keepout | **Ø6.0 mm copper-and-component free**, full height | **TARGET** |

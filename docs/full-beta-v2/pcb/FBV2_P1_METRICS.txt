@@ -1,52 +1,100 @@
-BOARD                 70.0 x 148.0 x 1.6 mm  (target 70.0 x 148.0, max 72.0 x 152.0)
-CAVITY FIT            board edge -> cavity wall  X 2.5 mm, Y 3.5 mm  (min 1.5)
-COMPONENTS            321 placed   F.Cu 120   B.Cu 201
-DISPLAY               module 56.54 x 84.96 at X 3.39..59.93, Y 55.04..140.00
-DISPLAY CENTRING      display centre X 31.66  vs board centre 35.00  -> 3.34 mm LEFT of board centre
-J1 FH69               X 16.38..46.95  Y 43.66..53.80   top of connector 1.24 mm below the panel edge
-FPC REACH             tail 30.0 +/- 0.5 mm; consumed = 4.7 drop + 6.0 fold + 3.0 run = 13.7 mm
-FPC MARGIN            15.8 mm spare on the 29.5 mm worst-case tail
-microSD J2            courtyard X 6.36..21.64  Y 0.06..19.95   body X 7.00..21.00
-USB-C J3              courtyard X 36.63..47.37  Y 0.49..9.53   body X 37.40..46.60
-USB <-> microSD       BODY edge-to-edge 16.40 mm   (rule >= 8.00)  centre-to-centre 28.00 mm
-USB-C CENTRING        7.00 mm right of board centre
-CARD TRAVEL           reserved 22.2 mm outside the shell (zone USD_APERTURE)
-J5 COMMUNITY          X 60.36..69.58  Y 105.22..136.78   pin field 27.94 x 7.87, 24 x D0.71 PTH
-J5 -> right edge      0.42 mm of board beyond the pad field
-J5 vs BATTERY         gap 6.72 mm (battery top Y 98.5)
-J5 vs NFC+5           gap 6.86 mm in X
-SW9 POWER             X 60.38..69.22  Y 64.95..75.05
-SW1 BOOT              X 61.48..68.36  Y 78.91..89.09  (recessed tool access)
-IR TX D1              centre X 50.75 Y 143.60   IR RX U6 centre X 65.75 Y 143.40
-IR TX <-> IR RX       15.00 mm centre-to-centre  (rule >= 15.00)
-IR BARRIER            X 57.50..60.50, full height, bonded to both shells
-SMA BULKHEAD          hole centre X 12.00 (top panel, left half), D6.5 clearance hole
-SMA <-> IR TX         centre-to-centre 39.55 mm (rule >= 15.00)   edge-to-edge 31.05 mm (rule >= 8.00)
-SMA <-> IR RX         centre-to-centre 54.36 mm (rule >= 15.00)   edge-to-edge 45.86 mm (rule >= 8.00)
-ESP32 U1              body X 42.90..63.06  Y 9.90..30.10  side F  antenna faces +X (right wall)
-ESP32 KEEP-OUT        all-layer zone X 63.06..84.06  Y -4.00..44.00  -> 6.94 mm on-board, 14.06 mm off-board
-ESP32 vs BATTERY      0.00 mm  |  vs NFC zone 71.90 mm  |  vs SPEAKER 0.00 mm
-NFC ZONE              X 0.50..48.50  Y 102.00..148.00  = 48.0 x 48.0 mm (rule >= 48 x 48, extends 2.0 mm above the board)
-BATTERY               X 6.00..66.00  Y 23.50..98.50 = 60.0 x 75.0 x 8.0
-NFC <-> BATTERY       3.50 mm gap, ZERO overlap
-SPEAKER               X 48.00..68.00  Y 1.00..21.00  D20 x 3 + sealed cavity
-SPEAKER <-> BATTERY   2.50 mm gap
-SPEAKER <-> NFC       81.00 mm to the loop perimeter (rule >= 20.00)
-MK1 MICROPHONE        B.Cu at X 3.00 Y 50.00  (bottom port, listens FORWARD through the board)
-MIC <-> SPEAKER       67.42 mm centre-to-centre (rule >= 60.00), opposite faces
-MIC vs BATTERY        1.21 mm clear of the battery envelope
-U7 E07-400M10S        B.Cu at X 9.00 Y 12.00  (IPEX faces the rear shell -> serviceable)
-433 FLEX              left cavity wall, board Y 1.5..48.5, 47 x 17 x 0.28 mm
-433 CABLE REACH       straight 16.6 mm, routed est. 35.7 mm of the 100 mm lead  -> REACHES
-U8 E22-900M22S        B.Cu at X 26.00 Y 12.00
-915 CABLE REACH       straight 140.2 mm, routed est. 190.3 mm  vs 100 mm assembly  -> DOES NOT REACH
-915 vs 100 mm assembly  routed est. 190.3 mm -> SHORT by 90 mm
-915 vs 150 mm assembly  routed est. 190.3 mm -> SHORT by 40 mm
-915 vs 200 mm assembly  routed est. 190.3 mm -> REACHES
-915 vs 300 mm assembly  routed est. 190.3 mm -> REACHES
-SPEAKER CABLE         J6 at X 37.00 Y 20.00 -> speaker centre, straight 22.8 mm of the 152 mm lead
-NFC CABLE             J7 B.Cu at X 52.00 Y 102.00 -> antenna centre, straight 35.9 mm of the 75 mm lead
-MOUNTING BOSSES       3 x M2 placed, D4.5 mm keepout (target 6 x M2, D6.0)
-   BOSS1              X 3.50  Y 44.00
-   BOSS2              X 59.50  Y 145.00
-   BOSS3              X 40.00  Y 12.00
+AQROOT Full Beta v2 - FBV2-P1 floorplan metrics (doc datum: origin lower-left, Y up)
+======================================================================================================================
+BOARD OUTLINE                          70.000 x 148.000 mm            70.000 x 148.000          PASS
+FOOTPRINTS                             323 total, 321 schematic + 2 boss 321 schematic             PASS
+DUPLICATE REFERENCES                   0                              0                         PASS
+SIGNAL TRACKS / VIAS / ZONES           0 / 0 / 0 fills                0 / 0 / 0                 PASS
+
+-- NFC, circular geometry (D-220) ------------------------------------------------------------------------------------
+NFC CENTRE                             doc (30.800, 124.500)   identical for all three regions
+NFC CLEAR REGION                       Oe48.0  -> X 6.80..54.80  Y 100.50..148.50
+NFC METAL EXCLUSION                    Oe58.0  -> X 1.80..59.80  Y 95.50..153.50
+NFC PLACEMENT / TOLERANCE BOX          48 x 48 -> X 6.80..54.80  Y 100.50..148.50
+NFC clear <-> battery gap              2.0                            >= 0 zero overlap         PASS
+battery inside NFC metal Oe58          3.0                            informational           
+NFC loop <-> speaker                   80.919                         >= 20.0                   PASS
+NFC clear <-> 433 flex body            58.079                         > 0                       PASS
+NFC clear region inside cavity         -                              true                      PASS
+NFC loop perimeter <-> J5 metal        5.490 mm                       >= 5.0                    PASS
+
+OBJECTS INSIDE THE Oe58 METAL EXCLUSION - recorded; none is a screw, boss or can:
+   battery pouch foil                  3.000 mm inside   (1.500 mm inside the superseded 58 x 51 rectangle)
+   D1 TSAL6100 leadframe               2.854 mm inside,  2.146 mm outside the Oe48 loop perimeter
+   (D1 also sat inside the superseded rectangular keep-out - not a regression)
+   U6                                   +10.733 mm  OUTSIDE
+   J5                                    +5.279 mm  OUTSIDE
+   J7                                    +1.914 mm  OUTSIDE
+   BOSS1                                +83.876 mm  OUTSIDE
+   BOSS2                                 +5.864 mm  OUTSIDE
+   MK1                                  +50.518 mm  OUTSIDE
+
+-- 915 MHz feed ------------------------------------------------------------------------------------------------------
+U8 E22-900M22S                         B.Cu, courtyard X 1.055..16.945  Y 1.455..22.795
+U8 IPEX / MHF1 port                    doc (9.00, 16.60)
+SMA BULKHEAD                           doc (5.00, 148.00) top panel, Oe6.5 hole
+COAX ROUTE                             (9.0,16.6) -> (5.4,19.2) -> (3.0,25.5) -> (3.0,108.0)
+                                       (0.3,118.5) -> (0.3,130.5) -> (5.0,143.0) -> (5.0,148.0)
+COAX POLYLINE LENGTH                   134.88 mm
+COAX ROUTED LENGTH incl. bends         138.48 mm
+COAX MINIMUM BEND RADIUS               7.42 mm                        >= 5.0 (C-7)              PASS
+INSTALLED LENGTH + service loop        153.48 mm                      <= 200 (CBA-UFLSMA20IP)   PASS
+SPARE ON THE 200 mm ASSEMBLY           46.52 mm beyond the 15 mm service loop
+COAX vs every hard obstacle            0 violations                   0                         PASS
+   tightest: seg4  NFC Oe58 metal exclusion         0.600 mm
+   tightest: seg5  NFC Oe58 metal exclusion         0.760 mm
+   tightest: seg3  NFC Oe58 metal exclusion         1.133 mm
+   tightest: seg1  battery envelope                 1.191 mm
+
+-- SMA bulkhead and the top panel (B-52) -----------------------------------------------------------------------------
+SMA BODY, from CAB/CBA manufacturer drawing:  8.00 mm A/F hex = Oe9.24 across corners,
+                                       1/4-36 UNS-2A thread, Oe10.2 REF lock washer,
+                                       HEX8 nut 1.80 mm thick, hex body 3.40 mm long
+SMA hex Oe9.24 <-> NFC Oe58            1.279                          >= 0                      PASS
+SMA washer Oe10.2 <-> NFC Oe58         0.798                          >= 0                      PASS
+SMA <-> IR TX window centre-to-centre  47.25                          >= 15.0                   PASS
+SMA body <-> IR TX aperture edge-to-edge 38.381                         >= 8.0                    PASS
+SMA <-> IR RX window centre-to-centre  60.75                          >= 15.0                   PASS
+SMA body <-> IR RX aperture edge-to-edge 51.881                         >= 8.0                    PASS
+SMA washer edge -> cavity left wall    2.4                            >= 0                      PASS
+
+-- IR ----------------------------------------------------------------------------------------------------------------
+IR TX D1 optical axis                  doc (50.750, 141.400)
+IR RX U6 optical axis                  doc (65.750, 143.400)
+IR TX <-> IR RX centre-to-centre       15.000 mm                      >= 15.0                   PASS
+IR BARRIER                             X 56.500..61.500 full height, both shells;
+                                       fills the whole inter-window gap and carries BOSS2
+
+-- bottom edge and community port ------------------------------------------------------------------------------------
+microSD <-> USB-C courtyard edge       14.990 mm                      >= 8.0 (D-217)            PASS
+J5 copper to board edge                0.515 mm                       >= 0.5                    PASS
+J5 COMMUNITY courtyard                 X 60.290..69.510  Y 105.215..136.785
+
+-- rear reservations -------------------------------------------------------------------------------------------------
+BATTERY                                X 6.0..66.0  Y 23.5..98.5  (60 x 75 x 8.0) UNCHANGED
+SPEAKER                                X 48.0..68.0  Y 1.0..21.0  (Oe20 x 3 sealed) UNCHANGED
+MK1 <-> speaker centre-to-centre       67.424 mm                      >= 60.0, opposite faces   PASS
+
+-- internal cables ---------------------------------------------------------------------------------------------------
+U7 E07-400M10S                         B.Cu, courtyard X 18.055..33.945  Y 1.455..22.795
+433 flex lead, routed                  44.12 mm of 100 mm             <= 100                    PASS
+NFC pair, routed estimate              41.73 mm of 75 mm              <= 75                     PASS
+speaker lead, routed estimate          29.31 mm of 152 mm             <= 152                    PASS
+
+-- display and J1 ----------------------------------------------------------------------------------------------------
+DISPLAY MODULE                         X 3.39..59.93  Y 55.04..140.00
+DISPLAY OFFSET                         3.34 mm LEFT of the board centreline - ACCEPTED, INTENTIONAL (D-224)
+J1 FH69                                X 16.375..46.945  Y 43.655..53.795
+FPC consumed of the 29.5 mm worst case 14.94 mm                       <= 29.5                   PASS
+
+-- retention ---------------------------------------------------------------------------------------------------------
+BOSS1                                  doc (40.000, 12.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
+BOSS2                                  doc (59.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
+SEARCH RESULT                          Oe6.0: 0 legal sites   Oe4.5: 2 legal sites
+SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_B1 RIB_B2 + 915 SLACK COIL
+
+-- placement collision review ----------------------------------------------------------------------------------------
+side-aware courtyard collisions        0                              0                         PASS
+parts outside the board in X           0                              0 (courtyard may overhang Y at the edges)  PASS
+
+======================================================================================================================
+REGRESSION: PASS   (0 checks failed)
