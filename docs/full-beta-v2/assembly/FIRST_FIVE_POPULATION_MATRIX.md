@@ -7,6 +7,14 @@ Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
 **322 schematic components · 306 FITTED · 16 DNP · 1 off-board (`LS1`) · 47 test points.**
 
+> **RE-CHECKED 2026-08-23 (FBV2-S2-002). The counts are unchanged — but eight of the sixteen DNP parts still carried NO RECORDED REASON, and all eight now do (D-208).**
+>
+> - **`U13`, `L2`, `R44`, `R45`, `C34`, `C35`** are the **NFC 5 V boost branch** — TPS61023 + 1 µH + feedback divider + output caps producing `NFC_5V_PA_PENDING` from `BQ25185_SYS`. **DNP is correct**: D-055/D-056 select `NFC_SUPPLY` = `+3V3` through `R106` (fitted), and `R107` (DNP) is the mutually exclusive 5 V link. **The branch is preserved, not abandoned** — a D-049 no-respin escape if the 3.3 V field measures short. **Never fit `R106` and `R107` together.** Traced through the netlist and confirmed **not** to be an inherited Beta-DM oversight.
+> - **`R119`** is the BMI270 alternate-address strap. `R118` (fitted, 0 Ω to GND) holds `BMI270_SDO_ADDR` low so the IMU answers at **0x68**. **`R118` and `R119` are mutually exclusive — fitting both shorts `+3V3` to GND through two 0 Ω links.**
+> - **`R112`** links display `SDO` to the shared `SPI_A_MISO`, DNP so the panel cannot drive the bus the microSD reads on. Fitting it is a bring-up provision and **must not** be done while **MX-8** is relied on.
+>
+> **The design now has zero DNP parts without a recorded reason.** For the route each FITTED part takes to the board, see [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md).
+
 ---
 
 ## 1. The rule this file exists to enforce

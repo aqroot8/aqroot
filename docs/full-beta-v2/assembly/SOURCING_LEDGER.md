@@ -1,5 +1,10 @@
 # AQROOT Full Beta v2 — sourcing ledger
 
+**Status: SUPERSEDED FOR ASSEMBLY ROUTING by**
+[`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) **(FBV2-S2-002, B-71 closed).**
+That file carries the live LCSC/JLC state, the A–F class for every part and the consignment
+plan. **This file remains normative for the sourcing *evidence* behind each MPN.**
+
 **Status: NORMATIVE for the first five boards.** Generated 2026-08-23 at FBV2-S2-001 from the
 schematic, not from a spreadsheet. Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md).
 
@@ -8,6 +13,8 @@ a selection, until a live manufacturer or distributor record confirms lifecycle 
 
 **46 unique MPNs across 322 schematic components. Every active and every connector now carries an
 exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
+
+> **UPDATED 2026-08-23 (FBV2-S2-002).** **65 `LCSC` fields have been written into the schematic**, so the BOM is now exportable directly. **Three MPN strings were corrected**: `J6` → `B2B-PH-K-S(LF)(SN)` and `J7` → `BM02B-ACHSS-GAN-ETF(LF)(SN)` — in both cases the bare order code resolves to a **zero-stock** LCSC listing while the plating-suffixed string is abundantly stocked — and `L2`/`L4` were normalised to one spelling of "Würth". **`L5`/`L6` gained an MPN for the first time** (Murata `LQW18AN39NG80D`, B-70). **Six substitution traps** found while doing this are listed in [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §8 **and are recorded in the schematic symbols themselves**.
 
 ---
 

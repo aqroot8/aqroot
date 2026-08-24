@@ -1,3 +1,125 @@
+## 2026-08-23 — S2 release closeout: the footprint that wasn't broken, and six wrong parts (FBV2-S2-002)
+
+**Overall raised 62% → 68%. FBV2-S2 = PASS** — the second of the twelve gates to pass. Full
+analysis: [`audits/2026-08-23-s2-release-closeout.md`](audits/2026-08-23-s2-release-closeout.md).
+New working document:
+[`assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`](assembly/FIRST_FIVE_ASSEMBLY_PLAN.md).
+
+**ERC 27 / 0 errors / 27 — the violation-type histogram is identical to the FBV2-S2-001 baseline.
+The schematic diff is property-only. The PCB is untouched and still bit-identical to Beta-DM.**
+
+### The MAX98357A footprint looked broken and was not
+
+Maxim outline **21-0136** lists exposed-pad variations in which **`T1633-5` is 1.50 / 1.60 /
+1.70 mm** while `T1633-2/-4/-7C` are 0.95 / **1.10** / 1.25. The KiCad footprint cites
+**21-0136 (T1633-5)** in its own `descr` and then draws a **1.23 × 1.23** land — sized for the
+1.10 family. That is a footprint contradicting its own citation, on a thermal pad, and the obvious
+move was to fork a corrected project-local footprint.
+
+**Maxim land pattern 90-0032 Rev E dissolves it.** The drawing is issued under **PKG. CODES
+[T1633-5], [T1633-5C] and [T1633-7C] together** and specifies **one land for all three** — EP
+**1.23 × 1.23**, pads **0.80 × 0.30**, pitch **0.50**, centreline span **2.85**. Maxim
+deliberately recommends a land smaller than the T1633-5 pad, **so the question of which variant
+`MAX98357AETE+T` carries does not have to be answered to get the land right** — which is
+fortunate, because analog.com, Mouser and LCSC all refused the datasheet in this environment.
+
+Against the library file: **EP exact, pitch exact, inner pad edge exact at 1.025** — so
+EP-to-signal clearance is Maxim's own 0.410 mm — pad centre **+0.0125** (inside the drawing's own
+±0.02), length **+0.025**, width **−0.05**. **No project-local footprint was created.** Forking
+one to chase 0.05 mm of pad width, buying a side fillet at the cost of a thinner mask dam at
+0.5 mm pitch, would have been a change made for the sake of having made one. **The right outcome
+of a verification is sometimes "it was already correct" — but only after the drawing is read.**
+
+**All eight remaining Tier-2 footprints are now Tier 1**, compared dimension by dimension. `Y1`'s
+land is an **exact** match to the vendor's own Suggested Layout (1.4 × 1.2 at (±1.10, ±0.85)), and
+`Y1` itself moves from **candidate to lock** — `C362365`, 3,421 in stock, ±30 ppm total against an
+ISO/IEC 14443 requirement of ±516 ppm.
+
+### The microphone port existed only as a sentence
+
+`AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm` was Tier 1 for its pads, and its `descr` then said the
+acoustic port was *"NOT PART OF THIS FOOTPRINT … an FBV2-S2 / PCB-stage item."* **A port that
+lives in a description is a port that gets forgotten at placement.**
+
+It is now drawn: **Ø1.05 mm NPTH** — **the diameter is not invented, it is the inner diameter of
+the manufacturer drawing's own pad-4 GND ring**, i.e. the part's own aperture — plus a **paste
+pullback**, pad 4 losing `F.Paste` entirely in favour of a separate **ID 1.25 / OD 1.65** annular
+aperture **0.10 mm** back from the copper edge. **The 0.10 mm is a declared stencil design choice,
+not a drawing dimension, and the footprint says so.** Keepout marked on `B.Fab` and
+`User.Comments`; **bottom-port orientation** — the part listens *through* the board, so the
+enclosure aperture belongs on the **bottom** face — recorded as **M-14**.
+
+### Six substitution traps, and two MPN strings that would have stalled the order
+
+All 46 MPNs were checked against **live JLCPCB parts-API state**. A loose keyword search **returns
+a plausible wrong part more often than it returns nothing**:
+
+- **`BAT54W,115` offered for `BAT54WS,115`** — a **single diode** for a **series pair**
+- **G-Switch `GT-TC089A-H043-L1`** for **C&K `PTS645SM43SMTR92LFS`** — 35 placements
+- **FUXINSEMI `SD103AWS`** for **onsemi `NSR0240HT1G`**
+- **LRC `LBSS138LT1G`** for **onsemi `BSS138LT1G`**, which has 762,522 in stock
+- **KOHERelec `SPM4030-1R0M`** for **Würth `74438357010`**
+- a **VBsemi clone** for **onsemi `NTMD4820NR2G` — the battery reverse-polarity pass FETs**
+
+**Every one is now recorded in the schematic symbol itself.** No substitute was adopted;
+`BAT54WS-7-F` and `0466005.NRHF` are candidates awaiting sign-off.
+
+**`J4` and `J6` are the same JST PH header and carried two different MPN strings.** Not cosmetic:
+the bare order code is `C20504437` with **stock 0**, while `B2B-PH-K-S(LF)(SN)` is `C131337` with
+**378,913**. `J7` had the identical fault. **A BOM that produces two lines for one part, one of
+which cannot be filled, is a BOM that stalls at the quote stage.**
+
+### The build closes — through consignment, not through hand assembly
+
+**Two through-hole parts per board are hand-soldered (`J5`, `D1`). Zero fine-pitch or QFN parts
+are hand-placed.** Ten parts have stock short of the first-five need and one is not in the LCSC
+library at all; **all are consigned to JLC and stay machine-placed.** The sharpest case is
+`U2`/`U3`/`U23` — **fifteen TSSOP-24 at 0.65 mm pitch against one in stock**. **`J1` improves**:
+JLC carries the genuine Hirose `FH69-50S-0.5SH` with 1,072 in stock, so the display connector is
+machine-placed after all.
+
+### The NFC numbers are now datasheet numbers
+
+DS12484 Rev 3 finally came through a **mikroe.com mirror** after st.com timed out repeatedly.
+**`I_AL-AM` max 26 mA** for the IC with all blocks active plus **≈ 60 mA** for the driver into
+D-134's *actual* first-build network → **allocate 100 mA**, replacing D-130's ≤ 150 mA estimate.
+**Table 118's 350 mA and 500 mA are absolute maximum ratings and were deliberately not used** —
+that is exactly the number a careless budget grabs. TPS63020 lands at **63–71 % of 2 A**.
+**One binding guard rail: D-134 records that `C_s` 300 pF → 270 pF draws ≈ 257 mA, which this
+allocation does not cover.**
+
+**`L5`/`L6` = Murata `LQW18AN39NG80D`** — and the useful finding is that **the DCR is not
+negligible**. `R_q` is only **1.1 Ω** per arm, so **0.20 Ω max drops the network Q from 25.3 to
+≈ 21.4**. That moves further into the safe, under-driven side D-134 chose, but **the antenna must
+be bench-tuned with this exact part fitted**, and **if the field is short the first lever is `R_q`,
+not 39 nH.**
+
+### Eight DNP parts still had no recorded reason
+
+After seven consecutive sheets of load-bearing inherited `DNP`, an unexplained one is the single
+thing this project cannot afford to leave lying around. **`U13`, `L2`, `R44`, `R45`, `C34`, `C35`
+are the NFC 5 V boost branch** — correct, and a D-049 no-respin escape if the 3.3 V field measures
+short. **`R119`** is the BMI270 alternate-address strap, **mutually exclusive with `R118`**.
+**`R112`** isolates the display `SDO` from the shared MISO and **must not be fitted while MX-8 is
+relied on**. **All eight now carry a note; the design has zero unexplained DNP.**
+
+### O-8 — verified, not accepted
+
+Taoglas **`TI.92.2113`** against **SPE-19-8-076/A**: 902–928 MHz, terminal-mount dipole, hinged
+SMA(M), 198 ±3.3 mm × Ø13 mm, 1 W max input, and Taoglas' own statement that it *"performs very
+well in free space … where there may be no ground plane."* Every expectation checks out. **Worth
+saying anyway: the marketed "2 dBi" is the bent-configuration peak — the table gives 1.21 dBi
+straight and negative average gain in both orientations. Budget the link with the average.**
+
+### What was NOT done
+
+No PCB placement, no routing, no outline change, no mechanical CAD, no firmware, no Beta-DM, no
+frozen Beta. **No honest ERC warning was "fixed"** — no no-connect, power flag, pin electrical
+type or exclusion was added, removed or altered anywhere. **No product feature was added.** No
+part was substituted. Passive values remain unconsolidated.
+
+---
+
 # AQROOT Full Beta v2 — Changelog
 
 Chronological engineering changes and why they happened. Newest entries at the

@@ -1,6 +1,6 @@
 # AQROOT Full Beta v2 — footprint verification ledger
 
-**Status: NORMATIVE.** Generated 2026-08-23 at FBV2-S2-001. This file exists because **B-03** has
+**Status: NORMATIVE.** Generated 2026-08-23 at FBV2-S2-001, **B-03 CLOSED and B-63 CLOSED 2026-08-23 at FBV2-S2-002.** This file exists because **B-03** has
 stood since the pre-design audit: *"every other footprint remains unverified."*
 
 > **A footprint is only marked VERIFIED here if a manufacturer drawing was read and its document
@@ -15,7 +15,7 @@ footprint — `LS1`, the off-board wired speaker — which is correct.**
 
 ## 1. TIER 1 — manufacturer-drawing verified, with citation
 
-**15 of the 28 critical footprints.** Each carries the source document in its own `descr` field,
+**23 of the 28 critical footprints — was 15; the eight promoted at FBV2-S2-002 are listed separately in §2A so the evidence is not buried.** Each carries the source document in its own `descr` field,
 so the evidence travels with the library rather than living only here.
 
 | footprint | part | drawing cited |
@@ -45,24 +45,87 @@ datasheet's "2.90 mm × 2.80 mm" is length × lead span, which is standard SOT-2
 
 ## 2. TIER 2 — vendor-specific stock footprint, drawing NOT re-read
 
-**These are the outstanding items.** Each is a KiCad library footprint whose name encodes a
-specific vendor part rather than a generic package, so it is traceable — but **no drawing was read
-in this task**, and the standing instruction forbids calling that verified.
+**EMPTY. B-03 CLOSED 2026-08-23 at FBV2-S2-002.**
 
-| footprint | part | why it is Tier 2 |
-|---|---|---|
-| `RF_Module:ESP32-S3-WROOM-1` | **`U1`** | Largest part on the board; castellated pads plus a large thermal land. A wrong land here is fatal and expensive |
-| `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` | `J3` | 16-contact USB-C with shell mounts; mechanical and electrical |
-| `Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical` | `J7` | 1.20 mm pitch NFC antenna connector with a mounting peg |
-| `Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical` | `J4`, `J6` | Battery and speaker; through-hole, load-bearing |
-| `Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92` | `SW1`–`SW7` | Seven user buttons; actuator height and land geometry drive the enclosure |
-| `Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN` | `SW9` | The hard power switch |
-| `Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` | `U5` MAX98357A | Exposed thermal pad on the amplifier |
-| `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | `Y1` | 27.12 MHz NFC crystal; the vendor's own recommended land should be read |
+All eight remaining Tier-2 footprints were read against a current manufacturer drawing and
+compared **numerically**, dimension by dimension, to the actual KiCad footprint file. **None was
+promoted on the strength of its name.** Two of the eight were expected to fail and did not; one
+looked like it had failed and turned out to be the reading that was wrong. Details in §2A.
 
-> **These eight are the single remaining FBV2-S2 exit-gate failure.** They do not block PCB
-> *placement* — the pin counts, pitches and package identities are fixed — but they **must be read
-> against manufacturer drawings before fabrication release.**
+---
+
+## 2A. B-03 closure — the eight, with the numbers
+
+| footprint | part | drawing read | numerical result |
+|---|---|---|---|
+| `RF_Module:ESP32-S3-WROOM-1` | `U1` | Espressif **ESP32-S3-WROOM-1 datasheet v1.8, Figure 11-1** module dimensions and recommended PCB land pattern | **MATCH.** 40 castellated lands **1.5 × 0.9** at **1.27** pitch, row centre-to-centre **17.5**; thermal land **3.9 × 3.9** solid copper with **12** thermal vias, paste split into **nine 0.9 × 0.9 apertures spanning exactly 3.7 × 3.7**. The paste split is correct practice, not a deviation |
+| `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` | `J3` | GCT **USB4105 series drawing** | **MATCH.** Contact field span **8.64**; **12 × 1.15**, **4 × 0.60**, **8 × 0.30** at **0.50** pitch; **2 × Ø0.65 NPTH** locating holes; **4 × 1.00** shell lands |
+| `Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical` | `J7` | JST **ACH series** drawing | **MATCH.** Pitch **1.2**, contact land **0.85**, mounting-peg land **0.8**, peg span **3.5** |
+| `Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical` | `J4`, `J6` | JST **PH series** drawing | **MATCH.** Pitch **2.00 ± 0.05**; hole **Ø0.7 +0.1 / −0**, so the library's **0.75** drill sits mid-window rather than at either limit |
+| `Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92` | `SW1`–`SW7` | C&K **PTS645 series, SMT "G-Type" recommended layout** | **EXACT MATCH.** Layout envelope **9.5 / 6.4** in x and **5.8 / 3.2** in y gives pads **1.55 × 1.3** centred at **(±3.975, ±2.25)**; the library is **(±3.98, ±2.25)** |
+| `Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN` | `SW9` | C&K **JS series** drawing — already read at FBV2-S1-007 and re-confirmed from the note carried in the `SW9` symbol | **MATCH.** Pitch **2.5 TYP**, two **Ø0.9** locating holes at **6.8** span (x = ±3.4), body **9.0 × (3.6 + 2.0)**, with a documented **1.25-vs-1.2** land fillet allowance |
+| `Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` | `U5` MAX98357A | Maxim package outline **21-0136** *and* land pattern **90-0032 Rev E** — both retrieved and read | **MATCH — and this is the one that looked wrong.** See §2B |
+| `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | `Y1` | Yajingxin **TXM27.12M0004322DBBDO00T** data sheet, *Suggested Layout* panel | **EXACT MATCH.** Pads **1.4 × 1.2**, column gap **0.8**, row gap **0.5** → centres **(±1.10, ±0.85)**; the library is **1.4 × 1.2 at (±1.10, ±0.85)**. Package **3.20 ±0.1 × 2.50 ±0.1 × 0.70 ±0.1** |
+
+### 2B. The MAX98357A exposed pad — a contradiction that dissolved
+
+Maxim outline **21-0136** publishes an **EXPOSED PAD VARIATIONS** table. `T1633-5` is
+**1.50 / 1.60 / 1.70 mm**; `T1633-2`, `-4` and `-7C` are **0.95 / 1.10 / 1.25 mm**. The KiCad
+footprint's own `descr` cites **21-0136 (T1633-5)** — the 1.60-nominal variant — while its exposed
+land is **1.23 × 1.23**, which is sized for the 1.10-nominal family. On its face that is an
+internally inconsistent footprint on a thermal pad, and the obvious conclusion was that a
+corrected project-local footprint was needed.
+
+**It is not inconsistent.** Maxim land pattern **90-0032 Rev E**, titled *"PACKAGE LAND PATTERN,
+[T1633] 16L TQFN, 3X3 MM"*, is issued under **PKG. CODES [T1633-5], [T1633-5C] and [T1633-7C]
+together** and specifies **one land for all three**: EP **1.23 × 1.23**, perimeter pads
+**0.80 × 0.30**, pitch **0.50**, pad **centreline** span **2.85**, IPC-7351A, tolerance ±0.02.
+Maxim deliberately recommends a land smaller than the T1633-5 exposed pad. **So the question of
+which EP variant `MAX98357AETE+T` carries does not have to be answered to get the land right** —
+which is fortunate, because every route to the ADI datasheet package table was blocked in this
+environment.
+
+Numerical comparison against the library file:
+
+| dimension | 90-0032 Rev E | KiCad | delta |
+|---|---|---|---|
+| EP land | 1.23 × 1.23 | 1.23 × 1.23 | **0** |
+| pitch | 0.50 | 0.50 | **0** |
+| pad **inner** edge | 1.025 | 1.025 | **0** — EP-to-signal clearance is Maxim's own 0.410 |
+| pad centre | 1.425 | 1.4375 | +0.0125 — inside the drawing's own ±0.02 |
+| pad length | 0.80 | 0.825 | +0.025 toe |
+| pad width | 0.30 | **0.25** | −0.05 — zero side fillet, but a 0.25 mm pad gap and a safer mask dam at 0.5 mm pitch |
+
+**No project-local footprint was created.** Both deviations are ≤ 0.05 mm, IPC-7351B compliant,
+and both fall on the safe side for a first build. EP paste is four 0.5 × 0.5 apertures over the
+1.23 land — **66 % coverage**, which is correct QFN practice and not a defect. The evidence is
+recorded in the `U5` symbol so it travels with the design.
+
+---
+
+## 2C. B-63 — the microphone acoustic footprint is now complete
+
+`AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm` was already Tier 1 for its **pads**, but its own
+`descr` said the acoustic port was *"NOT PART OF THIS FOOTPRINT … an FBV2-S2 / PCB-stage item."*
+A port that exists only as a sentence in a description is a port that gets forgotten at placement.
+**It is now drawn.**
+
+- **Acoustic hole: Ø1.05 mm NPTH**, concentric with pad 4. **The diameter is not invented** — it
+  is the **inner diameter of the manufacturer drawing's own pad-4 GND ring** (ID 1.05 / OD 1.65),
+  i.e. the port aperture of the part itself.
+- **Paste pullback:** pad 4 no longer carries `F.Paste`. Its paste is a **separate annular
+  aperture, ID 1.25 / OD 1.65** — pulled back **0.10 mm** from the copper inner edge so molten
+  solder cannot wick into the port. **The 0.10 mm is a stated stencil design choice, not a drawing
+  dimension**, and it is labelled as such in the footprint. Coverage ≈ **72 %** of the ring land.
+- **Keepout:** a dashed `B.Fab` circle at Ø2.0 plus a `User.Comments` legend mark the region that
+  must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces**.
+- **Orientation:** this is a **bottom-port** microphone. It sits on the **top** of the PCB and
+  listens **through** the board, so **the acoustic path leaves on the bottom face** — the
+  enclosure aperture and any gasket belong on that face, not the component face. Recorded as a
+  mechanical-interface constraint (**M-14**).
+
+The edited footprint was re-loaded through KiCad's own `pcbnew` parser to confirm it is valid:
+seven signal pads, one paste-only aperture, one Ø1.05 NPTH.
 
 ---
 
@@ -74,7 +137,7 @@ in this task**, and the standing instruction forbids calling that verified.
 `VSSOP-8_3x3mm_P0.65mm` (`U16`) · `TSSOP-24_4.4x7.8mm_P0.65mm` (`U2`, `U3`, `U23`) ·
 `Diode_SMD:D_SOD-123` (`D9`), `D_SOD-323` (`D8`, `D10`–`D12`) · `Fuse:Fuse_1206_3216Metric` (`F1`) ·
 `LED_THT:LED_D5.0mm` (`D1`) · `Resistor_SMD:R_0603_1608Metric` (127) ·
-`Capacitor_SMD:C_0402/0603/0805` (80) · `Inductor_SMD:L_0603_1608Metric` (`L5`, `L6`) ·
+`Capacitor_SMD:C_0402/0603/0805` (80) · `Inductor_SMD:L_0603_1608Metric` (`L5`, `L6` — **now Murata `LQW18AN39NG80D`, B-70 closed**) ·
 `TestPoint:TestPoint_Pad_D1.0mm` (47).
 
 **Pin-level confirmations already on record:** AO3400A **1 = G / 2 = S / 3 = D** (FBV2-S1-007);

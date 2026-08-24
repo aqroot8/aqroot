@@ -43,10 +43,23 @@ present on the standard part number. Mates MHF1/U.FL directly.
 
 ## 4. RF — 915 MHz
 
+> **Read the gain number carefully.** Taoglas markets the `TI.92.2113` as "2 dBi". The data sheet
+> table says **peak gain 1.21 dBi straight and 2.14 dBi bent**, and **average gain is negative in
+> both orientations** (−0.97 dB straight, −1.35 dB bent). The headline figure is the *bent-peak*.
+> Budget the link with the average, not the peak.
+>
+> **Mating chain, end to end:** `E22-900M22S` IPEX/MHF1 socket → Amphenol AMC right-angle plug
+> (documented by Amphenol as *compatible with Hirose U.FL and IPEX MHF1*) → RG-178 150 mm →
+> **SMA female** bulkhead jack through the panel → **SMA male** hinged connector on the
+> `TI.92.2113`. **Every interface is female-to-male in the right direction.**
+>
+> **Power margin:** the module transmits **+22 dBm (0.16 W)** into an antenna rated **1 W** —
+> better than 6× headroom.
+
 | item | MPN | qty | evidence |
 |---|---|---|---|
 | **U.FL/MHF-I → SMA female bulkhead pigtail** | **Amphenol RF `095-902-568-150`** | 1 | Amphenol RF product page 2026-08-23: **Part Status ACTIVE**. AMC right-angle plug → **SMA straight bulkhead jack, IP67**, **RG-178**, **50 Ω**, **150 mm**, **6 GHz** max, 5.34 g, RoHS (exemption 6C). Amphenol's AMC series is **"compatible with Hirose U.FL and IPEX MHF1"** |
-| **915 MHz external antenna, SMA male** | **to be selected at procurement** | 1 | A standard 868/915 MHz SMA-male whip. **Not yet selected — see O-8** |
+| **915 MHz external antenna, SMA male** | **Taoglas `TI.92.2113`** | 1 | **LOCKED by CTO ruling, O-8 CLOSED 2026-08-23 (D-198).** Verified against Taoglas data sheet **SPE-19-8-076/A**: **ISM 915, 902–928 MHz**; **terminal-mount DIPOLE**; **hinged SMA(M)** connector as standard, so it mounts straight or right-angled; **198 ±3.3 mm × Ø13 mm**; TPEE body, **22.5 g**; 50 Ω, linear, omnidirectional; **max input power 1 W**; −40 to +85 °C. Efficiency **80.01 % straight / 73.20 % bent**. The reason it was chosen is in the data sheet in Taoglas' own words: it *"performs very well in free space, making it an ideal solution in areas where there may be no ground plane"* — AQROOT is a handheld that cannot provide the 30 × 30 cm ground plane a common monopole whip prefers |
 
 **This is ONE assembly: the pigtail and the panel bulkhead are the same orderable part, so no
 separate bulkhead MPN is needed.** Loss at 915 MHz is ≈ **0.4 dB** (RG-178 ≈ 1.2 dB/m × 0.15 m
@@ -106,6 +119,6 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 
 | # | item |
 |---|---|
-| **O-8** | **The 915 MHz external antenna MPN is not selected.** Everything from the module to the bulkhead is now locked and orderable; the whip on the outside is not. It is an accessory-class purchase with no board impact, but it must exist before a range test means anything |
+| ~~**O-8**~~ | **CLOSED 2026-08-23 (FBV2-S2-002).** Taoglas **`TI.92.2113`** locked by CTO ruling and verified live against the manufacturer data sheet. **No hardware or schematic change was required** — the panel connector is SMA **female** on the Amphenol pigtail and the antenna is SMA **male**, so the interface was already correct |
 | **M-04** | Battery SKU — envelope frozen, SKU at procurement |
 | — | Enclosure-side hardware beyond the SMA nut is **mechanical CAD scope**, deliberately not listed here |
