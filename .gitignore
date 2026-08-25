@@ -31,3 +31,9 @@ _autosave-*
 # Python bytecode from the hardware check scripts
 __pycache__/
 *.pyc
+
+# Router scratch workspace.  route_battery_block.py builds project-faithful
+# copies of the whole KiCad project here to route and DRC against; it is
+# regenerated on every run and must never be committed.
+hardware/beta-v2/checks/w/
+hardware/beta-v2/checks/__pycache__/

@@ -78,6 +78,89 @@ def check(label, referenced, available, failures):
         failures.append('%s: %r' % (label, m))
 
 
+# --------------------------------------------------------------------------
+# PR-11 / section 8: a width exception may only live inside a CORRIDOR.
+#
+# A bounding box around a 20 mm branch was a 67 x 23 mm hole in the trunk rule.
+# These checks make that shape impossible to reintroduce quietly:
+#
+#   C1  every area a width rule names must exist on the board;
+#   C2  a corridor must not be a rectangle - four vertices IS a bounding box;
+#   C3  a corridor must fill most of its own bounding box, so it hugs the
+#       branch instead of enclosing the neighbourhood;
+#   C4  every track lying inside a corridor must belong to the corridor's own
+#       net, so a corridor can never grant its lower floor to an unrelated
+#       high-current traverse.
+CORRIDOR_MIN_FILL = 0.35        # area / bbox area, below which it is a box
+CORRIDOR_BOX_EXEMPT_MM2 = 9.0   # a genuinely tiny area may be a rectangle
+
+
+def corridor_checks(failures):
+    try:
+        import pcbnew
+    except ImportError:
+        print('  corridors             skipped (needs KiCad python)')
+        return
+    dru = open(DRU, 'rb').read().decode('utf-8')
+    body = strip_comments(dru)
+    # area name -> net named in the same rule
+    want = {}
+    for m in re.finditer(r"\(rule \"([^\"]+)\"(.*?)\n\n", dru + '\n\n', re.S):
+        txt = m.group(2)
+        a = re.search(r"enclosedByArea\('([^']+)'\)", txt)
+        n = re.search(r"NetName == '([^']+)'", txt)
+        if a:
+            want[a.group(1)] = n.group(1) if n else None
+    if not want:
+        print('  corridors               0 declared   OK')
+        return
+    b = pcbnew.LoadBoard(PCB)
+    zones = {}
+    for z in b.Zones():
+        if z.GetIsRuleArea() and z.GetZoneName():
+            zones[z.GetZoneName()] = z
+    bad = 0
+    for name, net in sorted(want.items()):
+        z = zones.get(name)
+        if z is None:
+            failures.append('corridor missing: %r' % name)
+            print('      MISSING CORRIDOR: %r' % name)
+            bad += 1
+            continue
+        o = z.Outline()
+        verts = sum(o.Outline(i).PointCount() for i in range(o.OutlineCount()))
+        bb = z.GetBoundingBox()
+        box = (bb.GetWidth() / 1e6) * (bb.GetHeight() / 1e6)
+        area = o.Area() / 1e12
+        fill = area / box if box else 1.0
+        if box > CORRIDOR_BOX_EXEMPT_MM2 and (verts <= 4 or fill < CORRIDOR_MIN_FILL):
+            failures.append('corridor %r is a bounding box (%.1f x %.1f mm, '
+                            'fill %.2f, %d vertices)'
+                            % (name, bb.GetWidth() / 1e6, bb.GetHeight() / 1e6,
+                               fill, verts))
+            print('      BOUNDING BOX: %-24s %.1f x %.1f mm  fill %.2f  %d vertices'
+                  % (name, bb.GetWidth() / 1e6, bb.GetHeight() / 1e6, fill, verts))
+            bad += 1
+            continue
+        # C4: nothing foreign may sit inside the corridor
+        foreign = set()
+        for t in b.GetTracks():
+            if t.GetClass() != 'PCB_TRACK' or not net:
+                continue
+            if t.GetNetname() == net:
+                continue
+            if o.Collide(t.GetStart()) or o.Collide(t.GetEnd()):
+                foreign.add(t.GetNetname() or '<none>')
+        if foreign:
+            failures.append('corridor %r admits foreign nets: %s'
+                            % (name, ', '.join(sorted(foreign))))
+            print('      FOREIGN IN CORRIDOR: %-20s %s'
+                  % (name, ', '.join(sorted(foreign))))
+            bad += 1
+    print('  %-22s %3d declared, %d bad   %s'
+          % ('corridors', len(want), bad, 'FAIL' if bad else 'OK'))
+
+
 def main():
     dru, pcb, pro = load()
     body = strip_comments(dru)
@@ -134,6 +217,8 @@ def main():
     print('  %d board nets, %d classified, %d on Default'
           % (len(nets), sum(1 for v in resolved.values() if v != 'Default'),
              sum(1 for v in resolved.values() if v == 'Default')))
+
+    corridor_checks(failures)
 
     if failures:
         print('DRU PROBE: FAIL (%d)' % len(failures))

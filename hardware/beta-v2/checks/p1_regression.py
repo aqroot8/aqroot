@@ -29,7 +29,13 @@ def row(name, value, rule, ok):
 
 
 def main():
-    b, parts = G.load_parts()
+    # optional board override, so P1 can be re-verified on a scratch copy
+    # before any of it reaches the authoritative project
+    pcb = None
+    for a in sys.argv[1:]:
+        if a.endswith('.kicad_pcb'):
+            pcb = a
+    b, parts = G.load_parts(pcb) if pcb else G.load_parts()
     P = {p['ref']: p for p in parts}
     fails = []
 
@@ -265,9 +271,11 @@ def main():
          % ('PASS' if not fails else 'FAIL', len(fails), '' if len(fails) == 1 else 's'))
     for f in fails:
         emit('   FAILED: ' + f)
-    if len(sys.argv) > 1:
-        with open(sys.argv[1], 'w', encoding='utf-8') as fh:
-            fh.write('\n'.join(OUT) + '\n')
+    for a in sys.argv[1:]:
+        if not a.endswith('.kicad_pcb'):
+            with open(a, 'w', encoding='utf-8') as fh:
+                fh.write('\n'.join(OUT) + '\n')
+            break
     return 0 if not fails else 1
 
 

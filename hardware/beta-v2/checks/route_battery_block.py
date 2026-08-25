@@ -4,7 +4,7 @@ project-faithful scratch copy, routed by PATH ROLE.
 
 Nothing here touches the authoritative board.
 """
-import os, sys, json, math, time
+import os, sys, json, math, time, faulthandler
 SP = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SP)
 import path_role_util as RU
@@ -47,6 +47,24 @@ def mst(pads):
     return out
 
 
+def area_stats(board, area_trk):
+    out = {}
+    for name, trks in area_trk.items():
+        if not trks:
+            continue
+        ps = RU.corridor_from_tracks(board, trks)
+        bb = ps.BBox()
+        box = (bb.GetWidth() / 1e6) * (bb.GetHeight() / 1e6)
+        out[name] = dict(area_mm2=round(ps.Area() / 1e12, 3),
+                         bbox_mm=[round(bb.GetWidth() / 1e6, 2),
+                                  round(bb.GetHeight() / 1e6, 2)],
+                         fill_ratio=round(ps.Area() / 1e12 / box, 3) if box else 0,
+                         vertices=sum(ps.Outline(i).PointCount()
+                                      for i in range(ps.OutlineCount())),
+                         segments=len(trks))
+    return out
+
+
 def connected(pcb, a, b):
     bd = pcbnew.LoadBoard(pcb)
     bd.BuildConnectivity()
@@ -63,6 +81,9 @@ def connected(pcb, a, b):
 
 
 def main():
+    if os.environ.get('AQROOT_WATCHDOG'):
+        faulthandler.dump_traceback_later(
+            int(os.environ['AQROOT_WATCHDOG']), repeat=True)
     t_all = time.time()
     pcb = RU.fresh(WORK, "A")
     b = pcbnew.LoadBoard(pcb)
@@ -86,34 +107,41 @@ def main():
     for (net, ref), p in qb.pads.items():
         pads.setdefault(net, {})[ref] = p
 
-    journal, stubs, area_box = [], [], {}
-    state = dict(fail=None, rn=base_rn, done=0, skipped=0)
+    journal, stubs, area_trk = [], [], {}
+    ITEM_BUDGET = float(os.environ.get('AQROOT_ITEM_BUDGET', '150'))
+
+    state = dict(fail=None, last=None, rn=base_rn, done=0, skipped=0)
 
     def apply_areas():
-        for name, bx in area_box.items():
-            RU.set_area_box(qb.b, name, bx[0] - 300000, bx[1] - 300000,
-                            bx[2] + 300000, bx[3] + 300000)
+        """PR-11: every exception area is a CORRIDOR around its own branch
+        centreline, not a bounding box.  A box around a 20 mm branch was a
+        67 x 23 mm hole in the trunk rule; a corridor covers the branch copper
+        plus 0.10 mm per side and nothing else."""
+        for name, trks in area_trk.items():
+            if trks:
+                RU.set_area_poly(qb.b, name, RU.corridor_from_tracks(qb.b, trks))
 
     def grow(area, tracks):
-        bx = area_box.get(area)
-        for t in tracks:
-            hw = t.GetWidth() // 2
-            for (x, y) in ((t.GetStart().x, t.GetStart().y),
-                           (t.GetEnd().x, t.GetEnd().y)):
-                nb = (x - hw, y - hw, x + hw, y + hw)
-                bx = nb if bx is None else (min(bx[0], nb[0]), min(bx[1], nb[1]),
-                                            max(bx[2], nb[2]), max(bx[3], nb[3]))
-        area_box[area] = bx
+        area_trk.setdefault(area, []).extend(tracks)
 
-    def gate():
+    def gate(verbose=False):
+        tg = [time.time()]
         apply_areas()
+        tg.append(time.time())
         # A through via punches a hole in the In1 GND plane, so the plane has to
         # be refilled before DRC means anything.  Doing it inside the gate keeps
         # every per-connection measurement honest.
         pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
+        tg.append(time.time())
         qb.save()
         DRU.write(pcb, stubs)
+        tg.append(time.time())
         after, det = RU.drc(pcb, "A", WORK)
+        tg.append(time.time())
+        if os.environ.get('AQROOT_GATE_TIMING'):
+            print("        gate: areas %.1f  fill %.1f  save %.1f  drc %.1f"
+                  % (tg[1] - tg[0], tg[2] - tg[1], tg[3] - tg[2], tg[4] - tg[3]))
+            sys.stdout.flush()
         d = dict((k, v - base.get(k, 0)) for k, v in after.items()
                  if v > base.get(k, 0) and k != 'unconnected_items')
         rn = RU.ratsnest(pcb)
@@ -145,47 +173,49 @@ def main():
         A decoupling capacitor taps the NODE; it does not sit in the current
         path, and it must not be reached through the 0.20 mm package escape at
         the far end of the trunk.  Merely nearest is not enough - the nearest
-        point on the trunk is often inside the pin field it just escaped."""
+        point on the trunk is often inside the pin field it just escaped.
+
+        Sampled at 0.5 mm and tested NEAREST-FIRST with an early exit: at
+        0.1 mm with no early exit this was thousands of full obstacle scans per
+        call, and it is called once per width rung on every fallback.
+        """
         LID = qb.b.GetLayerID('B.Cu')
-        best = None
+        cand = []
         for t in qb.b.GetTracks():
             if t.GetClass() != 'PCB_TRACK' or t.GetLayer() != LID:
                 continue
-            if t.GetNetname() != net:
-                continue
-            if str(t.m_Uuid.AsString()) in skip:
+            if t.GetNetname() != net or str(t.m_Uuid.AsString()) in skip:
                 continue
             ax, ay = t.GetStart().x, t.GetStart().y
             bx, by = t.GetEnd().x, t.GetEnd().y
             L = math.hypot(bx - ax, by - ay)
-            n = max(1, int(L // 100000))
+            n = max(1, int(L // 500000))
             for k in range(n + 1):
                 u = k / float(n)
                 px, py = int(ax + u * (bx - ax)), int(ay + u * (by - ay))
-                d = math.hypot(px - x, py - y)
-                if best is not None and d >= best[0]:
-                    continue
-                if not qb.point_free('B', net, px, py, width, CP, ct, 50000):
-                    continue
-                best = (d, px, py, t)
-        if best is None:
-            return None
-        d = RU.pseudo_pad(net, best[1], best[2], QR)
-        d['anchor'] = True
-        d['ref'] = '(node)'
-        d['track'] = best[3]
-        return d
+                cand.append((math.hypot(px - x, py - y), px, py, t))
+        cand.sort(key=lambda c: c[0])
+        for (_, px, py, t) in cand[:400]:
+            if qb.point_free('B', net, px, py, width, CP, ct, 50000):
+                d = RU.pseudo_pad(net, px, py, QR)
+                d['anchor'] = True
+                d['ref'] = '(node)'
+                d['track'] = t
+                return d
+        return None
 
-    def run(net, a, b_, role, ladder, area, ct):
+    def run(net, a, b_, role, ladder, area, ct, fatal=True):
         if state['fail']:
-            return
+            return False
         pa = pads[net].get(a)
         node = (b_ == '(node)')
         skip = set()
         pb = None if node else pads[net].get(b_)
         if pa is None or (pb is None and not node):
-            state['fail'] = '%s: missing pad %s/%s' % (net, a, b_)
-            return
+            state['last'] = '%s: missing pad %s/%s' % (net, a, b_)
+            if fatal:
+                state['fail'] = state['last']
+            return False
         ref = b_ if not node else {N + 'BAT_PROTECTED_P': 'R75.2',
                                    N + 'BAT_RAW': 'F1.2',
                                    N + 'BAT_SENSE': 'R75.1',
@@ -193,11 +223,14 @@ def main():
                                    N + 'BAT_CONNECTOR_P': 'F1.1'}.get(net)
         if ref and connected(pcb, a, ref):
             state['skipped'] += 1
-            return
+            return True
         if node:
             skip = cluster_of(a)
         m = qb.mark()
         t0 = time.time()
+        if os.environ.get('AQROOT_GATE_TIMING'):
+            print("        try   %-18s %-8s -> %-8s" % (net.split('/')[-1], a, b_))
+            sys.stdout.flush()
         r, used, hop, tapped = None, None, False, node
         if role == 'TAP':
             # A shunt tap is judged on RESISTANCE, not on raw width: an 80 mm
@@ -223,6 +256,8 @@ def main():
                          why='no corridor at any rung for %s' % a)
         else:
             for w in ladder:
+                if time.time() - t0 > ITEM_BUDGET and used is None and r is not None:
+                    break
                 tgt = anchor_on(net, pa['x'], pa['y'], w, ct, skip) if node else pb
                 if tgt is None:
                     r = dict(ok=False, reason='NO_NODE',
@@ -241,9 +276,14 @@ def main():
         #   2. B.Cu, pad to the nearest legal point on this net's own copper
         #   3. F.Cu with two through vias, pad to pad
         #   4. F.Cu with two through vias, pad to node
-        if not r['ok'] and not node:
+        # FALLBACKS ARE ABOUT TOPOLOGY, NOT WIDTH.  If the widest rung could
+        # not find a pad-to-pad corridor, retrying every rung again through the
+        # node and layer-hop paths multiplies the cost of a connection that is
+        # going to be requeued anyway.  The fallbacks use the narrowest legal
+        # rung only, which is the one most likely to fit.
+        if not r['ok'] and not node and time.time() - t0 < ITEM_BUDGET:
             skip = cluster_of(a)
-            for w in ladder:
+            for w in ladder[-1:]:
                 tgt = anchor_on(net, pa['x'], pa['y'], w, ct, skip)
                 if tgt is None:
                     continue
@@ -252,9 +292,9 @@ def main():
                     used, pb, tapped = w, tgt, True
                     break
                 qb.revert(m)
-        if not r['ok']:
+        if not r['ok'] and time.time() - t0 < ITEM_BUDGET:
             for use_node in (False, True) if not node else (True,):
-                for w in ladder:
+                for w in ladder[-1:]:
                     if use_node and not skip:
                         skip = cluster_of(a)
                     tgt = (anchor_on(net, pa['x'], pa['y'], w, ct, skip)
@@ -274,9 +314,14 @@ def main():
                     break
         if not r['ok']:
             qb.revert(m)
-            state['fail'] = '%s %s->%s (%s) : %s : %s' % (
+            state['last'] = '%s %s->%s (%s) : %s : %s' % (
                 net.split('/')[-1], a, b_, role, r['reason'], r.get('why', ''))
-            return
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs"
+                  % (net.split('/')[-1], a, b_, r['reason'], time.time() - t0))
+            sys.stdout.flush()
+            if fatal:
+                state['fail'] = state['last']
+            return False
         if tapped and pb is not None and pb.get('track') is not None:
             # Make the junction an EXACT shared endpoint of three tracks by
             # splitting the trunk at the tap point.  A branch end merely lying
@@ -303,10 +348,12 @@ def main():
             qb.revert(m)
             if stubs and stubs[-1][0] == area:
                 stubs.pop()
-                area_box.pop(area, None)
-            state['fail'] = '%s %s->%s (%s) : %s %s' % (
+                area_trk.pop(area, None)
+            state['last'] = '%s %s->%s (%s) : %s %s' % (
                 net.split('/')[-1], a, b_, role, g['why'], g.get('detail', ''))
-            return
+            if fatal:
+                state['fail'] = state['last']
+            return False
         state['done'] += 1
         journal.append(dict(net=net.split('/')[-1], a=a, b=b_, role=role,
                             mm=round(r['mm'], 3), w=used / 1e6, grid=r['grid'],
@@ -317,25 +364,49 @@ def main():
               % (role, net.split('/')[-1], a, b_, r['mm'], used / 1e6, r['grid'],
                  ('F.Cu+2 vias' if hop else '           '), time.time() - t0))
         sys.stdout.flush()
+        return True
 
-    # ORDER NOTE.  Section 12 lists BAT_PROTECTED_P last inside group A.  Taken
-    # literally that fails: the 1.00 mm BAT_MAIN copper laid first closes the
-    # west margin and leaves no 1.20 mm corridor for the one connection that has
-    # a hard floor and no fallback ladder.  Section 14 ranks LEGAL above every
-    # other objective, so the most constrained member of group A is routed
-    # first and the rest of the chain follows.  The order WITHIN the chain, and
-    # the order of groups A/B/C/D/E, is otherwise exactly as section 12 gives it.
-    print("--- A2. BAT_PROTECTED_P 1.50 mm trunk (most constrained, routed first) ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_A:
-        if net == N + 'BAT_PROTECTED_P':
-            run(net, a, b_, role, lad, area, CT_W)
+    # ORDER IS A PREFERENCE, NOT A CONTRACT.
+    #
+    # The priority list is the section 12 order refined by what this board is
+    # actually scarce in: U18's MSOP-10 pin field first - each pin has a
+    # 0.325 mm escape window and no second chance - then the 1.50 mm trunk, the
+    # BAT_MAIN chain, and test points last.
+    #
+    # But hand-tuning an order is a losing game: every fix moved the failure to
+    # the next pin.  So the list is worked as a QUEUE OVER REPEATED PASSES.  A
+    # connection that cannot route yet is set aside and retried once the others
+    # have laid their copper, and the run only fails when an entire pass makes
+    # no progress at all.  That converges on an order the board will accept
+    # rather than one that was guessed.
+    QUEUE = []
 
-    # U11.2 flared escape + the trunk approach
-    if not state['fail']:
+    def add(title, group, ct):
+        for (net, a, b_, role, lad, area) in group:
+            QUEUE.append(dict(title=title, net=net, a=a, b=b_, role=role,
+                              lad=lad, area=area, ct=ct))
+
+    add("0. U18 pin field", PL.PLAN_0_U18, CT_W)
+    add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
+    add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
+    add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
+    add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
+    add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
+    add("BAT_RAW taps", PL.PLAN_TAPS, CT_W)
+    add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
+    for short in PL.DEADCELL:
+        add("10b. dead-cell network",
+            [(N + short, a, b_, 'SIG', PL.LAD_SIG, None)
+             for a, b_ in mst(pads[N + short])], CT_S)
+    add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
+    add("12. capacitor taps", PL.PLAN_12_CAPS, CT_W)
+    add("13. test-point stubs", PL.PLAN_13_TEST, CT_W)
+
+    def u11_escape():
+        """The U11.2 flare is emitted with the trunk, not as a queue item: the
+        trunk cannot exist without its own endpoint."""
         net = N + 'BAT_PROTECTED_P'
         m = qb.mark()
-        # reachability regions seeded at D9.1's own 1.50 mm launch, so the
-        # flare ends where the trunk can actually leave from
         eD = qb.escape(pads[net]['D9.1'], 'B', PL.W_TRUNK_BPP, PL.W_TRUNK_BPP,
                        CP, CT_W, 50000, qb.ex0, qb.ey0)
         regs = {}
@@ -349,72 +420,51 @@ def main():
         f = qb.flare(net, pads[net]['U11.2'], 'B', PL.W_TRUNK_BPP, PL.W_SENSE,
                      CP, CT_W, 25000, region=regs)
         if f is None:
-            state['fail'] = 'U11.2 flared escape: none exists'
-        else:
-            grow('BAT_PROT_ESCAPE_U11', qb.laid[m[0]:])
-            lp = dict(ref='U11.2/launch', x=f['x'], y=f['y'], F=False, B=True,
-                      shape=QR.RR(f['x'], f['y'], 1, 1, 0, 0, net, 'launch'),
-                      hx=1, hy=1, r=0, ang=0, net=net, tht=False)
-            r = None
-            for w in (PL.W_TRUNK_BPP, 1200000):
-                r = QR.connect_role(qb, net, lp, pads[net]['D9.1'], 'B', w, CP, CT_W)
-                if r['ok']:
-                    break
-            if not r['ok']:
-                qb.revert(m)
-                state['fail'] = 'U11.2 approach: %s %s' % (r['reason'], r.get('why', ''))
-            else:
-                g = gate()
-                if not g['ok']:
-                    qb.revert(m)
-                    state['fail'] = 'U11.2 approach: %s %s' % (g['why'], g.get('detail', ''))
-                else:
-                    state['done'] += 1
-                    journal.append(dict(net='BAT_PROTECTED_P', a='U11.2',
-                                        b='D9.1', role='TRUNK+ESCAPE',
-                                        mm=round(f['total'] + r['mm'], 3),
-                                        w=1.5, grid=r['grid'], flare=f))
-                    print("  TRUNK BAT_PROTECTED_P    U11.2    -> D9.1    "
-                          "%8.3f mm  (escape %.3f mm, neck %.3f mm at 0.20)"
-                          % (f['total'] + r['mm'], f['total'], f['neck_len']))
+            qb.revert(m)
+            return False
+        grow('BAT_PROT_ESCAPE_U11', qb.laid[m[0]:])
+        lp = dict(ref='U11.2/launch', x=f['x'], y=f['y'], F=False, B=True,
+                  shape=QR.RR(f['x'], f['y'], 1, 1, 0, 0, net, 'launch'),
+                  hx=1, hy=1, r=0, ang=0, net=net, tht=False, anchor=True)
+        r = None
+        for w in (PL.W_TRUNK_BPP, 1200000):
+            r = QR.connect_role(qb, net, lp, pads[net]['D9.1'], 'B', w, CP, CT_W)
+            if r['ok']:
+                break
+        if not r['ok'] or not gate()['ok']:
+            qb.revert(m)
+            area_trk.pop('BAT_PROT_ESCAPE_U11', None)
+            return False
+        state['done'] += 1
+        journal.append(dict(net='BAT_PROTECTED_P', a='U11.2', b='D9.1',
+                            role='TRUNK+ESCAPE', mm=round(f['total'] + r['mm'], 3),
+                            w=1.5, grid=r['grid'], flare=f))
+        print("  TRUNK BAT_PROTECTED_P    U11.2    -> D9.1    %8.3f mm  "
+              "(escape %.3f mm, neck %.3f mm at 0.20)"
+              % (f['total'] + r['mm'], f['total'], f['neck_len']))
+        return True
 
-    print("--- A1b. C59, the long way out of the south-west corner ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_TIGHT:
-        run(net, a, b_, role, lad, area, CT_W)
-
-    print("--- A1a. south-west corner: U14 fuel-gauge taps and TP15 ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_SW:
-        run(net, a, b_, role, lad, area, CT_W)
-
-    print("--- A1. BAT_MAIN high-current chain ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_A:
-        if net != N + 'BAT_PROTECTED_P':
-            run(net, a, b_, role, lad, area, CT_W)
-
-    print("--- A2b. decoupling capacitor taps ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_CAPS:
-        run(net, a, b_, role, lad, area, CT_W)
-
-    print("--- B. Kelvin / sense branches ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_B:
-        run(net, a, b_, role, lad, area, CT_W)
-    print("--- A3. microamp taps ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_TAPS:
-        run(net, a, b_, role, lad, area, CT_W)
-    print("--- B2. LTC4368 VIN supply tap ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_B2:
-        run(net, a, b_, role, lad, area, CT_W)
-
-    print("--- E. fuel gauge / test branches ---")
-    for (net, a, b_, role, lad, area) in PL.PLAN_E:
-        run(net, a, b_, role, lad, area, CT_W)
-    print("--- C/D. LTC + dead-cell networks ---")
-    for short in PL.SIGNAL_ORDER:
-        if state['fail']:
+    u11 = [False]
+    for p_ in range(1, 7):
+        before = state['done'] + state['skipped']
+        print("--- pass %d: %d queued ---" % (p_, len(QUEUE)))
+        sys.stdout.flush()
+        rest = []
+        for it in QUEUE:
+            if state['fail']:
+                rest.append(it)
+                continue
+            if not run(it['net'], it['a'], it['b'], it['role'], it['lad'],
+                       it['area'], it['ct'], fatal=False):
+                rest.append(it)
+        QUEUE = rest
+        if not u11[0] and not state['fail']:
+            u11[0] = u11_escape()
+        if not QUEUE and u11[0]:
             break
-        net = N + short
-        for a, b_ in mst(pads[net]):
-            run(net, a, b_, 'SIG', [PL.W_SIG, 200000, 150000], None, CT_S)
+        if state['done'] + state['skipped'] == before:
+            state['fail'] = (state['last'] if QUEUE else 'U11.2 escape: none exists')
+            break
 
     apply_areas()
     pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
@@ -424,8 +474,7 @@ def main():
     rn = RU.ratsnest(pcb)
     res = dict(fail=state['fail'], connections=state['done'],
                skipped=state['skipped'], tp34=tp34, stubs=stubs,
-               areas=dict((k, [round(v / 1e6, 3) for v in bx])
-                          for k, bx in area_box.items() if bx),
+               areas=area_stats(qb.b, area_trk),
                drc=dict(sorted(after.items())), baseline=dict(sorted(base.items())),
                ratsnest=rn, ratsnest_delta=rn - base_rn, journal=journal,
                secs=round(time.time() - t_all, 1))

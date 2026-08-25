@@ -22,6 +22,8 @@ import pcbnew
 MM = 1000000            # nm per mm
 EDGE_CLR = 500000       # 0.5 mm min copper->edge
 LNAME = {'F': pcbnew.F_Cu, 'B': pcbnew.B_Cu}
+ASTAR_BUDGET = 500000     # directional states
+WAVE_BUDGET = 3000        # wavefront steps
 
 
 # --------------------------------------------------------------------------
@@ -254,9 +256,18 @@ class QBoard(object):
                                               t.GetEnd().x, t.GetEnd().y,
                                               t.GetWidth() / 2.0, t.GetNetname(), 'track'))
 
+    _obs_cache = None
+
     def obstacles(self, layer, net):
-        return ([s for s in self.shapes[layer] if s.net != net] +
-                [h for h in self.holes if h.net != net])
+        """Memoised: this list is rebuilt from ~2000 shapes and is asked for
+        once per point test, which turns an inner loop into an O(n^2) one."""
+        key = (layer, net, len(self.shapes[layer]), len(self.holes))
+        if self._obs_cache is not None and self._obs_cache[0] == key:
+            return self._obs_cache[1]
+        out = ([s for s in self.shapes[layer] if s.net != net] +
+               [h for h in self.holes if h.net != net])
+        self._obs_cache = (key, out)
+        return out
 
     # ------------------------------------------------------------- raster
     wide_nets = frozenset()
@@ -328,7 +339,15 @@ class QBoard(object):
         par = {}
         seen = set()
         pq = [(math.hypot(t[0] - s[0], t[1] - s[1]), 0.0, S, -1)]
+        # SEARCH CEILING.  A* that cannot reach its target explores the entire
+        # reachable region, and on a board where F.Cu is almost empty that is
+        # millions of directional states for a connection the retry queue is
+        # about to set aside anyway.  Giving up is the same answer, sooner.
+        budget = ASTAR_BUDGET
         while pq:
+            budget -= 1
+            if budget <= 0:
+                return None
             f, c, u, du = heapq.heappop(pq)
             if (u, du) in seen:
                 continue
@@ -380,7 +399,11 @@ class QBoard(object):
         cur = np.zeros((ny, nx), dtype=bool)
         cur[t[1], t[0]] = True
         d = 0
+        steps = WAVE_BUDGET
         while True:
+            steps -= 1
+            if steps <= 0:
+                return None
             if cur[s[1], s[0]]:
                 return dist
             nxt = np.zeros((ny, nx), dtype=bool)
@@ -486,7 +509,8 @@ class QBoard(object):
         return self.smooth(blk, raw)
 
     # -------------------------------------------------------------- escape
-    def escape(self, pad, layer, trunk_w, rule_min, clr_pad, clr_trk, G, ox, oy):
+    def escape(self, pad, layer, trunk_w, rule_min, clr_pad, clr_trk, G, ox, oy,
+               prefer=None):
         """Legal launch points for one terminal, widest legal width first.
 
         RULE MINIMUM WINS: no candidate is ever narrower than `rule_min`.
@@ -508,6 +532,19 @@ class QBoard(object):
                 n = math.hypot(u1 + u2, v1 + v2)
                 diag.append(((u1 + u2) / n, (v1 + v2) / n))
         dirs = base + diag
+        if prefer is not None:
+            # ESCAPE TOWARDS WHERE YOU ARE GOING.  Leaving a corner pin along
+            # its long axis is the textbook answer and usually right, but on
+            # U18.10 it means escaping NORTH and then walking back around the
+            # package to reach R76 in the south - straight across the lane
+            # U18.9 needs.  Ordering the candidate directions by how well they
+            # point at the destination costs nothing and removes that whole
+            # class of self-inflicted blockage.
+            px_, py_ = prefer
+            n = math.hypot(px_, py_)
+            if n > 0:
+                px_, py_ = px_ / n, py_ / n
+                dirs = sorted(dirs, key=lambda d: -(d[0] * px_ + d[1] * py_))
         widths = []
         w = trunk_w
         while w > rule_min + 1000:
@@ -873,9 +910,13 @@ def connect(qb, net, pa, pb, layer, trunk_w, rule_min, clr_pad, clr_trk, G=50000
         if not eb:
             note(qb.escape_why[0])
             return dict(ok=False, reason='NO_LEGAL_ESCAPE', why=qb.escape_why[0], pad=pb['ref'])
-        for margin in (pad_margin, pad_margin * 2, pad_margin * 4):
-            for A in ea[:4]:
-                for B in eb[:4]:
+        # SEARCH BUDGET.  Three window sizes against four escape candidates a
+        # side is forty-eight whole-board wavefronts for a connection that is
+        # going to fail anyway, and a failing connection is exactly what the
+        # retry queue needs to get through quickly.  Two and two is eight.
+        for margin in (pad_margin, pad_margin * 3):
+            for A in ea[:2]:
+                for B in eb[:2]:
                     x0 = min(A['x'], B['x'], pa['x'], pb['x']) - margin
                     x1 = max(A['x'], B['x'], pa['x'], pb['x']) + margin
                     y0 = min(A['y'], B['y'], pa['y'], pb['y']) - margin
@@ -940,8 +981,10 @@ def connect_role(qb, net, pa, pb, layer, trunk_w, clr_pad, clr_trk,
                 ends.append(dict(kind='plain', x=p['x'], y=p['y'], w=trunk_w,
                                  ln=0, pad=p))
             elif nw is None or nw >= trunk_w:
+                other = pb if p is pa else pa
                 e = qb.escape(p, layer, trunk_w, trunk_w, clr_pad, clr_trk,
-                              G_try, ox, oy)
+                              G_try, ox, oy,
+                              prefer=(other['x'] - p['x'], other['y'] - p['y']))
                 if not e:
                     return dict(ok=False, reason='NO_LEGAL_ESCAPE',
                                 why=qb.escape_why[0], pad=p['ref'])
@@ -1023,7 +1066,9 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
         ends = []
         ok = True
         for p in (pa, pb):
-            e = qb.escape(p, near, width, width, clr_pad, clr_trk, G_try, ox, oy)
+            other = pb if p is pa else pa
+            e = qb.escape(p, near, width, width, clr_pad, clr_trk, G_try, ox, oy,
+                          prefer=(other['x'] - p['x'], other['y'] - p['y']))
             if not e:
                 return dict(ok=False, reason='NO_LEGAL_ESCAPE',
                             why=qb.escape_why[0], pad=p['ref'])

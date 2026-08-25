@@ -139,3 +139,71 @@ def pseudo_pad(net, x, y, qr):
     return dict(ref='(tap)', x=int(x), y=int(y), F=False, B=True,
                 shape=qr.RR(int(x), int(y), 1, 1, 0, 0, net, 'tap'),
                 hx=1, hy=1, r=0, ang=0, net=net, tht=False)
+
+
+# --------------------------------------------------------------------------
+# PR-11: corridors, not bounding boxes.
+#
+# A bounding box around a 20 mm branch is a 67 x 23 mm hole in the trunk rule.
+# A corridor is the branch's own centreline, buffered just far enough to
+# enclose its copper plus a rule-area tolerance, so the exception covers the
+# branch and nothing else.
+CORRIDOR_TOL = 100000          # 0.10 mm per side beyond the copper envelope
+
+
+def corridor_from_tracks(board, tracks, tol=CORRIDOR_TOL):
+    """Union of oriented capsules along each track centreline."""
+    ps = pcbnew.SHAPE_POLY_SET()
+    for t in tracks:
+        if t.GetClass() != 'PCB_TRACK':
+            # A via contributes a square of its own diameter.  PCB_VIA.GetWidth()
+            # WITHOUT A LAYER ARGUMENT asserts inside KiCad 10 and the assert
+            # handler stalls the process for minutes - which is exactly how this
+            # loop looked like a hung router.  Ask per layer.
+            try:
+                vw = t.GetWidth(pcbnew.B_Cu)
+            except TypeError:
+                vw = t.GetDrill() * 2
+            r = vw / 2.0 + tol
+            cx, cy = t.GetPosition().x, t.GetPosition().y
+            one = pcbnew.SHAPE_POLY_SET()
+            one.NewOutline()
+            for (dx, dy) in ((-r, -r), (r, -r), (r, r), (-r, r)):
+                one.Append(int(cx + dx), int(cy + dy))
+            ps.BooleanAdd(one)
+            continue
+        x0, y0 = t.GetStart().x, t.GetStart().y
+        x1, y1 = t.GetEnd().x, t.GetEnd().y
+        r = t.GetWidth() / 2.0 + tol
+        dx, dy = float(x1 - x0), float(y1 - y0)
+        L = math.hypot(dx, dy)
+        if L == 0:
+            continue
+        ux, uy = dx / L, dy / L
+        px, py = -uy, ux
+        ax, ay = x0 - ux * r, y0 - uy * r
+        bx, by = x1 + ux * r, y1 + uy * r
+        one = pcbnew.SHAPE_POLY_SET()
+        one.NewOutline()
+        for (X, Y) in ((ax + px * r, ay + py * r), (bx + px * r, by + py * r),
+                       (bx - px * r, by - py * r), (ax - px * r, ay - py * r)):
+            one.Append(int(X), int(Y))
+        ps.BooleanAdd(one)
+    ps.Simplify()
+    return ps
+
+
+def set_area_poly(board, name, ps):
+    """Replace a named rule area's outline with an arbitrary polygon set."""
+    for z in board.Zones():
+        if not (z.GetIsRuleArea() and z.GetZoneName() == name):
+            continue
+        o = z.Outline()
+        o.RemoveAllContours()
+        for i in range(ps.OutlineCount()):
+            c = ps.Outline(i)
+            o.NewOutline()
+            for k in range(c.PointCount()):
+                o.Append(c.CPoint(k).x, c.CPoint(k).y)
+        return z
+    return None
