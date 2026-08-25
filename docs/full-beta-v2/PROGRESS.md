@@ -2,8 +2,15 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-24 (updated after **FBV2-P2-002C — battery path-role rules and the first
-authoritative routing attempt. **FAIL: Phase A stopped at `LTC_GATE` `Q2.2 → TP17.1`, so Phase B
+Date: 2026-08-25 (updated after **FBV2-P2-002E — battery / protection routing resumed from the
+`e09eb35` checkpoint. **FAIL: Phase A did not complete, so Phase B never ran and the board is
+byte-identical to `e09eb35`.** Best result to date: **60 connections coexisting DRC-clean on
+scratch, ratsnest 781 → 718 (−63)**, the whole high-current path closed with the trunk at its
+**1.50 mm target, zero vias**, and the **dead-cell network routed for the first time**. Stopped
+with **15 open connections, nine of them `NO_LEGAL_ESCAPE` at 0 s** — a placement finding (PR-25),
+not a router finding. Five harness defects fixed including a **segmentation fault**.
+**PCB routing stays 0 %; overall stays 74 %**; previously **FBV2-P2-002C — battery path-role rules
+and the first authoritative routing attempt. **FAIL: Phase A stopped at `LTC_GATE` `Q2.2 → TP17.1`, so Phase B
 never ran and the board is byte-identical to `a52977e`.** Delivered **D-249**, the path-role
 width ruling, and 27 coexisting DRC-clean connections on scratch. **PCB routing stays 0 %;
 overall stays 74 %**; previously **FBV2-P2-002B — routing harness qualification.
@@ -26,7 +33,7 @@ freeze. **FBV2-P2 ENTRY = FAIL** on one criterion of thirteen; **NO PROGRESS EAR
 74%**, FBV2-P1 = PASS unchanged**; previously **FBV2-P1-002 — P1 closeout; **FBV2-P1 PASSES**; overall 68% → 74%**; previously **FBV2-P1-001 — enclosure-driven floorplan built; **FBV2-P1 DOES NOT PASS** on the 915 MHz pigtail reach; overall stays 68%**; previously FBV2-MECH-002 — pre-floorplan authority reconciliation and final
 procurement sign-offs. NO PROGRESS EARNED: overall stays 68%, FBV2-S2 = PASS unchanged**; previously
 FBV2-S2-002 — S2 release closeout, FBV2-S2 = PASS)
-Repository HEAD at last update: `a52977e` (FBV2-P2-002B)
+Repository HEAD at last update: `e09eb35` (FBV2-P2-002E; the authoritative PCB is unchanged by it)
 
 ---
 
@@ -73,7 +80,7 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | Architecture freeze | **IN PROGRESS** |
 | Schematic migration | **100%** — **all nine sheets landed. `fork_equivalence.py`'s "still Beta-DM" list is EMPTY.** |
 | PCB placement | **100%** — **FBV2-P1 RE-ISSUED AND RE-PASSED on the new 72 × 148 outline (FBV2-EXP-002)** |
-| PCB routing | **0%** — entry gate PASS; the router is **QUALIFIED** (FBV2-P2-002B) and the battery **path-role width ruling D-249 is settled** (FBV2-P2-002C). **Three routing attempts, none committed.** The best so far routed **27 of the block's connections coexisting DRC-clean on scratch** — the whole high-current battery path, both R75 Kelvin branches and the U11.2 flared escape — and stopped at `LTC_GATE` `Q2.2 → TP17.1`. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the authoritative board still has **zero tracks and zero signal vias** |
+| PCB routing | **0%** — entry gate PASS; the router is **QUALIFIED** (FBV2-P2-002B) and the battery **path-role width ruling D-249 is settled** (FBV2-P2-002C). **Four routing attempts, none committed.** The best (FBV2-P2-002E) routed **60 of the block's connections coexisting DRC-clean on scratch, ratsnest 781 → 718** — the whole high-current path `J4→F1→Q2→Q3→R75→D9→U11.2` with the **`BAT_PROTECTED_P` trunk at its 1.50 mm TARGET on B.Cu, zero vias**, both R75 Kelvin branches, the U11.2 flare, the MAX17048 taps and **the dead-cell / recovery network for the first time**. It stopped with **15 open connections; nine failed `NO_LEGAL_ESCAPE` at 0 s**, which is a **placement** limit (**PR-25**: U18 escapes 6 of its 8 signal pins, 7 at best, through one ~2.2 mm corridor) rather than a routing one. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the authoritative board still has **zero tracks and zero signal vias** |
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 

@@ -3,6 +3,51 @@
 **Status: IN PROGRESS. FBV2-P2-001 = FAIL.** Created 2026-08-24 at **FBV2-P2-001**.
 Pre-routing checkpoint: tag **`beta-v2-p2-entry-pass`** → `faa0c91`.
 
+> **UPDATED 2026-08-25 at FBV2-P2-002E. STILL NOT ROUTED, BUT THE BLOCK IS CLOSE AND WHAT IS LEFT
+> IS PLACEMENT.** Phase A reached **60 connections coexisting on one scratch board with zero new
+> DRC violations of any class at every step, ratsnest 781 → 718 (−63)** — the previous best was
+> 27 and −32. **Phase A did not complete, so Phase B was not run and the authoritative board is
+> byte-identical to `e09eb35`: zero tracks, zero signal vias.**
+>
+> **What is now measured on real copper:**
+>
+> | path | routed | width | vias | layer |
+> |---|---|---|---|---|
+> | `BAT_CONNECTOR_P` `J4.1 → F1.1` | 9.871 mm | 1.00 mm | 0 | B.Cu |
+> | `BAT_RAW` load `F1.2 → Q2.8 → Q2.7` | 7.996 mm | 1.00 / 0.80 mm | 0 | B.Cu |
+> | `BAT_MID` `Q2.5 → Q2.6 → Q3.8 → Q3.7` | 18.106 mm | 1.00 / 0.80 mm | 0 | B.Cu |
+> | `BAT_SENSE` load `Q3.5 → Q3.6 → R75.1` | 17.553 mm | **1.00 mm** | 2 | B.Cu + F.Cu |
+> | `BAT_SENSE` Kelvin `R75.1 → U18.9` | 3.179 mm | 0.20 mm | 0 | B.Cu |
+> | `BAT_PROTECTED_P` Kelvin `R75.2 → U18.8` | 23.799 mm | 0.20 mm | 0 | B.Cu |
+> | `BAT_PROTECTED_P` trunk `R75.2 → D9.1` | 20.416 mm | **1.50 mm (TARGET)** | **0** | B.Cu |
+> | `BAT_PROTECTED_P` `U11.2 → D9.1` incl. flare | 73.615 mm | 1.50 mm | **0** | B.Cu |
+> | `BAT_RAW` VIN tap `U18.1 → R77.1` | 32.204 mm | 0.20 mm | 0 | B.Cu |
+> | `U14.2 → TP15.1` (MAX17048) | 31.228 mm | 0.15 mm | 0 | B.Cu |
+> | `C59.1 → F1.2` | 3.407 mm | 0.60 mm | 0 | B.Cu |
+> | `C58.1 → D9.1` | 4.557 mm | **1.50 mm** | 0 | B.Cu |
+> | `LTC_GATE` `TP17.1` stub | **5.741 mm** | 0.25 mm | 0 | B.Cu |
+>
+> **`U11.2` escape, re-measured:** 0.20 mm neck **0.575 mm** long (cap 0.75 mm), strictly monotonic
+> flare 0.30 → 0.40 → 0.60 → 0.80 → 1.00 → 1.20 → 1.50, **no via, no thermal relief**,
+> **4.214 mΩ**, sub-1.20 mm length **4.737 mm against §5's 5.25 mm cap — inside it**.
+>
+> **R75 Kelvin mismatch 20.620 mm** (3.179 vs 23.799), both from the correct R75 pad, both
+> current-free — the direct cost of routing the trunk before the pin field, which is what §8
+> requires and what buys the 1.50 mm trunk.
+>
+> **Trunk-first is load-bearing.** With U18's pin field routed first, a 0.20 mm sense tap landing
+> on `R75.2` takes the trunk's only escape from that pad and `R75.2 → D9.1` returns
+> `NO_LEGAL_ESCAPE` at 0 s. Copper on this board only accumulates, so no later pass recovers it.
+>
+> **15 connections remain open and nine failed `NO_LEGAL_ESCAPE` at 0 s** — the pad cannot emit a
+> legal track at any width on any layer. `LTC_GATE` finishes in two pieces
+> (`{U18.10,R76.1,TP17.1}` ‖ `{Q2.2,Q2.4,Q3.2,Q3.4}`), so **`U18.10 → Q3.4` is the connection to
+> beat**. **U18 escapes 6 of its 8 signal pins here, 7 at best across four orderings**, because the
+> whole north row shares one ~2.2 mm corridor between the package (x ≤ 4.83) and the
+> R76/R77/R78/R79 divider wall (x ≥ 7.00). That is **PR-25** and it needs a placement ruling.
+> Full account:
+> [`../audits/2026-08-25-p2-battery-authoritative-route.md`](../audits/2026-08-25-p2-battery-authoritative-route.md).
+
 > **UPDATED 2026-08-24 at FBV2-P2-002A.** The battery / protection block was attempted with a
 > proper obstacle-aware router and **still is not routed**: 2 of 29 nets came out DRC-clean and
 > the other 27 were reverted automatically rather than committed. **D-245 is now ruled and

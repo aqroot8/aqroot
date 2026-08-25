@@ -1,3 +1,56 @@
+## 2026-08-25 - the block routes, the pin field does not (FBV2-P2-002E)
+
+**FBV2-P2-002E = FAIL.** Phase A did not complete, so Phase B never ran and
+`aqroot-Beta-v2.kicad_pcb` is byte-identical to `e09eb35`: zero tracks, zero signal vias. PCB
+routing stays 0 %, overall stays 74 %. Full analysis:
+[`audits/2026-08-25-p2-battery-authoritative-route.md`](audits/2026-08-25-p2-battery-authoritative-route.md).
+
+**First unresolved FUNCTIONAL connection: `BAT_RAW` `R80.1 -> Q2.7`. Most consequential:
+`LTC_GATE` `U18.10 -> Q3.4`.**
+
+### 60 connections, ratsnest -63, and a DRC that never moved
+
+The previous best was 27 connections and -32. This run closed the whole high-current path end to
+end - `J4 -> F1 -> Q2 -> Q3 -> R75 -> D9 -> U11.2` - with the `BAT_PROTECTED_P` trunk at its
+**1.50 mm target on B.Cu carrying zero vias**, both R75 Kelvin branches, the U11.2 flare, the
+MAX17048 taps, and **the dead-cell / recovery network for the first time**. DRC after every single
+connection was identical to the baseline: no new violation of any class, ever.
+
+### A segmentation fault, and four more harness defects
+
+`split_at()` replaces one track in `qb.laid` with two, and the mark taken before it is an index
+into that same list. Nothing shifted the mark, so `revert()` removed a track belonging to the
+**trunk** and left one of the branch's own behind - and a second revert on the same trunk called
+`BOARD::Remove` on an item no longer in the list, which segfaults rather than raising. Exit 139 at
+`TP34.1`, 55 connections in, with no Python traceback because only the watchdog was armed.
+
+Fixed, made undoable, `faulthandler.enable()` turned on, and pinned by a new **`router_regression`
+G7** that checks the arithmetic rather than waiting for a crash. Also fixed: an item budget that
+starved the F.Cu fallback and made the router look nondeterministic (**PR-20**); trunks silently
+dropping width to buy a layer hop (**PR-21**); and an already-connected check that read a FILE
+still holding reverted copper, so connections that had never been routed were counted as done
+(**PR-22**).
+
+### Ordering is section 8's, and inside the pin field it is measured
+
+Putting U18's pin field before the trunk let a 0.20 mm sense tap take the 1.20 mm trunk's only
+escape from `R75.2` - and copper on this board only accumulates, so no later pass can give it back.
+Section 8's order (trunk first) is what buys the 1.50 mm trunk. Inside the pin field there is no
+right fixed order at all: three hand-picked ones each moved the casualty. It is now measured by
+binary search once per pass, tightest pin first. And section 9's gate-before-CS is proved on Q3,
+where the CS route threads both 0.67 mm gaps and leaves `Q3.2` with no escape on any layer.
+
+### What is left is placement, not routing
+
+Nine of the fifteen open connections failed `NO_LEGAL_ESCAPE` at 0 s - the pad cannot emit a legal
+track at any width on any layer before pathfinding is even attempted. **U18 escapes 6 of its 8
+signal pins here, 7 at best**, because its whole north row shares one ~2.2 mm corridor between the
+package and the R76/R77/R78/R79 divider wall. That is **PR-25**, and it needs a placement ruling
+rather than another routing attempt. Section 11 forbids weakening the architecture to finish, so
+nothing was dropped, re-aimed or re-valued.
+
+**B-34 is not recalculated authoritatively and stays OPEN.** **PM-2 does not close.**
+
 ## 2026-08-24 - width becomes a path role, and the board still says no (FBV2-P2-002C)
 
 **FBV2-P2-002C = FAIL.** Phase A did not complete, so Phase B never ran and
