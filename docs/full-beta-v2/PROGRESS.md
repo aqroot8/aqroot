@@ -2,7 +2,17 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-25 (updated after **FBV2-P2-002F - battery-block placement ECO and routeability
+Date: 2026-08-25 (updated after **FBV2-P2-002F RESUMED - three harness defects fixed, 24 of 29
+nets. **STILL FAIL; board byte-identical to `24f6611`.** Phase A run 8: **71 connections, ratsnest
+781 -> 708 (-73)**, DRC identical to baseline, **24 of 29 in-scope nets single components** (was
+23). **PR-37** (closure ignored D-249's per-pad widths and asked a 0.7 x 0.3 mm pad for 1.20 mm)
+closed the MAX17048 island and PR-35; **PR-38** (ordering measured only the first-named pad of an
+MST edge) closed `REF_POL`. **PR-39 OPEN and it is the most consequential: a connection can report
+a length and appear in the journal having been built to a DIFFERENT endpoint** - `R79.1 -> R80.1`
+reports 5.276 mm across a 12.030 mm gap with ZERO track endpoints in the pad. Section 14 must be
+judged on connectivity, not the routed count. **CORRECTION: an earlier note that U19 need not move
+is withdrawn** - run 8 moved the casualty from `U19.2`/`U19.3` to `U19.3`/`U19.8`, which is PR-25's
+signature; PR-34 stands. **PCB routing stays 0 %; overall stays 74 %**; previously **FBV2-P2-002F - **FBV2-P2-002F - battery-block placement ECO and routeability
 proof. **FAIL: Phase A did not complete, so Phase B never ran; the board is byte-identical to
 `24f6611` and THE PLACEMENT ECO IS NOT APPLIED TO IT** (section 23 forbids committing an unproven
 placement). **The placement question PR-25 asked is ANSWERED:** U18 rotates 90 -> 180 to

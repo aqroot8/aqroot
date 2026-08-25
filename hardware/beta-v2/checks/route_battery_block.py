@@ -581,19 +581,41 @@ def main():
             return queue
         rows = []
         for i in idx:
-            pad = pads.get(queue[i]['net'], {}).get(queue[i]['a'])
             need = min(queue[i]['lad'])
-            w = widest_escape(pad) if pad else 0
-            nd = freedom(pad, need) if pad else 0
-            rows.append((w - need, nd, w, i))
+            # PR-38.  MEASURE BOTH ENDS, NOT JUST THE FIRST-NAMED PAD.
+            #
+            # U18's pin field is written pin-first, so measuring `a` measured
+            # the fine-pitch pin.  The dead-cell block is a minimum spanning
+            # tree, and its edges come out in whatever order the MST produced:
+            # `TP24.1 -> U19.2` measures TP24.1, a 1.0 mm test pad with three
+            # ways out, and never looks at `U19.2` - an SOT-23-8 pin with ONE.
+            # So the block routed five U19 pins first and the two tightest
+            # last, which is precisely backwards, and `U19.2`/`U19.3` came back
+            # NO_LEGAL_ESCAPE.  A connection is as tight as its TIGHTER END.
+            cand = [queue[i]['a']]
+            if queue[i]['b'] != '(node)':
+                cand.append(queue[i]['b'])
+            best = None
+            for ref_ in cand:
+                pad = pads.get(queue[i]['net'], {}).get(ref_)
+                if pad is None:
+                    continue
+                w = widest_escape(pad)
+                nd = freedom(pad, need)
+                key = (w - need, nd, w, ref_)
+                if best is None or key < best:
+                    best = key
+            if best is None:
+                best = (0, 0, 0, queue[i]['a'])
+            rows.append((best[0], best[1], best[2], i, best[3]))
         rows.sort(key=lambda r: (r[0], r[1], r[2]))
         if verbose:
             print("      pin-field slack: " + "  ".join(
-                "%s %+.2f/%dway" % (queue[i]['a'], sl / 1e6, nd)
-                for (sl, nd, _, i) in rows))
+                "%s %+.2f/%dway" % (ref_, sl / 1e6, nd)
+                for (sl, nd, _, i, ref_) in rows))
             sys.stdout.flush()
         out = list(queue)
-        for slot, (_, _, _, src) in zip(idx, rows):
+        for slot, (_, _, _, src, _r) in zip(idx, rows):
             out[slot] = queue[src]
         return out
 
@@ -643,8 +665,20 @@ def main():
     # copper already laid" - and the copper in front of Q3 is not where it was.
     add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
     add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
-    add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
+    # PR-36: THE MICROAMP TAPS GO BEFORE THE CROSS-BOARD SIGNAL RUNS, AND IT IS
+    # PR-18's ARGUMENT ONE REGION OVER.
+    #
+    # `R80.1` sits in a ~1 mm slot between R80's own body and R81, and the two
+    # longest signal runs in the block pass either side of it: `LTC_SHDN`
+    # `U18.6 -> Q4.3` (28 mm) at x 4.65..4.95 and `LTC4368_FAULT_N`
+    # `R82.1 -> Q9.1` (64 mm) at x 5.8..6.8.  Both are in section 9's trip
+    # network, both routed FIRST, and `R80.1` then came back NO_LEGAL_ESCAPE
+    # with 42 track blockers.
+    #
+    # A 1 mm slot cannot be recovered; a cross-board run has the whole board to
+    # find another way.  Same scarcity rule as PR-18, so the taps go first.
     add("BAT_RAW taps", PL.PLAN_TAPS, CT_W)
+    add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
     add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
     for short in PL.DEADCELL:
         # PR-33: the dead-cell block is a fine-pitch pin field too - U19 is an
@@ -675,6 +709,30 @@ def main():
     for short in PL.DEADCELL:
         if N + short not in SCOPE_NETS:
             SCOPE_NETS.append(N + short)
+    # PR-37.  THE CLOSURE STAGE WAS ASKING RULED SENSE PADS FOR TRUNK WIDTH.
+    #
+    # D-249 rules these pads INDIVIDUALLY - U11.2 and U18.8/.9/.1 at 0.20 mm,
+    # U14.2/U14.3 at 0.15 mm because 0.20 mm is geometrically impossible there
+    # by five microns, TP15 at 0.20 mm - and each has its own named corridor
+    # area in which the trunk floor is relaxed.  The closure stage ignored all
+    # of that and handed every BAT_PROTECTED_P pad the trunk ladder
+    # [1.50, 1.20], so `U14.2 -> (node)` and `U14.3 -> (node)` came back
+    # NO_LEGAL_ESCAPE at 0 s - not because the pads cannot escape (they escape
+    # at 0.15 mm, measured) but because they were asked for 1.20 mm on a
+    # 0.70 x 0.30 mm pad.
+    #
+    # The MAX17048 island sits 10.862 mm from C58.1 on the main node. It was
+    # never a corridor problem.  Same root cause as the TP15 stub being judged
+    # against the D-249 trunk floor.
+    RULED = {
+        'U11.2': (PL.W_SENSE, 'BAT_PROT_ESCAPE_U11'),
+        'U18.8': (PL.W_SENSE, 'BAT_PROT_TAP_U18'),
+        'U18.9': (PL.W_SENSE, 'BAT_SENSE_KELVIN'),
+        'U18.1': (PL.W_SENSE, 'BAT_RAW_TAP_U18'),
+        'TP15.1': (PL.W_SENSE, 'BAT_PROT_TAP_U14'),
+        'U14.2': (PL.W_U14, 'BAT_PROT_TAP_U14'),
+        'U14.3': (PL.W_U14, 'BAT_PROT_TAP_U14'),
+    }
     CLOSE = []
     for nt in SCOPE_NETS:
         wide = nt in WIDE
@@ -687,10 +745,17 @@ def main():
         for ref_ in sorted(pads.get(nt, {})):
             if ref_.startswith('TP'):
                 continue
-            CLOSE.append((nt, ref_, '(node)', 'TRUNK' if wide else 'SIG',
-                          lad, None))
+            if ref_ in RULED:
+                w_, area_ = RULED[ref_]
+                CLOSE.append((nt, ref_, '(node)', 'SENSE', [w_], area_))
+            else:
+                CLOSE.append((nt, ref_, '(node)', 'TRUNK' if wide else 'SIG',
+                              lad, None))
     add("12b. close remaining open pads", CLOSE, CT_W)
 
+    # PR-37, second half: TP15's own stub is ruled 0.20 mm inside
+    # BAT_PROT_TAP_U14, and PLAN_13_TEST already names both.  It is listed here
+    # only so the ordering is explicit.
     add("13. test-point stubs", PL.PLAN_13_TEST, CT_W)
 
     def u11_escape():

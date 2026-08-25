@@ -680,8 +680,12 @@ forbids closing B-34 from it. **Physical first-article validation remains mandat
 | **PR-31** | A partner placed on the far side of its pin wraps the package. | **CLOSED** — scored and penalised in the ring solver. |
 | **PR-32** | Once-per-pass measurement cannot separate pins that tie at the head of the pass. | **CLOSED** — re-measured before every fine-pitch pin. |
 | **PR-33** | U19 is an SOT-23-8 on 0.65 mm pitch and had **no** measured ordering at all. | **CLOSED** — `tight` is now a group name; U18 and U19 are each ordered within themselves. Recovered three U19 pins. |
-| **PR-34** | **`R80.1`, `U19.2`, `U19.3` and the `{TP15, U14.2, U14.3}` island do not join their nets.** Four pads and one island, on a board where 23 of 29 in-scope nets are single components. | **OPEN — the reason Phase A fails.** `U19.2`/`U19.3` are a U19 placement question of the same kind PR-25 answered for U18; the U14 island is the west-edge 0.15 mm channel, unchanged since 002C. |
-| **PR-35** | A test-point stub outside its own generated corridor is judged against the D-249 trunk floor, so `TP15.1 → (node)` is rejected at 0.20 mm. | **OPEN — harness.** A consequence of the U14 island; the corridor is grown from routed copper that does not exist. |
+| **PR-34** | **`R80.1`, `U19.3` and `U19.8` do not join their nets.** Three pads, on a board where **24 of 29** in-scope nets are single components. | **OPEN — the reason Phase A fails, and it is PLACEMENT.** All three are west-margin geometry: `U19`'s west row faces the board edge with one lane, `C60` leaves 0.93 mm beside U19, and `R80.1` sits in a ~1 mm slot boxed by its own partner's route. Needs the measured treatment PR-25 gave U18. |
+| **PR-35** | A test-point stub outside its own generated corridor is judged against the D-249 trunk floor. | **CLOSED by PR-37** — same root cause. |
+| **PR-36** | The microamp taps routed after two cross-board signal runs that pass either side of `R80.1`'s 1 mm slot. | **APPLIED, and it was not the cause.** Correct by PR-18's own scarcity argument, kept; `R80.1`'s problem is PR-39 plus placement. |
+| **PR-37** | The closure stage handed every `BAT_PROTECTED_P` pad the **trunk** ladder `[1.50, 1.20]`, ignoring D-249's per-pad rulings, and asked a 0.70 × 0.30 mm pad for 1.20 mm. | **CLOSED.** The MAX17048 island joined; `BAT_PROTECTED_P` is one component. |
+| **PR-38** | `order_tight` measured only the **first-named** pad. On an MST-derived block that is usually the loose end: `TP24.1 → U19.2` measured a 1.0 mm test pad with three ways out and never looked at the SOT-23-8 pin with one. | **CLOSED.** `REF_POL` joined. It orders correctly; it does not create capacity. |
+| **PR-39** | **A connection can report a length and a width, and appear in the journal, having been built to a DIFFERENT endpoint than the one it names.** `R79.1 → R80.1` reports 5.276 mm across a 12.030 mm gap and puts **zero** track endpoints in `R80.1`'s pad. The node fallback retargets silently. | **OPEN — harness, and the most consequential defect found this session.** Section 14 must be judged on connectivity, never the routed count; a section 17 replay would faithfully reproduce a connection that does not exist. |
 
 ---
 
@@ -724,3 +728,134 @@ field, with the real router, against the copper the plan actually lays first. Th
 
 **PCB routing remains 0 %. Overall Full Beta v2 remains 74 %.** No progress is claimed and none was
 earned: there is no authoritative signal copper on this board.
+
+---
+
+## 17. Resumed — PR-34 and PR-35 diagnosed to three separate causes
+
+Phase A run 7 left four items open. Measuring each one on the finished scratch board — rather than
+inferring from the log — separated them into three unrelated causes, none of which is the placement.
+
+### `R80.1` — a 1 mm slot spent by two cross-board runs (PR-36)
+
+`R80.1` reported `NO_LEGAL_ESCAPE` with **42 track blockers**. It sits in a ~1 mm slot between R80's
+own body and R81, and the two longest signal runs in the block pass either side of it: `LTC_SHDN`
+`U18.6 → Q4.3` (28.248 mm) at x 4.65…4.95, and `LTC4368_FAULT_N` `R82.1 → Q9.1` (64.081 mm) at
+x 5.8…6.8. **Both are in section 9's trip network and both routed first.**
+
+That is PR-18's own argument one region over: *a 1 mm slot cannot be recovered; a cross-board run
+has the whole board to find another way.* The BAT_RAW microamp taps now go **before** the trip
+network.
+
+> A reporting defect surfaced with it and is worth recording. The log line
+> `TAP BAT_RAW R79.1 -> R80.1 5.276 mm` is **not what was built**: R79.1 and R80.1 are 12.03 mm
+> apart, so 5.276 mm cannot span them. `run()`'s node fallback silently retargets `pb` to the
+> nearest point on the net's own copper while the printed line and the journal still name the
+> original pad. The connectivity audit is what caught it — `{R80.1}` alone in its own island — and
+> it is the reason section 14 must be judged on **connectivity, not on the routed count**.
+
+### The MAX17048 island — the closure stage asked a 0.7 × 0.3 mm pad for 1.20 mm (PR-37)
+
+`U14.2 → (node)` and `U14.3 → (node)` both returned `NO_LEGAL_ESCAPE` at 0 s. **The pads escape
+fine**: measured on that same finished board, `U14.2`, `U14.3` and `TP15.1` all emit a legal
+0.15 mm track. And the island is not far from home — the nearest main `BAT_PROTECTED_P` copper is
+**10.862 mm away, at `C58.1`**.
+
+The closure stage hands every `BAT_PROTECTED_P` pad the **trunk** ladder `[1.50, 1.20]`. D-249 rules
+these pads individually — `U11.2`, `U18.8`, `U18.9`, `U18.1` and `TP15` at 0.20 mm, `U14.2`/`U14.3`
+at **0.15 mm because 0.20 mm is geometrically impossible there by five microns** — and gives each
+its own named corridor in which the trunk floor is relaxed. The closure stage knew none of that, so
+it asked a 0.70 × 0.30 mm pad for 1.20 mm and was told no.
+
+**This is also PR-35.** The `TP15.1 → (node)` stub that ended run 7 was rejected against the D-249
+trunk floor for the same reason. One fix, both symptoms: the closure stage now uses each pad's
+**ruled** width and its **named area**.
+
+### `U19.2` / `U19.3` — the block was ordered by the wrong end of the connection (PR-38)
+
+PR-33 gave the dead-cell block the measured tightest-first ordering. It did not help, and the reason
+is that **`order_tight` measures `it['a']`, the first-named pad of the connection.**
+
+U18's pin field is written pin-first, so measuring `a` measured the fine-pitch pin. **The dead-cell
+block is a minimum spanning tree, and its edges come out in whatever order the MST produced.**
+`TP24.1 → U19.2` measures `TP24.1` — a 1.0 mm test pad with **three** ways out — and never looks at
+`U19.2`, an SOT-23-8 pin with **one**. So the block routed `U19.1`, `U19.5`, `U19.6`, `U19.7` and
+`U19.8` first and left the two tightest pins for last.
+
+**A connection is as tight as its tighter end.** Both ends are now measured.
+
+> On the bare board `U19.2` and `U19.3` each have **exactly one** escape direction and `U19.1`,
+> `U19.5` and `U19.8` have four or five — so the ordering had everything it needed to get this
+> right, and was looking at the wrong pad.
+
+### What this changes about PR-34 — and a correction, one section later
+
+**I first wrote here that U19 does not need to move.** The argument was that all seven U19 signal
+pins escape on the bare board, that all seven survive the section 3C simultaneity test, and that a
+search over 2 608 legal U19 poses finds none that both improves the section 6 spans and removes the
+wrong-side cost.
+
+**Run 8 disproves it, and the way it disproves it is the same lesson this whole task has been
+teaching.** Bare-board escapes are not routeability — that is section 3.2's finding, and I applied
+the reasoning I had already shown to be unsound. See section 18.
+
+The honest reading of PR-38 is narrower: **ordering by the tighter end was a real and necessary
+defect fix** — it closed `REF_POL` — but it does not create capacity that is not there. It chooses
+which pin loses.
+
+---
+
+## 18. Phase A run 8 — 24 of 29, and two of the three fixes hold
+
+**`PHASE A: FAIL` — 71 connections, ratsnest 781 → 708 (−73), DRC identical to the baseline, zero
+out-of-scope copper.** **24 of 29 in-scope nets are single connected components**, up from 23.
+
+| fix | target | result |
+|---|---|---|
+| **PR-37** — closure uses D-249's ruled per-pad widths | the `{TP15, U14.2, U14.3}` MAX17048 island | **CLOSED.** `BAT_PROTECTED_P` is now ONE component. |
+| **PR-38** — order each connection by its tighter end | `U19.2`, `U19.3` | **`REF_POL` CLOSED.** `U19.2` routes. |
+| **PR-36** — microamp taps before the cross-board trip runs | `R80.1` | **No effect** — see below. |
+
+### PR-36 did what it was told, and it was not the problem
+
+The taps now run first — `R79.1 → R80.1` at queue line 31, `LTC_SHDN → Q4.3` at 35, `FAULT_N →
+Q9.1` at 45. `R80.1` is still alone in its own island.
+
+**Because that connection has never been made, in any run.** The log line reads
+`TAP BAT_RAW R79.1 -> R80.1 5.276 mm` and took 212 s. Measured on the board those two pads are
+**12.030 mm** apart — 5.276 mm is **43.9 %** of the straight line between them — and the count of
+`BAT_RAW` track endpoints landing inside `R80.1`'s pad is **zero**.
+
+`run()`'s node fallback silently retargets `pb` to the nearest point on the net's own copper while
+the printed line and the journal keep the original pad name. R79.1 was already on the node, so the
+"successful" connection laid a **redundant loop** and left `R80.1` untouched — and because `gate()`
+only requires the ratsnest to fall, some other pad's edge paid for it.
+
+> **PR-39, and it is the most important defect in this session.** A connection that reports a length
+> and a width, and appears in the journal, may have been built to a different endpoint than the one
+> it names. Section 14 must therefore be judged on **connectivity**, never on the routed count — and
+> the replay of section 17 would faithfully reproduce a connection that does not exist. The fix is
+> to make the retarget explicit in both the log line and the journal entry, and to refuse it when
+> the pad it was aimed at is still unconnected afterwards.
+
+### What is actually left
+
+| net | island | cause |
+|---|---|---|
+| `BAT_RAW` | `{R80.1}` | **placement** — `R80.1` sits in a ~1 mm slot between R80's body and R81, boxed by its own `R80.2 → U18.6` route and R81's. 42 track blockers. |
+| `N_POL` | `{U19.3}` | **placement** — west row against the board edge; one escape direction, and `U19.2` now takes it. |
+| `VREC_VCC` | `{U19.8}` ‖ `{C60.1, R84.2}` | **placement** — `NO_PATH`, not `NO_LEGAL_ESCAPE`: the pads are **2.668 mm** apart and the 0.93 mm gap between U19 and C60 is full. |
+| `LTC4368_FAULT_N` | `{TP18.1}` | test point, escapes with **8** directions — simply not reached before the run ended |
+| `BAT_PROT_SHDN_CTL` | `{TP19.1}` | test point, escapes with **5** directions — same |
+
+**Three of the five are placement, all three in the west margin, and all three are the same shape as
+PR-25: a fine-pitch part whose pin row faces the board edge with one lane, or a passive packed so
+close to its neighbour that its own partner's route seals it.** The two test points are not blockers
+— they escape freely and were simply never reached.
+
+**PR-34 therefore stands, and stands as originally written.** U19 needs the measured placement
+treatment PR-25 gave U18, and so do R80/R81. What PR-38 bought is that the block now fails with
+*two* U19 pins open instead of two different ones — the casualty moved, which is the signature
+PR-25 named.
+
+---

@@ -1,3 +1,44 @@
+## 2026-08-25 - resumed FBV2-P2-002F: three harness defects, 24 of 29 nets (FBV2-P2-002F cont.)
+
+**Still FAIL, and the authoritative PCB is still byte-identical to `24f6611`.** Phase A run 8:
+**71 connections, ratsnest 781 -> 708 (-73), DRC identical to the baseline, zero out-of-scope
+copper, 24 of 29 in-scope nets single connected components** (was 23).
+
+### Two fixes held
+
+**PR-37.** The closure stage handed every `BAT_PROTECTED_P` pad the TRUNK ladder `[1.50, 1.20]`,
+ignoring D-249's per-pad rulings, and so asked a 0.70 x 0.30 mm MAX17048 pad for 1.20 mm. The pads
+escape fine at 0.15 mm - measured - and the island sat **10.862 mm** from `C58.1`. It was never a
+corridor problem. `BAT_PROTECTED_P` is now ONE component, and the same fix closes PR-35.
+
+**PR-38.** `order_tight` measured only the FIRST-NAMED pad of a connection. U18's pin field is
+written pin-first so that worked; the dead-cell block is a minimum spanning tree, so
+`TP24.1 -> U19.2` measured a 1.0 mm test pad with three ways out and never looked at the SOT-23-8
+pin with one. A connection is as tight as its tighter end. `REF_POL` closed.
+
+### PR-39 - the defect that matters most
+
+`TAP BAT_RAW R79.1 -> R80.1 5.276 mm` is **not what was built.** Those pads are **12.030 mm**
+apart, and the number of `BAT_RAW` track endpoints inside `R80.1`'s pad is **zero**. `run()`'s node
+fallback silently retargets to the nearest point on the net's own copper while the log line and the
+journal keep the original pad name - so a "successful" connection laid a redundant loop and left
+the pad alone.
+
+**Section 14 must be judged on connectivity, never on the routed count**, and a section 17 replay
+would faithfully reproduce a connection that does not exist.
+
+### And a correction
+
+This document briefly recorded that U19 does not need to move, on the grounds that all seven of its
+signal pins escape on the bare board and survive the section 3C simultaneity test. **Run 8
+disproves it** - the casualty simply moved from `U19.2`/`U19.3` to `U19.3`/`U19.8`. That is
+precisely the signature PR-25 named, and bare-board escapes are exactly the inference this task has
+shown to be unsound. **PR-34 stands as originally written: U19 needs the measured placement
+treatment PR-25 gave U18, and so do R80/R81.**
+
+What is left is three pads - `R80.1`, `U19.3`, `U19.8` - all west-margin placement, plus two test
+points (`TP18.1`, `TP19.1`) that escape with 8 and 5 directions and were simply never reached.
+
 ## 2026-08-25 - the placement question is answered, the block still does not close (FBV2-P2-002F)
 
 **FBV2-P2-002F = FAIL.** Phase A did not complete, so Phase B never ran and
