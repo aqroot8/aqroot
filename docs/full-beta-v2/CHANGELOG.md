@@ -1,3 +1,30 @@
+## 2026-08-25 - FBV2-P2-002G / 002H: routing truth (PR-39), full-prefix qualification (PR-40), and the BAT_RAW contention
+
+**FAIL. No authoritative copper written; the placement ECO is still not applied.** The
+authoritative PCB is byte-identical to `984423c` (md5 `a908cedfa9f9410aab327d8bd55b9f45`).
+Rollback tag `beta-v2-p2-battery-pre-authoritative` created at `984423c` and pushed.
+
+- **PR-39 CLOSED** - router success now means the *requested* pads are one connected
+  component. A retarget that leaves the named pad isolated is reverted and does not count.
+  Six regression cases G8-A..G8-F, all passing. `checks/net_ledger.py` makes connectivity
+  the primary truth; the routed count is secondary.
+- **PR-40 IMPLEMENTED** - qualification is the full prefix (`AQROOT_PROBE_PASS1`), not
+  bare-board escape, simultaneous stubs, or a reduced prefix. Cost ~40 min/candidate.
+- **PR-41 CLOSED AND VALIDATED** - the closure stage gave every `BAT_RAW` pad the trunk
+  ladder because `BAT_RAW` is a WIDE net; the 0.20 mm divider chain was asked for 0.60 mm.
+  Zero `NO_LEGAL_ESCAPE` board-wide afterwards. Not sufficient on its own.
+- **PR-42 CLOSED** - a stray `break` made the 'joint' U19+R80/R81 search share one R80/R81
+  pose across all eight candidates. Fixed: six distinct R80 poses; the two independent axes
+  are swept separately. `AQROOT_SEARCH_ONLY` regenerates candidates without probing.
+- **MEASURED** - a bare-board flood (negative test only) shows both `BAT_RAW` bridges reach
+  the battery node at 0.20 mm. The corridor exists; the failure is contention, not geometry.
+  This reverses the part of PR-34 that assumed R80 needed a placement search.
+- **PR-43 APPLIED, UNPROVEN** - schedule by corridor scarcity, not net role: the 21.5 mm and
+  45.5 mm divider-chain bridges now route with the chain instead of after U18's pin field.
+
+Phase A not passed, Phase B not run, no manifest. B-34 remains OPEN. PCB routing 0 %,
+overall Full Beta v2 74 % - unchanged.
+
 ## 2026-08-25 - resumed FBV2-P2-002F: three harness defects, 24 of 29 nets (FBV2-P2-002F cont.)
 
 **Still FAIL, and the authoritative PCB is still byte-identical to `24f6611`.** Phase A run 8:

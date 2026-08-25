@@ -687,6 +687,9 @@ def main():
     # output) and U18.1 first inside it per PR-17.
     add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
     add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
+    # PR-43: the divider chain's two long links to the battery node compete for
+    # the west margin and lose it to U18's pin field if they wait their turn.
+    add("5b. BAT_RAW long bridges", PL.PLAN_TAPS_BRIDGE, CT_W)
     add("6b. U18 pin field", PL.PLAN_0_U18, CT_W, tight='U18')
     # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
     #
@@ -753,7 +756,8 @@ def main():
     # 13 so a test point still cannot take a functional corridor.
     SCOPE_NETS = []
     for grp in (PL.PLAN_1_BPP_TRUNK, PL.PLAN_2_CHAIN, PL.PLAN_0_U18,
-                PL.PLAN_8_CS, PL.PLAN_8_GATE, PL.PLAN_9_TRIP, PL.PLAN_TAPS,
+                PL.PLAN_8_CS, PL.PLAN_8_GATE, PL.PLAN_9_TRIP,
+                PL.PLAN_TAPS_BRIDGE, PL.PLAN_TAPS,
                 PL.PLAN_10_DEADCELL_TAPS, PL.PLAN_11_GAUGE, PL.PLAN_12_CAPS):
         for row in grp:
             if row[0] not in SCOPE_NETS:
@@ -776,7 +780,25 @@ def main():
     # The MAX17048 island sits 10.862 mm from C58.1 on the main node. It was
     # never a corridor problem.  Same root cause as the TP15 stub being judged
     # against the D-249 trunk floor.
+    # PR-41.  THE SAME DEFECT PR-37 FIXED, ONE NET OVER.
+    #
+    # `BAT_RAW` is a WIDE net, so the closure stage handed every one of its
+    # pads the BAT_MAIN ladder [1.00, 0.80, 0.60].  But the LTC4368 divider
+    # chain - R77.1, R79.1, R80.1, U18.1 - and D12.1 are MICROAMP TAPS, ruled
+    # 0.20 mm by D-249 and routed as TAPs everywhere else in this plan.  Asking
+    # them for 0.60 mm minimum is why `R80.1 -> (node)` returned
+    # NO_LEGAL_ESCAPE: measured on the C01 board R80.1 escapes at 0.20 mm with
+    # TWO directions, and is already joined to R77.1/R79.1/U18.1.
+    #
+    # The BAT_RAW failure was never R80's placement.  The divider chain is one
+    # island and the battery node is another, and the only two plan entries
+    # that bridge them - `R80.1 -> Q2.7` and `D12.1 -> R77.1` - both failed,
+    # leaving the closure stage as the last chance with the wrong ladder.
     RULED = {
+        'R77.1': (PL.W_TAP, None),
+        'R79.1': (PL.W_TAP, None),
+        'R80.1': (PL.W_TAP, None),
+        'D12.1': (PL.W_TAP, None),
         'U11.2': (PL.W_SENSE, 'BAT_PROT_ESCAPE_U11'),
         'U18.8': (PL.W_SENSE, 'BAT_PROT_TAP_U18'),
         'U18.9': (PL.W_SENSE, 'BAT_SENSE_KELVIN'),
@@ -799,7 +821,12 @@ def main():
                 continue
             if ref_ in RULED:
                 w_, area_ = RULED[ref_]
-                CLOSE.append((nt, ref_, '(node)', 'SENSE', [w_], area_))
+                # a TAP is judged on resistance across its whole ladder; a
+                # ruled SENSE pad has exactly one legal width
+                if w_ == PL.W_TAP:
+                    CLOSE.append((nt, ref_, '(node)', 'TAP', PL.LAD_TAP, area_))
+                else:
+                    CLOSE.append((nt, ref_, '(node)', 'SENSE', [w_], area_))
             else:
                 CLOSE.append((nt, ref_, '(node)', 'TRUNK' if wide else 'SIG',
                               lad, None))

@@ -129,11 +129,33 @@ PLAN_9_TRIP = [
 ]
 
 # ---- the microamp taps off the raw battery node --------------------------
-PLAN_TAPS = [
+#
+# PR-43: SCHEDULE BY CORRIDOR SCARCITY, NOT BY NET ROLE.
+#
+# These four are all 'TAP' by role, so PR-36 put the whole group after the
+# trunk, the BAT_MAIN chain and U18's eight-pin field.  That is right for a
+# tap in the usual sense - short, local, several ways out.  Two of them are
+# not that:
+#
+#     R80.1 -> Q2.7    21.5 mm      D12.1 -> R77.1    45.5 mm
+#
+# They are the LTC4368 divider chain's only link to the battery node, and the
+# only corridor they have is the west margin at x 4..10 - the same margin the
+# 1.50 mm BAT_PROTECTED_P trunk, BAT_SENSE and BAT_MID have already taken by
+# then.  Measured on a bare board, both reach Q2.7/Q2.8/F1.2/C59.1 at 0.20 mm,
+# so the corridor EXISTS and the failure is contention, not geometry.
+#
+# So the two long bridges are scheduled with the chain, by the same scarcity
+# argument PR-18 used for the trunk, and the genuinely local taps stay put.
+# U18's pins are short and have alternatives; these have one corridor each.
+PLAN_TAPS_BRIDGE = [
     (N + 'BAT_RAW', 'R80.1', 'Q2.7', 'TAP', LAD_TAP, None),
+    (N + 'BAT_RAW', 'D12.1', 'R77.1', 'TAP', LAD_TAP, None),
+]
+
+PLAN_TAPS = [
     (N + 'BAT_RAW', 'R79.1', 'R80.1', 'TAP', LAD_TAP, None),
     (N + 'BAT_RAW', 'R77.1', 'R79.1', 'TAP', LAD_TAP, None),
-    (N + 'BAT_RAW', 'D12.1', 'R77.1', 'TAP', LAD_TAP, None),
 ]
 
 # ---- 10. the dead-cell / recovery network --------------------------------

@@ -1,0 +1,36 @@
+{
+ "probe": "PR-40 full-prefix, end of pass 1",
+ "routed": 68,
+ "skipped": 86,
+ "targets": {
+  "BAT_RAW R80.1->Q2.7": false,
+  "BAT_RAW D12.1->R77.1": false,
+  "LTC_SHDN U18.6->Q4.3": true,
+  "LTC_GATE U18.10->Q2.2": true,
+  "Q3_CS Q3.1->Q3.3": true,
+  "BAT_PROTECTED_P R75.2->U11.2": true,
+  "BAT_PROTECTED_P U14.2->TP15.1": true
+ },
+ "u19": {
+  "U19.1": false,
+  "U19.2": true,
+  "U19.3": true,
+  "U19.5": true,
+  "U19.6": true,
+  "U19.7": false,
+  "U19.8": true
+ },
+ "u19_connected": 5,
+ "ledger_connected": 22,
+ "ledger_total": 29,
+ "unconnected": [
+  "BAT_RAW",
+  "LTC4368_FAULT_N",
+  "BAT_PROT_SHDN_CTL",
+  "REF_POL",
+  "VREC_VCC",
+  "REC_POL_OK",
+  "REC_BAT_LOW"
+ ],
+ "out_of_scope": {}
+}

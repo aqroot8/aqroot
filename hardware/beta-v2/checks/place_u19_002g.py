@@ -345,23 +345,69 @@ def main():
     print('stage A+B: R80 slots %d, R81 slots %d' % (len(r80s), len(r81s)))
 
     # ---- assemble joint candidates, mutually non-overlapping -------------
-    cands = []
-    for (w, rot, x, y) in u19c[:40]:
-        for (ws0, d0, r0, x0, y0, c0) in r80s[:20]:
-            for (ws1, d1, r1, x1, y1, c1) in r81s[:20]:
-                if PS.ovl(c0, c1):
-                    continue
-                cands.append(dict(span=w, u19=(rot, x, y), r80=(r0, x0, y0),
-                                  r81=(r1, x1, y1),
-                                  score=(ws0 + ws1, w, d0 + d1)))
-                break
-            break
-    cands.sort(key=lambda c: c['score'])
+    # PR-42: this assembly used to carry a stray `break` in each inner loop,
+    # so every candidate shared r80s[0] and r81s[0] -- only U19 was ever varied
+    # and all eight candidates failed R80.1 in exactly the same way, at forty
+    # minutes a candidate.  R80's pose had never actually been searched.
+    #
+    # The fix is not a bigger product.  U19's box (y 8..34) and the R80/R81 box
+    # (y 56..78) are disjoint, they cannot collide, and they share no net, so
+    # the two are INDEPENDENT axes: a full 40 x 20 x 20 cross would spend the
+    # candidate budget re-probing the same R80 pose under a different U19.  So
+    # sweep each axis on its own and spend the budget on DISTINCT poses of the
+    # pad that is actually failing.
+    pairs = []
+    for (ws0, d0, r0, x0, y0, c0) in r80s[:20]:
+        for (ws1, d1, r1, x1, y1, c1) in r81s[:20]:
+            if PS.ovl(c0, c1):
+                continue
+            pairs.append(dict(r80=(r0, x0, y0), r81=(r1, x1, y1),
+                              key=(ws0 + ws1, d0 + d1)))
+    pairs.sort(key=lambda q: q['key'])
+    # one entry per distinct R80 pose, keeping that pose's best R81 partner
+    seen80, ring = set(), []
+    for q in pairs:
+        if q['r80'] in seen80:
+            continue
+        seen80.add(q['r80'])
+        ring.append(q)
+    print('stage E: %d non-overlapping R80/R81 pairs over %d distinct R80 poses'
+          % (len(pairs), len(ring)))
+
+    cands, seen = [], set()
+
+    def carry(u, q):
+        k = (u[1:], q['r80'], q['r81'])
+        if k in seen:
+            return
+        seen.add(k)
+        cands.append(dict(span=u[0], u19=u[1:], r80=q['r80'], r81=q['r81'],
+                          score=(q['key'][0], u[0], q['key'][1])))
+
+    # axis 1 -- vary R80/R81 against the best U19 pose.  R80.1 is the pad that
+    # failed the full prefix on C01, so it gets most of the budget.
+    if u19c and ring:
+        for q in ring[:6]:
+            carry(u19c[0], q)
+        # axis 2 -- vary U19 against the best ring, for the 5/7 pin field
+        for u in u19c[:6]:
+            carry(u, ring[0])
     cands = cands[:8]
     print('stage E: %d joint candidates carried to the real-router probe'
           % len(cands))
     json.dump(cands, open(os.path.join(SP, 'u19_candidates_002g.json'), 'w'),
               indent=1)
+
+    if os.environ.get('AQROOT_SEARCH_ONLY'):
+        for k, c in enumerate(cands):
+            print('  C%02d U19 (%.2f,%.2f) rot%d   R80 rot%d(%.2f,%.2f)   '
+                  'R81 rot%d(%.2f,%.2f)   span %.2f'
+                  % (k, c['u19'][1], c['u19'][2], c['u19'][0],
+                     c['r80'][0], c['r80'][1], c['r80'][2],
+                     c['r81'][0], c['r81'][1], c['r81'][2], c['span']))
+        print('')
+        print('search only: %d candidates written, no probe run' % len(cands))
+        return
 
     rows = []
     for k, c in enumerate(cands):

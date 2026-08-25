@@ -1,10 +1,16 @@
 [
  {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "R75.2",
+  "requested_b": "D9.1",
+  "actual_a": "2.800,62.038",
+  "actual_b": "D9.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "R75.2",
   "b": "D9.1",
   "role": "TRUNK",
-  "mm": 17.625,
+  "mm": 14.004,
   "w": 1.5,
   "grid": 0.05,
   "area": null,
@@ -20,9 +26,9 @@
     1.8384776310850235
    ]
   ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 3.3
+  "vias": 2,
+  "layer": "F",
+  "secs": 73.4
  },
  {
   "net": "BAT_PROTECTED_P",
@@ -110,31 +116,43 @@
  },
  {
   "net": "BAT_SENSE",
+  "requested_a": "Q3.6",
+  "requested_b": "R75.1",
+  "actual_a": "3.165,54.325",
+  "actual_b": "R75.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.6",
   "b": "R75.1",
   "role": "TRUNK",
-  "mm": 13.783,
-  "w": 1.0,
+  "mm": 58.7,
+  "w": 0.8,
   "grid": 0.05,
   "area": null,
   "profile": [
    [
     "Q3.6",
-    1.0,
-    1.9250584406713476
+    0.8,
+    1.825061642794566
    ],
    [
     "R75.1",
-    1.0,
-    1.5625
+    0.8,
+    1.4625
    ]
   ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 64.8
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 36.3
  },
  {
   "net": "BAT_SENSE",
+  "requested_a": "Q3.5",
+  "requested_b": "Q3.6",
+  "actual_a": "1.895,54.325",
+  "actual_b": "Q3.6",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.5",
   "b": "Q3.6",
   "role": "TRUNK",
@@ -156,10 +174,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.7
+  "secs": 3.0
  },
  {
   "net": "BAT_MID",
+  "requested_a": "Q2.6",
+  "requested_b": "Q3.8",
+  "actual_a": "3.165,46.525",
+  "actual_b": "Q3.8",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q2.6",
   "b": "Q3.8",
   "role": "TRUNK",
@@ -181,10 +205,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 3.1
  },
  {
   "net": "BAT_MID",
+  "requested_a": "Q2.5",
+  "requested_b": "Q2.6",
+  "actual_a": "1.895,46.525",
+  "actual_b": "Q2.6",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q2.5",
   "b": "Q2.6",
   "role": "TRUNK",
@@ -206,10 +236,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.7
+  "secs": 2.9
  },
  {
   "net": "BAT_MID",
+  "requested_a": "Q3.8",
+  "requested_b": "Q3.7",
+  "actual_a": "5.705,54.325",
+  "actual_b": "Q3.7",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.8",
   "b": "Q3.7",
   "role": "TRUNK",
@@ -231,10 +267,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 2.9
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "F1.2",
+  "requested_b": "Q2.8",
+  "actual_a": "4.800,42.800",
+  "actual_b": "Q2.8",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "F1.2",
   "b": "Q2.8",
   "role": "TRUNK",
@@ -256,10 +298,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.7
+  "secs": 2.8
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "Q2.8",
+  "requested_b": "Q2.7",
+  "actual_a": "5.705,46.525",
+  "actual_b": "Q2.7",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q2.8",
   "b": "Q2.7",
   "role": "TRUNK",
@@ -281,10 +329,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 3.3
  },
  {
   "net": "BAT_CONNECTOR_P",
+  "requested_a": "J4.1",
+  "requested_b": "F1.1",
+  "actual_a": "7.000,35.000",
+  "actual_b": "F1.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "J4.1",
   "b": "F1.1",
   "role": "TRUNK",
@@ -306,10 +360,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.7
+  "secs": 3.3
  },
  {
   "net": "BAT_SENSE",
+  "requested_a": "U18.9",
+  "requested_b": "R75.1",
+  "actual_a": "5.900,64.750",
+  "actual_b": "R75.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.9",
   "b": "R75.1",
   "role": "SENSE",
@@ -331,10 +391,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 3.5
  },
  {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "U18.8",
+  "requested_b": "R75.2",
+  "actual_a": "5.900,65.250",
+  "actual_b": "R75.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.8",
   "b": "R75.2",
   "role": "SENSE",
@@ -356,41 +422,22 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
- },
- {
-  "net": "LTC4368_FAULT_N",
-  "a": "U18.7",
-  "b": "R81.2",
-  "role": "SIG",
-  "mm": 8.973,
-  "w": 0.15,
-  "grid": 0.025,
-  "area": null,
-  "profile": [
-   [
-    "U18.7",
-    0.15,
-    1.275
-   ],
-   [
-    "R81.2",
-    0.15,
-    1.0
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 29.3
+  "secs": 3.2
  },
  {
   "net": "LTC_GATE",
+  "requested_a": "U18.10",
+  "requested_b": "R76.1",
+  "actual_a": "5.900,64.250",
+  "actual_b": "R76.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.10",
   "b": "R76.1",
   "role": "SIG",
-  "mm": 16.126,
+  "mm": 16.297,
   "w": 0.2,
-  "grid": 0.025,
+  "grid": 0.05,
   "area": null,
   "profile": [
    [
@@ -401,15 +448,83 @@
    [
     "R76.1",
     0.2,
-    0.95
+    0.975
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 4.4
+  "secs": 3.0
+ },
+ {
+  "net": "LTC4368_FAULT_N",
+  "requested_a": "U18.7",
+  "requested_b": "R81.2",
+  "actual_a": "5.900,65.750",
+  "actual_b": "R81.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "U18.7",
+  "b": "R81.2",
+  "role": "SIG",
+  "mm": 5.929,
+  "w": 0.2,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "U18.7",
+    0.2,
+    1.3
+   ],
+   [
+    "R81.2",
+    0.2,
+    0.975
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.0
+ },
+ {
+  "net": "LTC_SHDN",
+  "requested_a": "U18.6",
+  "requested_b": "R80.2",
+  "actual_a": "5.900,66.250",
+  "actual_b": "R80.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "U18.6",
+  "b": "R80.2",
+  "role": "SIG",
+  "mm": 11.008,
+  "w": 0.2,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "U18.6",
+    0.2,
+    0.75
+   ],
+   [
+    "R80.2",
+    0.2,
+    1.0784827305061495
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.7
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "U18.1",
+  "requested_b": "R77.1",
+  "actual_a": "10.100,64.250",
+  "actual_b": "R77.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.1",
   "b": "R77.1",
   "role": "SENSE",
@@ -431,10 +546,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 3.2
  },
  {
   "net": "LTC_UV",
+  "requested_a": "U18.2",
+  "requested_b": "R79.2",
+  "actual_a": "10.100,64.750",
+  "actual_b": "R79.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.2",
   "b": "R79.2",
   "role": "SIG",
@@ -460,10 +581,16 @@
  },
  {
   "net": "LTC_OV",
+  "requested_a": "U18.3",
+  "requested_b": "R77.2",
+  "actual_a": "10.100,65.250",
+  "actual_b": "R77.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U18.3",
   "b": "R77.2",
   "role": "SIG",
-  "mm": 14.997,
+  "mm": 14.133,
   "w": 0.2,
   "grid": 0.05,
   "area": null,
@@ -484,32 +611,13 @@
   "secs": 3.5
  },
  {
-  "net": "LTC_SHDN",
-  "a": "U18.6",
-  "b": "R80.2",
-  "role": "SIG",
-  "mm": 3.591,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "U18.6",
-    0.25,
-    0.75
-   ],
-   [
-    "R80.2",
-    0.25,
-    0.975
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.8
- },
- {
   "net": "Q2_CS",
+  "requested_a": "Q2.1",
+  "requested_b": "Q2.3",
+  "actual_a": "5.705,51.475",
+  "actual_b": "Q2.3",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q2.1",
   "b": "Q2.3",
   "role": "SIG",
@@ -531,10 +639,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 2.9
  },
  {
   "net": "Q3_CS",
+  "requested_a": "Q3.1",
+  "requested_b": "Q3.3",
+  "actual_a": "5.705,59.275",
+  "actual_b": "Q3.3",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.1",
   "b": "Q3.3",
   "role": "SIG",
@@ -556,10 +670,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.8
+  "secs": 3.6
  },
  {
   "net": "LTC_GATE",
+  "requested_a": "Q3.2",
+  "requested_b": "Q3.4",
+  "actual_a": "4.435,59.275",
+  "actual_b": "Q3.4",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.2",
   "b": "Q3.4",
   "role": "SIG",
@@ -581,10 +701,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.7
+  "secs": 2.8
  },
  {
   "net": "LTC_GATE",
+  "requested_a": "Q2.2",
+  "requested_b": "Q2.4",
+  "actual_a": "4.435,51.475",
+  "actual_b": "Q2.4",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q2.2",
   "b": "Q2.4",
   "role": "SIG",
@@ -610,6 +736,12 @@
  },
  {
   "net": "LTC_GATE",
+  "requested_a": "Q3.2",
+  "requested_b": "Q2.2",
+  "actual_a": "4.435,59.275",
+  "actual_b": "Q2.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q3.2",
   "b": "Q2.2",
   "role": "SIG",
@@ -631,10 +763,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.6
+  "secs": 3.5
  },
  {
   "net": "LTC_GATE_RC",
+  "requested_a": "C57.1",
+  "requested_b": "R76.2",
+  "actual_a": "7.725,56.500",
+  "actual_b": "R76.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "C57.1",
   "b": "R76.2",
   "role": "SIG",
@@ -656,97 +794,64 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.7
+  "secs": 3.4
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "R79.1",
+  "requested_b": "R80.1",
+  "actual_a": "13.675,62.500",
+  "actual_b": "R80.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "R79.1",
   "b": "R80.1",
   "role": "TAP",
-  "mm": 5.276,
-  "w": 0.2,
-  "grid": 0.05,
+  "mm": 18.016,
+  "w": 0.3,
+  "grid": 0.025,
   "area": "BAT_STUB_0",
   "profile": [
    [
     "R79.1",
-    0.2,
-    0.975
+    0.3,
+    1.1313708498984762
+   ],
+   [
+    "R80.1",
+    0.3,
+    1.0
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 212.4
+  "secs": 31.1
  },
  {
   "net": "BAT_RAW",
-  "a": "D12.1",
-  "b": "R77.1",
+  "requested_a": "R77.1",
+  "requested_b": "R79.1",
+  "actual_a": "10.175,62.500",
+  "actual_b": "R79.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R77.1",
+  "b": "R79.1",
   "role": "TAP",
-  "mm": 52.507,
+  "mm": 5.414,
   "w": 0.6,
   "grid": 0.05,
   "area": null,
   "profile": [
    [
-    "D12.1",
-    0.6,
-    1.0
-   ],
-   [
     "R77.1",
     0.6,
     1.2002603884157803
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 37.7
- },
- {
-  "net": "LTC_OV",
-  "a": "R77.2",
-  "b": "R78.1",
-  "role": "SIG",
-  "mm": 2.042,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R77.2",
-    0.25,
-    0.9503288904374106
    ],
    [
-    "R78.1",
-    0.25,
-    0.9503288904374106
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "LTC_SHDN",
-  "a": "U18.6",
-  "b": "Q4.3",
-  "role": "SIG",
-  "mm": 28.248,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "U18.6",
-    0.25,
-    0.65
-   ],
-   [
-    "Q4.3",
-    0.25,
-    0.7551034697311356
+    "R79.1",
+    0.6,
+    1.2905909499140307
    ]
   ],
   "vias": 0,
@@ -754,61 +859,110 @@
   "secs": 3.6
  },
  {
-  "net": "LTC4368_FAULT_N",
-  "a": "R81.2",
-  "b": "R82.1",
+  "net": "LTC_OV",
+  "requested_a": "R77.2",
+  "requested_b": "R78.1",
+  "actual_a": "11.825,62.500",
+  "actual_b": "R78.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R77.2",
+  "b": "R78.1",
   "role": "SIG",
-  "mm": 2.719,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R81.2",
-    0.25,
-    1.0077822185373189
-   ],
-   [
-    "R82.1",
-    0.25,
-    1.0077822185373189
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.8
- },
- {
-  "net": "LTC4368_FAULT_N",
-  "a": "R82.1",
-  "b": "Q9.1",
-  "role": "SIG",
-  "mm": 64.081,
+  "mm": 5.144,
   "w": 0.15,
   "grid": 0.05,
   "area": null,
   "profile": [
    [
-    "R82.1",
+    "R77.2",
     0.15,
-    0.9724325169388361
+    0.825
    ],
    [
-    "Q9.1",
+    "R78.1",
     0.15,
-    0.7451048583924279
+    0.9724325169388361
    ]
   ],
   "vias": 2,
   "layer": "F",
-  "secs": 367.2
+  "secs": 32.9
+ },
+ {
+  "net": "LTC4368_FAULT_N",
+  "requested_a": "R81.2",
+  "requested_b": "R82.1",
+  "actual_a": "5.500,69.675",
+  "actual_b": "R82.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R81.2",
+  "b": "R82.1",
+  "role": "SIG",
+  "mm": 6.636,
+  "w": 0.15,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R81.2",
+    0.15,
+    0.825
+   ],
+   [
+    "R82.1",
+    0.15,
+    0.9724325169388361
+   ]
+  ],
+  "vias": 2,
+  "layer": "F",
+  "secs": 22.4
+ },
+ {
+  "net": "BAT_PROT_SHDN_CTL",
+  "requested_a": "Q4.1",
+  "requested_b": "R83.1",
+  "actual_a": "1.637,94.205",
+  "actual_b": "R83.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "Q4.1",
+  "b": "R83.1",
+  "role": "SIG",
+  "mm": 19.762,
+  "w": 0.15,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "Q4.1",
+    0.15,
+    0.7051108068949163
+   ],
+   [
+    "R83.1",
+    0.15,
+    0.9003471552684553
+   ]
+  ],
+  "vias": 2,
+  "layer": "F",
+  "secs": 51.7
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "R86.2",
+  "requested_b": "(node)",
+  "actual_a": "9.650,26.875",
+  "actual_b": "(node)@4.800,42.800",
+  "retargeted": true,
+  "requested_connected": true,
   "a": "R86.2",
   "b": "(node)",
   "role": "TAP",
-  "mm": 6.887,
+  "mm": 26.388,
   "w": 0.6,
   "grid": 0.05,
   "area": null,
@@ -821,109 +975,263 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.3
+  "secs": 11.9
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "R89.1",
+  "requested_b": "(node)",
+  "actual_a": "8.000,21.325",
+  "actual_b": "(node)@9.650,26.875",
+  "retargeted": true,
+  "requested_connected": true,
   "a": "R89.1",
   "b": "(node)",
   "role": "TAP",
-  "mm": 5.061,
-  "w": 0.4,
+  "mm": 6.201,
+  "w": 0.3,
   "grid": 0.05,
   "area": "BAT_STUB_1",
   "profile": [
    [
     "R89.1",
-    0.4,
-    1.1845357740482134
+    0.3,
+    1.1491844934561204
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 8.9
+  "secs": 6.9
  },
  {
   "net": "REF_POL",
-  "a": "TP24.1",
+  "requested_a": "R87.2",
+  "requested_b": "U19.2",
+  "actual_a": "9.650,25.025",
+  "actual_b": "U19.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R87.2",
   "b": "U19.2",
   "role": "SIG",
-  "mm": 8.61,
+  "mm": 11.109,
   "w": 0.25,
   "grid": 0.05,
   "area": null,
   "profile": [
    [
-    "TP24.1",
-    0.25,
-    0.9899494936611665
-   ],
-   [
-    "U19.2",
-    0.25,
-    1.1426750412956432
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "N_BATDIV",
-  "a": "R89.2",
-  "b": "U19.6",
-  "role": "SIG",
-  "mm": 10.151,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R89.2",
+    "R87.2",
     0.25,
     1.0077822185373189
    ],
    [
-    "U19.6",
+    "U19.2",
     0.25,
-    1.1176789565881609
+    1.137774692107361
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.9
+  "secs": 3.2
  },
  {
-  "net": "REC_BAT_LOW",
-  "a": "U19.7",
-  "b": "Q7.1",
+  "net": "N_POL",
+  "requested_a": "R85.2",
+  "requested_b": "U19.3",
+  "actual_a": "9.650,28.725",
+  "actual_b": "U19.3",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R85.2",
+  "b": "U19.3",
   "role": "SIG",
-  "mm": 20.103,
+  "mm": 31.796,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R85.2",
+    0.25,
+    1.0077822185373189
+   ],
+   [
+    "U19.3",
+    0.25,
+    1.1627687861307596
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 5.0
+ },
+ {
+  "net": "VREC_VCC",
+  "requested_a": "R84.2",
+  "requested_b": "C60.1",
+  "actual_a": "11.175,28.000",
+  "actual_b": "C60.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R84.2",
+  "b": "C60.1",
+  "role": "SIG",
+  "mm": 6.308,
+  "w": 0.15,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R84.2",
+    0.15,
+    0.9003471552684553
+   ],
+   [
+    "C60.1",
+    0.15,
+    0.9003471552684553
+   ]
+  ],
+  "vias": 2,
+  "layer": "F",
+  "secs": 37.4
+ },
+ {
+  "net": "VBRIDGE_TOP",
+  "requested_a": "R85.1",
+  "requested_b": "D10.1",
+  "actual_a": "8.000,28.725",
+  "actual_b": "D10.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R85.1",
+  "b": "D10.1",
+  "role": "SIG",
+  "mm": 7.907,
   "w": 0.15,
   "grid": 0.025,
   "area": null,
   "profile": [
    [
-    "U19.7",
+    "R85.1",
     0.15,
-    1.0925114415876842
+    0.825
    ],
    [
-    "Q7.1",
+    "D10.1",
     0.15,
-    0.7151092573865899
+    0.725
+   ]
+  ],
+  "vias": 2,
+  "layer": "F",
+  "secs": 144.6
+ },
+ {
+  "net": "REC_POL_OK",
+  "requested_a": "U19.1",
+  "requested_b": "Q6.1",
+  "actual_a": "17.637,19.025",
+  "actual_b": "Q6.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "U19.1",
+  "b": "Q6.1",
+  "role": "SIG",
+  "mm": 16.264,
+  "w": 0.15,
+  "grid": 0.025,
+  "area": null,
+  "profile": [
+   [
+    "U19.1",
+    0.15,
+    1.0875
+   ],
+   [
+    "Q6.1",
+    0.15,
+    1.1625
+   ]
+  ],
+  "vias": 2,
+  "layer": "F",
+  "secs": 137.9
+ },
+ {
+  "net": "N_POL",
+  "requested_a": "R85.2",
+  "requested_b": "R86.1",
+  "actual_a": "9.650,28.725",
+  "actual_b": "R86.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R85.2",
+  "b": "R86.1",
+  "role": "SIG",
+  "mm": 13.133,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R85.2",
+    0.25,
+    1.0077822185373189
+   ],
+   [
+    "R86.1",
+    0.25,
+    0.925
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 60.4
+  "secs": 3.3
+ },
+ {
+  "net": "N_BATDIV",
+  "requested_a": "C61.1",
+  "requested_b": "U19.6",
+  "actual_a": "11.225,22.000",
+  "actual_b": "U19.6",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "C61.1",
+  "b": "U19.6",
+  "role": "SIG",
+  "mm": 4.849,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "C61.1",
+    0.25,
+    1.0431323022512533
+   ],
+   [
+    "U19.6",
+    0.25,
+    1.1627687861307596
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.0
  },
  {
   "net": "REF_HO",
+  "requested_a": "R91.2",
+  "requested_b": "U19.5",
+  "actual_a": "9.650,17.625",
+  "actual_b": "U19.5",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "R91.2",
   "b": "U19.5",
   "role": "SIG",
-  "mm": 12.069,
+  "mm": 13.149,
   "w": 0.15,
   "grid": 0.05,
   "area": null,
@@ -936,144 +1244,25 @@
    [
     "U19.5",
     0.15,
-    1.0235752292821472
+    1.0165044269455987
    ]
   ],
   "vias": 2,
   "layer": "F",
-  "secs": 22.0
- },
- {
-  "net": "REC_POL_OK",
-  "a": "U19.1",
-  "b": "Q6.1",
-  "role": "SIG",
-  "mm": 9.629,
-  "w": 0.15,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "U19.1",
-    0.15,
-    1.0342660441105085
-   ],
-   [
-    "Q6.1",
-    0.15,
-    0.7251077506136588
-   ]
-  ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 65.7
- },
- {
-  "net": "N_POL",
-  "a": "R86.1",
-  "b": "TP23.1",
-  "role": "SIG",
-  "mm": 5.366,
-  "w": 0.15,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R86.1",
-    0.15,
-    0.9724325169388361
-   ],
-   [
-    "TP23.1",
-    0.15,
-    0.9192388155425117
-   ]
-  ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 93.3
- },
- {
-  "net": "VREF_TOP",
-  "a": "D11.1",
-  "b": "R87.1",
-  "role": "SIG",
-  "mm": 12.118,
-  "w": 0.2,
-  "grid": 0.025,
-  "area": null,
-  "profile": [
-   [
-    "D11.1",
-    0.2,
-    0.7778174593052022
-   ],
-   [
-    "R87.1",
-    0.2,
-    0.85
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 20.3
- },
- {
-  "net": "REC_GATE_N",
-  "a": "Q6.3",
-  "b": "Q5.1",
-  "role": "SIG",
-  "mm": 5.624,
-  "w": 0.15,
-  "grid": 0.025,
-  "area": null,
-  "profile": [
-   [
-    "Q6.3",
-    0.15,
-    0.7251077506136588
-   ],
-   [
-    "Q5.1",
-    0.15,
-    0.7151092573865899
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 20.9
- },
- {
-  "net": "REC_LIM_IN",
-  "a": "Q5.3",
-  "b": "R95.1",
-  "role": "SIG",
-  "mm": 16.947,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "Q5.3",
-    0.25,
-    0.7651021173673486
-   ],
-   [
-    "R95.1",
-    0.25,
-    1.3750568170079371
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 3.4
+  "secs": 43.3
  },
  {
   "net": "REF_POL",
+  "requested_a": "R88.1",
+  "requested_b": "TP24.1",
+  "actual_a": "8.000,23.175",
+  "actual_b": "TP24.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "R88.1",
-  "b": "R87.2",
+  "b": "TP24.1",
   "role": "SIG",
-  "mm": 2.29,
+  "mm": 4.132,
   "w": 0.15,
   "grid": 0.05,
   "area": null,
@@ -1081,190 +1270,57 @@
    [
     "R88.1",
     0.15,
-    0.8003905296791061
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 27.6
- },
- {
-  "net": "N_BATDIV",
-  "a": "C61.1",
-  "b": "R89.2",
-  "role": "SIG",
-  "mm": 2.913,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "C61.1",
-    0.25,
-    1.0431323022512533
+    0.9724325169388361
    ],
    [
-    "R89.2",
-    0.25,
-    1.0077822185373189
+    "TP24.1",
+    0.15,
+    0.9192388155425117
    ]
   ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.8
+  "vias": 2,
+  "layer": "F",
+  "secs": 130.2
  },
  {
-  "net": "N_BATDIV",
-  "a": "R89.2",
-  "b": "R90.1",
+  "net": "VREF_TOP",
+  "requested_a": "D11.1",
+  "requested_b": "R87.1",
+  "actual_a": "14.450,30.000",
+  "actual_b": "R87.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "D11.1",
+  "b": "R87.1",
   "role": "SIG",
-  "mm": 5.906,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R89.2",
-    0.25,
-    1.0077822185373189
-   ],
-   [
-    "R90.1",
-    0.25,
-    0.925
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "VREC_VCC",
-  "a": "C60.1",
-  "b": "R84.2",
-  "role": "SIG",
-  "mm": 18.292,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "C60.1",
-    0.25,
-    1.0431323022512533
-   ],
-   [
-    "R84.2",
-    0.25,
-    1.0077822185373189
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 4.0
- },
- {
-  "net": "VBRIDGE_TOP",
-  "a": "R85.1",
-  "b": "D10.1",
-  "role": "SIG",
-  "mm": 3.61,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R85.1",
-    0.25,
-    1.0077822185373189
-   ],
-   [
-    "D10.1",
-    0.25,
-    0.7778174593052022
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "REF_HO",
-  "a": "R91.2",
-  "b": "R92.1",
-  "role": "SIG",
-  "mm": 2.519,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R91.2",
-    0.25,
-    1.0077822185373189
-   ],
-   [
-    "R92.1",
-    0.25,
-    1.0077822185373189
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.8
- },
- {
-  "net": "REC_AND1",
-  "a": "Q6.2",
-  "b": "Q7.3",
-  "role": "SIG",
-  "mm": 3.683,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "Q6.2",
-    0.25,
-    1.1579210897120755
-   ],
-   [
-    "Q7.3",
-    0.25,
-    1.1508176441122198
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.8
- },
- {
-  "net": "REC_BAT_LOW",
-  "a": "Q7.1",
-  "b": "R93.1",
-  "role": "SIG",
-  "mm": 20.891,
+  "mm": 10.284,
   "w": 0.15,
-  "grid": 0.025,
+  "grid": 0.05,
   "area": null,
   "profile": [
    [
-    "Q7.1",
+    "D11.1",
     0.15,
-    1.1119268186351114
+    0.65
    ],
    [
-    "R93.1",
+    "R87.1",
     0.15,
-    0.9545941546018392
+    0.9724325169388361
    ]
   ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 34.3
+  "vias": 2,
+  "layer": "F",
+  "secs": 30.0
  },
  {
   "net": "REC_AND2",
+  "requested_a": "Q8.3",
+  "requested_b": "Q7.2",
+  "actual_a": "3.513,13.095",
+  "actual_b": "Q7.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q8.3",
   "b": "Q7.2",
   "role": "SIG",
@@ -1286,10 +1342,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 2.9
+  "secs": 3.1
  },
  {
   "net": "REC_FAULT_B",
+  "requested_a": "Q9.3",
+  "requested_b": "Q8.1",
+  "actual_a": "3.513,9.305",
+  "actual_b": "Q8.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q9.3",
   "b": "Q8.1",
   "role": "SIG",
@@ -1311,16 +1373,239 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 22.9
+  "secs": 30.6
+ },
+ {
+  "net": "REC_AND1",
+  "requested_a": "Q6.2",
+  "requested_b": "Q7.3",
+  "actual_a": "1.637,19.725",
+  "actual_b": "Q7.3",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "Q6.2",
+  "b": "Q7.3",
+  "role": "SIG",
+  "mm": 3.683,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "Q6.2",
+    0.25,
+    1.1579210897120755
+   ],
+   [
+    "Q7.3",
+    0.25,
+    1.1508176441122198
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.1
+ },
+ {
+  "net": "REC_BAT_LOW",
+  "requested_a": "R93.1",
+  "requested_b": "Q7.1",
+  "actual_a": "8.000,13.925",
+  "actual_b": "Q7.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R93.1",
+  "b": "Q7.1",
+  "role": "SIG",
+  "mm": 8.26,
+  "w": 0.15,
+  "grid": 0.025,
+  "area": null,
+  "profile": [
+   [
+    "R93.1",
+    0.15,
+    0.9545941546018392
+   ],
+   [
+    "Q7.1",
+    0.15,
+    1.1119268186351114
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 32.4
+ },
+ {
+  "net": "N_BATDIV",
+  "requested_a": "C61.1",
+  "requested_b": "R89.2",
+  "actual_a": "11.225,22.000",
+  "actual_b": "R89.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "C61.1",
+  "b": "R89.2",
+  "role": "SIG",
+  "mm": 2.913,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "C61.1",
+    0.25,
+    1.0431323022512533
+   ],
+   [
+    "R89.2",
+    0.25,
+    1.0077822185373189
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.2
+ },
+ {
+  "net": "REF_HO",
+  "requested_a": "R91.2",
+  "requested_b": "R92.1",
+  "actual_a": "9.650,17.625",
+  "actual_b": "R92.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R91.2",
+  "b": "R92.1",
+  "role": "SIG",
+  "mm": 2.519,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R91.2",
+    0.25,
+    1.0077822185373189
+   ],
+   [
+    "R92.1",
+    0.25,
+    1.0077822185373189
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.1
  },
  {
   "net": "REC_GATE_N",
-  "a": "TP21.1",
-  "b": "R94.2",
+  "requested_a": "Q6.3",
+  "requested_b": "Q5.1",
+  "actual_a": "3.513,20.675",
+  "actual_b": "Q5.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "Q6.3",
+  "b": "Q5.1",
   "role": "SIG",
-  "mm": 11.388,
+  "mm": 8.748,
   "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "Q6.3",
+    0.25,
+    0.7751007998963748
+   ],
+   [
+    "Q5.1",
+    0.25,
+    0.7651021173673486
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.4
+ },
+ {
+  "net": "REC_LIM_IN",
+  "requested_a": "Q5.3",
+  "requested_b": "R95.1",
+  "actual_a": "3.513,24.465",
+  "actual_b": "R95.1",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "Q5.3",
+  "b": "R95.1",
+  "role": "SIG",
+  "mm": 20.886,
+  "w": 0.15,
   "grid": 0.025,
+  "area": null,
+  "profile": [
+   [
+    "Q5.3",
+    0.15,
+    0.7151092573865899
+   ],
+   [
+    "R95.1",
+    0.15,
+    1.3000600947648535
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 74.6
+ },
+ {
+  "net": "REF_HO",
+  "requested_a": "R92.1",
+  "requested_b": "R93.2",
+  "actual_a": "8.000,15.775",
+  "actual_b": "R93.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "R92.1",
+  "b": "R93.2",
+  "role": "SIG",
+  "mm": 2.995,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "R92.1",
+    0.25,
+    1.0077822185373189
+   ],
+   [
+    "R93.2",
+    0.25,
+    0.975
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.1
+ },
+ {
+  "net": "REC_GATE_N",
+  "requested_a": "TP21.1",
+  "requested_b": "Q6.3",
+  "actual_a": "6.000,19.500",
+  "actual_b": "Q6.3",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "TP21.1",
+  "b": "Q6.3",
+  "role": "SIG",
+  "mm": 3.275,
+  "w": 0.25,
+  "grid": 0.05,
   "area": null,
   "profile": [
    [
@@ -1329,46 +1614,27 @@
     0.9899494936611665
    ],
    [
-    "R94.2",
+    "Q6.3",
     0.25,
-    0.95
+    1.1405179744309162
    ]
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 4.4
- },
- {
-  "net": "REF_HO",
-  "a": "R92.1",
-  "b": "R93.2",
-  "role": "SIG",
-  "mm": 4.626,
-  "w": 0.15,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R92.1",
-    0.15,
-    0.9724325169388361
-   ],
-   [
-    "R93.2",
-    0.15,
-    0.8503675675847474
-   ]
-  ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 27.8
+  "secs": 3.1
  },
  {
   "net": "REC_GATE_N",
+  "requested_a": "TP21.1",
+  "requested_b": "R94.2",
+  "actual_a": "6.000,19.500",
+  "actual_b": "R94.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "TP21.1",
-  "b": "Q6.3",
+  "b": "R94.2",
   "role": "SIG",
-  "mm": 4.243,
+  "mm": 9.524,
   "w": 0.15,
   "grid": 0.05,
   "area": null,
@@ -1376,49 +1642,30 @@
    [
     "TP21.1",
     0.15,
-    0.9
+    0.9192388155425117
    ],
    [
-    "Q6.3",
+    "R94.2",
     0.15,
-    1.1048897003773726
+    0.9724325169388361
    ]
   ],
   "vias": 2,
   "layer": "F",
-  "secs": 29.2
- },
- {
-  "net": "REC_DIODE_IN",
-  "a": "TP22.1",
-  "b": "R95.2",
-  "role": "SIG",
-  "mm": 5.255,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "TP22.1",
-    0.25,
-    1.0
-   ],
-   [
-    "R95.2",
-    0.25,
-    1.3750568170079371
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
+  "secs": 88.0
  },
  {
   "net": "REC_FAULT_B",
+  "requested_a": "Q9.3",
+  "requested_b": "R96.2",
+  "actual_a": "3.513,9.305",
+  "actual_b": "R96.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "Q9.3",
   "b": "R96.2",
   "role": "SIG",
-  "mm": 7.91,
+  "mm": 7.135,
   "w": 0.25,
   "grid": 0.05,
   "area": null,
@@ -1436,10 +1683,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.0
+  "secs": 3.1
  },
  {
   "net": "REC_DIODE_IN",
+  "requested_a": "D12.2",
+  "requested_b": "TP22.1",
+  "actual_a": "13.050,17.000",
+  "actual_b": "TP22.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "D12.2",
   "b": "TP22.1",
   "role": "SIG",
@@ -1464,7 +1717,44 @@
   "secs": 2.9
  },
  {
+  "net": "REC_DIODE_IN",
+  "requested_a": "TP22.1",
+  "requested_b": "R95.2",
+  "actual_a": "12.500,14.500",
+  "actual_b": "R95.2",
+  "retargeted": false,
+  "requested_connected": true,
+  "a": "TP22.1",
+  "b": "R95.2",
+  "role": "SIG",
+  "mm": 5.255,
+  "w": 0.25,
+  "grid": 0.05,
+  "area": null,
+  "profile": [
+   [
+    "TP22.1",
+    0.25,
+    1.0
+   ],
+   [
+    "R95.2",
+    0.25,
+    1.3750568170079371
+   ]
+  ],
+  "vias": 0,
+  "layer": "B.Cu",
+  "secs": 3.2
+ },
+ {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "U14.2",
+  "requested_b": "TP15.1",
+  "actual_a": "1.245,82.765",
+  "actual_b": "TP15.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "U14.2",
   "b": "TP15.1",
   "role": "SENSE",
@@ -1486,10 +1776,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 10.1
+  "secs": 21.9
  },
  {
   "net": "BAT_RAW",
+  "requested_a": "C59.1",
+  "requested_b": "F1.2",
+  "actual_a": "8.000,42.275",
+  "actual_b": "F1.2",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "C59.1",
   "b": "F1.2",
   "role": "TAP",
@@ -1511,10 +1807,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.0
+  "secs": 3.3
  },
  {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "C58.1",
+  "requested_b": "D9.1",
+  "actual_a": "11.225,74.500",
+  "actual_b": "D9.1",
+  "retargeted": false,
+  "requested_connected": true,
   "a": "C58.1",
   "b": "D9.1",
   "role": "TAP",
@@ -1536,10 +1838,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 3.1
+  "secs": 3.4
  },
  {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "C36.1",
+  "requested_b": "(node)",
+  "actual_a": "62.975,73.750",
+  "actual_b": "(node)@64.100,78.925",
+  "retargeted": true,
+  "requested_connected": true,
   "a": "C36.1",
   "b": "(node)",
   "role": "TAP",
@@ -1556,10 +1864,16 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 62.4
+  "secs": 79.9
  },
  {
   "net": "BAT_PROTECTED_P",
+  "requested_a": "C25.1",
+  "requested_b": "(node)",
+  "actual_a": "62.225,65.000",
+  "actual_b": "(node)@63.000,72.400",
+  "retargeted": true,
+  "requested_connected": true,
   "a": "C25.1",
   "b": "(node)",
   "role": "TAP",
@@ -1576,176 +1890,6 @@
   ],
   "vias": 0,
   "layer": "B.Cu",
-  "secs": 68.6
- },
- {
-  "net": "BAT_PROTECTED_P",
-  "a": "U14.2",
-  "b": "(node)",
-  "role": "SENSE",
-  "mm": 34.205,
-  "w": 0.15,
-  "grid": 0.025,
-  "area": "BAT_PROT_TAP_U14",
-  "profile": [
-   [
-    "U14.2",
-    0.15,
-    0.8379289946051515
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 10.2
- },
- {
-  "net": "BAT_RAW",
-  "a": "D12.1",
-  "b": "(node)",
-  "role": "TRUNK",
-  "mm": 35.567,
-  "w": 1.0,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "D12.1",
-    1.0,
-    1.2
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 4.8
- },
- {
-  "net": "REF_POL",
-  "a": "R87.2",
-  "b": "(node)",
-  "role": "SIG",
-  "mm": 5.014,
-  "w": 0.15,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R87.2",
-    0.15,
-    1.0784827305061495
-   ],
-   [
-    "(node)",
-    0.15,
-    0.5505678886386309
-   ]
-  ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 20.6
- },
- {
-  "net": "N_POL",
-  "a": "R85.2",
-  "b": "(node)",
-  "role": "SIG",
-  "mm": 3.658,
-  "w": 0.15,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "R85.2",
-    0.15,
-    0.9503288904374106
-   ],
-   [
-    "(node)",
-    0.15,
-    0.5505678886386309
-   ]
-  ],
-  "vias": 2,
-  "layer": "F",
-  "secs": 4.5
- },
- {
-  "net": "LTC_GATE",
-  "a": "TP17.1",
-  "b": "(node)",
-  "role": "TEST",
-  "mm": 2.104,
-  "w": 0.25,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "TP17.1",
-    0.25,
-    1.1
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "BAT_RAW",
-  "a": "TP16.1",
-  "b": "(node)",
-  "role": "TEST",
-  "mm": 4.447,
-  "w": 0.6,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "TP16.1",
-    0.6,
-    1.25
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
- },
- {
-  "net": "BAT_SENSE",
-  "a": "TP20.1",
-  "b": "(node)",
-  "role": "TEST",
-  "mm": 14.245,
-  "w": 0.6,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "TP20.1",
-    0.6,
-    1.2727922061357855
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 3.5
- },
- {
-  "net": "BAT_CONNECTOR_P",
-  "a": "TP34.1",
-  "b": "(node)",
-  "role": "TEST",
-  "mm": 1.523,
-  "w": 0.6,
-  "grid": 0.05,
-  "area": null,
-  "profile": [
-   [
-    "TP34.1",
-    0.6,
-    1.2727922061357855
-   ]
-  ],
-  "vias": 0,
-  "layer": "B.Cu",
-  "secs": 2.9
+  "secs": 89.9
  }
 ]

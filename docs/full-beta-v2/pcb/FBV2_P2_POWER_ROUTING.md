@@ -343,3 +343,38 @@ out-of-scope routing: zero, trivially, because no net is routed.**
 board**, not from the authoritative board — the authoritative board has no copper on it. They show
 the `BAT_PROTECTED_P` trunk and its `U11.2` flare, the R75 Kelvin pair, the `BAT_MAIN` chain, the
 two F.Cu hops with their four vias, and the fuel-gauge and test branches.
+
+---
+
+## 9. Routing-order rules established by FBV2-P2-002G / 002H
+
+These are harness rulings, not board facts, and they apply to every block that
+follows — the converters included.
+
+**PR-39 — router success must mean real connectivity.** A route counts only if
+the pads that were *requested* end up in one connected component. The router's
+node-retarget fallbacks are still allowed, because a retarget is often the right
+topology, but one that leaves the named pad isolated is reverted and does not
+count. Judge a phase on `checks/net_ledger.py`, never on the routed count.
+
+**PR-40 — qualify on the full prefix.** Bare-board escape, simultaneous stub
+escape and reduced-prefix probes have each passed a placement that then failed.
+A candidate is qualified by the real driver, in the real order, against the real
+copper the plan lays first. Use the cheap models only as *negative* tests: they
+can rule a candidate out, never in.
+
+**PR-41 — a WIDE net does not make every pad on it wide.** `BAT_RAW` carries the
+pack current at one end and a microamp divider at the other. Net-level width
+classes must yield to D-249's per-pad rulings in the closure stage, exactly as
+they do in the plan.
+
+**PR-43 — schedule by corridor scarcity, not by net role.** Role tells you how
+wide a path must be; it does not tell you how contested its corridor is. A
+`TAP` that is the only 21 mm link between two islands through a shared margin
+must be scheduled with the trunk, not with the local taps it superficially
+resembles. Before ordering a block, ask of each connection: *how many corridors
+does this have, and who else wants them?*
+
+The common thread, and the one worth carrying: **an escape proof measures a
+0.5 mm stub; a connection is a route.** Every defect in this list was found by
+measuring the thing itself rather than a proxy for it.
