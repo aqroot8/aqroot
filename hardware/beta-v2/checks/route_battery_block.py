@@ -468,6 +468,7 @@ def main():
             if fatal:
                 state['fail'] = state['last']
             return False
+        rn_before = state['rn']
         g = gate()
         if not g['ok']:
             m = unsplit(m)
@@ -482,16 +483,67 @@ def main():
             if fatal:
                 state['fail'] = state['last']
             return False
+        # ------------------------------------------------------------ PR-39
+        # ROUTER SUCCESS MUST MEAN REAL CONNECTIVITY BETWEEN THE REQUESTED PADS.
+        #
+        # `run()` has three fallbacks that may REPLACE `pb` with a point on the
+        # net's own copper: the node retarget, the hop-to-node, and a '(node)'
+        # request.  Every one of them kept the REQUESTED pad name in the log
+        # line and in the journal while building somewhere else entirely, so
+        # `BAT_RAW R79.1 -> R80.1` was reported at 5.276 mm across a 12.030 mm
+        # gap, put ZERO track endpoints in R80.1, and still incremented the
+        # routed count.  A Phase B replay would have reproduced it faithfully.
+        #
+        # A route is now SUCCESS only if, after the copper is on the board, the
+        # REQUESTED start pad and the REQUESTED end pad are in the SAME
+        # connectivity component.  Retargeting is allowed - it is often the
+        # right topology - but only when it genuinely joins what was asked for.
+        #
+        # A '(node)' request has no named end, so its contract is that the pad
+        # ends up joined to SOME other pad of its own net.
+        act_a = '%.3f,%.3f' % (pa['x'] / 1e6, pa['y'] / 1e6)
+        act_b = ('(node)@%.3f,%.3f' % (pb['x'] / 1e6, pb['y'] / 1e6)
+                 if pb is not None and pb.get('anchor') else b_)
+        if node:
+            others = [o for o in pads.get(net, {}) if o != a]
+            conn = any(joined(a, o) for o in others)
+        else:
+            conn = joined(a, b_)
+        if not conn:
+            m = unsplit(m)
+            qb.revert(m)
+            if area:
+                area_trk[area] = area_trk.get(area, [])[:_pre_area]
+            if stubs and stubs[-1][0] == area:
+                stubs.pop()
+                area_trk.pop(area, None)
+            state['rn'] = rn_before
+            state['last'] = ('%s %s->%s (%s) : PR-39 requested pads NOT '
+                             'CONNECTED after routing (actual end %s)'
+                             % (net.split('/')[-1], a, b_, role, act_b))
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs"
+                  % (net.split('/')[-1], a, b_, 'NOT_CONNECTED', time.time() - t0))
+            sys.stdout.flush()
+            if fatal:
+                state['fail'] = state['last']
+            return False
         state['done'] += 1
         _ckpt(journal)
-        journal.append(dict(net=net.split('/')[-1], a=a, b=b_, role=role,
+        journal.append(dict(net=net.split('/')[-1],
+                            requested_a=a, requested_b=b_,
+                            actual_a=act_a, actual_b=act_b,
+                            retargeted=bool(pb is not None and pb.get('anchor')),
+                            requested_connected=True,
+                            a=a, b=b_, role=role,
                             mm=round(r['mm'], 3), w=used / 1e6, grid=r['grid'],
                             area=area, profile=r.get('profile'),
                             vias=r.get('vias', 0), layer=r.get('layer', 'B.Cu'),
                             secs=round(time.time() - t0, 1)))
-        print("  %-5s %-18s %-8s -> %-8s %8.3f mm  w=%.2f  g=%.3f %s %.0fs"
+        print("  %-5s %-18s %-8s -> %-8s %8.3f mm  w=%.2f  g=%.3f %s%s %.0fs"
               % (role, net.split('/')[-1], a, b_, r['mm'], used / 1e6, r['grid'],
-                 ('F.Cu+2 vias' if hop else '           '), time.time() - t0))
+                 ('F.Cu+2 vias' if hop else '           '),
+                 ('  [via node]' if (pb is not None and pb.get('anchor')) else ''),
+                 time.time() - t0))
         sys.stdout.flush()
         return True
 
@@ -890,6 +942,63 @@ def main():
             if (not u11[0] and not state['fail'] and it['a'] == 'R75.2'
                     and it['b'] == 'D9.1'):
                 u11[0] = u11_escape()
+        # -------------------------------------------------------------- PR-40
+        # THE FULL PREFIX IS THE QUALIFICATION MODEL.
+        #
+        # FBV2-P2-002G qualified a placement on a REDUCED prefix and the full
+        # Phase A then rejected three of its connections.  Bare-board escape,
+        # simultaneous stub escape and reduced-prefix routing are all cheaper
+        # than the truth and all three have now been wrong.
+        #
+        # AQROOT_PROBE_PASS1 stops after pass 1 and writes the per-net
+        # connectivity ledger plus the named target pairs.  Pass 1 is exactly
+        # the copper that exists before and around the remaining bottlenecks,
+        # laid by the real driver in the real order - not a proxy for it.
+        if os.environ.get('AQROOT_PROBE_PASS1'):
+            apply_areas()
+            pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
+            qb.save()
+            DRU.write(pcb, stubs)
+            import net_ledger as NL
+            lg = NL.ledger(pcb)
+            TARGETS = [('BAT_RAW', 'R80.1', 'Q2.7'),
+                       ('BAT_RAW', 'D12.1', 'R77.1'),
+                       ('LTC_SHDN', 'U18.6', 'Q4.3'),
+                       ('LTC_GATE', 'U18.10', 'Q2.2'),
+                       ('Q3_CS', 'Q3.1', 'Q3.3'),
+                       ('BAT_PROTECTED_P', 'R75.2', 'U11.2'),
+                       ('BAT_PROTECTED_P', 'U14.2', 'TP15.1')]
+            tg = {}
+            for (nt, a_, b2) in TARGETS:
+                tg['%s %s->%s' % (nt, a_, b2)] = bool(joined(a_, b2))
+            u19 = {}
+            for n_ in ('1', '2', '3', '5', '6', '7', '8'):
+                ref = 'U19.' + n_
+                pd = None
+                for nt2 in pads:
+                    if ref in pads[nt2]:
+                        pd = nt2
+                        break
+                others = [o for o in pads.get(pd, {}) if o != ref] if pd else []
+                u19[ref] = bool(any(joined(ref, o) for o in others))
+            res = dict(probe='PR-40 full-prefix, end of pass 1',
+                       routed=state['done'], skipped=state['skipped'],
+                       targets=tg, u19=u19,
+                       u19_connected=sum(1 for v in u19.values() if v),
+                       ledger_connected=lg['connected'],
+                       ledger_total=lg['total'],
+                       unconnected=[k for k, v in lg['nets'].items()
+                                    if not v.get('connected')],
+                       out_of_scope=lg['out_of_scope'])
+            json.dump(res, open(os.path.join(
+                SP, os.environ.get('AQROOT_PROBE_OUT', 'probe_pass1.json')),
+                'w'), indent=1)
+            print('PR-40 PROBE  targets %s  U19 %d/7  ledger %d/%d'
+                  % (''.join('1' if v else '0' for v in tg.values()),
+                     res['u19_connected'], lg['connected'], lg['total']))
+            sys.stdout.flush()
+            return
+
         QUEUE = rest
         if not u11[0] and not state['fail']:
             u11[0] = u11_escape()

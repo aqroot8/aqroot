@@ -38,7 +38,7 @@ If a rule is relaxed or a part is moved so that one of them becomes routable --
 or if a new pad joins the list -- this test fails and asks for a fresh ruling
 rather than letting the change pass unnoticed.
 """
-import os, sys, json, shutil, subprocess, collections, math, tempfile
+import io, os, sys, json, shutil, subprocess, collections, math, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -91,6 +91,7 @@ CONFLICTS = {
     'U11.2': (N + 'BAT_PROTECTED_P', 1200000, 200000),
 }
 
+SP_DIR = os.path.dirname(os.path.abspath(__file__))
 FAILED = []
 def chk(name, detail, ok):
     print('  %-4s %-46s %s' % ('PASS' if ok else 'FAIL', name, detail))
@@ -309,6 +310,103 @@ def main():
         chk('G7 split halves removed from the board',
             '%d of 2 still present' % sum(1 for t in made if id(t) in live),
             not any(id(t) in live for t in made))
+
+        # ---- G8: PR-39, ROUTER SUCCESS MUST MEAN REAL CONNECTIVITY -------
+        #
+        # FBV2-P2-002F reported `BAT_RAW R79.1 -> R80.1` as routed at 5.276 mm
+        # across a 12.030 mm gap, with ZERO track endpoints in R80.1's pad and
+        # R80.1 alone in its own copper component.  The node fallback had
+        # retargeted silently while the log line, the journal and the routed
+        # count all kept the requested pair.  These cases pin the contract:
+        # a route is SUCCESS only if the REQUESTED pads end up connected.
+        print('')
+        print('  -- G8 PR-39 router truth ------------------------------------')
+        import net_ledger as NL
+
+        def connected(pcb_, net_, a_, b_):
+            """Requested-pad connectivity, judged on a SAVED AND RELOADED board."""
+            bd = pcbnew.LoadBoard(pcb_)
+            bd.BuildConnectivity()
+            cn_ = bd.GetConnectivity()
+            pp = {}
+            for f_ in bd.GetFootprints():
+                for q_ in f_.Pads():
+                    pp[f_.GetReference() + '.' + q_.GetNumber()] = q_
+            if a_ not in pp or b_ not in pp:
+                return None
+            grp = {str(i.m_Uuid.AsString()) for i in cn_.GetConnectedItems(pp[a_])}
+            return str(pp[b_].m_Uuid.AsString()) in grp
+
+        NBR = '/01_POWER_TREE/BAT_RAW'
+        pcb8 = fresh(work, 'G8')
+        qb8 = QR.QBoard(pcb8)
+        qb8.wide_nets = frozenset([NBR])
+
+        # TEST A -- a named pair that routes directly is SUCCESS, and the
+        # requested pads really are connected afterwards.
+        pa = qb8.pads.get((NBR, 'F1.2'))
+        pb = qb8.pads.get((NBR, 'Q2.8'))
+        ra = QR.connect_role(qb8, NBR, pa, pb, 'B', 1000000, 200000, 300000)
+        qb8.save()
+        ca = connected(pcb8, NBR, 'F1.2', 'Q2.8')
+        chk('G8-A direct named pair routes and connects',
+            'ok=%s connected=%s' % (ra['ok'], ca), bool(ra['ok']) and ca is True)
+
+        # TEST B -- a fallback that lands on same-net copper and GENUINELY
+        # joins the requested pads is still SUCCESS.
+        pc = qb8.pads.get((NBR, 'Q2.7'))
+        rb = QR.connect_role(qb8, NBR, pc, pa, 'B', 800000, 200000, 300000)
+        qb8.save()
+        cb = connected(pcb8, NBR, 'Q2.7', 'F1.2')
+        chk('G8-B fallback that truly joins is SUCCESS',
+            'ok=%s connected=%s' % (rb['ok'], cb), bool(rb['ok']) and cb is True)
+
+        # TEST C -- the defect itself.  Route a pad to a POINT on its own net
+        # that does not reach the requested end; the router reports ok, and the
+        # contract must still call the REQUESTED pair NOT CONNECTED.
+        pcb8c = fresh(work, 'G8C')
+        qb8c = QR.QBoard(pcb8c)
+        qb8c.wide_nets = frozenset([NBR])
+        src = qb8c.pads.get((NBR, 'F1.2'))
+        far = qb8c.pads.get((NBR, 'R80.1'))
+        e = qb8c.escape(src, 'B', 600000, 600000, 200000, 300000, 50000,
+                        qb8c.ex0, qb8c.ey0)
+        laid = False
+        if e:
+            qb8c.track(NBR, 'B', src['x'], src['y'], e[0]['x'], e[0]['y'], 600000)
+            laid = True
+        qb8c.save()
+        cc = connected(pcb8c, NBR, 'F1.2', 'R80.1')
+        chk('G8-C copper laid but requested end isolated -> NOT CONNECTED',
+            'laid=%s requested_connected=%s' % (laid, cc), laid and cc is False)
+
+        # TEST D -- the journal must carry requested AND actual endpoints.
+        # READ the driver's source; do NOT import it.  route_battery_block.py
+        # calls main() at module level, so importing it starts a Phase A run.
+        src_txt = io.open(os.path.join(SP_DIR, 'route_battery_block.py'),
+                          encoding='utf-8').read()
+        has_fields = all(k in src_txt for k in
+                         ('requested_a=', 'requested_b=', 'actual_a=',
+                          'actual_b=', 'requested_connected='))
+        gated = 'PR-39 requested pads NOT' in src_txt
+        chk('G8-D journal records requested AND actual endpoints',
+            'fields=%s rejection_path=%s' % (has_fields, gated),
+            has_fields and gated)
+
+        # TEST E -- a save/reload preserves the verdict.
+        ca2 = connected(pcb8, NBR, 'F1.2', 'Q2.8')
+        cc2 = connected(pcb8c, NBR, 'F1.2', 'R80.1')
+        chk('G8-E save/reload preserves the connectivity verdict',
+            'A %s->%s   C %s->%s' % (ca, ca2, cc, cc2),
+            ca2 == ca and cc2 == cc)
+
+        # TEST F -- the ledger, which is what Phase A/B are judged on, must
+        # report the isolated case as NOT fully connected.
+        lg = NL.ledger(pcb8c)
+        br = lg['nets']['BAT_RAW']
+        chk('G8-F ledger reports the isolated net as unconnected',
+            '%d islands, connected=%s' % (br['islands'], br['connected']),
+            br['islands'] > 1 and br['connected'] is False)
 
         print('')
         if FAILED:
