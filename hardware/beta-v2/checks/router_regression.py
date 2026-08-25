@@ -55,6 +55,7 @@ except ImportError:
     print("router_regression: needs KiCad's bundled python (pcbnew).")
     raise SystemExit(2)
 import qrouter as QR
+import path_role_util as RU
 
 N = '/01_POWER_TREE/'
 # width / rule floor / pad clearance / track clearance, nm.  Taken from the
@@ -244,6 +245,70 @@ def main():
             chk('land-pattern conflict %s unchanged' % ref,
                 'widest legal escape %.3f mm vs floor %.2f mm' % (best / 1e6, floor / 1e6),
                 best == proved and best < floor)
+
+        # ---- G7  SPLIT / REVERT INDEX ARITHMETIC (PR-15) ------------------
+        #
+        # split_at() replaces ONE track in qb.laid with TWO.  A mark taken
+        # before the split is an index into that list, so every mark after the
+        # split point is now off by one.  Reverting with a stale mark removed a
+        # track belonging to the TRUNK and left one of the branch's own behind;
+        # doing it twice on the same trunk called BOARD::Remove on an item that
+        # was no longer in the list, which SEGFAULTS the interpreter rather than
+        # raising.  That crash killed the first FBV2-P2-002E Phase A run at
+        # BAT_CONNECTOR_P TP34.1 after 55 connections.
+        #
+        # The guard is arithmetic, not a crash test: lay copper, mark, split an
+        # EARLIER track, undo the split, revert, and require the board and the
+        # laid list to be exactly what they were.
+        qb = QR.QBoard(scratch)
+        net = '/01_POWER_TREE/BAT_CONNECTOR_P'
+        nid = qb.b.FindNet(net)
+        LID = qb.b.GetLayerID('B.Cu')
+
+        def lay(x0, y0, x1, y1):
+            t = pcbnew.PCB_TRACK(qb.b)
+            t.SetStart(pcbnew.VECTOR2I(x0, y0))
+            t.SetEnd(pcbnew.VECTOR2I(x1, y1))
+            t.SetWidth(250000)
+            t.SetLayer(LID)
+            t.SetNet(nid)
+            qb.b.Add(t)
+            qb.laid.append(t)
+            return t
+
+        trunk = lay(20000000, 30000000, 30000000, 30000000)
+        n0 = len(qb.laid)
+        before = len(list(qb.b.GetTracks()))
+        m = qb.mark()
+        branch = lay(25000000, 30000000, 25000000, 34000000)
+        at = qb.laid.index(trunk)
+        made = RU.split_at(qb.b, trunk, 25000000, 30000000)
+        chk('G7 split produced two halves', '%d halves' % len(made), len(made) == 2)
+        qb.laid[at:at + 1] = made
+        m2 = (m[0] + len(made) - 1, m[1], m[2]) if m[0] > at else m
+        chk('G7 shifted mark still points at the branch',
+            'laid[%d] is the branch' % m2[0],
+            m2[0] < len(qb.laid) and qb.laid[m2[0]] is branch)
+        # undo the split, then revert
+        for t in made:
+            qb.b.Remove(t)
+        qb.laid[at:at + len(made)] = [trunk]
+        m3 = (m2[0] - (len(made) - 1), m2[1], m2[2]) if m2[0] > at else m2
+        qb.b.Add(trunk)
+        qb.revert(m3)
+        chk('G7 laid list restored exactly',
+            '%d laid, expected %d' % (len(qb.laid), n0), len(qb.laid) == n0)
+        chk('G7 trunk survived the undo', 'trunk is laid[%d]' % at,
+            at < len(qb.laid) and qb.laid[at] is trunk)
+        chk('G7 board track count restored',
+            '%d tracks, expected %d' % (len(list(qb.b.GetTracks())), before),
+            len(list(qb.b.GetTracks())) == before)
+        # the halves must NOT still be on the board, and a second revert with
+        # the ORIGINAL (unshifted) mark must not be reachable any more
+        live = {id(t) for t in qb.b.GetTracks()}
+        chk('G7 split halves removed from the board',
+            '%d of 2 still present' % sum(1 for t in made if id(t) in live),
+            not any(id(t) in live for t in made))
 
         print('')
         if FAILED:

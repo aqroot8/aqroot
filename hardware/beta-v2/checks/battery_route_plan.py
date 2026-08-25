@@ -70,15 +70,32 @@ PLAN_6B_U18 = []
 # then U18.7, one per attempt.  The whole pin field goes first, inner pins
 # before outer ones, and the trunk routes around the result.  The trunk has the
 # whole board; these pins have 0.325 mm.
+#
+# PR-17, AND THE ORDER INSIDE THE PIN FIELD IS THE WHOLE POINT.
+#
+# U18 sits at x 1.23..4.83 with the divider wall R76/R77/R78/R79 at x 7.00..10.33.
+# EVERY pin on the north row escapes through the same 2.2 mm corridor between
+# them, and there is no second one.  Routing pins 6, 7, 8 and 9 first fills that
+# corridor and pins 10 and 1 - the OUTERMOST pins, whose targets R76.1 and R77.1
+# are the farthest east - are left with nothing: that is exactly what happened
+# on the first FBV2-P2-002E run, where U18.10 failed NO_PATH to both R76.1 and
+# Q3.4 and U18.1 failed its gate.
+#
+# The comment this list used to carry already said the FUNCTIONAL gate
+# connection goes first.  The list did not do it.  It does now: U18.10 (the
+# LTC4368 GATE output, section 9's functional net) claims the corridor first,
+# U18.1 (the VIN tap, the other outer pin) second, and the inner pins - which
+# have short northward escapes to R75 that do not use the corridor at all -
+# take what is left.
 PLAN_0_U18 = [
+    (N + 'LTC_GATE', 'U18.10', 'R76.1', 'SIG', LAD_SIG, None),
+    (N + 'BAT_RAW', 'U18.1', 'R77.1', 'SENSE', [W_SENSE], 'BAT_RAW_TAP_U18'),
     (N + 'BAT_SENSE', 'U18.9', 'R75.1', 'SENSE', [W_SENSE], 'BAT_SENSE_KELVIN'),
     (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2', 'SENSE', [W_SENSE], 'BAT_PROT_TAP_U18'),
     (N + 'LTC4368_FAULT_N', 'U18.7', 'R81.2', 'SIG', LAD_SIG, None),
     (N + 'LTC_SHDN', 'U18.6', 'R80.2', 'SIG', LAD_SIG, None),
-    (N + 'LTC_GATE', 'U18.10', 'R76.1', 'SIG', LAD_SIG, None),
     (N + 'LTC_OV', 'U18.3', 'R77.2', 'SIG', LAD_SIG, None),
     (N + 'LTC_UV', 'U18.2', 'R79.2', 'SIG', LAD_SIG, None),
-    (N + 'BAT_RAW', 'U18.1', 'R77.1', 'SENSE', [W_SENSE], 'BAT_RAW_TAP_U18'),
 ]
 
 PLAN_7_KELVIN = []
@@ -148,7 +165,10 @@ PLAN_12_CAPS = [
 # ---- 13. test-point stubs, LAST so they never take a functional corridor --
 PLAN_13_TEST = [
     (N + 'BAT_PROTECTED_P', 'TP15.1', '(node)', 'SENSE', [W_SENSE], 'BAT_PROT_TAP_U14'),
-    (N + 'LTC_GATE', 'TP17.1', 'R76.1', 'TEST', LAD_SIG, None),
+    # Section 9: TP17 hangs OFF the closed gate network at its nearest legal
+    # point, never through a named pad at the far end of it.  Aimed at R76.1
+    # this stub routed 24.1 mm with two vias - a second route on the net.
+    (N + 'LTC_GATE', 'TP17.1', '(node)', 'TEST', LAD_SIG, None),
     (N + 'BAT_RAW', 'TP16.1', '(node)', 'TEST', LAD_TAP, None),
     (N + 'BAT_SENSE', 'TP20.1', '(node)', 'TEST', LAD_TAP, None),
     (N + 'BAT_CONNECTOR_P', 'TP34.1', '(node)', 'TEST', LAD_TAP, None),
