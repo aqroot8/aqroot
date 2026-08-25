@@ -3,6 +3,57 @@
 **Status: IN PROGRESS. FBV2-P2-001 = FAIL.** Created 2026-08-24 at **FBV2-P2-001**.
 Pre-routing checkpoint: tag **`beta-v2-p2-entry-pass`** → `faa0c91`.
 
+> **UPDATED 2026-08-25 at FBV2-P2-002F. FAIL — BUT THE PLACEMENT QUESTION PR-25 ASKED IS ANSWERED,
+> AND THE AUTHORITATIVE BOARD IS UNTOUCHED.** Phase A did not complete, so Phase B never ran;
+> `aqroot-Beta-v2.kicad_pcb` is byte-identical to `24f6611` — zero tracks, zero signal vias — and
+> **the placement ECO is NOT applied to it** (§23: never commit an unproven placement).
+>
+> FBV2-P2-002E's fifteen open connections were not a router failure: nine returned
+> `NO_LEGAL_ESCAPE` at 0 s, before pathfinding was attempted. This task moved the geometry.
+>
+> **`U18` rotated 90 → 180 and moved (3.000, 72.400) → (8.000, 65.250)**, from a measured search —
+> 13 284 poses, 2 490 clearing collision and the §4 Kelvin envelope, 1 331 keeping both Kelvin
+> branches ≤ 10 mm with a legal 1.50 mm trunk, 20 fully scored — with the winner re-confirmed by
+> **routing all eight pins with the real router** against the real trunk, chain and flare. The
+> R76…R83 divider *wall* is gone: each part is now placed **by the `U18` pin it serves**.
+>
+> | §4 target | 002E | 002F |
+> |---|---|---|
+> | `U18` signal-pad escapes | **6 of 8** (7 at best) | **8 of 8, and all eight route** |
+> | `R75.1 → U18.9` Kelvin | 3.179 mm | **5.254 mm** |
+> | `R75.2 → U18.8` Kelvin | **23.799 mm** | **7.708 mm** |
+> | Kelvin mismatch ≤ 5 mm | **20.620 mm** | **2.454 mm** |
+> | `U18.1` VIN ≤ 10 mm | **32.204 mm** | **1.850 mm** |
+> | `U14.2` branch ≤ 15 mm | **31.228 mm** | **6.387 mm**, `U14` did not move |
+> | worst megohm dead-cell node | **64.01 mm** | **18.43 mm** |
+> | `BAT_PROTECTED_P` trunk | 20.416 mm @ 1.50, 0 vias | **17.625 mm @ 1.50, 0 vias** |
+> | connections on one scratch board | 60 | **70** |
+> | ratsnest | 781 → 718 (−63) | **781 → 709 (−72)** |
+> | in-scope nets fully connected | — | **23 of 29** |
+>
+> **`Q3_CS` closes with ZERO vias.** §5's authorised layer drop was measured and **not taken**: four
+> variants of the same prefix show CS-before-gate closes all twelve at Q3 on B.Cu, that moving Q3
+> 1 mm loses **both** CS nets, and that the authorised drop cannot even start because `Q3.3` has no
+> B.Cu escape left once the gate has routed. The price is 2.188 mm on one gate link. **`LTC_GATE`,
+> which 002E left in two pieces, is one connected component.**
+>
+> **Why it still fails: §14 allows no partial pass.** Six nets are in two islands and four of them
+> are a single stranded pad — `R80.1`, `U19.2`, `U19.3` — plus the `{TP15, U14.2, U14.3}` MAX17048
+> island (**PR-34**). `U19.2`/`U19.3` are a U19 placement question of exactly the kind PR-25
+> answered for U18.
+>
+> **Four harness rulings, none board-specific:** PR-30 (tie-break on ways-out), PR-31 (a partner
+> must sit on the side its pin faces, or the route wraps the package), PR-32 (re-measure before
+> every fine-pitch pin), PR-33 (U19 is a fine-pitch field too). And the lesson under all of them:
+> **an escape proof measures a 0.5 mm stub and a connection is a route** — four placements passed
+> the §12 gate, simultaneity test included, and then failed Phase A.
+>
+> **B-34 stays open.** Scratch pack-current copper ≈ 64.9 mΩ, essentially unchanged from 002E — the
+> ECO cost the load path nothing. ≈ 97 mV / 146 mW at 1.5 A; ≈ 114 mV / 199 mW at 1.75 A, excluding
+> F1, Q2/Q3 R_DS(on), the BQ25185 BATFET, contact resistance and temperature rise.
+>
+> Full detail: [`audits/2026-08-25-p2-battery-placement-eco.md`](../audits/2026-08-25-p2-battery-placement-eco.md).
+
 > **UPDATED 2026-08-25 at FBV2-P2-002E. STILL NOT ROUTED, BUT THE BLOCK IS CLOSE AND WHAT IS LEFT
 > IS PLACEMENT.** Phase A reached **60 connections coexisting on one scratch board with zero new
 > DRC violations of any class at every step, ratsnest 781 → 718 (−63)** — the previous best was

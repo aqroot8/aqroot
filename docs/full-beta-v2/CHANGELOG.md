@@ -1,3 +1,75 @@
+## 2026-08-25 - the placement question is answered, the block still does not close (FBV2-P2-002F)
+
+**FBV2-P2-002F = FAIL.** Phase A did not complete, so Phase B never ran and
+`aqroot-Beta-v2.kicad_pcb` is byte-identical to `24f6611`: zero tracks, zero signal vias. **The
+placement ECO is NOT applied to the authoritative board** - section 23 forbids committing an
+unproven placement, and a placement that does not pass section 13 is not proven. PCB routing stays
+0 %, overall stays 74 %. Full analysis:
+[`audits/2026-08-25-p2-battery-placement-eco.md`](audits/2026-08-25-p2-battery-placement-eco.md).
+
+### PR-25 is closed, and closed by measurement
+
+U18 rotates **90 -> 180** and moves **(3.000, 72.400) -> (8.000, 65.250)**. At 002E's pose it sat at
+x 1.205..4.795 with R75 immediately south and the R76..R83 divider wall at x 7.300..10.350: every
+north-row pin escaped through the same **2.505 mm** corridor, and R75's own 3.35 mm pads stood
+between `U18.8` and its Kelvin target. **6 of 8 pins escaped, 7 at best.**
+
+At rot 180 the pin rows face east and west and U18 straddles R75's midline, so `U18.8` and `U18.9`
+look straight at `R75.2` and `R75.1`. **8 of 8 escape and 8 of 8 route.** The divider *wall* is
+gone - every part is now placed by the U18 pin it serves.
+
+The pose came from 13 284 candidates: 2 490 cleared collision and the section 4 Kelvin envelope,
+1 331 kept both Kelvin branches under 10 mm with a legal 1.50 mm trunk, 20 were fully scored, and
+the winner was re-confirmed by **routing all eight pins with the real router** against the real
+trunk, chain and flare.
+
+### `Q3_CS` closes with zero vias, and the authorised via was declined
+
+Section 5 authorised one `Q3_CS` layer drop. It was measured across four variants of the same
+prefix and **not taken**: CS-before-gate closes all twelve connections at Q3 on B.Cu with no vias;
+moving Q3 1 mm loses **both** CS nets; and the authorised drop **cannot even start**, because
+`Q3.3` has no B.Cu escape left once the gate has routed. The whole price is **2.188 mm** on one
+gate link. `LTC_GATE`, which 002E left in two pieces, is now **one connected component**.
+
+### The numbers
+
+| target | 002E | 002F |
+|---|---|---|
+| U18 signal-pad escapes | 6 of 8 | **8 of 8, all routed** |
+| R75 Kelvin mismatch | 20.620 mm | **2.454 mm** |
+| `U18.1` VIN tap | 32.204 mm | **1.850 mm** |
+| `U14.2` branch | 31.228 mm | **6.387 mm**, U14 did not move |
+| worst megohm dead-cell node | 64.01 mm | **18.43 mm** |
+| `Q3_CS` | `NO_LEGAL_ESCAPE` | **5.500 mm, zero vias** |
+| connections on one scratch board | 60 | **70** |
+| ratsnest | 781 -> 718 (-63) | **781 -> 709 (-72)** |
+| in-scope nets fully connected | - | **23 of 29** |
+
+DRC was identical to the baseline after every single connection, and there is zero out-of-scope
+copper.
+
+### Why it still fails
+
+Section 14 allows no partial pass. Six nets sit in two islands and **four of them are one stranded
+pad** - `R80.1`, `U19.2`, `U19.3` - plus the `{TP15, U14.2, U14.3}` MAX17048 island. `U19.2` and
+`U19.3` are a U19 placement question of exactly the kind PR-25 answered for U18 (**PR-34, open**).
+
+### Four harness rulings, and one lesson
+
+**PR-30** fine-pitch slack ties break on how many ways out a pad still has. **PR-31** a partner must
+sit on the side its pin faces, or the route wraps the package - `U18.10` cost 18.4 mm and took
+`U18.2`'s only lane with it. **PR-32** re-measure before every fine-pitch pin. **PR-33** U19 is an
+SOT-23-8 on 0.65 mm pitch and had no measured ordering at all; giving it one recovered three pins.
+
+The lesson underneath all four: **an escape proof measures a 0.5 mm stub and a connection is a
+route.** Four placements passed the section 12 gate - including its section 3C simultaneity test,
+49 escapes laid at once with none lost - and then failed Phase A. The fix was not a better proxy
+but a worse-scaling one: route the pin field with the real router, against the copper the plan lays
+first.
+
+**B-34 stays open.** Scratch pack-current copper is approximately 64.9 mOhm, essentially unchanged
+from 002E, so the ECO cost the load path nothing. Physical validation remains mandatory.
+
 ## 2026-08-25 - the block routes, the pin field does not (FBV2-P2-002E)
 
 **FBV2-P2-002E = FAIL.** Phase A did not complete, so Phase B never ran and

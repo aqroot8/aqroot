@@ -88,7 +88,17 @@ def main():
         faulthandler.dump_traceback_later(
             int(os.environ['AQROOT_WATCHDOG']), repeat=True)
     t_all = time.time()
-    pcb = RU.fresh(WORK, "A")
+    pcb = RU.fresh(WORK, os.environ.get('AQROOT_SCRATCH', 'A'))
+    # FBV2-P2-002F.  The battery-block PLACEMENT ECO is applied to the scratch
+    # copy, never to the authoritative board: section 18 does not let this task
+    # write authoritative signal copper, and until Phase A passes the placement
+    # is not validated either.  Without the flag this script behaves exactly as
+    # it did at 002E, so the 002E result stays reproducible.
+    if os.environ.get('AQROOT_ECO_002F'):
+        import place_p2_002f as ECO
+        ECO.apply(pcb, report=False)
+        print("FBV2-P2-002F placement ECO applied to the scratch copy: "
+              "%d footprints moved" % len(ECO.MOVES))
     b = pcbnew.LoadBoard(pcb)
     tp = [f for f in b.GetFootprints() if f.GetReference() == 'TP34'][0]
     if tp.GetLayer() != pcbnew.B_Cu:
@@ -500,7 +510,15 @@ def main():
     # rather than one that was guessed.
     QUEUE = []
 
-    def add(title, group, ct, tight=False):
+    def add(title, group, ct, tight=None):
+        """`tight` is now a GROUP NAME, not a flag.  PR-33: U19 is an SOT-23-8
+        on 0.65 mm pitch and its pins seal each other exactly the way U18's do,
+        but the dead-cell block was queued in raw MST order with no measured
+        ordering at all - so `U19.3`, `U19.6` and `U19.8` came back
+        NO_LEGAL_ESCAPE once `U19.2` and `U19.5` had routed.  Naming the group
+        lets the same measured tightest-first ordering apply to U19 WITHOUT
+        letting a dead-cell item be promoted into U18's block, which a single
+        boolean would have done."""
         for (net, a, b_, role, lad, area) in group:
             QUEUE.append(dict(title=title, net=net, a=a, b=b_, role=role,
                               lad=lad, area=area, ct=ct, tight=tight))
@@ -516,6 +534,22 @@ def main():
             else:
                 hi = mid
         return best
+
+    def freedom(pad, need):
+        """HOW MANY WAYS OUT this pad still has at the width it needs.
+
+        PR-30.  Slack alone ties, and the tie-break was the order the plan
+        happened to list the pins in - which put U18.2, the MIDDLE pin of an
+        east row, LAST of the three.  A middle pin is boxed by a neighbour on
+        both sides and has one lane; an end pin has two.  Routing the end pins
+        first spends the middle pin's only lane, and U18.2 came back
+        NO_LEGAL_ESCAPE with U18.1 and U18.3 named as its blockers.
+
+        Counting the directions that still work costs one escape() call and
+        breaks the tie the way the geometry actually constrains it: fewest ways
+        out goes first."""
+        e = qb.escape(pad, 'B', need, need, CP, CT_W, 25000, qb.ex0, qb.ey0)
+        return len(e)
 
     def order_tight(queue, verbose=True):
         """PR-19.  THE PIN-FIELD ORDER IS MEASURED, NOT GUESSED.
@@ -533,22 +567,33 @@ def main():
         no second chance; a pin with 0.60 mm can wait.  The block keeps its
         position in the queue - this reorders WITHIN the pin field, it does not
         promote it past the trunk."""
-        idx = [i for i, it in enumerate(queue) if it.get('tight')]
+        groups = {}
+        for i, it in enumerate(queue):
+            g = it.get('tight')
+            if g:
+                groups.setdefault(g, []).append(i)
+        idx = []
+        for g in groups:
+            if len(groups[g]) >= 2:
+                idx = groups[g]
+                break
         if len(idx) < 2:
             return queue
         rows = []
         for i in idx:
             pad = pads.get(queue[i]['net'], {}).get(queue[i]['a'])
-            w = widest_escape(pad) if pad else 0
             need = min(queue[i]['lad'])
-            rows.append((w - need, w, i))
-        rows.sort(key=lambda r: (r[0], r[1]))
+            w = widest_escape(pad) if pad else 0
+            nd = freedom(pad, need) if pad else 0
+            rows.append((w - need, nd, w, i))
+        rows.sort(key=lambda r: (r[0], r[1], r[2]))
         if verbose:
             print("      pin-field slack: " + "  ".join(
-                "%s %+.2f" % (queue[i]['a'], s / 1e6) for (s, _, i) in rows))
+                "%s %+.2f/%dway" % (queue[i]['a'], sl / 1e6, nd)
+                for (sl, nd, _, i) in rows))
             sys.stdout.flush()
         out = list(queue)
-        for slot, (_, _, src) in zip(idx, rows):
+        for slot, (_, _, _, src) in zip(idx, rows):
             out[slot] = queue[src]
         return out
 
@@ -568,23 +613,45 @@ def main():
     # output) and U18.1 first inside it per PR-17.
     add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
     add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
-    add("6b. U18 pin field", PL.PLAN_0_U18, CT_W, tight=True)
-    # Section 9 is explicit - "Route the actual gate-drive network FIRST:
-    # U18 gate control, Q2 gates, Q3 gates".  The plan had the FET sense pairs
-    # first on the argument that Q*_CS is boxed between two gate pads while
-    # LTC_GATE has an F.Cu hop.  On Q3 that is simply not what happens: the
-    # 0.25 mm CS route threads both 0.67 mm inter-pad gaps and Q3.2 is left
-    # with NO_LEGAL_ESCAPE - no width, no layer, nothing.  Q*_CS has the same
-    # hop available and keeps a workable window when it goes second.
-    add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
+    add("6b. U18 pin field", PL.PLAN_0_U18, CT_W, tight='U18')
+    # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
+    #
+    # Section 9 put the gate network before the FET sense pairs, and at the
+    # 002E placement that was right: a CS route threading Q3's two 0.67 mm
+    # inter-pad gaps sealed Q3.2 and the gate net lost a pad outright.
+    #
+    # After the FBV2-P2-002F placement ECO the measurement inverts, and it was
+    # MEASURED, on four variants of the same prefix:
+    #
+    #   (a) gate then CS, Q3 where it is      11/12 - Q3_CS NO_LEGAL_ESCAPE
+    #   (b) CS then gate, Q3 where it is      12/12 - EVERYTHING, ZERO VIAS
+    #   (c) gate then CS, Q3 moved 1 mm south 10/12 - loses BOTH CS nets
+    #   (d) gate then CS, Q3_CS forced onto
+    #       section 5's authorised layer drop 11/12 - the drop cannot even
+    #       start, because Q3.3 has no B.Cu escape left to reach a via from
+    #
+    # With (b): Q2_CS 5.400 mm and Q3_CS 5.400 mm, both B.Cu, BOTH ZERO VIAS,
+    # and LTC_GATE still closes on B.Cu with zero vias on all three of its
+    # connections - Q3.2 <-> Q3.4 7.794 mm, Q2.2 <-> Q2.4 7.794 mm and the
+    # inter-FET link Q3.2 <-> Q2.2 at 15.331 mm against 13.143 mm.  Section 5's
+    # PREFERRED RESULT is "both GATE and Q3_CS leave on B.Cu without a via",
+    # and 2.188 mm on one gate link is what it costs.  The section 5 via
+    # authorisation is therefore NOT taken.
+    #
+    # PR-23's own finding is the reason this is not a rule change: "there is no
+    # fixed right order, because the window each pin has left depends on the
+    # copper already laid" - and the copper in front of Q3 is not where it was.
     add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
+    add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
     add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
     add("BAT_RAW taps", PL.PLAN_TAPS, CT_W)
     add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
     for short in PL.DEADCELL:
+        # PR-33: the dead-cell block is a fine-pitch pin field too - U19 is an
+        # SOT-23-8 on 0.65 mm pitch - so it gets the same measured ordering.
         add("10b. dead-cell network",
             [(N + short, a, b_, 'SIG', PL.LAD_SIG, None)
-             for a, b_ in mst(pads[N + short])], CT_S)
+             for a, b_ in mst(pads[N + short])], CT_S, tight='U19')
     add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
     add("12. capacitor taps", PL.PLAN_12_CAPS, CT_W)
     # PR-24: CLOSE WHAT IS STILL OPEN, BEFORE THE TEST POINTS.
@@ -668,8 +735,43 @@ def main():
               % (f['total'] + r['mm'], f['total'], f['neck_len']))
         return True
 
+    # ------------------------------------------------------------- PHASE B
+    # SECTION 17.  The replay must INDEPENDENTLY RECREATE the block from the
+    # saved plan, on a second clean scratch copy - not copy its coordinates.
+    # So it re-runs the router: same queue, same driver, same rules, but the
+    # ORDER is the order Phase A actually converged on and each item is pinned
+    # to the width Phase A recorded.  Reproducing the geometry that way proves
+    # the result is a property of the placement, not of a lucky pass ordering.
+    replay = os.environ.get('AQROOT_REPLAY')
+    passes = 7
+    if replay:
+        jr = json.load(open(replay, encoding='utf-8'))
+        if jr.get('fail'):
+            raise SystemExit('PHASE A DID NOT PASS - refusing to replay: %s' % jr['fail'])
+        idx = {}
+        for it in QUEUE:
+            idx.setdefault((it['net'].split('/')[-1], it['a'], it['b']), it)
+        newq, missing = [], []
+        for e in jr['journal']:
+            if e.get('role') == 'TRUNK+ESCAPE':
+                continue
+            it = idx.get((e['net'], e['a'], e['b']))
+            if it is None:
+                missing.append((e['net'], e['a'], e['b']))
+                continue
+            it = dict(it)
+            it['lad'] = [int(round(e['w'] * 1e6))]
+            it['tight'] = False
+            newq.append(it)
+        if missing:
+            raise SystemExit('replay: journal names items the plan does not: %s' % missing[:5])
+        print('PHASE B REPLAY: %d journal items, plan order frozen, widths pinned'
+              % len(newq))
+        QUEUE = newq
+        passes = 2
+
     u11 = [False]
-    for p_ in range(1, 7):
+    for p_ in range(1, passes):
         before = state['done'] + state['skipped']
         print("--- pass %d: %d queued ---" % (p_, len(QUEUE)))
         sys.stdout.flush()
@@ -683,10 +785,26 @@ def main():
         # went from a workable window to NO_LEGAL_ESCAPE in one connection.
         # Re-measuring in front of every tight item costs a handful of local
         # floods and picks the pin that is about to lose its last option.
-        QUEUE = order_tight(QUEUE)
+        if not replay:
+            QUEUE = order_tight(QUEUE)
         rest = []
         idx_ = 0
+        shown = [False]
         while idx_ < len(QUEUE):
+            # PR-32.  RE-MEASURE BEFORE EVERY FINE-PITCH PIN, NOT ONCE A PASS.
+            #
+            # PR-23 measured once per pass because at the FBV2-P2-002E placement
+            # re-measuring per item took U18 from 7 escapes of 8 down to 6.  At
+            # the 002F placement the opposite holds, and it is not an argument -
+            # `ring_probe_002f.py` re-measures before every pin and routes 8 of
+            # 8 against the real trunk, chain and flare, while one measurement
+            # per pass loses U18.2.  The reason is PR-30: three east-row pins
+            # tie on slack AND on ways-out at the head of the pass, so a table
+            # taken there cannot separate them - but after one of them routes,
+            # the other two no longer tie.
+            if QUEUE[idx_].get('tight'):
+                QUEUE[idx_:] = order_tight(QUEUE[idx_:], verbose=not shown[0])
+                shown[0] = True
             it = QUEUE[idx_]
             # Measured ONCE PER PASS, not before every item.  Re-sorting the
             # block mid-pass picks whichever pin is locally tightest and then
@@ -728,7 +846,8 @@ def main():
                drc=dict(sorted(after.items())), baseline=dict(sorted(base.items())),
                ratsnest=rn, ratsnest_delta=rn - base_rn, journal=journal,
                secs=round(time.time() - t_all, 1))
-    json.dump(res, open(os.path.join(SP, 'phaseA.json'), 'w'), indent=1)
+    json.dump(res, open(os.path.join(
+        SP, os.environ.get('AQROOT_RESULT', 'phaseA.json')), 'w'), indent=1)
     print("\nPHASE A:", ("FAIL -- " + state['fail']) if state['fail'] else "COMPLETE")
     print("routed", state['done'], "skipped-already-connected", state['skipped'],
           "ratsnest", rn, "(%+d)" % (rn - base_rn))

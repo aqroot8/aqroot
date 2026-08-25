@@ -1,0 +1,409 @@
+{
+ "BAT_CONNECTOR_P": {
+  "total_mm": 11.394,
+  "by_width": {
+   "0.60": 1.523,
+   "1.00": 9.871
+  },
+  "squares": 12.409,
+  "copper_mohm": 6.09,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "BAT_MID": {
+  "total_mm": 18.106,
+  "by_width": {
+   "0.80": 3.371,
+   "1.00": 14.735
+  },
+  "squares": 18.948,
+  "copper_mohm": 9.3,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "BAT_PROTECTED_P": {
+  "total_mm": 128.677,
+  "by_width": {
+   "0.15": 3.997,
+   "0.20": 8.283,
+   "0.30": 0.1,
+   "0.40": 0.1,
+   "0.60": 0.262,
+   "0.80": 14.102,
+   "1.00": 8.118,
+   "1.20": 0.341,
+   "1.50": 93.374
+  },
+  "squares": 157.36,
+  "copper_mohm": 77.26,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "BAT_PROT_SHDN_CTL": {
+  "total_mm": 19.762,
+  "by_width": {
+   "0.15": 19.762
+  },
+  "squares": 131.745,
+  "copper_mohm": 64.69,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "BAT_RAW": {
+  "total_mm": 117.906,
+  "by_width": {
+   "0.20": 7.126,
+   "0.40": 5.061,
+   "0.60": 67.248,
+   "0.80": 3.371,
+   "1.00": 35.101
+  },
+  "squares": 199.676,
+  "copper_mohm": 98.04,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "BAT_SENSE": {
+  "total_mm": 37.052,
+  "by_width": {
+   "0.20": 5.254,
+   "0.60": 14.245,
+   "1.00": 17.553
+  },
+  "squares": 67.566,
+  "copper_mohm": 33.18,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "LTC4368_FAULT_N": {
+  "total_mm": 75.773,
+  "by_width": {
+   "0.15": 73.054,
+   "0.25": 2.719
+  },
+  "squares": 497.902,
+  "copper_mohm": 244.47,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "LTC_GATE": {
+  "total_mm": 49.868,
+  "by_width": {
+   "0.20": 16.126,
+   "0.25": 33.742
+  },
+  "squares": 215.6,
+  "copper_mohm": 105.86,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "LTC_GATE_RC": {
+  "total_mm": 2.087,
+  "by_width": {
+   "0.25": 2.087
+  },
+  "squares": 8.35,
+  "copper_mohm": 4.1,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "LTC_OV": {
+  "total_mm": 17.04,
+  "by_width": {
+   "0.20": 14.997,
+   "0.25": 2.042
+  },
+  "squares": 83.156,
+  "copper_mohm": 40.83,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "LTC_SHDN": {
+  "total_mm": 31.838,
+  "by_width": {
+   "0.25": 31.838
+  },
+  "squares": 127.354,
+  "copper_mohm": 62.53,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "LTC_UV": {
+  "total_mm": 6.15,
+  "by_width": {
+   "0.20": 6.15
+  },
+  "squares": 30.749,
+  "copper_mohm": 15.1,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "N_BATDIV": {
+  "total_mm": 18.97,
+  "by_width": {
+   "0.25": 18.97
+  },
+  "squares": 75.878,
+  "copper_mohm": 37.26,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "N_POL": {
+  "total_mm": 9.789,
+  "by_width": {
+   "0.15": 9.789
+  },
+  "squares": 65.258,
+  "copper_mohm": 32.04,
+  "vias": 4,
+  "via_mohm": 3.52,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "Q2_CS": {
+  "total_mm": 5.4,
+  "by_width": {
+   "0.25": 5.4
+  },
+  "squares": 21.6,
+  "copper_mohm": 10.61,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "Q3_CS": {
+  "total_mm": 5.5,
+  "by_width": {
+   "0.25": 5.5
+  },
+  "squares": 22.0,
+  "copper_mohm": 10.8,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_AND1": {
+  "total_mm": 6.443,
+  "by_width": {
+   "0.15": 6.443
+  },
+  "squares": 42.95,
+  "copper_mohm": 21.09,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_AND2": {
+  "total_mm": 3.683,
+  "by_width": {
+   "0.25": 3.683
+  },
+  "squares": 14.732,
+  "copper_mohm": 7.23,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_BAT_LOW": {
+  "total_mm": 23.375,
+  "by_width": {
+   "0.25": 23.375
+  },
+  "squares": 93.5,
+  "copper_mohm": 45.91,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_DIODE_IN": {
+  "total_mm": 7.983,
+  "by_width": {
+   "0.25": 7.983
+  },
+  "squares": 31.931,
+  "copper_mohm": 15.68,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_FAULT_B": {
+  "total_mm": 12.759,
+  "by_width": {
+   "0.15": 5.624,
+   "0.25": 7.135
+  },
+  "squares": 66.031,
+  "copper_mohm": 32.42,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REC_GATE_N": {
+  "total_mm": 18.64,
+  "by_width": {
+   "0.15": 18.64
+  },
+  "squares": 124.268,
+  "copper_mohm": 61.02,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "REC_LIM_IN": {
+  "total_mm": 16.783,
+  "by_width": {
+   "0.15": 16.783
+  },
+  "squares": 111.884,
+  "copper_mohm": 54.94,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "REC_POL_OK": {
+  "total_mm": 11.148,
+  "by_width": {
+   "0.15": 11.148
+  },
+  "squares": 74.322,
+  "copper_mohm": 36.49,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REF_HO": {
+  "total_mm": 18.056,
+  "by_width": {
+   "0.25": 18.056
+  },
+  "squares": 72.224,
+  "copper_mohm": 35.46,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "REF_POL": {
+  "total_mm": 8.041,
+  "by_width": {
+   "0.15": 5.399,
+   "0.25": 2.642
+  },
+  "squares": 46.562,
+  "copper_mohm": 22.86,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "VBRIDGE_TOP": {
+  "total_mm": 4.845,
+  "by_width": {
+   "0.15": 4.845
+  },
+  "squares": 32.299,
+  "copper_mohm": 15.86,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ },
+ "VREC_VCC": {
+  "total_mm": 9.975,
+  "by_width": {
+   "0.25": 9.975
+  },
+  "squares": 39.898,
+  "copper_mohm": 19.59,
+  "vias": 0,
+  "via_mohm": 0.0,
+  "layers": [
+   "B.Cu"
+  ]
+ },
+ "VREF_TOP": {
+  "total_mm": 8.721,
+  "by_width": {
+   "0.15": 8.721
+  },
+  "squares": 58.143,
+  "copper_mohm": 28.55,
+  "vias": 2,
+  "via_mohm": 1.76,
+  "layers": [
+   "B.Cu",
+   "F.Cu"
+  ]
+ }
+}

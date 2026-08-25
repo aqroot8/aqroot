@@ -1,7 +1,7 @@
 {
- "tracks": 360,
- "vias": 44,
- "routed_nets": 27,
+ "tracks": 385,
+ "vias": 20,
+ "routed_nets": 29,
  "routed_net_names": [
   "/01_POWER_TREE/BAT_CONNECTOR_P",
   "/01_POWER_TREE/BAT_MID",
@@ -14,9 +14,11 @@
   "/01_POWER_TREE/LTC_GATE_RC",
   "/01_POWER_TREE/LTC_OV",
   "/01_POWER_TREE/LTC_SHDN",
+  "/01_POWER_TREE/LTC_UV",
   "/01_POWER_TREE/N_BATDIV",
   "/01_POWER_TREE/N_POL",
   "/01_POWER_TREE/Q2_CS",
+  "/01_POWER_TREE/Q3_CS",
   "/01_POWER_TREE/REC_AND1",
   "/01_POWER_TREE/REC_AND2",
   "/01_POWER_TREE/REC_BAT_LOW",
@@ -31,7 +33,7 @@
   "/01_POWER_TREE/VREC_VCC",
   "/01_POWER_TREE/VREF_TOP"
  ],
- "ratsnest": 718,
+ "ratsnest": 709,
  "out_of_scope": {},
  "BAT_CONNECTOR_P": {
   "total_mm": 11.394,
@@ -53,27 +55,29 @@
   "segments": 7
  },
  "BAT_RAW": {
-  "total_mm": 43.607,
+  "total_mm": 117.906,
   "by_width": {
-   "0.20": 32.204,
-   "0.60": 3.407,
+   "0.20": 7.126,
+   "0.40": 5.061,
+   "0.60": 67.248,
    "0.80": 3.371,
-   "1.00": 4.625
+   "1.00": 35.101
   },
   "widths_mm": [
    0.2,
+   0.4,
    0.6,
    0.8,
    1.0
   ],
-  "squares": 175.537,
-  "copper_mohm": 86.19,
+  "squares": 199.676,
+  "copper_mohm": 98.04,
   "vias": 0,
   "via_mohm": 0.0,
   "layers": {
-   "B.Cu": 21
+   "B.Cu": 47
   },
-  "segments": 21
+  "segments": 47
  },
  "BAT_MID": {
   "total_mm": 18.106,
@@ -95,37 +99,39 @@
   "segments": 11
  },
  "BAT_SENSE": {
-  "total_mm": 20.732,
+  "total_mm": 37.052,
   "by_width": {
-   "0.20": 3.179,
+   "0.20": 5.254,
+   "0.60": 14.245,
    "1.00": 17.553
   },
   "widths_mm": [
    0.2,
+   0.6,
    1.0
   ],
-  "squares": 33.448,
-  "copper_mohm": 16.42,
+  "squares": 67.566,
+  "copper_mohm": 33.18,
   "vias": 2,
   "via_mohm": 1.76,
   "layers": {
    "F.Cu": 2,
-   "B.Cu": 9
+   "B.Cu": 16
   },
-  "segments": 11
+  "segments": 18
  },
  "BAT_PROTECTED_P": {
-  "total_mm": 180.397,
+  "total_mm": 128.677,
   "by_width": {
-   "0.15": 31.228,
-   "0.20": 32.636,
+   "0.15": 3.997,
+   "0.20": 8.283,
    "0.30": 0.1,
    "0.40": 0.1,
    "0.60": 0.262,
    "0.80": 14.102,
    "1.00": 8.118,
    "1.20": 0.341,
-   "1.50": 93.509
+   "1.50": 93.374
   },
   "widths_mm": [
    0.15,
@@ -138,34 +144,33 @@
    1.2,
    1.5
   ],
-  "squares": 460.757,
-  "copper_mohm": 226.23,
+  "squares": 157.36,
+  "copper_mohm": 77.26,
   "vias": 0,
   "via_mohm": 0.0,
   "layers": {
-   "B.Cu": 78
+   "B.Cu": 64
   },
-  "segments": 78
+  "segments": 64
  },
  "LTC_GATE": {
-  "total_mm": 38.986,
+  "total_mm": 49.868,
   "by_width": {
-   "0.15": 6.809,
-   "0.25": 32.177
+   "0.20": 16.126,
+   "0.25": 33.742
   },
   "widths_mm": [
-   0.15,
+   0.2,
    0.25
   ],
-  "squares": 174.101,
-  "copper_mohm": 85.48,
-  "vias": 2,
-  "via_mohm": 1.76,
+  "squares": 215.6,
+  "copper_mohm": 105.86,
+  "vias": 0,
+  "via_mohm": 0.0,
   "layers": {
-   "F.Cu": 2,
-   "B.Cu": 22
+   "B.Cu": 28
   },
-  "segments": 24
+  "segments": 28
  },
  "paths": {
   "BAT_CONNECTOR_P J4.1->F1.1": {
@@ -207,7 +212,7 @@
    "stub_b_mm": 0.0
   },
   "BAT_SENSE kelvin R75.1->U18.9": {
-   "mm": 3.179,
+   "mm": 5.254,
    "widths": [
     0.2
    ],
@@ -216,7 +221,7 @@
    "stub_b_mm": 0.0
   },
   "BAT_PROT kelvin R75.2->U18.8": {
-   "mm": 23.799,
+   "mm": 7.708,
    "widths": [
     0.2
    ],
@@ -226,7 +231,7 @@
   },
   "BAT_PROT trunk R75.2->U11.2": null,
   "BAT_RAW tap U18.1->R77.1": {
-   "mm": 32.204,
+   "mm": 1.85,
    "widths": [
     0.2
    ],
@@ -235,7 +240,7 @@
    "stub_b_mm": 0.0
   },
   "U14.2 branch": {
-   "mm": 31.228,
+   "mm": 3.997,
    "widths": [
     0.15
    ],
@@ -263,7 +268,7 @@
    "stub_b_mm": 0.0
   },
   "C58 BAT_PROTECTED_P": {
-   "mm": 4.557,
+   "mm": 5.092,
    "widths": [
     1.5
    ],
@@ -350,15 +355,206 @@
  },
  "deadcell": {
   "VBRIDGE_TOP": {
-   "total_mm": 26.39,
+   "total_mm": 4.845,
    "by_width": {
-    "0.25": 26.39
+    "0.15": 4.845
+   },
+   "widths_mm": [
+    0.15
+   ],
+   "squares": 32.299,
+   "copper_mohm": 15.86,
+   "vias": 2,
+   "via_mohm": 1.76,
+   "layers": {
+    "F.Cu": 2,
+    "B.Cu": 3
+   },
+   "segments": 5,
+   "span": {
+    "mm": 4.845,
+    "a": "R85.1",
+    "b": "D10.1",
+    "pads": 2
+   }
+  },
+  "VREF_TOP": {
+   "total_mm": 8.721,
+   "by_width": {
+    "0.15": 8.721
+   },
+   "widths_mm": [
+    0.15
+   ],
+   "squares": 58.143,
+   "copper_mohm": 28.55,
+   "vias": 2,
+   "via_mohm": 1.76,
+   "layers": {
+    "F.Cu": 2,
+    "B.Cu": 3
+   },
+   "segments": 5,
+   "span": {
+    "mm": 8.721,
+    "a": "D11.1",
+    "b": "R87.1",
+    "pads": 2
+   }
+  },
+  "REF_HO": {
+   "total_mm": 18.056,
+   "by_width": {
+    "0.25": 18.056
    },
    "widths_mm": [
     0.25
    ],
-   "squares": 105.559,
-   "copper_mohm": 51.83,
+   "squares": 72.224,
+   "copper_mohm": 35.46,
+   "vias": 0,
+   "via_mohm": 0.0,
+   "layers": {
+    "B.Cu": 17
+   },
+   "segments": 17,
+   "span": {
+    "mm": 18.056,
+    "a": "U19.5",
+    "b": "R93.2",
+    "pads": 4
+   }
+  },
+  "REF_POL": {
+   "total_mm": 8.041,
+   "by_width": {
+    "0.15": 5.399,
+    "0.25": 2.642
+   },
+   "widths_mm": [
+    0.15,
+    0.25
+   ],
+   "squares": 46.562,
+   "copper_mohm": 22.86,
+   "vias": 2,
+   "via_mohm": 1.76,
+   "layers": {
+    "F.Cu": 2,
+    "B.Cu": 6
+   },
+   "segments": 8,
+   "span": {
+    "mm": 8.041,
+    "a": "U19.2",
+    "b": "R87.2",
+    "pads": 4
+   }
+  },
+  "N_POL": {
+   "total_mm": 9.789,
+   "by_width": {
+    "0.15": 9.789
+   },
+   "widths_mm": [
+    0.15
+   ],
+   "squares": 65.258,
+   "copper_mohm": 32.04,
+   "vias": 4,
+   "via_mohm": 3.52,
+   "layers": {
+    "F.Cu": 3,
+    "B.Cu": 6
+   },
+   "segments": 9,
+   "span": {
+    "mm": 9.789,
+    "a": "R85.2",
+    "b": "U19.3",
+    "pads": 4
+   }
+  },
+  "N_BATDIV": {
+   "total_mm": 18.97,
+   "by_width": {
+    "0.25": 18.97
+   },
+   "widths_mm": [
+    0.25
+   ],
+   "squares": 75.878,
+   "copper_mohm": 37.26,
+   "vias": 0,
+   "via_mohm": 0.0,
+   "layers": {
+    "B.Cu": 22
+   },
+   "segments": 22,
+   "span": {
+    "mm": 13.617,
+    "a": "R90.1",
+    "b": "U19.6",
+    "pads": 4
+   }
+  },
+  "VREC_VCC": {
+   "total_mm": 9.975,
+   "by_width": {
+    "0.25": 9.975
+   },
+   "widths_mm": [
+    0.25
+   ],
+   "squares": 39.898,
+   "copper_mohm": 19.59,
+   "vias": 0,
+   "via_mohm": 0.0,
+   "layers": {
+    "B.Cu": 15
+   },
+   "segments": 15,
+   "span": {
+    "mm": 9.975,
+    "a": "U19.8",
+    "b": "R84.2",
+    "pads": 3
+   }
+  },
+  "REC_GATE_N": {
+   "total_mm": 18.64,
+   "by_width": {
+    "0.15": 18.64
+   },
+   "widths_mm": [
+    0.15
+   ],
+   "squares": 124.268,
+   "copper_mohm": 61.02,
+   "vias": 2,
+   "via_mohm": 1.76,
+   "layers": {
+    "F.Cu": 2,
+    "B.Cu": 14
+   },
+   "segments": 16,
+   "span": {
+    "mm": 17.19,
+    "a": "Q5.1",
+    "b": "R94.2",
+    "pads": 4
+   }
+  },
+  "REC_POL_OK": {
+   "total_mm": 11.148,
+   "by_width": {
+    "0.15": 11.148
+   },
+   "widths_mm": [
+    0.15
+   ],
+   "squares": 74.322,
+   "copper_mohm": 36.49,
    "vias": 0,
    "via_mohm": 0.0,
    "layers": {
@@ -366,228 +562,30 @@
    },
    "segments": 7,
    "span": {
-    "mm": 26.39,
-    "a": "R85.1",
-    "b": "D10.1",
-    "pads": 2
-   }
-  },
-  "VREF_TOP": {
-   "total_mm": 53.592,
-   "by_width": {
-    "0.25": 53.592
-   },
-   "widths_mm": [
-    0.25
-   ],
-   "squares": 214.368,
-   "copper_mohm": 105.25,
-   "vias": 0,
-   "via_mohm": 0.0,
-   "layers": {
-    "B.Cu": 8
-   },
-   "segments": 8,
-   "span": {
-    "mm": 53.592,
-    "a": "D11.1",
-    "b": "R87.1",
-    "pads": 2
-   }
-  },
-  "REF_HO": {
-   "total_mm": 47.907,
-   "by_width": {
-    "0.15": 42.869,
-    "0.25": 5.038
-   },
-   "widths_mm": [
-    0.15,
-    0.25
-   ],
-   "squares": 305.947,
-   "copper_mohm": 150.22,
-   "vias": 0,
-   "via_mohm": 0.0,
-   "layers": {
-    "B.Cu": 26
-   },
-   "segments": 26,
-   "span": {
-    "mm": 47.907,
-    "a": "U19.5",
-    "b": "R93.2",
-    "pads": 4
-   }
-  },
-  "REF_POL": {
-   "total_mm": 7.464,
-   "by_width": {
-    "0.15": 4.945,
-    "0.25": 2.519
-   },
-   "widths_mm": [
-    0.15,
-    0.25
-   ],
-   "squares": 43.045,
-   "copper_mohm": 21.13,
-   "vias": 2,
-   "via_mohm": 1.76,
-   "layers": {
-    "F.Cu": 2,
-    "B.Cu": 6
-   },
-   "segments": 8,
-   "span": {
-    "mm": 7.464,
-    "a": "TP24.1",
-    "b": "R87.2",
-    "pads": 4
-   }
-  },
-  "N_POL": {
-   "total_mm": 12.743,
-   "by_width": {
-    "0.15": 12.743
-   },
-   "widths_mm": [
-    0.15
-   ],
-   "squares": 84.954,
-   "copper_mohm": 41.71,
-   "vias": 4,
-   "via_mohm": 3.52,
-   "layers": {
-    "F.Cu": 4,
-    "B.Cu": 5
-   },
-   "segments": 9,
-   "span": {
-    "mm": 11.793,
-    "a": "R85.2",
-    "b": "U19.3",
-    "pads": 4
-   }
-  },
-  "N_BATDIV": {
-   "total_mm": 44.59,
-   "by_width": {
-    "0.15": 42.071,
-    "0.25": 2.519
-   },
-   "widths_mm": [
-    0.15,
-    0.25
-   ],
-   "squares": 290.552,
-   "copper_mohm": 142.66,
-   "vias": 2,
-   "via_mohm": 1.76,
-   "layers": {
-    "F.Cu": 2,
-    "B.Cu": 8
-   },
-   "segments": 10,
-   "span": {
-    "mm": 42.071,
-    "a": "C61.1",
-    "b": "U19.6",
-    "pads": 4
-   }
-  },
-  "VREC_VCC": {
-   "total_mm": 60.053,
-   "by_width": {
-    "0.15": 22.408,
-    "0.25": 37.645
-   },
-   "widths_mm": [
-    0.15,
-    0.25
-   ],
-   "squares": 299.964,
-   "copper_mohm": 147.28,
-   "vias": 2,
-   "via_mohm": 1.76,
-   "layers": {
-    "F.Cu": 2,
-    "B.Cu": 12
-   },
-   "segments": 14,
-   "span": {
-    "mm": 60.053,
-    "a": "U19.8",
-    "b": "C60.1",
-    "pads": 3
-   }
-  },
-  "REC_GATE_N": {
-   "total_mm": 20.911,
-   "by_width": {
-    "0.15": 20.911
-   },
-   "widths_mm": [
-    0.15
-   ],
-   "squares": 139.406,
-   "copper_mohm": 68.45,
-   "vias": 6,
-   "via_mohm": 5.28,
-   "layers": {
-    "F.Cu": 6,
-    "B.Cu": 6
-   },
-   "segments": 12,
-   "span": {
-    "mm": 20.911,
-    "a": "Q5.1",
-    "b": "R94.2",
-    "pads": 4
-   }
-  },
-  "REC_POL_OK": {
-   "total_mm": 9.629,
-   "by_width": {
-    "0.15": 9.629
-   },
-   "widths_mm": [
-    0.15
-   ],
-   "squares": 64.191,
-   "copper_mohm": 31.52,
-   "vias": 2,
-   "via_mohm": 1.76,
-   "layers": {
-    "F.Cu": 2,
-    "B.Cu": 2
-   },
-   "segments": 4,
-   "span": {
-    "mm": 9.629,
+    "mm": 11.148,
     "a": "U19.1",
     "b": "Q6.1",
     "pads": 2
    }
   },
   "REC_AND1": {
-   "total_mm": 3.683,
+   "total_mm": 6.443,
    "by_width": {
-    "0.25": 3.683
+    "0.15": 6.443
    },
    "widths_mm": [
-    0.25
+    0.15
    ],
-   "squares": 14.732,
-   "copper_mohm": 7.23,
+   "squares": 42.95,
+   "copper_mohm": 21.09,
    "vias": 0,
    "via_mohm": 0.0,
    "layers": {
-    "B.Cu": 5
+    "B.Cu": 10
    },
-   "segments": 5,
+   "segments": 10,
    "span": {
-    "mm": 3.683,
+    "mm": 6.443,
     "a": "Q6.2",
     "b": "Q7.3",
     "pads": 2
@@ -617,96 +615,95 @@
    }
   },
   "REC_BAT_LOW": {
-   "total_mm": 26.313,
+   "total_mm": 23.375,
    "by_width": {
-    "0.15": 26.313
+    "0.25": 23.375
    },
    "widths_mm": [
-    0.15
+    0.25
    ],
-   "squares": 175.422,
-   "copper_mohm": 86.13,
-   "vias": 4,
-   "via_mohm": 3.52,
+   "squares": 93.5,
+   "copper_mohm": 45.91,
+   "vias": 0,
+   "via_mohm": 0.0,
    "layers": {
-    "F.Cu": 5,
-    "B.Cu": 13
+    "B.Cu": 11
    },
-   "segments": 18,
+   "segments": 11,
    "span": {
-    "mm": 26.313,
+    "mm": 23.375,
     "a": "U19.7",
     "b": "R93.1",
     "pads": 3
    }
   },
   "REC_FAULT_B": {
-   "total_mm": 13.014,
+   "total_mm": 12.759,
    "by_width": {
-    "0.15": 13.014
+    "0.15": 5.624,
+    "0.25": 7.135
    },
    "widths_mm": [
-    0.15
+    0.15,
+    0.25
    ],
-   "squares": 86.762,
-   "copper_mohm": 42.6,
-   "vias": 4,
-   "via_mohm": 3.52,
+   "squares": 66.031,
+   "copper_mohm": 32.42,
+   "vias": 0,
+   "via_mohm": 0.0,
    "layers": {
-    "F.Cu": 4,
-    "B.Cu": 4
+    "B.Cu": 11
    },
-   "segments": 8,
+   "segments": 11,
    "span": {
-    "mm": 13.014,
+    "mm": 12.759,
     "a": "Q8.1",
     "b": "R96.2",
     "pads": 3
    }
   },
   "REC_LIM_IN": {
-   "total_mm": 18.546,
+   "total_mm": 16.783,
    "by_width": {
-    "0.15": 18.546
+    "0.15": 16.783
    },
    "widths_mm": [
     0.15
    ],
-   "squares": 123.639,
-   "copper_mohm": 60.71,
+   "squares": 111.884,
+   "copper_mohm": 54.94,
    "vias": 2,
    "via_mohm": 1.76,
    "layers": {
-    "F.Cu": 9,
-    "B.Cu": 2
+    "F.Cu": 2,
+    "B.Cu": 3
    },
-   "segments": 11,
+   "segments": 5,
    "span": {
-    "mm": 18.546,
+    "mm": 16.783,
     "a": "Q5.3",
     "b": "R95.1",
     "pads": 2
    }
   },
   "REC_DIODE_IN": {
-   "total_mm": 64.464,
+   "total_mm": 7.983,
    "by_width": {
-    "0.15": 64.464
+    "0.25": 7.983
    },
    "widths_mm": [
-    0.15
+    0.25
    ],
-   "squares": 429.757,
-   "copper_mohm": 211.01,
-   "vias": 4,
-   "via_mohm": 3.52,
+   "squares": 31.931,
+   "copper_mohm": 15.68,
+   "vias": 0,
+   "via_mohm": 0.0,
    "layers": {
-    "F.Cu": 2,
-    "B.Cu": 4
+    "B.Cu": 8
    },
-   "segments": 6,
+   "segments": 8,
    "span": {
-    "mm": 64.464,
+    "mm": 7.983,
     "a": "D12.2",
     "b": "R95.2",
     "pads": 3
@@ -715,51 +712,51 @@
  },
  "spans": {
   "LTC_OV": {
-   "mm": 14.731,
+   "mm": 17.04,
    "a": "R78.1",
    "b": "U18.3",
    "pads": 3
   },
   "LTC_UV": {
-   "mm": 0.0,
-   "a": null,
-   "b": null,
+   "mm": 6.15,
+   "a": "U18.2",
+   "b": "R79.2",
    "pads": 2
   },
   "LTC_SHDN": {
-   "mm": 36.593,
+   "mm": 31.838,
    "a": "R80.2",
    "b": "Q4.3",
    "pads": 3
   },
   "LTC4368_FAULT_N": {
-   "mm": 67.83,
+   "mm": 75.773,
    "a": "Q9.1",
-   "b": "R81.2",
+   "b": "U18.7",
    "pads": 5
   },
   "LTC_GATE": {
-   "mm": 23.486,
+   "mm": 22.638,
    "a": "Q3.4",
    "b": "Q2.4",
    "pads": 7
   },
   "LTC_GATE_RC": {
-   "mm": 3.425,
+   "mm": 2.087,
    "a": "C57.1",
    "b": "R76.2",
    "pads": 2
   },
   "Q2_CS": {
-   "mm": 8.432,
+   "mm": 5.4,
    "a": "Q2.1",
    "b": "Q2.3",
    "pads": 2
   },
   "Q3_CS": {
-   "mm": 0.0,
-   "a": null,
-   "b": null,
+   "mm": 5.5,
+   "a": "Q3.1",
+   "b": "Q3.3",
    "pads": 2
   }
  }

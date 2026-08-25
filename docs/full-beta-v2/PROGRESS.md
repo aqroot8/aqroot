@@ -2,14 +2,28 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-25 (updated after **FBV2-P2-002E — battery / protection routing resumed from the
-`e09eb35` checkpoint. **FAIL: Phase A did not complete, so Phase B never ran and the board is
-byte-identical to `e09eb35`.** Best result to date: **60 connections coexisting DRC-clean on
-scratch, ratsnest 781 → 718 (−63)**, the whole high-current path closed with the trunk at its
-**1.50 mm target, zero vias**, and the **dead-cell network routed for the first time**. Stopped
-with **15 open connections, nine of them `NO_LEGAL_ESCAPE` at 0 s** — a placement finding (PR-25),
-not a router finding. Five harness defects fixed including a **segmentation fault**.
-**PCB routing stays 0 %; overall stays 74 %**; previously **FBV2-P2-002C — battery path-role rules
+Date: 2026-08-25 (updated after **FBV2-P2-002F - battery-block placement ECO and routeability
+proof. **FAIL: Phase A did not complete, so Phase B never ran; the board is byte-identical to
+`24f6611` and THE PLACEMENT ECO IS NOT APPLIED TO IT** (section 23 forbids committing an unproven
+placement). **The placement question PR-25 asked is ANSWERED:** U18 rotates 90 -> 180 to
+**(8.000, 65.250)** from a measured search of 13 284 poses, and **escapes 8 of 8 signal pins and
+ROUTES 8 of 8** against 6 of 8 at 002E. **R75 Kelvin mismatch 20.620 -> 2.454 mm**, **`U18.1` VIN
+32.204 -> 1.850 mm**, **MAX17048 branch 31.228 -> 6.387 mm with U14 unmoved**, **worst megohm
+dead-cell node 64.01 -> 18.43 mm**, and **`Q3_CS` closes with ZERO vias** - section 5's authorised
+layer drop was measured and declined. `LTC_GATE`, left in two pieces at 002E, is now ONE connected
+component. **70 connections on one scratch board, ratsnest 781 -> 709 (-72), DRC identical to the
+baseline at every step, zero out-of-scope copper, 23 of 29 in-scope nets single components.**
+**Fails on section 14's no-partial-pass rule:** four stranded pads (`R80.1`, `U19.2`, `U19.3`) and
+the `{TP15, U14.2, U14.3}` MAX17048 island remain (PR-34). Four new general harness rulings
+(PR-30..PR-33) and one lesson - **an escape proof measures a stub, a connection is a route**.
+**PCB routing stays 0 %; overall stays 74 %**; previously **FBV2-P2-002E - battery / protection
+routing resumed from the `e09eb35` checkpoint. **FAIL: Phase A did not complete, so Phase B never
+ran and the board is byte-identical to `e09eb35`.** 60 connections coexisting DRC-clean on scratch,
+ratsnest 781 -> 718 (-63), the whole high-current path closed with the trunk at its 1.50 mm target,
+zero vias, and the dead-cell network routed for the first time. Stopped with 15 open connections,
+nine of them `NO_LEGAL_ESCAPE` at 0 s - a placement finding (PR-25), not a router finding. Five
+harness defects fixed including a segmentation fault. **PCB routing stays 0 %; overall stays 74 %**;
+previously **FBV2-P2-002C — battery path-role rules
 and the first authoritative routing attempt. **FAIL: Phase A stopped at `LTC_GATE` `Q2.2 → TP17.1`, so Phase B
 never ran and the board is byte-identical to `a52977e`.** Delivered **D-249**, the path-role
 width ruling, and 27 coexisting DRC-clean connections on scratch. **PCB routing stays 0 %;
