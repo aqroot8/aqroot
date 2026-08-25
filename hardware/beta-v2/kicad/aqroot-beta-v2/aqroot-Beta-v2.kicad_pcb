@@ -44199,7 +44199,7 @@
 	(footprint "TestPoint:TestPoint_Pad_D1.0mm"
 		(layer "B.Cu")
 		(uuid "95504713-6175-468a-a59a-5eb484079c27")
-		(at 14.5 48.25)
+		(at 12.5 76)
 		(descr "test point")
 		(tags "test point SMD pad")
 		(property "Reference" "TP17"
@@ -47719,7 +47719,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "B.Cu")
 		(uuid "a65b4fb6-58d2-436b-9840-21f47bdde3db")
-		(at 70 72.75)
+		(at 13 68.5)
 		(descr "Unpolarized capacitor")
 		(tags "capacitor")
 		(property "Reference" "C58"
@@ -48340,11 +48340,11 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "B.Cu")
 		(uuid "a9dcf7a7-5327-4b4a-ab17-b873284c652b")
-		(at 2.125 84.885)
+		(at 8 41.5 90)
 		(descr "Unpolarized capacitor")
 		(tags "capacitor")
 		(property "Reference" "C59"
-			(at 0 1.43 180)
+			(at 0 1.43 270)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "f01a9cd0-70af-40ef-b8a0-9a0fe383dff3")
@@ -48357,7 +48357,7 @@
 			)
 		)
 		(property "Value" "1uF 25V X7R"
-			(at 0 -1.43 180)
+			(at 0 -1.43 270)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "0a8490fe-f7f2-430e-a9a8-6c18551404dc")
@@ -48370,7 +48370,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 180)
+			(at 0 0 270)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "442170e9-4475-41ab-87c0-b0b6b5af397e")
@@ -48382,7 +48382,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 180)
+			(at 0 0 270)
 			(layer "B.Fab")
 			(hide yes)
 			(uuid "c98493df-1853-40ef-981c-f7d9606a702b")
@@ -48394,7 +48394,7 @@
 			)
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
-			(at 0 0 180)
+			(at 0 0 270)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "08897877-d8ee-4778-b311-01c76aabd61b")
@@ -48451,7 +48451,7 @@
 			(uuid "7a87a59b-87d1-46c6-8a15-0de01024c634")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 180)
+			(at 0 0 270)
 			(layer "B.Fab")
 			(uuid "f1253d5e-5aab-4f8d-8539-59207e1d3a27")
 			(effects
@@ -48463,7 +48463,7 @@
 			)
 		)
 		(pad "1" smd roundrect
-			(at -0.775 0)
+			(at -0.775 0 90)
 			(size 0.9 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
@@ -48471,7 +48471,7 @@
 			(uuid "fbcead63-cf70-49ea-8c89-db0595002cb1")
 		)
 		(pad "2" smd roundrect
-			(at 0.775 0)
+			(at 0.775 0 90)
 			(size 0.9 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
