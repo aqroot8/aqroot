@@ -40,6 +40,30 @@ Pre-routing checkpoint: tag **`beta-v2-p2-entry-pass`** → `faa0c91`.
 > routes** — 45.274 mm at 1.00 mm and 8.82 mm at 0.20 mm — so **no placement move was proposed and
 > none was taken.** **Nothing was committed as copper; the board is byte-identical to `8b9efba`.**
 
+> **UPDATED 2026-08-24 at FBV2-P2-002C.** **D-249 settles the width question: WIDTH IS A PATH
+> ROLE, not a property of the net name.** D-245's whole-net floor is superseded — it applied the
+> 1.20 mm trunk minimum to the MAX17048 fuel-gauge tap, the LTC4368 `VOUT` sense input and a test
+> point, and **as written it made `BAT_PROTECTED_P` unroutable.** The trunk floor now holds on the
+> whole net and is relaxed only inside a named rule area bounding one approved branch, in a new
+> **section 10b at the very end of `.kicad_dru`** — a position that is load-bearing, because in
+> section 5b the pad-escape necking block silently overrode it.
+>
+> **`U11.2` did NOT need the authorised 0.19 mm exception.** TI's own DLH0010A land is 0.2 mm pads
+> on 0.4 mm pitch, so **0.20 mm is the widest copper that can ever leave that pad — the package is
+> the bottleneck, not the rule** — and JLCPCB's live capability page gives 0.09/0.09 mm on 1 oz
+> multilayer. The measured escape is a **0.20 mm neck 0.575 mm long**, flaring to the 1.50 mm trunk
+> over 5.079 mm, with **no via and no thermal relief**.
+>
+> **FBV2-P2-002C = FAIL and nothing was committed.** Phase A routed **27 connections coexisting
+> DRC-clean on scratch** — the whole high-current battery path, both R75 Kelvin branches, the U11.2
+> flare, the fuel-gauge and test taps and three of six LTC gate connections, ratsnest 781 → 749 —
+> and then stopped at **`LTC_GATE` `Q2.2 → TP17.1`**. §19 forbids touching the authoritative board
+> when Phase A fails, so **the board is byte-identical to `a52977e`: zero tracks, zero signal vias.**
+>
+> **B-34 recomputed from real copper is WORSE than the estimate: ≈ 392 mV / 588 mW at 1.5 A**,
+> because the routed copper is ≈ 75.0 mΩ rather than the assumed ≈ 50.6 mΩ. Full account in
+> [`../audits/2026-08-24-p2-battery-authoritative-route.md`](../audits/2026-08-24-p2-battery-authoritative-route.md).
+
 ---
 
 ## 1. What this task delivered
@@ -195,20 +219,31 @@ out-of-scope routing: zero, trivially, because no net is routed.**
 
 ---
 
-## 7. Open items carried to FBV2-P2-002C
+## 7. Open items carried to FBV2-P2-002D
 
-**Updated 2026-08-24 at FBV2-P2-002B.**
+**Updated 2026-08-24 at FBV2-P2-002C.**
 
 | # | item |
 |---|---|
-| **PR-1** | **CLOSED.** The obstacle-aware harness is qualified: six of eight real-geometry cases route with zero new DRC violations, correct connectivity after save/reload, and no foreign-net contact. Regression-tested by `hardware/beta-v2/checks/router_regression.py` |
-| **PR-5** | **CLOSED as a router-implementation matter.** `track_dangling`, `track_width` and `shorting_items` all fixed and proved fixed; a fourth defect (grid guard band) found and fixed during qualification |
-| **PR-6** | **CLOSED.** `R86.2 → R89.1` routes legally at 1.00 mm (45.274 mm, 0.025 mm local grid) and at 0.60 mm (16.848 mm); `TP15.1 → U14.2` routes legally at 0.20 mm (8.82 mm). **No placement move needed, none proposed, none taken** |
-| **PR-7** | **NEEDS A CTO RULING.** `BAT_MAIN`'s 0.60 mm floor and D-245's 1.20 mm floor are **whole-net** constraints on nets that also carry zero-current sense and probe taps, and **five pads cannot legally accept them**: `U18.9` 0.245 mm vs 0.600, `U18.8` 0.245 mm vs 1.200, `U14.2`/`U14.3` 0.295 mm vs 1.200, `U11.2` 0.195 mm vs 1.200. **As written, D-245 makes `BAT_PROTECTED_P` unroutable.** No rule was touched |
-| **PR-8** | **`TP34.1` is an `F.Cu`-only pad on the otherwise-`B.Cu` net `BAT_CONNECTOR_P`.** Needs a via and an `F.Cu` stub, or the test point flipped to `B.Cu`. The only face-split net in the block |
-| **PR-9** | `R86.2 → R89.1` is **45.3 mm at 1.00 mm against 16.8 mm at the 0.60 mm floor** — shorter *and* lower-resistance at the narrower width (≈ 13.8 mΩ vs ≈ 22.2 mΩ). A routing decision for the next task |
-| **PR-10** | **D-245 delivers about half what its arithmetic predicted.** The measured 1.50 mm traverse is **85.3 mm**, not the 71 mm placement span, and the mandatory `U18.8` neck adds **≈ 7.8 mΩ in 3.9 mm of copper**. `BAT_PROTECTED_P` as actually routable is **≈ 35.7 mΩ**, so the net gains ≈ 6 mΩ rather than ≈ 11.7 mΩ. Feeds the PR-7 ruling |
-| **PR-2** | `BAT_PROTECTED_P` at 1.50 mm — **traverse feasibility demonstrated** (85.274 mm, B.Cu, zero vias); terminations blocked pending PR-7 |
-| **PR-3** | **PM-2 was closed on incomplete evidence at FBV2-EXP-002.** Corrected at FBV2-P2-001; recorded so the pattern is not repeated. Status remains **placement corrected, closure pending DRC-clean routing** |
-| **B-34** | **OPEN — physical validation required.** ≈ 355 mV / 532 mW at 1.5 A, ≈ 414 mV / 724 mW at 1.75 A, BATFET-dominated |
-| **PR-4** | F.Cu / B.Cu ground pours and perimeter stitching remain the **last** step of FBV2-P2, after signals |
+| **PR-7** | **CLOSED by D-249.** Width is a path role; the trunk floor holds on the net and is relaxed only inside a bounded named area, enforced from section 10b of `.kicad_dru` |
+| **PR-8** | **VALIDATED ON SCRATCH, NOT APPLIED.** `TP34` flips to B.Cu in place at (5.000, 39.000), 4.47 mm from `J4.1` and 4.99 mm from `F1.1`, and the `J4.1 → F1.1` trunk picks it up with **zero extra copper**. Phase B did not run, so the authoritative footprint is unchanged |
+| **PR-9** | **CLOSED.** `R86`/`R89` are megohm divider tops, so they were reclassified as microamp taps and routed in 18.873 + 8.480 mm at 0.40–0.60 mm rather than a 45 mm 1.00 mm detour |
+| **PR-10** | **CLOSED — the 1.50 mm trunk is KEPT**, as ruled. Measured, it contributes 33.58 mΩ over 94.5 mm; at the 1.00 mm class target the same route would be ≈ 46 mΩ |
+| **PR-11** | **NEW. The bounded areas must be corridors, not bounding boxes.** Three are tight; the C58 tap's box is **67 × 23 mm at a 0.80 mm floor**, which is a real hole in the trunk rule. A router change, not a rule change |
+| **PR-12** | **NEW. Phase A stops at `LTC_GATE` `Q2.2 → TP17.1`.** The rest of the LTC gate net and the **entire dead-cell / recovery network** are unrouted. The congestion is the left margin between `Q2`/`Q3` and the 0603 divider wall at x = 8.0 / 9.65 |
+| **PR-13** | **NEW — NEEDS A RULING. `U14.2` / `U14.3` route at 0.15 mm, not the ruled 0.20 mm.** 0.20 mm is impossible there by **5 µm**: a track in the 1.245 mm strip west of `U14` needs its centre at x ≥ 0.500 + w/2 and x ≤ 0.695 − w/2, solvable only for w ≤ 0.195 mm |
+| **PR-14** | **NEW — NEEDS A RULING. The `U11.2` sub-1.20 mm escape is 4.738 mm**, against §6's 1.00 mm cap. The 0.20 mm neck itself is 0.575 mm and complies; the nearest **reachable** 1.20 mm-capable point is 2.511 mm from the pad, so ≤ 1.00 mm does not exist |
+| **PR-15** | **NEW. `U18.1` (LTC4368 `VIN`) was classified a microamp supply tap at 0.20 mm** on D-249's reasoning. §5 did not enumerate it |
+| **PR-16** | **NEW. `C59`, a 1 µF bulk capacitor on `BAT_RAW`, needs 44.4 mm of 0.30 mm copper** to reach its net. At that length it is not a decoupling capacitor in any useful sense. A placement finding |
+| **B-34** | **OPEN — physical validation required.** From real copper: ≈ 392 mV / 588 mW at 1.5 A, ≈ 457 mV / 800 mW at 1.75 A, routed copper ≈ 75.0 mΩ |
+| **PM-2** | **Placement corrected and approved; closure still pending** — §22 requires a DRC-clean routed block and there is not one |
+| **PR-4** | F.Cu / B.Cu ground pours and perimeter stitching remain the **last** step of FBV2-P2 |
+
+---
+
+## 8. Review plots
+
+`pcb/FBV2-P2-battery-front.svg`, `-back.svg`, `-inner1.svg` are exported from the **Phase A scratch
+board**, not from the authoritative board — the authoritative board has no copper on it. They show
+the `BAT_PROTECTED_P` trunk and its `U11.2` flare, the R75 Kelvin pair, the `BAT_MAIN` chain, the
+two F.Cu hops with their four vias, and the fuel-gauge and test branches.

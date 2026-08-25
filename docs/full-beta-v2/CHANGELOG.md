@@ -1,3 +1,94 @@
+## 2026-08-24 - width becomes a path role, and the board still says no (FBV2-P2-002C)
+
+**FBV2-P2-002C = FAIL.** Phase A did not complete, so Phase B never ran and
+`aqroot-Beta-v2.kicad_pcb` is byte-identical to `a52977e`: zero tracks, zero signal vias. PCB
+routing stays 0 %, overall stays 74 %. Full analysis:
+[`audits/2026-08-24-p2-battery-authoritative-route.md`](audits/2026-08-24-p2-battery-authoritative-route.md).
+
+**First unresolved connection: `LTC_GATE` `Q2.2 -> TP17.1`.**
+
+### D-249: width is a path role
+
+D-245 said `BAT_PROTECTED_P` should be 1.50 mm because it is the one long high-current run. That is
+still right. What was wrong is that the rule said it about the NET NAME, and the same net also feeds
+the MAX17048 fuel-gauge sense input, the LTC4368 VOUT sense input and a test point - none of which
+carries load current, and none of whose land patterns can accept 1.20 mm. **As written, D-245 made
+the net unroutable.**
+
+The replacement keeps the trunk floor on the whole net and relaxes it ONLY inside a named rule area
+that bounds one approved branch, through `enclosedByArea()`, which requires the WHOLE track to be
+inside. A branch that wanders out of its area is measured against the trunk floor and fails.
+
+**Where those rules live turned out to matter as much as what they say.** Section 9 of `.kicad_dru`
+already records that KiCad applies the LAST matching rule and that the necking and land-pattern
+blocks must sit at the end. Put the path-role rules in section 5b and they are silently overridden
+by *"Pad-escape necking - width, fine-pitch power packages"* - which is exactly the trap section 9
+was written to warn about. They now live in a new **section 10b at the very end**, widest first and
+narrowest last so that overlapping areas resolve to the lower floor instead of a false violation.
+
+### U11.2 did not need the 0.19 mm exception
+
+Section 6 authorised dropping to 0.19 mm if 0.20 mm proved impossible. It is not impossible.
+**TI's own DLH0010A land pattern is 0.2 mm pads on 0.4 mm pitch**, so 0.20 mm is the widest copper
+that can ever leave that pad - the package is the bottleneck, not the rule - and JLCPCB's live
+capability page gives 0.09 / 0.09 mm on 1 oz multilayer, so nothing here is fab-limited. The earlier
+"0.195 mm" was an artefact of the router subtracting half a sampling step; with exact
+segment-to-shape geometry the answer is **exactly 0.200 mm**.
+
+The measured escape: **0.20 mm for 0.575 mm**, then 0.30, 0.40, 0.60, 0.80, 1.00 and 1.20 mm,
+reaching the 1.50 mm trunk 5.079 mm from the pad. No via, no thermal relief, about 4.3 mOhm.
+
+**One part of section 6 is NOT met and is flagged rather than smoothed over.** The neck complies at
+0.575 mm against the 1.00 mm cap, but the copper BELOW the 1.20 mm trunk floor runs 4.738 mm. It
+cannot be shorter: the nearest point to U11.2 that admits 1.20 mm *and is reachable from the rest of
+the net* is 2.511 mm away.
+
+### U14 misses 0.20 mm by five microns
+
+`U14` sits 1.245 mm from the west board edge with its pin row facing that edge. Copper must be
+>= 0.500 mm from the edge and >= 0.200 mm from pads whose west edge is at x = 0.895, so a track of
+width w needs its centre at x >= 0.500 + w/2 AND x <= 0.695 - w/2 - solvable only for
+**w <= 0.195 mm**. Section 5 locked 0.20 mm. It routes at **0.15 mm**, the board's own minimum and
+1.7x JLCPCB's, carrying a nanoamp sense input. Flagged for ratification.
+
+A related fix caught a violation on the way: the router now insets the board outline by half the
+Edge.Cuts stroke, because copper-to-edge clearance is measured to the LINE, not to the outside of
+the stroke. That 25 um is what turned a 0.475 mm edge clearance into a caught error rather than a
+committed one.
+
+### What routed
+
+Twenty-seven connections coexisting on one scratch board, each gated on project-context DRC with the
+In1 plane refilled every time: the `BAT_PROTECTED_P` trunk `R75 -> D9 -> U11.2` at **94.5 mm,
+1.50 mm, B.Cu, ZERO vias**; `BAT_CONNECTOR_P`, `BAT_RAW` and `BAT_MID` at 0.80-1.00 mm; both R75
+Kelvin branches at 0.20 mm with zero vias, **7.327 mm on the U18.9 side against 14.588 mm on the
+U18.8 side, mismatch 7.261 mm**, both taken directly off the correct R75 pad; the fuel-gauge and
+test taps; and three of the six LTC gate connections. Ratsnest 781 -> 749. **Zero new DRC violations
+of any class, at every step.**
+
+The only vias in the whole attempt are **four**: the `BAT_SENSE` `Q3 -> R75` trunk and the TP20 stub
+hop to F.Cu, because the west margin cannot carry both that trunk and the 1.50 mm
+`BAT_PROTECTED_P` past R75 on B.Cu alone.
+
+### B-34 from real copper, and it is worse
+
+Routed copper is **~75.0 mOhm**, not the ~50.6 mOhm the estimate assumed. With F1 at ~25 mOhm,
+Q2+Q3 at ~46 mOhm and the BQ25185 BATFET at 115 mOhm the path is **~392 mV / 588 mW at 1.5 A** and
+**~457 mV / 800 mW at 1.75 A**. The trunk is at its ruled 1.50 mm; the excess sits in `BAT_MID` and
+`BAT_SENSE`, which the corridors forced to 0.80 mm instead of the 1.00 mm class target.
+**B-34 stays OPEN - physical validation required.**
+
+### And one weakness worth naming
+
+Section 7 asked that the construction make it IMPOSSIBLE for a long high-current run to masquerade
+as a branch. It does not fully manage that yet. The bounded areas are generated from each routed
+branch's own bounding box, and three of them are tight - but the C58 decoupling tap's box is
+**67 x 23 mm at a 0.80 mm floor**, which is a real hole in the trunk rule. The fix is to build the
+area from the route's centre-line rather than its bounding box. That is a router change, not a rule
+change, and it is carried as PR-11.
+
+---
+
 ## 2026-08-24 - the router on trial, and a rule that cannot be routed (FBV2-P2-002B)
 
 **ROUTER HARNESS QUALIFICATION = PASS.** No copper was committed; the authoritative PCB is

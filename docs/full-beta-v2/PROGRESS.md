@@ -2,7 +2,11 @@
 
 **Status: LIVING DASHBOARD.**
 
-Date: 2026-08-24 (updated after **FBV2-P2-002B — routing harness qualification.
+Date: 2026-08-24 (updated after **FBV2-P2-002C — battery path-role rules and the first
+authoritative routing attempt. **FAIL: Phase A stopped at `LTC_GATE` `Q2.2 → TP17.1`, so Phase B
+never ran and the board is byte-identical to `a52977e`.** Delivered **D-249**, the path-role
+width ruling, and 27 coexisting DRC-clean connections on scratch. **PCB routing stays 0 %;
+overall stays 74 %**; previously **FBV2-P2-002B — routing harness qualification.
 **HARNESS QUALIFICATION = PASS.** All three router defects fixed and proved fixed on real geometry;
 the two remaining cases are a **proved land-pattern / rule conflict** on five fine-pitch pads,
 surfaced for a CTO ruling. **No copper committed; the board is byte-identical to `8b9efba`.**
@@ -22,7 +26,7 @@ freeze. **FBV2-P2 ENTRY = FAIL** on one criterion of thirteen; **NO PROGRESS EAR
 74%**, FBV2-P1 = PASS unchanged**; previously **FBV2-P1-002 — P1 closeout; **FBV2-P1 PASSES**; overall 68% → 74%**; previously **FBV2-P1-001 — enclosure-driven floorplan built; **FBV2-P1 DOES NOT PASS** on the 915 MHz pigtail reach; overall stays 68%**; previously FBV2-MECH-002 — pre-floorplan authority reconciliation and final
 procurement sign-offs. NO PROGRESS EARNED: overall stays 68%, FBV2-S2 = PASS unchanged**; previously
 FBV2-S2-002 — S2 release closeout, FBV2-S2 = PASS)
-Repository HEAD at last update: `8b9efba` (FBV2-P2-002A)
+Repository HEAD at last update: `a52977e` (FBV2-P2-002B)
 
 ---
 
@@ -69,7 +73,7 @@ that can be built if Full Beta v2 stalls. It must remain preserved
 | Architecture freeze | **IN PROGRESS** |
 | Schematic migration | **100%** — **all nine sheets landed. `fork_equivalence.py`'s "still Beta-DM" list is EMPTY.** |
 | PCB placement | **100%** — **FBV2-P1 RE-ISSUED AND RE-PASSED on the new 72 × 148 outline (FBV2-EXP-002)** |
-| PCB routing | **0%** — entry gate PASS; **two routing attempts, both correctly reverted**, then the router itself put on trial and **QUALIFIED** at FBV2-P2-002B: six of eight real-geometry cases route with zero new DRC violations and correct connectivity after save/reload, and the two that do not are a **proved rule conflict**, not a router fault. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the board still has **zero tracks and zero signal vias** |
+| PCB routing | **0%** — entry gate PASS; the router is **QUALIFIED** (FBV2-P2-002B) and the battery **path-role width ruling D-249 is settled** (FBV2-P2-002C). **Three routing attempts, none committed.** The best so far routed **27 of the block's connections coexisting DRC-clean on scratch** — the whole high-current battery path, both R75 Kelvin branches and the U11.2 flared escape — and stopped at `LTC_GATE` `Q2.2 → TP17.1`. The **In1.Cu GND plane is valid (1 island, 93.3 %)**; the authoritative board still has **zero tracks and zero signal vias** |
 | DFM / release | **0%** |
 | Physical validation | **0%** |
 

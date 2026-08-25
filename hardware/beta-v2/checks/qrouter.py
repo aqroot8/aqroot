@@ -99,19 +99,70 @@ class SEG(object):
         return self.hw
 
 
-def seg_shape_dist(x0, y0, x1, y1, shape, step=20000):
-    """Distance from a segment centre-line to a shape.  Point-to-shape distance
-    is 1-Lipschitz along the line, so sampling at `step` and subtracting half a
-    step is a sound lower bound."""
-    L = math.hypot(x1 - x0, y1 - y0)
-    n = max(1, int(L / step) + 1)
-    best = 1e18
-    for k in range(n + 1):
-        t = k / float(n)
-        d = shape.dist(x0 + t * (x1 - x0), y0 + t * (y1 - y0))
+def _pt_seg(px, py, x0, y0, x1, y1):
+    vx, vy = float(x1 - x0), float(y1 - y0)
+    L2 = vx * vx + vy * vy
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((px - x0) * vx + (py - y0) * vy) / L2))
+    return math.hypot(px - (x0 + t * vx), py - (y0 + t * vy))
+
+
+def _seg_seg(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1):
+    """Exact distance between two segments."""
+    d1x, d1y = ax1 - ax0, ay1 - ay0
+    d2x, d2y = bx1 - bx0, by1 - by0
+    den = d1x * d2y - d1y * d2x
+    if den != 0:
+        ex, ey = bx0 - ax0, by0 - ay0
+        t = (ex * d2y - ey * d2x) / float(den)
+        u = (ex * d1y - ey * d1x) / float(den)
+        if 0.0 <= t <= 1.0 and 0.0 <= u <= 1.0:
+            return 0.0
+    return min(_pt_seg(ax0, ay0, bx0, by0, bx1, by1),
+               _pt_seg(ax1, ay1, bx0, by0, bx1, by1),
+               _pt_seg(bx0, by0, ax0, ay0, ax1, ay1),
+               _pt_seg(bx1, by1, ax0, ay0, ax1, ay1))
+
+
+def _seg_box(x0, y0, x1, y1, hx, hy):
+    """Exact distance from a segment to an axis-aligned box centred at the
+    origin.  Both are convex, so the closest pair is a vertex of one against
+    the other -- no sampling, no conservative fudge, and therefore no
+    false NO-LEGAL-ESCAPE on a pad that is exactly at the limit."""
+    def ptbox(px, py):
+        return math.hypot(max(abs(px) - hx, 0.0), max(abs(py) - hy, 0.0))
+    if ptbox(x0, y0) == 0.0 or ptbox(x1, y1) == 0.0:
+        return 0.0
+    best = min(ptbox(x0, y0), ptbox(x1, y1))
+    for cx, cy in ((-hx, -hy), (hx, -hy), (hx, hy), (-hx, hy)):
+        d = _pt_seg(cx, cy, x0, y0, x1, y1)
         if d < best:
             best = d
-    return best - (L / n) / 2.0
+    # segment crossing the box entirely, both endpoints outside
+    for (ex0, ey0, ex1, ey1) in ((-hx, -hy, hx, -hy), (hx, -hy, hx, hy),
+                                 (hx, hy, -hx, hy), (-hx, hy, -hx, -hy)):
+        if _seg_seg(x0, y0, x1, y1, ex0, ey0, ex1, ey1) == 0.0:
+            return 0.0
+    return best
+
+
+def seg_shape_dist(x0, y0, x1, y1, shape, step=20000):
+    """EXACT distance from a segment centre-line to a shape.
+
+    This used to sample the segment and subtract half a step as a conservative
+    lower bound.  That was safe but it lied at the margin: a 0.20 mm track
+    leaving a 0.40 mm-pitch WSON pad has EXACTLY 0.20 mm of clearance, and a
+    10 um fudge turned a legal escape into NO LEGAL ESCAPE.  Both shapes are
+    convex, so the distance is computed closed-form instead."""
+    if isinstance(shape, SEG):
+        return _seg_seg(x0, y0, x1, y1,
+                        shape.x0, shape.y0, shape.x1, shape.y1) - shape.hw
+    ca, sa = shape.ca, shape.sa
+    ax = (x0 - shape.cx) * ca + (y0 - shape.cy) * sa
+    ay = -(x0 - shape.cx) * sa + (y0 - shape.cy) * ca
+    bx = (x1 - shape.cx) * ca + (y1 - shape.cy) * sa
+    by = -(x1 - shape.cx) * sa + (y1 - shape.cy) * ca
+    return _seg_box(ax, ay, bx, by,
+                    shape.hx - shape.r, shape.hy - shape.r) - shape.r
 
 
 # --------------------------------------------------------------------------
@@ -125,9 +176,18 @@ class QBoard(object):
         self.holes = []         # blocks every layer
         self.escape_why = []
         self._scan()
+        # GetBoardEdgesBoundingBox() measures to the OUTSIDE of the Edge.Cuts
+        # stroke, but copper-to-edge clearance is measured to the LINE ITSELF.
+        # Half a line width is 0.025 mm here, and that is exactly the amount by
+        # which a track hard against the west edge failed DRC at 0.475 mm.
         bb = self.b.GetBoardEdgesBoundingBox()
-        self.ex0, self.ey0 = bb.GetLeft(), bb.GetTop()
-        self.ex1, self.ey1 = bb.GetRight(), bb.GetBottom()
+        lw = 0
+        for d in self.b.GetDrawings():
+            if d.GetLayer() == pcbnew.Edge_Cuts:
+                lw = max(lw, d.GetWidth())
+        half = lw // 2
+        self.ex0, self.ey0 = bb.GetLeft() + half, bb.GetTop() + half
+        self.ex1, self.ey1 = bb.GetRight() - half, bb.GetBottom() - half
         self.laid = []
 
     # ---------------------------------------------------------------- scan
@@ -199,13 +259,24 @@ class QBoard(object):
                 [h for h in self.holes if h.net != net])
 
     # ------------------------------------------------------------- raster
+    wide_nets = frozenset()
+
     def margin(self, s, width, clr_pad, clr_trk):
-        """Per-obstacle clearance.  A keep-out admits no copper at all; a pad
-        and a track can carry different rule clearances (BAT_MAIN is 0.20 mm to
-        a pad and 0.30 mm to another track)."""
+        """Per-obstacle clearance.
+
+        A keep-out admits no copper at all.  A pad and a track carry different
+        rule clearances.  And `wide_nets` -- the BAT_MAIN-class nets, whose
+        .kicad_dru rule demands 0.30 mm track-to-track -- pull the wider figure
+        even when the net being routed is an ordinary signal, because that rule
+        fires on either side of the pair."""
         if s.net is None and s.tag == 'KO':
             return width / 2.0
-        return width / 2.0 + (clr_trk if isinstance(s, SEG) else clr_pad)
+        if not isinstance(s, SEG):
+            return width / 2.0 + clr_pad
+        c = clr_trk
+        if s.net in self.wide_nets and c < 300000:
+            c = 300000
+        return width / 2.0 + c
 
     def grid(self, layer, net, width, clr_pad, clr_trk, x0, y0, x1, y1, G):
         """Blocked-cell grid.
@@ -513,6 +584,197 @@ class QBoard(object):
                 best = (s.tag, gap)
         return best
 
+    # ------------------------------------------------------- flared escape
+    def clearance_at(self, layer, net, x, y, clr_pad, clr_trk):
+        """Largest track half-width that could be centred on this point."""
+        best = 1e18
+        for sh in self.obstacles(layer, net):
+            if sh.net is None and sh.tag == 'KO':
+                d = sh.dist(x, y)
+            else:
+                d = sh.dist(x, y) - (clr_trk if isinstance(sh, SEG) else clr_pad)
+            if d < best:
+                best = d
+        for lim, v in ((self.ex0 + EDGE_CLR, x - (self.ex0 + EDGE_CLR)),
+                       (self.ex1 - EDGE_CLR, (self.ex1 - EDGE_CLR) - x),
+                       (self.ey0 + EDGE_CLR, y - (self.ey0 + EDGE_CLR)),
+                       (self.ey1 - EDGE_CLR, (self.ey1 - EDGE_CLR) - y)):
+            if v < best:
+                best = v
+        return best
+
+    def nearest_free(self, layer, net, x, y, width, clr_pad, clr_trk, G,
+                     span=12000000, region=None):
+        """Nearest grid point to (x, y) on which a track of `width` may be
+        centred.  Used to find where a flare can take its next step up."""
+        ox = int(round((x - span) / G)) * G
+        oy = int(round((y - span) / G)) * G
+        blk = self.grid(layer, net, width, clr_pad, clr_trk,
+                        ox, oy, x + span, y + span, G)
+        ny, nx = blk.shape
+        ci = int((x - ox) // G)
+        cj = int((y - oy) // G)
+        best = None
+        for r in range(0, int(span / G)):
+            found = False
+            for dj in range(-r, r + 1):
+                for di in range(-r, r + 1):
+                    if max(abs(di), abs(dj)) != r:
+                        continue
+                    ii, jj = ci + di, cj + dj
+                    if not (0 <= ii < nx and 0 <= jj < ny):
+                        continue
+                    if blk[jj, ii]:
+                        continue
+                    if region is not None:
+                        rmask, rox, roy, rG = region
+                        ri = int((ox + ii * G - rox) // rG)
+                        rj = int((oy + jj * G - roy) // rG)
+                        rny, rnx = rmask.shape
+                        if not (0 <= ri < rnx and 0 <= rj < rny and rmask[rj, ri]):
+                            continue
+                    d = (di * di + dj * dj)
+                    if best is None or d < best[0]:
+                        best = (d, ox + ii * G, oy + jj * G)
+                    found = True
+            if found and best is not None:
+                return (best[1], best[2])
+        return None
+
+    def free_region(self, layer, net, width, clr_pad, clr_trk, G,
+                    seed, x0, y0, x1, y1):
+        """Flood-fill the trunk-width-free space from `seed`.
+
+        A point that admits the trunk width is not necessarily a point the
+        trunk can REACH.  This is the difference between the two, computed
+        once and reused."""
+        ox = int(round((x0) / G)) * G
+        oy = int(round((y0) / G)) * G
+        blk = self.grid(layer, net, width, clr_pad, clr_trk, ox, oy, x1, y1, G)
+        ny, nx = blk.shape
+        si = int((seed[0] - ox) // G)
+        sj = int((seed[1] - oy) // G)
+        if not (0 <= si < nx and 0 <= sj < ny):
+            return None
+        free = ~blk
+        free[sj, si] = True
+        seen = np.zeros((ny, nx), dtype=bool)
+        seen[sj, si] = True
+        cur = seen.copy()
+        while cur.any():
+            nxt = np.zeros((ny, nx), dtype=bool)
+            nxt[1:, :] |= cur[:-1, :]
+            nxt[:-1, :] |= cur[1:, :]
+            nxt[:, 1:] |= cur[:, :-1]
+            nxt[:, :-1] |= cur[:, 1:]
+            nxt &= free
+            nxt &= ~seen
+            seen |= nxt
+            cur = nxt
+        return (seen, ox, oy, G)
+
+    def flare(self, net, pad, layer, trunk_w, neck_w, clr_pad, clr_trk, G,
+              ladder=(300000, 400000, 600000, 800000, 1000000, 1200000),
+              region=None):
+        """ROUTED flare out of a fine-pitch high-current pad.
+
+        Section 6: the neck must be the shortest possible and must flare
+        outward immediately.  A straight ray cannot do that here -- west of
+        U11.2 the corridor pinches again at 1.5 mm -- so the flare is a short
+        chain of grid routes at increasing width, each one ending at the
+        nearest point where the NEXT width becomes legal.
+
+        The analytic neck out of the pad carries no grid guard band, because it
+        is analytic; every routed step does, because it is grid-derived.
+
+        Emits copper.  Returns a profile dict, or None.
+        """
+        ox = self.ex0 - 2000000
+        oy = self.ey0 - 2000000
+        e = self.escape(pad, layer, neck_w, neck_w, clr_pad, clr_trk, G, ox, oy)
+        if not e:
+            return None
+        # SHORTEN THE NECK.  escape() launches clear of the package with slack to
+        # spare, which is right for a trunk but wrong here: section 6 wants the
+        # shortest neck that exists.  Walk back along the same direction to the
+        # first grid point that still admits neck_w.
+        ux = e[0]['x'] - pad['x']
+        uy = e[0]['y'] - pad['y']
+        L0 = math.hypot(ux, uy)
+        cx, cy = e[0]['x'], e[0]['y']
+        if L0 > 0:
+            ux, uy = ux / L0, uy / L0
+            obs = self.obstacles(layer, pad['net'])
+            k = 1
+            while k * 25000 <= L0:
+                d = k * 25000
+                px = int(round((pad['x'] + ux * d) / G)) * G
+                py = int(round((pad['y'] + uy * d) / G)) * G
+                if self.point_free(layer, pad['net'], px, py, neck_w,
+                                   clr_pad, clr_trk, G):
+                    bad = False
+                    for sh in obs:
+                        m = self.margin(sh, neck_w, clr_pad, clr_trk)
+                        if seg_shape_dist(pad['x'], pad['y'], px, py, sh) < m:
+                            bad = True
+                            break
+                    if not bad:
+                        cx, cy = px, py
+                        break
+                k += 1
+        segs = [(pad['x'], pad['y'], cx, cy, neck_w)]
+        levels = [w for w in ladder if neck_w < w < trunk_w] + [trunk_w]
+        cur_w = neck_w
+        for w in levels:
+            if self.point_free(layer, net, cx, cy, w, clr_pad, clr_trk, G):
+                cur_w = w
+                continue
+            # REACHABILITY AT EVERY RUNG.  Applying it only to the final width
+            # lets the earlier steps walk into a pocket that admits the width
+            # but has no corridor out of it; the flare then succeeds and the
+            # trunk is stranded.  Ask, at every rung, for the nearest point of
+            # that width that the DESTINATION can actually reach.
+            reg = region.get(w) if isinstance(region, dict) else (
+                region if (region is not None and w == levels[-1]) else None)
+            tgt = self.nearest_free(layer, net, cx, cy, w, clr_pad, clr_trk, G,
+                                    region=reg)
+            if tgt is None:
+                return None
+            blk = self.grid(layer, net, cur_w, clr_pad, clr_trk,
+                            min(cx, tgt[0]) - 6000000, min(cy, tgt[1]) - 6000000,
+                            max(cx, tgt[0]) + 6000000, max(cy, tgt[1]) + 6000000, G)
+            ny, nx = blk.shape
+            gx0 = int(round((min(cx, tgt[0]) - 6000000 - ox) / G)) * G + ox
+            gy0 = int(round((min(cy, tgt[1]) - 6000000 - oy) / G)) * G + oy
+            blk = self.grid(layer, net, cur_w, clr_pad, clr_trk, gx0, gy0,
+                            max(cx, tgt[0]) + 6000000, max(cy, tgt[1]) + 6000000, G)
+            ny, nx = blk.shape
+            si = ((cx - gx0) // G, (cy - gy0) // G)
+            ti = ((tgt[0] - gx0) // G, (tgt[1] - gy0) // G)
+            for (ii, jj) in (si, ti):
+                if 0 <= ii < nx and 0 <= jj < ny:
+                    blk[jj, ii] = False
+            path = self.search(blk, si, ti)
+            if path is None:
+                return None
+            pts = simplify(path, gx0, gy0, G)
+            for k in range(len(pts) - 1):
+                segs.append((pts[k][0], pts[k][1], pts[k + 1][0], pts[k + 1][1], cur_w))
+            cx, cy = tgt
+            cur_w = w
+        for (x0, y0, x1, y1, w) in segs:
+            self.track(net, layer, x0, y0, x1, y1, w)
+        L = lambda a: math.hypot(a[2] - a[0], a[3] - a[1])
+        return dict(x=cx, y=cy,
+                    segs=[(round(L(a) / 1e6, 4), a[4] / 1e6) for a in segs],
+                    neck_len=sum(L(a) for a in segs if a[4] <= neck_w) / 1e6,
+                    sub_trunk=sum(L(a) for a in segs if a[4] < trunk_w) / 1e6,
+                    total=sum(L(a) for a in segs) / 1e6,
+                    bbox=(min(min(a[0], a[2]) for a in segs),
+                          min(min(a[1], a[3]) for a in segs),
+                          max(max(a[0], a[2]) for a in segs),
+                          max(max(a[1], a[3]) for a in segs)))
+
     # ---------------------------------------------------------------- emit
     def track(self, net, layer, x0, y0, x1, y1, width):
         x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
@@ -529,16 +791,39 @@ class QBoard(object):
         self.shapes[layer].append(SEG(x0, y0, x1, y1, width / 2.0, net, 'track'))
         return t
 
+    def via(self, net, x, y, dia=800000, drill=400000):
+        """Through via on every copper layer.  0.40 mm drill satisfies the
+        POWER-class hole rule; (0.80-0.40)/2 = 0.20 mm annular ring satisfies
+        the 0.125 mm floor."""
+        x, y = int(x), int(y)
+        v = pcbnew.PCB_VIA(self.b)
+        v.SetPosition(pcbnew.VECTOR2I(x, y))
+        v.SetWidth(int(dia))
+        v.SetDrill(int(drill))
+        v.SetViaType(pcbnew.VIATYPE_THROUGH)
+        v.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+        v.SetNet(self.nets[net])
+        self.b.Add(v)
+        self.laid.append(v)
+        for L in ('F', 'B'):
+            self.shapes[L].append(RR(x, y, dia / 2.0, dia / 2.0, dia / 2.0,
+                                     0, net, 'via'))
+        self.holes.append(RR(x, y, drill / 2.0, drill / 2.0, drill / 2.0,
+                             0, net, 'via/hole'))
+        return v
+
     def mark(self):
-        return len(self.laid), dict((L, len(self.shapes[L])) for L in self.shapes)
+        return (len(self.laid), dict((L, len(self.shapes[L])) for L in self.shapes),
+                len(self.holes))
 
     def revert(self, m):
-        n, sh = m
+        n, sh, nh = m
         for t in self.laid[n:]:
             self.b.Remove(t)
         self.laid = self.laid[:n]
         for L in sh:
             self.shapes[L] = self.shapes[L][:sh[L]]
+        self.holes = self.holes[:nh]
 
     def save(self, path=None):
         self.b.Save(path or self.path)
@@ -630,3 +915,214 @@ def connect(qb, net, pa, pb, layer, trunk_w, rule_min, clr_pad, clr_trk, G=50000
     return dict(ok=False, reason='NO_PATH',
                 why='no legal corridor at %.3f mm wide from %s to %s at 0.05 or 0.025 mm grid'
                     % (trunk_w / 1e6, pa['ref'], pb['ref']))
+
+
+def connect_role(qb, net, pa, pb, layer, trunk_w, clr_pad, clr_trk,
+                 neck=None, G=50000, fine=25000, pad_margin=6000000):
+    """Route one connection with PATH-ROLE widths.
+
+    `neck` maps a pad reference to the width its land pattern may legally take
+    when it is below the trunk width.  Where a pad appears in `neck`, the escape
+    is FLARED: narrow at the pad, widening as soon as the surrounding copper
+    allows, and the exact length spent at each width is returned so it can be
+    documented rather than assumed.
+    """
+    neck = neck or {}
+    for G_try in (G, fine):
+        ox = qb.ex0 - 2000000
+        oy = qb.ey0 - 2000000
+        ends = []
+        for p in (pa, pb):
+            nw = neck.get(p['ref'])
+            if p.get('anchor'):
+                # A junction on copper this net already owns.  There is nothing
+                # to escape FROM: the point itself is the launch.
+                ends.append(dict(kind='plain', x=p['x'], y=p['y'], w=trunk_w,
+                                 ln=0, pad=p))
+            elif nw is None or nw >= trunk_w:
+                e = qb.escape(p, layer, trunk_w, trunk_w, clr_pad, clr_trk,
+                              G_try, ox, oy)
+                if not e:
+                    return dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                                why=qb.escape_why[0], pad=p['ref'])
+                ends.append(dict(kind='plain', x=e[0]['x'], y=e[0]['y'],
+                                 w=e[0]['w'], ln=e[0]['ln'], pad=p))
+            else:
+                f = qb.flare(p, layer, trunk_w, nw, clr_pad, clr_trk, G_try)
+                if f is None:
+                    return dict(ok=False, reason='NO_FLARE',
+                                why='%s: no flared escape from %.3f mm to %.3f mm'
+                                    % (p['ref'], nw / 1e6, trunk_w / 1e6),
+                                pad=p['ref'])
+                ends.append(dict(kind='flare', pad=p, **f))
+        A, B = ends
+        for margin in (pad_margin, pad_margin * 2, pad_margin * 4):
+            x0 = min(A['x'], B['x'], pa['x'], pb['x']) - margin
+            x1 = max(A['x'], B['x'], pa['x'], pb['x']) + margin
+            y0 = min(A['y'], B['y'], pa['y'], pb['y']) - margin
+            y1 = max(A['y'], B['y'], pa['y'], pb['y']) + margin
+            x0 = max(x0, qb.ex0 - 1000000); y0 = max(y0, qb.ey0 - 1000000)
+            x1 = min(x1, qb.ex1 + 1000000); y1 = min(y1, qb.ey1 + 1000000)
+            ox2 = int(round((x0 - ox) / G_try)) * G_try + ox
+            oy2 = int(round((y0 - oy) / G_try)) * G_try + oy
+            blk = qb.grid(layer, net, trunk_w, clr_pad, clr_trk, ox2, oy2, x1, y1, G_try)
+            si = ((A['x'] - ox2) // G_try, (A['y'] - oy2) // G_try)
+            ti = ((B['x'] - ox2) // G_try, (B['y'] - oy2) // G_try)
+            ny, nx = blk.shape
+            for (ii, jj) in (si, ti):
+                if 0 <= ii < nx and 0 <= jj < ny:
+                    blk[jj, ii] = False
+            path = qb.search(blk, si, ti)
+            if path is None:
+                continue
+            pts = simplify(path, ox2, oy2, G_try)
+            total = 0
+            prof = []
+            for E in ends:
+                p = E['pad']
+                if E['kind'] == 'plain':
+                    if not p.get('anchor'):
+                        qb.track(net, layer, p['x'], p['y'], E['x'], E['y'], E['w'])
+                        total += E['ln']
+                        prof.append((p['ref'], E['w'] / 1e6, E['ln'] / 1e6))
+                else:
+                    ux, uy = E['dir']
+                    for (d0, d1, w) in E['segs']:
+                        sx = p['x'] + ux * d0 if d0 else p['x']
+                        sy = p['y'] + uy * d0 if d0 else p['y']
+                        exx, eyy = p['x'] + ux * d1, p['y'] + uy * d1
+                        if abs(d1 - E['total']) < 1:
+                            exx, eyy = E['x'], E['y']
+                        qb.track(net, layer, sx, sy, exx, eyy, w)
+                        total += math.hypot(exx - sx, eyy - sy)
+                        prof.append((p['ref'], w / 1e6,
+                                     math.hypot(exx - sx, eyy - sy) / 1e6))
+            for k in range(len(pts) - 1):
+                qb.track(net, layer, pts[k][0], pts[k][1],
+                         pts[k + 1][0], pts[k + 1][1], trunk_w)
+                total += math.hypot(pts[k + 1][0] - pts[k][0],
+                                    pts[k + 1][1] - pts[k][1])
+            return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, profile=prof,
+                        trunk_mm=trunk_w / 1e6,
+                        minw=min([w for _, w, _ in prof] + [trunk_w / 1e6]))
+    return dict(ok=False, reason='NO_PATH',
+                why='no legal corridor at %.3f mm from %s to %s at 0.05 or 0.025 mm'
+                    % (trunk_w / 1e6, pa['ref'], pb['ref']))
+
+
+def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
+                G=50000, fine=25000, via_dia=800000, via_drill=400000):
+    """Route pad-to-pad with a layer hop: a short escape on `near` at each pad,
+    a through via, and the run itself on `far`.
+
+    Returns the same shape as connect_role plus the via count, so a hop can
+    never be reported as if it were a flat route.
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    for G_try in (G, fine):
+        ends = []
+        ok = True
+        for p in (pa, pb):
+            e = qb.escape(p, near, width, width, clr_pad, clr_trk, G_try, ox, oy)
+            if not e:
+                return dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                            why=qb.escape_why[0], pad=p['ref'])
+            # The via must clear BOTH layers.  Beside a fine-pitch pad there is
+            # usually no room for it right at the escape point, so walk out on
+            # the near layer to the closest point that can hold one instead of
+            # giving up.
+            cand = None
+            for c in e[:6]:
+                if (qb.point_free(near, net, c['x'], c['y'], via_dia,
+                                  clr_pad, clr_trk, G_try) and
+                        qb.point_free(far, net, c['x'], c['y'], via_dia,
+                                      clr_pad, clr_trk, G_try)):
+                    cand = dict(c)
+                    cand['walk'] = None
+                    break
+            if cand is None:
+                c = e[0]
+                t1 = qb.nearest_free(near, net, c['x'], c['y'], via_dia,
+                                     clr_pad, clr_trk, G_try, span=6000000)
+                t2 = qb.nearest_free(far, net, c['x'], c['y'], via_dia,
+                                     clr_pad, clr_trk, G_try, span=6000000)
+                site = None
+                if t1 is not None and t2 is not None:
+                    for cand_pt in (t1, t2):
+                        if (qb.point_free(near, net, cand_pt[0], cand_pt[1], via_dia,
+                                          clr_pad, clr_trk, G_try) and
+                                qb.point_free(far, net, cand_pt[0], cand_pt[1], via_dia,
+                                              clr_pad, clr_trk, G_try)):
+                            site = cand_pt
+                            break
+                if site is None:
+                    ok = False
+                    break
+                cand = dict(c)
+                cand['walk'] = site
+            ends.append((p, cand))
+        if not ok:
+            continue
+        m = qb.mark()
+        total = 0.0
+        for (p, c) in ends:
+            qb.track(net, near, p['x'], p['y'], c['x'], c['y'], c['w'])
+            total += c['ln']
+            if c.get('walk'):
+                blkn = qb.grid(near, net, c['w'], clr_pad, clr_trk,
+                               min(c['x'], c['walk'][0]) - 6000000,
+                               min(c['y'], c['walk'][1]) - 6000000,
+                               max(c['x'], c['walk'][0]) + 6000000,
+                               max(c['y'], c['walk'][1]) + 6000000, G_try)
+                gx0 = min(c['x'], c['walk'][0]) - 6000000
+                gy0 = min(c['y'], c['walk'][1]) - 6000000
+                si = ((c['x'] - gx0) // G_try, (c['y'] - gy0) // G_try)
+                ti = ((c['walk'][0] - gx0) // G_try, (c['walk'][1] - gy0) // G_try)
+                nyy, nxx = blkn.shape
+                for (ii, jj) in (si, ti):
+                    if 0 <= ii < nxx and 0 <= jj < nyy:
+                        blkn[jj, ii] = False
+                pth = qb.search(blkn, si, ti)
+                if pth is None:
+                    qb.revert(qb.mark())
+                    ok = False
+                    break
+                pp = simplify(pth, int(gx0), int(gy0), G_try)
+                for k in range(len(pp) - 1):
+                    qb.track(net, near, pp[k][0], pp[k][1], pp[k + 1][0], pp[k + 1][1], c['w'])
+                    total += math.hypot(pp[k + 1][0] - pp[k][0], pp[k + 1][1] - pp[k][1])
+                c['x'], c['y'] = c['walk']
+            qb.via(net, c['x'], c['y'], via_dia, via_drill)
+        if not ok:
+            qb.revert(m)
+            continue
+        A, B = ends[0][1], ends[1][1]
+        margin = 8000000
+        x0 = max(min(A['x'], B['x']) - margin, qb.ex0 - 1000000)
+        y0 = max(min(A['y'], B['y']) - margin, qb.ey0 - 1000000)
+        x1 = min(max(A['x'], B['x']) + margin, qb.ex1 + 1000000)
+        y1 = min(max(A['y'], B['y']) + margin, qb.ey1 + 1000000)
+        ox2 = int(round((x0 - ox) / G_try)) * G_try + ox
+        oy2 = int(round((y0 - oy) / G_try)) * G_try + oy
+        blk = qb.grid(far, net, width, clr_pad, clr_trk, ox2, oy2, x1, y1, G_try)
+        si = ((A['x'] - ox2) // G_try, (A['y'] - oy2) // G_try)
+        ti = ((B['x'] - ox2) // G_try, (B['y'] - oy2) // G_try)
+        ny, nx = blk.shape
+        for (ii, jj) in (si, ti):
+            if 0 <= ii < nx and 0 <= jj < ny:
+                blk[jj, ii] = False
+        path = qb.search(blk, si, ti)
+        if path is None:
+            qb.revert(m)
+            continue
+        pts = simplify(path, ox2, oy2, G_try)
+        for k in range(len(pts) - 1):
+            qb.track(net, far, pts[k][0], pts[k][1], pts[k + 1][0], pts[k + 1][1], width)
+            total += math.hypot(pts[k + 1][0] - pts[k][0], pts[k + 1][1] - pts[k][1])
+        return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=2,
+                    trunk_mm=width / 1e6, minw=width / 1e6, layer=far,
+                    profile=[(pa['ref'], ends[0][1]['w'] / 1e6, ends[0][1]['ln'] / 1e6),
+                             (pb['ref'], ends[1][1]['w'] / 1e6, ends[1][1]['ln'] / 1e6)])
+    return dict(ok=False, reason='NO_PATH',
+                why='no %s corridor at %.3f mm from %s to %s'
+                    % (far, width / 1e6, pa['ref'], pb['ref']))

@@ -73,12 +73,21 @@ CASES = [
 
 # ref -> (net, rule floor nm, widest legal escape nm).  Proved by bisection in
 # docs/full-beta-v2/audits/2026-08-24-routing-harness-qualification.md.
+# Re-measured at FBV2-P2-002C after TWO corrections to the router:
+#   * seg_shape_dist became EXACT.  The old sampled distance subtracted half a
+#     step as a safety margin, so every figure was 5 um low - the difference
+#     between "0.195 mm" and the truth, which is that U11.2 admits EXACTLY
+#     0.200 mm, the width the CTO ruled for it.
+#   * the board outline is now inset by half the Edge.Cuts stroke, because
+#     copper-to-edge clearance is measured to the LINE, not to the outside of
+#     the stroke.  That is 25 um, and it is what moves U14.2 / U14.3 from
+#     0.300 mm to 0.240 mm: those two are EDGE-limited, not pad-limited.
 CONFLICTS = {
-    'U18.9': (N + 'BAT_SENSE',       600000,  245000),
-    'U18.8': (N + 'BAT_PROTECTED_P', 1200000, 245000),
-    'U14.2': (N + 'BAT_PROTECTED_P', 1200000, 295000),
-    'U14.3': (N + 'BAT_PROTECTED_P', 1200000, 295000),
-    'U11.2': (N + 'BAT_PROTECTED_P', 1200000, 195000),
+    'U18.9': (N + 'BAT_SENSE',       600000,  250000),
+    'U18.8': (N + 'BAT_PROTECTED_P', 1200000, 250000),
+    'U14.2': (N + 'BAT_PROTECTED_P', 1200000, 240000),
+    'U14.3': (N + 'BAT_PROTECTED_P', 1200000, 240000),
+    'U11.2': (N + 'BAT_PROTECTED_P', 1200000, 200000),
 }
 
 FAILED = []
