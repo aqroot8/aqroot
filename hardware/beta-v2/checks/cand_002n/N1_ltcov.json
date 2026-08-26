@@ -1,0 +1,14 @@
+{
+ "name": "N-LTCOV",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002N section 9: R78 alone, the smallest move that gives LTC_OV a local B.Cu link. U18, R75, R77 and the R80-R82 column all unchanged.",
+ "ltcov_span": 8.577,
+ "moves": {
+  "R78": [
+   8.575,
+   69.925,
+   180.0,
+   "B.Cu"
+  ]
+ }
+}

@@ -302,6 +302,23 @@ class QBoard(object):
         fires on either side of the pair."""
         if s.net is None and s.tag == 'KO':
             return width / 2.0
+        # A NOTE ON WIDE-NET PADS, AND WHY THE BUMP IS *NOT* APPLIED HERE.
+        #
+        # `BAT_MAIN routed clearance` is a rule about the NET and it fires on
+        # either side of the pair, so on the face of it a control track passing
+        # a BAT_MAIN PAD owes it 0.300 mm just as it owes a BAT_MAIN track
+        # 0.300 mm, and FBV2-P2-002N tried exactly that.  It is wrong, and the
+        # board says so: raising every wide-net PAD to 0.300 mm immediately
+        # sealed `U18.8` and `U18.9` - the two D-249-ruled Kelvin taps that must
+        # leave an MSOP-10 pin field straight past R75's own pads - and both
+        # came back NO_LEGAL_ESCAPE.  Those taps route legally today at 0.150 mm
+        # under the pad-escape necking block, a LATER and more specific rule
+        # than the class clearance, so DRC does not in fact demand 0.300 mm
+        # there.  A router-side bump cannot see which corridor rule governs a
+        # given pair, so it would have to over-apply - and over-applying a
+        # clearance is how a legal escape becomes NO_LEGAL_ESCAPE.  The gate's
+        # own DRC stays the authority: a route that really does violate 0.300 mm
+        # beside a wide-net pad is rejected there, per connection, by name.
         if not isinstance(s, SEG):
             return width / 2.0 + clr_pad
         c = clr_trk

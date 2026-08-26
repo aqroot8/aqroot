@@ -1,0 +1,44 @@
+{
+ "name": "N-COMBINED",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002N: R75 turned so its pads lie along x (Kelvin), the R80/R81/R82 column shifted 1.0 mm east to free that rotation, and R78 moved 0.354 mm for LTC_OV. U18 and R77 unchanged.",
+ "ring_dx": 1.0,
+ "kelvin": [
+  7.772,
+  7.0,
+  0.771
+ ],
+ "ltcov_span": 8.577,
+ "moves": {
+  "R75": [
+   4.3,
+   63.5,
+   180.0,
+   "B.Cu"
+  ],
+  "R80": [
+   9.825,
+   65.975,
+   0.0,
+   "B.Cu"
+  ],
+  "R81": [
+   9.825,
+   64.125,
+   0.0,
+   "B.Cu"
+  ],
+  "R82": [
+   9.825,
+   62.275,
+   0.0,
+   "B.Cu"
+  ],
+  "R78": [
+   8.575,
+   69.925,
+   180.0,
+   "B.Cu"
+  ]
+ }
+}

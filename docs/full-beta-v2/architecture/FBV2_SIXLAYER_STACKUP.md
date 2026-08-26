@@ -1,9 +1,11 @@
 # Full Beta v2 — six-layer stackup, POFV fabrication note, impedance register
 
-**D-258 (FBV2-P2-002M).** Status: **ARCHITECTURE RULED AND PROVEN ON SCRATCH;
-NOT YET APPLIED TO THE AUTHORITATIVE BOARD.** The local six-layer battery gate
-(FBV2-P2-002M §14) did not pass, and §16 conditions the authoritative lock on
-that gate. See the 002M audit for the two blockers.
+**D-258 (FBV2-P2-002M) / D-259(c) CLOSED (FBV2-P2-002N).** Status:
+**ARCHITECTURE RULED, PUBLISHED STACKUP ADOPTED AND VERIFIED ON SCRATCH; NOT YET
+APPLIED TO THE AUTHORITATIVE BOARD.** The local battery gate has not passed
+(002M §14, 002N §11), and the authoritative lock is conditioned on it. The
+authoritative PCB remains **four layers, zero signal tracks, zero signal
+vias**.
 
 ---
 
@@ -42,37 +44,41 @@ carries `BAT_MAIN is outer-layer only`, and 002M's router now honours it by
 construction: `connect_hop` offers the new internal layers to control nets and
 never to a wide net.
 
-## 3. Stackup geometry as authored
+## 3. Stackup geometry — the PUBLISHED JLC06161H-7628 construction
+
+**D-259(c) is CLOSED.** FBV2-P2-002M authored a *derived* inner distribution
+(0.2 core / 0.6312 prepreg / 0.2 core) chosen so the listed materials summed
+close to 1.6 mm, and flagged it for confirmation. It is replaced here by the
+manufacturer's own table, and the derived split is **not** kept merely because
+it added up more neatly.
 
 ```
-F.SilkS
-F.Paste
-F.Mask        0.0100
 F.Cu          0.0350      1 oz
-prepreg 7628  0.2104      <- outer dielectric, same as JLC04161H-7628
+prepreg 7628  0.2104      <- outer dielectric, as JLC04161H-7628
 In1.Cu        0.0152      0.5 oz   GND
-core FR4      0.2000
+core          0.4000
 In2.Cu        0.0152      0.5 oz   signal
-prepreg 7628  0.6312      (3 plies)
+prepreg 7628  0.2028      <- central prepreg
 In3.Cu        0.0152      0.5 oz   signal
-core FR4      0.2000
+core          0.4000
 In4.Cu        0.0152      0.5 oz   GND
 prepreg 7628  0.2104      <- outer dielectric
 B.Cu          0.0350      1 oz
-B.Mask        0.0100
-B.Paste
-B.SilkS
-                          TOTAL 1.6028 mm
 ```
 
-**The outer 0.2104 mm figure is carried over from the four-layer design and is
-the one number this stack shares with it.** The INNER distribution above is
-**DERIVED** so the stack totals 1.6 mm at 1 oz outer / 0.5 oz inner. It is
-recorded as a derivation and **must be confirmed against JLCPCB's published
-JLC06161H-7628 table before Gerbers are ordered.** Do not quote it as
-manufacturer data.
+**Listed materials total 1.5544 mm; 1.5744 mm including both solder masks.**
 
----
+**That is not a discrepancy and it is not a thickness measurement.** The board
+is a **nominal 1.6 mm construction**: the vendor's table lists nominal laminate
+and copper, and the finished board also carries plating, resin flow and press
+tolerance. Summing the table does not produce the finished thickness, and
+nothing in this repository claims that it does. The board is ordered as
+**JLC06161H-7628, 6 layers, nominal 1.6 mm, 1 oz outer / 0.5 oz inner.**
+
+The one figure that carries over from four layers is the **outer dielectric**:
+0.2104 mm of 7628 from each outer copper to its adjacent reference, identical to
+JLC04161H-7628. That is the geometry the outer-layer routing plans depend on,
+and it is unchanged.
 
 ## 4. POFV — the Q3.3 via-in-pad fabrication note
 
@@ -110,27 +116,50 @@ the reason one premium via is worth buying.
 
 ---
 
-## 5. Impedance impact register
+## 5. Impedance impact register — PUBLISHED-STACKUP INPUTS
 
-**No impedance-sensitive net was routed in 002M.** The four-layer widths must
-not be carried over on the assumption that a similar outer prepreg means an
-unchanged impedance: the reference distance is only one of the inputs, and the
-return-path layer changes for anything that used In2 as a reference.
+**No impedance-sensitive net was routed in 002M or 002N.** The inputs below are
+now the published JLC06161H-7628 values; every width remains **pending
+recalculation**. The four-layer widths must not be carried over on the
+assumption that a similar outer prepreg means an unchanged impedance — the
+reference distance is one input, and the return-path layer changes for anything
+that used In2 as a reference.
+
+**Dielectric inputs, published:**
+
+| item | value |
+|---|---|
+| outer dielectric (F.Cu↔In1.Cu, In4.Cu↔B.Cu) | **0.2104 mm**, 7628 |
+| central prepreg (In2.Cu↔In3.Cu) | **0.2028 mm**, 7628 |
+| cores (In1↔In2, In3↔In4) | **0.4000 mm** each |
+| outer copper | 1 oz (0.0350 mm) |
+| inner copper | 0.5 oz (0.0152 mm) |
 
 | net / class | old reference | new intended reference | recalculation |
 |---|---|---|---|
-| **USB D+/D−** (`USB_D`, 0.25 mm, 0.55/0.25 vias) | F.Cu over In1.Cu, 0.2104 mm; In2 excursion already forbidden | F.Cu over In1.Cu, 0.2104 mm — unchanged pairing | **YES** — differential pair, must be re-solved against the six-layer dielectric constants even though the geometry looks identical |
-| **915 MHz feed** (`NFC_RF` / RF controls, 0.4 mm) | F.Cu over In1.Cu | F.Cu over In1.Cu | **YES** — 50 Ω single-ended; re-solve |
-| **433 MHz controlled traces** | outer over In1.Cu | outer over In1.Cu | **YES** if any length is controlled; confirm which arms are |
-| **NFC transmit arms** (`NFC_RF`, via-prohibited by rule) | B.Cu over In1.Cu across the full 4-layer core | **B.Cu over In4.Cu, 0.2104 mm** — a much closer reference than before | **YES** — this is the biggest change in the table; the tuning network assumptions must be re-derived |
-| **NFC_RX / NFC_OSC** | outer over In1.Cu | outer over nearest plane | **YES** where tuning-sensitive |
-| **Display / high-speed SPI** (`LED_BOOST`, SPI groups) | outer over In1.Cu | outer over nearest plane | **YES** for any pair declared controlled; none is today |
-| `SWITCH_NODE` | outer only, never In2 | outer only, never In2 **or In3** | **NO** — not impedance-controlled; the rule is extended, not recalculated |
+| **USB D+/D−** (`USB_D`, 0.25 mm, 0.55/0.25 vias) | F.Cu over In1.Cu, 0.2104 mm; In2 excursion already forbidden | F.Cu over In1.Cu, **0.2104 mm** — same pairing | **PENDING** — differential pair; re-solve against the published stack |
+| **915 MHz feed** (RF controls, 0.4 mm) | F.Cu over In1.Cu | F.Cu over In1.Cu, **0.2104 mm** | **PENDING** — 50 Ω single-ended |
+| **433 MHz controlled traces** | outer over In1.Cu | outer over nearest plane, **0.2104 mm** | **PENDING** — confirm which arms are controlled |
+| **NFC transmit arms** (`NFC_RF`, via-prohibited by rule) | B.Cu over In1.Cu across the full 4-layer core | **B.Cu over In4.Cu, 0.2104 mm** | **PENDING — the largest change in this table.** The reference moves from the far side of a 1.065 mm core to 0.2104 mm; the tuning network must be re-derived |
+| **NFC_RX / NFC_OSC** | outer over In1.Cu | outer over nearest plane | **PENDING** where tuning-sensitive |
+| **Display / high-speed SPI** | outer over In1.Cu | outer over nearest plane | **PENDING** for any pair declared controlled; none is today |
+| **internal signals on In2 / In3** | did not exist | In2 over In1 (0.4000 mm core) · In3 over In4 (0.4000 mm core), the pair separated by 0.2028 mm | **PENDING** if any controlled net is ever placed there — none is today |
+| `SWITCH_NODE` | outer only, never In2 | outer only, never In2 **or In3** | **NOT APPLICABLE** — not impedance-controlled; the rule is extended, not recalculated |
 
-**Structural check (002M §3): the migration does not invalidate the USB, RF or
-display PLANNING assumptions.** Every one of those blocks keeps an outer layer
-against a solid plane at the same 0.2104 mm, which is the property the plans
-depend on. What changes is the numeric width, and that is what this register
-schedules. The NFC transmit arms are the exception worth flagging: their
-reference moves from the far side of a 1.065 mm core to In4 at 0.2104 mm, which
-is a real electrical change and not a width tweak.
+**Structural check: the migration does not invalidate the USB, RF or display
+PLANNING assumptions.** Every one of those blocks keeps an outer layer against a
+solid plane at the same 0.2104 mm, which is the property the plans depend on.
+What changes is the numeric width, and that is what this register schedules.
+
+---
+
+## 6. Board-outline datum
+
+**The design datum is 72.000 × 148.000 mm.**
+
+`GetBoardEdgesBoundingBox()` measures to the **outside** of the Edge.Cuts
+stroke, so with a 0.100 mm outline stroke it reports **72.100 × 148.100 mm**.
+That is an API artefact of where the stroke is measured from, not a board
+dimension. FBV2-P2-002M's regression quoted the artefact as though it were the
+requirement; the six-layer regression now reports **both** figures and subtracts
+the stroke to recover the datum. **Edge.Cuts itself is untouched.**

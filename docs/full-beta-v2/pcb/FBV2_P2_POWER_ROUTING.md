@@ -651,3 +651,79 @@ another net's inner copper.
 
 **A via that clears the two layers you were thinking about is not a via that
 clears the board.**
+
+---
+
+## FBV2-P2-002N — the mismatch was a property of the part, not the position
+
+002M left two blockers. 002N solved both *individually* and neither *together*,
+and the reason in each case is worth keeping.
+
+### R75: translation could never have worked
+
+    U18.8 and U18.9 are at the SAME y (70.300), 0.5 mm apart in x
+    R75 is a 5.925 mm shunt whose pads lie along y
+
+So for **any** pure north/south move, both Kelvin lengths change by the same
+amount and their difference does not move at all. The mismatch is pinned at
+very nearly the shunt's own length. Measured over ±8 mm at 0.5 mm in four
+rotations: 28 poses reached the Kelvin test, **all of them rot 90/270**, best
+mismatch **5.177 mm** against a 5.000 mm limit — close enough to look like a
+tuning problem and structurally impossible.
+
+Turning the shunt so its pads lie along x drops the mismatch below 1 mm. Every
+rot 0/180 pose is blocked by the R80/R81/R82 courtyards at x 7.30.
+
+**The part costing the Kelvin specification was the divider column, not R75.**
+Shift that column 1.0 mm east — the measured minimum — and R75 reaches
+**0.771 mm** mismatch with both branches under 8.03 mm.
+
+**And then the column is in the control lanes.** `LTC_SHDN`, `LTC_GATE` and
+`FAULT_N` are all rejected at 0.2371–0.2778 mm against `BAT_MAIN routed
+clearance 0.3000 mm`, and U18 falls from 8/8 to 6/8.
+
+### The rule this adds
+
+**Before searching a placement, ask what the objective is a function of.** A
+mismatch between two distances measured from two points that share a coordinate
+is a function of the *part's own geometry*, not of where the part sits. No
+amount of translation search will find what translation cannot express. One
+line of arithmetic would have saved the whole ±8 mm sweep — and the sweep is
+what proved the arithmetic, so it was not wasted, but it should have been the
+confirmation and not the discovery.
+
+### LTC_OV: the link you aim at is not the net you fix
+
+R78 moved **0.354 mm** and `R77.2 → R78.1` closed. `LTC_OV` became one
+component and U18 held at 8/8. And `U18.3 → R77.2` — the other half of the same
+net — took **13.087 mm on F.Cu with two vias**, which is the long generic
+fallback this block has been refusing since D-256.
+
+**Fixing the link that failed does not make the net local.** A high-impedance
+node has to be judged end to end, and the next lever is R77.
+
+### Two ways a search lies to you
+
+Both surfaced in this task and both are cheap to prevent:
+
+- **A search allowed to overlap the part it is connecting to will always report
+  a perfect score.** The first R78 sweep returned `R77.2 → R78.1 = 0.000 mm` —
+  not a zero-length link, but R78's pad sitting on R77's, because R77 was in the
+  movable set and so absent from the obstacle list.
+- **A filter that rejects the status quo is a bug, not a filter.** The
+  fine-pitch band heuristic rejected R75's own current pose and returned zero
+  candidates; it is the right question for an MSOP pin with a 0.325 mm window
+  and the wrong one for a 5.925 mm shunt with 1.5 mm pads.
+
+### And one clearance that must not be tightened
+
+`BAT_MAIN routed clearance` fires on either side of the pair, so raising
+wide-net **pads** from 0.200 to 0.300 mm in the router's own margin looks
+obviously right. It sealed `U18.8` and `U18.9` — the two D-249-ruled Kelvin
+taps — at `NO_LEGAL_ESCAPE`. They route legally at 0.150 mm under the
+pad-escape necking block, a later and more specific rule, so DRC does not demand
+0.300 mm there at all.
+
+**Over-applying a clearance is how a legal escape becomes NO_LEGAL_ESCAPE.** A
+router-side margin cannot see which corridor rule governs a pair; the
+per-connection DRC gate can, and it stays the authority.

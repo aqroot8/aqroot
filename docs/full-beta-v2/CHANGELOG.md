@@ -1,3 +1,63 @@
+## 2026-08-26 - FBV2-P2-002N: D-259(c) closed, R75 Kelvin solved analytically, gate still FAILS
+
+**FAIL at section 11.** **The authoritative stackup was NOT changed** - section 16 gates the lock on
+section 11. PCB byte-identical to `7ff0337` (md5 `a908cedfa9f9410aab327d8bd55b9f45`): **4 copper
+layers, zero signal tracks, zero signal vias**. All five suites PASS.
+
+- **D-259(c) CLOSED.** The derived inner split of 002M is gone; `sixlayer.py` now authors the
+  **published JLC06161H-7628** table and the regression asserts those dielectrics - 0.2104 outer,
+  0.4000 cores, **0.2028 central prepreg**. Listed materials total **1.5544 mm** (1.5744 with both
+  masks). **That is not a discrepancy**: the board is a **NOMINAL 1.6 mm construction**, the vendor
+  lists nominal laminate and copper, and the finished board also carries plating, resin flow and
+  press tolerance. The regression now RECORDS the total and ASSERTS the published values - it no
+  longer tests the sum against 1.6 mm, because that was never the right test.
+- **SECTION 18 CLOSED: the datum is 72.000 x 148.000 mm.** `GetBoardEdgesBoundingBox()` reads
+  72.100 x 148.100 because it measures to the OUTSIDE of the 0.100 mm Edge.Cuts stroke; 002M quoted
+  that artefact as though it were the requirement. Both figures are now reported and the stroke
+  subtracted. **Edge.Cuts untouched, no new board-size requirement created.**
+- **THE R75 MEASUREMENT THAT MATTERS: translating R75 was never going to fix the Kelvin mismatch.**
+  `U18.8` and `U18.9` sit at the **same y**, and R75 is a **5.925 mm** shunt whose pads lie along y,
+  so any north/south move changes both Kelvin lengths equally and the mismatch stays at very nearly
+  the shunt's own length. Over a +/-8 mm box at 0.5 mm in four rotations, **28 poses reached the
+  Kelvin test, ALL rot 90/270, best mismatch 5.177 mm against a 5.000 mm limit.** Turning the shunt
+  so its pads lie along x drops the mismatch below 1 mm - and **every rot 0/180 pose is blocked by
+  the R80/R81/R82 courtyards at x 7.30. The part costing the Kelvin spec is the divider column, not
+  R75.**
+- **With the column shifted 1.0 mm east - the measured minimum - R75 gets 8 poses**, best
+  **(4.300, 63.500) rot 180, Kelvin 7.772 / 7.000, mismatch 0.771 mm** against a 5.000 limit.
+  **But the combination does not hold:** moving the column east puts BAT_MAIN copper into the
+  LTC4368 control lanes and three connections are rejected by `BAT_MAIN routed clearance 0.3000` at
+  actuals of 0.2750, 0.2778 and 0.2371 mm, taking **U18 to 6 of 8**. The Kelvin fix is real; the
+  price is paid one region over.
+- **LTC_OV: ONE COMPONENT with a 0.354 mm R78 move** - `(8.825, 69.675) rot 0 -> (8.575, 69.925)
+  rot 180`, `R77.2 -> R78.1` 2.26 -> **1.577 mm**, span **8.577 mm**, U18 stays **8/8** and every
+  other section 11 item holds. **But `U18.3 -> R77.2` routed 13.087 mm on F.Cu with 2 vias** -
+  exactly the long generic layer fallback section 13 forbids, on a high-impedance comparator input.
+  **Section 9's secondary lever, a bounded R77 adjustment, is the next instrument and was not
+  spent.**
+- **A SEARCH DEFECT WORTH RECORDING:** the first R78 run returned `R77.2 -> R78.1 = 0.000 mm` and
+  called it the best candidate. That is not a zero-length link - it is R78's pad sitting exactly on
+  top of R77's, because R77 was in the movable set and therefore absent from the obstacle list.
+  **A search allowed to overlap the part it is connecting to will always report a perfect score.**
+- **A HARNESS CHANGE MADE, MEASURED AND DELIBERATELY REVERTED.** `BAT_MAIN routed clearance` fires
+  on either side of the pair, so a control track passing a BAT_MAIN PAD looks like it owes 0.300 mm,
+  and `margin()` returned 0.200 mm for every pad regardless of net. Raising wide-net pads to
+  0.300 mm looked like the fix - **and immediately sealed `U18.8` and `U18.9`**, the two D-249-ruled
+  Kelvin taps, both `NO_LEGAL_ESCAPE`. They route legally today at **0.150 mm** under the
+  pad-escape necking block, a later and more specific rule, so DRC does not in fact demand 0.300 mm
+  there. **Over-applying a clearance is how a legal escape becomes NO_LEGAL_ESCAPE.** Reverted, with
+  the reasoning left in the code so it is not re-attempted.
+- **Section 11 gate:** PASS on Q3 POFV, Q3_CS, LTC_GATE, Q3_GATE, U18 VIN, SHDN, FAULT_N, R80.1,
+  D12, BAT_PROTECTED_P, U11.2 flare and LTC_OV-one-component. **FAIL on `BAT_SENSE Q3.6 -> R75.1`
+  (0.2400 vs 0.3000), high-current clearance, Kelvin as routed, LTC_OV local B.Cu, and new DRC
+  classes.** **Section 13's U18 reserve was NOT opened** - it is conditioned on both individual
+  searches succeeding, and LTC_OV succeeds only in a form section 8 does not accept.
+- Impedance register updated to the published inputs; every controlled net marked **PENDING**
+  recalculation, with the **NFC transmit arms** still flagged as the real electrical change.
+
+**U19 NOT searched** (section 20). Phase A NOT run. B-34 REMAINS OPEN. Converter routing NOT
+STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002M: six layers proven on scratch, PR-47 closed, gate FAILS on LTC_OV and BAT_SENSE
 
 **FAIL at section 14.** **The authoritative stackup was NOT changed** - section 16 gates the lock on
