@@ -378,3 +378,37 @@ does this have, and who else wants them?*
 The common thread, and the one worth carrying: **an escape proof measures a
 0.5 mm stub; a connection is a route.** Every defect in this list was found by
 measuring the thing itself rather than a proxy for it.
+
+---
+
+## 10. PR-43, measured — and what it teaches about the west margin
+
+`FBV2-P2-002I` ran PR-43 exactly as §9 above describes it, and the ruling is
+**correct but not sufficient**, which is a distinction worth keeping.
+
+**It works.** Scheduling the two long `BAT_RAW` bridges with the chain closes
+`BAT_RAW` — 11 of 12 pads in one island, `R80.1` and `D12.1` both connected —
+**with no placement change at all**, and it closes `LTC_SHDN` as a side effect.
+
+**It costs `U18` two pins**, 8 of 8 → 6 of 8, and the copper boxing them is not
+`BAT_RAW`:
+
+    U18.7    LTC_SHDN        0.500 mm      BAT_PROTECTED_P  0.500 mm
+    U18.10   BAT_SENSE       0.500 mm      BAT_SENSE        0.986 mm
+
+The bridges never touched U18's lanes. They unblocked `LTC_SHDN`, and
+`LTC_SHDN`'s new route took the lane `U18.7` needed. **The failure is capacity,
+not ordering.** Both schedules land on 24 of 29; the loser is simply whoever
+goes last.
+
+**The rule this adds, for the converters and every block after:** when
+reordering changes *which* net fails but not *how many*, stop reordering. That
+signature means the corridor is oversubscribed, and the remaining levers are
+placement, a layer change, or dropping a demand — not sequence.
+
+The west margin at x 4…10 must presently carry the 1.50 mm `BAT_PROTECTED_P`
+trunk, `BAT_SENSE`, `BAT_MID`, both `BAT_RAW` bridges, `LTC_SHDN` and U18's
+north row. That is the list to shorten.
+
+PR-43 is available behind `AQROOT_PR43=1`. The default ordering keeps `U18` at
+8 of 8.

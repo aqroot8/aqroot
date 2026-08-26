@@ -689,7 +689,22 @@ def main():
     add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
     # PR-43: the divider chain's two long links to the battery node compete for
     # the west margin and lose it to U18's pin field if they wait their turn.
-    add("5b. BAT_RAW long bridges", PL.PLAN_TAPS_BRIDGE, CT_W)
+    #
+    # MEASURED (FBV2-P2-002I) AND NOT ADOPTED BY DEFAULT.  Scheduling them here
+    # DOES close BAT_RAW - 11 of its 12 pads become one island, R80.1 and D12.1
+    # both CONNECTED - and it also closes LTC_SHDN, which had been NO_PATH.  But
+    # U18 falls from 8 of 8 to 6 of 8: U18.7 (LTC4368_FAULT_N) returns
+    # NO_LEGAL_ESCAPE and U18.10 (LTC_GATE) returns NO_PATH, and section 9
+    # protects both.  The blocking copper beside those two pads is NOT BAT_RAW -
+    # it is LTC_SHDN at 0.500 mm and BAT_SENSE at 0.500 mm - so the bridges did
+    # not take U18's lanes directly.  They unblocked LTC_SHDN, which then took
+    # the lane U18.7 needed.  The west margin is OVERSUBSCRIBED, and reordering
+    # moves the casualty rather than removing it.  Both orderings score 24 of 29.
+    #
+    # Left OFF so the default tree keeps the known 8-of-8 U18 result, and ON
+    # behind a flag so the measurement is reproducible.  This is a CTO call.
+    if os.environ.get('AQROOT_PR43'):
+        add("5b. BAT_RAW long bridges (PR-43)", PL.PLAN_TAPS_BRIDGE, CT_W)
     add("6b. U18 pin field", PL.PLAN_0_U18, CT_W, tight='U18')
     # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
     #
@@ -732,7 +747,9 @@ def main():
     #
     # A 1 mm slot cannot be recovered; a cross-board run has the whole board to
     # find another way.  Same scarcity rule as PR-18, so the taps go first.
-    add("BAT_RAW taps", PL.PLAN_TAPS, CT_W)
+    add("BAT_RAW taps",
+        PL.PLAN_TAPS_PR43 if os.environ.get('AQROOT_PR43') else PL.PLAN_TAPS,
+        CT_W)
     add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
     add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
     for short in PL.DEADCELL:

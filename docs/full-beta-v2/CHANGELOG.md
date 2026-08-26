@@ -1,3 +1,25 @@
+## 2026-08-26 - FBV2-P2-002I: PR-43 answered - BAT_RAW closes, U18 loses two pins, the margin is full
+
+**FAIL on section 5 Case D.** No authoritative copper; board byte-identical to `984423c`.
+Preflight all PASS (p1_regression, router_regression 34 incl. G8-A..F, dru_probe,
+netclass_probe, fork_equivalence; DRC 1 baseline violation; ERC 0).
+
+- **PR-43 WORKS.** `BAT_RAW` goes to 11-of-12 pads in one island - `R80.1` and `D12.1` both
+  CONNECTED - with **no placement change**. `LTC_SHDN`, previously NO_PATH, closes too.
+- **And it costs U18 8/8 -> 6/8**: `U18.7` NO_LEGAL_ESCAPE, `U18.10` NO_PATH. Section 9
+  protects both, so this is a Case D stop.
+- **The blocking copper is not `BAT_RAW`.** Beside `U18.7` sit `LTC_SHDN` and
+  `BAT_PROTECTED_P` at 0.500 mm; beside `U18.10`, `BAT_SENSE` at 0.500 mm. PR-43 unblocked
+  `LTC_SHDN`, whose new route took `U18.7`'s lane. **Capacity, not ordering** - both
+  orderings score 24 of 29, and reordering moves the casualty rather than removing it.
+- **PR-43 flagged, not adopted** (`AQROOT_PR43=1`). The default keeps U18 at 8/8.
+- Improved and worth keeping: **Kelvin 4.464/4.464 mm, mismatch 0.000 mm** (was 2.454);
+  `U18.1` VIN 1.752 mm. Held: `BAT_PROTECTED_P` one island / 0 vias / 1.50 mm, `Q3_CS` and
+  `Q2_CS` 0 vias, `U11.2` neck 0.20 mm no via, `U14`+`TP15` connected, 0 out-of-scope copper.
+- **U19 search NOT performed** - section 6 requires Case C.
+
+CTO decision required (see D-255). B-34 OPEN. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-25 - FBV2-P2-002G / 002H: routing truth (PR-39), full-prefix qualification (PR-40), and the BAT_RAW contention
 
 **FAIL. No authoritative copper written; the placement ECO is still not applied.** The

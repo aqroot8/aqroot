@@ -153,7 +153,18 @@ PLAN_TAPS_BRIDGE = [
     (N + 'BAT_RAW', 'D12.1', 'R77.1', 'TAP', LAD_TAP, None),
 ]
 
+# With PR-43 off, the two bridges stay in the tap group where PR-36 put them,
+# so the default ordering is unchanged from the measured 8-of-8 U18 baseline.
 PLAN_TAPS = [
+    (N + 'BAT_RAW', 'R80.1', 'Q2.7', 'TAP', LAD_TAP, None),
+    (N + 'BAT_RAW', 'R79.1', 'R80.1', 'TAP', LAD_TAP, None),
+    (N + 'BAT_RAW', 'R77.1', 'R79.1', 'TAP', LAD_TAP, None),
+    (N + 'BAT_RAW', 'D12.1', 'R77.1', 'TAP', LAD_TAP, None),
+]
+
+# PR-43 ON removes the two bridges from the tap group; the driver adds them
+# right after the BAT_MAIN chain instead.
+PLAN_TAPS_PR43 = [
     (N + 'BAT_RAW', 'R79.1', 'R80.1', 'TAP', LAD_TAP, None),
     (N + 'BAT_RAW', 'R77.1', 'R79.1', 'TAP', LAD_TAP, None),
 ]
