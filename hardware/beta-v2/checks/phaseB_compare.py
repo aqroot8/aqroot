@@ -5,7 +5,7 @@ Section 17 lists what has to match: connection count, nets, connectivity,
 widths, vias, DRC, metrics and the absence of out-of-scope copper.  Anything
 that differs MATERIALLY is a FAIL.
 
-    "<KICAD>/bin/python.exe" phaseB_compare.py phaseA.json phaseB.json         <A.kicad_pcb> <B.kicad_pcb>
+    python phaseB_compare.py phaseA.json phaseB.json         <A.kicad_pcb> <B.kicad_pcb>
 """
 import os, sys, json, math, collections
 SP = os.path.dirname(os.path.abspath(__file__))

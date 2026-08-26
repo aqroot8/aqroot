@@ -1,0 +1,21 @@
+# Python dependencies of the ACTIVE Full Beta v2 check/routing harness.
+#
+#   pip install -r hardware/beta-v2/checks/requirements.txt
+#
+# ONLY what the active scripts actually import.  Nothing speculative: a package
+# listed here is a package the harness stops working without.
+#
+# NOT LISTED, ON PURPOSE:
+#
+#   pcbnew  -- ships with KiCad (10.0.5), is not on PyPI, and must never be
+#              pip-installed.  It is supplied by the interpreter: KiCad's
+#              bundled python.exe on Windows, or a venv created with
+#              --system-site-packages against the distribution KiCad on Linux.
+#              `import pcbnew` failing means the WRONG INTERPRETER is running,
+#              not that a requirement is missing.
+#
+# Everything else the harness imports (os, sys, io, re, json, math, hashlib,
+# heapq, shutil, subprocess, collections, tempfile, time) is standard library.
+
+# qrouter.py -- A*/obstacle grids and geometry maths.
+numpy>=1.24

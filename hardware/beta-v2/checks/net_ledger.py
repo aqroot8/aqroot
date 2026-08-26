@@ -7,7 +7,7 @@ because the router's node fallback retargeted silently (PR-39).  Phase
 completion is judged HERE instead: every in-scope net must be ONE connected
 copper component, measured on a board that has been SAVED AND RELOADED.
 
-    "<KICAD>/bin/python.exe" net_ledger.py <board.kicad_pcb> [out.json]
+    python net_ledger.py <board.kicad_pcb> [out.json]
 """
 import os, sys, json, collections
 SP = os.path.dirname(os.path.abspath(__file__))

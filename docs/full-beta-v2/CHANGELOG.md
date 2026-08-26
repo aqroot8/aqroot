@@ -1,3 +1,39 @@
+## 2026-08-26 - FBV2-CLOUD-001: the harness becomes reproducible on a second machine
+
+**PASS. INFRASTRUCTURE / TOOLING ONLY - NO PCB PROGRESS EARNED.** No schematic, no copper, no
+placement, no architecture. Authoritative PCB byte-identical to `a1cc687`; **0 signal tracks,
+0 signal vias.** All five suites PASS on Ubuntu 24.04 / KiCad 10.0.5.
+
+- **The problem:** every FBV2-P2 verdict, 002A through 002J, was measured on ONE Windows
+  workstation. Four active scripts had that machine's disk baked in as literals
+  (`P:/New folder (2)/bin/kicad-cli.exe`, `P:/Vaults/ClaudeVault/AQROOT/...`,
+  `"<KICAD>/bin/python.exe"`). **13 active portability defects** found and tabulated.
+- **The dangerous one:** `router_regression.py` had a `KICAD_CLI` override, but its DEFAULT was
+  the Windows path. Unset on Linux it yielded a nonexistent tool, and both DRC call sites use
+  `subprocess.run(capture_output=True)` with no returncode check - so "the DRC tool is absent"
+  looked like an I/O error, **inside the script that gates authoritative copper.** That is the
+  G1 class from 002A, one layer down.
+- **New `checks/harness_paths.py`** - one policy each. **kicad-cli:** `KICAD_CLI` ->
+  `shutil.which` -> documented Windows fallbacks (`os.name=='nt'` only) -> **loud `SystemExit`,
+  never a silent default.** **project dir:** `AQROOT_BETA_V2_PROJECT`, else derived from
+  `__file__` (`checks/ -> beta-v2/ -> hardware/ -> repo root`) - no username, mount point, home
+  directory or vault path. **interpreter:** `sys.executable`, always.
+- **Windows is a strict superset**, verified statically: the old machine still resolves at the
+  fallback with zero configuration; `C:\...\kicad-cli.exe` passes verbatim into `subprocess.run`;
+  no Linux-only literal is mandatory anywhere.
+- **`.kicad_prl` REMOVED from fork equivalence.** It is per-user KiCad editor state, gitignored
+  since before the fork, and `beta-dm` has none at all - the probe was asserting a property of
+  one person's KiCad session. **No fake `.prl` generated, none committed, `.gitignore` unweakened.**
+- **`checks/requirements.txt`**: `numpy>=1.24` and nothing else. `pcbnew` deliberately excluded -
+  it comes from KiCad, not pip, and the file says so.
+- **KiCad 10's Ubuntu `PROPERTY_ENUM` assertion noise is NOT suppressed** - hiding it would hide
+  the next real error. Judged on exit status and results.
+- `p1_regression` PASS, `router_regression` **ALL CHECKS PASS** (G1-G7 + G8-A..F; also PASS with
+  `KICAD_CLI` unset), `dru_probe` PASS, `netclass_probe` PASS, `fork_equivalence` PASS.
+
+B-34 REMAINS OPEN; D-256 still awaits the CTO. FBV2-P2-002K NOT STARTED.
+PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002J: the R80/R81 lever fails, and PR-44 unblocks Phase A
 
 **FAIL.** No authoritative copper; board byte-identical to `984423c`. Preflight all PASS.

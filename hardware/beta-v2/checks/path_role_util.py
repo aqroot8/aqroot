@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 """Path-role support: named rule areas, the D-249 rule block, and net taps."""
 import os, io, math, json, shutil, subprocess, collections
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import harness_paths as HP
 import pcbnew
 
-KC = r"P:/New folder (2)/bin/kicad-cli.exe"
-AUTH_DIR = r"P:/Vaults/ClaudeVault/AQROOT/hardware/beta-v2/kicad/aqroot-beta-v2"
-PCBNAME = "aqroot-Beta-v2.kicad_pcb"
-DRUNAME = "aqroot-Beta-v2.kicad_dru"
-NEEDED = (DRUNAME, "aqroot-Beta-v2.kicad_pro", "fp-lib-table", "sym-lib-table", "libraries")
+# FBV2-CLOUD-001: these were workstation literals ("P:/New folder (2)/...").
+# They are now resolved from this file's own location and from PATH/KICAD_CLI,
+# so the same committed script runs on the Windows machine and on the Ubuntu
+# worker.  kicad-cli is resolved lazily -- importing this module must not fail
+# on a machine that only needs the pcbnew half of it.
+AUTH_DIR = HP.project_dir()
+PCBNAME = HP.PCBNAME
+DRUNAME = HP.DRUNAME
+NEEDED = HP.PROJECT_CONTEXT
 
 
 def assert_ctx(pcb):
@@ -31,7 +38,7 @@ def fresh(workdir, name):
 def drc(pcb, tag, work):
     assert_ctx(pcb)
     out = os.path.join(work, "drc_%s.json" % tag)
-    subprocess.run([KC, "pcb", "drc", "--severity-all", "--format", "json",
+    subprocess.run([HP.kicad_cli(), "pcb", "drc", "--severity-all", "--format", "json",
                     "-o", out, pcb], capture_output=True, text=True)
     j = json.load(open(out, encoding='utf-8'))
     c = collections.Counter()

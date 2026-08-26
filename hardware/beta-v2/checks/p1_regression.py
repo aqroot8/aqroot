@@ -3,7 +3,7 @@
 
 Run with KiCad's bundled python:
 
-    "<KICAD>/bin/python.exe" hardware/beta-v2/checks/p1_regression.py [metrics.txt]
+    python hardware/beta-v2/checks/p1_regression.py [metrics.txt]
 
 Reads the board, re-derives every FBV2-P1 mechanical relationship from the
 placed geometry (nothing is hard-coded from the previous pass except the

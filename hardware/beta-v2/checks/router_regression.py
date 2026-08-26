@@ -3,7 +3,10 @@
 
 Run with KiCad's own Python:
 
-    "P:/New folder (2)/bin/python.exe" hardware/beta-v2/checks/router_regression.py
+    python hardware/beta-v2/checks/router_regression.py
+
+(any interpreter that can import pcbnew -- KiCad's bundled python.exe on the
+Windows machine, the venv python on the Ubuntu worker)
 
 Six router defects put copper on this board that should never have been laid.
 This script is the standing guard against all six coming back:
@@ -42,12 +45,17 @@ import io, os, sys, json, shutil, subprocess, collections, math, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
-PRJ = os.path.join(REPO, 'hardware', 'beta-v2', 'kicad', 'aqroot-beta-v2')
-PCBNAME = 'aqroot-Beta-v2.kicad_pcb'
-KC = os.environ.get('KICAD_CLI', r'P:/New folder (2)/bin/kicad-cli.exe')
-NEEDED = ('aqroot-Beta-v2.kicad_dru', 'aqroot-Beta-v2.kicad_pro',
-          'fp-lib-table', 'sym-lib-table', 'libraries')
+import harness_paths as HP
+
+# FBV2-CLOUD-001: repository, project and kicad-cli all come from the shared
+# resolution policy now.  The old KICAD_CLI default was a Windows drive-letter
+# path, so an unset variable on Linux produced a kicad-cli that does not exist
+# -- and subprocess.run(capture_output=True) swallowed the failure, leaving the
+# DRC json missing rather than reporting why.
+REPO = HP.REPO_ROOT
+PRJ = HP.project_dir()
+PCBNAME = HP.PCBNAME
+NEEDED = HP.PROJECT_CONTEXT
 
 try:
     import pcbnew
@@ -110,7 +118,7 @@ def drc(pcb, tag, work):
     if missing:
         raise RuntimeError('PROJECT CONTEXT MISSING next to %s: %s' % (pcb, missing))
     out = os.path.join(work, 'drc_%s.json' % tag)
-    subprocess.run([KC, 'pcb', 'drc', '--severity-all', '--format', 'json',
+    subprocess.run([HP.kicad_cli(), 'pcb', 'drc', '--severity-all', '--format', 'json',
                     '-o', out, pcb], capture_output=True, text=True)
     j = json.load(open(out, encoding='utf-8'))
     c = collections.Counter()

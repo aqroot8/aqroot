@@ -10,7 +10,7 @@ minimum the routing plan actually asks for, and section 3C is tested
 explicitly: every escape is laid SIMULTANEOUSLY and every pad must still have
 one afterwards, so no escape depends on another signal already being routed.
 
-    "<KICAD>/bin/python.exe" gate_p2_002f.py <scratch.kicad_pcb>
+    python gate_p2_002f.py <scratch.kicad_pcb>
 """
 import os, sys, json, math, time, faulthandler
 SP = os.path.dirname(os.path.abspath(__file__))

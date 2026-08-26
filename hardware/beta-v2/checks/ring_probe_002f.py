@@ -13,7 +13,7 @@ lays exactly the prefix the plan lays - trunk, U11.2 flare, the BAT_MAIN chain -
 and then tries all eight U18 pins in the plan's own order.  The ring that closes
 the most wins; ties go to the shortest pin-field copper.
 
-    "<KICAD>/bin/python.exe" ring_probe_002f.py [pose_index]
+    python ring_probe_002f.py [pose_index]
 """
 import os, sys, json, time, math, faulthandler
 SP = os.path.dirname(os.path.abspath(__file__))

@@ -6,7 +6,7 @@ reservation into one legible SVG, in the P1 doc datum (origin lower-left,
 Y up).  The KiCad layer plots beside it are the authority for what is IN the
 board file; this drawing exists so the relationships can actually be read.
 
-    "<KICAD>/bin/python.exe" hardware/beta-v2/checks/p1_mech_render.py out.svg
+    python hardware/beta-v2/checks/p1_mech_render.py out.svg
 """
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
