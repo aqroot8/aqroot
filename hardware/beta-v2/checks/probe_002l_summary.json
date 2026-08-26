@@ -1,0 +1,105 @@
+[
+ {
+  "candidate": "AUTHORITATIVE (unshifted)",
+  "u18_pose": "3.000,72.400/90",
+  "u18": 8,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": true,
+   "Q3_CS Q3.1->Q3.3": false,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "open_u18": [],
+  "ledger": "5/29"
+ },
+ {
+  "candidate": "C00 = 002F ECO (unshifted)",
+  "u18_pose": "8.000,65.250/180",
+  "u18": 6,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": false,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "open_u18": [
+   "U18.7",
+   "U18.10"
+  ],
+  "ledger": "8/29"
+ },
+ {
+  "candidate": "C01 AUTH +5.5,-5.0",
+  "u18_pose": "8.500,67.400/90",
+  "u18": 5,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": false,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "open_u18": [
+   "U18.2",
+   "U18.3",
+   "U18.10"
+  ],
+  "ledger": "4/29"
+ },
+ {
+  "candidate": "C02 AUTH +6.0,-5.0",
+  "u18_pose": "9.000,67.400/90",
+  "u18": 5,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": false,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "open_u18": [
+   "U18.2",
+   "U18.3",
+   "U18.10"
+  ],
+  "ledger": "4/29"
+ },
+ {
+  "candidate": "C03 AUTH +5.5,-8.5",
+  "u18_pose": "8.500,63.900/90",
+  "u18": 7,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": false,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "open_u18": [
+   "U18.10"
+  ],
+  "ledger": "6/29"
+ }
+]

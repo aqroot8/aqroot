@@ -363,7 +363,24 @@ D256_SETS = {
 # harness's guard is unchanged - gate() refills the plane and runs full DRC
 # after every single connection and rejects any new violation class - so an
 # illegal via cannot survive to the manifest.
-D256_VIA = (500000, 250000)
+# D-257 (FBV2-P2-002L) SUPERSEDES the 002K 0.50/0.25 figure and it is a
+# MANUFACTURING ruling, not a routing convenience:
+#
+#     PREFERRED  0.35 mm diameter / 0.20 mm drill    ordinary through via
+#     RESERVE    0.25 mm diameter / 0.15 mm drill    ordinary through via
+#
+# and nothing smaller.  NO blind via, NO buried via, NO laser microvia: 002K
+# found that `U18.10` has a reachable site at 0.20 mm and that finding is NOT a
+# route, because KiCad's `min_microvia_diameter = 0.20` is a CAD default and not
+# an authorisation from a fabricator.  The reserve is taken only where the
+# preferred geometry is MEASURED impossible, and only on via geometry -- never
+# to buy a corridor that a legal width could not have.
+D257_VIA_PREFERRED = (350000, 200000)
+D257_VIA_RESERVE = (250000, 150000)
+D257_VIA_LADDER = (D257_VIA_PREFERRED, D257_VIA_RESERVE)
+
+# Kept as the default for any planned escape that does not name its own.
+D256_VIA = D257_VIA_PREFERRED
 
 
 # ---- D-256 / section 10: the Q3 south row, gate BEFORE the sense pair -----

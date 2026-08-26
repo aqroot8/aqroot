@@ -1,3 +1,55 @@
+## 2026-08-26 - FBV2-P2-002L: PR-48 and D-257 proven, PR-47 is a via-in-pad decision
+
+**DECISION STOP** (section 17: *"If Q3 requires via-in-pad: 002L = DECISION STOP, not PASS"*).
+**No authoritative copper**; PCB byte-identical to `cb17269` (md5 `a908cedfa9f9410aab327d8bd55b9f45`),
+**zero signal tracks, zero signal vias**, In1.Cu one filled island. All five suites PASS.
+
+- **PR-48 PROVEN.** A local `clearance (min 0.20mm)` conditioned on net AND bounded corridor
+  resolves all three measured cases: **`U18.1` VIN 10.107 mm at 0.20 mm** (was
+  `clearance 0.3000; actual 0.2500`), **`U14.2` 7.401 mm at 0.15 mm** (was 0.2347), **`U14.3`
+  joined** (was 0.2350). `BAT_PROTECTED_P` becomes ONE island including `U11.2`, `U14.2`,
+  `U14.3`, `TP15.1`, `U18.8`. Minimum measured clearance 0.200 mm, no new DRC class.
+  **AND A CORRECTION:** the first cut also covered `BAT_PROT_TAP_U18` and `BAT_SENSE_KELVIN`,
+  which were already running legally at **0.150 mm** - so the "relaxation" RAISED the floor on
+  compliant copper and rejected every connection after it. **A relaxation applied where nothing
+  needed relaxing is a restriction.**
+- **D-257 PROVEN ON THE PREFERRED GEOMETRY.** Every D-256 escape is carried by the **0.35/0.20
+  ordinary through via** - LTC_GATE x4, LTC_SHDN x2 - and **the 0.25/0.15 reserve was never
+  needed**. No microvia, no blind or buried via. Verified before adoption: a 0.35/0.20 via inside
+  a named corridor reports `via_diameter` + `annular_width` without the rules and nothing with
+  them; no other class moves.
+- **U18 SEARCH: FIVE POSES SCREENED, NONE CLOSES.** The **authoritative** pose routes **8 of 8**
+  and misses Kelvin (straight-line 2.440/8.265, **mismatch 5.825** against a 5.000 limit); the
+  **002F ECO** pose has Kelvin 4.464/4.464/0.000 and routes **6 of 8**; C01/C02 **5 of 8**; C03
+  **7 of 8**. **Most of the authoritative pose's Kelvin failure is ROUTING, not placement** - it
+  misses by **0.825 mm straight-line** and carries a further **4.948 mm of detour** on
+  `R75.2 -> U18.8`. **The lever section 6 held back is R75**, fixed "initially" and sitting in the
+  1.5 A path, so it is surfaced rather than taken.
+- **PR-47: ORDINARY VIAS ARE MEASURED IMPOSSIBLE.** Q3 is `SOIC-8_3.9x4.9mm_P1.27mm` - 1.270 mm
+  pitch, 1.950 x 0.600 mm pads, **0.670 mm copper gap** - with `Q3_CS` on pins 1/3 and `LTC_GATE`
+  on 2/4 sharing one B.Cu slot. **`Q3.3` has NO LEGAL ESCAPE at 0.25, 0.20 OR 0.15 mm**, blocked
+  by `Q3.2` (x27) and `Q3.4` (x20); both D-257 geometries and all three widths return
+  `NO_LEGAL_ESCAPE`. **A via needs a landing site and a landing site has to be REACHED from the
+  pad** - the via's size is irrelevant. **Section 13 geometry check: a filled/capped through
+  via-in-pad at 0.35/0.20 FITS, with 0.125 mm of pad copper each side**, the 0.670 mm pad gap
+  unchanged and adjacent drills 2.540 mm apart. Feasible and premium - hence the stop.
+  **Section 14 alternative, recorded not taken:** a Q3 toe extension of **>= 0.40 mm**.
+- **SIX-LAYER ASSESSMENT TRIGGERED (non-destructive, nothing applied).** 1.6 mm retainable, **P1
+  mechanical evidence stays valid**, two extra signal layers plus a second GND reference relieve
+  U18 directly - **but it does NOT solve PR-47**, because `Q3.3` still has no B.Cu escape.
+- **PROCESS FIX (section 2):** `checks/placement_fingerprint.py` prints the pose of U18, R75,
+  R76-R83, Q2, Q3, U14, U19 at the head of every screen and `AQROOT_EXPECT_PLACEMENT` makes it an
+  assertion that **fails before routing**; the candidate loader reads the SAME file the assertion
+  checks. All eleven screens ran under it, and it caught its first defect immediately - a
+  candidate with three courtyard overlaps that the geometric filter had cleared against a board
+  the screen would never see.
+- Standing **section 11 flag**: `LTC_OV` reached F.Cu through the ordinary fallback (2 vias at
+  0.60/0.30) and split `R78.1`. High-impedance comparator input; not the only blocker; not moved
+  silently.
+
+**U19 NOT searched** (section 16). Phase A NOT run. B-34 REMAINS OPEN. Converter routing NOT
+STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002K: D-256 is right, and its instrument does not fit U18
 
 **FAIL** at section 9. **No authoritative copper**; PCB byte-identical to `a5771a7`

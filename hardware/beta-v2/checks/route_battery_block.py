@@ -23,6 +23,10 @@ WIDE = frozenset(N + n for n in ('BAT_CONNECTOR_P', 'BAT_RAW', 'BAT_MID',
 AREAS = ['BAT_PROT_TAP_U18', 'BAT_PROT_TAP_U14', 'BAT_PROT_ESCAPE_U11',
          'BAT_SENSE_KELVIN', 'BAT_RAW_TAP_U18']
 STUBAREAS = ['BAT_STUB_%d' % k for k in range(10)]
+# PR-48 / D-257: each PLANNED fine-pitch escape gets its own bounded corridor,
+# so the local 0.20 mm clearance and the 0.35/0.20 (reserve 0.25/0.15) via
+# geometry reach exactly one net inside exactly one escape and nothing else.
+FINEAREAS = ['FINE_ESC_%d' % k for k in range(16)]
 FLOOR = {N + 'BAT_CONNECTOR_P': 600000, N + 'BAT_RAW': 600000,
          N + 'BAT_MID': 600000, N + 'BAT_SENSE': 600000,
          N + 'BAT_PROTECTED_P': 1200000}
@@ -139,7 +143,7 @@ def main():
         tp.Flip(tp.GetPosition(), False)
     tp34 = (round(tp.GetPosition().x / 1e6, 3), round(tp.GetPosition().y / 1e6, 3),
             b.GetLayerName(tp.GetLayer()))
-    for a in AREAS + STUBAREAS:
+    for a in AREAS + STUBAREAS + FINEAREAS:
         RU.add_named_area(b, a, 0, 0, 1000, 1000)
     b.Save(pcb)
     DRU.write(pcb, [])
@@ -147,6 +151,47 @@ def main():
     base, _ = RU.drc(pcb, "Abase", WORK)
     base_rn = RU.ratsnest(pcb)
     print("scratch baseline", dict(sorted(base.items())), "ratsnest", base_rn)
+    # FBV2-P2-002L sections 6-9: a U18 CANDIDATE placement, named by a file.
+    # AQROOT_PLACE_JSON is {base, moves}: the base placement it is expressed
+    # against, and the absolute poses that differ from it.  The SAME file is
+    # what the fingerprint asserts against, so the thing that is applied and
+    # the thing that is checked cannot drift apart - which is the whole point
+    # of section 2.
+    _cand = os.environ.get('AQROOT_PLACE_JSON')
+    if _cand:
+        _spec = json.load(open(_cand))
+        _bb = pcbnew.LoadBoard(pcb)
+        _fp = {f.GetReference(): f for f in _bb.GetFootprints()}
+        for _r, _v in _spec.get('moves', {}).items():
+            _f = _fp[_r]
+            if len(_v) > 3 and _bb.GetLayerName(_f.GetLayer()) != _v[3]:
+                _f.Flip(_f.GetPosition(), False)
+            _f.SetPosition(pcbnew.VECTOR2I(int(round(_v[0] * 1e6)),
+                                           int(round(_v[1] * 1e6))))
+            _f.SetOrientationDegrees(_v[2])
+        _bb.BuildConnectivity()
+        pcbnew.ZONE_FILLER(_bb).Fill(_bb.Zones())
+        _bb.Save(pcb)
+        print('CANDIDATE PLACEMENT APPLIED: %s (base %s, %d part(s) moved)'
+              % (_spec.get('name', _cand), _spec.get('base'),
+                 len(_spec.get('moves', {}))))
+
+    # FBV2-P2-002L section 2: STATE WHICH BOARD THIS IS, BEFORE ANY COPPER.
+    # 002K ran nine screens on the wrong placement because nothing in a run
+    # named the placement it was on.  The fingerprint is printed every time and,
+    # when AQROOT_EXPECT_PLACEMENT names one, it is ASSERTED - a mismatch is a
+    # fail before routing rather than a Kelvin anomaly noticed four hours later.
+    import placement_fingerprint as FP
+    _fp = FP.fingerprint(pcb)
+    print('PLACEMENT FINGERPRINT: %s' % FP.render(_fp))
+    _want = os.environ.get('AQROOT_EXPECT_PLACEMENT')
+    if _want:
+        FP.assert_placement(pcb, _want, label='this screen')
+        print('PLACEMENT ASSERTED: %s' % _want)
+    else:
+        print('PLACEMENT NOT ASSERTED (set AQROOT_EXPECT_PLACEMENT to require one)')
+    sys.stdout.flush()
+
 
     qb = QR.QBoard(pcb)
     qb.wide_nets = WIDE
@@ -155,6 +200,9 @@ def main():
         pads.setdefault(net, {})[ref] = p
 
     journal, stubs, area_trk = [], [], {}
+    # PR-48 / D-257: bounded fine-pitch escape corridors, one per planned
+    # escape, carrying that escape's local clearance and via geometry.
+    fine = []
     # PR-20.  THE BUDGET WAS STARVING THE FALLBACKS, AND THAT LOOKED LIKE A
     # NONDETERMINISTIC ROUTER.  Both fallback stages are guarded by
     # `time.time() - t0 < ITEM_BUDGET`, so when the B.Cu width ladder alone ran
@@ -215,7 +263,7 @@ def main():
         pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
         tg.append(time.time())
         qb.save()
-        DRU.write(pcb, stubs)
+        DRU.write(pcb, stubs, fine)
         tg.append(time.time())
         after, det = RU.drc(pcb, "A", WORK)
         tg.append(time.time())
@@ -356,19 +404,26 @@ def main():
         # widest legal rung first, so the B.Cu lane is never claimed at all.
         # A failed hop falls through to the ordinary B.Cu ladder untouched:
         # this adds capacity, it does not remove an option.
+        planned_via = None
         if D256_FCU and not node and (net, a, b_) in D256_FCU:
-            # The planned escape uses the finest via the board's own rules
-            # declare (PL.D256_VIA); every other hop keeps the Default-class
-            # 0.60/0.30 it has always used.  See battery_route_plan.D256_VIA
-            # for the measurement that forces it.
-            vd, vk = PL.D256_VIA_FOR.get((net, a, b_), PL.D256_VIA)
-            for w in ladder:
-                rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct,
-                                    via_dia=vd, via_drill=vk)
-                if rr['ok']:
-                    r, used, hop = rr, w, True
+            # D-257's VIA HIERARCHY, and the order is the ruling: the PREFERRED
+            # 0.35/0.20 ordinary through via is tried across the whole width
+            # ladder first, and the 0.25/0.15 RESERVE is reached only when the
+            # preferred geometry has been MEASURED impossible.  A connection
+            # never drops to the reserve to buy a corridor a legal width could
+            # not have -- the reserve answers a via-geometry question only.
+            override = PL.D256_VIA_FOR.get((net, a, b_))
+            ladder_v = (override,) if override else PL.D257_VIA_LADDER
+            for (vd, vk) in ladder_v:
+                for w in ladder:
+                    rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct,
+                                        via_dia=vd, via_drill=vk)
+                    if rr['ok']:
+                        r, used, hop, planned_via = rr, w, True, (vd, vk)
+                        break
+                    qb.revert(m)
+                if r is not None and r.get('ok'):
                     break
-                qb.revert(m)
             if r is not None and not r['ok']:
                 r = None
         if r is not None and r.get('ok'):
@@ -517,6 +572,16 @@ def main():
             qb.b.Add(o)
             return mm
 
+        # PR-48 / D-257: a planned escape that actually took the layer gets its
+        # own bounded corridor, grown from the copper it just laid.  Outside
+        # that corridor the escape is judged by the ordinary board rules, so a
+        # fine via cannot wander and the relaxation cannot be inherited.
+        _pre_fine = len(fine)
+        if planned_via is not None and hop and area is None and len(fine) < len(FINEAREAS):
+            area = FINEAREAS[len(fine)]
+            fine.append((area, net, 0.20, planned_via[0] / 1e6,
+                         planned_via[1] / 1e6,
+                         'D-257 %s %s->%s escape' % (net.split('/')[-1], a, b_)))
         _pre_area = len(area_trk.get(area, [])) if area else 0
         if area:
             grow(area, qb.laid[m[0]:])
@@ -554,6 +619,9 @@ def main():
                 area_trk[area] = area_trk.get(area, [])[:_pre_area]
             if stubs and stubs[-1][0] == area:
                 stubs.pop()
+                area_trk.pop(area, None)
+            if len(fine) > _pre_fine:
+                del fine[_pre_fine:]
                 area_trk.pop(area, None)
             state['last'] = '%s %s->%s (%s) : %s %s' % (
                 net.split('/')[-1], a, b_, role, g['why'], g.get('detail', ''))
@@ -608,6 +676,9 @@ def main():
             if stubs and stubs[-1][0] == area:
                 stubs.pop()
                 area_trk.pop(area, None)
+            if len(fine) > _pre_fine:
+                del fine[_pre_fine:]
+                area_trk.pop(area, None)
             state['rn'] = rn_before
             state['last'] = ('%s %s->%s (%s) : PR-39 requested pads NOT '
                              'CONNECTED after routing (actual end %s)'
@@ -629,6 +700,8 @@ def main():
                             mm=round(r['mm'], 3), w=used / 1e6, grid=r['grid'],
                             area=area, profile=r.get('profile'),
                             vias=r.get('vias', 0), layer=r.get('layer', 'B.Cu'),
+                            via_dia=r.get('via_dia'), via_drill=r.get('via_drill'),
+                            via_xy=r.get('via_xy'), fine_area=area if planned_via else None,
                             secs=round(time.time() - t0, 1)))
         print("  %-5s %-18s %-8s -> %-8s %8.3f mm  w=%.2f  g=%.3f %s%s %.0fs"
               % (role, net.split('/')[-1], a, b_, r['mm'], used / 1e6, r['grid'],
@@ -899,6 +972,11 @@ def main():
         add("10b. dead-cell network",
             [(N + short, a, b_, 'SIG', PL.LAD_SIG, None)
              for a, b_ in mst(pads[N + short])], CT_S, tight='U19')
+    # FBV2-P2-002L section 5: the U14.2 / U14.3 fuel-gauge branches ARE PR-48
+    # cases B and C, so the D256 screen has to lay them.  The capacitor taps
+    # stay out - they are east of the margin and cannot free a lane in it.
+    if LOCAL == 'D256':
+        add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
     if not LOCAL:
         add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
         add("12. capacitor taps", PL.PLAN_12_CAPS, CT_W)
@@ -1160,7 +1238,7 @@ def main():
             apply_areas()
             pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
             qb.save()
-            DRU.write(pcb, stubs)
+            DRU.write(pcb, stubs, fine)
             import net_ledger as NL
             lg = NL.ledger(pcb)
             # FBV2-P2-002J section 5 criteria A..H, in order.
@@ -1228,7 +1306,7 @@ def main():
     apply_areas()
     pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
     qb.save()
-    DRU.write(pcb, stubs)
+    DRU.write(pcb, stubs, fine)
     after, det = RU.drc(pcb, "Afinal", WORK)
     rn = RU.ratsnest(pcb)
     res = dict(fail=state['fail'], connections=state['done'],

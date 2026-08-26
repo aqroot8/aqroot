@@ -522,3 +522,83 @@ Corollaries the harness now enforces:
   actual — against PR-43's own bridge copper at `R77.1`. The U14.2/U14.3 gauge
   branches fail the same rule at 0.2347 / 0.2350 mm. A corridor that relaxes
   width for a fine tap must decide what it does about clearance too.
+
+---
+
+## FBV2-P2-002L — the via fits U18 and cannot reach Q3.3
+
+002K's block closes with a corrected rule: *before planning a class onto a
+second layer, prove the via lands.* 002L proved it — twice, with opposite
+answers, and the difference between the two is the whole result.
+
+### U18: the via lands, on an ordinary through via
+
+D-257 ruled **0.35 / 0.20 preferred**, **0.25 / 0.15 absolute reserve**, and no
+microvia. On the authoritative pose that is enough:
+
+    LTC_GATE   4 x 0.35/0.20 ordinary through via
+    LTC_SHDN   2 x 0.35/0.20 ordinary through via
+    reserve    NEVER TAKEN
+
+Two layer transitions per connection, no more. **The exotic-fabrication option
+002K raised is not needed for U18** — which is the outcome section 18's
+"prefer standard fabrication" rule is there to find.
+
+Both ruled geometries sit under the board's global `min_via_diameter` 0.50 mm
+and `min_via_annular_width` 0.125 mm, so every bounded escape corridor carries
+its own `via_diameter` / `annular_width` / `hole_size` override. That was
+verified before it was adopted: a 0.35/0.20 via inside a named area reports
+`via_diameter` and `annular_width` without the rules, nothing with them, and no
+other violation class moves.
+
+### Q3.3: there is nowhere to land
+
+    Q3   SOIC-8_3.9x4.9mm_P1.27mm
+         pitch 1.270 mm, pads 1.950 x 0.600 mm, copper gap 0.670 mm
+         south row:  1 Q3_CS   2 LTC_GATE   3 Q3_CS   4 LTC_GATE
+
+    Q3.3  NO LEGAL ESCAPE at 0.25, 0.20 AND 0.15 mm
+          blocked by Q3.2 (x27), Q3.4 (x20)
+
+    via 0.35/0.20  all widths   NO_LEGAL_ESCAPE
+    via 0.25/0.15  all widths   NO_LEGAL_ESCAPE
+
+**A smaller via does not help a pad that cannot emit copper.** The escape comes
+first and the via second; when the escape does not exist, via geometry is not
+the variable. This is the same shape as `U18.7` at the 002F pose, one package
+over, and it is why PR-47 leaves the routing domain entirely.
+
+Geometry-only, a filled and capped **through** via-in-pad at 0.35/0.20 fits
+inside a 0.600 mm pad with **0.125 mm of pad copper each side**, leaves the
+0.670 mm pad gap untouched, and puts adjacent drills 2.540 mm apart. Feasible,
+and premium — hence the decision stop.
+
+### The rule this adds
+
+**Width, clearance and via geometry are three separate rulings and a corridor
+needs all three.** D-249 ruled width. PR-48 had to add clearance, because a
+0.20 mm microamp tap that passes every width rule is still rejected by a
+0.30 mm wide-net spacing rule fired by its own target pad. D-257 had to add via
+geometry, because a corridor that permits a narrow track says nothing about
+what may be drilled in it. A bounded corridor that states only one of the three
+is a corridor that will fail for a reason nobody ruled.
+
+And the corollary, learned the expensive way in this task: **a relaxation
+applied where nothing needed relaxing is a restriction.** The first PR-48 rule
+list covered two corridors that were already running legally at 0.150 mm; since
+a clearance rule states a minimum and the block is written last so it wins, it
+raised the floor on compliant copper and rejected every connection after it.
+Relax exactly what was measured to need relaxing.
+
+### Kelvin, and where the 002F ECO came from
+
+The authoritative pose routes 8 of 8 and the 002F ECO pose routes 6 of 8 with
+perfect Kelvin. It is tempting to read that as a straight trade, and it is not:
+
+    authoritative   straight-line kelvin 2.440 / 8.265   mismatch 5.825
+    as routed                            3.179 / 13.152  mismatch 9.973
+
+**4.948 mm of that mismatch is a detour**, not geometry. The pose is 0.825 mm
+of placement away from the limit and the rest is a branch being sent the long
+way round. The lever is **R75** — held fixed "initially" — and it is one short
+branch, not a re-floorplan.

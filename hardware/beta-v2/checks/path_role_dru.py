@@ -107,19 +107,101 @@ RULE = (u'(rule "%s - D-249"\n'
         u'\t(constraint track_width (min %.2fmm) (opt %.2fmm))\n'
         u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n')
 
+# ---------------------------------------------------------------------
+# PR-48 / D-257  (FBV2-P2-002L)
+#
+# D-249 ruled WIDTH by path role and said nothing about CLEARANCE, and the two
+# are not interchangeable.  `BAT_RAW U18.1 -> R77.1` is a ruled 0.20 mm microamp
+# VIN tap that passes every width rule and is still rejected by
+# `BAT_MAIN routed clearance` - 0.300 mm required, 0.250 mm measured - because
+# the wide-net spacing rule fires on the tap's own target pad.  The U14.2 and
+# U14.3 fuel-gauge branches fail the identical rule at 0.2347 / 0.2350 mm.
+# A corridor that relaxes width for a nanoamp branch has to decide what it does
+# about spacing too, or the branch is unroutable for a reason nobody ruled.
+#
+# The CTO ruling is a LOCAL 0.20 mm clearance for short low-current escape and
+# tap corridors around U18, U14 and Q3's control/sense pins.  It is conditioned
+# on A.NetName AND A.enclosedByArea(), exactly like the width overrides, so it
+# reaches one net inside one bounded corridor and nothing else.  It does NOT
+# touch the global board clearance, the high-current trunk spacing, board-edge
+# clearance, or the hole rules.
+#
+# D-257 additionally rules the ORDINARY THROUGH VIA a fine-pitch escape may use:
+# 0.35 / 0.20 preferred, 0.25 / 0.15 as an absolute reserve, and NOTHING
+# SMALLER.  No blind via, no buried via, no laser microvia - the KiCad
+# `min_microvia_diameter` value is a CAD default, not a manufacturing
+# authorisation, and 002K's finding that a 0.20 mm site exists for U18.10 is
+# therefore not a route.  Both ruled geometries sit below the board's global
+# `min_via_diameter` 0.50 mm and `min_via_annular_width` 0.125 mm, so each
+# bounded escape corridor carries its own via_diameter / annular_width /
+# hole_size override.  MEASURED: with these rules a 0.35/0.20 through via inside
+# a named area clears DRC, and without them it reports `via_diameter` and
+# `annular_width`; no other violation class moves either way.
+LOCAL_CLR = (u'(rule "%s - local fine-pitch clearance, PR-48"\n'
+             u'\t(constraint clearance (min %.2fmm))\n'
+             u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n')
 
-def compose(stubs):
-    """stubs: list of (area_name, net_name, min_mm, comment)"""
+FINE_VIA = (u'(rule "%s - fine-pitch escape via, D-257"\n'
+            u'\t(constraint via_diameter (min %.2fmm) (opt 0.35mm))\n'
+            u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n'
+            u'\n'
+            u'(rule "%s - fine-pitch escape annular ring, D-257"\n'
+            u'\t(constraint annular_width (min %.3fmm))\n'
+            u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n'
+            u'\n'
+            u'(rule "%s - fine-pitch escape hole, D-257"\n'
+            u'\t(constraint hole_size (min %.2fmm) (opt 0.20mm))\n'
+            u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n')
+
+# The D-249 corridors that PR-48's local clearance applies to as standing rule.
+# These are the three MEASURED PR-48 cases plus the two other ruled U18 taps
+# that share the same pin field and the same wide-net neighbour copper.
+# EXACTLY THE THREE MEASURED PR-48 CASES, AND NOTHING ELSE.
+#
+# The first cut of this list also carried BAT_PROT_TAP_U18 and
+# BAT_SENSE_KELVIN, on the reasoning that they share U18's pin field.  That was
+# wrong, and the board said so within one screen: a clearance rule states a
+# MINIMUM, this block is written LAST so it wins, and both of those corridors
+# were already running legally at 0.150 mm under the pad-escape rules.  Adding
+# a 0.20 mm floor there did not relax anything - it RAISED the requirement on
+# copper that was already compliant, and `BAT_SENSE Kelvin sense tap ...
+# clearance 0.2000 mm; actual 0.1500 mm` then rejected every connection after
+# it.  A relaxation that is applied where nothing needed relaxing is a
+# restriction.  Section 4 says to use the smallest corridor necessary; these
+# are the corridors that were measured to need it.
+FIXED_CLR = [
+    ('BAT_RAW_TAP_U18', N + 'BAT_RAW', 0.20,
+     'BAT_RAW LTC4368 VIN supply tap'),          # PR-48 case A, U18.1
+    ('BAT_PROT_TAP_U14', N + 'BAT_PROTECTED_P', 0.20,
+     'BAT_PROTECTED_P fuel-gauge and test taps'),  # PR-48 cases B and C
+]
+
+
+def compose(stubs, fine=()):
+    """stubs: list of (area_name, net_name, min_mm, comment)
+    fine:  list of (area_name, net_name, clr_mm, via_dia_mm, via_drill_mm, note)
+           -- PR-48 / D-257 bounded fine-pitch escape corridors."""
     rows = [(mn, opt, name, net, note) for (name, net, mn, opt, note) in FIXED]
     rows += [(mn, mn, name, net, note) for (name, net, mn, note) in stubs]
     rows.sort(key=lambda r: -r[0])
     out = [TAILHEAD]
     for (mn, opt, name, net, note) in rows:
         out.append(RULE % (note, mn, opt, net, name))
+    # PR-48 / D-257 come LAST of all: they are the most specific statement on
+    # the board -- one net, inside one corridor bounding one approved escape --
+    # and KiCad applies the last matching rule.
+    for (name, net, clr, note) in FIXED_CLR:
+        out.append(LOCAL_CLR % (note, clr, net, name))
+    for (name, net, clr, vdia, vdrill, note) in fine:
+        out.append(LOCAL_CLR % (note, clr, net, name))
+        ann = (vdia - vdrill) / 2.0
+        out.append(FINE_VIA % (note, vdia, net, name,
+                               note, ann, net, name,
+                               note, vdrill, net, name))
     return u"\n".join(out)
 
 
-def write(pcb, stubs):
+def write(pcb, stubs, fine=()):
     p = os.path.join(os.path.dirname(pcb), "aqroot-Beta-v2.kicad_dru")
     raw = open(p, 'rb').read().decode('utf-8')
     crlf = '\r\n' in raw
@@ -132,5 +214,5 @@ def write(pcb, stubs):
     k = d.find("# =====================================================================\n" + MARK)
     if k >= 0:
         d = d[:k]
-    d = d.rstrip('\n') + "\n\n\n" + compose(stubs).rstrip('\n') + "\n"
+    d = d.rstrip('\n') + "\n\n\n" + compose(stubs, fine).rstrip('\n') + "\n"
     open(p, 'wb').write((d.replace('\n', '\r\n') if crlf else d).encode('utf-8'))

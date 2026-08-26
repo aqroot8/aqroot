@@ -1245,6 +1245,11 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
             total += math.hypot(pts[k + 1][0] - pts[k][0], pts[k + 1][1] - pts[k][1])
         return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=2,
                     trunk_mm=width / 1e6, minw=width / 1e6, layer=far,
+                    via_dia=via_dia / 1e6, via_drill=via_drill / 1e6,
+                    via_xy=[(round(ends[0][1]['x'] / 1e6, 3),
+                             round(ends[0][1]['y'] / 1e6, 3)),
+                            (round(ends[1][1]['x'] / 1e6, 3),
+                             round(ends[1][1]['y'] / 1e6, 3))],
                     profile=[(pa['ref'], ends[0][1]['w'] / 1e6, ends[0][1]['ln'] / 1e6),
                              (pb['ref'], ends[1][1]['w'] / 1e6, ends[1][1]['ln'] / 1e6)])
     if fail is not None:
