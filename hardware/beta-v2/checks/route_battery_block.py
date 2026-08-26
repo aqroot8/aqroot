@@ -27,6 +27,15 @@ FLOOR = {N + 'BAT_CONNECTOR_P': 600000, N + 'BAT_RAW': 600000,
          N + 'BAT_MID': 600000, N + 'BAT_SENSE': 600000,
          N + 'BAT_PROTECTED_P': 1200000}
 
+# D-256.  AQROOT_D256 names one of battery_route_plan.D256_SETS; the listed
+# connections take their PLANNED F.Cu hop first instead of last.  Unset means
+# the pre-D-256 behaviour exactly, so every earlier measurement is reproducible.
+_d256 = (os.environ.get('AQROOT_D256') or '').upper()
+if _d256 and _d256 not in PL.D256_SETS:
+    raise SystemExit('AQROOT_D256=%s is not one of %s'
+                     % (_d256, sorted(PL.D256_SETS)))
+D256_FCU = frozenset(PL.D256_SETS[_d256]) if _d256 else frozenset()
+
 
 def mst(pads):
     refs = list(pads)
@@ -337,7 +346,34 @@ def main():
             print("        try   %-18s %-8s -> %-8s" % (net.split('/')[-1], a, b_))
             sys.stdout.flush()
         r, used, hop, tapped = None, None, False, node
-        if role == 'TAP':
+        # D-256: PLANNED F.Cu ESCAPE, TRIED FIRST RATHER THAN LAST.
+        #
+        # connect_hop() has always been available, but only as the last rung of
+        # the fallback ladder - so a control net reached F.Cu having ALREADY
+        # spent the west margin's B.Cu trying every width not to.  The lane was
+        # gone by the time the hop was taken.  For the connections D-256 names
+        # (see battery_route_plan.D256_SETS) the hop is now the FIRST choice,
+        # widest legal rung first, so the B.Cu lane is never claimed at all.
+        # A failed hop falls through to the ordinary B.Cu ladder untouched:
+        # this adds capacity, it does not remove an option.
+        if D256_FCU and not node and (net, a, b_) in D256_FCU:
+            # The planned escape uses the finest via the board's own rules
+            # declare (PL.D256_VIA); every other hop keeps the Default-class
+            # 0.60/0.30 it has always used.  See battery_route_plan.D256_VIA
+            # for the measurement that forces it.
+            vd, vk = PL.D256_VIA_FOR.get((net, a, b_), PL.D256_VIA)
+            for w in ladder:
+                rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct,
+                                    via_dia=vd, via_drill=vk)
+                if rr['ok']:
+                    r, used, hop = rr, w, True
+                    break
+                qb.revert(m)
+            if r is not None and not r['ok']:
+                r = None
+        if r is not None and r.get('ok'):
+            pass
+        elif role == 'TAP':
             # A shunt tap is judged on RESISTANCE, not on raw width: an 80 mm
             # detour at 1.20 mm is worse copper than a 6 mm run at 0.60 mm, and
             # it eats a corridor something else needs.  Try every rung, keep the
@@ -359,7 +395,7 @@ def main():
             else:
                 r = dict(ok=False, reason='NO_PATH',
                          why='no corridor at any rung for %s' % a)
-        else:
+        elif True:
             for w in ladder:
                 if time.time() - t0 > ITEM_BUDGET and used is None and r is not None:
                     break
@@ -521,6 +557,20 @@ def main():
                 area_trk.pop(area, None)
             state['last'] = '%s %s->%s (%s) : %s %s' % (
                 net.split('/')[-1], a, b_, role, g['why'], g.get('detail', ''))
+            # PR-46: SAY SO.  A connection rejected by the DRC / ratsnest gate
+            # used to be reverted and requeued in COMPLETE SILENCE - no line in
+            # the log, no entry in the journal, nothing.  It routed, it was
+            # judged, it was thrown away, and the transcript showed only that
+            # the item had never been mentioned.  Reading FBV2-P2-002K's first
+            # D-256 screen, three items - `LTC_GATE U18.10 -> Q3.4`,
+            # `BAT_RAW U18.1 -> (node)` and `LTC_SHDN Q4.3 -> (node)` - simply
+            # were not there, and "not attempted" and "attempted, routed and
+            # rejected by DRC" are not the same finding at all.
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs   %s %s"
+                  % (net.split('/')[-1], a, b_, 'GATE_REJECTED',
+                     time.time() - t0, g['why'][:70],
+                     json.dumps(g.get('detail', ''))[:200]))
+            sys.stdout.flush()
             if fatal:
                 state['fail'] = state['last']
             return False
@@ -775,9 +825,25 @@ def main():
     # fixed right order, because the window each pin has left depends on the
     # copper already laid" - and the copper in front of Q3 is not where it was.
     LOCAL = (os.environ.get('AQROOT_LOCAL') or '').upper()
+    # D-256 / section 10: when the Q3_CS layer excursion is in force, the Q3
+    # GATE link claims the south-row slot FIRST and the sense pair takes the
+    # excursion.  See battery_route_plan.PLAN_8_GATE_Q3_FIRST for the three
+    # measurements that decide it.
+    # Gate-first applies only when Q3_CS is taking the excursion and the GATE
+    # is NOT: if both halves of the row have a planned escape, the CS excursion
+    # goes first precisely so that it leaves stubs rather than a through-run in
+    # the gaps, and the gate hops over what is left.
+    q3_first = ((N + 'Q3_CS', 'Q3.1', 'Q3.3') in D256_FCU
+                and (N + 'LTC_GATE', 'Q3.2', 'Q3.4') not in D256_FCU)
     if LOCAL != 'R80':
+        if q3_first:
+            add("8a0. LTC_GATE Q3 row, before the sense pair (D-256)",
+                PL.PLAN_8_GATE_Q3_FIRST, CT_S)
         add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
-        add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
+        add("8b. LTC_GATE",
+            [r for r in PL.PLAN_8_GATE
+             if not (q3_first and (r[0], r[1], r[2])
+                     == (N + 'LTC_GATE', 'Q3.2', 'Q3.4'))], CT_S)
     # PR-36: THE MICROAMP TAPS GO BEFORE THE CROSS-BOARD SIGNAL RUNS, AND IT IS
     # PR-18's ARGUMENT ONE REGION OVER.
     #
@@ -818,9 +884,16 @@ def main():
     # east or south of the contested margin and cannot free a lane there.
     # AQROOT_LOCAL=U19 keeps the full prefix and adds the dead-cell network,
     # which IS U19's pin field, stopping before gauge/caps/closure/test pts.
-    if LOCAL != 'R80':
+    # AQROOT_LOCAL=D256 is the FBV2-P2-002K screen and it is section 8's list
+    # exactly: the 1.50 mm trunk, the BAT_MAIN chain, the PR-43 BAT_RAW
+    # bridges, U18's eight-pin field (which carries both R75 Kelvin branches),
+    # the Q2/Q3 sense pairs, LTC_GATE, the microamp taps and the LTC trip
+    # network - LTC_SHDN and LTC4368_FAULT_N included.  It stops BEFORE the
+    # dead-cell network, which is U19's pin field, east of the contested margin
+    # and unable to free a lane in it.  R80 stays the narrower 002J screen.
+    if LOCAL not in ('R80', 'D256'):
         add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
-    for short in ([] if LOCAL == 'R80' else PL.DEADCELL):
+    for short in ([] if LOCAL in ('R80', 'D256') else PL.DEADCELL):
         # PR-33: the dead-cell block is a fine-pitch pin field too - U19 is an
         # SOT-23-8 on 0.65 mm pitch - so it gets the same measured ordering.
         add("10b. dead-cell network",
@@ -893,8 +966,14 @@ def main():
         'U14.2': (PL.W_U14, 'BAT_PROT_TAP_U14'),
         'U14.3': (PL.W_U14, 'BAT_PROT_TAP_U14'),
     }
+    # FBV2-P2-002K: the D256 screen closes only the nets its own prefix laid.
+    # Offering a tap to the dead-cell pads would route U19's pin field, which
+    # is east of the contested margin, cannot free a lane in it, and is section
+    # 11 work not yet authorised at this point in the task.
+    CLOSE_NETS = ([nt for nt in SCOPE_NETS if nt[len(N):] not in PL.DEADCELL]
+                  if LOCAL == 'D256' else SCOPE_NETS)
     CLOSE = []
-    for nt in SCOPE_NETS:
+    for nt in CLOSE_NETS:
         wide = nt in WIDE
         if nt == N + 'BAT_PROTECTED_P':
             lad = [PL.W_TRUNK_BPP, 1200000]      # never below the D-249 floor
@@ -927,7 +1006,10 @@ def main():
     # PR-37, second half: TP15's own stub is ruled 0.20 mm inside
     # BAT_PROT_TAP_U14, and PLAN_13_TEST already names both.  It is listed here
     # only so the ordering is explicit.
-    if LOCAL != 'R80':
+    # Section 13 keeps the test points LAST, and the D256 screen stops before
+    # them: a test point cannot free a west-margin lane and must never be the
+    # reason a functional verdict changes.
+    if LOCAL not in ('R80', 'D256'):
         add("13. test-point stubs", PL.PLAN_13_TEST, CT_W)
 
     def u11_escape():

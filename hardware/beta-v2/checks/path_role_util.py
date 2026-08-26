@@ -58,10 +58,28 @@ def ratsnest(pcb):
 
 
 # --------------------------------------------------------------------------
-def add_named_area(board, name, x0, y0, x1, y1, layers=('B.Cu',)):
+def add_named_area(board, name, x0, y0, x1, y1, layers=('B.Cu', 'F.Cu')):
     """A rule area that restricts NOTHING -- it exists only so a .kicad_dru rule
     can say `A.enclosedByArea('NAME')`.  That is what makes width a PATH ROLE
-    rather than a property of the net name."""
+    rather than a property of the net name.
+
+    FBV2-P2-002K: THE CORRIDOR NOW SPANS BOTH OUTER LAYERS, AND IT HAS TO.
+
+    These areas were created on B.Cu alone, which was true of the board while
+    every battery route was on B.Cu.  D-256 authorises planned F.Cu escapes for
+    the LTC4368 low-current paths, and the moment a D-249-ruled tap takes one,
+    `A.enclosedByArea('BAT_RAW_TAP_U18')` is FALSE for the F.Cu half of its own
+    corridor -- so the 0.20 mm ruling silently stops applying and the segments
+    are judged against BAT_RAW's 0.60 mm class floor instead.  That is exactly
+    how `BAT_RAW U18.1 -> R77.1` came back from the gate as
+    `new DRC {"track_width": 5, "clearance": 1}`: five F.Cu segments outside a
+    B.Cu-only rule area.
+
+    Nothing is weakened by the change.  A rule area here restricts NOTHING --
+    DoNotAllowTracks/Vias/Pads/ZoneFills/Footprints are all False -- it only
+    NAMES a region so a width rule can be conditioned on it.  Extending the
+    name to the other outer layer of the same corridor makes the existing D-249
+    ruling apply where the copper actually is."""
     z = pcbnew.ZONE(board)
     z.SetIsRuleArea(True)
     z.SetDoNotAllowTracks(False)

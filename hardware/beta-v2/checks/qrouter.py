@@ -678,6 +678,76 @@ class QBoard(object):
                 return (best[1], best[2])
         return None
 
+    def via_site(self, near, far, net, esc, width, via_dia, clr_pad, clr_trk,
+                 G, span=8000000, via_drill=0, hole_clr=250000):
+        """PR-45.  THE FIRST POINT A VIA CAN SIT ON THAT THE ESCAPE CAN REACH.
+
+        connect_hop used to pick its via site with nearest_free(), which
+        answers "where is the closest point a via fits" - a question about
+        GEOMETRY.  The question that matters is "where is the closest point a
+        via fits THAT THIS PAD CAN GET TO", which is a question about
+        REACHABILITY, and beside a fine-pitch pin in a congested field the two
+        answers are not the same place.
+
+        `U18.10` is the case that exposed it.  It is the LTC4368 GATE output on
+        the corner of an MSOP-10 whose 0.50 mm pitch leaves ONE legal escape
+        direction.  A 0.60 mm via does not fit at that escape point, so
+        nearest_free() went looking and returned a site 2.30 mm away - on the
+        far side of the copper the pin is trying to escape past.  The walk to
+        it then failed, the hop was abandoned, and D-256's planned F.Cu escape
+        for LTC_GATE could never be taken.  The F.Cu corridor was never the
+        problem: measured, F.Cu over that margin is 0.00 mm2 occupied and the
+        run itself was never attempted.
+
+        So: flood the near layer at TRACK width from the escape point, and take
+        the nearest cell of that reachable region which also admits the VIA on
+        both layers.  A site returned here is reachable by construction, so the
+        walk that follows cannot fail for want of a corridor.
+        """
+        x0, y0 = esc['x'] - span, esc['y'] - span
+        x1, y1 = esc['x'] + span, esc['y'] + span
+        reach = self.free_region(near, net, width, clr_pad, clr_trk, G,
+                                 (esc['x'], esc['y']), x0, y0, x1, y1)
+        if reach is None:
+            return None
+        mask, ox, oy, g = reach
+        bn = self.grid(near, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
+        bf = self.grid(far, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
+        ny = min(mask.shape[0], bn.shape[0], bf.shape[0])
+        nx = min(mask.shape[1], bn.shape[1], bf.shape[1])
+        good = mask[:ny, :nx] & ~bn[:ny, :nx] & ~bf[:ny, :nx]
+        if not good.any():
+            return None
+        jj, ii = np.nonzero(good)
+        ci = (esc['x'] - ox) / float(g)
+        cj = (esc['y'] - oy) / float(g)
+        d = (ii - ci) ** 2 + (jj - cj) ** 2
+        # HOLE-TO-HOLE IS NOT A COPPER RULE, so the clearance grids above do
+        # not see it: they test whether a via's PAD clears other copper, and
+        # `min_hole_to_hole` is a drill-to-drill spacing the fabricator needs
+        # between two barrels.  The first D-256 screen put the `U18.10 -> Q3.4`
+        # escape via on a site that was clean on both layers and still came
+        # back from DRC as `hole_to_hole: 1`.  Rejecting those sites here costs
+        # one distance test per candidate and saves a whole gated connection.
+        if via_drill:
+            hx = np.array([h.cx for h in self.holes], dtype=float) \
+                if self.holes else np.zeros(0)
+            hy = np.array([h.cy for h in self.holes], dtype=float) \
+                if self.holes else np.zeros(0)
+            hr = np.array([max(h.hx, h.hy) for h in self.holes], dtype=float) \
+                if self.holes else np.zeros(0)
+            if hx.size:
+                order = np.argsort(d)
+                for k in order:
+                    px = ox + ii[k] * g
+                    py = oy + jj[k] * g
+                    need = hr + (via_drill / 2.0) + hole_clr
+                    if np.all(np.hypot(hx - px, hy - py) >= need):
+                        return (int(px), int(py))
+                return None
+        k = int(np.argmin(d))
+        return (int(ox + ii[k] * g), int(oy + jj[k] * g))
+
     def free_region(self, layer, net, width, clr_pad, clr_trk, G,
                     seed, x0, y0, x1, y1):
         """Flood-fill the trunk-width-free space from `seed`.
@@ -1062,6 +1132,14 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
     never be reported as if it were a flat route.
     """
     ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    # PR-46: connect_hop used to report EVERY failure as
+    # 'NO_PATH: no F corridor', including the two that have nothing to do with
+    # the far layer - no reachable via site, and no near-layer walk to it.  The
+    # far-layer run is the LAST thing it tries, so a hop that died before ever
+    # reaching it was still being reported as an F.Cu capacity failure.  That
+    # misreport is what made the layer option look exhausted when it had not
+    # been exercised.  The real reason is carried out now.
+    fail = None
     for G_try in (G, fine):
         ends = []
         ok = True
@@ -1086,21 +1164,20 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
                     cand['walk'] = None
                     break
             if cand is None:
-                c = e[0]
-                t1 = qb.nearest_free(near, net, c['x'], c['y'], via_dia,
-                                     clr_pad, clr_trk, G_try, span=6000000)
-                t2 = qb.nearest_free(far, net, c['x'], c['y'], via_dia,
-                                     clr_pad, clr_trk, G_try, span=6000000)
+                # PR-45: ask for the nearest via site the escape can REACH,
+                # not merely the nearest one that exists.  See QBoard.via_site.
                 site = None
-                if t1 is not None and t2 is not None:
-                    for cand_pt in (t1, t2):
-                        if (qb.point_free(near, net, cand_pt[0], cand_pt[1], via_dia,
-                                          clr_pad, clr_trk, G_try) and
-                                qb.point_free(far, net, cand_pt[0], cand_pt[1], via_dia,
-                                              clr_pad, clr_trk, G_try)):
-                            site = cand_pt
-                            break
+                for c in e[:6]:
+                    site = qb.via_site(near, far, net, c, width, via_dia,
+                                       clr_pad, clr_trk, G_try,
+                                       via_drill=via_drill)
+                    if site is not None:
+                        break
                 if site is None:
+                    fail = dict(ok=False, reason='NO_VIA_SITE',
+                                why='%s: no via site of %.2f mm reachable on %s'
+                                    % (p['ref'], via_dia / 1e6, near),
+                                pad=p['ref'])
                     ok = False
                     break
                 cand = dict(c)
@@ -1129,7 +1206,9 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
                         blkn[jj, ii] = False
                 pth = qb.search(blkn, si, ti)
                 if pth is None:
-                    qb.revert(qb.mark())
+                    fail = dict(ok=False, reason='NO_NEAR_WALK',
+                                why='%s: no %s corridor from the escape to its '
+                                    'via site' % (p['ref'], near), pad=p['ref'])
                     ok = False
                     break
                 pp = simplify(pth, int(gx0), int(gy0), G_try)
@@ -1168,6 +1247,8 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
                     trunk_mm=width / 1e6, minw=width / 1e6, layer=far,
                     profile=[(pa['ref'], ends[0][1]['w'] / 1e6, ends[0][1]['ln'] / 1e6),
                              (pb['ref'], ends[1][1]['w'] / 1e6, ends[1][1]['ln'] / 1e6)])
+    if fail is not None:
+        return fail
     return dict(ok=False, reason='NO_PATH',
                 why='no %s corridor at %.3f mm from %s to %s'
                     % (far, width / 1e6, pa['ref'], pb['ref']))

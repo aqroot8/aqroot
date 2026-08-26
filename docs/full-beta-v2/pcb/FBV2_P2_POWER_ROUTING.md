@@ -445,3 +445,80 @@ planning the layer removes it.
 the next `apply_areas()` read freed memory — a deterministic SIGSEGV that killed
 two full Phase A runs at connection 28. Store UUIDs; resolve against the board.
 Any harness holding KiCad object pointers across a revert has this bug.
+
+---
+
+## FBV2-P2-002K — D-256 answered: the layer exists, the via does not fit
+
+The block above closes with a rule: *when a class of nets already needs vias to
+exist at all, stop conceding them one at a time and give the class a planned
+second-layer path.* D-256 ruled exactly that. FBV2-P2-002K executed it, and the
+result is a correction to the rule rather than a confirmation of it.
+
+**The rule is right about the shortage and silent about the price of admission.
+A planned second-layer path costs a via, and a via has to land somewhere.**
+
+### What was measured
+
+At the FBV2-P2-002F placement — the one every verdict from 002F to 002J uses:
+
+```
+U18.10   escape 0.20 mm, ONE direction
+         reachable through-via site at 0.60 / 0.55 / 0.50 / 0.45 /
+                                       0.40 / 0.35 / 0.30 / 0.25 mm ... NONE
+         reachable site at 0.20 mm ............................ yes, 1.20 mm out
+                                     (= min_microvia_diameter, NOT a through via)
+
+U18.7    NO LEGAL ESCAPE at 0.25, 0.20 AND 0.15 mm
+         blocked by U18.8 (x25) and U18.6 (x20) - its own adjacent pads
+```
+
+`U18` is an **MSOP-10 on 0.50 mm pitch**; the board's own floor is
+`min_via_diameter = 0.50 mm`. The pin field cannot hold the smallest through via
+the board declares, so on this placement the excursion cannot start.
+
+On the **authoritative** placement both pins do have reachable sites — `U18.10`
+from 0.50 mm, `U18.7` from 0.60 mm — and there the planned path does everything
+D-256 expected:
+
+    LTC_GATE  U18.10 -> R76.1   8.794 mm F.Cu, 2 vias, 2 s   (was NO_PATH, 26 s)
+    LTC_GATE  U18.10 -> Q3.4   15.552 mm F.Cu, 2 vias
+    LTC_SHDN  U18.6  -> Q4.3   24.525 mm F.Cu, 2 vias @0.25  (was DRC-rejected)
+    LTC4368_FAULT_N            all four functional pads, ONE island, on B.Cu
+    LTC_GATE                   ONE ISLAND, all six functional pads
+    U18                        6 of 8  ->  7 of 8
+
+So the strategy is sound and the placement decides whether it is reachable. The
+ECO adopted to fix U18's escapes is the same ECO that denies these two pins the
+layer change.
+
+### The corrected rule
+
+**Before planning a class onto a second layer, prove the via lands.** The
+question is not "is there room on the other layer" — over this margin F.Cu is
+0.00 mm² occupied — but "can each pad of the class reach a legal via site from
+its own escape". Those are different questions and only the second one binds.
+
+Corollaries the harness now enforces:
+
+- A via site must be **reachable from the escape**, not merely nearby (PR-45).
+  For `U18.10` the nearest site that *existed* was 2.30 mm away on the far side
+  of the copper the pin was escaping past.
+- Via-site selection must respect **`min_hole_to_hole`**, a drill-to-drill rule
+  no copper-clearance grid can see.
+- A rule area that names a corridor must span **both outer layers**, or a ruled
+  tap that takes the second layer falls outside its own corridor and is judged
+  against its class floor.
+
+### And two conflicts that are not about layers at all
+
+- **PR-47, the Q3 south row.** `Q3_CS` owns pins 1 and 3, `LTC_GATE` owns 2 and
+  4, they interleave, and there is one B.Cu slot. Measured in three orderings:
+  the loser's middle pad has **no legal escape at any width on either layer**,
+  so it cannot reach a via and no excursion can rescue it. This is a
+  land-pattern conflict of the same class as U11.2 and U14.2/U14.3.
+- **PR-48, D-249 relaxes width and not clearance.** `U18.1`'s ruled 0.20 mm VIN
+  tap is rejected by `BAT_MAIN routed clearance` — 0.300 mm required, 0.250 mm
+  actual — against PR-43's own bridge copper at `R77.1`. The U14.2/U14.3 gauge
+  branches fail the same rule at 0.2347 / 0.2350 mm. A corridor that relaxes
+  width for a fine tap must decide what it does about clearance too.

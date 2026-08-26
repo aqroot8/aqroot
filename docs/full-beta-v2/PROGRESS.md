@@ -57,7 +57,7 @@ freeze. **FBV2-P2 ENTRY = FAIL** on one criterion of thirteen; **NO PROGRESS EAR
 74%**, FBV2-P1 = PASS unchanged**; previously **FBV2-P1-002 — P1 closeout; **FBV2-P1 PASSES**; overall 68% → 74%**; previously **FBV2-P1-001 — enclosure-driven floorplan built; **FBV2-P1 DOES NOT PASS** on the 915 MHz pigtail reach; overall stays 68%**; previously FBV2-MECH-002 — pre-floorplan authority reconciliation and final
 procurement sign-offs. NO PROGRESS EARNED: overall stays 68%, FBV2-S2 = PASS unchanged**; previously
 FBV2-S2-002 — S2 release closeout, FBV2-S2 = PASS)
-Repository HEAD at last update: `a1cc687` (FBV2-CLOUD-001; the authoritative PCB is unchanged by it - tooling only)
+Repository HEAD at last update: `a5771a7` (FBV2-P2-002K; the authoritative PCB is unchanged by it - no copper written)
 
 ---
 

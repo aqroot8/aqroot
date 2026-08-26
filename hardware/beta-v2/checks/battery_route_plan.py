@@ -206,3 +206,187 @@ PLAN_13_TEST = [
     (N + 'BAT_SENSE', 'TP20.1', '(node)', 'TEST', LAD_TAP, None),
     (N + 'BAT_CONNECTOR_P', 'TP34.1', '(node)', 'TEST', LAD_TAP, None),
 ]
+
+
+# ---- D-256: PLANNED F.Cu ESCAPE CAPACITY FOR THE LTC4368 CONTROL PATHS ----
+#
+# FBV2-P2-002J exhausted the R80/R81 placement lever: six poses plus the
+# control, none reaching U18 8/8, and two full Phase A runs BELOW the 24-of-29
+# baseline.  The measured conclusion was that the west margin at x 4..10 is
+# short of LAYER CAPACITY, not of another B.Cu lane -- every route that wins a
+# lane there takes it from a neighbour, so the casualty moves and the total
+# does not improve.
+#
+# D-256 rules that conclusion accepted and authorises deliberate F.Cu capacity
+# for selected LOW-CURRENT LTC4368 status and control paths, in priority order
+# LTC_GATE, LTC4368_FAULT_N, then LTC_SHDN if required.
+#
+# The mechanism already exists: connect_hop() lays a short B.Cu escape at each
+# pad, one through via, the run itself on F.Cu, and one through via down --
+# exactly the "one via up, one via down" section 3 prefers.  What changes here
+# is only WHEN it is used.  Until now it was a LAST-RESORT FALLBACK, reached
+# after every B.Cu rung had failed, which meant a control net only left B.Cu
+# after it had already spent the margin's copper trying not to.  For the nets
+# named below the hop is now the FIRST choice, so the B.Cu lane is never taken
+# in the first place.
+#
+# Nothing here is symmetric-for-symmetry's sake (section 3 forbids that): each
+# entry is a run that was MEASURED crossing or boxing the contested margin.
+#
+#   * The two FAULT_N cross-board runs are 64 mm and they traverse the whole
+#     west margin to reach Q9.  Section 4 is explicit that U18's scarce B.Cu
+#     escape lane must not be spent to keep this net at zero vias.
+#   * LTC_GATE's two runs OUT of U18's pin field (to R76.1 and to Q3.4) are the
+#     ones that fragment; the three FET-local gate links (Q3.2<->Q3.4,
+#     Q2.2<->Q2.4, Q3.2<->Q2.2) are NOT listed, because FBV2-P2-002F measured
+#     them closing on B.Cu with zero vias and section 3 says use only the
+#     length necessary to escape congestion.
+#   * LTC_SHDN is the section 5 case: `U18.6 -> R80.2` is the run D-255 proved
+#     was boxing U18.7, laid between two adjacent pins of the same MSOP-10, and
+#     `U18.6 -> Q4.3` is 28 mm across the same margin.
+#
+# LTC_OV is DELIBERATELY ABSENT.  It is the high-impedance comparator input and
+# section 6 keeps it local on B.Cu; if it ever becomes the final blocker that
+# is a CTO stop, not a silent layer change.
+#
+# The sets are cumulative and are screened in increasing order of F.Cu use, so
+# the answer records the MINIMUM intervention that works rather than the
+# largest one that happens to pass.
+_G = [
+    (N + 'LTC_GATE', 'U18.10', 'R76.1'),
+    (N + 'LTC_GATE', 'U18.10', 'Q3.4'),
+]
+_F = [
+    (N + 'LTC4368_FAULT_N', 'R81.2', 'R82.1'),
+    (N + 'LTC4368_FAULT_N', 'R82.1', 'Q9.1'),
+]
+_S_LONG = [
+    (N + 'LTC_SHDN', 'U18.6', 'Q4.3'),
+]
+_S_FIELD = [
+    (N + 'LTC_SHDN', 'U18.6', 'R80.2'),
+    (N + 'LTC4368_FAULT_N', 'U18.7', 'R81.2'),
+]
+
+# Screened in increasing order of F.Cu use so the answer records the MINIMUM
+# intervention that works.  The order follows the MEASURED failures rather than
+# D-256's priority list alone: the FBV2-P2-002K control screen (PR-43 on, no
+# F.Cu) leaves U18 at 6 of 8 with LTC_GATE fragmented (`Q3.2` NO_LEGAL_ESCAPE,
+# `U18.10` NO_PATH to both R76.1 and Q2.2) and LTC_SHDN `U18.6 -> Q4.3` NO_PATH,
+# while LTC4368_FAULT_N `U18.7 -> R81.2` CLOSES on B.Cu unaided.  So LTC_SHDN's
+# long run is screened before FAULT_N's, because it is the one that is failing;
+# adding vias to a net that already works would be exactly the unnecessary-via
+# defect section 22 asks us to look for.
+# Section 10's RESERVE, and it is not taken pre-emptively.
+#
+# MEASURED on the D-256 screen board, with Q3_CS's B.Cu route deleted and
+# nothing else changed:
+#
+#     Q3.2 escape with Q3_CS present   0 directions at 0.15 mm  (NO_LEGAL_ESCAPE)
+#     Q3.2 escape with Q3_CS removed   1 direction  at 0.25 mm
+#     LTC_GATE  Q3.2 -> Q3.4  B.Cu     ROUTES, 5.500 mm at 0.25 mm, zero vias
+#     Q3_CS     Q3.1 -> Q3.3  F.Cu     ROUTES, 5.583 mm at 0.25 mm, 2 vias
+#
+# This is PR-23's own prediction: on each SOIC-8 south row Q*_CS owns pins 1
+# and 3 while LTC_GATE owns 2 and 4, the two nets INTERLEAVE, and a CS route
+# threading both 0.67 mm inter-pad gaps SEALS the gate pad between them.  At
+# the 002F prefix the CS-first order was measured better; with PR-43 in force
+# it costs LTC_GATE the Q3.2 pad outright.
+#
+# So Q3_CS takes the layer excursion instead - one via up, one via down, the
+# ORDINARY 0.60/0.30 Default-class geometry, no fine via needed - and LTC_GATE
+# closes on B.Cu with no vias of its own.  Section 10 authorises exactly this
+# and only once it is the measured local blocker, which it now is.
+_Q3CS = [
+    (N + 'Q3_CS', 'Q3.1', 'Q3.3'),
+]
+
+# Per-connection via geometry for a planned escape.  Anything not named here
+# uses D256_VIA.  Q3_CS does not need the fine via and therefore does not get
+# it: the reserve is a LAYER excursion, not a via-geometry exception.
+D256_VIA_FOR = {
+    (N + 'Q3_CS', 'Q3.1', 'Q3.3'): (600000, 300000),
+}
+
+# The other side of the Q3 south-row trade.  Instead of giving Q3_CS the layer
+# excursion and the GATE the B.Cu slot, give Q3_CS the slot it already wins on
+# PR-26's order and put the GATE's Q3 link on the planned F.Cu escape.  Both
+# halves are measured; which one the board prefers is the question this set
+# exists to answer, and it is answered by running it rather than by argument.
+_GQ3 = [
+    (N + 'LTC_GATE', 'Q3.2', 'Q3.4'),
+]
+
+D256_SETS = {
+    'G':     _G,
+    'GS':    _G + _S_LONG,
+    'GSQ':   _G + _S_LONG + _Q3CS,
+    'GSX':   _G + _S_LONG + _GQ3,
+    # Both halves of the Q3 south row on their own planned escape: Q3_CS takes
+    # section 10's excursion FIRST, so it leaves two stubs and two vias in the
+    # inter-pad gaps instead of a full B.Cu run through them, and LTC_GATE's Q3
+    # link then takes its own fine-via hop over the top.  Measured on the GSQ
+    # board, that hop routes: 15.991 mm at 0.25 mm with the 0.50/0.25 via.
+    'GSQX':  _G + _S_LONG + _Q3CS + _GQ3,
+    'GSXF':  _G + _S_LONG + _GQ3 + _F,
+    'GSQF':  _G + _S_LONG + _Q3CS + _F,
+    'GSQFX': _G + _S_LONG + _Q3CS + _F + _S_FIELD,
+}
+
+
+# The via geometry a PLANNED D-256 escape is allowed to use.
+#
+# MEASURED, and it is the whole difference between D-256 being takeable and not:
+# `U18.10` is the LTC4368 GATE output on the corner of an MSOP-10 at 0.50 mm
+# pitch, and its single legal escape corridor is a dead-end slot.  With PR-45
+# asking for a REACHABLE via site rather than merely a nearby one, the site
+# exists at 0.50 mm and does NOT exist at 0.55 mm or 0.60 mm:
+#
+#     via 0.60 / 0.30   U18.10 -> R76.1   NO_VIA_SITE
+#     via 0.55 / 0.25   U18.10 -> R76.1   NO_VIA_SITE
+#     via 0.50 / 0.25   U18.10 -> R76.1   OK, 8.626 mm at 0.20 mm
+#     via 0.50 / 0.25   U18.10 -> Q3.4    OK, 13.062 mm at 0.20 mm
+#
+# 0.50 / 0.25 is the board's OWN DECLARED FLOOR, not a relaxation of it:
+#
+#     min_via_diameter        0.50 mm   -> 0.50 is exactly at it
+#     min_via_annular_width   0.125 mm  -> (0.50 - 0.25) / 2 = 0.125, exactly at it
+#     min_through_hole_diameter 0.20 mm -> 0.25 clears it
+#     min_hole_clearance      0.25 mm   -> enforced by DRC, per connection
+#
+# and the project already carries one non-Default fine via: the USB_D class at
+# 0.55 / 0.25, the "approved 0.25/0.55 geometry" of retired rule R9.
+#
+# IT IS STILL A CTO MATTER, AND IT IS SURFACED RATHER THAN ADOPTED SILENTLY:
+# a via that sits on TWO declared minimums at once is a fabrication-yield
+# question, not a routing one, and it is raised as such in the closeout.  The
+# harness's guard is unchanged - gate() refills the plane and runs full DRC
+# after every single connection and rejects any new violation class - so an
+# illegal via cannot survive to the manifest.
+D256_VIA = (500000, 250000)
+
+
+# ---- D-256 / section 10: the Q3 south row, gate BEFORE the sense pair -----
+#
+# PR-26 put Q*_CS ahead of LTC_GATE and it was MEASURED right at the 002F
+# prefix.  With PR-43 in force it is measured wrong, and the reason is the one
+# PR-23 wrote down: on each SOIC-8 south row Q*_CS owns pins 1 and 3 while
+# LTC_GATE owns 2 and 4, the nets INTERLEAVE, and whichever goes first takes
+# the slot.  Measured on the FBV2-P2-002K screen boards:
+#
+#   Q3_CS first, on B.Cu     Q3.2 boxed - LTC_GATE loses the pad outright
+#   Q3_CS first, on F.Cu     Q3.2 still boxed: the hop leaves B.Cu ESCAPE STUBS
+#                            and two vias in the very slot Q3.2 needs, and
+#                            Q3.2 -> Q3.4 then costs 15.991 mm on F.Cu with
+#                            two vias - on a MOSFET GATE DRIVE path
+#   LTC_GATE first, on B.Cu  Q3.2 -> Q3.4 routes 5.500 mm on B.Cu, ZERO vias,
+#                            and Q3_CS takes section 10's authorised layer
+#                            excursion instead at 5.583 mm with two vias
+#
+# The gate drive is the path that should not be carrying vias and length, so
+# the gate goes first and the sense pair takes the excursion.  Section 10's
+# reserve is spent on exactly what section 10 describes - Q3_CS - and it is
+# spent because it was measured to be the local blocker, not pre-emptively.
+PLAN_8_GATE_Q3_FIRST = [
+    (N + 'LTC_GATE', 'Q3.2', 'Q3.4', 'SIG', LAD_SIG, None),
+]

@@ -1,0 +1,259 @@
+[
+ {
+  "run": "probe_d256_base.json",
+  "note": "authoritative placement, PR-43, no D-256 (control)",
+  "u18": 6,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": false,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 33,
+  "skipped": 43,
+  "open_u18": [
+   "U18.1",
+   "U18.10"
+  ],
+  "ledger": "6/29"
+ },
+ {
+  "run": "probe_d256_G.json",
+  "note": "authoritative, D-256 G, 0.60/0.30 via (pre PR-45 via ruling)",
+  "u18": 6,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": false,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 33,
+  "skipped": 43,
+  "open_u18": [
+   "U18.1",
+   "U18.10"
+  ],
+  "ledger": "6/29"
+ },
+ {
+  "run": "probe_d256_G2.json",
+  "note": "authoritative, D-256 G, 0.50/0.25 planned via",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": false,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 33,
+  "skipped": 45,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "6/29"
+ },
+ {
+  "run": "probe_d256_G3.json",
+  "note": "authoritative, D-256 G, + PR-46 gate reporting",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": false,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 33,
+  "skipped": 45,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "6/29"
+ },
+ {
+  "run": "probe_d256_GS.json",
+  "note": "authoritative, D-256 GS (+ LTC_SHDN long run)",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 34,
+  "skipped": 47,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "7/29"
+ },
+ {
+  "run": "probe_d256_GSQ.json",
+  "note": "authoritative, D-256 GSQ (+ Q3_CS excursion), CS first",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 34,
+  "skipped": 47,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "7/29"
+ },
+ {
+  "run": "probe_d256_GSQ2.json",
+  "note": "authoritative, D-256 GSQ, GATE first -- LTC_GATE ONE island",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": true,
+   "Q3_CS Q3.1->Q3.3": false,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 35,
+  "skipped": 46,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "6/29"
+ },
+ {
+  "run": "probe_d256_GSX.json",
+  "note": "authoritative, D-256 GSX (gate Q3 hop, CS on B.Cu)",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 34,
+  "skipped": 47,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "7/29"
+ },
+ {
+  "run": "probe_d256_GSQX.json",
+  "note": "authoritative, D-256 GSQX (both Q3 halves planned)",
+  "u18": 7,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 34,
+  "skipped": 47,
+  "open_u18": [
+   "U18.1"
+  ],
+  "ledger": "7/29"
+ },
+ {
+  "run": "probe_eco_base.json",
+  "note": "FBV2-P2-002F ECO placement, PR-43, no D-256 (control)",
+  "u18": 6,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": false,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 37,
+  "skipped": 45,
+  "open_u18": [
+   "U18.7",
+   "U18.10"
+  ],
+  "ledger": "8/29"
+ },
+ {
+  "run": "probe_eco_GS.json",
+  "note": "FBV2-P2-002F ECO placement, D-256 GS",
+  "u18": 6,
+  "u19": 0,
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": false,
+   "LTC_GATE U18.10->R76.1": false,
+   "LTC_GATE U18.10->Q2.2": false,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": false
+  },
+  "routed": 37,
+  "skipped": 46,
+  "open_u18": [
+   "U18.7",
+   "U18.10"
+  ],
+  "ledger": "8/29"
+ }
+]

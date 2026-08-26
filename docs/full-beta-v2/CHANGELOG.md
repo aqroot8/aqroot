@@ -1,3 +1,55 @@
+## 2026-08-26 - FBV2-P2-002K: D-256 is right, and its instrument does not fit U18
+
+**FAIL** at section 9. **No authoritative copper**; PCB byte-identical to `a5771a7`
+(md5 `a908cedfa9f9410aab327d8bd55b9f45`), **zero signal tracks, zero signal vias**, In1.Cu one
+filled island, placement ECO still not applied. Preflight all PASS.
+
+- **THE ANSWER: the west margin IS short of layer capacity exactly as D-256 ruled - and at the
+  FBV2-P2-002F placement the two pins that need the extra layer CANNOT REACH A VIA.**
+  `U18.10`: escape 0.20 mm, one direction, and **no reachable through-via site at 0.60, 0.55,
+  0.50, 0.45, 0.40, 0.35, 0.30 or 0.25 mm** - the smallest that fits is **0.20 mm**, which is
+  `min_microvia_diameter`, not a through via. `U18.7`: **NO legal escape at 0.25, 0.20 OR
+  0.15 mm**, blocked by `U18.8` and `U18.6`, its own adjacent pads. A layer change needs a via;
+  a via needs somewhere to land; **U18 is an MSOP-10 on 0.50 mm pitch and the board's floor is
+  `min_via_diameter` 0.50 mm.**
+- **ON THE AUTHORITATIVE PLACEMENT THE SAME STRATEGY WORKS**, and that contrast is the finding:
+  `LTC_GATE U18.10 -> R76.1` **8.794 mm F.Cu / 2 vias / 2 s** (was NO_PATH at 26 s),
+  `U18.10 -> Q3.4` 15.552 mm, `LTC_SHDN U18.6 -> Q4.3` **24.525 mm at 0.25 mm** (was rejected),
+  FAULT_N all four functional pads one island **on B.Cu unaided**, **LTC_GATE ONE ISLAND across
+  all six functional pads - the first time with PR-43 in force** - and **U18 6/8 -> 7/8**.
+  `BAT_PROTECTED_P` 167.401 mm with **zero vias**.
+- **PLACEMENT ERROR, CAUGHT AND CORRECTED IN-TASK:** the first nine screens ran without
+  `AQROOT_ECO_002F`. Section 14 caught it - Kelvin came out **3.179 / 13.152 mm, 9.973 mm
+  mismatch** against 002I's 4.464 / 4.464 / 0.000. Repeated on the ECO placement; both sets are
+  reported and labelled.
+- **THREE HARNESS DEFECTS FIXED.** **PR-45**: `connect_hop` chose its via site by "closest point
+  a via fits" instead of "closest point a via fits THAT THIS PAD CAN REACH" - for `U18.10` it
+  returned a site 2.30 mm away on the far side of the copper the pin was escaping past; it now
+  floods the near layer from the escape point, and rejects sites that break `min_hole_to_hole`.
+  **PR-46**: two silences - every hop failure was reported as `NO_PATH: no F corridor` even when
+  the far layer was never attempted, **and a connection rejected by the DRC gate was reverted and
+  requeued with NO LOG LINE AT ALL**. Both now report. **D-249 corridor rule areas now span both
+  outer layers** - they existed on B.Cu only, so an F.Cu escape by a ruled tap fell outside its
+  own corridor and was judged against the 0.60 mm class floor.
+- All five suites re-run after the harness changes: **PASS**.
+- **U19 search NOT PERFORMED** - section 11 gates it on the section 9 screen. **Phase A, Phase B,
+  manifest and authoritative write NOT PERFORMED.**
+- **NEW CTO ISSUES.** **D-257**: D-256's instrument does not fit U18's pin field - microvia /
+  via-in-pad (a reachable **0.20 mm** site exists 1.20 mm out from `U18.10`), a land-pattern
+  change, moving U18 (forbidden by section 7), or accepting `U18.7`/`U18.10` unrouted.
+  **PR-47**: the Q3 south row is a **proved land-pattern conflict** - `Q3_CS` (pins 1, 3) and
+  `LTC_GATE` (pins 2, 4) interleave with one B.Cu slot and in all three orderings measured the
+  loser's middle pad has no escape at any width on either layer. **PR-48**: D-249 relaxes WIDTH,
+  not CLEARANCE - `U18.1` and the U14.2/U14.3 branches are all blocked by
+  `BAT_MAIN routed clearance` (0.300 mm required, 0.250 / 0.2347 / 0.2350 mm actual).
+  **Section 6 flag**: `LTC_OV` reached F.Cu through the generic fallback (13.604 mm, 4 vias) and
+  it is a high-impedance comparator input.
+- 11 screens, one at a time, 501-890 s each, ~1.8 h. **No cloud-vs-PC speedup claimed** - the
+  committed PC figures are for unlike workloads.
+
+B-34 REMAINS OPEN. Converter routing NOT STARTED.
+PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-CLOUD-001: the harness becomes reproducible on a second machine
 
 **PASS. INFRASTRUCTURE / TOOLING ONLY - NO PCB PROGRESS EARNED.** No schematic, no copper, no
