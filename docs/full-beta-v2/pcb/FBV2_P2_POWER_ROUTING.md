@@ -412,3 +412,36 @@ north row. That is the list to shorten.
 
 PR-43 is available behind `AQROOT_PR43=1`. The default ordering keeps `U18` at
 8 of 8.
+
+---
+
+## 11. The R80/R81 lever, measured — and why the west margin is short of layers
+
+`FBV2-P2-002J` screened six `R80` poses and ran two full Phase A runs on the two
+best. The result closes the first lever of D-255.
+
+**Every candidate kept `R80.1` and `D12.1` connected**, so PR-43's result does
+not depend on where `R80` sits. **None reached U18 8/8.** K6 alone closed both
+D-255 casualties — and cost `Q3_CS`, which §12 protects, plus `LTC_GATE`.
+
+    baseline (PR-43 off)   24/29     U18 8/8, BAT_RAW open
+    baseline (PR-43 on)    24/29     U18 6/8
+    K6                     20/29     both pins fixed, Q3_CS split
+    K1                     22/29     both pins joined, LTC_GATE in 5 islands
+
+**One reordering and seven placements have all landed at or below 24 of 29.**
+That is the signature of a corridor short of *layers*, not of lanes: each change
+chooses a different loser at constant total.
+
+**The rule for the blocks that follow:** when a class of nets already needs vias
+to exist at all — here `LTC_GATE`, `LTC4368_FAULT_N`, `LTC_SHDN` and `LTC_OV`
+each carry two — stop conceding them one at a time and give the class a planned
+second-layer path. Conceding vias individually redistributes the shortage;
+planning the layer removes it.
+
+### PR-44 — rule-area corridors must resolve their tracks fresh
+
+`grow()` stored `PCB_TRACK` objects. A later `qb.revert()` frees that copper, and
+the next `apply_areas()` read freed memory — a deterministic SIGSEGV that killed
+two full Phase A runs at connection 28. Store UUIDs; resolve against the board.
+Any harness holding KiCad object pointers across a revert has this bug.

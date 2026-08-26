@@ -1,3 +1,26 @@
+## 2026-08-26 - FBV2-P2-002J: the R80/R81 lever fails, and PR-44 unblocks Phase A
+
+**FAIL.** No authoritative copper; board byte-identical to `984423c`. Preflight all PASS.
+
+- **Section 5 local screen built and VALIDATED** (`AQROOT_LOCAL=R80`): 19 named connections,
+  reproduces D-255 exactly (U18 6/8, open `U18.7`/`U18.10`) in **471 s vs ~2 h** - 15x cheaper.
+  Sound because the copper boxing `U18.7` is the `LTC_SHDN` `U18.6 -> R80.2` run, inside the U18 field.
+- **Six R80 poses screened.** `R80.1` and `D12.1` connected in every one. **None reached 8/8.**
+  K6 (R80 8.000,68.000 r180 / R81 5.500,70.500 r90) is the only one closing BOTH D-255 pins.
+- **Two full Phase A runs, both worse than doing nothing**: K6 **20/29** (`Q3_CS` splits -
+  section 12 protects it), K1 **22/29** (`LTC_GATE` fragments into five islands).
+- **The 002I baseline of 24/29 stands.** Across 002I+002J, one reordering and seven
+  placements have all landed at or below it.
+- **Section 10 via reserve NOT triggered** - `U18.7` is the easy pin. **The section 10 stop
+  condition IS met**: `LTC_GATE` degrades under every R80/R81 move. Stopped for CTO review.
+- **U19 search NOT performed** - section 9 needs an R80/R81 winner first.
+- **PR-44 CLOSED**: `apply_areas` called `GetClass()` on PCB_TRACK objects freed by a revert -
+  a deterministic SIGSEGV at connection 28 that killed two full Phase A runs. Store UUIDs and
+  resolve against the board. `router_regression` ALL CHECKS PASS.
+
+CTO decision required (D-256): the margin is short of layers, not lanes. B-34 OPEN.
+PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002I: PR-43 answered - BAT_RAW closes, U18 loses two pins, the margin is full
 
 **FAIL on section 5 Case D.** No authoritative copper; board byte-identical to `984423c`.

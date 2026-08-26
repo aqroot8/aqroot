@@ -48,8 +48,15 @@ def mst(pads):
 
 
 def area_stats(board, area_trk):
+    """PR-44: `area_trk` holds track UUIDs, not track objects - see
+    `apply_areas`.  Resolve them against the board, and drop any whose copper a
+    revert has since removed."""
+    live = {}
+    for t in board.GetTracks():
+        live[str(t.m_Uuid.AsString())] = t
     out = {}
-    for name, trks in area_trk.items():
+    for name, ids in area_trk.items():
+        trks = [live[i] for i in ids if i in live]
         if not trks:
             continue
         ps = RU.corridor_from_tracks(board, trks)
@@ -96,9 +103,27 @@ def main():
     # it did at 002E, so the 002E result stays reproducible.
     if os.environ.get('AQROOT_ECO_002F'):
         import place_p2_002f as ECO
-        ECO.apply(pcb, report=False)
-        print("FBV2-P2-002F placement ECO applied to the scratch copy: "
-              "%d footprints moved" % len(ECO.MOVES))
+        # FBV2-P2-002J: AQROOT_ECO_EXTRA names a JSON file of additional or
+        # replacement moves, {ref: [x, y, rot, layer]}, applied on top of the
+        # 002F ECO.  Section 5 tests R80/R81 poses one local change at a time,
+        # and section 7 tests U19; overriding through a file keeps the committed
+        # ECO itself unedited until a pose is actually proven.
+        extra = os.environ.get('AQROOT_ECO_EXTRA')
+        if extra:
+            import json as _j
+            ov = _j.load(open(extra))
+            saved = dict(ECO.MOVES)
+            for r, v in ov.items():
+                ECO.MOVES[r] = tuple(v)
+            ECO.apply(pcb, report=False)
+            print("FBV2-P2-002F ECO + %d override(s) applied to the scratch "
+                  "copy: %s" % (len(ov), ', '.join(sorted(ov))))
+            ECO.MOVES.clear()
+            ECO.MOVES.update(saved)
+        else:
+            ECO.apply(pcb, report=False)
+            print("FBV2-P2-002F placement ECO applied to the scratch copy: "
+                  "%d footprints moved" % len(ECO.MOVES))
     b = pcbnew.LoadBoard(pcb)
     tp = [f for f in b.GetFootprints() if f.GetReference() == 'TP34'][0]
     if tp.GetLayer() != pcbnew.B_Cu:
@@ -147,13 +172,29 @@ def main():
         """PR-11: every exception area is a CORRIDOR around its own branch
         centreline, not a bounding box.  A box around a 20 mm branch was a
         67 x 23 mm hole in the trunk rule; a corridor covers the branch copper
-        plus 0.10 mm per side and nothing else."""
-        for name, trks in area_trk.items():
+        plus 0.10 mm per side and nothing else.
+
+        PR-44 (FBV2-P2-002J): AND IT MUST RESOLVE ITS TRACKS FRESH EVERY TIME.
+        `grow` used to keep the PCB_TRACK objects themselves.  When a later
+        connection fails and `qb.revert()` removes its copper, KiCad frees those
+        objects, and the next `apply_areas()` called GetClass() on freed memory -
+        a hard SIGSEGV, deterministic, at whichever connection happened to be
+        the first revert after an area had grown.  It killed two full Phase A
+        runs at exactly connection 28.
+
+        Storing the UUID instead is safe: the object is alive when `grow` reads
+        it, and the board is the authority on what still exists afterwards."""
+        live = {}
+        for t in qb.b.GetTracks():
+            live[str(t.m_Uuid.AsString())] = t
+        for name, ids in area_trk.items():
+            trks = [live[i] for i in ids if i in live]
             if trks:
                 RU.set_area_poly(qb.b, name, RU.corridor_from_tracks(qb.b, trks))
 
     def grow(area, tracks):
-        area_trk.setdefault(area, []).extend(tracks)
+        area_trk.setdefault(area, []).extend(
+            str(t.m_Uuid.AsString()) for t in tracks)
 
     def gate(verbose=False):
         tg = [time.time()]
@@ -733,8 +774,10 @@ def main():
     # PR-23's own finding is the reason this is not a rule change: "there is no
     # fixed right order, because the window each pin has left depends on the
     # copper already laid" - and the copper in front of Q3 is not where it was.
-    add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
-    add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
+    LOCAL = (os.environ.get('AQROOT_LOCAL') or '').upper()
+    if LOCAL != 'R80':
+        add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
+        add("8b. LTC_GATE", PL.PLAN_8_GATE, CT_S)
     # PR-36: THE MICROAMP TAPS GO BEFORE THE CROSS-BOARD SIGNAL RUNS, AND IT IS
     # PR-18's ARGUMENT ONE REGION OVER.
     #
@@ -747,19 +790,45 @@ def main():
     #
     # A 1 mm slot cannot be recovered; a cross-board run has the whole board to
     # find another way.  Same scarcity rule as PR-18, so the taps go first.
-    add("BAT_RAW taps",
-        PL.PLAN_TAPS_PR43 if os.environ.get('AQROOT_PR43') else PL.PLAN_TAPS,
-        CT_W)
-    add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
-    add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
-    for short in PL.DEADCELL:
+    if LOCAL != 'R80':
+        add("BAT_RAW taps",
+            PL.PLAN_TAPS_PR43 if os.environ.get('AQROOT_PR43')
+            else PL.PLAN_TAPS, CT_W)
+        add("9. LTC trip network", PL.PLAN_9_TRIP, CT_S)
+    # FBV2-P2-002J section 5: the LOCAL qualification prefix.
+    #
+    # A full Phase A costs about two hours, and section 5 needs a probe that is
+    # "much cheaper" while still using REAL prefix copper - PR-40 rules out any
+    # geometry-only proxy.  Everything up to and including the LTC trip network
+    # is exactly the copper that decides the west margin: the 1.50 mm trunk,
+    # BAT_SENSE/BAT_MID, the PR-43 BAT_RAW bridges, U18's eight-pin field, the
+    # FET sense pairs, LTC_GATE, the microamp taps and the two cross-board trip
+    # runs (LTC_SHDN U18.6->Q4.3 and LTC4368_FAULT_N R82.1->Q9.1).
+    #
+    # The dead-cell network, the fuel-gauge branches, the capacitor taps, the
+    # closure stage and the test points are all EAST or SOUTH of the contested
+    # margin and none of them can free a lane there, so they are skipped.  This
+    # is a bounded prefix, not a reduced-fidelity model: every connection it
+    # does attempt is attempted by the real router in the real order.
+    # AQROOT_LOCAL=R80 lays ONLY the west-margin prefix: the 1.50 mm trunk,
+    # the BAT_MAIN chain, the PR-43 BAT_RAW bridges and U18's eight-pin
+    # field.  That is enough, because the copper that boxed U18.7 in D-255
+    # is LTC_SHDN's U18.6 -> R80.2 segment, which is IN the U18 field, laid
+    # between two adjacent pins of the same package.  Everything skipped is
+    # east or south of the contested margin and cannot free a lane there.
+    # AQROOT_LOCAL=U19 keeps the full prefix and adds the dead-cell network,
+    # which IS U19's pin field, stopping before gauge/caps/closure/test pts.
+    if LOCAL != 'R80':
+        add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
+    for short in ([] if LOCAL == 'R80' else PL.DEADCELL):
         # PR-33: the dead-cell block is a fine-pitch pin field too - U19 is an
         # SOT-23-8 on 0.65 mm pitch - so it gets the same measured ordering.
         add("10b. dead-cell network",
             [(N + short, a, b_, 'SIG', PL.LAD_SIG, None)
              for a, b_ in mst(pads[N + short])], CT_S, tight='U19')
-    add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
-    add("12. capacitor taps", PL.PLAN_12_CAPS, CT_W)
+    if not LOCAL:
+        add("11. fuel-gauge branches", PL.PLAN_11_GAUGE, CT_W)
+        add("12. capacitor taps", PL.PLAN_12_CAPS, CT_W)
     # PR-24: CLOSE WHAT IS STILL OPEN, BEFORE THE TEST POINTS.
     #
     # The plan names ONE pad pair per connection, and when that exact pair has
@@ -847,12 +916,19 @@ def main():
             else:
                 CLOSE.append((nt, ref_, '(node)', 'TRUNK' if wide else 'SIG',
                               lad, None))
-    add("12b. close remaining open pads", CLOSE, CT_W)
+    # The closure stage offers a tap to every still-open pad in scope, which
+    # is about a hundred connections.  For the section 5 west-margin screen
+    # it is skipped: a candidate judged 8/8 on the NAMED plan alone is
+    # strictly better than the D-255 control, which reaches only 6/8 even
+    # WITH closure.  The screen is therefore conservative, never generous.
+    if LOCAL != 'R80':
+        add("12b. close remaining open pads", CLOSE, CT_W)
 
     # PR-37, second half: TP15's own stub is ruled 0.20 mm inside
     # BAT_PROT_TAP_U14, and PLAN_13_TEST already names both.  It is listed here
     # only so the ordering is explicit.
-    add("13. test-point stubs", PL.PLAN_13_TEST, CT_W)
+    if LOCAL != 'R80':
+        add("13. test-point stubs", PL.PLAN_13_TEST, CT_W)
 
     def u11_escape():
         """The U11.2 flare is emitted with the trunk, not as a queue item: the
@@ -1005,13 +1081,20 @@ def main():
             DRU.write(pcb, stubs)
             import net_ledger as NL
             lg = NL.ledger(pcb)
+            # FBV2-P2-002J section 5 criteria A..H, in order.
             TARGETS = [('BAT_RAW', 'R80.1', 'Q2.7'),
                        ('BAT_RAW', 'D12.1', 'R77.1'),
                        ('LTC_SHDN', 'U18.6', 'Q4.3'),
+                       ('LTC4368_FAULT_N', 'U18.7', 'R81.2'),
+                       ('LTC_GATE', 'U18.10', 'R76.1'),
                        ('LTC_GATE', 'U18.10', 'Q2.2'),
                        ('Q3_CS', 'Q3.1', 'Q3.3'),
                        ('BAT_PROTECTED_P', 'R75.2', 'U11.2'),
                        ('BAT_PROTECTED_P', 'U14.2', 'TP15.1')]
+            U18PINS = [('U18.1', 'R77.1'), ('U18.2', 'R79.2'),
+                       ('U18.3', 'R77.2'), ('U18.6', 'R80.2'),
+                       ('U18.7', 'R81.2'), ('U18.8', 'R75.2'),
+                       ('U18.9', 'R75.1'), ('U18.10', 'R76.1')]
             tg = {}
             for (nt, a_, b2) in TARGETS:
                 tg['%s %s->%s' % (nt, a_, b2)] = bool(joined(a_, b2))
@@ -1025,9 +1108,14 @@ def main():
                         break
                 others = [o for o in pads.get(pd, {}) if o != ref] if pd else []
                 u19[ref] = bool(any(joined(ref, o) for o in others))
+            u18 = {}
+            for (a_, b2) in U18PINS:
+                u18[a_] = bool(joined(a_, b2))
             res = dict(probe='PR-40 full-prefix, end of pass 1',
+                       local=os.environ.get('AQROOT_LOCAL') or None,
                        routed=state['done'], skipped=state['skipped'],
-                       targets=tg, u19=u19,
+                       targets=tg, u19=u19, u18=u18,
+                       u18_connected=sum(1 for v in u18.values() if v),
                        u19_connected=sum(1 for v in u19.values() if v),
                        ledger_connected=lg['connected'],
                        ledger_total=lg['total'],
@@ -1037,9 +1125,12 @@ def main():
             json.dump(res, open(os.path.join(
                 SP, os.environ.get('AQROOT_PROBE_OUT', 'probe_pass1.json')),
                 'w'), indent=1)
-            print('PR-40 PROBE  targets %s  U19 %d/7  ledger %d/%d'
+            print('PR-40 PROBE  targets %s  U18 %d/8  U19 %d/7  ledger %d/%d'
                   % (''.join('1' if v else '0' for v in tg.values()),
+                     res['u18_connected'],
                      res['u19_connected'], lg['connected'], lg['total']))
+            print('             open U18 pins: %s'
+                  % (', '.join(k for k, v in u18.items() if not v) or 'none'))
             sys.stdout.flush()
             return
 
