@@ -1,3 +1,48 @@
+## 2026-08-26 - FBV2-P2-002O: the rigid-cluster hypothesis is confirmed and misses by 0.132 mm
+
+**DECISION STOP.** **The authoritative stackup was NOT changed** - section 17 gates it on section 14.
+PCB byte-identical to `fcacf0e` (md5 `a908cedfa9f9410aab327d8bd55b9f45`): **4 copper layers, zero
+signal tracks, zero signal vias**. All five suites PASS.
+
+- **D-260'S RIGID-CLUSTER HYPOTHESIS IS CORRECT ABOUT THE CAUSE.** Moving U18 together with
+  R76..R83 as one rigid body **eliminates 002N's three control-lane clearance failures** - they do
+  not recur. The hypothesis is confirmed; it simply cannot move far enough.
+- **THE KELVIN BLOCKER IS NOW CLOSED ARITHMETIC, NOT A SEARCH RESULT.** R75 at rot 0/180 needs a
+  **7.75 mm** corridor; the space between the board-edge clearance and the divider column is
+  **6.80 mm**. West limit `R75.x >= 4.075` (pad edge at 0.500 mm); east limit at cluster +0.50 is
+  `R75.x < 3.925` - **an empty window**. It first opens at **cluster +0.75 mm** (0.100 mm wide) -
+  **and +0.75 mm is exactly where D9 overlaps R77 by 0.170 mm.**
+- **ONLY CLUSTER +0.50 mm IS LEGAL.** Beyond it **D9** blocks R77 at +0.75 and +1.00; TP17 and C58
+  only appear at +1.25. **Section 13's test-point scan therefore has a clear answer: the obstruction
+  is D9, a functional diode in the protected high-current path, NOT a test point.** D9 would need to
+  move **0.170 mm** east.
+- **THE OTHER ORIENTATION, RE-MEASURED WITH THE CLUSTER MOVED: rot 90/270 bottoms out at 5.132 mm
+  mismatch against a 5.000 mm limit** (002N measured 5.177 unmoved; the shift bought 0.045 mm).
+  Routed anyway, that pose gives **U18 4 of 8** - moving R75 east far enough to improve the mismatch
+  puts the shunt under U18's escape corridor. **Both routes miss by less than two tenths of a
+  millimetre.**
+- **WHAT DID CLOSE: `LTC_OV R77.2 -> R78.1` routed 2.901 mm on B.Cu with ZERO vias** - the section
+  11 requirement, met, without moving R77 at all. And **section 11's fallback lock is now enforced**:
+  `AQROOT_LTCOV_BCU` denies LTC_OV and LTC_UV the generic layer fallback during qualification, so
+  002N's "connected, but 13.087 mm across F.Cu with two vias" **cannot be reported as a pass again**.
+- **TWO TOOLING DEFECTS FOUND.** (1) The first pose filter checked courtyards against the outline
+  and nothing else, and proposed R75 with its west pad **0.325 mm** from the edge against a 0.500 mm
+  clearance - every connection was rejected from the first one and nothing routed; the edge rule now
+  applies to the **pads**. (2) The placement guard refused a candidate because the file said `270.0`
+  and KiCad reports `-90.0` - **the same pose**; angles are now compared modulo 360, because a guard
+  that fires on a difference that is not a difference trains people to ignore it, and this guard
+  exists precisely because 002K ran nine screens on the wrong placement.
+- **DECISIONS REQUIRED:** (a) **authorise a 0.170 mm eastward move of D9**, which admits the
+  +0.75 mm cluster shift and a Kelvin mismatch of ~0.10 mm - a protection-architecture call since D9
+  is in the high-current path; (b) **or relax the mismatch from 5.000 to 5.132 mm**, noting the pose
+  that achieves it also costs four U18 control pins so this alone does not close the gate; (c) **or
+  change the shunt** - R75's 5.925 mm pad pitch is what pins the rot 90/270 mismatch AND what makes
+  the rot 0/180 corridor 7.75 mm wide, so a physically shorter 15 mOhm part relieves both at once.
+  Raised, not taken.
+
+**U19 NOT searched** (section 20). Phase A NOT run. No battery signal copper. B-34 REMAINS OPEN.
+Converter routing NOT STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002N: D-259(c) closed, R75 Kelvin solved analytically, gate still FAILS
 
 **FAIL at section 11.** **The authoritative stackup was NOT changed** - section 16 gates the lock on

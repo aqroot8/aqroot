@@ -727,3 +727,53 @@ pad-escape necking block, a later and more specific rule, so DRC does not demand
 **Over-applying a clearance is how a legal escape becomes NO_LEGAL_ESCAPE.** A
 router-side margin cannot see which corridor rule governs a pair; the
 per-connection DRC gate can, and it stays the authority.
+
+---
+
+## FBV2-P2-002O — a corridor 6.80 mm wide and a part that needs 7.75
+
+002N's failure was read as "the divider column moved without U18". That reading
+was correct: move them together and the three control-lane clearance failures
+disappear. It also turned out not to matter, because the rigid cluster cannot
+travel far enough, and the reason is a subtraction.
+
+    R75 at rot 0/180 needs        7.75 mm   (2 x 3.875 mm courtyard half-width)
+    corridor actually available   6.80 mm   (west edge clearance -> divider column)
+
+    west limit                    R75.x >= 4.075
+    east limit, cluster +0.50     R75.x <  3.925     <- empty
+    east limit, cluster +0.75     R75.x <  4.175     <- opens, 0.100 mm wide
+
+Cluster +0.75 mm is where **D9 overlaps R77 by 0.170 mm**. Only +0.50 mm is
+legal, so the window never opens. TP17 and C58 obstruct only from +1.25 mm, so
+the test-point lever — the cheap one, the one §13 exists to find — does not
+apply here. **The obstruction is a functional diode in the protected path.**
+
+The other orientation was re-measured rather than assumed: rot 90/270 bottoms
+out at **5.132 mm** mismatch against 5.000 (002N: 5.177 unmoved). Routed, that
+pose costs four U18 control pins, because moving R75 east far enough to improve
+the mismatch puts the shunt under U18's escape corridor.
+
+### The rule this adds
+
+**When two constraints both bind within a tenth of a millimetre, stop searching
+placements and go back to the part.** R75's 5.925 mm pad pitch is *both* the
+reason rot 90/270 cannot beat 5 mm — the mismatch floors at the shunt's own
+length — *and* the reason rot 0/180 needs 7.75 mm of corridor. One dimension is
+generating both walls. No amount of translation, rotation or cluster
+re-arrangement addresses a dimension; only a different part does.
+
+That is a component decision and it is raised, not taken. But it is worth
+noticing that four consecutive placement tasks have been trading one
+sub-millimetre casualty for another around a single 5.925 mm object.
+
+### And two ways tooling wasted a screen
+
+- **A pose filter that checks the outline is not checking the board.** R75 at
+  x = 3.900 rot 180 puts its west pad 0.325 mm from the edge against a 0.500 mm
+  clearance; every connection was rejected from the first, and the screen
+  produced nothing. Edge rules belong on the pads.
+- **A guard that fires on `270.0` versus `-90.0` is a guard people learn to
+  ignore.** Angles compare modulo 360 now. The placement-identity assertion is
+  the one piece of tooling that must never cry wolf — it exists because 002K
+  ran nine screens on the wrong board.

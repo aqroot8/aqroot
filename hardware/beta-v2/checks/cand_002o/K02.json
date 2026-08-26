@@ -1,0 +1,79 @@
+{
+ "name": "K02",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002O: the U18+R76..R83 RIGID CLUSTER translated (+0.50, +0.00) mm with every offset preserved, and R75 turned to rot 180 so its pads lie along x. One coupled candidate.",
+ "cluster_dx": 0.5,
+ "cluster_dy": 0.0,
+ "kelvin": [
+  8.028,
+  7.926,
+  0.102
+ ],
+ "sense_probe": {
+  "ok": true,
+  "w": 1.0,
+  "mm": 13.141
+ },
+ "moves": {
+  "U18": [
+   3.5,
+   72.4,
+   90.0,
+   "B.Cu"
+  ],
+  "R76": [
+   9.325,
+   75.225,
+   0.0,
+   "B.Cu"
+  ],
+  "R77": [
+   9.0,
+   71.5,
+   0.0,
+   "B.Cu"
+  ],
+  "R78": [
+   9.325,
+   69.675,
+   0.0,
+   "B.Cu"
+  ],
+  "R79": [
+   9.325,
+   67.825,
+   0.0,
+   "B.Cu"
+  ],
+  "R80": [
+   9.325,
+   65.975,
+   0.0,
+   "B.Cu"
+  ],
+  "R81": [
+   9.325,
+   64.125,
+   0.0,
+   "B.Cu"
+  ],
+  "R82": [
+   9.325,
+   62.275,
+   0.0,
+   "B.Cu"
+  ],
+  "R83": [
+   9.325,
+   60.425,
+   0.0,
+   "B.Cu"
+  ],
+  "R75": [
+   3.9,
+   62.8,
+   180.0,
+   "B.Cu"
+  ]
+ }
+}

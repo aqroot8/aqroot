@@ -64,8 +64,16 @@ def differs(a, b_):
         if x is None or y is None:
             out.append((r, x, y))
             continue
+        # ANGLES ARE COMPARED MODULO 360.  KiCad stores 270 deg as -90, so a
+        # candidate file saying `270.0` and a board reporting `-90.0` describe
+        # the SAME pose - and the guard refused to route on exactly that,
+        # correctly by its own logic and uselessly in fact.  A guard that fires
+        # on a difference that is not a difference trains people to ignore it,
+        # which is the one thing this guard must never do.
         if (abs(x[0] - y[0]) > TOL_MM or abs(x[1] - y[1]) > TOL_MM
-                or abs(x[2] - y[2]) > 0.05 or x[3] != y[3]):
+                or abs((x[2] - y[2]) % 360.0) > 0.05
+                and abs((x[2] - y[2]) % 360.0 - 360.0) > 0.05
+                or x[3] != y[3]):
             out.append((r, x, y))
     return out
 

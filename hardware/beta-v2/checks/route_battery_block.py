@@ -40,6 +40,18 @@ FLOOR = {N + 'BAT_CONNECTOR_P': 600000, N + 'BAT_RAW': 600000,
 # pre-002M behaviour exactly.
 Q3_POFV = bool(os.environ.get('AQROOT_Q3_POFV'))
 
+# FBV2-P2-002O section 11: LTC_OV MAY NOT TAKE THE GENERIC LAYER FALLBACK
+# DURING QUALIFICATION.
+#
+# 002N ended with `LTC_OV` reported as one connected component and the report
+# was true and useless: `U18.3 -> R77.2` had gone 13.087 mm across F.Cu with two
+# vias, which is exactly the long generic excursion D-256 through D-259 have
+# each refused for a high-impedance comparator input.  A gate that accepts
+# "connected" without asking "connected HOW" will keep producing that answer.
+# With this set, LTC_OV is offered B.Cu and nothing else, so the screen either
+# proves a local route or reports no route - and cannot report a false pass.
+LTCOV_BCU_ONLY = bool(os.environ.get('AQROOT_LTCOV_BCU'))
+
 _d256 = (os.environ.get('AQROOT_D256') or '').upper()
 if _d256 and _d256 not in PL.D256_SETS:
     raise SystemExit('AQROOT_D256=%s is not one of %s'
@@ -526,7 +538,9 @@ def main():
                     used, pb, tapped = w, tgt, True
                     break
                 qb.revert(m)
-        if not r['ok'] and time.time() - t0 < ITEM_BUDGET:
+        ltcov_locked = (LTCOV_BCU_ONLY
+                        and net in (N + 'LTC_OV', N + 'LTC_UV'))
+        if not r['ok'] and not ltcov_locked and time.time() - t0 < ITEM_BUDGET:
             for use_node in (False, True) if not node else (True,):
                 for w in hop_lad:
                     if use_node and not skip:
