@@ -193,7 +193,17 @@ def compose(stubs, fine=()):
     for (name, net, clr, note) in FIXED_CLR:
         out.append(LOCAL_CLR % (note, clr, net, name))
     for (name, net, clr, vdia, vdrill, note) in fine:
-        out.append(LOCAL_CLR % (note, clr, net, name))
+        # VIA GEOMETRY ONLY.  A D-257 escape corridor exists so a 0.35/0.20
+        # through via is legal inside it; it does NOT need, and must not carry,
+        # a clearance floor.  The first six-layer screen showed why: the
+        # corridor is grown from the laid track with a 0.3 mm tolerance, so it
+        # swallows neighbouring copper, and a 0.20 mm floor imposed there then
+        # fires on pairs the corridor was never meant to govern -
+        # `LTC_OV R77.2 -> R78.1` was rejected by
+        # `D-257 LTC_GATE U18.10->Q3.4 escape ... clearance 0.2000; actual
+        # 0.1000`.  This is the FBV2-P2-002L lesson a second time: relax
+        # exactly what was measured to need relaxing.  The three PR-48 cases
+        # keep their clearance in FIXED_CLR, where they were measured.
         ann = (vdia - vdrill) / 2.0
         out.append(FINE_VIA % (note, vdia, net, name,
                                note, ann, net, name,

@@ -58,7 +58,10 @@ def ratsnest(pcb):
 
 
 # --------------------------------------------------------------------------
-def add_named_area(board, name, x0, y0, x1, y1, layers=('B.Cu', 'F.Cu')):
+CU_ALL = ('F.Cu', 'In1.Cu', 'In2.Cu', 'In3.Cu', 'In4.Cu', 'B.Cu')
+
+
+def add_named_area(board, name, x0, y0, x1, y1, layers=None):
     """A rule area that restricts NOTHING -- it exists only so a .kicad_dru rule
     can say `A.enclosedByArea('NAME')`.  That is what makes width a PATH ROLE
     rather than a property of the net name.
@@ -88,6 +91,14 @@ def add_named_area(board, name, x0, y0, x1, y1, layers=('B.Cu', 'F.Cu')):
     z.SetDoNotAllowZoneFills(False)
     z.SetDoNotAllowFootprints(False)
     z.SetZoneName(name)
+    # D-258: the corridor spans EVERY copper layer the board actually has.
+    # FBV2-P2-002K found this the hard way at four layers - the areas were
+    # B.Cu-only, so a ruled tap that took an F.Cu escape fell outside its own
+    # corridor and was judged against its class floor.  Six layers makes the
+    # same mistake available on four more, so the layer set is derived from the
+    # board rather than written down beside it.
+    if layers is None:
+        layers = [L for L in CU_ALL if board.IsLayerEnabled(board.GetLayerID(L))]
     ls = pcbnew.LSET()
     for L in layers:
         ls.addLayer(board.GetLayerID(L))

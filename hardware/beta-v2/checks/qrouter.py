@@ -21,7 +21,24 @@ import pcbnew
 
 MM = 1000000            # nm per mm
 EDGE_CLR = 500000       # 0.5 mm min copper->edge
-LNAME = {'F': pcbnew.F_Cu, 'B': pcbnew.B_Cu}
+# FBV2-P2-002M / D-258: the layer set is DERIVED FROM THE BOARD, not assumed.
+#
+# Until now this was `{'F': F_Cu, 'B': B_Cu}` and every obstacle loop was
+# `for L in ('F', 'B')`.  That was true while Full Beta v2 was four layers with
+# In1 a solid GND reference and In2 reserved for slow power distribution, and
+# it is exactly the assumption section 4 asks to be found.  On the six-layer
+# stack L3 and L4 are ROUTABLE SIGNAL LAYERS, and a router that cannot see them
+# cannot spend the capacity D-258 just bought.
+LNAME = {'F': pcbnew.F_Cu, 'B': pcbnew.B_Cu,
+         'I1': pcbnew.In1_Cu, 'I2': pcbnew.In2_Cu,
+         'I3': pcbnew.In3_Cu, 'I4': pcbnew.In4_Cu}
+
+# Which layers a router may LAY COPPER ON, by copper-layer count.  The GND
+# reference planes are never routable: on four layers In1 is the reference and
+# In2 is power-distribution only (a D-249-era rule that predates this task and
+# is not being relaxed here); on six layers In1 and In4 are the two solid
+# references and In2/In3 are the new signal layers.
+ROUTABLE = {4: ('F', 'B'), 6: ('F', 'B', 'I2', 'I3')}
 ASTAR_BUDGET = 500000     # directional states
 WAVE_BUDGET = 3000        # wavefront steps
 
@@ -174,7 +191,11 @@ class QBoard(object):
         self.b = pcbnew.LoadBoard(path)
         self.nets = {n.GetNetname(): n for n in self.b.GetNetsByName().values()}
         self.pads = {}          # (net, "REF.PAD") -> dict
-        self.shapes = {'F': [], 'B': []}
+        ncu = self.b.GetCopperLayerCount()
+        self.cu = tuple(L for L in ('F', 'I1', 'I2', 'I3', 'I4', 'B')
+                        if self.b.IsLayerEnabled(LNAME[L]))
+        self.routable = ROUTABLE.get(ncu, ('F', 'B'))
+        self.shapes = dict((L, []) for L in self.cu)
         self.holes = []         # blocks every layer
         self.escape_why = []
         self._scan()
@@ -211,10 +232,9 @@ class QBoard(object):
                 tag = ref + '.' + p.GetNumber()
                 onF, onB = p.IsOnLayer(pcbnew.F_Cu), p.IsOnLayer(pcbnew.B_Cu)
                 s = RR(pos.x, pos.y, sx, sy, r, ang, net, tag)
-                if onF:
-                    self.shapes['F'].append(s)
-                if onB:
-                    self.shapes['B'].append(s)
+                for L in self.cu:
+                    if p.IsOnLayer(LNAME[L]):
+                        self.shapes[L].append(s)
                 d = p.GetDrillSizeX()
                 if d > 0:
                     dy = p.GetDrillSizeY() or d
@@ -238,7 +258,7 @@ class QBoard(object):
             s = RR((bb.GetLeft() + bb.GetRight()) / 2.0,
                    (bb.GetTop() + bb.GetBottom()) / 2.0,
                    bb.GetWidth() / 2.0, bb.GetHeight() / 2.0, 0, 0, None, 'KO')
-            for L in ('F', 'B'):
+            for L in self.cu:
                 if z.IsOnLayer(LNAME[L]):
                     self.shapes[L].append(s)
 
@@ -250,7 +270,7 @@ class QBoard(object):
         for t in self.b.GetTracks():
             if t.GetClass() != 'PCB_TRACK':
                 continue
-            for L in ('F', 'B'):
+            for L in self.cu:
                 if t.IsOnLayer(LNAME[L]):
                     self.shapes[L].append(SEG(t.GetStart().x, t.GetStart().y,
                                               t.GetEnd().x, t.GetEnd().y,
@@ -912,7 +932,10 @@ class QBoard(object):
         v.SetNet(self.nets[net])
         self.b.Add(v)
         self.laid.append(v)
-        for L in ('F', 'B'):
+        # A THROUGH via is copper on every layer it passes, and on a six-layer
+        # board that is six, not two.  Missing the inner four is how an inner
+        # route would have been laid straight through a via barrel.
+        for L in self.cu:
             self.shapes[L].append(RR(x, y, dia / 2.0, dia / 2.0, dia / 2.0,
                                      0, net, 'via'))
         self.holes.append(RR(x, y, drill / 2.0, drill / 2.0, drill / 2.0,
@@ -1123,14 +1146,46 @@ def connect_role(qb, net, pa, pb, layer, trunk_w, clr_pad, clr_trk,
                     % (trunk_w / 1e6, pa['ref'], pb['ref']))
 
 
-def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
+def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far=None,
                 G=50000, fine=25000, via_dia=800000, via_drill=400000):
     """Route pad-to-pad with a layer hop: a short escape on `near` at each pad,
     a through via, and the run itself on `far`.
 
     Returns the same shape as connect_role plus the via count, so a hop can
     never be reported as if it were a flat route.
+
+    D-258: `far` now DEFAULTS TO EVERY ROUTABLE LAYER THAT IS NOT `near`, tried
+    in order.  On four layers that is F.Cu and the behaviour is exactly what it
+    always was; on the six-layer stack it is F.Cu, In2.Cu and In3.Cu, so a net
+    that cannot find an F.Cu corridor gets offered the two new internal signal
+    layers instead of being told there is no corridor at all.  Spending the
+    capacity D-258 bought is the whole point of buying it.
     """
+    if far is None:
+        far = [L for L in qb.routable if L != near]
+        # D-258 section 2: HIGH-CURRENT BATTERY COPPER STAYS ON OUTER 1 oz.
+        # The inner layers are 0.5 oz, where 1.5 A at a 10 K rise needs 2.73 mm
+        # by the .kicad_dru's own arithmetic - which defeats the point of going
+        # there - and the board already carries `BAT_MAIN is outer-layer only`
+        # as a rule.  Offering In2/In3 to a wide net produced exactly that
+        # rejection, three times, on `BAT_SENSE Q3.5 -> (node)`.  The new
+        # capacity is for the CONTROL nets; the trunk was never short of a
+        # layer, it was short of a lane.
+        if net in qb.wide_nets:
+            far = [L for L in far if L in ('F', 'B')]
+    if not isinstance(far, (list, tuple)):
+        far = [far]
+    if len(far) > 1:
+        best = None
+        for L in far:
+            r = connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk,
+                            near=near, far=L, G=G, fine=fine,
+                            via_dia=via_dia, via_drill=via_drill)
+            if r['ok']:
+                return r
+            best = best or r
+        return best
+    far = far[0]
     ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
     # PR-46: connect_hop used to report EVERY failure as
     # 'NO_PATH: no F corridor', including the two that have nothing to do with
@@ -1154,12 +1209,20 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
             # usually no room for it right at the escape point, so walk out on
             # the near layer to the closest point that can hold one instead of
             # giving up.
+            def free_everywhere(x, y):
+                """A THROUGH via is copper on every layer of the stack.
+                Checking only `near` and `far` was harmless while those WERE
+                the stack; on six layers it let a hop drop its via straight
+                onto another net's inner copper, and DRC answered
+                `shorting_items`.  The via has to clear the board, not the two
+                layers the hop happens to be thinking about."""
+                return all(qb.point_free(L, net, x, y, via_dia,
+                                         clr_pad, clr_trk, G_try)
+                           for L in qb.cu)
+
             cand = None
             for c in e[:6]:
-                if (qb.point_free(near, net, c['x'], c['y'], via_dia,
-                                  clr_pad, clr_trk, G_try) and
-                        qb.point_free(far, net, c['x'], c['y'], via_dia,
-                                      clr_pad, clr_trk, G_try)):
+                if free_everywhere(c['x'], c['y']):
                     cand = dict(c)
                     cand['walk'] = None
                     break
@@ -1168,10 +1231,11 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
                 # not merely the nearest one that exists.  See QBoard.via_site.
                 site = None
                 for c in e[:6]:
-                    site = qb.via_site(near, far, net, c, width, via_dia,
-                                       clr_pad, clr_trk, G_try,
-                                       via_drill=via_drill)
-                    if site is not None:
+                    st = qb.via_site(near, far, net, c, width, via_dia,
+                                     clr_pad, clr_trk, G_try,
+                                     via_drill=via_drill)
+                    if st is not None and free_everywhere(st[0], st[1]):
+                        site = st
                         break
                 if site is None:
                     fail = dict(ok=False, reason='NO_VIA_SITE',
@@ -1257,3 +1321,158 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far='F',
     return dict(ok=False, reason='NO_PATH',
                 why='no %s corridor at %.3f mm from %s to %s'
                     % (far, width / 1e6, pa['ref'], pb['ref']))
+
+
+def connect_pofv(qb, net, pa, pb, width, clr_pad, clr_trk, inner='I2',
+                 near='B', G=50000, fine=25000,
+                 via_dia=350000, via_drill=200000):
+    """PR-47: escape a pad that CANNOT escape, by putting the via IN it.
+
+    `Q3.3` is the case this exists for.  FBV2-P2-002L measured it as having NO
+    LEGAL ESCAPE at 0.25, 0.20 or 0.15 mm - blocked by `Q3.2` and `Q3.4`, its
+    own neighbours on a 1.27 mm SOIC-8 row where `Q3_CS` owns pins 1/3 and
+    `LTC_GATE` owns 2/4 and there is one B.Cu slot.  Both D-257 via geometries
+    failed the same way, and they had to: a via needs a landing site, a landing
+    site has to be REACHED from the pad, and no via size helps a pad that
+    cannot emit copper in any direction.
+
+    So the via goes INSIDE the pad.  D-258 authorises a filled-and-capped
+    ordinary THROUGH via-in-pad (POFV) for exactly this pad - not a blind via,
+    not a buried via, not a laser microvia - and the route leaves on one of the
+    six-layer stack's new internal signal layers, where the south-row conflict
+    does not exist.  The other end takes an ordinary external via, because it
+    has four escape directions and does not need the premium process.
+
+    THE FABRICATION PROCESS IS NOT OPTIONAL AND IT IS NOT IMPLIED BY THE
+    GERBERS.  A via inside a pad that is merely tented, mask-plugged or left
+    open wicks solder off the joint.  See docs FABRICATION_NOTES: this via must
+    be ordered as PLATED OVER FILLED VIA.
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    if inner not in qb.shapes:
+        return dict(ok=False, reason='NO_LAYER',
+                    why='%s is not a copper layer on this board' % inner)
+    # ---- pad A: the via sits in the pad, so there is no escape to find -----
+    ax, ay = pa['x'], pa['y']
+    half = min(pa['hx'], pa['hy'])
+    if via_dia / 2.0 > half:
+        return dict(ok=False, reason='POFV_TOO_LARGE',
+                    why='%s: %.2f mm via does not fit inside a %.2f mm pad'
+                        % (pa['ref'], via_dia / 1e6, 2 * half / 1e6))
+    # hole-to-hole is a drill rule the copper grids cannot see
+    for h in qb.holes:
+        if h.net == net:
+            continue
+        need = max(h.hx, h.hy) + via_drill / 2.0 + 250000
+        if math.hypot(h.cx - ax, h.cy - ay) < need:
+            return dict(ok=False, reason='POFV_HOLE_CLEARANCE',
+                        why='%s: via-in-pad too close to an existing hole'
+                            % pa['ref'])
+    # The via is inside its own pad on the pad's own layer, but it is a THROUGH
+    # via and therefore copper on the other five as well - including whatever
+    # sits at the same coordinates on the opposite face.
+    for L in qb.cu:
+        if L == near:
+            continue
+        if not qb.point_free(L, net, ax, ay, via_dia, clr_pad, clr_trk, fine):
+            return dict(ok=False, reason='POFV_LAYER_CONFLICT',
+                        why='%s: via-in-pad is not clear on %s' % (pa['ref'], L))
+    for G_try in (G, fine):
+        # ---- pad B: an ordinary external escape and a reachable via -------
+        other = pa
+        e = qb.escape(pb, near, width, width, clr_pad, clr_trk, G_try, ox, oy,
+                      prefer=(other['x'] - pb['x'], other['y'] - pb['y']))
+        if not e:
+            return dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                        why=qb.escape_why[0], pad=pb['ref'])
+        def all_layers_free(x, y):
+            """A THROUGH via is copper on EVERY layer, and the first six-layer
+            POFV attempt proved why that must be checked on every one of them:
+            checking only B.Cu and the inner run layer put a via through an
+            F.Cu pad and DRC returned
+            `shorting_items: Q3_CS and BAT_SENSE`.  A via that clears the two
+            layers you were thinking about is not a via that clears the board."""
+            return all(qb.point_free(L, net, x, y, via_dia,
+                                     clr_pad, clr_trk, G_try)
+                       for L in qb.cu)
+
+        site = None
+        cb = None
+        for c in e[:6]:
+            if all_layers_free(c['x'], c['y']):
+                site, cb = (c['x'], c['y']), c
+                break
+        if site is None:
+            for c in e[:6]:
+                st = qb.via_site(near, inner, net, c, width, via_dia,
+                                 clr_pad, clr_trk, G_try, via_drill=via_drill)
+                if st and all_layers_free(st[0], st[1]):
+                    site, cb = st, c
+                    break
+        if site is None:
+            return dict(ok=False, reason='NO_VIA_SITE',
+                        why='%s: no via site of %.2f mm reachable on %s'
+                            % (pb['ref'], via_dia / 1e6, near), pad=pb['ref'])
+        m = qb.mark()
+        total = 0.0
+        qb.track(net, near, pb['x'], pb['y'], cb['x'], cb['y'], cb['w'])
+        total += cb['ln']
+        if (cb['x'], cb['y']) != site:
+            gx0 = min(cb['x'], site[0]) - 6000000
+            gy0 = min(cb['y'], site[1]) - 6000000
+            blkn = qb.grid(near, net, cb['w'], clr_pad, clr_trk, gx0, gy0,
+                           max(cb['x'], site[0]) + 6000000,
+                           max(cb['y'], site[1]) + 6000000, G_try)
+            si = ((cb['x'] - gx0) // G_try, (cb['y'] - gy0) // G_try)
+            ti = ((site[0] - gx0) // G_try, (site[1] - gy0) // G_try)
+            nyy, nxx = blkn.shape
+            for (ii, jj) in (si, ti):
+                if 0 <= ii < nxx and 0 <= jj < nyy:
+                    blkn[jj, ii] = False
+            pth = qb.search(blkn, si, ti)
+            if pth is None:
+                qb.revert(m)
+                continue
+            pp = simplify(pth, int(gx0), int(gy0), G_try)
+            for k in range(len(pp) - 1):
+                qb.track(net, near, pp[k][0], pp[k][1],
+                         pp[k + 1][0], pp[k + 1][1], cb['w'])
+                total += math.hypot(pp[k + 1][0] - pp[k][0],
+                                    pp[k + 1][1] - pp[k][1])
+        qb.via(net, site[0], site[1], via_dia, via_drill)
+        qb.via(net, ax, ay, via_dia, via_drill)          # <- the POFV
+        # ---- the run itself, on the internal signal layer -----------------
+        margin = 8000000
+        x0 = max(min(ax, site[0]) - margin, qb.ex0 - 1000000)
+        y0 = max(min(ay, site[1]) - margin, qb.ey0 - 1000000)
+        x1 = min(max(ax, site[0]) + margin, qb.ex1 + 1000000)
+        y1 = min(max(ay, site[1]) + margin, qb.ey1 + 1000000)
+        ox2 = int(round((x0 - ox) / G_try)) * G_try + ox
+        oy2 = int(round((y0 - oy) / G_try)) * G_try + oy
+        blk = qb.grid(inner, net, width, clr_pad, clr_trk, ox2, oy2, x1, y1, G_try)
+        si = ((ax - ox2) // G_try, (ay - oy2) // G_try)
+        ti = ((site[0] - ox2) // G_try, (site[1] - oy2) // G_try)
+        ny, nx = blk.shape
+        for (ii, jj) in (si, ti):
+            if 0 <= ii < nx and 0 <= jj < ny:
+                blk[jj, ii] = False
+        path = qb.search(blk, si, ti)
+        if path is None:
+            qb.revert(m)
+            continue
+        pts = simplify(path, ox2, oy2, G_try)
+        for k in range(len(pts) - 1):
+            qb.track(net, inner, pts[k][0], pts[k][1],
+                     pts[k + 1][0], pts[k + 1][1], width)
+            total += math.hypot(pts[k + 1][0] - pts[k][0],
+                                pts[k + 1][1] - pts[k][1])
+        return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=2,
+                    pofv=[pa['ref']], layer=inner,
+                    via_dia=via_dia / 1e6, via_drill=via_drill / 1e6,
+                    via_xy=[(round(ax / 1e6, 3), round(ay / 1e6, 3)),
+                            (round(site[0] / 1e6, 3), round(site[1] / 1e6, 3))],
+                    pad_copper_mm=round((2 * half - via_dia) / 2e6, 4),
+                    trunk_mm=width / 1e6, minw=width / 1e6)
+    return dict(ok=False, reason='NO_PATH',
+                why='no %s corridor at %.3f mm from %s to %s'
+                    % (inner, width / 1e6, pa['ref'], pb['ref']))

@@ -34,6 +34,12 @@ FLOOR = {N + 'BAT_CONNECTOR_P': 600000, N + 'BAT_RAW': 600000,
 # D-256.  AQROOT_D256 names one of battery_route_plan.D256_SETS; the listed
 # connections take their PLANNED F.Cu hop first instead of last.  Unset means
 # the pre-D-256 behaviour exactly, so every earlier measurement is reproducible.
+# PR-47 / D-258: AQROOT_Q3_POFV routes Q3_CS off the contested south row
+# through a filled/capped ordinary THROUGH via-in-pad on Q3.3 and an internal
+# signal layer, leaving the B.Cu slot to the gate drive.  Unset reproduces the
+# pre-002M behaviour exactly.
+Q3_POFV = bool(os.environ.get('AQROOT_Q3_POFV'))
+
 _d256 = (os.environ.get('AQROOT_D256') or '').upper()
 if _d256 and _d256 not in PL.D256_SETS:
     raise SystemExit('AQROOT_D256=%s is not one of %s'
@@ -109,6 +115,14 @@ def main():
             int(os.environ['AQROOT_WATCHDOG']), repeat=True)
     t_all = time.time()
     pcb = RU.fresh(WORK, os.environ.get('AQROOT_SCRATCH', 'A'))
+    # D-258: AQROOT_SIXLAYER migrates the SCRATCH copy to the six-layer stack
+    # before anything is routed on it.  Section 4 requires the migration to be
+    # proven on scratch before the authoritative board is touched, and a screen
+    # that silently routed a four-layer board while claiming six would be the
+    # 002K placement error wearing a different hat.
+    if os.environ.get('AQROOT_SIXLAYER'):
+        import sixlayer as SIX
+        SIX.convert(pcb)
     # FBV2-P2-002F.  The battery-block PLACEMENT ECO is applied to the scratch
     # copy, never to the authoritative board: section 18 does not let this task
     # write authoritative signal copper, and until Phase A passes the placement
@@ -405,7 +419,25 @@ def main():
         # A failed hop falls through to the ordinary B.Cu ladder untouched:
         # this adds capacity, it does not remove an option.
         planned_via = None
-        if D256_FCU and not node and (net, a, b_) in D256_FCU:
+        # PR-47: the via-in-pad escape, tried first for the ONE connection
+        # D-258 authorises it for.  A failure falls through to the ordinary
+        # ladder untouched - this adds an option, it removes none.
+        if Q3_POFV and not node and (net, a, b_) in PL.POFV_Q3:
+            spec = PL.POFV_Q3[(net, a, b_)]
+            vd, vk = spec['via']
+            for w in ladder:
+                rr = QR.connect_pofv(qb, net, pa, pb, w, CP, ct,
+                                     inner=spec['inner'],
+                                     via_dia=vd, via_drill=vk)
+                if rr['ok']:
+                    r, used, hop, planned_via = rr, w, True, (vd, vk)
+                    break
+                qb.revert(m)
+            if r is not None and not r['ok']:
+                r = None
+        if r is not None and r.get('ok'):
+            pass
+        elif D256_FCU and not node and (net, a, b_) in D256_FCU:
             # D-257's VIA HIERARCHY, and the order is the ruling: the PREFERRED
             # 0.35/0.20 ordinary through via is tried across the whole width
             # ladder first, and the 0.25/0.15 RESERVE is reached only when the
@@ -702,6 +734,7 @@ def main():
                             vias=r.get('vias', 0), layer=r.get('layer', 'B.Cu'),
                             via_dia=r.get('via_dia'), via_drill=r.get('via_drill'),
                             via_xy=r.get('via_xy'), fine_area=area if planned_via else None,
+                            pofv=r.get('pofv'), pad_copper_mm=r.get('pad_copper_mm'),
                             secs=round(time.time() - t0, 1)))
         print("  %-5s %-18s %-8s -> %-8s %8.3f mm  w=%.2f  g=%.3f %s%s %.0fs"
               % (role, net.split('/')[-1], a, b_, r['mm'], used / 1e6, r['grid'],
@@ -849,6 +882,19 @@ def main():
     # order is section 8's: the 1.50 mm trunk and the BAT_MAIN chain claim their
     # copper first, THEN U18's pin field, with U18.10 (the functional gate
     # output) and U18.1 first inside it per PR-17.
+    # PR-47 / D-258: THE POFV ESCAPE GOES FIRST, AND IT IS THE SAME SCARCITY
+    # ARGUMENT PR-18 AND PR-36 ALREADY WON.
+    #
+    # `Q3.3` has exactly ONE way out of this design - a filled/capped via inside
+    # its own pad - and that via is a THROUGH via, so it needs its site clear on
+    # all six layers, F.Cu included.  Scheduled after the chain, it was not:
+    # `BAT_SENSE Q3.6 -> R75.1` had taken an F.Cu hop whose 1.00 mm track runs
+    # at x 2.800 down the whole of Q3's row, 0.365 mm from `Q3.3`'s centre, and
+    # the POFV came back POFV_LAYER_CONFLICT on F.  A 1.00 mm trunk has the
+    # whole board to find another way; this pad has one point.  So the pad goes
+    # first and the trunk routes around the result.
+    if Q3_POFV:
+        add("0a. Q3 south-row POFV escape (PR-47)", PL.PLAN_8_CS_POFV, CT_S)
     add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
     add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
     # PR-43: the divider chain's two long links to the battery node compete for
@@ -908,11 +954,20 @@ def main():
     # the gaps, and the gate hops over what is left.
     q3_first = ((N + 'Q3_CS', 'Q3.1', 'Q3.3') in D256_FCU
                 and (N + 'LTC_GATE', 'Q3.2', 'Q3.4') not in D256_FCU)
+    # PR-47 / D-258: with Q3_CS taking the via-in-pad onto an internal signal
+    # layer, the B.Cu south-row slot belongs to the gate drive, so the gate
+    # goes first whenever the POFV escape is in force.
+    if Q3_POFV:
+        q3_first = True
     if LOCAL != 'R80':
         if q3_first:
             add("8a0. LTC_GATE Q3 row, before the sense pair (D-256)",
                 PL.PLAN_8_GATE_Q3_FIRST, CT_S)
-        add("8a. FET sense pairs", PL.PLAN_8_CS, CT_S)
+        # With the POFV escape already laid at 0a, section 8a keeps only the
+        # Q2 pair; re-queuing Q3_CS here would just be skipped as joined.
+        add("8a. FET sense pairs",
+            [r for r in PL.PLAN_8_CS if r[1].startswith('Q2')] if Q3_POFV
+            else PL.PLAN_8_CS, CT_S)
         add("8b. LTC_GATE",
             [r for r in PL.PLAN_8_GATE
              if not (q3_first and (r[0], r[1], r[2])

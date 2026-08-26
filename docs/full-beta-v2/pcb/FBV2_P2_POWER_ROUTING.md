@@ -602,3 +602,52 @@ perfect Kelvin. It is tempting to read that as a straight trade, and it is not:
 of placement away from the limit and the rest is a branch being sent the long
 way round. The lever is **R75** — held fixed "initially" — and it is one short
 branch, not a re-floorplan.
+
+---
+
+## FBV2-P2-002M — six layers buy the Q3 conflict, not the corridor
+
+D-258 moved the board to six layers on the strength of 002L's measurement, and
+the measurement was right about what it said and silent about what it did not.
+
+**What six layers bought, exactly:** `Q3.3` — the pad that could not emit legal
+copper in any direction at any width, on either layer, at any via size. A
+filled/capped 0.35/0.20 **through** via inside its own pad and 4.626 mm on
+In2.Cu closes `Q3_CS`, and the B.Cu south-row slot goes back to the gate drive:
+`LTC_GATE Q3.2 → Q3.4`, **5.500 mm, zero vias**, against 002L's only available
+answer of a 15.991 mm F.Cu excursion. One premium via on one pad, and the
+MOSFET gate stops paying for the sense pair's geometry.
+
+**What six layers did not buy:** the corridor. `BAT_SENSE Q3.6 → R75.1` is a
+1.00 mm wide-net trunk that needs 0.30 mm to everything, and the POFV escape
+needs the same few square millimetres. The trunk cannot move inward — 0.5 oz
+inner copper needs 2.73 mm for 1.5 A at a 10 K rise, which is the board's own
+arithmetic, and `BAT_MAIN is outer-layer only` already said so. So the two
+contend on B.Cu and F.Cu exactly as before, and DRC reports
+`clearance 0.3000 mm; actual 0.2400 mm`.
+
+### The rule this adds
+
+**Layers relieve PIN-FIELD conflicts and do nothing for CORRIDOR contention.**
+A pin that cannot escape is short of somewhere to go, and another layer is
+somewhere to go. A 1.00 mm trunk and a fine escape competing for the same
+2 mm² are short of *area on the layers they are allowed to use*, and adding
+layers they are not allowed to use changes nothing. Before buying layers for a
+congestion problem, ask which of the two it is.
+
+The corollary for scheduling: **a through via's site must be clear on every
+layer, so the pad with one option must be routed before the trunk with many.**
+Scheduled after the chain, the Q3.3 POFV came back `POFV_LAYER_CONFLICT on F`
+— blocked by `BAT_SENSE`'s own F.Cu hop running 0.365 mm from the pad centre.
+PR-18's scarcity argument, now in three dimensions.
+
+### And a via is copper on every layer
+
+Three defects in this task were one defect: a router that had only ever seen
+two layers. Its obstacle model held two; `connect_hop` sited its vias by
+checking two; and it could route to only one of the two new ones. Each was
+caught by DRC on real copper — `shorting_items`, twice, from a via dropped onto
+another net's inner copper.
+
+**A via that clears the two layers you were thinking about is not a via that
+clears the board.**

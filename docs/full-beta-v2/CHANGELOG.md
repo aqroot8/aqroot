@@ -1,3 +1,62 @@
+## 2026-08-26 - FBV2-P2-002M: six layers proven on scratch, PR-47 closed, gate FAILS on LTC_OV and BAT_SENSE
+
+**FAIL at section 14.** **The authoritative stackup was NOT changed** - section 16 gates the lock on
+section 14. PCB byte-identical to `bc1d436` (md5 `a908cedfa9f9410aab327d8bd55b9f45`): **4 copper
+layers, zero signal tracks, zero signal vias**, In1.Cu one filled island. All five suites PASS.
+
+- **SIX-LAYER MIGRATION PROVEN ON SCRATCH.** 6 copper layers in order
+  (F.Cu / In1.Cu / In2.Cu / In3.Cu / In4.Cu / B.Cu), explicit **JLC06161H-7628** stackup,
+  **1.6028 mm**, **In1.Cu AND In4.Cu each one GND island** built from the same outline, no outer or
+  inner-signal pours, outline 72.100 x 148.100 mm - and a **DRC histogram IDENTICAL to the
+  four-layer baseline**. The In1 guard was EXTENDED, not weakened: In4 gets the identical GND-only
+  rule and `SWITCH_NODE never on In2` is repeated for In3.
+- **PR-47 CLOSED ON SCRATCH.** `Q3_CS Q3.3 -> Q3.1` routes **4.626 mm at 0.25 mm on In2.Cu** through
+  a filled/capped **0.35/0.20 ordinary THROUGH via-in-pad** at `Q3.3`, with **0.125 mm of pad copper
+  remaining each side**; the far end keeps an ordinary via. `Q3_CS` **one component**, `LTC_GATE`
+  **one component across all six functional pads**, **U18 8/8** - and the gate drive goes from
+  002L's only option, a 15.991 mm F.Cu excursion, to **5.500 mm on B.Cu with ZERO vias**. The
+  premium process is spent on **one pad**; no footprint or toe was modified.
+- **BUT SECTION 14 FAILS ON TWO NETS, AND IT IS THE SAME TRADE ONE REGION OVER.**
+  **`BAT_SENSE Q3.6 -> R75.1`**: `BAT_MAIN routed clearance 0.3000 mm; actual 0.2400 mm` - the
+  1.00 mm trunk and the POFV copper want the same corridor, and a wide net cannot be sent inward
+  because section 2 keeps high-current copper on outer 1 oz. **`LTC_OV R77.2 -> R78.1`**:
+  `NO_VIA_SITE` - **this is section 13's stop condition in substance**, since section 13 forbids
+  adopting the long generic F.Cu fallback as the final design. **Six layers removed the Q3 conflict,
+  which is what they were bought for**; what remains is a clearance contest over a few square
+  millimetres, which is a placement question.
+- **U18 six-layer re-screen and the R75 lever were NOT run** - re-screening against a prefix that
+  cannot close `BAT_SENSE` or `LTC_OV` would measure the wrong board, and 002K is the standing
+  lesson on that.
+- **THREE HARNESS DEFECTS, ALL ONE FAMILY - adding layers to a router that had only ever seen two.**
+  (1) the obstacle model saw two layers; the copper and routable sets are now DERIVED FROM THE BOARD
+  and a through via registers copper on all of them. (2) `connect_hop` sited its via checking only
+  `near` and `far` - harmless while those WERE the stack; on six layers it put a via onto another
+  net's inner copper and DRC said `shorting_items`. (3) `connect_hop` could only reach F.Cu, so the
+  new capacity was unreachable; `far` now defaults to every routable layer except `near` - **and
+  never an inner layer for a wide net**, which `BAT_MAIN is outer-layer only` proved three times in
+  one connection.
+- **THE RULE CORRECTION, A SECOND TIME:** the D-257 escape corridors were emitting a 0.20 mm
+  clearance floor alongside their via-geometry override; the corridor is grown from the track with a
+  0.3 mm tolerance, so it swallowed neighbours and the floor fired on pairs it never meant to govern
+  - `LTC_OV` was rejected by a rule named after `LTC_GATE`'s escape. **A relaxation applied where
+  nothing needed relaxing is a restriction.** Escape corridors now carry **via geometry only**.
+- **PR-48 RE-VERIFIED on six layers:** `U18.1` VIN in the BAT_RAW main island; `U14.2`, `U14.3` and
+  `TP15.1` all in the `BAT_PROTECTED_P` trunk island.
+- **POFV FABRICATION NOTE and IMPEDANCE IMPACT REGISTER** written to
+  `architecture/FBV2_SIXLAYER_STACKUP.md`. The via is **PLATED OVER FILLED VIA** - not tented, not
+  mask-plugged, not open, not blind, not a microvia - recorded as a process order because Gerbers
+  alone do not force it. **No impedance width is claimed unchanged**; every controlled net is
+  scheduled for recalculation, and the **NFC transmit arms** are flagged as the real electrical
+  change (reference moves from across a 1.065 mm core to In4 at 0.2104 mm).
+- **HONEST LIMIT ON THE STACKUP NUMBERS:** the outer 0.2104 mm 7628 prepreg is carried from
+  JLC04161H-7628; the **inner distribution is DERIVED** to total 1.6 mm and **must be confirmed
+  against JLCPCB's published table before Gerbers are ordered**.
+- Mechanically inert and re-measured as such: outline 72.100 x 148.100, 1.6 mm nominal, footprints
+  unchanged, `p1_regression` PASS on every boss, keepout, envelope and connector check.
+
+**U19 NOT searched** (section 20). Phase A NOT run. B-34 REMAINS OPEN. Converter routing NOT
+STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002L: PR-48 and D-257 proven, PR-47 is a via-in-pad decision
 
 **DECISION STOP** (section 17: *"If Q3 requires via-in-pad: 002L = DECISION STOP, not PASS"*).

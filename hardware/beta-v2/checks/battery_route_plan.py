@@ -407,3 +407,25 @@ D256_VIA = D257_VIA_PREFERRED
 PLAN_8_GATE_Q3_FIRST = [
     (N + 'LTC_GATE', 'Q3.2', 'Q3.4', 'SIG', LAD_SIG, None),
 ]
+
+
+# ---- PR-47 / D-258: the Q3 south-row POFV escape -------------------------
+#
+# `Q3.3` cannot emit legal copper in any direction at any legal width, so it
+# takes a filled/capped ordinary THROUGH via-in-pad and leaves on one of the
+# six-layer stack's internal signal layers.  `Q3.1` keeps an ORDINARY external
+# via - it has four escape directions and does not need the premium process,
+# and section 6 forbids adding via-in-pad to unrelated pads pre-emptively.
+#
+# With Q3_CS off the B.Cu south row entirely, `LTC_GATE Q3.2 -> Q3.4` gets the
+# slot back on B.Cu with zero vias - which is the right answer for a MOSFET
+# gate drive and the reason this is worth a premium via on one pad.
+POFV_Q3 = {
+    (N + 'Q3_CS', 'Q3.3', 'Q3.1'): dict(pofv='Q3.3', inner='I2',
+                                        via=(350000, 200000)),
+}
+
+PLAN_8_CS_POFV = [
+    (N + 'Q2_CS', 'Q2.1', 'Q2.3', 'SIG', LAD_SIG, None),
+    (N + 'Q3_CS', 'Q3.3', 'Q3.1', 'SIG', LAD_SIG, None),
+]
