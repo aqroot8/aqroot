@@ -40,6 +40,11 @@ FLOOR = {N + 'BAT_CONNECTOR_P': 600000, N + 'BAT_RAW': 600000,
 # pre-002M behaviour exactly.
 Q3_POFV = bool(os.environ.get('AQROOT_Q3_POFV'))
 
+# FBV2-P2-002Q section 9: route the two R75 Kelvin taps BEFORE the trunk, so
+# the 1.50 mm copper cannot take the lane a measurement branch needs.  Unset
+# reproduces the pre-002Q ordering exactly.
+KELVIN_FIRST = bool(os.environ.get('AQROOT_KELVIN_FIRST'))
+
 # FBV2-P2-002O section 11: LTC_OV MAY NOT TAKE THE GENERIC LAYER FALLBACK
 # DURING QUALIFICATION.
 #
@@ -117,6 +122,39 @@ def connected(pcb, a, b):
     s = {str(i.m_Uuid.AsString()) for i in cn.GetConnectedItems(pa)}
     return str(pb.m_Uuid.AsString()) in s
 
+
+
+def ladder_retry(ladder, attempt, on_fall=None):
+    """PR-49, as a standalone rule so it can be regression-tested directly.
+
+    `attempt(lad)` routes with the ladder it is handed and returns
+    `(ok, gate_rejected_width)`:
+
+        (True,  None)  the connection was routed AND passed every gate
+        (False, w)     a rung routed geometrically at width `w` and the gate
+                       rejected it; its copper has been reverted
+        (False, None)  the connection failed for a reason that is not a gate
+                       rejection - no corridor, no escape, no legal target
+
+    On a gate rejection the ladder is truncated to the rungs strictly NARROWER
+    than the rejected one and the attempt is repeated.  Nothing is invented:
+    the rungs come from the path role's own authorised ladder, so this can
+    never take a net below its standing floor.
+    """
+    lad = [w for w in ladder]
+    while lad:
+        ok, gw = attempt(lad)
+        if ok:
+            return True
+        if gw is None:
+            return False
+        nxt = [w for w in lad if w < gw]
+        if not nxt:
+            return False
+        if on_fall is not None:
+            on_fall(gw, nxt[0])
+        lad = nxt
+    return False
 
 def main():
     # PR-15: a SIGSEGV used to kill the run with no Python frame at all.  Enable
@@ -381,6 +419,48 @@ def main():
         return None
 
     def run(net, a, b_, role, ladder, area, ct, fatal=True):
+        """PR-49.  A WIDTH LADDER IS NOT A LADDER UNTIL THE GATE HAS SPOKEN.
+
+        `run_once` treats a rung as successful the moment `connect_role`
+        returns geometrically ok, and the DRC / connectivity gate runs AFTER
+        that.  So a rung that routes and is then REJECTED by the gate used to
+        abandon the whole connection - the remaining rungs of an already
+        authorised ladder were never tried.
+
+        FBV2-P2-002P is the case that proves it costs real results.
+        `BAT_PROTECTED_P R75.2 -> D9.1` routed at 1.50 mm, failed
+        `copper_edge_clearance 0.5000 mm; actual 0.4125 mm`, and stopped -
+        while `PLAN_1_BPP_TRUNK` carries `[1.50, 1.20]` precisely so the trunk
+        can fall to its D-249 floor, and 1.20 mm was legal at that pose.  The
+        rung that would have closed the trunk was authorised, legal, and never
+        attempted.
+
+        THIS IS NOT A WIDTH-RELAXATION MECHANISM.  It only ever walks the
+        ladder the path role ALREADY had: no rung is invented, nothing goes
+        below the standing floor, no netclass or clearance is touched, DRC is
+        never suppressed, and the copper from a rejected rung is fully reverted
+        before the next one is attempted.  If every authorised rung fails, the
+        connection fails and the board is exactly as it was.
+        """
+        def attempt(lad):
+            state.pop('gate_w', None)
+            ok = run_once(net, a, b_, role, lad, area, ct, fatal=False)
+            return ok, (None if ok else state.pop('gate_w', None))
+
+        def fell(gw, nxt):
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.2f mm rejected, "
+                  "falling to %.2f mm"
+                  % (net.split('/')[-1], a, b_, 'LADDER_RETRY',
+                     gw / 1e6, nxt / 1e6))
+            sys.stdout.flush()
+
+        if ladder_retry(ladder, attempt, fell):
+            return True
+        if fatal and not state['fail']:
+            state['fail'] = state['last']
+        return False
+
+    def run_once(net, a, b_, role, ladder, area, ct, fatal=True):
         if state['fail']:
             return False
         pa = pads[net].get(a)
@@ -671,6 +751,11 @@ def main():
                 area_trk.pop(area, None)
             state['last'] = '%s %s->%s (%s) : %s %s' % (
                 net.split('/')[-1], a, b_, role, g['why'], g.get('detail', ''))
+            # PR-49: tell the caller WHICH rung the gate rejected, so the next
+            # narrower authorised rung can be tried instead of the connection
+            # being abandoned.
+            if used is not None:
+                state['gate_w'] = used
             # PR-46: SAY SO.  A connection rejected by the DRC / ratsnest gate
             # used to be reverted and requeued in COMPLETE SILENCE - no line in
             # the log, no entry in the journal, nothing.  It routed, it was
@@ -909,6 +994,9 @@ def main():
     # first and the trunk routes around the result.
     if Q3_POFV:
         add("0a. Q3 south-row POFV escape (PR-47)", PL.PLAN_8_CS_POFV, CT_S)
+    if KELVIN_FIRST:
+        add("0b. R75 Kelvin taps, before the trunk (D-262)",
+            PL.PLAN_0A_KELVIN, CT_W, tight='U18')
     add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
     add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
     # PR-43: the divider chain's two long links to the battery node compete for
@@ -929,7 +1017,10 @@ def main():
     # behind a flag so the measurement is reproducible.  This is a CTO call.
     if os.environ.get('AQROOT_PR43'):
         add("5b. BAT_RAW long bridges (PR-43)", PL.PLAN_TAPS_BRIDGE, CT_W)
-    add("6b. U18 pin field", PL.PLAN_0_U18, CT_W, tight='U18')
+    add("6b. U18 pin field",
+        [r for r in PL.PLAN_0_U18
+         if not (KELVIN_FIRST and (r[0], r[1], r[2]) in PL.KELVIN_KEYS)],
+        CT_W, tight='U18')
     # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
     #
     # Section 9 put the gate network before the FET sense pairs, and at the
@@ -1394,4 +1485,7 @@ def main():
         print("bounded stub exceptions:", [(s[0], s[2]) for s in stubs])
 
 
-main()
+# PR-49: guarded so `ladder_retry` can be imported and regression-tested
+# without launching a two-hour routing run as a side effect of the import.
+if __name__ == '__main__':
+    main()

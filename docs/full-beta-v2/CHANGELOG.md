@@ -1,3 +1,54 @@
+## 2026-08-27 - FBV2-P2-002Q: PR-49 delivered and proven; closing the trunk costs three control pins
+
+**FAIL at section 14.** **The authoritative stackup was NOT changed** - section 18 gates it on
+section 14. PCB byte-identical to `adabe98` (md5 `a908cedfa9f9410aab327d8bd55b9f45`): **4 copper
+layers, zero signal tracks, zero signal vias**. All five suites PASS.
+
+- **PR-49 IS DELIVERED, REGRESSION-PROVEN AND DEMONSTRATED TWICE ON REAL COPPER.**
+  `BAT_PROTECTED_P R75.2 -> D9.1`: **1.50 mm routed then rejected on `copper_edge_clearance`,
+  `LADDER_RETRY` falls to 1.20 mm, and it routes 19.219 mm on B.Cu with zero vias** - exactly
+  section 6's expected evidence. A second instance appeared unprompted: `LTC_GATE U18.10 -> Q3.4`,
+  0.20 mm rejected, falling to 0.15 mm. **`BAT_PROTECTED_P` now carries `D9.1` in its functional
+  island**, closing the split 002P reported.
+- **THE RULE IS GENERAL, NOT A BOARD-SPECIFIC HACK.** It lives in one place,
+  `route_battery_block.ladder_retry`, so it is regression-tested directly rather than by reading,
+  and **G9 in `router_regression.py`** pins all five properties: falls to the next authorised rung;
+  **never invents a rung below the ladder**; fails cleanly when every rung is rejected; **does NOT
+  walk the ladder on a non-gate failure**; and leaves **no copper behind** (0 -> 5 -> 0 tracks).
+  `router_regression`: **ALL CHECKS PASS**, G1-G9. The safety boundary is structural - the retry
+  only ever walks the ladder the path role already had, so `PLAN_1_BPP_TRUNK` remains exactly
+  **1.50 mm target / 1.20 mm floor**.
+- **AND CLOSING THE TRUNK COSTS THREE U18 CONTROL PINS.** On the identical frozen 002P placement,
+  002P reported **U18 8/8 with the trunk ABSENT**; with PR-49 laying 19.219 mm of 1.20 mm trunk,
+  **U18 falls to 5/8** (`U18.2`, `U18.3`, `U18.7` open). The two results do not conflict - they are
+  the same board with one more connection on it. **002P's 8/8 was in part an artefact of a
+  connection that never got laid.**
+- **THE SECTION 9 KELVIN-ORDERING HYPOTHESIS IS MEASURED FALSE.** Routing the Kelvin taps before
+  the trunk gives **U18 4/8**; plan order gives 5/8. The same-net argument is correct and beside the
+  point: the taps do not obstruct the TRUNK, they take the pin-field lanes `LTC_UV`, `LTC_OV`,
+  `LTC_SHDN` and `FAULT_N` need. **The flag stays in the harness, off, so a rejected hypothesis
+  stays reproducible instead of becoming folklore.**
+- **Routed Kelvin, best case: 8.667 / 11.130 mm, mismatch 2.463 mm.** The mismatch is comfortably
+  inside 5.000 - **but `R75.2 -> U18.8` exceeds the 10.000 mm cap by 1.130 mm**, and
+  `R75.1 -> U18.9` takes an F.Cu excursion where section 8 prefers local B.Cu. Section 11's corridor
+  topologies were never reached, because ordering - the cheaper instrument section 9 asks for first
+  - made things worse. **Analytic Kelvin (7.378 / 7.267, mismatch 0.111) is NOT reported as a pass
+  while the routed result fails.**
+- **Section 14 PASSES on:** the published stack with In1/In4 one GND island each, D9 legal at
+  (13.600, 72.500) rot 0, `R75.2 -> D9.1` at 1.20 mm with zero vias and edge clearance met,
+  `BAT_PROTECTED_P` one functional island, the `U11.2` flare, `BAT_SENSE` one island (1.00 mm B.Cu,
+  zero vias), `Q3_CS`, `Q3_GATE`, Q3.3 POFV, `LTC_SHDN`, `BAT_RAW` with `U18.1`/`R80.1`/`D12`,
+  `BAT_MID` and `Q2_CS`. **It FAILS on:** Kelvin `R75.2 -> U18.8` 11.130 mm, U18 5/8, `LTC_GATE`
+  split, `LTC_OV` three islands and `FAULT_N` `[Q9.1, R81.2, R82.1]` vs `[U18.7]`. **Section 15's
+  sole-blocker clause does not apply** - FAULT_N is one of four and the cause is shared.
+- **Where each width is used:** 1.50 mm is the target and is attempted first everywhere the plan
+  asks for it; **1.20 mm is used on `R75.2 -> D9.1` alone**, because that pose puts R75.2's centre
+  1.187 mm from the board edge and a 1.50 mm track centred there needs 1.250 mm. The 1.20 mm rung
+  is D-249's standing floor, not a new concession.
+
+**U19 NOT searched** (section 20). Phase A NOT run. No battery signal copper. B-34 REMAINS OPEN.
+Converter routing NOT STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-27 - FBV2-P2-002P: the D9 lever works, BAT_SENSE closes, and the gate fails elsewhere
 
 **DECISION STOP** (section 17). **The authoritative stackup was NOT changed** - section 19 gates it

@@ -429,3 +429,28 @@ PLAN_8_CS_POFV = [
     (N + 'Q2_CS', 'Q2.1', 'Q2.3', 'SIG', LAD_SIG, None),
     (N + 'Q3_CS', 'Q3.3', 'Q3.1', 'SIG', LAD_SIG, None),
 ]
+
+
+# ---- FBV2-P2-002Q section 9: the R75 Kelvin taps, routed EARLY -----------
+#
+# D-262 read FBV2-P2-002P's Kelvin result correctly: the placement is fine and
+# the ROUTE is the problem.  Analytic 7.378 / 7.267 mm came back routed as
+# 18.764 / 7.886 - an eleven-millimetre detour on a measurement branch whose
+# direct path is under eight.
+#
+# The cause is ordering.  Inside PLAN_0_U18 the two Kelvin taps are queued with
+# the rest of U18's pin field, which runs AFTER the 1.50 mm trunk and the whole
+# BAT_MAIN chain.  By then the wide copper has taken the direct lane and the
+# tap goes round it.
+#
+# Each tap SHARES ITS NET with the current path it measures - `U18.9`/`R75.1`
+# are both BAT_SENSE, `U18.8`/`R75.2` are both BAT_PROTECTED_P - so early
+# Kelvin copper is same-net to the trunk that follows and cannot obstruct it as
+# a foreign net.  That is the argument for going first; it is NOT taken on
+# faith, and section 9 requires it measured on the real prefix.
+PLAN_0A_KELVIN = [
+    (N + 'BAT_SENSE', 'U18.9', 'R75.1', 'SENSE', [W_SENSE], 'BAT_SENSE_KELVIN'),
+    (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2', 'SENSE', [W_SENSE],
+     'BAT_PROT_TAP_U18'),
+]
+KELVIN_KEYS = frozenset((r[0], r[1], r[2]) for r in PLAN_0A_KELVIN)

@@ -837,3 +837,66 @@ cluster +0.75   U18 8/8, all nine targets, LTC_OV one component with no
 One of those needs a router fix; the other needs a clearance decision. Neither
 needs a different shunt: 002O's suspicion that R75's 5.925 mm pitch might have
 to go is withdrawn — with D9 moved, it fits.
+
+---
+
+## FBV2-P2-002Q — a ladder is not a ladder until the gate has spoken
+
+D-262 named one router defect and it was real. `run()` accepted a width rung the
+moment `connect_role` returned geometrically ok; the DRC gate ran afterwards; a
+rung that routed and was then rejected abandoned the whole connection. The
+remaining rungs of an **already authorised** ladder were never tried.
+
+    BAT_PROTECTED_P R75.2 -> D9.1
+      1.50 mm  routed, rejected: copper_edge_clearance 0.5000; actual 0.4125
+      LADDER_RETRY  1.50 mm rejected, falling to 1.20 mm
+      1.20 mm  19.219 mm, B.Cu, zero vias  -- ACCEPTED
+
+A second instance turned up unasked: `LTC_GATE U18.10 -> Q3.4`, 0.20 mm
+rejected, falling to 0.15 mm. One defect, two connections it had been quietly
+costing.
+
+### The rule, and why it cannot become a relaxation
+
+    attempt(lad) -> (True,  None)   routed AND passed every gate
+                    (False, w)      rung w routed, gate rejected it, copper reverted
+                    (False, None)   failed for a reason that is not a gate rejection
+
+On a gate rejection the ladder truncates to the rungs **strictly narrower** than
+the rejected one. On anything else it stops immediately. The retry walks only
+the ladder the path role already had — so it cannot invent a rung, cannot go
+below a standing floor, touches no netclass and no clearance, never suppresses
+DRC, and never keeps copper from a rejected rung. That is structure, not a
+promise, and `router_regression` G9 pins every clause of it.
+
+**Write the ladder semantics where they can be tested.** The rule lives in
+`ladder_retry`, a module-level function, precisely so the regression exercises
+the real code rather than a reimplementation of it.
+
+### What closing the trunk revealed
+
+002P reported **U18 8/8** on this exact placement. With the trunk actually laid,
+**U18 is 5/8**. The results do not conflict — 002P's 8/8 was measured on a board
+where `R75.2 -> D9.1` had been rejected and was simply absent.
+
+**A connection that fails is not a connection that costs nothing.** Every gate
+in this block has been evaluated on boards missing whichever route had most
+recently failed, and each time the missing copper flattered the rest. The
+contention now visible — the 1.20 mm trunk and the LTC4368 pin field wanting the
+same lanes — has been latent since 002M and could not be seen until PR-49 let
+the trunk exist.
+
+### And an ordering hypothesis that measured false
+
+§9 proposed routing the Kelvin taps before the trunk, on the argument that a tap
+shares its net with the current path it measures and therefore cannot obstruct
+it. The argument is correct and irrelevant:
+
+    Kelvin taps first   U18 4/8
+    plan order          U18 5/8
+
+The taps never obstructed the trunk. They took the pin-field lanes `LTC_UV`,
+`LTC_OV`, `LTC_SHDN` and `FAULT_N` needed. **Same-net reasoning tells you what a
+route cannot block; it tells you nothing about what it will occupy.** The flag
+stays in the harness, off, so the measurement stays reproducible rather than
+becoming folklore.

@@ -416,6 +416,92 @@ def main():
             '%d islands, connected=%s' % (br['islands'], br['connected']),
             br['islands'] > 1 and br['connected'] is False)
 
+        # ---- G9  PR-49 WIDTH-LADDER SEMANTICS ----------------------------
+        #
+        # A width ladder is not a ladder until the GATE has spoken.  Until
+        # FBV2-P2-002Q the driver treated a rung as accepted the moment
+        # connect_role() returned geometrically ok, and ran DRC afterwards - so
+        # a rung that routed and was then REJECTED abandoned the whole
+        # connection and the remaining authorised rungs were never tried.
+        #
+        # FBV2-P2-002P is the case that proves the cost:
+        # `BAT_PROTECTED_P R75.2 -> D9.1` routed at 1.50 mm, failed
+        # `copper_edge_clearance 0.5000 mm; actual 0.4125 mm`, and stopped -
+        # while PLAN_1_BPP_TRUNK carries [1.50, 1.20] exactly so the trunk can
+        # fall to its D-249 floor, and 1.20 mm was legal at that pose.
+        #
+        # This pins the semantics AND the safety boundary: the retry only ever
+        # walks the ladder it was given, so it can never take a net below its
+        # standing floor.
+        print('')
+        print('  -- G9 PR-49 width-ladder semantics ---------------------------')
+        import route_battery_block as RB
+
+        LAD = [1500000, 1200000]
+        seen = []
+
+        def first_rung_gate_rejected(lad):
+            seen.append(tuple(lad))
+            if lad[0] == 1500000:
+                return False, 1500000      # routed, then rejected by the gate
+            return True, None              # 1.20 mm passes
+
+        got = RB.ladder_retry(LAD, first_rung_gate_rejected)
+        chk('G9 gate-rejected rung falls to the next authorised rung',
+            'accepted=%s, tried %s' % (got, [[w / 1e6 for w in c] for c in seen]),
+            got is True and len(seen) == 2 and seen[1] == (1200000,))
+        chk('G9 the retry never invents a rung below the ladder',
+            'rungs offered %s' % sorted({w for c in seen for w in c}),
+            sorted({w for c in seen for w in c}) == sorted(LAD))
+
+        seen2 = []
+
+        def every_rung_gate_rejected(lad):
+            seen2.append(tuple(lad))
+            return False, lad[0]
+
+        got2 = RB.ladder_retry(LAD, every_rung_gate_rejected)
+        chk('G9 every rung rejected leaves the connection failed',
+            'accepted=%s after %d attempt(s)' % (got2, len(seen2)),
+            got2 is False and len(seen2) == 2)
+
+        seen3 = []
+
+        def not_a_gate_failure(lad):
+            seen3.append(tuple(lad))
+            return False, None             # NO_PATH / NO_LEGAL_ESCAPE
+
+        got3 = RB.ladder_retry(LAD, not_a_gate_failure)
+        chk('G9 a non-gate failure does not walk the ladder',
+            'accepted=%s after %d attempt(s)' % (got3, len(seen3)),
+            got3 is False and len(seen3) == 1)
+
+        # And the board-state half of the rule: a rejected rung must leave NO
+        # copper behind.  Measured on a real board rather than asserted.
+        pcb9 = fresh(work, 'G9')
+        qb9 = QR.QBoard(pcb9)
+        qb9.wide_nets = frozenset(N + x for x in
+                                  ('BAT_CONNECTOR_P', 'BAT_RAW', 'BAT_MID',
+                                   'BAT_SENSE', 'BAT_PROTECTED_P'))
+        P9 = {}
+        for (nt, rf), pd in qb9.pads.items():
+            P9.setdefault(rf, pd)
+        n9 = N + 'BAT_MID'
+        before_tracks = len([t for t in qb9.b.GetTracks()])
+        before_laid = len(qb9.laid)
+        m9 = qb9.mark()
+        r9 = QR.connect_role(qb9, n9, P9['Q2.6'], P9['Q3.8'], 'B',
+                             1000000, 200000, 300000)
+        mid_tracks = len([t for t in qb9.b.GetTracks()])
+        qb9.revert(m9)
+        chk('G9 a rejected rung leaves no copper on the board',
+            '%d -> %d -> %d tracks, laid %d -> %d'
+            % (before_tracks, mid_tracks,
+               len([t for t in qb9.b.GetTracks()]), before_laid, len(qb9.laid)),
+            r9['ok'] and mid_tracks > before_tracks
+            and len([t for t in qb9.b.GetTracks()]) == before_tracks
+            and len(qb9.laid) == before_laid)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))
