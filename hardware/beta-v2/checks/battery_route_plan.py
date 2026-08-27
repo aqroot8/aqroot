@@ -306,6 +306,13 @@ _Q3CS = [
 # it: the reserve is a LAYER excursion, not a via-geometry exception.
 D256_VIA_FOR = {
     (N + 'Q3_CS', 'Q3.1', 'Q3.3'): (600000, 300000),
+    # D-266 section 9, option B.  `LTC_UV U18.2 -> R79.2` is authorised to take
+    # an ORDINARY through via onto In2/In3 and return locally when B.Cu cannot
+    # carry it - measured on the first D-266 screen, it is NO_PATH at 0.20 mm
+    # and again at 0.15 mm, so option A is exhausted before option B is used.
+    # The via is the D-257 PREFERRED 0.35/0.20, not the reserve, and no
+    # clearance or width rule is relaxed to place it.
+    (N + 'LTC_UV', 'U18.2', 'R79.2'): (350000, 200000),
 }
 
 # The other side of the Q3 south-row trade.  Instead of giving Q3_CS the layer
@@ -317,8 +324,14 @@ _GQ3 = [
     (N + 'LTC_GATE', 'Q3.2', 'Q3.4'),
 ]
 
+_UV = [
+    (N + 'LTC_UV', 'U18.2', 'R79.2'),
+]
+
 D256_SETS = {
     'G':     _G,
+    # D-266 section 9: the GS board plus LTC_UV's authorised inner excursion.
+    'GSU':   _G + _S_LONG + _UV,
     'GS':    _G + _S_LONG,
     'GSQ':   _G + _S_LONG + _Q3CS,
     'GSX':   _G + _S_LONG + _GQ3,
@@ -478,4 +491,57 @@ KELVIN_INNER = {
         dict(layer='I2', via=(350000, 200000)),
     (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2'):
         dict(layer='I2', via=(350000, 200000)),
+}
+
+# ---------------------------------------------------------------- D-266 -----
+# FBV2-P2-002T sections 5-9 and 14: SCARCE-PAD ESCAPE RESERVATION.
+#
+# The order below is the ruling, and each step exists because a measurement
+# said so:
+#
+#   s5  the BAT_SENSE CURRENT path goes first.  On a clean board Q3.6, Q3.5,
+#       R75.1 and R75.2 every one escape at 1.50 mm with 2-5 directions
+#       (002T section 3), and 002S watched Q3.6 lose all of that to 28 track
+#       segments laid for other branches.  This is real 1.00 mm outer copper,
+#       zero vias, not a stub.
+#   s6-7 the four Kelvin endpoints reserve ONLY their neck and via.  Measured
+#       on the clean board, each has a 0.35/0.20 through-via site reachable
+#       within 0.89-1.38 mm on B.Cu -> In2.  Reserving is cheap; losing the
+#       exit is not.
+#   s14 the two branches are then JOINED on the SAME inner layer, which cannot
+#       fail for want of a lane because the scarce part was already spent.
+PLAN_D266_SENSE = [
+    (N + 'BAT_SENSE', 'Q3.5', 'Q3.6', 'TRUNK', LAD_BAT, None),
+    (N + 'BAT_SENSE', 'Q3.6', 'R75.1', 'TRUNK', LAD_BAT, None),
+]
+
+# BOTH ENDS OF A BRANCH ARE RESERVED AS ONE ITEM, AND GATED ONCE.
+#
+# Reserved end-by-end, the second stub of a pair was rejected with
+# `via_diameter`, `track_width` and `drill_out_of_range` together - the
+# signature of copper judged OUTSIDE its own D-249 corridor - while the first
+# passed, on either order.  A Kelvin branch is one path role and one corridor;
+# splitting its reservation into two separately-gated items asks DRC about half
+# a branch, which is not a question the rules were written to answer.
+PLAN_D266_RESERVE = [
+    (N + 'BAT_SENSE', 'U18.9', 'R75.1', 'RESERVE_PAIR', [W_SENSE], 'BAT_SENSE_KELVIN'),
+    (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2', 'RESERVE_PAIR', [W_SENSE], 'BAT_PROT_TAP_U18'),
+]
+
+PLAN_D266_JOIN = [
+    (N + 'BAT_SENSE', 'U18.9', 'R75.1', 'JOIN', [W_SENSE], 'BAT_SENSE_KELVIN'),
+    (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2', 'JOIN', [W_SENSE], 'BAT_PROT_TAP_U18'),
+]
+
+# D-266 section 9.  LTC_UV U18.2 -> R79.2 MAY BEGIN AT ITS MEASURED RUNG.
+#
+# 002S measured U18.2 still escaping at 0.20 mm on the finished board while the
+# branch had failed NO_PATH; 002T section 3 measures the same 0.20 mm exit on a
+# CLEAN board with two directions.  LAD_SIG already contains 0.20 - the branch
+# simply spent its corridor at 0.25 first.  Starting it one rung down is NOT a
+# new minimum and NOT a global ladder change: it applies to this ONE branch,
+# every other SIG connection keeps LAD_SIG unchanged, and nothing here goes
+# below the 0.15 mm floor LAD_SIG already carries.
+D266_LADDER = {
+    (N + 'LTC_UV', 'U18.2', 'R79.2'): [200000, 150000],
 }

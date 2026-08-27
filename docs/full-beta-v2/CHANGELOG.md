@@ -1,3 +1,41 @@
+## 2026-08-27 - FBV2-P2-002T: D-266 SCARCE-PAD RESERVATION; U18 8/8 INCLUDING BOTH KELVIN PINS; gate fails on the trunk alone
+
+**A - D-266 delivered and proven. B - decisive local gate: FAIL, on the trunk.**
+The authoritative PCB is UNCHANGED - six copper layers, zero signal tracks, zero signal vias.
+
+- **The premise is measured.** On a clean board at the frozen placement NOT ONE of the four
+  scarce sites is scarce: `Q3.6` escapes at 1.50 mm / 3 dir, `R75.1` 1.50 / 5, `R75.2`
+  1.50 / 3, `U18.9` / `U18.8` / `U18.2` 0.25 / 2 each, every one with a 0.35/0.20 through-via
+  site reachable within 0.890-1.375 mm. Every scarcity 002M-002S reported was made by copper
+  laid earlier.
+- **`Q3.5 -> Q3.6` 3.770 mm and `Q3.6 -> R75.1` 13.532 mm**, both at the 1.00 mm target on
+  B.Cu with **zero vias**, when routed first.
+- **Kelvin exits reserved, both ends of a branch as one gated item** - a 0.20 mm neck plus one
+  ordinary 0.35/0.20 through via, no microvia / blind / buried / POFV. A reservation is judged
+  by an **inverted gate**: DRC gains no class and the ratsnest must NOT move. It is never
+  counted as a route.
+- **U18 8 of 8, `U18.8` and `U18.9` CONNECTED, all nine PR-40 targets true - a first.**
+  `LTC_GATE` 6/6, `LTC_SHDN`, `LTC4368_FAULT_N` 4/4, `LTC_OV` (B.Cu, zero vias), `LTC_UV`,
+  `Q3_CS`, `Q2_CS`, `BAT_MID` all one component. **One control schedule was needed, not six.**
+- **Paired inner Kelvin built on In2, both branches, no F.Cu fallback:** A 7.989 mm / 2 vias,
+  B 10.456 mm / 2 vias, **mismatch 2.467 mm (inside the 5.000 mm limit)** - and **branch B is
+  0.456 mm over the 10.000 mm cap**, reported as a failure.
+- **`holes_co_located` is gone.** `BAT_PROT_SHDN_CTL Q4.1 -> R83.1` closed at 41.814 mm,
+  0.15 mm, F.Cu + 2 ordinary vias, no new clearance exception. `BAT_RAW R79.1` is split because
+  a ruled microamp tap is asked for a wide-net 0.80 mm via - raised, not fixed.
+- **The trunk is the whole remaining failure:** `R75.2 -> D9.1` = `NO LEGAL ESCAPE at
+  >= 1.200 mm; blocked by track (x37), R77.2 (x8), TP17.1 (x5)`. Zero corridor families were
+  generated because the failure is at `D9.1`'s escape, before a corridor question exists.
+- **Section 23 not triggered; Q3 does not move.** `BAT_SENSE` carries `Q3.5`, `Q3.6`, `R75.1`
+  and `U18.9` in one functional island with the full control field and both Kelvin branches on
+  the board.
+- New standing regression `d266_probe.py` (13 checks) and `scarce_char_002t.py`. All standing
+  suites PASS. No placement ECO, no Q3 POFV, no signal copper written. U19 NOT searched;
+  Phase A and Phase B NOT run; converter routing NOT started. B-34 remains open.
+- **No progress earned: PCB routing stays 0 %, overall stays 74 %.**
+  See [`CTO_DECISIONS.md`](CTO_DECISIONS.md) D-266 and
+  [`audits/2026-08-27-p2-002t-d266-reservation.md`](audits/2026-08-27-p2-002t-d266-reservation.md).
+
 ## 2026-08-27 - FBV2-P2-002S: D-264 DELIVERED AND PINNED; `LTC_SHDN` CLOSES; gate fails at section 21
 
 **A - D-264 path-role layer policy: DELIVERED.** **B - decisive local gate: FAIL.**

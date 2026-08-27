@@ -989,3 +989,46 @@ the F.Cu fallback (9.930 mm, 2 vias) and `U18.9 -> R75.1` did not route. The rem
 obstacle is escape width at the moment of routing, not layer permission — `U18.9`, `U18.2`
 and `R75.1` all still have legal escapes at 0.20–0.25 mm on the finished board. `Q3.6` is
 the one pad that is genuinely sealed, by `Q3.7`, `Q2.3` and 28 track segments.
+
+---
+
+## D-266 — scarce-pad reservation (2026-08-27, FBV2-P2-002T)
+
+> **Scarce-pad reservation is distinct from whole-branch-first routing. Q3.6
+> current copper is reserved early; U18.8/U18.9 Kelvin endpoints reserve only
+> their neck/via exits before controls; U18.2 may start at its already
+> authorized measured 0.20 mm rung.**
+
+Five permutations of whole-branch order (002M through 002S) each chose a
+different casualty and removed none. The reason is now measured: **on a clean
+board not one of the contested pads is scarce.** `Q3.6` escapes at 1.50 mm with
+three directions; `R75.1` at 1.50 mm with five; `U18.9`, `U18.8` and `U18.2` at
+0.25 mm with two each — every one with an ordinary 0.35/0.20 through-via site
+within 0.890–1.375 mm on B.Cu. The scarcity is made by copper laid earlier, and
+reordering only decides who makes it for whom.
+
+A reservation breaks that race rather than re-running it:
+
+* lay the **minimum** neck a scarce pad needs to leave its layer,
+* plant one **ordinary 0.35/0.20 through via** at the nearest site that neck can
+  actually reach — no microvia, no blind, no buried, no POFV,
+* stop, and complete the long run later over a layer that is not scarce.
+
+**A reservation is not a connection, and the harness enforces that structurally.**
+It is journalled as a reservation, counted in its own tally, and judged by an
+**inverted gate**: DRC must gain no class *and the ratsnest must not move*,
+because a reservation that moves the ratsnest has joined another node of its own
+net — the alternate-current-path failure the ruling forbids. A failed reservation
+leaves zero copper. `d266_probe.py` pins all of it.
+
+**What it bought, first time out:** `Q3.6` routes in one second at the 1.00 mm
+target; **U18 reaches 8 of 8 including both Kelvin pins**; the paired Kelvin is
+built on In2 with mismatch 2.467 mm; and **one** control schedule was needed
+instead of six.
+
+**What it has not yet reached: the trunk.** `R75.2 → D9.1` fails at `D9.1`'s
+escape — 37 track segments, `R77.2` and `TP17.1` — because the trunk is scheduled
+last, which is what protects the pin field. The ruling generalises to it: reserve
+`D9.1`'s trunk exit early, outer, 1.20 mm, zero vias, minimum neck. That extends
+reservation from sense copper to a **current** path, which is a
+protection-architecture decision and is raised, not taken.

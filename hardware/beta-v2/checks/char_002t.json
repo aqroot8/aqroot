@@ -1,0 +1,122 @@
+{
+ "Q3.6": {
+  "ref": "Q3.6",
+  "net": "BAT_SENSE",
+  "wide": true,
+  "layers": {
+   "B": {
+    "width": 0.3,
+    "dirs": 4
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 2.275,
+   "y": 54.325,
+   "dist": 0.89
+  },
+  "why": null
+ },
+ "U18.9": {
+  "ref": "U18.9",
+  "net": "BAT_SENSE",
+  "wide": true,
+  "layers": {
+   "B": {
+    "width": 0.25,
+    "dirs": 2
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 4.25,
+   "y": 71.625,
+   "dist": 1.325
+  },
+  "why": null
+ },
+ "U18.2": {
+  "ref": "U18.2",
+  "net": "LTC_UV",
+  "wide": false,
+  "layers": {
+   "B": {
+    "width": 0.25,
+    "dirs": 2
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 4.25,
+   "y": 75.875,
+   "dist": 1.375
+  },
+  "why": null
+ },
+ "R75.1": {
+  "ref": "R75.1",
+  "net": "BAT_SENSE",
+  "wide": true,
+  "layers": {
+   "B": {
+    "width": 0.3,
+    "dirs": 5
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 5.9,
+   "y": 63.5,
+   "dist": 1.212
+  },
+  "why": null
+ },
+ "U18.8": {
+  "ref": "U18.8",
+  "net": "BAT_PROTECTED_P",
+  "wide": true,
+  "layers": {
+   "B": {
+    "width": 0.25,
+    "dirs": 2
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 3.75,
+   "y": 71.625,
+   "dist": 1.325
+  },
+  "why": null
+ },
+ "R75.2": {
+  "ref": "R75.2",
+  "net": "BAT_PROTECTED_P",
+  "wide": true,
+  "layers": {
+   "B": {
+    "width": 0.3,
+    "dirs": 5
+   },
+   "F": null
+  },
+  "via": {
+   "near": "B",
+   "far": "I2",
+   "x": 2.4,
+   "y": 63.5,
+   "dist": 1.212
+  },
+  "why": null
+ }
+}

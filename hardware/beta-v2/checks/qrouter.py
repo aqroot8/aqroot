@@ -1493,3 +1493,206 @@ def connect_pofv(qb, net, pa, pb, width, clr_pad, clr_trk, inner='I2',
     return dict(ok=False, reason='NO_PATH',
                 why='no %s corridor at %.3f mm from %s to %s'
                     % (inner, width / 1e6, pa['ref'], pb['ref']))
+
+
+def reserve_escape(qb, net, pa, width, clr_pad, clr_trk, near='B', far='I2',
+                   G=50000, fine=25000, via_dia=350000, via_drill=200000,
+                   toward=None, target=None):
+    """D-266.  RESERVE ONE PAD'S EXIT, AND NOTHING MORE.
+
+    002S measured three of its four failing pads still escaping at 0.20-0.25 mm
+    on the FINISHED board: they were not walled in, they lost their lane to
+    copper laid earlier for a branch that had the whole board to work with.
+    002M-002S then showed that permuting whole-branch order only moves the
+    casualty, because every order still asks a scarce pad to win a race against
+    a branch that does not need to.
+
+    A reservation breaks the race instead of re-running it.  It lays the
+    MINIMUM neck the pad needs to leave `near`, plants one ordinary through via
+    at the nearest site that neck can actually reach, and stops.  The long run
+    is completed later, from the via, over a layer that is not scarce.
+
+    It is deliberately NOT a connection:
+
+      * it joins the pad to nothing, so it must never be counted as a route;
+      * it is one neck plus one via, so it cannot become an alternate current
+        path - a 0.20 mm sense stub carries no current a trunk would take;
+      * the via is chosen by via_site(), so it is reachable BY CONSTRUCTION
+        from this pad rather than merely nearby;
+      * the via clears every copper layer, because a through via is copper on
+        all of them (the same fact PR-47 learned as POFV_LAYER_CONFLICT).
+
+    Returns dict(ok, mm, via=(x, y), layer, vias=1) or a reason.
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    fail = None
+    for G_try in (G, fine):
+        prefer = toward
+        e = qb.escape(pa, near, width, width, clr_pad, clr_trk, G_try, ox, oy,
+                      prefer=prefer)
+        if not e:
+            # NOT a return.  A coarse grid can miss an exit a fine one finds -
+            # measured: `U18.9` escapes at 0.25 mm with two directions at
+            # 25 um and reports NO LEGAL ESCAPE at 50 um on the same copper -
+            # and reporting the coarse answer as the pad's verdict is exactly
+            # the misdiagnosis 002S spent a section on.  Fall to the fine grid
+            # and only then believe it.
+            fail = dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                        why=qb.escape_why[0], pad=pa['ref'])
+            continue
+
+        def free_everywhere(x, y):
+            return all(qb.point_free(L, net, x, y, via_dia, clr_pad, clr_trk,
+                                     G_try) for L in qb.cu)
+
+        # WHERE THE VIA LANDS DECIDES THE BRANCH LENGTH, so when the partner
+        # endpoint is known the site is CHOSEN rather than merely taken.
+        #
+        # `via_site` answers "nearest reachable site to this escape point",
+        # which is the right question for a hop that only has to get off the
+        # layer.  A Kelvin branch is judged on its TOTAL length against a
+        # 10.000 mm cap, and the nearest site can sit on the wrong side of the
+        # pad: measured, `R75.2`'s first reservation went 2.550 mm WEST while
+        # its partner `U18.8` lies north-east, and the branch came to 10.456 mm
+        # against the cap.  Scoring candidates on stub + remaining distance
+        # costs nothing and picks the exit that leaves the shortest run.
+        def score(x, y, stub):
+            if target is None:
+                return stub
+            return stub + math.hypot(target[0] - x, target[1] - y)
+
+        best, cand = None, None
+        if target is None:
+            # NO TARGET: keep the original two-phase preference EXACTLY - every
+            # escape point is tested for a via site AT the escape first, and
+            # only when none of them has one is a walk considered.  Collapsing
+            # the two phases into one loop changes which site a pad takes even
+            # when nothing else changed, and the `U18.8` pair that had been
+            # accepted came back rejected on `BAT_MAIN routed clearance`.  A
+            # fallback has to be the thing it is falling back TO.
+            for c in e[:6]:
+                if free_everywhere(c['x'], c['y']):
+                    cand = dict(c)
+                    cand['walk'] = None
+                    break
+            if cand is None:
+                for c in e[:6]:
+                    st = qb.via_site(near, far, net, c, width, via_dia,
+                                     clr_pad, clr_trk, G_try,
+                                     via_drill=via_drill)
+                    if st is not None and free_everywhere(st[0], st[1]):
+                        cand = dict(c)
+                        cand['walk'] = st
+                        break
+        else:
+            for c in e[:6]:
+                if free_everywhere(c['x'], c['y']):
+                    sc = score(c['x'], c['y'], c['ln'])
+                    if best is None or sc < best:
+                        best = sc
+                        cand = dict(c)
+                        cand['walk'] = None
+                st = qb.via_site(near, far, net, c, width, via_dia,
+                                 clr_pad, clr_trk, G_try, via_drill=via_drill)
+                if st is not None and free_everywhere(st[0], st[1]):
+                    sc = score(st[0], st[1], c['ln'] + math.hypot(
+                        st[0] - c['x'], st[1] - c['y']))
+                    if best is None or sc < best:
+                        best = sc
+                        cand = dict(c)
+                        cand['walk'] = st
+        if cand is None:
+            fail = dict(ok=False, reason='NO_VIA_SITE',
+                        why='%s: no %.2f mm via site reachable on %s'
+                            % (pa['ref'], via_dia / 1e6, near),
+                        pad=pa['ref'])
+            continue
+        m = qb.mark()
+        total = 0.0
+        qb.track(net, near, pa['x'], pa['y'], cand['x'], cand['y'], cand['w'])
+        total += cand['ln']
+        if cand.get('walk'):
+            gx0 = min(cand['x'], cand['walk'][0]) - 6000000
+            gy0 = min(cand['y'], cand['walk'][1]) - 6000000
+            blkn = qb.grid(near, net, cand['w'], clr_pad, clr_trk, gx0, gy0,
+                           max(cand['x'], cand['walk'][0]) + 6000000,
+                           max(cand['y'], cand['walk'][1]) + 6000000, G_try)
+            si = ((cand['x'] - gx0) // G_try, (cand['y'] - gy0) // G_try)
+            ti = ((cand['walk'][0] - gx0) // G_try,
+                  (cand['walk'][1] - gy0) // G_try)
+            nyy, nxx = blkn.shape
+            for (ii, jj) in (si, ti):
+                if 0 <= ii < nxx and 0 <= jj < nyy:
+                    blkn[jj, ii] = False
+            pth = qb.search(blkn, si, ti)
+            if pth is None:
+                qb.revert(m)
+                fail = dict(ok=False, reason='NO_NEAR_WALK',
+                            why='%s: no %s corridor from the escape to its via '
+                                'site' % (pa['ref'], near), pad=pa['ref'])
+                continue
+            pp = simplify(pth, int(gx0), int(gy0), G_try)
+            for k in range(len(pp) - 1):
+                qb.track(net, near, pp[k][0], pp[k][1],
+                         pp[k + 1][0], pp[k + 1][1], cand['w'])
+                total += math.hypot(pp[k + 1][0] - pp[k][0],
+                                    pp[k + 1][1] - pp[k][1])
+            cand['x'], cand['y'] = cand['walk']
+        qb.via(net, cand['x'], cand['y'], via_dia, via_drill)
+        return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=1,
+                    reservation=True, layer=far, near=near,
+                    trunk_mm=width / 1e6, minw=width / 1e6,
+                    via_dia=via_dia / 1e6, via_drill=via_drill / 1e6,
+                    via=(int(cand['x']), int(cand['y'])),
+                    via_xy=[(round(cand['x'] / 1e6, 3),
+                             round(cand['y'] / 1e6, 3))])
+    if fail is not None:
+        return fail
+    return dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                why='%s: no reservation possible at %.3f mm on %s'
+                    % (pa['ref'], width / 1e6, near), pad=pa['ref'])
+
+
+def join_reserved(qb, net, va, vb, width, clr_pad, clr_trk, layer='I2',
+                  G=50000, fine=25000):
+    """D-266.  COMPLETE A BRANCH BETWEEN TWO ALREADY-RESERVED VIA ENDPOINTS.
+
+    Both endpoints already exist and are already connected to their pads, so
+    this is a plain same-layer run between two points - no escape, no via
+    siting, nothing that can be lost to a race.  That is the whole return on
+    reserving: the part that was scarce is already spent.
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    for G_try in (G, fine):
+        margin = 8000000
+        x0 = max(min(va[0], vb[0]) - margin, qb.ex0 - 1000000)
+        y0 = max(min(va[1], vb[1]) - margin, qb.ey0 - 1000000)
+        x1 = min(max(va[0], vb[0]) + margin, qb.ex1 + 1000000)
+        y1 = min(max(va[1], vb[1]) + margin, qb.ey1 + 1000000)
+        ox2 = int(round((x0 - ox) / G_try)) * G_try + ox
+        oy2 = int(round((y0 - oy) / G_try)) * G_try + oy
+        blk = qb.grid(layer, net, width, clr_pad, clr_trk, ox2, oy2, x1, y1,
+                      G_try)
+        si = ((va[0] - ox2) // G_try, (va[1] - oy2) // G_try)
+        ti = ((vb[0] - ox2) // G_try, (vb[1] - oy2) // G_try)
+        ny, nx = blk.shape
+        for (ii, jj) in (si, ti):
+            if 0 <= ii < nx and 0 <= jj < ny:
+                blk[jj, ii] = False
+        path = qb.search(blk, si, ti)
+        if path is None:
+            continue
+        pts = simplify(path, ox2, oy2, G_try)
+        total = 0.0
+        m = qb.mark()
+        for k in range(len(pts) - 1):
+            qb.track(net, layer, pts[k][0], pts[k][1],
+                     pts[k + 1][0], pts[k + 1][1], width)
+            total += math.hypot(pts[k + 1][0] - pts[k][0],
+                                pts[k + 1][1] - pts[k][1])
+        return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=0,
+                    layer=layer, trunk_mm=width / 1e6, minw=width / 1e6,
+                    inner_mm=total / 1e6)
+    return dict(ok=False, reason='NO_PATH',
+                why='no %s corridor at %.3f mm between the two reserved vias'
+                    % (layer, width / 1e6))

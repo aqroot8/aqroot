@@ -229,6 +229,35 @@ def corridor_from_tracks(board, tracks, tol=CORRIDOR_TOL):
     return ps
 
 
+def capsule(x0, y0, x1, y1, w, tol=CORRIDOR_TOL):
+    """One oriented capsule, the same shape corridor_from_tracks lays down for a
+    track - but for copper that does not exist yet.
+
+    D-266 needs it because a RESERVED branch is two stubs with a gap between
+    them, and KiCad's `enclosedByArea` honours only the first outline of a
+    multi-outline rule area: measured, one stub inside such an area passes and
+    the pair fails with `via_diameter`, `track_width` and `drill_out_of_range`
+    together.  Bridging the gap with the capsule the inner run will occupy makes
+    the corridor ONE polygon and describes exactly the copper that is coming -
+    it does not widen the corridor anywhere copper will not go.
+    """
+    ps = pcbnew.SHAPE_POLY_SET()
+    r = w / 2.0 + tol
+    dx, dy = float(x1 - x0), float(y1 - y0)
+    L = math.hypot(dx, dy)
+    if L == 0:
+        return ps
+    ux, uy = dx / L, dy / L
+    px, py = -uy, ux
+    ax, ay = x0 - ux * r, y0 - uy * r
+    bx, by = x1 + ux * r, y1 + uy * r
+    ps.NewOutline()
+    for (X, Y) in ((ax + px * r, ay + py * r), (bx + px * r, by + py * r),
+                   (bx - px * r, by - py * r), (ax - px * r, ay - py * r)):
+        ps.Append(int(X), int(Y))
+    return ps
+
+
 def set_area_poly(board, name, ps):
     """Replace a named rule area's outline with an arbitrary polygon set."""
     for z in board.Zones():

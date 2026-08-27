@@ -80,6 +80,18 @@ U18_ORDER = [s.strip() for s in
 # With this set, LTC_OV is offered B.Cu and nothing else, so the screen either
 # proves a local route or reports no route - and cannot report a false pass.
 LTCOV_BCU_ONLY = bool(os.environ.get('AQROOT_LTCOV_BCU'))
+# D-266 / FBV2-P2-002T: SCARCE-PAD ESCAPE RESERVATION.
+#
+# 002S measured three of its four failing pads still escaping at 0.20-0.25 mm
+# on the FINISHED board.  They were never walled in; they lost their lane to a
+# branch that had the whole board to work with.  Permuting whole-branch order
+# only chooses a different casualty, which 002M-002S proved four times over.
+# D-266 stops running the race: the copper that MUST leave a scarce pad is laid
+# or reserved first, and the long runs are completed afterwards from copper that
+# is no longer scarce.  A reservation is a neck plus one via and NOTHING else -
+# it is never counted as a connection.
+D266 = bool(os.environ.get('AQROOT_D266'))
+D266_INNER = os.environ.get('AQROOT_D266_INNER', 'I2')
 
 _d256 = (os.environ.get('AQROOT_D256') or '').upper()
 if _d256 and _d256 not in PL.D256_SETS:
@@ -288,6 +300,8 @@ def main():
         pads.setdefault(net, {})[ref] = p
 
     journal, stubs, area_trk = [], [], {}
+    reserved = {}          # D-266: ref -> (x, y, layer) of an accepted exit
+    area_link = {}         # D-266: area -> [(x0, y0, x1, y1, w)] not-yet copper
     # PR-48 / D-257: bounded fine-pitch escape corridors, one per planned
     # escape, carrying that escape's local clearance and via geometry.
     fine = []
@@ -334,8 +348,15 @@ def main():
             live[str(t.m_Uuid.AsString())] = t
         for name, ids in area_trk.items():
             trks = [live[i] for i in ids if i in live]
-            if trks:
-                RU.set_area_poly(qb.b, name, RU.corridor_from_tracks(qb.b, trks))
+            if not trks:
+                continue
+            ps = RU.corridor_from_tracks(qb.b, trks)
+            # D-266: bridge a reserved pair's gap with the capsule its inner run
+            # will occupy, so the corridor is ONE polygon.  See RU.capsule.
+            for (x0, y0, x1, y1, w) in area_link.get(name, ()):
+                ps.BooleanAdd(RU.capsule(x0, y0, x1, y1, w))
+            ps.Simplify()
+            RU.set_area_poly(qb.b, name, ps)
 
     def grow(area, tracks):
         area_trk.setdefault(area, []).extend(
@@ -484,9 +505,238 @@ def main():
             state['fail'] = state['last']
         return False
 
+    def run_reserve(net, a, b_, role, ladder, area, ct, fatal=True):
+        """D-266 sections 5-8 and 14.  RESERVE a branch's exits, or JOIN them.
+
+        RESERVE_PAIR lays the minimum neck from BOTH ends of one branch plus an
+        ordinary 0.35/0.20 through via at each, and records where those vias
+        landed.  JOIN then completes the branch between them on the inner
+        layer, which cannot lose a race because the scarce part is already
+        spent.
+
+        Neither may masquerade as a completed connection: a reservation is
+        journalled with `reservation: True`, counted in its own tally, and
+        judged by the INVERTED gate - DRC gains no class and the ratsnest must
+        NOT move, because a reservation that moves it has connected something.
+        """
+        t0 = time.time()
+        pa = pads[net].get(a)
+        if pa is None:
+            state['last'] = '%s: missing pad %s' % (net, a)
+            if fatal:
+                state['fail'] = state['last']
+            return False
+        m = qb.mark()
+        rn0 = state['rn']
+        w = ladder[0]
+        r = None
+
+        if role in ('RESERVE', 'RESERVE_PAIR'):
+            # TWO ATTEMPTS, AND THE ORDER IS THE RULING: shortest branch first,
+            # nearest legal exit second.
+            #
+            # Scoring a via site on stub + remaining distance is what brings a
+            # Kelvin branch under its 10.000 mm cap.  But the shortest exit is
+            # not always the legal one - measured, the scored site for `R75.2`
+            # was rejected on `BAT_MAIN routed clearance`, and treating that as
+            # the branch's verdict cost `U18.8` outright.  So a gate-rejected
+            # scored reservation falls back to the ordinary nearest-reachable
+            # site, exactly as PR-49 falls to the next authorised rung.  No new
+            # geometry is invented on either attempt.
+            pairs = (((a, b_), (b_, a)) if role == 'RESERVE_PAIR'
+                     else ((a, b_),))
+            for attempt, scored in enumerate((True, False)):
+                ends, r = [], None
+                _pre_fine = len(fine)
+                _pre_area = len(area_trk.get(area, [])) if area else 0
+                _pre_link = len(area_link.get(area, [])) if area else 0
+                for (u, v) in pairs:
+                    pu, pv = pads[net].get(u), pads[net].get(v)
+                    if pu is None:
+                        r = dict(ok=False, reason='MISSING_PAD',
+                                 why='%s: no such pad' % u)
+                        break
+                    toward = ((pv['x'] - pu['x'], pv['y'] - pu['y'])
+                              if pv is not None else None)
+                    rr = QR.reserve_escape(
+                        qb, net, pu, w, CP, ct, near='B', far=D266_INNER,
+                        via_dia=350000, via_drill=200000, toward=toward,
+                        target=((pv['x'], pv['y'])
+                                if (scored and pv is not None) else None))
+                    if not rr['ok']:
+                        rr['pad'] = u
+                        r = rr
+                        break
+                    ends.append((u, rr))
+                if r is not None:
+                    qb.revert(m)
+                    if attempt == 0:
+                        continue
+                    break
+                if area is not None:
+                    # The branch's own D-249 corridor is what relaxes
+                    # `BAT_MAIN minimum width` to the ruled 0.20 mm sense
+                    # width; the override attached to it is what permits the
+                    # 0.35/0.20 through via.  Both are needed and they are not
+                    # interchangeable - moving the stub to a FINE_ESC corridor
+                    # bought the via and lost the width, and all four
+                    # reservations then failed `min width 0.6000 mm`.
+                    if not any(f[0] == area for f in fine):
+                        fine.append((area, net, 0.20, 0.35, 0.20,
+                                     'D-266 %s Kelvin reservation vias'
+                                     % net.split('/')[-1]))
+                    if len(ends) == 2:
+                        # KiCad's `enclosedByArea` honours only the FIRST
+                        # outline of a rule area, so two disjoint stubs in one
+                        # corridor fail together with `via_diameter`,
+                        # `track_width` and `drill_out_of_range` while either
+                        # alone passes.  Bridging the gap with the capsule the
+                        # inner run will occupy makes the corridor ONE polygon
+                        # and describes exactly the copper that is coming.
+                        va, vb = ends[0][1]['via'], ends[1][1]['via']
+                        area_link.setdefault(area, []).append(
+                            (va[0], va[1], vb[0], vb[1], w))
+                    grow(area, qb.laid[m[0]:])
+                g = reserve_gate(rn0, allow_dangle=True)
+                if g['ok']:
+                    r = dict(ok=True, mm=sum(e[1]['mm'] for e in ends),
+                             vias=sum(e[1]['vias'] for e in ends),
+                             layer=ends[0][1]['layer'], ends=ends,
+                             scored=scored)
+                    break
+                if area is not None:
+                    area_trk[area] = area_trk.get(area, [])[:_pre_area]
+                    if len(fine) > _pre_fine:
+                        del fine[_pre_fine:]
+                    if area in area_link:
+                        del area_link[area][_pre_link:]
+                qb.revert(m)
+                r = dict(ok=False, reason='GATE_REJECTED',
+                         why='%s %s' % (g['why'],
+                                        json.dumps(g.get('detail', ''))[:150]))
+                if attempt == 0:
+                    print("  ....  %-18s %-8s -> %-8s  %-18s shortest exit "
+                          "rejected, falling back to the nearest legal exit"
+                          % (net.split('/')[-1], a, b_, 'RESERVE_RETRY'))
+                    sys.stdout.flush()
+        else:
+            va, vb = reserved.get(a), reserved.get(b_)
+            if va is None or vb is None:
+                r = dict(ok=False, reason='NO_RESERVATION',
+                         why='an endpoint of %s->%s was never reserved'
+                             % (a, b_))
+            else:
+                _pre_area = len(area_trk.get(area, [])) if area else 0
+                r = QR.join_reserved(qb, net, va[:2], vb[:2], w, CP, ct,
+                                     layer=va[2])
+                if r['ok']:
+                    if area:
+                        grow(area, qb.laid[m[0]:])
+                    g = gate()
+                    if not g['ok']:
+                        if area:
+                            area_trk[area] = area_trk.get(area, [])[:_pre_area]
+                        qb.revert(m)
+                        r = dict(ok=False, reason='GATE_REJECTED',
+                                 why='%s %s'
+                                     % (g['why'],
+                                        json.dumps(g.get('detail', ''))[:150]))
+
+        if not r['ok']:
+            state['last'] = '%s %s->%s (%s) : %s' % (
+                net.split('/')[-1], a, b_, role, r.get('why', r['reason']))
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs   %s"
+                  % (net.split('/')[-1], a, b_, r['reason'], time.time() - t0,
+                     (r.get('why') or '')[:88]))
+            sys.stdout.flush()
+            if fatal:
+                state['fail'] = state['last']
+            return False
+
+        if role in ('RESERVE', 'RESERVE_PAIR'):
+            for (u, rr) in r['ends']:
+                reserved[u] = (rr['via'][0], rr['via'][1], rr['layer'])
+                state['reservations'] = state.get('reservations', 0) + 1
+            absorb_reservation_dangle()
+            tag = 'RESERVED'
+            extra = '%s vias %s @ %s' % (
+                'shortest' if r.get('scored') else 'nearest', r['layer'],
+                ' '.join('%s(%.3f,%.3f)' % (u, rr['via'][0] / 1e6,
+                                            rr['via'][1] / 1e6)
+                         for (u, rr) in r['ends']))
+        else:
+            state['done'] += 1
+            tag = 'JOINED'
+            extra = 'inner %s' % r['layer']
+        journal.append(dict(net=net, a=a, b=b_, role=role, ok=True,
+                            reservation=(role != 'JOIN'),
+                            mm=r['mm'], vias=r['vias'], layer=r['layer'],
+                            width=w / 1e6, area=area))
+        print("  %-5s %-18s %-8s -> %-8s %7.3f mm  w=%.2f  %s %d via  %.0fs"
+              % (tag, net.split('/')[-1], a, b_, r['mm'], w / 1e6, extra,
+                 r['vias'], time.time() - t0))
+        sys.stdout.flush()
+        return True
+
+    def reserve_gate(rn0, allow_dangle=False):
+        """D-266 section 8.  A RESERVATION IS JUDGED DIFFERENTLY, BECAUSE IT
+        IS NOT A CONNECTION.
+
+        gate() requires the ratsnest to FALL, which is exactly right for a
+        route and exactly wrong here: a reservation joins its pad to nothing,
+        so a falling ratsnest would mean the neck had wandered into another
+        node of the same net - the alternate-current-path failure section 8
+        forbids.  So the test inverts: DRC must gain no class, and the ratsnest
+        must be UNCHANGED.  Anything else is a route wearing a reservation's
+        name."""
+        apply_areas()
+        pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
+        qb.save()
+        DRU.write(pcb, stubs, fine)
+        after, det = RU.drc(pcb, "A", WORK)
+        d = dict((k, v - base.get(k, 0)) for k, v in after.items()
+                 if v > base.get(k, 0) and k != 'unconnected_items')
+        if allow_dangle:
+            d.pop('via_dangling', None)
+        if d:
+            return dict(ok=False, why='new DRC %s' % json.dumps(d),
+                        detail={k: det[k][:3] for k in d})
+        rn = RU.ratsnest(pcb)
+        if rn != rn0:
+            return dict(ok=False,
+                        why='a reservation changed the ratsnest (%d -> %d): it '
+                            'terminated into another node of its own net' % (rn0, rn))
+        return dict(ok=True)
+
+    def absorb_reservation_dangle():
+        """D-266.  A RESERVED VIA IS DANGLING BY CONSTRUCTION, AND ONLY UNTIL
+        ITS BRANCH IS JOINED.
+
+        A reservation is a neck and a through via with nothing on the far side
+        yet, so KiCad reports `via_dangling` - correctly.  That is the
+        reservation's SIGNATURE, not a defect: section 14 joins the two vias on
+        their inner layer and the class goes away.
+
+        It has to be absorbed into the DRC baseline the moment the reservation
+        is accepted, or every later connection is rejected for a violation it
+        did not cause - the same failure mode as measuring a board the ECO had
+        moved.  ONLY the `via_dangling` class is absorbed, only by the amount
+        the reservation actually added, and section 22 still requires the FINAL
+        board to carry none: absorbing it here defers the question, it does not
+        answer it.
+        """
+        after, _ = RU.drc(pcb, "A", WORK)
+        n = after.get('via_dangling', 0)
+        if n > base.get('via_dangling', 0):
+            base['via_dangling'] = n
+            state['dangling'] = n
+
     def run_once(net, a, b_, role, ladder, area, ct, fatal=True):
         if state['fail']:
             return False
+        # D-266: the two roles that are NOT connections.
+        if role in ('RESERVE', 'RESERVE_PAIR', 'JOIN'):
+            return run_reserve(net, a, b_, role, ladder, area, ct, fatal)
         pa = pads[net].get(a)
         node = (b_ == '(node)')
         skip = set()
@@ -683,8 +933,9 @@ def main():
             qb.revert(m)
             state['last'] = '%s %s->%s (%s) : %s : %s' % (
                 net.split('/')[-1], a, b_, role, r['reason'], r.get('why', ''))
-            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs"
-                  % (net.split('/')[-1], a, b_, r['reason'], time.time() - t0))
+            print("  ....  %-18s %-8s -> %-8s  %-18s %.0fs   %s"
+                  % (net.split('/')[-1], a, b_, r['reason'], time.time() - t0,
+                     (r.get('why') or '')[:88]))
             sys.stdout.flush()
             if fatal:
                 state['fail'] = state['last']
@@ -1053,6 +1304,24 @@ def main():
     if KELVIN_FIRST:
         add("0b. R75 Kelvin taps, before the trunk (D-262)",
             PL.PLAN_0A_KELVIN, CT_W, tight='U18')
+    # D-266 sections 5-7: THE SCARCE COPPER GOES FIRST, AND ONLY THE SCARCE
+    # COPPER.  The BAT_SENSE current path is laid in full because it IS the
+    # thing that gets sealed; the four Kelvin endpoints reserve a neck and a
+    # via and nothing else, because their long runs are not scarce once the
+    # exits exist.
+    if D266:
+        add("0c. BAT_SENSE current path, first (D-266 s5)",
+            PL.PLAN_D266_SENSE, CT_W)
+        # NO `tight` HERE, AND THE REASON IS MEASURED.  order_tight() re-sorts
+        # THE WHOLE REMAINDER of the queue when it meets a tight item, so
+        # marking the reservations tight interleaved them with the pin field
+        # and the PR-43 bridges - `U18.9` was then asked for its exit after
+        # several millimetres of other copper had been laid beside it and
+        # returned NO_LEGAL_ESCAPE, on a board where the same reservation
+        # succeeds in isolation.  A reservation exists precisely so it does NOT
+        # have to win that race; scheduling it into one defeats the mechanism.
+        add("0d. scarce Kelvin exits reserved (D-266 s6-7)",
+            PL.PLAN_D266_RESERVE, CT_W)
     # D-263 section 10: THE TRUNK ADAPTS TO THE CONTROL GEOMETRY, NOT THE OTHER
     # WAY ROUND.
     #
@@ -1086,7 +1355,7 @@ def main():
         add("5b. BAT_RAW long bridges (PR-43)", PL.PLAN_TAPS_BRIDGE, CT_W)
     add("6b. U18 pin field",
         [r for r in PL.PLAN_0_U18
-         if not ((KELVIN_FIRST or TRUNK_LAST)
+         if not ((KELVIN_FIRST or TRUNK_LAST or D266)
                  and (r[0], r[1], r[2]) in PL.KELVIN_KEYS)],
         CT_W, tight='U18')
     # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
@@ -1195,7 +1464,14 @@ def main():
     if TRUNK_LAST:
         # The control geometry is proved by now: U18's pin field, the Q3 row
         # and the trip network have each had first refusal on their own lanes.
-        add("9b. R75 Kelvin sense pair (D-263)", PL.PLAN_0A_KELVIN, CT_W)
+        # D-266 section 14: the reserved exits are joined on their inner
+        # layer AFTER the control field has had its lanes, which is the whole
+        # point of having reserved them.
+        if D266:
+            add("9a. paired inner Kelvin, joined (D-266 s14)",
+                PL.PLAN_D266_JOIN, CT_W)
+        else:
+            add("9b. R75 Kelvin sense pair (D-263)", PL.PLAN_0A_KELVIN, CT_W)
         add("9c. BAT_MAIN chain, after the control field", PL.PLAN_2_CHAIN, CT_W)
         add("9d. BAT_PROTECTED_P trunk, last (D-263)",
             PL.PLAN_1_BPP_TRUNK, CT_W)
@@ -1453,6 +1729,17 @@ def main():
                 QUEUE[idx_:] = order_tight(QUEUE[idx_:], verbose=not shown[0])
                 shown[0] = True
             it = QUEUE[idx_]
+            # D-266 section 9: ONE branch, ONE explicitly authorised starting
+            # rung.  The ladder itself is not changed - 0.20 mm is already in
+            # LAD_SIG - and no other SIG connection is touched.
+            if D266:
+                _lad = PL.D266_LADDER.get((it['net'], it['a'], it['b']))
+                if _lad is not None and it['lad'] is not _lad:
+                    print('  D-266 s9  %-16s %-8s -> %-8s starts at its '
+                          'measured %.2f mm rung (was %.2f mm)'
+                          % (it['net'].split('/')[-1], it['a'], it['b'],
+                             _lad[0] / 1e6, it['lad'][0] / 1e6))
+                    it['lad'] = _lad
             # Measured ONCE PER PASS, not before every item.  Re-sorting the
             # block mid-pass picks whichever pin is locally tightest and then
             # lays a route that closes two others: it took U18 from 7 escapes
