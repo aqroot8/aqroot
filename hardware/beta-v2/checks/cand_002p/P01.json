@@ -1,0 +1,81 @@
+{
+ "name": "P01",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002P / D-261: D9 relocated 0.200 mm east (placement only - same part, footprint, orientation, net, polarity and topology), the U18+R76..R83 rigid cluster then moved +0.75 mm east, and R75 turned to rot 180 inside the corridor that opens. R75 at the west limit x=4.075.",
+ "d9_displacement": 0.2,
+ "cluster_dx": 0.75,
+ "cluster_dy": 0.0,
+ "kelvin": [
+  6.889,
+  6.83,
+  0.059
+ ],
+ "moves": {
+  "U18": [
+   3.75,
+   72.4,
+   90.0,
+   "B.Cu"
+  ],
+  "R76": [
+   9.575,
+   75.225,
+   0.0,
+   "B.Cu"
+  ],
+  "R77": [
+   9.25,
+   71.5,
+   0.0,
+   "B.Cu"
+  ],
+  "R78": [
+   9.575,
+   69.675,
+   0.0,
+   "B.Cu"
+  ],
+  "R79": [
+   9.575,
+   67.825,
+   0.0,
+   "B.Cu"
+  ],
+  "R80": [
+   9.575,
+   65.975,
+   0.0,
+   "B.Cu"
+  ],
+  "R81": [
+   9.575,
+   64.125,
+   0.0,
+   "B.Cu"
+  ],
+  "R82": [
+   9.575,
+   62.275,
+   0.0,
+   "B.Cu"
+  ],
+  "R83": [
+   9.575,
+   60.425,
+   0.0,
+   "B.Cu"
+  ],
+  "R75": [
+   4.075,
+   64.0,
+   180.0,
+   "B.Cu"
+  ],
+  "D9": [
+   13.2,
+   72.5,
+   0.0,
+   "B.Cu"
+  ]
+ }
+}

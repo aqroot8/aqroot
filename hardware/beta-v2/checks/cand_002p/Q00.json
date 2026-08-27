@@ -1,0 +1,83 @@
+{
+ "name": "Q00",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002P / D-261: D9 relocated 0.600 mm east - PLACEMENT ONLY, same part, footprint, orientation, net, polarity and topology - which frees a +1.00 mm eastward move of the U18+R76..R83 rigid cluster, which in turn opens an R75 rot-180 window of x 4.225..4.400 wide enough for the 1.50 mm BAT_PROTECTED_P trunk to leave R75.2. R75 mid-window x=4.300.",
+ "d9_displacement": 0.6,
+ "cluster_dx": 1.0,
+ "cluster_dy": 0.0,
+ "kelvin": [
+  7.34,
+  7.303,
+  0.037
+ ],
+ "sense_analytic": 10.048,
+ "trunk_analytic": 13.915,
+ "moves": {
+  "U18": [
+   4.0,
+   72.4,
+   90.0,
+   "B.Cu"
+  ],
+  "R76": [
+   9.825,
+   75.225,
+   0.0,
+   "B.Cu"
+  ],
+  "R77": [
+   9.5,
+   71.5,
+   0.0,
+   "B.Cu"
+  ],
+  "R78": [
+   9.825,
+   69.675,
+   0.0,
+   "B.Cu"
+  ],
+  "R79": [
+   9.825,
+   67.825,
+   0.0,
+   "B.Cu"
+  ],
+  "R80": [
+   9.825,
+   65.975,
+   0.0,
+   "B.Cu"
+  ],
+  "R81": [
+   9.825,
+   64.125,
+   0.0,
+   "B.Cu"
+  ],
+  "R82": [
+   9.825,
+   62.275,
+   0.0,
+   "B.Cu"
+  ],
+  "R83": [
+   9.825,
+   60.425,
+   0.0,
+   "B.Cu"
+  ],
+  "R75": [
+   4.3,
+   63.5,
+   180.0,
+   "B.Cu"
+  ],
+  "D9": [
+   13.6,
+   72.5,
+   0.0,
+   "B.Cu"
+  ]
+ }
+}

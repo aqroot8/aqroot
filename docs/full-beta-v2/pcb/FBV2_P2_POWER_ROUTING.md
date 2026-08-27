@@ -777,3 +777,63 @@ sub-millimetre casualty for another around a single 5.925 mm object.
   ignore.** Angles compare modulo 360 now. The placement-identity assertion is
   the one piece of tooling that must never cry wolf — it exists because 002K
   ran nine screens on the wrong board.
+
+---
+
+## FBV2-P2-002P — the pad fits, the trunk does not
+
+D-261 authorised one new lever: move D9. It worked, and it worked further than
+the ruling assumed — 0.600 mm east frees a +1.00 mm cluster shift and opens an
+R75 window in which the **Kelvin mismatch reaches 0.000 mm**. `BAT_SENSE
+Q3.6 → R75.1`, unrouted since 002M, closes at 1.00 mm on B.Cu with zero vias.
+
+The first attempt used only 0.200 mm of that displacement, because the pose
+filter asked whether the **pad** fits. It does:
+
+```
+R75 at x = 4.125 rot 180   pad west edge 0.550 mm  >= 0.500 mm clearance   OK
+```
+
+And the screen rejected the very first connection:
+
+```
+BAT_PROTECTED_P R75.2 -> D9.1
+copper_edge_clearance 0.5000 mm; actual 0.4125 mm
+```
+
+A **1.50 mm trunk centred on that pad** has its own edge to clear: 0.500 + 0.750
+= **1.250 mm from the board edge to the pad centre**, which is 0.063 mm more
+than the +0.75 mm window can give. The pad was never the constraint.
+
+### The rule this adds
+
+**A pad clearance is not an escape clearance.** Ask what has to *leave* the pad,
+not whether the pad fits — a placement filter that stops at the copper it can
+see admits poses whose first route is illegal. Every width the plan may use has
+its own footprint at the board edge, and the widest one governs.
+
+### And a ladder that stops one rung too early
+
+`PLAN_1_BPP_TRUNK` carries `[1.50, 1.20]` precisely so the trunk can fall to its
+D-249 floor. It never did. `run()` walks the ladder and breaks the moment
+`connect_role` returns `ok`; the DRC gate runs afterwards. So a width that routes
+**geometrically** and then fails the **gate** is abandoned rather than dropping
+to the next rung — and at this pose the 1.20 mm rung is legal (it needs
+R75.x ≥ 4.063 against a window of 4.075…4.150).
+
+**A fallback ladder that is not consulted after the gate is not a fallback
+ladder.** Recorded as PR-49 and raised rather than taken, because it changes
+router behaviour on every net.
+
+### The trade that remains
+
+```
+cluster +1.00   Kelvin mismatch 0.000 mm, and three control pins lost to
+                BAT_MAIN routed clearance (0.2750 / 0.2500 / 0.2778)
+cluster +0.75   U18 8/8, all nine targets, LTC_OV one component with no
+                R77/R78 movement at all -- and no room for a 1.50 mm trunk
+```
+
+One of those needs a router fix; the other needs a clearance decision. Neither
+needs a different shunt: 002O's suspicion that R75's 5.925 mm pitch might have
+to go is withdrawn — with D9 moved, it fits.

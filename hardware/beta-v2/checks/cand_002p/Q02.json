@@ -1,0 +1,81 @@
+{
+ "name": "Q02",
+ "base": "AUTHORITATIVE",
+ "note": "FBV2-P2-002P: D9 +0.600 mm east, cluster +0.75 mm (the shift 002O showed preserves the control lanes), R75 rot 180 at the top of the +0.75 window. Tests whether the lane damage seen at +1.00 is caused by the cluster shift or by R75.",
+ "d9_displacement": 0.6,
+ "cluster_dx": 0.75,
+ "cluster_dy": 0.0,
+ "kelvin": [
+  7.378,
+  7.267,
+  0.111
+ ],
+ "moves": {
+  "U18": [
+   3.75,
+   72.4,
+   90.0,
+   "B.Cu"
+  ],
+  "R76": [
+   9.575,
+   75.225,
+   0.0,
+   "B.Cu"
+  ],
+  "R77": [
+   9.25,
+   71.5,
+   0.0,
+   "B.Cu"
+  ],
+  "R78": [
+   9.575,
+   69.675,
+   0.0,
+   "B.Cu"
+  ],
+  "R79": [
+   9.575,
+   67.825,
+   0.0,
+   "B.Cu"
+  ],
+  "R80": [
+   9.575,
+   65.975,
+   0.0,
+   "B.Cu"
+  ],
+  "R81": [
+   9.575,
+   64.125,
+   0.0,
+   "B.Cu"
+  ],
+  "R82": [
+   9.575,
+   62.275,
+   0.0,
+   "B.Cu"
+  ],
+  "R83": [
+   9.575,
+   60.425,
+   0.0,
+   "B.Cu"
+  ],
+  "R75": [
+   4.15,
+   63.5,
+   180.0,
+   "B.Cu"
+  ],
+  "D9": [
+   13.6,
+   72.5,
+   0.0,
+   "B.Cu"
+  ]
+ }
+}

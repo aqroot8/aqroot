@@ -1,3 +1,55 @@
+## 2026-08-27 - FBV2-P2-002P: the D9 lever works, BAT_SENSE closes, and the gate fails elsewhere
+
+**DECISION STOP** (section 17). **The authoritative stackup was NOT changed** - section 19 gates it
+on section 16. PCB byte-identical to `b803f93` (md5 `a908cedfa9f9410aab327d8bd55b9f45`): **4 copper
+layers, zero signal tracks, zero signal vias**. All five suites PASS.
+
+- **D-261'S D9 LEVER WORKS, AND BETTER THAN THE RULING ASSUMED.** A **0.600 mm** eastward
+  relocation of D9 - **placement only**: same part, footprint, orientation, net, polarity and
+  topology - frees a **+1.00 mm** rigid-cluster shift, which opens an R75 rot-180 window of
+  **x 4.225 .. 4.400** where the **Kelvin mismatch reaches 0.000 mm** with both branches at
+  **7.321 mm**. That is the first time since 002I the Kelvin specification has been analytically
+  satisfiable at all. Measured: D9 +0.20 and +0.40 free only cluster +0.75; **+0.60 is the minimum**
+  that frees +1.00. **`D9.1 -> U11.2` SHORTENS**, 55.344 -> 54.748 mm.
+- **`BAT_SENSE Q3.6 -> R75.1` - THE BLOCKER STANDING SINCE 002M - IS CLOSED**: 1.00 mm on B.Cu,
+  **zero vias**, one functional island. On the best candidate (D9 +0.600, cluster +0.75, R75
+  (4.150, 63.500) rot 180) the probe returns **all nine targets true and U18 8/8**, with **`LTC_OV`
+  one component** and `LTC_GATE` one component - **the first board on which all of those hold at
+  once** - and **`LTC_OV` closed without moving R77 or R78 at all**, so section 13's refinement
+  budget was never spent.
+- **A CONSTRAINT THE EARLIER ARITHMETIC MISSED: THE CORRIDOR HAS TO FIT THE TRUNK, NOT JUST THE
+  PAD.** The first chain found R75 legal at x=4.125 with D9 moved only 0.200 mm, and the screen
+  rejected `BAT_PROTECTED_P R75.2 -> D9.1` with `copper_edge_clearance 0.5000 mm; actual 0.4125 mm`.
+  The pad cleared the edge; the **1.50 mm trunk leaving that pad** did not - it needs R75.2's CENTRE
+  at least 1.250 mm from the edge, **0.063 mm more than the +0.75 window gives**. Cluster +1.00
+  opens it, and that is what the extra 0.400 mm of D9 displacement buys.
+- **SECTION 17'S EXACT NEW FIRST BLOCKER: `BAT_PROTECTED_P R75.2 -> D9.1` is rejected at 1.50 mm on
+  edge clearance and IS NEVER RETRIED AT D-249'S OWN 1.20 mm FLOOR.** `run()` stops the width ladder
+  the moment `connect_role` returns ok and the DRC gate runs afterwards, so a width that routes
+  GEOMETRICALLY but fails the GATE is abandoned rather than falling to the next rung.
+  `PLAN_1_BPP_TRUNK` carries `[1.50, 1.20]` precisely for this, and the 1.20 rung needs
+  R75.x >= 4.063 - which the +0.75 window satisfies. **The rung that would close the trunk is legal
+  and simply never tried.** Recorded as **PR-49**, not fixed mid-stop because it changes router
+  behaviour board-wide.
+- **SECOND BLOCKER: the ROUTED Kelvin detour.** Analytic **7.378 / 7.267**; routed **18.764 /
+  7.886**. A routing outcome, not a placement one - the placement is inside spec by a wide margin -
+  and the same class 002L recorded at 4.948 mm, now much larger.
+- **THE TRADE, PLAINLY:** cluster **+1.00** gives the 0.000 mm Kelvin window and **costs three
+  control pins** (`FAULT_N`, `LTC_SHDN`, `LTC_GATE` all rejected on `BAT_MAIN routed clearance` at
+  0.2750 / 0.2500 / 0.2778, U18 5/8); cluster **+0.75** keeps **U18 8/8 and all nine targets** and
+  puts R75 in the window that cannot host a 1.50 mm trunk.
+- **SECTION 18 SHUNT RESERVE NOT TRIGGERED.** It is conditioned on R75 still not fitting after the
+  minimum legal D9 move; **it fits**, the window was measured twice, and the analytic mismatch
+  inside it reaches 0.000 mm. **No replacement-shunt requirement is produced, and 002O's suggestion
+  that a shorter shunt might be needed is WITHDRAWN** - the D9 lever removed that need.
+- **Section 15 scan:** D9 could not move less (+0.20/+0.40 free only +0.75); **no test point move
+  reduces the displacement** - TP17 and C58 obstruct only from +1.25 mm and none was moved; R75 rot
+  180 is both the simpler orientation and the better one (rot 0 gives a 17.4 mm BAT_SENSE run
+  against 10.0 mm).
+
+**U19 NOT searched** (section 21). Phase A NOT run. No battery signal copper. B-34 REMAINS OPEN.
+Converter routing NOT STARTED. PCB routing 0 %, overall 74 % - unchanged.
+
 ## 2026-08-26 - FBV2-P2-002O: the rigid-cluster hypothesis is confirmed and misses by 0.132 mm
 
 **DECISION STOP.** **The authoritative stackup was NOT changed** - section 17 gates it on section 14.
