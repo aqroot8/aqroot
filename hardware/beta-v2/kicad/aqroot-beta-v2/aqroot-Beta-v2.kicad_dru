@@ -170,6 +170,34 @@
 	(constraint disallow track)
 	(condition "A.NetName != 'GND'"))
 
+# ---------------------------------------------------------------------
+# 2b. In4.Cu IS THE SECOND GND REFERENCE PLANE  (D-258, FBV2-P2-002M)
+#
+# The six-layer migration adds a SECOND solid reference, and it gets the
+# same rule as the first rather than a weaker one.  L2 (In1) references the
+# F.Cu side, L5 (In4) references the B.Cu side, and the two new signal
+# layers L3/L4 sit between them - so every internal route has a plane on
+# one side and every outer route has a plane 0.2104 mm away, which is the
+# geometry that made the four-layer outer reference work.
+#
+# Neither plane may be split into power islands.  The only authorised void
+# is still the ESP32 antenna keepout of section 3, which is a manufacturer
+# requirement and overrides plane continuity locally on every layer.
+# ---------------------------------------------------------------------
+
+(rule "In4.Cu carries GND only - no signal or power tracks"
+	(layer "In4.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+(rule "SWITCH_NODE: outer layers only - never on In3"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+
 
 # ---------------------------------------------------------------------
 # 3. ESP32-S3-WROOM-1 ANTENNA KEEPOUT - MANUFACTURER PRECEDENCE

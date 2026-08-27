@@ -68,16 +68,33 @@ def main():
     nvia = sum(1 for t in b.GetTracks() if t.GetClass() == 'PCB_VIA')
     pours = [z for z in b.Zones() if not z.GetIsRuleArea()]
     outer = [z for z in pours if z.GetLayer() in (pcbnew.F_Cu, pcbnew.B_Cu)]
-    in1 = [z for z in pours if z.GetLayer() == pcbnew.In1_Cu]
-    isl = sum(z.GetFilledPolysList(z.GetLayer()).OutlineCount() for z in in1)
     chk('SIGNAL TRACKS / VIAS / OUTER POURS',
         '%d / %d / %d' % (ntr, nvia, len(outer)), '0 / 0 / 0',
         ntr == 0 and nvia == 0 and not outer)
-    chk('In1.Cu GND REFERENCE',
-        '%d zone(s), %d island(s), net %s'
-        % (len(in1), isl, in1[0].GetNetname() if in1 else '-'),
-        '1 zone, 1 island, GND',
-        len(in1) == 1 and isl == 1 and in1[0].GetNetname() == 'GND')
+    # D-258 / FBV2-P2-002R: the board carries TWO solid GND references now, and
+    # the guard was EXTENDED rather than replaced - In1 keeps the identical
+    # check it has always had and In4 gets the same one.  A split reference is
+    # still the defect this exists to catch; there are simply two planes that
+    # can be split.  On a four-layer board In4 does not exist and is skipped, so
+    # this file still reads a pre-migration board correctly.
+    ncu = b.GetCopperLayerCount()
+    chk('COPPER LAYER COUNT', str(ncu), '6 (JLC06161H-7628)', ncu == 6)
+    for nm, lid in (('In1.Cu', pcbnew.In1_Cu), ('In4.Cu', pcbnew.In4_Cu)):
+        if not b.IsLayerEnabled(lid):
+            chk('%s GND REFERENCE' % nm, 'layer not enabled',
+                '1 zone, 1 island, GND', False)
+            continue
+        zs = [z for z in pours if z.GetLayer() == lid]
+        isl = sum(z.GetFilledPolysList(lid).OutlineCount() for z in zs)
+        chk('%s GND REFERENCE' % nm,
+            '%d zone(s), %d island(s), net %s'
+            % (len(zs), isl, zs[0].GetNetname() if zs else '-'),
+            '1 zone, 1 island, GND',
+            len(zs) == 1 and isl == 1 and zs[0].GetNetname() == 'GND')
+    inner_sig = [z for z in pours
+                 if z.GetLayer() in (pcbnew.In2_Cu, pcbnew.In3_Cu)]
+    chk('NO POUR ON THE INTERNAL SIGNAL LAYERS',
+        '%d zone(s) on In2/In3' % len(inner_sig), '0', not inner_sig)
 
     # -------------------------------------------------------- NFC geometry
     emit()
