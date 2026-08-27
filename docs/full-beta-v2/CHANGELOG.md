@@ -1,3 +1,45 @@
+## 2026-08-27 - FBV2-P2-002V: D-268 - the western partition is routed control copper, not placement
+
+**DECISION STOP** (sections 19 and 24). The authoritative PCB is UNCHANGED - six copper
+layers, zero signal tracks, zero signal vias.
+
+- **D-268:** *"The high-current BPP trunk remains on outer 1 oz copper with zero vias. The
+  first placement lever for the severed western B.Cu plane is TP17, a non-functional test
+  point routed last. C58 may move only if TP17-alone is measured insufficient.
+  Inner-layer/high-current-via bypass is not authorized."*
+- **The lever was aimed at the wrong thing, and one cheap measurement proved it.** Removing
+  TP17, C58, TP15 - entirely, not relocating them - from the finished 002U board changes
+  `R75.2 -> D9.1` at **no width from 1.50 down to 0.20 mm**. Neither is on the cut.
+- **The cut is routed control copper.** By net: `LTC_OV` (27 B.Cu shapes) removed restores
+  0.60 mm; **all LTC control (77 shapes) removed restores 1.50 mm at 30.561 mm**; all routed
+  B.Cu removed gives back the 19.878 mm clean-board route. No single control net opens it to
+  trunk width.
+- **TP17 was searched and replayed anyway.** 20 legal poses outside the current corridor;
+  selected **(17.000, 79.000), 5.408 mm**, same layer/net/footprint/region. The full prefix
+  reproduces - **U18 8/8, all nine targets, Kelvin A 7.644 / B 9.927 / mismatch 2.283 mm on
+  In2** - and the trunk is still `NO LEGAL ESCAPE at >= 1.200 mm`. **The blocker list went
+  from `track (x37), R77.2 (x8), TP17.1 (x5)` to `track (x42), R77.2 (x8), R78...`: TP17 left
+  the list and the trunk did not move.** It did open a 0.60 mm / 53.916 mm path - below the
+  floor, so not a trunk.
+- **C58 characterized and NOT moved:** 1 uF 25 V X7R 0603, `C58.1` on `BAT_PROTECTED_P`
+  **4.009 mm from `D9.1`** with the bulk caps 50 mm away - local HF decoupling for the
+  protected node. Section 9's search was not spent, on measured grounds.
+- **BAT_RAW half closed:** `R79.1 -> R80.1` routes (4.532 mm, F.Cu, 2 vias at the legal
+  0.65/0.40); **`R77.1 -> R79.1` still fails on `BAT_MAIN routed clearance`**. Microamp taps
+  are held to the high-current clearance because they share a net name - D-249 fixed width,
+  D-264 layer, D-267 via geometry; **clearance is the fourth and last property still scoped by
+  net name.** Raised, not taken.
+- **The long outer trunk is not available either:** `D9.1 -> R75.2` is `NO_LEGAL_ESCAPE` at
+  1.50 and 1.20 mm - that exit exists only with the D-267 reservation. Comparison recorded:
+  short 19.878 mm @1.50 = **6.53 mOhm / 9.79 mV / 14.7 mW** at 1.5 A; long 45.467 mm @1.50 =
+  **14.93 mOhm / 22.40 mV / 33.6 mW** - **2.29x the resistance**.
+- Zero new DRC classes, **zero track_dangling, zero via_dangling**. All seven suites PASS.
+  No placement ECO, no signal copper written; no rule relaxed anywhere. D-264/D-266/D-267
+  untouched. U19 NOT searched; Phase A and Phase B NOT run.
+- **No progress earned: PCB routing stays 0 %, overall stays 74 %.**
+  See [`CTO_DECISIONS.md`](CTO_DECISIONS.md) D-268 and
+  [`audits/2026-08-27-p2-002v-d268-tp17.md`](audits/2026-08-27-p2-002v-d268-tp17.md).
+
 ## 2026-08-27 - FBV2-P2-002U: D-267 D9 exit reservation and TAP path role; Kelvin B fixed; trunk stops on a severed plane
 
 **Section 25 DECISION STOP.** Two of 002T's three failures close. The authoritative PCB is

@@ -1076,3 +1076,38 @@ So the remaining choices are architectural, not procedural: a bounded layer
 exception for the trunk where it crosses the pin field; moving `TP17`/`C58` out
 of the western margin; or accepting a trunk roughly 2.3x longer that leaves the
 margin entirely.
+
+---
+
+## D-268 — the western partition is routed copper (2026-08-27, FBV2-P2-002V)
+
+> **The high-current BPP trunk remains on outer 1 oz copper with zero vias. The
+> first placement lever for the severed western B.Cu plane is TP17, a
+> non-functional test point routed last. C58 may move only if TP17-alone is
+> measured insufficient. Inner-layer/high-current-via bypass is not authorized.**
+
+**Do not spend another placement search on this.** Removing `TP17`, `C58` and
+`TP15` from the board entirely — not relocating them, removing them — leaves
+`R75.2 → D9.1` unroutable at every width from 1.50 mm down to 0.20 mm. They are
+not on the cut and never were.
+
+What is on the cut is **routed control copper**:
+
+| removed from B.Cu | `R75.2 → D9.1` |
+|---|---|
+| `LTC_OV` (27 shapes) | OK at 0.60 mm |
+| all LTC control (77 shapes) | OK at **1.50 mm**, 30.561 mm |
+| all routed B.Cu (171 shapes) | OK at 1.50 mm, **19.878 mm** — the clean-board route |
+
+TP17 was moved anyway, 5.408 mm to (17.000, 79.000), and the full functional
+prefix reproduced on it — U18 8/8, both Kelvin branches inside 10 mm. The trunk
+still failed, and the blocker list is the receipt: `track (x37), R77.2 (x8),
+TP17.1 (x5)` became `track (x42), R77.2 (x8), R78…`. **TP17 left the list and
+nothing changed.**
+
+**The remaining levers are all one property short of a rule already fixed.**
+`LTC_OV` is a control net, so D-264 already lets it leave B.Cu — nobody has told
+the router to. And `BAT_MAIN routed clearance` is still scoped by net name, which
+is why two microamp divider taps 0.20 mm wide are held to a 0.300 mm
+high-current spacing. D-249 fixed width, D-264 fixed layer, D-267 fixed via
+geometry; **clearance is the fourth and last.**
