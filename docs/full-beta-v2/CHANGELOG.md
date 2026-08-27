@@ -1,3 +1,54 @@
+## 2026-08-27 - FBV2-P2-002X: D-270 path-role offload delivered and proven; the western-margin trunk blocker is current-carrying, not low-current
+
+**DECISION STOP.** The D-270 offload mechanism is delivered and regression-proven, but the
+offload does not open the trunk: measured by individual path role, the binding blocker of
+`R75.2 -> D9.1` is the **`BAT_SENSE` 1.00 mm shunt current path**, which D-270 correctly
+refuses to move. The authoritative PCB is UNCHANGED - six copper layers, zero signal tracks,
+zero signal vias. Starting HEAD `6edc34a`.
+
+- **D-270(a):** *"Western-margin offload candidate selection shall be by individual CURRENT
+  PATH ROLE / ROUTED BRANCH, not whole net or net class. A bounded LOW-CURRENT / TAP branch on
+  `BAT_RAW` or `BAT_MAIN` may be offered In2/In3 offload despite its power net name."* Offload
+  is the fifth property to follow path role, after D-249 width, D-264 layer, D-267 via geometry
+  and D-269 clearance - and it closes the candidate-list gap D-269's own audit named.
+- **Mechanism.** `path_role_dru.INNER_OFFLOAD_AREAS` adds the authorised bounded corridors to
+  the exact D-264 In2/In3 exclusion the two Kelvin sense corridors already carry; the router
+  (`battery_route_plan.D270_SETS` + the offload block in `route_battery_block.run_once`) hops
+  the named branch `B -> In2/In3 -> B` on the smallest via its netclass admits - the D-267
+  0.65/0.40 POWER via, never the trunk's 0.80/0.40. Every current-carrying role is untouched.
+- **New standing regression `d270_probe.py`** - real copper on the six-layer board, eleven
+  clauses, **PASS**: a `BAT_RAW` bridge on In2 and In3 inside its corridor is ALLOWED; the same
+  copper with no corridor is REJECTED; the trunk and the `BAT_SENSE` current path on In2 are
+  REJECTED; **the bridge in its corridor but WITHOUT the D-270 authorisation is REJECTED**; the
+  D-264 sense corridors are unregressed; **no width, clearance, via, hole or GND rule changes.**
+- **The offload study is by individual branch, never whole-net.** `offload_probe_002x.py`
+  records the B.Cu each `(net, a, b)` connection lays (router `AQROOT_BRANCH_TRK`) and cuts one
+  routed branch at a time. **17 low-current branches sit in the trunk corridor; NO offload set
+  of any cardinality opens `R75.2 -> D9.1` at >=1.20 mm.** The one cut that opens it removes
+  **`BAT_SENSE`** - the 1.00 mm shunt CURRENT path `Q3.6 -> R75.1`, running between `R75.2` and
+  `D9.1`. It is current-carrying; D-270 forbids offloading it (0.5 oz needs 2.73 mm for 1.5 A).
+- **The real harness confirms it.** `AQROOT_D270=BRIDGES`: the bridges leave B.Cu, but the
+  trunk is still GATE_REJECTED on the D-269 clearance - `0.3000 mm required; actual 0.2500 mm`
+  - against `BAT_SENSE`. This is the D-263 tension localised by path role: the two roles that
+  collide in the margin, the trunk and `BAT_SENSE`, are BOTH current-carrying.
+- **Bounded by a reproduction gap, stated plainly.** The 002W 8/8 prefix (`probe_002w_W3.json`,
+  `111111111`) does not reproduce at HEAD - every recipe lands at U18 6/8 or 7/8, `U18.7` the
+  invariant casualty, because the D-266 `U18.8` reservation via lands at (3.000, 71.600) not
+  the 002T-proven (3.750, 71.600). D-269 §6's `control+BAT_RAW -> 1.50 mm` was measured on that
+  8/8 board; on every prefix reproducible at HEAD it takes `BAT_SENSE` too.
+- **Decision required:** (a) reproduce the 8/8 prefix by resolving the `U18.8` reservation-site
+  interaction, then re-measure - in scope for a follow-up; **or (b) accept that the margin
+  cannot host both the `BAT_SENSE` current path and a >=1.20 mm trunk on B.Cu**, and take the
+  F.Cu via-array bridge or the long B.Cu route (2.29x resistance) - an OWNER call, as 002W and
+  D-268 framed.
+- **Suites all PASS and unregressed:** `d270_probe` 11/11, `d264_probe`, `d269_probe`,
+  `dru_probe`, `netclass_probe`, `router_regression` G1-G9. Authoritative DRC unchanged;
+  scratch pass-1 screen is baseline + one dangling via (a screen, not a passed Phase A).
+- **Nothing moved and nothing else relaxed.** TP17 and C58 frozen; D-249/D-264/D-266/D-267/
+  D-269 untouched. **U19 NOT SEARCHED; Phase A NOT passed; Phase B NOT run; converters NOT
+  started.** B-34 remains open. Full analysis:
+  [`audits/2026-08-27-p2-002x-d270-offload.md`](audits/2026-08-27-p2-002x-d270-offload.md).
+
 ## 2026-08-27 - FBV2-P2-002W: D-269 path-role clearance closes BAT_RAW; no control-offload cut set exists
 
 **DECISION STOP** (section 25). **`BAT_RAW` is one functional island for the first time.**

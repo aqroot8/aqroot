@@ -574,3 +574,43 @@ D267_STAGING = {
 # The trunk's own ladder, unchanged: 1.50 mm target, 1.20 mm floor, PR-49 walks
 # it.  A reservation NEVER goes below 1.20 mm.
 LAD_D9_RESERVE = [W_TRUNK_BPP, 1200000]
+
+
+# ---------------------------------------------------------------- D-270 -----
+# FBV2-P2-002X: THE WESTERN-MARGIN OFFLOAD, BY INDIVIDUAL PATH ROLE.
+#
+# D-269 measured that no CONTROL-net cut re-opens `R75.2 -> D9.1` on B.Cu while
+# the two microamp `BAT_RAW` divider bridges sit in the trunk's margin, and that
+# section 9 had excluded those bridges from the candidate list BY NET CLASS.  The
+# 002X ruling widens the candidate list to the routed BRANCH: a bounded
+# low-current TAP on `BAT_RAW`/`BAT_MAIN` may be offered In2/In3 offload despite
+# its power net name, while every current-carrying role stays outer 1 oz.
+#
+# Each entry is (net, a, b) -> dict(layers, via, area):
+#   layers  the inner signal layers to try, In2 first (its 0.5 oz is ample for
+#           a microamp tap; the layer bar D-264 kept is for PACK CURRENT).
+#   via     the SMALLEST through via the branch's own netclass admits - for a
+#           BAT_RAW divider tap that is the D-267 0.65/0.40 POWER via, NOT the
+#           trunk's 0.80/0.40; a control signal uses the ordinary 0.35/0.20.
+#   area    the bounded D-249/D-269 corridor whose In2/In3 exclusion D-270 grants
+#           (BAT_MAIN branches only); None for a control net, which was never
+#           barred from the inner layers.
+#
+# The offload SET ITSELF is chosen by offload_probe_002x, which proves the
+# MINIMUM cardinality that re-opens the trunk before any of this copper is laid.
+_VIA_POWER = (650000, 400000)      # D-267 TAP via, the smallest legal on BAT_RAW
+_VIA_SIG = (350000, 200000)        # D-257 preferred ordinary through via
+_INNER = ('I2', 'I3')
+
+# The two long divider bridges - the copper D-269's audit measured in the margin.
+_D270_BRIDGES = {
+    (N + 'BAT_RAW', 'R80.1', 'Q2.7'):
+        dict(layers=_INNER, via=_VIA_POWER, area='BAT_RAW_DIVIDER_TAP_0'),
+    (N + 'BAT_RAW', 'D12.1', 'R77.1'):
+        dict(layers=_INNER, via=_VIA_POWER, area='BAT_RAW_DIVIDER_TAP_3'),
+}
+
+D270_SETS = {
+    # The two BAT_RAW bridges alone - the D-270 addition to the candidate set.
+    'BRIDGES': dict(_D270_BRIDGES),
+}

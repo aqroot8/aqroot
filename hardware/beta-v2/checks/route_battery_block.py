@@ -104,6 +104,28 @@ if _d256 and _d256 not in PL.D256_SETS:
                      % (_d256, sorted(PL.D256_SETS)))
 D256_FCU = frozenset(PL.D256_SETS[_d256]) if _d256 else frozenset()
 
+# D-270 / FBV2-P2-002X: the western-margin OFFLOAD, by path role.
+# AQROOT_D270 names one of battery_route_plan.D270_SETS - the minimum set of
+# bounded LOW-CURRENT branches (control signals, and the D-270 addition of
+# microamp BAT_RAW divider branches on the power net) that leave B.Cu for
+# In2/In3 so the high-current trunk has the corridor D-269 measured it needs.
+# Unset reproduces the pre-002X behaviour exactly.  The set is a dict keyed
+# (net, a, b) -> dict(layers, via), so the router offloads exactly the named
+# branches and no others, and every current-carrying role is untouched.
+_d270 = (os.environ.get('AQROOT_D270') or '').upper()
+if _d270 and _d270 not in PL.D270_SETS:
+    raise SystemExit('AQROOT_D270=%s is not one of %s'
+                     % (_d270, sorted(PL.D270_SETS)))
+D270_OFFLOAD = dict(PL.D270_SETS[_d270]) if _d270 else {}
+D270 = bool(D270_OFFLOAD)
+# D-270(a): the offloaded BAT_MAIN divider corridors are the ONLY inner-layer
+# authority this ruling grants, added to the exact D-264 exclusion the two Kelvin
+# sense corridors already carry.  Control-signal branches carry no area (they are
+# not BAT_MAIN and In2/In3 was never barred to them); only power-net branches
+# name a corridor.  Set once here so every DRU.write in the run is consistent.
+DRU.INNER_OFFLOAD_AREAS = tuple(sorted(
+    {spec['area'] for spec in D270_OFFLOAD.values() if spec.get('area')}))
+
 
 def mst(pads):
     refs = list(pads)
@@ -305,6 +327,12 @@ def main():
         pads.setdefault(net, {})[ref] = p
 
     journal, stubs, area_trk = [], [], {}
+    # FBV2-P2-002X / D-270: per-branch B.Cu track attribution, so the offload
+    # study can model an INDIVIDUAL routed branch's copper being cut rather than
+    # a whole net.  Populated only when AQROOT_BRANCH_TRK is set, and it records
+    # UUIDs (never live objects - see apply_areas / PR-44) of the B.Cu tracks a
+    # single (net, a, b) connection laid.  It never changes what is routed.
+    branch_trk = {}
     reserved = {}          # D-266: ref -> (x, y, layer) of an accepted exit
     area_link = {}         # D-266: area -> [(x0, y0, x1, y1, w)] not-yet copper
     # PR-48 / D-257: bounded fine-pitch escape corridors, one per planned
@@ -886,6 +914,32 @@ def main():
                     r, used, hop, planned_via = rr, w, True, (vd, vk)
                     break
                 qb.revert(m)
+            if r is not None and not r['ok']:
+                r = None
+        # D-270 (FBV2-P2-002X): the western-margin OFFLOAD, tried FIRST for the
+        # bounded low-current branches the CTO ruling authorises to leave the
+        # outer layer - and for those branches only.  Each hops B -> In2/In3 -> B
+        # on the SMALLEST via its own netclass admits (the D-267 0.65/0.40 POWER
+        # via for a BAT_RAW divider tap, never the trunk's 0.80/0.40) and returns
+        # locally, so the long run leaves the western B.Cu corridor while the
+        # branch stays connected.  A microamp divider tap on In2/In3 is exactly
+        # the path-role exception D-264 gave the two Kelvin sense corridors, one
+        # net over; every CURRENT-CARRYING role is untouched and keeps its outer
+        # 1 oz zero-via copper.  A failure falls through to the ordinary ladder.
+        if (r is None or not r.get('ok')) and D270 and not node \
+                and (net, a, b_) in D270_OFFLOAD:
+            spec = D270_OFFLOAD[(net, a, b_)]
+            vd, vk = spec['via']
+            for lay in spec['layers']:
+                for w in ladder:
+                    rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct, far=lay,
+                                        via_dia=vd, via_drill=vk)
+                    if rr['ok']:
+                        r, used, hop, planned_via = rr, w, True, (vd, vk)
+                        break
+                    qb.revert(m)
+                if r is not None and r.get('ok'):
+                    break
             if r is not None and not r['ok']:
                 r = None
         if r is not None and r.get('ok'):
@@ -1925,10 +1979,23 @@ def main():
             if state['fail']:
                 rest.append(it)
                 continue
+            _pre_laid = len(qb.laid)
             if not run(it['net'], it['a'], it['b'], it['role'], it['lad'],
                        it['area'], it['ct'], fatal=False):
                 rest.append(it)
                 continue
+            # D-270 instrumentation: record the B.Cu copper THIS branch laid, so
+            # the offload study can cut one routed branch and no other.  A failed
+            # rung is fully reverted before this runs (PR-49), so qb.laid[pre:]
+            # is exactly the accepted copper.  UUIDs, not objects - a later
+            # revert frees the object but the board stays the authority.
+            if os.environ.get('AQROOT_BRANCH_TRK'):
+                bkey = '%s %s %s' % (it['net'].split('/')[-1], it['a'], it['b'])
+                bt = branch_trk.setdefault(bkey, [])
+                for t in qb.laid[_pre_laid:]:
+                    if (t.GetClass() == 'PCB_TRACK'
+                            and t.GetLayer() == pcbnew.B_Cu):
+                        bt.append(str(t.m_Uuid.AsString()))
             # Section 8 item 6: the U11.2 escape belongs with the trunk, not at
             # the end of the pass.  The moment the trunk exists, flare into it -
             # a 1.50 mm endpoint left until last is a corridor nobody reserved.
@@ -1952,6 +2019,16 @@ def main():
             pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
             qb.save()
             DRU.write(pcb, stubs, fine)
+            if os.environ.get('AQROOT_BRANCH_TRK'):
+                # D-270: the routed board (qb.save above) plus this map is all
+                # offload_probe_002x needs to cut one branch's B.Cu and re-ask
+                # the trunk.  Keyed 'NET A B', short net name, matching TARGETS.
+                json.dump(branch_trk, open(os.path.join(
+                    SP, os.environ.get('AQROOT_BRANCH_TRK')), 'w'), indent=1)
+                print('BRANCH_TRK  %d branches, %d B.Cu tracks -> %s'
+                      % (len(branch_trk), sum(len(v) for v in branch_trk.values()),
+                         os.environ.get('AQROOT_BRANCH_TRK')))
+                sys.stdout.flush()
             import net_ledger as NL
             lg = NL.ledger(pcb)
             # FBV2-P2-002J section 5 criteria A..H, in order.

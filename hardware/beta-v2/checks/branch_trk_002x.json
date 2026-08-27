@@ -1,0 +1,297 @@
+{
+ "BAT_PROTECTED_P D9.1 (stage)": [
+  "e39a1dc0-9679-4ba1-9919-62dae6c12222",
+  "3b5cc7a2-2734-45d7-83e8-a87a305b4a4c",
+  "270c0984-9882-480e-874a-06a3c1db48ae"
+ ],
+ "BAT_SENSE Q3.5 Q3.6": [
+  "a34d4f04-8a29-4a64-92de-79d200c6869d",
+  "ecedccf4-59e0-418f-be91-b007302862ba",
+  "79a1db71-e679-4264-be78-d6930f01f51c"
+ ],
+ "BAT_SENSE Q3.6 R75.1": [
+  "9bc46dc1-df79-4c03-be97-77e266219b31",
+  "3df90c15-0f0d-40a5-8b79-c9850d19e27b",
+  "5cb754f5-a303-4297-a49e-f2915639f6eb",
+  "1234e5c6-dfc1-4a26-bb9d-d5e0d3369a60",
+  "2293bd92-17d5-43a0-8269-0a7e4013d7cb",
+  "99dc4b54-0718-4782-96bf-7299de954a21"
+ ],
+ "BAT_SENSE U18.9 R75.1": [
+  "2c100ea7-6f8a-4fd9-a0a5-2d31347f333c",
+  "5ac1ecd0-8cdc-4802-afa7-82b44287e4cf"
+ ],
+ "BAT_PROTECTED_P U18.8 R75.2": [
+  "94033eae-6799-4423-9a68-cdf4d37be04f",
+  "94dbf5a9-d4ba-4abc-b492-22bd63145ebf"
+ ],
+ "LTC_GATE U18.10 R76.1": [
+  "e9c037e6-4c3d-4f4b-9d2f-c2a3954346a1",
+  "e0a40d65-4e55-468a-ac78-e1436e41f706"
+ ],
+ "BAT_RAW U18.1 R77.1": [
+  "6e280bf1-42f2-4dcf-8332-bbf0b5add843",
+  "9eab9fe6-d865-43f3-b9fb-b1951dd1dd3f",
+  "ed5692a5-bf8a-46b7-9750-1234ac1d445f",
+  "ce32066c-9670-4c82-922b-4a26e9c54230"
+ ],
+ "LTC_UV U18.2 R79.2": [
+  "9314808f-43e1-434c-b672-15bf50ffecdc",
+  "be800063-b637-4a60-ba57-627e16adb481",
+  "6898a313-f4a3-4fa3-8650-b175d2248fce",
+  "d39dbe5c-ed3a-4d72-af73-cad172062cf4",
+  "d917a27e-c344-4c30-9aa4-2a12101cf40f",
+  "abc164f2-7720-4e04-9de8-fcd3e0d829ff",
+  "1aa34e7e-d01e-4d24-b461-99ad6fb5cc6a",
+  "488fbc08-694d-4a07-b875-145d0d942cc3"
+ ],
+ "LTC_OV U18.3 R77.2": [
+  "0760a965-675c-45f4-a613-a074a516e4ee",
+  "938e855a-e741-42de-9d2e-36a70dd8787a",
+  "282baa6b-5586-4096-a8f8-f35fa054d341",
+  "101513d4-0fe8-420a-911f-674e68076a81",
+  "9c1a93b0-9b8d-4a1b-a0e6-1b6e32794dde",
+  "4c9a15d5-32b1-4edf-a693-d8b19939cbb0",
+  "0fbfb0c7-55d6-47a3-ac47-cb2649d7476a",
+  "4451254b-7694-42ca-ab9c-8db439085c5c"
+ ],
+ "LTC_SHDN U18.6 R80.2": [
+  "08e0a1ec-f333-4e33-b2c7-604e509005a6",
+  "cff18dec-9fa9-4c9b-8ec6-e5ace59135b9",
+  "48e77e39-e8ee-4e32-964f-15bce5133008",
+  "0c23ec4c-e806-4e2f-9cf5-758a00f9bdc9",
+  "e1dc1baf-2a9a-42d9-942b-af66ba07e47a",
+  "3af94586-a966-42fc-a3f4-2c8ad73d0c67",
+  "7fbb0966-aa34-4a72-a5c7-9cb8beff44c3",
+  "e9e3ef5b-bb91-479a-9234-f39425444e50",
+  "e7b34853-7a30-4e90-a2f7-2b90633270ce",
+  "a8028b59-34da-4b20-806a-605360b9ec33",
+  "5a7048e7-c5db-4f9a-b3be-540349dc36c6",
+  "4b585ea0-225d-45ea-99a0-e8534bf40300",
+  "0bfd50b1-5851-4cd0-81f9-39253076f2f6",
+  "8d3bc99e-cdb1-4427-bf2c-ac6de1355f6e"
+ ],
+ "LTC_GATE Q3.2 Q3.4": [
+  "113b0c43-74bd-46e2-9ee5-5557d5f37c6d",
+  "2c774589-509d-43dd-b920-25680ed84ca6",
+  "2d585238-4102-417d-afda-59b2a4990428",
+  "07febb87-5f71-419b-9162-af2e4e5ac814",
+  "feb1a782-68bb-4945-acc1-6e103f4fe1a0"
+ ],
+ "Q2_CS Q2.1 Q2.3": [
+  "dfc1a62f-7b86-4956-9dde-a5cbcd86f269",
+  "e179a3a4-f6bb-403c-9a18-9fa4122ae293",
+  "85a88c02-ff51-4669-a29f-cc5c95fccf72",
+  "c44f1236-86b5-4297-b9ae-b71bfe384220",
+  "539948bd-0ba1-406c-8f85-49f48fa151c3"
+ ],
+ "Q3_CS Q3.1 Q3.3": [
+  "8e246812-7a07-4b43-92ed-b085f36ad69a",
+  "0240e4ec-8b8f-4f19-86d4-fe3330ea2a21",
+  "4d618eb3-e1de-4f4f-a5b0-4ccad9452fad"
+ ],
+ "LTC_GATE Q2.2 Q2.4": [
+  "f7c95f48-1b2c-4ff6-954d-9e488a5c2b50",
+  "786fab10-d8e7-4c6f-af01-4fc240d6dce8",
+  "189888a9-e105-47f5-9728-d29e551f644f",
+  "2aa7db97-254e-41ff-b517-1a2b9a54fdfb",
+  "6e5ef781-089b-4832-b6d1-03fb1a111700",
+  "83c76f86-5b9d-4ab5-8ee8-b646a56bf4bc",
+  "96483c57-deb4-4d5d-8dfa-8f5ca174f0d3",
+  "9a06633e-63dc-4786-8e50-898f5606b3fb",
+  "69b78617-a1b1-4fde-840e-be712e13ff9c"
+ ],
+ "LTC_GATE Q3.2 Q2.2": [
+  "742ae2cc-8ad9-49fc-9b60-8f250d965d4b",
+  "e76daa0e-4e9e-4bce-9431-f055b5dddc1a",
+  "c1eb0156-8664-4f6b-a2eb-e070b0930f35",
+  "8808e2de-c2b5-4f74-8eb3-570390f2f023",
+  "48689cb1-a6c1-4093-9109-bb5488b7c379",
+  "eb2bd0a9-4db7-404b-ba0e-971354b1621e",
+  "d4765002-0185-4949-97a8-9a07f90e6650",
+  "f3b3fb61-344d-4147-99f7-12fe8a950b9a",
+  "781872b0-af72-41b8-ba9b-bacfbc50da49",
+  "3a15f565-d496-47e3-bcff-dce9c10fa564",
+  "e9ac1953-b782-40dc-a655-d9f15ff95e4a",
+  "5ea2ac02-7e5a-4d1a-8b4e-021bdd4ada43",
+  "0f6c9e06-dbad-4ef3-92b5-e0db27965da3"
+ ],
+ "LTC_GATE U18.10 Q3.4": [
+  "07cf9f76-c2e3-49f7-9a6b-2a292318c2dd",
+  "9f3c5fb2-5d73-4ef1-89a3-d69e63e126bf"
+ ],
+ "LTC_GATE_RC C57.1 R76.2": [
+  "c2b3d474-0bf6-413d-b73f-f13dbf832770",
+  "397c93a0-1ebf-4f38-8668-228eff18724b",
+  "a0ed3fc3-4701-4568-b11d-17314295973c"
+ ],
+ "BAT_RAW R80.1 Q2.7": [
+  "99015001-cef6-46c6-a570-0be9bb6fb2ea",
+  "a26f8dad-739d-4561-85fe-5fcdbd11e978",
+  "9fa60313-b3ba-48ad-8578-e75a949ce292",
+  "0a76f42f-5cb0-4ac6-95c8-788dfde0a8d6",
+  "989b6e32-24c0-45bd-b2a9-948b73ae1761",
+  "150c64ff-262f-4184-a82c-c1fe5ce2b563",
+  "311356ce-fde8-4c73-b3db-f0580c2e44ed",
+  "a0f73f31-f0e7-42d5-b6cc-23cd2accbee3",
+  "1d8a14b2-0dae-47f0-8f8b-e48d892f9d4d",
+  "7c0afef1-2be2-4127-94dc-c6b684446a20",
+  "73117c2b-c324-43bd-a00b-f3d1d5fd585c",
+  "fe5b3615-4879-49ef-9001-8a937d1625c8"
+ ],
+ "BAT_RAW R79.1 R80.1": [
+  "43483f9e-9317-46bf-8fe1-24a4d816631e",
+  "3d4d7fbf-737d-4056-b77c-c4cbd80f8520",
+  "78c98f3a-51e9-40d4-a90e-477458dc15cc"
+ ],
+ "BAT_RAW R77.1 R79.1": [
+  "16bf16e8-9848-4f98-ac7a-dbeeee780019",
+  "59eafbc0-4575-462f-9fae-604e79515a5c"
+ ],
+ "LTC_OV R77.2 R78.1": [
+  "63160d51-b821-4be7-a77f-3f2fa79dade8",
+  "cdb1fd82-5b8a-483a-9cf5-43ffe018206e",
+  "dabdecd0-f8d7-4a67-afae-681833271650",
+  "080ce0e3-ca4a-42ac-8fcb-df393fa559f1",
+  "9440f0c6-3f53-42a5-ba1d-12f53e20fb79"
+ ],
+ "LTC_SHDN U18.6 Q4.3": [
+  "72b723eb-d798-41d0-8968-da97168602d0",
+  "33a6c278-55be-4d92-b61d-ba339c54943d"
+ ],
+ "LTC4368_FAULT_N R81.2 R82.1": [
+  "07125d85-632d-4637-bd5a-7671c9501e4f",
+  "c1dcc9ff-5108-45b7-a019-84671e7d9293",
+  "976f4898-9501-4318-8db0-2c9e0fe59b1f",
+  "077e3463-fcbf-4036-84eb-98e52771454a"
+ ],
+ "LTC4368_FAULT_N R82.1 Q9.1": [
+  "1cfefbb9-3ff4-4e4d-b1ca-b28b7e233d99",
+  "fe50a849-c126-492a-8328-3235856b9507"
+ ],
+ "BAT_PROT_SHDN_CTL Q4.1 R83.1": [
+  "5e345d4d-2b60-4d87-91fe-c2edfce36c74",
+  "75292f2a-01be-4386-a03e-431df442435d"
+ ],
+ "BAT_MID Q2.6 Q3.8": [
+  "67a581b3-77df-45cb-b76f-5f5dc35584a8",
+  "4832e733-be04-4f05-8acd-fa175cc84da0"
+ ],
+ "BAT_MID Q2.5 Q2.6": [
+  "90f332eb-5e60-45b2-b767-ff43f542c528",
+  "e20cb53d-c6fc-4c9c-9dcc-3470b6d1a4d3",
+  "b634a77c-84bf-4621-82fb-1aa6b6bebdfa"
+ ],
+ "BAT_MID Q3.8 Q3.7": [],
+ "BAT_RAW F1.2 Q2.8": [
+  "fb0ed146-02c0-4f94-98db-5409b0e6e6bd",
+  "a2abef8a-9607-451b-82f7-3d95e6b61625",
+  "d810f866-1caf-4f19-bf34-aa69e2e19625"
+ ],
+ "BAT_RAW Q2.8 Q2.7": [
+  "94ca649d-db85-490d-bac5-72d835723c67",
+  "0ebf97e7-a118-4d97-b4c5-ba1e3b7429cc",
+  "fef0bfb3-d9ae-454b-ae9e-d61182e5f012"
+ ],
+ "BAT_CONNECTOR_P J4.1 F1.1": [
+  "e782fc26-db13-4a94-96ad-955b0bd9c99a",
+  "d32c724b-4a80-4112-a198-542a38f77027",
+  "2ad3dd99-d7ee-42e8-874b-6ee9e327cba2",
+  "28d19a0b-011f-4102-9636-e6ccd57049b5"
+ ],
+ "BAT_PROTECTED_P U14.2 TP15.1": [
+  "91f8ff79-d87f-4da7-8177-a50d3ca430a5",
+  "55eb97a3-bb29-4fc1-a229-f27307d99b23",
+  "4e671acf-51f9-41c5-a4c4-4d2a3a5ff644",
+  "263ab3a8-f7ec-4a37-a3ab-34a80c73cd59",
+  "7e1d2162-866c-42d3-80c9-a27171d95414",
+  "50803f5a-6807-4bc9-98ab-b7fc0c371c0b",
+  "1ee0dba1-8311-4a31-97ac-06b9b5ad8fb0",
+  "9f6f8305-fdf0-4d10-8e13-c944a4e10f11"
+ ],
+ "BAT_PROTECTED_P U14.3 U14.2": [],
+ "BAT_PROTECTED_P D9.1 (node)": [
+  "3b43c449-2504-47a2-817a-04790f894f88",
+  "b718fc5d-0163-481c-83e6-fdcc159ffc69"
+ ],
+ "BAT_PROTECTED_P R75.2 (node)": [],
+ "BAT_PROTECTED_P U14.2 (node)": [
+  "f80aa2bb-f7e7-4800-93b7-3ce01c8fde63",
+  "138cf256-3485-4958-ad0c-70120519f4a7",
+  "0852e898-fcf0-41a1-b7c9-27369cff9c03",
+  "c573f588-0329-49fb-8d1c-40e61df5172b",
+  "d3db7f5d-54d6-43d9-8e2f-5929ebf38713",
+  "9c7d3644-b386-450d-8f53-cb80c1d3e72d"
+ ],
+ "BAT_PROTECTED_P U18.8 (node)": [
+  "3043fc2b-45aa-45d9-8f72-af11a88505d7",
+  "35850cfd-6a41-4207-9355-73ec200fb86c",
+  "fbfd9c69-56ae-438c-9792-79b70942c4a7",
+  "2a2bf9a6-5be7-4d48-ac6f-f2470e0d5b3d"
+ ],
+ "BAT_SENSE Q3.5 (node)": [],
+ "BAT_SENSE Q3.6 (node)": [],
+ "BAT_SENSE R75.1 (node)": [],
+ "BAT_SENSE U18.9 (node)": [],
+ "BAT_MID Q2.5 (node)": [],
+ "BAT_MID Q2.6 (node)": [],
+ "BAT_MID Q3.7 (node)": [],
+ "BAT_MID Q3.8 (node)": [],
+ "BAT_RAW C59.1 (node)": [
+  "f9ba854f-c5b6-4445-8b4c-f9c1ee9681bb",
+  "1bc2b9ad-254b-435a-94fe-2e3fe1c653b2",
+  "4a1faddd-d989-4233-9011-dd66208ebf7d"
+ ],
+ "BAT_RAW F1.2 (node)": [],
+ "BAT_RAW Q2.7 (node)": [],
+ "BAT_RAW Q2.8 (node)": [],
+ "BAT_RAW R77.1 (node)": [],
+ "BAT_RAW R79.1 (node)": [],
+ "BAT_RAW R80.1 (node)": [],
+ "BAT_RAW R86.2 (node)": [
+  "cb47c659-2952-4bec-9c3a-0e59f6cf9ac3",
+  "9c459eff-fbb7-466a-86c3-d70b7f11207b",
+  "757247ca-6784-4883-abd1-46d72ae5f4b6",
+  "5ebb4510-4328-4e23-88fb-ae6676d21067",
+  "8f8a7fde-1f3e-40f1-a2e9-985cec591a1c"
+ ],
+ "BAT_RAW R89.1 (node)": [
+  "12b3f4fe-6d07-40c4-b610-934097e43f8e",
+  "8a671ada-1ecc-4578-ad58-a14a1d911a50",
+  "db55969a-1600-4b81-bfa0-a9bcaa92f525",
+  "1bbf3fec-cd20-4129-b94b-34ac3b974f6c",
+  "d95f5169-1f10-497c-9de2-b70da8049f44",
+  "df57f2e0-f2c6-4903-b2fb-2637929ec6bf",
+  "f47f80ba-9bc1-4aeb-9a52-404d6e649c14",
+  "02304210-721e-45fe-80d6-9e3193361a37",
+  "0a6bf491-16cc-4c18-8f66-68ca54d2f870"
+ ],
+ "BAT_RAW U18.1 (node)": [],
+ "BAT_CONNECTOR_P F1.1 (node)": [],
+ "BAT_CONNECTOR_P J4.1 (node)": [],
+ "LTC_GATE Q2.2 (node)": [],
+ "LTC_GATE Q2.4 (node)": [],
+ "LTC_GATE Q3.2 (node)": [],
+ "LTC_GATE Q3.4 (node)": [],
+ "LTC_GATE R76.1 (node)": [],
+ "LTC_GATE U18.10 (node)": [],
+ "LTC4368_FAULT_N Q9.1 (node)": [],
+ "LTC4368_FAULT_N R81.2 (node)": [],
+ "LTC4368_FAULT_N R82.1 (node)": [],
+ "LTC_SHDN Q4.3 (node)": [],
+ "LTC_SHDN R80.2 (node)": [],
+ "LTC_SHDN U18.6 (node)": [],
+ "LTC_OV R77.2 (node)": [],
+ "LTC_OV R78.1 (node)": [],
+ "LTC_OV U18.3 (node)": [],
+ "LTC_UV R79.2 (node)": [],
+ "LTC_UV U18.2 (node)": [],
+ "Q2_CS Q2.1 (node)": [],
+ "Q2_CS Q2.3 (node)": [],
+ "Q3_CS Q3.1 (node)": [],
+ "Q3_CS Q3.3 (node)": [],
+ "LTC_GATE_RC C57.1 (node)": [],
+ "LTC_GATE_RC R76.2 (node)": [],
+ "BAT_PROT_SHDN_CTL Q4.1 (node)": [],
+ "BAT_PROT_SHDN_CTL R83.1 (node)": []
+}

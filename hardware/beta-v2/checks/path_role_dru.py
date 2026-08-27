@@ -166,6 +166,30 @@ RULE = (u'(rule "%s - D-249"\n'
 # already grown from the branch's own copper.
 INNER_SENSE_AREAS = ('BAT_SENSE_KELVIN', 'BAT_PROT_TAP_U18')
 
+# ---------------------------------------------------------------------
+# D-270(a)  (FBV2-P2-002X)
+#
+# WESTERN-MARGIN OFFLOAD IS A CURRENT-PATH-ROLE DECISION, NOT A WHOLE-NET ONE.
+#
+# D-264 barred In2/In3 for BAT_MAIN copper because distributing 1.5 A of pack
+# current on 0.5 oz inner copper needs 2.73 mm and defeats the layer.  That is
+# right for a CURRENT-CARRYING role and stays in force.  But the LTC4368 OV/UV
+# divider chain and its two long bridges - `BAT_RAW R80.1 -> Q2.7`,
+# `D12.1 -> R77.1` and the divider links - are microamp TAPS ruled 0.20 mm by
+# D-249; they share the `BAT_RAW` net name and nothing else with the pack rail.
+# D-269 closed `BAT_RAW`, which put those two bridges in the trunk's own margin,
+# and D-269's own audit measured that no CONTROL-net cut re-opens the trunk while
+# they sit there on B.Cu.  So the SAME path-role exception D-264 gave the two
+# Kelvin sense corridors is extended, by INDIVIDUAL BRANCH, to the bounded
+# low-current divider corridors that are authorised for offload - and to NOTHING
+# else.  Every current-carrying BAT_MAIN role is still outer 1 oz and zero-via;
+# this is not a blanket inner-layer exception for the net.
+#
+# The authorised corridors are supplied by the router (route_battery_block sets
+# INNER_OFFLOAD_AREAS from the D-270 offload set) so a corridor that names no
+# laid branch never appears, exactly as dru_probe requires.
+INNER_OFFLOAD_AREAS = ()
+
 OUTER_ONLY = (u'(rule "BAT_MAIN is outer-layer only - %s - D-264"\n'
               u'\t(layer "%s")\n'
               u'\t(severity error)\n'
@@ -174,8 +198,11 @@ OUTER_ONLY = (u'(rule "BAT_MAIN is outer-layer only - %s - D-264"\n'
 
 
 def outer_only_rules():
-    """The D-264 path-role form of the outer-layer restriction."""
-    excl = ' && '.join("!A.enclosedByArea('%s')" % a for a in INNER_SENSE_AREAS)
+    """The D-264 path-role form of the outer-layer restriction, with the D-270
+    bounded low-current offload corridors added to the same exclusion the two
+    D-264 sense corridors already carry."""
+    areas = tuple(INNER_SENSE_AREAS) + tuple(INNER_OFFLOAD_AREAS)
+    excl = ' && '.join("!A.enclosedByArea('%s')" % a for a in areas)
     return [OUTER_ONLY % (L.split('.')[0], L, excl)
             for L in ('In2.Cu', 'In3.Cu')]
 
