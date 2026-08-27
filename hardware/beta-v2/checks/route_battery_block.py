@@ -45,6 +45,16 @@ Q3_POFV = bool(os.environ.get('AQROOT_Q3_POFV'))
 # reproduces the pre-002Q ordering exactly.
 KELVIN_FIRST = bool(os.environ.get('AQROOT_KELVIN_FIRST'))
 
+# D-263 section 14: route both Kelvin branches on the same internal signal
+# layer with ordinary 0.35/0.20 through vias.  AQROOT_KELVIN_INNER names the
+# layer ('I2' or 'I3'); unset leaves the pair on its pre-002R topology.
+KELVIN_INNER = (os.environ.get('AQROOT_KELVIN_INNER') or '').upper()
+
+# D-263 section 10: the high-current trunk adapts to already-proven control
+# geometry instead of erasing the pin-field exits, so it is queued AFTER the
+# U18 field, the Q3 row, the trip network, the Kelvin pair and BAT_SENSE.
+TRUNK_LAST = bool(os.environ.get('AQROOT_TRUNK_LAST'))
+
 # FBV2-P2-002O section 11: LTC_OV MAY NOT TAKE THE GENERIC LAYER FALLBACK
 # DURING QUALIFICATION.
 #
@@ -511,10 +521,25 @@ def main():
         # A failed hop falls through to the ordinary B.Cu ladder untouched:
         # this adds capacity, it does not remove an option.
         planned_via = None
+        # D-263 section 14: the Kelvin pair, on its paired internal layer.
+        if KELVIN_INNER and not node and (net, a, b_) in PL.KELVIN_INNER:
+            spec = PL.KELVIN_INNER[(net, a, b_)]
+            vd, vk = spec['via']
+            lay = KELVIN_INNER if KELVIN_INNER in ('I2', 'I3') else spec['layer']
+            for w in ladder:
+                rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct, far=lay,
+                                    via_dia=vd, via_drill=vk)
+                if rr['ok']:
+                    r, used, hop, planned_via = rr, w, True, (vd, vk)
+                    break
+                qb.revert(m)
+            if r is not None and not r['ok']:
+                r = None
         # PR-47: the via-in-pad escape, tried first for the ONE connection
         # D-258 authorises it for.  A failure falls through to the ordinary
         # ladder untouched - this adds an option, it removes none.
-        if Q3_POFV and not node and (net, a, b_) in PL.POFV_Q3:
+        if (r is None or not r.get('ok')) and \
+                Q3_POFV and not node and (net, a, b_) in PL.POFV_Q3:
             spec = PL.POFV_Q3[(net, a, b_)]
             vd, vk = spec['via']
             for w in ladder:
@@ -703,11 +728,28 @@ def main():
         # that corridor the escape is judged by the ordinary board rules, so a
         # fine via cannot wander and the relaxation cannot be inherited.
         _pre_fine = len(fine)
-        if planned_via is not None and hop and area is None and len(fine) < len(FINEAREAS):
-            area = FINEAREAS[len(fine)]
-            fine.append((area, net, 0.20, planned_via[0] / 1e6,
-                         planned_via[1] / 1e6,
-                         'D-257 %s %s->%s escape' % (net.split('/')[-1], a, b_)))
+        if planned_via is not None and hop:
+            if area is None and len(fine) < len(FINEAREAS):
+                area = FINEAREAS[len(fine)]
+                fine.append((area, net, 0.20, planned_via[0] / 1e6,
+                             planned_via[1] / 1e6,
+                             'D-257 %s %s->%s escape' % (net.split('/')[-1], a, b_)))
+            elif area is not None:
+                # THE VIA OVERRIDE HAS TO REACH THE CORRIDOR THE ROW ALREADY HAS.
+                #
+                # A planned escape on a row that carries its OWN D-249 area -
+                # the Kelvin pair is exactly that, `BAT_SENSE_KELVIN` and
+                # `BAT_PROT_TAP_U18` - got no FINE_ESC corridor, because the
+                # allocation was guarded on `area is None`.  So its 0.35/0.20
+                # vias had no rule permitting them and DRC answered
+                # `via_diameter ... board setup constraints min 0.5000 mm;
+                # actual 0.3500 mm`.  The fix is not another corridor: it is to
+                # attach the via geometry to the corridor that already bounds
+                # this branch.
+                fine.append((area, net, 0.20, planned_via[0] / 1e6,
+                             planned_via[1] / 1e6,
+                             'D-263 %s %s->%s escape via'
+                             % (net.split('/')[-1], a, b_)))
         _pre_area = len(area_trk.get(area, [])) if area else 0
         if area:
             grow(area, qb.laid[m[0]:])
@@ -997,8 +1039,19 @@ def main():
     if KELVIN_FIRST:
         add("0b. R75 Kelvin taps, before the trunk (D-262)",
             PL.PLAN_0A_KELVIN, CT_W, tight='U18')
-    add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
-    add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
+    # D-263 section 10: THE TRUNK ADAPTS TO THE CONTROL GEOMETRY, NOT THE OTHER
+    # WAY ROUND.
+    #
+    # Two orders have failed on this placement.  Trunk-first (002Q) laid
+    # 19.219 mm of 1.20 mm copper through the U18 pin field and took `U18.2`,
+    # `U18.3` and `U18.7` with it - 8 of 8 became 5 of 8.  Kelvin-first was
+    # worse at 4 of 8, because the taps wanted the same lanes.  The lesson is
+    # not "route the sense copper earlier": the pin field has ONE exit per pin
+    # and the trunk has the whole board, so the trunk goes LAST and routes
+    # around geometry the pin field has already proved it needs.
+    if not TRUNK_LAST:
+        add("1. BAT_PROTECTED_P trunk", PL.PLAN_1_BPP_TRUNK, CT_W)
+        add("2-5. BAT_MAIN chain", PL.PLAN_2_CHAIN, CT_W)
     # PR-43: the divider chain's two long links to the battery node compete for
     # the west margin and lose it to U18's pin field if they wait their turn.
     #
@@ -1019,7 +1072,8 @@ def main():
         add("5b. BAT_RAW long bridges (PR-43)", PL.PLAN_TAPS_BRIDGE, CT_W)
     add("6b. U18 pin field",
         [r for r in PL.PLAN_0_U18
-         if not (KELVIN_FIRST and (r[0], r[1], r[2]) in PL.KELVIN_KEYS)],
+         if not ((KELVIN_FIRST or TRUNK_LAST)
+                 and (r[0], r[1], r[2]) in PL.KELVIN_KEYS)],
         CT_W, tight='U18')
     # PR-26, AND IT REVERSES FBV2-P2-002E's ORDER BECAUSE THE PLACEMENT MOVED.
     #
@@ -1124,6 +1178,13 @@ def main():
     # network - LTC_SHDN and LTC4368_FAULT_N included.  It stops BEFORE the
     # dead-cell network, which is U19's pin field, east of the contested margin
     # and unable to free a lane in it.  R80 stays the narrower 002J screen.
+    if TRUNK_LAST:
+        # The control geometry is proved by now: U18's pin field, the Q3 row
+        # and the trip network have each had first refusal on their own lanes.
+        add("9b. R75 Kelvin sense pair (D-263)", PL.PLAN_0A_KELVIN, CT_W)
+        add("9c. BAT_MAIN chain, after the control field", PL.PLAN_2_CHAIN, CT_W)
+        add("9d. BAT_PROTECTED_P trunk, last (D-263)",
+            PL.PLAN_1_BPP_TRUNK, CT_W)
     if LOCAL not in ('R80', 'D256'):
         add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
     for short in ([] if LOCAL in ('R80', 'D256') else PL.DEADCELL):

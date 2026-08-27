@@ -1,3 +1,55 @@
+## 2026-08-27 - FBV2-P2-002R: SIX-LAYER ARCHITECTURE LOCKED; D-263 routing stops on a standing rule
+
+**A - authoritative six-layer lock: PASS** (`f8c931b`). **B - D-263 routing: DECISION STOP.**
+The two results are independent by section 2's ruling, and the second does not undo the first.
+
+- **THE AUTHORITATIVE PCB IS NOW SIX LAYERS.** JLCPCB **JLC06161H-7628**, nominal 1.6 mm, 1 oz outer
+  / 0.5 oz inner, **In1 and In4 solid GND**, In2/In3 internal signal, no blind/buried/laser vias.
+  Rollback point **`beta-v2-p2-pre-sixlayer-authoritative`** created at `5f10073`, pushed and
+  verified on the remote BEFORE any modification.
+- **Validated after save / reload / refill:** 6 copper layers in order, published dielectrics
+  0.2104 / 0.4 / 0.2028 / 0.4 / 0.2104, **In1 one island and In4 one island**, no pour on In2/In3,
+  **zero signal tracks and zero signal vias**, outline datum 72.000 x 148.000 mm, **324 of 324
+  footprint positions IDENTICAL** to the pre-lock board, **DRC byte-for-byte the four-layer
+  baseline** with no new violation class, ERC unchanged, and all five suites PASS. Committed and
+  pushed **before** any routing, per section 8, so it survives Part B. `p1_regression` now guards
+  **both** reference planes and asserts the copper layer count - the In1 check was EXTENDED, never
+  weakened.
+- **SECTION 10'S REORDERING WAS IMPLEMENTED AND IT MOVES THE CASUALTY RATHER THAN REMOVING IT.**
+  Trunk-first (002Q) cost `U18.2`/`U18.3`/`U18.7`; Kelvin-first cost four control pins;
+  **controls-first costs `U18.6` AND the sense pads** - `R75.1`, `R75.2`, `Q3.5` and `Q3.6` all
+  `NO_LEGAL_ESCAPE`. **Three orders, three different casualties, one cause: there is not enough
+  B.Cu around U18 and R75 for the pin field, the sense pair and the high-current chain to coexist**,
+  and reordering only chooses who goes without.
+- With controls first, `LTC_OV` closes as **ONE COMPONENT on B.Cu with ZERO vias**
+  (`R77.2 -> R78.1` at 2.457 mm - the first time that has held in this order), `LTC_GATE` closes all
+  six functional pads, `FAULT_N` all four, `LTC_UV` at 9.889 mm and VIN at 4.910 mm - **but
+  `LTC_SHDN U18.6 -> R80.2` is `NO_LEGAL_ESCAPE`**, so section 11's control-lane reservation never
+  reaches 8/8.
+- **SECTION 14'S PAIRED-INTERNAL KELVIN IS BARRED BY A STANDING RULE, NOT BY GEOMETRY:**
+  `BAT_PROTECTED_P U18.8 -> R75.2` is rejected with **"Items not allowed (rule 'BAT_MAIN is
+  outer-layer only')"**. The rule covers the WHOLE net and the Kelvin tap is part of it; it was
+  written for the 1.5 A path - 0.5 oz inner copper needs 2.73 mm for 1.5 A at a 10 K rise, the
+  board's own arithmetic - and makes **no exception for a nanoamp sense branch that merely shares
+  the net name**. Section 17 forbids falling back to 002Q's asymmetric F.Cu route, and a pair with
+  one branch internal and one outer is not a matched pair either. **No trunk corridor family was
+  generated** - section 20 is downstream of a control reservation that does not exist.
+- **A via-override defect was found and fixed:** the FINE_ESC corridor carrying the D-257
+  via-geometry override was allocated only for rows with NO area of their own, and the Kelvin rows
+  carry `BAT_SENSE_KELVIN` and `BAT_PROT_TAP_U18` - so their 0.35/0.20 vias had no permitting rule
+  and DRC answered `via_diameter ... min 0.5000; actual 0.3500`. The override now attaches to the
+  corridor the row already has.
+- **DECISIONS REQUIRED: (a) SCOPE `BAT_MAIN is outer-layer only` TO CURRENT-CARRYING COPPER** - for
+  instance by excluding copper inside the already-bounded, already-named D-249 sense corridors; it
+  is a protection-architecture rule and not this task's to change. **(b) Then re-run sections
+  11-22** - with the sense pair off B.Cu the control reservation has a real chance at 8/8, and only
+  then does the trunk corridor search mean anything. **(c) `LTC_SHDN U18.6 -> R80.2` needs its own
+  look** - `NO_LEGAL_ESCAPE` with controls routed first and nothing else on the board.
+
+**No authoritative signal copper or placement ECO was written; the authoritative PCB is six layers
+with 0 tracks and 0 vias.** U19 NOT searched. Phase A/B NOT run. B-34 REMAINS OPEN. Converter
+routing NOT STARTED. PCB routing 0 %, overall 74 % - **no progress earned by an architecture lock**.
+
 ## 2026-08-27 - FBV2-P2-002Q: PR-49 delivered and proven; closing the trunk costs three control pins
 
 **FAIL at section 14.** **The authoritative stackup was NOT changed** - section 18 gates it on

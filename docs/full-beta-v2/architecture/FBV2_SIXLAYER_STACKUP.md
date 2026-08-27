@@ -1,11 +1,16 @@
 # Full Beta v2 — six-layer stackup, POFV fabrication note, impedance register
 
-**D-258 (FBV2-P2-002M) / D-259(c) CLOSED (FBV2-P2-002N).** Status:
-**ARCHITECTURE RULED, PUBLISHED STACKUP ADOPTED AND VERIFIED ON SCRATCH; NOT YET
-APPLIED TO THE AUTHORITATIVE BOARD.** The local battery gate has not passed
-(002M §14, 002N §11), and the authoritative lock is conditioned on it. The
-authoritative PCB remains **four layers, zero signal tracks, zero signal
-vias**.
+**D-258 · D-259(c) · LOCKED ON THE AUTHORITATIVE BOARD (FBV2-P2-002R, commit
+`f8c931b`).** Status: **THIS IS NOW THE AUTHORITATIVE FULL BETA v2 STACKUP.**
+FBV2-P2-002R §2 decoupled the architecture from the battery local-route gate —
+the migration had passed its own regression on every screen from 002M to 002Q,
+PR-47's solution requires the six-layer/POFV strategy, and there was no
+authoritative signal copper to disturb. Rollback point:
+**`beta-v2-p2-pre-sixlayer-authoritative`** at `5f10073`.
+
+The authoritative PCB is **six layers with zero signal tracks and zero signal
+vias** — architecture only. No placement ECO, no Q3.3 POFV via, no battery
+copper has been written.
 
 ---
 

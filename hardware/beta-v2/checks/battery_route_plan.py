@@ -454,3 +454,28 @@ PLAN_0A_KELVIN = [
      'BAT_PROT_TAP_U18'),
 ]
 KELVIN_KEYS = frozenset((r[0], r[1], r[2]) for r in PLAN_0A_KELVIN)
+
+
+# ---- D-263 section 14: the Kelvin pair on a PAIRED INTERNAL LAYER --------
+#
+# FBV2-P2-002Q measured the Kelvin pair routed as 8.667 / 11.130 mm against a
+# 10.000 mm cap, with one branch taking an F.Cu excursion and the other a B.Cu
+# detour - and section 17 forbids accepting that asymmetry as the final answer.
+#
+# The pair is LOW-CURRENT SENSE routing.  It carries no pack current, so it has
+# no business competing for B.Cu with the trunk and the pin field, and the
+# six-layer stack exists precisely so it does not have to.  Both branches go on
+# the SAME internal signal layer with the SAME topology and the SAME via count:
+# short B.Cu pad escape, one ordinary 0.35/0.20 through via, internal run, one
+# ordinary through via, short B.Cu destination escape.  Two vias per branch,
+# no POFV, no microvia.
+#
+# Symmetry is the point.  A Kelvin pair whose two halves take different layers
+# and different via counts is not a matched measurement pair, whatever its
+# lengths come out at.
+KELVIN_INNER = {
+    (N + 'BAT_SENSE', 'U18.9', 'R75.1'):
+        dict(layer='I2', via=(350000, 200000)),
+    (N + 'BAT_PROTECTED_P', 'U18.8', 'R75.2'):
+        dict(layer='I2', via=(350000, 200000)),
+}

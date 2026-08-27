@@ -900,3 +900,55 @@ The taps never obstructed the trunk. They took the pin-field lanes `LTC_UV`,
 route cannot block; it tells you nothing about what it will occupy.** The flag
 stays in the harness, off, so the measurement stays reproducible rather than
 becoming folklore.
+
+---
+
+## FBV2-P2-002R — three orders, three casualties, one cause
+
+The six-layer architecture is now the authoritative stackup. The battery block
+is not routed, and 002R establishes why in terms that no further reordering can
+change.
+
+Three routing orders have now been measured on the same frozen placement:
+
+    trunk first     (002Q)   U18 5/8   loses U18.2, U18.3, U18.7
+    Kelvin first    (002Q)   U18 4/8   loses four control pins
+    controls first  (002R)   U18 5/8   loses U18.6, and the sense pads:
+                                       R75.1, R75.2, Q3.5, Q3.6 NO_LEGAL_ESCAPE
+
+**Whoever routes last goes without.** That is not an ordering problem with an
+ordering solution — it is the signature of a region that cannot hold everything
+asked of it. Around U18 and R75 the pin field, the Kelvin pair and the
+high-current chain are competing for the same B.Cu, and each order simply
+nominates a different loser.
+
+### And the one class of copper that could move is pinned
+
+Six layers exist precisely so that low-current routing can leave scarce outer
+copper. The Kelvin pair is the perfect candidate: nanoamps, no pack current, two
+short branches. §14 asked for both on the same internal layer with ordinary
+0.35/0.20 vias. The board answered:
+
+    BAT_PROTECTED_P U18.8 -> R75.2
+    Items not allowed (rule 'BAT_MAIN is outer-layer only')
+
+The rule is right about what it was written for. Its justification is arithmetic
+about the 1.5 A path — 0.5 oz inner copper needs 2.73 mm for 1.5 A at a 10 K
+rise. It applies to the **net**, and the Kelvin tap shares the net name while
+sharing none of the current.
+
+### The rule this adds
+
+**A rule scoped by net name will eventually bind copper the net name does not
+describe.** D-249 already learned this for width: `BAT_PROTECTED_P` feeds a
+1.5 A trunk *and* a nanoamp sense input, and a single width floor made the net
+unroutable until path role replaced net name. `BAT_MAIN is outer-layer only` is
+the same rule shape one property over, and it has now produced the same class of
+result — a branch blocked from a layer it has no electrical reason to avoid.
+
+The fix is the one D-249 already found: **say what the copper IS, not which net
+it belongs to.** The D-249 sense corridors are already bounded and already named;
+scoping the layer rule to exclude them costs nothing and asks for no relaxation
+anywhere current actually flows.
+
+That is a protection-architecture ruling, and it is raised, not taken.
