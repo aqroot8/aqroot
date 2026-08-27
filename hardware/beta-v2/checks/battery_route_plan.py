@@ -545,3 +545,32 @@ PLAN_D266_JOIN = [
 D266_LADDER = {
     (N + 'LTC_UV', 'U18.2', 'R79.2'): [200000, 150000],
 }
+
+
+# ---------------------------------------------------------------- D-267 -----
+# FBV2-P2-002U section 2: EARLY HIGH-CURRENT ESCAPE RESERVATION, D9.1 ONLY.
+#
+# > An early high-current escape reservation is permitted only for D9.1, at the
+# > existing BPP trunk target/floor, outer-layer-only and zero-via.  It
+# > preserves the pad exit without completing the current path early.
+#
+# 002T left exactly one thing standing: `R75.2 -> D9.1` returned NO LEGAL
+# ESCAPE at >= 1.200 mm with `D9.1` behind 37 track segments, because the trunk
+# is routed LAST - which is what protects the pin field and is not up for
+# revision.  Measured on a CLEAN board `D9.1` escapes at 1.50 mm in SIX
+# directions and at 1.20 mm in six, so nothing about the pad is the problem.
+#
+# The staging points below are taken from the clean-board trunk itself: routed
+# with nothing in its way, `R75.2 -> D9.1` runs 19.878 mm at 1.50 mm and leaves
+# D9 heading south-west to (10.800, 73.000), then west along y = 73.0 past the
+# divider column to (7.700, 73.000) and (7.000, 72.300).  Reserving a prefix of
+# THAT path is what keeps the exit; inventing a staging point would not.
+D267_STAGING = {
+    'F1': (10800000, 73000000),    # clear of D9's immediate neighbourhood
+    'F2': (7700000, 73000000),     # west of the R77/R78 divider column
+    'F3': (7000000, 72300000),     # at the turn north, furthest committed
+}
+
+# The trunk's own ladder, unchanged: 1.50 mm target, 1.20 mm floor, PR-49 walks
+# it.  A reservation NEVER goes below 1.20 mm.
+LAD_D9_RESERVE = [W_TRUNK_BPP, 1200000]

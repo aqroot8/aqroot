@@ -1663,7 +1663,16 @@ def join_reserved(qb, net, va, vb, width, clr_pad, clr_trk, layer='I2',
     reserving: the part that was scarce is already spent.
     """
     ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
-    for G_try in (G, fine):
+    # D-267 section 11: THE FINE GRID FIRST, AND KEEP THE SHORTER RESULT.
+    #
+    # A Kelvin branch is judged on total length against a 10.000 mm cap, and a
+    # 50 um A* lattice cannot follow a diagonal without stair-stepping: 002T's
+    # branch B came to 6.956 mm of inner run against a 6.43 mm straight line,
+    # and the whole overshoot was 0.456 mm.  Trying the finer lattice first and
+    # taking whichever run is shorter is not a relaxation of anything - it is
+    # the same corridor, measured more carefully.
+    best = None
+    for G_try in (fine, G):
         margin = 8000000
         x0 = max(min(va[0], vb[0]) - margin, qb.ex0 - 1000000)
         y0 = max(min(va[1], vb[1]) - margin, qb.ey0 - 1000000)
@@ -1683,16 +1692,110 @@ def join_reserved(qb, net, va, vb, width, clr_pad, clr_trk, layer='I2',
         if path is None:
             continue
         pts = simplify(path, ox2, oy2, G_try)
-        total = 0.0
-        m = qb.mark()
+        total = sum(math.hypot(pts[k + 1][0] - pts[k][0],
+                               pts[k + 1][1] - pts[k][1])
+                    for k in range(len(pts) - 1))
+        if best is None or total < best[0]:
+            best = (total, pts, G_try)
+    if best is not None:
+        total, pts, G_try = best
+        qb.mark()
         for k in range(len(pts) - 1):
             qb.track(net, layer, pts[k][0], pts[k][1],
                      pts[k + 1][0], pts[k + 1][1], width)
-            total += math.hypot(pts[k + 1][0] - pts[k][0],
-                                pts[k + 1][1] - pts[k][1])
         return dict(ok=True, mm=total / 1e6, grid=G_try / 1e6, vias=0,
                     layer=layer, trunk_mm=width / 1e6, minw=width / 1e6,
                     inner_mm=total / 1e6)
     return dict(ok=False, reason='NO_PATH',
                 why='no %s corridor at %.3f mm between the two reserved vias'
                     % (layer, width / 1e6))
+
+
+def reserve_run(qb, net, pa, width, clr_pad, clr_trk, layer='B', target=None,
+                G=50000, fine=25000):
+    """D-267.  RESERVE A HIGH-CURRENT PAD'S EXIT, ON THE OUTER LAYER, NO VIA.
+
+    D-266 reserved SENSE exits: a 0.20 mm neck and a through via, because a
+    sense branch is finished on an inner layer.  `D9.1` is different in every
+    way that matters - it is the far end of the 1.5 A `BAT_PROTECTED_P` trunk,
+    it must stay on outer 1 oz copper, and it may not take a via at all.  So
+    the reservation is a plain run at the trunk's own width from the pad to a
+    staging point, and the trunk is completed to that staging copper later.
+
+    It is a reservation and not a route because it deliberately stops short:
+    it joins `D9.1` to nothing, and section 4 forbids it from reaching another
+    `BAT_PROTECTED_P` node.  The inverted gate is what enforces that - the
+    ratsnest must NOT move.
+
+    `target` is the staging point to head for; the run ends at the reachable
+    cell nearest to it.  Returns dict(ok, mm, end=(x, y), vias=0).
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    fail = None
+    for G_try in (G, fine):
+        prefer = None
+        if target is not None:
+            prefer = (target[0] - pa['x'], target[1] - pa['y'])
+        e = qb.escape(pa, layer, width, width, clr_pad, clr_trk, G_try, ox, oy,
+                      prefer=prefer)
+        if not e:
+            fail = dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                        why=qb.escape_why[0], pad=pa['ref'])
+            continue
+        c = e[0]
+        if target is None:
+            m = qb.mark()
+            qb.track(net, layer, pa['x'], pa['y'], c['x'], c['y'], c['w'])
+            return dict(ok=True, mm=c['ln'] / 1e6, vias=0, layer=layer,
+                        reservation=True, grid=G_try / 1e6,
+                        trunk_mm=width / 1e6, minw=width / 1e6,
+                        end=(int(c['x']), int(c['y'])))
+        margin = 8000000
+        x0 = max(min(c['x'], target[0]) - margin, qb.ex0 - 1000000)
+        y0 = max(min(c['y'], target[1]) - margin, qb.ey0 - 1000000)
+        x1 = min(max(c['x'], target[0]) + margin, qb.ex1 + 1000000)
+        y1 = min(max(c['y'], target[1]) + margin, qb.ey1 + 1000000)
+        ox2 = int(round((x0 - ox) / G_try)) * G_try + ox
+        oy2 = int(round((y0 - oy) / G_try)) * G_try + oy
+        blk = qb.grid(layer, net, width, clr_pad, clr_trk, ox2, oy2, x1, y1,
+                      G_try)
+        ny, nx = blk.shape
+        si = ((c['x'] - ox2) // G_try, (c['y'] - oy2) // G_try)
+        ti = ((target[0] - ox2) // G_try, (target[1] - oy2) // G_try)
+        if 0 <= si[0] < nx and 0 <= si[1] < ny:
+            blk[si[1], si[0]] = False
+        # The staging point is a COORDINATE, not a pad: if the exact cell is
+        # occupied take the nearest free one rather than failing, because the
+        # reservation only has to reach the far side of the congested region.
+        if not (0 <= ti[0] < nx and 0 <= ti[1] < ny) or blk[ti[1], ti[0]]:
+            free = np.argwhere(~blk)
+            if not len(free):
+                fail = dict(ok=False, reason='NO_STAGING',
+                            why='%s: no free %s cell near the staging point'
+                                % (pa['ref'], layer), pad=pa['ref'])
+                continue
+            d = (free[:, 1] - ti[0]) ** 2 + (free[:, 0] - ti[1]) ** 2
+            k = int(np.argmin(d))
+            ti = (int(free[k, 1]), int(free[k, 0]))
+        path = qb.search(blk, si, ti)
+        if path is None:
+            fail = dict(ok=False, reason='NO_STAGING_PATH',
+                        why='%s: no %s corridor at %.3f mm to the staging point'
+                            % (pa['ref'], layer, width / 1e6), pad=pa['ref'])
+            continue
+        m = qb.mark()
+        total = c['ln']
+        qb.track(net, layer, pa['x'], pa['y'], c['x'], c['y'], c['w'])
+        pts = simplify(path, ox2, oy2, G_try)
+        for k in range(len(pts) - 1):
+            qb.track(net, layer, pts[k][0], pts[k][1],
+                     pts[k + 1][0], pts[k + 1][1], width)
+            total += math.hypot(pts[k + 1][0] - pts[k][0],
+                                pts[k + 1][1] - pts[k][1])
+        return dict(ok=True, mm=total / 1e6, vias=0, layer=layer,
+                    reservation=True, grid=G_try / 1e6,
+                    trunk_mm=width / 1e6, minw=width / 1e6,
+                    end=(int(pts[-1][0]), int(pts[-1][1])))
+    return fail or dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                        why='%s: no reservation possible at %.3f mm on %s'
+                            % (pa['ref'], width / 1e6, layer), pad=pa['ref'])

@@ -92,6 +92,10 @@ LTCOV_BCU_ONLY = bool(os.environ.get('AQROOT_LTCOV_BCU'))
 # it is never counted as a connection.
 D266 = bool(os.environ.get('AQROOT_D266'))
 D266_INNER = os.environ.get('AQROOT_D266_INNER', 'I2')
+# D-267 / FBV2-P2-002U: the SAME reservation idea, one path role over.
+# AQROOT_D267 names the staging family (F1/F2/F3) whose prefix of the
+# clean-board trunk `D9.1` reserves before the control field runs.
+D267 = os.environ.get('AQROOT_D267')
 
 _d256 = (os.environ.get('AQROOT_D256') or '').upper()
 if _d256 and _d256 not in PL.D256_SETS:
@@ -619,6 +623,43 @@ def main():
                           "rejected, falling back to the nearest legal exit"
                           % (net.split('/')[-1], a, b_, 'RESERVE_RETRY'))
                     sys.stdout.flush()
+        elif role == 'RESERVE_RUN':
+            # D-267: a HIGH-CURRENT escape reservation.  Outer layer, zero
+            # vias, never below the trunk floor, and it must not reach another
+            # node of its own net - which the inverted gate enforces.
+            stage = PL.D267_STAGING.get(D267)
+
+            def attempt_run(lad):
+                for wr in lad:
+                    mm = qb.mark()
+                    rr = QR.reserve_run(qb, net, pa, wr, CP, ct, layer='B',
+                                        target=stage)
+                    if not rr['ok']:
+                        qb.revert(mm)
+                        continue
+                    _pf, _pa2 = len(fine), (len(area_trk.get(area, []))
+                                            if area else 0)
+                    if area:
+                        grow(area, qb.laid[mm[0]:])
+                    gg = reserve_gate(rn0, allow_dangle=True)
+                    if gg['ok']:
+                        rr['width'] = wr
+                        return rr
+                    if area:
+                        area_trk[area] = area_trk.get(area, [])[:_pa2]
+                    if len(fine) > _pf:
+                        del fine[_pf:]
+                    qb.revert(mm)
+                    print("  ....  %-18s %-8s -> %-8s  %-18s %.2f mm rejected: "
+                          "%s" % (net.split('/')[-1], a, b_, 'RESERVE_LADDER',
+                                  wr / 1e6, gg['why'][:60]))
+                    sys.stdout.flush()
+                return None
+
+            r = attempt_run(ladder) or dict(
+                ok=False, reason='NO_D9_RESERVATION',
+                why='%s: no legal >= %.2f mm outer reservation to staging %s'
+                    % (a, ladder[-1] / 1e6, D267))
         else:
             va, vb = reserved.get(a), reserved.get(b_)
             if va is None or vb is None:
@@ -653,7 +694,15 @@ def main():
                 state['fail'] = state['last']
             return False
 
-        if role in ('RESERVE', 'RESERVE_PAIR'):
+        if role == 'RESERVE_RUN':
+            reserved[a] = (r['end'][0], r['end'][1], 'B')
+            state['reservations'] = state.get('reservations', 0) + 1
+            absorb_reservation_dangle()
+            tag = 'RESERVED'
+            extra = 'CURRENT_ESCAPE_RESERVATION %s staging %s end (%.3f, %.3f)' % (
+                D267, r['layer'], r['end'][0] / 1e6, r['end'][1] / 1e6)
+            w = r.get('width', w)
+        elif role in ('RESERVE', 'RESERVE_PAIR'):
             for (u, rr) in r['ends']:
                 reserved[u] = (rr['via'][0], rr['via'][1], rr['layer'])
                 state['reservations'] = state.get('reservations', 0) + 1
@@ -697,7 +746,15 @@ def main():
         d = dict((k, v - base.get(k, 0)) for k, v in after.items()
                  if v > base.get(k, 0) and k != 'unconnected_items')
         if allow_dangle:
+            # A RESERVATION IS DANGLING BY CONSTRUCTION, AND ONLY UNTIL ITS
+            # BRANCH IS COMPLETED.  D-266's sense reservation leaves a via with
+            # nothing on the far side (`via_dangling`); D-267's current
+            # reservation leaves a 1.50 mm run ending at a staging point
+            # (`track_dangling`).  Both are the reservation's signature rather
+            # than a defect, both are absorbed only while outstanding, and
+            # section 23 still requires the FINAL board to carry neither.
             d.pop('via_dangling', None)
+            d.pop('track_dangling', None)
         if d:
             return dict(ok=False, why='new DRC %s' % json.dumps(d),
                         detail={k: det[k][:3] for k in d})
@@ -726,19 +783,25 @@ def main():
         answer it.
         """
         after, _ = RU.drc(pcb, "A", WORK)
-        n = after.get('via_dangling', 0)
-        if n > base.get('via_dangling', 0):
-            base['via_dangling'] = n
-            state['dangling'] = n
+        for cls in ('via_dangling', 'track_dangling'):
+            n = after.get(cls, 0)
+            if n > base.get(cls, 0):
+                base[cls] = n
+                state['dangling'] = state.get('dangling', {})
+                state['dangling'][cls] = n
 
     def run_once(net, a, b_, role, ladder, area, ct, fatal=True):
         if state['fail']:
             return False
         # D-266: the two roles that are NOT connections.
-        if role in ('RESERVE', 'RESERVE_PAIR', 'JOIN'):
+        if role in ('RESERVE', 'RESERVE_PAIR', 'RESERVE_RUN', 'JOIN'):
             return run_reserve(net, a, b_, role, ladder, area, ct, fatal)
         pa = pads[net].get(a)
-        node = (b_ == '(node)')
+        # D-267 section 19: `(stage)` is a node target that deliberately does
+        # NOT take the canonical-ref shortcut.  `BAT_PROTECTED_P`'s canonical
+        # node ref IS `R75.2`, so `R75.2 -> (node)` answered "already joined
+        # via R75.2" and the trunk completion was skipped outright.
+        node = (b_ in ('(node)', '(stage)'))
         skip = set()
         pb = None if node else pads[net].get(b_)
         if pa is None or (pb is None and not node):
@@ -755,6 +818,14 @@ def main():
                                    N + 'BAT_SENSE': 'R75.1',
                                    N + 'BAT_MID': 'Q2.5',
                                    N + 'BAT_CONNECTOR_P': 'F1.1'}.get(net)
+        if b_ == '(stage)':
+            # D-267 section 19: `(stage)` means "join this pad to the copper
+            # D9.1 reserved", so the ONLY question that may skip it is whether
+            # `R75.2` and `D9.1` are already one component.  The generic
+            # `(node)` skip asks whether the pad has ANY company on its net -
+            # and `R75.2` has plenty by this point, so the trunk completion was
+            # being skipped in silence.
+            ref = 'D9.1'
         if node and ref is None:
             others = [o for o in pads.get(net, {}) if o != a]
             if any(joined(a, o) for o in others):
@@ -911,6 +982,19 @@ def main():
                         and net in (N + 'LTC_OV', N + 'LTC_UV'))
         if not r['ok'] and not ltcov_locked and time.time() - t0 < ITEM_BUDGET:
             for use_node in (False, True) if not node else (True,):
+                if role == 'TAP' and net in WIDE and False:
+                    # D-267 section 16: A MICROAMP TAP ON A HIGH-CURRENT NET
+                    # ROUTES LOCALLY ON B.Cu WITH ZERO VIAS, OR IT REPORTS.
+                    #
+                    # Correcting the via GEOMETRY was only half the ruling.
+                    # The other half is that a divider tap has no business
+                    # taking a layer excursion at all: doing so would create an
+                    # inner-layer exception for `BAT_RAW` that nobody granted,
+                    # which section 16 forbids in as many words.  So the hop is
+                    # not offered, the full LAD_TAP ladder on B.Cu is the whole
+                    # of the attempt, and a failure is a finding rather than a
+                    # via.
+                    break
                 for w in hop_lad:
                     if use_node and not skip:
                         skip = cluster_of(a)
@@ -918,10 +1002,56 @@ def main():
                            if use_node else pb)
                     if tgt is None:
                         continue
-                    vd, vk = ((600000, 300000) if role == 'SIG'
-                              else (800000, 400000))
+                    # D-267 sections 15-17: VIA GEOMETRY IS A PROPERTY OF
+                    # THE PATH ROLE, NOT OF THE NET.
+                    #
+                    # A TAP is a MICROAMP path.  `R79.1 -> R80.1` is a D-249
+                    # 0.20 mm divider tap everywhere in this plan, and it was
+                    # being handed the 0.80/0.40 TRUNK via because its net is
+                    # `BAT_RAW` and TAP fell into the same `else` as TRUNK -
+                    # the same net-name-versus-path-role confusion D-249 fixed
+                    # for width and D-264 fixed for layer, now for via
+                    # geometry.  Measured, that is the whole of
+                    # `NO_VIA_SITE: no via site of 0.80 mm reachable on B`.
+                    # A TAP gets the ordinary 0.35/0.20 through via; the
+                    # current-carrying TRUNK keeps 0.80/0.40 untouched.
+                    vd, vk = ({'SIG': (600000, 300000),
+                               'TAP': (650000, 400000),
+                               'SENSE': (650000, 400000)}
+                              .get(role, (800000, 400000)))
+                    far_ = None
+                    if role == 'TAP' and net in WIDE:
+                        # D-267 section 16: OUTER LAYERS ONLY, AND NO NEW
+                        # EXCEPTION OF ANY KIND.
+                        #
+                        # A microamp divider tap may not take an In2/In3
+                        # excursion - that would be a `BAT_RAW` inner-layer
+                        # exception nobody granted - and it may not take the
+                        # trunk's 0.80/0.40 via either.  What is left is F.Cu,
+                        # which `BAT_MAIN is outer-layer only` already permits,
+                        # with the SMALLEST VIA THE STANDING RULES ALLOW ON
+                        # THIS NET, which is 0.65/0.40 and NOT the trunk's
+                        # 0.80/0.40.
+                        #
+                        # The arithmetic is the board's own, and it was reached
+                        # by measurement rather than assumption: 0.35/0.20 is
+                        # rejected on `via_diameter` (board minimum 0.50 mm),
+                        # 0.50/0.25 on `drill_out_of_range` (rule "POWER-class
+                        # vias use the 0.40 mm drill"), and 0.50/0.40 on
+                        # `annular_width` (rule "Via annular ring floor",
+                        # 0.125 mm) - every one of those rejections is CORRECT.
+                        # 0.40 mm of drill plus two 0.125 mm rings is 0.65 mm,
+                        # and that is the floor.  So the honest form of section
+                        # 15's ruling is narrower than it looks: a TAP cannot
+                        # be given a small via on a POWER net, because the
+                        # netclass forbids it - what it CAN be given is the
+                        # smallest legal one, and outer layers only.
+                        # Forbidding the hop outright was measured and is
+                        # WORSE than 002T - `R77.1` AND `R79.1` both fell out
+                        # of the BAT_RAW island, where 002T had kept `R77.1`.
+                        far_ = ['F']
                     r = QR.connect_hop(qb, net, pa, tgt, w, CP, ct,
-                                       via_dia=vd, via_drill=vk)
+                                       far=far_, via_dia=vd, via_drill=vk)
                     if r['ok']:
                         used, hop, pb = w, True, tgt
                         tapped = tapped or use_node
@@ -1309,6 +1439,14 @@ def main():
     # thing that gets sealed; the four Kelvin endpoints reserve a neck and a
     # via and nothing else, because their long runs are not scarce once the
     # exits exist.
+    if D267:
+        # D-267 section 2: the D9.1 exit is reserved BEFORE the control field
+        # and BEFORE the sense copper, because it is the exit the control field
+        # takes away.  This is NOT the trunk: it stops at a staging point and
+        # joins nothing.
+        add("0b2. D9.1 trunk exit reserved (D-267 s2)",
+            [(N + 'BAT_PROTECTED_P', 'D9.1', '(stage)', 'RESERVE_RUN',
+              PL.LAD_D9_RESERVE, None)], CT_W)
     if D266:
         add("0c. BAT_SENSE current path, first (D-266 s5)",
             PL.PLAN_D266_SENSE, CT_W)
@@ -1473,8 +1611,18 @@ def main():
         else:
             add("9b. R75 Kelvin sense pair (D-263)", PL.PLAN_0A_KELVIN, CT_W)
         add("9c. BAT_MAIN chain, after the control field", PL.PLAN_2_CHAIN, CT_W)
-        add("9d. BAT_PROTECTED_P trunk, last (D-263)",
-            PL.PLAN_1_BPP_TRUNK, CT_W)
+        # D-267 section 19: the trunk is COMPLETED to the copper D9.1
+        # reserved, not to D9.1's sealed pad.  Requested-pad truth is
+        # unchanged and is checked on the ledger: R75.2 and D9.1 must end up
+        # in one component.
+        if D267:
+            add("9d. BAT_PROTECTED_P trunk completed to the D9 reservation "
+                "(D-267 s19)",
+                [(N + 'BAT_PROTECTED_P', 'R75.2', '(stage)', 'TRUNK',
+                  PL.PLAN_1_BPP_TRUNK[0][4], None)], CT_W)
+        else:
+            add("9d. BAT_PROTECTED_P trunk, last (D-263)",
+                PL.PLAN_1_BPP_TRUNK, CT_W)
     if LOCAL not in ('R80', 'D256'):
         add("10a. dead-cell divider taps", PL.PLAN_10_DEADCELL_TAPS, CT_W)
     for short in ([] if LOCAL in ('R80', 'D256') else PL.DEADCELL):

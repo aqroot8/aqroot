@@ -1032,3 +1032,47 @@ last, which is what protects the pin field. The ruling generalises to it: reserv
 `D9.1`'s trunk exit early, outer, 1.20 mm, zero vias, minimum neck. That extends
 reservation from sense copper to a **current** path, which is a
 protection-architecture decision and is raised, not taken.
+
+---
+
+## D-267 — the D9 exit reservation, and the TAP path role (2026-08-27, FBV2-P2-002U)
+
+> **An early high-current escape reservation is permitted only for D9.1, at the
+> existing BPP trunk target/floor, outer-layer-only and zero-via. It preserves
+> the pad exit without completing the current path early.**
+
+And separately, the TAP correction:
+
+> **Via geometry is a property of the PATH ROLE, not of the net.** A microamp
+> divider tap does not inherit the trunk's via merely because it shares the
+> trunk's net — but on a POWER-class net it cannot have a small one either. The
+> board's own rules put the floor at **0.65 mm diameter / 0.40 mm drill**, and a
+> wide-net TAP is confined to the outer layers.
+
+The via arithmetic is worth keeping, because three plausible smaller vias were
+each rejected and each rejection was right: 0.35/0.20 by `via_diameter` (board
+minimum 0.50 mm), 0.50/0.25 by `drill_out_of_range` ("POWER-class vias use the
+0.40 mm drill"), 0.50/0.40 by `annular_width` ("Via annular ring floor",
+0.125 mm). 0.40 of drill plus two 0.125 rings is 0.65.
+
+**Where the trunk actually stands, stated so nobody re-derives it.** `D9.1` is
+not the problem and was never the problem: it escapes at 1.50 mm in six
+directions on a clean board, and both reservation families held at the 1.50 mm
+target with zero vias and no cost to the control field. The problem is one layer
+up from the pad:
+
+    R75.2      escapes at 1.50 mm
+    staging    escapes at 1.50 mm, 2 directions
+    between them, B.Cu at 1.50 / 1.20 / 1.00 / 0.80 / 0.60 / 0.40 / 0.30 / 0.20 mm
+               NO_PATH at every one
+
+**After the control field, the control copper partitions B.Cu in the western
+margin.** A reservation protects a pad from a race; it cannot repair a severed
+plane. And routing the trunk early instead — with the D-266 sense reservations
+already in place — was measured and still costs three control pins (U18 5/8),
+exactly as 002Q found before reservations existed.
+
+So the remaining choices are architectural, not procedural: a bounded layer
+exception for the trunk where it crosses the pin field; moving `TP17`/`C58` out
+of the western margin; or accepting a trunk roughly 2.3x longer that leaves the
+margin entirely.

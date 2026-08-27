@@ -1,3 +1,45 @@
+## 2026-08-27 - FBV2-P2-002U: D-267 D9 exit reservation and TAP path role; Kelvin B fixed; trunk stops on a severed plane
+
+**Section 25 DECISION STOP.** Two of 002T's three failures close. The authoritative PCB is
+UNCHANGED - six copper layers, zero signal tracks, zero signal vias.
+
+- **D-267:** *"An early high-current escape reservation is permitted only for D9.1, at the
+  existing BPP trunk target/floor, outer-layer-only and zero-via. It preserves the pad exit
+  without completing the current path early."*
+- **The reservation works on its own terms.** `D9.1` escapes at 1.50 mm in SIX directions on a
+  clean board. Staging families are prefixes of the measured clean-board trunk (19.878 mm at
+  1.50 mm). **F1 reserved 2.701 mm and F2 5.149 mm, both at the 1.50 mm target, B.Cu, zero
+  vias, and neither cost a control pin - U18 stayed 8/8 on both.**
+- **`track_dangling` joins `via_dangling`** as a class absorbed only while a reservation is
+  outstanding; the final board must carry neither.
+- **KELVIN B IS FIXED by section 11 alone.** `join_reserved` tries the 25 um lattice first and
+  keeps the shorter run. **A 7.989 -> 7.644 mm, B 10.456 -> 9.927 mm (inside the cap),
+  mismatch 2.467 -> 2.283 mm.** Same via sites, same corridor - measured more carefully, not
+  relaxed.
+- **TAP path-role via correction delivered, and the board narrowed it.** Via geometry now
+  follows the PATH ROLE. A TAP on a POWER net cannot have a small via: 0.35/0.20 fails
+  `via_diameter`, 0.50/0.25 fails `drill_out_of_range`, 0.50/0.40 fails `annular_width` - all
+  three rejections correct. **0.65/0.40 is the floor**, outer layers only. With it
+  **`R79.1 -> R80.1` routes (4.532 mm)** and `D12.1 -> R77.1` improves from 28.058 mm at
+  0.60 mm to **13.682 mm at 0.30 mm on B.Cu with zero vias**. Forbidding the hop outright was
+  tried first and measured WORSE than 002T.
+- **THE TRUNK STOPS ON A SEVERED PLANE.** `R75.2` escapes at 1.50 mm, the staging point
+  escapes at 1.50 mm, and **there is no B.Cu corridor between them at 1.50 / 1.20 / 1.00 /
+  0.80 / 0.60 / 0.40 / 0.30 / 0.20 mm.** After the control field the control copper partitions
+  B.Cu in the western margin. Nothing that reserves a pad can repair that.
+- **And the obvious next hypothesis is measured false:** trunk EARLY, with the D-266
+  reservations in place, routes 19.219 mm at 1.20 mm and takes **U18 to 5/8** (`U18.3`,
+  `U18.7`, `U18.9` open). Reserving the sense exits does not make an early trunk affordable.
+- **Decision required, three options, none this task's to take:** a bounded layer exception
+  for the trunk where it crosses the pin field; move `TP17`/`C58` out of the western margin;
+  or accept a ~2.3x longer trunk that leaves the margin entirely.
+- New standing regression `d267_probe.py` (19 checks). All suites PASS. No placement ECO, no
+  signal copper written, no netclass / clearance / annular / hole rule relaxed anywhere.
+  D-264 and D-266 untouched. U19 NOT searched; Phase A and Phase B NOT run.
+- **No progress earned: PCB routing stays 0 %, overall stays 74 %.**
+  See [`CTO_DECISIONS.md`](CTO_DECISIONS.md) D-267 and
+  [`audits/2026-08-27-p2-002u-d267-d9-reservation.md`](audits/2026-08-27-p2-002u-d267-d9-reservation.md).
+
 ## 2026-08-27 - FBV2-P2-002T: D-266 SCARCE-PAD RESERVATION; U18 8/8 INCLUDING BOTH KELVIN PINS; gate fails on the trunk alone
 
 **A - D-266 delivered and proven. B - decisive local gate: FAIL, on the trunk.**
