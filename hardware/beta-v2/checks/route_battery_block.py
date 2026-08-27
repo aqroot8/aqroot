@@ -21,7 +21,8 @@ CP, CT_W, CT_S = 200000, 300000, 200000
 WIDE = frozenset(N + n for n in ('BAT_CONNECTOR_P', 'BAT_RAW', 'BAT_MID',
                                  'BAT_SENSE', 'BAT_PROTECTED_P'))
 AREAS = ['BAT_PROT_TAP_U18', 'BAT_PROT_TAP_U14', 'BAT_PROT_ESCAPE_U11',
-         'BAT_SENSE_KELVIN', 'BAT_RAW_TAP_U18']
+         'BAT_SENSE_KELVIN', 'BAT_RAW_TAP_U18',
+         ] + list(DRU.TAP_CLEARANCE_AREAS)
 STUBAREAS = ['BAT_STUB_%d' % k for k in range(10)]
 # PR-48 / D-257: each PLANNED fine-pitch escape gets its own bounded corridor,
 # so the local 0.20 mm clearance and the 0.35/0.20 (reserve 0.25/0.15) via
@@ -1146,6 +1147,29 @@ def main():
                              'D-263 %s %s->%s escape via'
                              % (net.split('/')[-1], a, b_)))
         _pre_area = len(area_trk.get(area, [])) if area else 0
+        _pre_stub = len(stubs)
+        if area in DRU.TAP_CLEARANCE_AREAS and used < FLOOR.get(net, 0):
+            # D-269(a): A BOUNDED TAP CORRIDOR HAS TO CARRY ITS WIDTH ALLOWANCE
+            # AS WELL AS ITS CLEARANCE EXCLUSION.
+            #
+            # Before D-269 the divider rows had no area, so `run_once` gave each
+            # one an anonymous BAT_STUB corridor carrying the width it actually
+            # used, and `BAT_MAIN minimum width` (0.60 mm) was satisfied that
+            # way.  Naming the corridor for the clearance exclusion took that
+            # path away and the same copper came back as
+            # `track_width (rule 'BAT_MAIN minimum width' ...)` - a relaxation
+            # applied where nothing needed relaxing, one property over, exactly
+            # the lesson PR-48 recorded.  The corridor now registers the
+            # NARROWEST width its own copper uses.
+            prev = [i for i, st in enumerate(stubs) if st[0] == area]
+            if prev:
+                i0 = prev[0]
+                if used / 1e6 < stubs[i0][2]:
+                    stubs[i0] = (area, net, used / 1e6, stubs[i0][3])
+            else:
+                stubs.append((area, net, used / 1e6,
+                              'D-269 bounded microamp TAP corridor, %s'
+                              % net.split('/')[-1]))
         if area:
             grow(area, qb.laid[m[0]:])
         elif used < FLOOR.get(net, 0):
@@ -1183,6 +1207,8 @@ def main():
             if stubs and stubs[-1][0] == area:
                 stubs.pop()
                 area_trk.pop(area, None)
+            elif len(stubs) > _pre_stub:
+                del stubs[_pre_stub:]
             if len(fine) > _pre_fine:
                 del fine[_pre_fine:]
                 area_trk.pop(area, None)
@@ -1244,6 +1270,8 @@ def main():
             if stubs and stubs[-1][0] == area:
                 stubs.pop()
                 area_trk.pop(area, None)
+            elif len(stubs) > _pre_stub:
+                del stubs[_pre_stub:]
             if len(fine) > _pre_fine:
                 del fine[_pre_fine:]
                 area_trk.pop(area, None)

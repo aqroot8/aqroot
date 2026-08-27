@@ -1111,3 +1111,46 @@ the router to. And `BAT_MAIN routed clearance` is still scoped by net name, whic
 is why two microamp divider taps 0.20 mm wide are held to a 0.300 mm
 high-current spacing. D-249 fixed width, D-264 fixed layer, D-267 fixed via
 geometry; **clearance is the fourth and last.**
+
+---
+
+## D-269 — clearance follows the path role, and the trade it exposed (2026-08-27, FBV2-P2-002W)
+
+> **BAT_MAIN 0.300 mm routed clearance is a CURRENT-PATH-ROLE requirement, not
+> an entire-net-name requirement. The high-current BPP trunk remains B.Cu outer
+> 1 oz and zero-via. The western cut is addressed by the minimum necessary
+> low-current control-layer offload, not further placement changes.**
+
+**The set is now complete.** D-249 ruled width by path role, D-264 layer, D-267
+via geometry, D-269 clearance. Every one was the same defect one property over: a
+rule sized for 1.5 A of pack current applied to a branch carrying nanoamps
+because it shares a net name.
+
+```
+(rule "BAT_MAIN routed clearance - current path role - D-269"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad'
+	            && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && … _1 && _2 && _3"))
+```
+
+0.300 mm is untouched wherever current flows. Inside the four bounded divider
+corridors the **existing** rules govern — the board default of **0.200 mm**.
+
+**Two things to know before editing this again.** A bounded corridor must be
+**per branch**: `enclosedByArea` honours only the first outline of a
+multi-outline rule area, so one shared area silently stops covering whichever
+branch is not in its first outline. And a corridor named for a *clearance*
+exclusion must also carry its **width** allowance, or the anonymous `BAT_STUB`
+that used to supply it disappears and the copper fails `BAT_MAIN minimum width`.
+
+**What it bought: `BAT_RAW` is one functional island for the first time** —
+`R77.1 → R79.1` routes 12.454 mm at 0.20 mm on F.Cu with two legal 0.65/0.40
+vias, and all eleven functional pads join.
+
+**What it cost, stated plainly.** Closing `BAT_RAW` puts `R80.1 → Q2.7`
+(0.50 mm × 29.022 mm) and `D12.1 → R77.1` (0.60 mm × 14.637 mm) into the western
+margin. After that, **no subset of the seven control nets — not even all seven —
+opens a 1.20 mm trunk corridor**; only all seven *plus* `BAT_RAW` does, at
+1.50 mm and 19.9 mm. Those two runs are microamp **TAP** copper on a power-named
+net: the offload candidate list is the last place on this board still reasoning
+by net class rather than path role.

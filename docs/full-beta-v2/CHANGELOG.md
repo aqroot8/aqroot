@@ -1,3 +1,46 @@
+## 2026-08-27 - FBV2-P2-002W: D-269 path-role clearance closes BAT_RAW; no control-offload cut set exists
+
+**DECISION STOP** (section 25). **`BAT_RAW` is one functional island for the first time.**
+The authoritative PCB is UNCHANGED - six copper layers, zero signal tracks, zero signal vias.
+
+- **D-269(a):** *"BAT_MAIN 0.300 mm routed clearance is a CURRENT-PATH-ROLE requirement, not
+  an entire-net-name requirement."* Clearance is the fourth and last property to get what
+  D-249 gave width, D-264 gave layer and D-267 gave via geometry.
+- **0.300 mm is untouched on every current-carrying role.** The exclusion reaches four bounded
+  corridors grown from the divider chain's own copper; inside them the **existing** rules
+  govern - the board default **0.200 mm**. No new clearance number was invented.
+- **One corridor per branch, not one per chain** - `enclosedByArea` honours only the first
+  outline of a multi-outline rule area. **And a bounded TAP corridor must carry its width
+  allowance too**: naming it for the clearance exclusion took away the anonymous `BAT_STUB`
+  that had been carrying the width, and the copper came back as `track_width (rule 'BAT_MAIN
+  minimum width')`.
+- **New standing regression `d269_probe.py`** - real copper on two different BAT_MAIN-class
+  nets, six clauses, **PASS**. (The first version used two same-net tracks and saw nothing:
+  clearance is a between-nets rule.)
+- **`BAT_RAW` CLOSES.** `R77.1 -> R79.1` routes **12.454 mm at 0.20 mm on F.Cu with 2 vias at
+  the legal 0.65/0.40**; all eleven functional pads in one island, only `TP16` outstanding.
+  No inner-layer exception, no clearance or hole relaxation. The proven prefix reproduces
+  alongside: **U18 8/8, Kelvin A 7.644 / B 9.927 / mismatch 2.283 mm on In2.**
+- **And no control-offload cut set exists.** Every subset of the seven control nets carrying
+  B.Cu copper was tested by virtual removal at 1.20 and 1.50 mm - 7 singles, 21 pairs, 35
+  triples, 35 four-sets, 21 five-sets, 7 six-sets, and the full seven - **not one opens a
+  1.20 mm corridor.**
+- **The reason is this task's own doing, and it is said plainly:** `R80.1 -> Q2.7`
+  (0.50 mm x 29.022 mm) and `D12.1 -> R77.1` (0.60 mm x 14.637 mm) are now in the margin.
+  **All seven control nets AND `BAT_RAW` removed = 1.50 mm at 19.9 mm**; anything less is
+  0.60 mm at best. Those two runs are microamp TAP copper on a power-named net - section 9
+  excluded power nets **by net class**, but **by path role** they are exactly what section 13
+  would have moved.
+- **Decision required:** extend the offload candidate set from net class to path role (needs
+  an explicit ruling - section 6 forbids a `BAT_RAW` inner exception), or accept that the
+  western margin cannot host both the control field and a >=1.20 mm trunk. **`BAT_RAW`'s
+  closure should not be given back.**
+- Zero new DRC classes, zero track_dangling, zero via_dangling. All eight suites PASS. No
+  placement ECO, no signal copper, TP17 and C58 untouched. D-264/D-266/D-267 untouched.
+- **No progress earned: PCB routing stays 0 %, overall stays 74 %.**
+  See [`CTO_DECISIONS.md`](CTO_DECISIONS.md) D-269 and
+  [`audits/2026-08-27-p2-002w-d269-clearance.md`](audits/2026-08-27-p2-002w-d269-clearance.md).
+
 ## 2026-08-27 - FBV2-P2-002V: D-268 - the western partition is routed control copper, not placement
 
 **DECISION STOP** (sections 19 and 24). The authoritative PCB is UNCHANGED - six copper

@@ -180,6 +180,46 @@ def outer_only_rules():
             for L in ('In2.Cu', 'In3.Cu')]
 
 
+# ---------------------------------------------------------------------
+# D-269(a)  (FBV2-P2-002W)
+#
+# CLEARANCE IS THE FOURTH AND LAST PROPERTY STILL SCOPED BY NET NAME.
+#
+# > BAT_MAIN 0.300 mm routed clearance is a CURRENT-PATH-ROLE requirement, not
+# > an entire-net-name requirement.
+#
+# D-249 ruled WIDTH by path role, D-264 ruled LAYER, D-267 ruled VIA GEOMETRY.
+# Each was the same defect one property over: a rule written for 1.5 A of pack
+# current, applied to a branch that carries nanoamps because it happens to share
+# a net name.  `BAT_RAW R77.1 -> R79.1` is the case that exposes clearance -
+# two D-249 microamp divider taps, 0.20 mm wide, held 0.300 mm apart by a rule
+# whose entire justification is high-current spacing.
+#
+# The 0.300 mm requirement is UNCHANGED on every current-carrying TRUNK role.
+# The exclusion reaches ONE bounded, named corridor grown from the divider
+# chain's own copper, and inside it the EXISTING board rules govern - the board
+# default of 0.200 mm.  No new clearance number is invented anywhere.
+# ONE CORRIDOR PER BRANCH, not one for the whole chain.  `enclosedByArea`
+# honours only the FIRST outline of a multi-outline rule area - the fact D-266
+# learned and D-269 re-learned - and the four divider links are far apart, so a
+# single shared area silently stops covering whichever branch is not in its
+# first outline.  Every other D-249 corridor on this board is per-branch for the
+# same reason.
+TAP_CLEARANCE_AREAS = tuple('BAT_RAW_DIVIDER_TAP_%d' % k for k in range(4))
+
+BAT_MAIN_CLR = (u'(rule "BAT_MAIN routed clearance - current path role - D-269"\n'
+                u'\t(constraint clearance (min 0.30mm))\n'
+                u'\t(condition "A.hasNetclass(\'BAT_MAIN\') && A.Type != \'Pad\' '
+                u'&& B.Type != \'Pad\' && %s"))\n')
+
+
+def main_clearance_rules():
+    """The D-269 path-role form of the high-current spacing rule."""
+    excl = ' && '.join("!A.enclosedByArea('%s')" % a
+                       for a in TAP_CLEARANCE_AREAS)
+    return [BAT_MAIN_CLR % excl]
+
+
 LOCAL_CLR = (u'(rule "%s - local fine-pitch clearance, PR-48"\n'
              u'\t(constraint clearance (min %.2fmm))\n'
              u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n')
@@ -239,6 +279,9 @@ def compose(stubs, fine=()):
     # governs, and its two bounded exceptions are the only inner-layer
     # authority any BAT_MAIN-class copper has.
     out.extend(outer_only_rules())
+    # D-269(a): the path-role form of the high-current spacing rule, emitted
+    # after the static one has been excised in write().
+    out.extend(main_clearance_rules())
     for (name, net, clr, vdia, vdrill, note) in fine:
         # VIA GEOMETRY ONLY.  A D-257 escape corridor exists so a 0.35/0.20
         # through via is legal inside it; it does NOT need, and must not carry,
@@ -282,10 +325,16 @@ def write(pcb, stubs, fine=()):
     # in its scoped form.  The AUTHORITATIVE .kicad_dru keeps the original text,
     # because the sense corridors are router-created and a rule naming an area
     # that does not exist is what dru_probe exists to catch.
-    old_rule = '(rule "BAT_MAIN is outer-layer only"'
-    i2 = d.find(old_rule)
-    if i2 >= 0:
-        j2 = d.find('\n\n', d.find('(condition', i2))
-        d = d[:i2] + d[j2 + 2:] if j2 > 0 else d[:i2]
+    # D-269(a) excises `BAT_MAIN routed clearance` the same way and for the
+    # same reason: the scoped form must REPLACE the net-name form, not sit
+    # behind it hoping to be the last match.  The AUTHORITATIVE .kicad_dru keeps
+    # both originals, because the corridors are router-created and a rule naming
+    # an area that does not exist is what dru_probe exists to catch.
+    for old_rule in ('(rule "BAT_MAIN is outer-layer only"',
+                     '(rule "BAT_MAIN routed clearance"'):
+        i2 = d.find(old_rule)
+        if i2 >= 0:
+            j2 = d.find('\n\n', d.find('(condition', i2))
+            d = d[:i2] + d[j2 + 2:] if j2 > 0 else d[:i2]
     d = d.rstrip('\n') + "\n\n\n" + compose(stubs, fine).rstrip('\n') + "\n"
     open(p, 'wb').write((d.replace('\n', '\r\n') if crlf else d).encode('utf-8'))
