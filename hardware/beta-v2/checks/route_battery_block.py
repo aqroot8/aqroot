@@ -55,6 +55,20 @@ KELVIN_INNER = (os.environ.get('AQROOT_KELVIN_INNER') or '').upper()
 # U18 field, the Q3 row, the trip network, the Kelvin pair and BAT_SENSE.
 TRUNK_LAST = bool(os.environ.get('AQROOT_TRUNK_LAST'))
 
+# FBV2-P2-002S sections 8-11: an EXPLICIT U18 pin-field schedule, replacing
+# the measured slack ordering for that group only.
+#
+# `order_tight` picks whichever pin is locally tightest right now, which is the
+# right heuristic when nothing better is known - and 002S knows better.  A
+# bounded screen over twelve schedules found that almost every order keeps all
+# six functional pins AND all seven functional nets whole, while one ('outer
+# pins first') loses LTC_OV: the difference is real and the heuristic cannot
+# see it, because tightness at the moment of choosing says nothing about what
+# the choice costs three pins later.  AQROOT_U18_ORDER names the sequence;
+# unset leaves the measured ordering exactly as it was.
+U18_ORDER = [s.strip() for s in
+             (os.environ.get('AQROOT_U18_ORDER') or '').split(',') if s.strip()]
+
 # FBV2-P2-002O section 11: LTC_OV MAY NOT TAKE THE GENERIC LAYER FALLBACK
 # DURING QUALIFICATION.
 #
@@ -1387,6 +1401,21 @@ def main():
               % len(newq))
         QUEUE = newq
         passes = 2
+
+    if U18_ORDER:
+        # Freeze the pin field into the chosen schedule and take it out of the
+        # measured reordering, so the schedule under test is the one that runs.
+        rank = dict((pin, i) for i, pin in enumerate(U18_ORDER))
+        idxs = [i for i, it in enumerate(QUEUE) if it.get('tight') == 'U18']
+        rows = sorted(idxs, key=lambda i: rank.get(
+            QUEUE[i]['a'].split('.')[-1], len(rank)))
+        picked = [QUEUE[i] for i in rows]
+        for slot, it in zip(idxs, picked):
+            QUEUE[slot] = dict(it)
+            QUEUE[slot]['tight'] = None
+        print('U18 SCHEDULE PINNED: %s'
+              % ' '.join(QUEUE[i]['a'] for i in idxs))
+        sys.stdout.flush()
 
     u11 = [False]
     for p_ in range(1, passes):

@@ -137,6 +137,49 @@ RULE = (u'(rule "%s - D-249"\n'
 # hole_size override.  MEASURED: with these rules a 0.35/0.20 through via inside
 # a named area clears DRC, and without them it reports `via_diameter` and
 # `annular_width`; no other violation class moves either way.
+# ---------------------------------------------------------------------
+# D-264(a)  (FBV2-P2-002S)
+#
+# OUTER-LAYER-ONLY IS A CURRENT PATH ROLE RESTRICTION, NOT AN
+# ENTIRE-NET-NAME RESTRICTION.
+#
+# `BAT_MAIN is outer-layer only` is electrically right about what it was
+# written for: at 0.5 oz an inner layer needs 2.73 mm for 1.5 A at a 10 K
+# rise, so distributing pack current on In2/In3 defeats the point of the
+# layer.  But it is conditioned on `A.hasNetclass('BAT_MAIN')`, and a
+# high-impedance Kelvin branch shares that netclass while carrying
+# essentially no current at all.  FBV2-P2-002R hit exactly that:
+# `BAT_PROTECTED_P U18.8 -> R75.2`, a nanoamp sense tap, was rejected with
+# `Items not allowed (rule 'BAT_MAIN is outer-layer only')`.
+#
+# This is D-249's lesson one property over.  D-249 replaced a net-wide WIDTH
+# floor with path role because the same net feeds a 1.5 A trunk and a
+# nanoamp sense input; the LAYER rule has the same shape and now gets the
+# same treatment.  The restriction is re-emitted here, LAST so it governs,
+# with exactly two bounded exceptions - the two named D-249 sense corridors
+# and nothing else.  Same-net copper anywhere outside those corridors is
+# still barred from In2 AND, closing a gap the six-layer migration opened,
+# from In3.
+#
+# Nothing else moves: no width, no clearance, no current-path rule, no GND
+# plane.  The corridors are the ones that already exist, already bounded and
+# already grown from the branch's own copper.
+INNER_SENSE_AREAS = ('BAT_SENSE_KELVIN', 'BAT_PROT_TAP_U18')
+
+OUTER_ONLY = (u'(rule "BAT_MAIN is outer-layer only - %s - D-264"\n'
+              u'\t(layer "%s")\n'
+              u'\t(severity error)\n'
+              u'\t(constraint disallow track)\n'
+              u'\t(condition "A.hasNetclass(\'BAT_MAIN\') && %s"))\n')
+
+
+def outer_only_rules():
+    """The D-264 path-role form of the outer-layer restriction."""
+    excl = ' && '.join("!A.enclosedByArea('%s')" % a for a in INNER_SENSE_AREAS)
+    return [OUTER_ONLY % (L.split('.')[0], L, excl)
+            for L in ('In2.Cu', 'In3.Cu')]
+
+
 LOCAL_CLR = (u'(rule "%s - local fine-pitch clearance, PR-48"\n'
              u'\t(constraint clearance (min %.2fmm))\n'
              u'\t(condition "A.NetName == \'%s\' && A.enclosedByArea(\'%s\')"))\n')
@@ -192,6 +235,10 @@ def compose(stubs, fine=()):
     # and KiCad applies the last matching rule.
     for (name, net, clr, note) in FIXED_CLR:
         out.append(LOCAL_CLR % (note, clr, net, name))
+    # D-264(a) LAST OF ALL: the path-role form of the outer-layer restriction
+    # governs, and its two bounded exceptions are the only inner-layer
+    # authority any BAT_MAIN-class copper has.
+    out.extend(outer_only_rules())
     for (name, net, clr, vdia, vdrill, note) in fine:
         # VIA GEOMETRY ONLY.  A D-257 escape corridor exists so a 0.35/0.20
         # through via is legal inside it; it does NOT need, and must not carry,
@@ -224,5 +271,21 @@ def write(pcb, stubs, fine=()):
     k = d.find("# =====================================================================\n" + MARK)
     if k >= 0:
         d = d[:k]
+    # D-264(a): REMOVE THE UNSCOPED FORM, DO NOT MERELY OUTRANK IT.
+    #
+    # KiCad's `disallow` constraint is not last-match-wins the way a width or
+    # clearance constraint is - EVERY matching disallow rule fires.  So
+    # appending the path-role form after the net-name form leaves both live and
+    # the sense corridors are still barred; measured, C and D of the D-264 probe
+    # failed exactly that way while A, B and E passed.  The static rule is
+    # therefore excised from the board this block is written onto and re-emitted
+    # in its scoped form.  The AUTHORITATIVE .kicad_dru keeps the original text,
+    # because the sense corridors are router-created and a rule naming an area
+    # that does not exist is what dru_probe exists to catch.
+    old_rule = '(rule "BAT_MAIN is outer-layer only"'
+    i2 = d.find(old_rule)
+    if i2 >= 0:
+        j2 = d.find('\n\n', d.find('(condition', i2))
+        d = d[:i2] + d[j2 + 2:] if j2 > 0 else d[:i2]
     d = d.rstrip('\n') + "\n\n\n" + compose(stubs, fine).rstrip('\n') + "\n"
     open(p, 'wb').write((d.replace('\n', '\r\n') if crlf else d).encode('utf-8'))

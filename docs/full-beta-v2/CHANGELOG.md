@@ -1,3 +1,40 @@
+## 2026-08-27 - FBV2-P2-002S: D-264 DELIVERED AND PINNED; `LTC_SHDN` CLOSES; gate fails at section 21
+
+**A - D-264 path-role layer policy: DELIVERED.** **B - decisive local gate: FAIL.**
+The authoritative PCB is UNCHANGED - six copper layers, zero signal tracks, zero signal vias.
+
+- **Outer-layer-only is now a CURRENT PATH ROLE restriction, not an entire-net-name
+  restriction.** `path_role_dru.outer_only_rules()` scopes `BAT_MAIN is outer-layer only`
+  on In2/In3 with `!A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18')`.
+  The only inner exceptions presently authorized are the two bounded R75-to-U18
+  Kelvin/sense branches. Current-carrying `BAT_MAIN` copper stays barred from In2/In3.
+- **KiCad `disallow` fires on EVERY matching rule, not last-match-wins.** Appending the
+  scoped rule left the unscoped one live; the generated board now excises the static block.
+  The authoritative `.kicad_dru` keeps it so `dru_probe` still reads the shipped intent.
+- **New standing regression `d264_probe.py`** - six clauses A-F, all PASS.
+- **`LTC_SHDN` was never a trapped pad.** Alone: 5 escape directions at 0.25 mm B.Cu, via
+  sites at 0.60/0.50/0.35/0.25, `U18.6 -> R80.2` 10.269 mm. 002R's `NO_LEGAL_ESCAPE` was
+  neighbour copper - so the U18 pin-field SCHEDULE is the variable.
+- **Schedule hypothesis measured TRUE:** 10 of 12 schedules give U18 6/6 with all seven
+  functional control nets whole. On `6,10,7,1,3,2`: all nine PR-40 targets true,
+  **`LTC_SHDN` one component**, `LTC_OV` one component B.Cu zero vias, `LTC_GATE` six of
+  six, `FAULT_N` four of four, `Q3_CS` one component through the POFV.
+- **And it fails: U18 6 of 8**, open on `U18.2` (`NO_PATH`) and `U18.9` (`NO_LEGAL_ESCAPE`).
+  `R75.1` unreachable takes `BAT_SENSE` to five islands and the trunk `R75.2 -> D9.1` with
+  it, so sections 16-19 were never reached and no trunk corridor family was generated.
+- **Section 14's paired inner Kelvin was NOT achieved and is not reported as one:**
+  `U18.8 -> R75.2` routed 9.930 mm but on **F.Cu + 2 vias**, the fallback; `U18.9 -> R75.1`
+  never routed. One branch, wrong layer, unpaired.
+- **Three of the four failing pads are NOT sealed.** On the finished board `U18.9` escapes
+  at 0.20 mm, `U18.2` at 0.20 mm, `R75.1` at 0.25 mm - they failed at the width and layer
+  demanded at the time, not because copper walls them in. **`Q3.6` is the exception**: no
+  legal escape at >= 0.150 mm, blocked by track (x28), `Q3.7`, `Q2.3` and the board edge.
+- All five suites PASS. No placement ECO, no Q3 POFV, no signal copper written. U19 NOT
+  searched; Phase A and Phase B NOT run; converter routing NOT started. B-34 remains open.
+- **No progress earned: PCB routing stays 0 %, overall stays 74 %.**
+  See [`CTO_DECISIONS.md`](CTO_DECISIONS.md) D-265 and
+  [`audits/2026-08-27-p2-002s-d264-pathrole.md`](audits/2026-08-27-p2-002s-d264-pathrole.md).
+
 ## 2026-08-27 - FBV2-P2-002R: SIX-LAYER ARCHITECTURE LOCKED; D-263 routing stops on a standing rule
 
 **A - authoritative six-layer lock: PASS** (`f8c931b`). **B - D-263 routing: DECISION STOP.**

@@ -952,3 +952,40 @@ scoping the layer rule to exclude them costs nothing and asks for no relaxation
 anywhere current actually flows.
 
 That is a protection-architecture ruling, and it is raised, not taken.
+
+---
+
+## D-264 — outer-layer-only is scoped by path role (2026-08-27, FBV2-P2-002S)
+
+The ruling the previous section asked for was taken, and it reads:
+
+> **Outer-layer-only is a CURRENT PATH ROLE restriction, not an entire-net-name
+> restriction. The only inner exceptions presently authorized are the two bounded
+> R75-to-U18 Kelvin/sense branches.**
+
+In force as `path_role_dru.outer_only_rules()`, per inner layer:
+
+```
+(rule "BAT_MAIN is outer-layer only - In2 - D-264"
+	(layer "In2.Cu") (severity error) (constraint disallow track)
+	(condition "A.hasNetclass('BAT_MAIN')
+	            && !A.enclosedByArea('BAT_SENSE_KELVIN')
+	            && !A.enclosedByArea('BAT_PROT_TAP_U18')"))
+```
+
+Current-carrying `BAT_MAIN` copper remains barred from In2 and In3 everywhere. The two
+exemptions are the already-bounded, already-named D-249 sense corridors and nothing else;
+widening that list is a protection-architecture change and is not a routing decision.
+
+**KiCad semantics worth knowing before editing this again:** `disallow` fires on **every**
+matching rule, not last-match-wins. Adding a scoped rule alongside the unscoped one changes
+nothing — the unscoped one still rejects. The generated board excises the static unscoped
+block; the authoritative `.kicad_dru` keeps it so `dru_probe` reads the shipped intent.
+`d264_probe.py` pins all of this, clauses A–F.
+
+**What the rule change did and did not buy.** It removed the bar. It did not by itself
+produce the paired inner Kelvin: on the qualification screen `U18.8 -> R75.2` still took
+the F.Cu fallback (9.930 mm, 2 vias) and `U18.9 -> R75.1` did not route. The remaining
+obstacle is escape width at the moment of routing, not layer permission — `U18.9`, `U18.2`
+and `R75.1` all still have legal escapes at 0.20–0.25 mm on the finished board. `Q3.6` is
+the one pad that is genuinely sealed, by `Q3.7`, `Q2.3` and 28 track segments.
