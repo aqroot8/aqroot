@@ -1,3 +1,53 @@
+## 2026-08-27 - FBV2-P2-002Z: D-272 western-margin placement scope is exhausted; the first reproducible U18 8/8 does not close the BPP trunk
+
+**PLACEMENT-SCOPE CLOSEOUT.** Bounded battery-block placement was **CTO authority (D-249...D-271) and
+is now EXHAUSTED**. Across a full cardinality ladder no legal fan-8 placement makes the analytic
+western `BAT_PROTECTED_P` trunk reach even **0.80 mm** on B.Cu, and none closes target bit 8
+(`BAT_PROTECTED_P R75.2->U11.2`) in a supervised run. The authoritative PCB is UNCHANGED - six copper
+layers, **zero signal tracks, zero signal vias** (verified: `pcbnew` load 6 layers / 0 tracks / 0 vias;
+`kicad/` tree byte-for-byte HEAD). Starting HEAD `016aeee`.
+
+- **The cardinality ladder, exhaustive.** baseline (U18 authoritative pose alone) **6/8** (`U18.7`+
+  `U18.8` open); **c1** (one component) **ceiling 7/8** - no single move lands all of {7,8,2}; **c2**
+  (R75+U18, 5 supervised) **ceiling 7/8 AND target bit 8 FALSE in all five** - the trunk routes freely
+  at 1.50 mm (13.12 mm) with NO fanout but is dead at every width down to 0.40 mm once the 8-pin fanout
+  is laid, so the binder is the whole fanout band saturating the board-edge-bounded west margin, not
+  one obstacle; **c3** (R75+U18+one divider, 4 supervised) delivers the **first reproducible U18 8/8**
+  (`c3_e10n_r79`/`c3_00`: R75 `[2.8,65,270]`, U18 `[4.0,72.9,90]`, R79 east `[9.825,67.825,0]`, targets
+  `111111101`, ledger 7/29, sense 13.811 mm, returncode 0, applied+asserted true) - the unique lever of
+  243 candidates, widening the analytic trunk 0.40->0.80 mm - **but target bit 8 is FALSE in all four**
+  and the 8/8 is knife-edge (a 0.5 mm U18 x-shift re-opens `U18.7`); **c4** the last placement family,
+  a bounded-exhaustive **705-pose U18-pose vacate sweep**, returns **NEGATIVE** (102 fan-8 mech-clean
+  poses, `trunk_best_w` only ever 0.40 mm or dead, **zero reach 0.60 mm let alone the 1.20 mm floor**).
+- **`c3_00` is accepted as EVIDENCE ONLY** - the first reproducible U18 8/8 - and is **NOT promoted** to
+  the authoritative placement or to authoritative copper; its bit 8 `BAT_PROTECTED_P R75.2->U11.2`
+  remains open.
+- **Conclusion.** The west margin cannot host U18 8/8 AND the current-carrying `BAT_SENSE` path AND a
+  >=1.20 mm B.Cu trunk at once - it is saturated **in the plane, not along a length**. Closing bit 8
+  requires leaving the margin, a routing/topology move, not a placement ECO.
+- **This is NOT an OWNER decision, and it SUPERSEDES D-271's owner-escalation framing.** The
+  placement-change half D-271 offered was CTO authority all along and is now spent to exhaustion. The
+  **next technical task tests the reservation-dependent LONG outer B.Cu route FIRST** (preserves outer
+  1 oz and the high-current zero-via policy; ~2.29x trunk resistance / ~18.9 mW extra at 1.5 A is an
+  engineering tradeoff to **verify**, not escalate). The **F.Cu high-current via bridge remains a
+  DEFERRED FALLBACK, not authorized** - the via-policy question reaches the owner only if the long-route
+  proof fails.
+- **Delivered.** three analytic prefilters (`place_search_002z.py`, `place_search_c3_002z.py`,
+  `place_search_c4_002z.py`) + the pinned arbiter `run_prefix_002z.py`; a **generalized process-unique
+  DRC transient fix** in `path_role_util.py` (`RU.drc` wrote a FIXED-name transient that concurrent
+  same-phase search prefixes on a shared WORK clobbered - now `drc_%s_%d.json % (tag, os.getpid())`,
+  reclaimed after the read, **no routing result and no single-run output change**); and **new regression
+  G10** whose guard IS the collision (two processes, shared WORK, same fixed tag; both must return the
+  authoritative baseline histogram and neither may raise) - **4/4 PASS**.
+- **Suites all PASS and unregressed:** `router_regression` ALL CHECKS incl. G1-G9 + G10,
+  `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`. `phaseA_journal.json` scratch churn
+  restored.
+- **No long B.Cu route and no F.Cu via bridge attempted** - both are next-task routing work.
+- Full analysis: [`audits/2026-08-27-p2-002z-d272-placement-exhausted.md`](audits/2026-08-27-p2-002z-d272-placement-exhausted.md).
+- **No progress earned:** PCB routing stays 0 %, overall stays 74 %. B-34 open. Nothing moved, nothing
+  relaxed; D-249/D-264/D-266/D-267/D-269/D-270 untouched; high-current outer-1-oz / zero-via policy
+  unchanged.
+
 ## 2026-08-27 - FBV2-P2-002Y: D-271 the 002W prefix is pinned and deterministic; the "proven 8/8" board is not reconstructible from committed code
 
 **DECISION STOP.** The reproduction gap FBV2-P2-002X flagged is resolved as a **reproducibility

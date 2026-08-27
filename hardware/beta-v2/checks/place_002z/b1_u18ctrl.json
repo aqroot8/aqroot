@@ -1,0 +1,12 @@
+{
+ "name": "b1_u18ctrl",
+ "base": "AUTHORITATIVE",
+ "moves": {
+  "U18": [
+   4.0,
+   72.4,
+   90.0,
+   "B.Cu"
+  ]
+ }
+}

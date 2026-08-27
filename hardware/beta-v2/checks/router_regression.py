@@ -502,6 +502,70 @@ def main():
             and len([t for t in qb9.b.GetTracks()]) == before_tracks
             and len(qb9.laid) == before_laid)
 
+        # ---- G10  FBV2-P2-002Z CONCURRENCY-SAFE DRC TRANSIENT ------------
+        #
+        # RU.drc() writes a transient json, reads it straight back, and uses it
+        # nowhere else -- but the tag ("Abase"/"A"/"Afinal") is FIXED per phase.
+        # The placement SEARCH runs many route_battery_block prefixes at once,
+        # all sharing checks/w as WORK, so two runs in the same phase wrote the
+        # SAME drc_Abase.json and one json.load() read a half-written file
+        # ("Unterminated string ... "), crashing that prefix at random.
+        #
+        # The fix makes the transient path process-unique and removes it after
+        # the read, changing NO routing result and NO single-run output.  This
+        # guard is the collision itself: TWO processes call RU.drc with the same
+        # tag on a shared WORK at the same time; both must return the exact
+        # authoritative baseline histogram, and neither may raise.
+        print('')
+        print('  -- G10 FBV2-P2-002Z concurrency-safe DRC transient ----------')
+        # source contract: the transient path is process-unique and reclaimed.
+        ru_src = io.open(os.path.join(SP_DIR, 'path_role_util.py'),
+                         encoding='utf-8').read()
+        pid_unique = 'os.getpid()' in ru_src and 'drc_%s_%d.json' in ru_src
+        reclaimed = 'os.remove(out)' in ru_src
+        chk('G10 DRC transient path is process-unique and reclaimed',
+            'pid_unique=%s reclaimed=%s' % (pid_unique, reclaimed),
+            pid_unique and reclaimed)
+
+        # behavioural collision: two processes, one shared WORK, same FIXED tag.
+        worker = os.path.join(work, 'g10_worker.py')
+        io.open(worker, 'w', encoding='utf-8').write(
+            'import os, sys, json\n'
+            'sys.path.insert(0, %r)\n'
+            'import path_role_util as RU\n'
+            'work = sys.argv[1]\n'
+            'pcb = RU.fresh(work, "g10_" + str(os.getpid()))\n'
+            'c, _ = RU.drc(pcb, "Abase", work)\n'
+            'sys.stdout.write(json.dumps(dict(sorted(c.items()))))\n'
+            % SP_DIR)
+        shared = os.path.join(work, 'g10_shared')
+        os.makedirs(shared, exist_ok=True)
+        procs = [subprocess.Popen([sys.executable, worker, shared],
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                  text=True) for _ in range(2)]
+        outs = [p.communicate() for p in procs]
+        rcs = [p.returncode for p in procs]
+        base_hist = dict(sorted(base_a.items()))
+        parsed, crash = [], ''
+        for (o, e), rc in zip(outs, rcs):
+            if rc != 0:
+                crash = crash or (e.strip().splitlines() or [''])[-1]
+            try:
+                parsed.append(json.loads(o))
+            except ValueError:
+                parsed.append(None)
+                crash = crash or 'unparseable DRC json (torn transient)'
+        chk('G10 concurrent same-tag DRC does not clobber the transient',
+            'rcs=%s %s' % (rcs, ('crash: ' + crash) if crash else 'both clean'),
+            rcs == [0, 0] and not crash)
+        chk('G10 both concurrent runs read the authoritative baseline histogram',
+            '%s' % parsed,
+            all(p == base_hist for p in parsed))
+        # no transient may survive in the shared WORK after the read.
+        leftover = [f for f in os.listdir(shared) if f.startswith('drc_')]
+        chk('G10 no DRC transient left behind in shared WORK',
+            leftover or 'none', not leftover)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -37,10 +37,21 @@ def fresh(workdir, name):
 
 def drc(pcb, tag, work):
     assert_ctx(pcb)
-    out = os.path.join(work, "drc_%s.json" % tag)
+    # FBV2-P2-002Z: the DRC json is a transient, read back immediately below and
+    # referenced nowhere else, but the tag ("Abase"/"A"/"Afinal") is FIXED, so
+    # two concurrent route_battery_block runs sharing WORK clobbered the same
+    # drc_Abase.json and one read a half-written file ("Unterminated string").
+    # The placement SEARCH runs many prefixes at once, so the temp path is now
+    # process-unique.  This changes NO routing result and NO single-run output --
+    # only where the transient lands -- so the pinned prefix stays byte-identical.
+    out = os.path.join(work, "drc_%s_%d.json" % (tag, os.getpid()))
     subprocess.run([HP.kicad_cli(), "pcb", "drc", "--severity-all", "--format", "json",
                     "-o", out, pcb], capture_output=True, text=True)
     j = json.load(open(out, encoding='utf-8'))
+    try:
+        os.remove(out)
+    except OSError:
+        pass
     c = collections.Counter()
     det = collections.defaultdict(list)
     for key in ("violations", "unconnected_items", "schematic_parity"):

@@ -1,0 +1,17 @@
+{
+ "applied": true,
+ "asserted": true,
+ "mismatch": false,
+ "targets": "111010101",
+ "u18": 6,
+ "u19": 0,
+ "ledger": "7/29",
+ "u18_open": [
+  "U18.7",
+  "U18.8"
+ ],
+ "sense_mm": 10.41,
+ "candidate": "b1_q3rot.json",
+ "tag": "b1_q3rot",
+ "returncode": 0
+}

@@ -1,0 +1,17 @@
+{
+ "applied": true,
+ "asserted": true,
+ "mismatch": false,
+ "targets": "111010111",
+ "u18": 6,
+ "u19": 0,
+ "ledger": "7/29",
+ "u18_open": [
+  "U18.7",
+  "U18.8"
+ ],
+ "sense_mm": 18.2,
+ "candidate": "b1_u18ctrl.json",
+ "tag": "b1_u18ctrl",
+ "returncode": 0
+}

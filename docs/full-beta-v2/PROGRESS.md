@@ -2,6 +2,28 @@
 
 **Status: LIVING DASHBOARD.**
 
+**FBV2-P2-002Z (2026-08-27) - D-272 western-margin PLACEMENT SCOPE is EXHAUSTED; the first
+reproducible U18 8/8 does NOT close the BPP trunk; CTO CLOSEOUT, not an owner escalation.** Bounded
+battery-block placement was CTO authority (D-249...D-271) and is now spent to its floor. The
+cardinality ladder: baseline (U18 pose alone) **6/8**; c1 (one component) **ceiling 7/8**; c2
+(R75+U18, 5 supervised) **ceiling 7/8 AND target bit 8 `BAT_PROTECTED_P R75.2->U11.2` FALSE in all
+five** (the trunk routes freely at 1.50 mm with NO fanout but is dead at every width once the 8-pin
+fanout is laid - the west margin is saturated in the PLANE, not along a length); c3 (R75+U18+one
+divider) delivers the **first reproducible U18 8/8** (`c3_e10n_r79`/`c3_00`, targets `111111101`,
+ledger 7/29, sense 13.811 mm) - the unique lever widening the analytic trunk 0.40->0.80 mm - **but
+bit 8 is still FALSE and the 8/8 is knife-edge**; c4 the last family, a bounded-exhaustive **705-pose
+U18-pose vacate sweep**, is **NEGATIVE** (102 fan-8 mech-clean poses, `trunk_best_w` only ever 0.40 mm
+or dead, ZERO reach the 1.20 mm floor). No legal fan-8 placement reaches even 0.80 mm or closes bit 8.
+`c3_00` is accepted **as EVIDENCE ONLY, NOT promoted** to placement or authoritative copper. **This
+SUPERSEDES D-271's owner-escalation framing:** the placement-change half was CTO authority and is
+exhausted, so the next technical task tests the **reservation-dependent LONG outer B.Cu route FIRST**
+(preserves outer 1 oz + high-current zero-via policy; ~2.29x trunk resistance / ~18.9 mW at 1.5 A to
+VERIFY, not escalate); the F.Cu high-current via bridge is a **deferred fallback, not authorized**.
+Delivered a generalized process-unique DRC transient fix (`path_role_util.py`) + new regression **G10**
+(4/4 PASS) that reproduces the concurrent-search DRC clobber. Authoritative PCB UNCHANGED (six layers,
+**0 tracks, 0 vias**, verified); all suites PASS incl. `router_regression` G1-G10; `phaseA_journal.json`
+scratch churn restored. B-34 open. PCB routing stays 0 %; overall stays 74 %.
+
 **FBV2-P2-002Y (2026-08-27) - D-271 the 002W prefix is PINNED and DETERMINISTIC; the "proven 8/8"
 board is NOT reconstructible from committed code; DECISION STOP.** The reproduction gap 002X flagged
 is a reproducibility defect, not a router defect. On the AUTHORITATIVE placement the pinned recipe

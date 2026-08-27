@@ -1,0 +1,12 @@
+{
+ "name": "b1_r75rotNE",
+ "base": "AUTHORITATIVE",
+ "moves": {
+  "R75": [
+   3.3,
+   64.5,
+   270.0,
+   "B.Cu"
+  ]
+ }
+}

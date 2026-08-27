@@ -1,0 +1,33 @@
+{
+ "name": "002Z-c3_e10n_r79ww",
+ "base": "AUTHORITATIVE",
+ "moves": {
+  "R75": [
+   2.8,
+   65.0,
+   270.0,
+   "B.Cu"
+  ],
+  "U18": [
+   3.5,
+   72.9,
+   90.0,
+   "B.Cu"
+  ],
+  "R79": [
+   9.325,
+   67.825,
+   0.0,
+   "B.Cu"
+  ]
+ },
+ "analytic": {
+  "fanout": 8,
+  "trunk_best_w": 800000,
+  "base_trunk_w": 400000,
+  "sense_maxx": 3.25,
+  "card": 3,
+  "expected_casualty": "BAT_PROTECTED_P R75.2->U11.2 (western BPP trunk)",
+  "note": "U18 west 3.5, R79 east +0.5"
+ }
+}

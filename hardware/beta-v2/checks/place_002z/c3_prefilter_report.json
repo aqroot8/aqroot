@@ -1,0 +1,37 @@
+{
+ "task": "FBV2-P2-002Z / D-272 cardinality-3 analytic prefilter",
+ "prefilter": "place_search_c3_002z.py (graded trunk_best_w metric: largest B.Cu inflation at which R75.2->D9.1 routes with the full fanout laid)",
+ "raw_data": "c3_prefilter.json (243 fan-8 mech-clean candidates), c3_bracket_raw.json (e10n-neighborhood >=0.6 mm)",
+ "why_graded": "place_search_002z.evaluate's 1.20 mm binary gate is dead for every c2 pose (trunk_120=None) and stays dead for every card-3 divider move. But the real arbiter can STAGE the trunk on F.Cu with vias, so we rank by how much a third part WIDENS the B.Cu corridor rather than by pass/fail. base (c2) trunk_best_w: e10n=0.40 mm, e10/w05/E2r < 0.40 mm (dead).",
+ "search_space_swept": {
+  "bases": ["e10", "e10n", "w05", "E2r"],
+  "third_parts": ["R78", "R79", "R80", "R81", "R82", "R83"],
+  "single_part": "243 fan-8 mech-clean candidates (rot 0/180, dx -1..+2, dy -1..+1)",
+  "card4_pairs": ["R79+R80", "R79+R78", "R79+R81", "R80+R81", "R78+R80"],
+  "q3_subcluster": "R75+U18+Q3 (rot 90/270, dx -1..+1, dy -2..+0.5) and R75+U18+R79east+Q3"
+ },
+ "result": {
+  "meaningful_card3": 1,
+  "winner": {
+   "base": "e10n (U18 [4.0,72.9,90], R75 [2.8,65,270])",
+   "third_part": "R79 east +1.0 -> [9.825, 67.825, 0]",
+   "trunk_best_w": "0.40 -> 0.80 mm",
+   "fanout": 8,
+   "sense_maxx": 3.25,
+   "why_R79": "R79 is the U18.2->R79.2 tap sitting at y=67.8, exactly where the trunk climbs from R75.2 (y=62) to D9.1 (y=72.5). Nudging it east thins the fanout band at the trunk crossing. The e10n U18 north pose (y=72.9) is REQUIRED -- at y=72.4 (e10) the same R79 move yields trunk=None."
+  }
+ },
+ "dead_ends_proven": {
+  "single_divider_other_than_R79east_on_e10n": "R78/R80/R81/R82/R83 and all R79 poses except (9.825,67.825) do not widen the trunk beyond the base on any of the four bases (242 of 243 candidates).",
+  "R79east_on_other_bases": "e10+R79east=None, w05+R79east=None, E2r+R79east breaks fanout to 7. Only e10n benefits.",
+  "card4_divider_pairs": "0 of the swept R78/R79/R80/R81 east-shift pairs reach even 1.0 mm; spreading the divider column does NOT reach the 1.20 mm floor.",
+  "q3_subcluster": "R75+U18+Q3 caps at 0.40 mm; R75+U18+R79east+Q3 stays at 0.80 mm. Q3 is not a trunk lever (the trunk exits north to D9, not south past Q3)."
+ },
+ "conclusion": "Cardinality 3 is NOT dry but is MARGINAL: exactly one lever (e10n + R79 east) widens the B.Cu western BPP trunk, from 0.40 to 0.80 mm -- still below the 1.20 mm floor. Whether it closes BAT_PROTECTED_P R75.2->U11.2 depends on the arbiter's F.Cu staging, which only a real run can decide. The four ranked candidates (c3_00..c3_03) bracket this lever across the U18 x-axis and R79 step for the supervised runs.",
+ "next_family_if_c3_returns_open": {
+  "not_more_dividers": "the divider column is analytically exhausted (card-3 single + card-4 pairs both fail to reach the floor). Do NOT enumerate the 9-part R76..R83 cluster -- rigid/partial column shifts are trunk-inert (partial R79+R80+R81 east = None; full-column east = mechanical reject against D9).",
+  "candidate_A": "cardinality 3+ that MOVES THE TRUNK OFF THE WEST MARGIN rather than spreading obstacles: rotate/relocate U18 so its fanout band vacates the y~72.8 east-west lane the trunk needs (bounded by D9 at x=11-14 and the divider column) -- requires a fresh U18-pose sweep scored on trunk_best_w, not divider moves.",
+  "candidate_B": "escalation back to D-271: the F.Cu high-current via bridge or the 2.29x long B.Cu route for BAT_PROTECTED_P. The root cause (trunk routes at 1.50 mm only with NO fanout in the bounded west margin) is a topology/layer decision, i.e. OWNER/CTO scope, not a placement ECO.",
+  "recommendation": "run the four c3 candidates first; if all return 7/8 with BPP open, prepare candidate_A (U18-pose sweep) as the last placement-scope family before conceding to candidate_B."
+ }
+}

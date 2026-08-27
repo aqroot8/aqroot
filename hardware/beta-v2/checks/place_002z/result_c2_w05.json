@@ -1,0 +1,16 @@
+{
+ "applied": true,
+ "asserted": true,
+ "mismatch": false,
+ "targets": "101111101",
+ "u18": 7,
+ "u19": 0,
+ "ledger": "7/29",
+ "u18_open": [
+  "U18.8"
+ ],
+ "sense_mm": 13.811,
+ "candidate": "c2_w05.json",
+ "tag": "c2_w05",
+ "returncode": 0
+}

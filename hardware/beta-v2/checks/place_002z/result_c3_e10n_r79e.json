@@ -1,0 +1,16 @@
+{
+ "applied": true,
+ "asserted": true,
+ "mismatch": false,
+ "targets": "111011101",
+ "u18": 7,
+ "u19": 0,
+ "ledger": "6/29",
+ "u18_open": [
+  "U18.7"
+ ],
+ "sense_mm": 13.811,
+ "candidate": "c3_03.json",
+ "tag": "c3_e10n_r79e",
+ "returncode": 0
+}

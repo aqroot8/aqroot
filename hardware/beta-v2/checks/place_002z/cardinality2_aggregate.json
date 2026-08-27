@@ -1,0 +1,49 @@
+{
+ "card": 2,
+ "question": "Can TWO functional components (R75 + U18) reach U18 8/8 AND close the western BAT_PROTECTED_P trunk, with the current-carrying BAT_SENSE path de-bulged?",
+ "verdict": "DISPROVED",
+ "n_runs": 5,
+ "all_returncode_0": true,
+ "all_applied_asserted": true,
+ "best_u18": 7,
+ "u18_ceiling": "7/8",
+ "target_net_order": [
+  "BAT_RAW R80.1->Q2.7",
+  "BAT_RAW D12.1->R77.1",
+  "LTC_SHDN U18.6->Q4.3",
+  "LTC4368_FAULT_N U18.7->R81.2",
+  "LTC_GATE U18.10->R76.1",
+  "LTC_GATE U18.10->Q2.2",
+  "Q3_CS Q3.1->Q3.3",
+  "BAT_PROTECTED_P R75.2->U11.2",
+  "BAT_PROTECTED_P U14.2->TP15.1"
+ ],
+ "runs": [
+  {"tag": "c2_e05",  "cand": "c2_e05.json",  "u18": 7, "u18_open": ["U18.7"], "targets": "111011101", "ledger": "6/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [3.5, 72.4, 90]},
+  {"tag": "c2_e10",  "cand": "c2_e10.json",  "u18": 7, "u18_open": ["U18.7"], "targets": "111011101", "ledger": "7/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [4.0, 72.4, 90]},
+  {"tag": "c2_e10n", "cand": "c2_e10n.json", "u18": 7, "u18_open": ["U18.2"], "targets": "111111101", "ledger": "6/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [4.0, 72.9, 90]},
+  {"tag": "c2_w05",  "cand": "c2_w05.json",  "u18": 7, "u18_open": ["U18.8"], "targets": "101111101", "ledger": "7/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [2.5, 72.4, 90]},
+  {"tag": "c2_E2r",  "cand": "c2_E2r.json",  "u18": 7, "u18_open": ["U18.8"], "targets": "111111101", "ledger": "7/29", "sense_mm": 16.923, "R75": [4.8, 65.0, 270], "U18": [4.5, 72.4, 90]}
+ ],
+ "invariant_casualty": {
+  "net": "BAT_PROTECTED_P R75.2->U11.2",
+  "target_bit": 8,
+  "open_in_all_5_runs": true,
+  "detail": "target bit 8 (BAT_PROTECTED_P R75.2->U11.2) is FALSE in every one of the five runs, independent of which U18 pin (7, 8 or 2) the fanout leaves open. This is the western BPP trunk, and it is the single casualty every cardinality-2 move fails to close."
+ },
+ "complementary_u18_casualty": {
+  "pattern": "7 / 8 / 2",
+  "detail": "U18 caps at 7/8. The open pin is a complementary lever, not fixed: R75-west/U18-west-of-target seals U18.7 (LTC4368_FAULT_N escape), R75/U18 shifted east seals U18.8 (BAT_PROTECTED_P Kelvin reach), U18 north (72.9) seals U18.2 (LTC_UV). No card-2 move lands all of {2,7,8} at once."
+ },
+ "analytic_cross_check": {
+  "model": "place_search_002z.evaluate (courtyard Dijkstra, BAT_SENSE laid first, then 8-pin fanout, then trunk)",
+  "result": "reproduces the real failure: trunk_150=None AND trunk_120=None on ALL five applied c2 poses, matching the real router NO_LEGAL_ESCAPE at D9.1 / NO_PATH at R75.2 for BAT_PROTECTED_P.",
+  "conclusion": "the analytic prefilter is trustworthy for the western BPP trunk casualty and is used to design cardinality 3."
+ },
+ "trunk_root_cause": {
+  "finding": "the western BPP trunk R75.2->D9.1 routes freely (13.12 mm) at 1.50 mm when NO fanout is laid, but is dead at EVERY width down to 0.40 mm once the 8-pin U18 fanout is laid.",
+  "meaning": "the binder is the whole U18 fanout band saturating the board-edge-bounded west margin, NOT any single divider part. The trunk wants the same north-west corridor (x 2.8->6, then east along y~72.8) that U18 and its fanout occupy.",
+  "log_evidence": "c2_e05 log lines 49/55: BAT_PROTECTED_P R75.2->(stage) NO_PATH no F corridor at 1.200 mm; D9.1->(node) NO_LEGAL_ESCAPE blocked by track(x35), U18.6(x13), board_edge."
+ },
+ "implication": "Cardinality 2 cannot reach 8/8 with the western BPP trunk closed. Proceed to cardinality 3 (R75 + U18 + one support/divider part), analytic-prefiltered on graded trunk clearance."
+}

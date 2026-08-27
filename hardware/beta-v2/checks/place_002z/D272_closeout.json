@@ -1,0 +1,69 @@
+{
+ "task": "FBV2-P2-002Z / D-272 -- western-margin placement-scope closeout",
+ "status": "PLACEMENT-SCOPE EXHAUSTED (do not commit; parent-supervised verdict pending)",
+ "HEAD": "016aeee",
+ "routers_launched": "none (analytic prefilters only; no route_battery_block/run_prefix processes started)",
+ "the_one_casualty": {
+  "net": "BAT_PROTECTED_P R75.2->U11.2",
+  "target_bit": 8,
+  "role": "current-carrying western BPP trunk, 1.50 mm target / 1.20 mm floor (D-270 frozen role)",
+  "open_in_every_supervised_run": "all card-1, card-2 and card-3 runs, including the first reproducible U18 8/8"
+ },
+ "cardinality_ladder": {
+  "card1_single_component": {
+   "family": "place_search_002z fam_a (U18 | R75 | Q3 rotation x translation)",
+   "result": "no viable pose; superseded by card-2. Single-component moves cannot both de-bulge the sense diagonal and open the trunk."
+  },
+  "card2_R75_plus_U18": {
+   "evidence": "cardinality2_aggregate.json (5 supervised runs)",
+   "result": "DISPROVED -- U18 caps at 7/8, BAT_PROTECTED_P open in all 5. Analytic trunk_best_w = 0.40 mm (e10n), dead below.",
+   "root_cause": "the whole 8-pin U18 fanout band saturates the board-edge-bounded west margin; the trunk (free at 1.50 mm with NO fanout, 13.12 mm) is dead at every width once the fanout is laid. Not a single-obstacle blocker."
+  },
+  "card3_R75_U18_plus_one_divider": {
+   "evidence": "cardinality3_aggregate.json (4 supervised runs), c3_prefilter_report.json",
+   "result": "U18 8/8 ACHIEVED (first reproducible: c3_e10n_r79 / c3_00, open none) BUT western BPP trunk STILL OPEN in all 4.",
+   "unique_lever": "e10n + R79 east [9.825,67.825,0] widens analytic B.Cu trunk 0.40 -> 0.80 mm (of 243 fan-8 mech-clean candidates, the only meaningful one). Still < 1.20 mm floor.",
+   "divider_family_exhausted": "card-3 single (242/243 no better than base) and card-4 divider pairs (0 reach 1.0 mm) both fail the floor. The rigid R76..R83 column is trunk-inert. NOT re-enumerated."
+  },
+  "candidate_A_U18_pose_vacate_sweep": {
+   "script": "place_search_c4_002z.py",
+   "evidence": "c4_prefilter.json",
+   "intent": "the last placement-scope family -- relocate/reorient U18 so its fanout band VACATES the y~72.8 east-west trunk lane, scored on graded trunk_best_w, NOT more divider spreading.",
+   "swept": "R75 {rot 270 primary, rot 90 cross-check} x U18 {4 rotations x dx 2.5..5.5 x dy 69.4..74.4, 0.5 mm grid} = 616 card-2 poses; + minimal R76/R77 support on the top-8 fan-8 poses = 89 card-3 poses. 705 total, bounded-exhaustive over the legal fan-8 region.",
+   "result": "NEGATIVE. 102 fan-8 mech-clean poses found; trunk_best_w is ONLY EVER 0.40 mm (50 poses) or dead (52). ZERO reach 0.60 mm, let alone the 1.20 mm floor.",
+   "why": "fan-8 survives only in U18 rotations 90/180 (rot 0/270 break the fanout entirely) and only at x 2.5-4.5, y 70.9-74.4 -- a narrow basin in which the fanout band ALWAYS fills the west-margin lane. U18 cannot be reoriented off the lane without losing a fanout pin. Kelvin-B (k9) is already tight (min 9.18 mm vs 10 mm limit).",
+   "metric_calibration": "the same trunk_best_w code reads the c3 R79-east winner at 0.80 mm and the c2 base at 0.40 mm -- so the 0.40 mm ceiling here is a real result, not an under-measurement. The best any placement move ever achieved (R79 east, a divider move now excluded) was 0.80 mm, still sub-floor."
+  }
+ },
+ "conclusion": "Placement scope is EXHAUSTED. No legal fan-8 component placement (single, R75+U18, +divider, or U18-pose vacate) makes the analytic western BPP trunk reach even 0.80 mm, and none of the four families closes BAT_PROTECTED_P R75.2->U11.2 in a supervised run. The best deliverable placement is c3_e10n_r79 (U18 8/8, sense 13.811 mm, one net short of complete: bit 8 open). Closing bit 8 is a topology/layer decision, i.e. OWNER/CTO scope, not a placement ECO.",
+ "best_placement_to_carry_forward": {
+  "candidate": "c3_00.json / c3_e10n_r79",
+  "poses": {"R75": [2.8, 65.0, 270], "U18": [4.0, 72.9, 90], "R79": [9.825, 67.825, 0]},
+  "result": "U18 8/8 (open none), targets 111111101, ledger 7/29, sense 13.811 mm, returncode 0, applied+asserted true",
+  "gap": "target bit 8 BAT_PROTECTED_P R75.2->U11.2 FALSE (western BPP trunk)"
+ },
+ "cto_decision_next": {
+  "framing": "The western margin cannot hold the current-carrying BAT_SENSE path, U18 8/8 AND a >=1.20 mm BPP trunk on B.Cu at once. Closing bit 8 requires leaving the saturated west margin -- either by length (stay on B.Cu, route around) or by layer (jump to F.Cu over the top). This is D-271's OWNER/CTO topology decision, now confirmed unavoidable.",
+  "option_1_long_outer_B_Cu": {
+   "what": "route BAT_PROTECTED_P R75.2->U11.2 the long way on B.Cu (~2.29x nominal), around the saturated west margin, no layer change.",
+   "pro": "single layer, no current-carrying vias, no F.Cu keep-out interaction; simplest DRC story.",
+   "con": "2.29x conductor length on a current path -> higher IR drop / copper area; must find an uncongested B.Cu detour, which the west-margin saturation is evidence against nearby."
+  },
+  "option_2_F_Cu_high_current_via_bridge": {
+   "what": "via BAT_PROTECTED_P up to F.Cu, run the short direct corridor on the (uncongested) top layer, via back down near U11.2, with a high-current via array.",
+   "pro": "short direct trunk (analytic showed the corridor is free at 1.50 mm with no fanout); escapes the west-margin congestion entirely on the layer axis rather than the length axis.",
+   "con": "requires a qualified high-current via array (multiple/large vias for the current), F.Cu routing + keep-out review; adds the current-escape staging the arbiter only partially models."
+  },
+  "recommendation_to_CTO": "Prefer OPTION 2 (F.Cu high-current via bridge). The analytic evidence is decisive on the mechanism: the west margin is saturated in the PLANE, not along a length -- the trunk routes freely at 1.50 mm only when it can use a corridor the fanout occupies, so buying room on the LAYER axis (F.Cu) directly targets the actual binder, whereas Option 1 spends 2.29x length on a current path while still fighting the same congested plane for a B.Cu detour. Option 1 remains the fallback if a qualified high-current via array or F.Cu keep-out review is disallowed. Either way this is a CTO/OWNER call, not a placement ECO -- D-272 placement scope is closed.",
+  "authority": "OWNER/CTO (topology/layer). D-272 (placement ECO) is complete."
+ },
+ "artifacts": {
+  "analytic_scripts": ["place_search_002z.py", "place_search_c3_002z.py", "place_search_c4_002z.py"],
+  "arbiter": "run_prefix_002z.py (NOT launched this step)",
+  "prefilter_reports": ["c3_prefilter_report.json", "c4_prefilter.json"],
+  "aggregates": ["cardinality1_aggregate.json", "cardinality2_aggregate.json", "cardinality3_aggregate.json"],
+  "supervised_results_c3": ["result_c3_e10n_r79.json", "result_c3_e10n_r79w.json", "result_c3_e10n_r79ww.json", "result_c3_e10n_r79e.json"],
+  "best_candidate": "c3_00.json",
+  "note": "no >=1.20 mm placement candidate exists, so NO c4_*.json real-router batch is emitted (c4_index.json is empty by design). Nothing committed."
+ }
+}

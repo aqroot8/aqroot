@@ -1,0 +1,16 @@
+{
+ "applied": true,
+ "asserted": true,
+ "mismatch": false,
+ "targets": "111111101",
+ "u18": 7,
+ "u19": 0,
+ "ledger": "7/29",
+ "u18_open": [
+  "U18.8"
+ ],
+ "sense_mm": 16.923,
+ "candidate": "c2_E2r.json",
+ "tag": "c2_E2r",
+ "returncode": 0
+}

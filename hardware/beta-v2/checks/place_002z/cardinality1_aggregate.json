@@ -1,0 +1,99 @@
+{
+ "card": 1,
+ "question": "Can ONE functional component (U18, R75, or Q3) reach U18 8/8 with the current-carrying BAT_SENSE path de-bulged and the trunk corridor live?",
+ "verdict": "DISPROVED",
+ "best_u18": 7,
+ "best_tag": "b1_r75rot",
+ "n_candidates": 6,
+ "all_reached_8of8": false,
+ "candidates": [
+  {
+   "tag": "b1_r75rot",
+   "move": "b1_r75rot.json",
+   "u18": 7,
+   "u18_open": [
+    "U18.7"
+   ],
+   "ledger": "7/29",
+   "sense_mm": 13.811,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  },
+  {
+   "tag": "b1_r75rotE2",
+   "move": "b1_r75rotE2.json",
+   "u18": 7,
+   "u18_open": [
+    "U18.8"
+   ],
+   "ledger": "7/29",
+   "sense_mm": 16.923,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  },
+  {
+   "tag": "b1_r75rotN",
+   "move": "b1_r75rotN.json",
+   "u18": 7,
+   "u18_open": [
+    "U18.7"
+   ],
+   "ledger": "7/29",
+   "sense_mm": 13.516,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  },
+  {
+   "tag": "b1_r75rotNE",
+   "move": "b1_r75rotNE.json",
+   "u18": 7,
+   "u18_open": [
+    "U18.2"
+   ],
+   "ledger": "6/29",
+   "sense_mm": 13.104,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  },
+  {
+   "tag": "b1_q3rot",
+   "move": "b1_q3rot.json",
+   "u18": 6,
+   "u18_open": [
+    "U18.7",
+    "U18.8"
+   ],
+   "ledger": "7/29",
+   "sense_mm": 10.41,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  },
+  {
+   "tag": "b1_u18ctrl",
+   "move": "b1_u18ctrl.json",
+   "u18": 6,
+   "u18_open": [
+    "U18.7",
+    "U18.8"
+   ],
+   "ledger": "7/29",
+   "sense_mm": 18.2,
+   "applied": true,
+   "asserted": true,
+   "mismatch": false
+  }
+ ],
+ "casualty_analysis": {
+  "R75_rot_family_ceiling": "7/8",
+  "mode_1": "r75rot / r75rotN seal U18.7 (LTC4368_FAULT_N U18.7->R81.2) -- the western escape of pin 7 is contested even after the sense path de-bulges.",
+  "mode_2": "r75rotE2 (R75 nudged east) seals U18.8 instead (Kelvin BAT_PROTECTED_P U18.8->R75.2) -- moving R75 east frees pin 7 but pulls R75.2 out of pin 8 reach.",
+  "mode_3": "r75rotNE closes both 7 and 8 but over-rotates the fanout and seals U18.2 (loses LTC_UV, ledger falls to 6/29).",
+  "U18_only_and_Q3_only": "u18ctrl and q3rot cap at 6/8 (U18.7+U18.8 both open); they do not touch the sense wall the way an R75 180-swap does.",
+  "implication": "No single move lands all of {7,8} without sealing a third pin. The two casualties (pin 7 escape, pin 8 Kelvin reach) are complementary levers, so the minimum viable move is cardinality 2: R75 rotation (sense de-bulge, 7/8 base) joined with a U18 shift that opens pin 7 escape while keeping pin 8 Kelvin reach."
+ }
+}

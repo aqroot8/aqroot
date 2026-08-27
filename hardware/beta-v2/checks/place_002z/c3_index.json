@@ -1,0 +1,106 @@
+[
+ {
+  "file": "c3_00.json",
+  "tag": "c3_e10n_r79",
+  "rank": 1,
+  "card": 3,
+  "fanout": 8,
+  "trunk_best_w_mm": 0.8,
+  "base_trunk_w_mm": 0.4,
+  "sense_maxx": 3.25,
+  "U18": [
+   4.0,
+   72.9,
+   90.0
+  ],
+  "R79": [
+   9.825,
+   67.825,
+   0.0
+  ],
+  "R75": [
+   2.8,
+   65.0,
+   270.0
+  ],
+  "note": "primary: mid-U18, R79 east +1.0"
+ },
+ {
+  "file": "c3_01.json",
+  "tag": "c3_e10n_r79w",
+  "rank": 2,
+  "card": 3,
+  "fanout": 8,
+  "trunk_best_w_mm": 0.8,
+  "base_trunk_w_mm": 0.4,
+  "sense_maxx": 3.25,
+  "U18": [
+   3.5,
+   72.9,
+   90.0
+  ],
+  "R79": [
+   9.825,
+   67.825,
+   0.0
+  ],
+  "R75": [
+   2.8,
+   65.0,
+   270.0
+  ],
+  "note": "U18 west 3.5, R79 east +1.0"
+ },
+ {
+  "file": "c3_02.json",
+  "tag": "c3_e10n_r79ww",
+  "rank": 3,
+  "card": 3,
+  "fanout": 8,
+  "trunk_best_w_mm": 0.8,
+  "base_trunk_w_mm": 0.4,
+  "sense_maxx": 3.25,
+  "U18": [
+   3.5,
+   72.9,
+   90.0
+  ],
+  "R79": [
+   9.325,
+   67.825,
+   0.0
+  ],
+  "R75": [
+   2.8,
+   65.0,
+   270.0
+  ],
+  "note": "U18 west 3.5, R79 east +0.5"
+ },
+ {
+  "file": "c3_03.json",
+  "tag": "c3_e10n_r79e",
+  "rank": 4,
+  "card": 3,
+  "fanout": 8,
+  "trunk_best_w_mm": 0.8,
+  "base_trunk_w_mm": 0.4,
+  "sense_maxx": 3.25,
+  "U18": [
+   4.5,
+   72.9,
+   90.0
+  ],
+  "R79": [
+   9.325,
+   67.825,
+   0.0
+  ],
+  "R75": [
+   2.8,
+   65.0,
+   270.0
+  ],
+  "note": "U18 east 4.5, R79 east +0.5"
+ }
+]

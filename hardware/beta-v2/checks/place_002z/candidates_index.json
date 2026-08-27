@@ -1,0 +1,362 @@
+[
+ {
+  "file": "cand_00.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.39,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 0.0,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.0,
+    72.4,
+    90
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_01.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.6,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 0.5,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.0,
+    72.9,
+    90
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_02.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 11.1,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 0.707,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    2.5,
+    72.9,
+    90
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_03.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.1,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 0.707,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.5,
+    72.9,
+    90
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_04.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.39,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.0,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.0,
+    72.4,
+    90
+   ],
+   "R81": [
+    9.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_05.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 9.39,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.0,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    4.0,
+    72.4,
+    90
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_06.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 13.11,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.0,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.5,
+    72.4,
+    180
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_07.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 13.61,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.207,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.5,
+    72.9,
+    180
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_08.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.6,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.5,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.0,
+    72.9,
+    90
+   ],
+   "R81": [
+    9.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_09.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 12.11,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.618,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.5,
+    71.4,
+    180
+   ],
+   "R81": [
+    8.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_10.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 11.1,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.707,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    2.5,
+    72.9,
+    90
+   ],
+   "R81": [
+    9.825,
+    64.125,
+    0.0
+   ]
+  }
+ },
+ {
+  "file": "cand_11.json",
+  "fanout": 7,
+  "open": [
+   "9:X"
+  ],
+  "sense_mm": 15.968,
+  "sense_max_x": 3.25,
+  "k8": 10.1,
+  "k9": null,
+  "kmis": null,
+  "trunk_150": null,
+  "trunk_120": null,
+  "disp": 1.707,
+  "card": 2,
+  "viable": false,
+  "label": "U18+R81",
+  "place": {
+   "U18": [
+    3.5,
+    72.9,
+    90
+   ],
+   "R81": [
+    9.825,
+    64.125,
+    0.0
+   ]
+  }
+ }
+]

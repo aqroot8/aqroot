@@ -1,0 +1,45 @@
+{
+ "card": 3,
+ "question": "Can THREE components (R75 sense-de-bulge + U18 fanout + ONE support/divider part) reach U18 8/8 AND close the western BAT_PROTECTED_P trunk R75.2->U11.2?",
+ "verdict": "U18 8/8 ACHIEVED (first reproducible) BUT western BPP trunk STILL OPEN",
+ "n_runs": 4,
+ "all_returncode_0": true,
+ "all_applied_asserted": true,
+ "all_mismatch_false": true,
+ "best_u18": 8,
+ "sense_mm_all": 13.811,
+ "target_net_order": [
+  "BAT_RAW R80.1->Q2.7",
+  "BAT_RAW D12.1->R77.1",
+  "LTC_SHDN U18.6->Q4.3",
+  "LTC4368_FAULT_N U18.7->R81.2",
+  "LTC_GATE U18.10->R76.1",
+  "LTC_GATE U18.10->Q2.2",
+  "Q3_CS Q3.1->Q3.3",
+  "BAT_PROTECTED_P R75.2->U11.2",
+  "BAT_PROTECTED_P U14.2->TP15.1"
+ ],
+ "runs": [
+  {"rank": 1, "tag": "c3_e10n_r79",   "cand": "c3_00.json", "u18": 8, "u18_open": [],        "targets": "111111101", "ledger": "7/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [4.0, 72.9, 90], "R79": [9.825, 67.825, 0], "analytic_trunk_best_w_mm": 0.80, "note": "FIRST reproducible U18 8/8 (open none). target bit 8 BAT_PROTECTED_P R75.2->U11.2 = FALSE."},
+  {"rank": 2, "tag": "c3_e10n_r79w",  "cand": "c3_01.json", "u18": 7, "u18_open": ["U18.7"], "targets": "111011101", "ledger": "7/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [3.5, 72.9, 90], "R79": [9.825, 67.825, 0], "analytic_trunk_best_w_mm": 0.80, "note": "U18 west 3.5 seals U18.7; trunk still open."},
+  {"rank": 3, "tag": "c3_e10n_r79ww", "cand": "c3_02.json", "u18": 7, "u18_open": ["U18.7"], "targets": "111011101", "ledger": "7/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [3.5, 72.9, 90], "R79": [9.325, 67.825, 0], "analytic_trunk_best_w_mm": 0.80, "note": "smaller R79 step +0.5; U18.7 open; trunk still open."},
+  {"rank": 4, "tag": "c3_e10n_r79e",  "cand": "c3_03.json", "u18": 7, "u18_open": ["U18.7"], "targets": "111011101", "ledger": "6/29", "sense_mm": 13.811, "R75": [2.8, 65.0, 270], "U18": [4.5, 72.9, 90], "R79": [9.325, 67.825, 0], "analytic_trunk_best_w_mm": 0.80, "note": "U18 east 4.5 seals U18.7; trunk still open."}
+ ],
+ "u18_8of8_result": {
+  "pose": "c3_e10n_r79 (c3_00): R75 [2.8,65,270], U18 [4.0,72.9,90], R79 east [9.825,67.825,0]",
+  "detail": "The e10n north pose at the MID U18 x (4.0) is the unique fan-8 basin center; nudging U18 west (3.5) or east (4.5) re-opens U18.7. So U18 8/8 is real but knife-edge -- a single 0.5 mm x-shift drops it back to 7/8.",
+  "reproducible": true
+ },
+ "invariant_casualty": {
+  "net": "BAT_PROTECTED_P R75.2->U11.2 (western BPP trunk)",
+  "target_bit": 8,
+  "open_in_all_4_runs": true,
+  "detail": "target bit 8 is FALSE in ALL four cardinality-3 runs, including the 8/8 primary. Cardinality 3 solved the U18 fanout casualty (8/8 at the primary pose) but did NOT close the western BPP trunk. The R79-east lever widened the analytic B.Cu corridor from 0.40 to 0.80 mm -- real, but below the 1.20 mm floor -- and the real arbiter's F.Cu current-escape staging did not convert 0.80 mm into a routed trunk."
+ },
+ "analytic_cross_check": {
+  "model": "place_search_c3_002z.trunk_best_w (graded: largest B.Cu inflation at which R75.2->D9.1 routes with the full 8-pin fanout laid)",
+  "result": "c2 e10n base = 0.40 mm; c3 R79-east winner = 0.80 mm; both < 1.20 mm floor. Calibrated against the supervised runs: the 0.80 mm corridor is real but sub-floor, exactly matching the still-open trunk in every real run.",
+  "conclusion": "the analytic prefilter is trustworthy for the western BPP trunk casualty. Cardinality 3 (divider family) is marginal and exhausted below the floor."
+ },
+ "implication": "Cardinality 3 delivers the first reproducible U18 8/8 but cannot close the western BPP trunk. The divider-spreading family is analytically exhausted (single card-3 and card-4 pairs both fail to reach 1.20 mm). Proceed to candidate_A (U18-pose / trunk-lane vacate sweep, c4) as the LAST placement-scope family before conceding to candidate_B."
+}

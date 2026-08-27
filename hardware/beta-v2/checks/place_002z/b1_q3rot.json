@@ -1,0 +1,12 @@
+{
+ "name": "b1_q3rot",
+ "base": "AUTHORITATIVE",
+ "moves": {
+  "Q3": [
+   3.8,
+   56.8,
+   270.0,
+   "B.Cu"
+  ]
+ }
+}

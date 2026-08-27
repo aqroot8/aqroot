@@ -1,0 +1,17 @@
+{
+ "task": "FBV2-P2-002Z / D-272 cardinality-3 supervised routing runs",
+ "cwd": "hardware/beta-v2/checks",
+ "arbiter": "run_prefix_002z.py (pinned D-271 recipe, injects+asserts the candidate placement)",
+ "per_run_cost": "~9 min (EXCEEDS the 10-min ACP foreground cap -- run each in a persistent exec session, NOT detached; detached jobs die on session exit)",
+ "invoke": "python run_prefix_002z.py <candidate.json> <tag>",
+ "success_gate": "PR-40 line U18 8/8 AND target bit 8 (BAT_PROTECTED_P R75.2->U11.2) TRUE, returncode 0, applied+asserted true, mismatch false. Writes place_002z/{result_,log_,probe_}<tag>.json.",
+ "note": "all four candidates share R75=[2.8,65,270] and U18 y=72.9 (the north pose the analytic proves is required to open the trunk lane) with R79 shifted east; they differ in U18 x and R79 east step. Analytic trunk_best_w=0.80 mm on B.Cu (vs 0.40 mm at the c2 base) -- below the 1.20 mm floor, so success depends on the arbiter's F.Cu current-escape staging (which the B.Cu-only analytic does not model) converting the widened corridor into a routed trunk.",
+ "runs": [
+  {"rank": 1, "tag": "c3_e10n_r79",   "cmd": "python run_prefix_002z.py place_002z/c3_00.json c3_e10n_r79",   "U18": [4.0, 72.9, 90], "R79": [9.825, 67.825, 0], "why": "primary -- unique analytic-meaningful card-3 (trunk 0.40->0.80 mm), R79 east +1.0 mid-U18"},
+  {"rank": 2, "tag": "c3_e10n_r79w",  "cmd": "python run_prefix_002z.py place_002z/c3_01.json c3_e10n_r79w",  "U18": [3.5, 72.9, 90], "R79": [9.825, 67.825, 0], "why": "U18 west 3.5 -- more Kelvin/pin-7 room, same 0.80 mm trunk"},
+  {"rank": 3, "tag": "c3_e10n_r79ww", "cmd": "python run_prefix_002z.py place_002z/c3_02.json c3_e10n_r79ww", "U18": [3.5, 72.9, 90], "R79": [9.325, 67.825, 0], "why": "U18 west 3.5, smaller R79 step +0.5 -- least divider disturbance at 0.80 mm"},
+  {"rank": 4, "tag": "c3_e10n_r79e",  "cmd": "python run_prefix_002z.py place_002z/c3_03.json c3_e10n_r79e",  "U18": [4.5, 72.9, 90], "R79": [9.325, 67.825, 0], "why": "U18 east 4.5 -- pin-8 Kelvin family, same 0.80 mm trunk"}
+ ],
+ "stop_condition": "If ANY run returns U18 8/8 with target bit 8 TRUE -> cardinality 3 PROVEN, capture result/log/probe and write the D-272 verdict. If ALL four return 7/8 with BAT_PROTECTED_P R75.2->U11.2 still open -> the western-margin placement family is exhausted at 0.80 mm; see c3_prefilter_report.json 'next_family'.",
+ "after": "The parent CTO supervises these in persistent exec sessions and returns the five result_*.json back to this worktree; only then is the D-272 verdict/commit written (do not commit now)."
+}
