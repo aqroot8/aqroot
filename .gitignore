@@ -37,3 +37,9 @@ __pycache__/
 # regenerated on every run and must never be committed.
 hardware/beta-v2/checks/w/
 hardware/beta-v2/checks/__pycache__/
+
+# prefix_002w.py's AQROOT_PROBE_OUT dump.  It is the pinned regression's raw
+# per-run probe output, regenerated (deterministically) on every validate run.
+# The blessed prefix_002w_manifest.json is the evidence of record; this file is
+# not required and must never be committed.
+hardware/beta-v2/checks/probe_002w_prefix.json

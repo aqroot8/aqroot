@@ -1,0 +1,47 @@
+{
+ "deterministic": {
+  "bat_sense_q36_r751_mm": 18.2,
+  "placement_asserted": true,
+  "targets": "111010111",
+  "u18_8_attempt": "shortest",
+  "u18_8_via_mm": [
+   3.0,
+   71.6
+  ],
+  "u18_9_via_mm": [
+   3.5,
+   69.0
+  ],
+  "u18_connected": 6,
+  "u18_open": [
+   "U18.7",
+   "U18.8"
+  ]
+ },
+ "governed_goal": {
+  "kelvin_A_mm": 7.644,
+  "kelvin_B_mm": 9.927,
+  "kelvin_mismatch_mm": 2.283,
+  "u18_8_via_forbidden_mm": [
+   3.0,
+   71.6
+  ],
+  "u18_connected": 8
+ },
+ "placement": "AUTHORITATIVE",
+ "recipe": {
+  "AQROOT_D256": "GSQ",
+  "AQROOT_D266": "1",
+  "AQROOT_D267": "F1",
+  "AQROOT_EXPECT_PLACEMENT": "AUTHORITATIVE",
+  "AQROOT_LOCAL": "D256",
+  "AQROOT_PROBE_OUT": "probe_002w_prefix.json",
+  "AQROOT_PROBE_PASS1": "1",
+  "AQROOT_Q3_POFV": "1",
+  "AQROOT_SCRATCH": "W002W",
+  "AQROOT_TRUNK_LAST": "1",
+  "AQROOT_U18_ORDER": "6,10,7,1,3,2"
+ },
+ "status": "REPRODUCTION GAP: the governed 8/8 prefix is NOT reproducible from committed code; this manifest pins the deterministic 6/8 board so every task studies it.",
+ "task": "FBV2-P2-002Y"
+}

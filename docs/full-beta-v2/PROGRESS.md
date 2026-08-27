@@ -2,6 +2,21 @@
 
 **Status: LIVING DASHBOARD.**
 
+**FBV2-P2-002Y (2026-08-27) - D-271 the 002W prefix is PINNED and DETERMINISTIC; the "proven 8/8"
+board is NOT reconstructible from committed code; DECISION STOP.** The reproduction gap 002X flagged
+is a reproducibility defect, not a router defect. On the AUTHORITATIVE placement the pinned recipe
+reserves `U18.8` at **(3.000, 71.600)** on both attempts and IDENTICALLY at commits 002T/002U/HEAD -
+so D-269's clearance change is NOT the cause (this supersedes 002X's attribution), and the site is the
+sole candidate that seals no sibling at reservation time. The "3.750 / 8-of-8" board (13.532 mm sense
+path) is not produced by the committed code with any recipe - even at the 002T commit it gives
+18.200 mm and (3.000, 71.600). The true blocker is the current-carrying `BAT_SENSE` diagonal
+(6.75,62.45)→(2.80,66.40), here `U18.7`'s casualty - confirming and tightening 002X on a reproducible
+board. Delivered: `prefix_002w.py` + `prefix_002w_manifest.json` (DETERMINISM gate PASS pins the board;
+GOVERNED-GOAL gate FAIL by design - U18 6/8 at the blocking site). The placement trap is guarded by
+`AQROOT_EXPECT_PLACEMENT=AUTHORITATIVE` in the recipe. Authoritative PCB UNCHANGED (0 tracks, 0 vias);
+no routing code or rule changed. All standing suites PASS. OWNER decision required (protection
+architecture or placement). B-34 open. PCB routing stays 0 %; overall stays 74 %.
+
 **FBV2-P2-002X (2026-08-27) - D-270 path-role OFFLOAD delivered and proven; DECISION STOP.**
 A bounded low-current TAP branch on a power-named net may take In2/In3 inside its own corridor
 (`d270_probe` 11/11 PASS; mechanism in `path_role_dru.INNER_OFFLOAD_AREAS` + `D270_SETS`), and

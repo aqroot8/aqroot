@@ -1,3 +1,53 @@
+## 2026-08-27 - FBV2-P2-002Y: D-271 the 002W prefix is pinned and deterministic; the "proven 8/8" board is not reconstructible from committed code
+
+**DECISION STOP.** The reproduction gap FBV2-P2-002X flagged is resolved as a **reproducibility
+defect, not a router defect**. The 002W qualification prefix is now **pinned and self-describing**
+(`prefix_002w.py` + `prefix_002w_manifest.json`), and the "proven 8/8" board is shown, with
+evidence, to be **not reconstructible from the committed code**. The authoritative PCB is UNCHANGED -
+six copper layers, zero signal tracks, zero signal vias; 002Y changes no routing code and no rule.
+Starting HEAD `8725eea`.
+
+- **The site drift is recipe non-pinning, not a clearance interaction.** On the AUTHORITATIVE
+  placement the pinned recipe reserves `U18.8` at **(3.000, 71.600)** on both the scored and the
+  nearest-exit attempt, and does so IDENTICALLY at commit `798d0ae` (002T), `6ebb009` (002U) and
+  `8725eea` (HEAD). D-269's clearance rewrite (`6edc34a`) is therefore **not** the cause - the
+  pre-D-269 code selects the same site. `reserve_escape`, the reservation plan and its order are
+  byte-identical across 002T→HEAD; there is no tie-break instability and no state leakage
+  (`RU.fresh` rebuilds from the authoritative source every run). **This supersedes 002X's
+  "D-269-clearance / reservation-scoring interaction" attribution.**
+- **The placement trap.** `RU.fresh` copies the AUTHORITATIVE board; `AQROOT_ECO_002F=1` silently
+  swaps a placement differing in nine parts (`U18@3.000,72.400` vs `U18@8.000,65.250`, `R76..R83`).
+  The guard is the driver's own `AQROOT_EXPECT_PLACEMENT=AUTHORITATIVE`, now pinned into the recipe -
+  it refuses to route on the wrong board.
+- **The site is the sole candidate and not the blocker.** Instrumented, `U18.8` has exactly one via
+  candidate - (3.000, 71.600) - and laying it seals no sibling at reservation time; `U18.7` is sealed
+  later, cumulatively. Forcing (3.750, 71.600) is DRC-illegal here (`solder_mask_bridge`,
+  `shorting_items`, `clearance`) and `U18.7` stays blocked anyway.
+- **The "3.750 / 8-of-8" board is not reconstructible.** The 002T audit records `BAT_SENSE
+  Q3.6→R75.1` 13.532 mm, `R75.2` via (1.200, 65.700), U18 8/8; the committed code produces 18.200 mm,
+  (2.800, 63.200), U18 6/8 - and reproduces those even at the 002T commit. The audited board's recipe
+  is lost. Checked against git history and stored JSON with bounded scratch runs at three commits -
+  not handwaved.
+- **The true blocker, on a reproducible board.** The 18.200 mm sense path is the current-carrying
+  diagonal wall (6.75,62.45)→(2.80,66.40) 002X named; here it is `U18.7`'s casualty, one pad west of
+  the trunk's. No legal reservation site and no low-current offload set opens 8/8. This **confirms and
+  tightens** 002X's `BAT_SENSE`-blocker conclusion on a deterministic board, and bounds it: the trunk
+  question is not even reachable at 8/8.
+- **Delivered.** `prefix_002w.py` - a one-command pinned regression with two gates: DETERMINISM
+  (PASS; the board reproduces `prefix_002w_manifest.json`, so a future task cannot unknowingly study a
+  different board) and GOVERNED GOAL (FAIL by design - U18 6/8 with `U18.8` at the blocking site;
+  "must fail when U18.8 lands at the blocking site or U18 drops below 8/8").
+- **No real B.Cu trunk attempted** - the prefix it must sit on is not 8/8, and a trunk on a 6/8 board
+  would be a manufactured pass.
+- **Suites all PASS and unregressed:** `d264/d266/d267/d269/d270_probe`, `dru_probe`,
+  `netclass_probe`, `router_regression`.
+- **Decision required (OWNER):** accept the western margin is oversubscribed at current-carrying
+  roles and take the protection-architecture route (F.Cu via-array bridge, or the 2.29× long B.Cu
+  route), or authorise a placement change to widen it. Neither taken.
+- Full analysis: [`audits/2026-08-27-p2-002y-reproduction.md`](audits/2026-08-27-p2-002y-reproduction.md).
+- **No progress earned:** PCB routing stays 0 %, overall stays 74 %. B-34 open. Nothing moved,
+  nothing relaxed; D-249/D-264/D-266/D-267/D-269/D-270 untouched; high-current policy unchanged.
+
 ## 2026-08-27 - FBV2-P2-002X: D-270 path-role offload delivered and proven; the western-margin trunk blocker is current-carrying, not low-current
 
 **DECISION STOP.** The D-270 offload mechanism is delivered and regression-proven, but the
