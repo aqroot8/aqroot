@@ -1,0 +1,130 @@
+{
+ "task": "FBV2-P2-003B",
+ "board": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/c3repro003b/aqroot-Beta-v2.kicad_pcb",
+ "entry_array": {
+  "pad_mm": [
+   2.8,
+   67.963,
+   1.225,
+   3.35
+  ],
+  "onpad_free_sites": 65,
+  "array": [
+   [
+    3.1,
+    68.7
+   ],
+   [
+    2.2,
+    68.7
+   ],
+   [
+    3.1,
+    67.8
+   ],
+   [
+    2.2,
+    67.8
+   ]
+  ],
+  "n": 4,
+  "feasible": true,
+  "note": "via-in-pad on the sense-resistor pad -> plated-over-filled vias required (POFV precedent, D-258)"
+ },
+ "exit_array": {
+  "node_west": {
+   "free": 527,
+   "n": 4,
+   "array": [
+    [
+     41.7,
+     82.0
+    ],
+    [
+     40.9,
+     81.2
+    ],
+    [
+     42.5,
+     81.2
+    ],
+    [
+     41.7,
+     80.4
+    ]
+   ]
+  },
+  "node_interior": {
+   "free": 855,
+   "n": 4,
+   "array": [
+    [
+     45.4,
+     80.0
+    ],
+    [
+     46.2,
+     79.2
+    ],
+    [
+     45.0,
+     78.8
+    ],
+    [
+     47.0,
+     80.0
+    ]
+   ]
+  },
+  "D9_stub": {
+   "free": 17,
+   "n": 3,
+   "array": [
+    [
+     11.5,
+     71.4
+    ],
+    [
+     11.5,
+     73.4
+    ],
+    [
+     10.3,
+     73.4
+    ]
+   ]
+  },
+  "feasible": true
+ },
+ "traverse": {
+  "flood_east_max_x_mm": {
+   "1.50": 4.65,
+   "1.20": 4.8,
+   "1.00": 4.95,
+   "0.80": 11.6
+  },
+  "astar_to_island": {
+   "BPP_Fcu_west_11.35_71.3@1.50": [
+    "NO_PATH",
+    0.52
+   ],
+   "BPP_Fcu_west_11.35_71.3@1.20": [
+    "NO_PATH",
+    0.61
+   ],
+   "node_40_75@1.50": [
+    "NO_PATH",
+    0.59
+   ],
+   "node_40_75@1.20": [
+    "NO_PATH",
+    0.59
+   ]
+  },
+  "island_west_edge_mm": 10.05,
+  "traverse_feasible_ge_1.20mm": false
+ },
+ "bridge_feasible": false,
+ "blocker": "F.Cu >=1.20mm traverse of the western margin",
+ "verdict": "BRIDGE INFEASIBLE -- entry+exit arrays exist, but no F.Cu traverse at >= 1.20 mm (western margin saturated on F.Cu as on B.Cu; a full-width corridor from R75.2 dies at x=4.80 mm, and only <= 0.80 mm threads to x=11.60 mm, below the mandatory 1.20 mm trunk floor which may not be waived)."
+}

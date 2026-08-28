@@ -2,6 +2,30 @@
 
 **Status: LIVING DASHBOARD.**
 
+**FBV2-P2-003B (2026-08-28) - D-274 the bounded F.Cu HIGH-CURRENT VIA BRIDGE is DISPROVED; the two via
+arrays exist but the F.Cu traverse does not at >=1.20 mm; the western margin is saturated on F.Cu exactly
+as on B.Cu; a measured FAIL, next is a control-net corridor-vacate ECO.** D-273 named the F.Cu via bridge
+as the next step; 003B investigates it on the reproduced c3 board (`run_prefix_002z.py c3_00.json
+c3repro003b` -> `targets=111111101`, U18 8/8, sense 13.811 mm, byte-consistent with D-273) with
+evidence-based via-array sizing and real searches. Measured islands (KiCad `GetConnectedItems`): TARGET
+`{D9.1,C25.1,C36.1,U11.2}` (D9.1 already tied to U11.2 via the C25/C36 F.Cu cap copper through two SINGLE
+0.80/0.40 vias); SOURCE `{R75.2,U18.8}` at x=2.80 - ~8 mm apart. Via-array sizing (`via_array_003b.py`,
+board's own IPC-2221B, reproduces the DRU's 0.525 mm exactly): a 0.40/25um barrel carries 1.055 A at 10 K
+internal; 1.75 A validation -> floor 3 (fault-tolerant), design 4. `bridge_feasibility_003b.py`: **ENTRY
+feasible** (4-via array on R75.2's pad, F.Cu empty within 3.5 mm, via-in-pad/POFV), **EXIT feasible**
+(4-via arrays on the node), **TRAVERSE IMPOSSIBLE at >=1.20 mm** - F.Cu full-width flood from R75.2 dies at
+**x=4.80 mm** (only <=0.80 mm threads to x=11.6, below the mandatory 1.20 mm floor which may not be waived),
+and full-budget A* R75.2->node returns **NO_PATH at 1.20 AND 1.50 mm by exhaustion**. Blocker: the LTC_GATE
+x=5.75 vertical, the BAT_PROT_SHDN_CTL diagonal, the BAT_RAW y=72.45 run in the x 4.8..11 / y 66..73 window.
+`c3_00` remains **EVIDENCE ONLY, NOT promoted**; bit 8 stays open. **NOT an owner decision** - the next
+task is a **bounded western-corridor control-net vacate ECO** (CTO scope, the D-270 class) to open a
+>=1.20 mm F.Cu lane, then route the bridge. New regression **`via_array_probe.py`** pins the via-array
+sizing contract and rejects undersized (single-/two-via) transitions - **PASS**. Authoritative PCB UNCHANGED
+(six layers, **0 tracks, 0 vias**, no source mutated); all suites PASS incl. `router_regression` G1-G11,
+`via_array_probe`, `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`; `phaseA_journal.json`
+scratch churn restored. B-34 open. U19 NOT searched; Phase A/B NOT run. PCB routing stays 0 %; overall
+stays 74 %.
+
 **FBV2-P2-003A (2026-08-28) - D-273 the LONG outer-B.Cu ZERO-VIA route is DISPROVED at target 1.50 and
 floor 1.20; a measured FAIL, corroborated by the router's own search; next is a bounded F.Cu high-current
 via bridge.** D-272 sent the trunk question into a bounded routing proof - test the reservation-dependent

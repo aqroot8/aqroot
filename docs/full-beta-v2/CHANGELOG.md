@@ -1,3 +1,48 @@
+## 2026-08-28 - FBV2-P2-003B: D-274 the bounded F.Cu high-current via bridge is disproved; the western margin is saturated on F.Cu exactly as on B.Cu
+
+**BRIDGE-PROOF CLOSEOUT - a measured FAIL.** D-273 named the next step: a bounded named-path F.Cu
+high-current via bridge for `BAT_PROTECTED_P`. 003B investigates it on the reproduced c3 board (U18 8/8,
+trunk open) with evidence-based via-array sizing and real obstacle-aware searches, and it **fails**: the
+two via-array transitions are individually feasible, but the F.Cu traversing segment between them does
+not exist at the mandatory >=1.20 mm floor. The authoritative PCB is UNCHANGED - six copper layers,
+**zero signal tracks, zero signal vias**; no KiCad source mutated. Starting HEAD `624f085`.
+
+- **The board under test, reproduced.** `run_prefix_002z.py c3_00.json c3repro003b` yields `applied+asserted
+  true`, `mismatch false`, `targets=111111101`, `u18=8`, `ledger 7/29`, `sense 13.811 mm`, `returncode 0`
+  - byte-consistent with D-273. Measured islands (KiCad `GetConnectedItems`): TARGET `{D9.1,C25.1,C36.1,U11.2}`
+  (D9.1 already tied to U11.2 via the C25/C36 F.Cu cap copper through two SINGLE 0.80/0.40 vias); SOURCE
+  `{R75.2,U18.8}` - a 1.14 mm B.Cu stub at x=2.80. Bit 8 is open only because these two islands are ~8 mm apart.
+- **Via-array sizing (board's own IPC-2221B, calibrated).** `via_array_003b.py`: reproduces the DRU's
+  BAT_MAIN outer 0.525 mm exactly; a 0.40/25um through-via barrel as an INTERNAL FR4 conductor carries
+  **1.055 A at 10 K** (conservative). For 1.75 A validation: ideal 2, **fault-tolerant floor 3** (3.17 A;
+  lose one open via -> 2.11 A > 1.75 A), **design 4** (hottest via +6.5 K under 2:1 imbalance). Array R:
+  N3 0.293, N4 0.220 mOhm.
+- **The measurement.** `bridge_feasibility_003b.py`: **ENTRY feasible** - a 4-via array fits on R75.2's
+  1.225x3.35 mm pad at 0.9 mm pitch, all copper layers clear, F.Cu empty within 3.5 mm (via-in-pad ->
+  plated-over-filled, D-258 POFV precedent); **EXIT feasible** - 4-via arrays land on the node (527/855
+  free sites) and a 3-via on the D9 stub; **TRAVERSE IMPOSSIBLE at >=1.20 mm** - an F.Cu full-width flood
+  from R75.2 dies at **x=4.80 mm** (@1.50 4.65, @1.00 4.95, @0.80 11.6; island west edge x=10.05), and
+  full-budget A* R75.2->node returns **NO_PATH at 1.20 AND 1.50 mm by region exhaustion (0.5-0.6 s)**.
+  Blocker: the LTC_GATE x=5.75 vertical, the BAT_PROT_SHDN_CTL diagonal, and the BAT_RAW y=72.45 run in
+  the x 4.8..11 / y 66..73 window. The 0.80 mm escape is recorded, not used - below the mandatory 1.20 mm
+  trunk floor, which this task may not waive.
+- **This tightens D-273:** the western margin cannot host a >=1.20 mm high-current trunk on EITHER outer
+  layer - the saturation is in the plane, on both faces. The pre-existing D9->node single-via link is
+  flagged as a latent bottleneck for any future stub-landing bridge.
+- **Regression added.** `via_array_probe.py` pins the via-array sizing contract and REJECTS undersized
+  (single-/two-via) transitions - the electrical half of the bridge guard; the overbroad/bounding-box/
+  foreign-net geometric half is already carried by `dru_probe` corridor_checks. **PASS.**
+- **CTO recommendation:** a bounded western-corridor control-net vacate ECO - re-route the three named F.Cu
+  control crossings off the x 4.8..11 / y 66..73 window to open a >=1.20 mm F.Cu bridge lane, then route
+  the bridge measured here. CTO/engineering scope (the D-270 class), NOT an owner call.
+- **Suites ALL PASS and unregressed:** `router_regression` (G1-G11), `via_array_probe` (new),
+  `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`. `phaseA_journal.json` scratch churn
+  restored. D-249, D-264, D-266, D-267, D-269, D-270, D-271, D-272, D-273 untouched; outer-1-oz / zero-via
+  high-current policy unchanged; BAT_MAIN clearance not weakened; `c3_00` NOT promoted. **U19 NOT SEARCHED;
+  Phase A NOT passed; Phase B NOT run; converter routing NOT started. B-34 REMAINS OPEN. NO PROGRESS
+  EARNED: PCB routing stays 0 %, overall stays 74 %.** Full analysis:
+  [`audits/2026-08-28-p2-003b-d274-fcu-bridge-disproved.md`](audits/2026-08-28-p2-003b-d274-fcu-bridge-disproved.md).
+
 ## 2026-08-28 - FBV2-P2-003A: D-273 the long outer-B.Cu zero-via route is disproved; next is a bounded F.Cu high-current via bridge
 
 **ROUTING-PROOF CLOSEOUT - a measured FAIL.** D-272 sent the trunk question into a bounded routing proof:

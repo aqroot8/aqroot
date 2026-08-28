@@ -1,0 +1,55 @@
+{
+ "task": "FBV2-P2-003B",
+ "method": "IPC-2221B, DRU section 5 method",
+ "calibration_mm": {
+  "BAT_MAIN_outer_1.5A_10K": 0.525,
+  "BAT_MAIN_inner_1.5A_10K": 2.75
+ },
+ "calibration_note": "reproduces DRU section 5: outer 0.525 mm, inner 2.734 mm for BAT_MAIN 1.5 A @ 10 K",
+ "via": {
+  "drill_mm": 0.4,
+  "pad_mm": 0.8,
+  "plating_um": 25.0,
+  "barrel_area_mm2": 0.02945,
+  "barrel_area_mil2": 45.65,
+  "note": "0.80/0.40 POWER-class through via (qrouter QBoard.via default); plating 25 um is a conservative JLC assumption -- UNVERIFIED against a fab traveller, flagged."
+ },
+ "per_via_A": {
+  "int_10K": 1.055,
+  "ext_10K": 2.11,
+  "int_20K": 1.431,
+  "ext_20K": 2.863
+ },
+ "per_via_design": 1.055,
+ "array_sizing": {
+  "nominal_1.5A": {
+   "ideal_share": 2,
+   "imbalanced_2to1": 3,
+   "per_via_at_N3_A": 0.5,
+   "per_via_at_N4_A": 0.375,
+   "hottest_via_dT_N4_2to1": 4.6
+  },
+  "validation_1.75A": {
+   "ideal_share": 2,
+   "imbalanced_2to1": 4,
+   "per_via_at_N3_A": 0.583,
+   "per_via_at_N4_A": 0.438,
+   "hottest_via_dT_N4_2to1": 6.53
+  }
+ },
+ "ruling": {
+  "min_vias_per_array": 3,
+  "design_vias_per_array": 4,
+  "rationale": "Per-via conservative capacity (internal FR4, 10 K rise) = 1.055 A. Ideal-sharing need for 1.75 A validation = 2 vias; but current sharing from a single incoming trace is uneven, so the floor is raised to 3 (capacity 3.17 A @10K = 1.81x margin; tolerates one open via -> 2 remain, 2.11 A > 1.75 A). Design target is 4 for headroom and 2:1-imbalance safety (hottest via then rises only ~6.5 K). No single-via bottleneck at either transition.",
+  "via_resistance_mohm_each": 0.88,
+  "array_resistance_mohm": {
+   "N3": 0.293,
+   "N4": 0.22
+  },
+  "unverified": [
+   "plating thickness 25 um (JLC typical; not from a fab traveller)",
+   "no thermal coupling credit taken for barrel-to-plane conduction (would only improve capacity) -- conservative",
+   "IPC-2221B applied to a via barrel is the conservative industry proxy; a via is better cooled than a surface trace of equal area"
+  ]
+ }
+}
