@@ -104,6 +104,38 @@ if _d256 and _d256 not in PL.D256_SETS:
                      % (_d256, sorted(PL.D256_SETS)))
 D256_FCU = frozenset(PL.D256_SETS[_d256]) if _d256 else frozenset()
 
+# D-279 / FBV2-P2-003G: THE ANTISOCIAL DEAD-CELL DETOUR HOPS, IT DOES NOT WALL
+# ITS NEIGHBOURS.  A generalisation of D-278, measured at ROUTE time not order
+# time.
+#
+# In the packed 0402 dead-cell field (R84-R96 / Q5-Q9, 0.65 mm pitch) a
+# low-current SIG connection routed LATE finds its short direct B.Cu lane already
+# full, so `connect_role` returns the only legal B.Cu path it can: a HORSESHOE
+# that wraps a co-located pad.  Measured on the full baseline run,
+# `N_POL R85.2 -> R86.1` (2.48 mm direct) laid a 6.23 mm B.Cu detour (2.5x) that
+# boxes the co-located `VBRIDGE_TOP R85.1` pad to 0 escape, and the antisocial
+# `REC_BAT_LOW Q7.1 -> R93.1` (7.47 mm direct, 23.1 mm route, 3.1x) is one of the
+# routes that box `REF_HO R93.2`.  On the EMPTY board those same connections route
+# DIRECT (N_POL R85.2->R86.1 = 2.52 mm) and R85.1 keeps 7 escapes, so the
+# aggressor is the DETOUR, not the net.
+#
+# The six-layer stack exists precisely for a fan-out a single layer cannot make.
+# When set, a dead-cell SIG route that came back an ANTISOCIAL DETOUR - copper
+# length > D279_K x its straight-line pad distance AND > D279_MIN_MM absolute -
+# is reverted and re-routed as an ORDINARY 0.35/0.20 through-via hop (D-257
+# preferred, no rule relaxed) on an inner signal layer first, which runs DIRECT
+# and lays no B.Cu wall.  The swap is kept ONLY if the hop is legal and strictly
+# shorter; otherwise the original B.Cu route is re-laid untouched.  Adds an
+# option, removes none.  Scoped to the low-current dead-cell class (never a wide/
+# high-current net, never a TRUNK/TAP role, never a node target).  The default
+# thresholds 2.0 / 5.0 mm are the MEASURED 003G values (they catch the 2.5x N_POL
+# horseshoe and the 3.1x REC_BAT_LOW detour and nothing within 2x of its span);
+# AQROOT_D279_K / _MIN_MM override them.  Unset (`AQROOT_D279`) reproduces the
+# pre-003G behaviour byte-for-byte, so every earlier measurement stands.
+D279 = bool(os.environ.get('AQROOT_D279'))
+D279_K = float(os.environ.get('AQROOT_D279_K') or '2.0')
+D279_MIN_MM = float(os.environ.get('AQROOT_D279_MIN_MM') or '5.0')
+
 # D-270 / FBV2-P2-002X: the western-margin OFFLOAD, by path role.
 # AQROOT_D270 names one of battery_route_plan.D270_SETS - the minimum set of
 # bounded LOW-CURRENT branches (control signals, and the D-270 addition of
@@ -1040,6 +1072,57 @@ def main():
                     pb = tgt
                     break
                 qb.revert(m)
+        # D-279 (FBV2-P2-003G): AN ANTISOCIAL DEAD-CELL DETOUR HOPS INSTEAD OF
+        # WALLING ITS NEIGHBOURS.  A B.Cu SIG route that came back a horseshoe
+        # (copper > D279_K x its straight-line pad span AND > D279_MIN_MM) is the
+        # one whose detour seals a co-located pad (measured: N_POL R85.2->R86.1
+        # 6.2 mm/2.5x boxes VBRIDGE_TOP R85.1); re-route it as an ordinary
+        # through-via hop (D-257 preferred) on an inner signal layer, running
+        # direct.  The swap is kept ONLY if the hop is legal
+        # AND strictly shorter; otherwise the original B.Cu is re-laid untouched.
+        # Scoped to the low-current dead-cell class - never a wide/high-current
+        # net, TRUNK/TAP role, node target, or a route that already hopped.
+        if (D279 and r is not None and r.get('ok') and not hop and not node
+                and role == 'SIG' and net not in WIDE
+                and net[len(N):] in PL.DEADCELL):
+            direct_mm = math.hypot(pa['x'] - pb['x'], pa['y'] - pb['y']) / 1e6
+            if r['mm'] > D279_MIN_MM and r['mm'] > D279_K * max(direct_mm, 1e-3):
+                bcu_mm = r['mm']
+                qb.revert(m)
+                rh, vv, wv = None, None, None
+                # A LOCAL field detour belongs on an INNER signal layer (In2/In3,
+                # 0.5 oz - a low-current signal is welcome there), leaving the
+                # outer F.Cu clear for the cross-board runs that need it (e.g. a
+                # 40 mm bypass-cap hop landing in this same field).  Inner is
+                # tried first, F.Cu last; connect_hop's own D-258 fallback still
+                # holds, so a blocked inner layer simply falls through.
+                far = ['I2', 'I3', 'F'] if 'I2' in qb.routable else None
+                for (vd, vk) in PL.D257_VIA_LADDER:
+                    for w in ladder:
+                        rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct, far=far,
+                                            via_dia=vd, via_drill=vk)
+                        if rr['ok']:
+                            rh, vv, wv = rr, (vd, vk), w
+                            break
+                        qb.revert(m)
+                    if rh is not None:
+                        break
+                if rh is not None and rh['ok'] and rh['mm'] < bcu_mm:
+                    print("  D-279  %-16s %-8s -> %-8s antisocial B.Cu %.1f mm "
+                          "(%.1fx the %.2f mm span) -> layer hop %.1f mm, %d via"
+                          % (net.split('/')[-1], a, b_, bcu_mm,
+                             bcu_mm / max(direct_mm, 1e-3), direct_mm,
+                             rh['mm'], rh.get('vias') or 0))
+                    sys.stdout.flush()
+                    r, used, hop, planned_via = rh, wv, True, vv
+                else:
+                    qb.revert(m)
+                    for w in ladder:
+                        rr = QR.connect_role(qb, net, pa, pb, 'B', w, CP, ct)
+                        if rr['ok']:
+                            r, used = rr, w
+                            break
+                        qb.revert(m)
         # FALLBACK LADDER, widest and simplest first.  Every rung is legal
         # copper; none of them narrows below the applicable floor.
         #   1. B.Cu, pad to pad                (already tried above)
