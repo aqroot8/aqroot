@@ -1,3 +1,66 @@
+## 2026-08-28 - FBV2-P2-003E: D-277 the U19.3 N_POL NO_LEGAL_ESCAPE is a ROUTE-ORDER contention (cause B), not pad/board geometry; a cardinality-0 planar tie-break in the driver CLEARS it on a full production run and Phase A advances to a new deeper blocker VREC_VCC U19.8; the proven 003C bridge is held fixed
+
+**A MEASURED, PROVEN ROUTE-ORDER FIX - not a placement/topology/safety change.** D-276 named
+`N_POL U19.3->(node) NO_LEGAL_ESCAPE at >=0.150 mm` (blockers board_edge x23, U19.4 x16, U19.2 x12,
+U19.6 x8) as the full-driver Phase-A blocker and named the next task: a bounded investigation of it
+distinguishing (A) pad-escape geometry, (B) route-order/copper obstruction, (C) minimum placement ECO,
+holding the proven 003C vacate + F.Cu 4-via bridge FIXED. 003E measured each cause and repaired the one
+that is real.
+
+- **(A) intrinsic pad/footprint/board-edge geometry - REFUTED.** On the empty authoritative board (0
+  signal tracks; U19 is NOT moved by c3, which moves only R75/U18/R79) `qb.escape(U19.3, 'B', 0.150…)`
+  returns a legal >=0.150 mm escape east into the inter-row gap; its sibling U19.2 also escapes; both
+  middle west-row pins are SINGLE-LANE (freedom 1). The pad can leave its own copper.
+- **(B) route-order / already-laid copper - CONFIRMED (the cause), and directional.** Isolated on the
+  empty board, routing `REF_POL TP24.1->U19.2` FIRST drops U19.3 freedom to 0 and reproduces the D-276
+  fail string byte-for-byte; routing `N_POL TP23.1->U19.3` FIRST leaves U19.2 escapable and BOTH route.
+  U19.2 sits NORTH of U19.3 but its target TP24.1 is SOUTH, so its route crosses south through the gap
+  over U19.3's only (east) lane and seals it; U19.3's target TP23.1 does not cross U19.2. Textbook
+  planar-fanout ordering: among boxed pins exiting the same way, the one whose route crosses a sibling
+  goes LAST.
+- **(C) minimum placement ECO - NOT REQUIRED** (B is fixable by order alone), left un-exercised per the
+  A->B->C investigation order.
+
+**The fix - a measured planar tie-break, cardinality-0.** `order_tight` already routes the tightest pin
+first, but U19.2/U19.3 tie on EVERY existing key (slack +0.14 mm, ways-out 1, width), so the order fell
+through to the arbitrary MST order that put U19.2 first. The repair adds ONE final tie-break on live
+geometry: among rows tied on `(slack, ways-out)` with ways-out <=1 (the boxed single-lane class),
+`crossings[i]` counts tied siblings whose pad falls inside row i's pad->target bounding span, and the
+sort key becomes `(slack, ways-out, width, crossings)`. U19.2's span contains U19.3 (crossing 1);
+U19.3's does not contain U19.2 (crossing 0) -> U19.3 routes first, and both escape. The term is 0 for
+every pin with a second way out (guarded by `fr_a <= 1`) and is the LAST sort key, so it only settles an
+EXACT `(slack, ways-out, width)` tie that today resolves arbitrarily - it can never reorder across
+tightness classes, and it lays no copper (read-only geometry).
+
+**The full production Phase-A run** (`phaseA_003e_fix.json`, base `phaseA_003d` config, no ECO,
+2306.8 s): the pin-field slack line now reads `U19.3 +0.14/1way  U19.2 +0.14/1way …` (reordered exactly
+as the probe predicts) and both boxed pins route (`N_POL TP23.1->U19.3` 6.118 mm OK, `REF_POL
+TP24.1->U19.2` 13.372 mm OK). The D-276 terminal blocker is CLEARED and Phase A ADVANCES to a NEW,
+deeper terminal blocker `PHASE A: FAIL - VREC_VCC U19.8->(node) NO_LEGAL_ESCAPE at >=0.150 mm; blocked
+by track (x33), U19.7 (x13), board_edge (x5), U19.5 (x5)` (co-terminal `VBRIDGE_TOP R85.1` also
+NO_LEGAL_ESCAPE; both at -0.15/0way, stable across all 3 passes). Aggregate is a WASH BY DESIGN - the
+fix relocates the binding blocker, it does not close Phase A: connections 68, skipped 90, ratsnest 711
+delta -70 (003D-base 68/91/710/-71); DRC identical to the authoritative baseline (`hole_clearance 5 /
+lib_footprint_issues 199 / solder_mask_bridge 1 / unconnected_items 499`); `bridge_eco null`. The U19.8
+blocker is a DIFFERENT CLASS from D-276 - dominated by FOREIGN laid `track` (x33) on the EAST row, not
+board_edge + own pins - so the west-row planar tie-break does not apply and a route-order swap is
+unlikely to be sufficient; 003F must discriminate it afresh.
+
+**Delivered + regression.** `route_battery_block.py` gains the scoped D-277 planar tie-break inside
+`order_tight`; new probe **`u19_escape_probe_003e.py`** (A refuted, B both directions, C planar
+prediction + lay-and-count lookahead agree, D driver carries the scoped tie-break) - **PASS**; result
+artifact `phaseA_003e_fix.json`. **SUITES ALL PASS AND UNREGRESSED:** `u19_escape_probe_003e`,
+`router_regression` ALL CHECKS incl. G1-G11, **`bridge_probe_003c` PASS (003C/D-275 held fixed)**,
+`bridge_probe_003d` PASS (the committed 003D FAIL artifacts still pin `N_POL U19.3`, un-regressed).
+`phaseA_journal.json` scratch restored to HEAD. **Nothing moved and nothing relaxed:** D9, U18, R75,
+R76..R83, Q3, the shunt, the FETs, TP17 and C58 all frozen; `c3_00` NOT promoted; D-249..D-276 (incl.
+**D-275**) untouched; outer-1-oz / high-current policy unchanged; no safety weakening; no
+topology/net/footprint/polarity change; no authoritative promotion (Phase A did not pass). Authoritative
+PCB UNCHANGED - six copper layers, 0 signal tracks, 0 signal vias. **U19.3 CLEARED; `VREC_VCC U19.8` is
+the new named blocker. Next: FBV2-P2-003F.** Full analysis:
+[`audits/2026-08-28-p2-003e-d277-u19-escape-order.md`](audits/2026-08-28-p2-003e-d277-u19-escape-order.md).
+**NO PROGRESS EARNED: PCB routing stays 0 %, overall stays 74 %.**
+
 ## 2026-08-28 - FBV2-P2-003D: D-276 the driver-integrated vacate + F.Cu bridge is a MEASURED REPRODUCIBLE FAIL; the full production driver fails upstream at U19.3 N_POL NO_LEGAL_ESCAPE; 003C/D-275 stands as the fixed proven solution
 
 **A MEASURED REPRODUCIBLE FAIL of production / full-driver promotion - NOT a disproof of 003C.** D-275

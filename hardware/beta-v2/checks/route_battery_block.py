@@ -1474,16 +1474,56 @@ def main():
                     best = key
             if best is None:
                 best = (0, 0, 0, queue[i]['a'])
-            rows.append((best[0], best[1], best[2], i, best[3]))
-        rows.sort(key=lambda r: (r[0], r[1], r[2]))
+            # D-277: carry the tighter pad and its target so a planar tie-break
+            # can be measured below.  `other` is the far end of this connection
+            # (the pad NOT chosen as the tight one); its position is where this
+            # pin's route is headed.
+            tref = best[3]
+            oref = queue[i]['b'] if tref == queue[i]['a'] else queue[i]['a']
+            tpad = pads.get(queue[i]['net'], {}).get(tref)
+            opad = pads.get(queue[i]['net'], {}).get(oref)
+            ppos = (tpad['x'], tpad['y']) if tpad else None
+            gpos = (opad['x'], opad['y']) if opad else None
+            rows.append((best[0], best[1], best[2], i, best[3], ppos, gpos))
+        # D-277: PLANAR TIE-BREAK FOR MUTUALLY-BOXED SINGLE-LANE PINS.
+        #
+        # D-276 named `N_POL U19.3 -> (node) NO_LEGAL_ESCAPE`.  Measured
+        # (003E): U19.2 and U19.3 are the two middle west-row pins of U19's
+        # SOT-23-8 - each has ONE lane out (east, into the inter-row gap) and
+        # both tie on EVERY existing key: slack +0.14, ways-out 1, width.  So
+        # the order fell through to the queue's MST order, which routed U19.2
+        # first.  But U19.2 sits NORTH of U19.3 and its target (TP24.1) is
+        # SOUTH, so its route crosses south through the gap and seals U19.3's
+        # only lane - N_POL then has no escape.  Routing U19.3 first (its target
+        # TP23.1 does not cross U19.2) leaves BOTH escapes legal (both route).
+        #
+        # The tie-break is planarity, measured on live geometry: among pins
+        # tied on (slack, ways-out) with a SINGLE lane, the one whose pad->target
+        # span CONTAINS a tied sibling's pad must cross that sibling, so it goes
+        # LAST.  This fires only on an exact (slack, ways-out<=1) tie, is a
+        # no-op for every pin with a second way out, and never reorders across
+        # tightness classes - it only settles the order the queue left arbitrary.
+        crossings = {}
+        for (sl_a, fr_a, w_a, i_a, ref_a, pa, ta) in rows:
+            c = 0
+            if fr_a <= 1 and pa and ta:
+                x0, x1 = sorted((pa[0], ta[0]))
+                y0, y1 = sorted((pa[1], ta[1]))
+                for (sl_b, fr_b, w_b, i_b, ref_b, pb, tb) in rows:
+                    if i_b == i_a or (sl_b, fr_b) != (sl_a, fr_a):
+                        continue
+                    if pb and x0 <= pb[0] <= x1 and y0 <= pb[1] <= y1:
+                        c += 1
+            crossings[i_a] = c
+        rows.sort(key=lambda r: (r[0], r[1], r[2], crossings[r[3]]))
         if verbose:
             print("      pin-field slack: " + "  ".join(
                 "%s %+.2f/%dway" % (ref_, sl / 1e6, nd)
-                for (sl, nd, _, i, ref_) in rows))
+                for (sl, nd, _, i, ref_, _p, _g) in rows))
             sys.stdout.flush()
         out = list(queue)
-        for slot, (_, _, _, src, _r) in zip(idx, rows):
-            out[slot] = queue[src]
+        for slot, row in zip(idx, rows):
+            out[slot] = queue[row[3]]
         return out
 
     # PR-18: SECTION 8's ORDER, AND THE REASON IT IS RIGHT.
