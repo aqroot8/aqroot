@@ -61,6 +61,62 @@ W_TRAVERSE, W_LAND = BR.W_TRAVERSE, BR.W_LAND
 LAND_REFS = ['D9.1', 'C58.1']
 LAND_REF = LAND_REFS[0]
 
+# FBV2-P2-003K / D-282 candidate (c): the DISJOINT-SUB-BOX southern bridge.  003J
+# (D-282) measured that the shared western corridor (y 65-75) cannot host BOTH the
+# >= 1.20 mm bridge AND the LTC_GATE / BAT_RAW taps -- the taps sit at y < 74.7 and
+# the only spare >= 1.20 mm F.Cu lane is a SOUTHERN band, y > 75, DISJOINT from the
+# tap cluster.  The south variant forces the western leg of the traverse BELOW the
+# tap band with a temporary net-foreign obstacle wall over the corridor-north box,
+# so the bridge occupies y > 74.7 in the west and the taps + GND / BAT_MAIN keep the
+# corridor (y < 74.7).  The only target-island BPP pad reachable forced-south early
+# is the far-east node cap C36.1 -- no target-island pad exists between D9.1 (x=11)
+# and C25/C36 (x=62), so the exit array lands there and the ordinary trunk / cap
+# stages join it onward.  Everything else -- the cardinality-1 SHDN vacate, the 4x
+# entry array on R75.2, the >= 1.20 mm F.Cu traverse rule, the 4x exit array, the
+# >= 3 fault-tolerant floor -- is the SAME proven D-275 mechanism, single-sourced
+# VERBATIM from bridge_route_003c, identical to the corridor early stage.
+LAND_REFS_SOUTH = ['C36.1', 'U11.2', 'C25.1']
+SOUTH_WALL_NET = BR.N + '__SOUTH_BRIDGE_WALL'   # foreign net: shapes ONLY the search
+SOUTH_WALL_X0, SOUTH_WALL_X1 = 4600000, 30000000   # west of the taps (x>=5.75) .. mid
+SOUTH_WALL_Y0, SOUTH_WALL_Y1 = 55000000, 74700000  # corridor-north, above the y<74.7 taps
+SOUTH_WALL_STEP = 300000
+
+
+def _south_wall(qb):
+    """Inject a TEMPORARY net-foreign obstacle over the corridor-north box so the
+    F.Cu traverse search is forced BELOW the tap band (y > 74.7) in the western
+    region -- the disjoint-sub-box discipline (taps y < 74.7, bridge y > 75).  The
+    wall is a foreign net so it clears the bridge's own copper by margin(); it is
+    removed by the caller's `finally` exactly like the injected via phantoms, so it
+    never obstructs any REAL net -- it shapes only the bridge's own search.  Returns
+    the number of SEGs appended PER copper layer."""
+    per_layer = 0
+    y = SOUTH_WALL_Y0
+    while y < SOUTH_WALL_Y1:
+        x = SOUTH_WALL_X0
+        while x < SOUTH_WALL_X1:
+            for L in qb.cu:
+                qb.shapes[L].append(BR.QR.SEG(x, y, x + SOUTH_WALL_STEP, y, 150000,
+                                              SOUTH_WALL_NET, 'south-wall'))
+            per_layer += 1
+            x += SOUTH_WALL_STEP
+        y += SOUTH_WALL_STEP
+    qb._obs_cache = None
+    return per_layer
+
+
+def _west_maxy(qb):
+    """Deepest (max-y) F.Cu BAT_PROTECTED_P point in the western band (x < 30 mm) --
+    evidence that the south bridge dips below the tap band into the y > 75 lane."""
+    ym = 0
+    for t in qb.b.GetTracks():
+        if (t.GetClass() == 'PCB_TRACK' and t.GetNetname() == NET
+                and t.GetLayer() == pcbnew.F_Cu):
+            for p in (t.GetStart(), t.GetEnd()):
+                if p.x < 30000000 and p.y > ym:
+                    ym = p.y
+    return round(ym / 1e6, 2)
+
 
 def _vacate_live(qb):
     """Cardinality-1 vacate on the LIVE board: move any BAT_PROT_SHDN_CTL F.Cu
@@ -111,25 +167,35 @@ def _lay_landing(qb, entry_bus, exit_centroid, npx, npy):
     return True, d
 
 
-def apply_early(qb, pads, land_refs=LAND_REFS):
+def apply_early(qb, pads, land_refs=None, south=False):
     """Lay the exact D-275 bridge on the driver's LIVE qb, landing the exit array
     on the first `land_refs` pad that yields a full traverse + >= 3 exit array.
     `pads` is the driver's {net: {ref: pad}} map.  Returns a rec dict; rec['ok']
     is True iff the full bridge (entry array >= 3, >= 1.20 mm traverse, exit array
     >= 3) laid.  The driver's via-blind obstacle model is restored before return
-    whether or not the bridge succeeded."""
-    rec = {'stage': 'FBV2-P2-003I early bridge', 'ok': False}
+    whether or not the bridge succeeded.
+
+    `south` (FBV2-P2-003K / D-282 candidate c): force the western leg BELOW the tap
+    band (y > 74.7) with a temporary obstacle wall and land on the far-east node cap
+    (LAND_REFS_SOUTH) -- the disjoint-sub-box variant.  Default False reproduces the
+    003I corridor bridge byte-for-byte (same land_refs, no wall)."""
+    if land_refs is None:
+        land_refs = LAND_REFS_SOUTH if south else LAND_REFS
+    rec = {'stage': 'FBV2-P2-003%s bridge' % ('K south' if south else 'I early'),
+           'ok': False, 'south': bool(south)}
 
     # ---- VACATE (cardinality 1) ------------------------------------------
     rec['vacated'] = _vacate_live(qb)
 
     # ---- inject existing vias as D-269 traverse obstacles, remembering the
     # phantom block so it can be removed again (LIVE qb must stay via-blind for
-    # every net that routes after the bridge) ------------------------------
+    # every net that routes after the bridge).  `south` adds a temporary wall over
+    # the corridor-north box, removed with the same phantom block. -----------
     pre_sh = dict((L, len(qb.shapes[L])) for L in qb.cu)
     pre_h = len(qb.holes)
     nvia = BR.inject_vias(qb)
     rec['existing_vias'] = nvia
+    nwall = _south_wall(qb) if south else 0
     try:
         # ---- ENTRY ARRAY on R75.2 (POFV) ---------------------------------
         entry_vias = BR.scan_entry_sites(qb)
@@ -159,6 +225,8 @@ def apply_early(qb, pads, land_refs=LAND_REFS):
                 rec['land'] = ref
                 rec['landing'] = [round(npx / 1e6, 3), round(npy / 1e6, 3)]
                 rec.update(d)
+                if south:
+                    rec['south_ywest_mm'] = _west_maxy(qb)
                 rec['ok'] = True
                 return rec
             tried.append((ref, d.get('fail')))
@@ -167,15 +235,16 @@ def apply_early(qb, pads, land_refs=LAND_REFS):
         rec['tried'] = tried
         return rec
     finally:
-        # remove ONLY the injected phantom via-obstacles; the real bridge
-        # tracks/vias (appended after) stay as obstacles for other nets
+        # remove ONLY the injected phantoms (existing-via obstacles + the south
+        # wall); the real bridge tracks/vias (appended after) stay as obstacles for
+        # other nets.  Vias and wall are one contiguous block; holes are via-only.
         for L in qb.cu:
-            del qb.shapes[L][pre_sh[L]:pre_sh[L] + nvia]
+            del qb.shapes[L][pre_sh[L]:pre_sh[L] + nvia + nwall]
         del qb.holes[pre_h:pre_h + nvia]
         qb._obs_cache = None
 
 
-def apply_early_path(pcb, land_refs=LAND_REFS, fill=True):
+def apply_early_path(pcb, land_refs=None, fill=True, south=False):
     """Standalone driver-free entry point: build a QBoard on `pcb`, lay the early
     bridge, fill zones and save.  For preflight tests on a reconstructed placed /
     sparse board.  Returns the rec dict."""
@@ -187,7 +256,7 @@ def apply_early_path(pcb, land_refs=LAND_REFS, fill=True):
     pads = {}
     for (net, ref), p in qb.pads.items():
         pads.setdefault(net, {})[ref] = p
-    rec = apply_early(qb, pads, land_refs)
+    rec = apply_early(qb, pads, land_refs, south=south)
     if rec.get('ok') and fill:
         pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
         qb.save()
@@ -234,7 +303,9 @@ def reconstruct_placed(dst_tag, place_json='c3_00.json'):
 if __name__ == '__main__':
     import sys, json
     b = sys.argv[1]
-    lands = [sys.argv[2]] if len(sys.argv) > 2 else LAND_REFS
-    r = apply_early_path(b, lands)
+    args = sys.argv[2:]
+    south = 'south' in args
+    lands = [a for a in args if a != 'south'] or None
+    r = apply_early_path(b, lands, south=south)
     print(json.dumps(r, indent=1))
     raise SystemExit(0 if r.get('ok') else 1)

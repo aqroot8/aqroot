@@ -67,6 +67,17 @@ TRUNK_LAST = bool(os.environ.get('AQROOT_TRUNK_LAST'))
 # disabled so the bridge is laid exactly once.
 EARLY_BRIDGE = bool(os.environ.get('AQROOT_BRIDGE_EARLY'))
 
+# FBV2-P2-003K / D-282 candidate (c): the DISJOINT-SUB-BOX southern bridge.  When
+# AQROOT_BRIDGE_SOUTH is set the EARLY stage lays the SAME proven D-275 mechanism
+# but forces the western leg of the traverse below the tap band (y > 74.7) so the
+# bridge owns the spare SOUTHERN lane (y > 75) and the LTC_GATE / BAT_RAW taps +
+# GND / BAT_MAIN keep the corridor (y < 74.7) -- the disjoint sub-box 003J
+# localised.  It IMPLIES the early stage (the bridge is still laid exactly once, at
+# the stage-8 boundary); default-inert, no effect unless the gate is set.
+SOUTH_BRIDGE = bool(os.environ.get('AQROOT_BRIDGE_SOUTH'))
+if SOUTH_BRIDGE:
+    EARLY_BRIDGE = True
+
 # FBV2-P2-002S sections 8-11: an EXPLICIT U18 pin-field schedule, replacing
 # the measured slack ordering for that group only.
 #
@@ -2165,15 +2176,18 @@ def main():
             if (EARLY_BRIDGE and early[0] is None
                     and str(it.get('title', '')).startswith('8')):
                 import bridge_early_003i as EB
-                early[0] = EB.apply_early(qb, pads)
+                early[0] = EB.apply_early(qb, pads, south=SOUTH_BRIDGE)
                 ok = early[0].get('ok')
                 if not ok and not state['fail']:
                     state['fail'] = 'early bridge: ' + early[0].get('fail', 'unknown')
-                print('EARLY BRIDGE %s' % (
-                    'OK land=%s traverse=%.3fmm w=%.2f entry=%d exit=%d'
+                print('EARLY BRIDGE%s %s' % (
+                    ' SOUTH' if SOUTH_BRIDGE else '',
+                    'OK land=%s traverse=%.3fmm w=%.2f entry=%d exit=%d%s'
                     % (early[0].get('land'), early[0]['traverse']['mm'],
                        early[0]['traverse']['w_mm'], len(early[0]['entry_vias']),
-                       early[0]['exit_vias']) if ok
+                       early[0]['exit_vias'],
+                       (' ywest=%.2f' % early[0]['south_ywest_mm'])
+                       if 'south_ywest_mm' in early[0] else '') if ok
                     else 'FAIL -- ' + early[0].get('fail', '?')))
                 sys.stdout.flush()
             # D-266 section 9: ONE branch, ONE explicitly authorised starting
@@ -2317,7 +2331,7 @@ def main():
     # this is inert.
     if EARLY_BRIDGE and early[0] is None:
         import bridge_early_003i as EB
-        early[0] = EB.apply_early(qb, pads)
+        early[0] = EB.apply_early(qb, pads, south=SOUTH_BRIDGE)
         if not early[0].get('ok') and not state['fail']:
             state['fail'] = 'early bridge (fallback): ' + early[0].get('fail', 'unknown')
         print('EARLY BRIDGE (fallback, no stage-8 item) %s' % (
