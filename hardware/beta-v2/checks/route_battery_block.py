@@ -56,6 +56,17 @@ KELVIN_INNER = (os.environ.get('AQROOT_KELVIN_INNER') or '').upper()
 # U18 field, the Q3 row, the trip network, the Kelvin pair and BAT_SENSE.
 TRUNK_LAST = bool(os.environ.get('AQROOT_TRUNK_LAST'))
 
+# FBV2-P2-003I / D-275: EARLY (route-order) western-corridor bridge.  When set,
+# the exact proven D-275 mechanism is laid mid-run, at the first stage-8 queue
+# item (after the D-266 Kelvin reservation + U18 field claim their sites, before
+# the LTC_GATE / BAT_RAW tap stages choke the tight R75.2->D9.1 corridor), instead
+# of at end-of-run.  The 003I preflight measured the end-of-run bridge to be a
+# via-density FAIL (15 corridor vias -> NO_PATH); the early stage lays it while
+# the corridor is still sparse and lets subsequent routing route around it.  When
+# AQROOT_BRIDGE_EARLY is set the AQROOT_BRIDGE_ECO end-of-run duplicate is
+# disabled so the bridge is laid exactly once.
+EARLY_BRIDGE = bool(os.environ.get('AQROOT_BRIDGE_EARLY'))
+
 # FBV2-P2-002S sections 8-11: an EXPLICIT U18 pin-field schedule, replacing
 # the measured slack ordering for that group only.
 #
@@ -2104,6 +2115,7 @@ def main():
         sys.stdout.flush()
 
     u11 = [False]
+    early = [None]          # FBV2-P2-003I: the one-shot early-bridge record
     for p_ in range(1, passes):
         before = state['done'] + state['skipped']
         print("--- pass %d: %d queued ---" % (p_, len(QUEUE)))
@@ -2139,6 +2151,31 @@ def main():
                 QUEUE[idx_:] = order_tight(QUEUE[idx_:], verbose=not shown[0])
                 shown[0] = True
             it = QUEUE[idx_]
+            # FBV2-P2-003I / D-275: fire the EARLY western-corridor bridge ONCE,
+            # at the first stage-8 item.  order_tight only permutes the tight
+            # U18/U19 fine-pitch pins, so every '0*'/'6*' reservation + U18 item
+            # keeps its place ahead of the first '8*' (LTC_GATE / FET-sense) item
+            # -- i.e. the bridge lands in the proven-sparse window: after the
+            # D-266 Kelvin reservation and U18 field have claimed R75.2's escape
+            # sites (the c3bridge003c config carries both the 0d reserve via AND
+            # the 4 entry-array vias), before the LTC_GATE / BAT_RAW taps inject
+            # the corridor-choking vias.  apply_early operates on the live qb and
+            # restores the via-blind obstacle model, leaving only the real bridge
+            # copper as an obstacle the rest of the run routes around.
+            if (EARLY_BRIDGE and early[0] is None
+                    and str(it.get('title', '')).startswith('8')):
+                import bridge_early_003i as EB
+                early[0] = EB.apply_early(qb, pads)
+                ok = early[0].get('ok')
+                if not ok and not state['fail']:
+                    state['fail'] = 'early bridge: ' + early[0].get('fail', 'unknown')
+                print('EARLY BRIDGE %s' % (
+                    'OK land=%s traverse=%.3fmm w=%.2f entry=%d exit=%d'
+                    % (early[0].get('land'), early[0]['traverse']['mm'],
+                       early[0]['traverse']['w_mm'], len(early[0]['entry_vias']),
+                       early[0]['exit_vias']) if ok
+                    else 'FAIL -- ' + early[0].get('fail', '?')))
+                sys.stdout.flush()
             # D-266 section 9: ONE branch, ONE explicitly authorised starting
             # rung.  The ladder itself is not changed - 0.20 mm is already in
             # LAD_SIG - and no other SIG connection is touched.
@@ -2273,6 +2310,20 @@ def main():
             state['fail'] = (state['last'] if QUEUE else 'U11.2 escape: none exists')
             break
 
+    # FBV2-P2-003I: guaranteed one-shot -- if no stage-8 item existed in this
+    # QUEUE (e.g. a bounded LOCAL prefix), lay the early bridge now, before the
+    # final fill/save, so AQROOT_BRIDGE_EARLY always lays the bridge exactly once.
+    # In a full production run the loop above fires it at the stage-8 boundary and
+    # this is inert.
+    if EARLY_BRIDGE and early[0] is None:
+        import bridge_early_003i as EB
+        early[0] = EB.apply_early(qb, pads)
+        if not early[0].get('ok') and not state['fail']:
+            state['fail'] = 'early bridge (fallback): ' + early[0].get('fail', 'unknown')
+        print('EARLY BRIDGE (fallback, no stage-8 item) %s' % (
+            'OK' if early[0].get('ok') else 'FAIL -- ' + early[0].get('fail', '?')))
+        sys.stdout.flush()
+
     apply_areas()
     pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
     qb.save()
@@ -2284,8 +2335,11 @@ def main():
     # U11.2); the proven 003C mechanism (bridge_eco_003d.apply_eco) vacates the
     # cardinality-1 SHDN control branch off F.Cu and lays the array/traverse/array
     # bridge on THIS freshly routed board, before the authoritative DRC/ratsnest.
+    # FBV2-P2-003I: DISABLED when AQROOT_BRIDGE_EARLY is set -- the bridge is laid
+    # once, early, above, and the end-of-run timing is the measured via-density
+    # FAIL this task exists to avoid.
     eco = None
-    if os.environ.get('AQROOT_BRIDGE_ECO'):
+    if os.environ.get('AQROOT_BRIDGE_ECO') and not EARLY_BRIDGE:
         import bridge_eco_003d as ECO
         eco = ECO.apply_eco(pcb)
         if not eco.get('ok') and not state['fail']:
@@ -2301,7 +2355,8 @@ def main():
                areas=area_stats(qb.b, area_trk),
                drc=dict(sorted(after.items())), baseline=dict(sorted(base.items())),
                ratsnest=rn, ratsnest_delta=rn - base_rn, journal=journal,
-               bridge_eco=eco, secs=round(time.time() - t_all, 1))
+               bridge_eco=eco, bridge_early=early[0],
+               secs=round(time.time() - t_all, 1))
     json.dump(res, open(os.path.join(
         SP, os.environ.get('AQROOT_RESULT', 'phaseA.json')), 'w'), indent=1)
     print("\nPHASE A:", ("FAIL -- " + state['fail']) if state['fail'] else "COMPLETE")
