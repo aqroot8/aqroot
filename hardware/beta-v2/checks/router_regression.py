@@ -566,6 +566,71 @@ def main():
         chk('G10 no DRC transient left behind in shared WORK',
             leftover or 'none', not leftover)
 
+        # ---- G11  FBV2-P2-003A BOUNDED-PROBE SEARCH CONTRACT ------------
+        #
+        # D-273's long-corridor probe caps QR.ASTAR_BUDGET / QR.WAVE_BUDGET so a
+        # single unreachable hop gives up instead of exploring the whole board
+        # (the >18-min trap the un-bounded first draft hit).  A FAIL reported by
+        # that probe is only trustworthy if the cap does two things at once:
+        #   1. it must actually BOUND the search -- a tiny budget must turn a
+        #      genuinely routable trunk into a prompt give-up (NO_PATH) that lays
+        #      NO copper, never a hang;
+        #   2. it must NOT FABRICATE a FAIL -- the budget the probe actually uses
+        #      (ASTAR=60000 / WAVE=1200) must still route a trunk that routes at
+        #      the full default budget, so a bounded-budget FAIL is a real block
+        #      and not a starved search.
+        # Both are checked here on the authoritative board with a short routable
+        # trunk, so the guarantee the D-273 measurement rests on is pinned in CI
+        # even though the c3 scratch board it measured is not committed.  The
+        # module budgets are saved and restored so no other check is perturbed.
+        print('')
+        print('  -- G11 FBV2-P2-003A bounded-probe search contract ----------')
+        save_astar, save_wave = QR.ASTAR_BUDGET, QR.WAVE_BUDGET
+        try:
+            g11 = fresh(work, 'g11')
+            qb11 = QR.QBoard(g11)
+            net11 = N + 'Q2_CS'
+            pa = qb11.pads.get((net11, 'Q2.3'))
+            pb = qb11.pads.get((net11, 'Q2.1'))
+            outcomes = {}
+            for label, (ab, wb) in (('full', (500000, 3000)),
+                                    ('tiny', (1, 1)),
+                                    ('probe', (60000, 1200))):
+                QR.ASTAR_BUDGET, QR.WAVE_BUDGET = ab, wb
+                m11 = qb11.mark()
+                before = len([t for t in qb11.b.GetTracks()])
+                try:
+                    r = QR.connect_role(qb11, net11, pa, pb, 'B',
+                                        SIG['w'], SIG['cp'], SIG['ct'])
+                    raised = None
+                except Exception as e:               # a bounded give-up must not raise
+                    r, raised = {}, '%s: %s' % (type(e).__name__, e)
+                laid = len([t for t in qb11.b.GetTracks()]) - before
+                qb11.revert(m11)
+                outcomes[label] = dict(ok=bool(r.get('ok')),
+                                       reason=r.get('reason'), laid=laid,
+                                       raised=raised)
+        finally:
+            QR.ASTAR_BUDGET, QR.WAVE_BUDGET = save_astar, save_wave
+        full_ok = outcomes['full']['ok'] and outcomes['full']['laid'] > 0
+        chk('G11 short trunk routes at the full default budget',
+            'ok=%s laid=%s' % (outcomes['full']['ok'], outcomes['full']['laid']),
+            full_ok)
+        t = outcomes['tiny']
+        chk('G11 a tiny budget BOUNDS the search (give-up, no copper, no raise)',
+            'ok=%s reason=%s laid=%s raised=%s'
+            % (t['ok'], t['reason'], t['laid'], t['raised']),
+            (not t['ok']) and t['reason'] == 'NO_PATH' and t['laid'] == 0
+            and t['raised'] is None)
+        p = outcomes['probe']
+        chk('G11 the 003A probe budget does NOT fabricate a FAIL',
+            'ok=%s laid=%s (ASTAR=60000 WAVE=1200 still routes the trunk)'
+            % (p['ok'], p['laid']),
+            p['ok'] and p['laid'] > 0)
+        chk('G11 module search budgets restored after the probe',
+            'ASTAR=%d WAVE=%d' % (QR.ASTAR_BUDGET, QR.WAVE_BUDGET),
+            QR.ASTAR_BUDGET == save_astar and QR.WAVE_BUDGET == save_wave)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -1,3 +1,54 @@
+## 2026-08-28 - FBV2-P2-003A: D-273 the long outer-B.Cu zero-via route is disproved; next is a bounded F.Cu high-current via bridge
+
+**ROUTING-PROOF CLOSEOUT - a measured FAIL.** D-272 sent the trunk question into a bounded routing proof:
+test the reservation-dependent LONG outer-B.Cu route for `BAT_PROTECTED_P` BEFORE any F.Cu via bridge,
+because it keeps the trunk on outer 1 oz with zero current-carrying vias. 003A runs it on the proven c3
+board (U18 8/8, trunk open) and it **fails**: no long outer-B.Cu **zero-via** corridor carries
+`BAT_PROTECTED_P` from `R75.2` to the eastern node copper at the **1.50 mm target or the 1.20 mm floor**.
+The authoritative PCB is UNCHANGED - six copper layers, **zero signal tracks, zero signal vias**; no
+KiCad source mutated. Starting HEAD `1a82652`.
+
+- **The board under test, reproduced.** `w/c3repro003a_parent` = AUTHORITATIVE placement + pinned
+  `c3_00.json` recipe via `run_prefix_002z.py`; the committed reproduction triple confirms U18 8/8,
+  `targets=111111101`, `sense 13.811 mm`, `applied+asserted true`, `mismatch false`, `returncode 0`,
+  and `BAT_PROTECTED_P R75.2->U11.2 = false` (the one open connection). Not a new placement.
+- **The measurement (bounded families).** `long_corridor_003a_bounded.py` -> `long_corridor_003a_bounded.json`,
+  re-run and reproduced byte-identically. `occ_003a.py` shows exactly ONE connected central free channel
+  (x~13..38 mm) between the western margin and the node west edge, so the channel is not the
+  discriminator - the ESCAPE LATITUDE is; three thinnest latitudes (north/mid/south) = F1/F2/F3, plus F4
+  the D9-reservation exit; east is the node, west is the board edge, no fourth family. **Control
+  `R75.2->D9.1`: @1.50 NO_LEGAL_ESCAPE, @1.20 NO_PATH. F1/F2/F3/F4 ALL FAIL both widths** - @1.50 `R75.2`
+  cannot leave its pad at 1.5 mm; @1.20 it escapes ~2.7 mm to (5.5,67.95) then the first traversal out of
+  the western mass is COARSE_BLOCKED; F4 COARSE_BLOCKED both. `legal B.Cu long corridor: NONE`.
+- **The corroboration (full budgets, no coarse prefilter).** A 0.25 mm coarse grid can OVER-block, so
+  COARSE_BLOCKED alone is not proof. `long_corridor_003a_corrob.py` runs the SAME `QR.connect_role` the
+  router uses for the trunk, `R75.2` -> four node-copper points, at DEFAULT FULL budgets (ASTAR=500000,
+  WAVE=3000), no prefilter, 120 s/trial cap. **All 8 trials FAIL:** @1.50 NO_LEGAL_ESCAPE (target-
+  independent), @1.20 NO_PATH after a **48-62 s reachable-region exhaustion** (not a timeout). The long
+  route is disproved by the router's own search, not just a coarse gate.
+- **`c3_00` remains EVIDENCE ONLY, NOT promoted** to placement or authoritative copper; its bit 8
+  `BAT_PROTECTED_P R75.2->U11.2` stays open. This is a measured FAIL, not analytic; no result is presented
+  as a routed PASS.
+- **This is NOT an OWNER decision.** The long-route proof was the gate D-272 set, and it has now run. The
+  **next technical task is a bounded named-path F.Cu high-current via-bridge investigation** - evidence-
+  based via-array sizing (inner layers are 0.5 oz, ~2.73 mm for 1.5 A at 10 K by the board's own
+  `.kicad_dru`, so an array not one via) + full safety / DRC / connectivity gates. **NOT implemented or
+  tested in 003A.**
+- **Delivered.** the bounded probe + the full-budget corroboration + three read-only geometry helpers
+  (`inspect_003a.py`, `occ_003a.py`, `joins_003a.py`); the naive un-bounded first draft
+  `long_corridor_003a.py` is RETAINED as the documented rejected approach (its first east trial burned
+  >18 min, rc130 - what motivated the bounded redesign); and **new regression G11** pinning the bounded-
+  search contract on the AUTHORITATIVE board (a tiny budget must BOUND the search - prompt NO_PATH, no
+  copper, no raise; the probe budget ASTAR=60000/WAVE=1200 must NOT fabricate a FAIL - still routes a
+  routable short trunk; budgets saved/restored, no rule changed) - **4/4 PASS**.
+- **Suites all PASS and unregressed:** `router_regression` ALL CHECKS incl. G1-G9 + G10 + G11,
+  `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`. `phaseA_journal.json` scratch churn
+  restored.
+- Full analysis: [`audits/2026-08-28-p2-003a-d273-long-route-disproved.md`](audits/2026-08-28-p2-003a-d273-long-route-disproved.md).
+- **No progress earned:** PCB routing stays 0 %, overall stays 74 %. B-34 open. Nothing moved, nothing
+  relaxed; D-249/D-264/D-266/D-267/D-269/D-270/D-271/D-272 untouched; high-current outer-1-oz / zero-via
+  policy unchanged. U19 NOT searched; Phase A/B NOT run.
+
 ## 2026-08-27 - FBV2-P2-002Z: D-272 western-margin placement scope is exhausted; the first reproducible U18 8/8 does not close the BPP trunk
 
 **PLACEMENT-SCOPE CLOSEOUT.** Bounded battery-block placement was **CTO authority (D-249...D-271) and

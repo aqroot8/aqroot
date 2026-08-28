@@ -1,0 +1,61 @@
+{
+ "task": "FBV2-P2-003A / D-273",
+ "goal": "Bounded measurement of whether a LONG outer-B.Cu zero-via corridor (1.50 target / 1.20 floor) can close the BAT_PROTECTED_P trunk from R75.2 to the eastern node copper, now that the short western-margin corridor is proven severed (D-272).",
+ "board": "hardware/beta-v2/checks/w/c3repro003a_parent/aqroot-Beta-v2.kicad_pcb",
+ "board_facts": {
+  "edges_mm": {"x": [0.0, 72.0], "y": [0.0, 148.0]},
+  "R75.2_mm": [2.800, 67.963],
+  "D9.1_mm": [11.350, 72.500],
+  "D9_reservation_free_end_mm": [10.800, 73.000],
+  "node_copper_cluster1_bbox_mm": {"x": [38.48, 66.40], "y": [65.00, 93.40], "len_mm": 89.55},
+  "node_west_tip_vertex_mm": [38.475, 80.325],
+  "central_free_channel_mm": {"x": [14, 48], "note": "single connected free region linking west margin to node west edge"}
+ },
+ "budgets": {
+  "ASTAR_BUDGET": 60000,
+  "WAVE_BUDGET": 1200,
+  "HOP_TIMEOUT_s": 10,
+  "COARSE_PREFILTER_G_nm": 250000,
+  "note": "Budgets are set inside the probe (QR.ASTAR_BUDGET / QR.WAVE_BUDGET). A timeout is recorded as reason=TIMEOUT, a legitimate bounded failure. A coarse-blocked hop is recorded as reason=COARSE_BLOCKED without ever running the fine search."
+ },
+ "families": [
+  {"key": "F1_north", "src": "R75.2 (pad, escapes B)", "escape_latitude": "north y~58-62",
+   "waypoints_mm": [[13.0,60.0],[25.0,58.5],[37.0,62.0],[46.0,71.0]], "join_mm": [46.157,72.657],
+   "distinct_because": "highest exit latitude of the western mass; joins node NE diagonal"},
+  {"key": "F2_mid", "src": "R75.2 (pad, escapes B)", "escape_latitude": "mid y~75",
+   "waypoints_mm": [[16.0,75.0],[26.0,77.0],[35.0,79.5]], "join_mm": [38.475,80.325],
+   "distinct_because": "mid exit latitude; joins the node west tip (closest node copper, 5.5 mm)"},
+  {"key": "F3_south", "src": "R75.2 (pad, escapes B)", "escape_latitude": "south y~83",
+   "waypoints_mm": [[13.0,83.0],[26.0,86.0],[38.0,88.0]], "join_mm": [41.547,83.637],
+   "distinct_because": "lowest exit latitude; joins node SE diagonal"},
+  {"key": "F4_resv_first", "src": "D9 reservation free end (10.800,73.000) as trunk FIRST segment",
+   "escape_latitude": "exit south from the reserved end",
+   "waypoints_mm": [[13.0,80.0],[26.0,80.0],[35.0,80.0]], "join_mm": [38.475,80.325],
+   "distinct_because": "tests whether D9's own committed exit reaches the node the long way, continuous B.Cu"}
+ ],
+ "coverage_argument": "Every long B.Cu corridor from the western margin to the node must (1) escape the western control-copper mass and (2) cross the single central free channel to the node west tip. The channel is one connected free region, so it is not the discriminator; the ESCAPE LATITUDE is. The western mass is thinnest at exactly three latitudes (north/mid/south), covered by F1/F2/F3; F4 covers the reservation's own exit. No fourth macroscopically distinct family exists (east is the node, west is the board edge). Additional sampled anchors would only re-probe the same channel -- the un-bounded trap this replaces.",
+ "parent_commands": [
+  "cd hardware/beta-v2/checks",
+  "python3 long_corridor_003a_bounded.py   # default: proven parent board -> place_002z/long_corridor_003a_bounded.json",
+  "# optional explicit form:",
+  "python3 long_corridor_003a_bounded.py w/c3repro003a_parent/aqroot-Beta-v2.kicad_pcb place_002z/long_corridor_003a_bounded.json"
+ ],
+ "expected_runtime": "seconds to ~1 min (bounded); contrast the interrupted un-bounded sweep at >18 min for a single trial (rc130).",
+ "read_only_helpers": [
+  "place_002z/inspect_003a.py  -- board edges, pads, BPP copper clusters, reservation stub (no routing)",
+  "place_002z/occ_003a.py      -- ASCII B.Cu occupancy map of the working band (one grid build, no wave)",
+  "place_002z/joins_003a.py    -- exact nearest node-copper join point per channel exit"
+ ],
+ "corroboration": {
+  "script": "long_corridor_003a_corrob.py -> place_002z/long_corridor_003a_corrob.json",
+  "why": "A 0.25 mm COARSE prefilter can OVER-block, so a COARSE_BLOCKED verdict alone is not proof no 1.20 mm corridor exists. This runs the SAME QR.connect_role the router uses for the trunk, R75.2 -> node copper, at the DEFAULT FULL budgets (ASTAR=500000, WAVE=3000) with NO coarse prefilter, per-trial wall-clock capped.",
+  "result": "ALL 8 trials FAIL: @1.50 NO_LEGAL_ESCAPE to every node target (R75.2 cannot leave its pad at 1.5 mm), @1.20 NO_PATH to every node target after a full-budget reachable-region exhaustion (~48-62 s, not a timeout). Confirms the bounded probe's COARSE_BLOCKED verdict is real, not an artifact."
+ },
+ "regression": "router_regression.py G11 pins the D-273 bounded-search contract on the AUTHORITATIVE board: a tiny budget BOUNDS the search (prompt NO_PATH, no copper, no raise) and the probe budget (ASTAR=60000/WAVE=1200) does NOT fabricate a FAIL (still routes a routable short trunk). 4/4 PASS.",
+ "validation_run_result": {
+  "note": "Re-run end-to-end and reproduced byte-identically (routing verdicts; only the board-path string and wall-clock dt differ). Corroborated by the full-budget real search above.",
+  "control_R75.2_to_D9.1": {"1.50": "NO_LEGAL_ESCAPE", "1.20": "NO_PATH"},
+  "families": "ALL FAIL both widths -- at 1.50 R75.2 has NO_LEGAL_ESCAPE on B.Cu; at 1.20 R75.2 escapes locally (~2.7 mm to 5.5,67.95) but the first traversal out of the western mass is COARSE_BLOCKED; F4 COARSE_BLOCKED both widths.",
+  "verdict": "No long outer-B.Cu 1.20/1.50 zero-via corridor exists. This is a measured FAIL, not analytic. Corroborates D-270/271/272 (western blocker is real current-carrying copper). The next technical task is a bounded named-path F.Cu high-current via-bridge investigation (evidence-based via-array sizing + full safety/DRC/connectivity gates); it is NOT implemented or tested in 003A."
+ }
+}

@@ -1,0 +1,106 @@
+{
+ "board": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/c3repro003a_parent/aqroot-Beta-v2.kicad_pcb",
+ "astar_budget": 500000,
+ "wave_budget": 3000,
+ "cap_s": 120,
+ "note": "Real full-budget QR.connect_role from R75.2 to node copper; no coarse prefilter. NO_LEGAL_ESCAPE/NO_PATH at full budget corroborates the bounded probe COARSE_BLOCKED verdict.",
+ "trials": [
+  {
+   "target": "node_west_tip",
+   "xy_mm": [
+    38.475,
+    80.325
+   ],
+   "width_mm": 1.5,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "mm": 0,
+   "dt": 0.0
+  },
+  {
+   "target": "node_west_tip",
+   "xy_mm": [
+    38.475,
+    80.325
+   ],
+   "width_mm": 1.2,
+   "ok": false,
+   "reason": "NO_PATH",
+   "mm": 0,
+   "dt": 52.6
+  },
+  {
+   "target": "node_NE_diag",
+   "xy_mm": [
+    46.157,
+    72.657
+   ],
+   "width_mm": 1.5,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "mm": 0,
+   "dt": 0.0
+  },
+  {
+   "target": "node_NE_diag",
+   "xy_mm": [
+    46.157,
+    72.657
+   ],
+   "width_mm": 1.2,
+   "ok": false,
+   "reason": "NO_PATH",
+   "mm": 0,
+   "dt": 61.1
+  },
+  {
+   "target": "node_SE_diag",
+   "xy_mm": [
+    41.547,
+    83.637
+   ],
+   "width_mm": 1.5,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "mm": 0,
+   "dt": 0.0
+  },
+  {
+   "target": "node_SE_diag",
+   "xy_mm": [
+    41.547,
+    83.637
+   ],
+   "width_mm": 1.2,
+   "ok": false,
+   "reason": "NO_PATH",
+   "mm": 0,
+   "dt": 60.8
+  },
+  {
+   "target": "node_centroid",
+   "xy_mm": [
+    58.36,
+    75.08
+   ],
+   "width_mm": 1.5,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "mm": 0,
+   "dt": 0.0
+  },
+  {
+   "target": "node_centroid",
+   "xy_mm": [
+    58.36,
+    75.08
+   ],
+   "width_mm": 1.2,
+   "ok": false,
+   "reason": "NO_PATH",
+   "mm": 0,
+   "dt": 0.5
+  }
+ ],
+ "any_legal_long_corridor": false
+}

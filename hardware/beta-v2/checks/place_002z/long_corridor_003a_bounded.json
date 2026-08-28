@@ -1,0 +1,239 @@
+{
+ "board": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/c3repro003a_parent/aqroot-Beta-v2.kicad_pcb",
+ "astar_budget": 60000,
+ "wave_budget": 1200,
+ "hop_timeout_s": 10,
+ "control": {
+  "1.50": {
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "mm": 0,
+   "dt": 0.03
+  },
+  "1.20": {
+   "ok": false,
+   "reason": "NO_PATH",
+   "mm": 0,
+   "dt": 1.76
+  }
+ },
+ "families": [
+  {
+   "key": "F1_north",
+   "desc": "escape north, cross channel high, join node NE diagonal",
+   "width_mm": 1.5,
+   "join": [
+    46156683,
+    72656961
+   ],
+   "join_mm": [
+    46.157,
+    72.657
+   ],
+   "ok": false,
+   "total_mm": 0.0,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "R75.2: NO LEGAL ESCAPE at >= 1.500 mm; blocked by board_edge (x27), track (x20), U18.6 (x8), U18.7 (x6)",
+     "dt": 0.03
+    }
+   ]
+  },
+  {
+   "key": "F1_north",
+   "desc": "escape north, cross channel high, join node NE diagonal",
+   "width_mm": 1.2,
+   "join": [
+    46156683,
+    72656961
+   ],
+   "join_mm": [
+    46.157,
+    72.657
+   ],
+   "ok": false,
+   "total_mm": 2.7,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": true,
+     "mm": 2.7,
+     "end": [
+      5500000,
+      67950000
+     ],
+     "dt": 0.02
+    },
+    {
+     "hop": "run p0->w0",
+     "ok": false,
+     "reason": "COARSE_BLOCKED",
+     "coarse_dt": 0.01
+    }
+   ]
+  },
+  {
+   "key": "F2_mid",
+   "desc": "escape mid y75, cross channel, join node west tip",
+   "width_mm": 1.5,
+   "join": [
+    38475000,
+    80325000
+   ],
+   "join_mm": [
+    38.475,
+    80.325
+   ],
+   "ok": false,
+   "total_mm": 0.0,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "R75.2: NO LEGAL ESCAPE at >= 1.500 mm; blocked by board_edge (x27), track (x20), U18.6 (x8), U18.7 (x6)",
+     "dt": 0.03
+    }
+   ]
+  },
+  {
+   "key": "F2_mid",
+   "desc": "escape mid y75, cross channel, join node west tip",
+   "width_mm": 1.2,
+   "join": [
+    38475000,
+    80325000
+   ],
+   "join_mm": [
+    38.475,
+    80.325
+   ],
+   "ok": false,
+   "total_mm": 2.7,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": true,
+     "mm": 2.7,
+     "end": [
+      5500000,
+      67950000
+     ],
+     "dt": 0.02
+    },
+    {
+     "hop": "run p0->w0",
+     "ok": false,
+     "reason": "COARSE_BLOCKED",
+     "coarse_dt": 0.01
+    }
+   ]
+  },
+  {
+   "key": "F3_south",
+   "desc": "escape south y83, cross channel low, join node SE diagonal",
+   "width_mm": 1.5,
+   "join": [
+    41547282,
+    83637304
+   ],
+   "join_mm": [
+    41.547,
+    83.637
+   ],
+   "ok": false,
+   "total_mm": 0.0,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "R75.2: NO LEGAL ESCAPE at >= 1.500 mm; blocked by board_edge (x27), track (x20), U18.6 (x8), U18.7 (x6)",
+     "dt": 0.03
+    }
+   ]
+  },
+  {
+   "key": "F3_south",
+   "desc": "escape south y83, cross channel low, join node SE diagonal",
+   "width_mm": 1.2,
+   "join": [
+    41547282,
+    83637304
+   ],
+   "join_mm": [
+    41.547,
+    83.637
+   ],
+   "ok": false,
+   "total_mm": 2.7,
+   "hops": [
+    {
+     "hop": "esc R75.2",
+     "ok": true,
+     "mm": 2.7,
+     "end": [
+      5500000,
+      67950000
+     ],
+     "dt": 0.02
+    },
+    {
+     "hop": "run p0->w0",
+     "ok": false,
+     "reason": "COARSE_BLOCKED",
+     "coarse_dt": 0.01
+    }
+   ]
+  },
+  {
+   "key": "F4_resv_first",
+   "desc": "D9 reservation free end as first segment, exit south to node tip",
+   "width_mm": 1.5,
+   "join": [
+    38475000,
+    80325000
+   ],
+   "join_mm": [
+    38.475,
+    80.325
+   ],
+   "ok": false,
+   "total_mm": 0.0,
+   "hops": [
+    {
+     "hop": "run p0->w0",
+     "ok": false,
+     "reason": "COARSE_BLOCKED",
+     "coarse_dt": 0.01
+    }
+   ]
+  },
+  {
+   "key": "F4_resv_first",
+   "desc": "D9 reservation free end as first segment, exit south to node tip",
+   "width_mm": 1.2,
+   "join": [
+    38475000,
+    80325000
+   ],
+   "join_mm": [
+    38.475,
+    80.325
+   ],
+   "ok": false,
+   "total_mm": 0.0,
+   "hops": [
+    {
+     "hop": "run p0->w0",
+     "ok": false,
+     "reason": "COARSE_BLOCKED",
+     "coarse_dt": 0.01
+    }
+   ]
+  }
+ ]
+}

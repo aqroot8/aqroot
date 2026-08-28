@@ -2,6 +2,30 @@
 
 **Status: LIVING DASHBOARD.**
 
+**FBV2-P2-003A (2026-08-28) - D-273 the LONG outer-B.Cu ZERO-VIA route is DISPROVED at target 1.50 and
+floor 1.20; a measured FAIL, corroborated by the router's own search; next is a bounded F.Cu high-current
+via bridge.** D-272 sent the trunk question into a bounded routing proof - test the reservation-dependent
+LONG outer-B.Cu route for `BAT_PROTECTED_P` BEFORE any F.Cu via bridge - and 003A runs it on the proven
+c3 board (U18 8/8, trunk open, reproduced from `c3_00.json` via `run_prefix_002z.py`) and it FAILS. Bounded
+family probe (`long_corridor_003a_bounded.py`, reproduced byte-identically): control `R75.2->D9.1` @1.50
+NO_LEGAL_ESCAPE / @1.20 NO_PATH; four topologically distinct long families (north/mid/south + D9-reservation-
+first, the ONE central free channel deduped by `occ_003a.py`) ALL FAIL both widths - @1.50 `R75.2` cannot
+leave its pad at 1.5 mm, @1.20 it escapes ~2.7 mm then COARSE_BLOCKED. Corroborated WITHOUT the coarse
+prefilter by `long_corridor_003a_corrob.py`: the SAME `QR.connect_role` the router uses for the trunk,
+`R75.2` -> node copper, at FULL default budgets - all 8 trials FAIL, @1.20 NO_PATH after a 48-62 s reachable-
+region exhaustion (not a timeout). `R75.2` is copper-locked in the western mass; the one central channel is
+unreachable at trunk width. `c3_00` remains **EVIDENCE ONLY, NOT promoted**; bit 8 `BAT_PROTECTED_P
+R75.2->U11.2` stays open. **This is NOT an owner decision** - the long-route proof was the gate D-272 set,
+and it has run; the **next technical task is a bounded named-path F.Cu high-current via-bridge investigation**
+(evidence-based via-array sizing - inner layers 0.5 oz, ~2.73 mm for 1.5 A at 10 K - + full safety / DRC /
+connectivity gates), NOT implemented or tested here. Delivered the bounded probe + full-budget corroboration
++ three read-only geometry helpers; retained the naive un-bounded draft as the documented rejected approach;
+new regression **G11** pins the bounded-search contract on the authoritative board (a tiny budget BOUNDS the
+search; the probe budget does NOT fabricate a FAIL) - **4/4 PASS**. Authoritative PCB UNCHANGED (six layers,
+**0 tracks, 0 vias**, no source mutated); all suites PASS incl. `router_regression` G1-G11,
+`d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`; `phaseA_journal.json` scratch churn restored.
+B-34 open. U19 NOT searched; Phase A/B NOT run. PCB routing stays 0 %; overall stays 74 %.
+
 **FBV2-P2-002Z (2026-08-27) - D-272 western-margin PLACEMENT SCOPE is EXHAUSTED; the first
 reproducible U18 8/8 does NOT close the BPP trunk; CTO CLOSEOUT, not an owner escalation.** Bounded
 battery-block placement was CTO authority (D-249...D-271) and is now spent to its floor. The
