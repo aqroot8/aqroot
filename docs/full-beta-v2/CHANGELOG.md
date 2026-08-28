@@ -1,3 +1,68 @@
+## 2026-08-28 - FBV2-P2-003D: D-276 the driver-integrated vacate + F.Cu bridge is a MEASURED REPRODUCIBLE FAIL; the full production driver fails upstream at U19.3 N_POL NO_LEGAL_ESCAPE; 003C/D-275 stands as the fixed proven solution
+
+**A MEASURED REPRODUCIBLE FAIL of production / full-driver promotion - NOT a disproof of 003C.** D-275
+proved the western-corridor vacate + F.Cu via-array bridge as a POST-PROCESS of a hand-staged
+reproduced c3 board and named the next task: integrate that mechanism into the production Phase-A
+driver and drive it through a full 2-pass route (the D-271 discipline). 003D performs that integration
+- `route_battery_block.py` gains ONE `AQROOT_BRIDGE_ECO`-guarded call to `bridge_eco_003d.apply_eco`
+(single-sourcing the D-275 copper primitives verbatim from `bridge_route_003c`) - and the full driver
+route **reproducibly fails on two independent passes**:
+
+- **Phase A fails earlier, at the U19 recovery-comparator block:** `N_POL U19.3->(node) (SIG) :
+  NO_LEGAL_ESCAPE : U19.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by board_edge (x23), U19.4 (x16),
+  U19.2 (x12), U19.6 (x8)`.
+- **The integrated 003C-style vacate-then-bridge ECO aborts:** `ECO ABORT: no >= 1.20 mm F.Cu traverse
+  corridor` - the vacate runs (6 F.Cu tracks moved, 48 existing vias seen) but the production board
+  offers no >= 1.20 mm F.Cu lane to bridge, unlike the hand-staged 003C board.
+
+**Reproduced (2-pass D-271 discipline).** `phaseA_003d_ecoC.json` and `phaseA_003d_ecoD.json` are NOT
+byte-identical (they differ only in per-net wall-clock `secs` jitter) but every DECISIVE field is
+identical: the Phase-A `fail` string above; `connections 68`; `skipped 91`; `ratsnest 710`, delta
+`-71`; DRC `hole_clearance 5 / lib_footprint_issues 199 / solder_mask_bridge 1 / unconnected_items
+499` (identical to the authoritative baseline); `bridge_eco.ok false`, `fail "no >= 1.20 mm F.Cu
+traverse corridor"`, `vacated 6`, `existing_vias 48`. The base `phaseA_003d.json` (no ECO) shows the
+SAME U19.3 fail - the failure is upstream of and independent of the bridge ECO.
+
+**003C / D-275 is NOT invalidated.** Its post-processed, reproducible `BAT_PROTECTED_P` closure remains
+proven evidence and is the **fixed solution to preserve into 003E** (`bridge_probe_003c` re-run: PASS).
+003D fails production / full-driver promotion; it does NOT disprove D-275. The gating problem is now a
+new, distinct blocker: **U19.3 pad escape**, not the D-270..D-274 western-BPP-trunk arc.
+
+**Orchestration failure (accurately diagnosed - continuation loss, not engineering, not OWNER).** The
+CTO launched the ecoC/ecoD passes with `nohup setsid ... &` from a ONE-SHOT turn, then ended with a
+normal text response and NO `sessions_yield`, NO persistent waiter, NO completion callback tied to PIDs
+274901 / 274902. The detached children survived and finished at 04:31 UTC (correct result JSONs), but a
+process exit cannot itself re-awaken an already-ended turn, and the finalize ACP session had ended at
+the wait boundary. **Repair discipline recorded:** the ACP/finalize task OWNS foreground work and
+returns a completion event; the CTO uses `sessions_yield` and RESUMES from that event; NO unregistered
+detached child batches.
+
+**Delivered + regression.** Kept: the env-guarded driver hook (inert with `AQROOT_BRIDGE_ECO` unset -
+the default), `bridge_eco_003d.py`, `bridge_gates_003d.py`, and the three result JSONs + ecoC/ecoD/
+c3repro logs as evidence. **`bridge_probe_003d.py` was CONVERTED to pin the measured reproducible
+FAIL** - as first authored it presumed a PASSING driver gate (`bridge_gates_003d_*.json` with
+`pr40_eco 111111111`) that never existed because the ECO aborts; it now pins A the wired/ordered hook,
+B single-sourced D-275 primitives, C cardinality-1 control-role vacate, D each `phaseA_003d_eco*.json`
+records the FAIL (ECO abort AND N_POL U19.3 NO_LEGAL_ESCAPE) with NO false promotion, E 2-pass
+determinism of the FAIL. **D-276 DRIVER BRIDGE PROBE: PASS.** The incomplete `ecoA`/`ecoB` scratch
+logs (422 lines, no verdict, no result JSON) removed. `phaseA_journal.json` scratch churn restored to
+HEAD.
+
+**Suites ALL PASS and unregressed:** `router_regression` G1-G11, `bridge_probe_003d` (rewritten),
+`bridge_probe_003c`, `via_array_probe`, `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`.
+**Nothing moved and nothing relaxed:** D9, U18, R75, R76..R83, Q3, the shunt, the FETs, TP17 and C58 all
+frozen; `c3_00` NOT promoted; D-249..D-275 untouched; outer-1-oz / high-current policy unchanged; no
+safety weakening; no topology/net change; no authoritative promotion. Authoritative PCB UNCHANGED - six
+copper layers, **0 signal tracks, 0 signal vias**, no KiCad source mutated. **U19.3 is now the named
+blocker;** Phase A NOT passed; Phase B NOT run. B-34 unchanged. **Next - FBV2-P2-003E:** a bounded
+investigation of the U19.3 `N_POL` NO_LEGAL_ESCAPE holding the proven 003C vacate + F.Cu 4-via bridge
+FIXED - distinguishing pad-escape geometry vs route-order/copper obstruction vs minimum placement ECO;
+inspecting U19.3 / U19.2 / U19.4 / U19.6 and the board edge; analytic pad-escape + smallest real-router
+probes; no broad placement search, no topology/net change, no safety weakening, no authoritative
+promotion unless a later full gate passes. Full analysis:
+[`audits/2026-08-28-p2-003d-d276-driver-bridge-fail.md`](audits/2026-08-28-p2-003d-d276-driver-bridge-fail.md).
+**NO PROGRESS EARNED: PCB routing stays 0 %, overall stays 74 %.**
+
 ## 2026-08-28 - FBV2-P2-003C: D-275 the western-corridor vacate ECO + F.Cu via-array bridge is PROVEN; the BAT_PROTECTED_P trunk closes on real, reproducible copper
 
 **PROVEN - a real-copper PASS, the first BPP trunk closure in the D-270..D-274 arc.** D-274 named

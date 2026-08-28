@@ -2097,6 +2097,23 @@ def main():
     pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
     qb.save()
     DRU.write(pcb, stubs, fine)
+
+    # FBV2-P2-003D / D-275: the western-corridor vacate ECO + F.Cu via-array
+    # bridge for BAT_PROTECTED_P, integrated as an in-line driver stage.  The
+    # full route above leaves the western BPP trunk open (PR-40 bit 8 R75.2->
+    # U11.2); the proven 003C mechanism (bridge_eco_003d.apply_eco) vacates the
+    # cardinality-1 SHDN control branch off F.Cu and lays the array/traverse/array
+    # bridge on THIS freshly routed board, before the authoritative DRC/ratsnest.
+    eco = None
+    if os.environ.get('AQROOT_BRIDGE_ECO'):
+        import bridge_eco_003d as ECO
+        eco = ECO.apply_eco(pcb)
+        if not eco.get('ok') and not state['fail']:
+            state['fail'] = 'bridge ECO: ' + eco.get('fail', 'unknown')
+        print('BRIDGE ECO', 'OK' if eco.get('ok')
+              else 'FAIL -- ' + eco.get('fail', '?'))
+        sys.stdout.flush()
+
     after, det = RU.drc(pcb, "Afinal", WORK)
     rn = RU.ratsnest(pcb)
     res = dict(fail=state['fail'], connections=state['done'],
@@ -2104,7 +2121,7 @@ def main():
                areas=area_stats(qb.b, area_trk),
                drc=dict(sorted(after.items())), baseline=dict(sorted(base.items())),
                ratsnest=rn, ratsnest_delta=rn - base_rn, journal=journal,
-               secs=round(time.time() - t_all, 1))
+               bridge_eco=eco, secs=round(time.time() - t_all, 1))
     json.dump(res, open(os.path.join(
         SP, os.environ.get('AQROOT_RESULT', 'phaseA.json')), 'w'), indent=1)
     print("\nPHASE A:", ("FAIL -- " + state['fail']) if state['fail'] else "COMPLETE")
