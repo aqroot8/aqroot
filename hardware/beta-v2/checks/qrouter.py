@@ -15,7 +15,7 @@ Three rules the previous harness broke, and how they are enforced here:
   PR-5C  the neck is checked against the SAME obstacle set as the trunk,
          analytically, before it is emitted.
 """
-import math, heapq, collections
+import os, math, heapq, collections
 import numpy as np
 import pcbnew
 
@@ -1212,6 +1212,22 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far=None,
     # misreport is what made the layer option look exhausted when it had not
     # been exercised.  The real reason is carried out now.
     fail = None
+    # D-280 (FBV2-P2-003H): THE DIRECT-ESCAPE VIA PLACEMENT MUST RESPECT
+    # HOLE-TO-HOLE, NOT ONLY COPPER CLEARANCE.  A THROUGH via is a drilled
+    # barrel; the fabricator's `min_hole_to_hole` spacing is NET-AGNOSTIC, so
+    # unlike copper clearance it is NOT waived for the via's own net.  via_site
+    # (the fallback placement) already enforces this; the fast free_everywhere
+    # path below did NOT, so a hop whose pad has a single escape landing straight
+    # onto a co-terminal SAME-NET via of the same field dropped a second barrel
+    # on top of the first -- measured: N_BATDIV C61.1's landing fell 0.035 mm
+    # from the U19.6->R89.2 via (edge -0.165 mm) and DRC answered
+    # holes_co_located / hole_to_hole every pass.  Rejecting such a site here
+    # simply falls the placement through to via_site, which finds the nearest
+    # reachable barrel that clears the floor (the base's own 0.45 mm landing).
+    # Env-gated (`AQROOT_D280`): unset reproduces the pre-003H behaviour
+    # byte-for-byte, and the guard only ever adds a rejection -- it relaxes
+    # nothing and can only move a co-locating via to a legal, separated site.
+    h2h = 250000 if os.environ.get('AQROOT_D280') else 0
     for G_try in (G, fine):
         ends = []
         ok = True
@@ -1233,9 +1249,18 @@ def connect_hop(qb, net, pa, pb, width, clr_pad, clr_trk, near='B', far=None,
                 onto another net's inner copper, and DRC answered
                 `shorting_items`.  The via has to clear the board, not the two
                 layers the hop happens to be thinking about."""
-                return all(qb.point_free(L, net, x, y, via_dia,
+                if not all(qb.point_free(L, net, x, y, via_dia,
                                          clr_pad, clr_trk, G_try)
-                           for L in qb.cu)
+                           for L in qb.cu):
+                    return False
+                # D-280: net-agnostic hole-to-hole floor for the barrel we are
+                # about to drill (see the h2h note above).  Off by default.
+                if h2h:
+                    for hole in qb.holes:
+                        if math.hypot(hole.cx - x, hole.cy - y) < \
+                                max(hole.hx, hole.hy) + via_drill / 2.0 + h2h:
+                            return False
+                return True
 
             cand = None
             for c in e[:6]:
