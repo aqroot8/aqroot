@@ -1,0 +1,136 @@
+{
+ "task": "FBV2-P2-003C",
+ "board": "w/c3repro003c/aqroot-Beta-v2.kicad_pcb",
+ "entry_mm": [
+  2.8,
+  67.963
+ ],
+ "candidates": {
+  "BAT_PROT_SHDN_CTL {?3}": {
+   "mm": 46.34,
+   "n": 6,
+   "refs": []
+  },
+  "LTC4368_FAULT_N {?4}": {
+   "mm": 3.304,
+   "n": 2,
+   "refs": []
+  },
+  "LTC4368_FAULT_N {?5}": {
+   "mm": 52.868,
+   "n": 2,
+   "refs": []
+  },
+  "LTC_GATE {?7}": {
+   "mm": 3.38,
+   "n": 2,
+   "refs": []
+  },
+  "LTC_GATE {?8}": {
+   "mm": 10.945,
+   "n": 2,
+   "refs": []
+  },
+  "LTC_GATE_RC {?0}": {
+   "mm": 3.038,
+   "n": 2,
+   "refs": []
+  },
+  "LTC_SHDN {?6}": {
+   "mm": 20.707,
+   "n": 2,
+   "refs": []
+  }
+ },
+ "refused": {
+  "BAT_RAW {?1}": "BAT_RAW current-carrying node/reservoir - not low current",
+  "BAT_RAW {?2}": "BAT_RAW current-carrying node/reservoir - not low current"
+ },
+ "baseline": {
+  "flood": {
+   "1.50": 4.65,
+   "1.20": 4.8
+  },
+  "reach_1_50": false,
+  "reach_1_20": false,
+  "r15": {
+   "BPP_Fcu_west_11.35_71.3": [
+    "NO_PATH",
+    0.52
+   ],
+   "node_west_38.5_75": [
+    "NO_PATH",
+    0.56
+   ]
+  },
+  "r12": {
+   "BPP_Fcu_west_11.35_71.3": [
+    "NO_PATH",
+    0.61
+   ],
+   "node_west_38.5_75": [
+    "NO_PATH",
+    0.56
+   ]
+  }
+ },
+ "all_vacated": {
+  "flood": {
+   "1.50": 64.0,
+   "1.20": 64.0
+  },
+  "reach_1_50": true,
+  "reach_1_20": true,
+  "r15": {
+   "BPP_Fcu_west_11.35_71.3": [
+    "PATH",
+    0.34
+   ],
+   "node_west_38.5_75": [
+    "PATH",
+    0.63
+   ]
+  },
+  "r12": {
+   "BPP_Fcu_west_11.35_71.3": [
+    "PATH",
+    0.32
+   ],
+   "node_west_38.5_75": [
+    "PATH",
+    0.64
+   ]
+  }
+ },
+ "target": "1.50",
+ "minimal_set": [
+  "BAT_PROT_SHDN_CTL {?3}"
+ ],
+ "minimal_card": 1,
+ "minimal_open_1_50": true,
+ "minimal_open_1_20": true,
+ "minimal_r15": {
+  "BPP_Fcu_west_11.35_71.3": [
+   "NO_PATH",
+   2.14
+  ],
+  "node_west_38.5_75": [
+   "PATH",
+   0.75
+  ]
+ },
+ "minimal_r12": {
+  "BPP_Fcu_west_11.35_71.3": [
+   "NO_PATH",
+   2.36
+  ],
+  "node_west_38.5_75": [
+   "PATH",
+   0.75
+  ]
+ },
+ "proven_minimum": true,
+ "checked_upto": 0,
+ "smaller_hit": null,
+ "secs": 26.9
+}

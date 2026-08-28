@@ -1,0 +1,15 @@
+{
+ "traverse_mm": 50.99,
+ "traverse_w_mm": 1.4,
+ "traverse_layer": "F.Cu(1oz)",
+ "entry_vias": 4,
+ "exit_vias": 4,
+ "via_dia_mm": 0.8,
+ "via_drill_mm": 0.4,
+ "via_array_R_mOhm": 0.22,
+ "R_bridge_mOhm": 18.88,
+ "P_1p5A_mW": 42.5,
+ "drop_1p5A_mV": 28.3,
+ "P_1p75A_mW": 57.8,
+ "drop_1p75A_mV": 33.0
+}

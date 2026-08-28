@@ -1,3 +1,57 @@
+## 2026-08-28 - FBV2-P2-003C: D-275 the western-corridor vacate ECO + F.Cu via-array bridge is PROVEN; the BAT_PROTECTED_P trunk closes on real, reproducible copper
+
+**PROVEN - a real-copper PASS, the first BPP trunk closure in the D-270..D-274 arc.** D-274 named
+the next step: a bounded control-net vacate ECO to open a >=1.20 mm F.Cu lane, then route the bridge.
+003C runs it on the reproduced c3 board and it **succeeds**: the minimum vacate is CARDINALITY 1 - one
+low-current control branch, `BAT_PROT_SHDN_CTL`, moved off F.Cu to In3 - which opens a >=1.20 mm
+(1.40 mm achieved) F.Cu corridor from `R75.2` to the eastern BPP NODE, and a real 4-via / 1.40 mm
+F.Cu / 4-via bridge closes bit 8 `BAT_PROTECTED_P R75.2->U11.2`. The authoritative PCB is UNCHANGED -
+six copper layers, **zero signal tracks, zero signal vias**; no KiCad source mutated. Starting HEAD
+`1fa37e1`.
+
+- **The board under test, reproduced.** `run_prefix_002z.py c3_00.json c3repro003c` yields
+  `applied+asserted true`, `mismatch false`, `targets=111111101`, `u18=8`, `ledger 7/29`,
+  `sense 13.811 mm`, `rc 0` - byte-consistent with D-274.
+- **The F.Cu vacate cut-set study (`fcu_cutset_003c.py`).** Models the vacate of an INDIVIDUAL routed
+  F.Cu BRANCH (connected component of one candidate net's F.Cu copper), never a whole net, never
+  current-carrying/destination copper. Baseline re-measures D-274 exactly (flood dies at x=4.80 @1.20
+  / 4.65 @1.50, reaches island: no). **GREEDY MINIMAL = cardinality 1: `BAT_PROT_SHDN_CTL`** - that
+  ONE branch turns the R75.2->node A* from NO_PATH to PATH at both 1.50 and 1.20; cardinality-0 does
+  not open, so 1 is the PROVEN minimum (reproduced on c3repro003b and 003c). D-274 named three
+  crossings for the full-width straight corridor; only one branch discriminates because
+  `BAT_PROT_SHDN_CTL`'s F.Cu is a 46 mm WALL (y 59.75..93.47), and removing it lets R75.2 detour to
+  the OPEN node at x=38.5 (avoiding the D9 single-via link).
+- **The real vacate + bridge (`bridge_route_003c.py`).** VACATE: the 6 F.Cu tracks of
+  `BAT_PROT_SHDN_CTL` move to In3.Cu (its end transitions are already THROUGH vias, so continuity
+  holds; In3 clear; In1/In4 are the GND planes, kept intact; a control net was never barred inner, so
+  NO netclass rule). ENTRY: 4x 0.80/0.40 through vias on R75.2's own B.Cu pad (POFV, D-258), scanned
+  clear + hole-legal against the existing U18.8 sense via, united by a 1.50 mm F.Cu bus, no B.Cu ties.
+  TRAVERSE: 50.99 mm of 1.40 mm F.Cu, routed VIA-AWARE (`inject_vias` adds every board via as an
+  all-layer obstacle at the 0.30 mm D-269 clearance QBoard otherwise skips; 1.50 mm is NO_PATH with
+  strict via clearance, so the ladder takes 1.40 mm, above the 1.20 mm floor - the 1.50 mm target is
+  honestly not reached). EXIT: 4x 0.80/0.40 through vias landing on the node's 1.20 mm B.Cu copper at
+  (42.40,76.40), each tied by a >=1.20 mm stub - an ARRAY landing, no single via carries pack current.
+- **The gates (save/reload KiCad, `bridge_gates_003c.py`).** PR-40 `111111101` -> `111111111`; bit 8
+  CLOSED; U18 8/8; the vacated `BAT_PROT_SHDN_CTL Q4.1->R83.1` stays connected; BAT_SENSE/LTC_* no
+  regression; DRC identical to baseline (0 new of any class); ratsnest 741->740 (-1). **VERDICT PASS**
+  on every clause. Electricals: R_bridge ~18.9 mOhm (17.9 traverse + 0.44 two arrays); 42.5 mW / 28 mV
+  at 1.5 A, 57.8 mW / 33 mV at 1.75 A - the B-34 cost, updated on promotion.
+- **New regression `bridge_probe_003c.py`** (real copper + DRC): the vacated control net on In3
+  ALLOWED; the trunk on In2/In3 REJECTED (D-264); a current-carrying role is never a vacate candidate,
+  a control role is; the bridge board closes bit 8 with no new DRC / no regression. **PASS.**
+- **NOT an owner decision.** Promotion to the authoritative product board requires driver integration
+  of the vacate+bridge mechanism + promotion of the c3 placement through a full 2-pass Phase-A route
+  (the D-271 reproducibility discipline); that is the next task, CTO/engineering scope. The
+  authoritative product board is kept unrouted (routing is a driver output) and is left untouched.
+- **Suites ALL PASS and unregressed:** `router_regression` G1-G11, `bridge_probe_003c`,
+  `via_array_probe`, `d264/d266/d267/d269/d270_probe`, `dru_probe`, `netclass_probe`;
+  `phaseA_journal.json` scratch churn restored. D9, U18, R75, R76..R83, Q3, the shunt, the FETs, TP17
+  and C58 all frozen; `c3_00` NOT promoted; D-249..D-274 untouched. U19 NOT searched; Phase A NOT
+  completed; Phase B NOT run. Full analysis:
+  [`audits/2026-08-28-p2-003c-d275-vacate-bridge-proven.md`](audits/2026-08-28-p2-003c-d275-vacate-bridge-proven.md).
+  **The western trunk blocker that stalled D-270..D-274 is BROKEN; no authoritative progress earned
+  yet: PCB routing stays 0 %, overall stays 74 %.**
+
 ## 2026-08-28 - FBV2-P2-003B: D-274 the bounded F.Cu high-current via bridge is disproved; the western margin is saturated on F.Cu exactly as on B.Cu
 
 **BRIDGE-PROOF CLOSEOUT - a measured FAIL.** D-273 named the next step: a bounded named-path F.Cu

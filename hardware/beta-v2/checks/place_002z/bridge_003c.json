@@ -1,0 +1,30 @@
+{
+ "moved": 6,
+ "board": "w/c3bridge003c/aqroot-Beta-v2.kicad_pcb",
+ "existing_vias": 28,
+ "entry_vias": [
+  [
+   2.087,
+   67.713
+  ],
+  [
+   2.788,
+   67.713
+  ],
+  [
+   3.288,
+   68.213
+  ],
+  [
+   2.413,
+   68.338
+  ]
+ ],
+ "traverse": {
+  "ok": true,
+  "mm": 50.988,
+  "w_mm": 1.4,
+  "pts": 9
+ },
+ "exit_vias": 4
+}

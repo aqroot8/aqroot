@@ -1,0 +1,98 @@
+{
+ "baseline": {
+  "label": "baseline c3repro003c",
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": true,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": false,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "u18": {
+   "U18.1": true,
+   "U18.2": true,
+   "U18.3": true,
+   "U18.6": true,
+   "U18.7": true,
+   "U18.8": true,
+   "U18.9": true,
+   "U18.10": true
+  },
+  "control": {
+   "BAT_PROT_SHDN_CTL Q4.1->R83.1": true,
+   "BAT_PROT_SHDN_CTL Q4.1->TP19.1": false,
+   "BAT_SENSE Q3.6->R75.1": true,
+   "BAT_SENSE U18.9->R75.1": true,
+   "LTC_GATE Q3.2->Q3.4": true,
+   "LTC_OV R77.2->R78.1": true,
+   "LTC_UV U18.2->R79.2": true
+  },
+  "u18_connected": 8,
+  "targets_true": "111111101",
+  "ratsnest": 741
+ },
+ "bridge": {
+  "label": "bridge c3bridge003c",
+  "targets": {
+   "BAT_RAW R80.1->Q2.7": true,
+   "BAT_RAW D12.1->R77.1": true,
+   "LTC_SHDN U18.6->Q4.3": true,
+   "LTC4368_FAULT_N U18.7->R81.2": true,
+   "LTC_GATE U18.10->R76.1": true,
+   "LTC_GATE U18.10->Q2.2": true,
+   "Q3_CS Q3.1->Q3.3": true,
+   "BAT_PROTECTED_P R75.2->U11.2": true,
+   "BAT_PROTECTED_P U14.2->TP15.1": true
+  },
+  "u18": {
+   "U18.1": true,
+   "U18.2": true,
+   "U18.3": true,
+   "U18.6": true,
+   "U18.7": true,
+   "U18.8": true,
+   "U18.9": true,
+   "U18.10": true
+  },
+  "control": {
+   "BAT_PROT_SHDN_CTL Q4.1->R83.1": true,
+   "BAT_PROT_SHDN_CTL Q4.1->TP19.1": false,
+   "BAT_SENSE Q3.6->R75.1": true,
+   "BAT_SENSE U18.9->R75.1": true,
+   "LTC_GATE Q3.2->Q3.4": true,
+   "LTC_OV R77.2->R78.1": true,
+   "LTC_UV U18.2->R79.2": true
+  },
+  "u18_connected": 8,
+  "targets_true": "111111111",
+  "ratsnest": 740
+ },
+ "drc_baseline": {
+  "hole_clearance": 5,
+  "lib_footprint_issues": 199,
+  "solder_mask_bridge": 1,
+  "unconnected_items": 499
+ },
+ "drc_bridge": {
+  "hole_clearance": 5,
+  "lib_footprint_issues": 199,
+  "solder_mask_bridge": 1,
+  "unconnected_items": 499
+ },
+ "new_drc": {},
+ "verdict": {
+  "bit8_closed": true,
+  "all9_targets": true,
+  "u18_8of8": true,
+  "control_not_regressed": true,
+  "u18_not_regressed": true,
+  "targets_not_regressed": true,
+  "no_new_drc": true,
+  "ratsnest_not_worse": true
+ },
+ "PASS": true
+}

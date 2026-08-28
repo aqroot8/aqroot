@@ -1,0 +1,16 @@
+{
+ "moved": 6,
+ "board": "w/c3bridge003c/aqroot-Beta-v2.kicad_pcb",
+ "corridor": {
+  "1.50": {
+   "astar_to_node": "PATH",
+   "flood_east_mm": 64.0,
+   "secs": 0.94
+  },
+  "1.20": {
+   "astar_to_node": "PATH",
+   "flood_east_mm": 64.0,
+   "secs": 0.94
+  }
+ }
+}
