@@ -335,6 +335,13 @@ def main():
     branch_trk = {}
     reserved = {}          # D-266: ref -> (x, y, layer) of an accepted exit
     area_link = {}         # D-266: area -> [(x0, y0, x1, y1, w)] not-yet copper
+    # D-278 (FBV2-P2-003F): the boxed single-lane CROSSING pin escapes by a
+    # LAYER HOP, not an antisocial B.Cu detour.  order_tight already identifies
+    # this pin (crossings > 0 in the fr <= 1 tied class -- the D-277 term); this
+    # set carries those (net, a, b) keys to run_once so the crossing pin's long
+    # run leaves the outer layer instead of horse-shoeing around the sibling
+    # copper and sealing an unrelated pin.  See order_tight / run_once below.
+    hop_first_keys = set()
     # PR-48 / D-257: bounded fine-pitch escape corridors, one per planned
     # escape, carrying that escape's local clearance and via geometry.
     fine = []
@@ -942,6 +949,34 @@ def main():
                     break
             if r is not None and not r['ok']:
                 r = None
+        # D-278 (FBV2-P2-003F): THE BOXED CROSSING PIN HOPS, IT DOES NOT DETOUR.
+        #
+        # order_tight marks the D-277 crossing pin (the boxed single-lane pin
+        # whose route must cross a tied sibling) in `hop_first_keys`.  Left on
+        # B.Cu that pin routes LAST and, because the sibling copper already fills
+        # its direct lane, it horse-shoes far around the package -- a 13-20 mm
+        # B.Cu run for a 7-8 mm connection -- and the detour seals an unrelated
+        # pin's escape (measured: REF_POL TP24.1->U19.2 laid a wall over VREC_VCC
+        # U19.8 and VBRIDGE_TOP R85.1, the D-278 blocker).  The six-layer stack
+        # exists precisely for a crossing: the pin takes an ORDINARY 0.35/0.20
+        # through-via hop (D-257 preferred, no rule relaxed) and runs DIRECT off
+        # the outer layer, so no B.Cu wall is laid and both victims stay free.
+        # A failed hop falls through to the ordinary B.Cu ladder untouched -- this
+        # adds an option, it removes none.  Scoped exactly to the D-277 class.
+        if (r is None or not r.get('ok')) and not node \
+                and (net, a, b_) in hop_first_keys:
+            for (vd, vk) in PL.D257_VIA_LADDER:
+                for w in ladder:
+                    rr = QR.connect_hop(qb, net, pa, pb, w, CP, ct,
+                                        via_dia=vd, via_drill=vk)
+                    if rr['ok']:
+                        r, used, hop, planned_via = rr, w, True, (vd, vk)
+                        break
+                    qb.revert(m)
+                if r is not None and r.get('ok'):
+                    break
+            if r is not None and not r['ok']:
+                r = None
         if r is not None and r.get('ok'):
             pass
         elif D256_FCU and not node and (net, a, b_) in D256_FCU:
@@ -1515,6 +1550,15 @@ def main():
                     if pb and x0 <= pb[0] <= x1 and y0 <= pb[1] <= y1:
                         c += 1
             crossings[i_a] = c
+            # D-278: a boxed single-lane pin that must cross a tied sibling is
+            # the one whose B.Cu route detours antisocially; record it so
+            # run_once escapes it by a LAYER HOP instead.  Same predicate, same
+            # scope as the D-277 tie-break -- inert for any pin with a second way
+            # out or no crossing.  The key persists once seen, so the mark
+            # survives the sibling being routed and removed from later slices.
+            if c > 0:
+                it_a = queue[i_a]
+                hop_first_keys.add((it_a['net'], it_a['a'], it_a['b']))
         rows.sort(key=lambda r: (r[0], r[1], r[2], crossings[r[3]]))
         if verbose:
             print("      pin-field slack: " + "  ".join(
@@ -1961,6 +2005,19 @@ def main():
             QUEUE[slot]['tight'] = None
         print('U18 SCHEDULE PINNED: %s'
               % ' '.join(QUEUE[i]['a'] for i in idxs))
+        sys.stdout.flush()
+
+    # FBV2-P2-003F: AQROOT_LOCAL=DEADCELL keeps ONLY the dead-cell network
+    # (stages 10a/10b, U19's pin field), skipping the whole west-margin prefix.
+    # The dead-cell block is geographically isolated (U19 at y~=29, the trunk
+    # congestion at y 60-93), so this is the cheapest REAL-ROUTER reproduction
+    # of the D-277 next blocker (VREC_VCC U19.8 / VBRIDGE_TOP R85.1): the same
+    # driver, the same order_tight, the same run()/gate(), only the prefix that
+    # cannot reach U19's escape corridor removed.  It is a bounded probe prefix
+    # in exactly the class of R80/D256/U19, and is inert for every other LOCAL.
+    if LOCAL == 'DEADCELL':
+        QUEUE = [it for it in QUEUE if it['title'].startswith('10')]
+        print('LOCAL=DEADCELL: dead-cell-only prefix, %d queued' % len(QUEUE))
         sys.stdout.flush()
 
     u11 = [False]
