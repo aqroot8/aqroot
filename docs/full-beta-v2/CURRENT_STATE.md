@@ -18,8 +18,9 @@
   U18.10 ×25). No via-size/layer/direction/ordering lever rescues it without a DRU change or a
   frozen-part move. **No source, no copper, no placement, no rule change** (the D-290 WIP is
   RETIRED). This exhausts the routing-only space the policy named, so a bounded **LTC4368/R75
-  placement micro-ECO is now a genuine OWNER DECISION** and `/home/aqroot8/.aqroot-autopilot-stop`
-  is PRESENT. Prior milestone: `9bd7aac` (FBV2-P2-003Q / D-289). This checkpoint is written in
+  placement micro-ECO became a genuine OWNER DECISION; **D-291 records Alpha's approval of
+  the bounded CTO-recommended option and autonomy has resumed.** Prior milestone: `9bd7aac`
+  (FBV2-P2-003Q / D-289). This checkpoint is written in
   the same commit; a fresh session must confirm the live tip with `git rev-parse HEAD` and
   `git rev-parse origin/master`.
 - **HEAD == origin/master:** yes (committed and pushed at milestone closeout).
@@ -44,13 +45,12 @@
   of the adjacent pin's committed copper, and 0.5 mm pitch cannot host three escape
   transitions under the 0.300 mm current-path floor (D-269). The vacate makes it WORSE
   (0.35 mm via at 0.150 mm vs the 0.15 mm neck at 0.250 mm), and U18.9 is lost independently
-  (blocker U18.10 ×25). **This is now an OWNER DECISION** (a bounded LTC4368/R75 placement
-  micro-ECO to open a second U18.8 escape). The terminal **REF_POL R87.2→(node) NO_PATH** is
+  (blocker U18.10 ×25). **D-291 authorizes the bounded LTC4368/R75 placement micro-ECO**
+  to open a second U18.8 escape. The terminal **REF_POL R87.2→(node) NO_PATH** is
   (per D-289) **F.Cu routing capacity** (N_POL 6.36 mm F.Cu saturates its corridor), narrowest
   lever = D-279-class N_POL F.Cu inner offload — but it is downstream of the U18 placement
-  decision and not workable while autonomy is halted. Remaining Phase-A blockers in
-  fabrication-blocker order: (1) **U18.8's escape — NOW AN OWNER DECISION** (routing-only
-  space exhausted; needs the placement micro-ECO); (2) the REF_POL R87 F-corridor capacity
+  micro-ECO. Remaining Phase-A blockers in fabrication-blocker order: (1) **U18.8's escape —
+  owner-approved bounded placement work**; (2) the REF_POL R87 F-corridor capacity
   (CTO-scope, blocked behind (1)); (3) the BAT_RAW R89.1/R86.2 divider taps (true NO_PATH /
   other-branch width, a capacity symptom not a width lever).
 
@@ -144,7 +144,7 @@
   by the c3_00 placement short). `place_003l` (D-285) is clean and preserved. No DRC
   absorbed; the placement short IS the FAIL reason.
 
-## 5. Next task — BLOCKED ON AN OWNER DECISION (autonomy halted)
+## 5. Next task — FBV2-P2-003S (owner-approved bounded placement micro-ECO)
 - **There is NO bounded CTO routing lever left for the U18.8 escape.** 003R (D-290) refuted
   the last one (off-layer vacate of U18.7) on cheap non-vacuous evidence, and the refutation
   is geometric: the U18.7/U18.8/U18.9 3-into-one-corner contention is irreducible at the
@@ -152,15 +152,14 @@
   off-layer vacate (D-290) and via-size are all refuted or barred; the vacate makes the
   clearance WORSE (0.150 mm via-to-via vs the 0.250 mm neck), and U18.9 is an independent
   casualty. The next move necessarily moves a part — **outside CTO scope.**
-- **THE OWNER DECISION (see §8 and `/home/aqroot8/.aqroot-autopilot-stop`):** authorize a
-  bounded LTC4368/R75 placement micro-ECO (D-284/285 class) to open a *second, independent*
+- **OWNER DECISION D-291 RESOLVED:** Alpha authorized the CTO-recommended bounded
+  LTC4368/R75 placement micro-ECO (D-284/285 class) to open a *second, independent*
   U18.8 escape corridor so the three west-edge sense/control pins escape without the 0.5 mm
-  pad-exit contention. Options A (CTO-recommended micro-ECO) / B (accept U18.8 open — NOT
-  fabricable) / C (direction-2 widening / broader refloorplan) are recorded in the stop file.
+  pad-exit contention. Options B (accept U18.8 open — NOT fabricable) and C (direction-2
+  widening / broader refloorplan) remain unapproved.
 - **Downstream, still CTO-scope but BLOCKED behind the U18 decision:** extend the D-279
   offload to the `N_POL R86.1→TP23.1` F.Cu run (6.36 mm in the R87.2→node corridor) to open
-  the REF_POL R87.2 corridor; validate only on a full authority run. This is not workable
-  while the U18 placement is unresolved and autonomy is halted.
+  the REF_POL R87.2 corridor; validate only on a full authority run after the placement work.
 
 ## 6. Authoritative PCB state
 - **Routing/promotion:** NOT promoted. Authoritative board = **six copper layers,
@@ -231,8 +230,9 @@
   untouched.
 
 ## 8. Open owner decisions
-- **ONE — RAISED by FBV2-P2-003R / D-290.** (Synchronized with
-  `/home/aqroot8/.aqroot-autopilot-stop`, which is now **PRESENT**, OWNER_DECISION format.)
+- **NONE.** D-291 records Alpha's approval of the bounded option-A LTC4368/R75 placement
+  micro-ECO raised by D-290. The autopilot stop file is removed after this decision record
+  is committed; autonomy resumes with FBV2-P2-003S.
 - **The decision:** how to open a legal second escape for the U18.8 `BAT_PROTECTED_P` trunk
   pad, given that 003R exhausted the bounded routing-only space (ordering D-289, off-layer
   vacate D-290, via-size all refuted or barred) and the U18.7/U18.8/U18.9 3-into-one-corner
@@ -269,18 +269,14 @@
 - **Persistent CTO session:** `agent:main:aqroot-fbv2-cto` — sole owner of Claude
   engineering launches; receives every completion event.
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch
-  Claude or become a task parent. **The autopilot stop file `/home/aqroot8/.aqroot-autopilot-stop`
-  is now PRESENT (OWNER_DECISION)** — 003R (D-290) exhausted the last bounded routing-only
-  lever, so the U18.8 escape is now an owner decision, a genuine stop condition.
-- **Should an engineering process be active now?** **No — autonomy is HALTED pending the
-  owner decision in §8.** There is no bounded CTO lever left for the U18.8 escape; the next
-  move requires OWNER approval of a placement direction (option A/C). The CTO must not launch
-  a placement micro-ECO or a full run until the owner rules. (The REF_POL R87.2 F.Cu offload
-  is CTO-scope but downstream of and blocked behind the U18 placement decision.)
+  Claude or become a task parent. D-291 resolves the owner stop; the stop file is absent.
+- **Should an engineering process be active now?** **Yes.** The persistent CTO should run
+  exactly one Claude task: FBV2-P2-003S, the approved bounded placement micro-ECO screen and
+  full-gate integration. The REF_POL R87.2 F.Cu offload remains downstream CTO-scope work.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
-1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-290**; the
-   open **OWNER DECISION** is in §8 here + `/home/aqroot8/.aqroot-autopilot-stop`).
+1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-291**, owner
+   approval of the bounded option-A LTC4368/R75 placement micro-ECO).
 2. Newest audits — `audits/2026-08-29-p2-003r-d290-off-layer-vacate-refuted-owner-decision.md`,
    then `…-003q-d289-003p-rejection-and-u18-co-closure-refuted.md`,
    `…-003o-d288-entry-tie-fix-and-full-run.md`, `…-003n-d287-…`, `…-003m-d286-…`,
