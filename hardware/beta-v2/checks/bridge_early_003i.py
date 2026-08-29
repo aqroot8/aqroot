@@ -198,12 +198,23 @@ def apply_early(qb, pads, land_refs=None, south=False):
     nwall = _south_wall(qb) if south else 0
     try:
         # ---- ENTRY ARRAY on R75.2 (POFV) ---------------------------------
+        # The entry vias are genuine POFV sites INSIDE R75.2's B.Cu pad (D-288
+        # scan_entry_sites fix).  Each via is tied on TWO layers: the F.Cu bus
+        # unites the via tops into the trunk, and an explicit B.Cu tie-stub from
+        # each via to R75.2's pad CENTRE joins the via bottom to the pad copper --
+        # the exact symmetric mirror of the exit array's _lay_landing B.Cu stub
+        # (qb.track(NET,'B',...)).  Without that B.Cu tie the entry array dangled
+        # on one layer (D-287); with it every entry via is >= 2-layer connected.
+        r75 = pads.get(NET, {}).get('R75.2')
+        rpx, rpy = int(r75['x']), int(r75['y'])
         entry_vias = BR.scan_entry_sites(qb)
         if len(entry_vias) < 3:
             rec['fail'] = 'entry array below floor 3 (%d sites)' % len(entry_vias)
             return rec
         for (x, y) in entry_vias:
             qb.via(NET, x, y, DIA, DRILL)
+            if (x, y) != (rpx, rpy):
+                qb.track(NET, 'B', x, y, rpx, rpy, W_LAND)
         ex = sorted(x for x, y in entry_vias)
         ey0 = int(sum(y for x, y in entry_vias) / len(entry_vias))
         qb.track(NET, 'F', ex[0], ey0, ex[-1], ey0, W_TRAVERSE)

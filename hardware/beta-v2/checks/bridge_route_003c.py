@@ -128,6 +128,9 @@ def inject_vias(qb):
 VIA_R = DIA / 2.0            # 0.40 mm barrel radius
 HH_MIN = 249500             # KiCad hole_to_hole floor 0.2495 mm (edge to edge)
 PITCH = 700000             # 0.70 mm array pitch (comfortably over the hole floor)
+IN_PAD_MARGIN = 200000      # 0.20 mm: entry via CENTRE must sit this far inside the
+                            # R75.2 B.Cu pad rectangle, so each POFV barrel genuinely
+                            # overlaps the pad copper (FBV2-P2-003O / D-288).
 
 
 def hole_clear(qb, x, y):
@@ -136,24 +139,50 @@ def hole_clear(qb, x, y):
                    for h in qb.holes)
 
 
+def _in_pad(shp, x, y, margin):
+    """True iff (x,y) is inside pad shape `shp`'s rectangle, inset by `margin` on
+    every side, in the pad's OWN rotated frame.  qb.pads' hx/hy are the pad's
+    UNROTATED half-sizes and a separate `ang`; R75 is rotated -90 deg so a raw
+    hx/hy window is the WRONG shape (tall-narrow instead of wide-short).  This
+    transforms into the pad's local frame first, so the test tracks the ACTUAL
+    B.Cu copper (FBV2-P2-003O / D-288 root-cause fix)."""
+    dx, dy = x - shp.cx, y - shp.cy
+    lx = abs(dx * shp.ca + dy * shp.sa)
+    ly = abs(-dx * shp.sa + dy * shp.ca)
+    return lx <= shp.hx - margin and ly <= shp.hy - margin
+
+
 def scan_entry_sites(qb):
-    """Via sites on R75.2's own B.Cu pad, clear on every layer and hole-legal,
-    packed to 4 at 0.70 mm pitch.  Preferring the south (away from the existing
-    U18.8 sense via at the pad's north end)."""
+    """Via sites genuinely INSIDE R75.2's own B.Cu pad copper (POFV, D-258), clear
+    on every layer and hole-legal, packed to 4 at 0.70 mm pitch, picked CENTRE-OUT
+    so the array sits on the pad body.
+
+    FBV2-P2-003O / D-288 root-cause fix: the prior implementation windowed on the
+    raw qb.pads hx/hy (the pad's UNROTATED half-sizes) and accepted any point_free
+    site, so for the -90 deg-rotated R75 pad it scanned a tall-narrow box and its
+    'south-first' sort actually picked the NORTHERNMOST sites -- ~0.5-1.15 mm NORTH
+    of the real pad copper, over bare substrate.  Those off-pad vias touched R75.2
+    on NEITHER layer (F.Cu bus only) and dangled (D-287).  We now scan the pad's
+    rotation-aware AABB and require every site's centre to sit inside the pad
+    rectangle (inset by IN_PAD_MARGIN), so each barrel truly overlaps R75.2's B.Cu
+    pad.  point_free (clearance to FOREIGN copper) and hole_clear still apply."""
     r = qb.pads[(NET, 'R75.2')]
-    px, py, hx, hy = r['x'], r['y'], r['hx'], r['hy']
+    shp = r['shape']
+    px, py = r['x'], r['y']
+    x0, y0, x1, y1 = shp.bbox(0.0)            # rotation-aware pad AABB
     ok = []
     g = 25000
-    y = py - hy - 100000
-    while y <= py + hy + 100000:
-        x = px - hx - 100000
-        while x <= px + hx + 100000:
-            if (all(qb.point_free(L, NET, x, y, DIA, CP, CTW, 25000)
-                    for L in qb.cu) and hole_clear(qb, x, y)):
+    y = y0
+    while y <= y1:
+        x = x0
+        while x <= x1:
+            if (_in_pad(shp, x, y, IN_PAD_MARGIN)
+                    and all(qb.point_free(L, NET, x, y, DIA, CP, CTW, 25000)
+                            for L in qb.cu) and hole_clear(qb, x, y)):
                 ok.append((int(x), int(y)))
             x += g
         y += g
-    ok.sort(key=lambda c: (c[1], c[0]))       # south-first
+    ok.sort(key=lambda c: (abs(c[1] - py), abs(c[0] - px)))   # centre-out
     arr = []
     for c in ok:
         if all(math.hypot(c[0] - e[0], c[1] - e[1]) >= PITCH for e in arr):
@@ -213,20 +242,29 @@ def stage_bridge():
     print('  modelled %d existing vias as obstacles' % nvia)
     rec = dict(moved=moved, board=os.path.relpath(pcb, SP), existing_vias=nvia)
 
-    # ---- ENTRY ARRAY on R75.2 (no B.Cu ties: vias sit on the pad copper) --
+    # ---- ENTRY ARRAY on R75.2 (POFV, two-layer tie) ---------------------
+    # D-288: each entry via sits inside R75.2's B.Cu pad (scan_entry_sites) and is
+    # tied on BOTH layers -- the F.Cu bus unites the via tops, and an explicit B.Cu
+    # tie-stub from each via to the pad centre joins the via bottom to R75.2's pad
+    # copper (symmetric with the exit array).  The old asymmetric entry (F.Cu bus
+    # only) dangled on one layer (D-287).
+    r75 = qb.pads[(NET, 'R75.2')]
+    rpx, rpy = int(r75['x']), int(r75['y'])
     entry_vias = scan_entry_sites(qb)
     if len(entry_vias) < 3:
         print('  ENTRY: only %d clear sites on R75.2 -- abort' % len(entry_vias))
         return False
     for (x, y) in entry_vias:
         qb.via(NET, x, y, DIA, DRILL)
+        if (x, y) != (rpx, rpy):
+            qb.track(NET, 'B', x, y, rpx, rpy, W_LAND)
     ex = sorted(x for x, y in entry_vias)
     ey0 = sum(y for x, y in entry_vias) / len(entry_vias)
     # a 1.50 mm F.Cu bus across the array unites the 4 via tops into the trunk
     qb.track(NET, 'F', ex[0], int(ey0), ex[-1], int(ey0), W_TRAVERSE)
     entry_bus = (ex[-1], int(ey0))
     rec['entry_vias'] = [[round(x/1e6, 3), round(y/1e6, 3)] for x, y in entry_vias]
-    print('  ENTRY: %d vias on R75.2 pad + 1.50 mm F.Cu bus (no B.Cu ties)'
+    print('  ENTRY: %d POFV vias on R75.2 pad + F.Cu bus + B.Cu tie-stubs'
           % len(entry_vias))
 
     # ---- F.Cu TRAVERSE from the entry bus to the node landing ----------

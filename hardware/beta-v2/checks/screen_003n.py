@@ -292,6 +292,87 @@ def screen_one(fname, ref_cnt):
     return rec
 
 
+# The measured D-287 ASYMMETRIC entry geometry.  The old scan_entry_sites windowed
+# on the pad's UNROTATED hx/hy and kept the northernmost point_free sites; for the
+# -90 deg-rotated R75 pad those land ~0.5-1.15 mm NORTH of the real B.Cu pad copper.
+# Tied only by an F.Cu bus (no B.Cu stub) they touch R75.2's pad on NEITHER layer
+# and dangle.  Frozen here as the NEGATIVE control for the D-288 entry-tie regression
+# so the fix cannot pass vacuously -- the same DRC that clears the fixed bridge MUST
+# still flag this legacy array as dangling.
+LEGACY_ENTRY_SITES = [(2087000, 66188000), (3487000, 66188000),
+                      (2788000, 66188000), (2413000, 66812000)]
+
+
+def entry_tie_regression(fname='b1_r75rot.json'):
+    """FBV2-P2-003O / D-288 standing entry-array two-layer-tie regression.
+
+    NEGATIVE control -- reproduce the D-287 asymmetric entry array (4 vias at the
+    measured off-pad sites + an F.Cu bus, NO B.Cu tie-stub) on the candidate's D-286
+    placed board: it MUST dangle (via_dangling >= 3), proving the defect is real and
+    that KiCad's connectivity test genuinely catches it.
+
+    POSITIVE control -- the real fixed bridge (bridge_probe -> apply_early: in-pad
+    POFV entry vias + F.Cu bus + explicit B.Cu tie-stubs): via_dangling == 0, the
+    geometric floors hold (entry >= 3, exit >= 3, disjoint ywest > 75, traverse >=
+    1.20 mm), AND the bridge introduces NO new hard-class DRC vs the IDENTICAL
+    no-bridge placed board (no absorption).  Returns True on PASS, else False."""
+    import qrouter as QR
+    import bridge_route_003c as BR
+    tag = fname.replace('.json', '')
+    ok = True
+
+    # ---- NEGATIVE control: the legacy asymmetric entry array -------------
+    neg_pcb = _place_with_areas('ET_neg_' + tag, os.path.join(CAND_DIR, fname))
+    qb = QR.QBoard(neg_pcb)
+    qb.wide_nets = frozenset(BR.N + n for n in ('BAT_CONNECTOR_P', 'BAT_RAW',
+                                                'BAT_MID', 'BAT_SENSE',
+                                                'BAT_PROTECTED_P'))
+    for (x, y) in LEGACY_ENTRY_SITES:
+        qb.via(BR.NET, x, y, BR.DIA, BR.DRILL)
+    ex = sorted(x for x, y in LEGACY_ENTRY_SITES)
+    ey0 = int(sum(y for x, y in LEGACY_ENTRY_SITES) / len(LEGACY_ENTRY_SITES))
+    qb.track(BR.NET, 'F', ex[0], ey0, ex[-1], ey0, BR.W_TRAVERSE)   # F.Cu bus ONLY
+    pcbnew.ZONE_FILLER(qb.b).Fill(qb.b.Zones())
+    qb.save()
+    ncnt, _ = drc(neg_pcb, 'et_neg_' + tag)
+    neg_dangle = ncnt.get('via_dangling', 0)
+    if neg_dangle >= 3:
+        print('VALIDATE OK  [negative]: legacy asymmetric entry array DANGLES '
+              '(via_dangling +%d) -- D-287 defect reproduced & caught' % neg_dangle)
+    else:
+        print('VALIDATE FAIL [negative]: legacy asymmetric entry array must dangle '
+              '>= 3, got %d (the connectivity test is not catching the defect)'
+              % neg_dangle); ok = False
+
+    # ---- no-bridge baseline on the identical placed board (for the delta) -
+    base_pcb = _place_with_areas('ET_base_' + tag, os.path.join(CAND_DIR, fname))
+    bcnt, _ = drc(base_pcb, 'et_base_' + tag)
+
+    # ---- POSITIVE control: the real fixed bridge ------------------------
+    r = bridge_probe(fname)
+    fcnt, _ = drc(os.path.join(WORK, 'BP_' + tag, PCBNAME), 'et_pos_' + tag)
+    new_hard = {c: fcnt.get(c, 0) - bcnt.get(c, 0)
+                for c in HARD_CLASSES if fcnt.get(c, 0) - bcnt.get(c, 0) > 0}
+    if r['verdict'] == 'CONNECTED' and r['via_dangling'] == 0:
+        print('VALIDATE OK  [positive]: fixed bridge CONNECTED (via_dangling 0, '
+              'entry %d, exit %d, ywest %s, trav w %s) -- entry array electrically '
+              'tied on two layers' % (r['entry_vias'], r['exit_vias'],
+                                      r['ywest_mm'], r['traverse'].get('w_mm')))
+    else:
+        print('VALIDATE FAIL [positive]: fixed bridge must be CONNECTED with '
+              'via_dangling 0; got %s dangling=%d (%s)'
+              % (r['verdict'], r['via_dangling'], '; '.join(r['reasons'])))
+        ok = False
+    if not new_hard:
+        print('VALIDATE OK  [no-absorption]: fixed bridge adds ZERO new hard-class '
+              'DRC vs the no-bridge board (shorting/clearance/hole/courtyard delta 0)')
+    else:
+        print('VALIDATE FAIL [no-absorption]: fixed bridge introduces new hard-class '
+              'DRC %s -- genuine violations, not absorbed' % new_hard)
+        ok = False
+    return ok
+
+
 def bridge_main(only):
     """--bridge: run the standing bridge-connectivity regression on the given
     candidates (default: the three D-286 hard-gate survivors)."""
@@ -319,19 +400,14 @@ def bridge_main(only):
     print('\n=== BRIDGE PROBE: %d/%d truly-connected (zero dangling) ===' % (
         len(conn), len(recs)))
     if '--validate' in sys.argv:
-        # Standing bridge integration regression: the D-275 south-bridge ENTRY array
-        # (R75.2 POFV) is bussed on F.Cu with NO symmetric B.Cu tie-stub, so its
-        # vias dangle -- a GENUINE electrical fault the probe MUST catch and FAIL.
-        by = {r['file']: r for r in recs}
-        c = by.get('b1_r75rot.json')
-        if not (c and c['verdict'] == 'FAIL' and c['via_dangling'] >= 1):
-            print('VALIDATE FAIL: b1_r75rot must be FAIL with >=1 via_dangling '
-                  '(the entry-array dangling control)')
-            sys.exit(1)
-        print('VALIDATE OK: b1_r75rot FAIL (via_dangling +%d, entry array on R75.2) '
-              'reproduced -- geometric bridge != electrical connectivity'
-              % c['via_dangling'])
-        sys.exit(0)
+        # FBV2-P2-003O / D-288 standing bridge integration regression: the D-275
+        # south-bridge ENTRY array must be electrically tied on TWO layers.  The
+        # negative control reproduces the old asymmetric (F.Cu-only, off-pad) entry
+        # and MUST dangle; the positive control proves the fixed in-pad + B.Cu-stub
+        # entry is via_dangling-free and adds no new hard-class DRC (no absorption).
+        print()
+        ok = entry_tie_regression('b1_r75rot.json')
+        sys.exit(0 if ok else 1)
     return recs
 
 
