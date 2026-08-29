@@ -5,16 +5,19 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003O / D-288 milestone commit:** the closeout commit that fixes the D-275
-  south-bridge ENTRY-array two-layer tie in the bridge code (`bridge_route_003c.py`
-  rotation-aware in-pad `scan_entry_sites` + `bridge_early_003i.py` entry B.Cu tie-stub),
-  adds the non-vacuous D-288 `entry_tie_regression` to `screen_003n.py`, pins the
-  natural-completion CTO full-run evidence `checks/phaseA_003o_b1_r75rot_cto.json`, and
-  makes these governing-doc updates — the entry-tie fix is proven `via_dangling`-clean but
-  the overall Phase-A run still FAILs on new downstream blockers (U18.8 escape / REF_POL
-  R87 corridor / BAT_RAW divider width). Prior milestone: `9172470` (FBV2-P2-003N /
-  D-287). This checkpoint is written in the same commit; a fresh session must confirm the
-  live tip with `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-003Q / D-289 milestone commit (this checkpoint):** a governed **evidence /
+  NO-PROGRESS** commit that (a) retires the CTO-rejected FBV2-P2-003P WIP (independently
+  verified byte-aggregate-equivalent to 003O — a lateral U18.7↔U18.8 swap), restoring the
+  tree to the 003O tip, and (b) records two bounded engineering findings: the U18.7/U18.8
+  co-closure **reservation-ordering lever is REFUTED** (reserving U18.8 first trades 1
+  casualty for 2, −1 connection — a 3-into-one-corner placement-geometry mutual-exclusion),
+  and the terminal **REF_POL R87.2 wall is characterized as F.Cu routing capacity** (N_POL
+  6.36 mm F.Cu saturates the R87.2→node corridor) with a named narrowest lawful lever
+  (D-279-class N_POL F.Cu inner offload, no closure claimed). **No source, no copper, no
+  placement, no rule change.** The informal 003P labels D-289/D-290/D-291 were never
+  committed and are VOID; committed **D-289** is the 003Q ruling. Prior milestone: `bc1088d`
+  (FBV2-P2-003O / D-288). This checkpoint is written in the same commit; a fresh session
+  must confirm the live tip with `git rev-parse HEAD` and `git rev-parse origin/master`.
 - **HEAD == origin/master:** yes (committed and pushed at milestone closeout).
 
 ## 2. Mission
@@ -27,18 +30,36 @@
 - **Phase P2 — battery/power-block Phase-A routing**, specifically closing
   **`BAT_PROTECTED_P`** (the last-mile high-current protection net) via the proven
   D-275 forced-south bridge, integrated into a full Phase-A run.
-- **Current fabrication blocker (updated by D-288):** the D-275 south bridge is now
-  proven electrically connected (the D-287 entry-array dangling is FIXED), and on the best
-  survivor `b1_r75rot` the `BAT_PROTECTED_P` island closes R75.2 through
-  C36/C25/C58/D9/U11/U14/TP15. The remaining Phase-A blockers, in true fabrication-blocker
-  order, are: (1) **U18.8's `BAT_PROTECTED_P` escape** (`NO_VIA_SITE` on B at 0.65/0.35 mm
-  + a BAT_MAIN routed-clearance reservation reject) — the one open trunk pad; (2) the
-  terminal **`REF_POL R87.2 / R88.1→R87.2`** F-corridor NO_PATH at 0.150 mm; (3) the
-  **`BAT_RAW R89.1/R86.2` divider-tap width** vs the BAT_MAIN 0.60 mm rule. All are bounded
-  CTO-scope technical work.
+- **Current fabrication blocker (updated by D-289):** the D-275 south bridge is proven
+  electrically connected (D-288) and the `BAT_PROTECTED_P` island closes R75.2 through
+  C36/C25/C58/D9/U11/U14/TP15. D-289 localized the residual **U18.8 escape** as a genuine
+  **placement-geometry** limit, not a routing-order one: U18.8→R75.2 must escape NORTH into
+  the single B lane U18.7→R81.2 also needs, and U18.8 has no alternative B via-site — so
+  U18.7/U18.8/U18.9 are a 3-into-one-corner contention where ordering only selects the
+  casualty (the 003P sense-pair-clearance relaxation was a lateral U18.7↔U18.8 swap, and
+  reserving U18.8 first breaks U18.7+U18.9). The terminal **REF_POL R87.2→(node) NO_PATH**
+  is characterized as **F.Cu routing capacity** (N_POL 6.36 mm F.Cu saturates its corridor),
+  narrowest lever = D-279-class N_POL F.Cu inner offload. Remaining Phase-A blockers in
+  fabrication-blocker order: (1) U18.8's escape (needs an off-layer vacate of U18.7 or a
+  bounded placement micro-ECO); (2) the REF_POL R87 F-corridor capacity; (3) the BAT_RAW
+  R89.1/R86.2 divider taps (true NO_PATH / other-branch width, a capacity symptom not a
+  width lever). All bounded CTO-scope, except the placement micro-ECO fallback (OWNER).
 
 ## 4. Last accepted milestone
-- **Task:** FBV2-P2-003O · **Decision:** **D-288** · **Result:** THE D-275 SOUTH-BRIDGE
+- **Task:** FBV2-P2-003Q · **Decision:** **D-289** · **Result:** THE REJECTED 003P WIP IS
+  RETIRED WITH NO PROGRESS (byte-aggregate-equivalent to 003O, a lateral U18.7↔U18.8 swap),
+  the U18.7/U18.8 co-closure **reservation-ordering lever is REFUTED** (U18.8-first = conn 34
+  vs baseline 35; U18.8 closes but U18.7+U18.9 open — a 3-into-one-corner placement-geometry
+  mutual-exclusion where U18.8→R75.2 escapes NORTH into U18.7's only B lane with no
+  alternative B via-site), and the terminal REF_POL R87.2 wall is characterized on the actual
+  congested board as **F.Cu routing capacity** (N_POL 6.36 mm F.Cu saturates the R87.2→node
+  corridor) with a named narrowest lawful lever (D-279-class N_POL F.Cu inner offload, no
+  closure claimed). No source/copper/placement/rule change; committed D-289 supersedes the
+  VOID informal 003P labels D-289/290/291; a CTO ENGINEERING FAIL, NO OWNER DECISION, NO
+  PROMOTION. Evidence: gitignored `checks/w/log_003q_baseline.txt`, `log_003q_u18first.txt`,
+  `refpol_wall_003q.py`. Full analysis:
+  [`audits/2026-08-29-p2-003q-d289-003p-rejection-and-u18-co-closure-refuted.md`](audits/2026-08-29-p2-003q-d289-003p-rejection-and-u18-co-closure-refuted.md).
+- **Prior milestone — FBV2-P2-003O / D-288:** THE D-275 SOUTH-BRIDGE
   ENTRY-ARRAY TWO-LAYER TIE IS FIXED (`via_dangling`-CLEAN, PROVEN BY A NON-VACUOUS
   REGRESSION + A NATURAL-COMPLETION CTO FULL RUN) — BUT THE OVERALL PHASE-A RUN STILL FAILs
   ON NEW DOWNSTREAM BLOCKERS. BRIDGE-CODE FIX + REGRESSION ACCEPTED/COMMITTED, NO
@@ -100,27 +121,26 @@
   absorbed; the placement short IS the FAIL reason.
 
 ## 5. Next task
-- **FBV2-P2-003P (CTO scope), in true fabrication-blocker order** (with the bridge entry
-  tie now proven, all **without relaxing any floor/rule or moving a frozen part**):
-  1. **U18.8's `BAT_PROTECTED_P` escape (the last open trunk pad).** It reports
-     `NO_VIA_SITE` at 0.65 mm and 0.35 mm on B and an earlier reservation `GATE_REJECTED`
-     on a `BAT_MAIN routed clearance` item. Find a legal B-layer via site / escape + a
-     reservation for U18.8 that keeps the 0.200 mm clearance floor and the ≥1.20 mm trunk
-     width; this closes `BAT_PROTECTED_P` across all required pads.
-  2. **Terminal REF_POL R87.2 / R88.1→R87.2 corridor.** NO_PATH at 0.150 mm — investigate
-     the F.Cu corridor to the REF_POL node; determine whether it is congestion/ordering or
-     a genuine geometric wall.
-  3. **BAT_RAW R89.1 / R86.2 divider-tap width.** The four 0.20 mm divider taps trip the
-     BAT_MAIN 0.60 mm rule (`track_width +4`, gate-rejected). Attribute correctly — decide
-     whether they are legitimately bounded microamp exceptions (like the D-269
-     `BAT_RAW_DIVIDER_TAP_*` corridor already in the run's `stubs` list) or genuine width
-     failures — **without relaxing BAT_MAIN**.
-- **Why next:** D-288 fixed the D-275 entry-array two-layer tie (the bridge is now
-  electrically connected end-to-end) and the natural CTO full run shows the
-  `BAT_PROTECTED_P` island closing seven pads; the remaining Phase-A failures are the
-  above bounded, downstream blockers the entry dangling had shadowed. A genuine OWNER
-  DECISION (direction-2 LTC4368 refloorplan / corridor widening) arises only if one of
-  these proves un-fixable without relaxing a floor/rule or moving a frozen part.
+- **FBV2-P2-003R (CTO scope)** — the exact next lever D-289 identified, all **without
+  relaxing any floor/rule or moving a frozen part, and with no DRC absorption**:
+  1. **Vacate the contended pin off the single north B lane so U18.8 can reserve it.**
+     Force `U18.7→R81.2` onto an inner layer (D-278/D-279-class `hop_first`), and resolve
+     `U18.9→R75.1` as a main-pass hop to the already-node-connected R75.1 (the BAT_SENSE
+     `Q3.6→R75.1` current path connects it), **coupled** with reserving U18.8 first in
+     `PLAN_D266_RESERVE`. Judge on a parent-supervised full run: U18.7 **and** U18.8 **and**
+     U18.9 all close (no lateral swap) with the D-288 bridge and trunk closure preserved.
+  2. **Extend the D-279 offload to the F.Cu aggressor to open the REF_POL R87.2 corridor.**
+     D-279 today reverts only antisocial *B.Cu* detours; send the `N_POL R86.1→TP23.1`
+     23.7 mm F.Cu run (6.36 mm of it in the R87.2→node corridor) to In2/In3 so R87.2 can
+     reach the REF_POL node. Validate only on a full authority run (vacuous in focused
+     vehicles — do NOT claim closure from a local screen).
+- **Why next:** D-289 refuted the bounded reservation-ordering lever and localized the
+  U18.8 escape as a placement-geometry mutual-exclusion and the REF_POL wall as F.Cu
+  capacity. The off-layer-vacate lever (003R) is the narrowest lawful routing move that
+  could close all three U18 pins and the REF_POL corridor; it is untried, so no owner
+  decision is raised. A genuine OWNER DECISION (a bounded LTC4368/R75 placement micro-ECO
+  in the D-284/285 class to open a *second* U18.8 escape, or direction-2 corridor widening)
+  arises only if 003R also fails to co-close U18.7+U18.8+U18.9 within those constraints.
 
 ## 6. Authoritative PCB state
 - **Routing/promotion:** NOT promoted. Authoritative board = **six copper layers,
@@ -157,9 +177,19 @@
   (rotation-aware in-pad `scan_entry_sites`) AND carry a symmetric B.Cu tie-stub, so it is
   two-layer / `via_dangling`-clean. The entry-tie fix is proven; the remaining
   `BAT_PROTECTED_P`/Phase-A blockers (U18.8 escape, REF_POL R87 corridor, BAT_RAW divider
-  width) are bounded CTO-scope work (003P), NOT an owner decision. The **0.60 mm BAT_MAIN
+  width) are bounded CTO-scope work, NOT an owner decision. The **0.60 mm BAT_MAIN
   minimum width** rule is a hard floor (BAT_RAW divider taps are gate-rejected against it,
   not absorbed).
+- **D-289** the residual U18.8 `BAT_PROTECTED_P` escape is a **placement-geometry**
+  mutual-exclusion, not a routing-order defect: U18.8→R75.2 must escape NORTH into the
+  single B lane U18.7→R81.2 also needs and has no alternative B via-site, so U18.7/U18.8/
+  U18.9 are a 3-into-one-corner contention where reservation ordering only selects the
+  casualty (the 003P sense-pair-clearance relaxation was a lateral U18.7↔U18.8 swap; the
+  003Q reserve-U18.8-first lever breaks U18.7+U18.9). The terminal REF_POL R87.2 wall is
+  **F.Cu routing capacity** (N_POL 6.36 mm F.Cu saturates the R87.2→node corridor), not a
+  DRU rule — a width/clearance/via rule cannot manufacture an F corridor where the graph
+  finds none (R89.1 is a true NO_PATH). The narrowest lawful levers are routing-capacity
+  moves (off-layer vacate, D-279-class inner offload, path ordering), NOT a DRU exception.
 - Rule floors ENFORCED: **0.200 mm** clearance, **0.25 mm** hole-to-hole,
   **≥1.20 mm** BPP trunk width (D-249), **0.60 mm** BAT_MAIN minimum width. Six-layer
   stack, GND, netclasses, footprints, polarity, safety set — all frozen. Optional
@@ -168,13 +198,14 @@
 
 ## 8. Open owner decisions
 - **NONE.** (Synchronized with `/home/aqroot8/.aqroot-autopilot-stop`, which is ABSENT.)
-- 003O (D-288) fixed the entry-tie defect (the bridge is now `via_dangling`-clean) and the
-  natural full run leaves only **bounded, CTO-scope downstream blockers** — U18.8's
-  `BAT_PROTECTED_P` escape, the REF_POL R87 F-corridor, and the BAT_RAW divider-tap width.
-  None is a placement wall or requires relaxing a floor/rule or moving a frozen part, so no
-  owner decision is raised. A genuine OWNER DECISION arises only if one of the 003P
-  blockers proves un-fixable within those constraints, leaving a direction-2 LTC4368
-  refloorplan / corridor widening as the sole remaining option.
+- 003Q (D-289) refuted the bounded U18.7/U18.8 reservation-ordering lever and localized the
+  residual U18.8 escape as a 3-into-one-corner **placement-geometry** mutual-exclusion, plus
+  the REF_POL R87.2 wall as **F.Cu routing capacity**. One bounded CTO routing lever remains
+  untried (003R: off-layer vacate of U18.7 + D-279-class N_POL F.Cu offload), so no owner
+  decision is yet raised. A genuine OWNER DECISION — a bounded LTC4368/R75 placement
+  micro-ECO (D-284/285 class) to open a *second* U18.8 escape, or direction-2 corridor
+  widening — arises only if 003R also fails to co-close U18.7+U18.8+U18.9 without relaxing a
+  floor/rule or moving a frozen part.
 
 ## 9. JLCPCB readiness
 - **JLCPCB readiness ~77 %** (unchanged — a bridge-code fix proven on scratch, with the
@@ -194,14 +225,16 @@
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch
   Claude or become a task parent. No autopilot stop file is set (correct — this is an
   ordinary engineering FAIL with a known next task, not a stop condition).
-- **Should an engineering process be active now?** Yes — FBV2-P2-003P (close U18.8's
-  `BAT_PROTECTED_P` escape, then the REF_POL R87 corridor and BAT_RAW divider-width
-  attribution) is the known next task; autonomy continues without an owner decision.
+- **Should an engineering process be active now?** Yes — FBV2-P2-003R (off-layer vacate of
+  U18.7 + reserve U18.8 first to co-close U18.7/U18.8/U18.9, and a D-279-class N_POL F.Cu
+  offload to open the REF_POL R87.2 corridor) is the known next task; autonomy continues
+  without an owner decision.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
 1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-288**).
-2. Newest audits — `audits/2026-08-29-p2-003o-d288-entry-tie-fix-and-full-run.md`,
-   then `…-003n-d287-…`, `…-003m-d286-…`, `…-003l-d285-…`, `…-003k-d283-…`.
+2. Newest audits — `audits/2026-08-29-p2-003q-d289-003p-rejection-and-u18-co-closure-refuted.md`,
+   then `…-003o-d288-entry-tie-fix-and-full-run.md`, `…-003n-d287-…`, `…-003m-d286-…`,
+   `…-003l-d285-…`, `…-003k-d283-…`.
 3. `docs/full-beta-v2/CHANGELOG.md` and `docs/full-beta-v2/PROGRESS.md` (top entries).
 4. Git HEAD + recent commits; the instrument `hardware/beta-v2/checks/screen_003n.py`
    (`--validate` screen regression, `--bridge [--validate]` bridge probe + the D-288
