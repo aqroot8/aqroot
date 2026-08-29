@@ -631,6 +631,114 @@ def main():
             'ASTAR=%d WAVE=%d' % (QR.ASTAR_BUDGET, QR.WAVE_BUDGET),
             QR.ASTAR_BUDGET == save_astar and QR.WAVE_BUDGET == save_wave)
 
+        # ---- G12  FBV2-P2-003M / D-286 BASELINE-ORDER CONTRACT ----------
+        #
+        # route_battery_block.py measures the DRC/ratsnest baseline the routing
+        # gates subtract against.  Through 003L that baseline was taken after the
+        # 002F ECO (+AQROOT_ECO_EXTRA) but BEFORE AQROOT_PLACE_JSON moved the
+        # candidate footprints, so a placement that itself carried DRC items
+        # (courtyards_overlap / solder_mask_bridge / shorting_items / clearance)
+        # was NOT in the baseline.  Every gate then read those placement items as
+        # brand-new copper violations and rejected unrelated nets -- the 003M
+        # DRIVER_EXIT=143 cascade.  The gate delta is `after - base` excluding
+        # unconnected_items (route_battery_block ~L477/L836); this pins that the
+        # baseline must reflect the ACTUAL candidate placement, and that a
+        # violation appearing AFTER the baseline boundary (from copper) is still
+        # surfaced.  The driver source order is asserted too, so the pre-placement
+        # ordering fails this test if it ever returns.
+        print('')
+        print('  -- G12 FBV2-P2-003M/D-286 baseline-order contract ----------')
+
+        def _delta(after, base):        # driver gate semantics, verbatim
+            return dict((k, v - base.get(k, 0)) for k, v in after.items()
+                        if v > base.get(k, 0) and k != 'unconnected_items')
+
+        g12 = fresh(work, 'g12')
+        base_pre = drc(g12, 'g12pre', work)          # OLD-order baseline (pre-place)
+        rn_pre = ratsnest(g12)
+        # A candidate placement that induces a placement-derived DRC item, the
+        # way c3_00/place_003l did on the real board: stack C5 onto C36 so their
+        # courtyards overlap.  Mirrors the driver's AQROOT_PLACE_JSON apply path
+        # (move -> BuildConnectivity -> ZONE_FILLER.Fill -> Save).
+        _bb = pcbnew.LoadBoard(g12)
+        _fp = {f.GetReference(): f for f in _bb.GetFootprints()}
+        _c36, _c5 = _fp.get('C36'), _fp.get('C5')
+        chk('G12 candidate placement refs C36/C5 present',
+            'C36=%s C5=%s' % (_c36 is not None, _c5 is not None),
+            _c36 is not None and _c5 is not None)
+        if _c36 is not None and _c5 is not None:
+            _c5.SetPosition(_c36.GetPosition())      # deterministic courtyard overlap
+            _bb.BuildConnectivity()
+            pcbnew.ZONE_FILLER(_bb).Fill(_bb.Zones())
+            _bb.Save(g12)
+            base_post = drc(g12, 'g12post', work)    # NEW-order baseline (post-place)
+
+            # (1) The placement is DECISIVE: it moves the DRC histogram in a
+            #     placement-derived class, so WHICH baseline is used matters.
+            induced = _delta(base_post, base_pre)
+            chk('G12 candidate placement induces a placement-derived DRC delta',
+                'induced=%s' % (induced or 'NONE'),
+                bool(induced))
+
+            # (2) OLD ORDER (pre-placement baseline) would spuriously flag the
+            #     placement items on a legal, copper-free routed start.  A routed
+            #     start that laid NO offending copper still equals base_post, so
+            #     old-order delta = the induced placement items = a false gate hit.
+            after_legal = collections.Counter(base_post)     # zero new copper
+            old_delta = _delta(after_legal, base_pre)
+            chk('G12 OLD pre-placement order FALSELY flags the placement (the bug)',
+                'old_delta=%s' % (old_delta or 'NONE'),
+                bool(old_delta) and old_delta == induced)
+
+            # (3) NEW ORDER (post-placement baseline) yields ZERO spurious delta
+            #     for the same legal routed start -- the gate is now relative to
+            #     the actual routed starting geometry.
+            new_delta = _delta(after_legal, base_post)
+            chk('G12 NEW post-placement order yields ZERO spurious delta',
+                'new_delta=%s' % (new_delta or 'NONE'),
+                new_delta == {})
+
+            # (4) A violation arising AFTER the baseline boundary (i.e. from
+            #     copper the router lays) is STILL surfaced -- it cannot be
+            #     hidden by absorbing placement into the baseline.
+            after_copper = collections.Counter(base_post)
+            after_copper['clearance'] += 1
+            copper_delta = _delta(after_copper, base_post)
+            chk('G12 a post-baseline copper violation is STILL surfaced',
+                'copper_delta=%s' % copper_delta,
+                copper_delta.get('clearance') == 1)
+
+            # (5) ratsnest baseline is likewise measured on the placed board:
+            #     the placement changed connectivity, so the reference ratsnest
+            #     the gate subtracts must be the post-placement one.
+            rn_post = ratsnest(g12)
+            chk('G12 ratsnest baseline reflects the candidate placement',
+                'rn_pre=%d rn_post=%d' % (rn_pre, rn_post),
+                True)   # informational: both are recorded; gate uses rn_post
+
+        # (6) DRIVER SOURCE ORDER: the baseline `RU.drc(pcb, "Abase"...)` must be
+        #     computed AFTER the AQROOT_PLACE_JSON apply block AND after the
+        #     placement fingerprint assertion, but before QBoard routing.  This
+        #     fails the moment the pre-placement ordering is reintroduced.
+        drv = open(os.path.join(SP_DIR, 'route_battery_block.py')).read()
+        i_place = drv.find("_cand = os.environ.get('AQROOT_PLACE_JSON')")
+        i_fp = drv.find('assert_placement')
+        i_base = drv.find('base, _ = RU.drc(pcb, "Abase"')
+        i_qboard = drv.find('qb = QR.QBoard(pcb)')
+        chk('G12 driver anchors all found',
+            'place=%d fingerprint=%d baseline=%d qboard=%d'
+            % (i_place, i_fp, i_base, i_qboard),
+            min(i_place, i_fp, i_base, i_qboard) > 0)
+        chk('G12 driver baseline is AFTER candidate placement apply',
+            'baseline@%d > place@%d' % (i_base, i_place),
+            i_base > i_place)
+        chk('G12 driver baseline is AFTER the fingerprint assertion',
+            'baseline@%d > fingerprint@%d' % (i_base, i_fp),
+            i_base > i_fp)
+        chk('G12 driver baseline is BEFORE QBoard routing',
+            'baseline@%d < qboard@%d' % (i_base, i_qboard),
+            i_base < i_qboard)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

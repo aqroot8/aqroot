@@ -329,9 +329,6 @@ def main():
     b.Save(pcb)
     DRU.write(pcb, [])
 
-    base, _ = RU.drc(pcb, "Abase", WORK)
-    base_rn = RU.ratsnest(pcb)
-    print("scratch baseline", dict(sorted(base.items())), "ratsnest", base_rn)
     # FBV2-P2-002L sections 6-9: a U18 CANDIDATE placement, named by a file.
     # AQROOT_PLACE_JSON is {base, moves}: the base placement it is expressed
     # against, and the absolute poses that differ from it.  The SAME file is
@@ -371,6 +368,28 @@ def main():
         print('PLACEMENT ASSERTED: %s' % _want)
     else:
         print('PLACEMENT NOT ASSERTED (set AQROOT_EXPECT_PLACEMENT to require one)')
+    sys.stdout.flush()
+
+    # FBV2-P2-003M / D-286: MEASURE THE DRC/RATSNEST BASELINE ON THE ACTUAL
+    # COMPLETE STARTING GEOMETRY, NOT A PARTIAL ONE.  Until 003M this baseline
+    # was taken right after the 002F ECO (+AQROOT_ECO_EXTRA) but BEFORE the
+    # AQROOT_PLACE_JSON candidate placement was applied a few lines below, so the
+    # candidate's own placement-derived DRC (courtyards_overlap / solder_mask_
+    # bridge / shorting_items) was NOT in the comparison baseline.  Every routing
+    # gate then read those placement items as brand-new copper/safety violations
+    # and rejected unrelated nets (003M: a full GATE_REJECTED cascade carrying a
+    # FIXED placement delta across unrelated nets, DRIVER_EXIT=143).  The
+    # baseline is now taken HERE - after ECO + AQROOT_ECO_EXTRA + AQROOT_PLACE_
+    # JSON application, connectivity rebuild, zone fill, board save, DRU.write and
+    # the fingerprint assertion, but before any QBoard copper - so a gate delta is
+    # measured strictly against the real routed starting geometry.  When no
+    # candidate placement is supplied the on-disk board here is byte-identical to
+    # the pre-move board, so default behaviour is unchanged.  A placement-induced
+    # violation that arises AFTER this boundary (i.e. from copper) is therefore
+    # still fully surfaced - it cannot be hidden by the baseline.
+    base, _ = RU.drc(pcb, "Abase", WORK)
+    base_rn = RU.ratsnest(pcb)
+    print("scratch baseline", dict(sorted(base.items())), "ratsnest", base_rn)
     sys.stdout.flush()
 
 
