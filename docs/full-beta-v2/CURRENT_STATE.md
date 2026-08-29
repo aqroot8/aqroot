@@ -24,8 +24,9 @@
   D-269 floor, and R75 is boxed on all four sides (Q3 south ≤0.55 mm, board edge west, U18
   courtyard east, R80/R81 north). **No source, no copper, no placement, no rule change; no
   DRC absorbed; no promotion.** The bounded U18/R75 space the policy named is exhausted, so
-  closing `BAT_PROTECTED_P` (U18.8) is again a genuine **OWNER DECISION** (direction-2 or a
-  re-authorized routing lever); the autopilot stop file is re-created. Prior milestone:
+  closing `BAT_PROTECTED_P` (U18.8) required an owner direction. **D-293 now approves
+  direction 2**: bounded LTC4368-block spread / escape-target relocation, with every floor
+  preserved and D-290 remaining closed. Prior milestone:
   `951d7bf` (D-291 owner approval). This checkpoint is written in the same commit; a fresh
   session must confirm the live tip with `git rev-parse HEAD` and `git rev-parse
   origin/master`.
@@ -167,7 +168,7 @@
   by the c3_00 placement short). `place_003l` (D-285) is clean and preserved. No DRC
   absorbed; the placement short IS the FAIL reason.
 
-## 5. Next task — awaiting the RE-RAISED owner decision (D-292)
+## 5. Next task — FBV2-P2-003T (D-293 direction-2 execution)
 - **There is NO bounded CTO routing lever AND no bounded U18/R75 placement lever left for
   the U18.8 escape.** 003R (D-290) exhausted the routing-only space; 003S (D-292) has now
   exhausted the owner-approved bounded **placement** space (D-291). No bounded U18/R75 delta
@@ -181,11 +182,12 @@
   rigid 0.5 mm pitch, so a rigid translation only re-selects which edge breaches the
   0.300 mm D-269 floor, and R75 is boxed on all four sides (Q3 south ≤0.55 mm, board edge
   west, U18 courtyard east, R80/R81 north; its only motion breaks the U18.9 Kelvin).
-- **RE-RAISED OWNER DECISION (see §8):** closing `BAT_PROTECTED_P` (U18.8) now requires a
-  lever OUTSIDE the D-291 envelope — direction-2 (spread the LTC4368 block / relocate an
-  escape target R77/R79/R80/R81), a U18 rotation (a western-block refloorplan that risks the
-  frozen D-275/D-288 bridge), or re-authorizing the D-290-refuted+retired off-layer vacate
-  routing lever. All are OWNER decisions; the autopilot stop file is re-created.
+- **D-293 OWNER DIRECTION:** execute the bounded direction-2 lever: spread the LTC4368 block
+  and/or relocate the minimum escape-target set (R77/R79 east, R80/R81 north as evidence
+  dictates) so `BAT_RAW` and `BAT_PROTECTED_P` escape through independent corridors. Preserve
+  the D-275/D-288 bridge, enforce D-269 at 0.300 mm, do not accept U18.8 open, and do not
+  re-litigate D-290. Start with a cheap real-DRC/real-router screen, then run the first legal
+  candidate through the full authority gate; no promotion on proxy evidence.
 - **Downstream, still CTO-scope but BLOCKED behind the U18 decision:** extend the D-279
   offload to the `N_POL R86.1→TP23.1` F.Cu run (6.36 mm in the R87.2→node corridor) to open
   the REF_POL R87.2 corridor; validate only on a full authority run after the U18 decision.
@@ -259,11 +261,12 @@
   untouched.
 
 ## 8. Open owner decisions
-- **ONE — RE-RAISED by D-292 (FBV2-P2-003S).** The owner-approved bounded LTC4368/R75
+- **NONE. D-293 resolved the D-292 decision at 22:34 UTC.** Direction 2 is approved; the
+  alternatives below are retained only as historical context and are not active options.
+- **RESOLVED HISTORY — RE-RAISED by D-292 (FBV2-P2-003S).** The owner-approved bounded LTC4368/R75
   placement micro-ECO (D-291, option A) has been screened to EXHAUSTION and **cannot legally
   co-close the U18 escape field** (details §5, §1; audit D-292). Option A is therefore
-  spent; the autopilot stop file is re-created and autonomy is HALTED pending the owner's
-  choice among the remaining (all owner-scope) levers.
+  spent; D-293 selected direction 2 and autonomy resumes.
 - **The decision:** how to close `BAT_PROTECTED_P` (U18.8) given that BOTH the bounded
   routing-only space (D-290) AND the bounded U18/R75 placement space (D-292) are exhausted,
   and the wall is a **both-edges current-path footprint geometry** (U18 carries
@@ -300,17 +303,15 @@
 - **Persistent CTO session:** `agent:main:aqroot-fbv2-cto` — sole owner of Claude
   engineering launches; receives every completion event.
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch
-  Claude or become a task parent. D-292 re-raises an owner decision; the stop file
-  (`/home/aqroot8/.aqroot-autopilot-stop`) is re-created (OWNER_DECISION) and autonomy is
-  HALTED.
-- **Should an engineering process be active now?** **No.** 003S (D-292) exhausted the
-  owner-approved bounded U18/R75 placement space; the next move is an OWNER decision (§8).
-  No Claude engineering task should run until the owner picks a direction. The REF_POL R87.2
+  Claude or become a task parent. D-293 resolved the owner decision; the stop file is absent
+  and the persistent CTO resumes one-Claude-at-a-time engineering.
+- **Should an engineering process be active now?** **Yes.** FBV2-P2-003T executes the
+  D-293 bounded direction-2 screen and authority gate. The REF_POL R87.2
   F.Cu offload remains downstream CTO-scope work, blocked behind the U18 decision.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
-1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-291**, owner
-   approval of the bounded option-A LTC4368/R75 placement micro-ECO).
+1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-293**, owner
+   approval of bounded direction-2 LTC4368-block spread / target relocation).
 2. Newest audits — `audits/2026-08-29-p2-003r-d290-off-layer-vacate-refuted-owner-decision.md`,
    then `…-003q-d289-003p-rejection-and-u18-co-closure-refuted.md`,
    `…-003o-d288-entry-tie-fix-and-full-run.md`, `…-003n-d287-…`, `…-003m-d286-…`,

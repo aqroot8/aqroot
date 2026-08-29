@@ -5552,3 +5552,6 @@ Documentation infrastructure only. No design file was touched.
   measured GPIO budget (zero free native pins), three candidate 20-pin connector
   architectures, and the blocker set B-01 through B-16 now tracked in
   [PROGRESS.md](PROGRESS.md).
+## 2026-08-29 - OWNER DECISION D-293: direction-2 LTC4368-block spread / escape-target relocation approved
+
+Alpha ratified the D-292 CTO recommendation at 22:34 UTC: authorize a bounded LTC4368-block spread and/or minimum escape-target relocation (R77/R79 east, R80/R81 north as engineering evidence dictates) so `BAT_RAW` and `BAT_PROTECTED_P` escape through different corridors. The 0.300 mm D-269 current-path clearance and every other locked safety/routing/manufacturing floor remain mandatory; U18.8-open acceptance is prohibited; D-290 is not re-authorized or re-litigated. No engineering result, promotion, progress, or readiness increase is claimed by this decision record. **NEXT: FBV2-P2-003T** from clean pushed `b4f950b`: bounded direction-2 candidate screen followed by a full authority integration gate for the first legal candidate.
