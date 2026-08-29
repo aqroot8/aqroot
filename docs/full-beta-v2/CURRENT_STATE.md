@@ -5,24 +5,30 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003R / D-290 milestone commit (this checkpoint):** a governed **evidence /
-  NO-PROGRESS** commit that **RAISES ONE OWNER DECISION.** 003R implemented and screened the
-  LAST bounded routing-only U18 co-closure lever D-289 named — the **off-layer vacate of
-  U18.7** (`AQROOT_VACATE=U18_7` onto In2/In3 + `AQROOT_U18_FIRST=1` reserving U18.8 alone) —
-  and it is **REFUTED** (−1 regression, conn 34 vs baseline 35). The refutation is **geometric
-  and exact:** the U18.7/U18.8/U18.9 3-into-one-corner contention is an irreducible
-  **placement-geometry mutual-exclusion** at the 0.5 mm pad pitch vs the 0.300 mm current-path
-  clearance floor (D-269) — the vacate moves U18.7's escape transition from a 0.15 mm B.Cu
-  neck (0.250 mm from U18.8's reserve via) to a 0.35 mm through via (0.150 mm from it), CLOSER
-  not farther, so In2 AND In3 both revert; U18.9 is an independent casualty (dominant blocker
-  U18.10 ×25). No via-size/layer/direction/ordering lever rescues it without a DRU change or a
-  frozen-part move. **No source, no copper, no placement, no rule change** (the D-290 WIP is
-  RETIRED). This exhausts the routing-only space the policy named, so a bounded **LTC4368/R75
-  placement micro-ECO became a genuine OWNER DECISION; **D-291 records Alpha's approval of
-  the bounded CTO-recommended option and autonomy has resumed.** Prior milestone: `9bd7aac`
-  (FBV2-P2-003Q / D-289). This checkpoint is written in
-  the same commit; a fresh session must confirm the live tip with `git rev-parse HEAD` and
-  `git rev-parse origin/master`.
+- **FBV2-P2-003S / D-292 milestone commit (this checkpoint):** a governed **evidence /
+  NO-PROGRESS** commit that **RE-RAISES ONE OWNER DECISION.** 003S executed the
+  owner-approved (D-291) bounded LTC4368/R75 placement micro-ECO as a cheap, in-scope
+  screen (real-DRC bare-placement gate + a fast, `D256`-faithful **`AQROOT_LOCAL=R80`**
+  co-closure vehicle) and **screened the bounded U18/R75 space to EXHAUSTION: no bounded
+  placement LEGALLY co-closes the U18 escape field.** Baseline (b1_r75rot) = conn 19, DRC
+  clean, U18.8 the sole open pad (the D-290 clash). Every candidate is ≤ conn 19: EAST
+  translation and R75-south-alone are neutral (U18.8 stays open); NORTH does open a legal
+  inner-I2 via for U18.8 (the sought "second escape" exists) but the same rigid move breaks
+  the OTHER edge — U18.7 (0.25<0.30) at small north, the east `BAT_RAW`/`LTC_UV`/`LTC_OV`
+  current-path pins (0.275–0.296 < 0.300) at larger north; the R75-south align breaks the
+  U18.9 Kelvin. The ONLY candidate to reach PHASE A COMPLETE (`s_ne0707`) does so **only by
+  absorbing a 0.1248 mm `BAT_RAW`↔`BAT_PROTECTED_P` D-269 breach (41 % of the floor)** and
+  is DISQUALIFIED. **Root cause, sharper than D-290:** U18 (LTC4368, MSOP-10, 0.5 mm pitch)
+  carries a current-path net on BOTH edges — `BAT_PROTECTED_P` (U18.8, west) and `BAT_RAW`
+  (U18.1, east) — so a rigid translation only re-selects which edge breaches the 0.300 mm
+  D-269 floor, and R75 is boxed on all four sides (Q3 south ≤0.55 mm, board edge west, U18
+  courtyard east, R80/R81 north). **No source, no copper, no placement, no rule change; no
+  DRC absorbed; no promotion.** The bounded U18/R75 space the policy named is exhausted, so
+  closing `BAT_PROTECTED_P` (U18.8) is again a genuine **OWNER DECISION** (direction-2 or a
+  re-authorized routing lever); the autopilot stop file is re-created. Prior milestone:
+  `951d7bf` (D-291 owner approval). This checkpoint is written in the same commit; a fresh
+  session must confirm the live tip with `git rev-parse HEAD` and `git rev-parse
+  origin/master`.
 - **HEAD == origin/master:** yes (committed and pushed at milestone closeout).
 
 ## 2. Mission
@@ -45,8 +51,10 @@
   of the adjacent pin's committed copper, and 0.5 mm pitch cannot host three escape
   transitions under the 0.300 mm current-path floor (D-269). The vacate makes it WORSE
   (0.35 mm via at 0.150 mm vs the 0.15 mm neck at 0.250 mm), and U18.9 is lost independently
-  (blocker U18.10 ×25). **D-291 authorizes the bounded LTC4368/R75 placement micro-ECO**
-  to open a second U18.8 escape. The terminal **REF_POL R87.2→(node) NO_PATH** is
+  (blocker U18.10 ×25). **D-291 authorized the bounded LTC4368/R75 placement micro-ECO, but
+  D-292 (003S) screened it to EXHAUSTION — no bounded U18/R75 delta legally co-closes the
+  U18 field (the wall is a both-edges current-path footprint geometry: `BAT_PROTECTED_P`
+  U18.8 west and `BAT_RAW` U18.1 east), so closing U18.8 is again an OWNER decision (§8).** The terminal **REF_POL R87.2→(node) NO_PATH** is
   (per D-289) **F.Cu routing capacity** (N_POL 6.36 mm F.Cu saturates its corridor), narrowest
   lever = D-279-class N_POL F.Cu inner offload — but it is downstream of the U18 placement
   micro-ECO. Remaining Phase-A blockers in fabrication-blocker order: (1) **U18.8's escape —
@@ -55,7 +63,22 @@
   other-branch width, a capacity symptom not a width lever).
 
 ## 4. Last accepted milestone
-- **Task:** FBV2-P2-003R · **Decision:** **D-290** · **Result:** THE LAST BOUNDED
+- **Task:** FBV2-P2-003S · **Decision:** **D-292** · **Result:** THE OWNER-APPROVED
+  BOUNDED LTC4368/R75 PLACEMENT MICRO-ECO (D-291) IS SCREENED TO EXHAUSTION — NO BOUNDED
+  U18/R75 PLACEMENT LEGALLY CO-CLOSES THE U18 ESCAPE FIELD (baseline conn 19 with U18.8
+  legally open is the max legal state; every move ≤19, trading the casualty among U18.8 /
+  U18.7 / the east `BAT_RAW`/`LTC_UV`/`LTC_OV` current-path pins / the U18.9 Kelvin; the one
+  candidate to reach PHASE A COMPLETE, `s_ne0707`, does so ONLY by absorbing a 0.1248 mm
+  `BAT_RAW`↔`BAT_PROTECTED_P` D-269 breach and is DISQUALIFIED). Root cause sharper than
+  D-290: U18 carries a current-path net on BOTH edges (`BAT_PROTECTED_P` U18.8 west /
+  `BAT_RAW` U18.1 east) at a rigid 0.5 mm pitch, so a translation only re-selects which
+  edge breaches 0.300 mm D-269, and R75 is boxed on all four sides. A governed CTO **FAIL**
+  that re-raises the OWNER decision; no source/copper/placement/rule change, no DRC
+  absorbed, no promotion, D-275 and D-277..D-291 preserved. Evidence of record: audit
+  [`audits/2026-08-29-p2-003s-d292-u18-r75-placement-microeco-exhausted.md`](audits/2026-08-29-p2-003s-d292-u18-r75-placement-microeco-exhausted.md);
+  scratch gitignored (`checks/w/cand_003s/`, `screen_003s_results.json`,
+  `phaseA_003s_*.json`, `log_003s_*.txt`, `drc_ne0707_check.json`).
+- **Prior milestone — FBV2-P2-003R / D-290 · Result:** THE LAST BOUNDED
   ROUTING-ONLY U18 CO-CLOSURE LEVER (OFF-LAYER VACATE OF U18.7) IS REFUTED ON CHEAP
   NON-VACUOUS EVIDENCE (−1 regression, conn 34 vs baseline 35), THE REFUTATION IS GEOMETRIC
   AND EXACT (the U18.7/U18.8/U18.9 3-into-one-corner contention is an irreducible
@@ -144,22 +167,28 @@
   by the c3_00 placement short). `place_003l` (D-285) is clean and preserved. No DRC
   absorbed; the placement short IS the FAIL reason.
 
-## 5. Next task — FBV2-P2-003S (owner-approved bounded placement micro-ECO)
-- **There is NO bounded CTO routing lever left for the U18.8 escape.** 003R (D-290) refuted
-  the last one (off-layer vacate of U18.7) on cheap non-vacuous evidence, and the refutation
-  is geometric: the U18.7/U18.8/U18.9 3-into-one-corner contention is irreducible at the
-  0.5 mm pad pitch vs the 0.300 mm current-path clearance floor (D-269). Ordering (D-289),
-  off-layer vacate (D-290) and via-size are all refuted or barred; the vacate makes the
-  clearance WORSE (0.150 mm via-to-via vs the 0.250 mm neck), and U18.9 is an independent
-  casualty. The next move necessarily moves a part — **outside CTO scope.**
-- **OWNER DECISION D-291 RESOLVED:** Alpha authorized the CTO-recommended bounded
-  LTC4368/R75 placement micro-ECO (D-284/285 class) to open a *second, independent*
-  U18.8 escape corridor so the three west-edge sense/control pins escape without the 0.5 mm
-  pad-exit contention. Options B (accept U18.8 open — NOT fabricable) and C (direction-2
-  widening / broader refloorplan) remain unapproved.
+## 5. Next task — awaiting the RE-RAISED owner decision (D-292)
+- **There is NO bounded CTO routing lever AND no bounded U18/R75 placement lever left for
+  the U18.8 escape.** 003R (D-290) exhausted the routing-only space; 003S (D-292) has now
+  exhausted the owner-approved bounded **placement** space (D-291). No bounded U18/R75 delta
+  LEGALLY co-closes the U18 escape field: the max legal state is the baseline (conn 19, U18.8
+  open); every move only re-selects the casualty (U18.8 ↔ U18.7 ↔ the east `BAT_RAW`/`LTC_UV`/
+  `LTC_OV` current-path pins ↔ the U18.9 Kelvin), and the one placement that reaches PHASE A
+  COMPLETE (`s_ne0707`) does so ONLY by absorbing a 0.1248 mm `BAT_RAW`↔`BAT_PROTECTED_P`
+  D-269 breach (disqualified).
+- **Root cause (D-292, sharper than D-290):** U18 (LTC4368, MSOP-10) carries a current-path
+  net on BOTH edges — `BAT_PROTECTED_P` (U18.8, west) and `BAT_RAW` (U18.1, east) — at a
+  rigid 0.5 mm pitch, so a rigid translation only re-selects which edge breaches the
+  0.300 mm D-269 floor, and R75 is boxed on all four sides (Q3 south ≤0.55 mm, board edge
+  west, U18 courtyard east, R80/R81 north; its only motion breaks the U18.9 Kelvin).
+- **RE-RAISED OWNER DECISION (see §8):** closing `BAT_PROTECTED_P` (U18.8) now requires a
+  lever OUTSIDE the D-291 envelope — direction-2 (spread the LTC4368 block / relocate an
+  escape target R77/R79/R80/R81), a U18 rotation (a western-block refloorplan that risks the
+  frozen D-275/D-288 bridge), or re-authorizing the D-290-refuted+retired off-layer vacate
+  routing lever. All are OWNER decisions; the autopilot stop file is re-created.
 - **Downstream, still CTO-scope but BLOCKED behind the U18 decision:** extend the D-279
   offload to the `N_POL R86.1→TP23.1` F.Cu run (6.36 mm in the R87.2→node corridor) to open
-  the REF_POL R87.2 corridor; validate only on a full authority run after the placement work.
+  the REF_POL R87.2 corridor; validate only on a full authority run after the U18 decision.
 
 ## 6. Authoritative PCB state
 - **Routing/promotion:** NOT promoted. Authoritative board = **six copper layers,
@@ -230,28 +259,30 @@
   untouched.
 
 ## 8. Open owner decisions
-- **NONE.** D-291 records Alpha's approval of the bounded option-A LTC4368/R75 placement
-  micro-ECO raised by D-290. The autopilot stop file is removed after this decision record
-  is committed; autonomy resumes with FBV2-P2-003S.
-- **The decision:** how to open a legal second escape for the U18.8 `BAT_PROTECTED_P` trunk
-  pad, given that 003R exhausted the bounded routing-only space (ordering D-289, off-layer
-  vacate D-290, via-size all refuted or barred) and the U18.7/U18.8/U18.9 3-into-one-corner
-  contention is an irreducible placement-geometry mutual-exclusion at the 0.5 mm pad pitch vs
-  the 0.300 mm current-path clearance floor. The next move necessarily moves a part.
-- **Options (full engineering consequences + CTO recommendation in the stop file):**
-  - **A (CTO-RECOMMENDED) — a bounded LTC4368/R75 placement micro-ECO (D-284/285 class)** that
-    increases the U18 west-edge sense/control pad-exit spacing or opens a second corridor so
-    all three pins escape without the 0.5 mm-pitch contention. Smallest blast radius; same
-    class as the already-owner-approved D-284 spread; every floor/rule/frozen part preserved
-    except the named micro-move; needs OWNER approval of the *direction* (like D-284), then a
-    CTO engineering pass proves the landing + a supervised full run.
-  - **B — accept the board with U18.8 open.** NOT fabricable: `BAT_PROTECTED_P` is one trunk
-    pad short of closure, so Phase-A cannot pass. Rejected on its face; listed for completeness.
-  - **C — direction-2 corridor widening / broader LTC4368 refloorplan.** Larger mechanical
-    blast radius (was explicitly deferred at D-284 in favour of direction 1); only if A proves
-    insufficient.
-- **Nothing has been changed under this decision:** no part moved, no floor relaxed; the
-  authoritative PCB is untouched pending the owner's direction.
+- **ONE — RE-RAISED by D-292 (FBV2-P2-003S).** The owner-approved bounded LTC4368/R75
+  placement micro-ECO (D-291, option A) has been screened to EXHAUSTION and **cannot legally
+  co-close the U18 escape field** (details §5, §1; audit D-292). Option A is therefore
+  spent; the autopilot stop file is re-created and autonomy is HALTED pending the owner's
+  choice among the remaining (all owner-scope) levers.
+- **The decision:** how to close `BAT_PROTECTED_P` (U18.8) given that BOTH the bounded
+  routing-only space (D-290) AND the bounded U18/R75 placement space (D-292) are exhausted,
+  and the wall is a **both-edges current-path footprint geometry** (U18 carries
+  `BAT_PROTECTED_P` west/U18.8 and `BAT_RAW` east/U18.1, each at a rigid 0.5 mm pitch bound
+  by the 0.300 mm D-269 floor; R75 is boxed).
+- **Options (all now OWNER-scope; engineering consequences):**
+  - **C (now the narrowest remaining) — direction-2:** spread the LTC4368 block and/or
+    relocate an escape target (R77/R79 east, R80/R81 north) so the two opposite-edge
+    current-path nets escape into different corridors. Larger mechanical blast radius than a
+    micro-ECO (was deferred at D-284); needs owner approval of the direction.
+  - **D — re-authorize a routing-side lever** (the D-290-refuted+retired off-layer vacate of
+    U18.7, or a U18.8 POFV / inner-first reorder) at the north placement that opens U18.8's
+    inner via. This re-opens a closed CTO decision (D-290) and is a driver change, not a
+    placement ECO; owner must sanction re-litigating D-290.
+  - **B — accept the board with U18.8 open.** NOT fabricable (`BAT_PROTECTED_P` one trunk
+    pad short of closure); listed for completeness.
+- **Nothing has been changed under this decision:** no part moved, no floor relaxed, no DRC
+  absorbed into the authoritative board; the authoritative PCB is untouched pending the
+  owner's direction.
 
 ## 9. JLCPCB readiness
 - **JLCPCB readiness ~77 %** (unchanged — a bridge-code fix proven on scratch, with the
@@ -269,10 +300,13 @@
 - **Persistent CTO session:** `agent:main:aqroot-fbv2-cto` — sole owner of Claude
   engineering launches; receives every completion event.
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch
-  Claude or become a task parent. D-291 resolves the owner stop; the stop file is absent.
-- **Should an engineering process be active now?** **Yes.** The persistent CTO should run
-  exactly one Claude task: FBV2-P2-003S, the approved bounded placement micro-ECO screen and
-  full-gate integration. The REF_POL R87.2 F.Cu offload remains downstream CTO-scope work.
+  Claude or become a task parent. D-292 re-raises an owner decision; the stop file
+  (`/home/aqroot8/.aqroot-autopilot-stop`) is re-created (OWNER_DECISION) and autonomy is
+  HALTED.
+- **Should an engineering process be active now?** **No.** 003S (D-292) exhausted the
+  owner-approved bounded U18/R75 placement space; the next move is an OWNER decision (§8).
+  No Claude engineering task should run until the owner picks a direction. The REF_POL R87.2
+  F.Cu offload remains downstream CTO-scope work, blocked behind the U18 decision.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
 1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-291**, owner
