@@ -5,10 +5,11 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **SHA:** `e1149f3bfa931883e67cce61b661da9bf6dbaf7c` (branch `master`)
-- **HEAD == origin/master:** yes (committed and pushed at milestone closeout)
-- Milestone at this HEAD: **FBV2-P2-003M / D-286** (baseline-order harness fix +
-  c3_00 measured FAIL).
+- **FBV2-P2-003M / D-286 milestone commit:** `f80f126477476c916f1a177fd21c06c740a5909c`
+  (branch `master`) — the baseline-order harness fix + c3_00 measured FAIL. This
+  checkpoint file is synced by the docs commit immediately following it; a fresh session
+  must confirm the live tip with `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **HEAD == origin/master:** yes (committed and pushed at milestone closeout).
 
 ## 2. Mission
 - Deliver Full Beta v2 to **READY FOR JLCPCB** — a fabricable, assembly-ready
