@@ -345,6 +345,48 @@ GROUPS = {
         layer='F', width=200000, clr_pad=300000, clr_trk=300000,
         via_dia=600000, via_drill=300000, nets=['XGPIO8', 'XGPIO9'],
     ),
+    # FBV2-P2-016 -- the two SOUTHERNMOST west members (individually-screened
+    # single-net entries, mirroring XGPIO4..9).  R52.1 F -> U3.5 B and
+    # R51.1 F -> U3.4 B; U3's southmost GPIO pins, furthest from the crowded
+    # north-of-U3 XGPIO6/7 via pocket.
+    'XGPIO1': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO1 series R52.1 F -> U3.5 B (west edge, south); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO1'],
+    ),
+    'XGPIO0': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO0 series R51.1 F -> U3.4 B (west edge, southmost); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO0'],
+    ),
+    # FBV2-P2-016 WEST PILOT -- the credible coherent adjacent WEST subset chosen
+    # by the recovery screen (w/screen_016.py + w/screen_016_one.py, live D-313
+    # board, D-269 0.300 mm, no via_offset).  XGPIO0 + XGPIO1, the two SOUTHERNMOST
+    # west community-GPIO nets on consecutive PCAL9535A U3 pins (U3.4, U3.5).
+    # Unlike the northern west members (XGPIO6/7 collide in one via pocket), the
+    # southern pair SELF-SEPARATES when routed XGPIO1-first: the screen measured
+    # XGPIO1's via lands in the pocket at (55.40,79.00) and XGPIO0 (routed second,
+    # seeing XGPIO1's laid via as a real obstacle) escapes WEST to (52.75,78.35) --
+    # via-via copper 2.129 mm, both vias >=2.0 mm from the BAT_PROTECTED_P trunk
+    # and >=3.6 mm from every existing barrel, all >> the 0.300 mm D-269 floor
+    # (CLEAN).  ORDER MATTERS: the reverse order (XGPIO0-first) boxes XGPIO1 out
+    # (no legal 0.200 mm corridor from R52.1) -> route XGPIO1 FIRST.  Same D-269
+    # 0.300 mm clearance as the east pilot (BAT_PROTECTED_P crosses the y~73-82
+    # via band), no via_offset (every site is >=2 mm clear of every barrel).
+    'XGPIO_PILOT_W': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO west-edge south pilot: XGPIO1 (R52.1 F -> U3.5 B) + '
+             'XGPIO0 (R51.1 F -> U3.4 B); two adjacent 3V3 CMOS nets, each one '
+             'cross-layer through via, routed XGPIO1-FIRST at the D-269 0.300 mm '
+             'clearance floor (BAT_PROTECTED_P trunk crosses the corridor), no '
+             'via_offset; XGPIO0 self-separates west off XGPIO1 laid via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO1', 'XGPIO0'],
+    ),
 }
 
 

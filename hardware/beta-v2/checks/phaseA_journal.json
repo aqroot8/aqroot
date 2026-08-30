@@ -3190,5 +3190,27 @@
   "mm": 75.2,
   "requested_connected": true,
   "group": "XGPIO_PILOT"
+ },
+ {
+  "net": "/XGPIO1",
+  "a": "R52.1",
+  "b": "U3.5",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 84.499,
+  "requested_connected": true,
+  "group": "XGPIO_PILOT_W"
+ },
+ {
+  "net": "/XGPIO0",
+  "a": "R51.1",
+  "b": "U3.4",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 91.475,
+  "requested_connected": true,
+  "group": "XGPIO_PILOT_W"
  }
 ]

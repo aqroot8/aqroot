@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-313',                 # FBV2-P2-015: XGPIO east-edge pilot XGPIO8+XGPIO9 (R59/R60 F -> U3.13/.14 B), D-269 0.300 mm clearance
-    sha256='a0d6fead125295441dda0f0008c1261f5c1cec39edb2b8c7bd925b214e7207eb',
-    tracks=631,                       # 608 (D-312) + 23 XGPIO8/XGPIO9 (F.Cu haul + B.Cu fan-out)
-    vias=64,                          # 62 (D-312) + 2 XGPIO cross-layer through vias
+    decision='D-314',                 # FBV2-P2-016: XGPIO west-edge SOUTH pilot XGPIO1+XGPIO0 (R52/R51 F -> U3.5/.4 B), XGPIO1-first, D-269 0.300 mm clearance
+    sha256='95bc07be30598df44e5096fd3c51729aa61cdbefd9c9855297e3737ea0b3a605',
+    tracks=669,                       # 631 (D-313) + 38 XGPIO1/XGPIO0 (F.Cu haul + B.Cu fan-out, 19 each)
+    vias=66,                          # 64 (D-313) + 2 XGPIO cross-layer through vias
     copper_layers=6,
     zones=41,
-    ratsnest=679,                     # 681 (D-312) - 2 (XGPIO8 + XGPIO9 edges closed)
-    journal=102,                      # 100 (D-312) + 2 XGPIO REST_INC
+    ratsnest=677,                     # 679 (D-313) - 2 (XGPIO1 + XGPIO0 edges closed)
+    journal=104,                      # 102 (D-313) + 2 XGPIO REST_INC
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

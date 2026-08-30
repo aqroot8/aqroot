@@ -1698,6 +1698,92 @@ def main():
                len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
                len(rgb_trk), len(phaseA_trk), len(phaseA_via)), xg_addonly)
 
+        # -- G28 FBV2-P2-016/D-314 eleventh rest-of-board incremental increment --
+        # The WEST-edge SOUTH XGPIO pilot: XGPIO1 (R52.1 F.Cu -> U3.5 B.Cu) +
+        # XGPIO0 (R51.1 F.Cu -> U3.4 B.Cu), the two SOUTHERNMOST west community-
+        # header GPIO nets on consecutive PCAL9535A U3 pins, routed onto the D-313
+        # board by incremental_router.py.  The D-313 study characterised the eight
+        # west members as crowding ONE north-of-U3 via pocket (the NORTHERN pair
+        # XGPIO6/7 pick the identical site) -- but the recovery screen
+        # (w/screen_016.py + w/screen_016_one.py, live D-313 board) MEASURED that
+        # the SOUTHERN pair SELF-SEPARATES when routed XGPIO1-first: XGPIO1's via
+        # lands in the pocket at (55.40,79.00), then XGPIO0 -- routed SECOND, so
+        # XGPIO1's laid via is a real qb.via() obstacle -- escapes WEST to
+        # (52.75,78.35); via-via copper 2.129 mm, both >=2.0 mm from the
+        # BAT_PROTECTED_P trunk, all >> the 0.300 mm D-269 floor.  Order matters
+        # (the reverse order boxes XGPIO1 out); no via_offset (every site >=2 mm
+        # clear of every barrel).  Same D-269 0.300 mm clearance as the east pilot
+        # (BAT_PROTECTED_P crosses the via band).  G28 pins the increment: both
+        # nets fully copper-connected, copper legal (38 trk 0.200 mm F.Cu+B.Cu,
+        # two 0.60/0.30 through vias), both vias clear of every existing via, the
+        # D-269 0.300 mm BAT_PROTECTED_P clearance kept, and ADD-ONLY (east XGPIO
+        # 23, SD 28, AMP 19, TOUCH 26, IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11,
+        # ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G28 FBV2-P2-016/D-314 rest-of-board incremental increment --')
+        XGW = ('/XGPIO1', '/XGPIO0')
+        xgw_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in XGW]
+        xgw_via = [t for t in all_via if t.GetNetname() in XGW]
+
+        j1 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+              for p in _cc.GetConnectedItems(_pad('U3.5')) if p.GetClass() == 'PAD'}
+        j0 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+              for p in _cc.GetConnectedItems(_pad('U3.4')) if p.GetClass() == 'PAD'}
+        xgw_conn = ('R52.1' in j1 and 'R51.1' in j0)
+        chk('G28 XGPIO1 + XGPIO0 fully copper-connected across the U3 F/B hop',
+            'U3.5 joins R52.1 = %s ; U3.4 joins R51.1 = %s'
+            % ('R52.1' in j1, 'R51.1' in j0), xgw_conn)
+
+        xgw_layers = {t.GetLayerName() for t in xgw_trk}
+        xgw_pnv = collections.Counter(v.GetNetname() for v in xgw_via)
+        xgw_legal = (len(xgw_trk) == 38 and len(xgw_via) == 2
+                     and xgw_layers == {'F.Cu', 'B.Cu'}
+                     and all(t.GetWidth() == 200000 for t in xgw_trk)
+                     and xgw_pnv.get('/XGPIO1') == 1 and xgw_pnv.get('/XGPIO0') == 1
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             and v.GetViaType() == pcbnew.VIATYPE_THROUGH
+                             for v in xgw_via))
+        chk('G28 XGPIO west pilot copper legal (38 trk 0.200 F.Cu+B.Cu, two 0.60/0.30 through vias, 1 via/net)',
+            '%d trk layers=%s, vias=%d per-net=%s dias=%s drills=%s'
+            % (len(xgw_trk), sorted(xgw_layers), len(xgw_via), dict(xgw_pnv),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in xgw_via}),
+               sorted({v.GetDrill() for v in xgw_via})), xgw_legal)
+
+        xgw_other_via = [t for t in all_via if t.GetNetname() not in XGW]
+        xgw_min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                            + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                           for v in xgw_via for o in xgw_other_via), default=1e9)
+        chk('G28 both west-XGPIO vias clear every existing via (>=0.80 mm centre)',
+            'min west-XGPIO-via to other-via centre = %.3f mm' % (xgw_min_gap / 1e6),
+            xgw_min_gap >= 800000)
+
+        xgw_bpp = 1e12
+        for t in [t for t in xgw_trk if t.GetLayerName() == 'F.Cu']:
+            s, e = t.GetStart(), t.GetEnd()
+            for o in bpp_f:
+                os_, oe = o.GetStart(), o.GetEnd()
+                d = min(_ptseg(s.x, s.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(e.x, e.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(os_.x, os_.y, s.x, s.y, e.x, e.y),
+                        _ptseg(oe.x, oe.y, s.x, s.y, e.x, e.y)) - t.GetWidth() / 2.0 - o.GetWidth() / 2.0
+                if d < xgw_bpp:
+                    xgw_bpp = d
+        chk('G28 XGPIO west F.Cu copper keeps the D-269 0.300 mm BAT_PROTECTED_P clearance',
+            'min west-XGPIO->BAT_PROTECTED_P F.Cu edge gap = %.4f mm' % (xgw_bpp / 1e6),
+            xgw_bpp >= 300000 - 1000)
+
+        xgw_addonly = (len(xgw_trk) == 38 and len(xg_trk) == 23 and len(sd_trk) == 28
+                       and len(amp_trk) == 19 and len(tch_trk) == 26 and len(irvs_trk) == 8
+                       and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                       and len(phaseA_via) == 54)
+        chk('G28 increment is ADD-ONLY (east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'xgpio_w=%d (exp 38), xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk),
+               len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
+               len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)), xgw_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))
