@@ -13,7 +13,47 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-007 / D-305 (this checkpoint — SECOND REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
+- **FBV2-P2-008 / D-306 (this checkpoint — THIRD REST-OF-BOARD INCREMENT PROMOTED; FIRST VIA / MIXED-LAYER
+  PRIMITIVE):** a governed CTO **ACCEPT + PROMOTE** — a third rest-of-board net is on the authoritative board,
+  and for the first time the increment uses a **via / mixed-layer route**, with **no Phase-A / FRONT_RGB / ACC
+  casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `c22b9fd` (D-305; pushed;
+  `origin/master` identical). **(1) Same `incremental_router.py`, minimally extended** — three generic mechanics,
+  each forced by a concrete need: `edge_plan` (per-edge layer decision — same-layer B.Cu groups stay
+  byte-identical), `connect_cross` (composes only proven `qrouter` primitives escape→via_site→via→two anchored
+  `connect_role` runs, so **`qrouter.py` is untouched** and the battery driver unaffected), `refill_planes`
+  (re-pours only In1/In4 when a via was laid). **(2) Group selection (measured, prefer a new safe primitive —
+  baseline `f0046eb7…` 483/54/6, ratsnest 697, journal 84; `w/screen_007.py`, READ-ONLY):** CHOSE **DISP_RST
+  (`/DISP_RST_N`)** — one 3-pad display-reset net with pads NOT all on one layer (R16.1/J1.10 F.Cu, U2.8 B.Cu):
+  MST = one SAME-LAYER edge (R16.1↔J1.10, first incremental F.Cu run) + one CROSS-LAYER edge (J1.10↔U2.8, first
+  incremental via / mixed-layer route, ONE 0.60/0.30 Default through via ≥ 0.50 mm min_via), low congestion (2
+  Phase-A items in bbox+2 mm), NONCRITICAL low-speed reset. Rejected: AUDIO_SPK (F.Cu+THT but class-D SWITCHING
+  outputs, excluded), U11_PROG (16 items, coupled to safety-critical BPP path), PWR_SENSE (12 items, congested);
+  FALLBACK held (not needed): IMU_STRAP `BMI270_SDO_ADDR` B.Cu singleton; excluded per mandate
+  community-header/RF/NFC/USB/crystals/rails. **(3) First-via blocker, characterised (not brute-forced):** the
+  through via pierces the In1/In4 GND planes; the stale plane fill had no anti-pad (first gate: `clearance` ×2 +
+  `hole_clearance` ×2 at (52.95,87.0)). Focused evidence — a plain refill drifts ONLY zones 39/40 (In1/In4 GND,
+  +35 pts each, a stored-vs-current `ZONE_FILLER` discrepancy independent of the via) and no other zone — so
+  `route` re-pours EXACTLY In1/In4 when a via was laid; DRC returns to baseline IDENTICALLY (plane byte-equality
+  NOT claimed; standard = DRC-neutral + "only In1/In4 changed"). **(4) The gate (real full-board, D-286):** prior
+  copper deleted/altered = 0 (D-305 483 trk + 54 via multiset is a SUBSET); every new item a target-group net;
+  ONLY In1/In4 GND planes re-poured (all other 39 zones identical); DISP_RST_N fully connected across the hop
+  (open-edges 2→0); 0 prior pairs regressed; pcbnew **ratsnest 697→695** (−2); real kicad-cli DRC no new/worse
+  class. **GATE PASS.** **(5) Promoted:** authoritative `sha256 f0046eb7…04c7cd41` → **`9c0586d8…e3f62259`**;
+  tracks **483→494** (+11 DISP_RST_N); vias **54→55** (+1 F↔B through via); 6 layers / 41 zones unchanged;
+  journal **84→86** (+2 `REST_INC`); board diff **470 ins / 336 del** (all 336 deletions are In1/In4
+  `filled_polygon` xy — the plane re-pour; zero deleted segment/via/footprint lines); real KiCad DRC **identical**
+  (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`). **(6) Tests:**
+  new contract **G20** (+ G18/G19 generalised to pin `phaseA_via`==54 instead of `all_via`==54) →
+  `router_regression.py` **ALL 89 CHECKS PASS (G1–G20)**, deterministic; new probe
+  `checks/incremental_probe_008.py` ALL PASS; `checks/incremental_probe_006/007.py` refreshed ALL PASS;
+  `checks/phaseB_bringup_probe_005.py` updated (494/55/86; 6 routed rest nets, 158 unrouted) ALL PASS. **Open
+  owner decisions: NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback: pre-promotion `sha256
+  f0046eb7…04c7cd41` (D-305; parent `c22b9fd`). Next: **FBV2-P2-009 — continue rest-of-board routing (next
+  bounded group, same framework).** Full analysis:
+  [`audits/2026-08-30-p2-008-d306-third-rest-of-board-incremental-increment-disp-rst-via-promoted.md`](audits/2026-08-30-p2-008-d306-third-rest-of-board-incremental-increment-disp-rst-via-promoted.md).
+  This checkpoint is written in the D-306 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-007 / D-305 (SECOND REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
   **ACCEPT + PROMOTE** — a second rest-of-board net-group is on the authoritative board, with **no Phase-A /
   FRONT_RGB casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `6353bd7`
   (D-304; pushed; `origin/master` identical). **(1) Same reusable lever** `checks/incremental_router.py`

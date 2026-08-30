@@ -50,19 +50,21 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # Authoritative fingerprints.  This is a LIVE integrity probe: it tracks the
 # current promoted board (the frozen per-milestone evidence lives in the audits).
-# Updated at FBV2-P2-007 / D-305, which promoted the second rest-of-board
-# incremental increment (the ACC_3V3_CTL accelerometer-3V3 load-switch control
-# group) onto the D-304 board: 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL = 483
-# tracks; journal 77 + 3 + 4 REST_INC = 84.
-EXPECT_SHA = 'f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41'
-EXPECT_TRACKS = 483
-EXPECT_VIAS = 54
+# Updated at FBV2-P2-008 / D-306, which promoted the THIRD rest-of-board
+# incremental increment (the DISP_RST_N display-reset control net) onto the
+# D-305 board: 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL + 11 DISP_RST_N = 494
+# tracks; the FIRST increment to add a VIA (54 -> 55, the F<->B cross-layer
+# through via) and to re-pour the In1/In4 GND planes for its anti-pad; journal
+# 77 + 3 + 4 + 2 REST_INC = 86.
+EXPECT_SHA = '9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259'
+EXPECT_TRACKS = 494
+EXPECT_VIAS = 55
 EXPECT_LAYERS = 6
-EXPECT_JOURNAL = 84
+EXPECT_JOURNAL = 86
 
 # Rest-of-board nets promoted as accepted incremental increments (D-304 onward).
 ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N
-ACC_3V3_EN ACC_3V3_ILIM""".split())
+ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -86,9 +88,9 @@ def main():
             fails.append(name)
 
     # ------------------------------------------------------------- 1. INTEGRITY
-    print('-- 1. INTEGRITY: promoted board matches the D-305 fingerprints --')
+    print('-- 1. INTEGRITY: promoted board matches the D-306 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == current record (D-305)', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-306)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
@@ -139,7 +141,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-305: FRONT_RGB + ACC_3V3_CTL)',
+    chk('the only routed rest-of-board nets are accepted increments (D-306: FRONT_RGB + ACC_3V3_CTL + DISP_RST_N)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))

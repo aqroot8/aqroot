@@ -1159,10 +1159,15 @@ def main():
         _inc_nets = {e['net'] for e in _jr if e.get('role') == 'REST_INC'}
         phaseA_trk = [t for t in _g18.GetTracks()
                       if t.GetClass() == 'PCB_TRACK' and t.GetNetname() not in _inc_nets]
-        addonly = (len(phaseA_trk) == 432 and len(all_via) == 54 and len(rgb_trk) == 20)
+        # Phase-A vias are the vias NOT owned by a rest-of-board increment net;
+        # they must stay 54 even as later increments add their own vias (D-306
+        # DISP_RST_N is the first, +1) -- so the contract counts phaseA_via, not
+        # all_via, and stays green as the board grows.
+        phaseA_via = [t for t in all_via if t.GetNetname() not in _inc_nets]
+        addonly = (len(phaseA_trk) == 432 and len(phaseA_via) == 54 and len(rgb_trk) == 20)
         chk('G18 increment is ADD-ONLY (Phase-A 432 trk / 54 via preserved)',
-            'phaseA=%d (exp 432), vias=%d (exp 54), rgb tracks=%d (exp 20)'
-            % (len(phaseA_trk), len(all_via), len(rgb_trk)),
+            'phaseA=%d (exp 432), phaseA_vias=%d (exp 54), all_vias=%d, rgb tracks=%d (exp 20)'
+            % (len(phaseA_trk), len(phaseA_via), len(all_via), len(rgb_trk)),
             addonly)
 
         # -- G19 FBV2-P2-007/D-305 second rest-of-board incremental increment ---
@@ -1200,11 +1205,56 @@ def main():
             acc_legal)
 
         acc_addonly = (len(acc_trk) == 31 and len(rgb_trk) == 20
-                       and len(phaseA_trk) == 432 and len(all_via) == 54)
+                       and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
         chk('G19 increment is ADD-ONLY (FRONT_RGB 20 + Phase-A 432 preserved)',
-            'acc=%d (exp 31), rgb=%d (exp 20), phaseA=%d (exp 432), vias=%d (exp 54)'
-            % (len(acc_trk), len(rgb_trk), len(phaseA_trk), len(all_via)),
+            'acc=%d (exp 31), rgb=%d (exp 20), phaseA=%d (exp 432), phaseA_vias=%d (exp 54)'
+            % (len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             acc_addonly)
+
+        # -- G20 FBV2-P2-008/D-306 third rest-of-board incremental increment ----
+        # The DISP_RST_N display-reset control net was routed onto the D-305
+        # promoted board by incremental_router.py.  It is the FIRST increment to
+        # use a via: R16.1<->J1.10 is a pure F.Cu run and J1.10<->U2.8 crosses
+        # F<->B through ONE board-legal 0.60/0.30 Default-netclass through via,
+        # whose barrel required re-pouring the In1/In4 GND planes for its
+        # anti-pad.  G20 pins that increment on the authoritative board: the net
+        # is fully copper-connected across the hop, its copper spans F.Cu AND
+        # B.Cu with exactly one legal via, and the increment is ADD-ONLY -- the
+        # RGB (20) and ACC (31) increments and Phase-A (432 trk / 54 via) are
+        # untouched.
+        print('  -- G20 FBV2-P2-008/D-306 rest-of-board incremental increment --')
+        DISP = ('/DISP_RST_N',)
+        disp_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in DISP]
+        disp_via = [t for t in all_via if t.GetNetname() in DISP]
+
+        joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('J1.10')) if p.GetClass() == 'PAD'}
+        conn_ok = ('R16.1' in joined) and ('U2.8' in joined)
+        chk('G20 DISP_RST_N fully copper-connected across the F/B hop',
+            'J1.10 joined R16.1 & U2.8 = %s (%s)' % (conn_ok, sorted(joined)), conn_ok)
+
+        disp_layers = {t.GetLayerName() for t in disp_trk}
+        _v = disp_via[0] if disp_via else None
+        disp_legal = (len(disp_trk) == 11 and len(disp_via) == 1
+                      and {'F.Cu', 'B.Cu'} <= disp_layers
+                      and all(t.GetWidth() == 200000 for t in disp_trk)
+                      and _v is not None and _v.GetWidth(pcbnew.F_Cu) == 600000
+                      and _v.GetDrill() == 300000
+                      and _v.GetViaType() == pcbnew.VIATYPE_THROUGH)
+        chk('G20 DISP_RST_N copper legal (0.200 F.Cu+B.Cu, one 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d dia=%s drill=%s'
+            % (len(disp_trk), sorted(disp_layers), len(disp_via),
+               _v.GetWidth(pcbnew.F_Cu) if _v else None,
+               _v.GetDrill() if _v else None),
+            disp_legal)
+
+        disp_addonly = (len(disp_trk) == 11 and len(acc_trk) == 31 and len(rgb_trk) == 20
+                        and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
+        chk('G20 increment is ADD-ONLY (RGB 20 + ACC 31 + Phase-A 432/54 preserved)',
+            'disp=%d (exp 11), acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
+            disp_addonly)
 
         print('')
         if FAILED:

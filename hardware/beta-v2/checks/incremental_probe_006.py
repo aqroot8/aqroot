@@ -33,11 +33,11 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # the latest promotion (D-305: the ACC_3V3_CTL increment was added on top of
 # FRONT_RGB -- FRONT_RGB itself is unchanged).  The durable FRONT_RGB pin lives
 # in router_regression G18; this is the live snapshot.
-EXPECT_SHA = 'f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41'
-EXPECT_TRACKS = 483           # 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL (D-305)
-EXPECT_VIAS = 54              # unchanged -- neither increment adds a via
-EXPECT_JOURNAL = 84           # 77 Phase-A + 3 FRONT_RGB + 4 ACC_3V3_CTL REST_INC
-EXPECT_RATSNEST = 697         # 704 - 3 (FRONT_RGB) - 4 (ACC_3V3_CTL)
+EXPECT_SHA = '9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259'
+EXPECT_TRACKS = 494           # 432 PhA + 20 RGB + 31 ACC + 11 DISP_RST_N (D-306)
+EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N F<->B cross-layer through via
+EXPECT_JOURNAL = 86           # 77 PhA + 3 RGB + 4 ACC + 2 DISP_RST REST_INC
+EXPECT_RATSNEST = 695         # 704 - 3 (RGB) - 4 (ACC) - 2 (DISP_RST_N)
 
 # The pre-promotion D-302 authoritative copper (432 trk / 54 via) -- the exact
 # set that must survive the increment unchanged.
@@ -85,13 +85,13 @@ def main():
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (432 Phase-A + 20 FRONT_RGB + 31 ACC)' % EXPECT_TRACKS,
+    chk('track count == %d (432 PhA + 20 RGB + 31 ACC + 11 DISP_RST_N)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
-    chk('via count == %d (increment adds no via)' % EXPECT_VIAS,
+    chk('via count == %d (D-306 DISP_RST_N adds the first REST via)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (704 - 3 FRONT_RGB - 4 ACC closed)' % EXPECT_RATSNEST,
+    chk('ratsnest == %d (704 - 3 RGB - 4 ACC - 2 DISP_RST closed)' % EXPECT_RATSNEST,
         rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
     chk('journal entries == %d (77 Phase-A + 3 + 4 REST_INC)' % EXPECT_JOURNAL,

@@ -2992,5 +2992,27 @@
   "mm": 14.033,
   "requested_connected": true,
   "group": "ACC_3V3_CTL"
+ },
+ {
+  "net": "/DISP_RST_N",
+  "a": "J1.10",
+  "b": "R16.1",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 10.881,
+  "requested_connected": true,
+  "group": "DISP_RST"
+ },
+ {
+  "net": "/DISP_RST_N",
+  "a": "J1.10",
+  "b": "U2.8",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 18.081,
+  "requested_connected": true,
+  "group": "DISP_RST"
  }
 ]

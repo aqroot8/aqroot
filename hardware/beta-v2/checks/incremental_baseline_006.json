@@ -1,10 +1,10 @@
 {
- "sha256": "f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41",
- "tracks": 483,
- "vias": 54,
+ "sha256": "9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259",
+ "tracks": 494,
+ "vias": 55,
  "copper_layers": 6,
- "ratsnest": 697,
- "journal": 84,
+ "ratsnest": 695,
+ "journal": 86,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -401,6 +401,16 @@
    "/01_POWER_TREE/ACC_3V3_ILIM",
    "R97.1",
    "U20.4"
+  ],
+  [
+   "/DISP_RST_N",
+   "J1.10",
+   "R16.1"
+  ],
+  [
+   "/DISP_RST_N",
+   "J1.10",
+   "U2.8"
   ]
  ]
 }

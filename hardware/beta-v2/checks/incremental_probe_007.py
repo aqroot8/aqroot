@@ -30,11 +30,11 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # D-305 promoted-board fingerprints.
-EXPECT_SHA = 'f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41'
-EXPECT_TRACKS = 483           # D-304 452 + 31 ACC_3V3_CTL increment
-EXPECT_VIAS = 54              # unchanged -- the increment adds NO via
-EXPECT_JOURNAL = 84           # 80 (D-304) + 4 REST_INC
-EXPECT_RATSNEST = 697         # 701 (D-304) - 4 (two ACC nets closed: 3+1 edges)
+EXPECT_SHA = '9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259'
+EXPECT_TRACKS = 494           # D-305 483 + 11 DISP_RST_N (D-306)
+EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N cross-layer through via (D-306)
+EXPECT_JOURNAL = 86           # 84 (D-305) + 2 DISP_RST REST_INC
+EXPECT_RATSNEST = 695         # 697 (D-305) - 2 (DISP_RST_N 3-pad net closed)
 
 # The pre-promotion D-304 authoritative sha (452 trk / 54 via) -- the exact set
 # that must survive this increment unchanged.
@@ -80,13 +80,13 @@ def main():
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (452 prior + 31 increment)' % EXPECT_TRACKS,
+    chk('track count == %d (483 prior + 11 DISP_RST_N)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
-    chk('via count == %d (increment adds no via)' % EXPECT_VIAS,
+    chk('via count == %d (D-306 adds the first REST via)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (701 - 4 closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
+    chk('ratsnest == %d (697 - 2 closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
     chk('journal entries == %d (80 + 4 REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
@@ -95,14 +95,18 @@ def main():
         len(inc) == 4, str([(e.get('a'), e.get('b')) for e in inc]))
 
     # --------------------------------- 2. PRIOR COPPER PRESERVED EXACTLY ------
-    print('\n-- 2. D-304 copper preserved EXACTLY (452 trk + 54 via intact) --')
+    print('\n-- 2. Phase-A copper preserved EXACTLY (432 trk + 54 via intact) --')
     now = copper_sigs(b)
     acc_items = collections.Counter({s: n for s, n in now.items() if s[1] in ACC})
-    prior_now = now - acc_items
-    chk('non-ACC copper == 452 tracks + 54 vias (Phase-A + FRONT_RGB intact)',
-        sum(prior_now.values()) == 452 + 54,
-        '%d items' % sum(prior_now.values()))
-    chk('the only new copper is the ACC_3V3_CTL increment (31 tracks, 0 vias)',
+    # Phase-A = everything that is NOT a rest-of-board increment net, so this
+    # stays true as later increments (e.g. D-306 DISP_RST_N) are promoted.
+    inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}
+    phaseA_now = collections.Counter({s: n for s, n in now.items()
+                                      if s[1] not in inc_nets})
+    chk('Phase-A copper == 432 tracks + 54 vias (intact under all increments)',
+        sum(phaseA_now.values()) == 432 + 54,
+        '%d items' % sum(phaseA_now.values()))
+    chk('the ACC_3V3_CTL increment is exactly 31 B.Cu tracks (0 vias)',
         sum(acc_items.values()) == 31 and all(s[0] == 'T' for s in acc_items),
         '%d items, all tracks=%s' % (sum(acc_items.values()),
                                      all(s[0] == 'T' for s in acc_items)))

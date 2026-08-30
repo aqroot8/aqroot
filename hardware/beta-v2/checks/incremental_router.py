@@ -83,6 +83,27 @@ GROUPS = {
         layer='B', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['ACC_3V3_EN', 'ACC_3V3_ILIM'],
     ),
+    # FBV2-P2-008 / D-306 -- display reset control DISP_RST_N.  A single 3-pad
+    # noncritical low-speed reset line whose pads DO NOT all share one layer:
+    # R16.1 and J1.10 are F.Cu SMD, U2.8 is B.Cu SMD.  Its MST therefore has one
+    # SAME-LAYER edge (R16.1<->J1.10, a pure F.Cu run -- the FIRST incremental
+    # F.Cu route) and one CROSS-LAYER edge (J1.10<->U2.8, which must transition
+    # F<->B through ONE board-legal through via -- the FIRST incremental via /
+    # mixed-layer route).  The via is the Default netclass geometry the KiCad
+    # DRC enforces here: 0.60 mm diameter / 0.30 mm drill (>= the 0.50 mm
+    # min_via_diameter and 0.30 mm floor; NOT a microvia, not a POFV).  Widths
+    # and clearances are the Default netclass floor (0.200 mm).  Low congestion:
+    # only 2 accepted Phase-A copper items lie within the group bbox+2 mm.
+    'DISP_RST': dict(
+        sheet='03_SPI_A_DISPLAY_SD',
+        desc='display reset DISP_RST_N (R16.1/J1.10 F.Cu, U2.8 B.Cu); '
+             'noncritical low-speed reset line -- first incremental F.Cu run '
+             '(R16.1<->J1.10) + first incremental cross-layer through via '
+             '(J1.10<->U2.8, 0.60/0.30 Default netclass), no other via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['DISP_RST_N'],
+    ),
 }
 
 
@@ -130,6 +151,105 @@ def resolve_nets(qb, group):
 
 def net_pads(qb, netfull):
     return [d for (nm, tag), d in qb.pads.items() if nm == netfull]
+
+
+def _pad_layers(p):
+    """The set of outer copper layers a pad has copper on ('F' and/or 'B')."""
+    return {L for L in ('F', 'B') if p.get(L)}
+
+
+def edge_plan(pa, pb, group):
+    """Decide how ONE MST edge is routed from its two pads' layers.
+
+    * SAME-LAYER (the pads share a routable outer layer) -> a flat run on that
+      layer with QR.connect_role.  The layer preferred is the group's declared
+      `layer` when it is one of the shared layers (so THT pads, which are on
+      BOTH faces, and all-B / all-F groups behave exactly as before), else the
+      single shared layer.
+    * CROSS-LAYER (the pads have NO shared outer layer, e.g. one F.Cu SMD and
+      one B.Cu SMD) -> a single board-legal through via via connect_cross.
+    Returns (layer_or_None, 'same'|'cross')."""
+    common = _pad_layers(pa) & _pad_layers(pb)
+    if common:
+        L = group['layer'] if group['layer'] in common else sorted(common)[0]
+        return L, 'same'
+    return None, 'cross'
+
+
+def connect_cross(qb, net, pa, pb, group, G=50000, fine=25000):
+    """Route ONE cross-layer edge (pads on opposite outer faces) with exactly
+    ONE board-legal through via, composing only proven qrouter primitives:
+
+        escape(host, near) -> via_site(near, far) -> via(0.60/0.30) ->
+        connect_role(host -> anchor@via, near) + connect_role(run -> anchor@via, far)
+
+    The via geometry, the all-copper-layer clearance and the net-agnostic
+    hole-to-hole floor are exactly what QBoard.via_site already enforces (the
+    same legality connect_hop relies on); the two runs land on the via centre,
+    which is same-net copper and therefore not an obstacle to either.  No
+    qrouter.py behaviour is changed -- this is a new caller of existing methods.
+    """
+    w, cp, ct = group['width'], group['clr_pad'], group['clr_trk']
+    vd = group.get('via_dia', 600000)
+    vk = group.get('via_drill', 300000)
+
+    def only(p):
+        s = _pad_layers(p)
+        return next(iter(s)) if len(s) == 1 else None
+    near = only(pb)          # host the via beside pb (its single face)
+    far = only(pa)           # run the far layer to pa
+    if near is None or far is None or near == far:
+        return dict(ok=False, reason='NOT_CROSS',
+                    why='connect_cross needs two opposite single-layer pads '
+                        '(%s on %s, %s on %s)'
+                        % (pa['ref'], sorted(_pad_layers(pa)),
+                           pb['ref'], sorted(_pad_layers(pb))))
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    fail = dict(ok=False, reason='NO_VIA_SITE',
+                why='no reachable %s->%s via site for %s/%s'
+                    % (near, far, pb['ref'], pa['ref']))
+    for G_try in (G, fine):
+        e = qb.escape(pb, near, w, w, cp, ct, G_try, ox, oy,
+                      prefer=(pa['x'] - pb['x'], pa['y'] - pb['y']))
+        if not e:
+            return dict(ok=False, reason='NO_LEGAL_ESCAPE',
+                        why=qb.escape_why[0], pad=pb['ref'])
+        site = None
+        for c in e[:6]:
+            st = qb.via_site(near, far, net, c, w, vd, cp, ct, G_try,
+                             via_drill=vk)
+            if st is not None:
+                site = st
+                break
+        if site is None:
+            continue
+        vx, vy = site
+        m = qb.mark()
+        qb.via(net, vx, vy, vd, vk)
+        anchor = dict(ref='(via)', x=int(vx), y=int(vy), F=True, B=True,
+                      anchor=True, net=net,
+                      shape=QR.RR(int(vx), int(vy), 1, 1, 0, 0, net, 'via'),
+                      hx=1, hy=1, r=0, ang=0, tht=False)
+        rn = QR.connect_role(qb, net, pb, anchor, near, w, cp, ct, G=G_try)
+        if not rn.get('ok'):
+            qb.revert(m)
+            fail = dict(ok=False, reason='NO_NEAR_RUN', why=rn.get('why'),
+                        pad=pb['ref'])
+            continue
+        rf = QR.connect_role(qb, net, pa, anchor, far, w, cp, ct, G=G_try)
+        if not rf.get('ok'):
+            qb.revert(m)
+            fail = dict(ok=False, reason='NO_FAR_RUN', why=rf.get('why'),
+                        pad=pa['ref'])
+            continue
+        return dict(ok=True, mm=rn['mm'] + rf['mm'], vias=1,
+                    layer='%s+%s via' % (far, near),
+                    via_xy=[(round(vx / 1e6, 3), round(vy / 1e6, 3))],
+                    why='cross-layer %s/%s through via 0.%03d/0.%03d mm at '
+                        '(%.3f,%.3f)'
+                        % (far, near, vd // 1000, vk // 1000,
+                           vx / 1e6, vy / 1e6))
+    return fail
 
 
 def mst_edges(pads):
@@ -189,6 +309,47 @@ def scratch_pcb(name):
     return os.path.join(WORK, 'INC_' + name, RU.PCBNAME)
 
 
+# --------------------------------------------------------------------------- #
+# In1/In4 GND REFERENCE PLANES.  D-rules and [[fbv2-p2 In1/In4 GND roles]] pin
+# In1.Cu and In4.Cu as the two solid GND reference planes.  A through via on a
+# SIGNAL net crosses both, and the plane must open a clearance anti-pad around
+# the barrel or DRC answers `clearance`/`hole_clearance` (measured: the first
+# DISP_RST_N via, before any refill, showed 0.000 mm to both planes).  The B.Cu
+# increments never laid a via so this never arose; the first via increment does.
+# We therefore re-pour EXACTLY these two plane zones (and nothing else) when a
+# via was laid -- every other zone, and every Phase-A track/via, is left byte-
+# identical.  The plane fill is not byte-reproducible by the current KiCad
+# ZONE_FILLER (a stored-vs-current drift of ~35 poly-points per plane exists
+# independent of the via), so the re-pour is proven SAFE by the real full-board
+# DRC being unchanged, not by byte-equality of the plane polygons.
+def plane_zones(board):
+    """The In1/In4 GND reference-plane zones (order-stable index + zone)."""
+    out = []
+    for i, z in enumerate(board.Zones()):
+        lyrs = {pcbnew.BOARD.GetStandardLayerName(L)
+                for L in z.GetLayerSet().CuStack()}
+        if z.GetNetname() == 'GND' and lyrs and lyrs <= {'In1.Cu', 'In4.Cu'}:
+            out.append((i, z))
+    return out
+
+
+def zone_fp(z):
+    """Fingerprint a zone's identity + fill (net, layers, priority, points)."""
+    lyrs = tuple(sorted(pcbnew.BOARD.GetStandardLayerName(L)
+                        for L in z.GetLayerSet().CuStack()))
+    pts = sum(z.GetFilledPolysList(L).FullPointCount()
+              for L in z.GetLayerSet().CuStack())
+    return (z.GetNetname(), lyrs, z.GetAssignedPriority(), pts)
+
+
+def refill_planes(board):
+    """Re-pour only the In1/In4 GND reference planes; return their indices."""
+    planes = plane_zones(board)
+    if planes:
+        pcbnew.ZONE_FILLER(board).Fill([z for _, z in planes])
+    return [i for i, _ in planes]
+
+
 def cmd_route(name):
     group = GROUPS[name]
     pcb = RU.fresh(WORK, 'INC_' + name)          # copy of the authoritative project
@@ -206,16 +367,31 @@ def cmd_route(name):
         pads = [pads_by_ref[r] for r in order]
         for (i, j) in mst_edges(pads):
             pa, pb = pads[i], pads[j]
-            r = QR.connect_role(qb, nf, pa, pb, layer, w, cp, ct)
+            el, kind = edge_plan(pa, pb, group)
+            if kind == 'same':
+                r = QR.connect_role(qb, nf, pa, pb, el, w, cp, ct)
+                elabel, vias = el + '.Cu', 0
+            else:
+                r = connect_cross(qb, nf, pa, pb, group)
+                elabel, vias = r.get('layer', 'cross'), r.get('vias', 0)
             rec = dict(net=base, netfull=nf, a=pa['ref'], b=pb['ref'],
-                       layer=layer + '.Cu', w=w / 1e6, ok=bool(r.get('ok')),
-                       mm=round(r.get('mm', 0), 3), reason=r.get('reason'),
-                       why=r.get('why'))
+                       layer=elabel, w=w / 1e6, ok=bool(r.get('ok')),
+                       mm=round(r.get('mm', 0), 3), vias=vias,
+                       via_xy=r.get('via_xy'), kind=kind,
+                       reason=r.get('reason'), why=r.get('why'))
             jrn.append(rec)
-            print('  %-14s %-8s -> %-8s %s %s'
-                  % (base, pa['ref'], pb['ref'],
+            print('  %-12s %-8s -> %-8s [%-4s %s] %s %s'
+                  % (base, pa['ref'], pb['ref'], kind, elabel,
                      'ok %.3f mm' % r['mm'] if r.get('ok') else 'FAIL ' + str(r.get('reason')),
                      r.get('why', '') or ''))
+    # A through via crosses the In1/In4 GND planes; re-pour ONLY those two so
+    # the barrel gets its clearance anti-pad.  No via -> no refill -> the B.Cu
+    # increments stay byte-identical exactly as before.
+    nvia = sum(1 for v in qb.laid if v.GetClass() == 'PCB_VIA')
+    if nvia:
+        idx = refill_planes(qb.b)
+        print('  REFILLED %d In1/In4 GND plane zone(s) %s for %d new via(s) '
+              '(anti-pad); all other zones untouched' % (len(idx), idx, nvia))
     qb.save(pcb)
     json.dump(jrn, open(os.path.join(WORK, 'INC_' + name, 'route_journal.json'), 'w'), indent=1)
     allok = all(r['ok'] for r in jrn)
@@ -274,6 +450,31 @@ def cmd_gate(name, promote=False):
     chk(not oos, 'every new copper item is a target-group net',
         '(%d out-of-scope new items)' % len(oos))
     chk(len(added) > 0, 'copper was actually added', '(%d new items)' % sum(added.values()))
+
+    # -- 1b. ZONES preserved: only the In1/In4 GND reference planes may re-pour -
+    # (to carve a through-via anti-pad); every OTHER zone must be byte-identical
+    # in net / layers / priority / filled-poly count, and even the planes may
+    # only change their FILL, never their identity.  A B.Cu increment lays no
+    # via, so no plane re-pours and this reduces to "all zones identical".
+    a_zones, r_zones = list(ab.Zones()), list(rb.Zones())
+    plane_idx = {i for i, _ in plane_zones(rb)}
+    zchg, zbad = [], []
+    if len(a_zones) != len(r_zones):
+        zbad.append('zone COUNT %d->%d' % (len(a_zones), len(r_zones)))
+    else:
+        for i, (za, zr) in enumerate(zip(a_zones, r_zones)):
+            fa, fr = zone_fp(za), zone_fp(zr)
+            if fa == fr:
+                continue
+            zchg.append(i)
+            if fa[:3] != fr[:3]:
+                zbad.append('zone %d IDENTITY %s->%s' % (i, fa[:3], fr[:3]))
+            elif i not in plane_idx:
+                zbad.append('zone %d (non-plane) fill %d->%d' % (i, fa[3], fr[3]))
+    chk(not zbad,
+        'only In1/In4 GND planes re-poured; all other zones identical',
+        '(fill-changed zones=%s plane-set=%s%s)'
+        % (zchg, sorted(plane_idx), '' if not zbad else ' BAD=' + str(zbad)))
 
     # -- 2. requested connectivity GAIN: each target net fully connected -------
     # GetConnectedPads(pad) lists pads joined to `pad` by COPPER (ratsnest
@@ -373,9 +574,12 @@ def cmd_gate(name, promote=False):
     print('  DRC after:', dict(dc))
 
     verdict = not fails
+    new_vias = sum(1 for sig in added if sig[0] == 'V')
     art = dict(group=name, scratch=pcb, scratch_sha=sha256(pcb),
                auth_sha_pre=base['sha256'],
                new_copper_items=sum(added.values()),
+               new_vias=new_vias,
+               planes_repoured=sorted(plane_idx), zones_fill_changed=zchg,
                ratsnest_before=base['ratsnest'], ratsnest_after=rats_after,
                connections_gained=exp_drop,
                drc_before=b_drc, drc_after=dict(dc),
