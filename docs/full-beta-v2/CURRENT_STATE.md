@@ -13,7 +13,39 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-004B2 / D-302 (this checkpoint — FIRST AUTHORITATIVE COPPER):** the **first authoritative
+- **FBV2-P2-005 / D-303 (this checkpoint — PHASE-B BRING-UP):** a governed CTO **CHARACTERIZATION +
+  INTEGRITY + SCOPING** milestone on the promoted board — **no copper change, authoritative PCB byte-identical
+  (`sha256 63a9bc54…f87d6ba9`), autonomy CONTINUES, no owner decision.** Starting HEAD `01a38a5` (D-302; pushed;
+  `origin/master` identical). **(1) Exact Phase-B definition (from the code):** "Phase B" here is the
+  battery-block REPLAY / IDEMPOTENCE verification of the D-271 discipline, **NOT** rest-of-board routing —
+  `replay_battery_block.py` (verbatim scratch→authoritative promotion), `route_battery_block.py` SECTION 17
+  `AQROOT_REPLAY` (independent journal reproduction, frozen order / pinned widths / `passes=2`, on a clean
+  scratch), `phaseB_compare.py` (the A-vs-B gate); the driver is **power-tree scoped ONLY**. **(2) Integrity
+  re-verified:** `HEAD == origin/master == 01a38a5`, clean; PCB `sha256 63a9bc54…f87d6ba9` / size 1475931;
+  **432 tracks / 54 vias / 6 layers / 41 zones / 324 footprints**; journal **77 entries**; **all 432 routed
+  tracks are in-scope power-tree nets (0 out-of-scope) → Phase-A battery-block copper ONLY**;
+  `router_regression.py` = **ALL 79 CHECKS PASS (G1–G17)**; shared journal not mutated. **(3) The existing
+  Phase-B drivers assume a copper-EMPTY base (the sharply-characterized blocker, proven):**
+  `replay_battery_block.py:40-42` refuses a non-empty authoritative board (`raise SystemExit`) → post-promotion
+  (432 tracks) it can never re-run (role already fulfilled byte-identically by D-302); SECTION-17 replay
+  (`:2297`) SKIPS every `role=='TRUNK+ESCAPE'` entry — **exactly the one entry defining the promotion**
+  (`BAT_PROTECTED_P U11.2→C36.1, w=1.5, reinforcement=True`) → a replay carries 76/77 items, drops the wall
+  closure, would NOT reproduce the board; `phaseB_compare.py` needs a `phaseB.json` never produced. The replay
+  machinery predates the D-297/D-299/D-301/D-302 levers and is **stale**. **(4) The promotion is sound
+  regardless:** byte-identical to a scratch from a GENUINE full-authority Phase-A gate (`run_003t_full.sh 004b2`,
+  `DRIVER_EXIT=0`, PHASE A COMPLETE) — real driver / real order, not a proxy (D-286) — DRC zero new copper
+  classes, regression ALL PASS. **(5) Real remaining Phase-B, scoped (next lever):** rest-of-board = **164
+  multi-pad nets, 0 routed** across 9 subsystem sheets + rails (GND 259 pads, +3V3 86; 09_COMMUNITY_HEADER 20
+  nets, 04_SPI_B_RADIOS_NFC 20, 01_POWER_TREE-beyond-block 18, top 17, 08_BUTTONS_EXPANDERS 10, …) = ~85 % of
+  remaining routing with **NO driver** — the next lever is a **new scoped INCREMENTAL driver** that loads the
+  promoted board, **PRESERVES the Phase-A copper** (never erase/reroute), routes a bounded isolated net-group
+  first, gated by real full-board DRC (D-286), promoted only on a genuine no-casualty / no-new-DRC increment.
+  Added `checks/phaseB_bringup_probe_005.py` (READ-ONLY, reproducible; ALL PASS). **Open owner decisions: NONE;**
+  `JLCPCB_READINESS` unchanged (~77 %). Next: **FBV2-P2-006 — begin rest-of-board routing.** Full analysis:
+  [`audits/2026-08-30-p2-005-d303-phaseB-bringup-characterization-integrity-scope.md`](audits/2026-08-30-p2-005-d303-phaseB-bringup-characterization-integrity-scope.md).
+  This checkpoint is written in the D-303 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-004B2 / D-302 (prior checkpoint — FIRST AUTHORITATIVE COPPER):** the **first authoritative
   Phase-A copper promotion** is COMMITTED. The verified `AQROOT_U11_RETARGET`→`C36.1` full-run board
   (`run_004b2_full.log`, `DRIVER_EXIT=0`, PHASE A COMPLETE) becomes the authoritative PCB — **byte-identical**
   to the `checks/w/FULL003T_004b2_u11retarget` scratch (`sha256 63a9bc54…f87d6ba9`): **432 tracks, 54 vias,
@@ -200,9 +232,19 @@
 - Terminal condition: **READY FOR JLCPCB**.
 
 ## 3. Current phase / gate
-- **Phase P2 — battery/power-block Phase-A routing**, specifically completing a full Phase-A run at
-  the D-293 direction-2 placement `t_a_r77e15n10_r79e15n10` with `BAT_PROTECTED_P` closed.
-- **Current fabrication blocker (updated by D-301).** Direction-2 (D-294) plus the accepted bounded
+- **Phase P2 — battery/power-block Phase-A routing is COMPLETE and PROMOTED (D-302).** The authoritative
+  board carries **432 tracks / 54 vias / 6 layers** of Phase-A battery-block copper (all in-scope power-tree
+  nets, 0 out-of-scope), DRC zero new copper classes, `router_regression` ALL 79 PASS.
+- **FBV2-P2-005 / D-303 defined "Phase B" and scoped the real remaining routing.** In-repo "Phase B"
+  (`replay_battery_block.py` / SECTION-17 `AQROOT_REPLAY` / `phaseB_compare.py`) is the battery-block
+  replay/idempotence verification and is now **stale + assumes a copper-empty base** (do NOT naively re-run;
+  see §1). The promotion is sound without it (rests on a genuine full-authority gate, D-286).
+- **Current fabrication blocker (updated by D-303): rest-of-board routing.** The board is Phase-A only —
+  **164 multi-pad nets across 9 subsystem sheets + rails (GND 259 pads, +3V3 86, …) are UNROUTED** (ratsnest
+  704 / unconnected_items 499). There is **no driver** for these (route_battery_block is power-tree scoped).
+  The next lever is a new scoped INCREMENTAL rest-of-board driver that preserves the accepted Phase-A copper,
+  routes a bounded isolated net-group first, and is gated by real full-board DRC (D-286) — FBV2-P2-006 (§5).
+- **Historical Phase-A blocker context (all CLOSED under D-302), updated by D-301.** Direction-2 (D-294) plus the accepted bounded
   levers (D-297 U18.8 In3-join, D-298/D-299 U19CAP, **D-301 LTC_GATE_KO**) have resolved the west/BAT_RAW,
   U18.8, the saturated U19 dead-cell field **and** the `LTC_GATE U18.10→Q3.4` join; **the SINGLE remaining
   Phase-A fabrication blocker is now `U11.2 escape: none exists`** — the `BAT_PROTECTED_P` **1.5 mm
@@ -389,8 +431,22 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-004B (the `U11.2` BPP trunk-endpoint retarget lever)
-- **Where 004A left it (D-301).** `LTC_GATE U18.10→Q3.4` is now CLOSED (accepted `AQROOT_LTCGATE_KO`
+## 5. Next task — FBV2-P2-006 (begin rest-of-board routing)
+- **Where 005 left it (D-303).** Phase-A battery-block copper is promoted and integrity-verified; the in-repo
+  Phase-B replay machinery is stale/copper-empty-assuming (do not naively re-run — §1); the real remaining
+  work is rest-of-board routing (164 unrouted multi-pad nets, 9 subsystem sheets + rails, ~85 % of routing).
+- **The lever (FBV2-P2-006).** Build a **new, scoped, INCREMENTAL rest-of-board driver** that: LOADS the
+  promoted authoritative board and **PRESERVES the accepted Phase-A power-tree copper** (never erase/reroute —
+  an accepted invariant); routes a **bounded, isolated net-group first** (recommend a small self-contained
+  subsystem — a low-pin-count peripheral or a short bus segment); is gated by **real full-board DRC** (D-286);
+  and promotes **only a genuine no-casualty / no-new-DRC increment** under the established workflow. The
+  one-shot `replay_battery_block.py` (copper-empty-base guard) must be generalized for incremental promotion or
+  replaced by a new incremental promoter. All floors ENFORCED (D-249 ≥1.20 mm BPP, D-269 0.300 mm, D-257 via
+  ladder, 0.60 mm BAT_MAIN, 0.200/0.150 signal, 0.25 hole-hole, D-275/D-288 bridge); no DRU/rule relaxation,
+  no D-290 reauth, no topology/footprint/outline change. Promote copper only on a genuine full-board DRC-clean
+  increment.
+- **Superseded (kept for context) — FBV2-P2-004B (the `U11.2` BPP trunk-endpoint retarget lever), CLOSED by
+  D-302.** `LTC_GATE U18.10→Q3.4` is CLOSED (accepted `AQROOT_LTCGATE_KO`
   lever). The full run is the FIRST to reach the final `u11_escape()` step, and the single terminal
   Phase-A wall is now **`U11.2 escape: none exists`**. Copper is still NOT promoted.
 - **Root cause (measured, `checks/w/phaseA_003t_full_004a_ltcgate1.json` + `w/run_004a_full.log`,
@@ -431,9 +487,17 @@
   and the BAT_RAW R89.1/R86.2 divider taps.
 
 ## 6. Authoritative PCB state
-- **Routing/promotion:** NOT promoted. Authoritative board = **six copper layers,
-  0 signal tracks, 0 signal vias** (verified `sha256 2235e273…d642d7e`, byte-identical to HEAD);
-  placement untouched (C36 home 63.75,73.75,0°; U18 home 3.0,72.4,90°). All 003O/003T/003W bridge/
+- **Routing/promotion (D-302): FIRST AUTHORITATIVE COPPER PROMOTED.** Authoritative board = **six copper
+  layers, 432 signal tracks, 54 vias, 41 zones** (verified `sha256 63a9bc54…f87d6ba9`, size 1475931), carrying
+  **Phase-A battery-block copper ONLY** (all 432 tracks in-scope power-tree; 0 out-of-scope); direction-2
+  placement (fingerprint `397dffe1f77e4d10`; U18 moved to (8.0,66.5,180°), C36.1 at (63.750,74.325)); 77-entry
+  `phaseA_journal.json`; regenerated 119-rule DRU (the accepted D-249/D-257/D-258/D-263/D-264/D-266/D-269
+  per-net set, NOT a relaxation). Real KiCad DRC `{hole_clearance:5, lib_footprint_issues:199,
+  solder_mask_bridge:1, unconnected_items:499}` — zero new copper classes. **Rest of board (164 multi-pad
+  nets, 9 sheets + rails) UNROUTED** (ratsnest 704 / unconnected 499). **Rollback:** pre-promotion PCB
+  `sha256 2235e273…d642d7e` (parent `56d0ebe`, tag `beta-v2-p2-pre-copper-authoritative`).
+- **(historical) prior authoritative PCB state before D-302** = six copper layers, 0 signal tracks, 0 signal
+  vias (`sha256 2235e273…d642d7e`, byte-identical to the pre-promotion HEAD). All 003O/003T/003W bridge/
   full-run copper lived only in gitignored scratch (`checks/w/`) and override files; the natural-run
   003O result `checks/phaseA_003o_b1_r75rot_cto.json` is committed as evidence of record, and the
   003T/003W full-authority results stay gitignored under scratch

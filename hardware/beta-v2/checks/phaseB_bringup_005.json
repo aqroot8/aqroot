@@ -1,0 +1,293 @@
+{
+ "sha256": "63a9bc54e16cd1b2c69ad41cd95a2bb4d3e258503cb12b5628885debf87d6ba9",
+ "tracks": 432,
+ "vias": 54,
+ "copper_layers": 6,
+ "journal": 77,
+ "power_tree_routed_nets": 29,
+ "rest_of_board_nets": 164,
+ "rest_of_board_routed": 0,
+ "rest_by_sheet": {
+  "09_COMMUNITY_HEADER": {
+   "nets": 20,
+   "pads": 65
+  },
+  "(top)": {
+   "nets": 17,
+   "pads": 387
+  },
+  "ACC_5V_SW": {
+   "nets": 1,
+   "pads": 7
+  },
+  "ACC_3V3_SW": {
+   "nets": 1,
+   "pads": 15
+  },
+  "06_AUDIO": {
+   "nets": 4,
+   "pads": 10
+  },
+  "03_SPI_A_DISPLAY_SD": {
+   "nets": 5,
+   "pads": 21
+  },
+  "SD_CARD_DETECT_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "I2C_SDA_INT": {
+   "nets": 1,
+   "pads": 10
+  },
+  "AMP_SD_MODE": {
+   "nets": 1,
+   "pads": 3
+  },
+  "WAKE_INT_N": {
+   "nets": 1,
+   "pads": 6
+  },
+  "BMI270_INT1_STRAP": {
+   "nets": 1,
+   "pads": 4
+  },
+  "02_MCU_CORE": {
+   "nets": 4,
+   "pads": 13
+  },
+  "SPI_B_SCK": {
+   "nets": 1,
+   "pads": 4
+  },
+  "SPI_B_MOSI": {
+   "nets": 1,
+   "pads": 4
+  },
+  "SPI_B_MISO": {
+   "nets": 1,
+   "pads": 4
+  },
+  "CC1101_CS_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "CC1101_GDO0": {
+   "nets": 1,
+   "pads": 2
+  },
+  "IR_TX_GPIO16": {
+   "nets": 1,
+   "pads": 2
+  },
+  "SX1262_CS_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "NFC_IRQ": {
+   "nets": 1,
+   "pads": 2
+  },
+  "SX1262_BUSY": {
+   "nets": 1,
+   "pads": 2
+  },
+  "USB_D_MCU_N": {
+   "nets": 1,
+   "pads": 2
+  },
+  "USB_D_MCU_P": {
+   "nets": 1,
+   "pads": 2
+  },
+  "NFC_CS_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "DISP_CS_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "SPI_A_MOSI": {
+   "nets": 1,
+   "pads": 3
+  },
+  "SPI_A_SCK": {
+   "nets": 1,
+   "pads": 3
+  },
+  "SPI_A_MISO": {
+   "nets": 1,
+   "pads": 3
+  },
+  "DISP_DC": {
+   "nets": 1,
+   "pads": 2
+  },
+  "NATIVE_B": {
+   "nets": 1,
+   "pads": 2
+  },
+  "SD_CS_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "NATIVE_A": {
+   "nets": 1,
+   "pads": 2
+  },
+  "I2S_BCLK": {
+   "nets": 1,
+   "pads": 3
+  },
+  "I2S_LRCLK": {
+   "nets": 1,
+   "pads": 3
+  },
+  "I2S_SPK_DOUT": {
+   "nets": 1,
+   "pads": 2
+  },
+  "I2S_MIC_DIN": {
+   "nets": 1,
+   "pads": 3
+  },
+  "IR_RX_GPIO44": {
+   "nets": 1,
+   "pads": 3
+  },
+  "I2C_SCL_INT": {
+   "nets": 1,
+   "pads": 10
+  },
+  "07_IR": {
+   "nets": 4,
+   "pads": 12
+  },
+  "01_POWER_TREE": {
+   "nets": 18,
+   "pads": 78
+  },
+  "DISP_BL_CTL": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO9": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO3": {
+   "nets": 1,
+   "pads": 2
+  },
+  "08_BUTTONS_EXPANDERS": {
+   "nets": 10,
+   "pads": 33
+  },
+  "TOUCH_RST_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "XGPIO0": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO6": {
+   "nets": 1,
+   "pads": 2
+  },
+  "DISP_RST_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "TOUCH_INT_N": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO1": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO5": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO8": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO7": {
+   "nets": 1,
+   "pads": 2
+  },
+  "ACC_DETECT_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "05_I2C_DEVICES": {
+   "nets": 2,
+   "pads": 5
+  },
+  "XGPIO4": {
+   "nets": 1,
+   "pads": 2
+  },
+  "XGPIO2": {
+   "nets": 1,
+   "pads": 2
+  },
+  "NFC_SUPPLY": {
+   "nets": 1,
+   "pads": 7
+  },
+  "ACC_5V_BOOST_EN": {
+   "nets": 1,
+   "pads": 4
+  },
+  "04_SPI_B_RADIOS_NFC": {
+   "nets": 20,
+   "pads": 58
+  },
+  "SX1262_RST_N": {
+   "nets": 1,
+   "pads": 3
+  },
+  "ACC_5V_SW_EN": {
+   "nets": 1,
+   "pads": 4
+  },
+  "NFC_5V_EN": {
+   "nets": 1,
+   "pads": 4
+  },
+  "BQ25185_STAT1": {
+   "nets": 1,
+   "pads": 4
+  },
+  "BQ25185_STAT2": {
+   "nets": 1,
+   "pads": 4
+  },
+  "SX1262_DIO1": {
+   "nets": 1,
+   "pads": 2
+  },
+  "ACC_POWER_FAULT_N": {
+   "nets": 1,
+   "pads": 6
+  },
+  "ACC_3V3_EN": {
+   "nets": 1,
+   "pads": 4
+  },
+  "SX1262_RXEN": {
+   "nets": 1,
+   "pads": 3
+  },
+  "ACC_PWR_EN": {
+   "nets": 1,
+   "pads": 3
+  }
+ },
+ "fails": []
+}
