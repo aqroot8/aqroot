@@ -157,6 +157,57 @@ U19CAP = bool(os.environ.get('AQROOT_U19CAP'))
 # The reserved lane: a B.Cu keep-out centred just east of the U19 east row,
 # spanning U19.7 (y28.58) and U19.6 (y27.93).  (x0,y0,x1,y1,half-width) in nm.
 U19CAP_KO = (4700000, 27550000, 4700000, 28950000, 700000)
+# D-301 / FBV2-P2-004A: the LTC_GATE U18.10->Q3.4 join PATH-SHAPING lever
+# (ACCEPTED, OFF by default, +1 genuine connected-set gain under the full gate).
+#
+# The join is a D256_FCU connect_hop (near=B escapes, through via, run on
+# far=F/I2/I3) routed EARLY in section 8b.  Its greedy central far run is the
+# diagonal (5.15,64.75)->(5.15,63.6)->(2.25,60.7)->(1.9,60.7); it grazes the
+# BAT_SENSE 1.0 mm current-path track (2.8,62.05)-(5.4,62.05) at ~(3.59,62.04),
+# so the real gate() rejects it on D-269 alone (clearance 0.2803 vs 0.300 mm,
+# ~19.7 um short -- FINE_ESC legalises the D-257 via, so there is NO D-249
+# track_width violation in the real path; the audit's "0.20 mm D-249" was a raw-
+# connect_hop probe artifact that bypassed FINE_ESC).  connect_hop will not take
+# the longer clean detour while the central corridor is offered (D-300: a pure
+# re-order is a NULL op - the driver re-takes the identical central path).  So
+# install a FOREIGN keep-out over the rule-violating central corridor for exactly
+# this ONE join (laid before the item, LIFTED right after, on the proven
+# AQROOT_U19CAP KO mechanism), forcing connect_hop onto the clean detour.
+# AQROOT_LTCGATE_KO names one or more KO capsules as 'LAYER:x0,y0,x1,y1,hw;...'
+# in mm (LAYER defaults to B); unset -> no keep-out, byte-identical to every
+# prior run.  Net gain is judged ONLY by the full-authority gate (D-286: no post-
+# hoc/final-board proxy governs).  AQROOT_LTCGATE_KO=1 uses the validated DEFAULT
+# below; an explicit 'LAYER:x0,y0,x1,y1,hw;...' string overrides it.
+#
+# DEFAULT (FBV2-P2-004A, faithful D256 in-run screen): the noKO connect_hop far
+# run is the diagonal (5.15,64.75)->(5.15,63.6)->(2.25,60.7)->(1.9,60.7); it
+# grazes the BAT_SENSE 1.0 mm current-path track (2.8,62.05)-(5.4,62.05) at
+# ~(3.59,62.04), so the real gate() rejects it on D-269 alone (clearance 0.2803
+# vs 0.300, ~19.7 um short -- FINE_ESC legalises the D-257 via, so there is NO
+# D-249 track_width violation in the real path).  A keep-out capsule sealing the
+# squeeze-gap just north of that BAT_SENSE track, on each far layer, forces the
+# hop to cross WEST of the track's x=2.8 end: the join then routes F.Cu
+# (5.15,64.75)->(4.0,64.75)->(1.9,62.65)->(1.9,60.7), 8.556 mm, and the REAL
+# run()/gate() PASSES with NO new DRC (screened faithfully at the 8b point).
+LTCGATE_KO_DEFAULT = [('F',  (2600000, 62500000, 5500000, 62500000, 400000)),
+                      ('I2', (2600000, 62500000, 5500000, 62500000, 400000)),
+                      ('I3', (2600000, 62500000, 5500000, 62500000, 400000))]
+LTCGATE_KO = []                        # list of (layer, (x0,y0,x1,y1,hw)) in nm
+_ltcgate_ko_env = os.environ.get('AQROOT_LTCGATE_KO')
+if _ltcgate_ko_env and _ltcgate_ko_env.strip() in ('1', 'AUTO', 'DEFAULT'):
+    LTCGATE_KO = list(LTCGATE_KO_DEFAULT)
+elif _ltcgate_ko_env:
+    for _part in _ltcgate_ko_env.split(';'):
+        _part = _part.strip()
+        if not _part:
+            continue
+        _lay, _rest = _part.split(':', 1) if ':' in _part else ('B', _part)
+        _v = [float(x) for x in _rest.split(',')]
+        if len(_v) != 5:
+            raise SystemExit('AQROOT_LTCGATE_KO segment needs '
+                             'LAYER:x0,y0,x1,y1,hw (mm): %r' % _part)
+        LTCGATE_KO.append((_lay.strip().upper(),
+                           tuple(int(round(x * 1e6)) for x in _v)))
 # D-267 / FBV2-P2-002U: the SAME reservation idea, one path role over.
 # AQROOT_D267 names the staging family (F1/F2/F3) whose prefix of the
 # clean-board trunk `D9.1` reserves before the control field runs.
@@ -2309,9 +2360,31 @@ def main():
             if state['fail']:
                 rest.append(it)
                 continue
+            # FBV2-P2-004A / D-300: the LTC_GATE U18.10->Q3.4 join path-shaping
+            # lever.  Install the central-lane keep-out(s) for exactly this ONE
+            # join, so connect_hop detours around the D-249/D-269 central rung,
+            # then LIFT them right after the item (nothing else ever sees them).
+            _is_ltcgate = (it['net'] == N + 'LTC_GATE'
+                           and it['a'] == 'U18.10' and it['b'] == 'Q3.4')
+            _ltc_kos = []
+            if _is_ltcgate and LTCGATE_KO:
+                for (_lay, _geo) in LTCGATE_KO:
+                    _s = QR.SEG(_geo[0], _geo[1], _geo[2], _geo[3], _geo[4],
+                                None, 'KO')
+                    qb.shapes.setdefault(_lay, []).append(_s)
+                    _ltc_kos.append((_lay, _s))
+                print('LTC_GATE KO: %d central-lane keep-out(s) installed %s'
+                      % (len(_ltc_kos), LTCGATE_KO))
+                sys.stdout.flush()
             _pre_laid = len(qb.laid)
-            if not run(it['net'], it['a'], it['b'], it['role'], it['lad'],
-                       it['area'], it['ct'], fatal=False):
+            _ltc_ran = run(it['net'], it['a'], it['b'], it['role'], it['lad'],
+                           it['area'], it['ct'], fatal=False)
+            for (_lay, _s) in _ltc_kos:
+                if _s in qb.shapes.get(_lay, []):
+                    qb.shapes[_lay].remove(_s)
+            if _ltc_kos:
+                print('LTC_GATE KO: keep-out(s) lifted after join'); sys.stdout.flush()
+            if not _ltc_ran:
                 rest.append(it)
                 continue
             # D-270 instrumentation: record the B.Cu copper THIS branch laid, so

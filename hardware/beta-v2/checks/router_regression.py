@@ -824,6 +824,55 @@ def main():
         chk('G14 lever scoped to the U19 east lane + REC_BAT_LOW-before-N_BATDIV',
             'hooks present=%s' % u19_scoped, u19_scoped)
 
+        # -- G15 FBV2-P2-004A/D-300 LTC_GATE U18.10->Q3.4 path-shaping lever ----
+        # The join path-shaping keep-out must be OFF by default (byte-identical:
+        # LTCGATE_KO empty, no keep-out installed), and when armed name a central-
+        # lane keep-out on the far run layers that seals the squeeze-gap north of
+        # the BAT_SENSE current-path track (y~62.5) so the D256_FCU connect_hop
+        # crosses WEST.  It is a PATH-SHAPING capacity lever, not the D-300 pure
+        # re-order (refuted): it physically blocks the rule-violating central lane
+        # for exactly the ONE join and is lifted immediately after.
+        print('  -- G15 FBV2-P2-004A/D-300 LTC_GATE path-shaping lever ----------')
+        _s3 = os.environ.pop('AQROOT_LTCGATE_KO', None)
+        try:
+            importlib.reload(RBB)
+            chk('G15 lever OFF by default (byte-identical: no keep-out)',
+                'LTCGATE_KO=%r' % (RBB.LTCGATE_KO,), RBB.LTCGATE_KO == [])
+            os.environ['AQROOT_LTCGATE_KO'] = '1'
+            importlib.reload(RBB)
+            ko = RBB.LTCGATE_KO
+            # default: 3 capsules on the far layers F/I2/I3, sealing the graze
+            # gap north of the BAT_SENSE 1.0 mm track (x 2.8..5.4, y~62.05).
+            lays = [k[0] for k in ko]
+            geo = ko[0][1] if ko else (0, 0, 0, 0, 0)
+            chk('G15 AQROOT_LTCGATE_KO=1 arms the validated default',
+                'layers=%s geo=%s' % (lays, geo),
+                lays == ['F', 'I2', 'I3']
+                and geo[1] == geo[3] == 62500000            # y-latitude of the wall
+                and geo[0] <= 2800000 and geo[2] >= 5400000  # spans the BAT_SENSE x
+                and geo[4] > 0)
+            os.environ['AQROOT_LTCGATE_KO'] = 'F:1.0,60.0,4.0,64.0,0.5'
+            importlib.reload(RBB)
+            chk('G15 an explicit LAYER:x0,y0,x1,y1,hw override parses',
+                'LTCGATE_KO=%r' % (RBB.LTCGATE_KO,),
+                RBB.LTCGATE_KO == [('F', (1000000, 60000000, 4000000,
+                                          64000000, 500000))])
+        finally:
+            if _s3 is None:
+                os.environ.pop('AQROOT_LTCGATE_KO', None)
+            else:
+                os.environ['AQROOT_LTCGATE_KO'] = _s3
+            importlib.reload(RBB)
+        # Scoped: a KO capsule (net=None), installed ONLY for LTC_GATE U18.10->
+        # Q3.4 and LIFTED right after the join -- nothing else ever sees it.
+        ltcgate_scoped = ("LTCGATE_KO" in src
+                          and "it['a'] == 'U18.10'" in src
+                          and "it['b'] == 'Q3.4'" in src
+                          and "None, 'KO'" in src
+                          and "keep-out(s) lifted after join" in src)
+        chk('G15 lever scoped to exactly LTC_GATE U18.10->Q3.4, KO lifted after',
+            'hooks present=%s' % ltcgate_scoped, ltcgate_scoped)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))
