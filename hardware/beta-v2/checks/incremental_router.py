@@ -223,12 +223,20 @@ GROUPS = {
     # ==> D-309 MEASURED FAIL (NOT promoted): gate reported +7 `clearance` (via
     #     lands in the same congested U2 B.Cu escape beside DISP_RST_N; deferred
     #     to FBV2-P2-012 with the touch group).
+    # ==> FBV2-P2-013 / D-311 RESOLVED: the U2 escape via-site offset proven at
+    #     D-310 (TOUCH_CTL) applies unchanged.  Re-screened on the D-310 board
+    #     (w/screen_013.py): the via-blind DEFAULT via is 0.100 mm from the
+    #     DISP_RST_N barrel (CLASH, confirms D-309 +7); the bounded 2.5 mm offset
+    #     walks the F<->B transition to (51.55,90.20) -> 1.760 mm to the nearest
+    #     existing via (now the D-310 TOUCH_RST_N barrel) = CLEAR.  With
+    #     via_offset the real full-board gate passes -> PROMOTED.
     'AMP_SD_MODE': dict(
         sheet='06_AUDIO',
         desc='audio amp SD/mode-select strap AMP_SD_MODE (R15.1/U5.4 F -> U2.7 B); '
-             'static logic strap (not the class-D output), one cross-layer via',
+             'static logic strap (not the class-D output), one cross-layer via '
+             'with a bounded 2.5 mm U2-escape via-site offset',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
-        via_dia=600000, via_drill=300000,
+        via_dia=600000, via_drill=300000, via_offset=2500000,
         nets=['AMP_SD_MODE'],
     ),
     # FBV2-P2-011 candidate -- microSD card-detect.  SD_CARD_DETECT_N
@@ -237,12 +245,19 @@ GROUPS = {
     # cross-layer edge -> one through via.  cu 57.
     # ==> D-309 MEASURED FAIL (NOT promoted): gate reported +2 `clearance` (via
     #     lands in the same congested U2 B.Cu escape; deferred to FBV2-P2-012).
+    # ==> FBV2-P2-013 / D-311 RESOLVED: the D-309 +2 was TRACK-threading, not the
+    #     via (re-screened on the D-310 board, w/screen_013.py: even the DEFAULT
+    #     via is 1.301 mm clear of every barrel).  The always-on existing-via
+    #     injection (D-310) fixes the track threading; the bounded 2.5 mm offset
+    #     walks the transition SOUTH to (53.00,82.55) -> 3.850 mm clear (extra
+    #     margin).  With via_offset the real full-board gate passes.
     'SD_DETECT': dict(
         sheet='03_SPI_A_DISPLAY_SD',
         desc='microSD card-detect SD_CARD_DETECT_N (J2.10/R113.2 F -> U2.11 B); '
-             'noncritical low-speed detect, one cross-layer via',
+             'noncritical low-speed detect, one cross-layer via with a bounded '
+             '2.5 mm U2-escape via-site offset',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
-        via_dia=600000, via_drill=300000,
+        via_dia=600000, via_drill=300000, via_offset=2500000,
         nets=['SD_CARD_DETECT_N'],
     ),
 }

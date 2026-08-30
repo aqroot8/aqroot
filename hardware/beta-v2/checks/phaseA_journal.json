@@ -3124,5 +3124,27 @@
   "mm": 54.708,
   "requested_connected": true,
   "group": "TOUCH_CTL"
+ },
+ {
+  "net": "/AMP_SD_MODE",
+  "a": "R15.1",
+  "b": "U5.4",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 4.188,
+  "requested_connected": true,
+  "group": "AMP_SD_MODE"
+ },
+ {
+  "net": "/AMP_SD_MODE",
+  "a": "U5.4",
+  "b": "U2.7",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 58.487,
+  "requested_connected": true,
+  "group": "AMP_SD_MODE"
  }
 ]

@@ -1,10 +1,10 @@
 {
- "sha256": "856f7a8adf0db9b114b9f09d7469308f921bc897aaf2ddce7f1c15c40a197114",
- "tracks": 561,
- "vias": 60,
+ "sha256": "9bf429cec07654d4522121d2fb595204d06f5173ae629f2292c4d0cb9f68b314",
+ "tracks": 580,
+ "vias": 61,
  "copper_layers": 6,
- "ratsnest": 685,
- "journal": 96,
+ "ratsnest": 683,
+ "journal": 98,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -461,6 +461,16 @@
    "/TOUCH_INT_N",
    "J1.46",
    "U2.19"
+  ],
+  [
+   "/AMP_SD_MODE",
+   "R15.1",
+   "U5.4"
+  ],
+  [
+   "/AMP_SD_MODE",
+   "U5.4",
+   "U2.7"
   ]
  ]
 }

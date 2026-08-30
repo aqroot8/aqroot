@@ -1469,6 +1469,71 @@ def main():
                len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
                len(phaseA_via)), tch_addonly)
 
+        # -- G25 FBV2-P2-013/D-311 eighth rest-of-board incremental increment ---
+        # The audio-amp SD/mode-select strap AMP_SD_MODE (R15.1/U5.4 F.Cu ->
+        # U2.7 B.Cu) was routed onto the D-310 board by incremental_router.py.
+        # This is one of the two remaining U2 west-edge escape siblings the D-310
+        # via-offset UNLOCKED, and the HARDEST D-309 wall: the via-blind default
+        # via landed 0.100 mm from the accepted D-306 DISP_RST_N barrel (D-309
+        # +7 `clearance`).  D-311 completes it with the SAME unchanged mechanism
+        # -- the always-on existing-via injection plus the opt-in 2.5 mm
+        # via_offset (zero per-net tuning) -- walking the F<->B transition to
+        # (51.55,90.20), 1.760 mm clear of the nearest existing via (now the
+        # D-310 TOUCH_RST_N barrel).  Its sibling SD_CARD_DETECT_N also passed on
+        # scratch and is held for FBV2-P2-014 (not bundled -- functionally
+        # distinct).  G25 pins the increment: the net fully copper-connected
+        # across the U2 F/B hop, copper legal (19 trk 0.200 mm F.Cu+B.Cu, one
+        # 0.60/0.30 through via), the via cleared of every existing via (the
+        # offset mechanism worked), and ADD-ONLY (TOUCH 26, IR_RX_VS 8, RGB_LED
+        # 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54 untouched).
+        print('  -- G25 FBV2-P2-013/D-311 rest-of-board incremental increment --')
+        AMP = ('/AMP_SD_MODE',)
+        amp_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in AMP]
+        amp_via = [t for t in all_via if t.GetNetname() in AMP]
+
+        j_amp = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                 for p in _cc.GetConnectedItems(_pad('U5.4')) if p.GetClass() == 'PAD'}
+        amp_conn = ('R15.1' in j_amp and 'U2.7' in j_amp)
+        chk('G25 AMP_SD_MODE fully copper-connected across the U2 F/B hop',
+            'U5.4 joins R15.1&U2.7 = %s' % amp_conn, amp_conn)
+
+        amp_layers = {t.GetLayerName() for t in amp_trk}
+        amp_legal = (len(amp_trk) == 19 and len(amp_via) == 1
+                     and amp_layers == {'F.Cu', 'B.Cu'}
+                     and all(t.GetWidth() == 200000 for t in amp_trk)
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             for v in amp_via))
+        chk('G25 AMP_SD_MODE copper legal (19 trk 0.200 F.Cu+B.Cu, one 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d dias=%s drills=%s'
+            % (len(amp_trk), sorted(amp_layers), len(amp_via),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in amp_via}),
+               sorted({v.GetDrill() for v in amp_via})), amp_legal)
+
+        # The via-site OFFSET mechanism: the AMP via must clear EVERY other via
+        # (barrel copper: 0.60/2 + 0.60/2 + 0.200 = 0.800 mm centre-to-centre).
+        # The via-blind default put it 0.700 mm from DISP_RST_N (0.100 mm copper,
+        # D-309 +7) -- this proves the D-311 offset actually moved the transition
+        # off the wall.
+        amp_other_via = [t for t in all_via if t.GetNetname() not in AMP]
+        amp_min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                            + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                           for v in amp_via for o in amp_other_via), default=1e9)
+        chk('G25 U2-escape offset cleared the AMP via of every existing via (>=0.80 mm centre)',
+            'min AMP-via to other-via centre = %.3f mm' % (amp_min_gap / 1e6),
+            amp_min_gap >= 800000)
+
+        amp_addonly = (len(amp_trk) == 19 and len(tch_trk) == 26 and len(irvs_trk) == 8
+                       and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                       and len(phaseA_via) == 54)
+        chk('G25 increment is ADD-ONLY (TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'amp=%d (exp 19), touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)), amp_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

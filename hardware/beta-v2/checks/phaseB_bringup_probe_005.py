@@ -52,9 +52,9 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # current promoted board (the frozen per-milestone evidence lives in the audits).
 # The sha / counts now come from the shared single-source-of-truth
 # live_fingerprint.py so this pin is bumped in ONE place per increment.
-# Current pin: FBV2-P2-012 / D-310 promoted the SEVENTH rest-of-board increment
-# (display/touch pair TOUCH_RST_N + TOUCH_INT_N via the U2-escape via-site offset)
-# onto the D-309 board: 535 + 26 = 561 tracks, 58 + 2 = 60 vias, journal 93 + 3 = 96.
+# Current pin: FBV2-P2-013 / D-311 promoted the EIGHTH rest-of-board increment
+# (audio-amp SD/mode strap AMP_SD_MODE via the U2-escape 2.5 mm via-site offset)
+# onto the D-310 board: 561 + 19 = 580 tracks, 60 + 1 = 61 vias, journal 96 + 2 = 98.
 import live_fingerprint as LFP
 EXPECT_SHA = LFP.SHA
 EXPECT_TRACKS = LFP.TRACKS
@@ -66,7 +66,7 @@ EXPECT_JOURNAL = LFP.JOURNAL_LEN
 ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N
 ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
-TOUCH_RST_N TOUCH_INT_N""".split())
+TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -143,7 +143,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-310: FRONT_RGB + ACC_3V3_CTL + DISP_RST_N + IMU_ADDR + FRONT_RGB_LED + IR_RX_VS + TOUCH_CTL)',
+    chk('the only routed rest-of-board nets are accepted increments (D-311: FRONT_RGB + ACC_3V3_CTL + DISP_RST_N + IMU_ADDR + FRONT_RGB_LED + IR_RX_VS + TOUCH_CTL + AMP_SD_MODE)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))

@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-310',                 # FBV2-P2-012: display/touch pair (TOUCH_RST_N + TOUCH_INT_N), U2-escape via-site offset
-    sha256='856f7a8adf0db9b114b9f09d7469308f921bc897aaf2ddce7f1c15c40a197114',
-    tracks=561,                       # 535 (D-309) + 26 TOUCH_RST_N/TOUCH_INT_N (24 F.Cu + 2 B.Cu fan-out)
-    vias=60,                          # 58 (D-309) + 2 U2-escape offset through vias
+    decision='D-311',                 # FBV2-P2-013: audio-amp SD/mode strap AMP_SD_MODE, U2-escape via-site offset (2.5 mm)
+    sha256='9bf429cec07654d4522121d2fb595204d06f5173ae629f2292c4d0cb9f68b314',
+    tracks=580,                       # 561 (D-310) + 19 AMP_SD_MODE (18 F.Cu + 1 B.Cu fan-out)
+    vias=61,                          # 60 (D-310) + 1 U2-escape offset through via
     copper_layers=6,
     zones=41,
-    ratsnest=685,                     # 688 (D-309) - 3 (TOUCH_RST_N 2 edges + TOUCH_INT_N 1 edge closed)
-    journal=96,                       # 93 (D-309) + 3 TOUCH_CTL REST_INC
+    ratsnest=683,                     # 685 (D-310) - 2 (AMP_SD_MODE 2 edges closed)
+    journal=98,                       # 96 (D-310) + 2 AMP_SD_MODE REST_INC
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).
