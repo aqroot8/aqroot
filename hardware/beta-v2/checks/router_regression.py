@@ -739,6 +739,56 @@ def main():
             'baseline@%d < qboard@%d' % (i_base, i_qboard),
             i_base < i_qboard)
 
+        # ---- G13  FBV2-P2-003W / D-297  U18.8 I2-JOIN LEVER CONTRACT --------
+        # The SECONDARY D-295 lever completes the BAT_PROTECTED_P U18.8->R75.2
+        # reserve JOIN on In3 instead of the severed In2 lane.  This pins that
+        # (a) In3 is a routable six-layer signal layer (the lever's premise),
+        # (b) the lever is OFF by default -> byte-identical to every prior run,
+        # (c) it activates only for I2/I3, and (d) it is scoped to exactly ONE
+        # branch.  A future broadening of the gate or a flip of the default
+        # trips this test and asks for a fresh ruling.
+        print('  -- G13 FBV2-P2-003W/D-297 U18.8 I2-join lever ----------')
+        chk('G13 In3 is a routable six-layer signal layer',
+            'ROUTABLE[6]=%s' % (QR.ROUTABLE[6],),
+            'I2' in QR.ROUTABLE[6] and 'I3' in QR.ROUTABLE[6])
+
+        import importlib
+        _saved = os.environ.pop('AQROOT_U18BPP_JOIN', None)
+        try:
+            import route_battery_block as RBB
+            importlib.reload(RBB)
+            off = RBB.U18BPP_JOIN
+            chk('G13 lever OFF by default (byte-identical join layer=va[2])',
+                'U18BPP_JOIN=%r active=%s' % (off, off in ('I2', 'I3')),
+                off not in ('I2', 'I3'))
+            os.environ['AQROOT_U18BPP_JOIN'] = 'I3'
+            importlib.reload(RBB)
+            chk('G13 AQROOT_U18BPP_JOIN=I3 activates the In3 join',
+                'U18BPP_JOIN=%r' % (RBB.U18BPP_JOIN,),
+                RBB.U18BPP_JOIN == 'I3')
+            os.environ['AQROOT_U18BPP_JOIN'] = 'nonsense'
+            importlib.reload(RBB)
+            chk('G13 a non-I2/I3 value never activates the lever',
+                'U18BPP_JOIN=%r active=%s'
+                % (RBB.U18BPP_JOIN, RBB.U18BPP_JOIN in ('I2', 'I3')),
+                RBB.U18BPP_JOIN not in ('I2', 'I3'))
+        finally:
+            if _saved is None:
+                os.environ.pop('AQROOT_U18BPP_JOIN', None)
+            else:
+                os.environ['AQROOT_U18BPP_JOIN'] = _saved
+            importlib.reload(RBB)
+
+        src = io.open(os.path.join(HERE, 'route_battery_block.py'),
+                      encoding='utf-8').read()
+        # The override guard must name exactly this one branch and be gated on
+        # the env flag and an I2/I3 layer -- nothing wider.
+        scoped = ("net == N + 'BAT_PROTECTED_P'" in src
+                  and "a == 'U18.8' and b_ == 'R75.2'" in src
+                  and "U18BPP_JOIN in ('I2', 'I3')" in src)
+        chk('G13 override is scoped to exactly BAT_PROTECTED_P U18.8->R75.2',
+            'guard present=%s' % scoped, scoped)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

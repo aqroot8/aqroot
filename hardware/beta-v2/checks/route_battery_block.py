@@ -115,6 +115,22 @@ LTCOV_BCU_ONLY = bool(os.environ.get('AQROOT_LTCOV_BCU'))
 # it is never counted as a connection.
 D266 = bool(os.environ.get('AQROOT_D266'))
 D266_INNER = os.environ.get('AQROOT_D266_INNER', 'I2')
+# D-297 / FBV2-P2-003W: the SECONDARY U18.8 I2-join lever.  The reserve stores
+# an inner layer (D266_INNER) and JOIN completes on it, per D-266 s14 ("the same
+# inner layer, which cannot fail for want of a lane").  At the D-293 direction-2
+# placement that premise breaks for ONE branch only: the BAT_PROTECTED_P
+# U18.8->R75.2 reserve vias land at (2.800,66.800)/(7.200,66.500) and their I2
+# join is NO_PATH because a BAT_RAW 0.600 mm current-path wall runs vertically on
+# I2 at x~6.4-6.65 (y 50.45-70.40), severing the west->east lane between them.
+# The reserve vias are THROUGH vias (copper on every layer), and In3.Cu is a
+# routable six-layer signal layer (ROUTABLE[6]) that is EMPTY across the whole
+# corridor on the full-run board (only 2 In3 tracks board-wide, none here, no In3
+# copper pour) - so the same branch joins cleanly on I3 with NO new via, NO DRU/
+# floor change, NO topology change.  AQROOT_U18BPP_JOIN names the join layer
+# ('I2'/'I3') for this ONE branch; unset -> layer=va[2] (I2), byte-identical to
+# every prior run.  Screened on the real full-run board: I2 join NO_PATH, I3 join
+# ok 4.410 mm, real KiCad DRC adds ZERO new classes and clears via_dangling 1->0.
+U18BPP_JOIN = (os.environ.get('AQROOT_U18BPP_JOIN') or '').upper()
 # D-267 / FBV2-P2-002U: the SAME reservation idea, one path role over.
 # AQROOT_D267 names the staging family (F1/F2/F3) whose prefix of the
 # clean-board trunk `D9.1` reserves before the control field runs.
@@ -777,8 +793,16 @@ def main():
                              % (a, b_))
             else:
                 _pre_area = len(area_trk.get(area, [])) if area else 0
+                # D-297: this ONE branch may join on a named inner layer other
+                # than its reserve layer (the vias are through vias, so the join
+                # is electrically identical on I2 or I3).  Default is va[2].
+                jl = va[2]
+                if (U18BPP_JOIN in ('I2', 'I3')
+                        and net == N + 'BAT_PROTECTED_P'
+                        and a == 'U18.8' and b_ == 'R75.2'):
+                    jl = U18BPP_JOIN
                 r = QR.join_reserved(qb, net, va[:2], vb[:2], w, CP, ct,
-                                     layer=va[2])
+                                     layer=jl)
                 if r['ok']:
                     if area:
                         grow(area, qb.laid[m[0]:])
