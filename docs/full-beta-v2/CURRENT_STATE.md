@@ -5,7 +5,17 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003W / D-297 milestone commit (this checkpoint):** a governed **ACCEPT of a
+- **FBV2-P2-003X / D-298 (this checkpoint):** a governed **CTO IMPLEMENT + SCREEN + HANDOFF** — the
+  bounded U19 CAPACITY lever (`AQROOT_U19CAP`: reserve the U19.7/U19.6 shared east escape lane so
+  `LTC4368_FAULT_N` detours, and close `REC_BAT_LOW U19.7` before `N_BATDIV U19.6`) is implemented
+  env-gated / **OFF by default**, pinned by regression **G14**, and **screened DRC-clean** on the real
+  003W full-run board (both boxed U19 pins escape SIMULTANEOUSLY onto bare In3/In2 with the only
+  board-legal 0.65/0.40 via — a capacity ADD, categorically distinct from the refuted D-296 swap).
+  **Copper is NOT promoted** — the ~22-min full-authority gate (net +2 vs swap; FAULT_N clean detour)
+  has not run (exceeds the ACP cap; may not be backgrounded). Source is left **uncommitted** (docs
+  committed) per the 003X discipline; **autonomy CONTINUES** (no owner decision raised). Next:
+  **FBV2-P2-003Y** executes the gate (§5).
+- **FBV2-P2-003W / D-297 milestone commit (prior checkpoint):** a governed **ACCEPT of a
   SECONDARY lever + a governed FAIL of the overall Phase-A run** (source + docs + probe commit);
   **autonomy CONTINUES** (a normal Phase-A FAIL is not a stop reason; no owner decision raised).
   003W implemented the D-295/D-296 SECONDARY lever — an env-gated (`AQROOT_U18BPP_JOIN`, **OFF by
@@ -101,10 +111,11 @@
     it is NOT yet promoted because the full run still fails on U19.
   - **REF_POL R87.2 F-corridor wall — PAST under direction-2** (+2 connections vs 003O); re-verify
     downstream on a full PASS.
-  - **U19 dead-cell field — the terminal blocker.** D-296 proved a single-pin reservation only SWAPS
-    the casualty (the field is capacity-saturated on F.Cu/B.Cu), so the closure needs a lever that
-    **enlarges** the field — the D-297 insight (the inner layers In2/In3 are bare and routable in
-    this corridor) is the natural direction. This is bounded CTO-scope work, NOT an owner decision.
+  - **U19 dead-cell field — the terminal blocker; lever built + screened (D-298).** D-296 proved a
+    single-pin reservation only SWAPS the casualty; D-298 built the capacity ADD: `AQROOT_U19CAP`
+    reserves the U19.7/U19.6 shared east lane so `LTC4368_FAULT_N` detours and closes U19.7 before
+    U19.6, so both escape simultaneously onto bare In3/In2 (screened DRC-clean). Awaiting the
+    FBV2-P2-003Y full gate to judge net gain vs swap. Bounded CTO-scope, NOT an owner decision.
   - **BAT_RAW R89.1/R86.2 divider taps** — a capacity symptom, not a width lever; re-verify on a full
     PASS.
 
@@ -178,40 +189,39 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-003X (bounded U19 CAPACITY lever: close `REC_BAT_LOW U19.7` AND `N_BATDIV U19.6` SIMULTANEOUSLY, full-gate-judged)
-- **Where 003W left it (D-297).** The SECONDARY U18.8 I2-join lever is **accepted and banked** — a
-  genuine, board-legal +1 gain (`U18.8→R75.2` on In3, no swap, no new via, no new DRC, `via_dangling`
-  cleared), retained env-gated/OFF-by-default in source and turned ON in the 003X full run. It is NOT
-  promoted because the full run still FAILs on the U19 field. **The single remaining Phase-A
-  fabrication blocker is the saturated U19 dead-cell field:** terminal `REC_BAT_LOW U19.7→(node)
-  NO_LEGAL_ESCAPE`, with `N_BATDIV U19.6` next-in-line.
-- **The lever — U19 CAPACITY, not a single-pin reservation.** D-296 proved a single-pin reservation
-  only **swaps** the casualty (the field is capacity-saturated on F.Cu/B.Cu, not priority-limited for
-  one pin). So do NOT re-open the PRIMARY reservation family; implement ONE narrowly-scoped, env-gated
-  (**OFF by default**) bounded lever that **ENLARGES** the field — offload one or more saturating
-  escapes off the jammed F.Cu/B.Cu onto a **bare inner layer (In2/In3, proven free in this corridor
-  by D-297)**: the direction-2-induced `VREC_VCC U19.8` F.Cu pad-escape (D-295 named the B.Cu hold),
-  and/or a boxed U19 escape / inner hop for a `(node)`-retargeted U19 pin. All within **D-257/D-266
-  mechanics** — **no via below the D-257 ladder** (BARRED), **no D-290 off-layer vacate re-auth**
-  (BARRED), and **no weakening of D-269 or any change to topology/footprint/outline. No DRU change.**
-  Treat the D-278 `and not node` relaxation and the `VREC_VCC U19.8` B.Cu hold as part of the same
-  refuted swap **unless a full run shows they ENLARGE the field** (close U19.7 AND U19.6) rather than
-  re-order it.
-- **Method / the governing run.** Validate the lever against `router_regression.py` (authoritative
-  behavior must stay byte-identical; add a scoped regression contract like G13) and confirm it is OFF
-  by default; then the CTO runs the FULL authority gate in a persistent terminal, **with the accepted
-  D-297 `AQROOT_U18BPP_JOIN=I3` lever also ON** and the direction-2 placement:
+## 5. Next task — FBV2-P2-003Y (execute the D-298 full-authority gate for the U19 CAPACITY lever)
+- **Where 003X left it (D-298).** The bounded U19 CAPACITY lever is **implemented, regression-pinned
+  (G14), and screened DRC-clean** on the real 003W full-run board — but **copper is NOT promoted**
+  (the ~22-min full gate has not run; it exceeds the ACP 10-min cap and may not be backgrounded).
+  The lever is banked env-gated / **OFF by default** in tracked source (uncommitted WIP).
+- **Root cause (measured).** U19.6/U19.7 are a **BOTTOM SOT-23-8**, pad-boxed N/S by neighbour pads
+  (placement-fixed); their only non-pad directions **E/W** are walled by control tracks. **The EAST
+  lane is walled for BOTH by the same `LTC4368_FAULT_N R82.1→Q9.1` 64 mm B.Cu run.** POFV (via-in-pad)
+  is **DRU-BARRED** — the fine 0.35/0.20 via (annular 0.075) is DRU-legal only for named escapes, and
+  `U19.6/U19.7` are the only U19 pins WITHOUT a D-257 exception (`U19.2/U19.3/U19.5` have one); the
+  only globally-legal via is 0.65/0.40, which fits only if the tighter pin escapes first.
+- **The lever — `AQROOT_U19CAP` (a capacity ADD, not the D-296 swap).** (a) reserve the U19.7/U19.6
+  shared east escape lane with a keep-out so `LTC4368_FAULT_N` (a low-current run with ample slack)
+  **detours**; lift it before the closure stage; (b) close `REC_BAT_LOW U19.7` **before** `N_BATDIV
+  U19.6` (U19.6-first re-boxes U19.7). Both then escape SIMULTANEOUSLY onto bare **In3 / In2** with the
+  legal 0.65/0.40 via — screened DRC-clean (zero new violation involving those nets). OFF → byte-
+  identical. **No DRU change, no via below the D-257 ladder, no D-290 re-auth, no topology/footprint/
+  outline change.**
+- **The governing run (CTO, persistent terminal, ~22 min):**
   `cd hardware/beta-v2/checks && cp phaseA_journal.json /tmp/phaseA_journal.HEAD.json &&
-  AQROOT_U18BPP_JOIN=I3 <u19-lever-env> bash w/run_003t_full.sh 003x_u19cap
-  w/cand_003t/t_a_r77e15n10_r79e15n10.json && cp /tmp/phaseA_journal.HEAD.json phaseA_journal.json`
-  (~22 min). **Judge by the full-run connected-set diff** vs `phaseA_003o_b1_r75rot_cto.json` and
-  `w/phaseA_003t_full_e15n10cto.json`: the run must close **U19.7 AND U19.6 together for a real net
-  gain** (a focused/vehicle `fail=None` does not transfer, and — per D-296 — a 1-for-1 pin swap is NOT
-  a gain). **Promote copper only on a genuine full-authority Phase-A PASS** (D-286). All floors
-  ENFORCED (0.200 mm clearance, 0.25 mm hole-to-hole, 0.300 mm D-269 current-path, ≥1.20 mm BPP,
-  0.60 mm BAT_MAIN); D-290 stays closed.
-- **Note:** the ~22-min gate exceeds the ACP 10-min single-call cap; run it directly in a persistent
-  terminal, never via a backgrounded/detached job.
+  AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 bash w/run_003t_full.sh 003x_u19cap
+  w/cand_003t/t_a_r77e15n10_r79e15n10.json && cp /tmp/phaseA_journal.HEAD.json phaseA_journal.json`.
+  Keep `AQROOT_U18BPP_JOIN=I3` ON (D-297); do NOT combine with `AQROOT_U19_RESV` (refuted, D-296).
+  **Judge by the full-run connected-set diff** vs `phaseA_003o_b1_r75rot_cto.json` and
+  `w/phaseA_003t_full_003w_u18bpp_i3.json`: the run must close **U19.7 AND U19.6 together for a real
+  net gain** with no new DRC class (a swap is NOT a gain — D-296). **Promote copper only on a genuine
+  full-authority Phase-A PASS** (D-286). All floors ENFORCED; D-290 stays closed.
+- **The two full-gate risks (D-298 §5/§8).** (1) Does `LTC4368_FAULT_N` **detour cleanly** under full
+  congestion (the driver's per-connection `gate()` enforces it; the probe's crude whole-net reroute
+  grazed BAT_MAIN as an artifact)? (2) Is it a net +2 or a swap? If FAULT_N cannot detour clean, the
+  sharp next lever is a **DRU fine-via escape exception for `REC_BAT_LOW U19.7`/`N_BATDIV U19.6`**,
+  mirroring the existing D-257 exceptions for U19.2/U19.3/U19.5 — that is a **DRU change / owner
+  re-authorization**, not a routing lever.
 - **Downstream, still CTO-scope:** on a full PASS, re-verify the (now-past) `REF_POL R87.2`
   F-corridor and the BAT_RAW R89.1/R86.2 divider taps.
 
@@ -226,6 +236,11 @@
 - **Banked in source (D-297), NOT in copper:** the OFF-by-default `AQROOT_U18BPP_JOIN` In3-join lever
   (byte-identical when unset) closes `U18.8→R75.2` for a proven +1 gain when ON; it awaits the U19
   field closure and a full Phase-A PASS before any copper is promoted.
+- **Uncommitted WIP in source (D-298), NOT in copper:** the OFF-by-default `AQROOT_U19CAP` U19
+  east-lane reservation + U19.7-first lever (byte-identical when unset), pinned by regression G14 and
+  screened DRC-clean by `checks/w/u19cap_probe_003x.py`; it awaits the ~22-min full-authority gate
+  (FBV2-P2-003Y) to judge net gain vs swap before any copper is promoted. Source
+  (`route_battery_block.py`, `router_regression.py`) is left uncommitted per the 003X discipline.
 - `phaseA_journal.json` at its committed HEAD state (driver never authoritatively invoked; the shared
   journal was backed up and restored around the full run; scratch churn discarded).
 - PCB routing **0 %**; overall repo progress **74 %**.
@@ -276,6 +291,15 @@
   source; copper is NOT promoted while the full run still FAILs on the U19 field.** The general lesson:
   the bare inner signal layers In2/In3 are unused capacity in this corridor and are the correct
   vehicle for enlarging a saturated F.Cu/B.Cu field (the U19 direction for 003X).
+- **D-298 (003X)** the U19 field is closable by a **capacity ADD, not a swap**: U19.6/U19.7 (BOTTOM
+  SOT-23-8) are pad-boxed N/S; their shared EAST lane is walled by the same `LTC4368_FAULT_N`
+  cross-board run; POFV is DRU-barred (U19.6/U19.7 lack the D-257 fine-via exception the other three
+  U19 pins have), so the escape needs a clear lateral lane + the legal 0.65/0.40 via. The
+  `AQROOT_U19CAP` lever **reserves the shared east lane** (FAULT_N detours) and **closes U19.7 before
+  U19.6** — both then escape SIMULTANEOUSLY onto bare In3/In2, screened DRC-clean. IMPLEMENTED,
+  regression-pinned (G14), OFF-by-default, uncommitted; **copper NOT promoted** — the net-gain-vs-swap
+  verdict and FAULT_N's clean detour are the ~22-min full gate's job (D-286). Categorically distinct
+  from the refuted D-296 single-pin lateral swap.
 - Rule floors ENFORCED: **0.200 mm** clearance, **0.25 mm** hole-to-hole, **0.300 mm** current-path
   routed clearance (D-269), **≥1.20 mm** BPP trunk width (D-249), **0.60 mm** BAT_MAIN minimum width.
   Six-layer stack, GND, netclasses, footprints, polarity, safety set — all frozen. Frozen
