@@ -188,7 +188,7 @@ power/NFC review, and CTO decisions.
 - **BAT_MAIN** netclass (1.5 A design): trunk 1.00 mm, min **0.60 mm** (LOCKED).
 - **BAT_PROTECTED_P (BPP)** high-current trunk **≥ 1.20 mm** (D-249, LOCKED).
 - Current-path routed clearance **0.300 mm** (D-269, LOCKED).
-- These are hard floors; the current Phase-A routing wall is the BPP trunk (`U11.2`).
+- These are hard floors, all ENFORCED (not relaxed) in the first authoritative copper. **FBV2-P2-004B2 / D-302:** the Phase-A battery-block copper is now PROMOTED (the `U11.2` BPP trunk wall is closed by an on-net ≥1.20 mm tap to `C36.1`); the board carries 432 tracks / 54 vias / 6 layers with zero new copper DRC classes. **Phase-A copper only — the board is not yet fully routed** (Phase B pending, `FBV2-P2-005`).
 
 ---
 

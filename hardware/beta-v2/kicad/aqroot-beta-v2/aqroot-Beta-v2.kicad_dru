@@ -198,6 +198,34 @@
 	(condition "A.hasNetclass('SWITCH_NODE')"))
 
 
+# ---------------------------------------------------------------------
+# 2b. In4.Cu IS THE SECOND GND REFERENCE PLANE  (D-258, FBV2-P2-002M)
+#
+# The six-layer migration adds a SECOND solid reference, and it gets the
+# same rule as the first rather than a weaker one.  L2 (In1) references the
+# F.Cu side, L5 (In4) references the B.Cu side, and the two new signal
+# layers L3/L4 sit between them - so every internal route has a plane on
+# one side and every outer route has a plane 0.2104 mm away, which is the
+# geometry that made the four-layer outer reference work.
+#
+# Neither plane may be split into power islands.  The only authorised void
+# is still the ESP32 antenna keepout of section 3, which is a manufacturer
+# requirement and overrides plane continuity locally on every layer.
+# ---------------------------------------------------------------------
+
+(rule "In4.Cu carries GND only - no signal or power tracks"
+	(layer "In4.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+(rule "SWITCH_NODE: outer layers only - never on In3"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+
 
 # ---------------------------------------------------------------------
 # 3. ESP32-S3-WROOM-1 ANTENNA KEEPOUT - MANUFACTURER PRECEDENCE
@@ -348,12 +376,6 @@
 # separately at 0.5 oz - never inherit the outer-layer width.
 # ---------------------------------------------------------------------
 
-(rule "BAT_MAIN is outer-layer only"
-	(layer "In2.Cu")
-	(severity error)
-	(constraint disallow track)
-	(condition "A.hasNetclass('BAT_MAIN')"))
-
 (rule "BAT_MAIN minimum width"
 	(constraint track_width (min 0.60mm) (opt 1.00mm))
 	(condition "A.hasNetclass('BAT_MAIN')"))
@@ -402,10 +424,6 @@
 	(constraint clearance (min 0.30mm))
 	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad'"))
 
-(rule "BAT_MAIN routed clearance"
-	(constraint clearance (min 0.30mm))
-	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad'"))
-
 (rule "SWITCH_NODE routed clearance"
 	(constraint clearance (min 0.30mm))
 	(condition "A.hasNetclass('SWITCH_NODE') && A.Type != 'Pad' && B.Type != 'Pad'"))
@@ -432,33 +450,64 @@
 
 
 # ---------------------------------------------------------------------
-# 5b. BAT_PROTECTED_P LOCAL WIDTH OVERRIDE  (D-245, FBV2-P2-002A)
+# 5b. BATTERY PATH-ROLE WIDTHS  (D-249, 2026-08-24, FBV2-P2-002C)
 #
-# BAT_PROTECTED_P is the DOMINANT PCB-copper resistance term in the whole
-# protection path: it is the one long run PM-2 predicted would remain, and at
-# ~71 mm it is roughly 69 % of the path's copper resistance on its own.  At the
-# BAT_MAIN class target of 1.00 mm that is 34.9 mOhm; at 1.50 mm it is
-# 23.3 mOhm, which takes the whole protection-path copper from ~50.6 to
-# ~38.9 mOhm and the 1.5 A copper loss from 114 to 88 mW.
+# SUPERSEDES THE WHOLE-NET FORM OF D-245.  D-245's INTENT STANDS - the long
+# high-current BAT_PROTECTED_P trunk is 1.50 mm - but its implementation applied
+# that floor to every segment carrying the net name.  The same net also feeds
+# the MAX17048 fuel-gauge sense input, the LTC4368 VOUT sense input and a test
+# point.  None of those carries load current, and none of those land patterns
+# can physically accept 1.20 mm.  As written, D-245 made BAT_PROTECTED_P
+# UNROUTABLE.
 #
-# THE OVERRIDE IS SCOPED TO THIS ONE NET.  The BAT_MAIN class is NOT changed:
-# BAT_CONNECTOR_P, BAT_RAW, BAT_MID and BAT_SENSE keep the 1.00 mm target and
-# the 0.60 mm floor, because none of them carries the current over anything
-# like that distance.
+# WIDTH IS A PATH ROLE, NOT A PROPERTY OF THE NET NAME.
 #
-# NECKDOWN POLICY, and it is a POLICY not a loophole: a fine-pitch land pattern
-# cannot accept a 1.50 mm - or even a 0.60 mm - track.  U18 is an MSOP-10 on
-# 0.50 mm pitch whose pad-to-pad gap is 0.20 mm.  A short ESCAPE NECK at the
-# pad is therefore mechanically unavoidable and is permitted, subject to:
-#   - the neck is the SHORTEST length that clears the package;
-#   - it is never a traverse;
-#   - its exact length and minimum width are DOCUMENTED per pad;
-#   - it carries no thermal-relief bottleneck and no single-via bottleneck.
-# The 1.20 mm floor below is the TRUNK floor.  Necks are measured and reported
-# individually in FBV2_P2_POWER_ROUTING.md rather than being waived here.
+# ENFORCEMENT.  The trunk floor below applies to the WHOLE net.  It is relaxed
+# ONLY inside a small named rule area that bounds ONE approved branch, by the
+# rules in section 10b at the end of this file, and only through
+# enclosedByArea(), which requires the ENTIRE track to lie inside that area.
+# A narrow branch therefore cannot wander: the moment it leaves its own area it
+# is measured against the trunk floor and fails.  There is no construction here
+# that lets a long high-current run masquerade as a branch, and none that lets
+# a branch violate the trunk rule.
+#
+# WHY THE LTC4368 TAPS ARE NOT CURRENT PATHS.  The LTC4368 is a CONTROLLER: it
+# drives back-to-back external MOSFETs and the pack current flows through Q2/Q3,
+# never through U18.  Pins 1 (VIN), 8 (VOUT) and 9 (SENSE) are microamp inputs
+# on an MSOP-10 whose 0.50 mm pitch admits at most 0.25 mm of copper.
+#
+# WHY U11.2 IS DIFFERENT.  It is a TRUE HIGH-CURRENT endpoint - the BQ25185 BAT
+# pin.  Its width is limited by TI's own DLH0010A land pattern, 0.2 mm pads on
+# 0.4 mm pitch, so 0.20 mm is the widest copper that can leave that pad whatever
+# any rule says: THE PACKAGE IS THE BOTTLENECK, NOT THE RULE.  The escape is
+# bounded, measured, flares outward immediately and carries no via; the exact
+# profile is in pcb/FBV2_P2_POWER_ROUTING.md.
+#
+# A SHUNT STUB - a decoupling capacitor, a clamp diode, a divider top, a test
+# point - hangs OFF the current path rather than sitting IN it.  Where the
+# placement leaves no corridor at the class width, its stub may be narrower
+# INSIDE ITS OWN BOUNDED AREA AND NOWHERE ELSE.  Every width used still clears
+# IPC-2221B for the full 1.5 A pack current on 1 oz external copper at a 10 degC
+# rise (0.50 mm carries 1.45 A), which these stubs never see.
+#
+# U14 IS TIGHTER STILL, AND THE ARITHMETIC IS EXACT.  U14 sits 1.245 mm from
+# the west board edge with its pin row FACING that edge, so the only escape from
+# U14.2 / U14.3 is the strip between the edge and the pad row.  Copper must be
+# >= 0.500 mm from the edge and >= 0.200 mm from the pads, whose west edge is at
+# x = 0.895.  A track of width w running along that strip therefore needs its
+# centre at x >= 0.500 + w/2 AND at x <= 0.695 - w/2, which has a solution only
+# for w <= 0.195 mm: A 0.20 mm TRACK DOES NOT FIT, BY 5 MICRONS.  At 0.15 mm -
+# the board's own min_track_width, and 1.7x JLCPCB's 0.09 mm multilayer
+# minimum - the window is 0.575 to 0.620 and it fits.  That tap carries the MAX17048's sense-input
+# current, which is nanoamps.  FLAGGED FOR RATIFICATION: FBV2-P2-002C section 5
+# locked 0.20 mm, and 0.20 mm does not physically exist at this pad.
+#
+# JLCPCB capability, checked live 2026-08-24 against the vendor's own page:
+# minimum track width / spacing on a 1 oz MULTILAYER board is 0.09 / 0.09 mm.
+# Nothing in this block is fab-limited.
 # ---------------------------------------------------------------------
 
-(rule "BAT_PROTECTED_P trunk width - local override, D-245"
+(rule "BAT_PROTECTED_P high-current trunk width - D-249"
 	(constraint track_width (min 1.20mm) (opt 1.50mm))
 	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P'"))
 
@@ -742,3 +791,236 @@
 (rule "FP-U1 ESP32-S3-WROOM-1 manufacturer thermal-pad vias (0.20 mm drill)"
 	(constraint hole_size (min 0.20mm) (max 0.20mm))
 	(condition "A.Type == 'Pad' && A.memberOfFootprint('U1') && A.Pad_Number == '41'"))
+
+
+# =====================================================================
+# 10b. PATH-ROLE AREA OVERRIDES  (D-249, FBV2-P2-002C)
+#
+# THESE RULES ARE LAST IN THE FILE ON PURPOSE, AND MOVING THEM BREAKS THEM.
+#
+# Section 9 already records that KiCad applies the LAST matching rule, and that
+# the pad-escape necking and land-pattern blocks must sit near the end so they
+# beat the section-5 rail widths.  These path-role overrides must in turn beat
+# THOSE, because they are the most specific statement on the board: one named
+# net, inside one named area that bounds exactly one approved branch.
+#
+# Each area is generated from its own routed branch's bounding box plus 0.3 mm
+# and is written back by the router, so it cannot drift away from the copper it
+# describes.  enclosedByArea() requires the WHOLE track to lie inside, so a
+# branch that leaves its area is measured against the trunk floor and fails.
+#
+# Within this block the rules run WIDEST FIRST and NARROWEST LAST, so where two
+# bounded areas overlap the lower floor governs.
+# =====================================================================
+
+(rule "BOUNDED SHUNT STUB BAT_PROTECTED_P to (node) at 1.00 mm - D-249"
+	(constraint track_width (min 1.00mm) (opt 1.00mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_STUB_1')"))
+
+(rule "BOUNDED SHUNT STUB BAT_RAW to (node) at 0.40 mm - D-249"
+	(constraint track_width (min 0.40mm) (opt 0.40mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_STUB_0')"))
+
+(rule "BAT_PROTECTED_P U11 BAT-pin escape - D-249"
+	(constraint track_width (min 0.20mm) (opt 1.50mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_ESCAPE_U11')"))
+
+(rule "BAT_PROTECTED_P LTC4368 VOUT sense tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "BAT_SENSE Kelvin sense tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "BAT_RAW LTC4368 VIN supply tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_TAP_U18')"))
+
+(rule "BOUNDED SHUNT STUB BAT_RAW to (node) at 0.20 mm - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_STUB_2')"))
+
+(rule "BAT_PROTECTED_P fuel-gauge and test taps - D-249"
+	(constraint track_width (min 0.15mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U14')"))
+
+(rule "BAT_RAW LTC4368 VIN supply tap - local fine-pitch clearance, PR-48"
+	(constraint clearance (min 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_TAP_U18')"))
+
+(rule "BAT_PROTECTED_P fuel-gauge and test taps - local fine-pitch clearance, PR-48"
+	(constraint clearance (min 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U14')"))
+
+(rule "BAT_MAIN is outer-layer only - In2 - D-264"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('BAT_MAIN') && !A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "BAT_MAIN is outer-layer only - In3 - D-264"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('BAT_MAIN') && !A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "BAT_MAIN routed clearance - current path role - D-269"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad' && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_1') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_2') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.65mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.40mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.65mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.40mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))

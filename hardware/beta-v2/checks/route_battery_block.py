@@ -208,6 +208,51 @@ elif _ltcgate_ko_env:
                              'LAYER:x0,y0,x1,y1,hw (mm): %r' % _part)
         LTCGATE_KO.append((_lay.strip().upper(),
                            tuple(int(round(x * 1e6)) for x in _v)))
+# D-302 / FBV2-P2-004B: the U11.2 BPP trunk-endpoint RETARGET lever (OFF by
+# default, byte-identical when unset).
+#
+# u11_escape() lays the U11.2 end of the BAT_PROTECTED_P high-current trunk LAST.
+# By default it flares U11.2 (1.50->0.20 SENSE neck) and connect_role()s the
+# launch to D9.1 (11.350,72.500) -- a dedicated ~55 mm cross-board >=1.20 mm
+# B.Cu trunk that has NO legal path: the single central channel already holds the
+# EARLY SOUTH BRIDGE + the R75.2 trunk, so a second parallel cross-board trunk
+# does not fit (a structural >=1.20 mm-trunk NO_LEGAL_PATH, the D-273/274/281/282/
+# 283 class).  But U11.2 is IN the east node, already on-net with D9.1 via the
+# bridge/R75.2 backbone, so a fresh cross-board trunk is redundant: retarget the
+# U11.2 trunk endpoint to a SHORT wide tap into the nearest already-connected
+# >=1.20 mm BPP node copper (default C36.1 (63.75,74.325), landed by the D-275/
+# D-288 bridge via-array + four 1.20 mm B.Cu spokes, itself >=1.20 mm-connected to
+# R75.2 through the 1.30 mm bridge).  Screened FAITHFULLY on the exact final-run
+# 004A board (the same board u11_escape() runs against, at queue drain -- so unlike
+# D-300's proxy this saved-board screen governs this step): flare + connect_role
+# (launch -> C36.1) routes B.Cu 3.521 mm at 1.50 mm min trunk width; real KiCad
+# DRC adds ZERO new classes (and clears the pre-existing track_width:1); the
+# >=1.20 mm width-connected graph from C36.1 reaches R75.2 (bridge + 0.80 mm array
+# vias, no thin/fine-via/island dependence).
+#
+# FBV2-P2-004B2 (NO-CASUALTY REFINEMENT, CTO ruling).  U11.2's closure-stage 0.20 mm
+# SENSE tie is KEPT UNCHANGED -- the 004A requested-connected set (which INCLUDES
+# BAT_PROTECTED_P U11.2->(node) role=SENSE) is preserved intact, so nothing is lost.
+# By the time u11_escape() runs at queue drain U11.2 is therefore ALREADY on-net
+# with C36.1 (through that SENSE tie + the bridge/R75.2 backbone), so the wide C36.1
+# tap is a CURRENT-PATH REINFORCEMENT between two points already electrically
+# joined, NOT a new requested connection.  Because the endpoints are already joined
+# the ratsnest does NOT fall, so u11_escape() judges the reinforcement with the
+# established reserve_gate(state['rn'], allow_dangle=False) INVERTED semantics --
+# DRC gains no class/count AND the ratsnest is EXACTLY UNCHANGED -- rather than
+# gate()'s ratsnest-fall (which is the correct test only for a NEW connection).  A
+# successful reinforcement satisfies u11_escape (Phase A completes) without
+# fabricating a requested-connectivity gain (the journal entry carries
+# reinforcement=True and is NOT counted as a made/requested connection).
+# AQROOT_U11_RETARGET=1/AUTO/DEFAULT -> retarget to C36.1; an explicit pad ref (e.g.
+# 'C36.1') overrides the landing; unset -> D9.1 cross-board trunk judged by gate()'s
+# ratsnest-fall + SENSE closure, byte-identical to every prior run.  Net gain / full
+# PASS is judged ONLY by the full-authority gate (D-286).
+_u11_env = (os.environ.get('AQROOT_U11_RETARGET') or '').strip()
+if _u11_env.upper() in ('1', 'AUTO', 'DEFAULT', 'ON', 'YES'):
+    U11_RETARGET = 'C36.1'
+else:
+    U11_RETARGET = _u11_env          # '' (off) or an explicit node-copper pad ref
 # D-267 / FBV2-P2-002U: the SAME reservation idea, one path role over.
 # AQROOT_D267 names the staging family (F1/F2/F3) whose prefix of the
 # clean-board trunk `D9.1` reserves before the control field runs.
@@ -2121,6 +2166,12 @@ def main():
         for ref_ in sorted(pads.get(nt, {})):
             if ref_.startswith('TP'):
                 continue
+            # FBV2-P2-004B2 (no-casualty refinement): U11.2's 0.20 mm SENSE closure
+            # ALWAYS runs, retarget lever on or off.  Keeping it preserves the 004A
+            # requested-connected key BAT_PROTECTED_P U11.2->(node) role=SENSE, and
+            # it is what makes U11.2 already on-net with the C36.1 node so the later
+            # u11_escape() wide tap is a current-path REINFORCEMENT (judged by
+            # reserve_gate's ratsnest-UNCHANGED semantics), not a new connection.
             if ref_ in RULED:
                 w_, area_ = RULED[ref_]
                 # a TAP is judged on resistance across its whole ladder; a
@@ -2151,10 +2202,30 @@ def main():
 
     def u11_escape():
         """The U11.2 flare is emitted with the trunk, not as a queue item: the
-        trunk cannot exist without its own endpoint."""
+        trunk cannot exist without its own endpoint.
+
+        D-302 / FBV2-P2-004B: `U11_RETARGET` (default '' -> 'D9.1', byte-identical)
+        names the FAR endpoint of this trunk.  With the lever on it is the nearest
+        already-connected >=1.20 mm BPP node copper (C36.1), so the ~55 mm
+        cross-board D9.1 trunk that has no legal corridor becomes a short on-net tap
+        into the east node -- U11.2 is already on-net with D9.1 through the bridge/
+        R75.2 backbone, so the retarget preserves the full high-current path while
+        removing the redundant second cross-board trunk.  Only the far endpoint
+        changes; the flare, widths and region-guarded reachability are identical.
+
+        FBV2-P2-004B2 (no-casualty refinement): the U11.2 SENSE closure is KEPT, so
+        with the lever on U11.2 is ALREADY on-net with the C36.1 landing and the
+        wide tap is a CURRENT-PATH REINFORCEMENT between already-joined points, not
+        a new connection.  It is therefore judged by reserve_gate(state['rn'],
+        allow_dangle=False) -- no new DRC class/count AND ratsnest EXACTLY UNCHANGED
+        -- rather than gate()'s ratsnest-fall; the journal entry is marked
+        reinforcement so it is not counted as a made/requested connection.  With the
+        lever OFF, tgt='D9.1' is a genuine new connection judged by gate()."""
         net = N + 'BAT_PROTECTED_P'
+        tgt = U11_RETARGET or 'D9.1'
+        reinforce = bool(U11_RETARGET)
         m = qb.mark()
-        eD = qb.escape(pads[net]['D9.1'], 'B', PL.W_TRUNK_BPP, PL.W_TRUNK_BPP,
+        eD = qb.escape(pads[net][tgt], 'B', PL.W_TRUNK_BPP, PL.W_TRUNK_BPP,
                        CP, CT_W, 50000, qb.ex0, qb.ey0)
         regs = {}
         if eD:
@@ -2175,20 +2246,34 @@ def main():
                   hx=1, hy=1, r=0, ang=0, net=net, tht=False, anchor=True)
         r = None
         for w in (PL.W_TRUNK_BPP, 1200000):
-            r = QR.connect_role(qb, net, lp, pads[net]['D9.1'], 'B', w, CP, CT_W)
+            r = QR.connect_role(qb, net, lp, pads[net][tgt], 'B', w, CP, CT_W)
             if r['ok']:
                 break
-        if not r['ok'] or not gate()['ok']:
+        if not r['ok']:
+            qb.revert(m)
+            area_trk.pop('BAT_PROT_ESCAPE_U11', None)
+            return False
+        # A reinforcement lands on a node U11.2 is ALREADY on-net with (kept SENSE
+        # tie + bridge/R75.2 backbone), so the ratsnest cannot fall: judge it by
+        # reserve_gate's inverted rule (no new DRC class/count AND ratsnest EXACTLY
+        # unchanged; no dangle -- both ends terminate on real same-net copper).  The
+        # default D9.1 trunk is a genuine new connection -> gate()'s ratsnest-fall.
+        g = reserve_gate(state['rn'], allow_dangle=False) if reinforce else gate()
+        if not g['ok']:
             qb.revert(m)
             area_trk.pop('BAT_PROT_ESCAPE_U11', None)
             return False
         state['done'] += 1
-        journal.append(dict(net='BAT_PROTECTED_P', a='U11.2', b='D9.1',
-                            role='TRUNK+ESCAPE', mm=round(f['total'] + r['mm'], 3),
-                            w=1.5, grid=r['grid'], flare=f))
-        print("  TRUNK BAT_PROTECTED_P    U11.2    -> D9.1    %8.3f mm  "
-              "(escape %.3f mm, neck %.3f mm at 0.20)"
-              % (f['total'] + r['mm'], f['total'], f['neck_len']))
+        je = dict(net='BAT_PROTECTED_P', a='U11.2', b=tgt,
+                  role='TRUNK+ESCAPE', mm=round(f['total'] + r['mm'], 3),
+                  w=1.5, grid=r['grid'], flare=f)
+        if reinforce:                    # only tag the lever-on record; unset stays
+            je['reinforcement'] = True   # byte-identical to HEAD (no extra key)
+        journal.append(je)
+        print("  TRUNK BAT_PROTECTED_P    U11.2    -> %-6s %8.3f mm  "
+              "(escape %.3f mm, neck %.3f mm at 0.20)%s"
+              % (tgt, f['total'] + r['mm'], f['total'], f['neck_len'],
+                 '  [current-path reinforcement]' if reinforce else ''))
         return True
 
     # ------------------------------------------------------------- PHASE B

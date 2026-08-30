@@ -13,7 +13,35 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-004A / D-301 (this checkpoint):** a governed **CTO ACCEPT + COMMIT + overall-run FAIL**
+- **FBV2-P2-004B2 / D-302 (this checkpoint — FIRST AUTHORITATIVE COPPER):** the **first authoritative
+  Phase-A copper promotion** is COMMITTED. The verified `AQROOT_U11_RETARGET`→`C36.1` full-run board
+  (`run_004b2_full.log`, `DRIVER_EXIT=0`, PHASE A COMPLETE) becomes the authoritative PCB — **byte-identical**
+  to the `checks/w/FULL003T_004b2_u11retarget` scratch (`sha256 63a9bc54…f87d6ba9`): **432 tracks, 54 vias,
+  6 copper layers, direction-2 placement** (fingerprint `397dffe1f77e4d10`), **ratsnest 704 (−77)**, 41 zones,
+  and a **77-entry `phaseA_journal.json`** (incl. the `U11.2→C36.1` `reinforcement:True` tap that closes the
+  D-301 wall as a SHORT ≥1.20 mm on-net reinforcement, not a cross-board trunk). It carries the **regenerated
+  DRU** it requires (67→119 rules; the accepted D-249/D-257/D-258/D-263/D-264/D-266/D-269 per-net escape/tap/
+  stub/trunk/clearance rule set — **not a relaxation**; the old HEAD DRU is stale because without those named
+  rules DRC would spuriously flag legal accepted copper). Real KiCad DRC on the authoritative board =
+  `{hole_clearance:5, lib_footprint_issues:199, solder_mask_bridge:1, unconnected_items:499}` — **ZERO new
+  copper DRC classes** (the D-301 scratch `track_width:1` is resolved). **PHASE A COPPER ONLY — NOT ALL ROUTING
+  COMPLETE** (ratsnest 704 / unconnected_items 499: Phase B and the remaining nets are unrouted). The
+  router-regression harness was made compatible with a routed authoritative board (routine engineering, **not**
+  an owner decision): a new copper-CLEAN `scratch_clean()` fixture feeds the primitive vehicles (CASES G2–G6,
+  CONFLICTS, G7, G8, G9, G11, G12) while G1/G10 + the real-DRC/probe/judge harnesses keep validating the real
+  routed board; CONFLICTS `U18.8`/`U18.9` re-pinned 0.250→**0.245 mm** (U18 moved by the accepted placement;
+  still ≪ floor → conflict PRESERVED); new contract **G17** guards the promotion. `router_regression.py` =
+  **ALL 79 CHECKS PASS (G1–G17)**, run twice, deterministic; `u11_retarget_probe_004b.py` = ALL PASS.
+  **Rollback preserved:** pre-promotion PCB `sha256 2235e273…d642d7e` (parent `56d0ebe`) + tags
+  `beta-v2-p2-battery-pre-authoritative` / `beta-v2-p2-pre-sixlayer-authoritative`. Mandated **Opportunity &
+  Simplification Scan** (§9a): the fixture split makes the harness robust to every future promotion; **Open
+  owner decisions: NONE.** `JLCPCB_READINESS` NOT edited (conservative: keep ~77 %, not fab-ready — Phase-A
+  only). Next: **FBV2-P2-005 — Phase B bring-up on the promoted board** (screen full DRC per D-286, promote
+  only on a genuine gate PASS). Full analysis:
+  [`audits/2026-08-30-p2-004b2-d302-first-authoritative-phasea-copper-promotion-regression-fixture-fix.md`](audits/2026-08-30-p2-004b2-d302-first-authoritative-phasea-copper-promotion-regression-fixture-fix.md).
+  This checkpoint is written in the D-302 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-004A / D-301 (prior checkpoint):** a governed **CTO ACCEPT + COMMIT + overall-run FAIL**
   — the `AQROOT_LTCGATE_KO` **path-shaping** lever (a net-foreign central-lane keep-out installed for
   exactly the `LTC_GATE U18.10→Q3.4` join and lifted right after, on the proven `AQROOT_U19CAP`
   mechanism — **NOT a re-order**, which D-300 refuted) was full-authority-gate-run

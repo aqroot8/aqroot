@@ -91,9 +91,17 @@ CASES = [
 #     copper-to-edge clearance is measured to the LINE, not to the outside of
 #     the stroke.  That is 25 um, and it is what moves U14.2 / U14.3 from
 #     0.300 mm to 0.240 mm: those two are EDGE-limited, not pad-limited.
+# FBV2-P2-004B2 / D-302 re-pin: the first Phase-A copper promotion also lands the
+# ACCEPTED direction-2 placement, which MOVES U18 (HEAD (3.0,72.4) rot 90 deg ->
+# authoritative (8.0,66.5) rot 180 deg).  Re-measured at U18's authoritative pose
+# on the copper-clean scratch fixture, U18.8 / U18.9 admit 0.245 mm (was 0.250 mm
+# at the old pose) -- STILL far below their 1.20 / 0.60 mm floors, so both remain
+# NO-LEGAL-ESCAPE: the land-pattern conflict is PRESERVED, only the pinned widest-
+# escape tracks the accepted placement (this is a placement re-pin, not a rule
+# relaxation).  U14.2/U14.3/U11.2 did not move and are unchanged (0.240/0.200 mm).
 CONFLICTS = {
-    'U18.9': (N + 'BAT_SENSE',       600000,  250000),
-    'U18.8': (N + 'BAT_PROTECTED_P', 1200000, 250000),
+    'U18.9': (N + 'BAT_SENSE',       600000,  245000),   # D-302: U18 moved
+    'U18.8': (N + 'BAT_PROTECTED_P', 1200000, 245000),   # D-302: U18 moved
     'U14.2': (N + 'BAT_PROTECTED_P', 1200000, 240000),
     'U14.3': (N + 'BAT_PROTECTED_P', 1200000, 240000),
     'U11.2': (N + 'BAT_PROTECTED_P', 1200000, 200000),
@@ -129,11 +137,91 @@ def drc(pcb, tag, work):
 
 
 def fresh(work, name):
+    """A FAITHFUL scratch copy of the authoritative project -- it carries
+    WHATEVER copper the authoritative board currently holds (zero tracks before
+    the first Phase-A promotion, the promoted routed copper after it).  Use this
+    for checks that must validate the REAL authoritative state (the G1 project-
+    context copy, the G10 concurrency baseline that equals the authoritative DRC,
+    the real-DRC / probe / judge harnesses)."""
     dst = os.path.join(work, name)
     if os.path.exists(dst):
         shutil.rmtree(dst)
     shutil.copytree(PRJ, dst)
     return os.path.join(dst, PCBNAME)
+
+
+def scratch_clean(work, name):
+    """A copper-CLEAN scratch fixture for the primitive router unit/regression
+    vehicles (CASES G2-G6, the CONFLICTS bisection, G7, G8, G9, G11, G12).
+
+    Those vehicles lay a handful of tracks FROM SCRATCH and then assert exact
+    ratsnest-fall, exact DRC-delta and requested-pad connectivity, so they
+    implicitly assume a copper-EMPTY base.  Before the first Phase-A copper
+    promotion the authoritative board WAS copper-empty and fresh() sufficed; the
+    moment real routed copper is promoted a plain copy carries it and those
+    primitives (correctly, for the wrong reason) trip -- a bisection escape hits
+    routed copper, a "route this pair" is already connected, a rejected-rung
+    board is not empty.  That is fixture coupling, not a routing regression.
+
+    This derives the fixture from the SAME placement / footprints / GND copper
+    zones / rule areas / DRU+pro rule context as the authoritative board and
+    removes ONLY the routed copper (every PCB_TRACK / PCB_ARC / PCB_VIA) in the
+    SCRATCH COPY.  The authoritative file is NEVER mutated (fresh() copies out of
+    PRJ; we edit only the copy).  Footprints, the GND zones, the 4 authored
+    DoNotAllowTracks keep-outs and the routing annotation rule areas all stay, so
+    qrouter sees the identical obstacle set it saw on the pre-promotion board
+    (qrouter only treats PCB_TRACK and DoNotAllowTracks rule areas as obstacles)
+    and DRC still measures against the real, promoted rule set.  It does NOT hide
+    copper from any check meant to validate the promoted authoritative board --
+    those use fresh() / the authoritative file directly (see G1, G10, G17).
+
+    The strip is done on the .kicad_pcb TEXT, not through pcbnew: board-level
+    `(segment ...)`, `(via ...)` and `(arc ...)` are the only routed-copper
+    s-expressions, they are emitted at exactly one tab of indentation, and
+    removing whole balanced lists leaves a valid board.  (Mutating + re-saving a
+    board through pcbnew's SWIG bindings to delete tracks is both slow and, on
+    this KiCad build, prone to a teardown segfault -- the text strip is
+    deterministic and side-effect free, so every clean fixture is identical.)"""
+    dst = fresh(work, name)
+    txt = io.open(dst, encoding='utf-8').read()
+    out, i, n = [], 0, len(txt)
+    heads = ('\t(segment', '\t(via', '\t(arc')
+    while i < n:
+        nl = txt.find('\n', i)
+        line_end = n if nl < 0 else nl + 1
+        line = txt[i:line_end]
+        if any(line.startswith(h + '\n') or line.startswith(h + ' ')
+               for h in heads):
+            # drop this whole balanced (paren) list, however many lines it spans
+            # (quote-aware: never count a paren that sits inside a "string").
+            depth, j, instr = 0, txt.index('(', i), False
+            while j < n:
+                c = txt[j]
+                if instr:
+                    if c == '\\':
+                        j += 2
+                        continue
+                    if c == '"':
+                        instr = False
+                elif c == '"':
+                    instr = True
+                elif c == '(':
+                    depth += 1
+                elif c == ')':
+                    depth -= 1
+                    if depth == 0:
+                        j += 1
+                        break
+                j += 1
+            # also swallow the trailing newline so no blank line is left
+            if j < n and txt[j] == '\n':
+                j += 1
+            i = j
+            continue
+        out.append(line)
+        i = line_end
+    io.open(dst, 'w', encoding='utf-8', newline='').write(''.join(out))
+    return dst
 
 
 def ratsnest(pcb):
@@ -181,21 +269,40 @@ def main():
         print('  workspace %s' % work)
 
         # ---- G1 project context ------------------------------------------
+        import hashlib
         auth = os.path.join(PRJ, PCBNAME)
+        # Snapshot the authoritative file BEFORE any fixture is built, so G17 can
+        # prove building the clean fixtures never mutated it.
+        AUTH_HASH0 = hashlib.sha256(io.open(auth, 'rb').read()).hexdigest()
+        AUTH_STAT0 = os.stat(auth)
         base_a = drc(auth, 'auth', work)
-        scratch = fresh(work, 'base')
+        # G1 validates that a plain project COPY carries the full rule context
+        # (.kicad_dru / .kicad_pro netclasses / fp-lib-table / libraries) so DRC
+        # cannot silently fall back to KiCad DEFAULTS.  It must therefore compare
+        # a FAITHFUL copy of the authoritative board -- WHATEVER copper it now
+        # carries -- against the authoritative DRC: identical copper, identical
+        # rules, identical histogram.  (Post-promotion this copy carries the
+        # promoted routed copper, exactly as intended.)
+        ctx = fresh(work, 'ctx')
         chk('G1 scratch carries the full project context',
             'dru + pro + fp-lib-table + libraries present',
-            not project_context(scratch))
+            not project_context(ctx))
+        base_ctx = drc(ctx, 'ctx', work)
+        chk('G1 faithful project copy DRC == authoritative DRC',
+            '%s' % dict(sorted(base_ctx.items())), base_a == base_ctx)
+        # The primitive router vehicles below (CASES G2-G6, the CONFLICTS
+        # bisection, G7) lay a few tracks from scratch and assert EXACT
+        # ratsnest-fall / DRC-delta, so they need a copper-CLEAN base.  Derive it
+        # from the same placement/zones/rules with the routed copper stripped;
+        # base_s is the delta reference, base_rn the ratsnest-fall reference.
+        scratch = scratch_clean(work, 'base')
         base_s = drc(scratch, 'base', work)
-        chk('G1 scratch baseline DRC == authoritative baseline DRC',
-            '%s' % dict(sorted(base_s.items())), base_a == base_s)
         base_rn = ratsnest(scratch)
 
         # ---- G2..G6 per routed case --------------------------------------
         for title, net, spec, pairs in CASES:
             tag = title.split()[0]
-            pcb = fresh(work, tag)
+            pcb = scratch_clean(work, tag)     # primitive route -> copper-clean base
             qb = QR.QBoard(pcb)
             refs, ok = set(), True
             for a, b in pairs:
@@ -346,7 +453,7 @@ def main():
             return str(pp[b_].m_Uuid.AsString()) in grp
 
         NBR = '/01_POWER_TREE/BAT_RAW'
-        pcb8 = fresh(work, 'G8')
+        pcb8 = scratch_clean(work, 'G8')       # primitive route -> copper-clean base
         qb8 = QR.QBoard(pcb8)
         qb8.wide_nets = frozenset([NBR])
 
@@ -372,7 +479,7 @@ def main():
         # TEST C -- the defect itself.  Route a pad to a POINT on its own net
         # that does not reach the requested end; the router reports ok, and the
         # contract must still call the REQUESTED pair NOT CONNECTED.
-        pcb8c = fresh(work, 'G8C')
+        pcb8c = scratch_clean(work, 'G8C')     # primitive route -> copper-clean base
         qb8c = QR.QBoard(pcb8c)
         qb8c.wide_nets = frozenset([NBR])
         src = qb8c.pads.get((NBR, 'F1.2'))
@@ -478,7 +585,7 @@ def main():
 
         # And the board-state half of the rule: a rejected rung must leave NO
         # copper behind.  Measured on a real board rather than asserted.
-        pcb9 = fresh(work, 'G9')
+        pcb9 = scratch_clean(work, 'G9')       # primitive route -> copper-clean base
         qb9 = QR.QBoard(pcb9)
         qb9.wide_nets = frozenset(N + x for x in
                                   ('BAT_CONNECTOR_P', 'BAT_RAW', 'BAT_MID',
@@ -587,7 +694,7 @@ def main():
         print('  -- G11 FBV2-P2-003A bounded-probe search contract ----------')
         save_astar, save_wave = QR.ASTAR_BUDGET, QR.WAVE_BUDGET
         try:
-            g11 = fresh(work, 'g11')
+            g11 = scratch_clean(work, 'g11')   # primitive probe -> copper-clean base
             qb11 = QR.QBoard(g11)
             net11 = N + 'Q2_CS'
             pa = qb11.pads.get((net11, 'Q2.3'))
@@ -653,7 +760,7 @@ def main():
             return dict((k, v - base.get(k, 0)) for k, v in after.items()
                         if v > base.get(k, 0) and k != 'unconnected_items')
 
-        g12 = fresh(work, 'g12')
+        g12 = scratch_clean(work, 'g12')             # placement test -> clean base
         base_pre = drc(g12, 'g12pre', work)          # OLD-order baseline (pre-place)
         rn_pre = ratsnest(g12)
         # A candidate placement that induces a placement-derived DRC item, the
@@ -872,6 +979,126 @@ def main():
                           and "keep-out(s) lifted after join" in src)
         chk('G15 lever scoped to exactly LTC_GATE U18.10->Q3.4, KO lifted after',
             'hooks present=%s' % ltcgate_scoped, ltcgate_scoped)
+
+        # -- G16 FBV2-P2-004B/D-302 U11.2 BPP trunk-endpoint retarget lever ------
+        # u11_escape's default cross-board U11.2->D9.1 trunk has no legal >=1.20 mm
+        # corridor.  The retarget lever names the FAR endpoint: OFF -> 'D9.1'
+        # (byte-identical), AQROOT_U11_RETARGET=1/AUTO -> 'C36.1' (the nearest
+        # already->=1.20 mm-connected BPP node copper, landed by the bridge), and an
+        # explicit pad ref overrides.  FBV2-P2-004B2 (no-casualty refinement): the
+        # U11.2 0.20 mm SENSE closure is KEPT lever-on or off (the 004A requested-
+        # connected set is preserved), so the wide C36.1 tap is a CURRENT-PATH
+        # REINFORCEMENT between already-joined points, judged by reserve_gate(
+        # state['rn'], allow_dangle=False) -- no new DRC class/count AND ratsnest
+        # EXACTLY unchanged -- not gate()'s ratsnest-fall; its journal entry is
+        # marked reinforcement (not counted as a made/requested connection).
+        # Screened faithfully on the exact final-run 004A board: B.Cu 3.521 mm at
+        # 1.50 mm min trunk width, ZERO new KiCad DRC classes, >=1.20 mm continuity
+        # C36.1->bridge->R75.2.
+        print('  -- G16 FBV2-P2-004B/D-302 U11.2 trunk-endpoint retarget lever ----')
+        _s4 = os.environ.pop('AQROOT_U11_RETARGET', None)
+        try:
+            importlib.reload(RBB)
+            chk('G16 lever OFF by default (byte-identical: far endpoint D9.1)',
+                'U11_RETARGET=%r' % (RBB.U11_RETARGET,), RBB.U11_RETARGET == '')
+            os.environ['AQROOT_U11_RETARGET'] = '1'
+            importlib.reload(RBB)
+            chk('G16 AQROOT_U11_RETARGET=1 retargets U11.2 to the C36.1 node',
+                'U11_RETARGET=%r' % (RBB.U11_RETARGET,), RBB.U11_RETARGET == 'C36.1')
+            os.environ['AQROOT_U11_RETARGET'] = 'C25.1'
+            importlib.reload(RBB)
+            chk('G16 an explicit node-copper pad ref overrides the landing',
+                'U11_RETARGET=%r' % (RBB.U11_RETARGET,), RBB.U11_RETARGET == 'C25.1')
+        finally:
+            if _s4 is None:
+                os.environ.pop('AQROOT_U11_RETARGET', None)
+            else:
+                os.environ['AQROOT_U11_RETARGET'] = _s4
+            importlib.reload(RBB)
+        # Scoped: the far endpoint is `tgt = U11_RETARGET or 'D9.1'` (default D9.1),
+        # both the escape and connect_role use pads[net][tgt], the reinforcement
+        # branch judges with reserve_gate(..., allow_dangle=False) and marks the
+        # journal entry reinforcement -- and NOTHING skips the U11.2 SENSE closure
+        # (the no-casualty refinement removed that hook).
+        u11_scoped = ("U11_RETARGET" in src
+                      and "tgt = U11_RETARGET or 'D9.1'" in src
+                      and "pads[net][tgt]" in src
+                      and "reserve_gate(state['rn'], allow_dangle=False) if reinforce"
+                          " else gate()" in src
+                      and "je['reinforcement'] = True" in src
+                      and "U11_RETARGET and ref_ == 'U11.2'" not in src)
+        chk('G16 lever scoped to far endpoint + reinforcement gate, SENSE kept',
+            'hooks present=%s' % u11_scoped, u11_scoped)
+
+        # -- G17 FBV2-P2-004B2/D-302 first-copper-promotion / clean-fixture ------
+        # The first authoritative Phase-A copper promotion means the authoritative
+        # board now CARRIES routed copper.  Two invariants must hold TOGETHER:
+        #   (a) the primitive router vehicles (CASES G2-G6, the CONFLICTS
+        #       bisection, G7, G8, G9, G11, G12) run on a copper-CLEAN scratch
+        #       fixture -- zero tracks/vias -- so their exact ratsnest-fall /
+        #       DRC-delta / connectivity contracts still MEAN what they meant on
+        #       the pre-promotion empty board; and
+        #   (b) the fixture is NON-DESTRUCTIVE and hides copper from NO check that
+        #       is supposed to validate the promoted board -- the authoritative
+        #       file is byte-for-byte unchanged, and G1's context copy, G10's
+        #       concurrency baseline and the real-DRC/probe/judge harnesses all
+        #       still see the real routed copper.
+        # This is the standing guard that the harness fix is a fixture change, not
+        # a test weakening: it fails the moment the clean fixture leaks copper,
+        # the authoritative file is mutated, or the copper is hidden from the
+        # authoritative-state checks.
+        print('  -- G17 FBV2-P2-004B2/D-302 promotion / clean-fixture contract --')
+        auth_hash1 = hashlib.sha256(io.open(auth, 'rb').read()).hexdigest()
+        auth_stat1 = os.stat(auth)
+        chk('G17 authoritative board file is unchanged by fixture building',
+            'sha256 %s..%s stat(size=%d,mtime=%s)'
+            % (auth_hash1[:8], auth_hash1[-8:], auth_stat1.st_size,
+               auth_stat1.st_mtime == AUTH_STAT0.st_mtime),
+            auth_hash1 == AUTH_HASH0
+            and auth_stat1.st_size == AUTH_STAT0.st_size
+            and auth_stat1.st_mtime == AUTH_STAT0.st_mtime)
+
+        _ab = pcbnew.LoadBoard(auth)
+        auth_trk = len([t for t in _ab.GetTracks() if t.GetClass() == 'PCB_TRACK'])
+        auth_via = len([t for t in _ab.GetTracks() if t.GetClass() == 'PCB_VIA'])
+        chk('G17 authoritative board may carry promoted Phase-A copper',
+            '%d tracks / %d vias on the authoritative board' % (auth_trk, auth_via),
+            auth_trk > 0 and auth_via > 0)
+
+        cf = scratch_clean(work, 'g17_clean')
+        _cb = pcbnew.LoadBoard(cf)
+        cf_trk = len([t for t in _cb.GetTracks() if t.GetClass() == 'PCB_TRACK'])
+        cf_via = len([t for t in _cb.GetTracks() if t.GetClass() == 'PCB_VIA'])
+        cf_arc = len([t for t in _cb.GetTracks() if t.GetClass() == 'PCB_ARC'])
+        chk('G17 clean scratch fixture carries zero tracks, arcs and vias',
+            '%d tracks / %d arcs / %d vias' % (cf_trk, cf_arc, cf_via),
+            cf_trk == 0 and cf_arc == 0 and cf_via == 0)
+
+        # placement / layers / footprints / rules are PRESERVED in the fixture --
+        # only routed copper was stripped.
+        same_fp = len(_cb.GetFootprints()) == len(_ab.GetFootprints())
+        same_lay = (_cb.GetCopperLayerCount() == _ab.GetCopperLayerCount() == 6)
+        same_zone = _cb.GetAreaCount() == _ab.GetAreaCount()
+        has_ctx = not project_context(cf)
+        chk('G17 clean fixture keeps placement, layers, zones, rules',
+            'fp %d==%d, layers=%d, zones %d==%d, dru/pro present=%s'
+            % (len(_cb.GetFootprints()), len(_ab.GetFootprints()),
+               _cb.GetCopperLayerCount(), _cb.GetAreaCount(),
+               _ab.GetAreaCount(), has_ctx),
+            same_fp and same_lay and same_zone and has_ctx)
+
+        # the promoted copper is NOT hidden from the authoritative-state checks:
+        # the authoritative DRC (base_a, also the G10 concurrency reference) is
+        # measured on the routed file and is reproduced by the faithful copy
+        # (base_ctx == base_a), and the authoritative ratsnest -- measured on the
+        # real routed board -- has fallen BELOW the copper-clean fixture's exactly
+        # because the promoted Phase-A copper is real and connected.
+        auth_rn = ratsnest(auth)
+        chk('G17 authoritative DRC/connectivity measured on the routed board',
+            'auth ratsnest %d < clean ratsnest %d, auth tracks %d > clean %d, '
+            'base_a==base_ctx=%s'
+            % (auth_rn, base_rn, auth_trk, cf_trk, base_a == base_ctx),
+            auth_rn < base_rn and auth_trk > cf_trk and base_a == base_ctx)
 
         print('')
         if FAILED:
