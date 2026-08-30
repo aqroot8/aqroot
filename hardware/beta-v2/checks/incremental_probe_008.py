@@ -38,11 +38,11 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # D-306 promoted-board fingerprints.
-EXPECT_SHA = '9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259'
-EXPECT_TRACKS = 494           # D-305 483 + 11 DISP_RST_N
+EXPECT_SHA = 'a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50'
+EXPECT_TRACKS = 502           # 494 (D-306) + 8 IMU_ADDR (D-307)
 EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N cross-layer through via
-EXPECT_JOURNAL = 86           # 84 (D-305) + 2 DISP_RST REST_INC
-EXPECT_RATSNEST = 695         # 697 (D-305) - 2 (DISP_RST_N 3-pad net closed)
+EXPECT_JOURNAL = 88           # 86 (D-306) + 2 IMU_ADDR REST_INC
+EXPECT_RATSNEST = 693         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
 
 # The pre-promotion D-305 authoritative sha (483 trk / 54 via) -- the exact set
 # that must survive this increment unchanged.
@@ -83,31 +83,39 @@ def main():
     # ---------------------------------------------------- 1. INTEGRITY --------
     print('-- 1. INTEGRITY: authoritative board matches the D-306 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == D-306 record', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-307)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (483 prior + 11 DISP_RST_N)' % EXPECT_TRACKS,
+    chk('track count == %d (494 prior + 8 IMU_ADDR)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
-    chk('via count == %d (54 prior + 1 DISP_RST_N cross-layer via)' % EXPECT_VIAS,
+    chk('via count == %d (54 prior + 1 DISP_RST_N cross-layer via, unchanged)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (697 - 2 closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
+    chk('ratsnest == %d (695 - 2 IMU_ADDR closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
-    chk('journal entries == %d (84 + 2 REST_INC)' % EXPECT_JOURNAL,
+    chk('journal entries == %d (86 + 2 IMU_ADDR REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
     inc = [e for e in jr if e.get('role') == 'REST_INC' and e.get('group') == 'DISP_RST']
     chk('journal carries 2 REST_INC DISP_RST entries',
         len(inc) == 2, str([(e.get('a'), e.get('b')) for e in inc]))
 
     # --------------------------------- 2. PRIOR COPPER PRESERVED EXACTLY ------
-    print('\n-- 2. D-305 copper preserved EXACTLY (483 trk + 54 via intact) --')
+    print('\n-- 2. pre-DISP copper preserved EXACTLY (483 trk + 54 via intact) --')
     now = copper_sigs(b)
     disp_items = collections.Counter({s: n for s, n in now.items() if s[1] in DISP})
-    prior_now = now - disp_items
-    chk('non-DISP copper == 483 tracks + 54 vias (Phase-A + RGB + ACC intact)',
+    # Increments promoted AFTER D-306 (DISP) -- e.g. D-307 IMU_ADDR -- are excluded
+    # so this "pre-DISP copper intact" check stays true as the board grows.  The
+    # pre-DISP accepted copper is Phase-A (432) + FRONT_RGB (20) + ACC_3V3_CTL (31)
+    # = 483 tracks + 54 vias, and must never change under any later increment.
+    PRE_DISP_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST')
+    post_disp = {e['net'] for e in jr if e.get('role') == 'REST_INC'
+                 and e.get('group') not in PRE_DISP_GROUPS}
+    post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post_disp})
+    prior_now = now - disp_items - post_items
+    chk('non-DISP pre-D-307 copper == 483 tracks + 54 vias (Phase-A + RGB + ACC intact)',
         sum(prior_now.values()) == 483 + 54,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.

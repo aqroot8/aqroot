@@ -13,7 +13,51 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-008 / D-306 (this checkpoint — THIRD REST-OF-BOARD INCREMENT PROMOTED; FIRST VIA / MIXED-LAYER
+- **FBV2-P2-009 / D-307 (this checkpoint — FOURTH REST-OF-BOARD INCREMENT PROMOTED; the promoted fallback was
+  EARNED, not defaulted to):** a governed CTO **ACCEPT + PROMOTE** — a fourth rest-of-board net (the BMI270 IMU
+  I2C address-select strap `BMI270_SDO_ADDR`) is on the authoritative board, with **no Phase-A / FRONT_RGB / ACC /
+  DISP casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `73ea58e` (D-306;
+  pushed; `origin/master` identical). **(1) Same `incremental_router.py`, ZERO new mechanics** — a same-layer
+  B.Cu multi-terminal net routed through the existing Prim-MST + `connect_role` path; the D-306
+  via/`connect_cross`/`refill_planes` machinery reused byte-for-byte correctly did NOT engage (no via ⇒ no plane
+  re-pour ⇒ all 41 zones byte-identical). **(2) Group selection (measured; highest-value low-risk, not merely the
+  shortest net — baseline `9c0586d8…` 494/55/6, ratsnest 695, journal 86; refined READ-ONLY screen
+  `w/screen_009.py` reporting MST/layer/THT, group bbox, accepted-copper congestion within bbox+1/+2 mm and a
+  footprint-local coherence dump; all candidate nets confirmed Default netclass from the board).** Five candidates
+  recorded. CHOSE PRIMARY **U11_PROG** (`ILIM_VSET`+`ISET`, coherent same-chip BQ25185 charger current-program
+  straps) — a clean singleton is NOT bundled with unrelated nets to hit a count, and the favored IMU/I2C family
+  has no clean local *pair* (the only other U4 net `BMI270_INT1_RAW` is a ~46 mm haul to the MCU). Fallbacks:
+  **PWR_SENSE** (`VBUS_PRESENT`+`MAX17048_ALRT_N`), then pristine **IMU_ADDR** (`BMI270_SDO_ADDR`, 0 nearby
+  copper). Rejected: IMU_INT1 (17 mm MCU-adjacent single strap), IMU_COMBO (52 mm half-board span, needs a via);
+  excluded per mandate community-header/RF/NFC/USB/crystals/switching (ACC_5V boost)/rails/class-D SPK.
+  **(3) Two congested primaries EMPIRICALLY DISPROVEN (one foreground run each, authoritative untouched):**
+  `route U11_PROG` → INCOMPLETE (1/2): `ILIM_VSET` clean (4.857 mm) but `ISET` R37.1→**U11.8 NO LEGAL ESCAPE** —
+  boxed by BQ25185 pins U11.6/U11.9 + board edge (pad-local wall, order-independent); `route PWR_SENSE` →
+  INCOMPLETE (2/4): R104.2→TP31.1 + TP11.1→U14.5 **no legal corridor** even at the 0.025 mm fine grid (west
+  `BAT_PROTECTED_P` trunk); both confirm the congestion screen, AUTH sha UNCHANGED after each, no rule weakened.
+  **(4) The pristine fallback, EARNED — the gate (real full-board, D-286):** `route IMU_ADDR` → ALL OK (R118.1↔
+  R119.2 2.709 mm, R119.2↔U4.1 3.454 mm; 8 segments; 0.200 mm B.Cu, 0 via; 3-pad/2-edge MST); prior copper
+  deleted/altered = 0 (D-306 494 trk + 55 via multiset is a SUBSET); every new item a target-group net; ZERO
+  zones fill-changed (no via); `BMI270_SDO_ADDR` fully connected (open-edges 2→0); 0 prior pairs regressed; pcbnew
+  **ratsnest 695→693** (−2); real kicad-cli DRC no new/worse class. **GATE PASS.** **(5) Promoted:** authoritative
+  `sha256 9c0586d8…3f62259` → **`a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50`**; tracks
+  **494→502** (+8 BMI270_SDO_ADDR); vias **55** (no new via); 6 layers / 41 zones unchanged; journal **86→88**
+  (+2 `REST_INC`); PCB file diff **64 ins / 0 del** — pure ADD-ONLY (8 B.Cu `segment` lines; zero
+  segment/via/footprint/filled_polygon deletions, grep-confirmed; cleanest increment yet); real KiCad DRC
+  **identical** (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`).
+  **(6) Tests:** new contract **G21** (G18–G20 stay green unchanged — ADD-ONLY invariants already exclude all
+  `REST_INC` nets generically) → `router_regression.py` **ALL 92 CHECKS PASS (G1–G21)**, deterministic; new probe
+  `checks/incremental_probe_009.py` ALL PASS; `checks/incremental_probe_006/007/008.py` refreshed to the D-307
+  board (`_008` pre-DISP-copper check generalised) ALL PASS; `checks/phaseB_bringup_probe_005.py` updated
+  (502/55/88; 7 routed rest nets, 157 unrouted) ALL PASS. **Open owner decisions: NONE;** `JLCPCB_READINESS`
+  unchanged (~77 %). Rollback: pre-promotion `sha256 9c0586d8…3f62259` (D-306; parent `73ea58e`). Next:
+  **FBV2-P2-010 — continue rest-of-board routing (next bounded group, same framework); the two congested regions
+  (BQ25185/BPP trunk, west BAT trunk) are now characterised hard walls — do NOT re-attempt naively.** Full
+  analysis:
+  [`audits/2026-08-30-p2-009-d307-fourth-rest-of-board-incremental-increment-imu-addr-promoted.md`](audits/2026-08-30-p2-009-d307-fourth-rest-of-board-incremental-increment-imu-addr-promoted.md).
+  This checkpoint is written in the D-307 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-008 / D-306 (THIRD REST-OF-BOARD INCREMENT PROMOTED; FIRST VIA / MIXED-LAYER
   PRIMITIVE):** a governed CTO **ACCEPT + PROMOTE** — a third rest-of-board net is on the authoritative board,
   and for the first time the increment uses a **via / mixed-layer route**, with **no Phase-A / FRONT_RGB / ACC
   casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `c22b9fd` (D-305; pushed;

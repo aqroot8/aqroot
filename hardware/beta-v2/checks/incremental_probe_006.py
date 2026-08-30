@@ -33,11 +33,11 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # the latest promotion (D-305: the ACC_3V3_CTL increment was added on top of
 # FRONT_RGB -- FRONT_RGB itself is unchanged).  The durable FRONT_RGB pin lives
 # in router_regression G18; this is the live snapshot.
-EXPECT_SHA = '9c0586d824f92542c34fd12de1f6f8d4bdd8aaaab656c823eec40d6ae3f62259'
-EXPECT_TRACKS = 494           # 432 PhA + 20 RGB + 31 ACC + 11 DISP_RST_N (D-306)
+EXPECT_SHA = 'a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50'
+EXPECT_TRACKS = 502           # 432 PhA + 20 RGB + 31 ACC + 11 DISP + 8 IMU_ADDR (D-307)
 EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N F<->B cross-layer through via
-EXPECT_JOURNAL = 86           # 77 PhA + 3 RGB + 4 ACC + 2 DISP_RST REST_INC
-EXPECT_RATSNEST = 695         # 704 - 3 (RGB) - 4 (ACC) - 2 (DISP_RST_N)
+EXPECT_JOURNAL = 88           # 77 PhA + 3 RGB + 4 ACC + 2 DISP + 2 IMU_ADDR REST_INC
+EXPECT_RATSNEST = 693         # 704 - 3 (RGB) - 4 (ACC) - 2 (DISP) - 2 (IMU_ADDR)
 
 # The pre-promotion D-302 authoritative copper (432 trk / 54 via) -- the exact
 # set that must survive the increment unchanged.
@@ -80,21 +80,21 @@ def main():
     # ---------------------------------------------------- 1. INTEGRITY --------
     print('-- 1. INTEGRITY: authoritative board matches the D-304 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == D-304 record', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-307)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (432 PhA + 20 RGB + 31 ACC + 11 DISP_RST_N)' % EXPECT_TRACKS,
+    chk('track count == %d (432 PhA + 20 RGB + 31 ACC + 11 DISP + 8 IMU_ADDR)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
     chk('via count == %d (D-306 DISP_RST_N adds the first REST via)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (704 - 3 RGB - 4 ACC - 2 DISP_RST closed)' % EXPECT_RATSNEST,
+    chk('ratsnest == %d (704 - 3 RGB - 4 ACC - 2 DISP - 2 IMU_ADDR closed)' % EXPECT_RATSNEST,
         rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
-    chk('journal entries == %d (77 Phase-A + 3 + 4 REST_INC)' % EXPECT_JOURNAL,
+    chk('journal entries == %d (77 Phase-A + 3 + 4 + 2 + 2 REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
     inc = [e for e in jr if e.get('role') == 'REST_INC' and e.get('group') == 'FRONT_RGB']
     chk('journal carries 3 REST_INC FRONT_RGB entries',

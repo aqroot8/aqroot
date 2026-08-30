@@ -104,6 +104,46 @@ GROUPS = {
         via_dia=600000, via_drill=300000,
         nets=['DISP_RST_N'],
     ),
+    # FBV2-P2-009 / D-307 -- BQ25185 charger current-program strap PAIR.  Two
+    # coherent same-chip (U11) low-current programming straps: ILIM_VSET (input
+    # current-limit set resistor R36 -> U11.7) and ISET (charge-current set
+    # resistor R37 -> U11.8).  Both Default netclass (0.200 mm width/clearance,
+    # NO via), all B.Cu SMD, adjacent U11 east-edge pins -- a single coherent
+    # charger-programming control cluster.  The region is congested (BQ25185 /
+    # BPP trunk), so promotion is decided by the real full-board gate, not by
+    # geometry alone.  Same-layer B.Cu mechanics (D-304/D-305) reused byte-for-
+    # byte: no via, no plane re-pour.
+    'U11_PROG': dict(
+        sheet='01_POWER_TREE',
+        desc='BQ25185 charger current-program straps: input-current-limit set '
+             '(R36 -> U11.7 ILIM_VSET) + charge-current set (R37 -> U11.8 ISET); '
+             'coherent same-chip low-current control, all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['ILIM_VSET', 'ISET'],
+    ),
+    # FBV2-P2-009 fallback A -- west power-status sense pair: USB VBUS-present
+    # divider (R104/R105/C68/TP31 VBUS_PRESENT) + MAX17048 fuel-gauge alert
+    # (U14.5 -> TP11 MAX17048_ALRT_N).  Both Default netclass, all B.Cu SMD, no
+    # via, tight far-west power-input corner.
+    'PWR_SENSE': dict(
+        sheet='01_POWER_TREE',
+        desc='west power-status sense: USB VBUS-present divider (VBUS_PRESENT) + '
+             'MAX17048 fuel-gauge alert (MAX17048_ALRT_N); low-current status '
+             'sense, all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['VBUS_PRESENT', 'MAX17048_ALRT_N'],
+    ),
+    # FBV2-P2-009 fallback B -- BMI270 IMU I2C address-select strap (U4/R118/
+    # R119), a 3-pad B.Cu multi-terminal net, measured PRISTINE (0 accepted
+    # copper within bbox+2mm).  Default netclass, no via.  The held clean
+    # singleton fallback (favored IMU/I2C-local example).
+    'IMU_ADDR': dict(
+        sheet='05_I2C_DEVICES',
+        desc='BMI270 IMU I2C address-select strap (R118/R119 -> U4.1 '
+             'BMI270_SDO_ADDR); noncritical low-speed strap, all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['BMI270_SDO_ADDR'],
+    ),
 }
 
 

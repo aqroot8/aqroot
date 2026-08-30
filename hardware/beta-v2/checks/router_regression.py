@@ -1256,6 +1256,48 @@ def main():
             % (len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             disp_addonly)
 
+        # -- G21 FBV2-P2-009/D-307 fourth rest-of-board incremental increment ---
+        # The BMI270 IMU I2C address-select strap BMI270_SDO_ADDR (R118.1 /
+        # R119.2 / U4.1) was routed onto the D-306 promoted board by
+        # incremental_router.py as a genuine no-casualty / no-new-DRC increment.
+        # It is a pristine same-layer B.Cu multi-terminal net (3-pad, 2-edge MST)
+        # that reuses the D-304/D-305 B.Cu mechanics byte-for-byte -- NO via, so
+        # vias stay 55 and no GND plane is re-poured.  G21 pins that increment on
+        # the authoritative board: the net is fully copper-connected, its copper
+        # is legal (0.200 mm B.Cu, no via), and the increment is ADD-ONLY -- the
+        # RGB (20), ACC (31) and DISP (11) increments and Phase-A (432 trk / 54
+        # via) are untouched.
+        print('  -- G21 FBV2-P2-009/D-307 rest-of-board incremental increment --')
+        IMU = ('/05_I2C_DEVICES/BMI270_SDO_ADDR',)
+        imu_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in IMU]
+        imu_via = [t for t in all_via if t.GetNetname() in IMU]
+
+        joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('R119.2')) if p.GetClass() == 'PAD'}
+        conn_ok = ('R118.1' in joined) and ('U4.1' in joined)
+        chk('G21 BMI270_SDO_ADDR fully copper-connected (R118.1-R119.2-U4.1 one island)',
+            'R119.2 joined R118.1 & U4.1 = %s (%s)' % (conn_ok, sorted(joined)), conn_ok)
+
+        imu_legal = (len(imu_trk) == 8 and not imu_via
+                     and all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
+                             for t in imu_trk))
+        chk('G21 BMI270_SDO_ADDR copper legal (0.200 mm B.Cu, no via)',
+            '%d tracks, widths=%s, layers=%s, imu vias=%d'
+            % (len(imu_trk),
+               sorted({t.GetWidth() for t in imu_trk}),
+               sorted({t.GetLayerName() for t in imu_trk}), len(imu_via)),
+            imu_legal)
+
+        imu_addonly = (len(imu_trk) == 8 and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                       and len(phaseA_via) == 54)
+        chk('G21 increment is ADD-ONLY (DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'imu=%d (exp 8), disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)),
+            imu_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

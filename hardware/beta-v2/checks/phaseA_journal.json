@@ -3014,5 +3014,27 @@
   "mm": 18.081,
   "requested_connected": true,
   "group": "DISP_RST"
+ },
+ {
+  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+  "a": "R118.1",
+  "b": "R119.2",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 2.709,
+  "requested_connected": true,
+  "group": "IMU_ADDR"
+ },
+ {
+  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+  "a": "R119.2",
+  "b": "U4.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 3.454,
+  "requested_connected": true,
+  "group": "IMU_ADDR"
  }
 ]
