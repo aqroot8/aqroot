@@ -1149,11 +1149,62 @@ def main():
                sorted({t.GetLayerName() for t in rgb_trk}), len(rgb_via)),
             legal)
 
-        addonly = (len(other_trk) == 432 and len(all_via) == 54 and len(rgb_trk) == 20)
+        # ADD-ONLY is proven generically against ALL rest-of-board increment nets
+        # recorded in the shared journal (role=REST_INC), so this contract stays
+        # true as later increments are promoted: the Phase-A copper (everything
+        # that is NOT a rest-increment net) must remain exactly 432 tracks / 54
+        # vias, and FRONT_RGB itself must remain exactly its 20 B.Cu tracks.
+        _jr = json.load(io.open(os.path.join(SP_DIR, 'phaseA_journal.json'),
+                                encoding='utf-8'))
+        _inc_nets = {e['net'] for e in _jr if e.get('role') == 'REST_INC'}
+        phaseA_trk = [t for t in _g18.GetTracks()
+                      if t.GetClass() == 'PCB_TRACK' and t.GetNetname() not in _inc_nets]
+        addonly = (len(phaseA_trk) == 432 and len(all_via) == 54 and len(rgb_trk) == 20)
         chk('G18 increment is ADD-ONLY (Phase-A 432 trk / 54 via preserved)',
-            'other=%d (exp 432), vias=%d (exp 54), rgb tracks=%d (exp 20)'
-            % (len(other_trk), len(all_via), len(rgb_trk)),
+            'phaseA=%d (exp 432), vias=%d (exp 54), rgb tracks=%d (exp 20)'
+            % (len(phaseA_trk), len(all_via), len(rgb_trk)),
             addonly)
+
+        # -- G19 FBV2-P2-007/D-305 second rest-of-board incremental increment ---
+        # The ACC_3V3_CTL group (accelerometer 3V3 load-switch U20 local control:
+        # ACC_3V3_EN + ACC_3V3_ILIM) was routed onto the D-304 promoted board by
+        # incremental_router.py as a genuine no-casualty / no-new-DRC increment.
+        # G19 pins that increment on the authoritative board: the two nets are
+        # fully copper-connected, their copper is legal (0.200 mm B.Cu, NO via),
+        # and the increment is ADD-ONLY -- the FRONT_RGB increment (20 tracks) is
+        # untouched and the Phase-A copper is still exactly 432 tracks.
+        print('  -- G19 FBV2-P2-007/D-305 rest-of-board incremental increment --')
+        ACC = ('/ACC_3V3_EN', '/01_POWER_TREE/ACC_3V3_ILIM')
+        acc_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in ACC]
+        acc_via = [t for t in all_via if t.GetNetname() in ACC]
+
+        conn_ok = True
+        for a, b in (('U20.1', 'R98.1'), ('U20.1', 'TP26.1'),
+                     ('TP26.1', 'U3.15'), ('U20.4', 'R97.1')):
+            pa = _pad(a)
+            joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                      for p in _cc.GetConnectedItems(pa) if p.GetClass() == 'PAD'}
+            conn_ok = conn_ok and (b in joined)
+        chk('G19 ACC_3V3_CTL nets fully copper-connected on the authoritative board',
+            'U20.1-R98.1, U20.1-TP26.1, TP26.1-U3.15, U20.4-R97.1 joined=%s' % conn_ok,
+            conn_ok)
+
+        acc_legal = (all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
+                         for t in acc_trk) and not acc_via)
+        chk('G19 ACC_3V3_CTL copper is legal (0.200 mm B.Cu, no via)',
+            '%d tracks, widths=%s, layers=%s, acc vias=%d'
+            % (len(acc_trk),
+               sorted({t.GetWidth() for t in acc_trk}),
+               sorted({t.GetLayerName() for t in acc_trk}), len(acc_via)),
+            acc_legal)
+
+        acc_addonly = (len(acc_trk) == 31 and len(rgb_trk) == 20
+                       and len(phaseA_trk) == 432 and len(all_via) == 54)
+        chk('G19 increment is ADD-ONLY (FRONT_RGB 20 + Phase-A 432 preserved)',
+            'acc=%d (exp 31), rgb=%d (exp 20), phaseA=%d (exp 432), vias=%d (exp 54)'
+            % (len(acc_trk), len(rgb_trk), len(phaseA_trk), len(all_via)),
+            acc_addonly)
 
         print('')
         if FAILED:

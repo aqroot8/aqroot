@@ -66,6 +66,23 @@ GROUPS = {
         layer='B', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['FRONT_RGB_R_N', 'FRONT_RGB_G_N', 'FRONT_RGB_B_N'],
     ),
+    # FBV2-P2-007 / D-305 -- accelerometer 3V3 load-switch (U20) local control.
+    # Two noncritical low-current control nets: the enable line ACC_3V3_EN
+    # (driven from U3.15, pulled by R98, switched into U20.1, probed at TP26) and
+    # the current-limit programming strap ACC_3V3_ILIM (set resistor R97 -> U20.4).
+    # Both Default netclass (0.200 mm width/clearance, NO via), all B.Cu SMD; a
+    # coherent standalone power-gating control subsystem in a low-congestion
+    # region (only 4 Phase-A B.Cu strands within bbox+2 mm).  ACC_3V3_EN is a
+    # 4-pad multi-terminal net (3-edge MST) -- the first promoted increment to
+    # exercise multi-segment MST routing.
+    'ACC_3V3_CTL': dict(
+        sheet='01_POWER_TREE',
+        desc='accelerometer 3V3 load-switch (U20) local control: enable '
+             '(U3.15 -> R98/U20.1/TP26) + current-limit set (R97 -> U20.4); '
+             'noncritical low-current control, all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['ACC_3V3_EN', 'ACC_3V3_ILIM'],
+    ),
 }
 
 

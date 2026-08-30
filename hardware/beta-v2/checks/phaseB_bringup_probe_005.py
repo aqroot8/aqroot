@@ -50,17 +50,19 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # Authoritative fingerprints.  This is a LIVE integrity probe: it tracks the
 # current promoted board (the frozen per-milestone evidence lives in the audits).
-# Updated at FBV2-P2-006 / D-304, which promoted the first rest-of-board
-# incremental increment (the FRONT_RGB indicator group) onto the D-302 board:
-# 432 Phase-A tracks + 20 FRONT_RGB tracks = 452; journal 77 + 3 REST_INC = 80.
-EXPECT_SHA = '00c93bdbba9a8c798c51cdef1c0d6d828da1bac54e4a785197f0f69edfb72aad'
-EXPECT_TRACKS = 452
+# Updated at FBV2-P2-007 / D-305, which promoted the second rest-of-board
+# incremental increment (the ACC_3V3_CTL accelerometer-3V3 load-switch control
+# group) onto the D-304 board: 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL = 483
+# tracks; journal 77 + 3 + 4 REST_INC = 84.
+EXPECT_SHA = 'f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41'
+EXPECT_TRACKS = 483
 EXPECT_VIAS = 54
 EXPECT_LAYERS = 6
-EXPECT_JOURNAL = 80
+EXPECT_JOURNAL = 84
 
 # Rest-of-board nets promoted as accepted incremental increments (D-304 onward).
-ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N""".split())
+ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N
+ACC_3V3_EN ACC_3V3_ILIM""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -84,9 +86,9 @@ def main():
             fails.append(name)
 
     # ------------------------------------------------------------- 1. INTEGRITY
-    print('-- 1. INTEGRITY: promoted board matches the D-302 fingerprints --')
+    print('-- 1. INTEGRITY: promoted board matches the D-305 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == current record (D-304)', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-305)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
@@ -137,7 +139,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-304: FRONT_RGB)',
+    chk('the only routed rest-of-board nets are accepted increments (D-305: FRONT_RGB + ACC_3V3_CTL)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))

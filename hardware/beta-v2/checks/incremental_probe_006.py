@@ -28,12 +28,16 @@ import pcbnew
 AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
-# D-304 promoted-board fingerprints.
-EXPECT_SHA = '00c93bdbba9a8c798c51cdef1c0d6d828da1bac54e4a785197f0f69edfb72aad'
-EXPECT_TRACKS = 452           # D-302 Phase-A 432 + 20 FRONT_RGB increment
-EXPECT_VIAS = 54              # unchanged -- the increment adds NO via
-EXPECT_JOURNAL = 80           # 77 Phase-A + 3 REST_INC
-EXPECT_RATSNEST = 701         # 704 (D-302) - 3 (FRONT_RGB nets closed)
+# Live-board fingerprints.  This probe re-proves the FRONT_RGB increment is still
+# intact on the CURRENT authoritative board; its whole-board fingerprints track
+# the latest promotion (D-305: the ACC_3V3_CTL increment was added on top of
+# FRONT_RGB -- FRONT_RGB itself is unchanged).  The durable FRONT_RGB pin lives
+# in router_regression G18; this is the live snapshot.
+EXPECT_SHA = 'f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41'
+EXPECT_TRACKS = 483           # 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL (D-305)
+EXPECT_VIAS = 54              # unchanged -- neither increment adds a via
+EXPECT_JOURNAL = 84           # 77 Phase-A + 3 FRONT_RGB + 4 ACC_3V3_CTL REST_INC
+EXPECT_RATSNEST = 697         # 704 - 3 (FRONT_RGB) - 4 (ACC_3V3_CTL)
 
 # The pre-promotion D-302 authoritative copper (432 trk / 54 via) -- the exact
 # set that must survive the increment unchanged.
@@ -81,30 +85,35 @@ def main():
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (432 Phase-A + 20 increment)' % EXPECT_TRACKS,
+    chk('track count == %d (432 Phase-A + 20 FRONT_RGB + 31 ACC)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
     chk('via count == %d (increment adds no via)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (704 - 3 closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
+    chk('ratsnest == %d (704 - 3 FRONT_RGB - 4 ACC closed)' % EXPECT_RATSNEST,
+        rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
-    chk('journal entries == %d (77 + 3 REST_INC)' % EXPECT_JOURNAL,
+    chk('journal entries == %d (77 Phase-A + 3 + 4 REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
-    inc = [e for e in jr if e.get('role') == 'REST_INC']
+    inc = [e for e in jr if e.get('role') == 'REST_INC' and e.get('group') == 'FRONT_RGB']
     chk('journal carries 3 REST_INC FRONT_RGB entries',
-        len(inc) == 3 and all(e.get('group') == 'FRONT_RGB' for e in inc),
-        str([(e.get('a'), e.get('b')) for e in inc]))
+        len(inc) == 3, str([(e.get('a'), e.get('b')) for e in inc]))
 
     # --------------------------------- 2. PHASE-A PRESERVED EXACTLY -----------
     print('\n-- 2. PHASE-A copper preserved EXACTLY (D-302 set is a subset) --')
     now = copper_sigs(b)
     rgb_items = collections.Counter({s: n for s, n in now.items() if s[1] in RGB})
-    phaseA_now = now - rgb_items
-    chk('non-FRONT_RGB copper == 432 tracks + 54 vias (Phase-A intact)',
+    # Phase-A copper = everything that is NOT a rest-of-board increment net
+    # (FRONT_RGB + ACC_3V3_CTL + any later group), so this stays true as later
+    # increments are promoted.
+    inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}
+    phaseA_now = collections.Counter({s: n for s, n in now.items()
+                                      if s[1] not in inc_nets})
+    chk('Phase-A copper == 432 tracks + 54 vias (intact under all increments)',
         sum(phaseA_now.values()) == 432 + 54,
         '%d items' % sum(phaseA_now.values()))
-    chk('the only new copper is the FRONT_RGB increment',
+    chk('the FRONT_RGB increment is exactly 20 B.Cu tracks (no via)',
         sum(rgb_items.values()) == 20 and all(s[0] == 'T' for s in rgb_items),
         '%d items, all tracks=%s' % (sum(rgb_items.values()),
                                      all(s[0] == 'T' for s in rgb_items)))

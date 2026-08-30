@@ -1,10 +1,10 @@
 {
- "sha256": "00c93bdbba9a8c798c51cdef1c0d6d828da1bac54e4a785197f0f69edfb72aad",
- "tracks": 452,
+ "sha256": "f0046eb71f241afcb24978dc55b92aae0875300bd6e0747dc0bec6f204c7cd41",
+ "tracks": 483,
  "vias": 54,
  "copper_layers": 6,
- "ratsnest": 701,
- "journal": 80,
+ "ratsnest": 697,
+ "journal": 84,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -381,6 +381,26 @@
    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
    "R126.1",
    "U23.6"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "R98.1",
+   "U20.1"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "R98.1",
+   "TP26.1"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "TP26.1",
+   "U3.15"
+  ],
+  [
+   "/01_POWER_TREE/ACC_3V3_ILIM",
+   "R97.1",
+   "U20.4"
   ]
  ]
 }

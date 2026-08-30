@@ -2948,5 +2948,49 @@
   "mm": 7.379,
   "requested_connected": true,
   "group": "FRONT_RGB"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "R98.1",
+  "b": "U20.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 5.761,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "R98.1",
+  "b": "TP26.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 9.715,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "TP26.1",
+  "b": "U3.15",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 10.877,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL"
+ },
+ {
+  "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+  "a": "R97.1",
+  "b": "U20.4",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 14.033,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL"
  }
 ]

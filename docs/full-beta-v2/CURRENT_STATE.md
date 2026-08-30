@@ -13,7 +13,36 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-006 / D-304 (this checkpoint — FIRST REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
+- **FBV2-P2-007 / D-305 (this checkpoint — SECOND REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
+  **ACCEPT + PROMOTE** — a second rest-of-board net-group is on the authoritative board, with **no Phase-A /
+  FRONT_RGB casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `6353bd7`
+  (D-304; pushed; `origin/master` identical). **(1) Same reusable lever** `checks/incremental_router.py`
+  (no new mechanics — only a new `GROUPS` entry). **(2) Group selection (measured, `incremental_router.py
+  baseline` + `w/screen_007.py`, READ-ONLY):** CHOSE **ACC_3V3_CTL** (`/ACC_3V3_EN` + `/01_POWER_TREE/
+  ACC_3V3_ILIM`) — accelerometer 3V3 load-switch (U20) local control: enable (U3.15 → R98/U20.1/TP26, a
+  4-pad multi-terminal net) + current-limit set (R97 → U20.4); both Default netclass (0.200 mm width /
+  clearance, **no via**), all B.Cu SMD, low-congestion (only 4 Phase-A B.Cu strands within bbox + 2 mm),
+  NONCRITICAL low-current control; **adds the multi-segment MST primitive** (FRONT_RGB were all single-edge
+  2-pad). Rejected: IMU_STRAP `BMI270_SDO_ADDR` (clean but singleton — kept as fallback), PWR_SENSE (12
+  nearby copper, congested), U11_PROG (16 nearby, D-302 wall region), AUDIO_SPK (F.Cu/THT/analog), DISP_RST
+  (MIX-layer needs a via); excluded per mandate community-header/RF/NFC/USB/crystals/rails. **(3) The gate
+  (real full-board, D-286):** prior copper deleted/altered = 0 (D-304 452 trk + 54 via multiset is a SUBSET);
+  every new item a target-group net; both nets fully copper-connected (ACC_3V3_ILIM 1→0, ACC_3V3_EN 3→0); 0
+  prior requested pairs regressed; pcbnew **ratsnest 701→697** (−4); real kicad-cli DRC no new/worse class.
+  **GATE PASS.** **(4) Promoted:** authoritative `sha256 00c93bdb…dfb72aad` → **`f0046eb7…04c7cd41`**; tracks
+  **452→483** (+31 ACC_3V3_CTL); vias **54** (no new via); 6 layers / 41 zones unchanged; journal **80→84**
+  (+4 `REST_INC`); board diff **248 ins / 0 del** (ADD-ONLY at file level); real KiCad DRC **identical**
+  (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`). **(5)
+  Tests:** new contract **G19** (+ G18 generalised to exclude all `REST_INC` nets) → `router_regression.py`
+  **ALL 86 CHECKS PASS (G1–G19)**, deterministic; new probe `checks/incremental_probe_007.py` ALL PASS;
+  `checks/incremental_probe_006.py` refreshed ALL PASS; `checks/phaseB_bringup_probe_005.py` updated
+  (483/84; 5 routed rest nets, 159 unrouted) ALL PASS. **Open owner decisions: NONE;** `JLCPCB_READINESS`
+  unchanged (~77 %). Rollback: pre-promotion `sha256 00c93bdb…dfb72aad` (D-304; parent `6353bd7`). Next:
+  **FBV2-P2-008 — continue rest-of-board routing (next bounded group, same framework).** Full analysis:
+  [`audits/2026-08-30-p2-007-d305-second-rest-of-board-incremental-increment-acc-3v3-ctl-promoted.md`](audits/2026-08-30-p2-007-d305-second-rest-of-board-incremental-increment-acc-3v3-ctl-promoted.md).
+  This checkpoint is written in the D-305 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-006 / D-304 (FIRST REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
   **ACCEPT + PROMOTE** — the first rest-of-board copper is on the authoritative board, with **no Phase-A
   casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `50149f4` (D-303;
   pushed; `origin/master` identical). **(1) The reusable lever:** `checks/incremental_router.py` — a scoped
