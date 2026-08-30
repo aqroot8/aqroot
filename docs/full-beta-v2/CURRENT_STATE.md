@@ -5,7 +5,35 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003T / D-294 milestone commit (this checkpoint):** a governed **evidence /
+- **FBV2-P2-003U / D-295 milestone commit (this checkpoint):** a governed
+  **characterization / NO-PROGRESS + HANDOFF** commit (docs only); **autonomy CONTINUES**
+  (a normal Phase-A FAIL is not a stop reason, no owner decision is raised). 003U executed the
+  D-294 bounded full-context reservation/ordering corridor study of the two 003T walls at the
+  D-293 direction-2 placement (`t_a_r77e15n10_r79e15n10`). **Both walls are proven FULL-RUN-EMERGENT
+  ordering/congestion casualties, and NO cheap vehicle judges either at the direction-2 placement**
+  (the U19 dead-cell field is placement-independent for cheap vehicles, so it cannot reproduce the
+  direction-2-induced layer flip that boxes U19.7; the `R80` focused vehicle reported the exact
+  failing candidate as `fail=None` / U18.8 JOIN ok — vacuous). **The PRIMARY wall (`REC_BAT_LOW
+  U19.7`) is diagnosed EXACTLY and shown REDUCIBLE-in-principle:** in the committed 003O baseline all
+  seven U19 pins escaped, including `REC_BAT_LOW U19.7→Q7.1` (F.Cu 14.907 mm); direction-2 moves
+  nothing near U19 so the escape GEOMETRY is identical, and the +2-connection congestion **swapped
+  `VREC_VCC`'s two segments' layers** — `U19.8→C60.1` went B.Cu(0 via)→F.Cu(2 via) — so U19.8's
+  pad-escape now occupies the F lane immediately south of U19.7 that carried U19.7 in 003O (`U19.8`
+  ×26 the dominant blocker). U19.7 is then a greedy-tightest-first casualty (the driver already
+  re-measures `order_tight` per-pin, PR-32, so it is NOT a stale-table bug) that, as a `(node)` join,
+  is also ineligible for the D-278 inner hop (guarded `and not node`). **The SECONDARY wall (U18.8 I2
+  join corridor)** is a full-congestion I2 pinch: both reserve vias place, U18.9 JOINs, but
+  `U18.8→R75.2` JOIN `NO_PATH` (no ≥0.200 mm I2 lane between the two reserve vias) → `NO_VIA_SITE`.
+  Both bounded levers (escape-reservation for U19.7; reserve-via siting/ordering on I2 for U18.8)
+  require the **~22-min governing full authority gate** to judge, and that gate **cannot run
+  foreground** under the ACP 10-min single-call cap with backgrounding barred — so, per the 003U
+  discipline, 003U delivers a **precise CTO handoff** (exact lever design + ready-to-run
+  full-authority command) rather than an orphaned long run. **No source, no copper, no placement, no
+  rule change; no DRC absorbed; no promotion.** `/home/aqroot8/.aqroot-autopilot-stop` is ABSENT;
+  autonomy continues with **FBV2-P2-003V** (§5). Prior milestone: `36662db` (D-294, 003T direction-2
+  executed / full gate FAIL). This checkpoint is written in the same commit; a fresh session must
+  confirm the live tip with `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **Prior FBV2-P2-003T / D-294 milestone:** a governed **evidence /
   NO-PROGRESS** commit; **autonomy CONTINUES** (a normal Phase-A FAIL is not a stop reason,
   no owner decision is raised). 003T executed the owner-approved (D-293) bounded **direction-2**
   escape-target relocation: a cheap focused screen, then a **full CTO-authority** run (the CTO
@@ -74,7 +102,29 @@
   BAT_RAW R89.1/R86.2 divider taps (a capacity symptom, not a width lever).
 
 ## 4. Last accepted milestone
-- **Task:** FBV2-P2-003T · **Decision:** **D-294** · **Result:** DIRECTION 2 (D-293)
+- **Task:** FBV2-P2-003U · **Decision:** **D-295** · **Result:** THE TWO D-294 WALLS ARE
+  FULL-RUN-EMERGENT ORDERING/CONGESTION CASUALTIES — NO CHEAP VEHICLE JUDGES EITHER AT THE
+  DIRECTION-2 PLACEMENT — AND THE PRIMARY (`REC_BAT_LOW U19.7`) IS DIAGNOSED EXACTLY AND SHOWN
+  REDUCIBLE-IN-PRINCIPLE; THE GOVERNING ~22-min FULL GATE CANNOT RUN FOREGROUND UNDER THE ACP
+  10-min CAP, SO 003U DELIVERS A PRECISE CTO HANDOFF. The decisive cheap evidence is the
+  connected-set diff 003O→003T (no new long run): in 003O all seven U19 pins escaped, incl.
+  `REC_BAT_LOW U19.7→Q7.1` (F.Cu 14.907 mm); direction-2 moves nothing near U19, so the +2-connection
+  congestion **swapped `VREC_VCC`'s two segments' layers** (`U19.8→C60.1` B.Cu(0 via)→F.Cu(2 via)),
+  putting U19.8's pad-escape in the F lane U19.7 needs (`U19.8` ×26 dominant blocker). U19.7 is a
+  greedy-tightest-first casualty (driver already re-measures per-pin, PR-32) and, as a `(node)` join,
+  ineligible for the D-278 inner hop (`and not node` guard). SECONDARY: at U18 n+1.25 both I2 reserve
+  vias place and U18.9 JOINs, but `U18.8→R75.2` JOIN `NO_PATH` (no ≥0.200 mm I2 lane between the two
+  reserve vias) → `NO_VIA_SITE` — a full-congestion pinch, reserve-via siting/ordering lever.
+  Vacuity proven for both (DEADCELL omits the causal divider field + is placement-independent; the
+  `R80` focused screen said the failing candidate is `fail=None` U18.8 JOIN ok). Both are BOUNDED
+  full-context routing/ordering casualties (no floor relaxed, no frozen part moved, D-290 untouched,
+  D-269 enforced) — a governed CTO characterization / NO-PROGRESS + HANDOFF, NOT an owner decision;
+  autonomy CONTINUES; no source/copper/placement/rule change, no DRC absorbed, no promotion, D-275
+  and D-277..D-294 preserved. Evidence of record: audit
+  [`audits/2026-08-30-p2-003u-d295-two-walls-full-run-emergent-ordering-cheap-vacuous-handoff.md`](audits/2026-08-30-p2-003u-d295-two-walls-full-run-emergent-ordering-cheap-vacuous-handoff.md);
+  no new scratch (evidence read from committed `checks/phaseA_003o_b1_r75rot_cto.json` and gitignored
+  `checks/w/phaseA_003t_full_e15n10cto.json`, `w/FULL003T_e15n10cto/`, `w/cand_003t/`, `w/run_003t_full.sh`).
+- **Prior milestone — FBV2-P2-003T · Decision:** **D-294** · **Result:** DIRECTION 2 (D-293)
   EXECUTED — A FOCUSED MINIMUM CANDIDATE GENUINELY EXISTS, BUT THE GOVERNING FULL AUTHORITY
   GATE FAILs, SO NO CANDIDATE IS PROMOTABLE. The focused minimum is
   `t_a_r77e15n10_r79e15n10` (R77/R79 +1.5 mm east +1.0 mm north, U18 north +1.25 mm): the ONLY
@@ -199,31 +249,40 @@
   by the c3_00 placement short). `place_003l` (D-285) is clean and preserved. No DRC
   absorbed; the placement short IS the FAIL reason.
 
-## 5. Next task — FBV2-P2-003U (D-294 follow-through: bounded full-context reservation/ordering corridor study)
-- **Where 003T left it (D-294).** Direction 2 (D-293) is authorized, remains valid, and is
-  **not exhausted.** The focused minimum candidate `t_a_r77e15n10_r79e15n10` (R77/R79 +1.5 mm
-  east +1.0 mm north, U18 north +1.25 mm) closes clean on the focused vehicle but is VACUOUS vs
-  the congested full run (the governing gate), which FAILs on two bounded full-context walls.
-  Keep this direction-2 placement; attack the two walls with reservation/ordering, not more
-  translation.
-- **(1) PRIMARY — `REC_BAT_LOW U19.7` escape ordering (the current terminal FAIL).** U19.7 has
-  NO_LEGAL_ESCAPE only because its own package neighbors (U19.8 ×26, U19.5 ×7) and six tracks
-  escaped first and consumed its corridor. Study reserving U19.7's escape **before** its
-  neighbor pins and/or re-routing the six blocking tracks off its exit — a path-ordering /
-  escape-reservation lever within existing reservation mechanics, **no DRU change**.
-- **(2) SECONDARY — U18.8 I2 join corridor.** The full-run failure is "no I2 corridor at
-  0.200 mm between reserved vias." Study the U18.8/U18.9 reserve-via **siting/ordering** on I2
-  (D-257/D-266 reservation mechanics) at the direction-2 placement to open a ≥0.200 mm
-  `BAT_PROTECTED_P` join corridor between the two reserve vias — **without** dropping any via
-  below the D-257 ladder (a DRU change, BARRED), **without** the D-290 off-layer vacate (BARRED),
-  and **without** weakening D-269 or changing topology/footprint/outline. If the corridor cannot
-  open at this placement without relaxing a floor, report it as a bounded finding (it does not by
-  itself re-raise an owner decision).
-- **Method:** cheap full-context (not focused) screen first — judge every change by the
-  **full-run connected-set diff** (a focused `fail=None` does not transfer); run the first
-  candidate that clears the U19.7 wall through the full authority gate; **no promotion on proxy
-  evidence** (D-286). All floors ENFORCED (0.200 mm clearance, 0.25 mm hole-to-hole, 0.300 mm
-  D-269 current-path, ≥1.20 mm BPP trunk, 0.60 mm BAT_MAIN); D-290 stays closed.
+## 5. Next task — FBV2-P2-003V (D-295 handoff: implement ONE bounded env-gated lever, then run the full authority gate)
+- **Where 003U left it (D-295).** Both D-294 walls are **full-run-emergent ordering/congestion
+  casualties** and **no cheap vehicle judges either** at the direction-2 placement (proven, not
+  assumed — §4, audit). 003U could not run the governing ~22-min full gate foreground (ACP 10-min
+  cap, backgrounding barred), so it delivered a precise handoff: the PRIMARY wall is diagnosed
+  EXACTLY and shown reducible-in-principle. Keep the direction-2 placement `t_a_r77e15n10_r79e15n10`;
+  the levers are code-side reservation/ordering, not more translation.
+- **(1) PRIMARY — `REC_BAT_LOW U19.7` escape reservation.** Root cause (003U): direction-2's
+  +2-connection congestion swapped `VREC_VCC U19.8`'s pad-escape onto the F lane U19.7 needs to reach
+  Q7.1 (it escaped there cleanly in 003O), and greedy-tightest-first (already re-measured per-pin,
+  PR-32) routes U19.7 too late, after which it is a `(node)` join ineligible for the D-278 inner hop
+  (guarded `and not node`, `route_battery_block.py:1039`). Implement ONE narrowly-scoped, env-gated
+  (OFF by default) bounded lever: reserve U19.7's escape **before** its neighbors in the
+  reserve_escape family (`:647-729`) scoped to the `tight='U19'` group; and/or relax the D-278
+  `and not node` guard for the U19 group so a boxed `(node)`-retargeted U19 pin can take the ordinary
+  0.35/0.20 inner hop (D-257 preferred, no rule relaxed); and/or hold `VREC_VCC U19.8`'s pad-escape
+  on B.Cu (its 003O layer). **No DRU change.**
+- **(2) SECONDARY — U18.8 I2 join corridor.** Re-site/re-order the U18.8/U18.9 I2 reserve vias
+  (D-257/D-266 mechanics) so the `U18.8→R75.2` join has a ≥0.200 mm I2 lane — **without** dropping
+  any via below the D-257 ladder (BARRED), **without** the D-290 off-layer vacate (BARRED), and
+  **without** weakening D-269 or changing topology/footprint/outline. If the corridor cannot open at
+  this placement without relaxing a floor, that is a bounded finding (it does not by itself re-raise
+  an owner decision).
+- **Method / the governing run.** Validate the lever against `router_regression.py` (authoritative
+  behavior must stay byte-identical) and confirm it is OFF by default; then the CTO runs the FULL
+  authority gate in a persistent terminal:
+  `cd hardware/beta-v2/checks && cp phaseA_journal.json /tmp/phaseA_journal.HEAD.json &&
+  <lever-env> bash w/run_003t_full.sh 003v_u19resv w/cand_003t/t_a_r77e15n10_r79e15n10.json &&
+  cp /tmp/phaseA_journal.HEAD.json phaseA_journal.json` (~22 min; `w/run_003t_full.sh` carries the
+  full governed recipe). **Judge by the full-run connected-set diff** vs
+  `phaseA_003o_b1_r75rot_cto.json` and `w/phaseA_003t_full_e15n10cto.json` (a focused/vehicle
+  `fail=None` does not transfer); **no promotion on proxy evidence** (D-286). All floors ENFORCED
+  (0.200 mm clearance, 0.25 mm hole-to-hole, 0.300 mm D-269 current-path, ≥1.20 mm BPP trunk,
+  0.60 mm BAT_MAIN); D-290 stays closed.
 - **Downstream, still CTO-scope:** the old `REF_POL R87.2` F-corridor wall is now PAST under
   direction-2 (+2 connections); re-verify it (and the BAT_RAW R89.1/R86.2 divider taps) on a
   full authority run once the U19.7 and U18.8 walls clear.
@@ -307,6 +366,17 @@
   direction-2 remains authorized and is not exhausted. **A focused `fail=None` is VACUOUS vs
   the congested full run — judge Phase-A changes by the full-run connected-set diff, and promote
   copper only on full-authority evidence (D-286).**
+- **D-295 (003U)** the two D-294 walls are **full-run-emergent ordering/congestion casualties** and
+  **no cheap vehicle judges either at the direction-2 placement** (proven). The PRIMARY
+  (`REC_BAT_LOW U19.7`) is **reducible-in-principle** — it escaped cleanly in 003O; direction-2's
+  +2-connection congestion swapped `VREC_VCC U19.8`'s pad-escape from B.Cu onto the F lane U19.7
+  needs, and greedy-tightest-first (already per-pin-re-measured, PR-32) routes U19.7 too late, after
+  which it is a `(node)` join ineligible for the D-278 inner hop (guarded `and not node`). The
+  SECONDARY (U18.8 I2 join) is a full-congestion I2 corridor pinch between the two placed reserve
+  vias. Both bounded levers (escape-reservation for U19.7; I2 reserve-via siting for U18.8) are
+  judgeable **only by the ~22-min governing full gate**, which cannot run foreground under the ACP
+  10-min cap — so 003U is a governed characterization / NO-PROGRESS + HANDOFF, not an owner decision;
+  the U19.7 wall is an ordering class, NOT a D-289/290/292 placement mutual-exclusion.
 - Rule floors ENFORCED: **0.200 mm** clearance, **0.25 mm** hole-to-hole,
   **0.300 mm** current-path routed clearance (D-269),
   **≥1.20 mm** BPP trunk width (D-249), **0.60 mm** BAT_MAIN minimum width. Six-layer
@@ -315,13 +385,15 @@
   untouched.
 
 ## 8. Open owner decisions
-- **NONE. D-293 resolved the last owner decision at 22:34 UTC (direction 2 authorized), and
-  D-294 (003T) did NOT re-raise one.** Direction 2 was executed under full CTO authority and
-  FAILed the governing gate on two BOUNDED full-context routing/ordering walls (U18.8 I2 join
-  corridor; `REC_BAT_LOW U19.7` escape) — no floor relaxed, no frozen part moved, direction-2
-  not exhausted — so this is a governed CTO FAIL and autonomy CONTINUES with **FBV2-P2-003U**
-  (§5). The alternatives below are retained only as historical context and are not active
-  options.
+- **NONE. D-293 resolved the last owner decision at 22:34 UTC (direction 2 authorized); neither
+  D-294 (003T) nor D-295 (003U) re-raised one.** Direction 2 was executed under full CTO authority
+  and FAILs the governing gate on two BOUNDED full-context routing/ordering walls (U18.8 I2 join
+  corridor; `REC_BAT_LOW U19.7` escape); D-295 (003U) then diagnosed both walls exactly (the U19.7
+  wall is a REDUCIBLE ordering casualty, not a placement mutual-exclusion) and, unable to run the
+  ~22-min governing gate foreground (ACP 10-min cap), delivered a bounded lever design + a
+  ready-to-run full-authority handoff — no floor relaxed, no frozen part moved, direction-2 not
+  exhausted. Autonomy CONTINUES with **FBV2-P2-003V** (§5). The alternatives below are retained only
+  as historical context and are not active options.
 - **RESOLVED HISTORY — RE-RAISED by D-292 (FBV2-P2-003S).** The owner-approved bounded LTC4368/R75
   placement micro-ECO (D-291, option A) has been screened to EXHAUSTION and **cannot legally
   co-close the U18 escape field** (details §5, §1; audit D-292). Option A is therefore
@@ -347,10 +419,10 @@
   owner's direction.
 
 ## 9. JLCPCB readiness
-- **JLCPCB readiness ~77 %** (unchanged — 003T advanced the full-run frontier by +2
-  connections on scratch and moved the terminal wall past `REF_POL R87.2`, but the
-  authoritative board is still six layers / 0 tracks / 0 vias, the full Phase-A run still
-  FAILs, and no copper was promoted; only scratch evidence improved).
+- **JLCPCB readiness ~77 %** (unchanged — 003U earned NO progress: it characterized the two
+  003T walls and designed the 003V levers on read-only evidence, ran no route, and promoted no
+  copper; the authoritative board is still six layers / 0 tracks / 0 vias and the full Phase-A
+  run still FAILs).
 - **Repo progress 74 %** (governed value in PROGRESS.md).
 - **What remains before fabrication:** close `BAT_PROTECTED_P` on a valid LTC-block
   placement and complete Phase-A/Phase-B production routing; full DRC/ERC/connectivity
@@ -362,20 +434,25 @@
 - **Persistent CTO session:** `agent:main:aqroot-fbv2-cto` — sole owner of Claude
   engineering launches; receives every completion event.
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch
-  Claude or become a task parent. D-293 resolved the owner decision and D-294 (003T) is a
-  governed CTO FAIL that does not re-raise one; the stop file is ABSENT and the persistent CTO
-  continues one-Claude-at-a-time engineering.
-- **Should an engineering process be active now?** **Yes.** FBV2-P2-003U executes the
-  D-294 bounded full-context reservation/ordering corridor study of the two 003T walls
-  (`REC_BAT_LOW U19.7` escape ordering, primary; U18.8 I2 join corridor, secondary) at the
-  D-293 placement. The `REF_POL R87.2` F.Cu wall is now past under direction-2; re-verify
-  downstream once the U19.7/U18.8 walls clear.
+  Claude or become a task parent. D-293 resolved the owner decision and neither D-294 (003T) nor
+  D-295 (003U) re-raises one; the stop file is ABSENT and the persistent CTO continues
+  one-Claude-at-a-time engineering.
+- **Should an engineering process be active now?** **Yes.** FBV2-P2-003V executes the D-295
+  handoff: implement ONE narrowly-scoped, env-gated (OFF by default) bounded lever for the two
+  003T walls (PRIMARY `REC_BAT_LOW U19.7` escape reservation; SECONDARY U18.8 I2 reserve-via
+  siting), validate it against `router_regression.py` (authoritative byte-identical), then run
+  the FULL authority gate (`w/run_003t_full.sh 003v_u19resv w/cand_003t/t_a_r77e15n10_r79e15n10.json`,
+  ~22 min, in a persistent terminal) and judge by the full-run connected-set diff. **Note:** the
+  ~22-min gate exceeds the ACP 10-min single-call cap; run it directly in a persistent terminal,
+  never via a backgrounded/detached job.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
-1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-294**, FBV2-P2-003T
-   direction-2 executed, focused minimum exists but the full authority gate FAILs, no promotion;
-   preceded by **D-293**, owner approval of bounded direction 2).
-2. Newest audits — `audits/2026-08-30-p2-003t-d294-direction2-full-gate-fail-u18-corridor-u19-escape.md`,
+1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-295**, FBV2-P2-003U
+   the two D-294 walls are full-run-emergent ordering casualties, the PRIMARY (U19.7) is reducible
+   and diagnosed exactly, the full gate can't run foreground → precise CTO handoff, no promotion;
+   preceded by **D-294**, 003T direction-2 executed / full gate FAIL).
+2. Newest audits — `audits/2026-08-30-p2-003u-d295-two-walls-full-run-emergent-ordering-cheap-vacuous-handoff.md`,
+   then `…-003t-d294-direction2-full-gate-fail-u18-corridor-u19-escape.md`,
    then `…-003s-d292-u18-r75-placement-microeco-exhausted.md`,
    `…-003r-d290-off-layer-vacate-refuted-owner-decision.md`,
    `…-003q-d289-003p-rejection-and-u18-co-closure-refuted.md`,
