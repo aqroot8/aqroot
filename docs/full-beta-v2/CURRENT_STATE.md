@@ -5,7 +5,38 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003U / D-295 milestone commit (this checkpoint):** a governed
+- **FBV2-P2-003V / D-296 milestone commit (this checkpoint):** a governed **FAIL /
+  primary-family refutation** commit (docs only); **autonomy CONTINUES** (a normal Phase-A FAIL is
+  not a stop reason, no owner decision is raised). 003V implemented the D-295 PRIMARY lever — an
+  env-gated (`AQROOT_U19_RESV`, OFF by default) reservation of `REC_BAT_LOW U19.7`'s B.Cu escape +
+  one through via, scored toward Q7.1, BEFORE the `tight='U19'` pin field runs — as a +65-line
+  uncommitted WIP on `checks/route_battery_block.py`, and ran the FULL authority gate twice under CTO
+  authority (no new long run in this closeout; both artifacts pre-existed). **RESV (0.35/0.20 rung)
+  is behaviourally identical to D-294:** the corridor-less reservation cannot legalise a sub-minimum
+  via (rejected on `via_diameter` board-min 0.50 mm + `annular_width` 0.075<0.125 mm), is dropped
+  non-fatally, and the run falls through unchanged — connected-set diff vs the D-294 baseline
+  `w/phaseA_003t_full_e15n10cto.json` is **EMPTY both ways**. **RESV2 (0.60/0.30 board-legal rung)
+  FIRES and CLOSES U19.7** (rung self-corrects to the ordinary Default GENERAL_SIGNAL 0.60/0.30;
+  journal +1 `RESERVE` step `REC_BAT_LOW U19.7→Q7.1`) — but it is a bounded ORDERING TRADE with **NO
+  connected-set progress:** conn 69 / skip 98 / ratsnest 708/−73 all unchanged, DRC histogram
+  identical, and the terminal wall merely MOVES to `N_BATDIV U19.6→(node) NO_LEGAL_ESCAPE`. **The
+  decisive connected-set diff (D-294→RESV2) is a strict 1-for-1 swap:** GAINED `REC_BAT_LOW
+  U19.7→Q7.1 (SIG)`, LOST `REF_POL TP24.1→U19.2 (SIG)`, count 68→68 — the U19 field is
+  capacity-saturated, so reserving U19.7's lane only chooses which neighbour is abandoned. **Positive
+  finding recorded (not promoted):** the reservation mechanism is REAL and the D-295 diagnosis is
+  CONFIRMED (U19.7 is closable in principle, fully board-legal, no rule relaxed, no via below the
+  D-257 ladder) — but a 1-for-1 swap is not a net gain, so per D-286 nothing promotes copper. **The
+  `AQROOT_U19_RESV` source WIP is RETIRED** via an exact reverse patch (`git apply -R` of the WIP
+  diff, not a destructive reset): `git diff --stat` for the file is empty, worktree blob `bba62d35…`
+  = `HEAD:checks/route_battery_block.py` blob, and `git grep U19_RESV` over tracked source (excluding
+  gitignored `checks/w/`) returns no match; gitignored evidence preserved. **No source, no copper, no
+  placement, no rule change survives; no DRC absorbed; no promotion.**
+  `/home/aqroot8/.aqroot-autopilot-stop` is ABSENT; autonomy continues with **FBV2-P2-003W** (§5) —
+  the SECONDARY D-295 lever (U18.8/U18.9 I2 reserve-via siting/ordering for a ≥0.200 mm join lane,
+  full-gate-judged, no D-290/rule/topology/footprint/outline change). Prior milestone: `a2e27fc`
+  (D-295, 003U characterization + handoff). This checkpoint is written in the same commit; a fresh
+  session must confirm the live tip with `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **Prior FBV2-P2-003U / D-295 milestone:** a governed
   **characterization / NO-PROGRESS + HANDOFF** commit (docs only); **autonomy CONTINUES**
   (a normal Phase-A FAIL is not a stop reason, no owner decision is raised). 003U executed the
   D-294 bounded full-context reservation/ordering corridor study of the two 003T walls at the
@@ -249,40 +280,38 @@
   by the c3_00 placement short). `place_003l` (D-285) is clean and preserved. No DRC
   absorbed; the placement short IS the FAIL reason.
 
-## 5. Next task — FBV2-P2-003V (D-295 handoff: implement ONE bounded env-gated lever, then run the full authority gate)
-- **Where 003U left it (D-295).** Both D-294 walls are **full-run-emergent ordering/congestion
-  casualties** and **no cheap vehicle judges either** at the direction-2 placement (proven, not
-  assumed — §4, audit). 003U could not run the governing ~22-min full gate foreground (ACP 10-min
-  cap, backgrounding barred), so it delivered a precise handoff: the PRIMARY wall is diagnosed
-  EXACTLY and shown reducible-in-principle. Keep the direction-2 placement `t_a_r77e15n10_r79e15n10`;
-  the levers are code-side reservation/ordering, not more translation.
-- **(1) PRIMARY — `REC_BAT_LOW U19.7` escape reservation.** Root cause (003U): direction-2's
-  +2-connection congestion swapped `VREC_VCC U19.8`'s pad-escape onto the F lane U19.7 needs to reach
-  Q7.1 (it escaped there cleanly in 003O), and greedy-tightest-first (already re-measured per-pin,
-  PR-32) routes U19.7 too late, after which it is a `(node)` join ineligible for the D-278 inner hop
-  (guarded `and not node`, `route_battery_block.py:1039`). Implement ONE narrowly-scoped, env-gated
-  (OFF by default) bounded lever: reserve U19.7's escape **before** its neighbors in the
-  reserve_escape family (`:647-729`) scoped to the `tight='U19'` group; and/or relax the D-278
-  `and not node` guard for the U19 group so a boxed `(node)`-retargeted U19 pin can take the ordinary
-  0.35/0.20 inner hop (D-257 preferred, no rule relaxed); and/or hold `VREC_VCC U19.8`'s pad-escape
-  on B.Cu (its 003O layer). **No DRU change.**
-- **(2) SECONDARY — U18.8 I2 join corridor.** Re-site/re-order the U18.8/U18.9 I2 reserve vias
-  (D-257/D-266 mechanics) so the `U18.8→R75.2` join has a ≥0.200 mm I2 lane — **without** dropping
-  any via below the D-257 ladder (BARRED), **without** the D-290 off-layer vacate (BARRED), and
-  **without** weakening D-269 or changing topology/footprint/outline. If the corridor cannot open at
-  this placement without relaxing a floor, that is a bounded finding (it does not by itself re-raise
-  an owner decision).
+## 5. Next task — FBV2-P2-003W (D-295 SECONDARY lever: U18.8/U18.9 I2 reserve-via siting/ordering for a ≥0.200 mm join lane, full-gate-judged)
+- **Where 003V left it (D-296).** The PRIMARY U19.7 escape-reservation family is **refuted**: with a
+  board-legal 0.60/0.30 via the lever FIRES and U19.7 CLOSES, confirming the mechanism and the D-295
+  diagnosis, but it is a bounded **ordering trade** — the U19 dead-cell field is capacity-saturated,
+  so reserving U19.7's lane merely swaps the casualty (GAINED `REC_BAT_LOW U19.7→Q7.1`, LOST
+  `REF_POL TP24.1→U19.2`; conn 69/skip 98/ratsnest 708/−73 unchanged; wall moves U19.7→U19.6). No
+  net connected-set progress → rejected, source WIP retired. **Do NOT re-open the PRIMARY family**
+  (do not re-try U19.7-first reservation, and treat the D-278 `and not node` relaxation and the
+  `VREC_VCC U19.8` B.Cu hold as part of the same refuted swap unless a full run shows they enlarge
+  the field rather than re-order it). Keep the direction-2 placement `t_a_r77e15n10_r79e15n10`.
+- **The lever — SECONDARY, U18.8 I2 join corridor.** Root cause (003T/003U): at U18 north +1.25 both
+  reserve vias place on I2 and U18.9 JOINs, but `U18.8→R75.2` JOIN `NO_PATH` — no ≥0.200 mm I2 lane
+  **between the two reserved vias** (`BAT_PROTECTED_P` 0.35/0.20 at (2.8,66.8)&(7.2,66.5),
+  `BAT_SENSE` 0.35/0.20 at (4.25,63.5)&(4.6,66.0); centres ≈1.97 mm apart, a corridor pinch not
+  touching vias) → fallback `NO_VIA_SITE`. Implement ONE narrowly-scoped, env-gated (OFF by default)
+  bounded lever: re-site/re-order the U18.8/U18.9 I2 reserve vias within **D-257/D-266 mechanics** so
+  the join has a ≥0.200 mm I2 lane — **without** dropping any via below the D-257 ladder (BARRED),
+  **without** the D-290 off-layer vacate (BARRED), and **without** weakening D-269 or changing
+  topology/footprint/outline. **No DRU change.** If the corridor cannot open at this placement
+  without relaxing a floor, that is a bounded finding (it does not by itself re-raise an owner
+  decision).
 - **Method / the governing run.** Validate the lever against `router_regression.py` (authoritative
   behavior must stay byte-identical) and confirm it is OFF by default; then the CTO runs the FULL
   authority gate in a persistent terminal:
   `cd hardware/beta-v2/checks && cp phaseA_journal.json /tmp/phaseA_journal.HEAD.json &&
-  <lever-env> bash w/run_003t_full.sh 003v_u19resv w/cand_003t/t_a_r77e15n10_r79e15n10.json &&
+  <lever-env> bash w/run_003t_full.sh 003w_u18resv w/cand_003t/t_a_r77e15n10_r79e15n10.json &&
   cp /tmp/phaseA_journal.HEAD.json phaseA_journal.json` (~22 min; `w/run_003t_full.sh` carries the
   full governed recipe). **Judge by the full-run connected-set diff** vs
   `phaseA_003o_b1_r75rot_cto.json` and `w/phaseA_003t_full_e15n10cto.json` (a focused/vehicle
-  `fail=None` does not transfer); **no promotion on proxy evidence** (D-286). All floors ENFORCED
-  (0.200 mm clearance, 0.25 mm hole-to-hole, 0.300 mm D-269 current-path, ≥1.20 mm BPP trunk,
-  0.60 mm BAT_MAIN); D-290 stays closed.
+  `fail=None` does not transfer, and — per D-296 — a 1-for-1 pin swap is NOT a gain); **no promotion
+  on proxy evidence** (D-286). All floors ENFORCED (0.200 mm clearance, 0.25 mm hole-to-hole,
+  0.300 mm D-269 current-path, ≥1.20 mm BPP trunk, 0.60 mm BAT_MAIN); D-290 stays closed.
 - **Downstream, still CTO-scope:** the old `REF_POL R87.2` F-corridor wall is now PAST under
   direction-2 (+2 connections); re-verify it (and the BAT_RAW R89.1/R86.2 divider taps) on a
   full authority run once the U19.7 and U18.8 walls clear.
@@ -392,7 +421,10 @@
   wall is a REDUCIBLE ordering casualty, not a placement mutual-exclusion) and, unable to run the
   ~22-min governing gate foreground (ACP 10-min cap), delivered a bounded lever design + a
   ready-to-run full-authority handoff — no floor relaxed, no frozen part moved, direction-2 not
-  exhausted. Autonomy CONTINUES with **FBV2-P2-003V** (§5). The alternatives below are retained only
+  exhausted. D-296 (003V) then implemented and full-gate-ran the PRIMARY U19.7 reservation lever and
+  REFUTED it (it fires and closes U19.7 but only swaps the casualty within the saturated U19 field —
+  no net connected-set progress; source WIP retired). Autonomy CONTINUES with **FBV2-P2-003W** (§5) —
+  the SECONDARY U18.8/U18.9 I2 reserve-via lever. The alternatives below are retained only
   as historical context and are not active options.
 - **RESOLVED HISTORY — RE-RAISED by D-292 (FBV2-P2-003S).** The owner-approved bounded LTC4368/R75
   placement micro-ECO (D-291, option A) has been screened to EXHAUSTION and **cannot legally
@@ -437,14 +469,16 @@
   Claude or become a task parent. D-293 resolved the owner decision and neither D-294 (003T) nor
   D-295 (003U) re-raises one; the stop file is ABSENT and the persistent CTO continues
   one-Claude-at-a-time engineering.
-- **Should an engineering process be active now?** **Yes.** FBV2-P2-003V executes the D-295
-  handoff: implement ONE narrowly-scoped, env-gated (OFF by default) bounded lever for the two
-  003T walls (PRIMARY `REC_BAT_LOW U19.7` escape reservation; SECONDARY U18.8 I2 reserve-via
-  siting), validate it against `router_regression.py` (authoritative byte-identical), then run
-  the FULL authority gate (`w/run_003t_full.sh 003v_u19resv w/cand_003t/t_a_r77e15n10_r79e15n10.json`,
-  ~22 min, in a persistent terminal) and judge by the full-run connected-set diff. **Note:** the
-  ~22-min gate exceeds the ACP 10-min single-call cap; run it directly in a persistent terminal,
-  never via a backgrounded/detached job.
+- **Should an engineering process be active now?** **Yes.** FBV2-P2-003W executes the SECONDARY
+  D-295 lever (the PRIMARY U19.7 reservation family was refuted by D-296 — it fires but only swaps
+  the casualty in the saturated U19 field): implement ONE narrowly-scoped, env-gated (OFF by default)
+  bounded U18.8/U18.9 I2 reserve-via siting/ordering lever for a ≥0.200 mm `U18.8→R75.2` join lane
+  within D-257/D-266 mechanics, validate it against `router_regression.py` (authoritative
+  byte-identical), then run the FULL authority gate
+  (`w/run_003t_full.sh 003w_u18resv w/cand_003t/t_a_r77e15n10_r79e15n10.json`, ~22 min, in a
+  persistent terminal) and judge by the full-run connected-set diff (a 1-for-1 pin swap is NOT a
+  gain — D-296). **Note:** the ~22-min gate exceeds the ACP 10-min single-call cap; run it directly
+  in a persistent terminal, never via a backgrounded/detached job.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
 1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-295**, FBV2-P2-003U
