@@ -789,6 +789,41 @@ def main():
         chk('G13 override is scoped to exactly BAT_PROTECTED_P U18.8->R75.2',
             'guard present=%s' % scoped, scoped)
 
+        # -- G14 FBV2-P2-003X/D-298 U19 east-lane reservation lever ----------
+        # The U19 capacity lever must be OFF by default (byte-identical: no
+        # keep-out, ordinary DEADCELL close order), name the reserved-lane
+        # geometry over the U19.7/U19.6 east row, and reorder ONLY when on.
+        print('  -- G14 FBV2-P2-003X/D-298 U19 east-lane reservation lever ------')
+        _s2 = os.environ.pop('AQROOT_U19CAP', None)
+        try:
+            importlib.reload(RBB)
+            chk('G14 lever OFF by default (byte-identical: no reservation)',
+                'U19CAP=%r' % (RBB.U19CAP,), RBB.U19CAP is False)
+            os.environ['AQROOT_U19CAP'] = '1'
+            importlib.reload(RBB)
+            chk('G14 AQROOT_U19CAP activates the reservation',
+                'U19CAP=%r' % (RBB.U19CAP,), RBB.U19CAP is True)
+            # geometry: a keep-out over the U19 east row (x~4.7, y 27.55..28.95)
+            ko = RBB.U19CAP_KO
+            chk('G14 reserved-lane geometry spans U19.7 (y28.58) and U19.6 (y27.93)',
+                'KO=%s' % (ko,),
+                len(ko) == 5 and ko[1] <= 27930000 <= ko[3]
+                and ko[1] <= 28580000 <= ko[3] and abs(ko[0] - 4700000) < 500000)
+        finally:
+            if _s2 is None:
+                os.environ.pop('AQROOT_U19CAP', None)
+            else:
+                os.environ['AQROOT_U19CAP'] = _s2
+            importlib.reload(RBB)
+        # The lever is scoped: a KO keep-out (net=None), lifted at the '12b'
+        # closure, and REC_BAT_LOW ordered before N_BATDIV -- nothing wider.
+        u19_scoped = ("U19CAP" in src
+                      and "'12b'" in src
+                      and "N + 'REC_BAT_LOW'" in src
+                      and "N + 'N_BATDIV'" in src)
+        chk('G14 lever scoped to the U19 east lane + REC_BAT_LOW-before-N_BATDIV',
+            'hooks present=%s' % u19_scoped, u19_scoped)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -131,6 +131,32 @@ D266_INNER = os.environ.get('AQROOT_D266_INNER', 'I2')
 # every prior run.  Screened on the real full-run board: I2 join NO_PATH, I3 join
 # ok 4.410 mm, real KiCad DRC adds ZERO new classes and clears via_dangling 1->0.
 U18BPP_JOIN = (os.environ.get('AQROOT_U18BPP_JOIN') or '').upper()
+# D-298 / FBV2-P2-003X: the U19 CAPACITY lever - reserve the shared EAST escape
+# lane so a cross-board control run detours, and close the tighter pin first.
+#
+# The last Phase-A blocker is the saturated U19 dead-cell field: REC_BAT_LOW
+# U19.7 and N_BATDIV U19.6 (a BOTTOM SOT-23-8, east row x=3.833) both fail
+# NO_LEGAL_ESCAPE.  Measured on the 003W full-run board: both pins are pad-boxed
+# N/S by their neighbour pads (placement-fixed) and their only non-pad directions
+# E/W are walled by control tracks -- crucially the SAME LTC4368_FAULT_N
+# R82.1->Q9.1 64 mm B.Cu run walls the EAST lane of BOTH (its direct path grazes
+# the U19 east column; its endpoint (4.85,28.95) sits 30 um off U19.7's east ray).
+# FAULT_N is a low-current control net with ample slack: with the U19 east lane
+# reserved it re-routes on B.Cu and both pins escape east + hop to a bare inner
+# layer (U19.7->REC_BAT_LOW I3, U19.6->N_BATDIV I2) with the only board-legal
+# via geometry (0.65/0.40, annular 0.125 -- no DRU change).  The two adjacent
+# pins fit only if the TIGHTER one escapes FIRST: U19.7 before U19.6 (U19.6-first
+# re-boxes U19.7 -- an intra-pair swap).  Screened DRC-clean for the U19 escapes
+# (real KiCad DRC, zone-refilled: zero new classes attributable to them).
+# AQROOT_U19CAP: (a) install a foreign keep-out over the U19.7/U19.6 shared east
+# escape lane before routing so FAULT_N (and any early aggressor) detours; lift it
+# before the closure stage; (b) close REC_BAT_LOW before N_BATDIV.  Unset -> no
+# keep-out and the ordinary DEADCELL close order, byte-identical to every prior
+# run.  Net +2 vs a swap is judged ONLY by the full-authority gate (D-286).
+U19CAP = bool(os.environ.get('AQROOT_U19CAP'))
+# The reserved lane: a B.Cu keep-out centred just east of the U19 east row,
+# spanning U19.7 (y28.58) and U19.6 (y27.93).  (x0,y0,x1,y1,half-width) in nm.
+U19CAP_KO = (4700000, 27550000, 4700000, 28950000, 700000)
 # D-267 / FBV2-P2-002U: the SAME reservation idea, one path role over.
 # AQROOT_D267 names the staging family (F1/F2/F3) whose prefix of the
 # clean-board trunk `D9.1` reserves before the control field runs.
@@ -2023,6 +2049,15 @@ def main():
     # 11 work not yet authorised at this point in the task.
     CLOSE_NETS = ([nt for nt in SCOPE_NETS if nt[len(N):] not in PL.DEADCELL]
                   if LOCAL == 'D256' else SCOPE_NETS)
+    # D-298: close the tighter U19 pin first.  The DEADCELL order lists N_BATDIV
+    # (U19.6) before REC_BAT_LOW (U19.7); at closure that routes U19.6 first and
+    # its 0.65 mm escape via re-boxes U19.7 (the intra-pair swap).  Move
+    # REC_BAT_LOW immediately ahead of N_BATDIV so U19.7 escapes first and both
+    # fit.  Only reorders the two nets, and only when the lever is on.
+    if U19CAP and (N + 'REC_BAT_LOW') in CLOSE_NETS and (N + 'N_BATDIV') in CLOSE_NETS:
+        CLOSE_NETS = list(CLOSE_NETS)
+        CLOSE_NETS.remove(N + 'REC_BAT_LOW')
+        CLOSE_NETS.insert(CLOSE_NETS.index(N + 'N_BATDIV'), N + 'REC_BAT_LOW')
     CLOSE = []
     for nt in CLOSE_NETS:
         wide = nt in WIDE
@@ -2170,6 +2205,17 @@ def main():
 
     u11 = [False]
     early = [None]          # FBV2-P2-003I: the one-shot early-bridge record
+    # D-298: reserve the U19.7/U19.6 shared east escape lane BEFORE any routing,
+    # so the LTC4368_FAULT_N cross-board control run (and any early aggressor)
+    # detours around it instead of walling both boxed pins.  Lifted just before
+    # the closure stage (title '12b') so U19.7/U19.6 escape into the freed lane.
+    u19cap_ko = [None]
+    if U19CAP:
+        x0, y0, x1, y1, hw = U19CAP_KO
+        u19cap_ko[0] = QR.SEG(x0, y0, x1, y1, hw, None, 'KO')
+        qb.shapes['B'].append(u19cap_ko[0])
+        print('U19 CAP: reserved east escape lane KO=%s' % (U19CAP_KO,))
+        sys.stdout.flush()
     for p_ in range(1, passes):
         before = state['done'] + state['skipped']
         print("--- pass %d: %d queued ---" % (p_, len(QUEUE)))
@@ -2205,6 +2251,16 @@ def main():
                 QUEUE[idx_:] = order_tight(QUEUE[idx_:], verbose=not shown[0])
                 shown[0] = True
             it = QUEUE[idx_]
+            # D-298: lift the U19 east-lane reservation exactly once, just before
+            # the closure stage runs, so U19.7/U19.6 can escape into the freed
+            # lane (every U19-crossing aggressor has already routed by now).
+            if (U19CAP and u19cap_ko[0] is not None
+                    and str(it.get('title', '')).startswith('12b')):
+                if u19cap_ko[0] in qb.shapes['B']:
+                    qb.shapes['B'].remove(u19cap_ko[0])
+                u19cap_ko[0] = None
+                print('U19 CAP: lifted east-lane reservation for closure')
+                sys.stdout.flush()
             # FBV2-P2-003I / D-275: fire the EARLY western-corridor bridge ONCE,
             # at the first stage-8 item.  order_tight only permutes the tight
             # U18/U19 fine-pitch pins, so every '0*'/'6*' reservation + U18 item
