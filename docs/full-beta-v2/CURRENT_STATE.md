@@ -13,7 +13,37 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-005 / D-303 (this checkpoint — PHASE-B BRING-UP):** a governed CTO **CHARACTERIZATION +
+- **FBV2-P2-006 / D-304 (this checkpoint — FIRST REST-OF-BOARD INCREMENT PROMOTED):** a governed CTO
+  **ACCEPT + PROMOTE** — the first rest-of-board copper is on the authoritative board, with **no Phase-A
+  casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `50149f4` (D-303;
+  pushed; `origin/master` identical). **(1) The reusable lever:** `checks/incremental_router.py` — a scoped
+  INCREMENTAL router/promoter (commands `baseline`/`route`/`gate`/`promote`) that loads the promoted board via
+  `qrouter.QBoard` (all existing copper is an OBSTACLE; new copper is ADDED, never `Remove()`d), routes a
+  bounded named net-GROUP into a scratch copy `checks/w/INC_<GROUP>/` (authoritative project untouched during
+  the experiment — sha256 verified unchanged after `route`), and PROMOTES only on a real full-board gate PASS.
+  **(2) Group selection (measured, `w/measure_rest_006.py`, READ-ONLY):** CHOSE **FRONT_RGB**
+  (`/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N|G_N|B_N`) — front-panel RGB status-LED control (U23 expander →
+  R124/125/126), 6 pads, all B.Cu SMD, Default netclass (0.200 mm width / 0.200 mm clearance, **no via**),
+  region carries **ZERO Phase-A copper** (isolated), NONCRITICAL, no rail/RF/USB/HV/clock constraint; rejected
+  07_IR (F.Cu/THT near edge, moderate-current emitter), 01_POWER_TREE short pairs (power-adjacent), 05_I2C
+  single net; excluded per mandate community-header/RF/NFC/USB/crystals/rails. **(3) The gate (real
+  full-board, D-286):** Phase-A copper deleted/altered = 0 (D-302 copper-item multiset is a SUBSET of the
+  routed items); every new item a target-group net; each target net fully copper-connected
+  (`GetConnectedItems`, 1→0); 0 prior Phase-A requested pairs regressed (71); pcbnew **ratsnest 704→701**
+  (−3); real kicad-cli DRC no new/worse class. **GATE PASS.** **(4) Promoted:** authoritative
+  `sha256 63a9bc54…f87d6ba9` → **`00c93bdb…dfb72aad`**; tracks **432→452** (+20 FRONT_RGB); vias **54** (no
+  new via); 6 layers / 41 zones unchanged; journal **77→80** (+3 `REST_INC`); real KiCad DRC **identical**
+  (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`). **(5)
+  Tests:** new contract **G18** + `router_regression.py` **ALL 82 CHECKS PASS (G1–G18)**, deterministic; new
+  probe `checks/incremental_probe_006.py` ALL PASS; `checks/phaseB_bringup_probe_005.py` updated to the
+  promoted state (452/80; 3 routed rest nets, 161 unrouted) ALL PASS. **Open owner decisions: NONE;**
+  `JLCPCB_READINESS` unchanged (~77 %). Rollback: pre-promotion `sha256 63a9bc54…f87d6ba9` (D-302; parent
+  `50149f4`). Next: **FBV2-P2-007 — continue rest-of-board routing (next bounded group, same framework).**
+  Full analysis:
+  [`audits/2026-08-30-p2-006-d304-first-rest-of-board-incremental-increment-front-rgb-promoted.md`](audits/2026-08-30-p2-006-d304-first-rest-of-board-incremental-increment-front-rgb-promoted.md).
+  This checkpoint is written in the D-304 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-005 / D-303 (prior checkpoint — PHASE-B BRING-UP):** a governed CTO **CHARACTERIZATION +
   INTEGRITY + SCOPING** milestone on the promoted board — **no copper change, authoritative PCB byte-identical
   (`sha256 63a9bc54…f87d6ba9`), autonomy CONTINUES, no owner decision.** Starting HEAD `01a38a5` (D-302; pushed;
   `origin/master` identical). **(1) Exact Phase-B definition (from the code):** "Phase B" here is the
@@ -239,11 +269,13 @@
   (`replay_battery_block.py` / SECTION-17 `AQROOT_REPLAY` / `phaseB_compare.py`) is the battery-block
   replay/idempotence verification and is now **stale + assumes a copper-empty base** (do NOT naively re-run;
   see §1). The promotion is sound without it (rests on a genuine full-authority gate, D-286).
-- **Current fabrication blocker (updated by D-303): rest-of-board routing.** The board is Phase-A only —
-  **164 multi-pad nets across 9 subsystem sheets + rails (GND 259 pads, +3V3 86, …) are UNROUTED** (ratsnest
-  704 / unconnected_items 499). There is **no driver** for these (route_battery_block is power-tree scoped).
-  The next lever is a new scoped INCREMENTAL rest-of-board driver that preserves the accepted Phase-A copper,
-  routes a bounded isolated net-group first, and is gated by real full-board DRC (D-286) — FBV2-P2-006 (§5).
+- **Current fabrication blocker (updated by D-304): rest-of-board routing — IN PROGRESS, incrementally.**
+  The reusable incremental router/promoter (`checks/incremental_router.py`) now EXISTS and the FIRST group is
+  promoted: of the 164 rest-of-board multi-pad nets, **3 are routed (the FRONT_RGB indicator group, D-304),
+  161 remain UNROUTED** across 9 subsystem sheets + rails (GND 259 pads, +3V3 86, …); ratsnest **701**. Each
+  future group is added to the `incremental_router.py` registry and routed → gated (real full-board DRC,
+  D-286) → promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-007, §5). The board carries
+  Phase-A battery-block copper (432 trk / 54 via) **plus** the FRONT_RGB increment (20 trk).
 - **Historical Phase-A blocker context (all CLOSED under D-302), updated by D-301.** Direction-2 (D-294) plus the accepted bounded
   levers (D-297 U18.8 In3-join, D-298/D-299 U19CAP, **D-301 LTC_GATE_KO**) have resolved the west/BAT_RAW,
   U18.8, the saturated U19 dead-cell field **and** the `LTC_GATE U18.10→Q3.4` join; **the SINGLE remaining
@@ -431,20 +463,21 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-006 (begin rest-of-board routing)
-- **Where 005 left it (D-303).** Phase-A battery-block copper is promoted and integrity-verified; the in-repo
-  Phase-B replay machinery is stale/copper-empty-assuming (do not naively re-run — §1); the real remaining
-  work is rest-of-board routing (164 unrouted multi-pad nets, 9 subsystem sheets + rails, ~85 % of routing).
-- **The lever (FBV2-P2-006).** Build a **new, scoped, INCREMENTAL rest-of-board driver** that: LOADS the
-  promoted authoritative board and **PRESERVES the accepted Phase-A power-tree copper** (never erase/reroute —
-  an accepted invariant); routes a **bounded, isolated net-group first** (recommend a small self-contained
-  subsystem — a low-pin-count peripheral or a short bus segment); is gated by **real full-board DRC** (D-286);
-  and promotes **only a genuine no-casualty / no-new-DRC increment** under the established workflow. The
-  one-shot `replay_battery_block.py` (copper-empty-base guard) must be generalized for incremental promotion or
-  replaced by a new incremental promoter. All floors ENFORCED (D-249 ≥1.20 mm BPP, D-269 0.300 mm, D-257 via
-  ladder, 0.60 mm BAT_MAIN, 0.200/0.150 signal, 0.25 hole-hole, D-275/D-288 bridge); no DRU/rule relaxation,
-  no D-290 reauth, no topology/footprint/outline change. Promote copper only on a genuine full-board DRC-clean
-  increment.
+## 5. Next task — FBV2-P2-007 (continue rest-of-board routing, next bounded group)
+- **Where 006 left it (D-304).** The reusable incremental router/promoter `checks/incremental_router.py`
+  EXISTS and is proven: it loaded the D-302 promoted board, routed the FRONT_RGB indicator group (3 nets, 20
+  B.Cu tracks, no via) with a real full-board gate (Phase-A copper preserved exactly, 0 casualty, ratsnest
+  704→701, DRC unchanged), and PROMOTED it (authoritative `sha256 00c93bdb…`; 452 trk / 54 via; journal 80).
+  **161 of the 164 rest-of-board nets remain unrouted.**
+- **The lever (FBV2-P2-007).** Pick the next sharply-bounded group from measured geometry
+  (`w/measure_rest_006.py` ranks candidates), add it to the `GROUPS` registry in `incremental_router.py`, then
+  `route` → `gate` → `promote`. Good next candidates: the remaining short, isolated 08_BUTTONS_EXPANDERS /
+  01_POWER_TREE-local / 05_I2C control pairs, then short bus segments; **defer** the RF/NFC radios, USB,
+  community-header mass and GND/+3V3 bulk rails until the framework has more mileage. Promote **only a genuine
+  no-casualty / no-new-DRC increment** (the gate enforces this). All floors ENFORCED (D-249 ≥1.20 mm BPP,
+  D-269 0.300 mm, D-257 via ladder, 0.60 mm BAT_MAIN, 0.200/0.150 signal, 0.25 hole-hole, D-275/D-288 bridge);
+  no DRU/rule relaxation, no D-290 reauth, no topology/footprint/outline change. Add a G-contract per accepted
+  group (G18 is the FRONT_RGB template).
 - **Superseded (kept for context) — FBV2-P2-004B (the `U11.2` BPP trunk-endpoint retarget lever), CLOSED by
   D-302.** `LTC_GATE U18.10→Q3.4` is CLOSED (accepted `AQROOT_LTCGATE_KO`
   lever). The full run is the FIRST to reach the final `u11_escape()` step, and the single terminal
@@ -487,7 +520,14 @@
   and the BAT_RAW R89.1/R86.2 divider taps.
 
 ## 6. Authoritative PCB state
-- **Routing/promotion (D-302): FIRST AUTHORITATIVE COPPER PROMOTED.** Authoritative board = **six copper
+- **Routing/promotion (D-304): Phase-A copper + first rest-of-board increment.** Authoritative board =
+  **six copper layers, 452 signal tracks, 54 vias, 41 zones** (verified `sha256 00c93bdb…dfb72aad`), carrying
+  the **432-track Phase-A battery block (D-302) PLUS the 20-track FRONT_RGB indicator increment (D-304)**;
+  ratsnest **701**; journal **80** (77 Phase-A + 3 `REST_INC`); real KiCad DRC unchanged
+  (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`); 161 rest-of-
+  board nets remain unrouted. `router_regression.py` ALL 82 PASS (G1–G18). Rollback: pre-D-304
+  `sha256 63a9bc54…f87d6ba9` (D-302; parent `50149f4`).
+- **(historical) Routing/promotion (D-302): FIRST AUTHORITATIVE COPPER PROMOTED.** Authoritative board = **six copper
   layers, 432 signal tracks, 54 vias, 41 zones** (verified `sha256 63a9bc54…f87d6ba9`, size 1475931), carrying
   **Phase-A battery-block copper ONLY** (all 432 tracks in-scope power-tree; 0 out-of-scope); direction-2
   placement (fingerprint `397dffe1f77e4d10`; U18 moved to (8.0,66.5,180°), C36.1 at (63.750,74.325)); 77-entry

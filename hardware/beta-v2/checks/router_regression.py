@@ -1100,6 +1100,61 @@ def main():
             % (auth_rn, base_rn, auth_trk, cf_trk, base_a == base_ctx),
             auth_rn < base_rn and auth_trk > cf_trk and base_a == base_ctx)
 
+        # -- G18 FBV2-P2-006/D-304 first rest-of-board incremental increment ----
+        # The FRONT_RGB indicator group (U23 expander -> R124/125/126) was routed
+        # onto the promoted board by incremental_router.py as a genuine
+        # no-casualty / no-new-DRC increment.  G18 pins that increment on the
+        # authoritative board: the three nets are fully copper-connected, their
+        # copper is legal (0.200 mm B.Cu, NO new via), and the increment is
+        # ADD-ONLY -- every non-FRONT_RGB track is still the accepted D-302
+        # Phase-A copper (432 tracks), vias unchanged at 54.
+        print('  -- G18 FBV2-P2-006/D-304 rest-of-board incremental increment --')
+        _g18 = pcbnew.LoadBoard(auth)
+        _g18.BuildConnectivity()
+        _cc = _g18.GetConnectivity()
+        RGB = ('/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N',
+               '/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N',
+               '/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N')
+        rgb_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in RGB]
+        other_trk = [t for t in _g18.GetTracks()
+                     if t.GetClass() == 'PCB_TRACK' and t.GetNetname() not in RGB]
+        all_via = [t for t in _g18.GetTracks() if t.GetClass() == 'PCB_VIA']
+        rgb_via = [t for t in all_via if t.GetNetname() in RGB]
+
+        def _pad(ref):
+            r, num = ref.split('.')
+            for f in _g18.GetFootprints():
+                if f.GetReference() == r:
+                    for p in f.Pads():
+                        if p.GetNumber() == num:
+                            return p
+            return None
+
+        conn_ok = True
+        for a, b in (('U23.4', 'R124.1'), ('U23.5', 'R125.1'), ('U23.6', 'R126.1')):
+            pa = _pad(a)
+            joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                      for p in _cc.GetConnectedItems(pa) if p.GetClass() == 'PAD'}
+            conn_ok = conn_ok and (b in joined)
+        chk('G18 FRONT_RGB nets fully copper-connected on the authoritative board',
+            'U23.4-R124.1, U23.5-R125.1, U23.6-R126.1 joined=%s' % conn_ok, conn_ok)
+
+        legal = (all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
+                     for t in rgb_trk) and not rgb_via)
+        chk('G18 FRONT_RGB copper is legal (0.200 mm B.Cu, no via)',
+            '%d tracks, widths=%s, layers=%s, rgb vias=%d'
+            % (len(rgb_trk),
+               sorted({t.GetWidth() for t in rgb_trk}),
+               sorted({t.GetLayerName() for t in rgb_trk}), len(rgb_via)),
+            legal)
+
+        addonly = (len(other_trk) == 432 and len(all_via) == 54 and len(rgb_trk) == 20)
+        chk('G18 increment is ADD-ONLY (Phase-A 432 trk / 54 via preserved)',
+            'other=%d (exp 432), vias=%d (exp 54), rgb tracks=%d (exp 20)'
+            % (len(other_trk), len(all_via), len(rgb_trk)),
+            addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

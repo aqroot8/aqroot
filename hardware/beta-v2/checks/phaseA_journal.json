@@ -2915,5 +2915,38 @@
   "pofv": null,
   "pad_copper_mm": null,
   "secs": 11.0
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+  "a": "R124.1",
+  "b": "U23.4",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 5.415,
+  "requested_connected": true,
+  "group": "FRONT_RGB"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+  "a": "R125.1",
+  "b": "U23.5",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 10.83,
+  "requested_connected": true,
+  "group": "FRONT_RGB"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+  "a": "R126.1",
+  "b": "U23.6",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 7.379,
+  "requested_connected": true,
+  "group": "FRONT_RGB"
  }
 ]

@@ -48,12 +48,19 @@ import pcbnew
 AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
-# D-302 authoritative fingerprints (see CTO_DECISIONS D-302 / the 004b2 audit).
-EXPECT_SHA = '63a9bc54e16cd1b2c69ad41cd95a2bb4d3e258503cb12b5628885debf87d6ba9'
-EXPECT_TRACKS = 432
+# Authoritative fingerprints.  This is a LIVE integrity probe: it tracks the
+# current promoted board (the frozen per-milestone evidence lives in the audits).
+# Updated at FBV2-P2-006 / D-304, which promoted the first rest-of-board
+# incremental increment (the FRONT_RGB indicator group) onto the D-302 board:
+# 432 Phase-A tracks + 20 FRONT_RGB tracks = 452; journal 77 + 3 REST_INC = 80.
+EXPECT_SHA = '00c93bdbba9a8c798c51cdef1c0d6d828da1bac54e4a785197f0f69edfb72aad'
+EXPECT_TRACKS = 452
 EXPECT_VIAS = 54
 EXPECT_LAYERS = 6
-EXPECT_JOURNAL = 77
+EXPECT_JOURNAL = 80
+
+# Rest-of-board nets promoted as accepted incremental increments (D-304 onward).
+ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -79,7 +86,7 @@ def main():
     # ------------------------------------------------------------- 1. INTEGRITY
     print('-- 1. INTEGRITY: promoted board matches the D-302 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == D-302 record', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-304)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
@@ -91,9 +98,12 @@ def main():
     jr = json.load(open(JOURNAL, encoding='utf-8'))
     chk('journal entries == %d' % EXPECT_JOURNAL, len(jr) == EXPECT_JOURNAL, str(len(jr)))
 
-    oos = [t for t in trk if not in_scope(t.GetNetname())]
-    chk('every routed track is an in-scope power-tree net (Phase-A only)',
-        not oos, '%d out-of-scope' % len(oos))
+    def routable_ok(nm):
+        return in_scope(nm) or nm.split('/')[-1] in ACCEPTED_REST
+    oos = [t for t in trk if not routable_ok(t.GetNetname())]
+    inc_trk = [t for t in trk if t.GetNetname().split('/')[-1] in ACCEPTED_REST]
+    chk('every routed track is Phase-A power-tree OR an accepted rest increment',
+        not oos, '%d out-of-scope; %d accepted-increment tracks' % (len(oos), len(inc_trk)))
 
     # --------------------------------------------- 2. STALE REPLAY MACHINERY
     print('\n-- 2. STALE PHASE-B REPLAY MACHINERY (copper-empty-base assumptions) --')
@@ -126,8 +136,11 @@ def main():
     trk_by_net = collections.Counter(t.GetNetname() for t in trk)
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
-    chk('rest-of-board multi-pad nets are entirely UNROUTED',
-        not routed_rest, '%d rest nets, %d routed' % (len(rest), len(routed_rest)))
+    accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
+    chk('the only routed rest-of-board nets are accepted increments (D-304: FRONT_RGB)',
+        sorted(routed_rest) == sorted(accepted_routed),
+        '%d rest nets, %d routed (=%d accepted), %d still unrouted'
+        % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))
     sheets = collections.Counter()
     padsum = collections.Counter()
     for nm, n in rest:
