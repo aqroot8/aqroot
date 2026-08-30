@@ -1598,6 +1598,106 @@ def main():
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
                len(phaseA_trk), len(phaseA_via)), sd_addonly)
 
+        # -- G27 FBV2-P2-015/D-313 tenth rest-of-board incremental increment ----
+        # The FIRST XGPIO community-header bank member(s): the east-edge pilot
+        # XGPIO8 (R59.1 F.Cu -> U3.13 B.Cu) + XGPIO9 (R60.1 F.Cu -> U3.14 B.Cu),
+        # routed onto the D-312 board by incremental_router.py.  Each /XGPIOx is a
+        # 2-pad cross-layer net (100 R series resistor F.Cu top -> PCAL9535A U3
+        # pin B.Cu mid-board): one MST edge, one F<->B through via.  The corridor
+        # study (w/xgpio_study_015.py) measured every default via site >=3 mm
+        # clear of every existing barrel (U3 escapes NORTH, away from the U2
+        # cluster) so NO via_offset is used; the two east vias separate 2.7 mm
+        # (the west members crowd one pocket -- XGPIO6/7 picked the identical
+        # site -- and were NOT bundled).  The one real corridor constraint is the
+        # D-269 BAT_MAIN 0.300 mm clearance to the 52.4 mm BAT_PROTECTED_P F.Cu
+        # trunk that sweeps across the y~73-82 via band: at the default 0.200 mm
+        # the copper landed 0.244-0.281 mm from it (real DRC clearance FAIL), so
+        # the group is routed at the 0.300 mm D-269 floor (the CORRECT clearance,
+        # not a new mechanism).  G27 pins the increment: both nets fully copper-
+        # connected, copper legal (23 trk 0.200 mm F.Cu+B.Cu, two 0.60/0.30
+        # through vias), both vias clear of every existing via, the D-269 0.300 mm
+        # BAT_PROTECTED_P clearance kept, and ADD-ONLY (SD 28, AMP 19, TOUCH 26,
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G27 FBV2-P2-015/D-313 rest-of-board incremental increment --')
+        XG = ('/XGPIO8', '/XGPIO9')
+        xg_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in XG]
+        xg_via = [t for t in all_via if t.GetNetname() in XG]
+
+        j8 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+              for p in _cc.GetConnectedItems(_pad('U3.13')) if p.GetClass() == 'PAD'}
+        j9 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+              for p in _cc.GetConnectedItems(_pad('U3.14')) if p.GetClass() == 'PAD'}
+        xg_conn = ('R59.1' in j8 and 'R60.1' in j9)
+        chk('G27 XGPIO8 + XGPIO9 fully copper-connected across the U3 F/B hop',
+            'U3.13 joins R59.1 = %s ; U3.14 joins R60.1 = %s'
+            % ('R59.1' in j8, 'R60.1' in j9), xg_conn)
+
+        xg_layers = {t.GetLayerName() for t in xg_trk}
+        xg_pnv = collections.Counter(v.GetNetname() for v in xg_via)
+        xg_legal = (len(xg_trk) == 23 and len(xg_via) == 2
+                    and xg_layers == {'F.Cu', 'B.Cu'}
+                    and all(t.GetWidth() == 200000 for t in xg_trk)
+                    and xg_pnv.get('/XGPIO8') == 1 and xg_pnv.get('/XGPIO9') == 1
+                    and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                            and v.GetViaType() == pcbnew.VIATYPE_THROUGH
+                            for v in xg_via))
+        chk('G27 XGPIO pilot copper legal (23 trk 0.200 F.Cu+B.Cu, two 0.60/0.30 through vias, 1 via/net)',
+            '%d trk layers=%s, vias=%d per-net=%s dias=%s drills=%s'
+            % (len(xg_trk), sorted(xg_layers), len(xg_via), dict(xg_pnv),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in xg_via}),
+               sorted({v.GetDrill() for v in xg_via})), xg_legal)
+
+        # Both vias clear every existing via barrel (>=0.80 mm centre); the study
+        # found the U3-north escape lands >=3 mm from any barrel (no via_offset).
+        xg_other_via = [t for t in all_via if t.GetNetname() not in XG]
+        xg_min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                           + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                          for v in xg_via for o in xg_other_via), default=1e9)
+        chk('G27 both XGPIO vias clear every existing via (>=0.80 mm centre)',
+            'min XGPIO-via to other-via centre = %.3f mm' % (xg_min_gap / 1e6),
+            xg_min_gap >= 800000)
+
+        # D-269 corridor evidence: the BAT_PROTECTED_P F.Cu trunk crosses the
+        # XGPIO via band; the routed copper must keep >=0.300 mm from it.
+        def _ptseg(px, py, ax, ay, bx, by):
+            dx, dy = bx - ax, by - ay
+            L2 = dx * dx + dy * dy
+            if L2 == 0:
+                return ((px - ax) ** 2 + (py - ay) ** 2) ** 0.5
+            tt = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / L2))
+            return ((px - (ax + tt * dx)) ** 2 + (py - (ay + tt * dy)) ** 2) ** 0.5
+
+        bpp_f = [t for t in _g18.GetTracks()
+                 if t.GetClass() == 'PCB_TRACK' and 'BAT_PROTECTED_P' in t.GetNetname()
+                 and t.GetLayerName() == 'F.Cu']
+        xg_bpp = 1e12
+        for t in [t for t in xg_trk if t.GetLayerName() == 'F.Cu']:
+            s, e = t.GetStart(), t.GetEnd()
+            for o in bpp_f:
+                os_, oe = o.GetStart(), o.GetEnd()
+                d = min(_ptseg(s.x, s.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(e.x, e.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(os_.x, os_.y, s.x, s.y, e.x, e.y),
+                        _ptseg(oe.x, oe.y, s.x, s.y, e.x, e.y)) - t.GetWidth() / 2.0 - o.GetWidth() / 2.0
+                if d < xg_bpp:
+                    xg_bpp = d
+        chk('G27 XGPIO F.Cu copper keeps the D-269 0.300 mm BAT_PROTECTED_P clearance',
+            'min XGPIO->BAT_PROTECTED_P F.Cu edge gap = %.4f mm' % (xg_bpp / 1e6),
+            xg_bpp >= 300000 - 1000)
+
+        xg_addonly = (len(xg_trk) == 23 and len(sd_trk) == 28 and len(amp_trk) == 19
+                      and len(tch_trk) == 26 and len(irvs_trk) == 8
+                      and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                      and len(phaseA_via) == 54)
+        chk('G27 increment is ADD-ONLY (SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'xgpio=%d (exp 23), sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk),
+               len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
+               len(rgb_trk), len(phaseA_trk), len(phaseA_via)), xg_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

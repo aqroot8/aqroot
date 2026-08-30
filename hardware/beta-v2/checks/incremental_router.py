@@ -260,6 +260,91 @@ GROUPS = {
         via_dia=600000, via_drill=300000, via_offset=2500000,
         nets=['SD_CARD_DETECT_N'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-015 -- XGPIO0..9 community-header GPIO long-haul bank.  Each
+    # /XGPIOx is a 2-pad CROSS-LAYER net: the 100 R series resistor R5x.1 on
+    # F.Cu (top resistor pack, y~17-36) -> the PCAL9535A U3 expander pin on
+    # B.Cu (mid-board, y~74-80).  One MST edge, one F<->B through via each --
+    # structurally identical to the U2 escape family, BUT the U3 escape goes
+    # NORTH into open board (away from the U2 via cluster at y82-92), so the
+    # READ-ONLY study (w/xgpio_study_015.py) measured every default via site
+    # >=3.1 mm clear of every existing barrel and ZERO existing vias inside any
+    # XGPIO routing bbox -- NO via_offset needed (unlike the U2 wall).  The one
+    # real corridor risk the study found is INTER-XGPIO via crowding in the
+    # shared north-of-U3 pocket (independent west-edge offset sites collide),
+    # so the bank is routed as small adjacent pilots, member-by-member on
+    # scratch + real full-board gate, never blindly as ten vias.  Netclass
+    # Default (0.200/0.200, normal 0.60/0.30 via, In1.Cu forbidden -- the F/B
+    # framework never touches In1).  These are the individually-screened
+    # single-net entries; XGPIO_PILOT below is the combined transaction.
+    'XGPIO8': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO8 series R59.1 F -> U3.13 B (east edge); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO8'],
+    ),
+    'XGPIO9': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO9 series R60.1 F -> U3.14 B (east edge); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO9'],
+    ),
+    'XGPIO7': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO7 series R58.1 F -> U3.11 B (west edge, northmost); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO7'],
+    ),
+    'XGPIO6': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO6 series R57.1 F -> U3.10 B (west edge); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO6'],
+    ),
+    'XGPIO5': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO5 series R56.1 F -> U3.9 B (west edge); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO5'],
+    ),
+    'XGPIO4': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO4 series R55.1 F -> U3.8 B (west edge); '
+             'noncritical 3V3 CMOS, one cross-layer through via',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO4'],
+    ),
+    # FBV2-P2-015 PILOT -- the credible coherent adjacent XGPIO subset chosen by
+    # the corridor study (w/xgpio_study_015.py) and proven member-by-member on
+    # the real full-board gate: XGPIO8 (R59.1 F -> U3.13 B) + XGPIO9 (R60.1 F ->
+    # U3.14 B), the two EAST-edge community-GPIO nets on consecutive U3 pins.
+    # Chosen over the west-edge members because the study measured the west nets'
+    # cross-layer vias all crowding into one small pocket north of U3 (XGPIO6/7
+    # picked the IDENTICAL site 55.55,76.15; 4/5 within 0.6 mm) -- an ordering-
+    # sensitive shared-lane hazard -- whereas the east pair lands at (58.6,72.95)
+    # and (58.45,75.65), 2.7 mm apart (2.1 mm copper gap), an independent legal
+    # corridor.  All XGPIO nets need the D-269 0.300 mm clearance because the
+    # 52.4 mm BAT_PROTECTED_P protected-battery F.Cu trunk sweeps diagonally
+    # across the y~73-82 via-landing band (default 0.200 mm routing lands
+    # 0.244-0.281 mm from it -> DRC clearance FAIL); routing the group at the
+    # 0.300 mm D-269 floor is the correct clearance, NOT a new mechanism.  No
+    # via_offset (every via site is >=3 mm clear of every existing barrel; the
+    # U2-escape offset is not needed here).  Routed as ONE transaction: XGPIO8
+    # first, then XGPIO9 sees XGPIO8's laid via and separates.
+    'XGPIO_PILOT': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO east-edge pilot: XGPIO8 (R59.1 F -> U3.13 B) + '
+             'XGPIO9 (R60.1 F -> U3.14 B); two adjacent 3V3 CMOS nets, each one '
+             'cross-layer through via, routed at the D-269 0.300 mm clearance '
+             'floor (BAT_PROTECTED_P trunk crosses the corridor), no via_offset',
+        layer='F', width=200000, clr_pad=300000, clr_trk=300000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO8', 'XGPIO9'],
+    ),
 }
 
 
