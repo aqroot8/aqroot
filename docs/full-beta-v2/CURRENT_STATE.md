@@ -5,7 +5,32 @@
 > memory.** If this file conflicts with higher-authority evidence, repair this file.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-003Y / D-299 (this checkpoint):** a governed **CTO ACCEPT + COMMIT + overall-run FAIL + HANDOFF**
+- **FBV2-P2-003Z / D-300 (this checkpoint):** a governed **CTO FAIL / lever refutation + WIP retirement**
+  — the `AQROOT_LTCGATE` **defer-to-congestion** lever (a pure re-order: pull `LTC_GATE U18.10→Q3.4`
+  out of section `8b` and re-queue it LAST as a `13z` stage) was full-authority-gate-run
+  (`AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 AQROOT_LTCGATE=1 … 003z3_ltcgate`, secs 1497.0,
+  `checks/w/phaseA_003t_full_003z3_ltcgate.json`, judged by `w/judge_003z.py`) and proved
+  **behaviourally identical to D-299/003Y2**: connections 72=72, skipped 101=101, ratsnest 705/−76
+  = 705/−76, journal 75=75, connected-set diff **GAINED 0 / LOST 0**, the SAME `LTC_GATE U18.10→Q3.4`
+  terminal wall with the SAME `track_width` (D-249 min 1.2000 mm; actual 0.2000 mm) + `clearance`
+  (D-269 0.3000 mm; actual 0.2803 mm) rejections, final DRC histogram identical. **A pure re-order is a
+  NULL OPERATION on this wall** — the driver's `connect_role` greedily re-takes the identical
+  rule-violating central path even queued last. The focused `ltcgate_join_probe_003z.py` was a
+  **false-positive proxy** (its post-hoc `connect_role` on the SAVED board found a legal ~10.5 mm west
+  detour that the real in-run driver never takes; per D-286 a proxy cannot override the full gate). So
+  the lever and its **G15** WIP are **REJECTED/RETIRED** via an exact reverse patch scoped to the two
+  tracked files (`git diff -- route_battery_block.py router_regression.py | git apply -R`, NOT a broad
+  reset; post-revert `git hash-object` = `HEAD:` blob for each, `git grep` for the retired symbols NO
+  match), and the false-positive probe is **retired** (untracked, never committed) so **no artifact
+  claims the lever works**. **Copper is NOT promoted** — full Phase-A still FAILs at the unchanged
+  `LTC_GATE U18.10→Q3.4` wall; **readiness/progress UNCHANGED; autonomy CONTINUES** (no owner decision).
+  Mandated **Opportunity & Simplification Scan** (§9a): no product-capability / BOM / recoverability /
+  testability / manufacturing / firmware / UX / future-option opportunity justifies changing
+  architecture; **Open owner decisions: NONE.** Next: **FBV2-P2-004A** — the `LTC_GATE U18.10→Q3.4`
+  **path-shaping** lever (a central-lane keep-out forcing the proven west detour — NOT a re-order, §5).
+  This checkpoint is written in the D-300 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-003Y / D-299 (prior checkpoint):** a governed **CTO ACCEPT + COMMIT + overall-run FAIL + HANDOFF**
   — the D-298 U19 CAPACITY lever's **full-authority gate COMPLETED** and it is a **GENUINE +2** connected-set
   gain (NOT the D-296 swap): vs the D-297 003W baseline (conn 70) connections **70→72**, and the connected-set
   diff GAINED **exactly 2** — `N_BATDIV R89.2→U19.6` and `REC_BAT_LOW (node)→U19.7` (both SIG, F.Cu, 2 vias,
@@ -138,14 +163,47 @@
     the FBV2-P2-003Y full-authority gate confirmed a **genuine +2** (both `REC_BAT_LOW U19.7` and
     `N_BATDIV U19.6` close, LOST 0, board-legal 0.60/0.30 vias, FAULT_N clean, DRC identical). ACCEPTED
     and COMMITTED env-gated / OFF-by-default (G14); re-verify downstream on a full PASS.
-  - **`LTC_GATE U18.10→Q3.4` — the new terminal blocker (D-299).** Candidate paths DRC-gate-rejected by
-    the frozen D-249 (BPP 1.20 mm trunk width) and D-269 (BAT_MAIN 0.300 mm clearance) rules; a bounded
-    corridor/ordering lever within CTO scope (FBV2-P2-003Z, §5).
+  - **`LTC_GATE U18.10→Q3.4` — the terminal blocker (D-299), re-order REFUTED (D-300).** Candidate paths
+    DRC-gate-rejected by the frozen D-249 (BPP 1.20 mm trunk width) and D-269 (BAT_MAIN 0.300 mm
+    clearance) rules. D-300 (003Z) tested the `AQROOT_LTCGATE` **defer-to-congestion re-order** (route the
+    join LAST) under the full gate → **behaviourally identical to D-299** (gained 0 / lost 0, same wall,
+    same rejections): a pure re-order is a **null operation** here — `connect_role` re-takes the identical
+    central path even queued last, and the focused probe that predicted a west detour was a false-positive
+    proxy. The wall stays a **bounded path-shaping** lever within CTO scope: force the proven ~10.5 mm west
+    detour by blocking the central lane (FBV2-P2-004A, §5). NOT an owner decision.
   - **BAT_RAW R89.1/R86.2 divider taps** — a capacity symptom, not a width lever; re-verify on a full
     PASS.
 
 ## 4. Last accepted milestone
-- **Task:** FBV2-P2-003Y · **Decision:** **D-299** · **Result:** THE D-298 U19 CAPACITY LEVER'S
+- **Latest milestone — FBV2-P2-003Z · Decision:** **D-300** · **Result (a governed FAIL, no copper):**
+  THE `AQROOT_LTCGATE` DEFER-TO-CONGESTION LEVER'S FULL-AUTHORITY GATE COMPLETED AND IT IS
+  **BEHAVIOURALLY IDENTICAL TO D-299** (GAINED 0 / LOST 0, SAME `LTC_GATE U18.10→Q3.4` TERMINAL WALL,
+  SAME D-249 track_width / D-269 clearance REJECTIONS, IDENTICAL FINAL DRC) — SO A PURE RE-ORDER IS A
+  **NULL OPERATION** ON THIS WALL: THE LEVER AND ITS **G15** WIP ARE **REJECTED/RETIRED** AND THE
+  FALSE-POSITIVE PROBE IS **RETIRED**; COPPER IS NOT PROMOTED, READINESS/PROGRESS UNCHANGED, AUTONOMY
+  CONTINUES. The gate `AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 AQROOT_LTCGATE=1 bash w/run_003t_full.sh
+  003z3_ltcgate …` → `checks/w/phaseA_003t_full_003z3_ltcgate.json` (secs 1497.0, driver exited clean;
+  shared `phaseA_journal.json` restored byte-identical to HEAD; no process remains), judged by
+  `python3 w/judge_003z.py`. vs the 003Y2 baseline (D-299): connections 72=72, skipped 101=101, ratsnest
+  705/−76 = 705/−76, journal 75=75, connected-set diff GAINED 0 / LOST 0; the failing rung is the same
+  two frozen owner rules (`track_width` D-249 min 1.2000 mm actual 0.2000; `clearance` D-269 0.3000 mm
+  actual 0.2803); no sub-0.50 non-fine via. Deferring the join to route LAST changed nothing — the
+  driver's `connect_role` greedily re-takes the identical rule-violating central path. The probe
+  (`ltcgate_join_probe_003z.py`) predicted a legal ~10.5 mm west detour via post-hoc `connect_role` on
+  the SAVED board, but that never reproduces the real in-run state — a D-286 proxy the full gate
+  overrode. RETIRED via exact reverse patch scoped to `checks/route_battery_block.py` +
+  `checks/router_regression.py` (`git apply -R`; post-revert `git hash-object` = `HEAD:` blob for each;
+  `git grep LTCGATE|13z|ltcgate_join_probe` NO match); probe removed; `router_regression.py` ALL PASS
+  (G12/G13/G14; G15 gone). Mandated Opportunity & Simplification Scan recorded (§9a): no
+  capability/BOM/architecture opportunity; next best lever is path-shaping (force the west detour), the
+  bounded neighbour placement ECO is the fallback; **Open owner decisions: NONE.** A governed CTO FAIL,
+  NOT an owner decision (no floor relaxed, no frozen part moved, no DRU change, no D-249/D-269
+  relaxation); no copper/placement/rule/topology change, no DRC absorbed, no promotion, D-275 and
+  D-277..D-299 preserved. Evidence of record: audit
+  [`audits/2026-08-30-p2-003z-d300-ltcgate-defer-to-congestion-lever-refuted-false-positive-probe-retired.md`](audits/2026-08-30-p2-003z-d300-ltcgate-defer-to-congestion-lever-refuted-false-positive-probe-retired.md);
+  gitignored evidence (`checks/w/phaseA_003t_full_003z3_ltcgate.json`, `w/judge_003z.py`,
+  `w/FULL003T_003z*_ltcgate/`, `w/TEST003Z_*/`, `w/run_003z_ltcgate.log`).
+- **Last ACCEPTED milestone — Task:** FBV2-P2-003Y · **Decision:** **D-299** · **Result:** THE D-298 U19 CAPACITY LEVER'S
   FULL-AUTHORITY GATE COMPLETED AND IT IS A **GENUINE +2** CONNECTED-SET GAIN (NOT THE D-296 SWAP) — SO
   `AQROOT_U19CAP` IS **ACCEPTED AND COMMITTED** (banked env-gated / OFF-by-default, byte-identical when
   unset, pinned by **G14**); BUT COPPER IS NOT PROMOTED BECAUSE FULL PHASE-A STILL FAILs, THE TERMINAL
@@ -242,37 +300,44 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-003Z (the `LTC_GATE U18.10→Q3.4` join-corridor lever)
-- **Where 003Y left it (D-299).** The D-298 U19 CAPACITY lever is now a **committed, gate-validated
-  +2** (banked env-gated / OFF-by-default, G14). The full-authority gate advanced the terminal wall
-  **past the whole U19 field** to a new, further blocker: `LTC_GATE U18.10→Q3.4`. Copper is still NOT
-  promoted (full Phase-A FAILs at this wall).
-- **Root cause (measured, `checks/w/phaseA_003t_full_003y2_u19cap.json`).** `LTC_GATE` is the LTC4368
-  gate-drive net; its other segments are all connected (`U18.10→R76.1` on F.Cu — FINE_ESC_3, 2×
-  0.35/0.20 vias; `Q3.2→Q3.4`/`Q2.2→Q2.4`/`Q3.2→Q2.2` on B.Cu). **The failing connection is the JOIN
-  bridging the `U18.10` F.Cu escape cluster (north, y≈60–65) to the `Q3.4` B.Cu gate cluster (y≈59).**
-  It is **NOT** `NO_PATH`/`NO_LEGAL_ESCAPE`: candidate paths ARE found, but the driver's per-connection
-  `gate()` rejects every one for **two FROZEN owner rules** — **D-249** `BAT_PROTECTED_P` high-current
-  trunk (min 1.20 mm; the candidate narrows to 0.20 mm where the BPP trunk-area rule applies, i.e. it
-  enters the western-margin BPP trunk keep-region) and **D-269** `BAT_MAIN` routed clearance (0.300 mm;
-  the candidate reaches only 0.2803 mm, ~19.7 µm short). A flexible low-current control net with slack,
-  squeezed between the BPP trunk and a BAT_MAIN path — a bounded, reducible corridor/ordering pinch.
-- **The lever (build ONE, env-gated OFF-by-default).** Re-site / re-order / detour the `LTC_GATE
-  U18.10→Q3.4` join corridor so its path (a) stays **clear of the `BAT_PROTECTED_P` 1.20 mm trunk
-  region** (route the join *around* the western-margin BPP trunk rather than through it — preserving
-  D-249) and (b) opens the **0.300 mm `BAT_MAIN` clearance** (the miss is only ~20 µm — preserving
-  D-269). All within existing **D-257/D-266** mechanics. OFF → byte-identical. **No DRU change, no via
-  below the D-257 ladder, no D-290 re-auth, no D-249/D-269 relaxation, no topology/footprint/outline
-  change.**
+## 5. Next task — FBV2-P2-004A (the `LTC_GATE U18.10→Q3.4` path-shaping lever)
+- **Where 003Z left it (D-300).** The `LTC_GATE U18.10→Q3.4` join remains the single terminal Phase-A
+  wall. D-300 tested and **REFUTED** the `AQROOT_LTCGATE` **defer-to-congestion re-order** (route the
+  join LAST): under the full gate it was behaviourally identical to D-299 (gained 0 / lost 0, same wall,
+  same D-249/D-269 rejections). **A pure re-order is a null operation here** — do NOT re-try ordering.
+  Copper is still NOT promoted.
+- **Root cause (measured, `checks/w/phaseA_003t_full_003y2_u19cap.json` / `…_003z3_ltcgate.json`).**
+  `LTC_GATE` is the LTC4368 gate-drive net; its other segments are all connected (`U18.10→R76.1` on
+  F.Cu — FINE_ESC, 2× 0.35/0.20 vias; `Q3.2→Q3.4`/`Q2.2→Q2.4`/`Q3.2→Q2.2` on B.Cu). **The failing
+  connection is the JOIN bridging the `U18.10` F.Cu escape cluster (5.900,65.500, joined to R76.1/TP17)
+  to the `Q3.4` B.Cu gate cluster (1.895,59.275, joined to Q3.2/Q2.2/Q2.4).** It is **NOT**
+  `NO_PATH`/`NO_LEGAL_ESCAPE`: candidate paths ARE found, but the driver's `connect_role` greedily takes
+  a **short central path** the per-connection `gate()` then rejects for **two FROZEN owner rules** —
+  **D-249** (candidate narrows to 0.20 mm inside the BPP 1.20 mm-trunk keep-region) and **D-269**
+  (candidate reaches only 0.2803 mm, ~19.7 µm short of the 0.300 mm BAT_MAIN clearance). The greedy
+  cost model prefers the ~0.2 mm central rung over the longer clean detour and will not switch unless
+  the central lane is physically **blocked** — which re-ordering never does (the D-300 finding).
+- **The lever (build ONE, env-gated OFF-by-default) — PATH-SHAPING, NOT ORDERING.** The refuted probe
+  did establish one true fact: a **legal ~10.475 mm west detour exists** (B.Cu, w=0.20, out to x≈0.75,
+  0 new DRC on the saved board) clear of both the BPP trunk region (D-249) and the BAT_MAIN path
+  (D-269). So install a **foreign keep-out over the rule-violating central lane** for exactly the
+  `U18.10→Q3.4` join (on the proven `AQROOT_U19CAP` KO mechanism — laid before the join, lifted after),
+  forcing `connect_role` onto that west detour. All within existing **D-257/D-266** mechanics. OFF →
+  byte-identical. **No DRU change, no via below the D-257 ladder, no D-290 re-auth, no D-249/D-269
+  relaxation, no topology/footprint/outline change.** **Fallback** (only if the KO cannot be sited
+  without collateral): a **bounded immediate-neighbour placement ECO** (~20 µm nudge of the offending
+  BAT_MAIN path / Q3 cluster to open the D-269 clearance on the natural central path), **re-screened
+  with real full-placement DRC** (D-286) — larger blast radius, so second choice.
 - **The governing run (CTO, persistent terminal, ~22 min):**
   `cd hardware/beta-v2/checks && cp phaseA_journal.json /tmp/phaseA_journal.HEAD.json &&
-  AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 <lever env> bash w/run_003t_full.sh 003z_ltcgate
+  AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 <lever env> bash w/run_003t_full.sh 004a_ltcgate
   w/cand_003t/t_a_r77e15n10_r79e15n10.json && cp /tmp/phaseA_journal.HEAD.json phaseA_journal.json`.
   Keep `AQROOT_U18BPP_JOIN=I3` **and** `AQROOT_U19CAP=1` **ON** (both accepted, D-297/D-299). **Judge
   by the full-run connected-set diff** vs `w/phaseA_003t_full_003y2_u19cap.json` and
   `w/phaseA_003t_full_003w_u18bpp_i3.json`: the run must close the `LTC_GATE` join for a real net gain
-  with no new DRC class. **Promote copper only on a genuine full-authority Phase-A PASS** (D-286). All
-  floors ENFORCED; D-290 stays closed.
+  with no new DRC class. **Do not trust a focused/post-hoc probe** (the D-300 lesson: a post-hoc
+  `connect_role` on the saved board is a proxy the full gate overrides). **Promote copper only on a
+  genuine full-authority Phase-A PASS** (D-286). All floors ENFORCED; D-290 stays closed.
 - **Downstream, still CTO-scope:** on a full PASS, re-verify the (now-past) `REF_POL R87.2` F-corridor
   and the BAT_RAW R89.1/R86.2 divider taps.
 
@@ -357,7 +422,17 @@
   **Copper NOT promoted** (D-286): full Phase-A still FAILs, the terminal wall newly advancing past the
   whole U19 field to **`LTC_GATE U18.10→Q3.4`** — candidate join paths found but **DRC-gate-rejected**
   by the frozen **D-249** (BPP 1.20 mm trunk, actual 0.20) and **D-269** (BAT_MAIN 0.300 mm clearance,
-  actual 0.2803) rules; a bounded reducible corridor/ordering wall (FBV2-P2-003Z, §5), NOT `NO_PATH`.
+  actual 0.2803) rules; a bounded reducible corridor wall, NOT `NO_PATH`.
+- **D-300 (003Z)** the `LTC_GATE U18.10→Q3.4` **defer-to-congestion re-order** (`AQROOT_LTCGATE`: pull
+  the join out of section 8b, re-queue it LAST) is **REFUTED** — the full gate is behaviourally
+  identical to D-299 (gained 0 / lost 0, same wall, same D-249/D-269 rejections, identical DRC): **a
+  pure re-order is a NULL OPERATION** on this wall because the driver's `connect_role` greedily
+  re-takes the identical rule-violating central path even when queued last. Do NOT re-try ordering on
+  this wall. The focused `ltcgate_join_probe_003z.py` was a **false-positive proxy** — its post-hoc
+  `connect_role` on the SAVED board found a ~10.5 mm west detour the real in-run driver never takes; per
+  D-286 a post-hoc/focused proxy cannot override the full gate. The correct lever is **path-shaping**
+  (physically block the central lane to force the detour), not ordering (FBV2-P2-004A, §5). The lever +
+  its G15 WIP were retired via exact reverse patch; the probe was retired.
 - Rule floors ENFORCED: **0.200 mm** clearance, **0.25 mm** hole-to-hole, **0.300 mm** current-path
   routed clearance (D-269), **≥1.20 mm** BPP trunk width (D-249), **0.60 mm** BAT_MAIN minimum width.
   Six-layer stack, GND, netclasses, footprints, polarity, safety set — all frozen. Frozen
@@ -365,15 +440,44 @@
 
 ## 8. Open owner decisions
 - **NONE. D-293 resolved the last owner decision (direction 2 authorized); D-294 (003T), D-295
-  (003U), D-296 (003V) and D-297 (003W) each re-raised none.** Direction 2 is being executed under
-  full CTO authority; the U18.8 wall is now closed in principle by the accepted D-297 In3-join lever
-  (banked OFF-by-default in source), and the sole remaining Phase-A blocker — the saturated U19
-  dead-cell field (`REC_BAT_LOW U19.7` + `N_BATDIV U19.6`) — is **bounded CTO-scope routing/capacity
-  work, not an owner decision** (no floor relaxed, no frozen part moved, direction-2 not exhausted).
-  Autonomy CONTINUES with **FBV2-P2-003X** (§5). Historical options (B accept-U18.8-open, D
-  re-litigate-D-290) are retained only as context and are not active.
+  (003U), D-296 (003V), D-297 (003W), D-298 (003X), D-299 (003Y) and D-300 (003Z) each re-raised
+  none.** Direction 2 is being executed under full CTO authority; the U18.8 wall is closed in principle
+  by the accepted D-297 In3-join lever and the U19 field by the committed D-299 U19CAP lever (both
+  banked OFF-by-default in source). The sole remaining Phase-A blocker — `LTC_GATE U18.10→Q3.4` — is
+  **bounded CTO-scope routing/path-shaping work, not an owner decision** (no floor relaxed, no frozen
+  part moved, no DRU change, no D-249/D-269 relaxation); the D-300 mandated Opportunity & Simplification
+  Scan (§9a) found **no** irreversible opportunity loss or strategic fork. Autonomy CONTINUES with
+  **FBV2-P2-004A** (§5). Historical options (B accept-U18.8-open, D re-litigate-D-290) are retained
+  only as context and are not active.
 - **Nothing has been changed under any decision:** no part moved, no floor relaxed, no DRC absorbed
   into the authoritative board; the authoritative PCB is six layers / 0 tracks / 0 vias.
+
+## 9a. Opportunity & Simplification Scan (D-300, LTC_GATE / power-protection milestone)
+- **Mandated bounded scan** at this power-protection milestone, grounded in the measured `LTC_GATE
+  U18.10→Q3.4` geometry (the join bridges the U18.10 F.Cu escape cluster (5.900,65.500) to the Q3.4
+  B.Cu gate cluster (1.895,59.275); the failing central rung is 0.20 mm inside the BPP trunk (D-249)
+  and 0.2803 mm from a BAT_MAIN path (D-269, ~19.7 µm short); a legal ~10.5 mm west detour exists).
+- **Pure routing / path-shaping — the recommended next lever.** Force `connect_role` onto the proven
+  west detour by installing a keep-out over the rule-violating central lane for exactly this join (the
+  `AQROOT_U19CAP` KO mechanism). **Cost: cheapest, reversible, env-gated OFF-by-default, zero
+  BOM/placement/rule impact.** This is the FBV2-P2-004A lever (§5).
+- **Bounded local placement ECO — the fallback.** A ~20 µm immediate-neighbour nudge (BAT_MAIN path /
+  Q3 cluster) to open the D-269 clearance on the natural central path. **Cost: larger blast radius,
+  must be re-screened with real full-placement DRC (D-286), reversible but touches placement — second
+  choice.**
+- **BOM.** No opportunity — the wall is a routing pinch, not a component gap; the LTC4368 + Q2/Q3
+  back-to-back-FET reverse-protection topology is frozen and correct; no add/remove/substitute closes a
+  20 µm clearance. **No cost lever.**
+- **Recoverability (D-049) / testability / manufacturing / firmware / UX.** All unaffected — a
+  low-current internal control-net join with no footprint/outline/stackup/silk/firmware surface; TP17
+  already covers the U18.10/R76.1 side; no DNP/0 Ω/test-point change implicated.
+- **Future option (preserved).** The six-layer stack's bare inner signal layers In2/In3 remain spare
+  capacity in this corridor (the D-297 lesson) — a preserved vehicle if the west F.Cu/B.Cu detour proves
+  congested. Nothing is foreclosed.
+- **Cost classification / conclusion.** No product-capability or BOM opportunity justifies changing
+  architecture; no irreversible cost, no strategic fork, no opportunity loss. **Open owner decisions:
+  NONE.** The deferred opportunity is only the *technical* one above (path-shaping; placement-ECO
+  fallback), pursued under CTO autonomy as FBV2-P2-004A.
 
 ## 9. JLCPCB readiness
 - **JLCPCB readiness ~77 %** (unchanged — 003W earned NO copper: it accepted a genuine +1 SECONDARY
@@ -394,22 +498,27 @@
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch Claude or become
   a task parent. No owner decision is open; the stop file is ABSENT and the persistent CTO continues
   one-Claude-at-a-time engineering.
-- **Should an engineering process be active now?** **Yes.** FBV2-P2-003Z implements ONE bounded,
-  env-gated (OFF-by-default) `LTC_GATE U18.10→Q3.4` join-corridor lever (re-site / re-order / detour the
-  join clear of the `BAT_PROTECTED_P` 1.20 mm trunk region — D-249 — and open the 0.300 mm `BAT_MAIN`
-  clearance — D-269), validate it against `router_regression.py` (authoritative byte-identical), then
-  run the FULL authority gate (`AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 <ltcgate-lever> bash
-  w/run_003t_full.sh 003z_ltcgate w/cand_003t/t_a_r77e15n10_r79e15n10.json`, ~22 min, in a persistent
-  terminal) and judge by the full-run connected-set diff vs `w/phaseA_003t_full_003y2_u19cap.json` and
-  `w/phaseA_003t_full_003w_u18bpp_i3.json`. Promote copper only on a genuine full Phase-A PASS.
+- **Should an engineering process be active now?** **Yes.** FBV2-P2-004A implements ONE bounded,
+  env-gated (OFF-by-default) `LTC_GATE U18.10→Q3.4` **path-shaping** lever (a central-lane keep-out that
+  forces the proven ~10.5 mm west detour clear of the BPP 1.20 mm trunk region — D-249 — and the
+  BAT_MAIN 0.300 mm clearance — D-269; **NOT a re-order**, refuted by D-300), validate it against
+  `router_regression.py` (authoritative byte-identical), then run the FULL authority gate
+  (`AQROOT_U18BPP_JOIN=I3 AQROOT_U19CAP=1 <ltcgate-pathshape-lever> bash w/run_003t_full.sh 004a_ltcgate
+  w/cand_003t/t_a_r77e15n10_r79e15n10.json`, ~22 min, in a persistent terminal) and judge by the
+  full-run connected-set diff vs `w/phaseA_003t_full_003y2_u19cap.json` and
+  `w/phaseA_003t_full_003w_u18bpp_i3.json` (never a focused/post-hoc probe — the D-300 lesson). The
+  bounded neighbour placement ECO (~20 µm, re-screened full-placement DRC) is the fallback. Promote
+  copper only on a genuine full Phase-A PASS.
 
 ## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
-1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-299**, FBV2-P2-003Y the
-   D-298 U19 CAPACITY lever's full-authority gate CONFIRMED a genuine +2, `AQROOT_U19CAP` ACCEPTED and
-   COMMITTED OFF-by-default, copper NOT promoted while the new `LTC_GATE U18.10→Q3.4` wall FAILs;
-   preceded by **D-298** (003X U19CAP implemented/screened) and **D-297** (003W U18.8 In3-join +1
-   accepted)).
-2. Newest audits — `audits/2026-08-30-p2-003y-d299-u19cap-full-gate-plus2-accepted-committed-ltc-gate-wall.md`,
+1. `docs/full-beta-v2/CTO_DECISIONS.md` — authoritative rulings (latest: **D-300**, FBV2-P2-003Z the
+   `AQROOT_LTCGATE` defer-to-congestion re-order REFUTED by the full gate as behaviourally identical to
+   D-299 — a pure re-order is a null operation on the `LTC_GATE U18.10→Q3.4` wall; the lever + G15 WIP
+   RETIRED via exact reverse patch and the false-positive probe RETIRED; copper NOT promoted, autonomy
+   CONTINUES; preceded by **D-299** (003Y U19CAP full gate +2 accepted/committed) and **D-297** (003W
+   U18.8 In3-join +1 accepted)).
+2. Newest audits — `audits/2026-08-30-p2-003z-d300-ltcgate-defer-to-congestion-lever-refuted-false-positive-probe-retired.md`,
+   then `…-003y-d299-u19cap-full-gate-plus2-accepted-committed-ltc-gate-wall.md`,
    then `…-003x-d298-u19-capacity-east-lane-reservation-lever-screened-clean-handoff.md`,
    then `…-003w-d297-secondary-u18bpp-i3-join-lever-net-gain-accepted.md`,
    then `…-003v-d296-primary-reservation-lever-ordering-trade-no-progress-retired.md`,
