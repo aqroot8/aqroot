@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-311',                 # FBV2-P2-013: audio-amp SD/mode strap AMP_SD_MODE, U2-escape via-site offset (2.5 mm)
-    sha256='9bf429cec07654d4522121d2fb595204d06f5173ae629f2292c4d0cb9f68b314',
-    tracks=580,                       # 561 (D-310) + 19 AMP_SD_MODE (18 F.Cu + 1 B.Cu fan-out)
-    vias=61,                          # 60 (D-310) + 1 U2-escape offset through via
+    decision='D-312',                 # FBV2-P2-014: microSD card-detect SD_CARD_DETECT_N, U2-escape via-site offset (2.5 mm)
+    sha256='d6e0148a43a42895236b934cb6f7084036e50535a399f42fe09b300aabc5f1b8',
+    tracks=608,                       # 580 (D-311) + 28 SD_CARD_DETECT_N (F.Cu + B.Cu fan-out)
+    vias=62,                          # 61 (D-311) + 1 U2-escape offset through via
     copper_layers=6,
     zones=41,
-    ratsnest=683,                     # 685 (D-310) - 2 (AMP_SD_MODE 2 edges closed)
-    journal=98,                       # 96 (D-310) + 2 AMP_SD_MODE REST_INC
+    ratsnest=681,                     # 683 (D-311) - 2 (SD_CARD_DETECT_N 2 edges closed)
+    journal=100,                      # 98 (D-311) + 2 SD_CARD_DETECT_N REST_INC
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

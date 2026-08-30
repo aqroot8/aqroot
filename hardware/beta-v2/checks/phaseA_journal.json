@@ -3146,5 +3146,27 @@
   "mm": 58.487,
   "requested_connected": true,
   "group": "AMP_SD_MODE"
+ },
+ {
+  "net": "/SD_CARD_DETECT_N",
+  "a": "J2.10",
+  "b": "R113.2",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 14.145,
+  "requested_connected": true,
+  "group": "SD_DETECT"
+ },
+ {
+  "net": "/SD_CARD_DETECT_N",
+  "a": "R113.2",
+  "b": "U2.11",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 80.337,
+  "requested_connected": true,
+  "group": "SD_DETECT"
  }
 ]

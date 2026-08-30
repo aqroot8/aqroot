@@ -1534,6 +1534,70 @@ def main():
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
                len(phaseA_trk), len(phaseA_via)), amp_addonly)
 
+        # -- G26 FBV2-P2-014/D-312 ninth rest-of-board incremental increment -----
+        # The microSD card-detect strap SD_CARD_DETECT_N (J2.10/R113.2 F.Cu ->
+        # U2.11 B.Cu) was routed onto the D-311 board by incremental_router.py.
+        # This is the SECOND remaining U2 west-edge escape sibling and the last of
+        # the D-309 U2 family: the D-309 +2 `clearance` was TRACK-threading, not
+        # the via.  D-312 completes it with the SAME unchanged mechanism -- the
+        # always-on existing-via injection fixes the track threading, plus the
+        # opt-in 2.5 mm via_offset (zero per-net tuning) walks the F<->B
+        # transition SOUTH to (53.00,82.55), 3.850 mm clear of the nearest
+        # existing via (DISP_RST_N barrel).  Re-screened LIVE on the D-311 board
+        # (w/screen_014.py): the new D-311 AMP via (north, y~90) does not touch
+        # SD_CARD_DETECT_N's southward escape; even the via-blind default via is
+        # 1.301 mm clear.  Routed as its OWN increment (not bundled with
+        # AMP_SD_MODE -- functionally distinct microSD vs audio).  G26 pins the
+        # increment: net fully copper-connected across the U2 F/B hop, copper
+        # legal (28 trk 0.200 mm F.Cu+B.Cu, one 0.60/0.30 through via), the via
+        # cleared of every existing via, and ADD-ONLY (AMP 19, TOUCH 26,
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G26 FBV2-P2-014/D-312 rest-of-board incremental increment --')
+        SD = ('/SD_CARD_DETECT_N',)
+        sd_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in SD]
+        sd_via = [t for t in all_via if t.GetNetname() in SD]
+
+        j_sd = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                for p in _cc.GetConnectedItems(_pad('U2.11')) if p.GetClass() == 'PAD'}
+        sd_conn = ('J2.10' in j_sd and 'R113.2' in j_sd)
+        chk('G26 SD_CARD_DETECT_N fully copper-connected across the U2 F/B hop',
+            'U2.11 joins J2.10&R113.2 = %s' % sd_conn, sd_conn)
+
+        sd_layers = {t.GetLayerName() for t in sd_trk}
+        sd_legal = (len(sd_trk) == 28 and len(sd_via) == 1
+                    and sd_layers == {'F.Cu', 'B.Cu'}
+                    and all(t.GetWidth() == 200000 for t in sd_trk)
+                    and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                            for v in sd_via))
+        chk('G26 SD_CARD_DETECT_N copper legal (28 trk 0.200 F.Cu+B.Cu, one 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d dias=%s drills=%s'
+            % (len(sd_trk), sorted(sd_layers), len(sd_via),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in sd_via}),
+               sorted({v.GetDrill() for v in sd_via})), sd_legal)
+
+        # The via-site OFFSET mechanism: the SD via must clear EVERY other via
+        # (barrel copper: 0.60/2 + 0.60/2 + 0.200 = 0.800 mm centre-to-centre).
+        # The 2.5 mm offset put it 3.850 mm from DISP_RST_N.
+        sd_other_via = [t for t in all_via if t.GetNetname() not in SD]
+        sd_min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                           + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                          for v in sd_via for o in sd_other_via), default=1e9)
+        chk('G26 U2-escape offset cleared the SD via of every existing via (>=0.80 mm centre)',
+            'min SD-via to other-via centre = %.3f mm' % (sd_min_gap / 1e6),
+            sd_min_gap >= 800000)
+
+        sd_addonly = (len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                      and len(irvs_trk) == 8 and len(rgbled_trk) == 25
+                      and len(imu_trk) == 8 and len(disp_trk) == 11
+                      and len(acc_trk) == 31 and len(rgb_trk) == 20
+                      and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
+        chk('G26 increment is ADD-ONLY (AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'sd=%d (exp 28), amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)), sd_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -1,10 +1,10 @@
 {
- "sha256": "9bf429cec07654d4522121d2fb595204d06f5173ae629f2292c4d0cb9f68b314",
- "tracks": 580,
- "vias": 61,
+ "sha256": "d6e0148a43a42895236b934cb6f7084036e50535a399f42fe09b300aabc5f1b8",
+ "tracks": 608,
+ "vias": 62,
  "copper_layers": 6,
- "ratsnest": 683,
- "journal": 98,
+ "ratsnest": 681,
+ "journal": 100,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -471,6 +471,16 @@
    "/AMP_SD_MODE",
    "U5.4",
    "U2.7"
+  ],
+  [
+   "/SD_CARD_DETECT_N",
+   "J2.10",
+   "R113.2"
+  ],
+  [
+   "/SD_CARD_DETECT_N",
+   "R113.2",
+   "U2.11"
   ]
  ]
 }
