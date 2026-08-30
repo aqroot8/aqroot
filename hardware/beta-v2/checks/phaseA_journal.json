@@ -3091,5 +3091,38 @@
   "mm": 9.291,
   "requested_connected": true,
   "group": "IR_RX_VS"
+ },
+ {
+  "net": "/TOUCH_RST_N",
+  "a": "J1.47",
+  "b": "R12.1",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 22.217,
+  "requested_connected": true,
+  "group": "TOUCH_CTL"
+ },
+ {
+  "net": "/TOUCH_RST_N",
+  "a": "R12.1",
+  "b": "U2.4",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 28.553,
+  "requested_connected": true,
+  "group": "TOUCH_CTL"
+ },
+ {
+  "net": "/TOUCH_INT_N",
+  "a": "J1.46",
+  "b": "U2.19",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 54.708,
+  "requested_connected": true,
+  "group": "TOUCH_CTL"
  }
 ]

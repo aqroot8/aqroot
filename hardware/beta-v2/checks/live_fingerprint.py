@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-309',                 # FBV2-P2-011: IR receiver local supply (IR_RX_VS_LOCAL)
-    sha256='5c5cae79465416c81f9d7b8dba5b2e3a3325bd9a0680b65103badf0e1a339f63',
-    tracks=535,                       # 527 (D-308) + 8 IR_RX_VS_LOCAL F.Cu
-    vias=58,                          # unchanged (IR_RX_VS is same-layer F.Cu, no via)
+    decision='D-310',                 # FBV2-P2-012: display/touch pair (TOUCH_RST_N + TOUCH_INT_N), U2-escape via-site offset
+    sha256='856f7a8adf0db9b114b9f09d7469308f921bc897aaf2ddce7f1c15c40a197114',
+    tracks=561,                       # 535 (D-309) + 26 TOUCH_RST_N/TOUCH_INT_N (24 F.Cu + 2 B.Cu fan-out)
+    vias=60,                          # 58 (D-309) + 2 U2-escape offset through vias
     copper_layers=6,
     zones=41,
-    ratsnest=688,                     # 690 (D-308) - 2 (IR_RX_VS_LOCAL 3-pad net closed)
-    journal=93,                       # 91 (D-308) + 2 IR_RX_VS REST_INC
+    ratsnest=685,                     # 688 (D-309) - 3 (TOUCH_RST_N 2 edges + TOUCH_INT_N 1 edge closed)
+    journal=96,                       # 93 (D-309) + 3 TOUCH_CTL REST_INC
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

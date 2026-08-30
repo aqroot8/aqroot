@@ -1,10 +1,10 @@
 {
- "sha256": "a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50",
- "tracks": 502,
- "vias": 55,
+ "sha256": "856f7a8adf0db9b114b9f09d7469308f921bc897aaf2ddce7f1c15c40a197114",
+ "tracks": 561,
+ "vias": 60,
  "copper_layers": 6,
- "ratsnest": 693,
- "journal": 88,
+ "ratsnest": 685,
+ "journal": 96,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -421,6 +421,46 @@
    "/05_I2C_DEVICES/BMI270_SDO_ADDR",
    "R119.2",
    "U4.1"
+  ],
+  [
+   "Net-(D13-RK)",
+   "D13.4",
+   "R124.2"
+  ],
+  [
+   "Net-(D13-GK)",
+   "D13.3",
+   "R125.2"
+  ],
+  [
+   "Net-(D13-BK)",
+   "D13.2",
+   "R126.2"
+  ],
+  [
+   "/07_IR/IR_RX_VS_LOCAL",
+   "C11.1",
+   "R21.2"
+  ],
+  [
+   "/07_IR/IR_RX_VS_LOCAL",
+   "R21.2",
+   "U6.3"
+  ],
+  [
+   "/TOUCH_RST_N",
+   "J1.47",
+   "R12.1"
+  ],
+  [
+   "/TOUCH_RST_N",
+   "R12.1",
+   "U2.4"
+  ],
+  [
+   "/TOUCH_INT_N",
+   "J1.46",
+   "U2.19"
   ]
  ]
 }

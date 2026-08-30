@@ -42,6 +42,7 @@ authoritative project.  `promote` copies that scratch board + a merged journal
 back onto the authoritative project, but only after re-running the full gate.
 """
 import os, sys, json, math, hashlib, shutil, collections
+import numpy as np
 SP = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SP)
 import path_role_util as RU
@@ -194,20 +195,25 @@ GROUPS = {
     # closes with a Default through via.  MEASURED (screen_010): moderate mid-
     # board congestion (cu 21/24) -- promotion decided by the real full-board
     # gate, not geometry.
-    # ==> D-309 MEASURED FAIL (NOT promoted): the router laid geometric paths
-    #     (route ALL OK) but the real full-board gate reported +3 new `clearance`
-    #     violations -- the TOUCH_RST_N via/track collide with the ACCEPTED D-306
-    #     DISP_RST_N through-via in the congested U2 B.Cu escape region (all four
-    #     touch/amp/SD pins land on U2's B.Cu edge beside U2.8).  A characterised
-    #     wall (like U11_PROG/PWR_SENSE); needs a deliberate U2-escape corridor
-    #     plan, deferred to FBV2-P2-012.  Do NOT naively retry.
+    # ==> D-309 MEASURED FAIL under the via-blind default: the router laid
+    #     geometric paths (route ALL OK) but the real full-board gate reported +3
+    #     new `clearance` violations -- the TOUCH_RST_N via/track collide with the
+    #     ACCEPTED D-306 DISP_RST_N through-via in the congested U2 B.Cu escape
+    #     region (U2.4/.7/.8/.11 stack on U2's west edge; the DISP_RST_N via sits
+    #     1.19 mm west of that column so a westward escape via lands on it).
+    # ==> FBV2-P2-012 / D-310 RESOLVED: `via_offset` walks the F<->B transition a
+    #     bounded 2.5 mm off the nearest congesting barrel via the existing-via-
+    #     aware `_offset_via_site` (screen_012: TOUCH_RST_N via 5.10 mm from DISP,
+    #     TOUCH_INT_N is on U2's EAST edge already 5.9-8.4 mm clear).  Both nets
+    #     pass the real full-board gate -> PROMOTED as the display/touch pair.
     'TOUCH_CTL': dict(
         sheet='03_SPI_A_DISPLAY_SD',
         desc='display/touch control: touch reset TOUCH_RST_N (J1.47/R12.1 F -> '
              'U2.4 B) + touch interrupt TOUCH_INT_N (J1.46 F -> U2.19 B); '
-             'noncritical low-speed control, cross-layer through vias',
+             'noncritical low-speed control, cross-layer through vias with a '
+             'bounded 2.5 mm U2-escape via-site offset',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
-        via_dia=600000, via_drill=300000,
+        via_dia=600000, via_drill=300000, via_offset=2500000,
         nets=['TOUCH_RST_N', 'TOUCH_INT_N'],
     ),
     # FBV2-P2-011 candidate -- audio amplifier SD/mode strap.  AMP_SD_MODE
@@ -311,6 +317,156 @@ def edge_plan(pa, pb, group):
     return None, 'cross'
 
 
+# --------------------------------------------------------------------------- #
+# EXISTING-VIA AWARENESS + BOUNDED VIA-SITE OFFSET  (FBV2-P2-012 / D-310).
+#
+# qrouter.QBoard._scan registers footprint pads and PCB_TRACK segments as
+# obstacles but NOT existing PCB_VIA barrels/holes (it scans GetTracks() and
+# `continue`s on the via class).  For every increment through D-309 this was
+# harmless -- no new via landed beside an existing one.  The U2 display/touch
+# escape family breaks that: U2.4/.7/.8/.11 stack on U2's west edge and the
+# accepted D-306 DISP_RST_N through-via sits 1.19 mm west of that column, so a
+# westward cross-layer escape via lands right on the DISP_RST_N barrel.  The
+# router's via-blind via_site() happily returns that site (measured: AMP_SD_MODE
+# 0.100 mm via-to-via, TOUCH/SD tracks threading the same congested column) and
+# only the real full-board DRC catches the `clearance` violation -- exactly the
+# D-309 wall.
+#
+# The correct, bounded, GENERIC fix lives HERE (a new caller composing existing
+# QBoard primitives -- qrouter.py is NOT touched, so every G-contract fixture
+# that re-routes through QBoard is byte-unchanged): connect_cross gains existing-
+# via awareness and, when a group opts in with `via_offset`, DELIBERATELY places
+# the F<->B transition a bounded distance off the congesting barrel -- a short
+# B.Cu fan-out on the host face to a planned clear via site, rather than
+# accepting the router's first via-blind legal one.  Groups WITHOUT `via_offset`
+# call qb.via_site exactly as before (byte-identical to D-306/D-308).
+def _existing_vias(qb):
+    """All existing PCB_VIA barrels on the board (net,x,y,dia,drill) -- the
+    obstacles qrouter._scan omits.  Cached on the QBoard instance."""
+    cache = getattr(qb, '_inc_existing_vias', None)
+    if cache is not None:
+        return cache
+    out = []
+    for t in qb.b.GetTracks():
+        if t.GetClass() == 'PCB_VIA':
+            p = t.GetPosition()
+            out.append(dict(net=t.GetNetname(), x=p.x, y=p.y,
+                            dia=t.GetWidth(pcbnew.F_Cu), drill=t.GetDrill()))
+    qb._inc_existing_vias = out
+    return out
+
+
+def inject_existing_via_obstacles(qb):
+    """Register every existing PCB_VIA as an obstacle ON THE QBoard INSTANCE so
+    ALL qrouter primitives (escape / via_site / connect_role track search / grid)
+    see the accepted barrels -- WITHOUT editing qrouter.py.
+
+    qrouter._scan builds obstacles from footprint pads and PCB_TRACK segments but
+    skips PCB_VIA (it iterates GetTracks() and `continue`s on the via class), so
+    an incremental route is otherwise blind to accepted through-vias: it will lay
+    a new via or thread a track straight past an existing barrel and only real
+    DRC catches it (the D-309 U2 wall: the TOUCH_RST_N F.Cu run passed 0.05 mm
+    from the DISP_RST_N via).  This mirrors, item-for-item, exactly what
+    QBoard.via() already does for a via it lays itself (RR copper on every Cu
+    layer + a hole), so it is faithful, generic, and add-only: it can only make a
+    route MORE conservative, never delete/alter accepted copper, and it touches
+    only this transient per-route QBoard instance -- the G-contract fixtures build
+    their own QBoards and are unaffected.  Same-net vias are naturally not
+    obstacles (QBoard.obstacles filters s.net != net)."""
+    if getattr(qb, '_inc_vias_injected', False):
+        return 0
+    n = 0
+    for v in _existing_vias(qb):
+        x, y, dia, drill, net = v['x'], v['y'], v['dia'], v['drill'], v['net']
+        for L in qb.cu:
+            qb.shapes[L].append(QR.RR(x, y, dia / 2.0, dia / 2.0, dia / 2.0,
+                                      0, net, 'via'))
+        qb.holes.append(QR.RR(x, y, drill / 2.0, drill / 2.0, drill / 2.0,
+                              0, net, 'via/hole'))
+        n += 1
+    qb._inc_vias_injected = True
+    return n
+
+
+def _clears_existing_vias(qb, vx, vy, net, vdia, vdrill, cp, hole_clr=250000):
+    """True iff a via (vdia/vdrill) centred at (vx,vy) clears every existing via
+    NOT on `net` by copper clearance `cp` AND hole-to-hole `hole_clr`."""
+    for v in _existing_vias(qb):
+        if v['net'] == net:
+            continue
+        d = math.hypot(v['x'] - vx, v['y'] - vy)
+        if d < vdia / 2.0 + v['dia'] / 2.0 + cp:      # copper clearance
+            return False
+        if d < vdrill / 2.0 + v['drill'] / 2.0 + hole_clr:   # hole-to-hole
+            return False
+    return True
+
+
+def _offset_via_site(qb, near, far, net, esc, width, vdia, cp, ct, G, vdrill,
+                     off, span=8000000, hole_clr=250000):
+    """A bounded, existing-via-aware analogue of qb.via_site.
+
+    Same reachability/both-layer legality qb.via_site enforces (free_region on
+    `near` from the escape, via_dia clearance grids on `near` and `far`, the
+    net-agnostic hole-to-hole floor), with TWO additions the via-blind primitive
+    cannot make:
+
+      * existing PCB_VIA copper (every routed layer) and hole clearance are
+        subtracted from the candidate mask, so a returned site is legal against
+        the accepted D-306/D-308 barrels the router cannot otherwise see;
+      * the site is chosen nearest to a BIAS point = escape + `off` mm along the
+        unit vector pointing directly AWAY from the nearest existing via -- i.e.
+        the transition is deliberately walked ~`off` mm off the congesting barrel
+        (a short host-face fan-out), not left on the router's nearest cell.
+
+    `off` bounds the plan: the picked site must lie within `off` + a one-cell
+    guard of the escape's reachable region, so the fan-out can never wander far.
+    Returns (x,y) or None (caller then tries the next escape / grid / fails)."""
+    x0, y0 = esc['x'] - span, esc['y'] - span
+    x1, y1 = esc['x'] + span, esc['y'] + span
+    reach = qb.free_region(near, net, width, cp, ct, G, (esc['x'], esc['y']),
+                           x0, y0, x1, y1)
+    if reach is None:
+        return None
+    mask, ox, oy, g = reach
+    bn = qb.grid(near, net, vdia, cp, ct, ox, oy, x1, y1, g)
+    bf = qb.grid(far, net, vdia, cp, ct, ox, oy, x1, y1, g)
+    ny = min(mask.shape[0], bn.shape[0], bf.shape[0])
+    nx = min(mask.shape[1], bn.shape[1], bf.shape[1])
+    good = mask[:ny, :nx] & ~bn[:ny, :nx] & ~bf[:ny, :nx]
+    if not good.any():
+        return None
+    XX = (ox + np.arange(nx) * g).astype(float)
+    YY = (oy + np.arange(ny) * g).astype(float)
+    X, Y = np.meshgrid(XX, YY)
+    # subtract existing-via copper + hole clearance (the qrouter-blind obstacles)
+    nearest = None
+    for v in _existing_vias(qb):
+        if v['net'] == net:
+            continue
+        need = max(vdia / 2.0 + v['dia'] / 2.0 + cp,
+                   vdrill / 2.0 + v['drill'] / 2.0 + hole_clr)
+        good &= ~(np.hypot(X - v['x'], Y - v['y']) < need)
+        d = math.hypot(v['x'] - esc['x'], v['y'] - esc['y'])
+        if nearest is None or d < nearest[0]:
+            nearest = (d, v)
+    if not good.any():
+        return None
+    # bias point: `off` mm away from the nearest existing via (deliberate offset)
+    if nearest is not None:
+        ax, ay = esc['x'] - nearest[1]['x'], esc['y'] - nearest[1]['y']
+        n = math.hypot(ax, ay) or 1.0
+        bx, by = esc['x'] + ax / n * off, esc['y'] + ay / n * off
+    else:
+        bx, by = esc['x'], esc['y']
+    jj, ii = np.nonzero(good)
+    ci = (bx - ox) / float(g)
+    cj = (by - oy) / float(g)
+    d = (ii - ci) ** 2 + (jj - cj) ** 2
+    k = int(np.argmin(d))
+    return (int(ox + ii[k] * g), int(oy + jj[k] * g))
+
+
 def connect_cross(qb, net, pa, pb, group, G=50000, fine=25000):
     """Route ONE cross-layer edge (pads on opposite outer faces) with exactly
     ONE board-legal through via, composing only proven qrouter primitives:
@@ -323,10 +479,17 @@ def connect_cross(qb, net, pa, pb, group, G=50000, fine=25000):
     same legality connect_hop relies on); the two runs land on the via centre,
     which is same-net copper and therefore not an obstacle to either.  No
     qrouter.py behaviour is changed -- this is a new caller of existing methods.
+
+    When the group declares `via_offset`, the via site is chosen by the bounded
+    existing-via-aware `_offset_via_site` (FBV2-P2-012): the transition is walked
+    ~via_offset mm off the nearest congesting barrel and proven clear of every
+    existing via the router is blind to.  Without `via_offset` the site is
+    qb.via_site's nearest legal cell, exactly as for D-306/D-308.
     """
     w, cp, ct = group['width'], group['clr_pad'], group['clr_trk']
     vd = group.get('via_dia', 600000)
     vk = group.get('via_drill', 300000)
+    voff = group.get('via_offset')          # None -> router-blind via_site (D-306/D-308)
 
     def only(p):
         s = _pad_layers(p)
@@ -351,14 +514,28 @@ def connect_cross(qb, net, pa, pb, group, G=50000, fine=25000):
                         why=qb.escape_why[0], pad=pb['ref'])
         site = None
         for c in e[:6]:
-            st = qb.via_site(near, far, net, c, w, vd, cp, ct, G_try,
-                             via_drill=vk)
+            if voff:
+                st = _offset_via_site(qb, near, far, net, c, w, vd, cp, ct,
+                                      G_try, vk, off=voff)
+            else:
+                st = qb.via_site(near, far, net, c, w, vd, cp, ct, G_try,
+                                 via_drill=vk)
             if st is not None:
                 site = st
                 break
         if site is None:
             continue
         vx, vy = site
+        # Defensive: never lay a via that fails existing-via clearance (the
+        # router's obstacle model is blind to existing barrels; the offset
+        # picker enforces this, but re-prove it for every group unconditionally
+        # so a via-blind site can never reach the gate).
+        if not _clears_existing_vias(qb, vx, vy, net, vd, vk, cp):
+            fail = dict(ok=False, reason='VIA_NEAR_EXISTING_VIA',
+                        why='via site (%.3f,%.3f) within clearance of an '
+                            'existing via barrel/hole' % (vx / 1e6, vy / 1e6),
+                        pad=pb['ref'])
+            continue
         m = qb.mark()
         qb.via(net, vx, vy, vd, vk)
         anchor = dict(ref='(via)', x=int(vx), y=int(vy), F=True, B=True,
@@ -489,11 +666,17 @@ def cmd_route(name):
     group = GROUPS[name]
     pcb = RU.fresh(WORK, 'INC_' + name)          # copy of the authoritative project
     qb = QR.QBoard(pcb)
+    # qrouter._scan omits existing vias; register them as obstacles on this
+    # instance so escape/via_site/connect_role all respect accepted barrels
+    # (FBV2-P2-012).  Add-only, per-route, generic; qrouter.py untouched.
+    nvia_obs = inject_existing_via_obstacles(qb)
     nets = resolve_nets(qb, group)
     layer, w = group['layer'], group['width']
     cp, ct = group['clr_pad'], group['clr_trk']
     jrn = []
     print('ROUTE group %s on %s.Cu at %.3f mm (%s)' % (name, layer, w / 1e6, group['desc']))
+    if nvia_obs:
+        print('  injected %d existing-via obstacle(s) (qrouter._scan omits vias)' % nvia_obs)
     for base in group['nets']:
         nf = nets[base]
         pads = net_pads(qb, nf)

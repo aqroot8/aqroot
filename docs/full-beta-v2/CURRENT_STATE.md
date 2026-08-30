@@ -13,7 +13,66 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-011 / D-309 (this checkpoint — SIXTH REST-OF-BOARD INCREMENT PROMOTED; cleanest class, NO via;
+- **FBV2-P2-012 / D-310 (this checkpoint — SEVENTH REST-OF-BOARD INCREMENT PROMOTED; the D-309 U2 B.Cu ESCAPE
+  WALL BROKEN by a bounded via-site offset + existing-via awareness):** a governed CTO **ACCEPT + PROMOTE** — the
+  display/touch control pair `TOUCH_RST_N` + `TOUCH_INT_N` (capacitive-touch reset + interrupt, display FPC J1 →
+  touch-controller U2), **the group D-309 measured as a WALL**, is on the authoritative board with **no Phase-A /
+  FRONT_RGB / ACC / DISP / IMU / FRONT_RGB_LED / IR_RX_VS casualty and no new DRC**; autonomy CONTINUES, **no
+  owner decision.** Starting HEAD `f2bcac1` (D-309; pushed; `origin/master` identical). **(1) Root cause of the
+  D-309 wall — the router was BLIND to existing vias.** `qrouter.QBoard._scan` builds obstacles from footprint
+  pads + `PCB_TRACK` but iterates `GetTracks()` and `continue`s on `PCB_VIA`, so every accepted through-via is
+  invisible to escape/via_site/connect_role. U2.4/.7/.8/.11 stack on U2's WEST edge (x=54.14); the accepted D-306
+  `DISP_RST_N` via sits at (52.95,87.0), 1.19 mm west of that column, so a westward cross-layer escape lands the
+  new via (and threads its F.Cu run) right past the barrel; only real DRC caught it (D-309 +3; measured this
+  cycle `AMP_SD_MODE` default via 0.100 mm copper to `DISP_RST_N`). **(2) The fix — two generic, bounded,
+  `qrouter.py`-UNTOUCHED mechanisms in `connect_cross`.** (a) EXISTING-VIA AWARENESS — every accepted `PCB_VIA`
+  barrel/hole is injected as an obstacle onto the per-route `QBoard` instance (mirroring `QBoard.via()`
+  item-for-item), so escape/via_site/**connect_role's track search** respect accepted vias (add-only, per-route,
+  generic; touches only the transient route QBoard so G-contract fixtures are unaffected); (b) BOUNDED VIA-SITE
+  OFFSET — a group opts in with `via_offset` and the F↔B transition is deliberately walked ~2.5 mm off the
+  nearest congesting barrel via `_offset_via_site` (a short host-face B.Cu fan-out) — the first increment that
+  PLANS a via site; groups without `via_offset` are byte-identical to D-306/D-308. **(3) Screen (real-geometry
+  clearance, READ-ONLY `w/geom_012.py` + `w/screen_012.py`, before any gate):** `AMP_SD_MODE` default via 0.70 mm
+  from DISP = 0.100 mm CLASH (confirms D-309 +7); `TOUCH_RST_N`/`SD_DETECT` default vias clear the barrel but
+  their tracks thread the west column (D-309 +3/+2); at 2.5 mm offset all four clear (via↔via 2.6–7.8 mm);
+  `TOUCH_INT_N` on U2's EAST edge already 5.9 mm clear. Per the task preference the coherent display/touch PAIR
+  was taken (both pass); unrelated nets NOT bundled. **(4) The gate (real full-board, D-286):** `route TOUCH_CTL`
+  ALL OK (injected 58 existing-via obstacles): J1.47↔R12.1 22.217 mm F.Cu + R12.1↔U2.4 28.553 mm cross-via@(52.95,
+  92.10); J1.46↔U2.19 54.708 mm cross-via@(61.15,88.85); 26 seg + 2 through vias; In1/In4 re-poured. (First
+  attempt with via-offset ALONE still failed +3 — the via-blind track router threaded the F.Cu run 0.05 mm from
+  the DISP barrel; the existing-via injection made connect_role via-aware and the re-route was clean — the offset
+  fixes the via, the injection fixes the tracks.) `gate` = PASS every check: prior copper 0 missing (D-309 535
+  trk + 58 via a SUBSET); 28 new items all target-net; only zones 39/40 re-poured, all other 39 byte-identical;
+  both nets connected open-edges 2→0 and 1→0; 0 prior pairs regressed; **ratsnest 688→685 EXACTLY −3**; real DRC
+  no new/worse class (`clearance` 0→0). **GATE PASS.** **(5) Promoted:** `sha256 5c5cae79…a339f63` →
+  **`856f7a8adf0db9b114b9f09d7469308f921bc897aaf2ddce7f1c15c40a197114`**; tracks **535→561** (+26: 21 F.Cu + 5
+  B.Cu fan-out); vias **58→60** (+2 offset through vias); 6 layers / 41 zones; ratsnest **688→685** (−3); journal
+  **93→96** (+3 `REST_INC`); PCB file diff **310 ins / 40 del** — additions 26 `(segment)` + 2 `(via)` (0
+  seg/via/fp del), all 40 del are In1/In4 `filled_polygon` xy (2 via anti-pads); real KiCad DRC error-severity
+  identical (`solder_mask_bridge:1 + hole_clearance:5`; 0 `clearance`). **(6) Tests:** new contract **G24** (both
+  nets connected across the U2 F/B hop; copper legal 26 trk 0.200 mm F.Cu+B.Cu + 2×0.60/0.30 through vias; the
+  offset cleared both vias of every existing via — min TOUCH-via↔other-via **4.998 mm** ≥0.80 mm; ADD-ONLY
+  IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54); G18–G23 auto-generalise →
+  `router_regression.py` **ALL CHECKS PASS (G1–G24), 102 PASS lines**, deterministic; new probe
+  `checks/incremental_probe_012.py` PASS; `_006..011` PASS unchanged (pre-X checks auto-generalise);
+  `phaseB_bringup_probe_005` updated (561/60/96; 13 routed rest nets, 151 unrouted) PASS; real-board `kicad-cli`
+  DRC + pcbnew ratsnest 685 re-run independently — no new `clearance`. `d269`/`d264`/`dru` NOT regressed — a
+  **board-swap A/B test proves BYTE-IDENTICAL verdicts (`diff` empty) on the committed D-309 and promoted D-310
+  boards** (pre-existing BAT_*/LTC power-tree reds far from the mid-board TOUCH copper). **(7) Opportunity &
+  Simplification:** the via-site metadata is deliberately REUSABLE without hiding corridor coupling — the
+  existing-via injection is unconditional (fixes a latent gap for EVERY future cross-layer increment) and
+  re-proven by the defensive `_clears_existing_vias` guard for all groups; `via_offset` is an opt-in bounded
+  scalar biasing "away from the nearest existing via" (a general rule), now available to the rest of the U2
+  family; sibling U2 groups `AMP_SD_MODE`/`SD_DETECT` NOT bundled (task preference; annotated with clean measured
+  2.5 mm sites). **Open owner decisions: NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback: pre-promotion
+  `sha256 5c5cae79…a339f63` (D-309; parent `f2bcac1`). Next: **FBV2-P2-013 — the U2 escape family is UNLOCKED:
+  complete it (`AMP_SD_MODE` U2.7, `SD_CARD_DETECT_N` U2.11 both measured clean at 2.5 mm offset — add
+  `via_offset` and route/gate), or another clean local group; 151 of 164 rest nets unrouted; `U11_PROG`/
+  `PWR_SENSE` remain characterised walls.** Full analysis:
+  [`audits/2026-08-30-p2-012-d310-seventh-rest-of-board-incremental-increment-touch-ctl-u2-escape-via-offset-promoted.md`](audits/2026-08-30-p2-012-d310-seventh-rest-of-board-incremental-increment-touch-ctl-u2-escape-via-offset-promoted.md).
+  This checkpoint is written in the D-310 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-011 / D-309 (SIXTH REST-OF-BOARD INCREMENT PROMOTED; cleanest class, NO via;
   display/touch U2-escape wall characterised; shared live-fingerprint helper landed):** a governed CTO
   **ACCEPT + PROMOTE** — the IR receiver (U6) local filtered supply `IR_RX_VS_LOCAL` (series filter R21.2 +
   decoupling C11.1 → U6.3 THT supply pin, all same-layer F.Cu, **NO via**) is on the authoritative board, with
@@ -58,8 +117,6 @@
   family), or another clean local no-via/single-via group; `U11_PROG`/`PWR_SENSE` + the four U2-escape
   candidates remain characterised walls — do NOT re-attempt naively.** Full analysis:
   [`audits/2026-08-30-p2-011-d309-sixth-rest-of-board-incremental-increment-ir-rx-vs-promoted.md`](audits/2026-08-30-p2-011-d309-sixth-rest-of-board-incremental-increment-ir-rx-vs-promoted.md).
-  This checkpoint is written in the D-309 commit; a fresh session must confirm the live tip with
-  `git rev-parse HEAD` and `git rev-parse origin/master`.
 - **FBV2-P2-010 / D-308 (FIFTH REST-OF-BOARD INCREMENT PROMOTED; the FIRST MULTI-VIA
   increment):** a governed CTO **ACCEPT + PROMOTE** — the front-panel RGB status-indicator completion (three
   LED-cathode nets `Net-(D13-RK)`/`Net-(D13-GK)`/`Net-(D13-BK)`) is on the authoritative board, closing the
@@ -472,16 +529,19 @@
   (`replay_battery_block.py` / SECTION-17 `AQROOT_REPLAY` / `phaseB_compare.py`) is the battery-block
   replay/idempotence verification and is now **stale + assumes a copper-empty base** (do NOT naively re-run;
   see §1). The promotion is sound without it (rests on a genuine full-authority gate, D-286).
-- **Current fabrication blocker (updated by D-309): rest-of-board routing — IN PROGRESS, incrementally.**
-  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across SIX promoted
-  increments: of the 164 rest-of-board multi-pad nets, **11 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
-  FRONT_RGB_LED 3 + IR_RX_VS 1), 153 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest **688**. Each
-  future group is added to the `incremental_router.py` registry and routed → gated (real full-board DRC,
-  D-286) → promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-012, §5). The board carries
-  Phase-A battery-block copper (432 trk / 54 via) **plus** the six rest increments (103 trk / 4 via). Fingerprints
-  for all increment probes are now centralised in `checks/live_fingerprint.py` (D-309). Characterised walls (do
-  NOT naively retry): `U11_PROG`/`PWR_SENSE` (D-307) + the **U2 B.Cu escape** family `TOUCH_RST_N`/`TOUCH_INT_N`/
-  `AMP_SD_MODE`/`SD_CARD_DETECT_N` (D-309, via collides with the D-306 `DISP_RST_N` barrel).
+- **Current fabrication blocker (updated by D-310): rest-of-board routing — IN PROGRESS, incrementally.**
+  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across SEVEN promoted
+  increments: of the 164 rest-of-board multi-pad nets, **13 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
+  FRONT_RGB_LED 3 + IR_RX_VS 1 + TOUCH_CTL 2), 151 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest
+  **685**. Each future group is added to the `incremental_router.py` registry and routed → gated (real full-board
+  DRC, D-286) → promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-013, §5). The board carries
+  Phase-A battery-block copper (432 trk / 54 via) **plus** the seven rest increments (129 trk / 6 via). Fingerprints
+  for all increment probes are centralised in `checks/live_fingerprint.py` (D-309). **D-310 gave `connect_cross`
+  existing-via awareness (qrouter._scan omits `PCB_VIA`; injected per-route) + a bounded `via_offset`, breaking
+  the U2 escape wall** (`qrouter.py` untouched). Characterised walls (do NOT naively retry): `U11_PROG`/`PWR_SENSE`
+  (D-307, hard pad-escape/corridor). **U2 escape family now UNLOCKED** — `TOUCH_RST_N`/`TOUCH_INT_N` ROUTED
+  (D-310); `AMP_SD_MODE` (U2.7) / `SD_CARD_DETECT_N` (U2.11) measured clean at 2.5 mm offset, ready for the next
+  increment.
 - **Historical Phase-A blocker context (all CLOSED under D-302), updated by D-301.** Direction-2 (D-294) plus the accepted bounded
   levers (D-297 U18.8 In3-join, D-298/D-299 U19CAP, **D-301 LTC_GATE_KO**) have resolved the west/BAT_RAW,
   U18.8, the saturated U19 dead-cell field **and** the `LTC_GATE U18.10→Q3.4` join; **the SINGLE remaining
@@ -669,22 +729,25 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-012 (continue rest-of-board routing, next bounded group)
+## 5. Next task — FBV2-P2-013 (continue rest-of-board routing, next bounded group)
 
-- **Where 011 left it (D-309).** SIX increments promoted; **153 of 164 rest nets unrouted**; authoritative
-  `sha256 5c5cae79…a339f63` (535 trk / 58 via / ratsnest 688 / journal 93). All proven classes: same-layer
-  (B.Cu/F.Cu no via), single-via + multi-via cross-layer, multi-terminal MST. Fingerprint pin centralised in
-  `checks/live_fingerprint.py`.
-- **The lever (FBV2-P2-012) — two live directions.** (1) **The U2 B.Cu escape corridor (characterised wall).**
-  `TOUCH_RST_N`/`TOUCH_INT_N`/`AMP_SD_MODE`/`SD_CARD_DETECT_N` all fail because their via lands beside the D-306
-  `DISP_RST_N` via at U2's B.Cu escape; measure whether a **deliberate via-site offset** (route the via a few mm
-  off U2's edge before the F↔B transition) or a short B.Cu fan-out on U2's face clears the 0.200 mm clearance —
-  the first increment that plans a via *site*, unlocking the whole display/touch/SD/audio-strap family behind one
-  wall. (2) Else another **clean local no-via/single-via group** (screen `w/screen_010.py`; e.g. `RESERVED_SPARE`
-  U23-local B.Cu 3-pad, or verify `DIO2_TXEN` U8 intra-chip strap is a control tie not RF matching). Promote
-  **only a genuine no-casualty / no-new-DRC increment** (the gate enforces this); add a G-contract + a focused
-  probe per accepted group and bump `live_fingerprint.py` once. All floors ENFORCED; no DRU/rule relaxation, no
-  D-290 reauth, no topology/footprint/outline change.
+- **Where 012 left it (D-310).** SEVEN increments promoted; **151 of 164 rest nets unrouted**; authoritative
+  `sha256 856f7a8a…0a197114` (561 trk / 60 via / ratsnest 685 / journal 96). All proven classes: same-layer
+  (B.Cu/F.Cu no via), single-via + multi-via cross-layer, multi-terminal MST, **and now the bounded U2-escape
+  via-site offset + existing-via-aware `connect_cross`** (D-310; `qrouter.py` untouched). Fingerprint pin
+  centralised in `checks/live_fingerprint.py`.
+- **The lever (FBV2-P2-013) — the U2 escape family is UNLOCKED.** (1) **Complete the U2 escape family.**
+  `AMP_SD_MODE` (audio amp SD/mode strap, U2.7) and `SD_CARD_DETECT_N` (microSD card-detect, U2.11) both measured
+  clean at the 2.5 mm `via_offset` (via↔via 2.602 / 3.850 mm to the nearest barrel); a coherent next increment —
+  add `via_offset` to their `GROUPS` entries (already annotated) and route → gate; verify each on the real gate
+  (long hauls, `SD_DETECT` ~68 mm, may surface track-level congestion elsewhere). (2) Else another **clean local
+  no-via/single-via group** (screen `w/screen_010.py`; e.g. `RESERVED_SPARE` U23-local B.Cu 3-pad, or verify
+  `DIO2_TXEN` U8 intra-chip strap is a control tie not RF matching); the XGPIO0…9 bank is a real 10-net target but
+  a ~55 mm cross-board haul (screen its corridor first). Promote **only a genuine no-casualty / no-new-DRC
+  increment** (the gate enforces this); add a G-contract + a focused probe per accepted group and bump
+  `live_fingerprint.py` once. All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no
+  topology/footprint/outline change. `U11_PROG`/`PWR_SENSE` remain characterised hard walls (do NOT re-attempt
+  naively).
 - **(historical) Next task as of FBV2-P2-007 (continue rest-of-board routing, next bounded group)**
 - **Where 006 left it (D-304).** The reusable incremental router/promoter `checks/incremental_router.py`
   EXISTS and is proven: it loaded the D-302 promoted board, routed the FRONT_RGB indicator group (3 nets, 20
@@ -742,14 +805,14 @@
   and the BAT_RAW R89.1/R86.2 divider taps.
 
 ## 6. Authoritative PCB state
-- **Routing/promotion (D-309): Phase-A copper + SIX rest-of-board increments.** Authoritative board =
-  **six copper layers, 535 signal tracks, 58 vias, 41 zones** (verified `sha256 5c5cae79…a339f63`), carrying the
+- **Routing/promotion (D-310): Phase-A copper + SEVEN rest-of-board increments.** Authoritative board =
+  **six copper layers, 561 signal tracks, 60 vias, 41 zones** (verified `sha256 856f7a8a…0a197114`), carrying the
   **432-track Phase-A battery block (D-302) PLUS** FRONT_RGB 20 (D-304) + ACC 31 (D-305) + DISP 11/1 via (D-306)
-  + IMU 8 (D-307) + FRONT_RGB_LED 25/3 via (D-308) + IR_RX_VS 8 (D-309); ratsnest **688**; journal **93** (77
-  Phase-A + 16 `REST_INC`); real KiCad DRC unchanged (`{solder_mask_bridge:1, hole_clearance:5,
-  lib_footprint_issues:199, unconnected_items:499}`); **153 rest-of-board nets remain unrouted.**
-  `router_regression.py` ALL PASS (G1–G23, 98 lines). Rollback: pre-D-309 `sha256 f4e95dec…8559e7ee` (D-308;
-  parent `49528f2`).
+  + IMU 8 (D-307) + FRONT_RGB_LED 25/3 via (D-308) + IR_RX_VS 8 (D-309) + TOUCH_CTL 26/2 via (D-310); ratsnest
+  **685**; journal **96** (77 Phase-A + 19 `REST_INC`); real KiCad DRC unchanged (`{solder_mask_bridge:1,
+  hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`); **151 rest-of-board nets remain unrouted.**
+  `router_regression.py` ALL PASS (G1–G24, 102 lines). Rollback: pre-D-310 `sha256 5c5cae79…a339f63` (D-309;
+  parent `f2bcac1`).
 - **(historical) Routing/promotion (D-304): Phase-A copper + first rest-of-board increment.** Authoritative board =
   **six copper layers, 452 signal tracks, 54 vias, 41 zones** (verified `sha256 00c93bdb…dfb72aad`), carrying
   the **432-track Phase-A battery block (D-302) PLUS the 20-track FRONT_RGB indicator increment (D-304)**;

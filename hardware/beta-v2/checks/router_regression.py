@@ -1400,6 +1400,75 @@ def main():
                len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             irvs_addonly)
 
+        # -- G24 FBV2-P2-012/D-310 seventh rest-of-board incremental increment ---
+        # The display/touch control PAIR TOUCH_RST_N (J1.47/R12.1 F.Cu -> U2.4
+        # B.Cu) + TOUCH_INT_N (J1.46 F.Cu -> U2.19 B.Cu) was routed onto the D-309
+        # board by incremental_router.py.  This is the group D-309 MEASURED as a
+        # wall: U2.4/.7/.8/.11 stack on U2's west edge and the accepted D-306
+        # DISP_RST_N through-via sits 1.19 mm west of that column, so the via-blind
+        # default via_site laid the F<->B transition (and threaded its F.Cu run)
+        # right past the DISP_RST_N barrel -> +3 `clearance`.  FBV2-P2-012 closes it
+        # with TWO generic, bounded, qrouter-untouched mechanisms in connect_cross:
+        # (a) existing PCB_VIA barrels/holes are injected as obstacles on the route
+        # QBoard instance (qrouter._scan omits them), so escape/via_site/connect_role
+        # all respect accepted vias; (b) a per-group `via_offset` walks the
+        # transition a bounded 2.5 mm off the nearest congesting barrel.  Result:
+        # both vias land >=5 mm from any existing via and the gate is clean.  G24
+        # pins the increment: both nets fully copper-connected, copper legal (26 trk
+        # 0.200 mm, 2x 0.60/0.30 through vias), the two vias cleared of every other
+        # via (the offset mechanism worked), and ADD-ONLY (IR_RX_VS 8, RGB_LED 25,
+        # IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54 untouched).
+        print('  -- G24 FBV2-P2-012/D-310 rest-of-board incremental increment --')
+        TCH = ('/TOUCH_RST_N', '/TOUCH_INT_N')
+        tch_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in TCH]
+        tch_via = [t for t in all_via if t.GetNetname() in TCH]
+
+        j_rst = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                 for p in _cc.GetConnectedItems(_pad('R12.1')) if p.GetClass() == 'PAD'}
+        j_int = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                 for p in _cc.GetConnectedItems(_pad('U2.19')) if p.GetClass() == 'PAD'}
+        conn_ok = ('J1.47' in j_rst and 'U2.4' in j_rst) and ('J1.46' in j_int)
+        chk('G24 TOUCH_RST_N + TOUCH_INT_N fully copper-connected across the U2 F/B hop',
+            'R12.1 joins J1.47&U2.4=%s ; U2.19 joins J1.46=%s'
+            % ('J1.47' in j_rst and 'U2.4' in j_rst, 'J1.46' in j_int), conn_ok)
+
+        tch_layers = {t.GetLayerName() for t in tch_trk}
+        tch_legal = (len(tch_trk) == 26 and len(tch_via) == 2
+                     and tch_layers == {'F.Cu', 'B.Cu'}
+                     and all(t.GetWidth() == 200000 for t in tch_trk)
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             for v in tch_via))
+        chk('G24 TOUCH copper legal (26 trk 0.200 F.Cu+B.Cu, 2x 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d dias=%s drills=%s'
+            % (len(tch_trk), sorted(tch_layers), len(tch_via),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in tch_via}),
+               sorted({v.GetDrill() for v in tch_via})), tch_legal)
+
+        # The via-site OFFSET mechanism: each TOUCH via must clear EVERY other via
+        # (barrel copper: 0.60/2 + 0.60/2 + 0.200 = 0.800 mm centre-to-centre).  A
+        # via-blind default put AMP_SD_MODE 0.700 mm from DISP_RST_N (0.100 mm
+        # copper) -- this proves the D-310 offset actually moved the transition off
+        # the wall.
+        other_via = [t for t in all_via if t.GetNetname() not in TCH]
+        min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                        + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                       for v in tch_via for o in other_via), default=1e9)
+        chk('G24 U2-escape offset cleared both vias of every existing via (>=0.80 mm centre)',
+            'min TOUCH-via to other-via centre = %.3f mm' % (min_gap / 1e6),
+            min_gap >= 800000)
+
+        tch_addonly = (len(tch_trk) == 26 and len(irvs_trk) == 8
+                       and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                       and len(phaseA_via) == 54)
+        chk('G24 increment is ADD-ONLY (IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'touch=%d (exp 26), irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk),
+               len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
+               len(phaseA_via)), tch_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))
