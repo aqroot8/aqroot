@@ -38,11 +38,12 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # D-306 promoted-board fingerprints.
-EXPECT_SHA = 'f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee'
-EXPECT_TRACKS = 527           # 494 (D-306) + 8 IMU_ADDR (D-307)
-EXPECT_VIAS = 58              # 55 prior + 3 FRONT_RGB_LED cross-layer vias (D-308)
-EXPECT_JOURNAL = 91           # 86 (D-306) + 2 IMU_ADDR REST_INC
-EXPECT_RATSNEST = 690         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
+import live_fingerprint as LFP   # single source of truth for the live board pin (D-309)
+EXPECT_SHA = LFP.SHA
+EXPECT_TRACKS = LFP.TRACKS
+EXPECT_VIAS = LFP.VIAS
+EXPECT_JOURNAL = LFP.JOURNAL_LEN
+EXPECT_RATSNEST = LFP.RATSNEST
 
 # The pre-promotion D-305 authoritative sha (483 trk / 54 via) -- the exact set
 # that must survive this increment unchanged.

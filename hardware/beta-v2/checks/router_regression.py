@@ -1352,6 +1352,54 @@ def main():
                len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             rgbled_addonly)
 
+        # -- G23 FBV2-P2-011/D-309 sixth rest-of-board incremental increment ----
+        # The IR receiver (U6) local filtered supply IR_RX_VS_LOCAL (series filter
+        # R21.2 + decoupling C11.1 -> U6.3 THT supply pin) was routed onto the
+        # D-308 promoted board by incremental_router.py as a genuine no-casualty /
+        # no-new-DRC increment.  All three pads share the F.Cu outer layer (U6.3 is
+        # THT), so every MST edge is a SAME-LAYER F.Cu run with NO via -- the
+        # cleanest increment class (like D-307 IMU_ADDR, but on F.Cu): vias stay 58
+        # and no GND plane is re-poured.  It was chosen on EVIDENCE, not by default:
+        # the task-preferred display/touch group (TOUCH_RST_N + TOUCH_INT_N) and the
+        # AMP_SD_MODE / SD_CARD_DETECT_N alternatives were all measured on scratch
+        # and FAILED the real gate with new `clearance` violations (long cross-board
+        # hauls colliding at the congested U2 B.Cu escape beside the D-306 DISP_RST_N
+        # via).  G23 pins this increment on the authoritative board: the net is fully
+        # copper-connected, its copper is legal (0.200 mm F.Cu, no via), and the
+        # increment is ADD-ONLY -- the RGB_LED (25), IMU (8), DISP (11), ACC (31) and
+        # RGB (20) increments and Phase-A (432 trk / 54 via) are untouched.
+        print('  -- G23 FBV2-P2-011/D-309 rest-of-board incremental increment --')
+        IRVS = ('/07_IR/IR_RX_VS_LOCAL',)
+        irvs_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in IRVS]
+        irvs_via = [t for t in all_via if t.GetNetname() in IRVS]
+
+        joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('R21.2')) if p.GetClass() == 'PAD'}
+        conn_ok = ('C11.1' in joined) and ('U6.3' in joined)
+        chk('G23 IR_RX_VS_LOCAL fully copper-connected (C11.1-R21.2-U6.3 one island)',
+            'R21.2 joined C11.1 & U6.3 = %s (%s)' % (conn_ok, sorted(joined)), conn_ok)
+
+        irvs_legal = (len(irvs_trk) == 8 and not irvs_via
+                      and all(t.GetLayerName() == 'F.Cu' and t.GetWidth() == 200000
+                              for t in irvs_trk))
+        chk('G23 IR_RX_VS_LOCAL copper legal (0.200 mm F.Cu, no via)',
+            '%d tracks, widths=%s, layers=%s, irvs vias=%d'
+            % (len(irvs_trk),
+               sorted({t.GetWidth() for t in irvs_trk}),
+               sorted({t.GetLayerName() for t in irvs_trk}), len(irvs_via)),
+            irvs_legal)
+
+        irvs_addonly = (len(irvs_trk) == 8 and len(rgbled_trk) == 25
+                        and len(imu_trk) == 8 and len(disp_trk) == 11
+                        and len(acc_trk) == 31 and len(rgb_trk) == 20
+                        and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
+        chk('G23 increment is ADD-ONLY (RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'irvs=%d (exp 8), rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
+               len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
+            irvs_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

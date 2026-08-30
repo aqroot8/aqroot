@@ -170,6 +170,75 @@ GROUPS = {
         via_dia=600000, via_drill=300000,
         nets=['Net-(D13-RK)', 'Net-(D13-GK)', 'Net-(D13-BK)'],
     ),
+    # FBV2-P2-011 / D-309 candidate PRIMARY -- IR receiver local supply.
+    # IR_RX_VS_LOCAL is the RC-filtered local supply node for the IR demodulator
+    # U6 (07_IR): series filter R21.2 (F.Cu SMD) + decoupling C11.1 (F.Cu SMD) ->
+    # U6.3 supply pin (THT, on BOTH faces).  All three pads share the F.Cu outer
+    # layer (U6.3 is THT so F.Cu is available), so every MST edge is a SAME-LAYER
+    # F.Cu run with NO via.  A tight NE-corner cluster (span ~10x4 mm), measured
+    # PRISTINE (0 accepted copper within bbox+2 mm).  A coherent standalone
+    # peripheral supply-filter group -- noncritical low-current, not a bulk rail.
+    'IR_RX_VS': dict(
+        sheet='07_IR',
+        desc='IR receiver (U6) local filtered supply IR_RX_VS_LOCAL '
+             '(R21.2 series + C11.1 decoupling -> U6.3 THT supply); '
+             'pristine NE-corner cluster, all F.Cu, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['IR_RX_VS_LOCAL'],
+    ),
+    # FBV2-P2-011 candidate -- coherent display/touch-panel control subset.
+    # TOUCH_RST_N (J1.47 F, R12.1 F, U2.4 B) + TOUCH_INT_N (J1.46 F, U2.19 B):
+    # the capacitive touch panel reset + interrupt lines from the display FPC
+    # connector J1 to the touch-controller interface U2.  Both are long
+    # cross-board hauls (33-38 mm) that transition F<->B (U2 is B.Cu) so each
+    # closes with a Default through via.  MEASURED (screen_010): moderate mid-
+    # board congestion (cu 21/24) -- promotion decided by the real full-board
+    # gate, not geometry.
+    # ==> D-309 MEASURED FAIL (NOT promoted): the router laid geometric paths
+    #     (route ALL OK) but the real full-board gate reported +3 new `clearance`
+    #     violations -- the TOUCH_RST_N via/track collide with the ACCEPTED D-306
+    #     DISP_RST_N through-via in the congested U2 B.Cu escape region (all four
+    #     touch/amp/SD pins land on U2's B.Cu edge beside U2.8).  A characterised
+    #     wall (like U11_PROG/PWR_SENSE); needs a deliberate U2-escape corridor
+    #     plan, deferred to FBV2-P2-012.  Do NOT naively retry.
+    'TOUCH_CTL': dict(
+        sheet='03_SPI_A_DISPLAY_SD',
+        desc='display/touch control: touch reset TOUCH_RST_N (J1.47/R12.1 F -> '
+             'U2.4 B) + touch interrupt TOUCH_INT_N (J1.46 F -> U2.19 B); '
+             'noncritical low-speed control, cross-layer through vias',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['TOUCH_RST_N', 'TOUCH_INT_N'],
+    ),
+    # FBV2-P2-011 candidate -- audio amplifier SD/mode strap.  AMP_SD_MODE
+    # (R15.1 F, U5.4 F -> U2.7 B): the MAX98357 class-D amp SD/mode select strap
+    # (a static logic-level strap, NOT the class-D output).  Cross-board haul to
+    # U2 (~29 mm), one cross-layer edge -> one through via.  cu 57.
+    # ==> D-309 MEASURED FAIL (NOT promoted): gate reported +7 `clearance` (via
+    #     lands in the same congested U2 B.Cu escape beside DISP_RST_N; deferred
+    #     to FBV2-P2-012 with the touch group).
+    'AMP_SD_MODE': dict(
+        sheet='06_AUDIO',
+        desc='audio amp SD/mode-select strap AMP_SD_MODE (R15.1/U5.4 F -> U2.7 B); '
+             'static logic strap (not the class-D output), one cross-layer via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['AMP_SD_MODE'],
+    ),
+    # FBV2-P2-011 candidate -- microSD card-detect.  SD_CARD_DETECT_N
+    # (J2.10 F, R113.2 F -> U2.11 B): the microSD socket J2 card-detect switch
+    # line (noncritical low-speed) to U2.  Cross-board haul (~59 mm), one
+    # cross-layer edge -> one through via.  cu 57.
+    # ==> D-309 MEASURED FAIL (NOT promoted): gate reported +2 `clearance` (via
+    #     lands in the same congested U2 B.Cu escape; deferred to FBV2-P2-012).
+    'SD_DETECT': dict(
+        sheet='03_SPI_A_DISPLAY_SD',
+        desc='microSD card-detect SD_CARD_DETECT_N (J2.10/R113.2 F -> U2.11 B); '
+             'noncritical low-speed detect, one cross-layer via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['SD_CARD_DETECT_N'],
+    ),
 }
 
 

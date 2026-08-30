@@ -3069,5 +3069,27 @@
   "mm": 29.999,
   "requested_connected": true,
   "group": "FRONT_RGB_LED"
+ },
+ {
+  "net": "/07_IR/IR_RX_VS_LOCAL",
+  "a": "C11.1",
+  "b": "R21.2",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 3.113,
+  "requested_connected": true,
+  "group": "IR_RX_VS"
+ },
+ {
+  "net": "/07_IR/IR_RX_VS_LOCAL",
+  "a": "R21.2",
+  "b": "U6.3",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 9.291,
+  "requested_connected": true,
+  "group": "IR_RX_VS"
  }
 ]

@@ -50,22 +50,22 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # Authoritative fingerprints.  This is a LIVE integrity probe: it tracks the
 # current promoted board (the frozen per-milestone evidence lives in the audits).
-# Updated at FBV2-P2-009 / D-307, which promoted the FOURTH rest-of-board
-# incremental increment (the BMI270 IMU I2C address-select strap BMI270_SDO_ADDR)
-# onto the D-307 board: 432 Phase-A + 20 FRONT_RGB + 31 ACC_3V3_CTL + 11 DISP_RST_N
-# + 8 IMU_ADDR + 25 FRONT_RGB_LED = 527 tracks; the FRONT_RGB_LED increment adds
-# three cross-layer through vias (55 -> 58) and re-pours ONLY In1/In4; journal
-# 77 + 3 + 4 + 2 + 2 + 3 REST_INC = 91.
-EXPECT_SHA = 'f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee'
-EXPECT_TRACKS = 527
-EXPECT_VIAS = 58
-EXPECT_LAYERS = 6
-EXPECT_JOURNAL = 91
+# The sha / counts now come from the shared single-source-of-truth
+# live_fingerprint.py (D-309) so this pin is bumped in ONE place per increment.
+# Current pin: FBV2-P2-011 / D-309 promoted the SIXTH rest-of-board increment
+# (IR receiver local supply IR_RX_VS_LOCAL, all F.Cu, no via) onto the D-308
+# board: 527 + 8 = 535 tracks, vias unchanged at 58, journal 91 + 2 = 93.
+import live_fingerprint as LFP
+EXPECT_SHA = LFP.SHA
+EXPECT_TRACKS = LFP.TRACKS
+EXPECT_VIAS = LFP.VIAS
+EXPECT_LAYERS = LFP.COPPER_LAYERS
+EXPECT_JOURNAL = LFP.JOURNAL_LEN
 
 # Rest-of-board nets promoted as accepted incremental increments (D-304 onward).
 ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N
 ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
-Net-(D13-RK) Net-(D13-GK) Net-(D13-BK)""".split())
+Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -89,9 +89,9 @@ def main():
             fails.append(name)
 
     # ------------------------------------------------------------- 1. INTEGRITY
-    print('-- 1. INTEGRITY: promoted board matches the D-308 fingerprints --')
+    print('-- 1. INTEGRITY: promoted board matches the D-309 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == current record (D-308)', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-309)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
@@ -142,7 +142,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-308: FRONT_RGB + ACC_3V3_CTL + DISP_RST_N + IMU_ADDR + FRONT_RGB_LED)',
+    chk('the only routed rest-of-board nets are accepted increments (D-309: FRONT_RGB + ACC_3V3_CTL + DISP_RST_N + IMU_ADDR + FRONT_RGB_LED + IR_RX_VS)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))
