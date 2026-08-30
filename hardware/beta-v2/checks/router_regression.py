@@ -1298,6 +1298,60 @@ def main():
                len(phaseA_trk), len(phaseA_via)),
             imu_addonly)
 
+        # -- G22 FBV2-P2-010/D-308 fifth rest-of-board incremental increment ----
+        # The front-panel RGB status-indicator COMPLETION: D-304 (FRONT_RGB)
+        # routed the expander->resistor side (U23 -> R124/R125/R126, B.Cu); this
+        # increment closes the SAME indicator on the LED-cathode side -- the far
+        # pad of each series resistor (R124.2/R125.2/R126.2, B.Cu SMD) to the
+        # matching cathode of D13 (MHPA3528RGBCT RGB LED, F.Cu SMD).  It is the
+        # FIRST MULTI-VIA increment: the three nets are each a 2-pad CROSS-LAYER
+        # net that closes with exactly ONE board-legal 0.60/0.30 Default through
+        # via, so THREE independent vias are laid (the single-via-per-edge D-306
+        # mechanic applied three times; connect_cross unchanged; In1/In4 GND
+        # planes re-poured ONCE for all three anti-pads).  G22 pins that increment
+        # on the authoritative board: each net is fully copper-connected across
+        # its F/B hop, its copper spans F.Cu AND B.Cu at 0.200 mm with exactly
+        # three legal 0.60/0.30 through vias, and the increment is ADD-ONLY --
+        # the IMU (8), DISP (11), ACC (31) and RGB (20) increments and Phase-A
+        # (432 trk / 54 via) are untouched.
+        print('  -- G22 FBV2-P2-010/D-308 rest-of-board incremental increment --')
+        RGBLED = ('Net-(D13-RK)', 'Net-(D13-GK)', 'Net-(D13-BK)')
+        rgbled_trk = [t for t in _g18.GetTracks()
+                      if t.GetClass() == 'PCB_TRACK' and t.GetNetname() in RGBLED]
+        rgbled_via = [t for t in all_via if t.GetNetname() in RGBLED]
+
+        conn_ok = True
+        for a, b in (('D13.4', 'R124.2'), ('D13.3', 'R125.2'), ('D13.2', 'R126.2')):
+            joined = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                      for p in _cc.GetConnectedItems(_pad(a)) if p.GetClass() == 'PAD'}
+            conn_ok = conn_ok and (b in joined)
+        chk('G22 FRONT_RGB_LED nets fully copper-connected across their F/B hops',
+            'D13.4-R124.2, D13.3-R125.2, D13.2-R126.2 joined=%s' % conn_ok, conn_ok)
+
+        rgbled_layers = {t.GetLayerName() for t in rgbled_trk}
+        rgbled_legal = (len(rgbled_trk) == 25 and len(rgbled_via) == 3
+                        and {'F.Cu', 'B.Cu'} <= rgbled_layers
+                        and all(t.GetWidth() == 200000 for t in rgbled_trk)
+                        and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                                and v.GetViaType() == pcbnew.VIATYPE_THROUGH
+                                for v in rgbled_via))
+        chk('G22 FRONT_RGB_LED copper legal (0.200 F.Cu+B.Cu, three 0.60/0.30 through vias)',
+            '%d trk layers=%s, vias=%d dias=%s drills=%s'
+            % (len(rgbled_trk), sorted(rgbled_layers), len(rgbled_via),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in rgbled_via}),
+               sorted({v.GetDrill() for v in rgbled_via})),
+            rgbled_legal)
+
+        rgbled_addonly = (len(rgbled_trk) == 25 and len(imu_trk) == 8
+                          and len(disp_trk) == 11 and len(acc_trk) == 31
+                          and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                          and len(phaseA_via) == 54)
+        chk('G22 increment is ADD-ONLY (IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'rgbled=%d (exp 25), imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
+               len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
+            rgbled_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

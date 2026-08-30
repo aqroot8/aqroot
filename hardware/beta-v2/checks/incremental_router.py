@@ -144,6 +144,32 @@ GROUPS = {
         layer='B', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['BMI270_SDO_ADDR'],
     ),
+    # FBV2-P2-010 / D-308 -- FRONT-PANEL RGB STATUS-INDICATOR COMPLETION.  D-304
+    # (FRONT_RGB) routed the expander->resistor side of the front-panel RGB
+    # status LED (U23 PCAL9535A GPIO -> R124/R125/R126 series limit resistors,
+    # all B.Cu).  This group closes the SAME indicator on the LED-cathode side:
+    # each series resistor's far pad (R124.2/R125.2/R126.2, B.Cu SMD) to the
+    # matching cathode of D13 (MHPA3528RGBCT common-anode RGB LED, F.Cu SMD).
+    # The three nets are Net-(D13-RK) (R124->D13.4 red), Net-(D13-GK)
+    # (R125->D13.3 green), Net-(D13-BK) (R126->D13.2 blue).  Each is a 2-pad
+    # CROSS-LAYER net (resistor B.Cu, LED F.Cu) so each closes with exactly ONE
+    # board-legal Default through via (0.60/0.30) -- the SAME single-via-per-edge
+    # mechanic proven at D-306, now applied THREE times in one increment (the
+    # first MULTI-VIA increment; connect_cross is NOT changed, refill_planes
+    # re-pours In1/In4 once for all three barrels).  Low current (R-limited
+    # 2-6 mA status indicator, non-switching), low congestion (6-11 accepted
+    # copper items per net bbox+2mm), a coherent local peripheral cluster that
+    # directly extends an already-accepted increment.
+    'FRONT_RGB_LED': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='front-panel RGB status-LED cathode completion (R124/R125/R126 B.Cu '
+             '-> D13 MHPA3528 cathodes F.Cu); closes the D-304 FRONT_RGB '
+             'indicator on the LED side; low-current non-switching indicator, '
+             'three cross-layer nets each one 0.60/0.30 Default through via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['Net-(D13-RK)', 'Net-(D13-GK)', 'Net-(D13-BK)'],
+    ),
 }
 
 

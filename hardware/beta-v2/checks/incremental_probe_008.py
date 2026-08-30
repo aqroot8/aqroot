@@ -38,11 +38,11 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # D-306 promoted-board fingerprints.
-EXPECT_SHA = 'a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50'
-EXPECT_TRACKS = 502           # 494 (D-306) + 8 IMU_ADDR (D-307)
-EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N cross-layer through via
-EXPECT_JOURNAL = 88           # 86 (D-306) + 2 IMU_ADDR REST_INC
-EXPECT_RATSNEST = 693         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
+EXPECT_SHA = 'f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee'
+EXPECT_TRACKS = 527           # 494 (D-306) + 8 IMU_ADDR (D-307)
+EXPECT_VIAS = 58              # 55 prior + 3 FRONT_RGB_LED cross-layer vias (D-308)
+EXPECT_JOURNAL = 91           # 86 (D-306) + 2 IMU_ADDR REST_INC
+EXPECT_RATSNEST = 690         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
 
 # The pre-promotion D-305 authoritative sha (483 trk / 54 via) -- the exact set
 # that must survive this increment unchanged.
@@ -83,20 +83,20 @@ def main():
     # ---------------------------------------------------- 1. INTEGRITY --------
     print('-- 1. INTEGRITY: authoritative board matches the D-306 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == current record (D-307)', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-308)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (494 prior + 8 IMU_ADDR)' % EXPECT_TRACKS,
+    chk('track count == %d (prior + later REST_INC increments)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
-    chk('via count == %d (54 prior + 1 DISP_RST_N cross-layer via, unchanged)' % EXPECT_VIAS,
+    chk('via count == %d (55 prior + 3 FRONT_RGB_LED vias)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (695 - 2 IMU_ADDR closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
+    chk('ratsnest == %d (all promoted increments closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
-    chk('journal entries == %d (86 + 2 IMU_ADDR REST_INC)' % EXPECT_JOURNAL,
+    chk('journal entries == %d (Phase-A + all REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
     inc = [e for e in jr if e.get('role') == 'REST_INC' and e.get('group') == 'DISP_RST']
     chk('journal carries 2 REST_INC DISP_RST entries',

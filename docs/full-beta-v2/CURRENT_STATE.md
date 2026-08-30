@@ -13,7 +13,52 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-009 / D-307 (this checkpoint — FOURTH REST-OF-BOARD INCREMENT PROMOTED; the promoted fallback was
+- **FBV2-P2-010 / D-308 (this checkpoint — FIFTH REST-OF-BOARD INCREMENT PROMOTED; the FIRST MULTI-VIA
+  increment):** a governed CTO **ACCEPT + PROMOTE** — the front-panel RGB status-indicator completion (three
+  LED-cathode nets `Net-(D13-RK)`/`Net-(D13-GK)`/`Net-(D13-BK)`) is on the authoritative board, closing the
+  D-304 `FRONT_RGB` indicator on the LED side, with **no Phase-A / FRONT_RGB / ACC / DISP / IMU casualty and no
+  new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `c939f35` (D-307; pushed; `origin/master`
+  identical). **(1) Same `incremental_router.py`, ZERO new mechanics** — the FIRST multi-via increment needed NO
+  change to `connect_cross`/`refill_planes`/`qrouter.py`: the existing per-edge loop lays one 0.60/0.30 Default
+  through via per cross-layer edge (three times) and `refill_planes` re-pours In1/In4 once for all vias; a
+  multi-net group of independent single-via nets is already within the D-306-proven mechanic. **(2) Group
+  selection (measured; coherent + local + clean — baseline `a309f8ce…` 502/55/6, ratsnest 693, journal 88; new
+  READ-ONLY screen `w/screen_010.py` ranking ALL 156 remaining unrouted multi-pad nets by pad layers / THT / MST
+  / bbox-span / congestion).** CHOSE **FRONT_RGB_LED** (`Net-(D13-RK/GK/BK)`, R124.2/R125.2/R126.2 B.Cu → D13
+  MHPA3528 cathodes F.Cu) — the coherent completion of the D-304 indicator, local (span ≤26 mm), clean (cu
+  6–11), low-current non-switching; three independent single-via cross-layer nets. Excluded with evidence:
+  XGPIO0…9 bank (~55 mm cross-board hauls — not local), NFC/RF/USB/crystals, ACC_5V boost (switching), IR-LED
+  drive (Q1-switched), SPK class-D, community J5/J8 headers, scattered BTN_x_N buttons, U11_PROG + PWR_SENSE
+  (D-307 hard walls). A coherent 3-net group preferred to a safe singleton to show throughput beyond
+  singletons/2-net clusters WITHOUT bundling unrelated nets. **(3) The gate (real full-board, D-286):** `route
+  FRONT_RGB_LED` → ALL OK (25 segments F.Cu+B.Cu 0.200 mm + 3 through vias 0.60/0.30; In1/In4 zones [39,40]
+  re-poured once); prior copper deleted/altered = 0 (D-307 502 trk + 55 via multiset a SUBSET); 28 new items all
+  target-net; ONLY zones 39/40 fill-changed, all other 39 zones byte-identical; all three D13 nets fully
+  connected (open-edges 1→0 each); 0 prior pairs regressed; pcbnew **ratsnest 693→690** (−3); real kicad-cli DRC
+  no new/worse class. **GATE PASS.** **(4) Promoted:** authoritative `sha256 a309f8ce…31279a50` →
+  **`f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee`**; tracks **502→527** (+25 D13-cathode);
+  vias **55→58** (+3 through vias); 6 layers / 41 zones unchanged; ratsnest **693→690** (−3); journal **88→91**
+  (+3 `REST_INC`); PCB file diff **352 ins / 59 del** — additions are 25 `segment` + 3 `via` lines (zero
+  segment/via/footprint deletions, grep-confirmed); all 59 deletions are In1/In4 GND `filled_polygon` xy (the 3
+  via anti-pads); real KiCad DRC **identical** (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199,
+  unconnected_items:499}` — 0 clearance, hole_clearance unchanged at 5, 0 violations touch the D13 copper).
+  **(5) Tests:** new contract **G22** (G18–G21 stay green unchanged — ADD-ONLY invariants exclude all `REST_INC`
+  nets and pin `phaseA_via`==54, auto-generalising as total vias grow 55→58) → `router_regression.py` **ALL
+  CHECKS PASS (G1–G22), 94 PASS lines**, deterministic; new probe `checks/incremental_probe_010.py` ALL PASS;
+  `checks/incremental_probe_006/007/008/009.py` refreshed to the D-308 board (`_009` pre-IMU-copper check
+  generalised) ALL PASS; `checks/phaseB_bringup_probe_005.py` updated (527/58/91; 10 routed rest nets, 154
+  unrouted) ALL PASS. The Phase-A DRU-synthesis probes `d269`/`d264`/`dru_probe` are NOT part of the maintained
+  increment regression and NOT regressed by D-308 (`dru_probe`(2)/`d264`(1) carry the SAME pre-existing reds on
+  pristine HEAD; `d269` C/D is a flaky borderline between two REMOTE Phase-A items under KiCad's
+  non-byte-reproducible full-zone re-pour — it flips on HEAD too; the byte-stable authoritative board is
+  DRC-clean). **Open owner decisions: NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback: pre-promotion
+  `sha256 a309f8ce…31279a50` (D-307; parent `c939f35`). Next: **FBV2-P2-011 — continue rest-of-board routing
+  (next bounded group, same framework); the two congested regions (BQ25185/BPP trunk, west BAT trunk) remain
+  characterised hard walls — do NOT re-attempt naively.** Full analysis:
+  [`audits/2026-08-30-p2-010-d308-fifth-rest-of-board-incremental-increment-front-rgb-led-promoted.md`](audits/2026-08-30-p2-010-d308-fifth-rest-of-board-incremental-increment-front-rgb-led-promoted.md).
+  This checkpoint is written in the D-308 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-009 / D-307 (FOURTH REST-OF-BOARD INCREMENT PROMOTED; the promoted fallback was
   EARNED, not defaulted to):** a governed CTO **ACCEPT + PROMOTE** — a fourth rest-of-board net (the BMI270 IMU
   I2C address-select strap `BMI270_SDO_ADDR`) is on the authoritative board, with **no Phase-A / FRONT_RGB / ACC /
   DISP casualty and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `73ea58e` (D-306;
@@ -55,8 +100,6 @@
   (BQ25185/BPP trunk, west BAT trunk) are now characterised hard walls — do NOT re-attempt naively.** Full
   analysis:
   [`audits/2026-08-30-p2-009-d307-fourth-rest-of-board-incremental-increment-imu-addr-promoted.md`](audits/2026-08-30-p2-009-d307-fourth-rest-of-board-incremental-increment-imu-addr-promoted.md).
-  This checkpoint is written in the D-307 commit; a fresh session must confirm the live tip with
-  `git rev-parse HEAD` and `git rev-parse origin/master`.
 - **FBV2-P2-008 / D-306 (THIRD REST-OF-BOARD INCREMENT PROMOTED; FIRST VIA / MIXED-LAYER
   PRIMITIVE):** a governed CTO **ACCEPT + PROMOTE** — a third rest-of-board net is on the authoritative board,
   and for the first time the increment uses a **via / mixed-layer route**, with **no Phase-A / FRONT_RGB / ACC

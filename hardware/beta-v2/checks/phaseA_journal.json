@@ -3036,5 +3036,38 @@
   "mm": 3.454,
   "requested_connected": true,
   "group": "IMU_ADDR"
+ },
+ {
+  "net": "Net-(D13-RK)",
+  "a": "D13.4",
+  "b": "R124.2",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 22.532,
+  "requested_connected": true,
+  "group": "FRONT_RGB_LED"
+ },
+ {
+  "net": "Net-(D13-GK)",
+  "a": "D13.3",
+  "b": "R125.2",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 26.124,
+  "requested_connected": true,
+  "group": "FRONT_RGB_LED"
+ },
+ {
+  "net": "Net-(D13-BK)",
+  "a": "D13.2",
+  "b": "R126.2",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 29.999,
+  "requested_connected": true,
+  "group": "FRONT_RGB_LED"
  }
 ]

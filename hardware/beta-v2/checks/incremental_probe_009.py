@@ -38,11 +38,11 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 
 # D-307 promoted-board fingerprints.
-EXPECT_SHA = 'a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50'
-EXPECT_TRACKS = 502           # 494 (D-306) + 8 IMU_ADDR
-EXPECT_VIAS = 55              # unchanged -- IMU_ADDR lays no via
-EXPECT_JOURNAL = 88           # 86 (D-306) + 2 IMU_ADDR REST_INC
-EXPECT_RATSNEST = 693         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
+EXPECT_SHA = 'f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee'
+EXPECT_TRACKS = 527           # 494 (D-306) + 8 IMU_ADDR
+EXPECT_VIAS = 58              # 55 prior + 3 FRONT_RGB_LED cross-layer vias (D-308)
+EXPECT_JOURNAL = 91           # 86 (D-306) + 2 IMU_ADDR REST_INC
+EXPECT_RATSNEST = 690         # 695 (D-306) - 2 (BMI270_SDO_ADDR 3-pad net closed)
 
 # The pre-promotion D-306 authoritative sha (494 trk / 55 via) -- the exact set
 # that must survive this increment unchanged.
@@ -83,20 +83,20 @@ def main():
     # ---------------------------------------------------- 1. INTEGRITY --------
     print('-- 1. INTEGRITY: authoritative board matches the D-307 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == D-307 record', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == D-308 record', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
     via = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
-    chk('track count == %d (494 prior + 8 IMU_ADDR)' % EXPECT_TRACKS,
+    chk('track count == %d (prior + later REST_INC increments)' % EXPECT_TRACKS,
         len(trk) == EXPECT_TRACKS, str(len(trk)))
-    chk('via count == %d (unchanged -- IMU_ADDR lays no via)' % EXPECT_VIAS,
+    chk('via count == %d (55 prior + 3 FRONT_RGB_LED vias)' % EXPECT_VIAS,
         len(via) == EXPECT_VIAS, str(len(via)))
     chk('copper layers == 6', b.GetCopperLayerCount() == 6, str(b.GetCopperLayerCount()))
     rats = b.GetConnectivity().GetUnconnectedCount(True)
-    chk('ratsnest == %d (695 - 2 closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
+    chk('ratsnest == %d (all promoted increments closed)' % EXPECT_RATSNEST, rats == EXPECT_RATSNEST, str(rats))
     jr = json.load(open(JOURNAL, encoding='utf-8'))
-    chk('journal entries == %d (86 + 2 REST_INC)' % EXPECT_JOURNAL,
+    chk('journal entries == %d (Phase-A + all REST_INC)' % EXPECT_JOURNAL,
         len(jr) == EXPECT_JOURNAL, str(len(jr)))
     inc = [e for e in jr if e.get('role') == 'REST_INC' and e.get('group') == 'IMU_ADDR']
     chk('journal carries 2 REST_INC IMU_ADDR entries',
@@ -106,8 +106,17 @@ def main():
     print('\n-- 2. D-306 copper preserved EXACTLY (494 trk + 55 via intact) --')
     now = copper_sigs(b)
     imu_items = collections.Counter({s: n for s, n in now.items() if s[1] in IMU})
-    prior_now = now - imu_items
-    chk('non-IMU copper == 494 tracks + 55 vias (Phase-A + RGB + ACC + DISP intact)',
+    # Increments promoted AFTER D-307 (IMU_ADDR) -- e.g. D-308 FRONT_RGB_LED --
+    # are excluded so this "pre-IMU copper intact" check stays true as the board
+    # grows.  The pre-IMU accepted copper is Phase-A (432) + FRONT_RGB (20) +
+    # ACC_3V3_CTL (31) + DISP_RST (11) = 494 tracks + 55 vias, and must never
+    # change under any later increment.
+    PRE_IMU_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR')
+    post_imu = {e['net'] for e in jr if e.get('role') == 'REST_INC'
+                and e.get('group') not in PRE_IMU_GROUPS}
+    post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post_imu})
+    prior_now = now - imu_items - post_items
+    chk('non-IMU pre-D-308 copper == 494 tracks + 55 vias (Phase-A + RGB + ACC + DISP intact)',
         sum(prior_now.values()) == 494 + 55,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.

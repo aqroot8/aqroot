@@ -33,11 +33,11 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # the latest promotion (D-305: the ACC_3V3_CTL increment was added on top of
 # FRONT_RGB -- FRONT_RGB itself is unchanged).  The durable FRONT_RGB pin lives
 # in router_regression G18; this is the live snapshot.
-EXPECT_SHA = 'a309f8ce022b48ef04baa2fef591c64eb1a643049ad31220a9cff24831279a50'
-EXPECT_TRACKS = 502           # 432 PhA + 20 RGB + 31 ACC + 11 DISP + 8 IMU_ADDR (D-307)
-EXPECT_VIAS = 55              # 54 + 1 DISP_RST_N F<->B cross-layer through via
-EXPECT_JOURNAL = 88           # 77 PhA + 3 RGB + 4 ACC + 2 DISP + 2 IMU_ADDR REST_INC
-EXPECT_RATSNEST = 693         # 704 - 3 (RGB) - 4 (ACC) - 2 (DISP) - 2 (IMU_ADDR)
+EXPECT_SHA = 'f4e95decb5be87f6e758f76803e57be68a4437afaef75973518983008559e7ee'
+EXPECT_TRACKS = 527           # 432 PhA + 20 RGB + 31 ACC + 11 DISP + 8 IMU + 25 RGB_LED (D-308)
+EXPECT_VIAS = 58              # 54 + 1 DISP + 3 FRONT_RGB_LED cross-layer through vias (D-308)
+EXPECT_JOURNAL = 91           # 77 PhA + 3 RGB + 4 ACC + 2 DISP + 2 IMU + 3 RGB_LED REST_INC
+EXPECT_RATSNEST = 690         # 704 - 3 RGB - 4 ACC - 2 DISP - 2 IMU - 3 RGB_LED closed
 
 # The pre-promotion D-302 authoritative copper (432 trk / 54 via) -- the exact
 # set that must survive the increment unchanged.
