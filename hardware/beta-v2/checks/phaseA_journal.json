@@ -3410,5 +3410,38 @@
   "mm": 7.96,
   "requested_connected": true,
   "group": "BTN_UP_N"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+  "a": "R7.2",
+  "b": "U2.16",
+  "role": "REST_INC",
+  "layer": "F.Cu hop",
+  "w": 0.2,
+  "mm": 11.301,
+  "requested_connected": true,
+  "group": "BTN_RIGHT_N"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+  "a": "SW5.1",
+  "b": "R7.2",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 61.959,
+  "requested_connected": true,
+  "group": "BTN_RIGHT_N"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+  "a": "SW5.1",
+  "b": "SW5.1",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 7.96,
+  "requested_connected": true,
+  "group": "BTN_RIGHT_N"
  }
 ]

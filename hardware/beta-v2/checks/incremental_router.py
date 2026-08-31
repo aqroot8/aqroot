@@ -850,6 +850,13 @@ GROUPS = {
              'through via (long west haul on B.Cu), no via_offset',
         layer='B', width=200000, clr_pad=200000, clr_trk=200000,
         via_dia=600000, via_drill=300000,
+        # D-328: the ordinary B.Cu MST edge R7.2<->U2.16 is a measured
+        # severed local region.  Use the existing proven two-via layer-hop to
+        # join those two B.Cu pads on F.Cu, then attach BOTH SW5.1 F.Cu lands
+        # directly to the hop's R7-side via anchor.  This avoids asking the
+        # boxed R7 pad to escape a second time.  Opt-in and registry-driven:
+        # every group without hop_anchor_plan follows the old MST byte-for-byte.
+        hop_anchor_plan=dict(a='R7.2', b='U2.16', attach='SW5.1', far='F'),
         nets=['BTN_RIGHT_N'],
     ),
     # FBV2-P2-029 / D-327 -- final bounded characterization candidate after
@@ -1451,6 +1458,61 @@ def mst_edges(pads):
     return edges
 
 
+def route_hop_anchor_plan(qb, net, pads, group):
+    """Execute an opt-in same-face endpoint hop plus existing-copper anchor.
+
+    Some two-pad B.Cu endpoint pairs each have a legal local escape but live in
+    disconnected free-space regions.  ``connect_hop`` is the already-qualified
+    two-via answer: escape both pads on B.Cu and join them on a declared signal
+    layer.  A later F.Cu terminal can then attach to the hop's first via as an
+    owned-copper anchor instead of forcing the boxed endpoint to escape twice.
+
+    The plan is registry-driven and absent by default, so the ordinary MST path
+    and every pre-D-328 group remain byte-identical.
+    """
+    plan = group['hop_anchor_plan']
+    by_ref = collections.defaultdict(list)
+    for p in pads:
+        by_ref[p['ref']].append(p)
+    for ref in (plan['a'], plan['b'], plan['attach']):
+        if ref not in by_ref:
+            raise RuntimeError('hop_anchor_plan missing physical pad %s' % ref)
+    pa = by_ref[plan['a']][0]
+    pb = by_ref[plan['b']][0]
+    attach = sorted(by_ref[plan['attach']], key=lambda p: (p['x'], p['y']))
+    if len(attach) < 1:
+        raise RuntimeError('hop_anchor_plan has no attach pad')
+    w, cp, ct = group['width'], group['clr_pad'], group['clr_trk']
+    vd, vk = group.get('via_dia', 600000), group.get('via_drill', 300000)
+    out = []
+
+    hop = QR.connect_hop(qb, net, pa, pb, w, cp, ct, near=group['layer'],
+                         far=plan['far'], via_dia=vd, via_drill=vk)
+    out.append((pa, pb, 'hop', hop))
+    if not hop.get('ok'):
+        return out
+
+    vx, vy = (int(round(hop['via_xy'][0][0] * 1e6)),
+              int(round(hop['via_xy'][0][1] * 1e6)))
+    anchor = dict(ref='(hop-via)', x=vx, y=vy, F=True, B=True, anchor=True,
+                  net=net, shape=QR.RR(vx, vy, 1, 1, 0, 0, net, 'via'),
+                  hx=1, hy=1, r=0, ang=0, tht=False)
+    joined = QR.connect_role(qb, net, attach[0], anchor, plan['far'],
+                             w, cp, ct)
+    # Journal/gate semantics are pad-to-pad: the anchor is copper already
+    # connected to pa, so this realizes attach[0] <-> pa.
+    out.append((attach[0], pa, 'anchor', joined))
+    if not joined.get('ok'):
+        return out
+
+    for p in attach[1:]:
+        joined = QR.connect_role(qb, net, attach[0], p, plan['far'], w, cp, ct)
+        out.append((attach[0], p, 'same', joined))
+        if not joined.get('ok'):
+            break
+    return out
+
+
 # --------------------------------------------------------------------------- #
 def cmd_baseline():
     """Record the authoritative fingerprints, DRC, ratsnest and target open-set."""
@@ -1548,6 +1610,27 @@ def cmd_route(name):
         # identical to the old ref-keyed order (ties broken by x,y never fire).
         pads = physical_net_pads(qb, nf)
         pads.sort(key=lambda p: (p['ref'], p['x'], p['y']))   # deterministic
+        if group.get('hop_anchor_plan'):
+            if len(group['nets']) != 1:
+                raise RuntimeError('hop_anchor_plan requires a single-net group')
+            for pa, pb, kind, r in route_hop_anchor_plan(qb, nf, pads, group):
+                elabel = (('%s.Cu hop' % group['hop_anchor_plan']['far'])
+                           if kind == 'hop' else
+                           '%s.Cu' % group['hop_anchor_plan']['far'])
+                rec = dict(net=base, netfull=nf, a=pa['ref'], b=pb['ref'],
+                           layer=elabel, w=w / 1e6, ok=bool(r.get('ok')),
+                           mm=round(r.get('mm', 0), 3),
+                           vias=r.get('vias', 0), via_xy=r.get('via_xy'),
+                           kind=kind, reason=r.get('reason'), why=r.get('why'))
+                jrn.append(rec)
+                print('  %-12s %-8s -> %-8s [%-6s %s] %s %s'
+                      % (base, pa['ref'], pb['ref'], kind, elabel,
+                         'ok %.3f mm' % r['mm'] if r.get('ok')
+                         else 'FAIL ' + str(r.get('reason')),
+                         r.get('why', '') or ''))
+                if not r.get('ok'):
+                    break
+            continue
         for (i, j) in mst_edges(pads):
             pa, pb = pads[i], pads[j]
             el, kind = edge_plan(pa, pb, group)

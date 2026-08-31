@@ -2436,6 +2436,55 @@ def main():
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
                len(phaseA_via)), bu_addonly)
 
+        # -- G39 FBV2-P2-030/D-328 hop-anchor endpoint escape + increment ------
+        print('  -- G39 FBV2-P2-030/D-328 hop-anchor endpoint escape + BTN_RIGHT_N increment --')
+        RNET = '/08_BUTTONS_EXPANDERS/BTN_RIGHT_N'
+        br_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == RNET]
+        br_via = [t for t in all_via if t.GetNetname() == RNET]
+        br_layers = collections.Counter(t.GetLayerName() for t in br_trk)
+        br_pads = [p for f in _g18.GetFootprints() for p in f.Pads()
+                   if p.GetNetname() == RNET]
+        br_hub = next(p for p in br_pads
+                      if p.GetParentFootprint().GetReference() == 'R7')
+        br_reach = {(p.GetParentFootprint().GetReference() + '.' + p.GetNumber(),
+                     p.GetPosition().x, p.GetPosition().y)
+                    for p in _cc.GetConnectedItems(br_hub) if p.GetClass() == 'PAD'}
+        br_sw = [p for p in br_pads
+                 if p.GetParentFootprint().GetReference() == 'SW5'
+                 and p.GetNumber() == '1']
+        br_conn = (len(br_pads) == 4 and len(br_sw) == 2
+                   and all(('SW5.1', p.GetPosition().x, p.GetPosition().y) in br_reach
+                           for p in br_sw)
+                   and any(x[0] == 'U2.16' for x in br_reach))
+        chk('G39 BTN_RIGHT_N all four physical pads copper-connected (BOTH SW5.1 lands + R7.2 + U2.16)',
+            'pads=%d, SW5.1=%d, U2.16=%s'
+            % (len(br_pads), len(br_sw), any(x[0] == 'U2.16' for x in br_reach)),
+            br_conn)
+        br_legal = (len(br_trk) == 16 and br_layers == {'F.Cu': 12, 'B.Cu': 4}
+                    and len(br_via) == 2
+                    and all(t.GetWidth() == 200000 for t in br_trk)
+                    and all(v.GetWidth(pcbnew.F_Cu) == 600000
+                            and v.GetDrill() == 300000
+                            and v.GetViaType() == pcbnew.VIATYPE_THROUGH
+                            for v in br_via))
+        chk('G39 BTN_RIGHT_N copper legal (16 trk = 12 F.Cu + 4 B.Cu; two 0.60/0.30 through vias)',
+            'tracks=%d layers=%s vias=%d' % (len(br_trk), dict(br_layers), len(br_via)),
+            br_legal)
+        br_gap = min([math.hypot(v.GetPosition().x - o.GetPosition().x,
+                                 v.GetPosition().y - o.GetPosition().y)
+                      for v in br_via for o in all_via if o.GetNetname() != RNET]
+                     or [0])
+        chk('G39 both BTN_RIGHT_N vias clear every existing barrel by >=0.80 mm centre',
+            'min centre gap %.3f mm' % (br_gap / 1e6), br_gap >= 800000)
+        plan = IR.GROUPS['BTN_RIGHT_N'].get('hop_anchor_plan')
+        ordinary = [k for k, v in IR.GROUPS.items()
+                    if k != 'BTN_RIGHT_N' and v.get('hop_anchor_plan')]
+        chk('G39 hop-anchor lever is explicit, deterministic and opt-in only',
+            'plan=%s other_opt_ins=%s' % (plan, ordinary),
+            plan == {'a': 'R7.2', 'b': 'U2.16', 'attach': 'SW5.1', 'far': 'F'}
+            and not ordinary)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

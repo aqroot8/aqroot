@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-326',                 # FBV2-P2-028: the TWENTIETH rest-of-board increment and the SECOND SWx user-button net -- the navigation D-pad UP button BTN_UP_N (SW2.1 button two F.Cu tact-switch lands / R4.2 pull-up B.Cu / U2.13 PCAL9535A expander GPIO B.Cu) -- routed + PROMOTED on the D-325 duplicate-ref MST framework (physical_net_pads keys MST nodes by physical (ref,x,y); net_open_edges counts copper clusters over physical lands). SW2 is the SAME 4-pin PTS645 tact switch as SW7: two mechanically-linked pad-"1" lands 7.96 mm apart at (60.220,96.750) and (68.180,96.750). BTN_UP_N is the CLEANEST remaining nav button (shortest ~12.3 mm cross-haul, lowest congestion 201, in the SAME open south button field where BTN_B_N passed). MST = SW2.1a<->SW2.1b (7.96 mm same-layer F.Cu land-run, NO via) + R4.2<->U2.13 (same-layer B.Cu run, NO via) + ONE cross-layer edge U2.13<->SW2.1 closed by ONE 0.60/0.30 through via at (61.100,95.400) (In1/In4 re-poured once) -- ONE via, CLEANER than BTN_B_N's two. 21 tracks (6 F.Cu + 15 B.Cu 0.200 mm), ALL FOUR physical pads in one copper cluster (open_edges 3->0, both SW2.1 lands driven), via 4.804 mm from the nearest barrel, 7.453 mm clear of BAT_PROTECTED_P (zero D-269). ZERO router-logic change (GROUPS entry + comment only); ordinary unique-pad nets byte-identical; router_regression G1-G37 unchanged
-    sha256='adbea36b8bbcfa393f2810e989c93dbcfab4052b5538f9a7169bc71ff98b3e3f',
-    tracks=821,                       # 800 (D-325) + 21 BTN_UP_N (6 F.Cu: SW2.1 land-run + F escape/via leg; 15 B.Cu: R4.2->U2.13 run + U2.13 escape + via fan)
-    vias=71,                          # 70 (D-325) + 1 BTN_UP_N 0.60/0.30 through via at (61.100,95.400)
+    decision='D-328',                 # FBV2-P2-030: BTN_RIGHT_N promoted by the opt-in hop-anchor plan; 16 tracks (12 F.Cu + 4 B.Cu), two 0.60/0.30 through vias, all four physical pads connected, no rule/placement/topology change
+    sha256='27db293c8325832f585244b9d601103e8d72a6fcff13434a685f9472c21395c3',
+    tracks=837,                       # 821 (D-326) + 16 BTN_RIGHT_N
+    vias=73,                          # 71 (D-326) + 2 BTN_RIGHT_N through vias
     copper_layers=6,
     zones=41,                         # unchanged (1 via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=659,                     # 662 (D-325) - 3 (BTN_UP_N 4-physical-pad net fully connected: 3 MST edges closed, both SW2.1 lands driven)
-    journal=122,                      # 119 (D-325) + 3 BTN_UP_N REST_INC edges (R4.2<->U2.13 + U2.13<->SW2.1 + SW2.1<->SW2.1)
+    ratsnest=656,                     # 659 (D-326) - 3 (four physical pads -> one cluster)
+    journal=125,                      # 122 (D-326) + 3 BTN_RIGHT_N REST_INC edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).
