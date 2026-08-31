@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "current_decision": "D-331",
-  "current_board_sha256": "98181354b3378e9cfb527e858b5120704adfa628c25ce8e6a351267a4f71e098",
+  "current_decision": "D-332",
+  "current_board_sha256": "e5e6f4fc97c2677270f542f65d0037fb1329110a2ac844e84d2140f363d56e7d",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
-    {"decision":"D-331","framework":"inner_long_haul_plan","nets":["XGPIO2"],"gate":"PASS","tracks":8,"vias":2,"ratsnest_delta":-1}
+    {"decision":"D-331","framework":"inner_long_haul_plan","nets":["XGPIO2"],"gate":"PASS","tracks":8,"vias":2,"ratsnest_delta":-1},
+    {"decision":"D-332","framework":"inner_long_haul_plan","nets":["XGPIO4","XGPIO5"],"gate":"PASS","tracks":11,"vias":4,"ratsnest_delta":-2}
   ]
 }

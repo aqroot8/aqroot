@@ -3454,5 +3454,27 @@
   "mm": 53.817,
   "requested_connected": true,
   "group": "XGPIO2_INNER_PILOT"
+ },
+ {
+  "net": "/XGPIO4",
+  "a": "R55.1",
+  "b": "U3.8",
+  "role": "REST_INC",
+  "layer": "I2.Cu",
+  "w": 0.2,
+  "mm": 63.036,
+  "requested_connected": true,
+  "group": "XGPIO45_INNER_BATCH"
+ },
+ {
+  "net": "/XGPIO5",
+  "a": "R56.1",
+  "b": "U3.9",
+  "role": "REST_INC",
+  "layer": "I2.Cu",
+  "w": 0.2,
+  "mm": 47.625,
+  "requested_connected": true,
+  "group": "XGPIO45_INNER_BATCH"
  }
 ]

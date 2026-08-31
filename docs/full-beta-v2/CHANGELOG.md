@@ -6055,3 +6055,6 @@ GPT completed the primary-hardware-engineer transition acceptance test without C
 ## 2026-08-31 - FBV2-P2-033: D-331 — In2/In3 long-haul framework accepted; XGPIO2 promoted
 
 GPT implemented the reusable low-speed inner-layer haul: short native-face escapes, two standard vias, and a long In2/In3 signal run. The `XGPIO2` pilot passed the unchanged full-board gate and was promoted (`98181354…`, 845 tracks / 75 vias / ratsnest 655 / journal 126). G1–G41 passed twice, all probes and independent DRC passed unchanged. Next: fast-screen and batch-route `XGPIO4/5/6/7` through the accepted framework. Full evidence: [`audits/2026-08-31-p2-033-d331-in2-long-haul-framework-xgpio2-promoted.md`](audits/2026-08-31-p2-033-d331-in2-long-haul-framework-xgpio2-promoted.md).
+## 2026-08-31 - FBV2-P2-034: D-332 — XGPIO4/XGPIO5 inner-layer batch promoted
+
+Routine D-331 framework reuse: the coherent `XGPIO4` + `XGPIO5` batch passed the unchanged full-board gate and is authoritative at `e5e6f4fc…`, 856 tracks / 79 vias / ratsnest 653 / journal 128. G1–G42, focused probes 023–027, Phase-B (32/164 routed), and independent DRC all pass; no new clearance class. Compact evidence is in `routing_ledger.json`. Next: fast-screen XGPIO6/XGPIO7 for a second inner-haul batch, then move to the generic boxed-endpoint framework.

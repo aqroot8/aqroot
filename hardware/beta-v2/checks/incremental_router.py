@@ -437,6 +437,49 @@ GROUPS = {
                                   inner=['I2', 'I3']),
         nets=['XGPIO2'],
     ),
+    # D-331 framework-reuse screens and coherent batch.  Each member keeps a
+    # native-face escape and selects In2 first / In3 fallback independently;
+    # the batch is routed in this deterministic south-to-north order so laid
+    # copper is a real obstacle for the following member.
+    'XGPIO4_INNER': dict(
+        sheet='09_COMMUNITY_HEADER', desc='XGPIO4 D-331 inner-haul reuse screen',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R55.1', b='U3.8', a_near='F', b_near='B', inner=['I2', 'I3']),
+        nets=['XGPIO4'],
+    ),
+    'XGPIO5_INNER': dict(
+        sheet='09_COMMUNITY_HEADER', desc='XGPIO5 D-331 inner-haul reuse screen',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R56.1', b='U3.9', a_near='F', b_near='B', inner=['I2', 'I3']),
+        nets=['XGPIO5'],
+    ),
+    'XGPIO6_INNER': dict(
+        sheet='09_COMMUNITY_HEADER', desc='XGPIO6 D-331 inner-haul reuse screen',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R57.1', b='U3.10', a_near='F', b_near='B', inner=['I2', 'I3']),
+        nets=['XGPIO6'],
+    ),
+    'XGPIO7_INNER': dict(
+        sheet='09_COMMUNITY_HEADER', desc='XGPIO7 D-331 inner-haul reuse screen',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R58.1', b='U3.11', a_near='F', b_near='B', inner=['I2', 'I3']),
+        nets=['XGPIO7'],
+    ),
+    'XGPIO45_INNER_BATCH': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='coherent D-331 inner-haul reuse batch for fast-screen survivors XGPIO4/5',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plans={
+            'XGPIO4': dict(a='R55.1', b='U3.8', a_near='F', b_near='B', inner=['I2', 'I3']),
+            'XGPIO5': dict(a='R56.1', b='U3.9', a_near='F', b_near='B', inner=['I2', 'I3']),
+        },
+        nets=['XGPIO4', 'XGPIO5'],
+    ),
     # ---------------------------------------------------------------------- #
     # FBV2-P2-020 / D-318 -- a single IMU/I2C-local interrupt-strap net, OUTSIDE
     # the saturated west-XGPIO F.Cu corridor (D-317 mandate).  BMI270_INT1_STRAP
@@ -1627,6 +1670,7 @@ def enforce_wall_registry(name, group):
             continue
         replacement = bool(group.get('hop_anchor_plan') or
                            group.get('inner_long_haul_plan') or
+                           group.get('inner_long_haul_plans') or
                            group.get('boxed_endpoint_plan') or
                            group.get('connector_fanout_plan'))
         if not replacement:
@@ -1700,10 +1744,12 @@ def cmd_route(name):
         # identical to the old ref-keyed order (ties broken by x,y never fire).
         pads = physical_net_pads(qb, nf)
         pads.sort(key=lambda p: (p['ref'], p['x'], p['y']))   # deterministic
-        if group.get('inner_long_haul_plan'):
-            if len(group['nets']) != 1:
-                raise RuntimeError('inner_long_haul_plan requires a single-net group')
-            for pa, pb, kind, r, inner in route_inner_long_haul_plan(qb, nf, pads, group):
+        inner_plan = (group.get('inner_long_haul_plan') or
+                      group.get('inner_long_haul_plans', {}).get(base))
+        if inner_plan:
+            member_group = dict(group)
+            member_group['inner_long_haul_plan'] = inner_plan
+            for pa, pb, kind, r, inner in route_inner_long_haul_plan(qb, nf, pads, member_group):
                 rec = dict(net=base, netfull=nf, a=pa['ref'], b=pb['ref'],
                            layer=inner + '.Cu', w=w / 1e6, ok=bool(r.get('ok')),
                            mm=round(r.get('mm', 0), 3), vias=r.get('vias', 0),

@@ -2530,12 +2530,44 @@ def main():
             and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
                     and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in i2_via))
         i2_plan = IR.GROUPS['XGPIO2_INNER_PILOT'].get('inner_long_haul_plan')
-        other_i2 = [k for k, v in IR.GROUPS.items()
-                    if k != 'XGPIO2_INNER_PILOT' and v.get('inner_long_haul_plan')]
-        chk('G41 framework is explicit, opt-in and restricted to the pilot',
-            'plan=%s other_opt_ins=%s' % (i2_plan, other_i2),
+        reuse_i2 = sorted(k for k, v in IR.GROUPS.items()
+                          if k != 'XGPIO2_INNER_PILOT' and
+                          (v.get('inner_long_haul_plan') or v.get('inner_long_haul_plans')))
+        chk('G41 framework is explicit, opt-in and bounded to declared XGPIO reuse groups',
+            'plan=%s reuse_opt_ins=%s' % (i2_plan, reuse_i2),
             i2_plan == {'a': 'R53.1', 'b': 'U3.6', 'a_near': 'F',
-                        'b_near': 'B', 'inner': ['I2', 'I3']} and not other_i2)
+                        'b_near': 'B', 'inner': ['I2', 'I3']}
+            and reuse_i2 == ['XGPIO45_INNER_BATCH', 'XGPIO4_INNER',
+                             'XGPIO5_INNER', 'XGPIO6_INNER', 'XGPIO7_INNER'])
+
+        # -- G42 FBV2-P2-034/D-332 coherent D-331 framework reuse -----------
+        print('  -- G42 XGPIO4/5 coherent inner-haul reuse batch --')
+        batch_ok = True
+        detail = []
+        expected = {
+            '/XGPIO4': (7, {'F.Cu': 1, 'In2.Cu': 3, 'B.Cu': 3}, {'R55.1', 'U3.8'}),
+            '/XGPIO5': (4, {'F.Cu': 1, 'In2.Cu': 1, 'B.Cu': 2}, {'R56.1', 'U3.9'}),
+        }
+        for net, (ntrk, layers_want, refs) in expected.items():
+            nt = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == net]
+            nv = [v for v in all_via if v.GetNetname() == net]
+            layers = collections.Counter(t.GetLayerName() for t in nt)
+            pads = [p for f in _g18.GetFootprints() for p in f.Pads()
+                    if p.GetNetname() == net]
+            reach = set()
+            if pads:
+                reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                         for p in _cc.GetConnectedItems(pads[0]) if p.GetClass() == 'PAD'}
+            ok = (len(nt) == ntrk and layers == layers_want and len(nv) == 2
+                  and refs <= reach and all(t.GetWidth() == 200000 for t in nt)
+                  and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                          and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in nv))
+            batch_ok &= ok
+            detail.append('%s:%d/%s/%dv/reach=%s' %
+                          (net, len(nt), dict(layers), len(nv), sorted(reach)))
+        chk('G42 XGPIO4/5 are connected by legal In2 copper with two ordinary vias each',
+            '; '.join(detail), batch_ok)
 
         print('')
         if FAILED:

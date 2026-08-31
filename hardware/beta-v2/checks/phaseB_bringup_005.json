@@ -1,12 +1,12 @@
 {
- "sha256": "98181354b3378e9cfb527e858b5120704adfa628c25ce8e6a351267a4f71e098",
- "tracks": 845,
- "vias": 75,
+ "sha256": "e5e6f4fc97c2677270f542f65d0037fb1329110a2ac844e84d2140f363d56e7d",
+ "tracks": 856,
+ "vias": 79,
  "copper_layers": 6,
- "journal": 126,
- "power_tree_routed_nets": 59,
+ "journal": 128,
+ "power_tree_routed_nets": 61,
  "rest_of_board_nets": 164,
- "rest_of_board_routed": 30,
+ "rest_of_board_routed": 32,
  "rest_by_sheet": {
   "09_COMMUNITY_HEADER": {
    "nets": 20,

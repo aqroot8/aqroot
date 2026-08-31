@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-331',                 # FBV2-P2-033: XGPIO2 promoted as the In2 long-haul framework pilot
-    sha256='98181354b3378e9cfb527e858b5120704adfa628c25ce8e6a351267a4f71e098',
-    tracks=845,                       # 837 (D-328) + 8 XGPIO2
-    vias=75,                          # 73 (D-328) + 2 XGPIO2 through vias
+    decision='D-332',                 # FBV2-P2-034: XGPIO4/5 coherent D-331 framework-reuse batch
+    sha256='e5e6f4fc97c2677270f542f65d0037fb1329110a2ac844e84d2140f363d56e7d',
+    tracks=856,                       # 845 (D-331) + 11 XGPIO4/5
+    vias=79,                          # 75 (D-331) + 4 ordinary through vias
     copper_layers=6,
     zones=41,                         # unchanged (1 via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=655,                     # 656 (D-328) - 1 XGPIO2 connection
-    journal=126,                      # 125 (D-328) + 1 XGPIO2 REST_INC edge
+    ratsnest=653,                     # 655 (D-331) - 2 completed nets
+    journal=128,                      # 126 (D-331) + 2 REST_INC edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).
