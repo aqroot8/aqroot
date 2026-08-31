@@ -777,6 +777,97 @@ GROUPS = {
         via_dia=600000, via_drill=300000,
         nets=['BTN_UP_N'],
     ),
+    # FBV2-P2-029 / D-327 -- the navigation D-pad DOWN button BTN_DOWN_N, the THIRD
+    # net of the SWx user-button family (after BTN_B_N D-325, BTN_UP_N D-326), on
+    # the SAME D-325 duplicate-ref physical-pad MST framework (registry entry +
+    # comment only; physical_net_pads/net_open_edges/qrouter.py byte-unchanged).
+    # BTN_DOWN_N = {SW3.1 button (TWO F.Cu tact-switch lands at (11.250,103.520) and
+    # (11.250,111.480), 7.96 mm apart -- the PTS645 duplicate pad-"1" topology),
+    # R5.2 pull-up (B.Cu), U2.14 PCAL9535A expander GPIO (B.Cu)} -- exactly
+    # BTN_B_N/BTN_UP_N's role and class (a low-current 3V3 CMOS nav input read at
+    # the U2 expander, pulled up by R5), one pin over on U2.
+    #
+    # SELECTED as the cleanest legal of the FOUR remaining west nav buttons by a
+    # fresh read-only screen + faithful physical-pad/MST vet on the live D-326
+    # board (w/vet_026.py): it is the LOWEST-congestion west button by a clear
+    # margin (bbox congestion 339 vs BTN_A 435, BTN_LEFT 505, BTN_RIGHT 516) at a
+    # cross-haul (44.00 mm) essentially tied with the shortest (BTN_A 42.35 mm) --
+    # and bbox congestion, not raw haul length, is the wall predictor (it, not
+    # length, walled BMI270_INT1_RAW at 48 mm and DISP_CS_N).  The physical MST is:
+    # SW3.1a<->SW3.1b (7.96 mm SAME-LAYER F.Cu land-run, NO via -- the duplicate-
+    # land edge the D-325 lever enables) + R5.2<->U2.14 (8.10 mm SAME-LAYER B.Cu
+    # run, NO via) + ONE CROSS-LAYER edge R5.2<->SW3.1 (the long west haul) closed
+    # by exactly ONE 0.60/0.30 Default through via (the D-306/D-308/D-325 mechanic,
+    # In1/In4 re-poured once for the single anti-pad) -- so ONE via, like BTN_UP_N.
+    # The bulk of the west haul runs on the group's B.Cu layer (only the SW3.1 pad
+    # escape is F.Cu), keeping OFF the saturated west-XGPIO F.Cu corridor.  NO
+    # via_offset (the router's obstacle-aware via_site + the defensive clearance
+    # re-proof arbitrate barrel proximity).  Default netclass (0.200 mm).  MEASURED
+    # straight-MST 8.891 mm clear of BAT_PROTECTED_P (>> the D-269 0.300 mm floor ->
+    # zero D-269 involvement). D-327 OUTCOME: NO PROMOTE. The long west haul
+    # routed, but the short R5.2<->U2.14 B.Cu edge returned NO_PATH at both fine
+    # grids. The authoritative board remained untouched.
+    'BTN_DOWN_N': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='navigation D-pad DOWN button input BTN_DOWN_N (SW3.1 button two F.Cu '
+             'tact-switch lands / R5.2 pull-up B.Cu / U2.14 expander GPIO B.Cu); '
+             'low-current 3V3 CMOS user input, 4 physical pads, one same-layer '
+             'F.Cu land-run + one same-layer B.Cu run + one cross-layer through '
+             'via (the long west haul on B.Cu, not the west-XGPIO F.Cu corridor), '
+             'no via_offset',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BTN_DOWN_N'],
+    ),
+    # FBV2-P2-029 / D-327 -- BTN_RIGHT_N, the BOUNDED NEXT-BEST alternative after
+    # BTN_DOWN_N walled.  BTN_DOWN_N routed its long west haul fine (44.275 mm on
+    # B.Cu) but NO_PATH'd the SHORT same-B.Cu R5.2<->U2.14 cluster escape at
+    # 0.200 mm even on the 0.05/0.025 mm fine grid -- reframing the binding wall as
+    # the U2 expander / R pull-up cluster escape (not the long haul or bbox
+    # congestion).  A fresh read-only escape probe (w/escape_026.py) then showed
+    # the U2 column pins (0.65 mm pitch) are all boxed to 3/8 open dirs after the
+    # accepted BTN_B_N/BTN_UP_N copper, but the R.2 pull-ups differ sharply on
+    # escape room: R7.2 (BTN_RIGHT_N) nearest-other 1.600 mm / 1 fully-open dir /
+    # 3.0 mm reach is by far the roomiest, vs R5.2(FAIL) 0.930/2-open, R8.2(BTN_A)
+    # 0.933/0-open (fully boxed) and R6.2(BTN_LEFT) 0.748/0-open (worst) -- so
+    # BTN_RIGHT_N is the evidence-based next-best, overturning the a-priori BTN_A_N
+    # guess (R8.2 is fully boxed).  BTN_RIGHT_N = {SW5.1 button (TWO F.Cu lands at
+    # (3.750,111.020)/(3.750,118.980), 7.96 mm apart), R7.2 pull-up (B.Cu), U2.16
+    # expander GPIO (B.Cu)}; same class/role as BTN_UP_N.  Physical MST:
+    # SW5.1a<->SW5.1b (7.96 mm F.Cu land-run, NO via) + R7.2<->U2.16 (9.46 mm SAME-
+    # LAYER B.Cu run, NO via) + ONE CROSS-LAYER edge R7.2<->SW5.1 (the long west
+    # haul, 56.89 mm) closed by ONE 0.60/0.30 Default through via (In1/In4 re-poured
+    # once).  Default netclass (0.200 mm).  MEASURED straight-MST 5.483 mm clear of
+    # BAT_PROTECTED_P -- >> the D-269 0.300 mm floor (18x), zero D-269 involvement.
+    # D-327 OUTCOME: NO PROMOTE. The route produced no copper; the local
+    # pull-up/expander cluster remains boxed at the governed 0.200 mm rules.
+    'BTN_RIGHT_N': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='navigation D-pad RIGHT button input BTN_RIGHT_N (SW5.1 button two '
+             'F.Cu tact-switch lands / R7.2 pull-up B.Cu / U2.16 expander GPIO '
+             'B.Cu); low-current 3V3 CMOS user input, 4 physical pads, one same-'
+             'layer F.Cu land-run + one same-layer B.Cu run + one cross-layer '
+             'through via (long west haul on B.Cu), no via_offset',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BTN_RIGHT_N'],
+    ),
+    # FBV2-P2-029 / D-327 -- final bounded characterization candidate after
+    # BTN_DOWN_N and BTN_RIGHT_N produced no complete legal route. BTN_A_N is
+    # the shortest remaining west-button cross-haul. It uses the accepted D-325
+    # physical-pad MST unchanged: both SW6.1 F.Cu lands, R8.2 B.Cu pull-up and
+    # U2.17 B.Cu expander input, Default 0.200 mm with one through via expected.
+    # D-327 OUTCOME: NO PROMOTE. The west cross-haul and duplicate switch-land
+    # edge routed, but R8.2<->U2.17 returned NO_PATH; gate stayed open_edges 3->1.
+    'BTN_A_N': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='navigation A button input BTN_A_N (SW6.1 two F.Cu tact-switch '
+             'lands / R8.2 pull-up B.Cu / U2.17 expander GPIO B.Cu); '
+             'low-current 3V3 CMOS user input, accepted duplicate-pad MST',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BTN_A_N'],
+    ),
     # FBV2-P2-025 / D-323 -- the accelerometer PRESENCE-DETECT signal, a clean-
     # functional increment in an OPEN region (away from the west-XGPIO F.Cu
     # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
