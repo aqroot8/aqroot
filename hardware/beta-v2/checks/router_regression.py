@@ -2354,6 +2354,88 @@ def main():
             [(p['ref'], p['x'], p['y']) for p in dup]
             == [(p['ref'], p['x'], p['y']) for p in _again])
 
+        # -- G38 FBV2-P2-028/D-326 twentieth rest-of-board incremental increment -
+        # The navigation D-pad UP button BTN_UP_N (SW2.1 button two F.Cu tact-
+        # switch lands / R4.2 pull-up B.Cu / U2.13 PCAL9535A expander GPIO B.Cu) --
+        # the SECOND net of the SWx user-button family -- routed onto the D-325
+        # board on the SAME D-325 duplicate-ref MST framework (G37), ZERO router-
+        # logic change (a GROUPS registry entry + comment only).  SW2 is the SAME
+        # 4-pin PTS645 tact switch as SW7: two pad-"1" lands 7.96 mm apart at
+        # (60.220,96.750) and (68.180,96.750).  BTN_UP_N is the CLEANEST remaining
+        # nav button (shortest ~12.3 mm cross-haul, in the OPEN south button field
+        # where BTN_B_N passed).  Its MST = SW2.1a<->SW2.1b (7.96 mm SAME-LAYER F.Cu
+        # land-run, NO via) + R4.2<->U2.13 (SAME-LAYER B.Cu run, NO via) + ONE
+        # CROSS-LAYER edge U2.13<->SW2.1 closed by ONE 0.60/0.30 Default THROUGH via
+        # at (61.100,95.400) (In1/In4 re-poured once) -- ONE via, CLEANER than
+        # BTN_B_N's two.  G38 pins the increment: ALL FOUR physical pads copper-
+        # connected (both SW2.1 lands driven), copper legal (21 trk 0.200 mm =
+        # 6 F.Cu + 15 B.Cu, exactly 1 0.60/0.30 through via), the via clears every
+        # barrel >= 0.80 mm, ADD-ONLY.
+        print('  -- G38 FBV2-P2-028/D-326 rest-of-board incremental increment --')
+        UNET = '/08_BUTTONS_EXPANDERS/BTN_UP_N'
+        bu_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == UNET]
+        bu_via = [t for t in all_via if t.GetNetname() == UNET]
+
+        # BOTH physical SW2.1 lands must be copper-joined to the R4.2 hub -- the
+        # decisive proof the duplicate-number terminal is no longer left open.
+        _bu_pads = [p for f in _g18.GetFootprints() for p in f.Pads()
+                    if p.GetNetname() == UNET]
+        _bu_lands = [p for p in _bu_pads
+                     if p.GetParentFootprint().GetReference() == 'SW2'
+                     and p.GetNumber() == '1']
+        _bhub = _pad('R4.2')
+        _bhub_reach = {(pp.GetParentFootprint().GetReference() + '.' + pp.GetNumber(),
+                        pp.GetPosition().x, pp.GetPosition().y)
+                       for pp in _cc.GetConnectedItems(_bhub) if pp.GetClass() == 'PAD'}
+        bu_conn = (len(_bu_lands) == 2
+                   and all(('SW2.1', p.GetPosition().x, p.GetPosition().y) in _bhub_reach
+                           for p in _bu_lands)
+                   and any(pp[0] == 'U2.13' for pp in _bhub_reach))
+        chk('G38 BTN_UP_N all four pads copper-connected (BOTH SW2.1 lands + R4.2 + U2.13)',
+            'R4.2 hub joins %d SW2.1 land(s) + U2.13=%s'
+            % (sum(1 for p in _bu_lands
+                   if ('SW2.1', p.GetPosition().x, p.GetPosition().y) in _bhub_reach),
+               any(pp[0] == 'U2.13' for pp in _bhub_reach)), bu_conn)
+
+        bu_layers = collections.Counter(t.GetLayerName() for t in bu_trk)
+        bu_via_ok = (len(bu_via) == 1
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in bu_via))
+        bu_legal = (len(bu_trk) == 21 and set(bu_layers) == {'F.Cu', 'B.Cu'}
+                    and bu_layers['F.Cu'] == 6 and bu_layers['B.Cu'] == 15
+                    and all(t.GetWidth() == 200000 for t in bu_trk) and bu_via_ok)
+        chk('G38 BTN_UP_N copper legal (21 trk 0.200 mm = 6 F.Cu + 15 B.Cu, 1 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(bu_trk), dict(bu_layers), len(bu_via),
+               sorted({t.GetWidth() for t in bu_trk})), bu_legal)
+
+        bu_gap = min([math.hypot(v.GetPosition().x - o.GetPosition().x,
+                                 v.GetPosition().y - o.GetPosition().y)
+                      for v in bu_via for o in all_via if o.GetNetname() != UNET]
+                     or [0])
+        chk('G38 BTN_UP_N via >= 0.80 mm (centre) from every existing barrel',
+            'min centre gap = %.3f mm' % (bu_gap / 1e6), bu_gap >= 800000)
+
+        bu_addonly = (len(bu_trk) == 21 and len(bu_via) == 1
+                      and len(bn_trk) == 19 and len(bn_via) == 2
+                      and len(ad_trk) == 22 and len(rs_trk) == 10
+                      and len(sdcs_trk) == 20 and len(irtx_trk) == 13
+                      and len(uart_trk) == 7 and len(imu1_trk) == 18
+                      and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                      and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                      and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                      and len(phaseA_via) == 54)
+        chk('G38 increment is ADD-ONLY (BTN_UP_N 21/1via + BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'btnup=%d (exp 21, 1 via), btn_b=%d, accdet=%d, reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(bu_trk), len(bn_trk), len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk),
+               len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
+               len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
+               len(phaseA_via)), bu_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -52,16 +52,18 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # current promoted board (the frozen per-milestone evidence lives in the audits).
 # The sha / counts now come from the shared single-source-of-truth
 # live_fingerprint.py so this pin is bumped in ONE place per increment.
-# Current pin: FBV2-P2-027 / D-325 promoted the NINETEENTH rest-of-board increment
-# AND the duplicate-ref MST framework fix that unlocked it: BTN_B_N (navigation/boot
-# button SW7.1 F.Cu / R9.2 pull-up B.Cu / U2.18 expander B.Cu) -- the FIRST net of
-# the SWx user-button family.  SW7 is a 4-pin tact switch whose two mechanically-
-# linked terminals both carry pad "1" (7.96 mm apart); physical_net_pads() now keys
-# MST nodes by physical (ref,x,y) and net_open_edges() counts copper clusters over
-# physical pads, so the MST + gate drive BOTH SW7.1 lands.  MST = R9.2 hub -> both
-# SW7.1 lands (two 0.60/0.30 through vias, In1/In4 re-poured) + R9.2->U2.18 B.Cu; in
-# an OPEN south button field ~11 mm clear of BAT_PROTECTED_P, zero D-269) onto the
-# D-323 board: 781 + 19 = 800 tracks, 68 + 2 = 70 vias, journal 116 + 3 = 119.
+# Current pin: FBV2-P2-028 / D-326 promoted the TWENTIETH rest-of-board increment
+# and the SECOND SWx user-button net on the D-325 duplicate-ref MST framework:
+# BTN_UP_N (navigation D-pad UP button SW2.1 two F.Cu tact-switch lands / R4.2
+# pull-up B.Cu / U2.13 PCAL9535A expander GPIO B.Cu).  SW2 is the SAME 4-pin PTS645
+# tact switch as SW7 (two pad-"1" lands 7.96 mm apart at (60.220,96.750) and
+# (68.180,96.750)); physical_net_pads() keys MST nodes by physical (ref,x,y) and
+# net_open_edges() counts copper clusters over physical pads, so the MST + gate
+# drive BOTH SW2.1 lands.  MST = SW2.1a<->SW2.1b (same-layer F.Cu land-run, no via)
+# + R4.2<->U2.13 (same-layer B.Cu run, no via) + ONE cross-layer through via at
+# (61.100,95.400) (In1/In4 re-poured once) -- ONE via, cleaner than BTN_B_N's two;
+# in the OPEN south button field 7.453 mm clear of BAT_PROTECTED_P, zero D-269) onto
+# the D-325 board: 800 + 21 = 821 tracks, 70 + 1 = 71 vias, journal 119 + 3 = 122.
 import live_fingerprint as LFP
 EXPECT_SHA = LFP.SHA
 EXPECT_TRACKS = LFP.TRACKS
@@ -75,7 +77,7 @@ ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
 TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE SD_CARD_DETECT_N
 XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP UART0_TXD_DBG
-IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N BTN_B_N""".split())
+IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N BTN_B_N BTN_UP_N""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -152,7 +154,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-323: ... + SD_CS_N + RESERVED_SPARE + ACC_DETECT_N)',
+    chk('the only routed rest-of-board nets are accepted increments (D-326: ... + ACC_DETECT_N + BTN_B_N + BTN_UP_N)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))

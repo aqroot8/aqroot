@@ -13,7 +13,40 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-027 / D-325 (this checkpoint — DUPLICATE-REF MST FRAMEWORK FIX + `BTN_B_N` PROMOTED, the
+- **FBV2-P2-028 / D-326 (this checkpoint — TWENTIETH REST-OF-BOARD INCREMENT PROMOTED; the navigation
+  D-pad UP button `BTN_UP_N`, the SECOND net of the `SWx` user-button family, on the accepted D-325
+  duplicate-ref MST framework with ZERO router-logic change; CLEANER than `BTN_B_N` — ONE through via, not
+  two; AUTH `sha256 adbea36b8bbcfa393f2810e989c93dbcfab4052b5538f9a7169bc71ff98b3e3f`, 821 tracks / 71 vias /
+  6 layers / 41 zones / ratsnest 659 / journal 122):** a governed CTO **ACCEPT + PROMOTE**. `BTN_UP_N` =
+  {`SW2.1` button (two F.Cu tact-switch lands at `(60.220,96.750)`/`(68.180,96.750)`, the same 4-pin `PTS645`
+  duplicate pad-"1" topology as SW7), `R4.2` pull-up (B.Cu), `U2.13` PCAL9535A expander GPIO (B.Cu)}. Two
+  read-only screens on the live D-325 board (`w/screen_020.py` congestion + a faithful `physical_net_pads`
+  MST vet) ranked it the CLEANEST of the five remaining nav buttons: shortest cross-haul **12.33 mm** and
+  lowest congestion **201** (vs `BTN_A` 42.35/429, `BTN_DOWN` 44.00/352, `BTN_LEFT` 50.15/568, `BTN_RIGHT`
+  56.89/508), because SW2 is in the SAME open south button field where `BTN_B_N` (SW7) already passed.
+  `Net-(SW9-A)` (power-domain, touches U12.12 converter) and `BOOT_N` (characterized sensitive boot strap)
+  EXCLUDED. **MST:** `SW2.1a↔SW2.1b` (7.96 mm SAME-LAYER F.Cu land-run, NO via — the D-325 lever edge) +
+  `R4.2↔U2.13` (SAME-LAYER B.Cu run, NO via) + `U2.13↔SW2.1` (ONE 0.60/0.30 through via at `(61.100,95.400)`,
+  In1/In4 re-poured once); **21 trk (6 F.Cu + 15 B.Cu) + 1 via.** ZERO router-logic change (a `GROUPS` entry +
+  comment only). **Gate (real full-board, D-286) PASS all 10:** all four physical pads one cluster
+  (`open_edges 3→0`, both `SW2.1` lands driven), ratsnest 662→659 (−3), no new/worse DRC (`clearance` 0),
+  `unconnected_items` 499→499; realized copper 6.370 mm clear of `BAT_PROTECTED_P` (zero D-269), via 4.804 mm
+  from the nearest barrel. **Tests (deterministic twice):** `router_regression.py` ALL PASS **G1–G38** (new G38
+  pins the increment; G37 the D-325 framework lever retained; G1–G37 unchanged); `incremental_probe_006..025`
+  + `phaseB_bringup_probe_005` (821/71/122; 28 routed rest nets, 136 unrouted) PASS; `live_fingerprint.py`
+  bumped once; `phaseB` roster extended by `BTN_UP_N`; independent kicad-cli DRC identical to D-325;
+  D-269/D-264/DRU A/B (committed D-325 vs promoted D-326) in the documented battery/power-tree intrinsic-flake
+  envelope (`d269` PASS↔FAIL(2) both, `d264` 2-failed both, `dru` FAIL(2)=FAIL(2)), none involving `BTN_UP_N`.
+  **NOTE:** the mandate quoted the pre-work sha as `…b973f5231e76…`; the live board / `live_fingerprint.py` /
+  D-325 commit / this file all agree the true D-325 sha is `35d32343…b952e5390898764fd326742dc88b5e146cf0c5f292dc14a220`
+  (they share only the 16-char prefix) — work proceeded on the verified live value, the mandate tail being a
+  transcription artifact. **Open owner decisions: NONE;** autonomy continues. Starting HEAD `4028157` (D-325;
+  pushed; `origin/master` identical). Rollback: pre-promotion `sha256 35d32343af5146b952e5390898764fd326742dc88b5e146cf0c5f292dc14a220`
+  (committed D-325, HEAD `4028157`). **136/164 rest nets unrouted; PCB routing ~19 %, overall ~76 %, readiness
+  ~78 % (JLCPCB file unchanged).** This checkpoint is written in the D-326 commit; a fresh session must confirm
+  the live tip. Full analysis:
+  [`audits/2026-08-31-p2-028-d326-twentieth-rest-of-board-incremental-increment-btn-up-n-promoted.md`](audits/2026-08-31-p2-028-d326-twentieth-rest-of-board-incremental-increment-btn-up-n-promoted.md).
+- **FBV2-P2-027 / D-325 (prior checkpoint — DUPLICATE-REF MST FRAMEWORK FIX + `BTN_B_N` PROMOTED, the
   NINETEENTH rest-of-board increment and the FIRST that needed a framework change; AUTH
   `sha256 35d32343af5146b952e5390898764fd326742dc88b5e146cf0c5f292dc14a220`, 800 tracks / 70 vias / 6 layers /
   41 zones / ratsnest 662 / journal 119):** a governed CTO **ACCEPT + PROMOTE**. **Root cause:** `SW7`

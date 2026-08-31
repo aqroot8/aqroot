@@ -738,6 +738,45 @@ GROUPS = {
         via_dia=600000, via_drill=300000,
         nets=['BTN_B_N'],
     ),
+    # FBV2-P2-028 / D-326 -- the navigation D-pad UP button BTN_UP_N, the SECOND
+    # net of the SWx user-button family unlocked by the D-325 duplicate-ref MST
+    # framework fix, and the CLEANEST remaining member.  BTN_UP_N = {SW2.1 button
+    # (TWO F.Cu tact-switch lands at (60.220,96.750) and (68.180,96.750), 7.96 mm
+    # apart -- the duplicate pad-"1" topology every PTS645 switch shares), R4.2
+    # pull-up (B.Cu), U2.13 PCAL9535A expander GPIO (B.Cu)}.  A genuine functional
+    # low-current 3V3 CMOS user input (the D-pad UP key), read at expander U2.13,
+    # pulled up by R4 -- exactly BTN_B_N's role and class, one pin over on U2.
+    #
+    # SELECTED as the safest/cleanest of the five remaining nav buttons by TWO
+    # independent read-only screens on the live D-325 board (w/screen_020.py bbox
+    # congestion + a faithful physical_net_pads MST vet): its single CROSS-LAYER
+    # haul (U2.13<->SW2.1, ~12.33 mm) is BY FAR the shortest of the family (BTN_A
+    # 42.4, BTN_DOWN 44.0, BTN_LEFT 50.2, BTN_RIGHT 56.9 mm) because SW2 sits in the
+    # SAME OPEN south button field where BTN_B_N (SW7) already routed and PASSED the
+    # gate; congestion 201 is the lowest nav-button value.  The physical MST is:
+    # SW2.1a<->SW2.1b (7.96 mm SAME-LAYER F.Cu land-run, NO via -- the duplicate-land
+    # edge the D-325 lever enables) + R4.2<->U2.13 (7.92 mm SAME-LAYER B.Cu run, NO
+    # via) + ONE CROSS-LAYER edge U2.13<->SW2.1 closed by exactly ONE 0.60/0.30
+    # Default through via (the D-306/D-308/D-325 mechanic, In1/In4 re-poured once for
+    # the single anti-pad) -- so ONE via, CLEANER than BTN_B_N's two.  NO via_offset
+    # (the via lands in the open south field, not the U2 west-edge escape wall;
+    # U2.13 is reached by a flat SAME-LAYER B.Cu run off R4 exactly as U2.18 was for
+    # BTN_B_N).  Default netclass (0.200 mm width/clearance).  MEASURED straight-MST
+    # 7.453 mm clear of BAT_PROTECTED_P (>> the D-269 0.300 mm floor -> zero D-269
+    # involvement; arbitrated by the real full-board D-286 gate).  Promotion decided
+    # by the real full-board gate (D-286), not geometry.
+    'BTN_UP_N': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='navigation D-pad UP button input BTN_UP_N (SW2.1 button two F.Cu '
+             'tact-switch lands / R4.2 pull-up B.Cu / U2.13 expander GPIO B.Cu); '
+             'low-current 3V3 CMOS user input, 4 physical pads, one same-layer '
+             'F.Cu land-run + one same-layer B.Cu run + one cross-layer through '
+             'via in the open south button field (not the U2 escape wall), no '
+             'via_offset',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BTN_UP_N'],
+    ),
     # FBV2-P2-025 / D-323 -- the accelerometer PRESENCE-DETECT signal, a clean-
     # functional increment in an OPEN region (away from the west-XGPIO F.Cu
     # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
