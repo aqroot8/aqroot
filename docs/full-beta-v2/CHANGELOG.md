@@ -6058,3 +6058,6 @@ GPT implemented the reusable low-speed inner-layer haul: short native-face escap
 ## 2026-08-31 - FBV2-P2-034: D-332 — XGPIO4/XGPIO5 inner-layer batch promoted
 
 Routine D-331 framework reuse: the coherent `XGPIO4` + `XGPIO5` batch passed the unchanged full-board gate and is authoritative at `e5e6f4fc…`, 856 tracks / 79 vias / ratsnest 653 / journal 128. G1–G42, focused probes 023–027, Phase-B (32/164 routed), and independent DRC all pass; no new clearance class. Compact evidence is in `routing_ledger.json`. Next: fast-screen XGPIO6/XGPIO7 for a second inner-haul batch, then move to the generic boxed-endpoint framework.
+## 2026-08-31 - FBV2-P2-035: D-333 — final XGPIO pair bounded at endpoint via-site wall (no copper change)
+
+The accepted inner-layer long-haul framework was fast-screened on XGPIO6/XGPIO7. Each failed at a different endpoint because no legal reachable locked-size via site exists; neither reached the long-haul stage. Authoritative D-332 copper is byte-identical and the wall registry now directs both nets to the generic boxed-endpoint framework. Full evidence: [`audits/2026-08-31-p2-035-d333-xgpio6-xgpio7-inner-haul-endpoint-wall.md`](audits/2026-08-31-p2-035-d333-xgpio6-xgpio7-inner-haul-endpoint-wall.md).
