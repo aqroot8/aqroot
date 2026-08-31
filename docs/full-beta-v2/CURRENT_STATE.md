@@ -13,7 +13,45 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-016 / D-314 (this checkpoint — ELEVENTH REST-OF-BOARD INCREMENT PROMOTED; the FIRST WEST XGPIO
+- **FBV2-P2-017 / D-315 (this checkpoint — XGPIO2+XGPIO3 SOUTH-WEST PAIR = MEASURED CORRIDOR-CAPACITY WALL;
+  NOT PROMOTED; ZERO authoritative copper change; board byte-identical to committed D-314):** a governed CTO
+  **CHARACTERIZATION** — the named candidate, the XGPIO2+XGPIO3 adjacent pair (`XGPIO2` R53.1 F.Cu → U3.6 B.Cu
+  + `XGPIO3` R54.1 F.Cu → U3.7 B.Cu, the next south-west west-edge pair north of the D-314 XGPIO0/1), does
+  **NOT** promote; the authoritative PCB is **untouched** (`sha256 95bc07be30598df44e5096fd3c51729aa61cdbefd9c9855297e3737ea0b3a605`,
+  669 trk / 66 via / ratsnest 677 / journal 104); autonomy CONTINUES, **no owner decision.** Starting HEAD
+  `8de847b` (D-314; pushed; `origin/master` identical). D-314 predicted the "XGPIO-lower-first self-separates"
+  recipe would carry this pair; the task required **revalidating that hypothesis on the live D-314 board** →
+  **disproved for this pair.** **MEASURED EVIDENCE (all on gitignored scratch, authoritative untouched, one
+  managed process at a time):** (1) BOTH route orders FAIL at the D-269 0.300 mm floor (`w/screen_016_one.py`):
+  XGPIO2 **U3.6 NO LEGAL ESCAPE** — a flanked middle pin boxed by U3.7/U3.4 + 8 via obstacles (incl. the
+  accepted XGPIO0/XGPIO1 barrels); XGPIO3 far-run R54.1→via blocked; order-independent (`qb.escape` tries all
+  8 directions). (2) Per-clearance isolation (`w/xgpio23_clr_017.py`, each net ALONE): at **0.200 mm** each
+  routes; at **0.300 mm** XGPIO2 fails escape (pad-limited), XGPIO3 fails NO_FAR_RUN (track-limited) — the
+  0.300 mm blanket over-constrains the whole 116 mm haul to clear 0.300 from ALL copper. (3) The **one bounded
+  evidence-backed alternative** — per-region `clr_pad=0.200`/`clr_trk=0.300` (correct-per-region: every
+  BAT_PROTECTED_P pad is B.Cu ≥9 mm away, the only BPP copper near the F.Cu haul is its F.Cu trunk; **NOT** rule
+  weakening) fixes the escape but both nets still **FAIL NO_FAR_RUN** — the D-313+D-314-congested corridor
+  admits ONE 0.300 mm-clearance haul, not two. (4) PAIR @ 0.200 mm also fails (2nd net NO_FAR_RUN — two parallel
+  hauls from adjacent R53/R54 contend for one corridor), but a **SINGLE** west XGPIO net at 0.200 mm routes
+  CLEAN and keeps D-269 with margin: **XGPIO2 haul→BPP 0.6859 mm, XGPIO3 0.4739 mm (both ≥0.300)**. **INTEGRITY
+  (board PRISTINE):** `sha256 95bc07be…` before/after; `router_regression.py` ALL PASS G1–G28 twice
+  (deterministic); `incremental_probe_006..016` + `phaseB_bringup_probe_005` (669/66/104) all PASS; real DRC
+  `{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}` (clearance 0);
+  D-269/D-264/DRU board-swap trivially byte-identical (current board IS committed D-314 → no regression
+  possible). **NO promote, NO rule/logic change; `via_offset` cannot help (relocates via after escape); a
+  spatially-varying clearance is out-of-bounds and unnecessary.** **Opportunity & Simplification:** the 0.300 mm
+  blanket XGPIO clearance is over-conservative for west members whose haul clears BPP by ≥0.47 mm — use 0.200 mm
+  Default + real-gate D-269 arbitration; **do not force adjacent PAIRS** for the congested northern west members
+  (route one net at a time); In2/In3 inner signal layers a deferred capacity option. **Open owner decisions:
+  NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback: none needed (no authoritative change). **Next:
+  FBV2-P2-018 — route a SINGLE west XGPIO net (recommended `XGPIO3` via exv 0.704 mm; or `XGPIO2` BPP 0.686 mm)
+  at `clr_pad=clr_trk=0.200` (NOT the 0.300 mm blanket), route→gate→promote under the D-286 real full-board gate
+  (D-269-aware DRC arbitrates BPP), add `incremental_probe_017.py`+`G29`; do NOT re-attempt the XGPIO2+XGPIO3
+  PAIR or `U11_PROG`/`PWR_SENSE`; 145/164 rest nets unrouted.** Full analysis:
+  [`audits/2026-08-31-p2-017-d315-xgpio2-3-southwest-pair-corridor-capacity-wall-characterized-no-promote.md`](audits/2026-08-31-p2-017-d315-xgpio2-3-southwest-pair-corridor-capacity-wall-characterized-no-promote.md).
+  This checkpoint is written in the D-315 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-016 / D-314 (prior checkpoint — ELEVENTH REST-OF-BOARD INCREMENT PROMOTED; the FIRST WEST XGPIO
   members, promoted after a governed recovery of the west-pair corridor screen, at the D-269 corridor
   clearance, zero router-logic change):** a governed CTO **ACCEPT + PROMOTE** — the XGPIO west-edge SOUTH pilot
   **`XGPIO1`** (R52.1 F.Cu → U3.5 B.Cu) + **`XGPIO0`** (R51.1 F.Cu → U3.4 B.Cu), the two SOUTHERNMOST members
@@ -664,8 +702,12 @@
   FRONT_RGB_LED 3 + IR_RX_VS 1 + TOUCH_CTL 2 + AMP_SD_MODE 1 + SD_CARD_DETECT_N 1 + XGPIO8/XGPIO9 2 +
   XGPIO1/XGPIO0 2), 145 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest **677**. Each future group
   is added to the `incremental_router.py` registry and routed → gated (real full-board DRC, D-286) → promoted on a
-  genuine no-casualty / no-new-DRC increment (FBV2-P2-017, §5). The board carries Phase-A battery-block copper
-  (432 trk / 54 via) **plus** the eleven rest increments (237 trk / 12 via). Fingerprints for all increment probes
+  genuine no-casualty / no-new-DRC increment (FBV2-P2-018, §5). The board carries Phase-A battery-block copper
+  (432 trk / 54 via) **plus** the eleven rest increments (237 trk / 12 via). **FBV2-P2-017 / D-315 added NO
+  copper** — it characterised the XGPIO2+XGPIO3 south-west PAIR as a corridor-capacity wall at the D-269 0.300 mm
+  clearance (both orders fail; U3.6 flanked-middle-pin escape box + two parallel 116 mm hauls exceed the corridor;
+  the one bounded clr_pad/clr_trk split still NO_FAR_RUN) and proved a **single** west XGPIO net routes clean at
+  0.200 mm keeping ≥0.474 mm to BPP — the next path. Fingerprints for all increment probes
   are centralised in `checks/live_fingerprint.py` (D-309). **D-310 gave `connect_cross` existing-via awareness
   (qrouter._scan omits `PCB_VIA`; injected per-route) + a bounded `via_offset`, breaking the U2 escape wall**
   (`qrouter.py` untouched); **D-311/D-312 reused it byte-for-byte to complete the U2 family; D-313 opened the
@@ -676,9 +718,13 @@
   walls (do NOT naively retry): `U11_PROG`/`PWR_SENSE` (D-307, hard pad-escape/corridor). **U2 escape family —
   COMPLETE:** `DISP_RST_N` (D-306), `TOUCH_RST_N`/`TOUCH_INT_N` (D-310), `AMP_SD_MODE` U2.7 (D-311),
   `SD_CARD_DETECT_N` U2.11 (D-312). **XGPIO0..9 bank — east pair (D-313) + west SOUTH pair XGPIO0/1 (D-314) done;
-  4 west members remain.** The SOUTH of the west group routes cleanly with the XGPIO-lower-first order recipe (the
-  southern net self-separates west); the crowding the D-313 study flagged is specifically the NORTHERN pins
-  (XGPIO5/6/7 collide onto one via-pocket cell). Screen each next west pair live before routing.
+  4 west members remain (XGPIO2..7).** **D-315 (FBV2-P2-017) MEASURED that the NORTHERN west members cannot be
+  routed as ADJACENT PAIRS:** the XGPIO2+XGPIO3 pair is a corridor-capacity wall at the D-269 0.300 mm clearance
+  (U3.6 flanked-middle-pin escape box; two parallel 116 mm hauls exceed the corridor even split clr_pad/clr_trk).
+  The "XGPIO-lower-first self-separates" recipe is SOUTH-specific and does NOT transfer north. **The clean path is
+  SINGLE-net at the 0.200 mm Default clearance** (measured: XGPIO2 haul→BPP 0.686 mm, XGPIO3 0.474 mm, both
+  ≥0.300 — the 0.300 mm blanket is over-conservative here and it is what saturates the corridor). Route the
+  remaining west members ONE net at a time; screen each live before routing.
 - **Historical Phase-A blocker context (all CLOSED under D-302), updated by D-301.** Direction-2 (D-294) plus the accepted bounded
   levers (D-297 U18.8 In3-join, D-298/D-299 U19CAP, **D-301 LTC_GATE_KO**) have resolved the west/BAT_RAW,
   U18.8, the saturated U19 dead-cell field **and** the `LTC_GATE U18.10→Q3.4` join; **the SINGLE remaining
@@ -866,27 +912,31 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-017 (continue rest-of-board routing, next XGPIO south-west pilot or clean local group)
+## 5. Next task — FBV2-P2-018 (route a SINGLE west XGPIO net at the 0.200 mm Default clearance, or a clean local group)
 
-- **Where 016 left it (D-314).** ELEVEN increments promoted; **145 of 164 rest nets unrouted**; authoritative
-  `sha256 95bc07be…a0b3a605` (669 trk / 66 via / ratsnest 677 / journal 104). All proven classes: same-layer
-  (B.Cu/F.Cu no via), single-via + multi-via cross-layer, multi-terminal MST, the bounded U2-escape via-site
-  offset + existing-via-aware `connect_cross` (D-310..D-312), **and the XGPIO long-haul corridor at the D-269
-  0.300 mm clearance** (D-313 east pair, D-314 west SOUTH pair; `qrouter.py` untouched, no via_offset — clean
-  north escape). **The U2 escape family is COMPLETE; the XGPIO0..9 bank is east pair + west SOUTH pair XGPIO0/1
-  done — 4 west members remain.** Fingerprint pin centralised in `checks/live_fingerprint.py`.
-- **The lever (FBV2-P2-017) — the next XGPIO south-west pilot (`XGPIO2/3`), or the next clean local group.**
-  The XGPIO corridor is proven: all ten escape U3 cleanly (NORTH into open board), the binding rule is the
-  **D-269 0.300 mm clearance** to the `BAT_PROTECTED_P` trunk (all XGPIO GROUPS entries carry `clr=0.300`), and
-  D-314 showed the SOUTH west pins route cleanly with the **XGPIO-lower-index-first order** (the southern net sees
-  the first net's laid via as a real `qb.via()` obstacle and self-separates WEST off it — no via_offset, no
-  stagger needed). The residual crowding the D-313 study flagged is specifically the **NORTHERN** pins
-  (XGPIO5/6/7 collide onto the identical via-pocket cell) — those may still need per-net site selection / a
-  deliberate via stagger. **Re-screen each west pair live before routing** (via geometry shifts as increments add
-  vias): the recovery runner `w/screen_016_one.py <a> <b> <order>` re-measures one order (now `__main__`-guarded,
-  persists to `w/screen_016_recovery.json`), or `w/screen_016.py` runs the full ranker. Promote **only a genuine
-  no-casualty / no-new-DRC increment** (the gate enforces this); add a G-contract + a focused probe per accepted
-  group and bump `live_fingerprint.py` once. All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no
+- **Where 017 left it (D-315 — characterization, NO copper change).** ELEVEN increments promoted; **145 of 164
+  rest nets unrouted**; authoritative `sha256 95bc07be…a0b3a605` (669 trk / 66 via / ratsnest 677 / journal 104,
+  byte-identical to committed D-314). FBV2-P2-017 measured the XGPIO2+XGPIO3 south-west PAIR to be a
+  **corridor-capacity wall at the D-269 0.300 mm clearance** — both orders fail (U3.6 flanked-middle-pin escape
+  box; XGPIO3 far-run blocked), the one bounded per-region `clr_pad=0.200`/`clr_trk=0.300` split fixes the escape
+  but both nets still `NO_FAR_RUN` (the corridor admits ONE 0.300 mm haul, not two parallel), and the PAIR fails
+  at 0.200 mm too (parallel-haul conflict). The "XGPIO-lower-first self-separates" recipe is SOUTH-specific and
+  does NOT transfer to the northern west members. **Decisive positive lead:** a **SINGLE** west XGPIO net routes
+  clean at the **0.200 mm Default clearance** and keeps D-269 to BPP with margin (XGPIO2 haul→BPP 0.686 mm,
+  XGPIO3 0.474 mm — both ≥0.300; the 0.300 mm blanket is over-conservative here and is what saturates the
+  corridor). Fingerprint pin centralised in `checks/live_fingerprint.py`.
+- **The lever (FBV2-P2-018) — route ONE west XGPIO net at 0.200 mm (recommended `XGPIO3`, via exv 0.704 mm
+  most-separated, haul→BPP 0.474 mm; or `XGPIO2`, more BPP margin 0.686 mm), or the next clean local group.**
+  Register a SINGLE-net GROUP with `clr_pad=clr_trk=200000` (NOT the 0.300 mm blanket — this net's haul clears
+  BPP naturally), `route`→`gate`→`promote` under the D-286 real full-board gate; the gate's D-269-aware KiCad DRC
+  is the arbiter of the BPP clearance (do NOT assume — measure by the gate). On promote add
+  `incremental_probe_017.py` + a `G29` contract (net connected across the U3 F/B hop, copper legal, D-269 ≥0.300
+  to BPP by real DRC, both/all vias clear every barrel, ADD-ONLY) and bump `live_fingerprint.py` once. **Do NOT
+  re-attempt the XGPIO2+XGPIO3 PAIR** (characterised wall) or force adjacent PAIRS for the northern west members —
+  route them ONE at a time. Re-screen live before routing (via geometry shifts as increments add vias); the
+  recovery runner `w/screen_016_one.py <a> <b> <order>` and the per-clearance probes
+  `w/xgpio23_{clr,single200}_017.py` are the read-only tools. Promote **only a genuine no-casualty / no-new-DRC
+  increment** (the gate enforces this). All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no
   topology/footprint/outline change. `U11_PROG`/`PWR_SENSE` remain characterised hard walls (do NOT re-attempt
   naively); RF/NFC/USB/crystals/rails/switching/class-D deferred.
 - **(historical) Next task as of FBV2-P2-007 (continue rest-of-board routing, next bounded group)**
