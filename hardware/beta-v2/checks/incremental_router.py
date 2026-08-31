@@ -712,14 +712,22 @@ GROUPS = {
     # CONNECTIVITY, NOT PROMOTED.  SW7 is a 4-pin tactile switch whose TWO
     # mechanically-linked terminals BOTH carry pad number "1" on BTN_B_N at
     # different locations (measured (49.520,96.750) and (57.480,96.750), 7.96 mm
-    # apart), and the framework's per-ref MST (pads_by_ref) collapses the two
-    # SW7.1 pads to a single node -> the second terminal is never driven -> one
-    # permanent open ratsnest edge (open_edges 2->1, gate FAIL).  This is a
-    # connectivity gap of the WHOLE duplicate-ref button family (every SWx tact
-    # switch), NOT a copper casualty -- the authoritative board was never touched.
-    # Do NOT naively retry any SWx button net until the framework grows a
-    # duplicate-ref MST (a deferred framework task).  D-323 promoted the genuine
-    # 3-distinct-ref functional net ACC_DETECT_N instead (which gates clean).
+    # apart), and the framework's per-ref MST (pads_by_ref) collapsed the two
+    # SW7.1 pads to a single node -> the second terminal was never driven -> one
+    # permanent open ratsnest edge (open_edges 2->1, gate FAIL).
+    #
+    # FBV2-P2-027 / D-325 OUTCOME -- PROMOTED.  The bounded, generic, deterministic
+    # DUPLICATE-REF MST framework fix landed: physical_net_pads() keys MST nodes by
+    # PHYSICAL (ref, x, y) so both SW7.1 lands are distinct nodes, and cmd_gate's
+    # net_open_edges() counts copper clusters over physical pads (matching KiCad's
+    # own ratsnest: 4 lands -> 3 edges).  BTN_B_N then routes R9.2 hub -> BOTH
+    # SW7.1 lands (two 0.60/0.30 through vias in the OPEN south button field, at
+    # (48.300,96.750) and (56.300,95.600), In1/In4 re-poured) + R9.2->U2.18 same-
+    # layer B.Cu; 19 trk (3 F.Cu + 16 B.Cu) + 2 vias; all four physical pads in one
+    # copper cluster (open_edges 3->0), ratsnest -3, vias >= 2.915 mm from every
+    # barrel, gate PASS.  Ordinary unique-pad nets stay byte-identical; router_
+    # regression G1-G35 unchanged.  The WHOLE SWx user-button family is now
+    # routable (G36 pins the increment, G37 the framework lever).
     'BTN_B_N': dict(
         sheet='08_BUTTONS_EXPANDERS',
         desc='navigation/boot button input BTN_B_N (SW7.1 button F.Cu -> R9.2 '
@@ -948,6 +956,75 @@ def resolve_nets(qb, group):
 
 def net_pads(qb, netfull):
     return [d for (nm, tag), d in qb.pads.items() if nm == netfull]
+
+
+# --------------------------------------------------------------------------- #
+# DUPLICATE-FOOTPRINT-PAD-NUMBER MST NODES  (FBV2-P2-027 / D-325).
+#
+# qrouter.QBoard._scan keys its pad table `self.pads[(net, "REF.NUM")] = dict`.
+# When ONE footprint places TWO physical lands that carry the SAME pad NUMBER on
+# the SAME net -- a 4-pin tactile switch, whose two mechanically-linked terminals
+# are both pad "1" (BTN_B_N: SW7.1 at (49.520,96.750) and (57.480,96.750), 7.96 mm
+# apart) -- the second (net,tag) write overwrites the first, so one physical land
+# is INVISIBLE to net_pads()/the MST.  Routing then drives only one terminal and
+# the real full-board gate FAILs on connectivity (D-323 BTN_B_N: net open_edges
+# 2->1, not 2->0), blocking the whole SWx user-button family.
+#
+# The bounded, generic, deterministic fix lives HERE (a new caller composing
+# board data; qrouter.py is NOT touched, so every G-contract fixture that routes
+# through QBoard stays byte-identical): represent MST nodes by stable PHYSICAL
+# pad identity (ref, x, y) rather than by footprint pad number, so every distinct
+# land is its own node.  Ordinary nets -- every pad number unique -- return
+# exactly net_pads() (the same dict objects), so their routing/journal is byte-
+# unchanged; only a genuinely duplicated pad number contributes an extra node.
+def _rr_pad_dict(f, p):
+    """Rebuild ONE physical pad's routing dict IDENTICALLY to qrouter._scan
+    (lines that construct self.pads), so a recovered duplicate-number land is
+    field-for-field indistinguishable from a scanned pad.  Used ONLY for a land
+    that qb.pads dropped; ordinary single-number pads are taken straight from
+    qb.pads and never reach here."""
+    pos = p.GetPosition()
+    sx, sy = p.GetSizeX() / 2.0, p.GetSizeY() / 2.0
+    sh = p.GetShape()
+    if sh in (pcbnew.PAD_SHAPE_CIRCLE, pcbnew.PAD_SHAPE_OVAL):
+        r = min(sx, sy)
+    elif sh == pcbnew.PAD_SHAPE_ROUNDRECT:
+        r = p.GetRoundRectCornerRadius()
+    else:
+        r = 0
+    ang = p.GetOrientationDegrees()
+    tag = f.GetReference() + '.' + p.GetNumber()
+    net = p.GetNetname()
+    s = QR.RR(pos.x, pos.y, sx, sy, r, ang, net, tag)
+    return dict(ref=tag, x=pos.x, y=pos.y,
+                F=p.IsOnLayer(pcbnew.F_Cu), B=p.IsOnLayer(pcbnew.B_Cu),
+                shape=s, hx=sx, hy=sy, r=r, ang=ang, net=net,
+                tht=p.GetAttribute() in (pcbnew.PAD_ATTRIB_PTH,
+                                         pcbnew.PAD_ATTRIB_NPTH))
+
+
+def physical_net_pads(qb, netfull):
+    """Every PHYSICAL pad on `netfull` as a routing dict, WITHOUT the same-
+    footprint-pad-number collapse of qb.pads.  Deterministic; qrouter untouched.
+
+    Ordinary nets (every land a unique pad number) return exactly the
+    net_pads(qb, netfull) dict objects -- byte-identical routing.  A footprint
+    that shares one pad number across two physical lands on this net adds the
+    missing land(s) as separate node(s) so the MST + gate reach every terminal."""
+    have = net_pads(qb, netfull)
+    seen = {(d['ref'], d['x'], d['y']) for d in have}
+    out = list(have)
+    for f in qb.b.GetFootprints():
+        for p in f.Pads():
+            if p.GetNetname() != netfull or not p.GetNumber():
+                continue
+            pos = p.GetPosition()
+            key = (f.GetReference() + '.' + p.GetNumber(), pos.x, pos.y)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(_rr_pad_dict(f, p))
+    return out
 
 
 def _pad_layers(p):
@@ -1335,10 +1412,12 @@ def cmd_route(name):
         print('  injected %d existing-via obstacle(s) (qrouter._scan omits vias)' % nvia_obs)
     for base in group['nets']:
         nf = nets[base]
-        pads = net_pads(qb, nf)
-        pads_by_ref = {p['ref']: p for p in pads}
-        order = sorted(pads_by_ref)                # deterministic
-        pads = [pads_by_ref[r] for r in order]
+        # MST nodes are stable PHYSICAL pads (ref, x, y), NOT footprint pad
+        # numbers, so a duplicate-number tact-switch terminal (D-325) is its own
+        # node.  Ordinary nets have one land per number, so this is byte-
+        # identical to the old ref-keyed order (ties broken by x,y never fire).
+        pads = physical_net_pads(qb, nf)
+        pads.sort(key=lambda p: (p['ref'], p['x'], p['y']))   # deterministic
         for (i, j) in mst_edges(pads):
             pa, pb = pads[i], pads[j]
             el, kind = edge_plan(pa, pb, group)
@@ -1478,19 +1557,50 @@ def cmd_gate(name, promote=False):
                 out.add(it.GetParentFootprint().GetReference() + '.' + it.GetNumber())
         return out
 
+    def _pid(p):
+        """A pad's STABLE PHYSICAL identity (ref, x, y) -- distinguishes two
+        footprint lands that share a pad NUMBER (a tact switch's two 'pad 1'
+        terminals), which a ref-string alone collapses."""
+        pos = p.GetPosition()
+        return (p.GetParentFootprint().GetReference() + '.' + p.GetNumber(),
+                pos.x, pos.y)
+
     def net_open_edges(board, cc, netfull):
-        """Ratsnest edges owed by this net = (#copper clusters over its pads) - 1."""
+        """Ratsnest edges owed by this net = (#copper clusters over its PHYSICAL
+        pads) - 1.  Pads are keyed by physical (ref, x, y), so two lands sharing
+        one pad NUMBER are DISTINCT nodes -- matching KiCad's own ratsnest, which
+        owes one edge per physical land (D-325 BTN_B_N: 4 lands -> 3 edges, drop
+        3, not the 2 a ref-collapse counts).  Copper adjacency comes from
+        GetConnectedItems (copper only, ratsnest excluded); a net whose lands all
+        carry unique pad numbers is counted exactly as before (byte-identical)."""
         pads = pads_of(board, netfull)
         if not pads:
             return 0
-        seen, clusters = set(), 0
+        parent = {}
+
+        def find(a):
+            parent.setdefault(a, a)
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+
+        ids = {_pid(p) for p in pads}
+        for i in ids:
+            find(i)
         for p in pads:
-            ref = _ref(p)
-            if ref in seen:
-                continue
-            clusters += 1
-            seen |= copper_connected(cc, p) | {ref}
-        return clusters - 1
+            me = _pid(p)
+            for it in cc.GetConnectedItems(p):
+                if it.GetClass() == 'PAD':
+                    other = _pid(it)
+                    if other in ids:
+                        union(me, other)
+        return len({find(i) for i in ids}) - 1
 
     exp_drop = 0
     for nf in sorted(nf_set):

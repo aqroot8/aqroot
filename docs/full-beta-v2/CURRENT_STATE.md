@@ -13,7 +13,33 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-026 / D-324 (this checkpoint — CHARACTERIZATION, NO COPPER CHANGE; the board is byte-identical
+- **FBV2-P2-027 / D-325 (this checkpoint — DUPLICATE-REF MST FRAMEWORK FIX + `BTN_B_N` PROMOTED, the
+  NINETEENTH rest-of-board increment and the FIRST that needed a framework change; AUTH
+  `sha256 35d32343af5146b952e5390898764fd326742dc88b5e146cf0c5f292dc14a220`, 800 tracks / 70 vias / 6 layers /
+  41 zones / ratsnest 662 / journal 119):** a governed CTO **ACCEPT + PROMOTE**. **Root cause:** `SW7`
+  (Button_Switch_SMD:`SW_SPST_PTS645Sx43SMTR92`) is a 4-pin tact switch whose two mechanically-linked
+  terminals BOTH carry pad number "1" on `BTN_B_N` at `(49.520,96.750)` and `(57.480,96.750)`, 7.96 mm apart;
+  `qrouter.QBoard._scan` keys `self.pads[(net,"REF.NUM")]` so the second land overwrote the first and was
+  invisible to the MST (D-323 gate FAIL `open_edges 2→1`), and `cmd_gate.net_open_edges()` ref-deduped the two
+  lands in its own cluster count. **Fix (bounded, generic, deterministic; `incremental_router.py` ONLY,
+  `qrouter.py` untouched → G1–G35 byte-identical):** `physical_net_pads()` keys MST nodes by physical
+  `(ref,x,y)` (ordinary unique-pad nets return the exact `net_pads()` objects → byte-identical); `net_open_edges()`
+  rewritten as a physical-pad union-find that counts copper clusters over physical lands, matching KiCad's own
+  ratsnest. **Increment:** `BTN_B_N` (`SW7.1` button F.Cu / `R9.2` pull-up B.Cu / `U2.18` expander B.Cu) MST
+  hubbed on `R9.2` → BOTH `SW7.1` lands (two 0.60/0.30 through vias in the OPEN south button field, In1/In4
+  re-poured) + `R9.2→U2.18` B.Cu; 19 trk (3 F.Cu + 16 B.Cu) + 2 vias. **Gate (real full-board) PASS all 10:**
+  all four physical pads one cluster (`open_edges 3→0`, both `SW7.1` lands driven), ratsnest 665→662 (−3), no
+  new/worse DRC (`clearance` 0), `unconnected_items` 499→499; realized copper 10.68 mm clear of
+  `BAT_PROTECTED_P` (zero D-269). **Tests (deterministic twice):** `router_regression.py` ALL PASS **G1–G37**
+  (new G36 pins the increment, new G37 pins the framework lever; G1–G35 unchanged); `incremental_probe_006..024`
+  + `phaseB_bringup_probe_005` (800/70/119; 27 routed, 137 unrouted) PASS; `live_fingerprint.py` bumped once;
+  independent kicad-cli DRC identical to D-323; D-269/D-264/DRU A/B (committed D-323 vs promoted D-325) in the
+  documented battery/power-tree intrinsic-flake envelope (`d269` FAIL(2)/`dru` FAIL(2) identical both, `d264` B
+  no worse than A), none involving `BTN_B_N`. The whole `SWx` user-button family is now routable. **Open owner
+  decisions: NONE;** autonomy continues. Starting HEAD `45f45bc` (D-324; pushed; `origin/master` identical).
+  **137/164 rest nets unrouted; PCB routing ~19 %, overall ~76 %, readiness ~78 % (JLCPCB file unchanged).**
+  This checkpoint is written in the D-325 commit; a fresh session must confirm the live tip.
+- **FBV2-P2-026 / D-324 (prior checkpoint — CHARACTERIZATION, NO COPPER CHANGE; the board is byte-identical
   to committed D-323, `sha256 a7bf8bdc…`, 781 tracks / 68 vias / 6 layers / 41 zones / ratsnest 665 /
   journal 116):** a governed CTO **CHARACTERIZATION** — three genuinely-functional open-region candidates
   across three different subsystems were vetted and scratch-routed and **ALL hit characterized pad-escape

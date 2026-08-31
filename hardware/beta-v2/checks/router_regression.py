@@ -2216,6 +2216,144 @@ def main():
                len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
                len(phaseA_via)), ad_addonly)
 
+        # -- G36 FBV2-P2-027/D-325 nineteenth rest-of-board incremental increment -
+        # The navigation/boot button BTN_B_N (SW7.1 button F.Cu / R9.2 pull-up
+        # B.Cu / U2.18 expander B.Cu) -- the FIRST net of the SWx user-button
+        # family -- routed onto the D-323 board by incremental_router.py after the
+        # DUPLICATE-REF MST framework fix (G37) let the MST + gate see SW7's TWO
+        # physical "pad 1" lands (7.96 mm apart) as distinct nodes.  Its MST hubs
+        # on R9.2 -> BOTH SW7.1 lands (two 0.60/0.30 Default THROUGH vias in the
+        # OPEN south button field, In1/In4 re-poured) + one SAME-LAYER B.Cu run
+        # R9.2->U2.18.  G36 pins the increment: ALL FOUR physical pads copper-
+        # connected (both SW7.1 lands driven), copper legal (19 trk 0.200 mm =
+        # 3 F.Cu + 16 B.Cu, exactly 2 0.60/0.30 through vias), both vias clear
+        # every barrel >= 0.80 mm, ADD-ONLY.
+        print('  -- G36 FBV2-P2-027/D-325 rest-of-board incremental increment --')
+        BNET = '/08_BUTTONS_EXPANDERS/BTN_B_N'
+        bn_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == BNET]
+        bn_via = [t for t in all_via if t.GetNetname() == BNET]
+
+        # BOTH physical SW7.1 lands must be copper-joined to the R9.2 hub -- the
+        # decisive proof the duplicate-number terminal is no longer left open.
+        _bn_pads = [p for f in _g18.GetFootprints() for p in f.Pads()
+                    if p.GetNetname() == BNET]
+        _sw_lands = [p for p in _bn_pads
+                     if p.GetParentFootprint().GetReference() == 'SW7'
+                     and p.GetNumber() == '1']
+        _hub = _pad('R9.2')
+        _hub_reach = {(pp.GetParentFootprint().GetReference() + '.' + pp.GetNumber(),
+                       pp.GetPosition().x, pp.GetPosition().y)
+                      for pp in _cc.GetConnectedItems(_hub) if pp.GetClass() == 'PAD'}
+        bn_conn = (len(_sw_lands) == 2
+                   and all(('SW7.1', p.GetPosition().x, p.GetPosition().y) in _hub_reach
+                           for p in _sw_lands)
+                   and any(pp[0] == 'U2.18' for pp in _hub_reach))
+        chk('G36 BTN_B_N all four pads copper-connected (BOTH SW7.1 lands + R9.2 + U2.18)',
+            'R9.2 hub joins %d SW7.1 land(s) + U2.18=%s'
+            % (sum(1 for p in _sw_lands
+                   if ('SW7.1', p.GetPosition().x, p.GetPosition().y) in _hub_reach),
+               any(pp[0] == 'U2.18' for pp in _hub_reach)), bn_conn)
+
+        bn_layers = collections.Counter(t.GetLayerName() for t in bn_trk)
+        bn_via_ok = (len(bn_via) == 2
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in bn_via))
+        bn_legal = (len(bn_trk) == 19 and set(bn_layers) == {'F.Cu', 'B.Cu'}
+                    and bn_layers['F.Cu'] == 3 and bn_layers['B.Cu'] == 16
+                    and all(t.GetWidth() == 200000 for t in bn_trk) and bn_via_ok)
+        chk('G36 BTN_B_N copper legal (19 trk 0.200 mm = 3 F.Cu + 16 B.Cu, 2 0.60/0.30 through vias)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(bn_trk), dict(bn_layers), len(bn_via),
+               sorted({t.GetWidth() for t in bn_trk})), bn_legal)
+
+        bn_gap = min([math.hypot(v.GetPosition().x - o.GetPosition().x,
+                                 v.GetPosition().y - o.GetPosition().y)
+                      for v in bn_via for o in all_via if o.GetNetname() != BNET]
+                     or [0])
+        chk('G36 BTN_B_N both vias >= 0.80 mm (centre) from every existing barrel',
+            'min centre gap = %.3f mm' % (bn_gap / 1e6), bn_gap >= 800000)
+
+        bn_addonly = (len(bn_trk) == 19 and len(bn_via) == 2
+                      and len(ad_trk) == 22 and len(rs_trk) == 10
+                      and len(sdcs_trk) == 20 and len(irtx_trk) == 13
+                      and len(uart_trk) == 7 and len(imu1_trk) == 18
+                      and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                      and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                      and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                      and len(phaseA_via) == 54)
+        chk('G36 increment is ADD-ONLY (BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'btn=%d (exp 19, 2 via), accdet=%d, reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(bn_trk), len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk),
+               len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
+               len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
+               len(phaseA_via)), bn_addonly)
+
+        # -- G37 FBV2-P2-027/D-325 DUPLICATE-REF MST framework lever -------------
+        # The bounded, generic, deterministic framework fix that unlocked the SWx
+        # user-button family, exercised as a UNIT contract on the live board.
+        # qrouter.QBoard._scan keys self.pads[(net,"REF.NUM")], so a footprint that
+        # places two physical lands with the SAME pad number on one net (a 4-pin
+        # tact switch's two "pad 1" terminals) collapses to a single node and one
+        # land is invisible to the MST -- the D-323 BTN_B_N gate FAIL.  The fix
+        # lives ENTIRELY in incremental_router.py (qrouter untouched, so every
+        # QBoard-routing fixture above stays byte-identical): physical_net_pads()
+        # keys MST nodes by physical (ref,x,y).  G37 proves the four properties
+        # the mandate requires: (a) a duplicate pad NUMBER yields DISTINCT nodes;
+        # (b) an ordinary unique-pad net is BYTE-IDENTICAL (same dict objects) to
+        # the pre-fix ref-keyed order -- no topology/rule weakening; (c) the
+        # behaviour is DETERMINISTIC; (d) the MST reaches every physical land.
+        print('  -- G37 FBV2-P2-027/D-325 duplicate-ref MST framework lever --')
+        import incremental_router as IR
+        _qb = QR.QBoard(auth)
+
+        # (a) duplicate-number lands become DISTINCT physical nodes
+        dup = IR.physical_net_pads(_qb, BNET)
+        dup.sort(key=lambda p: (p['ref'], p['x'], p['y']))
+        sw_nodes = [p for p in dup if p['ref'] == 'SW7.1']
+        chk('G37 duplicate pad number -> distinct nodes (BTN_B_N: 4 lands, TWO SW7.1)',
+            '%d nodes, SW7.1 at %s'
+            % (len(dup), sorted((round(p['x'] / 1e6, 3), round(p['y'] / 1e6, 3))
+                                for p in sw_nodes)),
+            len(dup) == 4 and len(sw_nodes) == 2
+            and sw_nodes[0]['x'] != sw_nodes[1]['x'])
+
+        # the MST over the 4 physical nodes has 3 edges and touches all 4 nodes
+        _edges = IR.mst_edges(dup)
+        _touched = set()
+        for (i, j) in _edges:
+            _touched.add(i)
+            _touched.add(j)
+        chk('G37 MST over duplicate-aware nodes spans all 4 lands (3 edges)',
+            '%d edges, %d/4 nodes touched' % (len(_edges), len(_touched)),
+            len(_edges) == 3 and len(_touched) == 4)
+
+        # (b) ordinary unique-pad net is BYTE-IDENTICAL: physical_net_pads returns
+        # the SAME dict objects, same order, as the pre-fix ref-keyed selection.
+        ONET = '/ACC_DETECT_N'
+        _old = IR.net_pads(_qb, ONET)
+        _old_by_ref = {p['ref']: p for p in _old}
+        _old_order = [_old_by_ref[r] for r in sorted(_old_by_ref)]
+        _new = IR.physical_net_pads(_qb, ONET)
+        _new.sort(key=lambda p: (p['ref'], p['x'], p['y']))
+        chk('G37 ordinary unique-pad net byte-identical (same dict OBJECTS, no phantom node)',
+            '%d==%d pads, same objects=%s'
+            % (len(_old_order), len(_new),
+               all(a is b for a, b in zip(_old_order, _new))),
+            len(_new) == len(_old_order)
+            and all(a is b for a, b in zip(_old_order, _new)))
+
+        # (c) DETERMINISTIC: a second call yields the identical physical identities
+        _again = IR.physical_net_pads(_qb, BNET)
+        _again.sort(key=lambda p: (p['ref'], p['x'], p['y']))
+        chk('G37 physical_net_pads deterministic (identical (ref,x,y) across calls)',
+            'stable',
+            [(p['ref'], p['x'], p['y']) for p in dup]
+            == [(p['ref'], p['x'], p['y']) for p in _again])
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

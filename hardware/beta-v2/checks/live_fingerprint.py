@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-323',                 # FBV2-P2-025: accelerometer/add-on presence-detect ACC_DETECT_N (R64.1 divider F.Cu / R129.2 series B.Cu / U3.17 PCAL expander GPIO B.Cu), a 3-pad cross-layer net = ONE 0.60/0.30 through via (R64.1<->R129.2, In1/In4 re-poured) + ONE same-layer B.Cu run (R129.2<->U3.17); a genuine functional low-speed CMOS detect input, PROMOTED after the cleaner-class candidate DISP_BL_CTL_STRAP (display backlight-control strap U1.16/TP2.1/R108.1/R109.1) hit a characterized local wall (ALL three MST edges NO_PATH at 0.200 mm even on the fine grid -- the dense MCU/backlight pad pocket, congestion 185, boxes every terminal; the MCU_EN_RC lesson) and after BTN_B_N (button SW7.1/R9.2/U2.18) FAILED the gate on connectivity (SW7 is a 4-pin tact switch whose two terminals share pad "1" 7.96 mm apart -> the per-ref MST leaves the second terminal unconnected; a framework limit of the whole button family, NOT a copper casualty); the via landed in the OPEN north 34.16 mm from every barrel and the realized copper clears BAT_PROTECTED_P by 3.88 mm (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
-    sha256='a7bf8bdc11f1bc39303c6f6b6c801e3a4a575add64596cc4be20745c57f9f626',
-    tracks=781,                       # 759 (D-322) + 22 ACC_DETECT_N (3 F.Cu + 19 B.Cu 0.200 mm runs: R64.1->via short F.Cu leg + via->R129.2->U3.17 B.Cu detour)
-    vias=68,                          # 67 (D-322) + 1 ACC_DETECT_N 0.60/0.30 through via at (57.900,38.800)
+    decision='D-325',                 # FBV2-P2-027: the DUPLICATE-REF MST framework increment. BTN_B_N (navigation/boot button SW7.1 F.Cu / R9.2 pull-up B.Cu / U2.18 expander B.Cu) -- the FIRST net of the SWx user-button family -- routed + PROMOTED after a bounded, generic, deterministic framework fix let the MST + gate see a footprint's TWO physical "pad 1" lands as distinct nodes (SW7 is a 4-pin tact switch whose two mechanically-linked pad-"1" terminals sit 7.96 mm apart at (49.520,96.750) and (57.480,96.750); the old (net,'REF.NUM')-keyed collapse hid one land -> D-323 gate FAIL open_edges 2->1). physical_net_pads() now keys MST nodes by physical (ref,x,y) and net_open_edges() counts copper clusters over physical pads, matching KiCad's own ratsnest (4 lands -> 3 edges). BTN_B_N MST = R9.2 hub -> BOTH SW7.1 lands (two 0.60/0.30 through vias at (48.300,96.750) and (56.300,95.600), In1/In4 re-poured) + one same-layer B.Cu run R9.2->U2.18; 19 tracks (3 F.Cu + 16 B.Cu 0.200 mm), 2 vias, ALL FOUR physical pads in one copper cluster (open_edges 3->0), vias >= 2.915 mm from every barrel, OPEN south button field 11 mm clear of BAT_PROTECTED_P (zero D-269). Ordinary unique-pad nets byte-identical; router_regression G1-G35 unchanged
+    sha256='35d32343af5146b952e5390898764fd326742dc88b5e146cf0c5f292dc14a220',
+    tracks=800,                       # 781 (D-323) + 19 BTN_B_N (3 F.Cu short via legs + 16 B.Cu: R9.2 hub -> two SW7.1 lands via 2 through vias + R9.2->U2.18 run)
+    vias=70,                          # 68 (D-323) + 2 BTN_B_N 0.60/0.30 through vias at (48.300,96.750) and (56.300,95.600)
     copper_layers=6,
-    zones=41,                         # unchanged (via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=665,                     # 667 (D-322) - 2 (ACC_DETECT_N 3-pad net fully connected: 2 MST edges closed)
-    journal=116,                      # 114 (D-322) + 2 ACC_DETECT_N REST_INC edges
+    zones=41,                         # unchanged (2 vias -> only the In1/In4 GND reference planes re-poured for the anti-pads; zone COUNT constant)
+    ratsnest=662,                     # 665 (D-323) - 3 (BTN_B_N 4-physical-pad net fully connected: 3 MST edges closed, both SW7.1 lands driven)
+    journal=119,                      # 116 (D-323) + 3 BTN_B_N REST_INC edges (R9.2<->SW7.1 x2 + R9.2<->U2.18)
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

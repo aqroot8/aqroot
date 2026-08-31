@@ -52,15 +52,16 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # current promoted board (the frozen per-milestone evidence lives in the audits).
 # The sha / counts now come from the shared single-source-of-truth
 # live_fingerprint.py so this pin is bumped in ONE place per increment.
-# Current pin: FBV2-P2-025 / D-323 promoted the EIGHTEENTH rest-of-board increment
-# (accelerometer/add-on presence-detect ACC_DETECT_N, R64.1 divider F.Cu / R129.2
-# series B.Cu / U3.17 PCAL expander GPIO B.Cu, a 3-pad cross-layer net = ONE
-# 0.60/0.30 through via + ONE same-layer B.Cu run; PROMOTED after the cleaner-class
-# DISP_BL_CTL_STRAP hit a characterized local wall (all three MST edges NO_PATH at
-# 0.200 mm) and after BTN_B_N failed the gate on connectivity (SW7 duplicate-ref
-# tact-switch terminals, a whole-button-family framework limit); in an OPEN region
-# 3.88 mm-realized clear of BAT_PROTECTED_P, zero D-269) onto the D-322 board:
-# 759 + 22 = 781 tracks, 67 + 1 = 68 vias, journal 114 + 2 = 116.
+# Current pin: FBV2-P2-027 / D-325 promoted the NINETEENTH rest-of-board increment
+# AND the duplicate-ref MST framework fix that unlocked it: BTN_B_N (navigation/boot
+# button SW7.1 F.Cu / R9.2 pull-up B.Cu / U2.18 expander B.Cu) -- the FIRST net of
+# the SWx user-button family.  SW7 is a 4-pin tact switch whose two mechanically-
+# linked terminals both carry pad "1" (7.96 mm apart); physical_net_pads() now keys
+# MST nodes by physical (ref,x,y) and net_open_edges() counts copper clusters over
+# physical pads, so the MST + gate drive BOTH SW7.1 lands.  MST = R9.2 hub -> both
+# SW7.1 lands (two 0.60/0.30 through vias, In1/In4 re-poured) + R9.2->U2.18 B.Cu; in
+# an OPEN south button field ~11 mm clear of BAT_PROTECTED_P, zero D-269) onto the
+# D-323 board: 781 + 19 = 800 tracks, 68 + 2 = 70 vias, journal 116 + 3 = 119.
 import live_fingerprint as LFP
 EXPECT_SHA = LFP.SHA
 EXPECT_TRACKS = LFP.TRACKS
@@ -74,7 +75,7 @@ ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
 TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE SD_CARD_DETECT_N
 XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP UART0_TXD_DBG
-IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N""".split())
+IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N BTN_B_N""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
