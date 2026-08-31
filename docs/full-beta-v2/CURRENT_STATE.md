@@ -13,7 +13,42 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-018 / D-316 (this checkpoint — TWELFTH REST-OF-BOARD INCREMENT PROMOTED; a SINGLE west XGPIO net
+- **FBV2-P2-019 / D-317 (this checkpoint — the SINGLE west XGPIO net `XGPIO2` is now a MEASURED
+  CORRIDOR-CAPACITY WALL on the live D-316 board; NOT PROMOTED; ZERO authoritative copper change):** a governed
+  CTO **CHARACTERIZATION** — `XGPIO2` (R53.1 F.Cu → U3.6 B.Cu), named at D-316 as the next single-net candidate,
+  does **NOT** route on the live D-316 board; the authoritative PCB is **byte-identical to committed D-316**
+  (`sha256 d730c74d186ebcc7d2f0aa513776778ce1cb9c9659029a2fffd5e2261e3ac97d`, 691 trk / 67 via / 6 layers / 41
+  zones / ratsnest 676 / journal 105). Autonomy CONTINUES, **no owner decision.** Starting HEAD `6410e1f` (D-316;
+  pushed; `origin/master` identical). **The pre-D-316 0.6859 mm BPP margin did NOT survive**, exactly as the task
+  required verifying: `XGPIO2` alone @ 0.200 mm Default → **FAIL NO_FAR_RUN** (`w/screen_019.py`, one managed
+  foreground process, 67 existing barrels injected incl. the D-316 XGPIO3 via) — escape from U3.6 succeeds but the
+  long ~116 mm F.Cu haul from R53.1 has no legal 0.200 mm corridor. The **one authorized bounded alternative**,
+  the existing D-310 `via_offset` transition relocation (2.5 mm, ZERO new router logic; `w/screen_019_offset.py`),
+  **also FAILs NO_FAR_RUN** → the wall is the **haul corridor**, not the via site. **This is the D-315 wall
+  realized:** D-315 proved the west F.Cu corridor admits ONE 116 mm haul; D-316 spent it on the `XGPIO3` haul (now
+  REAL laid copper); `XGPIO2` (R53, U3.6) is the blocked second parallel haul. On the D-314 board `XGPIO2` alone
+  routed at (55.300,78.150), but that site is now 0.450 mm centre-to-centre from the D-316 XGPIO3 barrel
+  (55.300,77.700) — a hole-hole 0.150 mm < 0.25 collision. **INTEGRITY (board PRISTINE):** `sha256 d730c74d…`
+  before/after both screens (no `route`/`gate`/`promote`; only gitignored `w/{SGL019_2,SGL019O_2}` scratch; no
+  orphan; git tree clean). `router_regression.py` ALL PASS **G1–G29** twice (deterministic); `incremental_probe_006..017`
+  + `phaseB_bringup_probe_005` (691/67/105; 20 routed rest nets, 144 unrouted) all PASS; `live_fingerprint.py` SoT
+  still at D-316. Independent kicad-cli DRC `{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199,
+  unconnected_items:499}` (clearance 0) matches the D-316 gate. D-269/D-264/DRU board-swap trivially byte-identical
+  (current board IS committed D-316 → no regression possible; `d269` FAIL(2)/`d264` 2-failed/`dru` FAIL(2) are the
+  known synthetic/intrinsic flakes characterized at D-316). **Opportunity:** the west F.Cu corridor is now
+  saturated for single hauls — the remaining west members `XGPIO2/4/5/6/7` all contend for the one spent corridor
+  as *second* hauls (do NOT keep retrying them); the In2/In3 inner signal layers remain fully available and an
+  **inner-layer west-XGPIO haul** is the now concretely-justified deferred **framework** task. **Open owner
+  decisions: NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback: none needed (no authoritative change; HEAD
+  advances by documentation only). **Next: FBV2-P2-020 — route the next clean rest-of-board increment OUTSIDE the
+  saturated west XGPIO F.Cu corridor (single net or small coherent group) at its netclass Default under the D-286
+  gate; add `incremental_probe_018.py`+`G30` on promote; do NOT retry single west XGPIO F.Cu hauls, the
+  XGPIO2+XGPIO3 PAIR, or `U11_PROG`/`PWR_SENSE`; hold the inner-layer west-XGPIO haul as the deferred framework
+  task; 144/164 rest nets unrouted.** Full analysis:
+  [`audits/2026-08-31-p2-019-d317-xgpio2-single-west-corridor-capacity-wall-post-d316-characterized-no-promote.md`](audits/2026-08-31-p2-019-d317-xgpio2-single-west-corridor-capacity-wall-post-d316-characterized-no-promote.md).
+  This checkpoint is written in the D-317 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-018 / D-316 (prior checkpoint — TWELFTH REST-OF-BOARD INCREMENT PROMOTED; a SINGLE west XGPIO net
   `XGPIO3` at the 0.200 mm Default clearance; the D-315 positive lead realised; ZERO router-logic change):** a
   governed CTO **ACCEPT + PROMOTE** — `XGPIO3` (R54.1 F.Cu → U3.7 B.Cu), the fifth XGPIO0..9 bank member, is
   routed at the **0.200 mm Default clearance** (NOT the 0.300 mm blanket the D-313/D-314 pilot PAIRS used) and
