@@ -6064,3 +6064,6 @@ The accepted inner-layer long-haul framework was fast-screened on XGPIO6/XGPIO7.
 ## 2026-08-31 - FBV2-P2-036: D-334 — MCU EN same-face boxed-anchor pilot bounded
 
 A bounded generic prototype successfully staged `U1.3` toward explicit F.Cu anchors, but none opened a legal 0.200 mm path to `C1.2`; the prototype was removed rather than retained as dead routing logic. No authoritative copper changed. Fresh regression, focused probes, Phase-B and KiCad DRC reconfirm D-332 unchanged with zero clearance class. Next is a layer-changing/owned-copper endpoint framework for the coherent west-button family. Full evidence: [`audits/2026-08-31-p2-036-d334-mcu-en-boxed-anchor-screen.md`](audits/2026-08-31-p2-036-d334-mcu-en-boxed-anchor-screen.md).
+## 2026-08-31 - FBV2-P2-037: D-335 — west-button owned-anchor framework bounded
+
+The bounded layer-changing/owned-copper prototype failed at the boxed pull-up staging step for both `BTN_DOWN_N` and `BTN_A_N`; no scratch route reached promotion and the prototype was removed. D-332 copper and the full validation histogram remain unchanged. Framework-first non-placement mechanisms are now bounded for this family; next is a reversible pull-up placement ECO screen. Full evidence: [`audits/2026-08-31-p2-037-d335-west-button-owned-anchor-screen.md`](audits/2026-08-31-p2-037-d335-west-button-owned-anchor-screen.md).
