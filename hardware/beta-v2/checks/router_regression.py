@@ -2485,6 +2485,29 @@ def main():
             plan == {'a': 'R7.2', 'b': 'U2.16', 'attach': 'SW5.1', 'far': 'F'}
             and not ordinary)
 
+        # -- G40 routing-wall registry / framework-first screening -----------
+        print('  -- G40 routing-wall registry blocks disproven blind retries --')
+        walls = json.load(open(IR.WALLS_JSON, encoding='utf-8'))
+        ids = [w.get('id') for w in walls.get('walls', [])]
+        down_blocked = False
+        try:
+            IR.enforce_wall_registry('BTN_DOWN_N', IR.GROUPS['BTN_DOWN_N'])
+        except RuntimeError:
+            down_blocked = True
+        right_allowed = True
+        try:
+            IR.enforce_wall_registry('BTN_RIGHT_N', IR.GROUPS['BTN_RIGHT_N'])
+        except RuntimeError:
+            right_allowed = False
+        chk('G40 wall registry is valid, deterministic and non-duplicated',
+            'schema=%s walls=%d unique=%d' %
+            (walls.get('schema_version'), len(ids), len(set(ids))),
+            walls.get('schema_version') == 1 and len(ids) >= 9
+            and len(ids) == len(set(ids)) and all(ids))
+        chk('G40 disproven ordinary button retry is blocked while accepted replacement framework is allowed',
+            'BTN_DOWN blocked=%s BTN_RIGHT allowed=%s' %
+            (down_blocked, right_allowed), down_blocked and right_allowed)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

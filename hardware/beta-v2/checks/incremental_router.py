@@ -53,6 +53,7 @@ AUTH = os.path.join(RU.AUTH_DIR, RU.PCBNAME)
 JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 WORK = os.path.join(SP, 'w')
 BASELINE_JSON = os.path.join(SP, 'incremental_baseline_006.json')
+WALLS_JSON = os.path.join(SP, 'routing_walls.json')
 
 # --------------------------------------------------------------------------- #
 # GROUP REGISTRY.  A group is a bounded, isolated set of rest-of-board nets that
@@ -1546,6 +1547,31 @@ def scratch_pcb(name):
     return os.path.join(WORK, 'INC_' + name, RU.PCBNAME)
 
 
+def routing_wall_for(group):
+    """Return advisory wall records matching a group's declared base nets."""
+    if not os.path.exists(WALLS_JSON):
+        return []
+    data = json.load(open(WALLS_JSON, encoding='utf-8'))
+    wanted = set(group.get('nets', []))
+    return [w for w in data.get('walls', [])
+            if wanted.intersection(w.get('nets', []))]
+
+
+def enforce_wall_registry(name, group):
+    """Block a disproven ordinary retry unless a replacement plan is explicit."""
+    for wall in routing_wall_for(group):
+        if not wall.get('do_not_retry'):
+            continue
+        replacement = bool(group.get('hop_anchor_plan') or
+                           group.get('inner_long_haul_plan') or
+                           group.get('boxed_endpoint_plan') or
+                           group.get('connector_fanout_plan'))
+        if not replacement:
+            raise RuntimeError(
+                '%s is a registered routing wall (%s); select an allowed framework before retrying' %
+                (name, wall.get('id', 'unknown')))
+
+
 # --------------------------------------------------------------------------- #
 # In1/In4 GND REFERENCE PLANES.  D-rules and [[fbv2-p2 In1/In4 GND roles]] pin
 # In1.Cu and In4.Cu as the two solid GND reference planes.  A through via on a
@@ -1589,6 +1615,7 @@ def refill_planes(board):
 
 def cmd_route(name):
     group = GROUPS[name]
+    enforce_wall_registry(name, group)
     pcb = RU.fresh(WORK, 'INC_' + name)          # copy of the authoritative project
     qb = QR.QBoard(pcb)
     # qrouter._scan omits existing vias; register them as obstacles on this
