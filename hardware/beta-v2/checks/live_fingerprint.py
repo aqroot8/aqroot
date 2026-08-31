@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-319',                 # FBV2-P2-021: debug-console UART TX UART0_TXD_DBG (U1.37 MCU -> TP35.1 test point), dedicated 2-pad point-to-point net, SAME-LAYER F.Cu MST, NO via -- the cleanest class (no plane re-pour), in an OPEN region 31.3 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
-    sha256='57dcc8affb6c0f85f747fba025463b9cf0897c6712709692151020f56fdb8adf',
-    tracks=716,                       # 709 (D-318) + 7 UART0_TXD_DBG (single same-layer F.Cu MST run, 7 segments)
+    decision='D-320',                 # FBV2-P2-022: IR transmit carrier CONTROL leg IR_TX_GPIO16 (U1.9 ESP32 GPIO16 -> R22.1 series-drive resistor), dedicated 2-pad point-to-point net, SAME-LAYER F.Cu MST, NO via -- the cleanest class (no plane re-pour); the low-current MCU control GPIO, isolated by series R22 from the IR_GATE switch node and the IR_LED_A/K emitter power (both excluded switching/emitter nets); in an OPEN region 35.2 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
+    sha256='4e706490389655cb8b68f8c15249a813072f36a9ea9e6ffaeb1fdd2194c0bf34',
+    tracks=729,                       # 716 (D-319) + 13 IR_TX_GPIO16 (single same-layer F.Cu MST run, detoured 13 segments around the GND pinch)
     vias=67,                          # unchanged (no via -- both pads on F.Cu)
     copper_layers=6,
     zones=41,                         # unchanged (no via -> no plane re-pour; zone COUNT + FILL constant)
-    ratsnest=672,                     # 673 (D-318) - 1 (UART0_TXD_DBG 2-pad net fully connected)
-    journal=109,                      # 108 (D-318) + 1 UART0_TXD_DBG REST_INC edge
+    ratsnest=671,                     # 672 (D-319) - 1 (IR_TX_GPIO16 2-pad net fully connected)
+    journal=110,                      # 109 (D-319) + 1 IR_TX_GPIO16 REST_INC edge
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

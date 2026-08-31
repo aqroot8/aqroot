@@ -3267,5 +3267,16 @@
   "mm": 31.755,
   "requested_connected": true,
   "group": "UART0_TXD_DBG"
+ },
+ {
+  "net": "/IR_TX_GPIO16",
+  "a": "R22.1",
+  "b": "U1.9",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 23.153,
+  "requested_connected": true,
+  "group": "IR_TX_GPIO16"
  }
 ]

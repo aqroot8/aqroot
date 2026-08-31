@@ -1973,6 +1973,62 @@ def main():
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
                len(phaseA_trk), len(phaseA_via)), uart_addonly)
 
+        # -- G32 FBV2-P2-022/D-320 fifteenth rest-of-board incremental increment -
+        # The IR transmit carrier CONTROL leg IR_TX_GPIO16 (U1.9 ESP32 GPIO16 ->
+        # R22.1 series-drive resistor), routed onto the D-319 board by
+        # incremental_router.py in an OPEN region -- away from the saturated
+        # west-XGPIO F.Cu corridor, the U11/BQ25185 power-tree wall, and the
+        # RF/NFC/USB/crystal/switching/rail/community-header mass.  A DEDICATED
+        # 2-pad net that is ISOLATED by the series resistor R22 from the switching
+        # output: R22.2 belongs to the SEPARATE IR_GATE net (Q1 gate / R23) and
+        # the emitter-power path is IR_LED_A/IR_LED_K (both EXCLUDED switching/
+        # emitter nets, NOT part of this increment) -- so this is the low-current
+        # MCU carrier/control GPIO, distinct from the emitter power / switch path.
+        # Both pads on F.Cu, so its single MST edge is a SAME-LAYER F.Cu run with
+        # NO via -- the cleanest incremental class (no through via, no In1/In4
+        # plane re-pour, no via-clearance risk; the D-309/D-318/D-319 no-via
+        # same-layer mechanic).  The router detoured the run to 13 F.Cu segments
+        # (23.2 mm) around the GND pinch on the straight path.  Default netclass
+        # (0.200 mm); MEASURED 35.2 mm clear of BAT_PROTECTED_P -> ZERO D-269
+        # involvement.  G32 pins the increment: both pads copper-connected,
+        # copper legal (13 trk 0.200 mm all F.Cu, ZERO vias), and ADD-ONLY.
+        print('  -- G32 FBV2-P2-022/D-320 rest-of-board incremental increment --')
+        IRTXNET = '/IR_TX_GPIO16'
+        irtx_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == IRTXNET]
+        irtx_via = [t for t in all_via if t.GetNetname() == IRTXNET]
+
+        j_irtx = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('U1.9')) if p.GetClass() == 'PAD'}
+        irtx_conn = {'R22.1'}.issubset(j_irtx)
+        chk('G32 IR_TX_GPIO16 both pads copper-connected (U1.9/R22.1)',
+            'U1.9 joins %s' % sorted(j_irtx & {'R22.1'}), irtx_conn)
+
+        irtx_layers = {t.GetLayerName() for t in irtx_trk}
+        irtx_legal = (len(irtx_trk) == 13 and len(irtx_via) == 0
+                      and irtx_layers == {'F.Cu'}
+                      and all(t.GetWidth() == 200000 for t in irtx_trk))
+        chk('G32 IR_TX_GPIO16 copper legal (13 trk 0.200 mm all F.Cu, ZERO vias)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(irtx_trk), sorted(irtx_layers), len(irtx_via),
+               sorted({t.GetWidth() for t in irtx_trk})), irtx_legal)
+
+        irtx_addonly = (len(irtx_trk) == 13 and len(irtx_via) == 0
+                        and len(uart_trk) == 7
+                        and len(imu1_trk) == 18
+                        and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                        and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                        and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                        and len(phaseA_via) == 54)
+        chk('G32 increment is ADD-ONLY (IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'irtx=%d (exp 13, 0 via), uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(irtx_trk), len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk),
+               len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk),
+               len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)), irtx_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

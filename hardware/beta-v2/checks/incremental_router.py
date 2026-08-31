@@ -467,6 +467,37 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['UART0_TXD_DBG'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-022 / D-320 -- the IR transmit carrier CONTROL leg, a clean-
+    # functional increment in an OPEN region (away from the west-XGPIO F.Cu
+    # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
+    # rails/community mass).  IR_TX_GPIO16 is the MCU-side low-current control
+    # leg of the IR transmit path: ESP32 (U1) GPIO16 pad U1.9 (F.Cu SMD) ->
+    # series-drive resistor R22.1 (F.Cu SMD).  It is a DEDICATED 2-pad net that
+    # is ISOLATED by the series resistor R22 from the switching output: R22.2
+    # belongs to the SEPARATE net IR_GATE (Q1 gate / R23), and the IR-emitter
+    # power path is IR_LED_A/IR_LED_K (D1/Q1 drain) -- both EXCLUDED as
+    # switching/emitter nets and NOT part of this increment.  So this is exactly
+    # the low-current MCU carrier/control GPIO, distinct from the emitter power
+    # / switch path (the D-319 mandate's distinction).  Both pads on F.Cu so its
+    # single MST edge is a SAME-LAYER F.Cu run with NO via -- the cleanest
+    # incremental class (no plane re-pour, no via-clearance risk), the same
+    # no-via same-layer mechanic proven at D-305/D-307/D-309/D-318/D-319.
+    # Default netclass (0.200 mm width/clearance).  MEASURED (w/vet_021.py on the
+    # live D-319 board): span/MST 8.35 mm single edge, congestion 38 (lowest of
+    # the genuinely-clean functional shortlist), 35.2 mm clear of the
+    # BAT_PROTECTED_P trunk -- ZERO D-269 involvement.  Promotion decided by the
+    # real full-board gate (D-286), not geometry.
+    'IR_TX_GPIO16': dict(
+        sheet='07_IR',
+        desc='IR transmit carrier control leg IR_TX_GPIO16 (U1.9 ESP32 GPIO16 '
+             '-> R22.1 series-drive resistor); low-current MCU control GPIO, '
+             'isolated by R22 from the IR_GATE switch node and IR_LED_A/K '
+             'emitter power, dedicated 2-pad point-to-point net, all F.Cu SMD, '
+             'no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['IR_TX_GPIO16'],
+    ),
 }
 
 
