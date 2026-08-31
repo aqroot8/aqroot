@@ -13,7 +13,43 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-025 / D-323 (this checkpoint — EIGHTEENTH REST-OF-BOARD INCREMENT PROMOTED; the accelerometer/
+- **FBV2-P2-026 / D-324 (this checkpoint — CHARACTERIZATION, NO COPPER CHANGE; the board is byte-identical
+  to committed D-323, `sha256 a7bf8bdc…`, 781 tracks / 68 vias / 6 layers / 41 zones / ratsnest 665 /
+  journal 116):** a governed CTO **CHARACTERIZATION** — three genuinely-functional open-region candidates
+  across three different subsystems were vetted and scratch-routed and **ALL hit characterized pad-escape
+  walls at 0.200 mm**, so nothing was promotable via the proven mechanics without a deferred framework change
+  (kept deferred by this mandate); autonomy CONTINUES, **no owner decision.** Starting HEAD `89acc71` (D-323;
+  pushed; `origin/master` identical). ZERO copper change, ZERO router-logic change (three additive `GROUPS`
+  characterization entries + comments only — the `MCU_EN_RC`/`DISP_CS_N`/`BTN_B_N` do-not-retry-record
+  pattern). A fresh read-only screen (`w/screen_020.py`) measured all 138 unrouted rest nets (38 ALLOW / 100
+  EXCL); the 38 ALLOW resolve to ~6 already-characterized walls + ~7 `SWx` duplicate-ref buttons (deferred) +
+  converter/USB-C role-traps + the `BQ25185_STAT` power-tree pair + three huge hauls + only THREE
+  genuinely-clean functional candidates. A read-only geometry vet (`w/vet_021.py`) measured the three, each
+  then scratch-routed: **(1) `BMI270_INT1_RAW`** (BMI270 IMU INT1 sensor-side leg `U4.4` B → series `R18.1` F,
+  R18-isolated from the D-318 MCU-side strap; would COMPLETE the IMU interrupt path like D-308 completed
+  D-304) → FAIL `NO_FAR_RUN` at 0.200 mm (R18.1 boxed in the dense MCU-south pocket, no F.Cu exit; the
+  `MCU_EN_RC` class); **(2) `ACC_POWER_FAULT_N`** (ACC 3V3 power-fault status `U20.6`+`U22.6`/`R103.2`/`TP27`+
+  `TP33` → `U3.18`, all B.Cu) → FAIL `NO_LEGAL_ESCAPE` on `U20.6` (boxed by own-part pads U20.5/U20.1/U20.4;
+  3 of 5 edges route but the net can't complete; the `ISET`/`XGPIO2` boxed-pin class); **(3) `DISP_BL_CTL`**
+  (backlight-driver control leg `R109.2` F → `U17.4` TPS61169 CTRL logic input B, R109-isolated) → FAIL
+  `NO_FAR_RUN` at 0.200 mm (R109.2 in the same U1.16/backlight cluster that walled `DISP_BL_CTL_STRAP` at
+  D-323). None has a bounded fix; all three `GROUPS` entries carry their OUTCOME annotation. Board untouched
+  (`sha256 a7bf8bdc…` re-verified before/after; route writes only gitignored scratch;
+  `incremental_baseline_006.json` reverted stale-by-design). Integrity all PASS: `router_regression` G1–G35
+  deterministic twice; `incremental_probe_006..023` + `phaseB_bringup_probe_005` (781/68/116; 26 routed, 138
+  unrouted) PASS; NO fingerprint bump / NO new probe (no copper — the D-315 precedent); independent kicad-cli
+  DRC identical (clearance 0); D-269/D-264/DRU trivially unchanged (byte-identical board → no regression
+  possible). **STRUCTURAL FINDING:** after 18 promoted increments the readily-clean open-region functional
+  seam reachable by the proven F/B same-layer + single-through-via mechanics is essentially mined out — the
+  138 remaining rest nets are dominated by role-excluded traps (~100), characterized walls, the `SWx`
+  duplicate-ref button family, the saturated west-XGPIO F.Cu corridor, J1 display-FPC hauls, and boxed
+  MCU/IC-pin pockets. **P2-027 recommendation:** explicitly SELECT one deferred bounded framework task — the
+  **duplicate-ref MST** (unlocks the ~7-net `SWx` user-input button family; `BTN_B_N` already routed ALL OK
+  at D-323, failed only on the collapse — highest value) is recommended, or the In2/In3 inner-layer west-XGPIO
+  traverse. Rollback: not applicable (no copper change). Full analysis:
+  [`audits/2026-08-31-p2-026-d324-characterization-three-pad-escape-walls-no-promote.md`](audits/2026-08-31-p2-026-d324-characterization-three-pad-escape-walls-no-promote.md).
+  **138/164 rest nets unrouted; PCB routing ~18 %, overall ~76 %, readiness ~78 % (JLCPCB file unchanged).**
+- **FBV2-P2-025 / D-323 (prior checkpoint — EIGHTEENTH REST-OF-BOARD INCREMENT PROMOTED; the accelerometer/
   add-on presence-detect `ACC_DETECT_N`, a 3-pad cross-layer net = ONE 0.60/0.30 through via + ONE same-layer
   B.Cu run, in an OPEN region whose realized copper clears `BAT_PROTECTED_P` by 3.88 mm (zero D-269); a genuine
   functional detect, promoted after the cleaner-class `DISP_BL_CTL_STRAP` hit a characterized local wall and

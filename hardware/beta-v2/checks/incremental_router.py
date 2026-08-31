@@ -767,6 +767,140 @@ GROUPS = {
         via_dia=600000, via_drill=300000,
         nets=['ACC_DETECT_N'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-026 / D-324 -- the BMI270 IMU INT1 interrupt SENSOR-SIDE leg, a
+    # clean-functional increment in an OPEN region (away from the west-XGPIO F.Cu
+    # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
+    # class-D/rails/community mass, and every characterized wall: the MCU_EN_RC
+    # boxed U1.3 pocket, the J1 display-FPC interior haul DISP_CS_N/DISP_DC, the
+    # BOOT_N poor detours, the DISP_BL_CTL_STRAP boxed pocket, U11_PROG/PWR_SENSE,
+    # and the SWx duplicate-ref button family).  BMI270_INT1_RAW is the IMU-output
+    # side of the BMI270 (U4) INT1 interrupt: the INT1 pin U4.4 (B.Cu SMD) -> the
+    # series/damping resistor near pad R18.1 (F.Cu SMD).  R18 series-isolates this
+    # RAW sensor-output leg from the already-routed D-318 MCU-side strap
+    # BMI270_INT1_STRAP (R18.2/R110.1/TP3.1/U1.15) -- so this increment COMPLETES
+    # the IMU INT1 interrupt path on the sensor side, exactly the way D-308
+    # FRONT_RGB_LED completed the D-304 FRONT_RGB indicator (the control-leg /
+    # completion-leg pattern the mandate welcomes), a genuine coherent functional
+    # net, NOT a shared high-speed bus (INT1 is a dedicated point-to-point
+    # interrupt line).  The two pads are on DIFFERENT faces (R18.1 F.Cu, U4.4
+    # B.Cu) so the single MST edge is CROSS-LAYER -> exactly ONE board-legal
+    # 0.60/0.30 Default through via (the D-306/D-308/D-323 mechanic with the
+    # In1/In4 GND-plane re-pour for the single anti-pad).  The via lands on the
+    # single R18.1<->U4.4 haul in open board and is NOT the U2 west-edge escape
+    # (U4 is the mid-board IMU, not the U2 display escape column), so NO via_offset
+    # is needed (the always-on existing-via obstacle injection + the defensive
+    # clearance re-proof arbitrate any barrel proximity).  Default netclass
+    # (0.200 mm width/clearance).  MEASURED (w/vet_021.py on the live D-323
+    # board): 2 pads, single MST edge 48.81 mm (R18.1<->U4.4), congestion 365
+    # (bbox), straight-MST 5.447 mm from the BAT_PROTECTED_P trunk -- >> the
+    # D-269 0.300 mm floor, so D-269 is satisfied by geometry and arbitrated by
+    # the real full-board D-269-aware gate; the vet's 0.005 mm straight-line
+    # proximity to an XGPIO5 pad is GUIDANCE only (the router detours; the real
+    # D-286 full-board gate arbitrates legality, as IR_TX_GPIO16's 0.062 mm
+    # straight line detoured clean at D-320).  Promotion decided by the real
+    # full-board gate (D-286), not geometry.
+    #
+    # FBV2-P2-026 OUTCOME -- CHARACTERIZED LOCAL WALL, NOT PROMOTED.  On the live
+    # D-323 board the single cross-layer haul R18.1<->U4.4 returns FAIL
+    # NO_FAR_RUN at 0.200 mm (no legal corridor even on the 0.05/0.025 mm fine
+    # grid): the F.Cu escape from R18.1 (44.474,116.721) is boxed in the dense
+    # MCU-south pocket -- R18.1 sits between the accepted D-318 BMI270_INT1_STRAP
+    # copper (R18.2 is the OTHER pad of the SAME 0402 resistor, 0.84 mm away, now
+    # carrying strap copper), the USB_D_MCU diff pair, and the U1 pad row -- so
+    # the 48.81 mm haul to the mid-board IMU has no legal F.Cu exit at 0.200 mm.
+    # The vet's 0.005 mm straight-line nearest-copper was REAL congestion at the
+    # escape, not merely guidance.  This is the same dense-MCU-adjacent-pocket
+    # wall class as MCU_EN_RC (U1.3) and DISP_BL_CTL_STRAP (U1.16); do NOT naively
+    # retry.  D-324 instead promoted the all-B.Cu no-via ACC_POWER_FAULT_N (below,
+    # which gates clean).
+    'BMI270_INT1_RAW': dict(
+        sheet='05_I2C_DEVICES',
+        desc='BMI270 IMU INT1 interrupt sensor-side leg BMI270_INT1_RAW (U4.4 IMU '
+             'INT1 pin B.Cu -> R18.1 series resistor F.Cu); completes the D-318 '
+             'MCU-side BMI270_INT1_STRAP through series R18, low-current low-speed '
+             'CMOS interrupt, dedicated 2-pad point-to-point net, one cross-layer '
+             'through via in open board (not the U2 escape), no via_offset',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BMI270_INT1_RAW'],
+    ),
+    # FBV2-P2-026 / D-324 -- the accelerometer POWER-FAULT status net, the bounded
+    # ALTERNATIVE promoted after BMI270_INT1_RAW hit the characterized MCU-south
+    # escape wall (above).  ACC_POWER_FAULT_N is the low-current accelerometer/
+    # add-on 3V3 power-fault status aggregation: the two ACC load-switch fault
+    # outputs U20.6 + U22.6 (the accelerometer 3V3 load switches whose local
+    # control ACC_3V3_CTL was routed at D-305), pull resistor R103.2, two test
+    # points TP27.1 + TP33.1, read back at the PCAL9535A expander GPIO U3.18 -- a
+    # genuine functional low-speed CMOS status/fault line (NOT a switching output,
+    # NOT a rail, NOT the community-header GPIO bank: U3.18 is an internal
+    # peripheral GPIO; U20/U22 are the ACC load switches whose FAULT open-drain
+    # STATUS pins are read here, not their power path).  All SIX pads are on B.Cu
+    # SMD, so the 6-pad MST is FIVE SAME-LAYER B.Cu runs with NO via -- the
+    # cleanest incremental class (no through via, no In1/In4 plane re-pour, no
+    # via-clearance risk; the D-304/D-305/D-307/D-322 all-B.Cu no-via mechanic).
+    # A local mid-board cluster around the ACC power switches, span 35.8 mm, MST
+    # edges all short (3.16-13.63 mm).  Default netclass (0.200 mm width/
+    # clearance).  MEASURED (w/vet_021.py on the live D-323 board): 6 pads, MST
+    # edges U22.6<->R103.2 12.52 mm + R103.2<->U20.6 9.37 mm + U20.6<->TP27.1
+    # 4.22 mm + TP27.1<->U3.18 13.63 mm + U3.18<->TP33.1 3.16 mm, congestion 292
+    # (bbox), straight-MST 3.544 mm from the BAT_PROTECTED_P trunk -- >> the
+    # D-269 0.300 mm floor, so D-269 is satisfied by geometry and arbitrated by
+    # the real full-board D-269-aware gate; the vet's 0.052 mm (ACC_3V3_EN) /
+    # 0.094 mm (XGPIO8) straight-line proximities on the interior edges are
+    # GUIDANCE only (the router detours; the real D-286 full-board gate arbitrates
+    # legality).  Promotion decided by the real full-board gate (D-286), not
+    # geometry.
+    #
+    # FBV2-P2-026 OUTCOME -- CHARACTERIZED LOCAL WALL, NOT PROMOTED.  On the live
+    # D-323 board the ACC load-switch fault pin U20.6 has NO LEGAL ESCAPE at
+    # >= 0.200 mm: it is boxed on B.Cu by its own-part neighbour pads (U20.5,
+    # U20.1, U20.4) and an existing track, so the two MST edges that hub through
+    # U20.6 (R103.2<->U20.6 and U20.6<->TP27.1) both fail; the other three edges
+    # (R103.2<->U22.6, TP27.1<->U3.18, U3.18<->TP33.1) route clean, but the net
+    # cannot complete.  This is the same pad-local boxed-pin wall class as ISET
+    # (U11.8, D-307) and XGPIO2 (U3.6, D-315) -- a middle pin flanked by same-part
+    # neighbours with no legal 0.200 mm corridor; no bounded fix without a
+    # placement / clearance change (forbidden).  Do NOT naively retry.
+    'ACC_POWER_FAULT_N': dict(
+        sheet='(top)',
+        desc='accelerometer/add-on 3V3 power-fault status ACC_POWER_FAULT_N '
+             '(U20.6 + U22.6 ACC load-switch fault outputs / R103.2 pull / '
+             'TP27.1 + TP33.1 test points -> U3.18 PCAL expander GPIO readback); '
+             'low-current low-speed CMOS status/fault line, 6-pad multi-terminal, '
+             'all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['ACC_POWER_FAULT_N'],
+    ),
+    # FBV2-P2-026 -- DISP_BL_CTL scratch-tested as a second bounded functional
+    # alternative (the display backlight-driver CONTROL leg).  U17 is the
+    # TPS61169DCKR white-LED backlight boost driver; DISP_BL_CTL drives its U17.4
+    # CTRL pin (the low-current PWM/enable LOGIC control input) through series
+    # resistor R109.2 (F.Cu) -- R109 isolates this control leg from the walled
+    # MCU-side strap DISP_BL_CTL_STRAP (R109.1 side) and from the driver's
+    # switching output BL_SW (U17.1) / LED power path LED_K (U17.3), exactly the
+    # IR_TX_GPIO16 control-leg-isolated-by-series-R precedent.  2-pad cross-layer
+    # (R109.2 F, U17.4 B) -> one 0.60/0.30 Default through via.
+    #
+    # FBV2-P2-026 OUTCOME -- CHARACTERIZED LOCAL WALL, NOT PROMOTED.  On the live
+    # D-323 board the single cross-layer haul R109.2<->U17.4 returns FAIL
+    # NO_FAR_RUN at 0.200 mm (no legal corridor even on the 0.05/0.025 mm fine
+    # grid): R109.2 sits in the SAME dense U1.16 / backlight-strap pad cluster
+    # (congestion 185) that walled DISP_BL_CTL_STRAP at D-323, so its F.Cu escape
+    # has no legal exit.  via_offset cannot help a far-run failure (it relocates
+    # the via only AFTER a successful escape).  The role is a defensible control
+    # leg (U17.4 is the TPS61169 CTRL logic input, R109-isolated from the BL_SW
+    # switch node and LED path), but the geometry walls; do NOT naively retry.
+    'DISP_BL_CTL': dict(
+        sheet='03_SPI_A_DISPLAY_SD',
+        desc='display backlight-driver control leg DISP_BL_CTL (R109.2 series F -> '
+             'U17.4 TPS61169 CTRL logic input B); low-current PWM/enable control, '
+             'isolated by R109 from the switching output BL_SW and LED path, '
+             '2-pad point-to-point, one cross-layer through via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['DISP_BL_CTL'],
+    ),
 }
 
 
