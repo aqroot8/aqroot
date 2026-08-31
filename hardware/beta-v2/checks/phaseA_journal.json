@@ -3223,5 +3223,38 @@
   "mm": 118.261,
   "requested_connected": true,
   "group": "XGPIO3"
+ },
+ {
+  "net": "/BMI270_INT1_STRAP",
+  "a": "R110.1",
+  "b": "R18.2",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 2.829,
+  "requested_connected": true,
+  "group": "IMU_INT1_STRAP"
+ },
+ {
+  "net": "/BMI270_INT1_STRAP",
+  "a": "R18.2",
+  "b": "U1.15",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 4.646,
+  "requested_connected": true,
+  "group": "IMU_INT1_STRAP"
+ },
+ {
+  "net": "/BMI270_INT1_STRAP",
+  "a": "R110.1",
+  "b": "TP3.1",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 11.682,
+  "requested_connected": true,
+  "group": "IMU_INT1_STRAP"
  }
 ]

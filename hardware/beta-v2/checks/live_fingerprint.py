@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-316',                 # FBV2-P2-018: SINGLE west XGPIO net XGPIO3 (R54.1 F -> U3.7 B) at the 0.200 mm Default clearance (D-315 characterised the XGPIO2+XGPIO3 PAIR as a corridor-capacity wall; a SINGLE west haul clears BPP by >=0.47 mm so D-269 0.300 mm is kept by geometry)
-    sha256='d730c74d186ebcc7d2f0aa513776778ce1cb9c9659029a2fffd5e2261e3ac97d',
-    tracks=691,                       # 669 (D-314) + 22 XGPIO3 (F.Cu 118.261 mm haul + B.Cu fan-out)
-    vias=67,                          # 66 (D-314) + 1 XGPIO3 cross-layer through via @(55.300,77.700)
+    decision='D-318',                 # FBV2-P2-020: IMU/I2C-local interrupt strap BMI270_INT1_STRAP (R18.2/R110.1/TP3.1 -> U1.15 GPIO), 4-pad multi-terminal, ALL F.Cu SAME-LAYER MST, NO via -- the cleanest class (no plane re-pour), OUTSIDE the saturated west-XGPIO F.Cu corridor (D-317 mandate)
+    sha256='78bf82da537a22697a860c23822599246e0534a8c4c311e12bc3d5b857a28816',
+    tracks=709,                       # 691 (D-316) + 18 BMI270_INT1_STRAP (3 same-layer F.Cu MST runs)
+    vias=67,                          # unchanged (no via -- all four pads on F.Cu)
     copper_layers=6,
-    zones=41,                         # unchanged (In1/In4 re-poured for the 1 new anti-pad; zone COUNT constant)
-    ratsnest=676,                     # 677 (D-314) - 1 (XGPIO3 R54.1<->U3.7 edge closed)
-    journal=105,                      # 104 (D-314) + 1 XGPIO3 REST_INC
+    zones=41,                         # unchanged (no via -> no plane re-pour; zone COUNT + FILL constant)
+    ratsnest=673,                     # 676 (D-316) - 3 (BMI270_INT1_STRAP 4-pad net fully connected)
+    journal=108,                      # 105 (D-316) + 3 BMI270_INT1_STRAP REST_INC edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

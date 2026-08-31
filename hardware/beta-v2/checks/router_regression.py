@@ -1870,6 +1870,56 @@ def main():
                len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
                len(phaseA_via)), xg3_addonly)
 
+        # -- G30 FBV2-P2-020/D-318 thirteenth rest-of-board incremental increment -
+        # The IMU/I2C-local interrupt strap BMI270_INT1_STRAP (R18.2/R110.1/TP3.1
+        # -> U1.15 GPIO), routed onto the D-316 board by incremental_router.py
+        # OUTSIDE the saturated west-XGPIO F.Cu corridor (the D-317 mandate).  It
+        # is the MCU-side leg of the BMI270 IMU INT1 interrupt: all four pads are
+        # on F.Cu (U1 ESP32 pads F.Cu SMD; R18/R110/TP3 F.Cu SMD), so the 4-pad
+        # multi-terminal MST is THREE SAME-LAYER F.Cu runs with NO via -- the
+        # cleanest incremental class (no through via, no In1/In4 plane re-pour, no
+        # via-clearance risk; the D-305/D-307 no-via same-layer mechanic, here on
+        # F.Cu).  Noncritical low-speed CMOS interrupt strap (NOT switching / rail
+        # / RF-NFC / USB / bus-clock / community-header).  Default netclass
+        # (0.200 mm).  G30 pins the increment: all four pads copper-connected,
+        # copper legal (18 trk 0.200 mm all F.Cu, ZERO vias), and ADD-ONLY
+        # (XGPIO3 22, west-XGPIO 38, east-XGPIO 23, SD 28, AMP 19, TOUCH 26,
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G30 FBV2-P2-020/D-318 rest-of-board incremental increment --')
+        INET = '/BMI270_INT1_STRAP'
+        imu1_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == INET]
+        imu1_via = [t for t in all_via if t.GetNetname() == INET]
+
+        j_imu1 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('R110.1')) if p.GetClass() == 'PAD'}
+        imu1_conn = {'R18.2', 'TP3.1', 'U1.15'}.issubset(j_imu1)
+        chk('G30 BMI270_INT1_STRAP all four pads copper-connected (R110.1/R18.2/TP3.1/U1.15)',
+            'R110.1 joins %s' % sorted(j_imu1 & {'R18.2', 'TP3.1', 'U1.15'}), imu1_conn)
+
+        imu1_layers = {t.GetLayerName() for t in imu1_trk}
+        imu1_legal = (len(imu1_trk) == 18 and len(imu1_via) == 0
+                      and imu1_layers == {'F.Cu'}
+                      and all(t.GetWidth() == 200000 for t in imu1_trk))
+        chk('G30 BMI270_INT1_STRAP copper legal (18 trk 0.200 mm all F.Cu, ZERO vias)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(imu1_trk), sorted(imu1_layers), len(imu1_via),
+               sorted({t.GetWidth() for t in imu1_trk})), imu1_legal)
+
+        imu1_addonly = (len(imu1_trk) == 18 and len(imu1_via) == 0
+                        and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                        and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                        and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                        and len(phaseA_via) == 54)
+        chk('G30 increment is ADD-ONLY (XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'imu_int1=%d (exp 18, 0 via), xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk),
+               len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)), imu1_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

@@ -13,7 +13,46 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-019 / D-317 (this checkpoint — the SINGLE west XGPIO net `XGPIO2` is now a MEASURED
+- **FBV2-P2-020 / D-318 (this checkpoint — THIRTEENTH REST-OF-BOARD INCREMENT PROMOTED; the IMU/I2C-local
+  interrupt strap `BMI270_INT1_STRAP`, 4-pad ALL-F.Cu same-layer MST with NO via; the FIRST clean increment
+  OUTSIDE the saturated west-XGPIO F.Cu corridor; ZERO router-logic change):** a governed CTO **ACCEPT +
+  PROMOTE** — `BMI270_INT1_STRAP` (R18.2/R110.1/TP3.1 F.Cu → U1.15 MCU GPIO), the MCU-side leg of the BMI270
+  IMU INT1 interrupt, is on the authoritative board with **no Phase-A / prior-increment casualty and no new
+  DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `cacb68d` (D-317; pushed; `origin/master`
+  identical). **The stale §5 (which still said FBV2-P2-018) was first repaired to the D-317 truth.** A fresh
+  read-only screen (`w/screen_020.py`) measured all **144** unrouted rest nets (pad layers/span/MST/via-need/
+  congestion/netclass + category screen) → **44 ALLOW / 100 EXCL** (rejected: west/east XGPIO corridor, RF/NFC/
+  radio incl. `04_SPI_B`, USB, shared bus data/clocks, switching/boost/class-D, community-header mass,
+  `U11_PROG`, `PWR_SENSE`, rails); the cleanest ALLOW no-via singletons were vetted on merit (several
+  auto-ALLOW nets are actually converter-switching / USB-C connector nets — rejected). **SELECTED**
+  `BMI270_INT1_STRAP` (the mandate's welcomed IMU/I2C-local category); all four pads on F.Cu → the 4-pad MST
+  is **three SAME-LAYER F.Cu runs with NO via** — the cleanest class (no via, no In1/In4 re-pour, no
+  via-clearance risk). New single-net `GROUPS['IMU_INT1_STRAP']`; `incremental_router.py`/`qrouter.py` routing
+  logic UNCHANGED. **Promoted:** `sha256 d730c74d…` → **`78bf82da537a22697a860c23822599246e0534a8c4c311e12bc3d5b857a28816`**;
+  tracks 691 → **709** (+18 F.Cu 0.200 mm); vias **67** (unchanged — no via); 6 layers / 41 zones; ratsnest
+  676 → **673** (−3); journal 105 → **108** (+3 REST_INC edges). **Gate PASS every check** (real full-board,
+  D-286: 0 Phase-A altered, 18 new items all target-net, 0 zones fill-changed — no via, net open_edges 3→0, 0
+  prior pairs regressed, ratsnest −3 exact, no new/worse DRC, unconnected 499→499). **INTEGRITY / TESTS:**
+  `router_regression.py` ALL PASS **G1–G30** twice (deterministic; new **G30** pins connectivity + F.Cu
+  legality + 0 vias + ADD-ONLY); new `incremental_probe_018.py` PASS; `_006..017` + `phaseB_bringup_probe_005`
+  (709/67/108; **21 routed rest nets, 143 unrouted**) PASS; `live_fingerprint.py` bumped once (D-318).
+  Independent kicad-cli DRC `{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199,
+  unconnected_items:499}` (`clearance` 0, 0 schematic-parity). **D-269/D-264/DRU board-swap A/B** (committed
+  D-316 vs promoted D-318, via `AQROOT_BETA_V2_PROJECT` override): verdicts **IDENTICAL** (`d269` FAIL(2),
+  `d264` 2-failed, `dru` FAIL(2) on both) — the known pre-existing synthetic/intrinsic flakes, not regressions
+  (new copper is F.Cu near U1, far from the BAT tree the synthetic probes test); live AUTH sha re-verified
+  `78bf82da…` after the swap. **Open owner decisions: NONE;** `JLCPCB_READINESS` unchanged (~77 %). Rollback:
+  pre-promotion `sha256 d730c74d…` (committed D-316, parent `cacb68d`). **Next: FBV2-P2-021 — route the next
+  clean rest-of-board increment (single net or small coherent local group in an open region — the vetted
+  alternates `UART0_TXD_DBG`/`RESERVED_SPARE`/`BQ25185_STAT1+2`, or a fresh screen pick) at its netclass
+  Default under the D-286 gate; add `incremental_probe_019.py`+`G31` on promote; continue avoiding the west
+  XGPIO corridor, `U11_PROG`/`PWR_SENSE`, RF/NFC/USB/crystals/switching/class-D/rails/community-header mass;
+  hold the inner-layer west-XGPIO haul as the deferred framework task; 143/164 rest nets unrouted.** Full
+  analysis:
+  [`audits/2026-08-31-p2-020-d318-thirteenth-rest-of-board-incremental-increment-imu-int1-strap-promoted.md`](audits/2026-08-31-p2-020-d318-thirteenth-rest-of-board-incremental-increment-imu-int1-strap-promoted.md).
+  This checkpoint is written in the D-318 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-019 / D-317 (prior checkpoint — the SINGLE west XGPIO net `XGPIO2` is now a MEASURED
   CORRIDOR-CAPACITY WALL on the live D-316 board; NOT PROMOTED; ZERO authoritative copper change):** a governed
   CTO **CHARACTERIZATION** — `XGPIO2` (R53.1 F.Cu → U3.6 B.Cu), named at D-316 as the next single-net candidate,
   does **NOT** route on the live D-316 board; the authoritative PCB is **byte-identical to committed D-316**
@@ -765,14 +804,18 @@
   (`replay_battery_block.py` / SECTION-17 `AQROOT_REPLAY` / `phaseB_compare.py`) is the battery-block
   replay/idempotence verification and is now **stale + assumes a copper-empty base** (do NOT naively re-run;
   see §1). The promotion is sound without it (rests on a genuine full-authority gate, D-286).
-- **Current fabrication blocker (updated by D-314): rest-of-board routing — IN PROGRESS, incrementally.**
-  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across ELEVEN promoted
-  increments: of the 164 rest-of-board multi-pad nets, **19 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
+- **Current fabrication blocker (updated by D-318): rest-of-board routing — IN PROGRESS, incrementally.**
+  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across THIRTEEN promoted
+  increments: of the 164 rest-of-board multi-pad nets, **21 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
   FRONT_RGB_LED 3 + IR_RX_VS 1 + TOUCH_CTL 2 + AMP_SD_MODE 1 + SD_CARD_DETECT_N 1 + XGPIO8/XGPIO9 2 +
-  XGPIO1/XGPIO0 2), 145 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest **677**. Each future group
-  is added to the `incremental_router.py` registry and routed → gated (real full-board DRC, D-286) → promoted on a
-  genuine no-casualty / no-new-DRC increment (FBV2-P2-018, §5). The board carries Phase-A battery-block copper
-  (432 trk / 54 via) **plus** the eleven rest increments (237 trk / 12 via). **FBV2-P2-017 / D-315 added NO
+  XGPIO1/XGPIO0 2 + XGPIO3 1 + BMI270_INT1_STRAP 1), 143 remain UNROUTED** across 9 subsystem sheets + rails;
+  ratsnest **673**. Each future group is added to the `incremental_router.py` registry and routed → gated (real
+  full-board DRC, D-286) → promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-021, §5). The board
+  carries Phase-A battery-block copper (432 trk / 54 via) **plus** the thirteen rest increments (277 trk / 13
+  via). **FBV2-P2-020 / D-318 added the IMU/I2C-local interrupt strap `BMI270_INT1_STRAP` (4-pad ALL-F.Cu
+  same-layer MST, NO via) — the first clean increment OUTSIDE the saturated west-XGPIO F.Cu corridor (D-317
+  mandate): tracks 691→709, vias 67 unchanged, ratsnest 676→673, journal 105→108, no new DRC, `router_regression`
+  ALL PASS G1–G30.** **FBV2-P2-019 / D-317 added NO
   copper** — it characterised the XGPIO2+XGPIO3 south-west PAIR as a corridor-capacity wall at the D-269 0.300 mm
   clearance (both orders fail; U3.6 flanked-middle-pin escape box + two parallel 116 mm hauls exceed the corridor;
   the one bounded clr_pad/clr_trk split still NO_FAR_RUN) and proved a **single** west XGPIO net routes clean at
@@ -981,33 +1024,37 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-018 (route a SINGLE west XGPIO net at the 0.200 mm Default clearance, or a clean local group)
+## 5. Next task — FBV2-P2-021 (route the next clean rest-of-board increment in an OPEN region; continue avoiding the saturated west-XGPIO F.Cu corridor)
 
-- **Where 017 left it (D-315 — characterization, NO copper change).** ELEVEN increments promoted; **145 of 164
-  rest nets unrouted**; authoritative `sha256 95bc07be…a0b3a605` (669 trk / 66 via / ratsnest 677 / journal 104,
-  byte-identical to committed D-314). FBV2-P2-017 measured the XGPIO2+XGPIO3 south-west PAIR to be a
-  **corridor-capacity wall at the D-269 0.300 mm clearance** — both orders fail (U3.6 flanked-middle-pin escape
-  box; XGPIO3 far-run blocked), the one bounded per-region `clr_pad=0.200`/`clr_trk=0.300` split fixes the escape
-  but both nets still `NO_FAR_RUN` (the corridor admits ONE 0.300 mm haul, not two parallel), and the PAIR fails
-  at 0.200 mm too (parallel-haul conflict). The "XGPIO-lower-first self-separates" recipe is SOUTH-specific and
-  does NOT transfer to the northern west members. **Decisive positive lead:** a **SINGLE** west XGPIO net routes
-  clean at the **0.200 mm Default clearance** and keeps D-269 to BPP with margin (XGPIO2 haul→BPP 0.686 mm,
-  XGPIO3 0.474 mm — both ≥0.300; the 0.300 mm blanket is over-conservative here and is what saturates the
-  corridor). Fingerprint pin centralised in `checks/live_fingerprint.py`.
-- **The lever (FBV2-P2-018) — route ONE west XGPIO net at 0.200 mm (recommended `XGPIO3`, via exv 0.704 mm
-  most-separated, haul→BPP 0.474 mm; or `XGPIO2`, more BPP margin 0.686 mm), or the next clean local group.**
-  Register a SINGLE-net GROUP with `clr_pad=clr_trk=200000` (NOT the 0.300 mm blanket — this net's haul clears
-  BPP naturally), `route`→`gate`→`promote` under the D-286 real full-board gate; the gate's D-269-aware KiCad DRC
-  is the arbiter of the BPP clearance (do NOT assume — measure by the gate). On promote add
-  `incremental_probe_017.py` + a `G29` contract (net connected across the U3 F/B hop, copper legal, D-269 ≥0.300
-  to BPP by real DRC, both/all vias clear every barrel, ADD-ONLY) and bump `live_fingerprint.py` once. **Do NOT
-  re-attempt the XGPIO2+XGPIO3 PAIR** (characterised wall) or force adjacent PAIRS for the northern west members —
-  route them ONE at a time. Re-screen live before routing (via geometry shifts as increments add vias); the
-  recovery runner `w/screen_016_one.py <a> <b> <order>` and the per-clearance probes
-  `w/xgpio23_{clr,single200}_017.py` are the read-only tools. Promote **only a genuine no-casualty / no-new-DRC
-  increment** (the gate enforces this). All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no
-  topology/footprint/outline change. `U11_PROG`/`PWR_SENSE` remain characterised hard walls (do NOT re-attempt
-  naively); RF/NFC/USB/crystals/rails/switching/class-D deferred.
+- **Where 020 left it (D-318 — PROMOTED, thirteenth increment).** THIRTEEN increments promoted; **143 of 164
+  rest nets unrouted**; authoritative `sha256 78bf82da…b857a28816` (709 trk / 67 via / 6 layers / 41 zones /
+  ratsnest 673 / journal 108). FBV2-P2-020 repaired the stale §5 (which said FBV2-P2-018) to the D-317 truth,
+  then ran a fresh evidence-first read-only screen (`w/screen_020.py`) of all 144 unrouted rest nets (44 ALLOW /
+  100 EXCL) and PROMOTED the selected candidate `BMI270_INT1_STRAP` — the IMU/I2C-local interrupt strap
+  (R18.2/R110.1/TP3.1 F.Cu → U1.15 MCU GPIO), a 4-pad multi-terminal ALL-F.Cu same-layer MST with **NO via** (the
+  cleanest class), the first clean increment OUTSIDE the saturated west-XGPIO F.Cu corridor. Gate PASS every
+  check; `router_regression` ALL PASS G1–G30; `incremental_probe_018.py`+`G30` added; `live_fingerprint.py`
+  bumped once. Vetted alternates held for the next pick: `UART0_TXD_DBG` (debug UART, F.Cu no-via, cong 9),
+  `RESERVED_SPARE` (spare expander GPIO, B.Cu no-via), `BQ25185_STAT1`/`STAT2` (charger status pair, B.Cu no-via).
+- **The lever (FBV2-P2-021) — route the next clean rest-of-board increment in an OPEN, UNCONGESTED region**
+  (a single net or small coherent local group). Re-run / extend the evidence-first live screen (`w/screen_020.py`
+  is the reusable read-only inventory + category screen; its auto-classifier is a FIRST pass only — several
+  auto-ALLOW nets are actually converter-switching or USB-C connector nets and must be vetted on measured
+  geometry before selection). Prefer a spatially coherent local low-speed control/peripheral group or one
+  high-information singleton with a materially distinct clean primitive (remaining buttons/expander controls,
+  IMU/I2C-local controls, IR-receiver-side low-current controls, or other local noncritical nets — the vetted
+  alternates above are ready candidates). Register the selected 1–6-net GROUP in `incremental_router.py` at its
+  netclass Default (reuse the proven same-layer / MST / mixed-layer / via mechanics; extend only if forced by
+  measured evidence), `route`→`gate`→`promote` under the D-286 real full-board gate. On promote add
+  `incremental_probe_019.py` + a `G31` contract (net(s) connected, copper legal, all vias clear every barrel,
+  applicable D-269/BPP kept by real DRC, ADD-ONLY) and bump `live_fingerprint.py` once. **Do NOT** retry single
+  west XGPIO F.Cu hauls (`XGPIO2`/`XGPIO4`/`XGPIO5`/`XGPIO6`/`XGPIO7` — corridor-capacity walled as second hauls),
+  the `XGPIO2`+`XGPIO3` PAIR (D-315 wall), or `U11_PROG`/`PWR_SENSE` (hard walls); avoid RF/NFC matching/antennas,
+  USB, crystals/clocks, switching/high-current/class-D outputs, bulk rails, and community-header mass routing.
+  Hold the **inner-layer (In2/In3) west-XGPIO haul** as the concretely-justified deferred **framework** task (out
+  of scope for a single-net increment). Promote **only a genuine no-casualty / no-new-DRC increment** (the gate
+  enforces this). All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no topology/footprint/outline
+  change. If no candidate promotes, commit the exact characterization and define FBV2-P2-022.
 - **(historical) Next task as of FBV2-P2-007 (continue rest-of-board routing, next bounded group)**
 - **Where 006 left it (D-304).** The reusable incremental router/promoter `checks/incremental_router.py`
   EXISTS and is proven: it loaded the D-302 promoted board, routed the FRONT_RGB indicator group (3 nets, 20
@@ -1065,7 +1112,17 @@
   and the BAT_RAW R89.1/R86.2 divider taps.
 
 ## 6. Authoritative PCB state
-- **Routing/promotion (D-313): Phase-A copper + TEN rest-of-board increments.** Authoritative board =
+- **Routing/promotion (D-318): Phase-A copper + THIRTEEN rest-of-board increments.** Authoritative board =
+  **six copper layers, 709 signal tracks, 67 vias, 41 zones** (verified `sha256 78bf82da537a22697a860c23822599246e0534a8c4c311e12bc3d5b857a28816`),
+  carrying the **432-track Phase-A battery block (D-302) PLUS** FRONT_RGB 20 (D-304) + ACC 31 (D-305) + DISP 11/1
+  via (D-306) + IMU_ADDR 8 (D-307) + FRONT_RGB_LED 25/3 via (D-308) + IR_RX_VS 8 (D-309) + TOUCH_CTL 26/2 via
+  (D-310) + AMP_SD_MODE 19/1 via (D-311) + SD_CARD_DETECT_N 28/1 via (D-312) + XGPIO8/XGPIO9 23/2 via (D-313) +
+  XGPIO1/XGPIO0 38/2 via (D-314) + XGPIO3 22/1 via (D-316) + **BMI270_INT1_STRAP 18/0 via (D-318)**; ratsnest
+  **673**; journal **108** (77 Phase-A + 31 `REST_INC`); real KiCad DRC unchanged
+  (`{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199, unconnected_items:499}`); **143
+  rest-of-board nets remain unrouted.** `router_regression.py` ALL PASS (G1–G30). Rollback: pre-D-318
+  `sha256 d730c74d…e2261e3ac97d` (committed D-316, parent `cacb68d` / D-317).
+- **(historical) Routing/promotion (D-313): Phase-A copper + TEN rest-of-board increments.** Authoritative board =
   **six copper layers, 631 signal tracks, 64 vias, 41 zones** (verified `sha256 a0d6fead…e7207eb`), carrying the
   **432-track Phase-A battery block (D-302) PLUS** FRONT_RGB 20 (D-304) + ACC 31 (D-305) + DISP 11/1 via (D-306)
   + IMU 8 (D-307) + FRONT_RGB_LED 25/3 via (D-308) + IR_RX_VS 8 (D-309) + TOUCH_CTL 26/2 via (D-310) + AMP_SD_MODE

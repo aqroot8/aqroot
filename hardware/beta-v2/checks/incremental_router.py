@@ -419,6 +419,28 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         via_dia=600000, via_drill=300000, nets=['XGPIO3'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-020 / D-318 -- a single IMU/I2C-local interrupt-strap net, OUTSIDE
+    # the saturated west-XGPIO F.Cu corridor (D-317 mandate).  BMI270_INT1_STRAP
+    # is the MCU-side leg of the BMI270 IMU INT1 interrupt: series resistor far
+    # pad R18.2 -> pull resistor R110.1 -> test point TP3.1 -> MCU GPIO U1.15,
+    # ALL on F.Cu (U1 ESP32 pads are F.Cu SMD; R18/R110/TP3 F.Cu SMD).  A 4-pad
+    # multi-terminal net whose MST is therefore three SAME-LAYER F.Cu runs with
+    # NO via -- the cleanest incremental class (no plane re-pour, no via-clearance
+    # risk), the same B.Cu-family mechanic proven at D-305/D-307 now on F.Cu.
+    # Noncritical low-speed CMOS interrupt strap (NOT switching / rail / RF/NFC /
+    # USB / bus-clock / community-header).  Default netclass (0.200 mm width/
+    # clearance); measured span 12.1 mm, MST 17.2 mm, congestion 41 items within
+    # bbox+2 mm (evidence: w/screen_020.py).  Promotion decided by the real
+    # full-board gate (D-286), not geometry.
+    'IMU_INT1_STRAP': dict(
+        sheet='02_MCU_CORE',
+        desc='BMI270 IMU INT1 interrupt strap MCU-side leg (R18.2/R110.1/TP3.1 '
+             '-> U1.15 GPIO); noncritical low-speed CMOS interrupt, 4-pad '
+             'multi-terminal, all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['BMI270_INT1_STRAP'],
+    ),
 }
 
 
