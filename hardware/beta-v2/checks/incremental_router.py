@@ -420,6 +420,23 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         via_dia=600000, via_drill=300000, nets=['XGPIO3'],
     ),
+    # FBV2-P2-033 / D-331 framework pilot: offload the saturated west XGPIO
+    # outer-layer haul onto a routable inner SIGNAL layer. Each endpoint gets
+    # one short escape on its native outer face and one ordinary 0.60/0.30
+    # through via; the long low-speed CMOS run joins those reserved anchors on
+    # In2 (fallback In3). Explicit opt-in only; high-current/wide nets excluded.
+    'XGPIO2_INNER_PILOT': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO2 inner-layer long-haul framework pilot: R53.1 F.Cu '
+             'to U3.6 B.Cu via two reserved outer escapes and an In2/In3 signal '
+             'run; low-speed 3V3 CMOS only',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R53.1', b='U3.6',
+                                  a_near='F', b_near='B',
+                                  inner=['I2', 'I3']),
+        nets=['XGPIO2'],
+    ),
     # ---------------------------------------------------------------------- #
     # FBV2-P2-020 / D-318 -- a single IMU/I2C-local interrupt-strap net, OUTSIDE
     # the saturated west-XGPIO F.Cu corridor (D-317 mandate).  BMI270_INT1_STRAP
@@ -1514,6 +1531,52 @@ def route_hop_anchor_plan(qb, net, pads, group):
     return out
 
 
+def route_inner_long_haul_plan(qb, net, pads, group):
+    """Reserve each outer endpoint, then join the two anchors on In2/In3."""
+    if net in qb.wide_nets or group['width'] > 200000:
+        raise RuntimeError('inner_long_haul_plan is low-speed signal only; wide/high-current net refused')
+    plan = group['inner_long_haul_plan']
+    by_ref = {p['ref']: p for p in pads}
+    for ref in (plan['a'], plan['b']):
+        if ref not in by_ref:
+            raise RuntimeError('inner_long_haul_plan missing pad %s' % ref)
+    pa, pb = by_ref[plan['a']], by_ref[plan['b']]
+    w, cp, ct = group['width'], group['clr_pad'], group['clr_trk']
+    vd, vk = group.get('via_dia', 600000), group.get('via_drill', 300000)
+    inners = plan.get('inner', ['I2', 'I3'])
+    if isinstance(inners, str):
+        inners = [inners]
+    last = None
+    for inner in inners:
+        mark = qb.mark()
+        ra = QR.reserve_escape(qb, net, pa, w, cp, ct,
+                               near=plan['a_near'], far=inner,
+                               via_dia=vd, via_drill=vk,
+                               target=(pb['x'], pb['y']))
+        if not ra.get('ok'):
+            qb.revert(mark); last = [(pa, pb, 'reserve-a', ra, inner)]; continue
+        rb = QR.reserve_escape(qb, net, pb, w, cp, ct,
+                               near=plan['b_near'], far=inner,
+                               via_dia=vd, via_drill=vk,
+                               target=(pa['x'], pa['y']))
+        if not rb.get('ok'):
+            qb.revert(mark); last = [(pa, pb, 'reserve-b', rb, inner)]; continue
+        joined = QR.join_reserved(qb, net, ra['via'], rb['via'],
+                                  w, cp, ct, layer=inner)
+        if not joined.get('ok'):
+            qb.revert(mark); last = [(pa, pb, 'inner-join', joined, inner)]; continue
+        result = dict(joined)
+        result['mm'] = ra.get('mm', 0) + rb.get('mm', 0) + joined.get('mm', 0)
+        result['vias'] = 2
+        result['via_xy'] = ra.get('via_xy', []) + rb.get('via_xy', [])
+        result['why'] = ('reserved %s/%s outer escapes; joined on %s' %
+                         (plan['a_near'], plan['b_near'], inner))
+        return [(pa, pb, 'inner-haul', result, inner)]
+    return last or [(pa, pb, 'inner-haul',
+                     dict(ok=False, reason='NO_INNER_PLAN', why='no inner layer offered'),
+                     'none')]
+
+
 # --------------------------------------------------------------------------- #
 def cmd_baseline():
     """Record the authoritative fingerprints, DRC, ratsnest and target open-set."""
@@ -1637,6 +1700,22 @@ def cmd_route(name):
         # identical to the old ref-keyed order (ties broken by x,y never fire).
         pads = physical_net_pads(qb, nf)
         pads.sort(key=lambda p: (p['ref'], p['x'], p['y']))   # deterministic
+        if group.get('inner_long_haul_plan'):
+            if len(group['nets']) != 1:
+                raise RuntimeError('inner_long_haul_plan requires a single-net group')
+            for pa, pb, kind, r, inner in route_inner_long_haul_plan(qb, nf, pads, group):
+                rec = dict(net=base, netfull=nf, a=pa['ref'], b=pb['ref'],
+                           layer=inner + '.Cu', w=w / 1e6, ok=bool(r.get('ok')),
+                           mm=round(r.get('mm', 0), 3), vias=r.get('vias', 0),
+                           via_xy=r.get('via_xy'), kind=kind,
+                           reason=r.get('reason'), why=r.get('why'))
+                jrn.append(rec)
+                print('  %-12s %-8s -> %-8s [%-10s %s.Cu] %s %s'
+                      % (base, pa['ref'], pb['ref'], kind, inner,
+                         'ok %.3f mm' % r['mm'] if r.get('ok')
+                         else 'FAIL ' + str(r.get('reason')),
+                         r.get('why', '') or ''))
+            continue
         if group.get('hop_anchor_plan'):
             if len(group['nets']) != 1:
                 raise RuntimeError('hop_anchor_plan requires a single-net group')

@@ -2508,6 +2508,35 @@ def main():
             'BTN_DOWN blocked=%s BTN_RIGHT allowed=%s' %
             (down_blocked, right_allowed), down_blocked and right_allowed)
 
+        # -- G41 FBV2-P2-033/D-331 inner-layer long-haul framework -----------
+        print('  -- G41 In2/In3 long-haul framework + XGPIO2 pilot --')
+        I2NET = '/XGPIO2'
+        i2_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == I2NET]
+        i2_via = [t for t in all_via if t.GetNetname() == I2NET]
+        i2_layers = collections.Counter(t.GetLayerName() for t in i2_trk)
+        i2_pads = [p for f in _g18.GetFootprints() for p in f.Pads()
+                   if p.GetNetname() == I2NET]
+        i2_reach = set()
+        if i2_pads:
+            i2_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                        for p in _cc.GetConnectedItems(i2_pads[0]) if p.GetClass() == 'PAD'}
+        chk('G41 XGPIO2 endpoints connected by legal In2 pilot copper',
+            'tracks=%d layers=%s vias=%d reach=%s' %
+            (len(i2_trk), dict(i2_layers), len(i2_via), sorted(i2_reach)),
+            len(i2_trk) == 8 and i2_layers == {'F.Cu': 2, 'In2.Cu': 2, 'B.Cu': 4}
+            and len(i2_via) == 2 and {'R53.1', 'U3.6'} <= i2_reach
+            and all(t.GetWidth() == 200000 for t in i2_trk)
+            and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                    and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in i2_via))
+        i2_plan = IR.GROUPS['XGPIO2_INNER_PILOT'].get('inner_long_haul_plan')
+        other_i2 = [k for k, v in IR.GROUPS.items()
+                    if k != 'XGPIO2_INNER_PILOT' and v.get('inner_long_haul_plan')]
+        chk('G41 framework is explicit, opt-in and restricted to the pilot',
+            'plan=%s other_opt_ins=%s' % (i2_plan, other_i2),
+            i2_plan == {'a': 'R53.1', 'b': 'U3.6', 'a_near': 'F',
+                        'b_near': 'B', 'inner': ['I2', 'I3']} and not other_i2)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

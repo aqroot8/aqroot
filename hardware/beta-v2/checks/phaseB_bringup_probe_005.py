@@ -70,7 +70,7 @@ ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
 TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE SD_CARD_DETECT_N
 XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP UART0_TXD_DBG
-IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N BTN_B_N BTN_UP_N BTN_RIGHT_N""".split())
+IR_TX_GPIO16 SD_CS_N RESERVED_SPARE ACC_DETECT_N BTN_B_N BTN_UP_N BTN_RIGHT_N XGPIO2""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -147,7 +147,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-328: ... + BTN_UP_N + BTN_RIGHT_N)',
+    chk('the only routed rest-of-board nets are accepted increments (D-331: ... + BTN_RIGHT_N + XGPIO2)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))

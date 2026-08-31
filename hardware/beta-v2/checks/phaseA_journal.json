@@ -3443,5 +3443,16 @@
   "mm": 7.96,
   "requested_connected": true,
   "group": "BTN_RIGHT_N"
+ },
+ {
+  "net": "/XGPIO2",
+  "a": "R53.1",
+  "b": "U3.6",
+  "role": "REST_INC",
+  "layer": "I2.Cu",
+  "w": 0.2,
+  "mm": 53.817,
+  "requested_connected": true,
+  "group": "XGPIO2_INNER_PILOT"
  }
 ]

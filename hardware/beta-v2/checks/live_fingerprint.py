@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-328',                 # FBV2-P2-030: BTN_RIGHT_N promoted by the opt-in hop-anchor plan; 16 tracks (12 F.Cu + 4 B.Cu), two 0.60/0.30 through vias, all four physical pads connected, no rule/placement/topology change
-    sha256='27db293c8325832f585244b9d601103e8d72a6fcff13434a685f9472c21395c3',
-    tracks=837,                       # 821 (D-326) + 16 BTN_RIGHT_N
-    vias=73,                          # 71 (D-326) + 2 BTN_RIGHT_N through vias
+    decision='D-331',                 # FBV2-P2-033: XGPIO2 promoted as the In2 long-haul framework pilot
+    sha256='98181354b3378e9cfb527e858b5120704adfa628c25ce8e6a351267a4f71e098',
+    tracks=845,                       # 837 (D-328) + 8 XGPIO2
+    vias=75,                          # 73 (D-328) + 2 XGPIO2 through vias
     copper_layers=6,
     zones=41,                         # unchanged (1 via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=656,                     # 659 (D-326) - 3 (four physical pads -> one cluster)
-    journal=125,                      # 122 (D-326) + 3 BTN_RIGHT_N REST_INC edges
+    ratsnest=655,                     # 656 (D-328) - 1 XGPIO2 connection
+    journal=126,                      # 125 (D-328) + 1 XGPIO2 REST_INC edge
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).
