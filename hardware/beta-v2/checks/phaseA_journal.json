@@ -3322,5 +3322,27 @@
   "mm": 10.939,
   "requested_connected": true,
   "group": "RESERVED_SPARE"
+ },
+ {
+  "net": "/ACC_DETECT_N",
+  "a": "R129.2",
+  "b": "U3.17",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 35.311,
+  "requested_connected": true,
+  "group": "ACC_DETECT_N"
+ },
+ {
+  "net": "/ACC_DETECT_N",
+  "a": "R129.2",
+  "b": "R64.1",
+  "role": "REST_INC",
+  "layer": "B+F via",
+  "w": 0.2,
+  "mm": 20.861,
+  "requested_connected": true,
+  "group": "ACC_DETECT_N"
  }
 ]

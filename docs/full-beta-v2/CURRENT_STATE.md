@@ -13,7 +13,73 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-024 / D-322 (this checkpoint — SEVENTEENTH REST-OF-BOARD INCREMENT PROMOTED; the reserved/spare
+- **FBV2-P2-025 / D-323 (this checkpoint — EIGHTEENTH REST-OF-BOARD INCREMENT PROMOTED; the accelerometer/
+  add-on presence-detect `ACC_DETECT_N`, a 3-pad cross-layer net = ONE 0.60/0.30 through via + ONE same-layer
+  B.Cu run, in an OPEN region whose realized copper clears `BAT_PROTECTED_P` by 3.88 mm (zero D-269); a genuine
+  functional detect, promoted after the cleaner-class `DISP_BL_CTL_STRAP` hit a characterized local wall and
+  `BTN_B_N` failed the gate on a duplicate-ref tact-switch connectivity limit; ZERO router-logic change):** a
+  governed CTO **ACCEPT + PROMOTE** — `ACC_DETECT_N` (`R64.1` detect divider F.Cu + `R129.2` series B.Cu +
+  `U3.17` PCAL expander GPIO B.Cu) is on the authoritative board with **no Phase-A / prior-increment casualty
+  and no new DRC**; autonomy CONTINUES, **no owner decision.** Starting HEAD `36ffb2d` (D-322; pushed;
+  `origin/master` identical; AUTH `a861e30e…`, 759/67, ratsnest 667, journal 114). A read-only screen
+  (`w/screen_020.py`) measured the remaining unrouted rest nets (auto-classifier trap re-confirmed:
+  converter-switching `Net-(L1/U12/U13-*)`/`BL_SW`, IR-emitter `IR_LED_A/K`, USB-C `Net-(J3-*)` rejected on
+  measured role). A focused read-only geometry vet (`w/vet_021.py`, re-verified live) measured the
+  genuinely-functional shortlist: `ACC_DETECT_N` (3-pad, 1 via, edges 19.64 mm CROSS + 19.31 mm same-B, cong
+  103, straight-MST **2.750 mm** from BPP), `DISP_BL_CTL_STRAP` (4-pad F.Cu, no via, cong 185, 37.854 mm),
+  `BTN_B_N` (3-pad, 1 via, cong 141, 11.025 mm). **DISP_BL_CTL_STRAP characterized wall (cleaner class, tested
+  FIRST):** the display backlight-control strap (`U1.16` MCU / `TP2.1` / `R108.1`+`R109.1`, isolated by R109
+  from the downstream `DISP_BL_CTL`→`U17.4` driver) returned `NO_PATH` at 0.200 mm on **ALL THREE** MST edges
+  (5.44 + 10.30 + 24.77 mm; none even at the 0.05/0.025 mm fine grid) — the dense MCU/backlight pad pocket
+  (cong 185; vet nearest-copper 0.022 mm to the accepted D-318 `BMI270_INT1_STRAP`, 0.111 mm to
+  `SD_CARD_DETECT_N`) boxes every terminal (the `MCU_EN_RC` boxed-pocket lesson repeated); `GROUPS` annotated
+  (do NOT retry at 0.200 mm). **`BTN_B_N` gate-fail on a duplicate-ref connectivity limit (routed OK, NOT
+  promoted):** the nav/boot button (`SW7.1` F.Cu → `R9.2` pull-up B.Cu → `U2.18` expander B.Cu) routed ALL OK
+  but SW7 is a 4-pin tactile switch whose two mechanically-linked terminals BOTH carry pad "1" on `BTN_B_N` at
+  (49.520,96.750) and (57.480,96.750), 7.96 mm apart; the framework's per-ref MST (`pads_by_ref`) collapses
+  them to one node → the second terminal is never driven → one permanent open ratsnest edge (open_edges 2→1,
+  gate FAIL). A connectivity gap of the WHOLE duplicate-ref button family, NOT a copper casualty — the
+  authoritative board was never touched; `GROUPS` annotated (deferred "duplicate-ref MST" framework task).
+  **SELECTED** `ACC_DETECT_N` (three distinct-ref pads, gates clean). New `GROUPS['ACC_DETECT_N']` (`layer='B'`,
+  Default 0.200 mm, `via_dia`/`via_drill` 0.60/0.30, no `via_offset`); `incremental_router.py`/`qrouter.py`
+  routing logic UNCHANGED. **Route** ALL OK (`R129.2↔U3.17` 35.311 mm B.Cu + `R129.2↔R64.1` 20.861 mm B+F-via;
+  22 seg = 3 F.Cu + 19 B.Cu, 1 through via @(57.900,38.800)). **Promoted:** `sha256 a861e30e…` →
+  **`a7bf8bdc11f1bc39303c6f6b6c801e3a4a575add64596cc4be20745c57f9f626`**; tracks 759 → **781** (+22: 3 F.Cu +
+  19 B.Cu 0.200 mm); vias 67 → **68** (+1 through via); 6 layers / 41 zones; ratsnest 667 → **665** (−2);
+  journal 114 → **116** (+2 REST_INC edges). **Gate PASS every check** (real full-board, D-286: 0 Phase-A
+  altered, 22 new items + 1 via all target-net, only In1/In4 GND planes re-poured for the anti-pad — other 39
+  zones identical, net open_edges 2→0, 0 prior pairs regressed, via 34.157 mm from every barrel + realized
+  copper 3.8831 mm from BPP, ratsnest −2 exact, no new/worse DRC, unconnected 499→499). **INTEGRITY / TESTS:**
+  `router_regression.py` ALL PASS **G1–G35** twice (deterministic, 555 lines / 143 PASS, identical G-verdicts;
+  new **G35** pins connectivity + copper legality 22 trk 3 F.Cu/19 B.Cu + 1 through via + via ≥0.80 mm from
+  barrels + ADD-ONLY); new `incremental_probe_023.py` PASS; `_006..022` + `phaseB_bringup_probe_005`
+  (781/68/116; **26 routed rest nets, 138 unrouted**) PASS. **Probe via-total generalization** (first new via
+  since D-316, board total 67→68): the no-via probes `incremental_probe_018..022` had their board-total pin
+  generalized from a hard-coded `67` to `len(via) == EXPECT_VIAS` (the `live_fingerprint` SoT) with each
+  probe's per-net `len(i_via) == 0` contract KEPT — semantically sound + regression-safe (all 8 prior
+  via-probes already pin the total via `EXPECT_VIAS`); `incremental_probe_023.py`'s board-total pin aligned to
+  the same convention (per-net `i_via == 1` kept). `live_fingerprint.py` bumped once (D-323);
+  `incremental_baseline_006.json` left stale-by-design (reverted — the gate computes its baseline live).
+  Independent kicad-cli DRC `{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199,
+  unconnected_items:499}` (`clearance` 0), A/B identical on committed D-322 vs promoted D-323. **D-269/D-264/DRU
+  board-swap A/B** (committed D-322 vs promoted D-323, via `AQROOT_BETA_V2_PROJECT` override, 4 runs each):
+  `dru` FAIL(2)=FAIL(2) **IDENTICAL**; `d269` flips (promoted PASS,FAIL(2),FAIL(2),FAIL(2) / committed
+  FAIL(2)×4, count always 2) and `d264` flips (promoted 2,1,2,3 / committed 2,1,2,1) — the documented intrinsic
+  non-determinism, not a regression (new copper is peripheral, realized 3.88 mm from BPP near R64/R129/U3.17,
+  away from the BAT-divider/sense corridors these synthetic probes test); live AUTH sha re-verified
+  `a7bf8bdc…` after the swap. **Open owner decisions: NONE;** `JLCPCB_READINESS` ~78 % (authoritative; JLCPCB
+  file unchanged). Rollback: pre-promotion `sha256 a861e30e…` (committed D-322, parent `36ffb2d`). **Next:
+  FBV2-P2-026 — route the next clean rest-of-board increment (single net or small coherent local group in an
+  open region — a fresh screen pick) at its netclass Default under the D-286 gate; add
+  `incremental_probe_024.py`+`G36` on promote; continue avoiding the west XGPIO corridor, `U11_PROG`/
+  `PWR_SENSE`, RF/NFC/USB/crystals/switching/class-D/rails/community-header mass, the auto-ALLOW
+  converter-switching/USB-C connector traps, and every characterized wall (`MCU_EN_RC`, the J1
+  display-connector haul `DISP_CS_N`/`DISP_DC`, `BOOT_N`, the `DISP_BL_CTL_STRAP` boxed pocket); do NOT retry
+  the `SWx` duplicate-ref button family until a duplicate-ref MST lands; hold the inner-layer west-XGPIO haul as
+  a deferred framework task; 138/164 rest nets unrouted.** Full analysis:
+  [`audits/2026-08-31-p2-025-d323-eighteenth-rest-of-board-incremental-increment-acc-detect-n-promoted.md`](audits/2026-08-31-p2-025-d323-eighteenth-rest-of-board-incremental-increment-acc-detect-n-promoted.md).
+  This checkpoint is written in the D-323 commit; a fresh session must confirm the live tip.
+- **FBV2-P2-024 / D-322 (prior checkpoint — SEVENTEENTH REST-OF-BOARD INCREMENT PROMOTED; the reserved/spare
   community expander GPIO `RESERVED_SPARE`, a 3-pad ALL-B.Cu SAME-LAYER MST with NO via, in an OPEN region
   15.5 mm clear of `BAT_PROTECTED_P`; the held clean alternate, promoted after the meaningful display-control
   candidates `DISP_CS_N`/`DISP_DC` hit a characterized J1 display-FPC-connector wall and `BOOT_N` routed only
@@ -1009,16 +1075,22 @@
   (`replay_battery_block.py` / SECTION-17 `AQROOT_REPLAY` / `phaseB_compare.py`) is the battery-block
   replay/idempotence verification and is now **stale + assumes a copper-empty base** (do NOT naively re-run;
   see §1). The promotion is sound without it (rests on a genuine full-authority gate, D-286).
-- **Current fabrication blocker (updated by D-322): rest-of-board routing — IN PROGRESS, incrementally.**
-  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across SEVENTEEN promoted
-  increments: of the 164 rest-of-board multi-pad nets, **25 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
+- **Current fabrication blocker (updated by D-323): rest-of-board routing — IN PROGRESS, incrementally.**
+  The reusable incremental router/promoter (`checks/incremental_router.py`) is proven across EIGHTEEN promoted
+  increments: of the 164 rest-of-board multi-pad nets, **26 are routed (FRONT_RGB 3 + ACC 2 + DISP 1 + IMU 1 +
   FRONT_RGB_LED 3 + IR_RX_VS 1 + TOUCH_CTL 2 + AMP_SD_MODE 1 + SD_CARD_DETECT_N 1 + XGPIO8/XGPIO9 2 +
   XGPIO1/XGPIO0 2 + XGPIO3 1 + BMI270_INT1_STRAP 1 + UART0_TXD_DBG 1 + IR_TX_GPIO16 1 + SD_CS_N 1 +
-  RESERVED_SPARE 1), 139 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest **667**. Each future
-  group is added to the `incremental_router.py` registry and routed → gated (real full-board DRC, D-286) →
-  promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-025, §5). The board carries Phase-A
-  battery-block copper (432 trk / 54 via) **plus** the seventeen rest increments (327 trk / 13 via).
-  **FBV2-P2-024 / D-322 added the reserved/spare community expander GPIO `RESERVED_SPARE` (R130.2 / TP41.1 test
+  RESERVED_SPARE 1 + ACC_DETECT_N 1), 138 remain UNROUTED** across 9 subsystem sheets + rails; ratsnest
+  **665**. Each future group is added to the `incremental_router.py` registry and routed → gated (real
+  full-board DRC, D-286) → promoted on a genuine no-casualty / no-new-DRC increment (FBV2-P2-026, §5). The
+  board carries Phase-A battery-block copper (432 trk / 54 via) **plus** the eighteen rest increments (349 trk
+  / 14 via). **FBV2-P2-025 / D-323 added the accelerometer/add-on presence-detect `ACC_DETECT_N` (R64.1
+  divider F.Cu / R129.2 series B.Cu / U3.17 PCAL expander GPIO B.Cu, a 3-pad cross-layer net = ONE 0.60/0.30
+  through via + ONE same-layer B.Cu run) — a genuine functional detect, promoted in an OPEN region (realized
+  copper 3.88 mm clear of `BAT_PROTECTED_P`) after the cleaner-class `DISP_BL_CTL_STRAP` hit a characterized
+  local wall (all 3 MST edges `NO_PATH` at 0.200 mm) and `BTN_B_N` failed the gate on a duplicate-ref
+  tact-switch connectivity limit: tracks 759→781, vias 67→68, ratsnest 667→665, journal 114→116, no new DRC,
+  `router_regression` ALL PASS G1–G35.** **FBV2-P2-024 / D-322 added the reserved/spare community expander GPIO `RESERVED_SPARE` (R130.2 / TP41.1 test
   point / U23.7 PCAL expander, 3-pad ALL-B.Cu SAME-LAYER MST, NO via) — the held clean alternate, promoted in an
   OPEN region 15.5 mm clear of `BAT_PROTECTED_P` after the meaningful display-control candidates
   `DISP_CS_N`/`DISP_DC` hit a characterized J1 display-FPC-connector wall and `BOOT_N` routed only via poor 2.5×
@@ -1250,19 +1322,33 @@
 
 ## 5. Next task — FBV2-P2-025 (route the next clean rest-of-board increment in an OPEN region; continue avoiding the saturated west-XGPIO F.Cu corridor)
 
-- **Where 024 left it (D-322 — PROMOTED, seventeenth increment).** SEVENTEEN increments promoted; **139 of 164
-  rest nets unrouted**; authoritative `sha256 a861e30e…0628efd1` (759 trk / 67 via / 6 layers / 41 zones /
-  ratsnest 667 / journal 114). FBV2-P2-024 ran a fresh evidence-first read-only screen (`w/screen_020.py`) of all
-  140 unrouted rest nets (40 ALLOW / 100 EXCL), then a focused geometry vet (`w/vet_021.py`) of the mandate's
-  shortlist + two other genuinely-functional candidates (`RESERVED_SPARE` cong 84, `DISP_CS_N` cong 184,
-  `DISP_DC` cong 203, `BOOT_N` cong 231, `DISP_BL_CTL_STRAP` cong 185). **The meaningful display-control
-  candidates were vetted FIRST (prefer function over a spare).** The strongest, `DISP_CS_N` (the display SPI
-  chip-select `U1.18` MCU + `R26.2` series + `J1.38` display FPC, the direct analog of D-321's `SD_CS_N`), was
-  scratch-tested FIRST: its short MCU-side edge `R26.2↔U1.18` (2.5 mm) routes clean off the series resistor, but
-  the long `J1.38↔R26.2` haul to the tight display connector returns `NO_PATH` at 0.200 mm (none even at the
-  0.05/0.025 mm fine grid); `DISP_DC` (`U1.22 → J1.37`, the adjacent FPC pin) ALSO returns `NO_PATH` —
-  characterizing the **J1 display-FPC-connector interior haul as a shared local wall**; `GROUPS['DISP_CS_N']`/
-  `['DISP_DC']` annotated (do NOT naively retry at 0.200 mm). `BOOT_N` (the meaningful non-J1 alternative, ESP32
+- **Where 025 left it (D-323 — PROMOTED, eighteenth increment).** EIGHTEEN increments promoted; **138 of 164
+  rest nets unrouted**; authoritative `sha256 a7bf8bdc…c57f9f626` (781 trk / 68 via / 6 layers / 41 zones /
+  ratsnest 665 / journal 116). FBV2-P2-025 ran the evidence-first read-only screen (`w/screen_020.py`) of the
+  remaining unrouted rest nets, then a focused geometry vet (`w/vet_021.py`, re-verified live) of the
+  genuinely-functional shortlist (`ACC_DETECT_N` cong 103 / straight-MST 2.750 mm from BPP, `DISP_BL_CTL_STRAP`
+  cong 185, `BTN_B_N` cong 141). **The cleaner-class candidates were tested FIRST.** `DISP_BL_CTL_STRAP` (the
+  display backlight-control strap `U1.16` MCU / `TP2.1` / `R108.1`+`R109.1`, isolated by R109 from the
+  downstream `DISP_BL_CTL`→`U17.4` driver) returned `NO_PATH` at 0.200 mm on **ALL THREE** MST edges
+  (5.44 + 10.30 + 24.77 mm; none even at the 0.05/0.025 mm fine grid) — the dense MCU/backlight pad pocket
+  (cong 185; vet nearest-copper 0.022 mm to the accepted D-318 `BMI270_INT1_STRAP`) boxes every terminal (the
+  `MCU_EN_RC` boxed-pocket lesson repeated); `GROUPS['DISP_BL_CTL_STRAP']` annotated (do NOT retry at 0.200 mm).
+  `BTN_B_N` (nav/boot button `SW7.1` → `R9.2` → `U2.18`) routed ALL OK but **failed the gate on connectivity** —
+  SW7 is a 4-pin tactile switch whose two mechanically-linked terminals BOTH carry pad "1" on `BTN_B_N` at
+  (49.520,96.750) and (57.480,96.750), 7.96 mm apart, and the per-ref MST (`pads_by_ref`) collapses them to one
+  node → the second terminal is never driven → one permanent open ratsnest edge (open_edges 2→1); a connectivity
+  gap of the WHOLE duplicate-ref button family (deferred "duplicate-ref MST" framework task), NOT a copper
+  casualty — the authoritative board was never touched. **SELECTED** the genuine functional 3-distinct-ref
+  detect `ACC_DETECT_N` (`R64.1` divider F.Cu / `R129.2` series B.Cu / `U3.17` expander GPIO B.Cu, a cross-layer
+  net = ONE 0.60/0.30 through via `R64.1↔R129.2` + ONE same-layer B.Cu run `R129.2↔U3.17`), in an OPEN region
+  whose realized copper clears `BAT_PROTECTED_P` by **3.8831 mm** (zero D-269 involvement); the via lands in the
+  open north @(57.900,38.800), 34.157 mm from every barrel. Gate PASS every check; `router_regression` ALL PASS
+  G1–G35; `incremental_probe_023.py`+`G35` added; the no-via probes `_018..022` + `_023` generalized their
+  board-total via pin to `EXPECT_VIAS` (per-net `i_via` contract kept — first new via since D-316);
+  `live_fingerprint.py` bumped once. `MCU_EN_RC`, the J1 display-connector haul (`DISP_CS_N`/`DISP_DC`), the
+  `DISP_BL_CTL_STRAP` boxed pocket, and the `SWx` duplicate-ref button family are characterized — do NOT naively
+  retry; `BOOT_N` set aside (sensitive, poor path).
+- **(superseded D-322 note) FBV2-P2-024 promoted `RESERVED_SPARE`; `BOOT_N` (the meaningful non-J1 alternative, ESP32
   boot-mode strap) routed ALL OK but only via poor 2.5× detours (~110 mm of meandering copper for a boot-critical
   strap) — not equally clean, set aside (sensitivity treated carefully). It then PROMOTED the held clean alternate
   `RESERVED_SPARE` — the reserved/spare community expander GPIO (R130.2 / TP41.1 test point / U23.7 PCAL
@@ -1271,7 +1357,7 @@
   G1–G34; `incremental_probe_022.py`+`G34` added; `live_fingerprint.py` bumped once. `MCU_EN_RC` (`Net-(U1-EN)`)
   and the J1 display-connector haul (`DISP_CS_N`/`DISP_DC`) are characterized walls — do NOT naively retry;
   `BOOT_N` set aside (sensitive, poor path).
-- **The lever (FBV2-P2-025) — route the next clean rest-of-board increment in an OPEN, UNCONGESTED region**
+- **The lever (FBV2-P2-026) — route the next clean rest-of-board increment in an OPEN, UNCONGESTED region**
   (a single net or small coherent local group). Re-run / extend the evidence-first live screen (`w/screen_020.py`
   is the reusable read-only inventory + category screen; its auto-classifier is a FIRST pass only — several
   auto-ALLOW nets are actually converter-switching — `Net-(L1-Pad1/2)`, `Net-(U13-SW/FB)`, `Net-(U12-*)`,
@@ -1283,10 +1369,12 @@
   low-current controls, or other local noncritical nets). Register the selected 1–6-net GROUP in
   `incremental_router.py` at its netclass Default (reuse the proven same-layer / MST / mixed-layer / via
   mechanics; extend only if forced by measured evidence), `route`→`gate`→`promote` under the D-286 real
-  full-board gate. On promote add `incremental_probe_023.py` + a `G35` contract (net(s) connected, copper legal,
+  full-board gate. On promote add `incremental_probe_024.py` + a `G36` contract (net(s) connected, copper legal,
   all vias clear every barrel, applicable D-269/BPP kept by real DRC, ADD-ONLY) and bump `live_fingerprint.py`
   once. **Do NOT** retry the `MCU_EN_RC` (`Net-(U1-EN)`) characterized wall, the J1 display-connector haul
-  (`DISP_CS_N`/`DISP_DC`) characterized wall, single west XGPIO F.Cu hauls
+  (`DISP_CS_N`/`DISP_DC`) characterized wall, the `DISP_BL_CTL_STRAP` boxed-pocket wall (all 3 MST edges
+  `NO_PATH` at 0.200 mm), the `SWx` duplicate-ref button family (`BTN_B_N` etc. — `pads_by_ref` MST collapses
+  the duplicate pad-"1" terminals; needs a duplicate-ref MST framework task first), single west XGPIO F.Cu hauls
   (`XGPIO2`/`XGPIO4`/`XGPIO5`/`XGPIO6`/`XGPIO7` — corridor-capacity walled as second hauls), the `XGPIO2`+`XGPIO3`
   PAIR (D-315 wall), or `U11_PROG`/`PWR_SENSE` (hard walls); avoid RF/NFC matching/antennas, USB, crystals/clocks,
   switching/high-current/class-D outputs (incl. the IR-emitter power/Q1 switch node `IR_LED_A`/`IR_LED_K`), bulk
@@ -1294,7 +1382,7 @@
   Hold the **inner-layer (In2/In3) west-XGPIO haul** as the concretely-justified deferred **framework** task (out
   of scope for a single-net increment). Promote **only a genuine no-casualty / no-new-DRC increment** (the gate
   enforces this). All floors ENFORCED; no DRU/rule relaxation, no D-290 reauth, no topology/footprint/outline
-  change. If no candidate promotes, commit the exact characterization and define FBV2-P2-025.
+  change. If no candidate promotes, commit the exact characterization and define FBV2-P2-026.
 - **(historical) Next task as of FBV2-P2-007 (continue rest-of-board routing, next bounded group)**
 - **Where 006 left it (D-304).** The reusable incremental router/promoter `checks/incremental_router.py`
   EXISTS and is proven: it loaded the D-302 promoted board, routed the FRONT_RGB indicator group (3 nets, 20
@@ -1526,7 +1614,7 @@
   NONE.** The deferred opportunity is only the *technical* 004B lever above, pursued under CTO autonomy.
 
 ## 9. JLCPCB readiness
-- **JLCPCB readiness ~78 %** (authoritative governance figure; unchanged by D-322 — the rest-of-board
+- **JLCPCB readiness ~78 %** (authoritative governance figure; unchanged by D-323 — the rest-of-board
   increments add real authoritative copper but the fabrication package/Gerbers are not yet regenerated, so
   the JLCPCB file itself is unchanged; readiness is not moved absent that evidence).
   `/home/aqroot8/.aqroot-progress.env` unchanged (CTO owns readiness).

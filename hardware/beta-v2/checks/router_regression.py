@@ -2143,6 +2143,79 @@ def main():
                len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
                len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)), rs_addonly)
 
+        # -- G35 FBV2-P2-025/D-323 eighteenth rest-of-board incremental increment
+        # The accelerometer/add-on presence-detect ACC_DETECT_N (R64.1 divider
+        # F.Cu / R129.2 series B.Cu / U3.17 PCAL expander GPIO B.Cu), routed onto
+        # the D-322 board by incremental_router.py in an OPEN region -- away from
+        # the saturated west-XGPIO F.Cu corridor, the U11/BQ25185 power-tree wall,
+        # the RF/NFC/USB/crystal/switching/rail/community-header mass, and every
+        # characterized wall.  A genuine functional low-speed CMOS detect input,
+        # PROMOTED after the cleaner-class candidate DISP_BL_CTL_STRAP (backlight-
+        # control strap) hit a characterized local wall (all three MST edges
+        # NO_PATH at 0.200 mm even on the fine grid -- the dense MCU/backlight pad
+        # pocket boxes every terminal, the MCU_EN_RC lesson) and after BTN_B_N
+        # FAILED the gate on connectivity (SW7 is a 4-pin tact switch whose two
+        # terminals share pad "1" 7.96 mm apart -> the per-ref MST leaves the
+        # second terminal unconnected; a whole-button-family framework limit, NOT
+        # a copper casualty).  Three pads on TWO faces, so the MST is ONE
+        # cross-layer edge R64.1<->R129.2 (a single 0.60/0.30 Default through via,
+        # In1/In4 re-poured) + ONE same-layer B.Cu edge R129.2<->U3.17.  Default
+        # netclass (0.200 mm); MEASURED the via 34.16 mm from every barrel and the
+        # realized copper 3.8831 mm from BAT_PROTECTED_P -> ZERO D-269 involvement.
+        # G35 pins the increment: all three pads copper-connected, copper legal
+        # (22 trk 0.200 mm = 3 F.Cu + 19 B.Cu, exactly 1 0.60/0.30 through via),
+        # via clears every barrel >= 0.80 mm, ADD-ONLY.
+        print('  -- G35 FBV2-P2-025/D-323 rest-of-board incremental increment --')
+        ADNET = '/ACC_DETECT_N'
+        ad_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == ADNET]
+        ad_via = [t for t in all_via if t.GetNetname() == ADNET]
+
+        j_ad = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                for p in _cc.GetConnectedItems(_pad('R129.2')) if p.GetClass() == 'PAD'}
+        ad_conn = {'R64.1', 'U3.17'}.issubset(j_ad)
+        chk('G35 ACC_DETECT_N all three pads copper-connected (R64.1/R129.2/U3.17)',
+            'R129.2 joins %s' % sorted(j_ad & {'R64.1', 'U3.17'}), ad_conn)
+
+        ad_layers = collections.Counter(t.GetLayerName() for t in ad_trk)
+        ad_via_ok = (len(ad_via) == 1
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in ad_via))
+        ad_legal = (len(ad_trk) == 22 and set(ad_layers) == {'F.Cu', 'B.Cu'}
+                    and ad_layers['F.Cu'] == 3 and ad_layers['B.Cu'] == 19
+                    and all(t.GetWidth() == 200000 for t in ad_trk) and ad_via_ok)
+        chk('G35 ACC_DETECT_N copper legal (22 trk 0.200 mm = 3 F.Cu + 19 B.Cu, 1 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(ad_trk), dict(ad_layers), len(ad_via),
+               sorted({t.GetWidth() for t in ad_trk})), ad_legal)
+
+        ad_gap = min([math.hypot(v.GetPosition().x - o.GetPosition().x,
+                                 v.GetPosition().y - o.GetPosition().y)
+                      for v in ad_via for o in all_via if o.GetNetname() != ADNET]
+                     or [0])
+        chk('G35 ACC_DETECT_N via >= 0.80 mm (centre) from every existing barrel',
+            'min centre gap = %.3f mm' % (ad_gap / 1e6), ad_gap >= 800000)
+
+        ad_addonly = (len(ad_trk) == 22 and len(ad_via) == 1
+                      and len(rs_trk) == 10
+                      and len(sdcs_trk) == 20
+                      and len(irtx_trk) == 13
+                      and len(uart_trk) == 7
+                      and len(imu1_trk) == 18
+                      and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                      and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                      and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                      and len(phaseA_via) == 54)
+        chk('G35 increment is ADD-ONLY (ACC_DETECT_N 22/1via + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'accdet=%d (exp 22, 1 via), reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk), len(uart_trk),
+               len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk),
+               len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk),
+               len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
+               len(phaseA_via)), ad_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

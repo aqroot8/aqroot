@@ -151,8 +151,8 @@ def main():
         all(t.GetWidth() == 200000 for t in i_trk),
         'widths=%s' % sorted({t.GetWidth() for t in i_trk}))
     # No-via class: the total via count is unchanged, so this increment added none.
-    chk('increment added ZERO vias (via count 67 unchanged; cleanest class)',
-        len(via) == 67 and len(i_via) == 0, '%d total vias' % len(via))
+    chk('increment added ZERO vias to its net (board via total tracks the live SoT; cleanest class)',
+        len(via) == EXPECT_VIAS and len(i_via) == 0, '%d total vias' % len(via))
 
     # ------------------------------------ 4. CONNECTIVITY GAIN ----------------
     print('\n-- 4. both pads fully connected, no prior pair regressed --')

@@ -644,6 +644,129 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['BOOT_N'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-025 / D-323 -- the display BACKLIGHT-CONTROL strap, a clean-
+    # functional increment in an OPEN region (away from the west-XGPIO F.Cu
+    # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
+    # class-D/rails/community mass, and every characterized wall: the MCU_EN_RC
+    # boxed U1.3 pocket, the J1 display-FPC interior haul DISP_CS_N/DISP_DC, the
+    # BOOT_N poor detours, U11_PROG/PWR_SENSE).  DISP_BL_CTL_STRAP is the MCU-side
+    # low-current CONTROL strap of the display backlight: ESP32 (U1) GPIO pad
+    # U1.16 (F.Cu SMD) -> test point TP2.1 (F.Cu SMD) + series resistors R108.1
+    # and R109.1 (F.Cu SMD); R109 bridges to the SEPARATE downstream net
+    # DISP_BL_CTL (R109.2 -> U17.4 backlight driver, NOT part of this increment),
+    # so this is exactly the low-current MCU control/enable/PWM strap, DISTINCT
+    # from the backlight power/driver path (the emitter/switch-vs-control
+    # distinction the mandate draws).  It is NOT the higher-current LED_BOOST
+    # backlight distribution (LED_A, netclass LED_BOOST 0.300 mm width -- rejected
+    # as a converter/high-current trap).  All four pads on F.Cu, so the 4-pad MST
+    # is three SAME-LAYER F.Cu runs with NO via -- the cleanest incremental class
+    # (no through via, no In1/In4 plane re-pour, no via-clearance risk; the
+    # D-305/D-307/D-309/D-318..D-322 no-via same-layer mechanic).  Its role is
+    # noncritical low-speed CMOS backlight control -- NOT reset/boot sensitive
+    # (unlike BOOT_N / MCU_EN which the mandate set aside for sensitivity), so a
+    # legal same-layer detour around accepted copper is fully acceptable for this
+    # net.  Default netclass (0.200 mm width/clearance).  MEASURED (w/vet_021.py
+    # on the live D-322 board): 4 pads, MST 5.44 mm (TP2.1<->U1.16) + 10.30 mm
+    # (TP2.1<->R109.1) + 24.77 mm (U1.16<->R108.1), congestion 185, 37.9 mm clear
+    # of the BAT_PROTECTED_P trunk -> ZERO D-269 involvement.  U1.16 is a
+    # different MCU pin from the boxed U1.3 (MCU_EN wall): its short escape is the
+    # clean 5.44 mm TP2.1 edge (not a long haul directly off a boxed pad), and the
+    # long 24.77 mm R108.1 edge hauls SOUTH into open board -- the SD_CS_N/UART0
+    # MCU-pad-escape precedent, not the MCU_EN boxed-pocket wall.  Promotion
+    # decided by the real full-board gate (D-286), not geometry.
+    #
+    # FBV2-P2-025 OUTCOME -- CHARACTERIZED LOCAL WALL, NOT PROMOTED.  On the live
+    # D-322 board ALL THREE MST edges return NO_PATH at 0.200 mm (none even at the
+    # 0.05/0.025 mm fine grid) -- including the SHORT edges U1.16<->TP2.1 (5.44 mm)
+    # and TP2.1<->R109.1 (10.30 mm), not just the long R108.1 haul.  The MCU /
+    # backlight pad pocket (congestion 185) boxes every terminal: the vet's
+    # 0.022 mm straight-line proximity to the accepted D-318 BMI270_INT1_STRAP
+    # copper and 0.111 mm to the SD_CARD_DETECT_N region are REAL congestion, so
+    # U1.16, TP2.1 and R109.1 have no legal 0.200 mm corridor between them.  This
+    # is the MCU_EN_RC lesson repeated (a dense boxed MCU-adjacent pocket, not an
+    # open MCU-pad escape like SD_CS_N/UART0); do NOT naively retry.  The next
+    # bounded alternative BTN_B_N then FAILED the real full-board gate on
+    # connectivity (SW7 duplicate pad-"1" tact-switch topology -- see its block),
+    # so D-323 promoted the functional net ACC_DETECT_N (which gates clean).
+    'DISP_BL_CTL_STRAP': dict(
+        sheet='02_MCU_CORE',
+        desc='display backlight-control strap DISP_BL_CTL_STRAP (U1.16 MCU GPIO / '
+             'TP2.1 test point / R108.1 + R109.1 series); low-current MCU control '
+             'strap isolated by R109 from the DISP_BL_CTL backlight-driver path, '
+             '4-pad multi-terminal, all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['DISP_BL_CTL_STRAP'],
+    ),
+    # FBV2-P2-025 -- BTN_B_N held as the bounded functional ALTERNATIVE (a genuine
+    # user-input button net: boot/nav button SW7.1 F.Cu -> pull-up R9.2 B.Cu ->
+    # expander U2.18 B.Cu).  Its single cross-layer through via lands on the
+    # SW7.1<->R9.2 edge in the OPEN south button field (NOT the characterized U2
+    # west-edge escape wall -- the U2.18 leg is a flat SAME-LAYER B.Cu run), so no
+    # via_offset is needed; one 0.60/0.30 Default through via with the In1/In4
+    # re-pour mechanic (D-306/D-308).  Default netclass.  MEASURED (w/vet_021.py,
+    # live D-322): 3 pads, MST 6.12 mm (SW7.1<->R9.2 cross) + 8.57 mm
+    # (R9.2<->U2.18 same B), congestion 141, 11.0 mm clear of BAT_PROTECTED_P.
+    #
+    # FBV2-P2-025 OUTCOME -- ROUTED ALL OK BUT FAILED THE REAL FULL-BOARD GATE ON
+    # CONNECTIVITY, NOT PROMOTED.  SW7 is a 4-pin tactile switch whose TWO
+    # mechanically-linked terminals BOTH carry pad number "1" on BTN_B_N at
+    # different locations (measured (49.520,96.750) and (57.480,96.750), 7.96 mm
+    # apart), and the framework's per-ref MST (pads_by_ref) collapses the two
+    # SW7.1 pads to a single node -> the second terminal is never driven -> one
+    # permanent open ratsnest edge (open_edges 2->1, gate FAIL).  This is a
+    # connectivity gap of the WHOLE duplicate-ref button family (every SWx tact
+    # switch), NOT a copper casualty -- the authoritative board was never touched.
+    # Do NOT naively retry any SWx button net until the framework grows a
+    # duplicate-ref MST (a deferred framework task).  D-323 promoted the genuine
+    # 3-distinct-ref functional net ACC_DETECT_N instead (which gates clean).
+    'BTN_B_N': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='navigation/boot button input BTN_B_N (SW7.1 button F.Cu -> R9.2 '
+             'pull-up B.Cu -> U2.18 expander B.Cu); low-current 3V3 CMOS input, '
+             '3-pad, one cross-layer through via in the open button field '
+             '(not the U2 escape wall), no via_offset',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['BTN_B_N'],
+    ),
+    # FBV2-P2-025 / D-323 -- the accelerometer PRESENCE-DETECT signal, a clean-
+    # functional increment in an OPEN region (away from the west-XGPIO F.Cu
+    # corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/
+    # class-D/rails/community mass, and every characterized wall).  ACC_DETECT_N
+    # is the low-current accelerometer / add-on presence-detect signal: divider/
+    # pull resistor R64.1 (F.Cu SMD, placed in the north) -> series resistor
+    # R129.2 (B.Cu SMD) -> PCAL9535A expander GPIO U3.17 (B.Cu SMD).  It is a
+    # genuine functional low-speed CMOS detect input to the expander (NOT the
+    # community-header GPIO bank, NOT a converter/rail: U3.17 is an internal
+    # peripheral GPIO, R64 is the detect divider that merely sits spatially near
+    # the NFC parts in the north).  Three pads on TWO faces (R64.1 F.Cu; R129.2 +
+    # U3.17 B.Cu), so the MST is ONE cross-layer edge R64.1<->R129.2 (a single
+    # 0.60/0.30 Default through via, the D-306/D-308 mechanic with the In1/In4
+    # re-pour) + ONE SAME-LAYER B.Cu edge R129.2<->U3.17 (no via).  The via lands
+    # on the NORTH R64.1<->R129.2 edge (y~38-57), away from every existing barrel
+    # and away from the U3 west-edge XGPIO via pocket -> NO via_offset needed (the
+    # always-on existing-via obstacle injection + the defensive clearance re-proof
+    # arbitrate).  Default netclass (0.200 mm width/clearance).  MEASURED
+    # (w/vet_021.py on the live D-322 board): 3 pads, MST 19.64 mm
+    # (R64.1<->R129.2 cross) + 19.31 mm (R129.2<->U3.17 same B), congestion 103
+    # (lowest of the remaining genuinely-clean functional shortlist), straight-MST
+    # 2.750 mm from the BAT_PROTECTED_P trunk -- >> the D-269 0.300 mm floor, so
+    # D-269 is satisfied by geometry and arbitrated by the real full-board
+    # D-269-aware gate (the router detours; the vet's 0.228 mm NFC_5V_EN and
+    # 0.007 mm V3V3_FB straight-line proximities are GUIDANCE only).  Promotion
+    # decided by the real full-board gate (D-286), not geometry.
+    'ACC_DETECT_N': dict(
+        sheet='(top)',
+        desc='accelerometer/add-on presence-detect ACC_DETECT_N (R64.1 divider '
+             'F.Cu / R129.2 series B.Cu / U3.17 expander GPIO B.Cu); low-current '
+             'low-speed CMOS detect input, 3-pad, one cross-layer through via '
+             '(north R64.1<->R129.2 edge, not the U3 escape) + one same-layer '
+             'B.Cu run, no via_offset',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        nets=['ACC_DETECT_N'],
+    ),
 }
 
 
