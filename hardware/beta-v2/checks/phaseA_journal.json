@@ -3278,5 +3278,27 @@
   "mm": 23.153,
   "requested_connected": true,
   "group": "IR_TX_GPIO16"
+ },
+ {
+  "net": "/SD_CS_N",
+  "a": "J2.2",
+  "b": "U1.25",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 48.42,
+  "requested_connected": true,
+  "group": "SD_CS_N"
+ },
+ {
+  "net": "/SD_CS_N",
+  "a": "U1.25",
+  "b": "R25.2",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 21.081,
+  "requested_connected": true,
+  "group": "SD_CS_N"
  }
 ]

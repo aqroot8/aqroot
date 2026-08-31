@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-320',                 # FBV2-P2-022: IR transmit carrier CONTROL leg IR_TX_GPIO16 (U1.9 ESP32 GPIO16 -> R22.1 series-drive resistor), dedicated 2-pad point-to-point net, SAME-LAYER F.Cu MST, NO via -- the cleanest class (no plane re-pour); the low-current MCU control GPIO, isolated by series R22 from the IR_GATE switch node and the IR_LED_A/K emitter power (both excluded switching/emitter nets); in an OPEN region 35.2 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
-    sha256='4e706490389655cb8b68f8c15249a813072f36a9ea9e6ffaeb1fdd2194c0bf34',
-    tracks=729,                       # 716 (D-319) + 13 IR_TX_GPIO16 (single same-layer F.Cu MST run, detoured 13 segments around the GND pinch)
-    vias=67,                          # unchanged (no via -- both pads on F.Cu)
+    decision='D-321',                 # FBV2-P2-023: microSD SPI chip-select SD_CS_N (J2.2 socket / R25.2 / U1.25 MCU), a genuine functional POINT-TO-POINT control (NOT a shared MOSI/MISO/CLK bus line), 3-pad all-F.Cu SAME-LAYER MST, NO via -- the cleanest class (no plane re-pour); chosen over the walled MCU_EN_RC (Net-(U1-EN), natural MST short edge C1.2<->U1.3 NO_PATH in the congested U1-EN/IR_TX pocket) and over the RESERVED_SPARE spare (held clean alternate); in an OPEN region 50.1 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
+    sha256='68d44b54df91d607f689215c0da5db249b13fcd1ac189b9ab78ceb6366d25e46',
+    tracks=749,                       # 729 (D-320) + 20 SD_CS_N (two same-layer F.Cu MST runs J2.2<->U1.25 + U1.25<->R25.2, 69.5 mm total)
+    vias=67,                          # unchanged (no via -- all three pads on F.Cu)
     copper_layers=6,
     zones=41,                         # unchanged (no via -> no plane re-pour; zone COUNT + FILL constant)
-    ratsnest=671,                     # 672 (D-319) - 1 (IR_TX_GPIO16 2-pad net fully connected)
-    journal=110,                      # 109 (D-319) + 1 IR_TX_GPIO16 REST_INC edge
+    ratsnest=669,                     # 671 (D-320) - 2 (SD_CS_N 3-pad net fully connected: 2 MST edges closed)
+    journal=112,                      # 110 (D-320) + 2 SD_CS_N REST_INC edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

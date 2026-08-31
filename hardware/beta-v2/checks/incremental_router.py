@@ -498,6 +498,87 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['IR_TX_GPIO16'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-023 / D-321 -- the ESP32 MCU enable / power-on-reset network, a
+    # clean-functional increment in an OPEN region (away from the west-XGPIO
+    # F.Cu corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/
+    # switching/rails/community mass).  Net-(U1-EN) is the MCU (U1) EN pin RC
+    # reset network: U1.3 (EN, F.Cu SMD) + its pull-up resistor R1.1 (F.Cu SMD)
+    # + its filter capacitor C1.2 (F.Cu SMD) to GND -- a genuine, complete,
+    # coherent 3-pad functional net (the power-on-reset RC that holds EN low
+    # through C1 and pulls it high through R1).  Chosen (FBV2-P2-023) as the
+    # cleanest functional net of the remaining shortlist over RESERVED_SPARE (a
+    # mere spare of lower merit -- not chosen when a meaningful control net is
+    # equally clean) and over BOOT_N (a longer, more congested sensitive strap).
+    # EN sensitivity is treated carefully: the net's OWN filter cap C1 sits on
+    # this net AT the EN pin (so high-frequency coupling is shunted to GND right
+    # at the pad), the placement is frozen, and the realized route is inspected
+    # for USB_D_MCU_N spacing after routing -- the vet's 0.335 mm straight-line
+    # proximity to USB_D_MCU_N is GUIDANCE only (the router detours; the real
+    # D-286 full-board gate arbitrates legality).  All three pads on F.Cu, so
+    # both MST edges are SAME-LAYER F.Cu runs with NO via -- the cleanest
+    # incremental class (no through via, no In1/In4 plane re-pour, no via-
+    # clearance risk; the D-305/D-307/D-309/D-318/D-319/D-320 no-via same-layer
+    # mechanic).  Default netclass (0.200 mm width/clearance).  MEASURED
+    # (w/vet_021.py on the live D-320 board): 3 pads, MST 7.81 mm (U1.3<->C1.2)
+    # + 22.28 mm (U1.3<->R1.1), congestion 66 (lowest of the genuinely-clean
+    # functional shortlist), 40.4 mm clear of the BAT_PROTECTED_P trunk -> ZERO
+    # D-269 involvement.  Promotion decided by the real full-board gate (D-286),
+    # not geometry.
+    #
+    # FBV2-P2-023 OUTCOME -- CHARACTERIZED LOCAL WALL, NOT PROMOTED.  On the live
+    # D-320 board the natural MST short edge C1.2<->U1.3 (7.81 mm) has NO LEGAL
+    # CORRIDOR at 0.200 mm (router NO_PATH even at the 0.05/0.025 mm fine grid):
+    # the EN pin U1.3 sits in a dense pad pocket (U1 pin row + C1 + neighbouring
+    # parts, with the D-320 IR_TX_GPIO16 detour copper 0.101 mm away on the
+    # straight line), and the other edge U1.3<->R1.1 only routes with a 58.46 mm
+    # detour (2.6x the 22.28 mm straight) -- a poor, long path for a reset line.
+    # Combined with EN's reset-line sensitivity and the 0.335 mm straight-line
+    # proximity to the USB_D_MCU_N diff pair, EN is NOT the clean pick its bbox
+    # congestion (66) suggested; do NOT naively retry the natural MST.  D-321
+    # instead promoted the meaningful functional SD_CS_N (which gates clean).
+    'MCU_EN_RC': dict(
+        sheet='(top)',
+        desc='ESP32 MCU enable / power-on-reset RC network Net-(U1-EN) (U1.3 EN '
+             '+ R1.1 pull-up + C1.2 filter cap); low-current MCU reset strap, '
+             'dedicated 3-pad functional net, all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['Net-(U1-EN)'],
+    ),
+    # FBV2-P2-023 / D-321 -- SD_CS_N PROMOTED.  After MCU_EN_RC hit a
+    # characterized local wall (above), the held functional alternates were
+    # scratch-tested and gated: SD_CS_N = the microSD SPI chip-select control
+    # (J2.2 socket + R25.2 + U1.25 MCU), a genuine functional POINT-TO-POINT
+    # control (NOT a shared MOSI/MISO/CLK bus line -- the chip-select travels
+    # with its own synchronous SPI-A bus, benign coupling), all three pads on
+    # F.Cu -> both MST edges SAME-LAYER F.Cu runs with NO via (the cleanest
+    # incremental class; no In1/In4 plane re-pour).  MEASURED (w/vet_021.py, live
+    # D-320): 3-pad, MST 14.99 mm (U1.25<->R25.2) + 31.98 mm (U1.25<->J2.2),
+    # 50.1 mm clear of BAT_PROTECTED_P -> ZERO D-269 involvement.  Routed ALL OK
+    # (J2.2<->U1.25 48.42 mm + U1.25<->R25.2 21.08 mm, 20 F.Cu seg, 0 via) and
+    # gated PASS on the real full-board D-286 gate (ratsnest 671->669 -2, no
+    # new/worse DRC).  Chosen over RESERVED_SPARE per the mandate: prefer a
+    # meaningful coherent functional net over an easy spare.  RESERVED_SPARE =
+    # the reserved/spare community expander GPIO (R130.2 + TP41.1 test point +
+    # U23.7 PCAL expander), all B.Cu -> no via; routed ALL OK on scratch (4.43 +
+    # 10.94 mm, short/clean) and HELD as a clean alternate for a future
+    # increment (a spare of lower merit, not promoted while a meaningful control
+    # net gates clean).
+    'SD_CS_N': dict(
+        sheet='(top)',
+        desc='microSD SPI chip-select SD_CS_N (J2.2 socket / R25.2 / U1.25 MCU); '
+             'point-to-point control (not a shared SPI data/clock line), 3-pad '
+             'all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['SD_CS_N'],
+    ),
+    'RESERVED_SPARE': dict(
+        sheet='08_BUTTONS_EXPANDERS',
+        desc='reserved/spare community expander GPIO RESERVED_SPARE (R130.2 / '
+             'TP41.1 test point / U23.7 expander); 3-pad all B.Cu SMD, no via',
+        layer='B', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['RESERVED_SPARE'],
+    ),
 }
 
 
