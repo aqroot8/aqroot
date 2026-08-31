@@ -6061,3 +6061,6 @@ Routine D-331 framework reuse: the coherent `XGPIO4` + `XGPIO5` batch passed the
 ## 2026-08-31 - FBV2-P2-035: D-333 — final XGPIO pair bounded at endpoint via-site wall (no copper change)
 
 The accepted inner-layer long-haul framework was fast-screened on XGPIO6/XGPIO7. Each failed at a different endpoint because no legal reachable locked-size via site exists; neither reached the long-haul stage. Authoritative D-332 copper is byte-identical and the wall registry now directs both nets to the generic boxed-endpoint framework. Full evidence: [`audits/2026-08-31-p2-035-d333-xgpio6-xgpio7-inner-haul-endpoint-wall.md`](audits/2026-08-31-p2-035-d333-xgpio6-xgpio7-inner-haul-endpoint-wall.md).
+## 2026-08-31 - FBV2-P2-036: D-334 — MCU EN same-face boxed-anchor pilot bounded
+
+A bounded generic prototype successfully staged `U1.3` toward explicit F.Cu anchors, but none opened a legal 0.200 mm path to `C1.2`; the prototype was removed rather than retained as dead routing logic. No authoritative copper changed. Fresh regression, focused probes, Phase-B and KiCad DRC reconfirm D-332 unchanged with zero clearance class. Next is a layer-changing/owned-copper endpoint framework for the coherent west-button family. Full evidence: [`audits/2026-08-31-p2-036-d334-mcu-en-boxed-anchor-screen.md`](audits/2026-08-31-p2-036-d334-mcu-en-boxed-anchor-screen.md).
