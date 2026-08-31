@@ -1920,6 +1920,59 @@ def main():
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
                len(phaseA_trk), len(phaseA_via)), imu1_addonly)
 
+        # -- G31 FBV2-P2-021/D-319 fourteenth rest-of-board incremental increment -
+        # The debug-console UART transmit line UART0_TXD_DBG (U1.37 MCU -> TP35.1
+        # test point), routed onto the D-318 board by incremental_router.py in an
+        # OPEN region -- away from the saturated west-XGPIO F.Cu corridor, the
+        # U11/BQ25185 power-tree wall, and the RF/NFC/USB/crystal/switching/rail/
+        # community-header mass.  A dedicated point-to-point 2-pad net; both pads
+        # on F.Cu, so its single MST edge is a SAME-LAYER F.Cu run with NO via --
+        # the cleanest incremental class (no through via, no In1/In4 plane
+        # re-pour, no via-clearance risk; the D-309 IR_RX_VS / D-318
+        # BMI270_INT1_STRAP no-via same-layer mechanic).  Noncritical low-speed
+        # CMOS debug output (NOT switching / rail / RF-NFC / USB / bus-clock /
+        # community-header).  Default netclass (0.200 mm); MEASURED 31.3 mm clear
+        # of BAT_PROTECTED_P -> ZERO D-269 involvement.  G31 pins the increment:
+        # both pads copper-connected, copper legal (7 trk 0.200 mm all F.Cu, ZERO
+        # vias), and ADD-ONLY (IMU_INT1 18, XGPIO3 22, west-XGPIO 38, east-XGPIO
+        # 23, SD 28, AMP 19, TOUCH 26, IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11,
+        # ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G31 FBV2-P2-021/D-319 rest-of-board incremental increment --')
+        UNET = '/02_MCU_CORE/UART0_TXD_DBG'
+        uart_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == UNET]
+        uart_via = [t for t in all_via if t.GetNetname() == UNET]
+
+        j_uart = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                  for p in _cc.GetConnectedItems(_pad('U1.37')) if p.GetClass() == 'PAD'}
+        uart_conn = {'TP35.1'}.issubset(j_uart)
+        chk('G31 UART0_TXD_DBG both pads copper-connected (U1.37/TP35.1)',
+            'U1.37 joins %s' % sorted(j_uart & {'TP35.1'}), uart_conn)
+
+        uart_layers = {t.GetLayerName() for t in uart_trk}
+        uart_legal = (len(uart_trk) == 7 and len(uart_via) == 0
+                      and uart_layers == {'F.Cu'}
+                      and all(t.GetWidth() == 200000 for t in uart_trk))
+        chk('G31 UART0_TXD_DBG copper legal (7 trk 0.200 mm all F.Cu, ZERO vias)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(uart_trk), sorted(uart_layers), len(uart_via),
+               sorted({t.GetWidth() for t in uart_trk})), uart_legal)
+
+        uart_addonly = (len(uart_trk) == 7 and len(uart_via) == 0
+                        and len(imu1_trk) == 18
+                        and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                        and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                        and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                        and len(phaseA_via) == 54)
+        chk('G31 increment is ADD-ONLY (IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'uart=%d (exp 7, 0 via), imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
+               len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
+               len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
+               len(phaseA_trk), len(phaseA_via)), uart_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

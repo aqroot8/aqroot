@@ -3256,5 +3256,16 @@
   "mm": 11.682,
   "requested_connected": true,
   "group": "IMU_INT1_STRAP"
+ },
+ {
+  "net": "/02_MCU_CORE/UART0_TXD_DBG",
+  "a": "TP35.1",
+  "b": "U1.37",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 31.755,
+  "requested_connected": true,
+  "group": "UART0_TXD_DBG"
  }
 ]

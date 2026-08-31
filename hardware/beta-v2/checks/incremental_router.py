@@ -441,6 +441,32 @@ GROUPS = {
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['BMI270_INT1_STRAP'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-021 / D-319 -- the debug-console UART TX line, a clean-functional
+    # increment in an OPEN region (away from the west-XGPIO F.Cu corridor, the
+    # U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/switching/rails/community
+    # mass).  UART0_TXD_DBG is the ESP32 (U1) UART0 transmit output brought out
+    # to the debug test point: MCU pad U1.37 (F.Cu SMD) -> test point TP35.1
+    # (F.Cu SMD).  A dedicated point-to-point 2-pad net (NOT a shared bus); both
+    # pads on F.Cu so its single MST edge is a SAME-LAYER F.Cu run with NO via --
+    # the cleanest incremental class (no plane re-pour, no via-clearance risk),
+    # the same no-via same-layer mechanic proven at D-305/D-307/D-309/D-318.
+    # Noncritical low-speed CMOS debug output (not switching / rail / RF/NFC /
+    # USB / bus-clock / community-header).  Default netclass (0.200 mm width/
+    # clearance).  MEASURED (w/vet_021.py on the live D-318 board): span/MST
+    # 27.9 mm single edge, congestion 9 items within bbox+2 mm (lowest of the
+    # genuinely-clean functional shortlist), and 31.3 mm clear of the
+    # BAT_PROTECTED_P trunk -- ZERO D-269 involvement (unlike the rejected
+    # BQ25185_STAT pair whose hauls run 0.024 mm from BPP through the power-tree
+    # wall).  Promotion decided by the real full-board gate (D-286), not geometry.
+    'UART0_TXD_DBG': dict(
+        sheet='02_MCU_CORE',
+        desc='debug-console UART0 transmit output UART0_TXD_DBG (U1.37 MCU -> '
+             'TP35.1 test point); noncritical low-speed CMOS debug output, '
+             'dedicated 2-pad point-to-point net, all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['UART0_TXD_DBG'],
+    ),
 }
 
 

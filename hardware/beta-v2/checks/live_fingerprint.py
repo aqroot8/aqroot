@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-318',                 # FBV2-P2-020: IMU/I2C-local interrupt strap BMI270_INT1_STRAP (R18.2/R110.1/TP3.1 -> U1.15 GPIO), 4-pad multi-terminal, ALL F.Cu SAME-LAYER MST, NO via -- the cleanest class (no plane re-pour), OUTSIDE the saturated west-XGPIO F.Cu corridor (D-317 mandate)
-    sha256='78bf82da537a22697a860c23822599246e0534a8c4c311e12bc3d5b857a28816',
-    tracks=709,                       # 691 (D-316) + 18 BMI270_INT1_STRAP (3 same-layer F.Cu MST runs)
-    vias=67,                          # unchanged (no via -- all four pads on F.Cu)
+    decision='D-319',                 # FBV2-P2-021: debug-console UART TX UART0_TXD_DBG (U1.37 MCU -> TP35.1 test point), dedicated 2-pad point-to-point net, SAME-LAYER F.Cu MST, NO via -- the cleanest class (no plane re-pour), in an OPEN region 31.3 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
+    sha256='57dcc8affb6c0f85f747fba025463b9cf0897c6712709692151020f56fdb8adf',
+    tracks=716,                       # 709 (D-318) + 7 UART0_TXD_DBG (single same-layer F.Cu MST run, 7 segments)
+    vias=67,                          # unchanged (no via -- both pads on F.Cu)
     copper_layers=6,
     zones=41,                         # unchanged (no via -> no plane re-pour; zone COUNT + FILL constant)
-    ratsnest=673,                     # 676 (D-316) - 3 (BMI270_INT1_STRAP 4-pad net fully connected)
-    journal=108,                      # 105 (D-316) + 3 BMI270_INT1_STRAP REST_INC edges
+    ratsnest=672,                     # 673 (D-318) - 1 (UART0_TXD_DBG 2-pad net fully connected)
+    journal=109,                      # 108 (D-318) + 1 UART0_TXD_DBG REST_INC edge
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

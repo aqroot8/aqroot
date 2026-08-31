@@ -52,11 +52,11 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # current promoted board (the frozen per-milestone evidence lives in the audits).
 # The sha / counts now come from the shared single-source-of-truth
 # live_fingerprint.py so this pin is bumped in ONE place per increment.
-# Current pin: FBV2-P2-020 / D-318 promoted the THIRTEENTH rest-of-board increment
-# (IMU/I2C-local interrupt strap BMI270_INT1_STRAP, R18.2/R110.1/TP3.1 -> U1.15,
-# 4-pad multi-terminal ALL-F.Cu same-layer MST, NO via -- the cleanest class,
-# OUTSIDE the saturated west-XGPIO F.Cu corridor) onto the D-316 board:
-# 691 + 18 = 709 tracks, 67 + 0 = 67 vias, journal 105 + 3 = 108.
+# Current pin: FBV2-P2-021 / D-319 promoted the FOURTEENTH rest-of-board increment
+# (debug-console UART transmit UART0_TXD_DBG, U1.37 MCU -> TP35.1 test point, a
+# dedicated 2-pad point-to-point net, SAME-LAYER F.Cu MST, NO via -- the cleanest
+# class, in an OPEN region 31.3 mm clear of BAT_PROTECTED_P) onto the D-318 board:
+# 709 + 7 = 716 tracks, 67 + 0 = 67 vias, journal 108 + 1 = 109.
 import live_fingerprint as LFP
 EXPECT_SHA = LFP.SHA
 EXPECT_TRACKS = LFP.TRACKS
@@ -69,7 +69,7 @@ ACCEPTED_REST = set("""FRONT_RGB_R_N FRONT_RGB_G_N FRONT_RGB_B_N
 ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
 TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE SD_CARD_DETECT_N
-XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP""".split())
+XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP UART0_TXD_DBG""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -93,9 +93,9 @@ def main():
             fails.append(name)
 
     # ------------------------------------------------------------- 1. INTEGRITY
-    print('-- 1. INTEGRITY: promoted board matches the D-318 fingerprints --')
+    print('-- 1. INTEGRITY: promoted board matches the D-319 fingerprints --')
     sha = hashlib.sha256(open(AUTH, 'rb').read()).hexdigest()
-    chk('authoritative PCB sha256 == current record (D-318)', sha == EXPECT_SHA, sha[:16] + '..')
+    chk('authoritative PCB sha256 == current record (D-319)', sha == EXPECT_SHA, sha[:16] + '..')
     b = pcbnew.LoadBoard(AUTH)
     b.BuildConnectivity()
     trk = [t for t in b.GetTracks() if t.GetClass() == 'PCB_TRACK']
@@ -146,7 +146,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-318: ... + XGPIO3 + BMI270_INT1_STRAP)',
+    chk('the only routed rest-of-board nets are accepted increments (D-319: ... + BMI270_INT1_STRAP + UART0_TXD_DBG)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))
