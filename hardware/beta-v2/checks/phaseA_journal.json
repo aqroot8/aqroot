@@ -3212,5 +3212,16 @@
   "mm": 91.475,
   "requested_connected": true,
   "group": "XGPIO_PILOT_W"
+ },
+ {
+  "net": "/XGPIO3",
+  "a": "R54.1",
+  "b": "U3.7",
+  "role": "REST_INC",
+  "layer": "F+B via",
+  "w": 0.2,
+  "mm": 118.261,
+  "requested_connected": true,
+  "group": "XGPIO3"
  }
 ]

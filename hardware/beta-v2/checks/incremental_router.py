@@ -387,6 +387,38 @@ GROUPS = {
         layer='F', width=200000, clr_pad=300000, clr_trk=300000,
         via_dia=600000, via_drill=300000, nets=['XGPIO1', 'XGPIO0'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-018 / D-316 -- a SINGLE west XGPIO net at the 0.200 mm Default
+    # clearance (NOT the 0.300 mm blanket the pilot pairs used).  D-315
+    # characterised the XGPIO2+XGPIO3 adjacent PAIR as a corridor-capacity WALL
+    # (both orders NO_FAR_RUN -- the now D-313+D-314-congested F.Cu corridor
+    # admits ONE 116 mm haul, not two parallel ones) and produced the decisive
+    # positive lead: a SINGLE west member routes CLEAN at 0.200 mm and keeps the
+    # D-269 0.300 mm floor to the BAT_PROTECTED_P trunk WITH MARGIN, because the
+    # west haul's natural path clears BPP by >=0.47 mm (unlike the D-313 EAST
+    # pilot whose 0.200 mm haul pinched BPP to 0.244-0.281 mm and therefore
+    # needed the 0.300 mm floor).  The 0.300 mm blanket is over-conservative for a
+    # single west haul AND is exactly what saturates the corridor, so the correct
+    # clearance here is the 0.200 mm Default with the real full-board D-269-aware
+    # KiCad DRC arbitrating the BPP clearance (D-286 gate) -- NOT a new mechanism,
+    # NOT rule weakening (nothing below any floor is accepted; D-269 is satisfied
+    # by measured geometry).  Target = XGPIO3 (R54.1 F.Cu -> U3.7 B.Cu): the
+    # D-315 record + the FBV2-P2-018 live re-screen measured its cross-layer via
+    # at (55.300,77.700) with the MOST-separated existing-via clearance (exv
+    # copper 0.704 mm) and haul->BPP 0.474 mm >= 0.300.  One net, one MST edge,
+    # one 0.60/0.30 Default through via; no via_offset (the via site is clear of
+    # every barrel); In1/In4 re-poured once for the single anti-pad.  Do NOT
+    # bundle XGPIO2 (D-315: the pair is a measured wall -- route one at a time).
+    'XGPIO3': dict(
+        sheet='09_COMMUNITY_HEADER',
+        desc='community GPIO3 series R54.1 F -> U3.7 B (west edge); single-net '
+             '3V3 CMOS increment at the 0.200 mm Default clearance (the west haul '
+             'clears BPP by >=0.47 mm so the D-269 0.300 mm floor is kept by '
+             'geometry, arbitrated by the real full-board D-269-aware gate), one '
+             'cross-layer through via, no via_offset',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000, nets=['XGPIO3'],
+    ),
 }
 
 

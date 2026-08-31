@@ -1784,6 +1784,92 @@ def main():
                len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
                len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)), xgw_addonly)
 
+        # -- G29 FBV2-P2-018/D-316 twelfth rest-of-board incremental increment ---
+        # A SINGLE west XGPIO net: XGPIO3 (R54.1 F.Cu -> U3.7 B.Cu), one community-
+        # header GPIO on PCAL9535A U3 pin 7, routed onto the D-314 board by
+        # incremental_router.py at the 0.200 mm Default clearance (NOT the 0.300 mm
+        # blanket the D-313/D-314 XGPIO pilot PAIRS used).  D-315 characterised the
+        # XGPIO2+XGPIO3 adjacent PAIR as a corridor-capacity WALL (both orders
+        # NO_FAR_RUN -- the now D-313+D-314-congested F.Cu corridor admits ONE
+        # 116 mm haul, not two) and produced the positive lead this increment
+        # realises: a SINGLE west member routes CLEAN at 0.200 mm and KEEPS the
+        # D-269 0.300 mm floor to the BAT_PROTECTED_P trunk BY GEOMETRY, because a
+        # single west haul's natural path clears BPP by >=0.47 mm (unlike the D-313
+        # EAST pilot whose 0.200 mm haul pinched BPP and needed the 0.300 mm floor).
+        # The 0.200 mm Default clearance is the correct DRC floor here; the real
+        # full-board D-269-aware KiCad DRC (D-286 gate) arbitrates the BPP clearance
+        # and found NO new/worse class -- NOT rule weakening (D-269 is satisfied by
+        # measured geometry, 0.4739 mm >= 0.300).  One net, one MST edge, one
+        # 0.60/0.30 Default through via @(55.300,77.700); no via_offset (the site is
+        # 0.704 mm copper / 1.304 mm centre clear of the nearest existing barrel).
+        # G29 pins the increment: XGPIO3 fully copper-connected, copper legal
+        # (22 trk 0.200 mm F.Cu+B.Cu, one 0.60/0.30 through via), the via clear of
+        # every existing via, the D-269 0.300 mm BAT_PROTECTED_P clearance kept, and
+        # ADD-ONLY (west-XGPIO 38, east-XGPIO 23, SD 28, AMP 19, TOUCH 26,
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        print('  -- G29 FBV2-P2-018/D-316 rest-of-board incremental increment --')
+        XG3 = '/XGPIO3'
+        xg3_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == XG3]
+        xg3_via = [t for t in all_via if t.GetNetname() == XG3]
+
+        j3 = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+              for p in _cc.GetConnectedItems(_pad('U3.7')) if p.GetClass() == 'PAD'}
+        xg3_conn = ('R54.1' in j3)
+        chk('G29 XGPIO3 fully copper-connected across the U3 F/B hop',
+            'U3.7 joins R54.1 = %s' % ('R54.1' in j3), xg3_conn)
+
+        xg3_layers = {t.GetLayerName() for t in xg3_trk}
+        xg3_pnv = collections.Counter(v.GetNetname() for v in xg3_via)
+        xg3_legal = (len(xg3_trk) == 22 and len(xg3_via) == 1
+                     and xg3_layers == {'F.Cu', 'B.Cu'}
+                     and all(t.GetWidth() == 200000 for t in xg3_trk)
+                     and xg3_pnv.get('/XGPIO3') == 1
+                     and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                             and v.GetViaType() == pcbnew.VIATYPE_THROUGH
+                             for v in xg3_via))
+        chk('G29 XGPIO3 single-net copper legal (22 trk 0.200 F.Cu+B.Cu, one 0.60/0.30 through via)',
+            '%d trk layers=%s, vias=%d per-net=%s dias=%s drills=%s'
+            % (len(xg3_trk), sorted(xg3_layers), len(xg3_via), dict(xg3_pnv),
+               sorted({v.GetWidth(pcbnew.F_Cu) for v in xg3_via}),
+               sorted({v.GetDrill() for v in xg3_via})), xg3_legal)
+
+        xg3_other_via = [t for t in all_via if t.GetNetname() != XG3]
+        xg3_min_gap = min((((v.GetPosition().x - o.GetPosition().x) ** 2
+                            + (v.GetPosition().y - o.GetPosition().y) ** 2) ** 0.5
+                           for v in xg3_via for o in xg3_other_via), default=1e9)
+        chk('G29 XGPIO3 via clears every existing via (>=0.80 mm centre)',
+            'min XGPIO3-via to other-via centre = %.3f mm' % (xg3_min_gap / 1e6),
+            xg3_min_gap >= 800000)
+
+        xg3_bpp = 1e12
+        for t in [t for t in xg3_trk if t.GetLayerName() == 'F.Cu']:
+            s, e = t.GetStart(), t.GetEnd()
+            for o in bpp_f:
+                os_, oe = o.GetStart(), o.GetEnd()
+                d = min(_ptseg(s.x, s.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(e.x, e.y, os_.x, os_.y, oe.x, oe.y),
+                        _ptseg(os_.x, os_.y, s.x, s.y, e.x, e.y),
+                        _ptseg(oe.x, oe.y, s.x, s.y, e.x, e.y)) - t.GetWidth() / 2.0 - o.GetWidth() / 2.0
+                if d < xg3_bpp:
+                    xg3_bpp = d
+        chk('G29 XGPIO3 F.Cu copper keeps the D-269 0.300 mm BAT_PROTECTED_P clearance',
+            'min XGPIO3->BAT_PROTECTED_P F.Cu edge gap = %.4f mm' % (xg3_bpp / 1e6),
+            xg3_bpp >= 300000 - 1000)
+
+        xg3_addonly = (len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                       and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                       and len(phaseA_via) == 54)
+        chk('G29 increment is ADD-ONLY (west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'xgpio3=%d (exp 22), xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk),
+               len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk),
+               len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
+               len(phaseA_via)), xg3_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

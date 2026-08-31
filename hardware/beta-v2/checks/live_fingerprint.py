@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-314',                 # FBV2-P2-016: XGPIO west-edge SOUTH pilot XGPIO1+XGPIO0 (R52/R51 F -> U3.5/.4 B), XGPIO1-first, D-269 0.300 mm clearance
-    sha256='95bc07be30598df44e5096fd3c51729aa61cdbefd9c9855297e3737ea0b3a605',
-    tracks=669,                       # 631 (D-313) + 38 XGPIO1/XGPIO0 (F.Cu haul + B.Cu fan-out, 19 each)
-    vias=66,                          # 64 (D-313) + 2 XGPIO cross-layer through vias
+    decision='D-316',                 # FBV2-P2-018: SINGLE west XGPIO net XGPIO3 (R54.1 F -> U3.7 B) at the 0.200 mm Default clearance (D-315 characterised the XGPIO2+XGPIO3 PAIR as a corridor-capacity wall; a SINGLE west haul clears BPP by >=0.47 mm so D-269 0.300 mm is kept by geometry)
+    sha256='d730c74d186ebcc7d2f0aa513776778ce1cb9c9659029a2fffd5e2261e3ac97d',
+    tracks=691,                       # 669 (D-314) + 22 XGPIO3 (F.Cu 118.261 mm haul + B.Cu fan-out)
+    vias=67,                          # 66 (D-314) + 1 XGPIO3 cross-layer through via @(55.300,77.700)
     copper_layers=6,
-    zones=41,
-    ratsnest=677,                     # 679 (D-313) - 2 (XGPIO1 + XGPIO0 edges closed)
-    journal=104,                      # 102 (D-313) + 2 XGPIO REST_INC
+    zones=41,                         # unchanged (In1/In4 re-poured for the 1 new anti-pad; zone COUNT constant)
+    ratsnest=676,                     # 677 (D-314) - 1 (XGPIO3 R54.1<->U3.7 edge closed)
+    journal=105,                      # 104 (D-314) + 1 XGPIO3 REST_INC
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

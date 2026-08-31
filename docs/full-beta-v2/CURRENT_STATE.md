@@ -13,7 +13,41 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
-- **FBV2-P2-017 / D-315 (this checkpoint — XGPIO2+XGPIO3 SOUTH-WEST PAIR = MEASURED CORRIDOR-CAPACITY WALL;
+- **FBV2-P2-018 / D-316 (this checkpoint — TWELFTH REST-OF-BOARD INCREMENT PROMOTED; a SINGLE west XGPIO net
+  `XGPIO3` at the 0.200 mm Default clearance; the D-315 positive lead realised; ZERO router-logic change):** a
+  governed CTO **ACCEPT + PROMOTE** — `XGPIO3` (R54.1 F.Cu → U3.7 B.Cu), the fifth XGPIO0..9 bank member, is
+  routed at the **0.200 mm Default clearance** (NOT the 0.300 mm blanket the D-313/D-314 pilot PAIRS used) and
+  promoted; no Phase-A / prior-increment casualty, no new DRC class, autonomy CONTINUES, **no owner decision.**
+  Starting HEAD `9f108bb` (D-315; pushed; `origin/master` identical). **Promoted:** `sha256 95bc07be…` →
+  **`d730c74d186ebcc7d2f0aa513776778ce1cb9c9659029a2fffd5e2261e3ac97d`**; tracks 669 → **691** (+22); vias 66 →
+  **67** (+1); 6 layers / 41 zones; ratsnest 677 → **676** (−1); journal 104 → **105** (+1 REST_INC). **Why
+  0.200 mm is correct (not rule weakening):** D-269's 0.300 mm governs clearance to `BAT_PROTECTED_P`; a single
+  west haul clears BPP by ≥0.47 mm, so D-269 is satisfied **by geometry** (measured haul→BPP **0.4739 mm ≥
+  0.300**) and the real full-board D-269-aware KiCad DRC (D-286 gate) arbitrates — reporting no new/worse class.
+  The 0.300 mm blanket was over-conservative for west members (the D-315 Opportunity Scan flag), reserved now for
+  paths that actually approach BPP (the D-313 east pilot). **WIP recovery (gitignored scratch, ZERO routing-logic
+  change):** the preserved `w/screen_018.py` re-screen had stalled before persisting evidence — it imported
+  `haul_bpp_min`/`BPP` from `w/xgpio23_pair200_017.py`, whose full XGPIO2+XGPIO3 PAIR routing driver runs at
+  module level, so the import re-routed the D-315 wall every load (a cross-module recurrence of the D-314
+  module-level-driver bug); fix = drop the import, inline the self-contained helper, screen only `/XGPIO3`. Live
+  re-screen reproduced the D-315 record (via (55.300,77.700), exv 0.7038 mm, hole 1.0038 mm, haul→BPP 0.4739 mm).
+  **INTEGRITY:** `route`→`gate`→`promote` on the real full-board (23 new in-scope items, only In1/In4 re-poured,
+  0 regressed); `router_regression.py` ALL PASS **G1–G29** twice (deterministic; new **G29** pins connectivity +
+  copper legality + via clearance + D-269 0.4739 mm + ADD-ONLY); new `incremental_probe_017.py` PASS;
+  `_006..016` + `phaseB_bringup_probe_005` (691/67/105; **20 routed rest nets, 144 unrouted**) PASS;
+  `live_fingerprint.py` bumped once. Real DRC `{solder_mask_bridge:1, hole_clearance:5, lib_footprint_issues:199,
+  unconnected_items:499}` (clearance 0), independently confirmed by kicad-cli. **D-269/D-264/DRU board-swap A/B**
+  (committed D-314 vs promoted D-316): `dru` FAIL(2) + `d264` FAIL B/C identical on both; `d269` flipped
+  PASS/FAIL, but flips across repeated runs on the **byte-identical D-314 parent** too → intrinsic probe flake
+  (synthetic injection + non-reproducible full-zone re-pour), not a regression (XGPIO3 ~45 mm from the TAPs it
+  examines); D-316 board restored + sha re-verified after the swap. **Open owner decisions: NONE;**
+  `JLCPCB_READINESS` unchanged (~77 %). Rollback: pre-promotion `sha256 95bc07be…` (committed D-314, parent
+  `9f108bb`). **Next: FBV2-P2-019 — the next single west XGPIO member (one net at a time; do NOT force PAIRS), or
+  the next clean local group; 144/164 rest nets unrouted.** Full analysis:
+  [`audits/2026-08-31-p2-018-d316-twelfth-rest-of-board-incremental-increment-single-west-xgpio3-promoted.md`](audits/2026-08-31-p2-018-d316-twelfth-rest-of-board-incremental-increment-single-west-xgpio3-promoted.md).
+  This checkpoint is written in the D-316 commit; a fresh session must confirm the live tip with
+  `git rev-parse HEAD` and `git rev-parse origin/master`.
+- **FBV2-P2-017 / D-315 (prior checkpoint — XGPIO2+XGPIO3 SOUTH-WEST PAIR = MEASURED CORRIDOR-CAPACITY WALL;
   NOT PROMOTED; ZERO authoritative copper change; board byte-identical to committed D-314):** a governed CTO
   **CHARACTERIZATION** — the named candidate, the XGPIO2+XGPIO3 adjacent pair (`XGPIO2` R53.1 F.Cu → U3.6 B.Cu
   + `XGPIO3` R54.1 F.Cu → U3.7 B.Cu, the next south-west west-edge pair north of the D-314 XGPIO0/1), does
