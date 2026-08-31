@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-321',                 # FBV2-P2-023: microSD SPI chip-select SD_CS_N (J2.2 socket / R25.2 / U1.25 MCU), a genuine functional POINT-TO-POINT control (NOT a shared MOSI/MISO/CLK bus line), 3-pad all-F.Cu SAME-LAYER MST, NO via -- the cleanest class (no plane re-pour); chosen over the walled MCU_EN_RC (Net-(U1-EN), natural MST short edge C1.2<->U1.3 NO_PATH in the congested U1-EN/IR_TX pocket) and over the RESERVED_SPARE spare (held clean alternate); in an OPEN region 50.1 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
-    sha256='68d44b54df91d607f689215c0da5db249b13fcd1ac189b9ab78ceb6366d25e46',
-    tracks=749,                       # 729 (D-320) + 20 SD_CS_N (two same-layer F.Cu MST runs J2.2<->U1.25 + U1.25<->R25.2, 69.5 mm total)
-    vias=67,                          # unchanged (no via -- all three pads on F.Cu)
+    decision='D-322',                 # FBV2-P2-024: reserved/spare community expander GPIO RESERVED_SPARE (R130.2 / TP41.1 test point / U23.7 PCAL expander), 3-pad all-B.Cu SAME-LAYER MST, NO via -- the cleanest class (no plane re-pour); the held clean alternate, PROMOTED after the display-FPC-connector candidates DISP_CS_N (J1.38 haul) and DISP_DC (J1.37 haul) hit a characterized J1-corridor wall (NO_PATH at 0.200 mm even on the fine grid) and after BOOT_N (the meaningful non-J1 alternative) routed only via poor 2.5x detours (110 mm of copper across the congested MCU interior for a boot-critical strap -- not equally clean, sensitivity treated carefully); in an OPEN region 15.5 mm clear of BAT_PROTECTED_P (zero D-269 involvement); away from the west-XGPIO corridor / U11 power-tree wall / RF-NFC-USB-crystal-switching-rail-community mass
+    sha256='a861e30e5760515288ef9a3fc0c21ea6d3e9c31409f9181dd66d56ed0628efd1',
+    tracks=759,                       # 749 (D-321) + 10 RESERVED_SPARE (two same-layer B.Cu MST runs R130.2<->U23.7 4.43 mm + U23.7<->TP41.1 10.94 mm)
+    vias=67,                          # unchanged (no via -- all three pads on B.Cu)
     copper_layers=6,
     zones=41,                         # unchanged (no via -> no plane re-pour; zone COUNT + FILL constant)
-    ratsnest=669,                     # 671 (D-320) - 2 (SD_CS_N 3-pad net fully connected: 2 MST edges closed)
-    journal=112,                      # 110 (D-320) + 2 SD_CS_N REST_INC edges
+    ratsnest=667,                     # 669 (D-321) - 2 (RESERVED_SPARE 3-pad net fully connected: 2 MST edges closed)
+    journal=114,                      # 112 (D-321) + 2 RESERVED_SPARE REST_INC edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

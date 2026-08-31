@@ -3300,5 +3300,27 @@
   "mm": 21.081,
   "requested_connected": true,
   "group": "SD_CS_N"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/RESERVED_SPARE",
+  "a": "R130.2",
+  "b": "U23.7",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 4.434,
+  "requested_connected": true,
+  "group": "RESERVED_SPARE"
+ },
+ {
+  "net": "/08_BUTTONS_EXPANDERS/RESERVED_SPARE",
+  "a": "U23.7",
+  "b": "TP41.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "mm": 10.939,
+  "requested_connected": true,
+  "group": "RESERVED_SPARE"
  }
 ]

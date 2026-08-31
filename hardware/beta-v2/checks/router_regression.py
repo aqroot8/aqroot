@@ -2085,6 +2085,64 @@ def main():
                len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
                len(rgb_trk), len(phaseA_trk), len(phaseA_via)), sdcs_addonly)
 
+        # -- G34 FBV2-P2-024/D-322 seventeenth rest-of-board incremental increment
+        # The reserved/spare community expander GPIO RESERVED_SPARE (R130.2 /
+        # TP41.1 test point / U23.7 PCAL expander), routed onto the D-321 board by
+        # incremental_router.py in an OPEN region -- away from the saturated
+        # west-XGPIO F.Cu corridor, the U11/BQ25185 power-tree wall, and the RF/
+        # NFC/USB/crystal/switching/rail/community-header mass.  The held clean
+        # alternate, PROMOTED after the mandate's meaningful display-control
+        # candidates DISP_CS_N (U1.18/R26.2/J1.38) and DISP_DC (U1.22/J1.37) hit a
+        # characterized J1 display-FPC-connector wall (long interior haul NO_PATH
+        # at 0.200 mm even on the 0.05/0.025 mm fine grid) and after BOOT_N (the
+        # meaningful non-J1 alternative, the boot-mode strap) routed only via poor
+        # 2.5x detours (~110 mm of copper across the congested MCU interior) -- not
+        # equally clean, and its reset-level sensitivity treated carefully.  All
+        # three pads on B.Cu, so both MST edges are SAME-LAYER B.Cu runs with NO
+        # via -- the cleanest incremental class (no through via, no In1/In4 plane
+        # re-pour; the D-304/D-305/D-307 no-via same-layer mechanic).  Default
+        # netclass (0.200 mm); MEASURED 15.5 mm clear of BAT_PROTECTED_P -> ZERO
+        # D-269 involvement.  G34 pins the increment: all three pads copper-
+        # connected, copper legal (10 trk 0.200 mm all B.Cu, ZERO vias), ADD-ONLY.
+        print('  -- G34 FBV2-P2-024/D-322 rest-of-board incremental increment --')
+        RSNET = '/08_BUTTONS_EXPANDERS/RESERVED_SPARE'
+        rs_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == RSNET]
+        rs_via = [t for t in all_via if t.GetNetname() == RSNET]
+
+        j_rs = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                for p in _cc.GetConnectedItems(_pad('R130.2')) if p.GetClass() == 'PAD'}
+        rs_conn = {'U23.7', 'TP41.1'}.issubset(j_rs)
+        chk('G34 RESERVED_SPARE all three pads copper-connected (R130.2/U23.7/TP41.1)',
+            'R130.2 joins %s' % sorted(j_rs & {'U23.7', 'TP41.1'}), rs_conn)
+
+        rs_layers = {t.GetLayerName() for t in rs_trk}
+        rs_legal = (len(rs_trk) == 10 and len(rs_via) == 0
+                    and rs_layers == {'B.Cu'}
+                    and all(t.GetWidth() == 200000 for t in rs_trk))
+        chk('G34 RESERVED_SPARE copper legal (10 trk 0.200 mm all B.Cu, ZERO vias)',
+            '%d trk layers=%s, vias=%d, widths=%s'
+            % (len(rs_trk), sorted(rs_layers), len(rs_via),
+               sorted({t.GetWidth() for t in rs_trk})), rs_legal)
+
+        rs_addonly = (len(rs_trk) == 10 and len(rs_via) == 0
+                      and len(sdcs_trk) == 20
+                      and len(irtx_trk) == 13
+                      and len(uart_trk) == 7
+                      and len(imu1_trk) == 18
+                      and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
+                      and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
+                      and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
+                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(rgb_trk) == 20 and len(phaseA_trk) == 432
+                      and len(phaseA_via) == 54)
+        chk('G34 increment is ADD-ONLY (RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+            'reserved_spare=%d (exp 10, 0 via), sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
+            % (len(rs_trk), len(sdcs_trk), len(irtx_trk), len(uart_trk), len(imu1_trk),
+               len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk),
+               len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
+               len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)), rs_addonly)
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

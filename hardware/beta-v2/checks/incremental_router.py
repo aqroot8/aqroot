@@ -579,6 +579,71 @@ GROUPS = {
         layer='B', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['RESERVED_SPARE'],
     ),
+    # ---------------------------------------------------------------------- #
+    # FBV2-P2-024 / D-322 -- the display SPI chip-select control DISP_CS_N, a
+    # clean-functional increment in an OPEN region (away from the west-XGPIO
+    # F.Cu corridor, the U11/BQ25185 power-tree wall, RF/NFC/USB/crystals/
+    # switching/class-D/rails/community mass).  /DISP_CS_N is the display SPI-A
+    # chip-select: MCU (U1) GPIO pad U1.18 (F.Cu SMD) -> series resistor R26.2
+    # (F.Cu SMD) -> display FPC connector J1.38 (F.Cu SMD).  It is a genuine
+    # functional POINT-TO-POINT control (NOT a shared MOSI/MISO/CLK data/clock
+    # bus line -- the chip-select travels with its own synchronous SPI-A display
+    # bus, benign coupling), the DIRECT display analog of the D-321 microSD
+    # chip-select SD_CS_N.  Chosen (FBV2-P2-024) as the cleanest MEANINGFUL net
+    # of the remaining shortlist over the RESERVED_SPARE spare (a mere spare of
+    # lower merit -- not chosen when a meaningful control net is equally clean),
+    # over BOOT_N (a boot-mode strap whose reset-level sensitivity is treated
+    # carefully -- set aside), and over DISP_DC (equally meaningful but a single
+    # 38.5 mm haul directly off the boxed MCU pin U1.22, no intermediate series
+    # resistor).  DISP_CS_N's series resistor R26 sits 2.50 mm from U1.18, so
+    # the MCU-side MST edge is a trivial short escape and the long 32.57 mm haul
+    # originates from R26.2 in open area, NOT directly off the congested MCU pad
+    # pocket (the D-321 MCU_EN_RC wall lesson).  All three pads on F.Cu, so both
+    # MST edges are SAME-LAYER F.Cu runs with NO via -- the cleanest incremental
+    # class (no through via, no In1/In4 plane re-pour, no via-clearance risk; the
+    # D-305/D-307/D-309/D-318/D-319/D-320/D-321 no-via same-layer mechanic).
+    # Default netclass (0.200 mm width/clearance).  MEASURED (w/vet_021.py on the
+    # live D-321 board): 3 pads, MST 2.50 mm (U1.18<->R26.2) + 32.57 mm
+    # (R26.2<->J1.38), 15.9 mm clear of the BAT_PROTECTED_P trunk -> ZERO D-269
+    # involvement; the vet's 0.018 mm straight-line proximity to +3V3 on the long
+    # edge is GUIDANCE only (the router detours; the real D-286 full-board gate
+    # arbitrates legality).  Promotion decided by the real full-board gate
+    # (D-286), not geometry.
+    'DISP_CS_N': dict(
+        sheet='(top)',
+        desc='display SPI chip-select DISP_CS_N (U1.18 MCU / R26.2 series / '
+             'J1.38 display FPC connector); point-to-point control (not a shared '
+             'SPI data/clock line), 3-pad all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['DISP_CS_N'],
+    ),
+    # FBV2-P2-024 -- DISP_DC scratch-tested to CHARACTERIZE the J1 display-FPC
+    # connector haul as a shared wall (the mandate's headline candidate).  It is
+    # the display data/command control (U1.22 MCU -> J1.37, the FPC pin adjacent
+    # to DISP_CS_N's J1.38), a single 38.5 mm MST edge hauling directly off the
+    # boxed MCU pad U1.22 to the tight display connector.  See the D-322
+    # characterization below.
+    'DISP_DC': dict(
+        sheet='(top)',
+        desc='display data/command control DISP_DC (U1.22 MCU / J1.37 display '
+             'FPC connector); 2-pad all F.Cu SMD, no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['DISP_DC'],
+    ),
+    # FBV2-P2-024 -- BOOT_N scratch-tested as the meaningful non-J1 alternative
+    # (ESP32 boot-mode strap GPIO0: SW1.1 boot button + R2.2 pull-up + U1.27 MCU,
+    # all F.Cu, no via).  Avoids the J1 display-connector wall entirely.  Its
+    # reset-level sensitivity is treated carefully (a plain same-layer no-via
+    # route, no special mechanic); it is only promoted if it routes AND gates
+    # clean on the real D-286 gate.  See the D-322 characterization below.
+    'BOOT_N': dict(
+        sheet='02_MCU_CORE',
+        desc='ESP32 boot-mode strap BOOT_N (SW1.1 boot button / R2.2 pull-up / '
+             'U1.27 MCU GPIO0); low-current static strap, 3-pad all F.Cu SMD, '
+             'no via',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        nets=['BOOT_N'],
+    ),
 }
 
 

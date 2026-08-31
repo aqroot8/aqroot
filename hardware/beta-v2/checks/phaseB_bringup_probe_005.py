@@ -52,13 +52,14 @@ JOURNAL = os.path.join(SP, 'phaseA_journal.json')
 # current promoted board (the frozen per-milestone evidence lives in the audits).
 # The sha / counts now come from the shared single-source-of-truth
 # live_fingerprint.py so this pin is bumped in ONE place per increment.
-# Current pin: FBV2-P2-023 / D-321 promoted the SIXTEENTH rest-of-board increment
-# (microSD SPI chip-select SD_CS_N, J2.2 socket / R25.2 / U1.25 MCU, a genuine
-# functional point-to-point control -- not a shared SPI data/clock bus line,
-# 3-pad all-F.Cu SAME-LAYER MST, NO via -- the cleanest class; chosen over the
-# walled MCU_EN_RC Net-(U1-EN) and the RESERVED_SPARE spare; in an OPEN region
-# 50.1 mm clear of BAT_PROTECTED_P) onto the D-320 board: 729 + 20 = 749 tracks,
-# 67 + 0 = 67 vias, journal 110 + 2 = 112.
+# Current pin: FBV2-P2-024 / D-322 promoted the SEVENTEENTH rest-of-board increment
+# (reserved/spare community expander GPIO RESERVED_SPARE, R130.2 / TP41.1 test
+# point / U23.7 PCAL expander, 3-pad all-B.Cu SAME-LAYER MST, NO via -- the
+# cleanest class; the held clean alternate, PROMOTED after the display-FPC-
+# connector candidates DISP_CS_N/DISP_DC hit a characterized J1-corridor wall and
+# BOOT_N routed only via poor 2.5x detours; in an OPEN region 15.5 mm clear of
+# BAT_PROTECTED_P) onto the D-321 board: 749 + 10 = 759 tracks, 67 + 0 = 67 vias,
+# journal 112 + 2 = 114.
 import live_fingerprint as LFP
 EXPECT_SHA = LFP.SHA
 EXPECT_TRACKS = LFP.TRACKS
@@ -72,7 +73,7 @@ ACC_3V3_EN ACC_3V3_ILIM DISP_RST_N BMI270_SDO_ADDR
 Net-(D13-RK) Net-(D13-GK) Net-(D13-BK) IR_RX_VS_LOCAL
 TOUCH_RST_N TOUCH_INT_N AMP_SD_MODE SD_CARD_DETECT_N
 XGPIO8 XGPIO9 XGPIO1 XGPIO0 XGPIO3 BMI270_INT1_STRAP UART0_TXD_DBG
-IR_TX_GPIO16 SD_CS_N""".split())
+IR_TX_GPIO16 SD_CS_N RESERVED_SPARE""".split())
 
 N = '/01_POWER_TREE/'
 SCOPE = set("""BAT_CONNECTOR_P BAT_RAW BAT_MID BAT_SENSE BAT_PROTECTED_P
@@ -149,7 +150,7 @@ def main():
     rest = [(nm, n) for nm, n in padnets.items() if n >= 2 and not in_scope(nm)]
     routed_rest = [nm for nm, n in rest if trk_by_net[nm] > 0]
     accepted_routed = [nm for nm in routed_rest if nm.split('/')[-1] in ACCEPTED_REST]
-    chk('the only routed rest-of-board nets are accepted increments (D-321: ... + UART0_TXD_DBG + IR_TX_GPIO16 + SD_CS_N)',
+    chk('the only routed rest-of-board nets are accepted increments (D-322: ... + IR_TX_GPIO16 + SD_CS_N + RESERVED_SPARE)',
         sorted(routed_rest) == sorted(accepted_routed),
         '%d rest nets, %d routed (=%d accepted), %d still unrouted'
         % (len(rest), len(routed_rest), len(accepted_routed), len(rest) - len(routed_rest)))
