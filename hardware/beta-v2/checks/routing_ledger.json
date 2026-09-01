@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-380",
+  "current_decision": "D-381",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -50,6 +50,7 @@
     {"decision":"D-377","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8"],"result":"XGPIO0_CLOSES_ON_IN2_AFTER_D376_PREFIX_REPLAY_ADVANCES_TO_XGPIO8_NO_PATH","evidence":"u3_xgpio0_inner_replay_079.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-378","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8"],"result":"XGPIO8_NO_VIA_SITE_ON_IN2_OR_IN3_AFTER_D377_PREFIX_ZERO_TRANSACTION_CANDIDATES","evidence":"u3_xgpio8_inner_replay_080.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-379","framework":"XGPIO8_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8"],"result":"2_R59_SITES_X_3_U3_SITES_ALL_6_DISTINCT_IN3_PAIRS_CLOSE_XGPIO8_SHORTEST_49P187MM","evidence":"u3_xgpio8_viasite_enum_081.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-380","framework":"deterministic_explicit_viasite_transaction_replay","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"XGPIO8_CLOSES_ON_D379_SHORTEST_IN3_PAIR_REPLAY_ADVANCES_TO_XGPIO9_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio8_transaction_replay_082.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-380","framework":"deterministic_explicit_viasite_transaction_replay","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"XGPIO8_CLOSES_ON_D379_SHORTEST_IN3_PAIR_REPLAY_ADVANCES_TO_XGPIO9_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio8_transaction_replay_082.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-381","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"XGPIO9_MOVED_U3P14_ESCAPE_NO_LEGAL_ESCAPE_ON_IN2_OR_IN3_AFTER_D380_PREFIX_ZERO_TRANSACTION_CANDIDATES","evidence":"u3_xgpio9_inner_replay_083.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }

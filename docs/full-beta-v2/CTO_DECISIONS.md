@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-381 · 2026-09-01 · routing characterization:** after deterministic replay
+of the seven-route D-380 prefix, complete XGPIO9 replacement cannot reserve the
+moved U3.14-side escape on either In2 or In3; both independently owned attempts
+return `NO_LEGAL_ESCAPE`. Exact boundary withdrawal and unrelated-copper
+preservation pass, but no join or transaction candidate exists and the
+incomplete scratch layouts retain real KiCad DRC regressions. The authoritative
+board remains byte-identical (`a4b93b9b…`). Generic direct complete-branch
+inner replacement is closed for XGPIO9. Next is bounded reachable-via-site
+enumeration/explicit selection at R60.1 and U3.14 after the D-380 prefix,
+followed by joins only across distinct legal site pairs. No owner decision is
+open.
+
 **D-380 · 2026-09-01 · routing characterization:** deterministic replay of
 D-379's shortest explicit In3 pair closes complete XGPIO8 after the six-route
 D-377 prefix through `(54.45,33.00)/(55.70,81.70)` mm. Exact boundary

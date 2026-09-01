@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-083 / D-381 (complete-XGPIO9 inner replacement; no authoritative
+  PCB change):** after the seven-route D-380 prefix, complete XGPIO9
+  replacement cannot reserve the moved U3.14-side escape on either In2 or In3;
+  both independently owned attempts return `NO_LEGAL_ESCAPE`. Exact boundary
+  withdrawal and unrelated-copper preservation pass, but neither attempt
+  reaches its join and incomplete scratch layouts retain real KiCad DRC
+  regressions. Evidence/harness: `u3_xgpio9_inner_replay_083.py` / `.json`.
+  Board remains byte-identical (`a4b93b9b…`); no owner decision; readiness
+  remains 78%. **Next:** enumerate and explicitly select reachable legal via
+  sites at R60.1 and U3.14 after the D-380 prefix, then test joins only across
+  distinct site pairs.
 - **FBV2-P2-082 / D-380 (deterministic XGPIO8 transaction replay; no
   authoritative PCB change):** D-379's shortest explicit In3 pair at
   `(54.45,33.00)/(55.70,81.70)` mm closes complete XGPIO8 after the six-route
