@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-080 / D-378 (complete-XGPIO8 inner replacement; no authoritative
+  PCB change):** after the six-route D-377 prefix, complete XGPIO8 replacement
+  cannot reserve the R59.1-side escape on either In2 or In3; both attempts
+  return `NO_VIA_SITE`. There is no transaction candidate and incomplete
+  scratch layouts retain real KiCad DRC regressions. Evidence/harness:
+  `u3_xgpio8_inner_replay_080.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** enumerate
+  and explicitly select reachable legal via sites at R59.1 and U3.13 after the
+  D-377 prefix, then test joins only across distinct site pairs.
 - **FBV2-P2-079 / D-377 (complete-XGPIO0 inner replacement; no authoritative
   PCB change):** after the D-376 prefix, complete XGPIO0 replacement closes on
   In2 through `(58.95,20.15)/(61.15,75.15)` mm via sites; In3 fails its join

@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-378 · 2026-09-01 · routing characterization:** after the six-route D-377
+prefix, complete XGPIO8 replacement cannot reserve the R59.1-side escape on
+either In2 or In3; both independently owned attempts return `NO_VIA_SITE`.
+No transaction candidate exists, real KiCad DRC remains regressed only in the
+incomplete scratch layouts, and no PCB change is promoted. The authoritative
+board remains byte-identical (`a4b93b9b…`). Generic direct complete-branch
+inner replacement is closed for XGPIO8. Next is bounded reachable-via-site
+enumeration/explicit selection at R59.1 and U3.13 after the D-377 prefix,
+followed by joins only across distinct legal site pairs. No owner decision is
+open.
+
 **D-377 · 2026-09-01 · routing characterization:** after the D-376 prefix,
 complete XGPIO0 replacement closes on In2 through `(58.95,20.15)` and
 `(61.15,75.15)` mm via sites; In3 reserves its escapes but the join returns
