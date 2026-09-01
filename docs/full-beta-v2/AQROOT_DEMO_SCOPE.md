@@ -62,6 +62,8 @@ Demo implementation MUST retain:
 - required GND contacts
 - 3.3 V accessory power
 - ONE usable 5 V accessory output
+- software-controlled switched 3.3 V accessory power
+- software-controlled switched 5 V accessory power
 - SDA
 - SCL
 - Native GPIO A
