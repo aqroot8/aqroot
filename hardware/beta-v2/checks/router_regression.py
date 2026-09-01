@@ -2592,6 +2592,28 @@ def main():
                             'b_near': 'F', 'inner': ['I2', 'I3'],
                             'attach': ['U1.18']})
 
+        # -- G44 FBV2-P2-041/D-339 J1 connector fanout reuse ---------------
+        print('  -- G44 J1 connector fanout reuse + DISP_DC --')
+        dcnet = '/DISP_DC'
+        dc_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == dcnet]
+        dc_via = [v for v in all_via if v.GetNetname() == dcnet]
+        dc_layers = collections.Counter(t.GetLayerName() for t in dc_trk)
+        dc_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                    for p in _cc.GetConnectedItems(_pad('U1.22'))
+                    if p.GetClass() == 'PAD'}
+        dc_plan = IR.GROUPS['DISP_DC'].get('connector_fanout_plan')
+        chk('G44 DISP_DC connected through bounded J1 In2 fanout with legal vias',
+            'tracks=%d layers=%s vias=%d reach=%s plan=%s' %
+            (len(dc_trk), dict(dc_layers), len(dc_via), sorted(dc_reach), dc_plan),
+            len(dc_trk) == 4 and dc_layers == {'F.Cu': 2, 'In2.Cu': 2}
+            and len(dc_via) == 2 and {'U1.22', 'J1.37'} <= dc_reach
+            and all(t.GetWidth() == 200000 for t in dc_trk)
+            and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                    and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in dc_via)
+            and dc_plan == {'a': 'U1.22', 'b': 'J1.37', 'a_near': 'F',
+                            'b_near': 'F', 'inner': ['I2', 'I3'], 'attach': []})
+
         print('')
         if FAILED:
             print('router_regression: %d CHECK(S) FAILED' % len(FAILED))

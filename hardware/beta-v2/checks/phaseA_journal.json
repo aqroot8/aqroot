@@ -3498,5 +3498,16 @@
   "mm": 2.9,
   "requested_connected": true,
   "group": "DISP_CS_N"
+ },
+ {
+  "net": "/DISP_DC",
+  "a": "U1.22",
+  "b": "J1.37",
+  "role": "REST_INC",
+  "layer": "I2.Cu",
+  "w": 0.2,
+  "mm": 43.69,
+  "requested_connected": true,
+  "group": "DISP_DC"
  }
 ]

@@ -690,9 +690,12 @@ GROUPS = {
     'DISP_DC': dict(
         sheet='(top)',
         desc='display data/command control DISP_DC (U1.22 MCU / J1.37 display '
-             'FPC connector); 2-pad all F.Cu SMD, no via',
+             'FPC connector); 2-pad all F.Cu SMD, bounded inner-layer fanout',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['DISP_DC'],
+        connector_fanout_plan=dict(a='U1.22', b='J1.37',
+                                   a_near='F', b_near='F',
+                                   inner=['I2', 'I3'], attach=[]),
     ),
     # FBV2-P2-024 -- BOOT_N scratch-tested as the meaningful non-J1 alternative
     # (ESP32 boot-mode strap GPIO0: SW1.1 boot button + R2.2 pull-up + U1.27 MCU,
