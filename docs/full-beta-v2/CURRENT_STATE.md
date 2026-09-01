@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-052 / D-350 (characterization; no copper/placement change):** the D-349
+  eight-item replacement scope was executed at U20 180°/+0.5 mm north. Exactly one EN and
+  seven ILIM segments were removed in scratch; XGPIO8 and every other accepted item stayed
+  frozen, both controls regained zero open edges, and no baseline pad pair broke. The fault route
+  still returns `NO_PATH` even when reserved first, while real KiCad DRC adds two dangling retained-
+  stub violations. Thus the eight items are a collision scope, not a topologically complete replay
+  boundary; board `2cdc9f33…` remains unchanged. Evidence: `u20_local_replacement_052.json` / `.py`.
+  **Next:** expand only along the two control branches to nearest stable pad/branch anchors, freeze
+  XGPIO8/unrelated copper, and gate the placement/copper transaction. No owner decision; readiness 78%.
 - **FBV2-P2-051 / D-349 (characterization; no copper/placement change):** the
   required geometric accepted-copper impact map bounded all six D-347 rotation winners with
   real KiCad DRC plus a 0.300 mm expanded U20-pad envelope. The least-impact pose is U20

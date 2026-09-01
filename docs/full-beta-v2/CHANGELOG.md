@@ -6074,3 +6074,6 @@ The recovered scratch harness completed 72 cardinality-1 R5/R8/R6 placement cand
 ## 2026-09-01 - FBV2-P2-039: D-337 — coordinated pull-up-column spread bounded
 
 Eight legal cardinality-3 R5/R8/R6 layouts produced no complete west-button route in 24 attempts. The fixed U2/pull-up cluster, not independent pull-up spacing, is now the bounded wall. No placement or copper was promoted; D-332 and all validation evidence remain unchanged. Next is the bounded J1 display-fanout framework, with a larger U2 cluster ECO retained as fallback. Full evidence: [`audits/2026-09-01-p2-039-d337-west-button-coordinated-column-spread.md`](audits/2026-09-01-p2-039-d337-west-button-coordinated-column-spread.md).
+## 2026-09-01 - FBV2-P2-052: D-350 — exact U20 eight-item scope bounded
+
+The minimum collision scope was replayed in scratch. Frozen copper and control connectivity were preserved, but the fault net remains unroutable and real DRC finds two dangling retained stubs. Nothing was promoted; board `2cdc9f33…` is unchanged. Next: expand only affected control branches to stable anchors.

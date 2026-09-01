@@ -9,6 +9,12 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-350 · 2026-09-01 · routing characterization:** the D-349 eight-item U20
+collision scope is not a sufficient replacement boundary. Exact scratch replacement preserves
+all frozen copper and restores both control nets, but leaves two real dangling control stubs and
+the fault net has no path even when routed first. Next may expand only along connected EN/ILIM
+branches to stable anchors; XGPIO8 and unrelated accepted copper remain frozen. No promotion.
+
 **D-349 · 2026-09-01 · routing characterization:** the bounded U20 impact map
 selects the 180°/+0.5 mm north pose for the next scratch replay. Its real collision
 scope is only eight local `ACC_3V3_EN`/`ACC_3V3_ILIM` B.Cu items; XGPIO8 and every
