@@ -1111,6 +1111,14 @@ GROUPS = {
              '2-pad point-to-point, one cross-layer through via',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         via_dia=600000, via_drill=300000,
+        # FBV2-P2-045: replace the disproven ordinary cross-layer far run with
+        # the qualified D-331 reserved-escape framework.  Each boxed endpoint
+        # owns a short native-face escape and an ordinary through via; the two
+        # anchors join on a slow-signal inner layer.  This is opt-in, so every
+        # other group retains its existing route byte-for-byte.
+        inner_long_haul_plan=dict(a='R109.2', b='U17.4',
+                                  a_near='F', b_near='B',
+                                  inner=['I2', 'I3']),
         nets=['DISP_BL_CTL'],
     ),
 }

@@ -3509,5 +3509,16 @@
   "mm": 43.69,
   "requested_connected": true,
   "group": "DISP_DC"
+ },
+ {
+  "net": "/DISP_BL_CTL",
+  "a": "R109.2",
+  "b": "U17.4",
+  "role": "REST_INC",
+  "layer": "I3.Cu",
+  "w": 0.2,
+  "mm": 51.231,
+  "requested_connected": true,
+  "group": "DISP_BL_CTL"
  }
 ]

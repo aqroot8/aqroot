@@ -2533,11 +2533,11 @@ def main():
         reuse_i2 = sorted(k for k, v in IR.GROUPS.items()
                           if k != 'XGPIO2_INNER_PILOT' and
                           (v.get('inner_long_haul_plan') or v.get('inner_long_haul_plans')))
-        chk('G41 framework is explicit, opt-in and bounded to declared XGPIO reuse groups',
+        chk('G41 framework is explicit, opt-in and bounded to declared low-speed reuse groups',
             'plan=%s reuse_opt_ins=%s' % (i2_plan, reuse_i2),
             i2_plan == {'a': 'R53.1', 'b': 'U3.6', 'a_near': 'F',
                         'b_near': 'B', 'inner': ['I2', 'I3']}
-            and reuse_i2 == ['XGPIO45_INNER_BATCH', 'XGPIO4_INNER',
+            and reuse_i2 == ['DISP_BL_CTL', 'XGPIO45_INNER_BATCH', 'XGPIO4_INNER',
                              'XGPIO5_INNER', 'XGPIO6_INNER', 'XGPIO7_INNER'])
 
         # -- G42 FBV2-P2-034/D-332 coherent D-331 framework reuse -----------
@@ -2613,6 +2613,28 @@ def main():
                     and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in dc_via)
             and dc_plan == {'a': 'U1.22', 'b': 'J1.37', 'a_near': 'F',
                             'b_near': 'F', 'inner': ['I2', 'I3'], 'attach': []})
+
+        # -- G45 FBV2-P2-045/D-343 boxed-endpoint inner-haul reuse ---------
+        print('  -- G45 boxed-endpoint inner-haul reuse + DISP_BL_CTL --')
+        blnet = '/DISP_BL_CTL'
+        bl_trk = [t for t in _g18.GetTracks()
+                  if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == blnet]
+        bl_via = [v for v in all_via if v.GetNetname() == blnet]
+        bl_layers = collections.Counter(t.GetLayerName() for t in bl_trk)
+        bl_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                    for p in _cc.GetConnectedItems(_pad('R109.2'))
+                    if p.GetClass() == 'PAD'}
+        bl_plan = IR.GROUPS['DISP_BL_CTL'].get('inner_long_haul_plan')
+        chk('G45 DISP_BL_CTL connected through legal native escapes and In3 haul',
+            'tracks=%d layers=%s vias=%d reach=%s plan=%s' %
+            (len(bl_trk), dict(bl_layers), len(bl_via), sorted(bl_reach), bl_plan),
+            len(bl_trk) == 3 and bl_layers == {'F.Cu': 1, 'B.Cu': 1, 'In3.Cu': 1}
+            and len(bl_via) == 2 and {'R109.2', 'U17.4'} <= bl_reach
+            and all(t.GetWidth() == 200000 for t in bl_trk)
+            and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                    and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in bl_via)
+            and bl_plan == {'a': 'R109.2', 'b': 'U17.4', 'a_near': 'F',
+                            'b_near': 'B', 'inner': ['I2', 'I3']})
 
         print('')
         if FAILED:

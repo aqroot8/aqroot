@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-339',                 # FBV2-P2-041: J1 fanout reuse + DISP_DC
-    sha256='d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8',
-    tracks=867,                       # 863 (D-338) + 4 DISP_DC
-    vias=83,                          # 81 (D-338) + 2 ordinary through vias
+    decision='D-343',                 # FBV2-P2-045: boxed-endpoint reuse + DISP_BL_CTL
+    sha256='2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4',
+    tracks=870,                       # 867 (D-339) + 3 DISP_BL_CTL
+    vias=85,                          # 83 (D-339) + 2 ordinary through vias
     copper_layers=6,
     zones=41,                         # unchanged (1 via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=650,                     # 651 (D-338) - 1 closed edge
-    journal=131,                      # 130 (D-338) + 1 REST_INC edge
+    ratsnest=649,                     # 650 (D-339) - 1 closed edge
+    journal=132,                      # 131 (D-339) + 1 REST_INC edge
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).
