@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-064 / D-362 (U3 cut-through characterization; no authoritative
+  PCB change):** the exact 211-item/11-branch U3 incident boundary was withdrawn
+  scratch-only before pair reservation at the D-360 180°/+0.5 mm-north pose.
+  XGPIO6 then routes on In2 when first, while XGPIO7 still returns
+  `NO_VIA_SITE` both first and second. Accepted incident copper is therefore
+  not the XGPIO7 wall cause; replay was correctly skipped because the pair
+  cannot reserve. Board remains byte-identical (`a4b93b9b…`). Evidence:
+  `u3_cutthrough_064.py` / `.json`. **Next:** reserve XGPIO6 alone and test
+  complete incident-branch replay as a replacement transaction; keep XGPIO7
+  deferred pending a broader refloorplan or owner-approved process change. No
+  owner decision; readiness 78%.
+
 - **FBV2-P2-063 / D-361 (U3 neighbor-cluster characterization; no
   authoritative PCB change):** 30 non-rigid U3/C5/TP33 layouts around the
   D-360 180°/+0.5 mm-north U3 seed were screened in both XGPIO6/XGPIO7 orders.

@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-362 · 2026-09-01 · routing characterization:** the exact complete-U3-
+branch cut-through withdraws the full D-360 boundary (211 copper items on 11
+routed branches) before reserving the coherent XGPIO6/XGPIO7 pair at the
+180°/+0.5 mm-north U3 pose.  XGPIO6 routes successfully on In2 when first, but
+XGPIO7 still fails through-via reservation (`NO_VIA_SITE`) both after XGPIO6
+and when attempted first.  Therefore accepted U3 incident copper is not the
+cause of the XGPIO7 endpoint wall, and complete branch replay is intentionally
+not attempted for a pair that cannot reserve.  Next is a bounded single-net
+XGPIO6 reserve followed by complete incident-branch replay; XGPIO7 stays
+deferred pending a broader refloorplan or owner-approved process change.  The
+authoritative board remains byte-identical (`a4b93b9b…`); no owner decision is
+open.
+
 **D-361 · 2026-09-01 · routing characterization:** the bounded non-rigid
 U3/C5/TP33 cluster screen exhausts 30 scratch-only layouts around D-360's
 180°/+0.5 mm-north U3 seed and both deterministic XGPIO6/XGPIO7 orders.  All
