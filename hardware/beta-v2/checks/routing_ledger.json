@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-344",
+  "current_decision": "D-345",
   "current_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -14,6 +14,7 @@
     {"decision":"D-340","framework":"boxed_endpoint_owned_copper_anchor","nets":["XGPIO6","XGPIO7"],"result":"NO_ALL_LAYER_LEGAL_THROUGH_VIA_SITE","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},
     {"decision":"D-341","framework":"bounded_U3_translation_ECO","nets":["XGPIO6","XGPIO7"],"result":"16_TRANSLATIONS_32_ROUTE_FAILS_ALL_PLACEMENT_DRC_WORSE","evidence":"u3_endpoint_eco_041.json","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},
     {"decision":"D-342","framework":"two_endpoint_inner_layer_anchor_permutation_screen","nets":["Net-(U1-EN)"],"result":"2_INCOMPLETE_1_UNACCEPTABLE_58P457MM_RESET_DETOUR","evidence":"mcu_en_inner_anchor_042.json","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},
-    {"decision":"D-344","framework":"D343_reserved_escape_inner_haul_reuse","nets":["BMI270_INT1_RAW","ACC_POWER_FAULT_N"],"result":"BMI_U4P4_NO_VIA_SITE_AND_ACC_U20P6_NO_LEGAL_ESCAPE","evidence":"boxed_endpoint_reuse_046.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
+    {"decision":"D-344","framework":"D343_reserved_escape_inner_haul_reuse","nets":["BMI270_INT1_RAW","ACC_POWER_FAULT_N"],"result":"BMI_U4P4_NO_VIA_SITE_AND_ACC_U20P6_NO_LEGAL_ESCAPE","evidence":"boxed_endpoint_reuse_046.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
+    {"decision":"D-345","framework":"bounded_U20_translation_ECO","nets":["ACC_POWER_FAULT_N"],"result":"16_TRANSLATIONS_ALL_ROUTE_FAIL_AND_PLACEMENT_DRC_WORSE","evidence":"u20_endpoint_eco_047.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
   ]
 }
