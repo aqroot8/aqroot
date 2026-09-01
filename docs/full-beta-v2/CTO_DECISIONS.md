@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-389 · 2026-09-01 · routing characterization:** fresh complete-branch MST
+replay after the D-386 ordered transaction and D-388 withdrawal is blocked in
+both tested orders. ACC_POWER_FAULT_N closes its three local B.Cu edges but
+cannot escape TP27.1 to U3.18 (`NO_LEGAL_ESCAPE`); ACC_DETECT_N closes its
+R129.2↔R64.1 cross-layer edge but cannot reach U3.17 (`NO_PATH`). Therefore
+neither order produces a complete branch transaction. Exact duplicate-via
+removal removes one via from each scratch candidate; corrected same-basename,
+zone-refilled real KiCad DRC retains only the five D-388 isolated collision
+clearances, with no reintroduced fault/detect collisions. This is
+characterization only: both nets remain open, no copper is promoted, and the
+authoritative board remains byte-identical (`a4b93b9b…`). Generic fresh MST
+replay is closed. Next is explicit reachable-via-site enumeration at the
+U3.18/TP27.1 and U3.17/R129.2 endpoint pairs after the ordered prefix, followed
+by joins only across distinct legal sites; then attribute the five isolated
+retained-branch clearances. No owner decision is open.
+
 **D-388 · 2026-09-01 · routing characterization:** complete scratch withdrawal
 of retained collision-producing branches after the proven D-386 In3 transaction
 reduces exact-baseline-subtracted copper collisions from 22 to 7 when all 57

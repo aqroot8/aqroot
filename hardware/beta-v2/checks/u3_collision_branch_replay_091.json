@@ -1,0 +1,169 @@
+{
+  "attempts": [
+    {
+      "added_collision_count": 5,
+      "added_collision_types": {
+        "clearance": 5
+      },
+      "added_counts": {
+        "clearance": 5,
+        "hole_clearance": 1,
+        "hole_to_hole": 1,
+        "via_dangling": 9
+      },
+      "collision_pair_counts": {
+        "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+        "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+        "/ACC_PWR_EN | /XGPIO3": 1,
+        "/I2C_SCL_INT | /XGPIO5": 1
+      },
+      "drc_counts": {
+        "clearance": 5,
+        "hole_clearance": 6,
+        "hole_to_hole": 1,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "via_dangling": 9
+      },
+      "duplicate_vias_removed": 1,
+      "open_edges": {
+        "/ACC_DETECT_N": 2,
+        "/ACC_POWER_FAULT_N": 2
+      },
+      "order": [
+        "ACC_POWER_FAULT_N",
+        "ACC_DETECT_N"
+      ],
+      "pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_COLLISION_BRANCH_REPLAY_091/acc_power_fault_nthen_acc_detect_n/aqroot-Beta-v2.kicad_pcb",
+      "routes": [
+        {
+          "edges": [
+            {
+              "a": "R103.2",
+              "b": "U20.6",
+              "kind": "same",
+              "layer": "B",
+              "ok": true,
+              "reason": null,
+              "via_xy": null
+            },
+            {
+              "a": "U20.6",
+              "b": "TP27.1",
+              "kind": "same",
+              "layer": "B",
+              "ok": true,
+              "reason": null,
+              "via_xy": null
+            },
+            {
+              "a": "R103.2",
+              "b": "U22.6",
+              "kind": "same",
+              "layer": "B",
+              "ok": true,
+              "reason": null,
+              "via_xy": null
+            },
+            {
+              "a": "TP27.1",
+              "b": "U3.18",
+              "kind": "same",
+              "layer": "B",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null
+            }
+          ],
+          "group": "ACC_POWER_FAULT_N",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "added_collision_count": 5,
+      "added_collision_types": {
+        "clearance": 5
+      },
+      "added_counts": {
+        "clearance": 5,
+        "hole_clearance": 1,
+        "hole_to_hole": 1,
+        "via_dangling": 9
+      },
+      "collision_pair_counts": {
+        "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+        "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+        "/ACC_PWR_EN | /XGPIO3": 1,
+        "/I2C_SCL_INT | /XGPIO5": 1
+      },
+      "drc_counts": {
+        "clearance": 5,
+        "hole_clearance": 6,
+        "hole_to_hole": 1,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "via_dangling": 9
+      },
+      "duplicate_vias_removed": 1,
+      "open_edges": {
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 5
+      },
+      "order": [
+        "ACC_DETECT_N",
+        "ACC_POWER_FAULT_N"
+      ],
+      "pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_COLLISION_BRANCH_REPLAY_091/acc_detect_nthen_acc_power_fault_n/aqroot-Beta-v2.kicad_pcb",
+      "routes": [
+        {
+          "edges": [
+            {
+              "a": "R129.2",
+              "b": "R64.1",
+              "kind": "cross",
+              "layer": null,
+              "ok": true,
+              "reason": null,
+              "via_xy": [
+                [
+                  57.9,
+                  38.8
+                ]
+              ]
+            },
+            {
+              "a": "R129.2",
+              "b": "U3.17",
+              "kind": "same",
+              "layer": "B",
+              "ok": false,
+              "reason": "NO_PATH",
+              "via_xy": null
+            }
+          ],
+          "group": "ACC_DETECT_N",
+          "ok": false
+        }
+      ]
+    }
+  ],
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "complete_replays": 0,
+  "conclusion": "FRESH_REPLAY_BLOCKED",
+  "decision": "D-389",
+  "drc_clean_replays": 0,
+  "method": "complete_branch_withdrawal_then_fresh_MST_replay_order_screen",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "source_decisions": [
+    "D-386",
+    "D-388"
+  ],
+  "withdrawn_items": {
+    "/ACC_DETECT_N | PCB_TRACK": 22,
+    "/ACC_DETECT_N | PCB_VIA": 1,
+    "/ACC_POWER_FAULT_N | PCB_TRACK": 57
+  }
+}

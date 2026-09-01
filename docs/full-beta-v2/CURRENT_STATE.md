@@ -13,6 +13,20 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-091 / D-389 (fresh collision-branch replay order screen; no
+  authoritative PCB change):** after reconstructing D-386 and withdrawing both
+  dominant collision branches, generic complete-branch MST replay fails in
+  both orders. ACC_POWER_FAULT_N closes three local B.Cu edges then fails
+  TP27.1→U3.18 (`NO_LEGAL_ESCAPE`); ACC_DETECT_N closes R129.2→R64.1 across
+  layers then fails R129.2→U3.17 (`NO_PATH`). One exact duplicate via is
+  removed from each candidate. Corrected same-basename, zone-refilled real
+  KiCad DRC does not reintroduce either branch's collisions and retains the
+  five D-388 isolated clearances, but both candidates are electrically open.
+  Evidence/harness: `u3_collision_branch_replay_091.py` / `.json`. Board
+  remains byte-identical (`a4b93b9b…`); no owner decision; readiness remains
+  78%. **Next:** explicitly enumerate reachable legal via sites for the
+  U3.18/TP27.1 and U3.17/R129.2 endpoint pairs after the ordered prefix, test
+  only distinct site pairs, then attribute the five isolated clearances.
 - **FBV2-P2-090 / D-388 (dominant collision branch withdrawal; no authoritative
   PCB change):** after reconstructing the complete D-386 In3 transaction with
   the corrected real-DRC setup, withdrawing all 57 ACC_POWER_FAULT_N tracks
