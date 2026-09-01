@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-088 / D-386 (complete ACC_3V3_EN branch replacement; no
+  authoritative PCB change):** after the selected D-385 XGPIO9/In2 then
+  XGPIO8/In3 ordered prefix, complete ACC_3V3_EN closes on In3 through
+  `(53.65,62.35)/(53.05,80.80)` mm and both local B.Cu leaves close.  In2
+  fails at R98.1 (`NO_VIA_SITE`).  The unaffected accepted boundary restores
+  exactly, but real KiCad DRC remains strongly regressed (12 shorts, 112
+  clearances, two crossings, and other via/rule classes), so this is not a
+  promotion candidate.  Evidence/harness: `u3_acc_en_inner_replay_088.py` /
+  `.json`.  Board remains byte-identical (`a4b93b9b…`); no owner decision;
+  readiness remains 78%. **Next:** attribute the complete In3 transaction's
+  violations by collision source and route, then reroute the minimum dominant
+  geometry before a replacement-aware authoritative gate.  Do not introduce
+  blind vias without an owner manufacturing decision.
 - **FBV2-P2-087 / D-385 (ordered U3.14-first adjacent-branch refloor; no
   authoritative PCB change):** after the proven six-route prefix, 32 XGPIO9
   pair specifications become available.  Both screened In2 specifications

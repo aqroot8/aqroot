@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-386 · 2026-09-01 · routing characterization:** complete replacement of
+ACC_3V3_EN after the selected D-385 U3.14-first prefix closes the whole
+four-pad branch on In3.  The R98.1↔U3.15 haul reserves through-via sites at
+`(53.65,62.35)/(53.05,80.80)` mm, then both R98.1↔U20.1 and
+R98.1↔TP26.1 local B.Cu leaves close; In2 fails at R98.1 with
+`NO_VIA_SITE`.  The unaffected accepted boundary restores exactly and the
+authoritative board remains byte-identical (`a4b93b9b…`).  This proves a
+complete connectivity transaction, but it is not promotable: real KiCad DRC
+still reports 12 shorts, 112 clearances, two crossings, and other via/rule
+regressions in the scratch candidate.  Next is a bounded violation-attribution
+pass over the complete In3 transaction, ranked by collision source and route,
+followed by minimum-scope rerouting of the dominant violation-producing
+geometry; do not promote until the replacement-aware full-board gate passes.
+Blind vias remain excluded absent an owner manufacturing decision.  No owner
+decision is open.
+
 **D-385 · 2026-09-01 · routing characterization:** ordered local reflooring of
 the adjacent U3.13/U3.14/U3.15 branches advances the transaction wall.  After
 the proven six-route prefix, rank enumeration exposes 32 U3.14-first XGPIO9
