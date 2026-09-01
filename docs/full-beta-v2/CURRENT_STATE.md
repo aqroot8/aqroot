@@ -13,6 +13,20 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-097 / D-395 (complete fault replay + detect-wall obstacle-class
+  attribution; no authoritative PCB change):** deterministic replay of the
+  37.496 mm TP33.1↔TP27.1 B.Cu suffix closes ACC_POWER_FAULT_N and preserves
+  relocated XGPIO0 with zero open edges. After the proven detect prefix,
+  removing seven local non-detect vias or 18 local non-detect tracks within
+  3.0 mm of U3.17 changes U3.17 reachable sites on In2 and In3, while every
+  R129.2 site remains unchanged. The detect wall is therefore local mixed
+  copper at U3.17. Evidence: `u3_detect_obstacle_attribution_097.py` / `.json`.
+  This is characterization; required branches were withdrawn, no detect join
+  or promotion candidate exists, and the board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** rank the
+  seven local vias individually, then local tracks only if necessary; retain
+  only a complete detect join with every displaced branch replayed, attribute
+  the five D-388 residual clearances, and run the corrected full-board gate.
 - **FBV2-P2-096 / D-394 (fault-component attribution; no authoritative PCB
   change):** the D-393 In3 endpoint join is electrically connected through
   U3.18. The one remaining ACC_POWER_FAULT_N component is TP33.1 alone; the

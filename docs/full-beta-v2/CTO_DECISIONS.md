@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-395 · 2026-09-01 · routing characterization:** deterministic replay of
+the D-394 shortest 0.200 mm B.Cu TP33.1↔TP27.1 suffix after the D-393
+XGPIO0/In2 plus U3.18/In3 candidate closes both ACC_POWER_FAULT_N and XGPIO0
+with zero KiCad open edges. After the proven ACC_DETECT_N prefix, withdrawing
+either the seven non-detect vias or the 18 non-detect tracks within 3.0 mm of
+U3.17 changes the reachable U3.17 sites on both inner layers; withdrawing all
+25 changes them again. R129.2 sites are unchanged. Thus the remaining detect
+wall is a local U3.17 mixed-copper obstacle problem, not an R129.2 escape-site
+problem. This is characterization only: the class withdrawals break required
+branches, no complete detect join was replayed, real DRC promotion is not
+warranted, and the authoritative board remains byte-identical (`a4b93b9b…`).
+Next is deterministic minimum-cardinality ranking of the seven local vias and
+then the 18 local tracks only if no via singleton permits a complete detect
+join; replay every displaced complete branch before attributing the five
+D-388 residual clearances and running the corrected full-board gate. No owner
+decision is open.
+
 **D-394 · 2026-09-01 · routing characterization:** D-393's geometrically
 joined ACC_POWER_FAULT_N candidate is electrically continuous through U3.18;
 the reported remaining open component is solely TP33.1, which the D-390/D-393

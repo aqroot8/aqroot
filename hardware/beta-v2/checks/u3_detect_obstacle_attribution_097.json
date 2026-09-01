@@ -1,0 +1,2563 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "cases": [
+    {
+      "case": "control",
+      "endpoint_sites": {
+        "I2:R129.2": [
+          [
+            58600000,
+            57600000
+          ],
+          [
+            58600000,
+            58100000
+          ],
+          [
+            58600000,
+            58250000
+          ],
+          [
+            58600000,
+            58600000
+          ]
+        ],
+        "I2:U3.17": [
+          [
+            51350000,
+            80150000
+          ],
+          [
+            51900000,
+            78150000
+          ],
+          [
+            52725000,
+            79925000
+          ]
+        ],
+        "I3:R129.2": [
+          [
+            58350000,
+            57250000
+          ],
+          [
+            58350000,
+            57750000
+          ],
+          [
+            58550000,
+            58600000
+          ]
+        ],
+        "I3:U3.17": [
+          [
+            51350000,
+            80150000
+          ],
+          [
+            51900000,
+            78150000
+          ],
+          [
+            52200000,
+            77750000
+          ],
+          [
+            52750000,
+            77600000
+          ]
+        ]
+      },
+      "isolated_attempts": [
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.3857106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.6513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58100000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.1
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.357239123825033,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.1513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              57600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                57.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "ok": false,
+            "pad": "U3.17",
+            "reason": "NO_VIA_SITE",
+            "why": "U3.17: no 0.60 mm via site reachable on B"
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.025,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.7306980515339463,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52725000,
+              79925000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.725,
+                79.925
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 8.596951437946103,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51900000,
+              78150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.9,
+                78.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 3.057001944284939,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51350000,
+              80150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.35,
+                80.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.000132342638486,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57750000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.75
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.41226437699445,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.4357106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58550000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.55,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "ok": false,
+            "pad": "R129.2",
+            "reason": "NO_VIA_SITE",
+            "why": "R129.2: no 0.60 mm via site reachable on B"
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 8.596951437946103,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51900000,
+              78150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.9,
+                78.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 3.057001944284939,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51350000,
+              80150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.35,
+                80.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 9.062636862895344,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52200000,
+              77750000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.2,
+                77.75
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 9.674768897251308,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52750000,
+              77600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.75,
+                77.6
+              ]
+            ],
+            "vias": 1
+          }
+        }
+      ],
+      "obstacle_attribution": {},
+      "prefix": [
+        {
+          "a": "R129.2",
+          "b": "R64.1",
+          "kind": "cross",
+          "ok": true,
+          "reason": null,
+          "result": {
+            "layer": "B+F via",
+            "mm": 21.138936264299247,
+            "ok": true,
+            "via_xy": [
+              [
+                58.45,
+                38.65
+              ]
+            ],
+            "vias": 1,
+            "why": "cross-layer B/F through via 0.600/0.300 mm at (58.450,38.650)"
+          }
+        }
+      ],
+      "prefix_ok": true,
+      "remove_local_tracks": false,
+      "remove_local_vias": false,
+      "removed_items": []
+    },
+    {
+      "case": "local_vias",
+      "endpoint_sites": {
+        "I2:R129.2": [
+          [
+            58600000,
+            57600000
+          ],
+          [
+            58600000,
+            58100000
+          ],
+          [
+            58600000,
+            58250000
+          ],
+          [
+            58600000,
+            58600000
+          ]
+        ],
+        "I2:U3.17": [
+          [
+            55450000,
+            79000000
+          ],
+          [
+            55450000,
+            79500000
+          ],
+          [
+            55600000,
+            80000000
+          ],
+          [
+            55950000,
+            79500000
+          ]
+        ],
+        "I3:R129.2": [
+          [
+            58350000,
+            57250000
+          ],
+          [
+            58350000,
+            57750000
+          ],
+          [
+            58550000,
+            58600000
+          ]
+        ],
+        "I3:U3.17": [
+          [
+            52050000,
+            78150000
+          ],
+          [
+            52750000,
+            77800000
+          ],
+          [
+            55600000,
+            79100000
+          ],
+          [
+            55900000,
+            79500000
+          ]
+        ]
+      },
+      "isolated_attempts": [
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.3857106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.6513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58100000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.1
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.357239123825033,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.1513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              57600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                57.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.3127687861307595,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55450000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.45,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.724900820486724,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55450000,
+              79000000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.45,
+                79.0
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.7870328548426881,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55600000,
+              80000000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.6,
+                80.0
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.8127687861307595,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55950000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.95,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.000132342638486,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57750000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.75
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.41226437699445,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.4357106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58550000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.55,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "ok": false,
+            "pad": "R129.2",
+            "reason": "NO_VIA_SITE",
+            "why": "R129.2: no 0.60 mm via site reachable on B"
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 8.746951437946104,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52050000,
+              78150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.05,
+                78.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 9.591926184776687,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52750000,
+              77800000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.75,
+                77.8
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.6870328548426883,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55600000,
+              79100000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.6,
+                79.1
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.7627687861307597,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55900000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.9,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        }
+      ],
+      "obstacle_attribution": {},
+      "prefix": [
+        {
+          "a": "R129.2",
+          "b": "R64.1",
+          "kind": "cross",
+          "ok": true,
+          "reason": null,
+          "result": {
+            "layer": "B+F via",
+            "mm": 21.138936264299247,
+            "ok": true,
+            "via_xy": [
+              [
+                58.45,
+                38.65
+              ]
+            ],
+            "vias": 1,
+            "why": "cross-layer B/F through via 0.600/0.300 mm at (58.450,38.650)"
+          }
+        }
+      ],
+      "prefix_ok": true,
+      "remove_local_tracks": false,
+      "remove_local_vias": true,
+      "removed_items": [
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO9",
+          "position_mm": [
+            55.4,
+            81.4
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO3",
+          "position_mm": [
+            55.3,
+            77.7
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.75,
+            81.7
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO1",
+          "position_mm": [
+            55.4,
+            79.0
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO2",
+          "position_mm": [
+            55.9,
+            78.3
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.7,
+            78.45
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.05,
+            80.8
+          ]
+        }
+      ]
+    },
+    {
+      "case": "local_tracks",
+      "endpoint_sites": {
+        "I2:R129.2": [
+          [
+            58600000,
+            57600000
+          ],
+          [
+            58600000,
+            58100000
+          ],
+          [
+            58600000,
+            58250000
+          ],
+          [
+            58600000,
+            58600000
+          ]
+        ],
+        "I2:U3.17": [
+          [
+            51350000,
+            80150000
+          ],
+          [
+            51900000,
+            78150000
+          ],
+          [
+            52800000,
+            80000000
+          ],
+          [
+            52950000,
+            79500000
+          ]
+        ],
+        "I3:R129.2": [
+          [
+            58350000,
+            57250000
+          ],
+          [
+            58350000,
+            57750000
+          ],
+          [
+            58550000,
+            58600000
+          ]
+        ],
+        "I3:U3.17": [
+          [
+            51350000,
+            80150000
+          ],
+          [
+            51900000,
+            78150000
+          ],
+          [
+            52800000,
+            80000000
+          ],
+          [
+            52950000,
+            79500000
+          ]
+        ]
+      },
+      "isolated_attempts": [
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.3857106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.6513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58100000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.1
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.357239123825033,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.1513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              57600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                57.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.1877631287424273,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52950000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.95,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.7498951630983917,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52800000,
+              80000000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.8,
+                80.0
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 8.596951437946103,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51900000,
+              78150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.9,
+                78.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 3.057001944284939,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51350000,
+              80150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.35,
+                80.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.000132342638486,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57750000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.75
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.41226437699445,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.4357106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58550000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.55,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "ok": false,
+            "pad": "R129.2",
+            "reason": "NO_VIA_SITE",
+            "why": "R129.2: no 0.60 mm via site reachable on B"
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.1877631287424273,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52950000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.95,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.7498951630983917,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52800000,
+              80000000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.8,
+                80.0
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 8.596951437946103,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51900000,
+              78150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.9,
+                78.15
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 3.057001944284939,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              51350000,
+              80150000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                51.35,
+                80.15
+              ]
+            ],
+            "vias": 1
+          }
+        }
+      ],
+      "obstacle_attribution": {},
+      "prefix": [
+        {
+          "a": "R129.2",
+          "b": "R64.1",
+          "kind": "cross",
+          "ok": true,
+          "reason": null,
+          "result": {
+            "layer": "B+F via",
+            "mm": 21.138936264299247,
+            "ok": true,
+            "via_xy": [
+              [
+                58.45,
+                38.65
+              ]
+            ],
+            "vias": 1,
+            "why": "cross-layer B/F through via 0.600/0.300 mm at (58.450,38.650)"
+          }
+        }
+      ],
+      "prefix_ok": true,
+      "remove_local_tracks": true,
+      "remove_local_vias": false,
+      "removed_items": [
+        {
+          "class": "PCB_TRACK",
+          "net": "/SD_CARD_DETECT_N",
+          "position_mm": [
+            62.15,
+            88.85
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/SD_CARD_DETECT_N",
+          "position_mm": [
+            54.05,
+            81.5
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            54.1375,
+            81.425
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            46.55,
+            52.0
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            55.325,
+            81.325
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.75,
+            81.7
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            35.85,
+            79.75
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.075,
+            81.0
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO8",
+          "position_mm": [
+            54.1375,
+            82.075
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.7,
+            78.55
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.95,
+            78.8
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            54.1375,
+            78.825
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.1,
+            79.05
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.1,
+            82.65
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            54.1375,
+            80.775
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            52.95,
+            80.8
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.65,
+            62.35
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.35,
+            80.5
+          ]
+        }
+      ]
+    },
+    {
+      "case": "local_vias_and_tracks",
+      "endpoint_sites": {
+        "I2:R129.2": [
+          [
+            58600000,
+            57600000
+          ],
+          [
+            58600000,
+            58100000
+          ],
+          [
+            58600000,
+            58250000
+          ],
+          [
+            58600000,
+            58600000
+          ]
+        ],
+        "I2:U3.17": [
+          [
+            52850000,
+            78700000
+          ],
+          [
+            55300000,
+            79500000
+          ],
+          [
+            55700000,
+            79200000
+          ],
+          [
+            56000000,
+            79600000
+          ]
+        ],
+        "I3:R129.2": [
+          [
+            58350000,
+            57250000
+          ],
+          [
+            58350000,
+            57750000
+          ],
+          [
+            58550000,
+            58600000
+          ]
+        ],
+        "I3:U3.17": [
+          [
+            52850000,
+            78700000
+          ],
+          [
+            55300000,
+            79500000
+          ],
+          [
+            55700000,
+            79200000
+          ],
+          [
+            56000000,
+            79600000
+          ]
+        ]
+      },
+      "isolated_attempts": [
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.3857106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.6513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58100000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.1
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.357239123825033,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              58250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                58.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.1513961030678925,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58600000,
+              57600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.6,
+                57.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.1627687861307596,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55300000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.3,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.6870328548426883,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55700000,
+              79200000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.7,
+                79.2
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 2.0291844849797367,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52850000,
+              78700000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.85,
+                78.7
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I2",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I2",
+            "minw": 0.2,
+            "mm": 1.9041901423680692,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              56000000,
+              79600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                56.0,
+                79.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.000132342638486,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57750000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.75
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.41226437699445,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58350000,
+              57250000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.35,
+                57.25
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.4357106781186548,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              58550000,
+              58600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                58.55,
+                58.6
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "R129.2",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "ok": false,
+            "pad": "R129.2",
+            "reason": "NO_VIA_SITE",
+            "why": "R129.2: no 0.60 mm via site reachable on B"
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 0,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.1627687861307596,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55300000,
+              79500000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.3,
+                79.5
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 1,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.6870328548426883,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              55700000,
+              79200000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                55.7,
+                79.2
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 2,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 2.0291844849797367,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52850000,
+              78700000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.85,
+                78.7
+              ]
+            ],
+            "vias": 1
+          }
+        },
+        {
+          "endpoint": "U3.17",
+          "inner": "I3",
+          "rank": 3,
+          "reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.9041901423680692,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              56000000,
+              79600000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                56.0,
+                79.6
+              ]
+            ],
+            "vias": 1
+          }
+        }
+      ],
+      "obstacle_attribution": {},
+      "prefix": [
+        {
+          "a": "R129.2",
+          "b": "R64.1",
+          "kind": "cross",
+          "ok": true,
+          "reason": null,
+          "result": {
+            "layer": "B+F via",
+            "mm": 21.138936264299247,
+            "ok": true,
+            "via_xy": [
+              [
+                58.45,
+                38.65
+              ]
+            ],
+            "vias": 1,
+            "why": "cross-layer B/F through via 0.600/0.300 mm at (58.450,38.650)"
+          }
+        }
+      ],
+      "prefix_ok": true,
+      "remove_local_tracks": true,
+      "remove_local_vias": true,
+      "removed_items": [
+        {
+          "class": "PCB_TRACK",
+          "net": "/SD_CARD_DETECT_N",
+          "position_mm": [
+            62.15,
+            88.85
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/SD_CARD_DETECT_N",
+          "position_mm": [
+            54.05,
+            81.5
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO9",
+          "position_mm": [
+            55.4,
+            81.4
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            54.1375,
+            81.425
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            46.55,
+            52.0
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO9",
+          "position_mm": [
+            55.325,
+            81.325
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO3",
+          "position_mm": [
+            55.3,
+            77.7
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.75,
+            81.7
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            35.85,
+            79.75
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.75,
+            81.7
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "position_mm": [
+            52.075,
+            81.0
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO1",
+          "position_mm": [
+            55.4,
+            79.0
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/XGPIO8",
+          "position_mm": [
+            54.1375,
+            82.075
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/XGPIO2",
+          "position_mm": [
+            55.9,
+            78.3
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.7,
+            78.45
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.7,
+            78.55
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.95,
+            78.8
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            54.1375,
+            78.825
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.1,
+            79.05
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_POWER_FAULT_N",
+          "position_mm": [
+            52.1,
+            82.65
+          ]
+        },
+        {
+          "class": "PCB_VIA",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.05,
+            80.8
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            54.1375,
+            80.775
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            52.95,
+            80.8
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.65,
+            62.35
+          ]
+        },
+        {
+          "class": "PCB_TRACK",
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.35,
+            80.5
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": "LOCAL_OBSTACLE_CLASS_CHANGES_DETECT_ENDPOINT_SITES",
+  "decision": "D-395",
+  "fault_open_edges": 0,
+  "fault_suffix": {
+    "grid": 0.05,
+    "minw": 0.2,
+    "mm": 37.49581327676685,
+    "ok": true,
+    "profile": [
+      [
+        "TP33.1",
+        0.2,
+        0.9192388155425117
+      ],
+      [
+        "TP27.1",
+        0.2,
+        0.95
+      ]
+    ],
+    "trunk_mm": 0.2
+  },
+  "method": "shortest_fault_suffix_replay_then_U3P17_local_obstacle_class_sensitivity",
+  "promotion_candidate": false,
+  "radius_mm": 3.0,
+  "ranks_tested": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "schema_version": 1,
+  "site_changing_cases": [
+    "local_vias",
+    "local_tracks",
+    "local_vias_and_tracks"
+  ],
+  "site_separation_mm": 0.5,
+  "source_decisions": [
+    "D-393",
+    "D-394"
+  ],
+  "xgpio0_open_edges": 0
+}

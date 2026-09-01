@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-391",
+  "current_decision": "D-395",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -64,6 +64,7 @@
     {"decision":"D-391","framework":"U3P18_nearby_adjacent_branch_and_local_via_withdrawal_sensitivity","nets":["ACC_POWER_FAULT_N","XGPIO9","XGPIO3","XGPIO0","XGPIO1","XGPIO5","XGPIO4","XGPIO2","ACC_3V3_EN"],"result":"ADJACENT_BRANCH_WITHDRAWAL_NO_EFFECT_EIGHT_LOCAL_TRANSACTION_VIAS_REMOVED_EXPOSES_4_IN2_AND_4_IN3_U3P18_SITES","evidence":"u3_p18_obstacle_attribution_093.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-392","framework":"minimum_cardinality_local_transaction_via_withdrawal_rank","nets":["ACC_POWER_FAULT_N","XGPIO0","XGPIO1"],"result":"8_SINGLETONS_TESTED_XGPIO0_OR_XGPIO1_ALONE_EXPOSE_U3P18_MINIMUM_BLOCKING_CARDINALITY_1","evidence":"u3_p18_via_subset_rank_094.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-393","framework":"single_complete_XGPIO_branch_relocation_then_fault_detect_transaction_replay","nets":["XGPIO0","XGPIO1","ACC_POWER_FAULT_N","ACC_DETECT_N"],"result":"XGPIO0_IN2_COMPLETE_EXPOSES_1_IN2_4_IN3_U3P18_SITES_FAULT_IN3_GEOMETRIC_JOIN_RETAINS_1_OPEN_DETECT_U3P17_NO_PATH_RETAINS_1_OPEN","evidence":"u3_p18_xgpio_via_relocation_095.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-394","framework":"joined_fault_component_attribution_then_isolated_pad_direct_attach_screen","nets":["ACC_POWER_FAULT_N"],"result":"U3P18_JOIN_ELECTRICALLY_CONNECTED_TP33P1_ONLY_ISOLATED_4_OF_5_DIRECT_BCU_ATTACHMENTS_CLOSE_SHORTEST_TO_TP27P1_37P496MM","evidence":"u3_fault_component_attribution_096.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-394","framework":"joined_fault_component_attribution_then_isolated_pad_direct_attach_screen","nets":["ACC_POWER_FAULT_N"],"result":"U3P18_JOIN_ELECTRICALLY_CONNECTED_TP33P1_ONLY_ISOLATED_4_OF_5_DIRECT_BCU_ATTACHMENTS_CLOSE_SHORTEST_TO_TP27P1_37P496MM","evidence":"u3_fault_component_attribution_096.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-395","framework":"shortest_fault_suffix_replay_then_U3P17_local_obstacle_class_sensitivity","nets":["XGPIO0","ACC_POWER_FAULT_N","ACC_DETECT_N"],"result":"FAULT_AND_XGPIO0_ZERO_OPENS_U3P17_SITES_CHANGE_AFTER_7_LOCAL_VIAS_OR_18_LOCAL_TRACKS_R129P2_SITES_UNCHANGED","evidence":"u3_detect_obstacle_attribution_097.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }
