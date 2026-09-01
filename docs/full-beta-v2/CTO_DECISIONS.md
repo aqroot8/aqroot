@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-390 · 2026-09-01 · routing characterization:** explicit ordinary
+through-via-site enumeration after each D-389 proven local prefix closes both
+generic replay alternatives. ACC_POWER_FAULT_N exposes 3 TP27.1 sites on In2
+and 4 on In3 but zero U3.18 sites on either layer, so it has no endpoint pair.
+ACC_DETECT_N exposes sites at both endpoints on both layers and 24 distinct
+ordered-reservation pairs, but all 24 joins return no route. Prefix-only real
+KiCad DRC remains regressed by the already-known incomplete transaction vias
+and isolated clearances, so no copper is promoted. The authoritative board
+remains byte-identical (`a4b93b9b…`). Ordinary through-via enumeration is
+closed. Next is bounded U3.18/U3.17 endpoint-neighborhood obstacle attribution
+and minimum-scope adjacent-branch geometry/reflooring, prioritized at U3.18;
+also attribute the five D-388 residual clearances before any promotion gate.
+Blind vias remain excluded absent an owner manufacturing decision. No owner
+decision is open.
+
 **D-389 · 2026-09-01 · routing characterization:** fresh complete-branch MST
 replay after the D-386 ordered transaction and D-388 withdrawal is blocked in
 both tested orders. ACC_POWER_FAULT_N closes its three local B.Cu edges but

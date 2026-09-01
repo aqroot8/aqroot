@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-092 / D-390 (collision-branch explicit via-site enumeration; no
+  authoritative PCB change):** after each D-389 proven local prefix,
+  ACC_POWER_FAULT_N has 3 reachable TP27.1 sites on In2 and 4 on In3 but zero
+  U3.18 sites, while ACC_DETECT_N has sites at both endpoints yet none of 24
+  distinct pairs joins. Ordinary through-via enumeration is therefore closed.
+  Prefix-only real KiCad DRC retains known incomplete-transaction via and
+  clearance regressions; no copper is promoted. Evidence/harness:
+  `u3_collision_branch_viasite_enum_092.py` / `.json`. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** attribute U3.18/U3.17 endpoint-neighborhood obstacles and screen
+  minimum-scope adjacent-branch geometry/reflooring, prioritizing U3.18; also
+  attribute the five D-388 residual clearances before promotion.
 - **FBV2-P2-091 / D-389 (fresh collision-branch replay order screen; no
   authoritative PCB change):** after reconstructing D-386 and withdrawing both
   dominant collision branches, generic complete-branch MST replay fails in
