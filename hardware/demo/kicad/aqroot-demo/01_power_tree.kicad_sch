@@ -32714,7 +32714,7 @@
 				)
 			)
 		)
-		(property "Note" "ACC_5V_SW_EN safe-state pull-down, ADDED FBV2-S1-009. The CTO split the single ACC_5V_EN into ACC_5V_BOOST_EN (U3 P13 -> U21 EN) and ACC_5V_SW_EN (U23 P04 -> U22 ON), so the new net needs its own 100 k to ground. THE PULL-DOWN IS MANDATORY, NOT A CONVENIENCE: SLVSFJ2B specifies a 500 kOhm smart pull-down inside the TPS22950C and STILL REQUIRES AN EXTERNAL ONE, and the PCAL9535A powers up with every pin high-impedance - so without this resistor the 5 V accessory contact would be defined only by leakage between power-on and the first firmware write. 100 k matches R98 and R102 and costs 33 uA when the pin is driven high."
+		(property "Note" "ACC_5V_SW_EN safe-state pull-down, ADDED FBV2-S1-009. The CTO split the single ACC_5V_EN into ACC_5V_BOOST_EN (U3 P13 -> U21 EN) and ACC_5V_SW_EN (U3 P03 -> U22 ON), so the new net needs its own 100 k to ground. THE PULL-DOWN IS MANDATORY, NOT A CONVENIENCE: SLVSFJ2B specifies a 500 kOhm smart pull-down inside the TPS22950C and STILL REQUIRES AN EXTERNAL ONE, and the PCAL9535A powers up with every pin high-impedance - so without this resistor the 5 V accessory contact would be defined only by leakage between power-on and the first firmware write. 100 k matches R98 and R102 and costs 33 uA when the pin is driven high."
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

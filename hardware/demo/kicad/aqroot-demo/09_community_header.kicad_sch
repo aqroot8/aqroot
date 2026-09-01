@@ -2861,16 +2861,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000025")
 	)
-	(label "XGPIO7_HDR"
-		(at 135.89 146.05 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000026")
-	)
+	
 	(wire
 		(pts
 			(xy 115.57 135.89) (xy 107.95 135.89)
@@ -2911,16 +2902,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000002a")
 	)
-	(wire
-		(pts
-			(xy 115.57 138.43) (xy 107.95 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000002b")
-	)
+	
 	(symbol
 		(lib_id "power:GND")
 		(at 113.03 151.13 270)
@@ -3000,66 +2982,12 @@
 			)
 		)
 	)
-	(wire
-		(pts
-			(xy 128.27 138.43) (xy 135.89 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000002e")
-	)
-	(label "XGPIO1_HDR"
-		(at 135.89 138.43 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000002f")
-	)
-	(wire
-		(pts
-			(xy 115.57 140.97) (xy 107.95 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000030")
-	)
-	(label "XGPIO2_HDR"
-		(at 107.95 140.97 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000031")
-	)
-	(wire
-		(pts
-			(xy 128.27 140.97) (xy 135.89 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000032")
-	)
-	(label "XGPIO3_HDR"
-		(at 135.89 140.97 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000033")
-	)
+	
+	
+	
+	
+	
+	
 	(wire
 		(pts
 			(xy 115.57 143.51) (xy 107.95 143.51)
@@ -3100,36 +3028,9 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000037")
 	)
-	(wire
-		(pts
-			(xy 115.57 146.05) (xy 107.95 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000038")
-	)
-	(label "XGPIO6_HDR"
-		(at 107.95 146.05 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000039")
-	)
-	(wire
-		(pts
-			(xy 128.27 146.05) (xy 135.89 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000003a")
-	)
+	
+	
+	
 	(symbol
 		(lib_id "power:GND")
 		(at 130.81 133.35 90)
@@ -3209,46 +3110,10 @@
 			)
 		)
 	)
-	(wire
-		(pts
-			(xy 115.57 148.59) (xy 107.95 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000003d")
-	)
-	(label "XGPIO8_HDR"
-		(at 107.95 148.59 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000003e")
-	)
-	(wire
-		(pts
-			(xy 128.27 148.59) (xy 135.89 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000003f")
-	)
-	(label "XGPIO9_HDR"
-		(at 135.89 148.59 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000040")
-	)
+	
+	
+	
+	
 	(wire
 		(pts
 			(xy 115.57 151.13) (xy 113.03 151.13)
@@ -3259,16 +3124,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000041")
 	)
-	(label "XGPIO0_HDR"
-		(at 107.95 138.43 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000042")
-	)
+	
 	(wire
 		(pts
 			(xy 128.27 151.13) (xy 135.89 151.13)
@@ -3438,630 +3294,26 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000004d")
 	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 33.02 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-00000000004e")
-		(property "Reference" "R51"
-			(at 63.5 31.75 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 34.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-00000000004f")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-000000000050")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R51")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 33.02) (xy 52.07 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000051")
-	)
-	(wire
-		(pts
-			(xy 64.77 33.02) (xy 69.85 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000052")
-	)
-	(hierarchical_label "XGPIO0"
-		(shape bidirectional)
-		(at 52.07 33.02 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000053")
-	)
-	(label "XGPIO0_HDR"
-		(at 69.85 33.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000054")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 38.1 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-000000000055")
-		(property "Reference" "R52"
-			(at 63.5 36.83 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 39.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-000000000056")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-000000000057")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R52")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 38.1) (xy 52.07 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000058")
-	)
-	(wire
-		(pts
-			(xy 64.77 38.1) (xy 69.85 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000059")
-	)
-	(hierarchical_label "XGPIO1"
-		(shape bidirectional)
-		(at 52.07 38.1 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000005a")
-	)
-	(label "XGPIO1_HDR"
-		(at 69.85 38.1 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000005b")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 43.18 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-00000000005c")
-		(property "Reference" "R53"
-			(at 63.5 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 44.45 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 43.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 43.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 43.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-00000000005d")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-00000000005e")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R53")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 43.18) (xy 52.07 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000005f")
-	)
-	(wire
-		(pts
-			(xy 64.77 43.18) (xy 69.85 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000060")
-	)
-	(hierarchical_label "XGPIO2"
-		(shape bidirectional)
-		(at 52.07 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000061")
-	)
-	(label "XGPIO2_HDR"
-		(at 69.85 43.18 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000062")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 48.26 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-000000000063")
-		(property "Reference" "R54"
-			(at 63.5 46.99 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 49.53 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-000000000064")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-000000000065")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R54")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 48.26) (xy 52.07 48.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000066")
-	)
-	(wire
-		(pts
-			(xy 64.77 48.26) (xy 69.85 48.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000067")
-	)
-	(hierarchical_label "XGPIO3"
-		(shape bidirectional)
-		(at 52.07 48.26 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000068")
-	)
-	(label "XGPIO3_HDR"
-		(at 69.85 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000069")
-	)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	(symbol
 		(lib_id "Device:R")
 		(at 60.96 53.34 90)
@@ -4374,630 +3626,26 @@
 		)
 		(uuid "fb090108-0901-4908-9908-000000000077")
 	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 63.5 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-000000000078")
-		(property "Reference" "R57"
-			(at 63.5 62.23 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 64.77 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-000000000079")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-00000000007a")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R57")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 63.5) (xy 52.07 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000007b")
-	)
-	(wire
-		(pts
-			(xy 64.77 63.5) (xy 69.85 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000007c")
-	)
-	(hierarchical_label "XGPIO6"
-		(shape bidirectional)
-		(at 52.07 63.5 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000007d")
-	)
-	(label "XGPIO6_HDR"
-		(at 69.85 63.5 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000007e")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 68.58 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-00000000007f")
-		(property "Reference" "R58"
-			(at 63.5 67.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 69.85 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-000000000080")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-000000000081")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R58")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 68.58) (xy 52.07 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000082")
-	)
-	(wire
-		(pts
-			(xy 64.77 68.58) (xy 69.85 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000083")
-	)
-	(hierarchical_label "XGPIO7"
-		(shape bidirectional)
-		(at 52.07 68.58 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000084")
-	)
-	(label "XGPIO7_HDR"
-		(at 69.85 68.58 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000085")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 73.66 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-000000000086")
-		(property "Reference" "R59"
-			(at 63.5 72.39 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-000000000087")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-000000000088")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R59")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 73.66) (xy 52.07 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000089")
-	)
-	(wire
-		(pts
-			(xy 64.77 73.66) (xy 69.85 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000008a")
-	)
-	(hierarchical_label "XGPIO8"
-		(shape bidirectional)
-		(at 52.07 73.66 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000008b")
-	)
-	(label "XGPIO8_HDR"
-		(at 69.85 73.66 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000008c")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 60.96 78.74 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-00000000008d")
-		(property "Reference" "R60"
-			(at 63.5 77.47 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100R 1%"
-			(at 63.5 80.01 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 60.96 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 60.96 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.1W"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Community XGPIO series protection, D-090. 100 Ohm between the exposed contact and the PCAL9535A `U3` port pin. It is a fault-current limiter, not a termination: at the PCAL 5.5 V absolute-maximum I/O rating a hostile 5 V applied to the contact is held to (5 - 3.3 - Vf)/100 = about 10 mA into the clamp, and an ESD event is handled by the TPD4E1B06 array before the resistor is reached. The 70 us-per-transition I2C latency of an expander pin makes the RC irrelevant: 100 Ohm into a 200 pF accessory is 20 ns."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-00000000008e")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-00000000008f")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "R60")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 57.15 78.74) (xy 52.07 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000090")
-	)
-	(wire
-		(pts
-			(xy 64.77 78.74) (xy 69.85 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000091")
-	)
-	(hierarchical_label "XGPIO9"
-		(shape bidirectional)
-		(at 52.07 78.74 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000092")
-	)
-	(label "XGPIO9_HDR"
-		(at 69.85 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000093")
-	)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	(symbol
 		(lib_id "Device:R")
 		(at 60.96 83.82 90)
@@ -8603,224 +7251,15 @@
 		(at 355.6 142.24)
 		(uuid "fb090108-0901-4908-9908-00000000013c")
 	)
-	(symbol
-		(lib_id "AQROOT_Beta:TPD4E1B06DRLR")
-		(at 355.6 190.5 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fb090108-0901-4908-9908-00000000013d")
-		(property "Reference" "D3"
-			(at 358.14 177.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TPD4E1B06DRLR"
-			(at 358.14 180.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-563"
-			(at 355.6 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd4e1b06.pdf"
-			(at 355.6 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "TI TPD4E1B06 4-channel ultra-low-leakage bidirectional ESD array, SOT-563"
-			(at 355.6 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C1972953"
-			(at 355.6 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "Texas Instruments"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TPD4E1B06DRLR"
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Low-capacitance ESD array on the exposed community contacts, D-090 and FBV2-S1-009. TI TPD4E1B06DRLR, SLVSBQ8E: 4-channel BI-DIRECTIONAL, IEC 61000-4-2 +/-12 kV CONTACT and +/-15 kV AIR-GAP - beyond level 4 - IEC 61000-4-5 surge 3.0 A (8/20 us), I/O capacitance 0.7 pF TYPICAL and leakage 0.5 nA MAXIMUM. VRWM +/-5.5 V. Pinout 1 = IO1, 2 = GND, 3 = IO2, 4 = IO3, 5 = NC, 6 = IO4, DRL/SOT-563 1.6 x 1.6 mm. THESE ARRIVED FROM BETA-DM MARKED DNP AND ARE NOW FITTED: an unprotected user-accessible connector is not a defensible shipping state, and 0.7 pF costs nothing even on the 400 kHz I2C pair. THE 5.5 V VRWM IS WHY THIS PART IS NOT USED ON THE ACCESSORY 5 V RAIL - 5.0 V nominal leaves no working margin. The rails are protected instead by their own bulk capacitance and by the TPS22950C's ratings."
-			(at 0 0 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb090108-0901-4908-9908-00000000013e")
-		)
-		(pin "2"
-			(uuid "fb090108-0901-4908-9908-00000000013f")
-		)
-		(pin "3"
-			(uuid "fb090108-0901-4908-9908-000000000140")
-		)
-		(pin "4"
-			(uuid "fb090108-0901-4908-9908-000000000141")
-		)
-		(pin "5"
-			(uuid "fb090108-0901-4908-9908-000000000142")
-		)
-		(pin "6"
-			(uuid "fb090108-0901-4908-9908-000000000143")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/fc294db1-6eef-4bd8-b4f0-c1bd635657ed"
-					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 345.44 187.96) (xy 340.36 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000144")
-	)
-	(label "XGPIO0_HDR"
-		(at 340.36 187.96 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000145")
-	)
-	(wire
-		(pts
-			(xy 345.44 193.04) (xy 340.36 193.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000146")
-	)
-	(label "XGPIO1_HDR"
-		(at 340.36 193.04 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000147")
-	)
-	(wire
-		(pts
-			(xy 365.76 187.96) (xy 370.84 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000148")
-	)
-	(label "XGPIO2_HDR"
-		(at 370.84 187.96 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-000000000149")
-	)
-	(wire
-		(pts
-			(xy 365.76 193.04) (xy 370.84 193.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000014a")
-	)
-	(label "XGPIO3_HDR"
-		(at 370.84 193.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000014b")
-	)
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	(wire
 		(pts
 			(xy 355.6 200.66) (xy 355.6 203.2)
@@ -9091,46 +7530,10 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000015a")
 	)
-	(wire
-		(pts
-			(xy 365.76 226.06) (xy 370.84 226.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000015b")
-	)
-	(label "XGPIO6_HDR"
-		(at 370.84 226.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000015c")
-	)
-	(wire
-		(pts
-			(xy 365.76 231.14) (xy 370.84 231.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000015d")
-	)
-	(label "XGPIO7_HDR"
-		(at 370.84 231.14 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000015e")
-	)
+	
+	
+	
+	
 	(wire
 		(pts
 			(xy 355.6 238.76) (xy 355.6 241.3)
@@ -9361,46 +7764,10 @@
 			)
 		)
 	)
-	(wire
-		(pts
-			(xy 345.44 264.16) (xy 340.36 264.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000016a")
-	)
-	(label "XGPIO8_HDR"
-		(at 340.36 264.16 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000016b")
-	)
-	(wire
-		(pts
-			(xy 345.44 269.24) (xy 340.36 269.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000016c")
-	)
-	(label "XGPIO9_HDR"
-		(at 340.36 269.24 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fb090108-0901-4908-9908-00000000016d")
-	)
+	
+	
+	
+	
 	(wire
 		(pts
 			(xy 365.76 264.16) (xy 370.84 264.16)
@@ -9710,7 +8077,7 @@
 			)
 		)
 	)
-	(text "COMMUNITY EXPANSION PORT - MIGRATED FBV2-S1-009\n\nJ5 = SAMTEC BCS-112-S-D-HE   2 x 12, 24 ACTIVE CONTACTS\n2.54 mm, FEMALE, HORIZONTAL ENTRY, THROUGH-HOLE, 30 uin GOLD\nFOOTPRINT FIG 3 REV B: 2.54 IN ROW, 7.87 BETWEEN ROWS, 0.71 PTH\n\n 1 XGPIO0        2 EXT_SCL        3 ACC_3V3_SW    4 GND\n 5 XGPIO1        6 EXT_SDA        7 NATIVE_A      8 XGPIO2\n 9 GND          10 ACC_5V_SW     11 NATIVE_B     12 XGPIO3\n13 XGPIO4       14 WAKE_ATTN_N   15 ACC_3V3_SW   16 GND\n17 XGPIO5       18 XGPIO6        19 XGPIO7       20 XGPIO8\n21 GND          22 ACC_5V_SW     23 ACC_DETECT_N 24 XGPIO9\n\nNO NC CONTACT. NO KEY CONTACT. NO DUPLICATE GPIO.\nONLY GND AND THE TWO RAILS ARE DUPLICATED.\n\n**COMMUNITY PORT - 3V3 LOGIC ONLY / 5V PIN IS POWER OUTPUT ONLY**\nTHIS MUST APPEAR ON THE SILKSCREEN.\n\nTHE TWO ACC_3V3 CONTACTS SHARE THE TOTAL 3.3 V RAIL LIMIT.\nTHE TWO ACC_5V CONTACTS SHARE THE TOTAL 5 V RAIL LIMIT.\nDUPLICATE CONTACTS DO NOT MULTIPLY THE AVAILABLE CURRENT.\nFIRST FIVE BOARDS: 400 mA TOTAL AT 3.3 V, 300 mA TOTAL AT 5 V.\n\nTHERE IS NO PERMANENT RAW +3V3 ON THIS PORT (D-057). THE OLD\nBETA-DM PIN 1 CARRIED IT AND IS GONE ALONG WITH THE 26-PIN\nHEADER, XGPIO10-13, THE ROOTPROBE FAST_IO PIN AND RESERVED_NC."
+	(text "COMMUNITY EXPANSION PORT - AQROOT DEMO SCHEMATIC ECO\n\nJ5 = 24-CONTACT ORDER-B PHYSICAL INTERFACE\n\n 1 5V    2 GND   3 3V3   4 SDA   5 SCL   6 GND   7 NATIVE_A   8 NATIVE_B\n 9 NC   10 NC   11 NC   12 NC   13 XGPIO4 14 XGPIO5 15 NC       16 NC\n17 NC   18 NC   19 GND  20 WAKE 21 DET   22 3V3   23 GND      24 5V\n\nAQROOT DEMO EXPOSES ONLY XGPIO4 AND XGPIO5. CONTACTS 9-12 AND 15-18\nARE EXPLICITLY NC. BOTH SWITCHED-RAIL CONTACT PAIRS SHARE THEIR EXISTING\nTOTAL CURRENT LIMIT. COMMUNITY LOGIC IS 3.3 V; 5 V CONTACTS ARE POWER ONLY."
 		(exclude_from_sim no)
 		(at 76.2 200.66 0)
 		(effects
@@ -9730,7 +8097,7 @@
 		)
 		(uuid "fb090108-0901-4908-9908-00000000017c")
 	)
-	(text "ACCESSORY POWER SEQUENCING - CTO RULING, FBV2-S1-009\n\nTHE SINGLE ACC_5V_EN IS SPLIT INTO TWO INDEPENDENT ENABLES:\n  U3  P13  ACC_5V_BOOST_EN  -> TPS61023 EN   (U21, SHEET 01)\n  U23 P04  ACC_5V_SW_EN     -> TPS22950C ON  (U22, SHEET 01)\nBOTH CARRY THEIR OWN 100 k EXTERNAL PULL-DOWN, SO BOTH ARE\nOFF BEFORE FIRMWARE RUNS. U23 P04 WAS A SPARE; ELEVEN\nORDINARY SPARES PLUS RESERVED_SPARE REMAIN.\n\nPOWER-UP:\n  1  VERIFY ACC_DETECT_N ASSERTED\n  2  ACC_3V3_EN  = 1\n  3  WAIT >= 5 ms                       (MX-4)\n  4  ACC_5V_BOOST_EN = 1\n  5  WAIT >= 5 ms FOR THE CONVERTER      (SEE BELOW)\n  6  ACC_5V_SW_EN = 1\n\nPOWER-DOWN, EXACTLY REVERSED:\n  1  ACC_5V_SW_EN = 0\n  2  ACC_5V_BOOST_EN = 0\n  3  ACC_3V3_EN = 0\n\nSTEP 5 IS DERIVED, NOT GUESSED. SLVSDK9: THE TPS61023 SOFT\nSTART IS 700 us TYPICAL FROM EN HIGH TO THE OUTPUT REACHING\nTARGET. THE DATASHEET GIVES NO MAXIMUM, SO THE FIRST BUILD\nUSES 5 ms - SEVEN TIMES TYPICAL - AND IT IS MEASURED ON THE\nFIRST BOARDS. THE SPLIT MAKES THAT NUMBER TRUSTWORTHY: WITH\nU22 STILL OFF THE BOOST STARTS INTO A KNOWN 44 uF OF C65/C66\nAND NOT INTO AN UNKNOWN ACCESSORY, SO THE START-UP TIME IS A\nBOARD CONSTANT INSTEAD OF AN ACCESSORY VARIABLE.\n\nWHAT THE SPLIT BUYS: TWO INDEPENDENT SERIES DISCONNECTS IN\nTHE 5 V PATH. THE TPS61023 HAS TRUE INPUT-TO-OUTPUT\nDISCONNECTION IN SHUTDOWN, SO ACC_5V_RAW REALLY GOES TO ZERO,\nAND THE TPS22950C ADDS REVERSE-CURRENT BLOCKING ON TOP. A\nSINGLE STUCK ENABLE CAN NO LONGER ENERGISE THE CONTACT, AND\nTHE BOOST NO LONGER HAS TO START INTO A HOT-PLUGGED LOAD.\n\nDETECT LOSS OR FLT STILL FORCES A PROMPT SHUTDOWN (MX-5,\nMX-6). NO PGOOD IC IS ADDED FOR THIS."
+	(text "ACCESSORY POWER SEQUENCING - CTO RULING, FBV2-S1-009\n\nTHE SINGLE ACC_5V_EN IS SPLIT INTO TWO INDEPENDENT ENABLES:\n  U3  P13  ACC_5V_BOOST_EN  -> TPS61023 EN   (U21, SHEET 01)\n  U3  P03  ACC_5V_SW_EN     -> TPS22950C ON  (U22, SHEET 01)\nBOTH CARRY THEIR OWN 100 k EXTERNAL PULL-DOWN, SO BOTH ARE\nOFF BEFORE FIRMWARE RUNS. THE TWO 5 V CONTROLS REMAIN INDEPENDENT.\n\nPOWER-UP:\n  1  VERIFY ACC_DETECT_N ASSERTED\n  2  ACC_3V3_EN  = 1\n  3  WAIT >= 5 ms                       (MX-4)\n  4  ACC_5V_BOOST_EN = 1\n  5  WAIT >= 5 ms FOR THE CONVERTER      (SEE BELOW)\n  6  ACC_5V_SW_EN = 1\n\nPOWER-DOWN, EXACTLY REVERSED:\n  1  ACC_5V_SW_EN = 0\n  2  ACC_5V_BOOST_EN = 0\n  3  ACC_3V3_EN = 0\n\nSTEP 5 IS DERIVED, NOT GUESSED. SLVSDK9: THE TPS61023 SOFT\nSTART IS 700 us TYPICAL FROM EN HIGH TO THE OUTPUT REACHING\nTARGET. THE DATASHEET GIVES NO MAXIMUM, SO THE FIRST BUILD\nUSES 5 ms - SEVEN TIMES TYPICAL - AND IT IS MEASURED ON THE\nFIRST BOARDS. THE SPLIT MAKES THAT NUMBER TRUSTWORTHY: WITH\nU22 STILL OFF THE BOOST STARTS INTO A KNOWN 44 uF OF C65/C66\nAND NOT INTO AN UNKNOWN ACCESSORY, SO THE START-UP TIME IS A\nBOARD CONSTANT INSTEAD OF AN ACCESSORY VARIABLE.\n\nWHAT THE SPLIT BUYS: TWO INDEPENDENT SERIES DISCONNECTS IN\nTHE 5 V PATH. THE TPS61023 HAS TRUE INPUT-TO-OUTPUT\nDISCONNECTION IN SHUTDOWN, SO ACC_5V_RAW REALLY GOES TO ZERO,\nAND THE TPS22950C ADDS REVERSE-CURRENT BLOCKING ON TOP. A\nSINGLE STUCK ENABLE CAN NO LONGER ENERGISE THE CONTACT, AND\nTHE BOOST NO LONGER HAS TO START INTO A HOT-PLUGGED LOAD.\n\nDETECT LOSS OR FLT STILL FORCES A PROMPT SHUTDOWN (MX-5,\nMX-6). NO PGOOD IC IS ADDED FOR THIS."
 		(exclude_from_sim no)
 		(at 76.2 262.89 0)
 		(effects
@@ -9933,4 +8300,74 @@
 		)
 	)
 	(embedded_fonts no)
+
+	(no_connect
+		(at 115.57 138.43)
+		(uuid "4e60cfda-8848-46ea-9c00-01f1f9954ad5")
+	)
+
+	(no_connect
+		(at 128.27 138.43)
+		(uuid "edd7f83d-e95f-4f2e-843c-0cf540e625b5")
+	)
+
+	(no_connect
+		(at 115.57 140.97)
+		(uuid "746ef857-504c-4b5f-bc39-81cafeb0ae49")
+	)
+
+	(no_connect
+		(at 128.27 140.97)
+		(uuid "e99b3311-6ab7-4849-bcd1-07c38612ab0e")
+	)
+
+	(no_connect
+		(at 115.57 146.05)
+		(uuid "a592dc3b-d290-4c78-bd7a-655af01cfebc")
+	)
+
+	(no_connect
+		(at 128.27 146.05)
+		(uuid "c198137b-5600-4cea-bf6d-70eb1fc44e91")
+	)
+
+	(no_connect
+		(at 115.57 148.59)
+		(uuid "6c79eb0f-836d-45d1-8d89-dfc859d18e3d")
+	)
+
+	(no_connect
+		(at 128.27 148.59)
+		(uuid "47b127e9-e848-4eda-88e3-6020ddfc9062")
+	)
+
+	
+
+	
+
+	
+
+	
+
+
+	(no_connect
+		(at 365.76 226.06)
+		(uuid "2eda50e1-7a74-4877-99d8-3510355f93f5")
+	)
+
+	(no_connect
+		(at 365.76 231.14)
+		(uuid "54322b01-53b6-422b-baa1-a69f75f6a606")
+	)
+
+	(no_connect
+		(at 345.44 264.16)
+		(uuid "ebc90344-b547-4380-90d4-dd6cffc62753")
+	)
+
+	(no_connect
+		(at 345.44 269.24)
+		(uuid "16b48160-76b7-4fd5-9e45-6528b4b331b6")
+	)
+
 )
