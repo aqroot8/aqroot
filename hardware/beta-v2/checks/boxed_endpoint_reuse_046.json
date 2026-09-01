@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "decision": "D-344",
+  "authoritative_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "authoritative_board_unchanged": true,
+  "framework": "D343_reserved_escape_inner_haul_reuse",
+  "screens": [
+    {"net": "BMI270_INT1_RAW", "plan": "R18.1_F_to_U4.4_B_via_In2_then_In3", "result": "NO_VIA_SITE", "binding_endpoint": "U4.4", "detail": "no legal 0.60/0.30 mm through-via site reachable from the B.Cu endpoint on either signal inner layer"},
+    {"net": "ACC_POWER_FAULT_N", "plan": "R103.2_to_U20.6_owned_inner_anchor_then_BCu_terminal_attach", "result": "NO_LEGAL_ESCAPE", "binding_endpoint": "U20.6", "detail": "no 0.200 mm B.Cu escape; blocked by accepted tracks and U20.5/U20.1/U20.4 lands"}
+  ],
+  "next": "bounded U20 plus local-neighbor placement-ECO impact map with accepted-copper replay"
+}
