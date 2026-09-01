@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-358 · 2026-09-01 · routing promotion:** the D-357-certified U4
+replacement transaction is atomically promoted. U4 is exactly 270°/+0.5 mm
+east; the complete `BMI270_SDO_ADDR` branch is replayed and
+`BMI270_INT1_RAW` is closed through legal F.Cu/In3.Cu/B.Cu copper and two
+0.60/0.30 through vias. All unrelated copper and baseline pad connectivity
+remain preserved, ratsnest improves 644→643, and real KiCad DRC is unchanged.
+G1–G47 and all standing incremental/Phase-B probes pass. Authoritative board
+is `a4b93b9b…` (925 tracks / 87 vias / journal 138). Next is the bounded U3
+plus neighbor-cluster refloorplan/replay framework for XGPIO6/XGPIO7; no owner
+decision is open.
+
 **D-357 · 2026-09-01 · routing gate characterization:** the independent
 replacement-aware full-board gate regenerates and certifies the D-356 U4
 transaction. Only U4 moves (exactly 270°/+0.5 mm east); all missing copper is

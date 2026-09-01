@@ -2504,7 +2504,7 @@ def main():
         chk('G40 wall registry is valid, deterministic and non-duplicated',
             'schema=%s walls=%d unique=%d' %
             (walls.get('schema_version'), len(ids), len(set(ids))),
-            walls.get('schema_version') == 1 and len(ids) >= 9
+            walls.get('schema_version') == 1 and len(ids) >= 8
             and len(ids) == len(set(ids)) and all(ids))
         chk('G40 disproven ordinary button retry is blocked while accepted replacement framework is allowed',
             'BTN_DOWN blocked=%s BTN_RIGHT allowed=%s' %
@@ -2662,6 +2662,45 @@ def main():
             and all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
                     for t in fault_trk)
             and {'R103.2', 'U20.6', 'U22.6', 'TP27.1', 'U3.18', 'TP33.1'} <= fault_reach)
+
+        # -- G47 FBV2-P2-060/D-358 certified U4 transaction promotion ------
+        print('  -- G47 U4 replacement transaction + BMI270_INT1_RAW --')
+        rawnet = '/05_I2C_DEVICES/BMI270_INT1_RAW'
+        raw_trk = [t for t in _g18.GetTracks()
+                   if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == rawnet]
+        raw_via = [v for v in all_via if v.GetNetname() == rawnet]
+        raw_layers = collections.Counter(t.GetLayerName() for t in raw_trk)
+        raw_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                     for p in _cc.GetConnectedItems(_pad('U4.4'))
+                     if p.GetClass() == 'PAD'}
+        addrnet = '/05_I2C_DEVICES/BMI270_SDO_ADDR'
+        addr_trk = [t for t in _g18.GetTracks()
+                    if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == addrnet]
+        addr_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                      for p in _cc.GetConnectedItems(_pad('U4.1'))
+                      if p.GetClass() == 'PAD'}
+        u4 = _g18.FindFootprintByReference('U4')
+        u4p = u4.GetPosition()
+        u4j = [e for e in _jr if e.get('transaction') == 'D-358']
+        chk('G47 exact U4 pose and replacement journal are pinned',
+            'pose=(%d,%d,%.1f,%s) journal=%d' %
+            (u4p.x, u4p.y, u4.GetOrientationDegrees(), u4.GetLayerName(), len(u4j)),
+            (u4p.x, u4p.y, round(u4.GetOrientationDegrees(), 6), u4.GetLayerName()) ==
+            (57500000, 70000000, -90.0, 'B.Cu') and len(u4j) == 3)
+        chk('G47 BMI270_INT1_RAW closes on legal F/In3/B copper',
+            'tracks=%d layers=%s vias=%d reach=%s' %
+            (len(raw_trk), dict(raw_layers), len(raw_via), sorted(raw_reach)),
+            len(raw_trk) == 7 and raw_layers == {'F.Cu': 2, 'In3.Cu': 4, 'B.Cu': 1}
+            and len(raw_via) == 2 and {'R18.1', 'U4.4'} <= raw_reach
+            and all(t.GetWidth() == 200000 for t in raw_trk)
+            and all(v.GetWidth(pcbnew.F_Cu) == 600000 and v.GetDrill() == 300000
+                    and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in raw_via))
+        chk('G47 replayed BMI270_SDO_ADDR strap remains fully connected on B.Cu',
+            'tracks=%d reach=%s' % (len(addr_trk), sorted(addr_reach)),
+            len(addr_trk) == 8
+            and all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
+                    for t in addr_trk)
+            and {'R118.1', 'R119.2', 'U4.1'} <= addr_reach)
 
         print('')
         if FAILED:

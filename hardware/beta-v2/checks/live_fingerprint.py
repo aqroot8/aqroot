@@ -23,14 +23,14 @@ prints, or the promote summary).  Nothing else changes.
 
 # The authoritative board fingerprint after the most recently promoted increment.
 EXPECTED = dict(
-    decision='D-353',                 # FBV2-P2-055: certified U20 replacement transaction
-    sha256='02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5',
-    tracks=918,                       # 870 - 20 replaced + 68 transaction additions
-    vias=85,                          # 83 (D-339) + 2 ordinary through vias
+    decision='D-358',                 # FBV2-P2-060: certified U4 replacement transaction
+    sha256='a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782',
+    tracks=925,                       # 918 - 4 replaced + 11 transaction additions
+    vias=87,                          # 85 + 2 ordinary through vias
     copper_layers=6,
     zones=41,                         # unchanged (1 via -> only the In1/In4 GND reference planes re-poured for the anti-pad; zone COUNT constant)
-    ratsnest=644,                     # 649 - 5 closed ACC_POWER_FAULT_N edges
-    journal=137,                      # 132 - 4 superseded + 9 D-353 transaction edges
+    ratsnest=643,                     # 644 - 1 closed BMI270_INT1_RAW edge
+    journal=138,                      # 137 - 2 superseded + 3 D-358 transaction edges
 )
 
 # Convenience aliases (the names the existing probes already use for these pins).

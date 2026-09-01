@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-060 / D-358 (U4 TRANSACTION PROMOTED):** the D-357-certified
+  replacement transaction is authoritative. U4 moved exactly 270°/+0.5 mm
+  east; the complete `BMI270_SDO_ADDR` branch was replayed and
+  `BMI270_INT1_RAW` is now connected through legal F.Cu/In3.Cu/B.Cu copper
+  with two 0.60/0.30 through vias. No unrelated copper or baseline pad
+  connectivity regressed. G1–G47, probes 006–028 and Phase-B pass; real KiCad
+  DRC remains exactly 5 hole-clearance / 1 mask-bridge / 199 library-footprint /
+  499 unconnected-item findings. Board `a4b93b9b…`, 925 tracks / 87 vias /
+  journal 138 / ratsnest 643; Phase-B 37/164 routed, 127 unrouted. **Next:**
+  bounded U3 plus neighbor-cluster refloorplan with accepted-copper replay for
+  the coherent XGPIO6/XGPIO7 pair. No owner decision; readiness remains 78%.
+
 - **FBV2-P2-059 / D-357 (replacement-gate characterization; no authoritative
   PCB change):** the independent replacement-aware full-board gate regenerates
   and certifies D-356. Only U4 moves, exactly 270°/+0.5 mm east; all missing

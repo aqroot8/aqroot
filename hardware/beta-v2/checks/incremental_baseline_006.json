@@ -1,10 +1,10 @@
 {
- "sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
- "tracks": 870,
- "vias": 85,
+ "sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+ "tracks": 925,
+ "vias": 87,
  "copper_layers": 6,
- "ratsnest": 649,
- "journal": 132,
+ "ratsnest": 643,
+ "journal": 138,
  "drc": {
   "solder_mask_bridge": 1,
   "hole_clearance": 5,
@@ -383,26 +383,6 @@
    "U23.6"
   ],
   [
-   "/ACC_3V3_EN",
-   "R98.1",
-   "U20.1"
-  ],
-  [
-   "/ACC_3V3_EN",
-   "R98.1",
-   "TP26.1"
-  ],
-  [
-   "/ACC_3V3_EN",
-   "TP26.1",
-   "U3.15"
-  ],
-  [
-   "/01_POWER_TREE/ACC_3V3_ILIM",
-   "R97.1",
-   "U20.4"
-  ],
-  [
    "/DISP_RST_N",
    "J1.10",
    "R16.1"
@@ -411,16 +391,6 @@
    "/DISP_RST_N",
    "J1.10",
    "U2.8"
-  ],
-  [
-   "/05_I2C_DEVICES/BMI270_SDO_ADDR",
-   "R118.1",
-   "R119.2"
-  ],
-  [
-   "/05_I2C_DEVICES/BMI270_SDO_ADDR",
-   "R119.2",
-   "U4.1"
   ],
   [
    "Net-(D13-RK)",
@@ -641,6 +611,66 @@
    "/DISP_BL_CTL",
    "R109.2",
    "U17.4"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "R98.1",
+   "U20.1"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "U20.1",
+   "TP26.1"
+  ],
+  [
+   "/ACC_3V3_EN",
+   "TP26.1",
+   "U3.15"
+  ],
+  [
+   "/01_POWER_TREE/ACC_3V3_ILIM",
+   "R97.1",
+   "U20.4"
+  ],
+  [
+   "/ACC_POWER_FAULT_N",
+   "R103.2",
+   "U20.6"
+  ],
+  [
+   "/ACC_POWER_FAULT_N",
+   "U20.6",
+   "TP27.1"
+  ],
+  [
+   "/ACC_POWER_FAULT_N",
+   "R103.2",
+   "U22.6"
+  ],
+  [
+   "/ACC_POWER_FAULT_N",
+   "TP27.1",
+   "U3.18"
+  ],
+  [
+   "/ACC_POWER_FAULT_N",
+   "U3.18",
+   "TP33.1"
+  ],
+  [
+   "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+   "R118.1",
+   "R119.2"
+  ],
+  [
+   "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+   "R119.2",
+   "U4.1"
+  ],
+  [
+   "/05_I2C_DEVICES/BMI270_INT1_RAW",
+   "R18.1",
+   "U4.4"
   ]
  ]
 }

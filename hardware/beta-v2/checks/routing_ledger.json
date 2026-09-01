@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "current_decision": "D-357",
-  "current_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "current_decision": "D-358",
+  "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
     {"decision":"D-331","framework":"inner_long_haul_plan","nets":["XGPIO2"],"gate":"PASS","tracks":8,"vias":2,"ratsnest_delta":-1},
@@ -10,6 +10,7 @@
     {"decision":"D-339","framework":"connector_fanout_plan","nets":["DISP_DC"],"gate":"PASS","tracks":4,"vias":2,"ratsnest_delta":-1},
     {"decision":"D-343","framework":"inner_long_haul_plan","nets":["DISP_BL_CTL"],"gate":"PASS","tracks":3,"vias":2,"ratsnest_delta":-1}
     ,{"decision":"D-353","framework":"transactional_accepted_copper_replacement","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"gate":"PASS","tracks_removed":20,"tracks_added":68,"vias":0,"ratsnest_delta":-5,"evidence":"u20_promotion_055.json"}
+    ,{"decision":"D-358","framework":"transactional_accepted_copper_replacement","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"gate":"PASS","tracks_removed":4,"tracks_added":11,"vias":2,"ratsnest_delta":-1,"evidence":"u4_promotion_060.json"}
   ],
   "characterizations": [
     {"decision":"D-340","framework":"boxed_endpoint_owned_copper_anchor","nets":["XGPIO6","XGPIO7"],"result":"NO_ALL_LAYER_LEGAL_THROUGH_VIA_SITE","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},

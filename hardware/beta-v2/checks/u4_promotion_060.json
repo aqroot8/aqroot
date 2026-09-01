@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "decision": "D-358",
+  "verdict": "PASS",
+  "promotion_performed": true,
+  "rollback_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "tracks": 925,
+  "vias": 87,
+  "journal_entries": 138,
+  "ratsnest_before": 644,
+  "ratsnest_after": 643,
+  "replacement_tracks_removed": 4,
+  "transaction_tracks_added": 11,
+  "transaction_vias_added": 2,
+  "moved_footprints": ["U4"],
+  "u4_pose": [57500000, 70000000, -90.0, "B.Cu"],
+  "transaction_nets": ["BMI270_SDO_ADDR", "BMI270_INT1_RAW"],
+  "drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "validation": [
+    "D-357 replacement gate PASS",
+    "G1-G47 PASS",
+    "incremental probes 006-028 PASS",
+    "Phase-B probe PASS",
+    "real KiCad DRC unchanged"
+  ],
+  "next": "bounded U3 plus neighbor-cluster refloorplan for XGPIO6 and XGPIO7 with accepted-copper replay"
+}

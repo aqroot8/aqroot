@@ -2972,28 +2972,6 @@
   "group": "DISP_RST"
  },
  {
-  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
-  "a": "R118.1",
-  "b": "R119.2",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 2.709,
-  "requested_connected": true,
-  "group": "IMU_ADDR"
- },
- {
-  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
-  "a": "R119.2",
-  "b": "U4.1",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 3.454,
-  "requested_connected": true,
-  "group": "IMU_ADDR"
- },
- {
   "net": "Net-(D13-RK)",
   "a": "D13.4",
   "b": "R124.2",
@@ -3575,5 +3553,38 @@
   "requested_connected": true,
   "group": "ACC_POWER_FAULT_N",
   "transaction": "D-353"
+ },
+ {
+  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+  "a": "R118.1",
+  "b": "R119.2",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "IMU_ADDR",
+  "transaction": "D-358"
+ },
+ {
+  "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+  "a": "R119.2",
+  "b": "U4.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "IMU_ADDR",
+  "transaction": "D-358"
+ },
+ {
+  "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+  "a": "R18.1",
+  "b": "U4.4",
+  "role": "REST_INC",
+  "layer": "I3.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "BMI270_INT1_RAW",
+  "transaction": "D-358"
  }
 ]

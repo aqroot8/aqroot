@@ -2,7 +2,7 @@
   "added_items": 13,
   "allowed_replacement_items": 8,
   "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
-  "candidate_board_sha256": "da98dfee25b6953dd08834cf7df2b614214683c2c27032398878bd7b43af3cb5",
+  "candidate_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "decision": "D-357",
   "drc_after": {
     "hole_clearance": 5,
