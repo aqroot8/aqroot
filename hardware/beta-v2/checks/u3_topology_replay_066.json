@@ -1,0 +1,261 @@
+{
+  "accepted_pairs_broken": [
+    [
+      "R103.2",
+      "U3.18"
+    ],
+    [
+      "R129.2",
+      "U3.17"
+    ],
+    [
+      "R51.1",
+      "U3.4"
+    ],
+    [
+      "R52.1",
+      "U3.5"
+    ],
+    [
+      "R53.1",
+      "U3.6"
+    ],
+    [
+      "R54.1",
+      "U3.7"
+    ],
+    [
+      "R55.1",
+      "U3.8"
+    ],
+    [
+      "R56.1",
+      "U3.9"
+    ],
+    [
+      "R59.1",
+      "U3.13"
+    ],
+    [
+      "R60.1",
+      "U3.14"
+    ],
+    [
+      "R64.1",
+      "U3.17"
+    ],
+    [
+      "R98.1",
+      "U3.15"
+    ],
+    [
+      "TP26.1",
+      "U3.15"
+    ],
+    [
+      "TP27.1",
+      "U3.18"
+    ],
+    [
+      "TP33.1",
+      "U3.18"
+    ],
+    [
+      "U20.1",
+      "U3.15"
+    ],
+    [
+      "U20.6",
+      "U3.18"
+    ],
+    [
+      "U22.6",
+      "U3.18"
+    ]
+  ],
+  "added_items_total": 8,
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "boundary_items": 211,
+  "conclusion": "topology_aware_U3_terminal_replay_failed",
+  "decision": "D-364",
+  "drc_after": {
+    "clearance": 6,
+    "hole_clearance": 6,
+    "lib_footprint_issues": 199,
+    "shorting_items": 12,
+    "solder_mask_bridge": 14,
+    "track_dangling": 1,
+    "tracks_crossing": 1,
+    "unconnected_items": 499
+  },
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_worse": {
+    "clearance": [
+      0,
+      6
+    ],
+    "hole_clearance": [
+      5,
+      6
+    ],
+    "shorting_items": [
+      0,
+      12
+    ],
+    "solder_mask_bridge": [
+      1,
+      14
+    ],
+    "track_dangling": [
+      0,
+      1
+    ],
+    "tracks_crossing": [
+      0,
+      1
+    ]
+  },
+  "drc_worse_details": {
+    "clearance": [
+      "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+      "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1862 mm)",
+      "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+      "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1873 mm)",
+      "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1862 mm)",
+      "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+    ],
+    "hole_clearance": [
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+      "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+    ],
+    "shorting_items": [
+      "Items shorting two nets (nets /XGPIO1 and /XGPIO6)",
+      "Items shorting two nets (nets GND and /ACC_3V3_EN)",
+      "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+      "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+      "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+      "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "Items shorting two nets (nets /SX1262_RXEN and /XGPIO2)",
+      "Items shorting two nets (nets +3V3 and /XGPIO4)",
+      "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
+      "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)",
+      "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
+      "Items shorting two nets (nets /WAKE_INT_N and /XGPIO9)"
+    ],
+    "solder_mask_bridge": [
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets",
+      "Rear solder mask aperture bridges items with different nets"
+    ],
+    "track_dangling": [
+      "Track has unconnected end"
+    ],
+    "tracks_crossing": [
+      "Tracks crossing"
+    ]
+  },
+  "first_attachment_failure": {
+    "anchor_distance_mm": 5.88999416383412,
+    "anchor_mm": [
+      55.3,
+      76.4
+    ],
+    "net": "/XGPIO5",
+    "ok": false,
+    "reason": "NO_PATH",
+    "terminal": "U3.9"
+  },
+  "forbidden_added_count": 0,
+  "forbidden_missing_count": 0,
+  "method": "exact_accepted_template_restore_then_nearest_BCu_terminal_attach",
+  "missing_items_total": 0,
+  "open_edges_after": {
+    "/ACC_3V3_EN": 1,
+    "/ACC_DETECT_N": 1,
+    "/ACC_POWER_FAULT_N": 1,
+    "/XGPIO0": 1,
+    "/XGPIO1": 1,
+    "/XGPIO2": 1,
+    "/XGPIO3": 1,
+    "/XGPIO4": 1,
+    "/XGPIO5": 1,
+    "/XGPIO6": 0,
+    "/XGPIO8": 1,
+    "/XGPIO9": 1
+  },
+  "pose": {
+    "offset_mm": [
+      0.0,
+      0.5
+    ],
+    "rotation_deg": 180
+  },
+  "promotion_blocker": "topology_aware_terminal_replay_not_closed",
+  "promotion_candidate": false,
+  "removed_items": 199,
+  "restored_items": 199,
+  "schedule": [
+    "/XGPIO5",
+    "/XGPIO4",
+    "/XGPIO2",
+    "/XGPIO3",
+    "/XGPIO1",
+    "/XGPIO0",
+    "/XGPIO8",
+    "/XGPIO9",
+    "/ACC_DETECT_N",
+    "/ACC_3V3_EN",
+    "/ACC_POWER_FAULT_N"
+  ],
+  "schema_version": 1,
+  "source_decision": "D-363",
+  "terminal_attachments": [
+    {
+      "anchor_distance_mm": 5.88999416383412,
+      "anchor_mm": [
+        55.3,
+        76.4
+      ],
+      "net": "/XGPIO5",
+      "ok": false,
+      "reason": "NO_PATH",
+      "terminal": "U3.9"
+    }
+  ],
+  "transaction_candidate": false,
+  "xgpio6_route": {
+    "edges": [
+      {
+        "a": "R57.1",
+        "b": "U3.10",
+        "inner": "I2",
+        "kind": "inner-haul",
+        "ok": true,
+        "reason": null
+      }
+    ],
+    "group": "XGPIO6_INNER",
+    "ok": true
+  }
+}

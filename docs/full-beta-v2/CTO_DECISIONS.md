@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-364 · 2026-09-01 · routing characterization:** the topology-aware U3 replay
+restores all 199 unique accepted copper items in the eleven withdrawn branches
+after reserving XGPIO6, preserving their specialized inner hauls, vias and
+multi-terminal trunks.  The 180°/+0.5 mm-north U3 pose nevertheless shorts that
+exact topology in 12 places (plus six clearances and one In2 crossing), and the
+first changed terminal, XGPIO5/U3.9, is 5.890 mm from its retained B.Cu anchor
+and returns `NO_PATH`.  Exact-template reuse therefore cannot close this pose;
+the prior 211 count contains 199 unique copper signatures after deduplication.
+The authoritative board remains byte-identical (`a4b93b9b…`). Next is a broader
+U3/local-corridor refloorplan for coherent XGPIO6/XGPIO7, excluding D-359–D-364
+poses and mechanisms; no owner decision is open.
+
 **D-363 · 2026-09-01 · routing characterization:** reserving the D-362-proven
 XGPIO6 In2 route first succeeds after the exact complete U3 incident boundary
 is withdrawn, but a generic B.Cu-MST replay stops immediately on the smallest
