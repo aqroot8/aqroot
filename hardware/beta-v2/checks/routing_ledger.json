@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-351",
+  "current_decision": "D-352",
   "current_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -21,6 +21,7 @@
     {"decision":"D-348","framework":"exact_add_only_U20_rotation_replay","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"6_D347_WINNERS_ALL_FAIL_WITH_2_TO_7_REAL_SHORTS_AND_NO_COMPLETE_ROUTE","evidence":"u20_exact_replay_050.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
     {"decision":"D-349","framework":"geometric_accepted_copper_impact_map","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"180DEG_NORTH_0P5MM_MINIMUM_SCOPE_ONLY_8_LOCAL_CONTROL_ITEMS_NO_NEIGHBOR_FOOTPRINT_MOVE","evidence":"u20_impact_map_051.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
     {"decision":"D-350","framework":"exact_8_item_local_control_replacement","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"FROZEN_COPPER_PRESERVED_BUT_FAULT_NO_PATH_AND_2_DANGLING_STUBS","evidence":"u20_local_replacement_052.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
-    {"decision":"D-351","framework":"complete_control_branch_replacement_at_pad_anchors","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"TRANSACTION_CANDIDATE_ALL_NETS_CONNECTED_DRC_UNCHANGED_REPLACEMENT_GATE_PENDING","evidence":"u20_closed_branch_053.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
+    {"decision":"D-351","framework":"complete_control_branch_replacement_at_pad_anchors","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"TRANSACTION_CANDIDATE_ALL_NETS_CONNECTED_DRC_UNCHANGED_REPLACEMENT_GATE_PENDING","evidence":"u20_closed_branch_053.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
+    {"decision":"D-352","framework":"replacement_aware_authoritative_full_board_gate","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"PASS_EXACT_BOUNDARY_RATSNEST_649_TO_644_DRC_UNCHANGED_PROMOTION_PENDING","evidence":"u20_transaction_gate_054.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
   ]
 }

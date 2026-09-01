@@ -1,0 +1,49 @@
+{
+  "added_items": 68,
+  "allowed_replacement_items": 31,
+  "authoritative_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "candidate_board_sha256": "a59e567dbc7ab7c8f4dd0dc06a2dc9fe958548e6dd736427beeee8f17e37a1eb",
+  "decision": "D-352",
+  "drc_after": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_worse": {},
+  "failures": [],
+  "missing_items": 20,
+  "moved_footprints": {
+    "U20": [
+      [
+        52250000,
+        64250000,
+        0.0,
+        "B.Cu"
+      ],
+      [
+        52250000,
+        64750000,
+        180.0,
+        "B.Cu"
+      ]
+    ]
+  },
+  "next": "atomic promotion plus accepted-copper/journal/fingerprint/probe contract re-pin",
+  "open_edges_after": {
+    "/01_POWER_TREE/ACC_3V3_ILIM": 0,
+    "/ACC_3V3_EN": 0,
+    "/ACC_POWER_FAULT_N": 0
+  },
+  "promotion_performed": false,
+  "ratsnest_after": 644,
+  "ratsnest_before": 649,
+  "schema_version": 1,
+  "verdict": "PASS"
+}

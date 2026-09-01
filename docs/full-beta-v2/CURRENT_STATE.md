@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-054 / D-352 (replacement-gate characterization; no authoritative PCB
+  change):** the deterministic replacement-aware full-board gate certifies D-351's
+  exact U20 pose/copper transaction, preserves all unrelated copper/placement and
+  baseline pad connectivity, closes all three transaction nets, improves ratsnest
+  649→644, and leaves real KiCad DRC unchanged. G1–G45 and all standing probes pass on
+  the untouched authority. Evidence: `u20_transaction_gate_054.py` / `.json`. Board
+  remains `2cdc9f33…`. **Next:** atomically promote the candidate and re-pin journal,
+  fingerprint, focused probe, G-contract, ledger and wall state. No owner decision;
+  readiness 78%.
 - **FBV2-P2-053 / D-351 (characterization; no copper/placement change):** the D-350
   boundary was expanded to the complete accepted `ACC_3V3_EN`/`ACC_3V3_ILIM` branches
   (31 B.Cu segments) at their pad anchors. At U20 180°/+0.5 mm north with controls

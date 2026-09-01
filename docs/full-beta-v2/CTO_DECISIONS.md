@@ -9,6 +9,14 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-352 · 2026-09-01 · routing gate characterization:** the replacement-aware
+full-board transaction gate independently regenerates and certifies the D-351 U20
+candidate. The only placement delta is U20 at exactly 180°/+0.5 mm north; all missing
+copper is inside the declared complete EN/ILIM branch boundary, all added copper is on
+the three transaction nets, no baseline pad connectivity regresses, ratsnest improves
+649→644, and real KiCad DRC is unchanged. The authoritative board remains `2cdc9f33…`;
+no promotion occurred. Next is one atomic promotion plus accepted-copper contract re-pin.
+
 **D-351 · 2026-09-01 · routing characterization:** expanding the D-350 cut-through
 scope to the complete 31-segment EN/ILIM branches at their pad anchors produces a
 valid scratch transaction candidate at U20 180°/+0.5 mm north when controls reserve
