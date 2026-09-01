@@ -9,6 +9,16 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-360 · 2026-09-01 · routing characterization:** the complete U3 impact map
+enumerates all 24 incident pads and the eleven already-routed signal branches (211
+connected copper items) at stable non-U3 pad anchors.  The least-impact D-359
+pose is 180°/+0.5 mm north, but it still enters 32 accepted copper items on 14
+nets and its 0.300 mm footprint envelope overlaps C5 and TP33.  Therefore a
+U3-only complete-branch replay is not a sufficient transaction boundary.  Next
+is a bounded non-rigid U3/C5/TP33 cluster screen with the mapped incident
+branches and unrelated nearby copper explicitly frozen; no owner decision is
+open.  The authoritative board remains byte-identical (`a4b93b9b…`).
+
 **D-359 · 2026-09-01 · routing characterization:** the bounded orthogonal U3
 pose screen exhausts 15 scratch-only 90°/180°/270° plus cardinal ±0.5 mm
 candidates for the coherent XGPIO6/XGPIO7 pair. Both deterministic routing

@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-062 / D-360 (U3 impact characterization; no authoritative PCB
+  change):** complete connectivity-component mapping covers all 24 U3 incident
+  pads and the eleven routed signal branches (211 copper items) at stable non-U3
+  anchors.  Of the 15 D-359 poses, 180°/+0.5 mm north has the smallest combined
+  real-DRC/neighbor boundary, but still enters 32 accepted items on 14 nets and
+  overlaps the C5 and TP33 footprint envelopes.  Thus U3-only replay is not a
+  closed transaction.  Board remains byte-identical (`a4b93b9b…`). Evidence:
+  `u3_impact_map_062.py` / `.json`. **Next:** bounded non-rigid U3/C5/TP33
+  cluster screen around the 180°/+0.5 mm-north seed, with all mapped U3 branches
+  transactionally replayable and unrelated copper frozen. No owner decision;
+  readiness 78%.
+
 - **FBV2-P2-061 / D-359 (U3 pose characterization; no authoritative PCB
   change):** 15 orthogonal U3 poses (90°/180°/270°, each at origin and cardinal
   ±0.5 mm) were screened scratch-only for XGPIO6/XGPIO7 in both deterministic

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-359",
+  "current_decision": "D-360",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -29,6 +29,7 @@
     {"decision":"D-355","framework":"geometric_accepted_copper_impact_map","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"U4_270DEG_EAST_0P5MM_ZERO_U4_DRC_ONLY_COMPLETE_ADDRESS_STRAP_REPLAY_REQUIRED_XGPIO8_FROZEN","evidence":"u4_impact_map_057.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
     {"decision":"D-356","framework":"complete_address_branch_replacement_at_U4_270deg_east_0p5mm","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"TRANSACTION_CANDIDATE_BOTH_NETS_CONNECTED_DRC_UNCHANGED_REPLACEMENT_GATE_PENDING","evidence":"u4_closed_branch_058.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
     {"decision":"D-357","framework":"replacement_aware_authoritative_full_board_gate","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"PASS_EXACT_BOUNDARY_RATSNEST_644_TO_643_DRC_UNCHANGED_PROMOTION_PENDING","evidence":"u4_transaction_gate_059.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
-    {"decision":"D-359","framework":"bounded_U3_orthogonal_pose_screen","nets":["XGPIO6","XGPIO7"],"result":"15_POSES_30_PAIR_ORDERS_ALL_NO_VIA_SITE_16_TO_18_ACCEPTED_PAIR_CASUALTIES","evidence":"u3_pose_eco_061.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-359","framework":"bounded_U3_orthogonal_pose_screen","nets":["XGPIO6","XGPIO7"],"result":"15_POSES_30_PAIR_ORDERS_ALL_NO_VIA_SITE_16_TO_18_ACCEPTED_PAIR_CASUALTIES","evidence":"u3_pose_eco_061.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-360","framework":"complete_U3_incident_branch_and_neighbor_impact_map","nets":["XGPIO6","XGPIO7"],"result":"24_INCIDENT_PADS_11_ROUTED_BRANCHES_211_COPPER_ITEMS_LEAST_IMPACT_180DEG_NORTH_0P5MM_STILL_TOUCHES_32_ITEMS_14_NETS_AND_C5_TP33","evidence":"u3_impact_map_062.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }
