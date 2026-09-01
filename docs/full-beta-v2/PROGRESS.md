@@ -2,6 +2,8 @@
 
 **Status: LIVING DASHBOARD.**
 
+**FBV2-P2-039 (2026-09-01) — D-337 CHARACTERIZATION, NO COPPER/PLACEMENT CHANGE.** Eight coordinated cardinality-3 pull-up layouts (24 complete-net attempts) failed without a rule relaxation; the fixed U2/pull-up cluster is the remaining west-button wall. D-332 remains authoritative and all closeout gates pass unchanged. Next: bounded J1 display-fanout framework; U2 cluster ECO is fallback. Overall 76%; JLCPCB readiness 78%.
+
 **FBV2-P2-036 (2026-08-31) — D-334 CHARACTERIZATION, NO COPPER CHANGE.** Same-face boxed-anchor staging does not unlock the MCU EN/RC pocket: `C1.2` remains unreachable at the fine grid. The rejected prototype was removed; D-332 remains authoritative and all closeout gates pass unchanged. Next: layer-changing/owned-copper endpoint framework for the coherent west-button family. Overall 76%; JLCPCB readiness 78%.
 
 **FBV2-P2-035 (2026-08-31) — D-333 CHARACTERIZATION, NO COPPER CHANGE.** XGPIO6/XGPIO7 cannot reuse the accepted inner-layer long-haul framework because their locked-size endpoint vias have no legal reachable sites. D-332 remains authoritative and byte-identical; both nets now defer to the generic boxed-endpoint framework. Overall 76%; JLCPCB readiness 78%.

@@ -6070,3 +6070,7 @@ The bounded layer-changing/owned-copper prototype failed at the boxed pull-up st
 ## 2026-09-01 - FBV2-P2-038: D-336 — west-button single-pull-up placement screen bounded
 
 The recovered scratch harness completed 72 cardinality-1 R5/R8/R6 placement candidates. Courtyard conflicts reject most moves and every legal ±0.5/1.0 mm/native/180° candidate remains unroutable. No placement or copper was promoted; D-332 and all validation evidence remain unchanged. Next is a bounded coordinated pull-up-column spread. Full evidence: [`audits/2026-09-01-p2-038-d336-west-button-cardinality1-placement-screen.md`](audits/2026-09-01-p2-038-d336-west-button-cardinality1-placement-screen.md).
+
+## 2026-09-01 - FBV2-P2-039: D-337 — coordinated pull-up-column spread bounded
+
+Eight legal cardinality-3 R5/R8/R6 layouts produced no complete west-button route in 24 attempts. The fixed U2/pull-up cluster, not independent pull-up spacing, is now the bounded wall. No placement or copper was promoted; D-332 and all validation evidence remain unchanged. Next is the bounded J1 display-fanout framework, with a larger U2 cluster ECO retained as fallback. Full evidence: [`audits/2026-09-01-p2-039-d337-west-button-coordinated-column-spread.md`](audits/2026-09-01-p2-039-d337-west-button-coordinated-column-spread.md).
