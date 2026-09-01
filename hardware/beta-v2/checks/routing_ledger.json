@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-370",
+  "current_decision": "D-371",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -40,6 +40,7 @@
     {"decision":"D-367","framework":"real_DRC_accepted_pair_rank_then_exact_U3_R58_affected_branch_replay","nets":["XGPIO6","XGPIO7"],"result":"R58_NORTH_0P5_LEAST_IMPACT_BUT_EXACT_RESTORE_13_SHORTS_7_CLEARANCES_1_CROSSING_XGPIO5_ATTACH_NO_PATH","evidence":"u3_r58_impact_replay_069.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-368","framework":"bounded_radial_local_scar_retention_then_fresh_outer_layer_terminal_replay","nets":["XGPIO6","XGPIO7","XGPIO5"],"result":"12_ATTEMPTS_PAIR_RESERVED_BUT_ALL_STOP_AT_XGPIO5_U3P9_AND_REGRESS_REAL_DRC","evidence":"u3_local_scar_replay_070.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-369","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4"],"result":"XGPIO5_CLOSES_ON_IN2_AND_IN3_REPLAY_ADVANCES_TO_XGPIO4_U3P8_NO_PATH_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio5_inner_replay_071.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-370","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2"],"result":"XGPIO4_CLOSES_ON_IN2_AND_IN3_AFTER_XGPIO5_IN3_REPLAY_ADVANCES_TO_XGPIO2_U3P6_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio4_inner_replay_072.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-370","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2"],"result":"XGPIO4_CLOSES_ON_IN2_AND_IN3_AFTER_XGPIO5_IN3_REPLAY_ADVANCES_TO_XGPIO2_U3P6_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio4_inner_replay_072.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-371","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3"],"result":"XGPIO2_CLOSES_ON_IN3_AFTER_XGPIO5_IN3_XGPIO4_IN2_REPLAY_ADVANCES_TO_XGPIO3_U3P7_NO_PATH_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio2_inner_replay_073.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }
