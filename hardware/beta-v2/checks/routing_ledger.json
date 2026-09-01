@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-341",
+  "current_decision": "D-342",
   "current_board_sha256": "d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -11,6 +11,7 @@
   ],
   "characterizations": [
     {"decision":"D-340","framework":"boxed_endpoint_owned_copper_anchor","nets":["XGPIO6","XGPIO7"],"result":"NO_ALL_LAYER_LEGAL_THROUGH_VIA_SITE","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},
-    {"decision":"D-341","framework":"bounded_U3_translation_ECO","nets":["XGPIO6","XGPIO7"],"result":"16_TRANSLATIONS_32_ROUTE_FAILS_ALL_PLACEMENT_DRC_WORSE","evidence":"u3_endpoint_eco_041.json","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"}
+    {"decision":"D-341","framework":"bounded_U3_translation_ECO","nets":["XGPIO6","XGPIO7"],"result":"16_TRANSLATIONS_32_ROUTE_FAILS_ALL_PLACEMENT_DRC_WORSE","evidence":"u3_endpoint_eco_041.json","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"},
+    {"decision":"D-342","framework":"two_endpoint_inner_layer_anchor_permutation_screen","nets":["Net-(U1-EN)"],"result":"2_INCOMPLETE_1_UNACCEPTABLE_58P457MM_RESET_DETOUR","evidence":"mcu_en_inner_anchor_042.json","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"}
   ]
 }

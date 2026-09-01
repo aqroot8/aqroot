@@ -1,0 +1,13 @@
+{
+  "authoritative_board_sha256": "d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8",
+  "authoritative_unchanged": true,
+  "decision": "D-342",
+  "net": "Net-(U1-EN)",
+  "rules": {"clearance_mm": 0.2, "inner_layers": ["In2.Cu", "In3.Cu"], "track_width_mm": 0.2, "via_mm": [0.6, 0.3]},
+  "permutations": [
+    {"inner_endpoints": ["U1.3", "C1.2"], "attach": "R1.1", "inner_ok": true, "attach_ok": true, "total_mm": 68.294, "result": "REJECT_RESET_SENSITIVITY_58P457MM_ATTACH_DETOUR"},
+    {"inner_endpoints": ["U1.3", "R1.1"], "attach": "C1.2", "inner_ok": true, "attach_ok": false, "result": "NO_PATH_U1.3_TO_C1.2"},
+    {"inner_endpoints": ["C1.2", "R1.1"], "attach": "U1.3", "inner_ok": true, "attach_ok": false, "result": "NO_PATH_C1.2_TO_U1.3"}
+  ],
+  "conclusion": "INNER_LAYER_ANCHOR_PERMUTATION_SPACE_EXHAUSTED_NO_PROMOTABLE_ROUTE"
+}
