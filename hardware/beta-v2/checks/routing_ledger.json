@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-339",
+  "current_decision": "D-340",
   "current_board_sha256": "d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -8,5 +8,8 @@
     {"decision":"D-332","framework":"inner_long_haul_plan","nets":["XGPIO4","XGPIO5"],"gate":"PASS","tracks":11,"vias":4,"ratsnest_delta":-2},
     {"decision":"D-338","framework":"connector_fanout_plan","nets":["DISP_CS_N"],"gate":"PASS","tracks":7,"vias":2,"ratsnest_delta":-2},
     {"decision":"D-339","framework":"connector_fanout_plan","nets":["DISP_DC"],"gate":"PASS","tracks":4,"vias":2,"ratsnest_delta":-1}
+  ],
+  "characterizations": [
+    {"decision":"D-340","framework":"boxed_endpoint_owned_copper_anchor","nets":["XGPIO6","XGPIO7"],"result":"NO_ALL_LAYER_LEGAL_THROUGH_VIA_SITE","authoritative_board_unchanged":true,"board_sha256":"d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8"}
   ]
 }
