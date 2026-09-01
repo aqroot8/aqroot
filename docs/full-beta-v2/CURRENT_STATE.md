@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-049 / D-347 (characterization; no copper/placement change):** a bounded
+  15-candidate orthogonal U20 rotation/non-rigid screen found six geometry/DRC-neutral
+  routes, including an in-place 90° rotation that replays both controls and closes all six
+  `ACC_POWER_FAULT_N` terminals with no broken baseline cluster pair. Promotion was correctly
+  rejected by the full regression: the generic replay changes pinned accepted-copper signatures
+  (`ACC` 31→23 tracks and Phase-A classification 432→484), causing 20 add-only contract failures.
+  The authoritative board remains byte-identical (`2cdc9f33…`). Evidence/harness:
+  `u20_rotation_eco_049.json` / `.py`. **Next:** use the proven in-place 90° geometry but build
+  an exact accepted-copper-signature preservation/replay ECO for the affected U20 control lands;
+  promote only after the unchanged full-board gate passes. Open owner decisions: NONE; readiness 78%.
 - **FBV2-P2-048 / D-346 (characterization; no copper/placement change):** the coordinated
   `U20/R97/R98` rigid-cluster replay screen removed the accepted `ACC_3V3_EN`/`ACC_3V3_ILIM`
   copper in scratch, translated all three footprints together through 16 cardinal 0.25–1.00 mm
