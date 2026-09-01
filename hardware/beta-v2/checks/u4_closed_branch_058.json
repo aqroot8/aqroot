@@ -1,0 +1,69 @@
+{
+  "accepted_pairs_broken": [],
+  "added_items_total": 13,
+  "address_routes": [
+    {
+      "a": "R118.1",
+      "b": "R119.2",
+      "ok": true,
+      "reason": null
+    },
+    {
+      "a": "R119.2",
+      "b": "U4.1",
+      "ok": true,
+      "reason": null
+    }
+  ],
+  "allowed_replacement_items": 8,
+  "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "authoritative_unchanged": true,
+  "conclusion": "closed_U4_transaction_candidate",
+  "decision": "D-356",
+  "drc_after": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_worse": {},
+  "forbidden_added_count": 0,
+  "forbidden_missing_count": 0,
+  "missing_items_total": 4,
+  "open_edges_after": {
+    "/05_I2C_DEVICES/BMI270_INT1_RAW": 0,
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR": 0
+  },
+  "pose": {
+    "offset_mm": [
+      0.5,
+      0
+    ],
+    "rotation_deg": 270
+  },
+  "promotion_blocker": "replacement_aware_authoritative_full_board_gate_not_yet_executed",
+  "promotion_candidate": false,
+  "raw_route": {
+    "edges": [
+      {
+        "a": "R18.1",
+        "b": "U4.4",
+        "inner": "I3",
+        "kind": "inner-haul",
+        "ok": true,
+        "reason": null
+      }
+    ],
+    "ok": true
+  },
+  "removed_items": 8,
+  "replacement_boundary": "complete_BMI270_SDO_ADDR_track_branch",
+  "schema_version": 1,
+  "transaction_candidate": true
+}

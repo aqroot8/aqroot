@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-058 / D-356 (closed U4 transaction candidate; no authoritative
+  change):** the exact U4 270°/+0.5 mm-east scratch transaction removes the
+  complete eight-track `BMI270_SDO_ADDR` branch, reserves the new
+  `BMI270_INT1_RAW` In3 haul, and replays the address strap. Both transaction
+  nets are fully connected; no baseline pad pair regresses; unrelated copper
+  is unchanged; real KiCad DRC remains exactly at 5 hole-clearance, 199 library,
+  1 solder-mask and 499 unconnected findings after reference-plane refill.
+  Board remains byte-identical (`02e263a7…`). Evidence:
+  `u4_closed_branch_058.py` / `.json`. **Next:** independently regenerate and
+  certify this candidate with the replacement-aware full-board transaction
+  gate; do not promote before PASS.
+
 - **FBV2-P2-057 / D-355 (U4 accepted-copper impact map; no authoritative
   change):** all ten D-354 routing-capable 180°/270° poses were measured with
   real KiCad DRC plus a conservative 0.300 mm expanded U4-pad envelope. The

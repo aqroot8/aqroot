@@ -9,6 +9,16 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-356 · 2026-09-01 · routing characterization:** the exact scratch U4
+transaction at 270°/+0.5 mm east is a closed candidate. The complete eight-track
+`BMI270_SDO_ADDR` branch is removed and replayed after reserving the new
+`BMI270_INT1_RAW` In3 haul; both nets become fully connected, no baseline pad
+pair regresses, all unrelated copper is frozen, and real KiCad DRC is unchanged
+after the mandatory reference-plane refill. The authoritative board remains
+byte-identical (`02e263a7…`). Next is an independent replacement-aware
+full-board transaction gate; promotion remains forbidden until that gate passes.
+No owner decision is open.
+
 **D-355 · 2026-09-01 · routing characterization:** the real-DRC accepted-copper
 impact map selects U4 270°/+0.5 mm east from all ten D-354 routing-capable poses.
 That pose has zero U4-attributable DRC violations; the nearby accepted `XGPIO8`
