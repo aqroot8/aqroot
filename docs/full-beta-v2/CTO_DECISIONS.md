@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-380 · 2026-09-01 · routing characterization:** deterministic replay of
+D-379's shortest explicit In3 pair closes complete XGPIO8 after the six-route
+D-377 prefix through `(54.45,33.00)/(55.70,81.70)` mm. Exact boundary
+withdrawal and unrelated-copper preservation pass, and all seven replaced
+branches have zero open edges. Replay advances to XGPIO9/U3.14, whose retained
+B.Cu anchor 7.208 mm away returns `NO_LEGAL_ESCAPE`. The incomplete scratch
+layout adds 48 non-unconnected real KiCad DRC violations, so it is not a
+promotion candidate and the authoritative board remains byte-identical
+(`a4b93b9b…`). Next is complete-XGPIO9 branch replacement after the seven
+selected routes, continuing the remaining terminal schedule only while each
+branch closes. No owner decision is open.
+
 **D-379 · 2026-09-01 · routing characterization:** after the six-route D-377
 prefix, explicit rank enumeration exposes two reachable R59.1-side and three
 U3.13-side legal In3 via sites. All six distinct pairings close XGPIO8; the

@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-082 / D-380 (deterministic XGPIO8 transaction replay; no
+  authoritative PCB change):** D-379's shortest explicit In3 pair at
+  `(54.45,33.00)/(55.70,81.70)` mm closes complete XGPIO8 after the six-route
+  D-377 prefix. Exact boundary withdrawal and unrelated-copper preservation
+  pass, and all seven replaced branches have zero open edges. Replay advances
+  to XGPIO9/U3.14, whose retained B.Cu anchor 7.208 mm away returns
+  `NO_LEGAL_ESCAPE`. The incomplete scratch layout adds 48 non-unconnected real
+  KiCad DRC violations, so no transaction is promoted. Evidence/harness:
+  `u3_xgpio8_transaction_replay_082.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** replace
+  complete XGPIO9 after the seven selected routes, then continue the remaining
+  U3 terminal schedule only while each branch closes.
 - **FBV2-P2-081 / D-379 (XGPIO8 explicit via-site enumeration; no
   authoritative PCB change):** after the six-route D-377 prefix, bounded rank
   enumeration finds two reachable R59.1-side and three U3.13-side legal In3
