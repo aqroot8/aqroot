@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-069 / D-367 (D-366 winner rank and exact replay; no authoritative
+  PCB change):** real KiCad DRC/accepted-pair ranking selects R58 -0.5 mm north
+  from the three pair-reserving layouts (16 added non-unconnected violations,
+  tied with +0.5 mm east; -1.0 mm north adds 22).  After XGPIO6/XGPIO7 reserve,
+  exact restoration of all 199 U3 incident items still causes 13 shorts, seven
+  clearances and one crossing; XGPIO5/U3.9 again cannot attach to its retained
+  B.Cu anchor 5.890 mm away (`NO_PATH`).  The R58 header-side connection was
+  explicitly checked and remains closed.  Evidence/harness:
+  `u3_r58_impact_replay_069.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** map only
+  the local collision-producing U3 branch geometry at the selected layout and
+  replay that bounded corridor freshly; do not retry exact accepted templates.
 - **FBV2-P2-068 / D-366 (U3/R57/R58 endpoint-cluster characterization; no
   authoritative PCB change):** with U3 held at 180°/+0.5 mm north after exact
   withdrawal of its 199 physical incident items and R57 fixed, three of nine

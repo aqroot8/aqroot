@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-367 · 2026-09-01 · routing characterization:** real KiCad DRC and accepted-
+pair impact rank the three D-366 pair-reserving layouts.  R58 -0.5 mm north is
+least impact (tied at 16 added non-unconnected violations and 32 temporarily
+broken accepted pairs; R58 -1.0 mm north is worse at 22).  Exact restoration of
+all 199 U3 incident copper items after reserving XGPIO6/XGPIO7 still produces
+13 shorts, seven clearances and one crossing, and the first moved terminal,
+XGPIO5/U3.9, again fails its 5.890 mm B.Cu attachment with `NO_PATH`.  The R58
+header-side connection is explicitly checked and remains closed.  Therefore
+R58 translation unlocks pair reservation but does not make the old U3 topology
+replayable.  The authoritative board remains byte-identical (`a4b93b9b…`).
+Next is a bounded geometric replacement map for the collision-producing local
+U3 branches at the selected layout, followed by fresh local-corridor replay;
+exact-template replay and all D-359–D-367 mechanisms are closed.  No owner
+decision is open.
+
 **D-366 · 2026-09-01 · routing characterization:** the bounded endpoint-
 cluster screen holds U3 at the 180°/+0.5 mm-north cut-through pose and R57 at
 authority, then translates the still-unrouted R58 through nine cardinal 0.5/1.0
