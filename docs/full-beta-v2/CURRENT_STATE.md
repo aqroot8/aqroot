@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-061 / D-359 (U3 pose characterization; no authoritative PCB
+  change):** 15 orthogonal U3 poses (90°/180°/270°, each at origin and cardinal
+  ±0.5 mm) were screened scratch-only for XGPIO6/XGPIO7 in both deterministic
+  orders. All 30 attempts stop at `NO_VIA_SITE`; every pose also breaks 16–18
+  accepted U3 pad pairs and adds real DRC findings. Board remains byte-identical
+  (`a4b93b9b…`). Evidence: `u3_pose_eco_061.py` / `.json`. **Next:** map the
+  complete U3 incident accepted-copper branches and local-neighbor collision
+  boundary, then screen an exact replacement/refloorplan transaction; do not
+  retry U3-only translation or rotation. No owner decision; readiness 78%.
+
 - **FBV2-P2-060 / D-358 (U4 TRANSACTION PROMOTED):** the D-357-certified
   replacement transaction is authoritative. U4 moved exactly 270°/+0.5 mm
   east; the complete `BMI270_SDO_ADDR` branch was replayed and

@@ -9,6 +9,16 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-359 · 2026-09-01 · routing characterization:** the bounded orthogonal U3
+pose screen exhausts 15 scratch-only 90°/180°/270° plus cardinal ±0.5 mm
+candidates for the coherent XGPIO6/XGPIO7 pair. Both deterministic routing
+orders fail at through-via reservation in every candidate (`NO_VIA_SITE`),
+while each pose breaks 16–18 accepted U3 pad pairs and worsens real KiCad DRC.
+The authoritative D-358 board remains byte-identical (`a4b93b9b…`). U3 pose
+changes alone are disproven; next is an accepted-copper impact/replacement map
+for the complete U3 incident branches plus the local neighbor cluster before
+any exact replay attempt. No owner decision is open.
+
 **D-358 · 2026-09-01 · routing promotion:** the D-357-certified U4
 replacement transaction is atomically promoted. U4 is exactly 270°/+0.5 mm
 east; the complete `BMI270_SDO_ADDR` branch is replayed and
