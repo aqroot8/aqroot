@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-074 / D-372 (complete-XGPIO3 inner replacement characterization;
+  no authoritative PCB change):** after XGPIO6/XGPIO7 reservation and the
+  selected In3 XGPIO5, In2 XGPIO4, and In3 XGPIO2 replacements, XGPIO3 cannot
+  reserve U3.7 on In2 but closes on In3 through `(55.10,29.75)/(60.90,78.85)`
+  mm via sites. Replay advances to XGPIO1/U3.5, whose retained B.Cu anchor
+  4.700 mm away fails `NO_LEGAL_ESCAPE`. The incomplete candidate restores
+  158 remaining accepted copper items but still has real KiCad DRC regressions
+  and is not promotable. Evidence/harness: `u3_xgpio3_inner_replay_074.py` /
+  `.json`. Board remains byte-identical (`a4b93b9b…`); no owner decision;
+  readiness remains 78%. **Next:** replace the complete XGPIO1 branch after
+  In3 XGPIO3, then continue only if it closes.
 - **FBV2-P2-073 / D-371 (complete-XGPIO2 inner replacement characterization;
   no authoritative PCB change):** after XGPIO6/XGPIO7 reservation, In3
   XGPIO5, and In2 XGPIO4 replay, XGPIO2 cannot reserve U3.6 on In2 but closes

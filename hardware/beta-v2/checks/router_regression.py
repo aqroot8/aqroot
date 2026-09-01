@@ -2539,7 +2539,7 @@ def main():
             'plan=%s reuse_opt_ins=%s' % (i2_plan, reuse_i2),
             i2_plan == {'a': 'R53.1', 'b': 'U3.6', 'a_near': 'F',
                         'b_near': 'B', 'inner': ['I2', 'I3']}
-            and reuse_i2 == ['DISP_BL_CTL', 'XGPIO45_INNER_BATCH', 'XGPIO4_INNER',
+            and reuse_i2 == ['DISP_BL_CTL', 'XGPIO3_INNER', 'XGPIO45_INNER_BATCH', 'XGPIO4_INNER',
                              'XGPIO5_INNER', 'XGPIO6_INNER', 'XGPIO7_INNER'])
 
         # -- G42 FBV2-P2-034/D-332 coherent D-331 framework reuse -----------

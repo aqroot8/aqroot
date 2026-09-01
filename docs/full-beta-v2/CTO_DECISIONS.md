@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-372 · 2026-09-01 · routing characterization:** at the selected D-367
+U3/R58 layout, the complete XGPIO3 branch was replaced after coherent
+XGPIO6/XGPIO7 reservation and the selected XGPIO5/In3, XGPIO4/In2 and
+XGPIO2/In3 replacements. In2 cannot reserve the moved U3.7 endpoint
+(`NO_VIA_SITE`); In3 closes XGPIO3 (`R54.1→U3.7`) through via sites
+`(55.10,29.75)/(60.90,78.85)` mm. Replay therefore advances to XGPIO1/U3.5,
+whose retained B.Cu anchor 4.700 mm away returns `NO_LEGAL_ESCAPE`. The
+incomplete candidate restores 158 remaining accepted items but retains real
+KiCad DRC regressions and is not promotable; the authoritative board remains
+byte-identical (`a4b93b9b…`). Next is complete-XGPIO1 branch replacement after
+the four selected inner routes, then continuation of the terminal schedule
+only while each branch closes. No owner decision is open.
+
 **D-371 · 2026-09-01 · routing characterization:** at the selected D-367
 U3/R58 layout, the complete XGPIO2 branch was replaced after coherent
 XGPIO6/XGPIO7 reservation, D-369's In3 XGPIO5 replacement, and D-370's In2
