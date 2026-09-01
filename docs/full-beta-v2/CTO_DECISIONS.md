@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-385 · 2026-09-01 · routing characterization:** ordered local reflooring of
+the adjacent U3.13/U3.14/U3.15 branches advances the transaction wall.  After
+the proven six-route prefix, rank enumeration exposes 32 U3.14-first XGPIO9
+pair specifications; the first two deterministic In2 specifications both
+close complete XGPIO9, then close XGPIO8 on In3, with exact restoration of the
+remaining accepted boundary.  Reattaching ACC_3V3_EN at U3.15 fails identically
+in both candidates (`NO_LEGAL_ESCAPE`) against its retained B.Cu anchor 7.634 mm
+away.  Real KiCad DRC is strongly regressed in the incomplete scratch candidate
+(including 12 shorts and 111 clearances), so no copper is promoted.  The
+authoritative board remains byte-identical (`a4b93b9b…`).  U3.14-first ordering
+is proven useful and the wall has moved to U3.15.  Next is complete
+ACC_3V3_EN branch replacement after the selected XGPIO9/XGPIO8 ordered prefix,
+using explicit U3.15 reachable-site enumeration if direct inner replacement
+cannot reserve both endpoints.  Blind vias remain excluded absent an owner
+manufacturing decision.  No owner decision is open.
+
 **D-384 · 2026-09-01 · routing characterization:** after deterministic replay
 of the sole viable D-383 seven-route prefix, ten bounded R7-only translations
 from 0.25 to 1.00 mm expose zero U3.14 sites on either In2 or In3. The baseline

@@ -1,0 +1,1272 @@
+{
+  "acc_3v3_en_after_xgpio8_routes": 0,
+  "attempts": [
+    {
+      "acc_3v3_en": {
+        "anchor_distance_mm": 7.634011068894255,
+        "anchor_mm": [
+          59.8625,
+          75.725
+        ],
+        "net": "/ACC_3V3_EN",
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "terminal": "U3.15"
+      },
+      "candidate_pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_ORDERED_P13_P15_REFLOOR_087/x9state_00_1_0.kicad_pcb",
+      "remaining_restored_exact": true,
+      "xgpio8": {
+        "a_rank": 1,
+        "a_reservation": {
+          "grid": 0.025,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 2.408582219253206,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54500000,
+            32925000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.5,
+              32.925
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 0.7251077506136588,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54150000,
+            82800000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.15,
+              82.8
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I3",
+        "join": {
+          "grid": 0.025,
+          "inner_mm": 49.876228055056444,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 49.876228055056444,
+          "ok": true,
+          "trunk_mm": 0.2,
+          "vias": 0
+        },
+        "ok": true
+      },
+      "xgpio8_attempts": [
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 0,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 1,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 2,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 3,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 1,
+          "a_reservation": {
+            "grid": 0.025,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 2.408582219253206,
+            "near": "F",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              54500000,
+              32925000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                54.5,
+                32.925
+              ]
+            ],
+            "vias": 1
+          },
+          "b_rank": 0,
+          "b_reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 0.7251077506136588,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              54150000,
+              82800000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                54.15,
+                82.8
+              ]
+            ],
+            "vias": 1
+          },
+          "inner": "I3",
+          "join": {
+            "grid": 0.025,
+            "inner_mm": 49.876228055056444,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 49.876228055056444,
+            "ok": true,
+            "trunk_mm": 0.2,
+            "vias": 0
+          },
+          "ok": true
+        }
+      ],
+      "xgpio9": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 1.0057701291696826,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54550000,
+            20150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.55,
+              20.15
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 1.2627475004924777,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            55400000,
+            81400000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              55.4,
+              81.4
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I2",
+        "join": {
+          "grid": 0.025,
+          "inner_mm": 63.55515089527052,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 63.55515089527052,
+          "ok": true,
+          "trunk_mm": 0.2,
+          "vias": 0
+        },
+        "ok": true
+      }
+    },
+    {
+      "acc_3v3_en": {
+        "anchor_distance_mm": 7.634011068894255,
+        "anchor_mm": [
+          59.8625,
+          75.725
+        ],
+        "net": "/ACC_3V3_EN",
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "terminal": "U3.15"
+      },
+      "candidate_pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_ORDERED_P13_P15_REFLOOR_087/x9state_01_1_0.kicad_pcb",
+      "remaining_restored_exact": true,
+      "xgpio8": {
+        "a_rank": 1,
+        "a_reservation": {
+          "grid": 0.025,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 2.408582219253206,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54500000,
+            32925000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.5,
+              32.925
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 0.7251077506136588,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54150000,
+            82800000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.15,
+              82.8
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I3",
+        "join": {
+          "grid": 0.025,
+          "inner_mm": 49.876228055056444,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 49.876228055056444,
+          "ok": true,
+          "trunk_mm": 0.2,
+          "vias": 0
+        },
+        "ok": true
+      },
+      "xgpio8_attempts": [
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 0,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 1,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 2,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 0,
+          "a_reservation": {
+            "ok": false,
+            "pad": "R59.1",
+            "reason": "NO_VIA_SITE",
+            "why": "R59.1: no 0.60 mm via site reachable on F"
+          },
+          "b_rank": 3,
+          "b_reservation": {
+            "ok": false,
+            "reason": "A_FAILED"
+          },
+          "inner": "I3",
+          "join": {
+            "ok": false,
+            "reason": "RESERVATION_FAILED"
+          },
+          "ok": false
+        },
+        {
+          "a_rank": 1,
+          "a_reservation": {
+            "grid": 0.025,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 2.408582219253206,
+            "near": "F",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              54500000,
+              32925000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                54.5,
+                32.925
+              ]
+            ],
+            "vias": 1
+          },
+          "b_rank": 0,
+          "b_reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 0.7251077506136588,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              54150000,
+              82800000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                54.15,
+                82.8
+              ]
+            ],
+            "vias": 1
+          },
+          "inner": "I3",
+          "join": {
+            "grid": 0.025,
+            "inner_mm": 49.876228055056444,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 49.876228055056444,
+            "ok": true,
+            "trunk_mm": 0.2,
+            "vias": 0
+          },
+          "ok": true
+        }
+      ],
+      "xgpio9": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 1.0057701291696826,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            54550000,
+            20150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              54.55,
+              20.15
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 1,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 1.7870115692044064,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            55800000,
+            81700000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              55.8,
+              81.7
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I2",
+        "join": {
+          "grid": 0.025,
+          "inner_mm": 64.03350946657824,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 64.03350946657824,
+          "ok": true,
+          "trunk_mm": 0.2,
+          "vias": 0
+        },
+        "ok": true
+      }
+    }
+  ],
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "conclusion": "ordered_XGPIO9_first_reaches_XGPIO8",
+  "decision": "D-385",
+  "furthest_candidate_drc": {
+    "annular_width": 22,
+    "clearance": 111,
+    "drill_out_of_range": 34,
+    "hole_clearance": 34,
+    "hole_to_hole": 1,
+    "holes_co_located": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 12,
+    "solder_mask_bridge": 7,
+    "track_width": 74,
+    "tracks_crossing": 3,
+    "unconnected_items": 499,
+    "via_dangling": 9,
+    "via_diameter": 22
+  },
+  "max_xgpio9_specs": 2,
+  "method": "six_route_prefix_then_ordered_complete_XGPIO9_XGPIO8_ACC_3V3_EN_replay",
+  "prefix": {
+    "ok": true,
+    "pair_routes": [
+      {
+        "edges": [
+          {
+            "a": "R57.1",
+            "b": "U3.10",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "group": "XGPIO6_INNER",
+        "ok": true
+      },
+      {
+        "edges": [
+          {
+            "a": "R58.1",
+            "b": "U3.11",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "group": "XGPIO7_INNER",
+        "ok": true
+      }
+    ],
+    "prefix_routes": [
+      {
+        "edges": [
+          {
+            "a": "R56.1",
+            "b": "U3.9",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                55.1,
+                30.85
+              ],
+              [
+                61.05,
+                80.1
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      },
+      {
+        "edges": [
+          {
+            "a": "R55.1",
+            "b": "U3.8",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                55.15,
+                22.45
+              ],
+              [
+                58.45,
+                78.45
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      },
+      {
+        "edges": [
+          {
+            "a": "R53.1",
+            "b": "U3.6",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                54.95,
+                27.3
+              ],
+              [
+                61.9,
+                77.85
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      },
+      {
+        "edges": [
+          {
+            "a": "R54.1",
+            "b": "U3.7",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                55.1,
+                29.75
+              ],
+              [
+                60.9,
+                78.85
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      }
+    ],
+    "removed_boundary_exact": true,
+    "xgpio0_route": {
+      "edges": [
+        {
+          "a": "R51.1",
+          "b": "U3.4",
+          "inner": "I2",
+          "kind": "inner-haul",
+          "ok": true,
+          "reason": null,
+          "via_xy": [
+            [
+              58.95,
+              20.15
+            ],
+            [
+              61.15,
+              75.15
+            ]
+          ]
+        }
+      ],
+      "ok": true
+    },
+    "xgpio1_ranked_route": {
+      "a_reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 0.9290369987686175,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55400000,
+          24950000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.4,
+            24.95
+          ]
+        ],
+        "vias": 1
+      },
+      "b_reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 6.571215506658033,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          62750000,
+          78550000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            62.75,
+            78.55
+          ]
+        ],
+        "vias": 1
+      },
+      "join": {
+        "grid": 0.025,
+        "inner_mm": 57.264033156846864,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 57.264033156846864,
+        "ok": true,
+        "trunk_mm": 0.2,
+        "vias": 0
+      },
+      "ok": true
+    }
+  },
+  "promotion_candidate": false,
+  "ranks_tested": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "schema_version": 1,
+  "source_decision": "D-384",
+  "xgpio8_after_xgpio9_routes": 2,
+  "xgpio9_isolated_attempts": [
+    {
+      "endpoint": "R60.1",
+      "inner": "I2",
+      "rank": 0,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.0057701291696826,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          54550000,
+          20150000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            54.55,
+            20.15
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I2",
+      "rank": 1,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.5981013714398604,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55000000,
+          20300000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.0,
+            20.3
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I2",
+      "rank": 2,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.530034197881611,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          54150000,
+          20450000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            54.15,
+            20.45
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I2",
+      "rank": 3,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.5981013714398604,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55600000,
+          20300000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.6,
+            20.3
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I2",
+      "rank": 0,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.2627475004924777,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55400000,
+          81400000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.4,
+            81.4
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I2",
+      "rank": 1,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.7870115692044064,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55800000,
+          81700000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.8,
+            81.7
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I2",
+      "rank": 2,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 1.7870115692044064,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55700000,
+          81000000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.7,
+            81.0
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I2",
+      "rank": 3,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I2",
+        "minw": 0.2,
+        "mm": 2.0041688567297875,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          56100000,
+          81300000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            56.1,
+            81.3
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I3",
+      "rank": 0,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.0057701291696826,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          54550000,
+          20150000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            54.55,
+            20.15
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I3",
+      "rank": 1,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.573837302727932,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55300000,
+          20400000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.3,
+            20.4
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I3",
+      "rank": 2,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.530034197881611,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          54250000,
+          19750000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            54.25,
+            19.75
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "R60.1",
+      "inner": "I3",
+      "rank": 3,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.530034197881611,
+        "near": "F",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          54250000,
+          20550000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            54.25,
+            20.55
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I3",
+      "rank": 0,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.2627475004924777,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55400000,
+          81400000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.4,
+            81.4
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I3",
+      "rank": 1,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.7870115692044064,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55800000,
+          81700000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.8,
+            81.7
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I3",
+      "rank": 2,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 1.7870115692044064,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          55700000,
+          81000000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            55.7,
+            81.0
+          ]
+        ],
+        "vias": 1
+      }
+    },
+    {
+      "endpoint": "U3.14",
+      "inner": "I3",
+      "rank": 3,
+      "reservation": {
+        "grid": 0.05,
+        "layer": "I3",
+        "minw": 0.2,
+        "mm": 2.0041688567297875,
+        "near": "B",
+        "ok": true,
+        "reservation": true,
+        "trunk_mm": 0.2,
+        "via": [
+          56100000,
+          81300000
+        ],
+        "via_dia": 0.6,
+        "via_drill": 0.3,
+        "via_xy": [
+          [
+            56.1,
+            81.3
+          ]
+        ],
+        "vias": 1
+      }
+    }
+  ],
+  "xgpio9_pair_specs": 32,
+  "xgpio9_pair_specs_screened": 2,
+  "xgpio9_routes": 2
+}

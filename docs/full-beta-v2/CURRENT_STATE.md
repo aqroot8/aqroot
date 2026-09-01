@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-087 / D-385 (ordered U3.14-first adjacent-branch refloor; no
+  authoritative PCB change):** after the proven six-route prefix, 32 XGPIO9
+  pair specifications become available.  Both screened In2 specifications
+  close complete XGPIO9 and then XGPIO8 on In3, with exact restoration of the
+  remaining accepted boundary.  ACC_3V3_EN still cannot attach at U3.15 to its
+  retained B.Cu anchor 7.634 mm away (`NO_LEGAL_ESCAPE`).  The incomplete
+  scratch candidate has real KiCad DRC regressions (12 shorts, 111 clearances,
+  and other classes), so it is not promotable.  Evidence/harness:
+  `u3_ordered_p13_p15_refloor_087.py` / `.json`.  Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** replace
+  complete ACC_3V3_EN after the selected U3.14-first XGPIO9/XGPIO8 prefix;
+  enumerate explicit reachable U3.15 sites if direct replacement cannot close.
+  Do not introduce blind vias without an owner manufacturing decision.
 - **FBV2-P2-086 / D-384 (U3.14 obstacle attribution and R7-only minimum-scope
   cluster screen; no authoritative PCB change):** after replaying the sole
   viable seven-route prefix, ten R7 translations from 0.25–1.00 mm expose zero
