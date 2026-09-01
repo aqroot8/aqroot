@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-393 · 2026-09-01 · routing characterization:** minimum-scope complete
+branch relocation advances the U3.18 transaction wall but does not yet produce
+a promotable transaction. Replacing XGPIO0 on In2 through ordinary vias at
+`(58.95,20.15)/(61.15,75.15)` mm closes XGPIO0 and exposes one In2 plus four
+In3 U3.18 sites. The ranked fault replay reserves and joins the In3 pair
+`(56.55,65.90)/(52.70,78.45)` mm geometrically, but KiCad connectivity still
+reports one ACC_POWER_FAULT_N open component; ACC_DETECT_N also stops at the
+known R129.2↔U3.17 `NO_PATH` wall with one open component.
+Nearest-rank XGPIO0/In3 and XGPIO1/In2/In3 replacements do not close their
+own complete branches. This is characterization only: no complete
+fault/detect transaction exists, no real-DRC promotion gate is warranted, and
+the authoritative board remains byte-identical (`a4b93b9b…`). Next is bounded
+connectivity attribution of the geometrically joined fault candidate, then
+U3.17/R129.2 obstacle attribution after the proven XGPIO0/In2 prefix and
+minimum-scope relocation/replay of the blocking geometry; also attribute the
+five D-388 residual clearances before promotion. No owner decision is open.
+
 **D-392 · 2026-09-01 · routing characterization:** deterministic
 minimum-cardinality ranking of the eight D-391 nearby transaction vias reduces
 the U3.18 escape wall to either of two individual through vias. Removing only

@@ -1,0 +1,2008 @@
+{
+  "attempts": [
+    {
+      "complete_fault_detect_transaction": false,
+      "complete_xgpio_exposes_u3p18": true,
+      "detect_route": {
+        "edges": [
+          {
+            "a": "R129.2",
+            "b": "R64.1",
+            "kind": "cross",
+            "layer": null,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                57.9,
+                38.8
+              ]
+            ]
+          },
+          {
+            "a": "R129.2",
+            "b": "U3.17",
+            "kind": "same",
+            "layer": "B",
+            "ok": false,
+            "reason": "NO_PATH",
+            "via_xy": null
+          }
+        ],
+        "ok": false
+      },
+      "distinct_pair": true,
+      "fault_prefix_ok": true,
+      "fault_route": {
+        "attempts": [
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "TP27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "TP27.1: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "TP27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "TP27.1: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "TP27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "TP27.1: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "TP27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "TP27.1: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4788582233137677,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58575000,
+                63875000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.575,
+                  63.875
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4788582233137677,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58575000,
+                63875000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.575,
+                  63.875
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4788582233137677,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58575000,
+                63875000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.575,
+                  63.875
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4788582233137677,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58575000,
+                63875000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.575,
+                  63.875
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.582842712474619,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56350000,
+                63700000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.35,
+                  63.7
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.582842712474619,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56350000,
+                63700000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.35,
+                  63.7
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.582842712474619,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56350000,
+                63700000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.35,
+                  63.7
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.582842712474619,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56350000,
+                63700000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.35,
+                  63.7
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4931980515339462,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58675000,
+                63800000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.675,
+                  63.8
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4931980515339462,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58675000,
+                63800000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.675,
+                  63.8
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4931980515339462,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58675000,
+                63800000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.675,
+                  63.8
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4931980515339462,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58675000,
+                63800000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.675,
+                  63.8
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "pad": "TP27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "TP27.1: no 0.60 mm via site reachable on B"
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4788582233137677,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58575000,
+                63875000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.575,
+                  63.875
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.582842712474619,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56350000,
+                63700000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.35,
+                  63.7
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.712027197454356,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52650000,
+                78400000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.65,
+                  78.4
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I2 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "grid": 0.025,
+              "layer": "I2",
+              "minw": 0.2,
+              "mm": 1.4931980515339462,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58675000,
+                63800000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.675,
+                  63.8
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 2,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 3,
+            "first_reservation": {
+              "ok": false,
+              "pad": "U3.18",
+              "reason": "NO_VIA_SITE",
+              "why": "U3.18: no 0.60 mm via site reachable on B"
+            },
+            "inner": "I2",
+            "join": {
+              "ok": false,
+              "reason": "RESERVATION_FAILED"
+            },
+            "order": [
+              "U3.18",
+              "TP27.1"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "ok": false,
+              "reason": "FIRST_FAILED"
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.4192388155425117,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58650000,
+                64900000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.65,
+                  64.9
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I3",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.641316519335701,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52700000,
+                78450000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.7,
+                  78.45
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.4192388155425117,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58650000,
+                64900000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.65,
+                  64.9
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I3",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 1,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 2.1206058412170465,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52750000,
+                77950000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.75,
+                  77.95
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.4192388155425117,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58650000,
+                64900000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.65,
+                  64.9
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I3",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 2,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 2.136291266166284,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52250000,
+                78200000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.25,
+                  78.2
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 0,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.4192388155425117,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                58650000,
+                64900000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  58.65,
+                  64.9
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I3",
+            "join": {
+              "ok": false,
+              "reason": "NO_PATH",
+              "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 3,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 2.491316519335701,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52700000,
+                80000000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.7,
+                  80.0
+                ]
+              ],
+              "vias": 1
+            }
+          },
+          {
+            "first_rank": 1,
+            "first_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 18.20035713374682,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                56550000,
+                65900000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  56.55,
+                  65.9
+                ]
+              ],
+              "vias": 1
+            },
+            "inner": "I3",
+            "join": {
+              "grid": 0.05,
+              "inner_mm": 26.15893577750951,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 26.15893577750951,
+              "ok": true,
+              "trunk_mm": 0.2,
+              "vias": 0
+            },
+            "order": [
+              "TP27.1",
+              "U3.18"
+            ],
+            "second_rank": 0,
+            "second_reservation": {
+              "grid": 0.05,
+              "layer": "I3",
+              "minw": 0.2,
+              "mm": 1.641316519335701,
+              "near": "B",
+              "ok": true,
+              "reservation": true,
+              "trunk_mm": 0.2,
+              "via": [
+                52700000,
+                78450000
+              ],
+              "via_dia": 0.6,
+              "via_drill": 0.3,
+              "via_xy": [
+                [
+                  52.7,
+                  78.45
+                ]
+              ],
+              "vias": 1
+            }
+          }
+        ],
+        "ok": true,
+        "prefix": [
+          {
+            "a": "R103.2",
+            "b": "U20.6",
+            "kind": "same",
+            "ok": true,
+            "reason": null,
+            "result": {
+              "grid": 0.05,
+              "minw": 0.2,
+              "mm": 9.69855653734948,
+              "ok": true,
+              "profile": [
+                [
+                  "R103.2",
+                  0.2,
+                  0.915
+                ],
+                [
+                  "U20.6",
+                  0.2,
+                  0.7501041594338749
+                ]
+              ],
+              "trunk_mm": 0.2
+            }
+          },
+          {
+            "a": "U20.6",
+            "b": "TP27.1",
+            "kind": "same",
+            "ok": true,
+            "reason": null,
+            "result": {
+              "grid": 0.05,
+              "minw": 0.2,
+              "mm": 11.216536790187178,
+              "ok": true,
+              "profile": [
+                [
+                  "U20.6",
+                  0.2,
+                  1.0875
+                ],
+                [
+                  "TP27.1",
+                  0.2,
+                  0.95
+                ]
+              ],
+              "trunk_mm": 0.2
+            }
+          },
+          {
+            "a": "R103.2",
+            "b": "U22.6",
+            "kind": "same",
+            "ok": true,
+            "reason": null,
+            "result": {
+              "grid": 0.05,
+              "minw": 0.2,
+              "mm": 13.509115696451635,
+              "ok": true,
+              "profile": [
+                [
+                  "R103.2",
+                  0.2,
+                  0.935
+                ],
+                [
+                  "U22.6",
+                  0.2,
+                  0.7501041594338749
+                ]
+              ],
+              "trunk_mm": 0.2
+            }
+          }
+        ],
+        "winner": {
+          "first_rank": 1,
+          "first_reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 18.20035713374682,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              56550000,
+              65900000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                56.55,
+                65.9
+              ]
+            ],
+            "vias": 1
+          },
+          "inner": "I3",
+          "join": {
+            "grid": 0.05,
+            "inner_mm": 26.15893577750951,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 26.15893577750951,
+            "ok": true,
+            "trunk_mm": 0.2,
+            "vias": 0
+          },
+          "order": [
+            "TP27.1",
+            "U3.18"
+          ],
+          "second_rank": 0,
+          "second_reservation": {
+            "grid": 0.05,
+            "layer": "I3",
+            "minw": 0.2,
+            "mm": 1.641316519335701,
+            "near": "B",
+            "ok": true,
+            "reservation": true,
+            "trunk_mm": 0.2,
+            "via": [
+              52700000,
+              78450000
+            ],
+            "via_dia": 0.6,
+            "via_drill": 0.3,
+            "via_xy": [
+              [
+                52.7,
+                78.45
+              ]
+            ],
+            "vias": 1
+          }
+        }
+      },
+      "open_edges": {
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 0
+      },
+      "removed": {
+        "/ACC_DETECT_N | PCB_TRACK": 22,
+        "/ACC_DETECT_N | PCB_VIA": 1,
+        "/ACC_POWER_FAULT_N | PCB_TRACK": 57,
+        "/XGPIO0 | PCB_TRACK": 5,
+        "/XGPIO0 | PCB_VIA": 3
+      },
+      "u3p18_sites": {
+        "I2": [
+          [
+            52650000,
+            78400000
+          ]
+        ],
+        "I3": [
+          [
+            52250000,
+            78200000
+          ],
+          [
+            52700000,
+            78450000
+          ],
+          [
+            52700000,
+            80000000
+          ],
+          [
+            52750000,
+            77950000
+          ]
+        ]
+      },
+      "xgpio": "XGPIO0",
+      "xgpio_route": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 0.9657650334988319,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            58950000,
+            20150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              58.95,
+              20.15
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 2.979184484979737,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            61150000,
+            75150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              61.15,
+              75.15
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I2",
+        "join": {
+          "grid": 0.025,
+          "inner_mm": 55.04398241406594,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 55.04398241406594,
+          "ok": true,
+          "trunk_mm": 0.2,
+          "vias": 0
+        },
+        "ok": true
+      }
+    },
+    {
+      "complete_fault_detect_transaction": false,
+      "complete_xgpio_exposes_u3p18": false,
+      "detect_route": {
+        "ok": false,
+        "reason": "FAULT_NOT_CLOSED"
+      },
+      "distinct_pair": false,
+      "fault_prefix_ok": false,
+      "fault_route": {
+        "ok": false,
+        "reason": "XGPIO_NOT_DISTINCT"
+      },
+      "open_edges": {
+        "/ACC_DETECT_N": 2,
+        "/ACC_POWER_FAULT_N": 5,
+        "/XGPIO0": 1
+      },
+      "removed": {
+        "/ACC_DETECT_N | PCB_TRACK": 22,
+        "/ACC_DETECT_N | PCB_VIA": 1,
+        "/ACC_POWER_FAULT_N | PCB_TRACK": 57,
+        "/XGPIO0 | PCB_TRACK": 5,
+        "/XGPIO0 | PCB_VIA": 3
+      },
+      "u3p18_sites": {
+        "I2": [],
+        "I3": []
+      },
+      "xgpio": "XGPIO0",
+      "xgpio_route": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 0.9657650334988319,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            58950000,
+            20150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              58.95,
+              20.15
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 2.979184484979737,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            61150000,
+            75150000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              61.15,
+              75.15
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I3",
+        "join": {
+          "ok": false,
+          "reason": "NO_PATH",
+          "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+        },
+        "ok": false
+      }
+    },
+    {
+      "complete_fault_detect_transaction": false,
+      "complete_xgpio_exposes_u3p18": false,
+      "detect_route": {
+        "ok": false,
+        "reason": "FAULT_NOT_CLOSED"
+      },
+      "distinct_pair": false,
+      "fault_prefix_ok": false,
+      "fault_route": {
+        "ok": false,
+        "reason": "XGPIO_NOT_DISTINCT"
+      },
+      "open_edges": {
+        "/ACC_DETECT_N": 2,
+        "/ACC_POWER_FAULT_N": 5,
+        "/XGPIO1": 1
+      },
+      "removed": {
+        "/ACC_DETECT_N | PCB_TRACK": 22,
+        "/ACC_DETECT_N | PCB_VIA": 1,
+        "/ACC_POWER_FAULT_N | PCB_TRACK": 57,
+        "/XGPIO1 | PCB_TRACK": 18,
+        "/XGPIO1 | PCB_VIA": 3
+      },
+      "u3p18_sites": {
+        "I2": [],
+        "I3": []
+      },
+      "xgpio": "XGPIO1",
+      "xgpio_route": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I2",
+          "minw": 0.2,
+          "mm": 0.9290369987686175,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            55400000,
+            24950000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              55.4,
+              24.95
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "ok": false,
+          "pad": "U3.5",
+          "reason": "NO_VIA_SITE",
+          "why": "U3.5: no 0.60 mm via site reachable on B"
+        },
+        "inner": "I2",
+        "join": {
+          "ok": false,
+          "reason": "RESERVATION_FAILED"
+        },
+        "ok": false
+      }
+    },
+    {
+      "complete_fault_detect_transaction": false,
+      "complete_xgpio_exposes_u3p18": false,
+      "detect_route": {
+        "ok": false,
+        "reason": "FAULT_NOT_CLOSED"
+      },
+      "distinct_pair": false,
+      "fault_prefix_ok": false,
+      "fault_route": {
+        "ok": false,
+        "reason": "XGPIO_NOT_DISTINCT"
+      },
+      "open_edges": {
+        "/ACC_DETECT_N": 2,
+        "/ACC_POWER_FAULT_N": 5,
+        "/XGPIO1": 1
+      },
+      "removed": {
+        "/ACC_DETECT_N | PCB_TRACK": 22,
+        "/ACC_DETECT_N | PCB_VIA": 1,
+        "/ACC_POWER_FAULT_N | PCB_TRACK": 57,
+        "/XGPIO1 | PCB_TRACK": 18,
+        "/XGPIO1 | PCB_VIA": 3
+      },
+      "u3p18_sites": {
+        "I2": [],
+        "I3": []
+      },
+      "xgpio": "XGPIO1",
+      "xgpio_route": {
+        "a_rank": 0,
+        "a_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 0.9290369987686175,
+          "near": "F",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            55400000,
+            24950000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              55.4,
+              24.95
+            ]
+          ],
+          "vias": 1
+        },
+        "b_rank": 0,
+        "b_reservation": {
+          "grid": 0.05,
+          "layer": "I3",
+          "minw": 0.2,
+          "mm": 2.074900820486724,
+          "near": "B",
+          "ok": true,
+          "reservation": true,
+          "trunk_mm": 0.2,
+          "via": [
+            58550000,
+            76650000
+          ],
+          "via_dia": 0.6,
+          "via_drill": 0.3,
+          "via_xy": [
+            [
+              58.55,
+              76.65
+            ]
+          ],
+          "vias": 1
+        },
+        "inner": "I3",
+        "join": {
+          "ok": false,
+          "reason": "NO_PATH",
+          "why": "no I3 corridor at 0.200 mm between the two reserved vias"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "complete_fault_detect_transactions": 0,
+  "complete_xgpio_site_exposing_relocations": 1,
+  "conclusion": "COMPLETE_XGPIO_RELOCATION_EXPOSES_U3P18_BUT_TRANSACTION_BLOCKED",
+  "decision": "D-393",
+  "fault_ranks_tested": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "method": "single_complete_XGPIO_branch_relocation_then_fault_detect_transaction_replay",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "site_separation_mm": 0.5,
+  "source_decision": "D-392",
+  "xgpio_ranks_tested": [
+    0
+  ]
+}

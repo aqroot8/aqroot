@@ -13,6 +13,21 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-095 / D-393 (minimum-scope XGPIO relocation/replay; no
+  authoritative PCB change):** complete XGPIO0 replacement closes on In2 via
+  `(58.95,20.15)/(61.15,75.15)` mm and exposes 1 In2 + 4 In3 U3.18 sites. A
+  ranked replay geometrically reserves and joins the fault endpoint pair on
+  In3 via `(56.55,65.90)/(52.70,78.45)` mm, but KiCad still reports one fault
+  open component; ACC_DETECT_N also retains one open at its R129.2↔U3.17
+  `NO_PATH` edge. Nearest-rank XGPIO0/In3 and
+  XGPIO1/In2/In3 replacements do not close. No complete transaction exists,
+  so no DRC promotion gate or copper promotion was performed. Evidence:
+  `u3_p18_xgpio_via_relocation_095.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** attribute
+  the fault candidate's remaining connectivity discontinuity, then the
+  U3.17/R129.2 obstacle after the proven XGPIO0/In2 prefix; relocate/replay the
+  minimum blocking geometry and also attribute the five D-388 residual
+  clearances before promotion.
 - **FBV2-P2-094 / D-392 (U3.18 blocking-via minimum-cardinality rank; no
   authoritative PCB change):** all eight individual D-391 transaction-via
   withdrawals were screened deterministically. XGPIO0 `(52.75,78.35)` alone
