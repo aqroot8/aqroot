@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-050 / D-348 (characterization; no copper/placement change):** exact
+  add-only preservation was tested across all six D-347 rotation winners. Zero is promotable:
+  the rotated U20 lands overlap unchanged legacy copper and create 2–7 real shorts per pose;
+  none closes both controls and `ACC_POWER_FAULT_N`. Even the least disruptive 180°/+0.5 mm
+  north pose preserves every baseline pad pair and reconnects both controls but retains two
+  shorts, three clearances, two dangling-track errors, and no fault path. The authoritative board
+  remains byte-identical (`2cdc9f33…`). Evidence/harness: `u20_exact_replay_050.json` / `.py`.
+  **Next:** bounded wider U20/R97/R98 neighbor-cluster refloorplan with a geometric accepted-copper
+  impact map and exact signature preservation; do not retry rotation over fixed legacy copper.
+  Open owner decisions: NONE; readiness 78%.
 - **FBV2-P2-049 / D-347 (characterization; no copper/placement change):** a bounded
   15-candidate orthogonal U20 rotation/non-rigid screen found six geometry/DRC-neutral
   routes, including an in-place 90° rotation that replays both controls and closes all six

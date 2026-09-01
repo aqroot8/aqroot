@@ -1,0 +1,458 @@
+{
+  "authoritative_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "authoritative_unchanged": true,
+  "candidates": [
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [
+        [
+          "R98.1",
+          "U20.1"
+        ],
+        [
+          "TP26.1",
+          "U20.1"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ]
+      ],
+      "copper_items_after": 959,
+      "drc_after": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 7,
+        "solder_mask_bridge": 12,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "shorting_items": [
+          0,
+          7
+        ],
+        "solder_mask_bridge": [
+          1,
+          12
+        ]
+      },
+      "offset_mm": [
+        0,
+        0
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 0,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 1
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 90,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": false,
+          "reason": "NO_PATH"
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ]
+    },
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [
+        [
+          "R98.1",
+          "U20.1"
+        ],
+        [
+          "TP26.1",
+          "U20.1"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ]
+      ],
+      "copper_items_after": 959,
+      "drc_after": {
+        "clearance": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 5,
+        "solder_mask_bridge": 10,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          1
+        ],
+        "shorting_items": [
+          0,
+          5
+        ],
+        "solder_mask_bridge": [
+          1,
+          10
+        ]
+      },
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 0,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 1
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 90,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ]
+    },
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [
+        [
+          "R97.1",
+          "U20.4"
+        ],
+        [
+          "R98.1",
+          "U20.1"
+        ],
+        [
+          "TP26.1",
+          "U20.1"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ]
+      ],
+      "copper_items_after": 955,
+      "drc_after": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 4,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "shorting_items": [
+          0,
+          3
+        ],
+        "solder_mask_bridge": [
+          1,
+          4
+        ]
+      },
+      "offset_mm": [
+        0,
+        0
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 1,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 1
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 180,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ]
+    },
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [
+        [
+          "R97.1",
+          "U20.4"
+        ],
+        [
+          "R98.1",
+          "U20.1"
+        ],
+        [
+          "TP26.1",
+          "U20.1"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ]
+      ],
+      "copper_items_after": 955,
+      "drc_after": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 7,
+        "solder_mask_bridge": 11,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "shorting_items": [
+          0,
+          7
+        ],
+        "solder_mask_bridge": [
+          1,
+          11
+        ]
+      },
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 1,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 1
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 180,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ]
+    },
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [],
+      "copper_items_after": 982,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 2,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "solder_mask_bridge": [
+          1,
+          2
+        ],
+        "track_dangling": [
+          0,
+          2
+        ]
+      },
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 0,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 0
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 180,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "U20.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ]
+    },
+    {
+      "accepted_copper_missing_count": 0,
+      "accepted_pairs_broken": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "copper_items_after": 955,
+      "drc_after": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 6,
+        "solder_mask_bridge": 10,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "drc_worse": {
+        "shorting_items": [
+          0,
+          6
+        ],
+        "solder_mask_bridge": [
+          1,
+          10
+        ],
+        "track_dangling": [
+          0,
+          2
+        ]
+      },
+      "offset_mm": [
+        1,
+        0
+      ],
+      "open_edges_after": {
+        "/01_POWER_TREE/ACC_3V3_ILIM": 1,
+        "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+        "/ACC_3V3_EN": 0
+      },
+      "promotion_candidate": false,
+      "rotation_deg": 180,
+      "routes": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ]
+    }
+  ],
+  "conclusion": "exact_add_only_replay_exhausted",
+  "copper_items_before": 955,
+  "decision": "D-348",
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "open_edges_before": {
+    "/01_POWER_TREE/ACC_3V3_ILIM": 0,
+    "/01_POWER_TREE/ACC_POWER_FAULT_N": 0,
+    "/ACC_3V3_EN": 0
+  },
+  "orientation_before_deg": 0.0,
+  "promotion_candidates": 0,
+  "schema_version": 1
+}
