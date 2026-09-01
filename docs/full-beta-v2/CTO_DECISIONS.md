@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-383 · 2026-09-01 · routing characterization:** all four proven-layer
+allocations for XGPIO5/XGPIO4 were replayed before the fixed XGPIO2, XGPIO3,
+XGPIO1, XGPIO0 and XGPIO8 schedule. Only the existing In3/In2 allocation closes
+all seven routes; XGPIO5=In2/XGPIO4=In2 fails the ranked XGPIO1 reservation,
+while both XGPIO4=In3 allocations stop at XGPIO3. The sole viable allocation
+still exposes zero U3.14 sites on either In2 or In3 across four explicit ranks.
+Exact boundary withdrawal passes and the authoritative board remains byte-
+identical (`a4b93b9b…`). Prefix layer permutation is closed for XGPIO9. Next
+is bounded U3.14 endpoint-neighborhood obstacle attribution and minimum-scope
+cluster geometry, preserving the proven prefix; blind vias remain excluded
+absent an owner manufacturing decision. No owner decision is open.
+
 **D-382 · 2026-09-01 · routing characterization:** after deterministic replay
 of the seven-route D-380 prefix, explicit rank enumeration finds four reachable
 R60.1-side via sites on each of In2 and In3, but zero reachable U3.14-side sites

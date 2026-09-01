@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-382",
+  "current_decision": "D-383",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -52,6 +52,7 @@
     {"decision":"D-379","framework":"XGPIO8_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8"],"result":"2_R59_SITES_X_3_U3_SITES_ALL_6_DISTINCT_IN3_PAIRS_CLOSE_XGPIO8_SHORTEST_49P187MM","evidence":"u3_xgpio8_viasite_enum_081.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-380","framework":"deterministic_explicit_viasite_transaction_replay","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"XGPIO8_CLOSES_ON_D379_SHORTEST_IN3_PAIR_REPLAY_ADVANCES_TO_XGPIO9_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio8_transaction_replay_082.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-381","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"XGPIO9_MOVED_U3P14_ESCAPE_NO_LEGAL_ESCAPE_ON_IN2_OR_IN3_AFTER_D380_PREFIX_ZERO_TRANSACTION_CANDIDATES","evidence":"u3_xgpio9_inner_replay_083.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-382","framework":"XGPIO9_In2_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"4_R60_SITES_ON_EACH_INNER_LAYER_ZERO_U3P14_SITES_ZERO_DISTINCT_PAIRS_OR_JOINS","evidence":"u3_xgpio9_viasite_enum_084.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-382","framework":"XGPIO9_In2_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"4_R60_SITES_ON_EACH_INNER_LAYER_ZERO_U3P14_SITES_ZERO_DISTINCT_PAIRS_OR_JOINS","evidence":"u3_xgpio9_viasite_enum_084.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-383","framework":"bounded_XGPIO5_XGPIO4_inner_layer_allocation_permutation_then_U3P14_site_probe","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9"],"result":"4_ALLOCATIONS_ONLY_XGPIO5_IN3_XGPIO4_IN2_CLOSES_7_ROUTE_PREFIX_AND_ZERO_U3P14_SITES_ON_IN2_OR_IN3","evidence":"u3_xgpio9_layer_permute_085.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }

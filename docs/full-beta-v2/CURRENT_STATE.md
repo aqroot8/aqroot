@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-085 / D-383 (XGPIO5/XGPIO4 layer-allocation permutation; no
+  authoritative PCB change):** all four In2/In3 allocations were replayed.
+  Only the existing XGPIO5=In3/XGPIO4=In2 allocation preserves all seven
+  routes; the other three stop at XGPIO1 or XGPIO3. Four explicit U3.14 ranks
+  on both inner layers remain unreachable in the sole viable prefix. Exact
+  boundary withdrawal passes. Evidence/harness:
+  `u3_xgpio9_layer_permute_085.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** bounded
+  U3.14 endpoint-neighborhood obstacle attribution and minimum-scope cluster
+  geometry while preserving the proven seven-route prefix; do not retry layer
+  permutations or introduce blind vias without an owner manufacturing decision.
 - **FBV2-P2-084 / D-382 (XGPIO9 explicit via-site enumeration; no
   authoritative PCB change):** after the seven-route D-380 prefix, bounded
   rank enumeration exposes four reachable R60.1-side sites on each of In2 and
