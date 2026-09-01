@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-379 · 2026-09-01 · routing characterization:** after the six-route D-377
+prefix, explicit rank enumeration exposes two reachable R59.1-side and three
+U3.13-side legal In3 via sites. All six distinct pairings close XGPIO8; the
+shortest joins `(54.45,33.00)` to `(55.70,81.70)` mm in 49.187 mm. In2 remains
+closed because R59.1 has no reachable site. The prefix scratch layout retains
+known real KiCad DRC regressions, so this is not a promotion candidate and the
+authoritative board remains byte-identical (`a4b93b9b…`). Next is deterministic
+complete-XGPIO8 replay with the shortest In3 pair after the D-377 prefix,
+followed by continuation of the remaining U3 terminal schedule only while each
+branch closes. No owner decision is open.
+
 **D-378 · 2026-09-01 · routing characterization:** after the six-route D-377
 prefix, complete XGPIO8 replacement cannot reserve the R59.1-side escape on
 either In2 or In3; both independently owned attempts return `NO_VIA_SITE`.

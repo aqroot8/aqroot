@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-081 / D-379 (XGPIO8 explicit via-site enumeration; no
+  authoritative PCB change):** after the six-route D-377 prefix, bounded rank
+  enumeration finds two reachable R59.1-side and three U3.13-side legal In3
+  sites. All six distinct site pairs join; the shortest is
+  `(54.45,33.00)/(55.70,81.70)` mm at 49.187 mm. In2 remains closed because
+  R59.1 has no reachable site. The incomplete prefix retains real KiCad DRC
+  regressions, so no transaction is promoted. Evidence/harness:
+  `u3_xgpio8_viasite_enum_081.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** replay
+  complete XGPIO8 with the shortest In3 pair after the D-377 prefix and continue
+  the remaining U3 terminal schedule only while each branch closes.
 - **FBV2-P2-080 / D-378 (complete-XGPIO8 inner replacement; no authoritative
   PCB change):** after the six-route D-377 prefix, complete XGPIO8 replacement
   cannot reserve the R59.1-side escape on either In2 or In3; both attempts
