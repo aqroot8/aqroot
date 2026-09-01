@@ -1,0 +1,2534 @@
+{
+  "attempt_count": 12,
+  "attempts": [
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 2,
+        "track_dangling": 12,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          3
+        ],
+        "solder_mask_bridge": [
+          1,
+          2
+        ],
+        "track_dangling": [
+          0,
+          12
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO7 and /XGPIO4)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "solder_mask_bridge": [
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.35,
+      "retained_items": 180,
+      "scar_items": 19
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 2,
+        "track_dangling": 12,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          3
+        ],
+        "solder_mask_bridge": [
+          1,
+          2
+        ],
+        "track_dangling": [
+          0,
+          12
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
+        ],
+        "solder_mask_bridge": [
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.35,
+      "retained_items": 180,
+      "scar_items": 19
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 13,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          13
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO7 and /XGPIO4)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.5,
+      "retained_items": 179,
+      "scar_items": 20
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 13,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          13
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.5,
+      "retained_items": 179,
+      "scar_items": 20
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 13,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          13
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.75,
+      "retained_items": 179,
+      "scar_items": 20
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 18,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 4,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 13,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          4
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          13
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 0.75,
+      "retained_items": 179,
+      "scar_items": 20
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 15,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          15
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 1.0,
+      "retained_items": 175,
+      "scar_items": 24
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "anchor_mm": [
+                55.3,
+                76.4
+              ],
+              "distance_mm": 5.88999416383412,
+              "layer": "B.Cu",
+              "ok": false,
+              "reason": "NO_PATH"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 15,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 4
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          15
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          4
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "anchor_mm": [
+              55.3,
+              76.4
+            ],
+            "distance_mm": 5.88999416383412,
+            "layer": "B.Cu",
+            "ok": false,
+            "reason": "NO_PATH"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 1.0,
+      "retained_items": 175,
+      "scar_items": 24
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "layer": "B.Cu",
+              "reason": "NO_ANCHOR"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 10,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 6
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          10
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          6
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO7 and /XGPIO4)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "layer": "B.Cu",
+            "reason": "NO_ANCHOR"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 1.5,
+      "retained_items": 161,
+      "scar_items": 38
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "layer": "B.Cu",
+              "reason": "NO_ANCHOR"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 10,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 6
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          10
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          6
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "layer": "B.Cu",
+            "reason": "NO_ANCHOR"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 1.5,
+      "retained_items": 161,
+      "scar_items": 38
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "layer": "B.Cu",
+              "reason": "NO_ANCHOR"
+            },
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 9,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 10
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          9
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          10
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "layer": "B.Cu",
+            "reason": "NO_ANCHOR"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "B.Cu",
+        "F.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 2.0,
+      "retained_items": 152,
+      "scar_items": 47
+    },
+    {
+      "attachments": [
+        {
+          "net": "/XGPIO5",
+          "ok": false,
+          "terminal": "U3.9",
+          "trials": [
+            {
+              "anchor_mm": [
+                54.409814,
+                30.836116
+              ],
+              "distance_mm": 49.58957421253032,
+              "layer": "F.Cu",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE"
+            },
+            {
+              "layer": "B.Cu",
+              "reason": "NO_ANCHOR"
+            }
+          ]
+        }
+      ],
+      "broken_pair_count": 22,
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 3,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 1,
+        "track_dangling": 9,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 10
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          3
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          2
+        ],
+        "track_dangling": [
+          0,
+          9
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          10
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+        ],
+        "track_dangling": [
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end",
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_failure": {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          },
+          {
+            "layer": "B.Cu",
+            "reason": "NO_ANCHOR"
+          }
+        ]
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "layer_order": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 2,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 1,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "radius_mm": 2.0,
+      "retained_items": 152,
+      "scar_items": 47
+    }
+  ],
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "best_attempt": {
+    "attachments": [
+      {
+        "net": "/XGPIO5",
+        "ok": false,
+        "terminal": "U3.9",
+        "trials": [
+          {
+            "layer": "B.Cu",
+            "reason": "NO_ANCHOR"
+          },
+          {
+            "anchor_mm": [
+              54.409814,
+              30.836116
+            ],
+            "distance_mm": 49.58957421253032,
+            "layer": "F.Cu",
+            "ok": false,
+            "reason": "NO_LEGAL_ESCAPE"
+          }
+        ]
+      }
+    ],
+    "broken_pair_count": 22,
+    "closed_candidate": false,
+    "drc_after": {
+      "clearance": 3,
+      "hole_clearance": 6,
+      "lib_footprint_issues": 199,
+      "shorting_items": 2,
+      "solder_mask_bridge": 1,
+      "track_dangling": 10,
+      "tracks_crossing": 1,
+      "unconnected_items": 499,
+      "via_dangling": 6
+    },
+    "drc_worse": {
+      "clearance": [
+        0,
+        3
+      ],
+      "hole_clearance": [
+        5,
+        6
+      ],
+      "shorting_items": [
+        0,
+        2
+      ],
+      "track_dangling": [
+        0,
+        10
+      ],
+      "tracks_crossing": [
+        0,
+        1
+      ],
+      "via_dangling": [
+        0,
+        6
+      ]
+    },
+    "drc_worse_details": {
+      "clearance": [
+        "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+        "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+        "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+      ],
+      "hole_clearance": [
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+        "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+      ],
+      "shorting_items": [
+        "Items shorting two nets (nets /XGPIO7 and /XGPIO4)",
+        "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)"
+      ],
+      "track_dangling": [
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end",
+        "Track has unconnected end"
+      ],
+      "tracks_crossing": [
+        "Tracks crossing"
+      ],
+      "via_dangling": [
+        "Via is not connected or connected on only one layer",
+        "Via is not connected or connected on only one layer",
+        "Via is not connected or connected on only one layer",
+        "Via is not connected or connected on only one layer",
+        "Via is not connected or connected on only one layer",
+        "Via is not connected or connected on only one layer"
+      ]
+    },
+    "first_failure": {
+      "net": "/XGPIO5",
+      "ok": false,
+      "terminal": "U3.9",
+      "trials": [
+        {
+          "layer": "B.Cu",
+          "reason": "NO_ANCHOR"
+        },
+        {
+          "anchor_mm": [
+            54.409814,
+            30.836116
+          ],
+          "distance_mm": 49.58957421253032,
+          "layer": "F.Cu",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ]
+    },
+    "forbidden_added_count": 0,
+    "forbidden_missing_count": 0,
+    "layer_order": [
+      "B.Cu",
+      "F.Cu"
+    ],
+    "open_edges_after": {
+      "/ACC_3V3_EN": 1,
+      "/ACC_DETECT_N": 1,
+      "/ACC_POWER_FAULT_N": 2,
+      "/XGPIO0": 1,
+      "/XGPIO1": 1,
+      "/XGPIO2": 1,
+      "/XGPIO3": 1,
+      "/XGPIO4": 1,
+      "/XGPIO5": 1,
+      "/XGPIO6": 0,
+      "/XGPIO7": 0,
+      "/XGPIO7_HDR": 0,
+      "/XGPIO8": 1,
+      "/XGPIO9": 1
+    },
+    "pair_routes": [
+      {
+        "edges": [
+          {
+            "a": "R57.1",
+            "b": "U3.10",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "group": "XGPIO6_INNER",
+        "ok": true
+      },
+      {
+        "edges": [
+          {
+            "a": "R58.1",
+            "b": "U3.11",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "group": "XGPIO7_INNER",
+        "ok": true
+      }
+    ],
+    "radius_mm": 1.5,
+    "retained_items": 161,
+    "scar_items": 38
+  },
+  "boundary_items": 211,
+  "conclusion": "local_scar_replay_not_closed",
+  "decision": "D-368",
+  "method": "bounded_local_scar_retention_then_fresh_multilayer_terminal_replay",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "selected_layout": {
+    "r58_offset_mm": [
+      0.0,
+      -0.5
+    ],
+    "u3_offset_mm": [
+      0.0,
+      0.5
+    ],
+    "u3_rotation_deg": 180
+  },
+  "source_decision": "D-367",
+  "transaction_candidates": 0
+}

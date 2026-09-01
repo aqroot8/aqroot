@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-070 / D-368 (local-scar replay characterization; no authoritative
+  PCB change):** twelve scratch candidates combine the D-367 U3/R58 layout
+  with six radial scar boundaries (0.35–2.00 mm) and both outer-layer replay
+  orders. All reserve XGPIO6/XGPIO7 but fail first at XGPIO5/U3.9. Boundaries
+  through 1.00 mm retain its unusable 5.890 mm B.Cu anchor (`NO_PATH`);
+  1.50/2.00 mm remove that anchor and expose only a 49.590 mm F.Cu route
+  (`NO_LEGAL_ESCAPE`). All candidates regress real KiCad DRC. Evidence/harness:
+  `u3_local_scar_replay_070.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** replace
+  the complete XGPIO5 branch with a terminal-specific inner-layer haul to a
+  stable non-U3 anchor, then extend only if that first-branch mechanism closes.
 - **FBV2-P2-069 / D-367 (D-366 winner rank and exact replay; no authoritative
   PCB change):** real KiCad DRC/accepted-pair ranking selects R58 -0.5 mm north
   from the three pair-reserving layouts (16 added non-unconnected violations,

@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-368 · 2026-09-01 · routing characterization:** the selected D-367 U3/R58
+layout was screened with six radial local-scar boundaries (0.35–2.00 mm) and
+both F.Cu/B.Cu fresh-attachment orders.  All twelve scratch candidates reserve
+XGPIO6/XGPIO7, preserve unrelated copper, and stop deterministically at the
+first replay terminal, XGPIO5/U3.9.  Radii through 1.00 mm retain the same
+unusable B.Cu anchor 5.890 mm away (`NO_PATH`); radii 1.50/2.00 mm remove it and
+leave only a 49.590 mm F.Cu anchor (`NO_LEGAL_ESCAPE`).  Every candidate also
+has real KiCad DRC regressions, so none is promotable.  Radius-only local-scar
+retention and generic outer-layer terminal attachment are closed.  The
+authoritative board remains byte-identical (`a4b93b9b…`).  Next is a bounded
+complete-XGPIO5-branch replacement using a terminal-specific inner-layer haul
+to a stable non-U3 anchor, before extending the mechanism to the remaining U3
+branches.  No owner decision is open.
+
 **D-367 · 2026-09-01 · routing characterization:** real KiCad DRC and accepted-
 pair impact rank the three D-366 pair-reserving layouts.  R58 -0.5 mm north is
 least impact (tied at 16 added non-unconnected violations and 32 temporarily
