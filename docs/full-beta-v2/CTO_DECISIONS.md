@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-370 · 2026-09-01 · routing characterization:** at the selected D-367
+U3/R58 layout, D-369's lower-crossing In3 XGPIO5 replacement was retained and
+the complete nine-item XGPIO4 branch was replaced with the same qualified
+native-face/through-via inner-haul mechanism. Both independently owned layers
+close XGPIO4 (`R55.1→U3.8`): In2 via sites are
+`(55.15,22.45)/(58.45,78.45)` mm and In3 sites are
+`(55.15,22.45)/(61.075,79.225)` mm. In2 is selected because it has one fewer
+clearance regression (nine versus ten) and the replay advances to XGPIO2/U3.6,
+whose retained B.Cu anchor 3.964 mm away returns `NO_LEGAL_ESCAPE` (the In3
+candidate returns `NO_PATH`). The incomplete candidates retain real KiCad DRC
+regressions and are not promotable; the authoritative board remains
+byte-identical (`a4b93b9b…`). Next is the same bounded complete-XGPIO2 branch
+replacement after In3 XGPIO5 and In2 XGPIO4, then continue the terminal
+schedule only while each branch closes. No owner decision is open.
+
 **D-369 · 2026-09-01 · routing characterization:** at the selected D-367
 U3/R58 layout, the complete six-item XGPIO5 branch was replaced after coherent
 XGPIO6/XGPIO7 reservation with the qualified D-331 native-face/through-via
