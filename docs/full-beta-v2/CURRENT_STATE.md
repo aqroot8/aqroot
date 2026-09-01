@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-096 / D-394 (fault-component attribution; no authoritative PCB
+  change):** the D-393 In3 endpoint join is electrically connected through
+  U3.18. The one remaining ACC_POWER_FAULT_N component is TP33.1 alone; the
+  prior manual prefix omitted this sixth pad. Four direct 0.200 mm B.Cu
+  attachments close the complete fault branch, with TP33.1↔TP27.1 shortest at
+  37.496 mm; only TP33.1↔U3.18 is blocked. Evidence:
+  `u3_fault_component_attribution_096.py` / `.json`. This is characterization,
+  not a complete fault/detect transaction or promotion candidate. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** replay the shortest TP33.1↔TP27.1 suffix deterministically, then
+  attribute/relocate the U3.17/R129.2 detect wall and the five D-388 residual
+  clearances before the corrected full-board gate.
 - **FBV2-P2-095 / D-393 (minimum-scope XGPIO relocation/replay; no
   authoritative PCB change):** complete XGPIO0 replacement closes on In2 via
   `(58.95,20.15)/(61.15,75.15)` mm and exposes 1 In2 + 4 In3 U3.18 sites. A

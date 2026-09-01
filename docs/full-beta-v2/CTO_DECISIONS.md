@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-394 · 2026-09-01 · routing characterization:** D-393's geometrically
+joined ACC_POWER_FAULT_N candidate is electrically continuous through U3.18;
+the reported remaining open component is solely TP33.1, which the D-390/D-393
+manual prefix omitted. The other five pads form one KiCad-connected component.
+Direct 0.200 mm B.Cu replay from TP33.1 closes the complete fault branch to
+four component pads (shortest TP27.1, 37.496 mm); only direct TP33.1↔U3.18 is
+blocked. This corrects the fault attribution and proves a reusable complete
+fault suffix, but is characterization only: ACC_DETECT_N remains open at the
+known R129.2↔U3.17 wall, the complete transaction was not replayed/gated, and
+the authoritative board remains byte-identical (`a4b93b9b…`). Next is a
+single deterministic replay using the shortest TP33.1↔TP27.1 suffix, followed
+by U3.17/R129.2 obstacle attribution and minimum-scope relocation/replay; then
+attribute the five D-388 residual clearances before promotion. No owner
+decision is open.
+
 **D-393 · 2026-09-01 · routing characterization:** minimum-scope complete
 branch relocation advances the U3.18 transaction wall but does not yet produce
 a promotable transaction. Replacing XGPIO0 on In2 through ordinary vias at

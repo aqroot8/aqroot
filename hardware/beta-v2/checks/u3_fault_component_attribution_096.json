@@ -1,0 +1,194 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "complete_direct_attachments": 4,
+  "components_after_d393": [
+    [
+      "TP33.1"
+    ],
+    [
+      "R103.2",
+      "TP27.1",
+      "U20.6",
+      "U22.6",
+      "U3.18"
+    ]
+  ],
+  "conclusion": "TP33_DIRECT_ATTACHMENT_CLOSES_FAULT_NEEDS_TRANSACTION_REPLAY",
+  "d393_fault_join_ok": true,
+  "decision": "D-394",
+  "direct_bcu_attempts": [
+    {
+      "components": [
+        [
+          "R103.2",
+          "TP27.1",
+          "TP33.1",
+          "U20.6",
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "from": "TP33.1",
+      "open_edges": 0,
+      "route": {
+        "grid": 0.05,
+        "minw": 0.2,
+        "mm": 44.61413718607427,
+        "ok": true,
+        "profile": [
+          [
+            "TP33.1",
+            0.2,
+            0.9192388155425117
+          ],
+          [
+            "R103.2",
+            0.2,
+            1.0006123125366788
+          ]
+        ],
+        "trunk_mm": 0.2
+      },
+      "to": "R103.2"
+    },
+    {
+      "components": [
+        [
+          "R103.2",
+          "TP27.1",
+          "TP33.1",
+          "U20.6",
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "from": "TP33.1",
+      "open_edges": 0,
+      "route": {
+        "grid": 0.05,
+        "minw": 0.2,
+        "mm": 37.49581327676685,
+        "ok": true,
+        "profile": [
+          [
+            "TP33.1",
+            0.2,
+            0.9192388155425117
+          ],
+          [
+            "TP27.1",
+            0.2,
+            0.95
+          ]
+        ],
+        "trunk_mm": 0.2
+      },
+      "to": "TP27.1"
+    },
+    {
+      "components": [
+        [
+          "R103.2",
+          "TP27.1",
+          "TP33.1",
+          "U20.6",
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "from": "TP33.1",
+      "open_edges": 0,
+      "route": {
+        "grid": 0.05,
+        "minw": 0.2,
+        "mm": 44.89983582309141,
+        "ok": true,
+        "profile": [
+          [
+            "TP33.1",
+            0.2,
+            0.9192388155425117
+          ],
+          [
+            "U20.6",
+            0.2,
+            1.0875
+          ]
+        ],
+        "trunk_mm": 0.2
+      },
+      "to": "U20.6"
+    },
+    {
+      "components": [
+        [
+          "R103.2",
+          "TP27.1",
+          "TP33.1",
+          "U20.6",
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "from": "TP33.1",
+      "open_edges": 0,
+      "route": {
+        "grid": 0.05,
+        "minw": 0.2,
+        "mm": 54.88748733822997,
+        "ok": true,
+        "profile": [
+          [
+            "TP33.1",
+            0.2,
+            0.9192388155425117
+          ],
+          [
+            "U22.6",
+            0.2,
+            0.7501041594338749
+          ]
+        ],
+        "trunk_mm": 0.2
+      },
+      "to": "U22.6"
+    },
+    {
+      "components": [
+        [
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "TP27.1",
+          "U20.6",
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "from": "TP33.1",
+      "open_edges": 1,
+      "route": {
+        "ok": false,
+        "reason": "NO_PATH",
+        "why": "no legal corridor at 0.200 mm from TP33.1 to U3.18 at 0.05 or 0.025 mm"
+      },
+      "to": "U3.18"
+    }
+  ],
+  "isolated_component": [
+    "TP33.1"
+  ],
+  "joined_component": [
+    "R103.2",
+    "TP27.1",
+    "U20.6",
+    "U22.6",
+    "U3.18"
+  ],
+  "method": "joined_fault_component_attribution_then_isolated_pad_direct_attach_screen",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "source_decision": "D-393"
+}
