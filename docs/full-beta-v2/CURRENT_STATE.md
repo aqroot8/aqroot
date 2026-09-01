@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-075 / D-373 (complete-XGPIO1 inner replacement characterization;
+  no authoritative PCB change):** after XGPIO6/XGPIO7 reservation and the
+  selected In3 XGPIO5, In2 XGPIO4, In3 XGPIO2, and In3 XGPIO3 replacements,
+  direct complete-branch replacement does not close XGPIO1 on either inner
+  layer. In2 fails to reserve moved U3.5 (`NO_VIA_SITE`); In3 reserves its
+  endpoint escapes but the long join fails `NO_PATH`. Both incomplete
+  candidates have 16 added non-unconnected real KiCad DRC violations and are
+  not promotable. Evidence/harness: `u3_xgpio1_inner_replay_075.py` / `.json`.
+  Board remains byte-identical (`a4b93b9b…`); no owner decision; readiness
+  remains 78%. **Next:** bounded XGPIO1-specific In3 staged-waypoint/anchor
+  sweep after the four selected inner routes, preserving earlier transaction
+  copper; do not retry the generic direct inner haul.
 - **FBV2-P2-074 / D-372 (complete-XGPIO3 inner replacement characterization;
   no authoritative PCB change):** after XGPIO6/XGPIO7 reservation and the
   selected In3 XGPIO5, In2 XGPIO4, and In3 XGPIO2 replacements, XGPIO3 cannot

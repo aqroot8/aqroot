@@ -446,6 +446,15 @@ GROUPS = {
                                   inner=['I2', 'I3']),
         nets=['XGPIO3'],
     ),
+    'XGPIO1_INNER': dict(
+        sheet='09_COMMUNITY_HEADER', desc='XGPIO1 D-331 inner-haul reuse screen',
+        layer='F', width=200000, clr_pad=200000, clr_trk=200000,
+        via_dia=600000, via_drill=300000,
+        inner_long_haul_plan=dict(a='R52.1', b='U3.5',
+                                  a_near='F', b_near='B',
+                                  inner=['I2', 'I3']),
+        nets=['XGPIO1'],
+    ),
     # D-331 framework-reuse screens and coherent batch.  Each member keeps a
     # native-face escape and selects In2 first / In3 fallback independently;
     # the batch is routed in this deterministic south-to-north order so laid

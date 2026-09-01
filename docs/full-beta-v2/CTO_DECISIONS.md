@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-373 · 2026-09-01 · routing characterization:** at the selected D-367
+U3/R58 layout, complete XGPIO1 replacement was attempted after coherent
+XGPIO6/XGPIO7 reservation and the selected XGPIO5/In3, XGPIO4/In2,
+XGPIO2/In3 and XGPIO3/In3 replacements. The qualified native-face/inner-haul
+mechanism does not close XGPIO1 (`R52.1→U3.5`) on either independently owned
+layer: In2 cannot reserve the moved U3.5 endpoint (`NO_VIA_SITE`), while In3
+reserves the endpoint escapes but the long join returns `NO_PATH`. Both
+incomplete candidates retain 16 added non-unconnected real KiCad DRC
+violations and are not promotable; the authoritative board remains byte-
+identical (`a4b93b9b…`). Generic direct inner-haul reuse is closed for XGPIO1.
+Next is a bounded XGPIO1-specific In3 staged-waypoint/anchor sweep after the
+four selected inner routes, preserving all earlier transaction copper. No
+owner decision is open.
+
 **D-372 · 2026-09-01 · routing characterization:** at the selected D-367
 U3/R58 layout, the complete XGPIO3 branch was replaced after coherent
 XGPIO6/XGPIO7 reservation and the selected XGPIO5/In3, XGPIO4/In2 and
