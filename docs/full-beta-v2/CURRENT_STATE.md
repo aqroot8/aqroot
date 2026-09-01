@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-084 / D-382 (XGPIO9 explicit via-site enumeration; no
+  authoritative PCB change):** after the seven-route D-380 prefix, bounded
+  rank enumeration exposes four reachable R60.1-side sites on each of In2 and
+  In3, but no reachable U3.14-side site on either layer. Thus there are zero
+  distinct endpoint pairs and zero joins. Exact boundary withdrawal passes;
+  the scratch prefix retains the known real KiCad DRC regressions.
+  Evidence/harness: `u3_xgpio9_viasite_enum_084.py` / `.json`. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** boundedly permute the proven XGPIO5/XGPIO4 inner-layer choices,
+  retaining only prefixes that close all seven routes, and probe whether any
+  allocation exposes a legal U3.14 site before considering endpoint-cluster
+  geometry; blind vias remain excluded absent an owner manufacturing decision.
 - **FBV2-P2-083 / D-381 (complete-XGPIO9 inner replacement; no authoritative
   PCB change):** after the seven-route D-380 prefix, complete XGPIO9
   replacement cannot reserve the moved U3.14-side escape on either In2 or In3;

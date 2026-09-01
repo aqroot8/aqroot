@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-382 · 2026-09-01 · routing characterization:** after deterministic replay
+of the seven-route D-380 prefix, explicit rank enumeration finds four reachable
+R60.1-side via sites on each of In2 and In3, but zero reachable U3.14-side sites
+on either layer. Therefore no distinct endpoint pair or join exists. Exact
+boundary withdrawal passes, the authoritative board remains byte-identical
+(`a4b93b9b…`), and the scratch prefix retains the already-known real KiCad DRC
+regressions. Explicit site selection is closed for XGPIO9 at this prefix.
+Next is a bounded permutation of the already-proven XGPIO5/XGPIO4 layer choices
+to test whether prefix allocation can expose a legal U3.14 site without losing
+any of the seven closed routes; blind vias remain excluded absent an owner
+manufacturing decision. No owner decision is open.
+
 **D-381 · 2026-09-01 · routing characterization:** after deterministic replay
 of the seven-route D-380 prefix, complete XGPIO9 replacement cannot reserve the
 moved U3.14-side escape on either In2 or In3; both independently owned attempts
