@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-051 / D-349 (characterization; no copper/placement change):** the
+  required geometric accepted-copper impact map bounded all six D-347 rotation winners with
+  real KiCad DRC plus a 0.300 mm expanded U20-pad envelope. The least-impact pose is U20
+  180°/+0.5 mm north: its six U20-related violations touch only legacy B.Cu on
+  `ACC_3V3_ILIM`/`ACC_3V3_EN` (two shorts, three clearances, one mask bridge). The accepted
+  XGPIO8 F.Cu long-haul enters the 2D envelope but causes no real violation; no neighboring
+  footprint must move. Authoritative board remains byte-identical (`2cdc9f33…`). Evidence/harness:
+  `u20_impact_map_051.json` / `.py`. **Next:** bounded scratch replacement/replay of only the
+  eight mapped local control-copper items for the 180°/+0.5 mm north pose, freezing XGPIO8 and
+  all other accepted copper; promote only if exact connectivity and the authoritative full-board
+  gate pass. Open owner decisions: NONE; readiness 78%.
 - **FBV2-P2-050 / D-348 (characterization; no copper/placement change):** exact
   add-only preservation was tested across all six D-347 rotation winners. Zero is promotable:
   the rotated U20 lands overlap unchanged legacy copper and create 2–7 real shorts per pose;

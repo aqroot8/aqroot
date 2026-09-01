@@ -9,6 +9,11 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-349 · 2026-09-01 · routing characterization:** the bounded U20 impact map
+selects the 180°/+0.5 mm north pose for the next scratch replay. Its real collision
+scope is only eight local `ACC_3V3_EN`/`ACC_3V3_ILIM` B.Cu items; XGPIO8 and every
+other accepted net remain frozen. This is not a placement or copper promotion.
+
 ---
 
 ## ⭐ STANDING POLICY — FIRST FIVE FULL BETA PCBAs: NO-RESPIN RECOVERY POLICY

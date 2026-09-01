@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-348",
+  "current_decision": "D-349",
   "current_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -18,6 +18,7 @@
     {"decision":"D-345","framework":"bounded_U20_translation_ECO","nets":["ACC_POWER_FAULT_N"],"result":"16_TRANSLATIONS_ALL_ROUTE_FAIL_AND_PLACEMENT_DRC_WORSE","evidence":"u20_endpoint_eco_047.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
     {"decision":"D-346","framework":"coordinated_U20_R97_R98_rigid_cluster_replay","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"16_RIGID_TRANSLATIONS_CONTROL_REPLAY_FEASIBLE_BUT_FAULT_ROUTE_FAILS_ALL","evidence":"u20_cluster_eco_048.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
     {"decision":"D-347","framework":"bounded_U20_orthogonal_rotation_nonrigid_cluster_screen","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"6_GEOMETRIC_WINS_INPLACE_90_DEG_BEST_BUT_GENERIC_REPLAY_FAILS_20_ACCEPTED_COPPER_CONTRACTS","evidence":"u20_rotation_eco_049.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
-    {"decision":"D-348","framework":"exact_add_only_U20_rotation_replay","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"6_D347_WINNERS_ALL_FAIL_WITH_2_TO_7_REAL_SHORTS_AND_NO_COMPLETE_ROUTE","evidence":"u20_exact_replay_050.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
+    {"decision":"D-348","framework":"exact_add_only_U20_rotation_replay","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"6_D347_WINNERS_ALL_FAIL_WITH_2_TO_7_REAL_SHORTS_AND_NO_COMPLETE_ROUTE","evidence":"u20_exact_replay_050.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
+    {"decision":"D-349","framework":"geometric_accepted_copper_impact_map","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"180DEG_NORTH_0P5MM_MINIMUM_SCOPE_ONLY_8_LOCAL_CONTROL_ITEMS_NO_NEIGHBOR_FOOTPRINT_MOVE","evidence":"u20_impact_map_051.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"}
   ]
 }

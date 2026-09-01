@@ -1,0 +1,1915 @@
+{
+  "authoritative_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "authoritative_unchanged": true,
+  "candidates": [
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            52.2,
+            63.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.35,
+            62.15
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            54.05,
+            61.435
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            63.05
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.1,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.1,
+            62.15
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.35,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            51.4,
+            62.15
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.7,
+            61.435
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.4,
+            62.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.35,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            65.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.85,
+            62.15
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            51.4,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.1,
+            62.9
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.85,
+            62.15
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 90,
+      "u20_drc_count": 18,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.0500 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Items shorting two nets (nets /ACC_3V3_EN and +3V3)",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets +3V3 and /ACC_3V3_EN)",
+          "items": [
+            "Pad 2 [+3V3] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_POWER_FAULT_N)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_POWER_FAULT_N)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_POWER_FAULT_N)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.0500 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.0328 mm)",
+          "items": [
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm"
+          ],
+          "type": "clearance"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            52.2,
+            63.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            63.05
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.1,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.4,
+            62.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.35,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            65.6
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 90,
+      "u20_drc_count": 15,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Items shorting two nets (nets /ACC_3V3_EN and +3V3)",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1389 mm)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_POWER_FAULT_N)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets +3V3 and /ACC_3V3_EN)",
+          "items": [
+            "Pad 2 [+3V3] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /ACC_3V3_SW and /ACC_3V3_EN)",
+          "items": [
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm"
+          ],
+          "type": "shorting_items"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            63.05
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.1,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.4,
+            62.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.1,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            62.9
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.35,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            65.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            63.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            65.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.1,
+            62.9
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.85,
+            62.15
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 180,
+      "u20_drc_count": 6,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            55.25,
+            76.35
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO5",
+          "start_mm": [
+            53.55,
+            30.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            58.35,
+            66.35
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            54.75,
+            62.75
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.75,
+            62.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            54.75,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            52.2,
+            63.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            63.05
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.1,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.4,
+            62.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            63.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            65.6
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO5",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 180,
+      "u20_drc_count": 17,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /ACC_3V3_EN)",
+          "items": [
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets +3V3 and /01_POWER_TREE/ACC_3V3_ILIM)",
+          "items": [
+            "Pad 2 [+3V3] of U20 on B.Cu",
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.3536 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "shorting_items"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.1,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            62.9
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            50.35,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.1,
+            65.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            63.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            65.6
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 180,
+      "u20_drc_count": 6,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.3536 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1389 mm)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            55.25,
+            76.35
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO5",
+          "start_mm": [
+            53.55,
+            30.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.05,
+            68.4
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.8,
+            34.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            58.35,
+            66.35
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            54.75,
+            62.75
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.75,
+            62.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            54.75,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            52.2,
+            63.05
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            65.2
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            51.1125,
+            65.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            52.2,
+            63.05
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/ACC_3V3_EN",
+          "start_mm": [
+            53.1,
+            62.15
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.15,
+            65.85
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            50.35,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.55
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            53.3875,
+            63.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            53.4,
+            62.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            63.6
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            65.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.15,
+            65.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            54.4,
+            63.6
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+          "start_mm": [
+            54.4,
+            65.6
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/01_POWER_TREE/ACC_3V3_ILIM",
+        "/ACC_3V3_EN",
+        "/XGPIO5",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        1,
+        0
+      ],
+      "rotation_deg": 180,
+      "u20_drc_count": 15,
+      "u20_drc_violations": [
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 5 [/ACC_3V3_SW] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm",
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm",
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 2 [+3V3] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /ACC_3V3_EN)",
+          "items": [
+            "Pad 6 [/ACC_POWER_FAULT_N] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.2728 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+            "Track [/ACC_3V3_EN] on B.Cu, length 2.1500 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and /ACC_3V3_EN)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+            "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+          "items": [
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.3536 mm",
+            "Pad 3 [GND] of U20 on B.Cu"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets +3V3 and /01_POWER_TREE/ACC_3V3_ILIM)",
+          "items": [
+            "Pad 2 [+3V3] of U20 on B.Cu",
+            "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 2.0000 mm"
+          ],
+          "type": "shorting_items"
+        }
+      ]
+    }
+  ],
+  "conclusion": "impact_scope_mapped_for_bounded_control_copper_replacement",
+  "decision": "D-349",
+  "least_impact_candidate": {
+    "expanded_pad_envelope_copper": [
+      {
+        "end_mm": [
+          54.05,
+          68.4
+        ],
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/XGPIO8",
+        "start_mm": [
+          54.8,
+          34.05
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          52.2,
+          65.2
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/ACC_3V3_EN",
+        "start_mm": [
+          51.1125,
+          65.2
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          54.15,
+          65.85
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          50.35,
+          65.85
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          53.4,
+          62.55
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          53.3875,
+          63.3
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          53.4,
+          62.6
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          54.4,
+          63.6
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          50.1,
+          65.6
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          50.1,
+          62.9
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          54.4,
+          65.6
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          54.15,
+          65.85
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          50.35,
+          65.85
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          50.1,
+          65.6
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "end_mm": [
+          54.4,
+          63.6
+        ],
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+        "start_mm": [
+          54.4,
+          65.6
+        ],
+        "width_mm": 0.2
+      }
+    ],
+    "impacted_nets": [
+      "/01_POWER_TREE/ACC_3V3_ILIM",
+      "/ACC_3V3_EN",
+      "/XGPIO8"
+    ],
+    "offset_mm": [
+      0,
+      0.5
+    ],
+    "rotation_deg": 180,
+    "u20_drc_count": 6,
+    "u20_drc_violations": [
+      {
+        "description": "Rear solder mask aperture bridges items with different nets",
+        "items": [
+          "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+          "Pad 3 [GND] of U20 on B.Cu"
+        ],
+        "type": "solder_mask_bridge"
+      },
+      {
+        "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
+        "items": [
+          "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.7501 mm",
+          "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+        ],
+        "type": "clearance"
+      },
+      {
+        "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+        "items": [
+          "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 0.3536 mm",
+          "Pad 3 [GND] of U20 on B.Cu"
+        ],
+        "type": "shorting_items"
+      },
+      {
+        "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1389 mm)",
+        "items": [
+          "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 1.4142 mm",
+          "Pad 1 [/ACC_3V3_EN] of U20 on B.Cu"
+        ],
+        "type": "clearance"
+      },
+      {
+        "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
+        "items": [
+          "Pad 4 [/01_POWER_TREE/ACC_3V3_ILIM] of U20 on B.Cu",
+          "Track [/ACC_3V3_EN] on B.Cu, length 1.0875 mm"
+        ],
+        "type": "clearance"
+      },
+      {
+        "description": "Items shorting two nets (nets /01_POWER_TREE/ACC_3V3_ILIM and GND)",
+        "items": [
+          "Track [/01_POWER_TREE/ACC_3V3_ILIM] on B.Cu, length 3.8000 mm",
+          "Pad 3 [GND] of U20 on B.Cu"
+        ],
+        "type": "shorting_items"
+      }
+    ]
+  },
+  "method": "real_DRC_plus_U20_pad_envelope_0.300mm_clearance",
+  "schema_version": 1
+}
