@@ -1,0 +1,4751 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "baseline_cluster_accepted_pairs": [
+    [
+      "R103.2",
+      "TP33.1"
+    ],
+    [
+      "R103.2",
+      "U3.18"
+    ],
+    [
+      "R129.2",
+      "U3.17"
+    ],
+    [
+      "R51.1",
+      "U3.4"
+    ],
+    [
+      "R52.1",
+      "U3.5"
+    ],
+    [
+      "R53.1",
+      "U3.6"
+    ],
+    [
+      "R54.1",
+      "U3.7"
+    ],
+    [
+      "R55.1",
+      "U3.8"
+    ],
+    [
+      "R56.1",
+      "U3.9"
+    ],
+    [
+      "R59.1",
+      "U3.13"
+    ],
+    [
+      "R60.1",
+      "U3.14"
+    ],
+    [
+      "R64.1",
+      "U3.17"
+    ],
+    [
+      "R98.1",
+      "U3.15"
+    ],
+    [
+      "TP26.1",
+      "U3.15"
+    ],
+    [
+      "TP27.1",
+      "TP33.1"
+    ],
+    [
+      "TP27.1",
+      "U3.18"
+    ],
+    [
+      "TP33.1",
+      "U20.6"
+    ],
+    [
+      "TP33.1",
+      "U22.6"
+    ],
+    [
+      "TP33.1",
+      "U3.18"
+    ],
+    [
+      "U20.1",
+      "U3.15"
+    ],
+    [
+      "U20.6",
+      "U3.18"
+    ],
+    [
+      "U22.6",
+      "U3.18"
+    ]
+  ],
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "candidates": [
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0.5,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "TP33.1"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U20.6"
+        ],
+        [
+          "TP33.1",
+          "U22.6"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 22,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        1,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -1
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0.5,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "TP33.1"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U20.6"
+        ],
+        [
+          "TP33.1",
+          "U22.6"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 22,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 2,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 2,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        1,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 2,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 2,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -1
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0.5,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 11,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 9,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 11,
+        "solder_mask_bridge": 15,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0.5,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "TP33.1"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U20.6"
+        ],
+        [
+          "TP33.1",
+          "U22.6"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 22,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        1,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -1
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        1,
+        0
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 2,
+        "shorting_items": 18,
+        "solder_mask_bridge": 21,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 7,
+        "lib_footprint_issues": 199,
+        "shorting_items": 18,
+        "solder_mask_bridge": 22,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0.5,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "TP33.1"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U20.6"
+        ],
+        [
+          "TP33.1",
+          "U22.6"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 22,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        1,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -1
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -0.5
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0.5,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "TP33.1"
+        ],
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "TP33.1"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U20.6"
+        ],
+        [
+          "TP33.1",
+          "U22.6"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 22,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        1,
+        0
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -0.5
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 2
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 2,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 2,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        -1
+      ]
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R56.1",
+          "U3.9"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "broken_count": 18,
+      "c5_offset_mm": [
+        0,
+        -1
+      ],
+      "drc_delta": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 1,
+        "shorting_items": 10,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1
+      },
+      "pair_route_candidate": false,
+      "placement_drc": {
+        "clearance": 6,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 10,
+        "solder_mask_bridge": 14,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "tp33_offset_mm": [
+        0,
+        0.5
+      ]
+    }
+  ],
+  "conclusion": "bounded_U3_C5_TP33_cluster_space_exhausted",
+  "decision": "D-361",
+  "moved_footprints": [
+    "U3",
+    "C5",
+    "TP33"
+  ],
+  "pair_route_candidates": 0,
+  "schema_version": 1,
+  "source_decision": "D-360",
+  "u3_pose": {
+    "offset_mm": [
+      0.0,
+      0.5
+    ],
+    "rotation_deg": 180
+  }
+}

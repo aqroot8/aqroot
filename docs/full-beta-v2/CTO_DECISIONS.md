@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-361 · 2026-09-01 · routing characterization:** the bounded non-rigid
+U3/C5/TP33 cluster screen exhausts 30 scratch-only layouts around D-360's
+180°/+0.5 mm-north U3 seed and both deterministic XGPIO6/XGPIO7 orders.  All
+60 attempts still fail at through-via reservation (`NO_VIA_SITE`); moving C5
+or TP33 never improves the seed's real KiCad DRC damage and breaks 18–22
+accepted cluster pad pairs.  Therefore these two envelope neighbors do not
+cause the endpoint wall and this cluster is closed.  Next is an exact scratch
+cut-through test: withdraw the D-360-mapped complete U3 incident branches,
+reserve XGPIO6/XGPIO7 first, then test complete branch replay with all unrelated
+copper frozen.  The authoritative board remains byte-identical (`a4b93b9b…`);
+no owner decision is open.
+
 **D-360 · 2026-09-01 · routing characterization:** the complete U3 impact map
 enumerates all 24 incident pads and the eleven already-routed signal branches (211
 connected copper items) at stable non-U3 pad anchors.  The least-impact D-359

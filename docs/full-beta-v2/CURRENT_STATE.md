@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-063 / D-361 (U3 neighbor-cluster characterization; no
+  authoritative PCB change):** 30 non-rigid U3/C5/TP33 layouts around the
+  D-360 180°/+0.5 mm-north U3 seed were screened in both XGPIO6/XGPIO7 orders.
+  Every one of the 60 attempts returns `NO_VIA_SITE`; moving C5 or TP33 does
+  not improve real KiCad DRC and breaks 18–22 accepted cluster pad pairs.
+  Those envelope neighbors are not the endpoint-wall cause. Board remains
+  byte-identical (`a4b93b9b…`). Evidence: `u3_neighbor_cluster_063.py` /
+  `.json`. **Next:** exact scratch cut-through using D-360's complete U3
+  incident-branch boundary: withdraw those branches, reserve XGPIO6/XGPIO7
+  first, and test complete replay while freezing all unrelated copper. No
+  owner decision; readiness 78%.
+
 - **FBV2-P2-062 / D-360 (U3 impact characterization; no authoritative PCB
   change):** complete connectivity-component mapping covers all 24 U3 incident
   pads and the eleven routed signal branches (211 copper items) at stable non-U3
