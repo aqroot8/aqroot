@@ -1,0 +1,1022 @@
+{
+  "authoritative_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "authoritative_unchanged": true,
+  "baseline_cluster_pairs": [
+    [
+      "R97.1",
+      "U20.4"
+    ],
+    [
+      "R98.1",
+      "TP26.1"
+    ],
+    [
+      "R98.1",
+      "U20.1"
+    ],
+    [
+      "R98.1",
+      "U3.15"
+    ],
+    [
+      "TP26.1",
+      "U20.1"
+    ],
+    [
+      "U20.1",
+      "U3.15"
+    ]
+  ],
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "candidates": [
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "clearance": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        -0.25,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {},
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0.25,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "clearance": 3,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 3
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0,
+        -0.25
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {},
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0,
+        0.25
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "courtyards_overlap": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "courtyards_overlap": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "drc": {
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 5,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "courtyards_overlap": 2,
+        "shorting_items": 3,
+        "solder_mask_bridge": 4
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ],
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {},
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "TP27.1",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP27.1",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ],
+      "offset_mm": [
+        -0.75,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "clearance": 1,
+        "courtyards_overlap": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 1,
+        "courtyards_overlap": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0.75,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "drc": {
+        "clearance": 2,
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "silk_overlap": 2,
+        "solder_mask_bridge": 5,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 2,
+        "courtyards_overlap": 2,
+        "shorting_items": 3,
+        "silk_overlap": 2,
+        "solder_mask_bridge": 4
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ],
+      "offset_mm": [
+        0,
+        -0.75
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {},
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "TP27.1",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP27.1",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0,
+        0.75
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ],
+      "offset_mm": [
+        -1,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "courtyards_overlap": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "courtyards_overlap": 1,
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        1,
+        0
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [
+        [
+          "R97.1",
+          "U20.4"
+        ]
+      ],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "drc": {
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 5,
+        "solder_mask_bridge": 7,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "courtyards_overlap": 2,
+        "shorting_items": 5,
+        "solder_mask_bridge": 6
+      },
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_PATH"
+        }
+      ],
+      "offset_mm": [
+        0,
+        -1
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    },
+    {
+      "broken_baseline_pairs": [],
+      "control_replay": [
+        {
+          "a": "R98.1",
+          "b": "U20.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R98.1",
+          "b": "TP26.1",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP26.1",
+          "b": "U3.15",
+          "net": "ACC_3V3_EN",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "R97.1",
+          "b": "U20.4",
+          "net": "ACC_3V3_ILIM",
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {},
+      "fault_route": [
+        {
+          "a": "R103.2",
+          "b": "TP27.1",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": true,
+          "reason": null
+        },
+        {
+          "a": "TP27.1",
+          "b": "U20.6",
+          "net": "ACC_POWER_FAULT_N",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "offset_mm": [
+        0,
+        1
+      ],
+      "promotion_candidate": false,
+      "removed_replay_items": 31
+    }
+  ],
+  "conclusion": "rigid_cluster_translation_exhausted",
+  "decision": "D-346",
+  "promotion_candidates": 0,
+  "schema_version": 1
+}
