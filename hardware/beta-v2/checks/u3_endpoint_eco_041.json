@@ -1,0 +1,926 @@
+{
+  "authoritative_board_sha256": "d52daca8df4351bb0052ba4e260e5c56d0cdcac4806d610c536bd78c599c05c8",
+  "authoritative_unchanged": true,
+  "baseline_u3_accepted_pairs": [
+    [
+      "U3.13",
+      "R59.1"
+    ],
+    [
+      "U3.14",
+      "R60.1"
+    ],
+    [
+      "U3.15",
+      "R98.1"
+    ],
+    [
+      "U3.15",
+      "TP26.1"
+    ],
+    [
+      "U3.15",
+      "U20.1"
+    ],
+    [
+      "U3.17",
+      "R129.2"
+    ],
+    [
+      "U3.17",
+      "R64.1"
+    ],
+    [
+      "U3.4",
+      "R51.1"
+    ],
+    [
+      "U3.5",
+      "R52.1"
+    ],
+    [
+      "U3.6",
+      "R53.1"
+    ],
+    [
+      "U3.7",
+      "R54.1"
+    ],
+    [
+      "U3.8",
+      "R55.1"
+    ],
+    [
+      "U3.9",
+      "R56.1"
+    ]
+  ],
+  "candidates": [
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        -0.25,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 4,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        0.25,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 6,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        0,
+        -0.25
+      ],
+      "placement_drc": {
+        "clearance": 17,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        0,
+        0.25
+      ],
+      "placement_drc": {
+        "clearance": 10,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 4,
+        "courtyards_overlap": 1,
+        "hole_clearance": 8,
+        "lib_footprint_issues": 199,
+        "shorting_items": 5,
+        "silk_over_copper": 1,
+        "solder_mask_bridge": 8,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 5,
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 5,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 12,
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "placement_drc": {
+        "clearance": 3,
+        "courtyards_overlap": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 14,
+        "solder_mask_bridge": 15,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.13",
+          "R59.1"
+        ],
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 13,
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "placement_drc": {
+        "clearance": 2,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 9,
+        "solder_mask_bridge": 10,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 11,
+      "offset_mm": [
+        -0.5,
+        -0.5
+      ],
+      "placement_drc": {
+        "clearance": 4,
+        "courtyards_overlap": 2,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "shorting_items": 16,
+        "silk_over_copper": 1,
+        "solder_mask_bridge": 20,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.13",
+          "R59.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 12,
+      "offset_mm": [
+        -0.5,
+        0.5
+      ],
+      "placement_drc": {
+        "clearance": 7,
+        "courtyards_overlap": 2,
+        "hole_clearance": 10,
+        "lib_footprint_issues": 199,
+        "shorting_items": 14,
+        "solder_mask_bridge": 18,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ]
+      ],
+      "broken_count": 8,
+      "offset_mm": [
+        0.5,
+        -0.5
+      ],
+      "placement_drc": {
+        "courtyards_overlap": 3,
+        "hole_clearance": 8,
+        "lib_footprint_issues": 199,
+        "shorting_items": 22,
+        "solder_mask_bridge": 26,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.13",
+          "R59.1"
+        ],
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 11,
+      "offset_mm": [
+        0.5,
+        0.5
+      ],
+      "placement_drc": {
+        "clearance": 1,
+        "courtyards_overlap": 2,
+        "hole_clearance": 8,
+        "lib_footprint_issues": 199,
+        "shorting_items": 17,
+        "solder_mask_bridge": 19,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 8,
+      "offset_mm": [
+        -1,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 8,
+        "courtyards_overlap": 2,
+        "hole_clearance": 8,
+        "lib_footprint_issues": 199,
+        "shorting_items": 8,
+        "silk_over_copper": 1,
+        "solder_mask_bridge": 15,
+        "track_dangling": 10,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.13",
+          "R59.1"
+        ],
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ]
+      ],
+      "broken_count": 5,
+      "offset_mm": [
+        1,
+        0
+      ],
+      "placement_drc": {
+        "clearance": 7,
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 6,
+        "silk_over_copper": 2,
+        "solder_mask_bridge": 9,
+        "track_dangling": 10,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 12,
+      "offset_mm": [
+        0,
+        -1
+      ],
+      "placement_drc": {
+        "clearance": 5,
+        "courtyards_overlap": 2,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 13,
+        "silk_over_copper": 2,
+        "solder_mask_bridge": 12,
+        "track_dangling": 10,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "U3.13",
+          "R59.1"
+        ],
+        [
+          "U3.14",
+          "R60.1"
+        ],
+        [
+          "U3.15",
+          "R98.1"
+        ],
+        [
+          "U3.15",
+          "TP26.1"
+        ],
+        [
+          "U3.15",
+          "U20.1"
+        ],
+        [
+          "U3.17",
+          "R129.2"
+        ],
+        [
+          "U3.17",
+          "R64.1"
+        ],
+        [
+          "U3.4",
+          "R51.1"
+        ],
+        [
+          "U3.5",
+          "R52.1"
+        ],
+        [
+          "U3.6",
+          "R53.1"
+        ],
+        [
+          "U3.7",
+          "R54.1"
+        ],
+        [
+          "U3.8",
+          "R55.1"
+        ],
+        [
+          "U3.9",
+          "R56.1"
+        ]
+      ],
+      "broken_count": 13,
+      "offset_mm": [
+        0,
+        1
+      ],
+      "placement_drc": {
+        "clearance": 9,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 6,
+        "track_dangling": 10,
+        "unconnected_items": 499
+      },
+      "routes": {
+        "XGPIO6_INNER": {
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        },
+        "XGPIO7_INNER": {
+          "ok": false,
+          "reason": "NO_VIA_SITE"
+        }
+      }
+    }
+  ],
+  "conclusion": "bounded_translation_space_exhausted",
+  "decision": "D-341",
+  "geometric_wins": 0
+}
