@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-374 · 2026-09-01 · routing characterization:** after the D-373 prefix,
+both XGPIO1 In3 endpoint escapes reserve at `(55.40,24.95)/(58.55,76.65)` mm,
+but a bounded 17-point line-relative staged-waypoint sweep produces no complete
+join. Six waypoint cells are blocked; two free cells fail the R52-side first
+leg and nine reach from R52 but cannot reach the U3-side reserved via
+(`SECOND_LEG_NO_PATH`). The authoritative board remains byte-identical
+(`a4b93b9b…`). Generic single-waypoint staging is closed; next is a bounded
+XGPIO1 In3 endpoint-reservation target-bias/via-site sweep, especially at U3.5,
+followed by direct/staged joins only for distinct legal via-site pairs. No owner
+decision is open.
+
 **D-373 · 2026-09-01 · routing characterization:** at the selected D-367
 U3/R58 layout, complete XGPIO1 replacement was attempted after coherent
 XGPIO6/XGPIO7 reservation and the selected XGPIO5/In3, XGPIO4/In2,

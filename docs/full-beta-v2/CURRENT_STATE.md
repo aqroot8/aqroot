@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-076 / D-374 (XGPIO1 staged-waypoint characterization; no
+  authoritative PCB change):** after the four selected inner replacements,
+  XGPIO1 reserves both In3 endpoints at `(55.40,24.95)/(58.55,76.65)` mm.
+  Seventeen deterministic line-relative anchors were screened: six are blocked,
+  two fail the R52-side first leg, and nine fail the U3-side second leg. No
+  complete XGPIO1 route or transaction candidate exists; generic single-anchor
+  staging is closed. Evidence/harness: `u3_xgpio1_waypoint_076.py` / `.json`.
+  Board remains byte-identical (`a4b93b9b…`); no owner decision; readiness
+  remains 78%. **Next:** bounded In3 endpoint-reservation target-bias/via-site
+  sweep for XGPIO1, especially U3.5, then test direct/staged joins only across
+  distinct legal via-site pairs.
 - **FBV2-P2-075 / D-373 (complete-XGPIO1 inner replacement characterization;
   no authoritative PCB change):** after XGPIO6/XGPIO7 reservation and the
   selected In3 XGPIO5, In2 XGPIO4, In3 XGPIO2, and In3 XGPIO3 replacements,

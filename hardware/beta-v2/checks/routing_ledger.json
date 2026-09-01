@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-373",
+  "current_decision": "D-374",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -43,6 +43,7 @@
     {"decision":"D-370","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2"],"result":"XGPIO4_CLOSES_ON_IN2_AND_IN3_AFTER_XGPIO5_IN3_REPLAY_ADVANCES_TO_XGPIO2_U3P6_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio4_inner_replay_072.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-371","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3"],"result":"XGPIO2_CLOSES_ON_IN3_AFTER_XGPIO5_IN3_XGPIO4_IN2_REPLAY_ADVANCES_TO_XGPIO3_U3P7_NO_PATH_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio2_inner_replay_073.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-372","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"XGPIO3_CLOSES_ON_IN3_AFTER_XGPIO5_IN3_XGPIO4_IN2_XGPIO2_IN3_REPLAY_ADVANCES_TO_XGPIO1_U3P5_NO_LEGAL_ESCAPE_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio3_inner_replay_074.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-373","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"XGPIO1_DIRECT_INNER_REPLACEMENT_FAILS_IN2_NO_VIA_SITE_AND_IN3_NO_PATH_AFTER_FOUR_SELECTED_INNER_ROUTES_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio1_inner_replay_075.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-373","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"XGPIO1_DIRECT_INNER_REPLACEMENT_FAILS_IN2_NO_VIA_SITE_AND_IN3_NO_PATH_AFTER_FOUR_SELECTED_INNER_ROUTES_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio1_inner_replay_075.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-374","framework":"XGPIO1_In3_line_relative_staged_waypoint_sweep","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"17_WAYPOINTS_ZERO_XGPIO1_ROUTES_6_BLOCKED_2_FIRST_LEG_NO_PATH_9_SECOND_LEG_NO_PATH","evidence":"u3_xgpio1_waypoint_076.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }
