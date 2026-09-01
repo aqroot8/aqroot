@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-059 / D-357 (replacement-gate characterization; no authoritative
+  PCB change):** the independent replacement-aware full-board gate regenerates
+  and certifies D-356. Only U4 moves, exactly 270°/+0.5 mm east; all missing
+  copper is inside the complete declared `BMI270_SDO_ADDR` branch, all added
+  copper belongs to the two transaction nets, both nets are connected, and no
+  baseline pad connectivity regresses. Ratsnest improves 644→643; real KiCad
+  DRC remains exactly 5 hole-clearance / 199 library-footprint / 1 mask-bridge /
+  499 unconnected findings. Board remains byte-identical (`02e263a7…`).
+  Evidence: `u4_transaction_gate_059.py` / `.json`. **Next:** atomically promote
+  the candidate and re-pin journal, fingerprints, probes, G-contract, ledger,
+  and wall state. No owner decision; readiness 78%.
+
 - **FBV2-P2-058 / D-356 (closed U4 transaction candidate; no authoritative
   change):** the exact U4 270°/+0.5 mm-east scratch transaction removes the
   complete eight-track `BMI270_SDO_ADDR` branch, reserves the new

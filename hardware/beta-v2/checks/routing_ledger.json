@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-356",
+  "current_decision": "D-357",
   "current_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -26,6 +26,7 @@
     {"decision":"D-352","framework":"replacement_aware_authoritative_full_board_gate","nets":["ACC_3V3_EN","ACC_3V3_ILIM","ACC_POWER_FAULT_N"],"result":"PASS_EXACT_BOUNDARY_RATSNEST_649_TO_644_DRC_UNCHANGED_PROMOTION_PENDING","evidence":"u20_transaction_gate_054.json","authoritative_board_unchanged":true,"board_sha256":"2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4"},
     {"decision":"D-354","framework":"bounded_U4_rotation_translation_ECO","nets":["BMI270_INT1_RAW"],"result":"180_AND_270_DEG_ROUTE_BUT_ALL_BREAK_2_ACCEPTED_STRAP_PAIRS_AND_WORSEN_REAL_DRC","evidence":"u4_neighbor_eco_056.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
     {"decision":"D-355","framework":"geometric_accepted_copper_impact_map","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"U4_270DEG_EAST_0P5MM_ZERO_U4_DRC_ONLY_COMPLETE_ADDRESS_STRAP_REPLAY_REQUIRED_XGPIO8_FROZEN","evidence":"u4_impact_map_057.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
-    {"decision":"D-356","framework":"complete_address_branch_replacement_at_U4_270deg_east_0p5mm","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"TRANSACTION_CANDIDATE_BOTH_NETS_CONNECTED_DRC_UNCHANGED_REPLACEMENT_GATE_PENDING","evidence":"u4_closed_branch_058.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"}
+    {"decision":"D-356","framework":"complete_address_branch_replacement_at_U4_270deg_east_0p5mm","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"TRANSACTION_CANDIDATE_BOTH_NETS_CONNECTED_DRC_UNCHANGED_REPLACEMENT_GATE_PENDING","evidence":"u4_closed_branch_058.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"},
+    {"decision":"D-357","framework":"replacement_aware_authoritative_full_board_gate","nets":["BMI270_INT1_RAW","BMI270_SDO_ADDR"],"result":"PASS_EXACT_BOUNDARY_RATSNEST_644_TO_643_DRC_UNCHANGED_PROMOTION_PENDING","evidence":"u4_transaction_gate_059.json","authoritative_board_unchanged":true,"board_sha256":"02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5"}
   ]
 }

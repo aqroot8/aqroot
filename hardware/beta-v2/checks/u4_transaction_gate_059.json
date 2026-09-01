@@ -1,0 +1,48 @@
+{
+  "added_items": 13,
+  "allowed_replacement_items": 8,
+  "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "candidate_board_sha256": "da98dfee25b6953dd08834cf7df2b614214683c2c27032398878bd7b43af3cb5",
+  "decision": "D-357",
+  "drc_after": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_worse": {},
+  "failures": [],
+  "missing_items": 4,
+  "moved_footprints": {
+    "U4": [
+      [
+        57000000,
+        70000000,
+        0.0,
+        "B.Cu"
+      ],
+      [
+        57500000,
+        70000000,
+        -90.0,
+        "B.Cu"
+      ]
+    ]
+  },
+  "next": "atomic promotion plus accepted-copper/journal/fingerprint/probe contract re-pin",
+  "open_edges_after": {
+    "/05_I2C_DEVICES/BMI270_INT1_RAW": 0,
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR": 0
+  },
+  "promotion_performed": false,
+  "ratsnest_after": 643,
+  "ratsnest_before": 644,
+  "schema_version": 1,
+  "verdict": "PASS"
+}

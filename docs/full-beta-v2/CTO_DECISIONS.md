@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-357 · 2026-09-01 · routing gate characterization:** the independent
+replacement-aware full-board gate regenerates and certifies the D-356 U4
+transaction. Only U4 moves (exactly 270°/+0.5 mm east); all missing copper is
+inside the complete declared `BMI270_SDO_ADDR` branch, all added copper is on
+the two transaction nets, no baseline pad connectivity regresses, ratsnest
+improves 644→643, and real KiCad DRC is unchanged. The authoritative board
+remains byte-identical (`02e263a7…`). Next is atomic promotion plus accepted-
+copper contract re-pin. No owner decision is open.
+
 **D-356 · 2026-09-01 · routing characterization:** the exact scratch U4
 transaction at 270°/+0.5 mm east is a closed candidate. The complete eight-track
 `BMI270_SDO_ADDR` branch is removed and replayed after reserving the new
