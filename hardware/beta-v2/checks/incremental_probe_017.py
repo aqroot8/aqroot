@@ -142,7 +142,7 @@ def main():
     # Increments promoted AFTER D-316 (XGPIO3) are excluded so this
     # "pre-XGPIO3 copper intact" check stays true as the board grows.  The
     # pre-XGPIO3 accepted copper is Phase-A (432) + all eleven prior rest
-    # increments incl. the west XGPIO0/1 south pilot (237) = 669 tracks + 66 vias.
+    # increments incl. the west XGPIO0/1 south pilot (237) = 660 tracks + 66 vias.
     PRE_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR',
                   'FRONT_RGB_LED', 'IR_RX_VS', 'TOUCH_CTL', 'AMP_SD_MODE',
                   'SD_DETECT', 'XGPIO_PILOT', 'XGPIO_PILOT_W', 'XGPIO3')
@@ -150,8 +150,8 @@ def main():
             and e.get('group') not in PRE_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post})
     prior_now = now - xg_items - post_items
-    chk('non-XGPIO3 pre-D-316 copper == 669 tracks + 66 vias (all prior increments intact)',
-        sum(prior_now.values()) == 669 + 66,
+    chk('non-XGPIO3 pre-D-316 copper == 660 tracks + 66 vias (all prior increments intact)',
+        sum(prior_now.values()) == 660 + 66,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

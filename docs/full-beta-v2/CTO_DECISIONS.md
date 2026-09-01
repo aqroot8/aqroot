@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-353 · 2026-09-01 · routing promotion:** the D-352-certified U20
+replacement transaction is atomically promoted. U20 is exactly 180°/+0.5 mm
+north; the complete EN/ILIM replacement boundary and new six-terminal
+`ACC_POWER_FAULT_N` branch are journaled and pinned by G46. All unrelated
+copper and baseline pad connectivity remain preserved, ratsnest improves
+649→644, and real KiCad DRC is unchanged. Authoritative board is `02e263a7…`
+(918 tracks / 85 vias / journal 137). Next is the bounded U4-neighbor cluster
+ECO for `BMI270_INT1_RAW`; no owner decision is open.
+
 **D-352 · 2026-09-01 · routing gate characterization:** the replacement-aware
 full-board transaction gate independently regenerates and certifies the D-351 U20
 candidate. The only placement delta is U20 at exactly 180°/+0.5 mm north; all missing

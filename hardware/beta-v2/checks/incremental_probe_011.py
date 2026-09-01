@@ -117,16 +117,16 @@ def main():
     irvs_items = collections.Counter({s: n for s, n in now.items() if s[1] in IRVS})
     # Increments promoted AFTER D-309 (IR_RX_VS) are excluded so this "pre-IR_RX_VS
     # copper intact" check stays true as the board grows.  The pre-IR_RX_VS
-    # accepted copper is Phase-A (432) + FRONT_RGB (20) + ACC (31) + DISP (11) +
-    # IMU (8) + FRONT_RGB_LED (25) = 527 tracks + 58 vias.
+    # accepted copper is Phase-A (432) + FRONT_RGB (20) + ACC (22, D-353 replacement) + DISP (11) +
+    # IMU (8) + FRONT_RGB_LED (25) = 518 tracks + 58 vias.
     PRE_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR',
                   'FRONT_RGB_LED', 'IR_RX_VS')
     post = {e['net'] for e in jr if e.get('role') == 'REST_INC'
             and e.get('group') not in PRE_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post})
     prior_now = now - irvs_items - post_items
-    chk('non-IR_RX_VS pre-D-310 copper == 527 tracks + 58 vias (all prior increments intact)',
-        sum(prior_now.values()) == 527 + 58,
+    chk('non-IR_RX_VS pre-D-310 copper == 518 tracks + 58 vias (all prior increments intact)',
+        sum(prior_now.values()) == 518 + 58,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

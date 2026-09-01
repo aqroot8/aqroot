@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-055 / D-353 (U20 TRANSACTION PROMOTED):** the D-352-certified
+  replacement transaction is now authoritative. U20 moved exactly 180°/+0.5 mm
+  north; the complete `ACC_3V3_EN`/`ACC_3V3_ILIM` branches were transactionally
+  replaced and all six `ACC_POWER_FAULT_N` terminals are connected. No unrelated
+  copper or baseline pad connectivity regressed. G1–G46, probes 006–028 and
+  Phase-B pass; real KiCad DRC remains exactly 5 hole-clearance / 1 mask-bridge /
+  199 library-footprint / 499 unconnected-item findings with no new copper class.
+  Board `02e263a7…`, 918 tracks / 85 vias / journal 137 / ratsnest 644; Phase-B
+  36/164 routed, 128 unrouted. **Next:** bounded U4-neighbor cluster ECO with
+  accepted-copper replay for `BMI270_INT1_RAW`. No owner decision; readiness 78%.
 - **FBV2-P2-054 / D-352 (replacement-gate characterization; no authoritative PCB
   change):** the deterministic replacement-aware full-board gate certifies D-351's
   exact U20 pose/copper transaction, preserves all unrelated copper/placement and

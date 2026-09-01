@@ -121,7 +121,7 @@ def main():
     sd_items = collections.Counter({s: n for s, n in now.items() if s[1] in SD})
     # Increments promoted AFTER D-312 (SD_DETECT) are excluded so this "pre-SD
     # copper intact" check stays true as the board grows.  The pre-SD accepted
-    # copper is Phase-A (432) + FRONT_RGB (20) + ACC (31) + DISP (11) + IMU (8) +
+    # copper is Phase-A (432) + FRONT_RGB (20) + ACC (22, D-353 replacement) + DISP (11) + IMU (8) +
     # FRONT_RGB_LED (25) + IR_RX_VS (8) + TOUCH (26) + AMP_SD_MODE (19) = 580
     # tracks + 61 vias.
     PRE_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR',
@@ -131,8 +131,8 @@ def main():
             and e.get('group') not in PRE_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post})
     prior_now = now - sd_items - post_items
-    chk('non-SD pre-D-313 copper == 580 tracks + 61 vias (all prior increments intact)',
-        sum(prior_now.values()) == 580 + 61,
+    chk('non-SD pre-D-313 copper == 571 tracks + 61 vias (all prior increments intact)',
+        sum(prior_now.values()) == 571 + 61,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

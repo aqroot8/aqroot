@@ -110,15 +110,15 @@ def main():
     # Increments promoted AFTER D-307 (IMU_ADDR) -- e.g. D-308 FRONT_RGB_LED --
     # are excluded so this "pre-IMU copper intact" check stays true as the board
     # grows.  The pre-IMU accepted copper is Phase-A (432) + FRONT_RGB (20) +
-    # ACC_3V3_CTL (31) + DISP_RST (11) = 494 tracks + 55 vias, and must never
+    # ACC_3V3_CTL (22, D-353 replacement) + DISP_RST (11) = 485 tracks + 55 vias, and must never
     # change under any later increment.
     PRE_IMU_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR')
     post_imu = {e['net'] for e in jr if e.get('role') == 'REST_INC'
                 and e.get('group') not in PRE_IMU_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post_imu})
     prior_now = now - imu_items - post_items
-    chk('non-IMU pre-D-308 copper == 494 tracks + 55 vias (Phase-A + RGB + ACC + DISP intact)',
-        sum(prior_now.values()) == 494 + 55,
+    chk('non-IMU pre-D-308 copper == 485 tracks + 55 vias (Phase-A + RGB + ACC + DISP intact)',
+        sum(prior_now.values()) == 485 + 55,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

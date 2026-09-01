@@ -117,16 +117,16 @@ def main():
     amp_items = collections.Counter({s: n for s, n in now.items() if s[1] in AMP})
     # Increments promoted AFTER D-311 (AMP_SD_MODE) are excluded so this "pre-AMP
     # copper intact" check stays true as the board grows.  The pre-AMP accepted
-    # copper is Phase-A (432) + FRONT_RGB (20) + ACC (31) + DISP (11) + IMU (8) +
-    # FRONT_RGB_LED (25) + IR_RX_VS (8) + TOUCH (26) = 561 tracks + 60 vias.
+    # copper is Phase-A (432) + FRONT_RGB (20) + ACC (22, D-353 replacement) + DISP (11) + IMU (8) +
+    # FRONT_RGB_LED (25) + IR_RX_VS (8) + TOUCH (26) = 552 tracks + 60 vias.
     PRE_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST', 'IMU_ADDR',
                   'FRONT_RGB_LED', 'IR_RX_VS', 'TOUCH_CTL', 'AMP_SD_MODE')
     post = {e['net'] for e in jr if e.get('role') == 'REST_INC'
             and e.get('group') not in PRE_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post})
     prior_now = now - amp_items - post_items
-    chk('non-AMP pre-D-312 copper == 561 tracks + 60 vias (all prior increments intact)',
-        sum(prior_now.values()) == 561 + 60,
+    chk('non-AMP pre-D-312 copper == 552 tracks + 60 vias (all prior increments intact)',
+        sum(prior_now.values()) == 552 + 60,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

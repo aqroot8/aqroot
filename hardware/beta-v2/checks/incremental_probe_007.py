@@ -13,7 +13,7 @@ promoted:
      byte/geometry-identical, none deleted or altered (proven as a copper-item
      multiset superset over the two ACC nets removed);
   2. the increment is ADD-ONLY and IN-SCOPE -- the only new copper is the two
-     ACC_3V3_CTL nets (31 tracks, 0 vias), all 0.200 mm B.Cu;
+     ACC_3V3_CTL nets (22 tracks, 0 vias), all 0.200 mm B.Cu;
   3. the two ACC nets are now FULLY copper-connected (ratsnest 701->697), and no
      prior requested-connected pad pair (Phase-A or FRONT_RGB) regressed;
   4. real full-board KiCad DRC is unchanged (no new class, none increased).
@@ -107,8 +107,8 @@ def main():
     chk('Phase-A copper == 432 tracks + 54 vias (intact under all increments)',
         sum(phaseA_now.values()) == 432 + 54,
         '%d items' % sum(phaseA_now.values()))
-    chk('the ACC_3V3_CTL increment is exactly 31 B.Cu tracks (0 vias)',
-        sum(acc_items.values()) == 31 and all(s[0] == 'T' for s in acc_items),
+    chk('the ACC_3V3_CTL increment is exactly 22 B.Cu tracks (0 vias)',
+        sum(acc_items.values()) == 22 and all(s[0] == 'T' for s in acc_items),
         '%d items, all tracks=%s' % (sum(acc_items.values()),
                                      all(s[0] == 'T' for s in acc_items)))
 

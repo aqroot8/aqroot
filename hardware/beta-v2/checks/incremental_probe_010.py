@@ -125,8 +125,8 @@ def main():
             and e.get('group') not in PRE_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post})
     prior_now = now - rgbled_items - post_items
-    chk('non-FRONT_RGB_LED pre-D-309 copper == 502 tracks + 55 vias (all prior increments intact)',
-        sum(prior_now.values()) == 502 + 55,
+    chk('non-FRONT_RGB_LED pre-D-309 copper == 493 tracks + 55 vias (all prior increments intact)',
+        sum(prior_now.values()) == 493 + 55,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

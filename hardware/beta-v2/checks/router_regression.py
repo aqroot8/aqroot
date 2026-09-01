@@ -1176,8 +1176,10 @@ def main():
         # incremental_router.py as a genuine no-casualty / no-new-DRC increment.
         # G19 pins that increment on the authoritative board: the two nets are
         # fully copper-connected, their copper is legal (0.200 mm B.Cu, NO via),
-        # and the increment is ADD-ONLY -- the FRONT_RGB increment (20 tracks) is
-        # untouched and the Phase-A copper is still exactly 432 tracks.
+        # D-353 transactionally replaced this group's original 31-track branch
+        # geometry after moving U20.  The accepted topology and electrical rules
+        # remain pinned here, while G46 pins the exact replacement boundary,
+        # U20 pose and newly closed ACC_POWER_FAULT_N branch.
         print('  -- G19 FBV2-P2-007/D-305 rest-of-board incremental increment --')
         ACC = ('/ACC_3V3_EN', '/01_POWER_TREE/ACC_3V3_ILIM')
         acc_trk = [t for t in _g18.GetTracks()
@@ -1204,10 +1206,10 @@ def main():
                sorted({t.GetLayerName() for t in acc_trk}), len(acc_via)),
             acc_legal)
 
-        acc_addonly = (len(acc_trk) == 31 and len(rgb_trk) == 20
+        acc_addonly = (len(acc_trk) == 22 and len(rgb_trk) == 20
                        and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
-        chk('G19 increment is ADD-ONLY (FRONT_RGB 20 + Phase-A 432 preserved)',
-            'acc=%d (exp 31), rgb=%d (exp 20), phaseA=%d (exp 432), phaseA_vias=%d (exp 54)'
+        chk('G19 replacement contract preserves FRONT_RGB 20 + Phase-A 432',
+            'acc=%d (exp 22), rgb=%d (exp 20), phaseA=%d (exp 432), phaseA_vias=%d (exp 54)'
             % (len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             acc_addonly)
 
@@ -1249,9 +1251,9 @@ def main():
                _v.GetDrill() if _v else None),
             disp_legal)
 
-        disp_addonly = (len(disp_trk) == 11 and len(acc_trk) == 31 and len(rgb_trk) == 20
+        disp_addonly = (len(disp_trk) == 11 and len(acc_trk) == 22 and len(rgb_trk) == 20
                         and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
-        chk('G20 increment is ADD-ONLY (RGB 20 + ACC 31 + Phase-A 432/54 preserved)',
+        chk('G20 increment is ADD-ONLY (RGB 20 + ACC 22 + Phase-A 432/54 preserved)',
             'disp=%d (exp 11), acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
             disp_addonly)
@@ -1289,10 +1291,10 @@ def main():
                sorted({t.GetLayerName() for t in imu_trk}), len(imu_via)),
             imu_legal)
 
-        imu_addonly = (len(imu_trk) == 8 and len(disp_trk) == 11 and len(acc_trk) == 31
+        imu_addonly = (len(imu_trk) == 8 and len(disp_trk) == 11 and len(acc_trk) == 22
                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                        and len(phaseA_via) == 54)
-        chk('G21 increment is ADD-ONLY (DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G21 increment is ADD-ONLY (DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'imu=%d (exp 8), disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
                len(phaseA_trk), len(phaseA_via)),
@@ -1343,10 +1345,10 @@ def main():
             rgbled_legal)
 
         rgbled_addonly = (len(rgbled_trk) == 25 and len(imu_trk) == 8
-                          and len(disp_trk) == 11 and len(acc_trk) == 31
+                          and len(disp_trk) == 11 and len(acc_trk) == 22
                           and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                           and len(phaseA_via) == 54)
-        chk('G22 increment is ADD-ONLY (IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G22 increment is ADD-ONLY (IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'rgbled=%d (exp 25), imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
                len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
@@ -1392,9 +1394,9 @@ def main():
 
         irvs_addonly = (len(irvs_trk) == 8 and len(rgbled_trk) == 25
                         and len(imu_trk) == 8 and len(disp_trk) == 11
-                        and len(acc_trk) == 31 and len(rgb_trk) == 20
+                        and len(acc_trk) == 22 and len(rgb_trk) == 20
                         and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
-        chk('G23 increment is ADD-ONLY (RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G23 increment is ADD-ONLY (RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'irvs=%d (exp 8), rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
                len(acc_trk), len(rgb_trk), len(phaseA_trk), len(phaseA_via)),
@@ -1417,7 +1419,7 @@ def main():
         # pins the increment: both nets fully copper-connected, copper legal (26 trk
         # 0.200 mm, 2x 0.60/0.30 through vias), the two vias cleared of every other
         # via (the offset mechanism worked), and ADD-ONLY (IR_RX_VS 8, RGB_LED 25,
-        # IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54 untouched).
+        # IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54 untouched).
         print('  -- G24 FBV2-P2-012/D-310 rest-of-board incremental increment --')
         TCH = ('/TOUCH_RST_N', '/TOUCH_INT_N')
         tch_trk = [t for t in _g18.GetTracks()
@@ -1460,10 +1462,10 @@ def main():
 
         tch_addonly = (len(tch_trk) == 26 and len(irvs_trk) == 8
                        and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(disp_trk) == 11 and len(acc_trk) == 22
                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                        and len(phaseA_via) == 54)
-        chk('G24 increment is ADD-ONLY (IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G24 increment is ADD-ONLY (IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'touch=%d (exp 26), irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk),
                len(disp_trk), len(acc_trk), len(rgb_trk), len(phaseA_trk),
@@ -1485,7 +1487,7 @@ def main():
         # across the U2 F/B hop, copper legal (19 trk 0.200 mm F.Cu+B.Cu, one
         # 0.60/0.30 through via), the via cleared of every existing via (the
         # offset mechanism worked), and ADD-ONLY (TOUCH 26, IR_RX_VS 8, RGB_LED
-        # 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54 untouched).
+        # 25, IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54 untouched).
         print('  -- G25 FBV2-P2-013/D-311 rest-of-board incremental increment --')
         AMP = ('/AMP_SD_MODE',)
         amp_trk = [t for t in _g18.GetTracks()
@@ -1525,10 +1527,10 @@ def main():
 
         amp_addonly = (len(amp_trk) == 19 and len(tch_trk) == 26 and len(irvs_trk) == 8
                        and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(disp_trk) == 11 and len(acc_trk) == 22
                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                        and len(phaseA_via) == 54)
-        chk('G25 increment is ADD-ONLY (TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G25 increment is ADD-ONLY (TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'amp=%d (exp 19), touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
@@ -1551,7 +1553,7 @@ def main():
         # increment: net fully copper-connected across the U2 F/B hop, copper
         # legal (28 trk 0.200 mm F.Cu+B.Cu, one 0.60/0.30 through via), the via
         # cleared of every existing via, and ADD-ONLY (AMP 19, TOUCH 26,
-        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G26 FBV2-P2-014/D-312 rest-of-board incremental increment --')
         SD = ('/SD_CARD_DETECT_N',)
         sd_trk = [t for t in _g18.GetTracks()
@@ -1590,9 +1592,9 @@ def main():
         sd_addonly = (len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25
                       and len(imu_trk) == 8 and len(disp_trk) == 11
-                      and len(acc_trk) == 31 and len(rgb_trk) == 20
+                      and len(acc_trk) == 22 and len(rgb_trk) == 20
                       and len(phaseA_trk) == 432 and len(phaseA_via) == 54)
-        chk('G26 increment is ADD-ONLY (AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G26 increment is ADD-ONLY (AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'sd=%d (exp 28), amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
                len(imu_trk), len(disp_trk), len(acc_trk), len(rgb_trk),
@@ -1617,7 +1619,7 @@ def main():
         # connected, copper legal (23 trk 0.200 mm F.Cu+B.Cu, two 0.60/0.30
         # through vias), both vias clear of every existing via, the D-269 0.300 mm
         # BAT_PROTECTED_P clearance kept, and ADD-ONLY (SD 28, AMP 19, TOUCH 26,
-        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G27 FBV2-P2-015/D-313 rest-of-board incremental increment --')
         XG = ('/XGPIO8', '/XGPIO9')
         xg_trk = [t for t in _g18.GetTracks()
@@ -1689,10 +1691,10 @@ def main():
         xg_addonly = (len(xg_trk) == 23 and len(sd_trk) == 28 and len(amp_trk) == 19
                       and len(tch_trk) == 26 and len(irvs_trk) == 8
                       and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(disp_trk) == 11 and len(acc_trk) == 22
                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                       and len(phaseA_via) == 54)
-        chk('G27 increment is ADD-ONLY (SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G27 increment is ADD-ONLY (SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'xgpio=%d (exp 23), sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk),
                len(rgbled_trk), len(imu_trk), len(disp_trk), len(acc_trk),
@@ -1718,7 +1720,7 @@ def main():
         # two 0.60/0.30 through vias), both vias clear of every existing via, the
         # D-269 0.300 mm BAT_PROTECTED_P clearance kept, and ADD-ONLY (east XGPIO
         # 23, SD 28, AMP 19, TOUCH 26, IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11,
-        # ACC 31, RGB 20, Phase-A 432/54).
+        # ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G28 FBV2-P2-016/D-314 rest-of-board incremental increment --')
         XGW = ('/XGPIO1', '/XGPIO0')
         xgw_trk = [t for t in _g18.GetTracks()
@@ -1775,10 +1777,10 @@ def main():
         xgw_addonly = (len(xgw_trk) == 38 and len(xg_trk) == 23 and len(sd_trk) == 28
                        and len(amp_trk) == 19 and len(tch_trk) == 26 and len(irvs_trk) == 8
                        and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(disp_trk) == 11 and len(acc_trk) == 22
                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                        and len(phaseA_via) == 54)
-        chk('G28 increment is ADD-ONLY (east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G28 increment is ADD-ONLY (east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'xgpio_w=%d (exp 38), xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk),
                len(irvs_trk), len(rgbled_trk), len(imu_trk), len(disp_trk),
@@ -1806,7 +1808,7 @@ def main():
         # (22 trk 0.200 mm F.Cu+B.Cu, one 0.60/0.30 through via), the via clear of
         # every existing via, the D-269 0.300 mm BAT_PROTECTED_P clearance kept, and
         # ADD-ONLY (west-XGPIO 38, east-XGPIO 23, SD 28, AMP 19, TOUCH 26,
-        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G29 FBV2-P2-018/D-316 rest-of-board incremental increment --')
         XG3 = '/XGPIO3'
         xg3_trk = [t for t in _g18.GetTracks()
@@ -1860,10 +1862,10 @@ def main():
         xg3_addonly = (len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                        and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                        and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                       and len(disp_trk) == 11 and len(acc_trk) == 31
+                       and len(disp_trk) == 11 and len(acc_trk) == 22
                        and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                        and len(phaseA_via) == 54)
-        chk('G29 increment is ADD-ONLY (west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G29 increment is ADD-ONLY (west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'xgpio3=%d (exp 22), xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk),
                len(tch_trk), len(irvs_trk), len(rgbled_trk), len(imu_trk),
@@ -1884,7 +1886,7 @@ def main():
         # (0.200 mm).  G30 pins the increment: all four pads copper-connected,
         # copper legal (18 trk 0.200 mm all F.Cu, ZERO vias), and ADD-ONLY
         # (XGPIO3 22, west-XGPIO 38, east-XGPIO 23, SD 28, AMP 19, TOUCH 26,
-        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 31, RGB 20, Phase-A 432/54).
+        # IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11, ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G30 FBV2-P2-020/D-318 rest-of-board incremental increment --')
         INET = '/BMI270_INT1_STRAP'
         imu1_trk = [t for t in _g18.GetTracks()
@@ -1910,10 +1912,10 @@ def main():
                         and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                         and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                         and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(disp_trk) == 11 and len(acc_trk) == 22
                         and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                         and len(phaseA_via) == 54)
-        chk('G30 increment is ADD-ONLY (XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G30 increment is ADD-ONLY (XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'imu_int1=%d (exp 18, 0 via), xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk),
                len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
@@ -1936,7 +1938,7 @@ def main():
         # both pads copper-connected, copper legal (7 trk 0.200 mm all F.Cu, ZERO
         # vias), and ADD-ONLY (IMU_INT1 18, XGPIO3 22, west-XGPIO 38, east-XGPIO
         # 23, SD 28, AMP 19, TOUCH 26, IR_RX_VS 8, RGB_LED 25, IMU 8, DISP 11,
-        # ACC 31, RGB 20, Phase-A 432/54).
+        # ACC 22, RGB 20, Phase-A 432/54).
         print('  -- G31 FBV2-P2-021/D-319 rest-of-board incremental increment --')
         UNET = '/02_MCU_CORE/UART0_TXD_DBG'
         uart_trk = [t for t in _g18.GetTracks()
@@ -1963,10 +1965,10 @@ def main():
                         and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                         and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                         and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(disp_trk) == 11 and len(acc_trk) == 22
                         and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                         and len(phaseA_via) == 54)
-        chk('G31 increment is ADD-ONLY (IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G31 increment is ADD-ONLY (IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'uart=%d (exp 7, 0 via), imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
                len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk), len(rgbled_trk),
@@ -2019,10 +2021,10 @@ def main():
                         and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                         and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                         and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(disp_trk) == 11 and len(acc_trk) == 22
                         and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                         and len(phaseA_via) == 54)
-        chk('G32 increment is ADD-ONLY (IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G32 increment is ADD-ONLY (IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'irtx=%d (exp 13, 0 via), uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(irtx_trk), len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk),
                len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk), len(irvs_trk),
@@ -2075,10 +2077,10 @@ def main():
                         and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                         and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                         and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                        and len(disp_trk) == 11 and len(acc_trk) == 31
+                        and len(disp_trk) == 11 and len(acc_trk) == 22
                         and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                         and len(phaseA_via) == 54)
-        chk('G33 increment is ADD-ONLY (SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G33 increment is ADD-ONLY (SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'sdcs=%d (exp 20, 0 via), irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(sdcs_trk), len(irtx_trk), len(uart_trk), len(imu1_trk), len(xg3_trk),
                len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk), len(tch_trk),
@@ -2133,10 +2135,10 @@ def main():
                       and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                       and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(disp_trk) == 11 and len(acc_trk) == 22
                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                       and len(phaseA_via) == 54)
-        chk('G34 increment is ADD-ONLY (RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G34 increment is ADD-ONLY (RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'reserved_spare=%d (exp 10, 0 via), sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(rs_trk), len(sdcs_trk), len(irtx_trk), len(uart_trk), len(imu1_trk),
                len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk), len(amp_trk),
@@ -2205,10 +2207,10 @@ def main():
                       and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                       and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(disp_trk) == 11 and len(acc_trk) == 22
                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                       and len(phaseA_via) == 54)
-        chk('G35 increment is ADD-ONLY (ACC_DETECT_N 22/1via + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G35 increment is ADD-ONLY (ACC_DETECT_N 22/1via + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'accdet=%d (exp 22, 1 via), reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk), len(uart_trk),
                len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk), len(sd_trk),
@@ -2281,10 +2283,10 @@ def main():
                       and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                       and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(disp_trk) == 11 and len(acc_trk) == 22
                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                       and len(phaseA_via) == 54)
-        chk('G36 increment is ADD-ONLY (BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G36 increment is ADD-ONLY (BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'btn=%d (exp 19, 2 via), accdet=%d, reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(bn_trk), len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk),
                len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
@@ -2425,10 +2427,10 @@ def main():
                       and len(xg3_trk) == 22 and len(xgw_trk) == 38 and len(xg_trk) == 23
                       and len(sd_trk) == 28 and len(amp_trk) == 19 and len(tch_trk) == 26
                       and len(irvs_trk) == 8 and len(rgbled_trk) == 25 and len(imu_trk) == 8
-                      and len(disp_trk) == 11 and len(acc_trk) == 31
+                      and len(disp_trk) == 11 and len(acc_trk) == 22
                       and len(rgb_trk) == 20 and len(phaseA_trk) == 432
                       and len(phaseA_via) == 54)
-        chk('G38 increment is ADD-ONLY (BTN_UP_N 21/1via + BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 31 + RGB 20 + Phase-A 432/54 preserved)',
+        chk('G38 increment is ADD-ONLY (BTN_UP_N 21/1via + BTN_B_N 19/2via + ACC_DETECT_N 22 + RESERVED_SPARE 10 + SD_CS 20 + IR_TX 13 + UART 7 + IMU_INT1 18 + XGPIO3 22 + west-XGPIO 38 + east-XGPIO 23 + SD 28 + AMP 19 + TOUCH 26 + IR_RX_VS 8 + RGB_LED 25 + IMU 8 + DISP 11 + ACC 22 + RGB 20 + Phase-A 432/54 preserved)',
             'btnup=%d (exp 21, 1 via), btn_b=%d, accdet=%d, reserved_spare=%d, sdcs=%d, irtx=%d, uart=%d, imu_int1=%d, xgpio3=%d, xgpio_w=%d, xgpio_e=%d, sd=%d, amp=%d, touch=%d, irvs=%d, rgbled=%d, imu=%d, disp=%d, acc=%d, rgb=%d, phaseA=%d, phaseA_vias=%d'
             % (len(bu_trk), len(bn_trk), len(ad_trk), len(rs_trk), len(sdcs_trk), len(irtx_trk),
                len(uart_trk), len(imu1_trk), len(xg3_trk), len(xgw_trk), len(xg_trk),
@@ -2635,6 +2637,31 @@ def main():
                     and v.GetViaType() == pcbnew.VIATYPE_THROUGH for v in bl_via)
             and bl_plan == {'a': 'R109.2', 'b': 'U17.4', 'a_near': 'F',
                             'b_near': 'B', 'inner': ['I2', 'I3']})
+
+        # -- G46 FBV2-P2-055/D-353 certified U20 transaction promotion ------
+        print('  -- G46 U20 replacement transaction + ACC_POWER_FAULT_N --')
+        faultnet = '/ACC_POWER_FAULT_N'
+        fault_trk = [t for t in _g18.GetTracks()
+                     if t.GetClass() == 'PCB_TRACK' and t.GetNetname() == faultnet]
+        fault_via = [v for v in all_via if v.GetNetname() == faultnet]
+        fault_reach = {p.GetParentFootprint().GetReference() + '.' + p.GetNumber()
+                       for p in _cc.GetConnectedItems(_pad('U20.6'))
+                       if p.GetClass() == 'PAD'}
+        u20 = _g18.FindFootprintByReference('U20')
+        up = u20.GetPosition()
+        uj = [e for e in _jr if e.get('transaction') == 'D-353']
+        chk('G46 exact U20 pose and replacement journal are pinned',
+            'pose=(%d,%d,%.1f,%s) journal=%d' %
+            (up.x, up.y, u20.GetOrientationDegrees(), u20.GetLayerName(), len(uj)),
+            (up.x, up.y, round(u20.GetOrientationDegrees(), 6), u20.GetLayerName()) ==
+            (52250000, 64750000, 180.0, 'B.Cu') and len(uj) == 9)
+        chk('G46 ACC_POWER_FAULT_N closes all six terminals on legal B.Cu',
+            'tracks=%d vias=%d reach=%s' %
+            (len(fault_trk), len(fault_via), sorted(fault_reach)),
+            len(fault_trk) == 57 and not fault_via
+            and all(t.GetLayerName() == 'B.Cu' and t.GetWidth() == 200000
+                    for t in fault_trk)
+            and {'R103.2', 'U20.6', 'U22.6', 'TP27.1', 'U3.18', 'TP33.1'} <= fault_reach)
 
         print('')
         if FAILED:

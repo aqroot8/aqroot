@@ -2950,50 +2950,6 @@
   "group": "FRONT_RGB"
  },
  {
-  "net": "/ACC_3V3_EN",
-  "a": "R98.1",
-  "b": "U20.1",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 5.761,
-  "requested_connected": true,
-  "group": "ACC_3V3_CTL"
- },
- {
-  "net": "/ACC_3V3_EN",
-  "a": "R98.1",
-  "b": "TP26.1",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 9.715,
-  "requested_connected": true,
-  "group": "ACC_3V3_CTL"
- },
- {
-  "net": "/ACC_3V3_EN",
-  "a": "TP26.1",
-  "b": "U3.15",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 10.877,
-  "requested_connected": true,
-  "group": "ACC_3V3_CTL"
- },
- {
-  "net": "/01_POWER_TREE/ACC_3V3_ILIM",
-  "a": "R97.1",
-  "b": "U20.4",
-  "role": "REST_INC",
-  "layer": "B.Cu",
-  "w": 0.2,
-  "mm": 14.033,
-  "requested_connected": true,
-  "group": "ACC_3V3_CTL"
- },
- {
   "net": "/DISP_RST_N",
   "a": "J1.10",
   "b": "R16.1",
@@ -3520,5 +3476,104 @@
   "mm": 51.231,
   "requested_connected": true,
   "group": "DISP_BL_CTL"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "R98.1",
+  "b": "U20.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "U20.1",
+  "b": "TP26.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_3V3_EN",
+  "a": "TP26.1",
+  "b": "U3.15",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+  "a": "R97.1",
+  "b": "U20.4",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_3V3_CTL",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_POWER_FAULT_N",
+  "a": "R103.2",
+  "b": "U20.6",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_POWER_FAULT_N",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_POWER_FAULT_N",
+  "a": "U20.6",
+  "b": "TP27.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_POWER_FAULT_N",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_POWER_FAULT_N",
+  "a": "R103.2",
+  "b": "U22.6",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_POWER_FAULT_N",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_POWER_FAULT_N",
+  "a": "TP27.1",
+  "b": "U3.18",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_POWER_FAULT_N",
+  "transaction": "D-353"
+ },
+ {
+  "net": "/ACC_POWER_FAULT_N",
+  "a": "U3.18",
+  "b": "TP33.1",
+  "role": "REST_INC",
+  "layer": "B.Cu",
+  "w": 0.2,
+  "requested_connected": true,
+  "group": "ACC_POWER_FAULT_N",
+  "transaction": "D-353"
  }
 ]

@@ -109,15 +109,15 @@ def main():
     disp_items = collections.Counter({s: n for s, n in now.items() if s[1] in DISP})
     # Increments promoted AFTER D-306 (DISP) -- e.g. D-307 IMU_ADDR -- are excluded
     # so this "pre-DISP copper intact" check stays true as the board grows.  The
-    # pre-DISP accepted copper is Phase-A (432) + FRONT_RGB (20) + ACC_3V3_CTL (31)
-    # = 483 tracks + 54 vias, and must never change under any later increment.
+    # pre-DISP accepted copper is Phase-A (432) + FRONT_RGB (20) + ACC_3V3_CTL (22, D-353 replacement)
+    # = 474 tracks + 54 vias, and must never change under any later increment.
     PRE_DISP_GROUPS = ('FRONT_RGB', 'ACC_3V3_CTL', 'DISP_RST')
     post_disp = {e['net'] for e in jr if e.get('role') == 'REST_INC'
                  and e.get('group') not in PRE_DISP_GROUPS}
     post_items = collections.Counter({s: n for s, n in now.items() if s[1] in post_disp})
     prior_now = now - disp_items - post_items
-    chk('non-DISP pre-D-307 copper == 483 tracks + 54 vias (Phase-A + RGB + ACC intact)',
-        sum(prior_now.values()) == 483 + 54,
+    chk('non-DISP pre-D-307 copper == 474 tracks + 54 vias (Phase-A + RGB + ACC intact)',
+        sum(prior_now.values()) == 474 + 54,
         '%d items' % sum(prior_now.values()))
     # Phase-A alone (everything that is NOT a rest-increment net) stays 432+54.
     inc_nets = {e['net'] for e in jr if e.get('role') == 'REST_INC'}

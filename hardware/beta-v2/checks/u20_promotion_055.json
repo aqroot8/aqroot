@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "decision": "D-353",
+  "verdict": "PASS",
+  "promotion_performed": true,
+  "rollback_board_sha256": "2cdc9f338db3fc0ed7a49db365c267a50b25f497ffc32aef9cf74eac9cbc09c4",
+  "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "tracks": 918,
+  "vias": 85,
+  "journal_entries": 137,
+  "ratsnest_before": 649,
+  "ratsnest_after": 644,
+  "replacement_tracks_removed": 20,
+  "transaction_tracks_added": 68,
+  "moved_footprints": ["U20"],
+  "u20_pose": [52250000, 64750000, 180.0, "B.Cu"],
+  "transaction_nets": ["ACC_3V3_EN", "ACC_3V3_ILIM", "ACC_POWER_FAULT_N"],
+  "drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "validation": ["D-352 replacement gate PASS", "G1-G46 PASS", "incremental probes 006-028 PASS", "Phase-B probe PASS", "real KiCad DRC unchanged"],
+  "next": "bounded U4-neighbor cluster ECO with accepted-copper replay for BMI270_INT1_RAW"
+}
