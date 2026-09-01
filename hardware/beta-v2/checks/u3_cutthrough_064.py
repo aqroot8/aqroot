@@ -110,7 +110,10 @@ def route_inner(qb, name):
 
 
 def replay_branch(qb, netname, meta):
-    nf = qb.net_by_full.get(netname)
+    # QBoard exposes resolved names through ``nets``.  D-362 never exercised
+    # this path because XGPIO7 reservation failed first; keep the latent replay
+    # path valid for bounded successor experiments.
+    nf = netname if netname in qb.nets else None
     if nf is None:
         return {"net":netname, "ok":False, "error":"net_not_resolved"}
     pads = IR.physical_net_pads(qb, nf); pads.sort(key=lambda p:(p["ref"],p["x"],p["y"]))

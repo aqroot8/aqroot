@@ -1,0 +1,238 @@
+{
+  "accepted_pairs_broken": [
+    [
+      "R103.2",
+      "TP27.1"
+    ],
+    [
+      "R103.2",
+      "TP33.1"
+    ],
+    [
+      "R103.2",
+      "U20.6"
+    ],
+    [
+      "R103.2",
+      "U22.6"
+    ],
+    [
+      "R103.2",
+      "U3.18"
+    ],
+    [
+      "R129.2",
+      "R64.1"
+    ],
+    [
+      "R129.2",
+      "U3.17"
+    ],
+    [
+      "R51.1",
+      "U3.4"
+    ],
+    [
+      "R52.1",
+      "U3.5"
+    ],
+    [
+      "R53.1",
+      "U3.6"
+    ],
+    [
+      "R54.1",
+      "U3.7"
+    ],
+    [
+      "R55.1",
+      "U3.8"
+    ],
+    [
+      "R56.1",
+      "U3.9"
+    ],
+    [
+      "R59.1",
+      "U3.13"
+    ],
+    [
+      "R60.1",
+      "U3.14"
+    ],
+    [
+      "R64.1",
+      "U3.17"
+    ],
+    [
+      "R98.1",
+      "TP26.1"
+    ],
+    [
+      "R98.1",
+      "U20.1"
+    ],
+    [
+      "R98.1",
+      "U3.15"
+    ],
+    [
+      "TP26.1",
+      "U20.1"
+    ],
+    [
+      "TP26.1",
+      "U3.15"
+    ],
+    [
+      "TP27.1",
+      "TP33.1"
+    ],
+    [
+      "TP27.1",
+      "U20.6"
+    ],
+    [
+      "TP27.1",
+      "U22.6"
+    ],
+    [
+      "TP27.1",
+      "U3.18"
+    ],
+    [
+      "TP33.1",
+      "U20.6"
+    ],
+    [
+      "TP33.1",
+      "U22.6"
+    ],
+    [
+      "TP33.1",
+      "U3.18"
+    ],
+    [
+      "U20.1",
+      "U3.15"
+    ],
+    [
+      "U20.6",
+      "U22.6"
+    ],
+    [
+      "U20.6",
+      "U3.18"
+    ],
+    [
+      "U22.6",
+      "U3.18"
+    ]
+  ],
+  "added_items_total": 8,
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "boundary_items": 211,
+  "branch_count": 11,
+  "branch_replay": [
+    {
+      "edges": [
+        {
+          "a": "R56.1",
+          "b": "U3.9",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE"
+        }
+      ],
+      "net": "/XGPIO5",
+      "ok": false
+    }
+  ],
+  "conclusion": "XGPIO6_reservation_or_U3_branch_replay_failed",
+  "decision": "D-363",
+  "drc_after": {
+    "clearance": 2,
+    "hole_clearance": 6,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499,
+    "via_dangling": 12
+  },
+  "drc_before": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "drc_worse": {
+    "clearance": [
+      0,
+      2
+    ],
+    "hole_clearance": [
+      5,
+      6
+    ],
+    "via_dangling": [
+      0,
+      12
+    ]
+  },
+  "first_replay_failure": {
+    "edges": [
+      {
+        "a": "R56.1",
+        "b": "U3.9",
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE"
+      }
+    ],
+    "net": "/XGPIO5",
+    "ok": false
+  },
+  "forbidden_added_count": 0,
+  "forbidden_missing_count": 0,
+  "missing_items_total": 199,
+  "open_edges_after": {
+    "/ACC_3V3_EN": 3,
+    "/ACC_DETECT_N": 2,
+    "/ACC_POWER_FAULT_N": 5,
+    "/XGPIO0": 1,
+    "/XGPIO1": 1,
+    "/XGPIO2": 1,
+    "/XGPIO3": 1,
+    "/XGPIO4": 1,
+    "/XGPIO5": 1,
+    "/XGPIO6": 0,
+    "/XGPIO8": 1,
+    "/XGPIO9": 1
+  },
+  "pose": {
+    "offset_mm": [
+      0.0,
+      0.5
+    ],
+    "rotation_deg": 180
+  },
+  "promotion_blocker": "complete_incident_branch_replay_not_closed",
+  "promotion_candidate": false,
+  "removed_items": 199,
+  "replacement_boundary": "complete_connectivity_components_incident_on_U3",
+  "schema_version": 1,
+  "source_decision": "D-362",
+  "transaction_candidate": false,
+  "xgpio6_route": {
+    "edges": [
+      {
+        "a": "R57.1",
+        "b": "U3.10",
+        "inner": "I2",
+        "kind": "inner-haul",
+        "ok": true,
+        "reason": null
+      }
+    ],
+    "group": "XGPIO6_INNER",
+    "ok": true
+  }
+}

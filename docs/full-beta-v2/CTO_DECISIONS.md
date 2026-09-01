@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-363 · 2026-09-01 · routing characterization:** reserving the D-362-proven
+XGPIO6 In2 route first succeeds after the exact complete U3 incident boundary
+is withdrawn, but a generic B.Cu-MST replay stops immediately on the smallest
+accepted branch, XGPIO5, with `NO_LEGAL_ESCAPE`.  This does not disprove the
+transaction: XGPIO5 and several other withdrawn branches were accepted with
+specialized inner-haul or multi-terminal roles that the generic replay discards.
+The D-362 latent replay net lookup is corrected and the next bounded task is a
+topology-aware replay schedule that reuses each branch's accepted mechanism,
+with XGPIO6 reserved first and unrelated copper frozen.  The authoritative
+board remains byte-identical (`a4b93b9b…`); no owner decision is open.
+
 **D-362 · 2026-09-01 · routing characterization:** the exact complete-U3-
 branch cut-through withdraws the full D-360 boundary (211 copper items on 11
 routed branches) before reserving the coherent XGPIO6/XGPIO7 pair at the

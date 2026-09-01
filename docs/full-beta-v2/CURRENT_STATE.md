@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-065 / D-363 (U3 XGPIO6 replay characterization; no authoritative
+  PCB change):** the proven XGPIO6 In2 route reserves successfully after the
+  exact 211-item/11-branch U3 boundary is withdrawn.  The first generic replay
+  (`XGPIO5`) then fails `NO_LEGAL_ESCAPE`, because that primitive discards the
+  accepted branch's inner-haul topology; it is not a valid transaction
+  disproof.  Evidence/harness: `u3_xgpio6_replay_065.py` / `.json`. **Next:**
+  build a deterministic topology-aware schedule for all eleven branches using
+  their accepted routing roles, reserve XGPIO6 first, and run the replacement
+  gate only if complete replay closes.  XGPIO7 remains deferred.  Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
 - **FBV2-P2-064 / D-362 (U3 cut-through characterization; no authoritative
   PCB change):** the exact 211-item/11-branch U3 incident boundary was withdrawn
   scratch-only before pair reservation at the D-360 180°/+0.5 mm-north pose.

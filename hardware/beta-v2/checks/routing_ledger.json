@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-362",
+  "current_decision": "D-363",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -32,6 +32,7 @@
     {"decision":"D-359","framework":"bounded_U3_orthogonal_pose_screen","nets":["XGPIO6","XGPIO7"],"result":"15_POSES_30_PAIR_ORDERS_ALL_NO_VIA_SITE_16_TO_18_ACCEPTED_PAIR_CASUALTIES","evidence":"u3_pose_eco_061.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-360","framework":"complete_U3_incident_branch_and_neighbor_impact_map","nets":["XGPIO6","XGPIO7"],"result":"24_INCIDENT_PADS_11_ROUTED_BRANCHES_211_COPPER_ITEMS_LEAST_IMPACT_180DEG_NORTH_0P5MM_STILL_TOUCHES_32_ITEMS_14_NETS_AND_C5_TP33","evidence":"u3_impact_map_062.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-361","framework":"bounded_nonrigid_U3_C5_TP33_cluster_screen","nets":["XGPIO6","XGPIO7"],"result":"30_LAYOUTS_60_ORDERS_ALL_NO_VIA_SITE_NEIGHBOR_MOVES_BREAK_18_TO_22_PAIRS_AND_NEVER_IMPROVE_DRC","evidence":"u3_neighbor_cluster_063.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-362","framework":"exact_complete_U3_incident_branch_cutthrough_pair_reservation","nets":["XGPIO6","XGPIO7"],"result":"211_ITEMS_11_BRANCHES_WITHDRAWN_XGPIO6_ROUTES_ON_IN2_XGPIO7_NO_VIA_SITE_FIRST_OR_SECOND_REPLAY_NOT_ENTERED","evidence":"u3_cutthrough_064.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-362","framework":"exact_complete_U3_incident_branch_cutthrough_pair_reservation","nets":["XGPIO6","XGPIO7"],"result":"211_ITEMS_11_BRANCHES_WITHDRAWN_XGPIO6_ROUTES_ON_IN2_XGPIO7_NO_VIA_SITE_FIRST_OR_SECOND_REPLAY_NOT_ENTERED","evidence":"u3_cutthrough_064.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-363","framework":"single_XGPIO6_reservation_then_complete_U3_incident_branch_replay","nets":["XGPIO6"],"result":"XGPIO6_ROUTES_ON_IN2_GENERIC_BCU_MST_REPLAY_FAILS_FIRST_BRANCH_XGPIO5_NO_LEGAL_ESCAPE_TOPOLOGY_AWARE_REPLAY_REQUIRED","evidence":"u3_xgpio6_replay_065.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }
