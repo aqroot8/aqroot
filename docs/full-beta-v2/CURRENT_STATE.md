@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-071 / D-369 (complete-XGPIO5 inner replacement characterization;
+  no authoritative PCB change):** after XGPIO6/XGPIO7 reservation at the
+  selected U3/R58 layout, the exact six-item XGPIO5 branch is replaced cleanly
+  by the qualified D-331 native-face/through-via haul on either In2 or In3.
+  XGPIO5 is fully connected in both candidates; replay advances to XGPIO4/U3.8,
+  whose retained B.Cu anchor 3.714 mm away fails `NO_PATH`. In3 is the lower-
+  impact XGPIO5 choice (one crossing versus two), but incomplete replay still
+  has real KiCad DRC regressions and is not promotable. Evidence/harness:
+  `u3_xgpio5_inner_replay_071.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** replace
+  the complete XGPIO4 branch with the same terminal-specific inner-haul
+  mechanism after the In3 XGPIO5 route, then continue only if it closes.
 - **FBV2-P2-070 / D-368 (local-scar replay characterization; no authoritative
   PCB change):** twelve scratch candidates combine the D-367 U3/R58 layout
   with six radial scar boundaries (0.35–2.00 mm) and both outer-layer replay

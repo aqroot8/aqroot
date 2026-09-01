@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-368",
+  "current_decision": "D-369",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -38,6 +38,7 @@
     {"decision":"D-365","framework":"exact_incident_cutthrough_plus_expanded_U3_only_pose_screen","nets":["XGPIO6","XGPIO7"],"result":"48_POSES_96_ORDERS_ZERO_PAIR_RESERVATIONS_90_NO_VIA_SITE_6_NO_LEGAL_ESCAPE","evidence":"u3_corridor_refloor_067.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-366","framework":"exact_U3_incident_cutthrough_plus_bounded_R58_endpoint_translation","nets":["XGPIO6","XGPIO7"],"result":"9_LAYOUTS_3_PAIR_RESERVATIONS_R58_EAST_0P5_OR_NORTH_0P5_1P0_WITH_XGPIO6_FIRST","evidence":"u3_r57_r58_refloor_068.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-367","framework":"real_DRC_accepted_pair_rank_then_exact_U3_R58_affected_branch_replay","nets":["XGPIO6","XGPIO7"],"result":"R58_NORTH_0P5_LEAST_IMPACT_BUT_EXACT_RESTORE_13_SHORTS_7_CLEARANCES_1_CROSSING_XGPIO5_ATTACH_NO_PATH","evidence":"u3_r58_impact_replay_069.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-368","framework":"bounded_radial_local_scar_retention_then_fresh_outer_layer_terminal_replay","nets":["XGPIO6","XGPIO7","XGPIO5"],"result":"12_ATTEMPTS_PAIR_RESERVED_BUT_ALL_STOP_AT_XGPIO5_U3P9_AND_REGRESS_REAL_DRC","evidence":"u3_local_scar_replay_070.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-368","framework":"bounded_radial_local_scar_retention_then_fresh_outer_layer_terminal_replay","nets":["XGPIO6","XGPIO7","XGPIO5"],"result":"12_ATTEMPTS_PAIR_RESERVED_BUT_ALL_STOP_AT_XGPIO5_U3P9_AND_REGRESS_REAL_DRC","evidence":"u3_local_scar_replay_070.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-369","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4"],"result":"XGPIO5_CLOSES_ON_IN2_AND_IN3_REPLAY_ADVANCES_TO_XGPIO4_U3P8_NO_PATH_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio5_inner_replay_071.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }

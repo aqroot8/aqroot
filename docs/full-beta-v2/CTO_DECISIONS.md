@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-369 · 2026-09-01 · routing characterization:** at the selected D-367
+U3/R58 layout, the complete six-item XGPIO5 branch was replaced after coherent
+XGPIO6/XGPIO7 reservation with the qualified D-331 native-face/through-via
+inner-haul mechanism.  Both independently owned layers close XGPIO5
+(`R56.1→U3.9`): In2 via sites are `(55.10,30.85)/(58.45,78.45)` mm and In3
+sites are `(55.10,30.85)/(61.05,80.10)` mm.  Replay therefore advances for the
+first time to XGPIO4/U3.8, whose retained B.Cu anchor 3.714 mm away returns
+`NO_PATH` in both candidates.  The incomplete candidates retain real KiCad DRC
+regressions and are not promotable; the authoritative board remains byte-
+identical (`a4b93b9b…`).  Complete-branch inner replacement is now the proven
+U3 replay mechanism.  Next is the same bounded complete-XGPIO4 replacement,
+prefer In3 for XGPIO5 because it has one fewer crossing, then continue the
+terminal schedule only while each branch closes.  No owner decision is open.
+
 **D-368 · 2026-09-01 · routing characterization:** the selected D-367 U3/R58
 layout was screened with six radial local-scar boundaries (0.35–2.00 mm) and
 both F.Cu/B.Cu fresh-attachment orders.  All twelve scratch candidates reserve

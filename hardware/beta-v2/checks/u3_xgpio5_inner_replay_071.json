@@ -1,0 +1,582 @@
+{
+  "attempts": [
+    {
+      "accepted_pairs_broken": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 6,
+        "copper_sliver": 1,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 14,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1,
+        "tracks_crossing": 2,
+        "unconnected_items": 499,
+        "via_dangling": 2
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          6
+        ],
+        "copper_sliver": [
+          0,
+          1
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          14
+        ],
+        "solder_mask_bridge": [
+          1,
+          13
+        ],
+        "track_dangling": [
+          0,
+          1
+        ],
+        "tracks_crossing": [
+          0,
+          2
+        ],
+        "via_dangling": [
+          0,
+          2
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1873 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1862 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "copper_sliver": [
+          "Copper sliver (In2.Cu)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /XGPIO6 and /XGPIO1)",
+          "Items shorting two nets (nets /ACC_3V3_EN and GND)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /SX1262_RXEN and /XGPIO2)",
+          "Items shorting two nets (nets /XGPIO4 and +3V3)",
+          "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO5 and /XGPIO2)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
+          "Items shorting two nets (nets /WAKE_INT_N and /XGPIO9)"
+        ],
+        "solder_mask_bridge": [
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets"
+        ],
+        "track_dangling": [
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing",
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_remaining_failure": {
+        "anchor_distance_mm": 3.7140989822566657,
+        "anchor_mm": [
+          56.6,
+          77.7
+        ],
+        "net": "/XGPIO4",
+        "ok": false,
+        "reason": "NO_PATH",
+        "terminal": "U3.8"
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "inner_layer": "I2",
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 0,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "remaining_restored_items": 195,
+      "terminal_attachments": [
+        {
+          "anchor_distance_mm": 3.7140989822566657,
+          "anchor_mm": [
+            56.6,
+            77.7
+          ],
+          "net": "/XGPIO4",
+          "ok": false,
+          "reason": "NO_PATH",
+          "terminal": "U3.8"
+        }
+      ],
+      "xgpio5_boundary_items": 6,
+      "xgpio5_route": {
+        "edges": [
+          {
+            "a": "R56.1",
+            "b": "U3.9",
+            "inner": "I2",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                55.1,
+                30.85
+              ],
+              [
+                58.45,
+                78.45
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "accepted_pairs_broken": [
+        [
+          "R103.2",
+          "U3.18"
+        ],
+        [
+          "R129.2",
+          "U3.17"
+        ],
+        [
+          "R51.1",
+          "U3.4"
+        ],
+        [
+          "R52.1",
+          "U3.5"
+        ],
+        [
+          "R53.1",
+          "U3.6"
+        ],
+        [
+          "R54.1",
+          "U3.7"
+        ],
+        [
+          "R55.1",
+          "U3.8"
+        ],
+        [
+          "R59.1",
+          "U3.13"
+        ],
+        [
+          "R60.1",
+          "U3.14"
+        ],
+        [
+          "R64.1",
+          "U3.17"
+        ],
+        [
+          "R98.1",
+          "U3.15"
+        ],
+        [
+          "TP26.1",
+          "U3.15"
+        ],
+        [
+          "TP27.1",
+          "U3.18"
+        ],
+        [
+          "TP33.1",
+          "U3.18"
+        ],
+        [
+          "U20.1",
+          "U3.15"
+        ],
+        [
+          "U20.6",
+          "U3.18"
+        ],
+        [
+          "U22.6",
+          "U3.18"
+        ]
+      ],
+      "closed_candidate": false,
+      "drc_after": {
+        "clearance": 6,
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "shorting_items": 14,
+        "solder_mask_bridge": 13,
+        "track_dangling": 1,
+        "tracks_crossing": 1,
+        "unconnected_items": 499,
+        "via_dangling": 2
+      },
+      "drc_worse": {
+        "clearance": [
+          0,
+          6
+        ],
+        "hole_clearance": [
+          5,
+          6
+        ],
+        "shorting_items": [
+          0,
+          14
+        ],
+        "solder_mask_bridge": [
+          1,
+          13
+        ],
+        "track_dangling": [
+          0,
+          1
+        ],
+        "tracks_crossing": [
+          0,
+          1
+        ],
+        "via_dangling": [
+          0,
+          2
+        ]
+      },
+      "drc_worse_details": {
+        "clearance": [
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+          "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+          "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1873 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1862 mm)",
+          "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)"
+        ],
+        "hole_clearance": [
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2257 mm)",
+          "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)"
+        ],
+        "shorting_items": [
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)",
+          "Items shorting two nets (nets GND and /ACC_3V3_EN)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+          "Items shorting two nets (nets /SX1262_RXEN and /XGPIO2)",
+          "Items shorting two nets (nets +3V3 and /XGPIO4)",
+          "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
+          "Items shorting two nets (nets /XGPIO4 and /XGPIO7)",
+          "Items shorting two nets (nets /XGPIO2 and /XGPIO5)",
+          "Items shorting two nets (nets /XGPIO6 and /XGPIO1)",
+          "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
+          "Items shorting two nets (nets /WAKE_INT_N and /XGPIO9)"
+        ],
+        "solder_mask_bridge": [
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets",
+          "Rear solder mask aperture bridges items with different nets"
+        ],
+        "track_dangling": [
+          "Track has unconnected end"
+        ],
+        "tracks_crossing": [
+          "Tracks crossing"
+        ],
+        "via_dangling": [
+          "Via is not connected or connected on only one layer",
+          "Via is not connected or connected on only one layer"
+        ]
+      },
+      "first_remaining_failure": {
+        "anchor_distance_mm": 3.7140989822566657,
+        "anchor_mm": [
+          56.6,
+          77.7
+        ],
+        "net": "/XGPIO4",
+        "ok": false,
+        "reason": "NO_PATH",
+        "terminal": "U3.8"
+      },
+      "forbidden_added_count": 0,
+      "forbidden_missing_count": 0,
+      "inner_layer": "I3",
+      "open_edges_after": {
+        "/ACC_3V3_EN": 1,
+        "/ACC_DETECT_N": 1,
+        "/ACC_POWER_FAULT_N": 1,
+        "/XGPIO0": 1,
+        "/XGPIO1": 1,
+        "/XGPIO2": 1,
+        "/XGPIO3": 1,
+        "/XGPIO4": 1,
+        "/XGPIO5": 0,
+        "/XGPIO6": 0,
+        "/XGPIO7": 0,
+        "/XGPIO7_HDR": 0,
+        "/XGPIO8": 1,
+        "/XGPIO9": 1
+      },
+      "pair_routes": [
+        {
+          "edges": [
+            {
+              "a": "R57.1",
+              "b": "U3.10",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO6_INNER",
+          "ok": true
+        },
+        {
+          "edges": [
+            {
+              "a": "R58.1",
+              "b": "U3.11",
+              "inner": "I2",
+              "kind": "inner-haul",
+              "ok": true,
+              "reason": null
+            }
+          ],
+          "group": "XGPIO7_INNER",
+          "ok": true
+        }
+      ],
+      "remaining_restored_items": 195,
+      "terminal_attachments": [
+        {
+          "anchor_distance_mm": 3.7140989822566657,
+          "anchor_mm": [
+            56.6,
+            77.7
+          ],
+          "net": "/XGPIO4",
+          "ok": false,
+          "reason": "NO_PATH",
+          "terminal": "U3.8"
+        }
+      ],
+      "xgpio5_boundary_items": 6,
+      "xgpio5_route": {
+        "edges": [
+          {
+            "a": "R56.1",
+            "b": "U3.9",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              [
+                55.1,
+                30.85
+              ],
+              [
+                61.05,
+                80.1
+              ]
+            ]
+          }
+        ],
+        "ok": true
+      }
+    }
+  ],
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "conclusion": "XGPIO5_inner_replacement_characterized",
+  "decision": "D-369",
+  "method": "complete_XGPIO5_branch_replacement_with_terminal_specific_inner_haul",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "selected_layout": {
+    "r58_offset_mm": [
+      0.0,
+      -0.5
+    ],
+    "u3_offset_mm": [
+      0.0,
+      0.5
+    ],
+    "u3_rotation_deg": 180
+  },
+  "source_decision": "D-368",
+  "transaction_candidates": 0,
+  "xgpio5_mechanism_wins": 2
+}
