@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-354 · 2026-09-01 · routing characterization:** the corrected bounded U4
+pose screen finds that every tested 180°/270° pose makes the accepted inner-haul
+route for `BMI270_INT1_RAW`, while every 0°/90° pose fails routing. None is an
+add-only placement candidate: all routing-capable poses break the two accepted
+U4 address-strap pad pairs and introduce real KiCad DRC deltas. The authoritative
+D-353 board remains byte-identical (`02e263a7…`). Next is a geometric
+accepted-copper impact map for the best 180°/270° poses, followed by an exact
+transactional replay boundary if one is bounded; no owner decision is open.
+
 **D-353 · 2026-09-01 · routing promotion:** the D-352-certified U20
 replacement transaction is atomically promoted. U20 is exactly 180°/+0.5 mm
 north; the complete EN/ILIM replacement boundary and new six-terminal

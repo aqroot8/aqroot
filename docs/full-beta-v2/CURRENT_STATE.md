@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-056 / D-354 (U4 pose characterization; no authoritative change):**
+  recovered and corrected the unfinished U4-neighbor ECO harness, then screened
+  19 rotation/translation poses with the accepted reserved-escape inner-haul
+  framework and real KiCad DRC. All five 180° poses and all five 270° poses route
+  `BMI270_INT1_RAW`; every 0°/90° pose fails. None is add-only promotable: each
+  routing-capable pose breaks both accepted U4 address-strap pad pairs and adds
+  real clearance/hole-clearance/dangling or short findings. The authoritative
+  board remains byte-identical (`02e263a7…`). Evidence:
+  `u4_neighbor_eco_056.py` / `.json`. **Next:** impact-map accepted copper for
+  the best 180°/270° poses and define the smallest exact transactional replay
+  boundary before any placement/copper promotion. No owner decision; readiness 78%.
 - **FBV2-P2-055 / D-353 (U20 TRANSACTION PROMOTED):** the D-352-certified
   replacement transaction is now authoritative. U20 moved exactly 180°/+0.5 mm
   north; the complete `ACC_3V3_EN`/`ACC_3V3_ILIM` branches were transactionally

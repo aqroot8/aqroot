@@ -1,0 +1,866 @@
+{
+  "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "authoritative_unchanged": true,
+  "baseline_drc": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "unconnected_items": 499
+  },
+  "baseline_orientation_deg": 0.0,
+  "baseline_u4_accepted_pairs": [
+    [
+      "R118.1",
+      "U4.1"
+    ],
+    [
+      "R119.2",
+      "U4.1"
+    ]
+  ],
+  "candidates": [
+    {
+      "broken_accepted_pairs": [],
+      "broken_count": 0,
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 5,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "shorting_items": 3,
+        "solder_mask_bridge": 4
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 0,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 0,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 0,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 0,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 1,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 90,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 3,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 3,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 90,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 90,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 1,
+        "courtyards_overlap": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 1,
+        "courtyards_overlap": 1,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 90,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 1,
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 1,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 90,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "reserve-b",
+            "ok": false,
+            "reason": "NO_VIA_SITE"
+          }
+        ],
+        "ok": false
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 4,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 4,
+        "hole_clearance": 4,
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 180,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 4,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "shorting_items": 3,
+        "solder_mask_bridge": 7,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 4,
+        "hole_clearance": 4,
+        "shorting_items": 3,
+        "solder_mask_bridge": 6
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 180,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 5,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 5,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 180,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 4,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 4,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 180,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 4,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "shorting_items": 1,
+        "solder_mask_bridge": 2,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 4,
+        "hole_clearance": 4,
+        "shorting_items": 1,
+        "solder_mask_bridge": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 180,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 5,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 5,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 270,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 7,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 7,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 270,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 4,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 4,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 270,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 5,
+        "courtyards_overlap": 1,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 5,
+        "courtyards_overlap": 1,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 270,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    },
+    {
+      "broken_accepted_pairs": [
+        [
+          "R118.1",
+          "U4.1"
+        ],
+        [
+          "R119.2",
+          "U4.1"
+        ]
+      ],
+      "broken_count": 2,
+      "drc": {
+        "clearance": 5,
+        "hole_clearance": 9,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 1,
+        "unconnected_items": 499
+      },
+      "drc_delta": {
+        "clearance": 5,
+        "hole_clearance": 4,
+        "track_dangling": 1
+      },
+      "geometric_candidate": false,
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 270,
+      "route": {
+        "edges": [
+          {
+            "a": "R18.1",
+            "b": "U4.4",
+            "inner": "I3",
+            "kind": "inner-haul",
+            "ok": true,
+            "reason": null
+          }
+        ],
+        "ok": true
+      }
+    }
+  ],
+  "conclusion": "bounded_u4_pose_space_exhausted",
+  "decision": "D-354",
+  "geometric_candidates": 0,
+  "local_neighbor_cluster_4mm": [
+    "C6"
+  ],
+  "schema_version": 1
+}
