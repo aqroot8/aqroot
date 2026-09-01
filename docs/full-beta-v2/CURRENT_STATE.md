@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-093 / D-391 (U3.18 obstacle withdrawal sensitivity; no
+  authoritative PCB change):** six controlled scratch cases show that
+  withdrawing adjacent ACC_5V_BOOST_EN/SX1262_RXEN copper does not change the
+  zero-site U3.18 wall. Withdrawing the eight D-386 transaction vias within
+  3.0 mm (XGPIO9/3/0/1/5/4/2 and ACC_3V3_EN) exposes four U3.18 sites on each
+  inner layer. This isolates the movable obstacle class but does not identify
+  the minimum via subset or preserve the eight required routes, so it is not a
+  promotion candidate. Evidence/harness: `u3_p18_obstacle_attribution_093.py`
+  / `.json`. Board remains byte-identical (`a4b93b9b…`); no owner decision;
+  readiness remains 78%. **Next:** rank individual/subset via withdrawals and
+  relocate/replay the smallest blocking set before complete fault/detect replay;
+  also attribute the five D-388 residual clearances before promotion.
 - **FBV2-P2-092 / D-390 (collision-branch explicit via-site enumeration; no
   authoritative PCB change):** after each D-389 proven local prefix,
   ACC_POWER_FAULT_N has 3 reachable TP27.1 sites on In2 and 4 on In3 but zero

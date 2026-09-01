@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-391 · 2026-09-01 · routing characterization:** bounded U3.18 obstacle
+withdrawal sensitivity identifies the D-386 transaction's nearby through vias,
+not the adjacent retained branch copper, as the movable escape wall. With the
+control and ACC_5V_BOOST_EN/SX1262_RXEN branch-withdrawal cases, U3.18 exposes
+zero sites and reports the same U3.19/U3.17/U3.16/via blockers. Removing the
+eight transaction vias within 3.0 mm (XGPIO9/3/0/1/5/4/2 and ACC_3V3_EN)
+exposes four distinct U3.18 sites on each of In2 and In3; adjacent-branch
+withdrawal adds no benefit. This is sensitivity evidence only: the eight vias
+belong to required closed routes, no complete transaction is replayed, and no
+copper is promoted. The authoritative board remains byte-identical
+(`a4b93b9b…`). Next is individual/subset via-withdrawal ranking followed by
+minimum-scope relocation/replay of the smallest blocking via set, then the
+complete fault/detect transaction and corrected full-board gate. Also attribute
+the five D-388 residual clearances before promotion. No owner decision is open.
+
 **D-390 · 2026-09-01 · routing characterization:** explicit ordinary
 through-via-site enumeration after each D-389 proven local prefix closes both
 generic replay alternatives. ACC_POWER_FAULT_N exposes 3 TP27.1 sites on In2
