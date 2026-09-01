@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-377 · 2026-09-01 · routing characterization:** after the D-376 prefix,
+complete XGPIO0 replacement closes on In2 through `(58.95,20.15)` and
+`(61.15,75.15)` mm via sites; In3 reserves its escapes but the join returns
+`NO_PATH`. Replay advances to XGPIO8/U3.13, whose retained B.Cu anchor 9.555 mm
+away returns `NO_PATH`, so the transaction remains open and no PCB change is
+promoted. The authoritative board remains byte-identical (`a4b93b9b…`). Next
+is complete-XGPIO8 branch replacement after the six selected routes, continuing
+the terminal schedule only while each branch closes. No owner decision is open.
+
 **D-376 · 2026-09-01 · routing characterization:** after the D-373 prefix,
 explicit rank selection over reachable legal In3 via sites exposes a second
 R52.1-side site at `(62.75,78.55)` mm. The resulting distinct pair with the

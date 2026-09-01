@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-376",
+  "current_decision": "D-377",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -46,6 +46,7 @@
     {"decision":"D-373","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"XGPIO1_DIRECT_INNER_REPLACEMENT_FAILS_IN2_NO_VIA_SITE_AND_IN3_NO_PATH_AFTER_FOUR_SELECTED_INNER_ROUTES_REAL_DRC_STILL_WORSE","evidence":"u3_xgpio1_inner_replay_075.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-374","framework":"XGPIO1_In3_line_relative_staged_waypoint_sweep","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"17_WAYPOINTS_ZERO_XGPIO1_ROUTES_6_BLOCKED_2_FIRST_LEG_NO_PATH_9_SECOND_LEG_NO_PATH","evidence":"u3_xgpio1_waypoint_076.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-375","framework":"XGPIO1_In3_biased_endpoint_reservation_distinct_viasite_pair_sweep","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1"],"result":"45_BIAS_COMBINATIONS_COLLAPSE_TO_1_VIA_PAIR_ZERO_DIRECT_OR_STAGED_ROUTES","evidence":"u3_xgpio1_viasite_077.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-376","framework":"XGPIO1_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0"],"result":"2_DISTINCT_VIA_PAIRS_SECOND_R52_SITE_CLOSES_XGPIO1_DIRECT_REPLAY_ADVANCES_TO_XGPIO0_NO_LEGAL_ESCAPE","evidence":"u3_xgpio1_viasite_enum_078.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-376","framework":"XGPIO1_In3_explicit_reachable_viasite_rank_enumeration","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0"],"result":"2_DISTINCT_VIA_PAIRS_SECOND_R52_SITE_CLOSES_XGPIO1_DIRECT_REPLAY_ADVANCES_TO_XGPIO0_NO_LEGAL_ESCAPE","evidence":"u3_xgpio1_viasite_enum_078.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-377","framework":"complete_branch_terminal_specific_inner_haul_replacement","nets":["XGPIO6","XGPIO7","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8"],"result":"XGPIO0_CLOSES_ON_IN2_AFTER_D376_PREFIX_REPLAY_ADVANCES_TO_XGPIO8_NO_PATH","evidence":"u3_xgpio0_inner_replay_079.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }

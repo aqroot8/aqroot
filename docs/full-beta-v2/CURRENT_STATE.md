@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-079 / D-377 (complete-XGPIO0 inner replacement; no authoritative
+  PCB change):** after the D-376 prefix, complete XGPIO0 replacement closes on
+  In2 through `(58.95,20.15)/(61.15,75.15)` mm via sites; In3 fails its join
+  with `NO_PATH`. Replay advances to XGPIO8/U3.13, whose retained B.Cu anchor
+  9.555 mm away also returns `NO_PATH`, so there is no promotable transaction.
+  Evidence/harness: `u3_xgpio0_inner_replay_079.py` / `.json`. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** replace the complete XGPIO8 branch after the six selected routes,
+  then continue the terminal schedule only while each branch closes.
 - **FBV2-P2-078 / D-376 (XGPIO1 explicit via-site enumeration; no
   authoritative PCB change):** explicit rank selection finds a second legal
   R52.1-side In3 via site at `(62.75,78.55)` mm. Paired with the U3.5-side
