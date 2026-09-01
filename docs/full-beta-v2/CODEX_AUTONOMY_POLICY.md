@@ -161,3 +161,41 @@ All applicable release gates must be proven, including:
 Only after all applicable gates pass may the repository declare:
 
 READY_FOR_JLCPCB
+
+## Routing-wall iteration budget
+
+Do not spend unlimited consecutive iterations characterizing one local routing
+blocker while independent fabrication work remains available.
+
+For the same materially unchanged routing wall:
+
+- Allow at most **5 consecutive non-promoting iterations**.
+- A promoting iteration resets the counter.
+- A materially new board geometry or genuinely broader refloorplan may reset
+  the counter when documented evidence shows the problem has changed.
+- Rewording, additional measurements, alternate diagnostics, or equivalent
+  characterization of the same unchanged obstacle do NOT reset the counter.
+
+When the limit is reached and no safe copper promotion is available:
+
+1. Record the blocker and strongest evidence in the routing wall registry and
+   durable project state.
+2. Mark the wall PARKED, not solved.
+3. Select the highest-leverage independent routing cluster or fabrication task.
+4. Continue making measurable board progress.
+5. Revisit the parked wall only when:
+   - surrounding geometry has materially changed,
+   - another promoted route unlocks it,
+   - a broader coherent refloorplan becomes justified, or
+   - it becomes a critical-path blocker to fabrication completion.
+
+Exception:
+A wall may exceed 5 consecutive non-promoting iterations only if repository
+evidence shows that it blocks a broad dependent family or the immediate
+fabrication critical path. The reason must be explicitly recorded before
+continuing.
+
+Optimization objective:
+Prefer sustained fabrication progress over exhaustive local characterization.
+A useful characterization result is valuable, but repeated characterization
+without changing the board has diminishing value.
