@@ -677,6 +677,9 @@ GROUPS = {
              'SPI data/clock line), 3-pad all F.Cu SMD, no via',
         layer='F', width=200000, clr_pad=200000, clr_trk=200000,
         nets=['DISP_CS_N'],
+        connector_fanout_plan=dict(a='R26.2', b='J1.38',
+                                   a_near='F', b_near='F',
+                                   inner=['I2', 'I3'], attach=['U1.18']),
     ),
     # FBV2-P2-024 -- DISP_DC scratch-tested to CHARACTERIZE the J1 display-FPC
     # connector haul as a shared wall (the mandate's headline candidate).  It is
@@ -1620,6 +1623,36 @@ def route_inner_long_haul_plan(qb, net, pads, group):
                      'none')]
 
 
+def route_connector_fanout_plan(qb, net, pads, group):
+    """Fan a tight connector land to an inner layer, then attach local lands.
+
+    The long haul is the qualified D-331 reserved-escape framework.  Only after
+    both endpoint escapes and the inner join succeed do ordinary same-face
+    local pads attach to the open-side anchor.  This keeps failed fanout trials
+    transactional and avoids asking the long-haul router to cross the J1
+    interior on F.Cu.
+    """
+    plan = group['connector_fanout_plan']
+    member = dict(group)
+    member['inner_long_haul_plan'] = {k: plan[k] for k in
+                                      ('a', 'b', 'a_near', 'b_near', 'inner')}
+    haul = route_inner_long_haul_plan(qb, net, pads, member)
+    if not haul or not haul[-1][3].get('ok'):
+        return haul
+    by_ref = {p['ref']: p for p in pads}
+    anchor = by_ref[plan['a']]
+    out = list(haul)
+    for ref in plan.get('attach', []):
+        if ref not in by_ref:
+            raise RuntimeError('connector_fanout_plan missing attach pad %s' % ref)
+        r = QR.connect_role(qb, net, anchor, by_ref[ref], plan['a_near'],
+                            group['width'], group['clr_pad'], group['clr_trk'])
+        out.append((anchor, by_ref[ref], 'local-attach', r, plan['a_near']))
+        if not r.get('ok'):
+            break
+    return out
+
+
 # --------------------------------------------------------------------------- #
 def cmd_baseline():
     """Record the authoritative fingerprints, DRC, ratsnest and target open-set."""
@@ -1744,6 +1777,21 @@ def cmd_route(name):
         # identical to the old ref-keyed order (ties broken by x,y never fire).
         pads = physical_net_pads(qb, nf)
         pads.sort(key=lambda p: (p['ref'], p['x'], p['y']))   # deterministic
+        connector_plan = group.get('connector_fanout_plan')
+        if connector_plan:
+            for pa, pb, kind, r, used_layer in route_connector_fanout_plan(qb, nf, pads, group):
+                rec = dict(net=base, netfull=nf, a=pa['ref'], b=pb['ref'],
+                           layer=used_layer + '.Cu', w=w / 1e6,
+                           ok=bool(r.get('ok')), mm=round(r.get('mm', 0), 3),
+                           vias=r.get('vias', 0), via_xy=r.get('via_xy'),
+                           kind=kind, reason=r.get('reason'), why=r.get('why'))
+                jrn.append(rec)
+                print('  %-12s %-8s -> %-8s [%-12s %s.Cu] %s %s'
+                      % (base, pa['ref'], pb['ref'], kind, used_layer,
+                         'ok %.3f mm' % r['mm'] if r.get('ok')
+                         else 'FAIL ' + str(r.get('reason')),
+                         r.get('why', '') or ''))
+            continue
         inner_plan = (group.get('inner_long_haul_plan') or
                       group.get('inner_long_haul_plans', {}).get(base))
         if inner_plan:

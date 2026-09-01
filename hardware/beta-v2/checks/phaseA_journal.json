@@ -3476,5 +3476,27 @@
   "mm": 47.625,
   "requested_connected": true,
   "group": "XGPIO45_INNER_BATCH"
+ },
+ {
+  "net": "/DISP_CS_N",
+  "a": "R26.2",
+  "b": "J1.38",
+  "role": "REST_INC",
+  "layer": "I2.Cu",
+  "w": 0.2,
+  "mm": 32.867,
+  "requested_connected": true,
+  "group": "DISP_CS_N"
+ },
+ {
+  "net": "/DISP_CS_N",
+  "a": "R26.2",
+  "b": "U1.18",
+  "role": "REST_INC",
+  "layer": "F.Cu",
+  "w": 0.2,
+  "mm": 2.9,
+  "requested_connected": true,
+  "group": "DISP_CS_N"
  }
 ]

@@ -1,10 +1,11 @@
 {
   "schema_version": 1,
-  "current_decision": "D-332",
-  "current_board_sha256": "e5e6f4fc97c2677270f542f65d0037fb1329110a2ac844e84d2140f363d56e7d",
+  "current_decision": "D-338",
+  "current_board_sha256": "7940bda803e950c93fa45bcd2caa6e27a6a78ec4f1f9d118eccf3c5c55c7e715",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
     {"decision":"D-331","framework":"inner_long_haul_plan","nets":["XGPIO2"],"gate":"PASS","tracks":8,"vias":2,"ratsnest_delta":-1},
-    {"decision":"D-332","framework":"inner_long_haul_plan","nets":["XGPIO4","XGPIO5"],"gate":"PASS","tracks":11,"vias":4,"ratsnest_delta":-2}
+    {"decision":"D-332","framework":"inner_long_haul_plan","nets":["XGPIO4","XGPIO5"],"gate":"PASS","tracks":11,"vias":4,"ratsnest_delta":-2},
+    {"decision":"D-338","framework":"connector_fanout_plan","nets":["DISP_CS_N"],"gate":"PASS","tracks":7,"vias":2,"ratsnest_delta":-2}
   ]
 }
