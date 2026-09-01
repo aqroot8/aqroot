@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-077 / D-375 (XGPIO1 target-bias/via-site characterization; no
+  authoritative PCB change):** 45 combinations of endpoint target-score bias
+  all reserve the same In3 via pair at `(55.40,24.95)/(58.55,76.65)` mm. The
+  only distinct pair fails its direct join and the compact D-374-derived staged
+  set; target scoring cannot expose another legal site and is closed.
+  Evidence/harness: `u3_xgpio1_viasite_077.py` / `.json`. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** add a bounded reachable-via-site enumeration/explicit-selection
+  capability, especially at U3.5, then join only distinct enumerated pairs.
 - **FBV2-P2-076 / D-374 (XGPIO1 staged-waypoint characterization; no
   authoritative PCB change):** after the four selected inner replacements,
   XGPIO1 reserves both In3 endpoints at `(55.40,24.95)/(58.55,76.65)` mm.

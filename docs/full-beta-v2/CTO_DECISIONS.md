@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-375 · 2026-09-01 · routing characterization:** after the D-373 prefix,
+45 combinations of ±4/±8 mm target-score bias at the two XGPIO1 In3 endpoint
+reservations all collapse to the same physical via pair,
+`(55.40,24.95)/(58.55,76.65)` mm. The one distinct pair fails its direct join
+and the D-374-derived compact staged set; no XGPIO1 route exists. The
+authoritative board remains byte-identical (`a4b93b9b…`). Target-score bias is
+closed because it cannot select a different reachable site. Next is a bounded
+enumeration/explicit-selection capability for multiple reachable legal In3 via
+sites from U3.5 (and R52.1 only if useful), followed by joins only across
+distinct enumerated pairs. No owner decision is open.
+
 **D-374 · 2026-09-01 · routing characterization:** after the D-373 prefix,
 both XGPIO1 In3 endpoint escapes reserve at `(55.40,24.95)/(58.55,76.65)` mm,
 but a bounded 17-point line-relative staged-waypoint sweep produces no complete
