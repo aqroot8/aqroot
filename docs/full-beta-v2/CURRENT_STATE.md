@@ -13,6 +13,28 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-068 / D-366 (U3/R57/R58 endpoint-cluster characterization; no
+  authoritative PCB change):** with U3 held at 180°/+0.5 mm north after exact
+  withdrawal of its 199 physical incident items and R57 fixed, three of nine
+  R58 translations reserve both XGPIO6/XGPIO7 when XGPIO6 routes first: +0.5
+  mm east, -0.5 mm north, and -1.0 mm north. Every candidate preserves unrelated
+  accepted copper. Evidence/harness: `u3_r57_r58_refloor_068.py` / `.json`.
+  Board remains byte-identical (`a4b93b9b…`); no owner decision; readiness
+  remains 78%. **Next:** real-DRC/accepted-impact rank the three winners, then
+  run exact complete affected-branch replay for the best legal layout before
+  any replacement-aware promotion gate.
+- **FBV2-P2-067 / D-365 (expanded U3 corridor characterization; no
+  authoritative PCB change):** after exact withdrawal of the 199 physical
+  accepted items in the eleven U3 incident branches, 48 larger U3 poses
+  (90°/180°/270° with cardinal/diagonal 1.0/1.5 mm offsets) were screened in
+  both XGPIO6/XGPIO7 orders. No pose reserves both routes: failures total 90
+  `NO_VIA_SITE` and six `NO_LEGAL_ESCAPE`; 27 scratch candidates additionally
+  fail the conservative frozen-signature filter. Evidence/harness:
+  `u3_corridor_refloor_067.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** bounded
+  U3/R57/R58 endpoint-cluster refloorplan with complete affected-branch replay;
+  do not retry U3-only poses or use blind vias without an owner manufacturing
+  decision.
 - **FBV2-P2-066 / D-364 (U3 topology-aware replay characterization; no
   authoritative PCB change):** XGPIO6 again reserves on In2 after the complete
   U3 incident cut-through. All 199 unique accepted branch-copper signatures

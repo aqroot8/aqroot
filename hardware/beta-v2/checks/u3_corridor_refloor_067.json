@@ -1,0 +1,3336 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "branch_count": 11,
+  "candidate_count": 48,
+  "candidates": [
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 90,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 180,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_LEGAL_ESCAPE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        -1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.0,
+        1.0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        0
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        0,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I2",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        -1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        -1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "reserve-b",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": true
+    },
+    {
+      "exact_boundary_removed": true,
+      "offset_mm": [
+        1.5,
+        1.5
+      ],
+      "pair_route_candidate": false,
+      "rotation_deg": 270,
+      "routing_orders": [
+        {
+          "ok": false,
+          "order": [
+            "XGPIO6_INNER",
+            "XGPIO7_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R57.1",
+                  "b": "U3.10",
+                  "inner": "I3",
+                  "kind": "inner-haul",
+                  "ok": true,
+                  "reason": null
+                }
+              ],
+              "group": "XGPIO6_INNER",
+              "ok": true
+            },
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "ok": false,
+          "order": [
+            "XGPIO7_INNER",
+            "XGPIO6_INNER"
+          ],
+          "routes": [
+            {
+              "edges": [
+                {
+                  "a": "R58.1",
+                  "b": "U3.11",
+                  "inner": "I3",
+                  "kind": "reserve-a",
+                  "ok": false,
+                  "reason": "NO_VIA_SITE"
+                }
+              ],
+              "group": "XGPIO7_INNER",
+              "ok": false
+            }
+          ]
+        }
+      ],
+      "unrelated_copper_preserved": false
+    }
+  ],
+  "conclusion": "broader_1p0_1p5mm_U3_pose_space_exhausted",
+  "decision": "D-365",
+  "excluded_prior_space": "D359_0p5mm_pose_space_and_D360_D364_180deg_north_0p5mm",
+  "frozen_signature_failures": 27,
+  "frozen_signature_note": "Scratch routing may split accepted track signatures; this diagnostic is a candidate filter, not a promotion gate.",
+  "method": "exact_incident_cutthrough_plus_1p0_1p5mm_orthogonal_pose_screen",
+  "nominal_connectivity_boundary_items": 211,
+  "pair_route_candidates": 0,
+  "physical_boundary_items": 199,
+  "schema_version": 1,
+  "source_decision": "D-364",
+  "winning_poses": []
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_decision": "D-364",
+  "current_decision": "D-366",
   "current_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
   "routine_framework_promotions": [
     {"decision":"D-328","framework":"hop_anchor_plan","nets":["BTN_RIGHT_N"],"gate":"PASS","tracks":16,"vias":2,"ratsnest_delta":-3},
@@ -34,6 +34,8 @@
     {"decision":"D-361","framework":"bounded_nonrigid_U3_C5_TP33_cluster_screen","nets":["XGPIO6","XGPIO7"],"result":"30_LAYOUTS_60_ORDERS_ALL_NO_VIA_SITE_NEIGHBOR_MOVES_BREAK_18_TO_22_PAIRS_AND_NEVER_IMPROVE_DRC","evidence":"u3_neighbor_cluster_063.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-362","framework":"exact_complete_U3_incident_branch_cutthrough_pair_reservation","nets":["XGPIO6","XGPIO7"],"result":"211_ITEMS_11_BRANCHES_WITHDRAWN_XGPIO6_ROUTES_ON_IN2_XGPIO7_NO_VIA_SITE_FIRST_OR_SECOND_REPLAY_NOT_ENTERED","evidence":"u3_cutthrough_064.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
     {"decision":"D-363","framework":"single_XGPIO6_reservation_then_complete_U3_incident_branch_replay","nets":["XGPIO6"],"result":"XGPIO6_ROUTES_ON_IN2_GENERIC_BCU_MST_REPLAY_FAILS_FIRST_BRANCH_XGPIO5_NO_LEGAL_ESCAPE_TOPOLOGY_AWARE_REPLAY_REQUIRED","evidence":"u3_xgpio6_replay_065.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
-    {"decision":"D-364","framework":"exact_accepted_branch_template_restore_then_BCu_terminal_attach","nets":["XGPIO6","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9","ACC_DETECT_N","ACC_3V3_EN","ACC_POWER_FAULT_N"],"result":"199_UNIQUE_ITEMS_RESTORED_XGPIO6_ROUTES_BUT_180DEG_POSE_CAUSES_12_SHORTS_6_CLEARANCES_1_IN2_CROSSING_XGPIO5_ATTACH_NO_PATH","evidence":"u3_topology_replay_066.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
+    {"decision":"D-364","framework":"exact_accepted_branch_template_restore_then_BCu_terminal_attach","nets":["XGPIO6","XGPIO5","XGPIO4","XGPIO2","XGPIO3","XGPIO1","XGPIO0","XGPIO8","XGPIO9","ACC_DETECT_N","ACC_3V3_EN","ACC_POWER_FAULT_N"],"result":"199_UNIQUE_ITEMS_RESTORED_XGPIO6_ROUTES_BUT_180DEG_POSE_CAUSES_12_SHORTS_6_CLEARANCES_1_IN2_CROSSING_XGPIO5_ATTACH_NO_PATH","evidence":"u3_topology_replay_066.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-365","framework":"exact_incident_cutthrough_plus_expanded_U3_only_pose_screen","nets":["XGPIO6","XGPIO7"],"result":"48_POSES_96_ORDERS_ZERO_PAIR_RESERVATIONS_90_NO_VIA_SITE_6_NO_LEGAL_ESCAPE","evidence":"u3_corridor_refloor_067.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"},
+    {"decision":"D-366","framework":"exact_U3_incident_cutthrough_plus_bounded_R58_endpoint_translation","nets":["XGPIO6","XGPIO7"],"result":"9_LAYOUTS_3_PAIR_RESERVATIONS_R58_EAST_0P5_OR_NORTH_0P5_1P0_WITH_XGPIO6_FIRST","evidence":"u3_r57_r58_refloor_068.json","authoritative_board_unchanged":true,"board_sha256":"a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782"}
   ]
 }

@@ -9,6 +9,28 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-366 · 2026-09-01 · routing characterization:** the bounded endpoint-
+cluster screen holds U3 at the 180°/+0.5 mm-north cut-through pose and R57 at
+authority, then translates the still-unrouted R58 through nine cardinal 0.5/1.0
+mm offsets. Three layouts reserve both XGPIO6/XGPIO7 with XGPIO6 first: R58
++0.5 mm east, -0.5 mm north, and -1.0 mm north. All 199 physical U3-incident
+items are withdrawn exactly, unrelated copper is preserved in every candidate,
+and the authoritative board remains byte-identical (`a4b93b9b…`). Next is a
+real-DRC/impact rank of these three winners followed by exact complete affected-
+branch replay for the best legal layout; no owner decision is open.
+
+**D-365 · 2026-09-01 · routing characterization:** the exact 199-physical-item
+U3 incident cut-through was combined with 48 materially larger orthogonal U3
+poses (90°/180°/270° at cardinal/diagonal 1.0 and 1.5 mm offsets), screening
+both deterministic XGPIO6/XGPIO7 orders with unrelated authority frozen. None
+reserves the pair: XGPIO7 produces 90 `NO_VIA_SITE` failures and the remaining
+six stopped attempts are `NO_LEGAL_ESCAPE`; 27 scratch results also fail the
+conservative accepted-signature filter. The authoritative board remains
+byte-identical (`a4b93b9b…`). U3-only orthogonal pose expansion is closed. Next
+is a bounded U3/R57/R58 endpoint-cluster refloorplan with complete affected-
+branch replay; blind vias remain excluded absent an owner manufacturing
+decision. No owner decision is currently open.
+
 **D-364 · 2026-09-01 · routing characterization:** the topology-aware U3 replay
 restores all 199 unique accepted copper items in the eleven withdrawn branches
 after reserving XGPIO6, preserving their specialized inner hauls, vias and
