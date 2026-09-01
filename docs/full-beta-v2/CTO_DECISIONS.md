@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-351 · 2026-09-01 · routing characterization:** expanding the D-350 cut-through
+scope to the complete 31-segment EN/ILIM branches at their pad anchors produces a
+valid scratch transaction candidate at U20 180°/+0.5 mm north when controls reserve
+first: both controls and all six fault terminals connect, baseline pad connectivity
+and all unrelated copper (including XGPIO8) are preserved, and real KiCad DRC is
+unchanged. No promotion: the add-only authoritative gate cannot certify an intentional
+copper/placement replacement. Next must add/run a replacement-aware full-board gate
+and update pinned accepted-copper contracts transactionally before promotion.
+
 **D-350 · 2026-09-01 · routing characterization:** the D-349 eight-item U20
 collision scope is not a sufficient replacement boundary. Exact scratch replacement preserves
 all frozen copper and restores both control nets, but leaves two real dangling control stubs and

@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-053 / D-351 (characterization; no copper/placement change):** the D-350
+  boundary was expanded to the complete accepted `ACC_3V3_EN`/`ACC_3V3_ILIM` branches
+  (31 B.Cu segments) at their pad anchors. At U20 180°/+0.5 mm north with controls
+  reserved before FAULT, scratch routing connects both controls and all six
+  `ACC_POWER_FAULT_N` terminals, preserves every baseline pad pair and all unrelated
+  copper including XGPIO8, and leaves real KiCad DRC unchanged. This is a transaction
+  candidate, not a promotion: the authoritative gate is add-only and has not certified
+  intentional replacement/placement. Board `2cdc9f33…` remains unchanged. Evidence:
+  `u20_closed_branch_053.json` / `.py`. **Next:** implement and run a replacement-aware
+  authoritative full-board gate, transactionally re-pin accepted-copper contracts, and
+  promote only on full PASS. No owner decision; readiness 78%.
 - **FBV2-P2-052 / D-350 (characterization; no copper/placement change):** the D-349
   eight-item replacement scope was executed at U20 180°/+0.5 mm north. Exactly one EN and
   seven ILIM segments were removed in scratch; XGPIO8 and every other accepted item stayed
