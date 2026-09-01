@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-376 · 2026-09-01 · routing characterization:** after the D-373 prefix,
+explicit rank selection over reachable legal In3 via sites exposes a second
+R52.1-side site at `(62.75,78.55)` mm. The resulting distinct pair with the
+U3.5-side `(55.40,24.95)` mm site closes XGPIO1 directly; the legacy rank-zero
+pair remains the D-375 no-path result. Replay advances to XGPIO0/U3.4, whose
+retained B.Cu anchor 6.351 mm away returns `NO_LEGAL_ESCAPE`, so the full U3
+transaction remains open and no PCB change is promoted. The authoritative
+board remains byte-identical (`a4b93b9b…`). Next is complete-XGPIO0 branch
+replacement after the five selected inner routes, continuing the terminal
+schedule only while each branch closes. No owner decision is open.
+
 **D-375 · 2026-09-01 · routing characterization:** after the D-373 prefix,
 45 combinations of ±4/±8 mm target-score bias at the two XGPIO1 In3 endpoint
 reservations all collapse to the same physical via pair,

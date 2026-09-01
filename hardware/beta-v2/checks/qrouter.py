@@ -715,6 +715,56 @@ class QBoard(object):
                 return (best[1], best[2])
         return None
 
+    def via_sites(self, near, far, net, esc, width, via_dia, clr_pad, clr_trk,
+                  G, span=8000000, via_drill=0, hole_clr=250000,
+                  limit=None, separation=0):
+        """Distance-ordered reachable legal via sites.
+
+        This is the enumerable form of :meth:`via_site`.  ``separation`` can
+        compact a grid-sized cloud into materially distinct placement choices;
+        zero preserves every legal grid cell.  The result is bounded by
+        ``limit`` when supplied.  No copper is laid.
+        """
+        x0, y0 = esc['x'] - span, esc['y'] - span
+        x1, y1 = esc['x'] + span, esc['y'] + span
+        reach = self.free_region(near, net, width, clr_pad, clr_trk, G,
+                                 (esc['x'], esc['y']), x0, y0, x1, y1)
+        if reach is None:
+            return []
+        mask, ox, oy, g = reach
+        bn = self.grid(near, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
+        bf = self.grid(far, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
+        ny = min(mask.shape[0], bn.shape[0], bf.shape[0])
+        nx = min(mask.shape[1], bn.shape[1], bf.shape[1])
+        good = mask[:ny, :nx] & ~bn[:ny, :nx] & ~bf[:ny, :nx]
+        if not good.any():
+            return []
+        jj, ii = np.nonzero(good)
+        ci = (esc['x'] - ox) / float(g)
+        cj = (esc['y'] - oy) / float(g)
+        order = np.argsort((ii - ci) ** 2 + (jj - cj) ** 2)
+        holes = []
+        if via_drill and self.holes:
+            hx = np.array([h.cx for h in self.holes], dtype=float)
+            hy = np.array([h.cy for h in self.holes], dtype=float)
+            hr = np.array([max(h.hx, h.hy) for h in self.holes], dtype=float)
+            holes = (hx, hy, hr)
+        sites = []
+        for k in order:
+            px, py = int(ox + ii[k] * g), int(oy + jj[k] * g)
+            if holes:
+                hx, hy, hr = holes
+                need = hr + (via_drill / 2.0) + hole_clr
+                if not np.all(np.hypot(hx - px, hy - py) >= need):
+                    continue
+            if separation and any(math.hypot(px-x, py-y) < separation
+                                  for x, y in sites):
+                continue
+            sites.append((px, py))
+            if limit is not None and len(sites) >= limit:
+                break
+        return sites
+
     def via_site(self, near, far, net, esc, width, via_dia, clr_pad, clr_trk,
                  G, span=8000000, via_drill=0, hole_clr=250000):
         """PR-45.  THE FIRST POINT A VIA CAN SIT ON THAT THE ESCAPE CAN REACH.
@@ -741,49 +791,10 @@ class QBoard(object):
         both layers.  A site returned here is reachable by construction, so the
         walk that follows cannot fail for want of a corridor.
         """
-        x0, y0 = esc['x'] - span, esc['y'] - span
-        x1, y1 = esc['x'] + span, esc['y'] + span
-        reach = self.free_region(near, net, width, clr_pad, clr_trk, G,
-                                 (esc['x'], esc['y']), x0, y0, x1, y1)
-        if reach is None:
-            return None
-        mask, ox, oy, g = reach
-        bn = self.grid(near, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
-        bf = self.grid(far, net, via_dia, clr_pad, clr_trk, ox, oy, x1, y1, g)
-        ny = min(mask.shape[0], bn.shape[0], bf.shape[0])
-        nx = min(mask.shape[1], bn.shape[1], bf.shape[1])
-        good = mask[:ny, :nx] & ~bn[:ny, :nx] & ~bf[:ny, :nx]
-        if not good.any():
-            return None
-        jj, ii = np.nonzero(good)
-        ci = (esc['x'] - ox) / float(g)
-        cj = (esc['y'] - oy) / float(g)
-        d = (ii - ci) ** 2 + (jj - cj) ** 2
-        # HOLE-TO-HOLE IS NOT A COPPER RULE, so the clearance grids above do
-        # not see it: they test whether a via's PAD clears other copper, and
-        # `min_hole_to_hole` is a drill-to-drill spacing the fabricator needs
-        # between two barrels.  The first D-256 screen put the `U18.10 -> Q3.4`
-        # escape via on a site that was clean on both layers and still came
-        # back from DRC as `hole_to_hole: 1`.  Rejecting those sites here costs
-        # one distance test per candidate and saves a whole gated connection.
-        if via_drill:
-            hx = np.array([h.cx for h in self.holes], dtype=float) \
-                if self.holes else np.zeros(0)
-            hy = np.array([h.cy for h in self.holes], dtype=float) \
-                if self.holes else np.zeros(0)
-            hr = np.array([max(h.hx, h.hy) for h in self.holes], dtype=float) \
-                if self.holes else np.zeros(0)
-            if hx.size:
-                order = np.argsort(d)
-                for k in order:
-                    px = ox + ii[k] * g
-                    py = oy + jj[k] * g
-                    need = hr + (via_drill / 2.0) + hole_clr
-                    if np.all(np.hypot(hx - px, hy - py) >= need):
-                        return (int(px), int(py))
-                return None
-        k = int(np.argmin(d))
-        return (int(ox + ii[k] * g), int(oy + jj[k] * g))
+        sites = self.via_sites(near, far, net, esc, width, via_dia,
+                               clr_pad, clr_trk, G, span=span,
+                               via_drill=via_drill, hole_clr=hole_clr, limit=1)
+        return sites[0] if sites else None
 
     def free_region(self, layer, net, width, clr_pad, clr_trk, G,
                     seed, x0, y0, x1, y1):
@@ -1522,7 +1533,8 @@ def connect_pofv(qb, net, pa, pb, width, clr_pad, clr_trk, inner='I2',
 
 def reserve_escape(qb, net, pa, width, clr_pad, clr_trk, near='B', far='I2',
                    G=50000, fine=25000, via_dia=350000, via_drill=200000,
-                   toward=None, target=None):
+                   toward=None, target=None, site_index=0,
+                   site_separation=0):
     """D-266.  RESERVE ONE PAD'S EXIT, AND NOTHING MORE.
 
     002S measured three of its four failing pads still escaping at 0.20-0.25 mm
@@ -1611,21 +1623,26 @@ def reserve_escape(qb, net, pa, width, clr_pad, clr_trk, near='B', far='I2',
                         break
         else:
             for c in e[:6]:
-                if free_everywhere(c['x'], c['y']):
+                if site_index == 0 and free_everywhere(c['x'], c['y']):
                     sc = score(c['x'], c['y'], c['ln'])
                     if best is None or sc < best:
                         best = sc
                         cand = dict(c)
                         cand['walk'] = None
-                st = qb.via_site(near, far, net, c, width, via_dia,
-                                 clr_pad, clr_trk, G_try, via_drill=via_drill)
-                if st is not None and free_everywhere(st[0], st[1]):
-                    sc = score(st[0], st[1], c['ln'] + math.hypot(
-                        st[0] - c['x'], st[1] - c['y']))
-                    if best is None or sc < best:
-                        best = sc
-                        cand = dict(c)
-                        cand['walk'] = st
+                sites = qb.via_sites(near, far, net, c, width, via_dia,
+                                     clr_pad, clr_trk, G_try,
+                                     via_drill=via_drill,
+                                     limit=site_index + 1,
+                                     separation=site_separation)
+                if len(sites) > site_index:
+                    st = sites[site_index]
+                    if free_everywhere(st[0], st[1]):
+                        sc = score(st[0], st[1], c['ln'] + math.hypot(
+                            st[0] - c['x'], st[1] - c['y']))
+                        if best is None or sc < best:
+                            best = sc
+                            cand = dict(c)
+                            cand['walk'] = st
         if cand is None:
             fail = dict(ok=False, reason='NO_VIA_SITE',
                         why='%s: no %.2f mm via site reachable on %s'

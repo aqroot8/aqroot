@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-078 / D-376 (XGPIO1 explicit via-site enumeration; no
+  authoritative PCB change):** explicit rank selection finds a second legal
+  R52.1-side In3 via site at `(62.75,78.55)` mm. Paired with the U3.5-side
+  `(55.40,24.95)` mm site, XGPIO1 closes directly; the rank-zero pair repeats
+  the D-375 no-path result. Replay advances to XGPIO0/U3.4, whose retained B.Cu
+  anchor 6.351 mm away returns `NO_LEGAL_ESCAPE`, so there is no promotable
+  transaction. Evidence/harness: `u3_xgpio1_viasite_enum_078.py` / `.json`.
+  Board remains byte-identical (`a4b93b9b…`); no owner decision; readiness
+  remains 78%. **Next:** replace the complete XGPIO0 branch after the five
+  selected inner routes, then continue the terminal schedule only while each
+  branch closes.
 - **FBV2-P2-077 / D-375 (XGPIO1 target-bias/via-site characterization; no
   authoritative PCB change):** 45 combinations of endpoint target-score bias
   all reserve the same In3 via pair at `(55.40,24.95)/(58.55,76.65)` mm. The
