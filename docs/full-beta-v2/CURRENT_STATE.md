@@ -13,6 +13,21 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-094 / D-392 (U3.18 blocking-via minimum-cardinality rank; no
+  authoritative PCB change):** all eight individual D-391 transaction-via
+  withdrawals were screened deterministically. XGPIO0 `(52.75,78.35)` alone
+  exposes 1 In2 + 4 In3 U3.18 sites and XGPIO1 `(55.40,79.00)` alone exposes
+  4 In2 + 3 In3 sites; each other singleton exposes zero. Thus the minimum
+  blocking set has cardinality one and the next transaction needs to relocate
+  only XGPIO0 or XGPIO1, not all eight nearby vias. A clean rerun reproduced
+  `u3_p18_via_subset_rank_094.json` byte-for-byte; the ordered-prefix probe
+  passes in all cases. This is sensitivity-only evidence because the withdrawn
+  required route was not replayed. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** compare
+  bounded minimum-scope relocation/replay of XGPIO0 versus XGPIO1 (XGPIO0
+  first), retain only a complete XGPIO branch that permits complete fault and
+  detect replay, then run the corrected full-board gate; also attribute the
+  five D-388 residual clearances before promotion.
 - **FBV2-P2-093 / D-391 (U3.18 obstacle withdrawal sensitivity; no
   authoritative PCB change):** six controlled scratch cases show that
   withdrawing adjacent ACC_5V_BOOST_EN/SX1262_RXEN copper does not change the

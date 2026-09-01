@@ -1,0 +1,418 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "candidate_vias": [
+    {
+      "net": "/ACC_3V3_EN",
+      "position_mm": [
+        53.05,
+        80.8
+      ]
+    },
+    {
+      "net": "/XGPIO0",
+      "position_mm": [
+        52.75,
+        78.35
+      ]
+    },
+    {
+      "net": "/XGPIO1",
+      "position_mm": [
+        55.4,
+        79.0
+      ]
+    },
+    {
+      "net": "/XGPIO2",
+      "position_mm": [
+        55.9,
+        78.3
+      ]
+    },
+    {
+      "net": "/XGPIO3",
+      "position_mm": [
+        55.3,
+        77.7
+      ]
+    },
+    {
+      "net": "/XGPIO4",
+      "position_mm": [
+        56.6,
+        77.7
+      ]
+    },
+    {
+      "net": "/XGPIO5",
+      "position_mm": [
+        55.25,
+        76.35
+      ]
+    },
+    {
+      "net": "/XGPIO9",
+      "position_mm": [
+        55.4,
+        81.4
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "cardinality": 1,
+      "case": "k1_000",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/ACC_3V3_EN",
+          "position_mm": [
+            53.05,
+            80.8
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_001",
+      "exposes_site": true,
+      "obstacle_attribution": {},
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO0",
+          "position_mm": [
+            52.75,
+            78.35
+          ]
+        }
+      ],
+      "site_count": 5,
+      "sites": {
+        "I2": [
+          [
+            52650000,
+            78400000
+          ]
+        ],
+        "I3": [
+          [
+            52250000,
+            78200000
+          ],
+          [
+            52700000,
+            78450000
+          ],
+          [
+            52700000,
+            80000000
+          ],
+          [
+            52750000,
+            77950000
+          ]
+        ]
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_002",
+      "exposes_site": true,
+      "obstacle_attribution": {},
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO1",
+          "position_mm": [
+            55.4,
+            79.0
+          ]
+        }
+      ],
+      "site_count": 7,
+      "sites": {
+        "I2": [
+          [
+            55250000,
+            78850000
+          ],
+          [
+            55500000,
+            79650000
+          ],
+          [
+            55650000,
+            79150000
+          ],
+          [
+            56150000,
+            79100000
+          ]
+        ],
+        "I3": [
+          [
+            55250000,
+            78850000
+          ],
+          [
+            55650000,
+            79150000
+          ],
+          [
+            56150000,
+            79100000
+          ]
+        ]
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_003",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO2",
+          "position_mm": [
+            55.9,
+            78.3
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_004",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO3",
+          "position_mm": [
+            55.3,
+            77.7
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_005",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO4",
+          "position_mm": [
+            56.6,
+            77.7
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_006",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO5",
+          "position_mm": [
+            55.25,
+            76.35
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_007",
+      "exposes_site": false,
+      "obstacle_attribution": {
+        "U3.16": 9,
+        "U3.17": 9,
+        "U3.19": 27,
+        "via": 8
+      },
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO9",
+          "position_mm": [
+            55.4,
+            81.4
+          ]
+        }
+      ],
+      "site_count": 0,
+      "sites": {
+        "I2": [],
+        "I3": []
+      }
+    }
+  ],
+  "conclusion": "MINIMUM_BLOCKING_VIA_SUBSET_IDENTIFIED",
+  "decision": "D-392",
+  "method": "minimum_cardinality_local_transaction_via_withdrawal_rank",
+  "minimum_exposing_cardinality": 1,
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "source_decision": "D-391",
+  "subsets_tested": 8,
+  "winning_subsets": [
+    {
+      "cardinality": 1,
+      "case": "k1_001",
+      "exposes_site": true,
+      "obstacle_attribution": {},
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO0",
+          "position_mm": [
+            52.75,
+            78.35
+          ]
+        }
+      ],
+      "site_count": 5,
+      "sites": {
+        "I2": [
+          [
+            52650000,
+            78400000
+          ]
+        ],
+        "I3": [
+          [
+            52250000,
+            78200000
+          ],
+          [
+            52700000,
+            78450000
+          ],
+          [
+            52700000,
+            80000000
+          ],
+          [
+            52750000,
+            77950000
+          ]
+        ]
+      }
+    },
+    {
+      "cardinality": 1,
+      "case": "k1_002",
+      "exposes_site": true,
+      "obstacle_attribution": {},
+      "prefix_ok": true,
+      "removed_vias": [
+        {
+          "net": "/XGPIO1",
+          "position_mm": [
+            55.4,
+            79.0
+          ]
+        }
+      ],
+      "site_count": 7,
+      "sites": {
+        "I2": [
+          [
+            55250000,
+            78850000
+          ],
+          [
+            55500000,
+            79650000
+          ],
+          [
+            55650000,
+            79150000
+          ],
+          [
+            56150000,
+            79100000
+          ]
+        ],
+        "I3": [
+          [
+            55250000,
+            78850000
+          ],
+          [
+            55650000,
+            79150000
+          ],
+          [
+            56150000,
+            79100000
+          ]
+        ]
+      }
+    }
+  ]
+}

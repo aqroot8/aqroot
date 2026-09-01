@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-392 · 2026-09-01 · routing characterization:** deterministic
+minimum-cardinality ranking of the eight D-391 nearby transaction vias reduces
+the U3.18 escape wall to either of two individual through vias. Removing only
+XGPIO0 at `(52.75,78.35)` mm exposes one In2 and four In3 U3.18 sites; removing
+only XGPIO1 at `(55.40,79.00)` mm exposes four In2 and three In3 sites. Each of
+the other six individual withdrawals exposes none. All eight cardinality-one
+cases preserve the ordered-prefix probe contract, a clean rerun reproduces the
+evidence byte-for-byte, and the authoritative board remains byte-identical
+(`a4b93b9b…`). This is sensitivity evidence only: XGPIO0/XGPIO1 are required
+closed routes and neither via is replayed, so no copper is promoted. Next is a
+bounded minimum-scope relocation/replay comparison of XGPIO0 versus XGPIO1,
+prioritizing XGPIO0 because its current via exposes the larger U3.18-side In3
+choice while disturbing only one required branch; retain only a complete
+XGPIO route that also permits the complete fault/detect transaction, then run
+the corrected full-board gate. Also attribute the five D-388 residual
+clearances before promotion. No owner decision is open.
+
 **D-391 · 2026-09-01 · routing characterization:** bounded U3.18 obstacle
 withdrawal sensitivity identifies the D-386 transaction's nearby through vias,
 not the adjacent retained branch copper, as the movable escape wall. With the
