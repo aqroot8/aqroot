@@ -6067,3 +6067,6 @@ A bounded generic prototype successfully staged `U1.3` toward explicit F.Cu anch
 ## 2026-08-31 - FBV2-P2-037: D-335 — west-button owned-anchor framework bounded
 
 The bounded layer-changing/owned-copper prototype failed at the boxed pull-up staging step for both `BTN_DOWN_N` and `BTN_A_N`; no scratch route reached promotion and the prototype was removed. D-332 copper and the full validation histogram remain unchanged. Framework-first non-placement mechanisms are now bounded for this family; next is a reversible pull-up placement ECO screen. Full evidence: [`audits/2026-08-31-p2-037-d335-west-button-owned-anchor-screen.md`](audits/2026-08-31-p2-037-d335-west-button-owned-anchor-screen.md).
+## 2026-09-01 - FBV2-P2-038: D-336 — west-button single-pull-up placement screen bounded
+
+The recovered scratch harness completed 72 cardinality-1 R5/R8/R6 placement candidates. Courtyard conflicts reject most moves and every legal ±0.5/1.0 mm/native/180° candidate remains unroutable. No placement or copper was promoted; D-332 and all validation evidence remain unchanged. Next is a bounded coordinated pull-up-column spread. Full evidence: [`audits/2026-09-01-p2-038-d336-west-button-cardinality1-placement-screen.md`](audits/2026-09-01-p2-038-d336-west-button-cardinality1-placement-screen.md).
