@@ -1,0 +1,851 @@
+{
+  "authoritative_board_sha256": "02e263a75f88fa965f7a01aa399d84f66d7a64ce0435695701f4f8e47c09b1c5",
+  "authoritative_unchanged": true,
+  "conclusion": "impact_scope_mapped_for_bounded_U4_transactional_replay",
+  "decision": "D-355",
+  "least_impact_candidate": {
+    "expanded_pad_envelope_copper": [
+      {
+        "end_mm": [
+          58.6,
+          72.95
+        ],
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/XGPIO8",
+        "start_mm": [
+          54.05,
+          68.4
+        ],
+        "width_mm": 0.2
+      }
+    ],
+    "impacted_nets": [
+      "/XGPIO8"
+    ],
+    "offset_mm": [
+      0.5,
+      0
+    ],
+    "rotation_deg": 270,
+    "u4_drc_count": 0,
+    "u4_drc_violations": []
+  },
+  "method": "real_DRC_plus_U4_pad_envelope_0.300mm_clearance",
+  "routing_capable_candidates": [
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 180,
+      "u4_drc_count": 2,
+      "u4_drc_violations": [
+        {
+          "description": "Items shorting two nets (nets /05_I2C_DEVICES/BMI270_SDO_ADDR and +3V3)",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "solder_mask_bridge"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            55.25,
+            76.35
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO5",
+          "start_mm": [
+            53.55,
+            30.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            69.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            54.6,
+            69.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.15,
+            69.75
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO5",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 180,
+      "u4_drc_count": 9,
+      "u4_drc_violations": [
+        {
+          "description": "Items shorting two nets (nets /05_I2C_DEVICES/BMI270_SDO_ADDR and +3V3)",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /05_I2C_DEVICES/BMI270_SDO_ADDR and +3V3)",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 1.0000 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Items shorting two nets (nets /05_I2C_DEVICES/BMI270_SDO_ADDR and unconnected-(U4-OCSB-Pad10))",
+          "items": [
+            "Pad 10 [unconnected-(U4-OCSB-Pad10)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.7778 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 10 [unconnected-(U4-OCSB-Pad10)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.7778 mm"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 10 [unconnected-(U4-OCSB-Pad10)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 1.0000 mm"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 7 [GND] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 1.0000 mm"
+          ],
+          "type": "solder_mask_bridge"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 9 [unconnected-(U4-INT2-Pad9)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 1.0000 mm"
+          ],
+          "type": "solder_mask_bridge"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 180,
+      "u4_drc_count": 1,
+      "u4_drc_violations": [
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1625 mm)",
+          "items": [
+            "Pad 8 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "clearance"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 180,
+      "u4_drc_count": 0,
+      "u4_drc_violations": []
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 180,
+      "u4_drc_count": 2,
+      "u4_drc_violations": [
+        {
+          "description": "Items shorting two nets (nets /05_I2C_DEVICES/BMI270_SDO_ADDR and unconnected-(U4-INT2-Pad9))",
+          "items": [
+            "Pad 9 [unconnected-(U4-INT2-Pad9)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "shorting_items"
+        },
+        {
+          "description": "Rear solder mask aperture bridges items with different nets",
+          "items": [
+            "Pad 9 [unconnected-(U4-INT2-Pad9)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "solder_mask_bridge"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 270,
+      "u4_drc_count": 1,
+      "u4_drc_violations": [
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.0256 mm)",
+          "items": [
+            "Pad 12 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "clearance"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            55.25,
+            76.35
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO5",
+          "start_mm": [
+            53.55,
+            30.85
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            69.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            54.6,
+            69.2
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.15,
+            69.75
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO5",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        -0.5,
+        0
+      ],
+      "rotation_deg": 270,
+      "u4_drc_count": 3,
+      "u4_drc_violations": [
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.0250 mm)",
+          "items": [
+            "Pad 12 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
+          "items": [
+            "Pad 12 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 1.0000 mm"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1358 mm)",
+          "items": [
+            "Pad 13 [/I2C_SCL_INT] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.7778 mm"
+          ],
+          "type": "clearance"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0.5,
+        0
+      ],
+      "rotation_deg": 270,
+      "u4_drc_count": 0,
+      "u4_drc_violations": []
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        -0.5
+      ],
+      "rotation_deg": 270,
+      "u4_drc_count": 2,
+      "u4_drc_violations": [
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.1875 mm)",
+          "items": [
+            "Pad 11 [unconnected-(U4-OSDO-Pad11)] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "clearance"
+        },
+        {
+          "description": "Courtyards overlap",
+          "items": [
+            "Footprint C6",
+            "Footprint U4"
+          ],
+          "type": "courtyards_overlap"
+        }
+      ]
+    },
+    {
+      "expanded_pad_envelope_copper": [
+        {
+          "end_mm": [
+            58.6,
+            72.95
+          ],
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/XGPIO8",
+          "start_mm": [
+            54.05,
+            68.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.95,
+            78.25
+          ],
+          "kind": "track",
+          "layer": "In2.Cu",
+          "net": "/XGPIO2",
+          "start_mm": [
+            55.0,
+            27.3
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "end_mm": [
+            55.15,
+            70.75
+          ],
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "start_mm": [
+            55.8375,
+            70.75
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "impacted_nets": [
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/XGPIO2",
+        "/XGPIO8"
+      ],
+      "offset_mm": [
+        0,
+        0.5
+      ],
+      "rotation_deg": 270,
+      "u4_drc_count": 1,
+      "u4_drc_violations": [
+        {
+          "description": "Clearance violation ( clearance 0.2000 mm; actual 0.0256 mm)",
+          "items": [
+            "Pad 12 [+3V3] of U4 on B.Cu",
+            "Track [/05_I2C_DEVICES/BMI270_SDO_ADDR] on B.Cu, length 0.6875 mm"
+          ],
+          "type": "clearance"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "source_decision": "D-354"
+}

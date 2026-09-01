@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-355 · 2026-09-01 · routing characterization:** the real-DRC accepted-copper
+impact map selects U4 270°/+0.5 mm east from all ten D-354 routing-capable poses.
+That pose has zero U4-attributable DRC violations; the nearby accepted `XGPIO8`
+F.Cu track enters the conservative 0.300 mm pad envelope but remains legal. The
+only mandatory connectivity replacement is the complete accepted
+`BMI270_SDO_ADDR` strap branch already identified by D-354. No neighbor footprint
+must move and no unrelated copper replacement is justified. The authoritative
+board remains byte-identical (`02e263a7…`). Next is an exact scratch transaction
+that replays the complete address strap and routes `BMI270_INT1_RAW`, followed by
+the replacement-aware full-board gate if clean; no owner decision is open.
+
 **D-354 · 2026-09-01 · routing characterization:** the corrected bounded U4
 pose screen finds that every tested 180°/270° pose makes the accepted inner-haul
 route for `BMI270_INT1_RAW`, while every 0°/90° pose fails routing. None is an

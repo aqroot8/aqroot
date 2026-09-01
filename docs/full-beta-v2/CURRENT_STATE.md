@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-057 / D-355 (U4 accepted-copper impact map; no authoritative
+  change):** all ten D-354 routing-capable 180°/270° poses were measured with
+  real KiCad DRC plus a conservative 0.300 mm expanded U4-pad envelope. The
+  least-impact pose is U4 270°/+0.5 mm east: zero U4-attributable DRC findings,
+  no neighbor footprint move, and the sole nearby `XGPIO8` F.Cu track remains
+  legal. The only mandatory connectivity casualty is the complete accepted
+  `BMI270_SDO_ADDR` strap branch already identified by D-354. Board remains
+  byte-identical (`02e263a7…`). Evidence: `u4_impact_map_057.py` / `.json`.
+  **Next:** exact scratch transaction at 270°/+0.5 mm east, replacing/replaying
+  the complete address-strap branch and adding `BMI270_INT1_RAW` while freezing
+  XGPIO8 and all unrelated copper; run the replacement-aware full-board gate
+  only if the candidate is clean. No owner decision; readiness 78%.
 - **FBV2-P2-056 / D-354 (U4 pose characterization; no authoritative change):**
   recovered and corrected the unfinished U4-neighbor ECO harness, then screened
   19 rotation/translation poses with the accepted reserved-escape inner-haul
