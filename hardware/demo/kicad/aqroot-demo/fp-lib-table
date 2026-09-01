@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "AQROOT_Beta")(type "KiCad")(uri "${KIPRJMOD}/libraries/AQROOT_Beta.pretty")(options "")(descr "AQROOT Beta project footprints - Bosch LGA-14 BMI270, Vishay Minicast TSOP382xx"))
+)

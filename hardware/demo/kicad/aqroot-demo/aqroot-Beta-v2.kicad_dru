@@ -1,0 +1,1026 @@
+(version 1)
+
+# =====================================================================
+# AQROOT FULL BETA v2 - PRE-ROUTING RULE SET
+#
+# Rebuilt 2026-08-24 at FBV2-P2-000 (P2 entry gate).  The file this
+# replaces was the Beta-DM rule set carried across by the fork.  It
+# referenced THIRTY-NINE rule areas that the FBV2-P1 PCB rebuild
+# deleted, so twenty-two of its rules were silently inert - the
+# condition recorded as P2-O5.  Every rule below has been checked
+# against the CURRENT board and the CURRENT 224-net project by
+# checks/dru_probe.py, which is part of the validation set.
+#
+# Fabrication: JLCPCB JLC04161H-7628, 4 layer, 1.6 mm finished,
+#              1 oz outer / 0.5 oz (H) inner, 7628 prepreg 0.2104 mm
+#              L1->L2 and L3->L4, 1.065 mm core.
+#              NOTE: the board file carries NO physical stackup object.
+#              The geometry above is documentary until the stackup is
+#              declared in the board and impedance control is ordered.
+#              See FBV2_P2_ROUTING_PLAN.md section 3.
+#
+# Layer architecture - FROZEN AT FBV2-P2-000
+#   F.Cu    FRONT.  Signals + components.  USB pair, SPI-A, display and
+#           microSD escapes, community-port fanout, IR, Class-D output.
+#   In1.Cu  SOLID, CONTINUOUS, BOARD-WIDE GND REFERENCE.  No splits.
+#           One authorised void: the ESP32 antenna keepout.
+#   In2.Cu  Power distribution and SLOW control routing only.  Its only
+#           continuous reference is In1 across the 1.065 mm core, so
+#           nothing edge-rate sensitive is permitted here.
+#   B.Cu    REAR.  Signals + components.  Power stages, radios, NFC
+#           front end, expanders, microphone.
+#
+# ROUTING IS NOT AUTHORISED.  These rules exist so that routing can
+# begin against a rule system that has actually been checked.
+#
+# ---------------------------------------------------------------------
+# RETIREMENT REGISTER - what was removed at FBV2-P2-000, and why
+#
+# Every retirement below is a Beta-DM rule whose OBJECT or whose
+# PREMISE no longer exists in Full Beta v2.  Nothing was removed for
+# convenience, and no protection intent was dropped without a
+# replacement or an explicit finding.
+#
+# R1  "915 KEEPOUT" / "433 KEEPOUT" band rules (5 rules).
+#     PREMISE GONE.  Beta-DM reserved a full-width band at y 88..114
+#     and a second at x 0..52.5 / y 115..138 because its internal flex
+#     antennas lay OVER the board.  In Full Beta v2 NEITHER sub-GHz
+#     radiator is on or over the PCB: the 915 MHz element is an
+#     external whip on an SMA bulkhead fed by shielded RG-178 (D-223),
+#     and the 433 MHz flex is bonded to the LEFT CAVITY WALL, standing
+#     perpendicular to the board (ANT433_REGION, doc x -2.40..-0.20).
+#     The only radiator that remains over board copper is the ESP32
+#     module's own PCB antenna, which is protected below.
+#     NEW, SMALLER RESIDUAL, recorded not hidden: the 433 flex sits
+#     0.2 mm outboard of the LEFT BOARD EDGE over doc y 1.5..48.5, so
+#     board copper in that band is a potential AGGRESSOR into the
+#     antenna.  That is a different requirement from the retired one
+#     and it is carried as routing-stage item P2-R1, to be instantiated
+#     as a rule area AFTER the converter placement move PM-1, because
+#     PM-1 changes exactly which parts occupy that band.
+#
+# R2  E5 corridors ("E5 CORRIDOR C-W" / "E4" / "C-E") and the E4 lane
+#     rules (8 rules).  PREMISE GONE with R1: the corridors existed
+#     only to let In2 cross the Beta-DM 915 band.  No band splits the
+#     Full Beta v2 board, so In2 is continuous and needs no corridor.
+#     The USB pair no longer needs an In2 excursion at all - see
+#     section 6, where it is forbidden from In2 outright.
+#
+# R3  E2 button escapes ("E2_ESC_*", "E2_GND_SW*", netclass
+#     E2_BUTTON_ESCAPE).  PREMISE GONE with R1.  In Full Beta v2 no
+#     button sits inside any RF band, so no escape exemption is needed.
+#     The netclass carried Default values, so retiring it changes no
+#     electrical parameter on any net.
+#
+# R4  E6 pad-escape pockets - E6_U9_1, E6_J1_40/41/42 (_CLR/_WIDTH),
+#     E6_R11_1 (_CLR/_WIDTH), E6_R29_1 (_CLR/_WIDTH), E6_C18_1_WIDTH,
+#     E6_R3_2, E6_U4_5, E6_U4_12, E6_J1_35, E6_BL_FANOUT_CLR,
+#     E6_BL_KVIA_CLR, U3_21_ESCAPE (17 rules).
+#     OBJECTS GONE, AND THE MEASUREMENTS DO NOT TRANSFER.  Every one of
+#     these was measured during Beta-DM ROUTING PASS 1 against a
+#     specific landed route on a 74 x 155 mm board.  Full Beta v2 is
+#     70 x 148 mm, the placement is different, and NOTHING IS ROUTED.
+#     Re-creating them at Beta-DM coordinates would be fabricating
+#     evidence.  They are retired in full.  THE DOCTRINE THAT GOVERNS
+#     THEM IS NOT RETIRED and is restated in FBV2_P2_ROUTING_PLAN.md
+#     section 12: own-area sufficiency, enclosedByArea() containment
+#     never intersectsArea(), a 2.0 mm HARD cap on reduced-CLEARANCE
+#     run length, a 6.0 mm REVIEW trigger on narrow-WIDTH run length,
+#     the narrow-escape search doctrine (>= 0.40 mm copper only may
+#     terminate a narrow escape - never another pad's neck), and
+#     one rule area per pad, created only when a measured need appears.
+#
+# R5  "HEADER RESERVED" and "J5_SELF_FANOUT" (1 rule, 22 net terms).
+#     OBJECT AND PREMISE GONE.  On Beta-DM J5 was a 2 x 12 PTH field on
+#     the BOTTOM edge with 8.5 mm of board around it, which is why it
+#     needed a reservation and a scoped fanout exception.  In Full Beta
+#     v2 J5 is on the RIGHT edge at doc (64.900, 121.000), 27.94 mm
+#     long, with BOTH ENDS OPEN and a 6.570 mm channel between the pad
+#     rows.  Measured escape capacity is far above demand - see
+#     FBV2_P2_ROUTING_PLAN.md section 10 - so no reservation and no
+#     exception is required.
+#
+# R6  netclass E5_CROSSING and its 18 patterns.  Retired with R2.  The
+#     class carried Default values; the 18 nets keep those values as
+#     Default, so nothing electrical changed.
+#
+# R7  netclass RF_DO_NOT_ROUTE and its rule.  MATCHED ZERO NETS.  On
+#     this board U7.21 and U8.21 - the module stamp-antenna pads - are
+#     NETLESS.  A netless pad cannot carry a track, so the structural
+#     guarantee is stronger than the rule was.  Verified on the board.
+#
+# R8  netclass RF_DEFERRED_NFC and its rule.  PREMISE REVERSED, AND
+#     THE RULE WAS ACTIVELY MISLEADING.  Its twelve *_TBD nets do not
+#     exist in Full Beta v2: the NFC front end was fully designed at
+#     FBV2-S1-004B/004C.  U9 now has a real 27.12 MHz crystal, a real
+#     differential matching network and a real off-board antenna
+#     connector, ALL OF WHICH MUST BE ROUTED.  A rule telling the
+#     router that the NFC front end is deferred is replaced by
+#     section 7, which tells it how to route it.
+#
+# R9  "USB_VBUS_RAW escape vias use the approved 0.25/0.55 geometry".
+#     NET EXISTS, JUSTIFICATION DOES NOT.  The rule existed for one
+#     Beta-DM via site in a 1.050 mm pocket at C20 pad 1.  C20 is at a
+#     different place on this board and no via exists.  Retired; if the
+#     same pinch reappears it is re-derived and re-measured then.
+#
+# R10 "FP-D6 TPD4E1B06DRLR intra-footprint land pattern".
+#     OBJECT GONE.  Full Beta v2 has four TPD4E1B06 arrays - D2, D3,
+#     D4, D5 - not D3..D6.  Replaced by FP-D2 in section 9.
+#
+# Retired total: 22 rules of the 71 in the inherited file, plus four
+# netclasses and 36 netclass patterns in the project file.
+# ---------------------------------------------------------------------
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# 1. J2 microSD SHELL - VENDOR LAND PATTERN REACHES THE BOARD EDGE
+#
+# Molex 5025700893 shell ground tab sits 0.213 mm from Edge.Cuts by
+# vendor geometry; the shell is meant to align with the card opening.
+# 0.20 mm is the mainstream-fab copper-to-outline floor.  Scoped to J2,
+# and carried as a FAB confirmation item - not a relaxation of the
+# 0.5 mm board-wide edge rule.  J2 EXISTS on this board (verified).
+# ---------------------------------------------------------------------
+
+(rule "J2 microSD shell edge clearance (vendor land pattern)"
+	(constraint edge_clearance (min 0.20mm))
+	(condition "A.memberOfFootprint('J2')"))
+
+
+# ---------------------------------------------------------------------
+# 2. In1.Cu IS THE GND REFERENCE PLANE
+#
+# One continuous reference for digital, audio, RF, NFC and power - no
+# split by function, and specifically NO isolated analog-ground island.
+# No signal routing and no power routing on In1.  Through vias
+# legitimately pass through In1 and are NOT disallowed here.
+#
+# The single authorised void is the ESP32 antenna keepout (section 3),
+# which is a manufacturer requirement and overrides In1 continuity
+# locally.  It is a 6.5 x 44 mm notch on the RIGHT board edge over
+# doc y 0..44 - the corner that also holds U1, U11, U18, R75 and D10 -
+# and every return path in that corner must be planned around it.
+# ---------------------------------------------------------------------
+
+(rule "In1.Cu carries GND only - no signal or power tracks"
+	(layer "In1.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+# ---------------------------------------------------------------------
+# 2b. In4.Cu IS THE SECOND GND REFERENCE PLANE  (D-258, FBV2-P2-002M)
+#
+# The six-layer migration adds a SECOND solid reference, and it gets the
+# same rule as the first rather than a weaker one.  L2 (In1) references the
+# F.Cu side, L5 (In4) references the B.Cu side, and the two new signal
+# layers L3/L4 sit between them - so every internal route has a plane on
+# one side and every outer route has a plane 0.2104 mm away, which is the
+# geometry that made the four-layer outer reference work.
+#
+# Neither plane may be split into power islands.  The only authorised void
+# is still the ESP32 antenna keepout of section 3, which is a manufacturer
+# requirement and overrides plane continuity locally on every layer.
+# ---------------------------------------------------------------------
+
+(rule "In4.Cu carries GND only - no signal or power tracks"
+	(layer "In4.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+(rule "SWITCH_NODE: outer layers only - never on In3"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+
+# ---------------------------------------------------------------------
+# 2b. In4.Cu IS THE SECOND GND REFERENCE PLANE  (D-258, FBV2-P2-002M)
+#
+# The six-layer migration adds a SECOND solid reference, and it gets the
+# same rule as the first rather than a weaker one.  L2 (In1) references the
+# F.Cu side, L5 (In4) references the B.Cu side, and the two new signal
+# layers L3/L4 sit between them - so every internal route has a plane on
+# one side and every outer route has a plane 0.2104 mm away, which is the
+# geometry that made the four-layer outer reference work.
+#
+# Neither plane may be split into power islands.  The only authorised void
+# is still the ESP32 antenna keepout of section 3, which is a manufacturer
+# requirement and overrides plane continuity locally on every layer.
+# ---------------------------------------------------------------------
+
+(rule "In4.Cu carries GND only - no signal or power tracks"
+	(layer "In4.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.NetName != 'GND'"))
+
+(rule "SWITCH_NODE: outer layers only - never on In3"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+
+
+# ---------------------------------------------------------------------
+# 3. ESP32-S3-WROOM-1 ANTENNA KEEPOUT - MANUFACTURER PRECEDENCE
+#
+# Espressif requires no copper on ANY layer in the module antenna area.
+# The U1 footprint carries its own embedded rule area with every
+# keepout flag set, and that has always been live.  At FBV2-P2-000 a
+# BOARD-LEVEL rule area of the SAME polygon and the same flags was
+# added and NAMED "WROOM ANTENNA KEEPOUT", doc x 63.500..84.500,
+# y -4.000..44.000 (kicad y 104..152), on F.Cu/In1.Cu/In2.Cu/B.Cu.
+#
+# WHY A DUPLICATE AND NOT A RENAME: naming the footprint's own zone
+# edits the board copy of a library footprint and immediately raises
+# lib_footprint_mismatch, which FBV2-P1-002 had driven to zero.  This
+# was tested, observed and reverted.  The board-level copy is
+# geometrically identical, is visible in the board file, and is what
+# lets OTHER rules name the antenna region.
+#
+# Footprints are left "allowed" in the area because U1's own oversized
+# courtyard overlaps it and would self-report; component keepout is a
+# placement rule and placement is locked.
+# ---------------------------------------------------------------------
+
+(rule "WROOM antenna keepout: no track, via or pad on any layer"
+	(severity error)
+	(constraint disallow track via pad)
+	(condition "A.intersectsArea('WROOM ANTENNA KEEPOUT')"))
+
+
+# ---------------------------------------------------------------------
+# 4. SWITCHING-CONVERTER SWITCH NODES
+#
+#   U12 TPS63020  +3V3 buck-boost   Net-(L1-Pad1), Net-(L1-Pad2)
+#   U13 TPS61023  NFC 5 V fallback  Net-(U13-SW)
+#   U21 TPS61023  accessory 5 V     ACC_5V_LX   <- ADDED at P2-000; it
+#                 had NEVER been in the SWITCH_NODE class and was
+#                 routing as an ordinary 0.20 mm Default net
+#   U17 TPS61169  display backlight BL_SW
+#   U11 BQ25185   linear power path - no switch node
+#
+# ENCODED HERE: layer confinement, minimum width, antenna and acoustic
+# exclusion, and explicit separation from every victim the CTO named.
+#
+# NOT ENCODABLE, AND THEREFORE A PLACEMENT PRECONDITION: minimum loop
+# area.  ON THE CURRENT PLACEMENT ALL FOUR SWITCH NODES FAIL IT - the
+# inductors sit 12.5 to 45.9 mm from their own ICs (PM-1).  These rules
+# constrain routing; they cannot repair placement, and routing must not
+# start until PM-1 is decided.  See FBV2_P2_ROUTING_PLAN.md section 6.
+# ---------------------------------------------------------------------
+
+(rule "SWITCH_NODE: outer layers only - never on In2"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+(rule "SWITCH_NODE: never inside the ESP32 antenna keepout"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE') && A.intersectsArea('WROOM ANTENNA KEEPOUT')"))
+
+(rule "SWITCH_NODE: keep clear of the microphone and the audio amplifier"
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('SWITCH_NODE') && (A.intersectsCourtyard('MK1') || A.intersectsCourtyard('U5'))"))
+
+(rule "SWITCH_NODE: low impedance, minimum width 0.40 mm"
+	(constraint track_width (min 0.40mm) (opt 0.60mm))
+	(condition "A.hasNetclass('SWITCH_NODE')"))
+
+# Victim separations.  0.50 mm is a ROUTING separation, so pad-vs-pad
+# is excluded - vendor land patterns are judged in section 9.
+(rule "SWITCH_NODE to I2C separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('I2C') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "SWITCH_NODE to USB pair separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('USB_D') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "SWITCH_NODE to NFC receive path separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('NFC_RX') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "SWITCH_NODE to NFC transmit arms separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('NFC_RF') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "SWITCH_NODE to NFC crystal separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('NFC_OSC') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "SWITCH_NODE to I2S separation"
+	(constraint clearance (min 0.40mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && B.hasNetclass('I2S') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+# The backlight string is the other switching aggressor: TI SNVSA40B
+# gives V_OVP_SW = 36 / 37.5 / 39 V before the TPS61169 latches off, so
+# an open-LED fault puts up to 39 V on LED_BOOST.  Normal operation is
+# 3.884-4.484 V.  The elevated separations below are justified by the
+# fault case, not by the operating case.
+(rule "LED_BOOST to USB pair separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('LED_BOOST') && B.hasNetclass('USB_D') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+(rule "LED_BOOST to I2C separation"
+	(constraint clearance (min 0.50mm))
+	(condition "A.hasNetclass('LED_BOOST') && B.hasNetclass('I2C') && (A.Type != 'Pad' || B.Type != 'Pad')"))
+
+
+# ---------------------------------------------------------------------
+# 5. POWER RAILS - WIDTH FLOORS FROM IPC-2221B AT THE REAL COPPER
+#
+# 1 oz outer (35 um), 0.5 oz inner (17.4 um), dT = 10 K.  The method
+# reproduces every figure the Beta-DM file carried, so the two sets are
+# directly comparable:
+#
+#   net / class        design current      outer min   inner min
+#   BAT_MAIN           1.5 A sustained      0.525 mm    2.734 mm
+#     IBAT_OCP = 3.125 A is a FAULT TRIP THRESHOLD, not a routing
+#     design current (CTO ruling 2026-08-11, retained).
+#     THE CLASS NOW ALSO CARRIES BAT_RAW, BAT_MID AND BAT_SENSE.  All
+#     three carry the full pack current and all three had been sitting
+#     on the 0.20 mm Default class since the fork, because the
+#     inherited pattern was the root-sheet path "/BAT_PROTECTED_P"
+#     while every v2 net is "/01_POWER_TREE/...".  The pattern matched
+#     NOTHING.  This was the single worst netclass defect on the board.
+#   SYS_MAIN           1.0 A                0.300 mm    1.563 mm
+#     LOCAL EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a
+#     2.19 A peak inductor current from SYS (D-185), so the SYS segment
+#     that feeds U21 must be sized from that peak, not from 1.0 A.
+#   P3V3               1.0 A design         0.300 mm    1.563 mm
+#                      0.64 A measured pk   0.162 mm    0.844 mm
+#     The class now also carries NFC_SUPPLY, U9's VDD/VDD_TX rail.
+#   ACC_3V3            0.40 A published     0.085 mm    0.443 mm
+#                      0.76 A typ ILIM      0.196 mm    1.021 mm
+#   ACC_5V             0.70 A ILIM          0.184 mm    0.958 mm
+#   VBUS_CHG           0.5 A (ILIM500)      0.115 mm    0.601 mm
+#   NFC_5V_PA_PENDING  0.5 A TX burst       0.115 mm    0.601 mm
+#     Its inherited pattern "/NFC_5V_PA_PENDING" also matched nothing.
+#   SPK_OUT            0.29 A rms/0.41 pk   0.070 mm    0.365 mm
+#   LED_BOOST          0.09 A at up to 39 V clearance-driven, not width
+#
+# The floors below sit well above the thermal minimum, and BAT_MAIN and
+# SYS_MAIN are OUTER-LAYER BY POLICY.  Do NOT distribute BAT_MAIN on
+# In2: at 0.5 oz, 1.5 A needs 2.73 mm, which defeats the point of using
+# In2 at all.  If a SYS segment on In2 ever proves unavoidable, size it
+# separately at 0.5 oz - never inherit the outer-layer width.
+# ---------------------------------------------------------------------
+
+(rule "BAT_MAIN minimum width"
+	(constraint track_width (min 0.60mm) (opt 1.00mm))
+	(condition "A.hasNetclass('BAT_MAIN')"))
+
+(rule "SYS_MAIN minimum width"
+	(constraint track_width (min 0.50mm) (opt 0.80mm))
+	(condition "A.hasNetclass('SYS_MAIN')"))
+
+(rule "P3V3 minimum width on the outer layers"
+	(layer outer)
+	(constraint track_width (min 0.40mm) (opt 0.60mm))
+	(condition "A.hasNetclass('P3V3')"))
+
+(rule "ACC_3V3 minimum width"
+	(constraint track_width (min 0.35mm) (opt 0.50mm))
+	(condition "A.hasNetclass('ACC_3V3')"))
+
+(rule "ACC_5V minimum width"
+	(constraint track_width (min 0.40mm) (opt 0.60mm))
+	(condition "A.hasNetclass('ACC_5V')"))
+
+(rule "VBUS_CHG minimum width"
+	(constraint track_width (min 0.35mm) (opt 0.50mm))
+	(condition "A.hasNetclass('VBUS_CHG')"))
+
+(rule "NFC_5V_PA minimum width"
+	(constraint track_width (min 0.35mm) (opt 0.60mm))
+	(condition "A.hasNetclass('NFC_5V_PA')"))
+
+(rule "SPK_OUT minimum width"
+	(constraint track_width (min 0.25mm) (opt 0.30mm))
+	(condition "A.hasNetclass('SPK_OUT')"))
+
+(rule "SPK_OUT is outer-layer only - Class-D edges do not belong on In2"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('SPK_OUT')"))
+
+# Elevated clearances below are ROUTING clearances: they are scoped so
+# that vendor land patterns (J1 FH69 0.5 mm pitch, J3 USB-C, U11 WSON
+# 0.4 mm pitch, U12 VSON, U14 WLP) are judged against the 0.20 mm
+# global figure they actually satisfy, not against a routing target.
+
+(rule "LED_BOOST routed clearance - backlight string runs above 20 V"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('LED_BOOST') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "SWITCH_NODE routed clearance"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('SWITCH_NODE') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "SYS_MAIN routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('SYS_MAIN') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "ACC_3V3 routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('ACC_3V3') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "ACC_5V routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('ACC_5V') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "VBUS_CHG routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('VBUS_CHG') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "NFC_5V_PA routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('NFC_5V_PA') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+
+# ---------------------------------------------------------------------
+# 5b. BATTERY PATH-ROLE WIDTHS  (D-249, 2026-08-24, FBV2-P2-002C)
+#
+# SUPERSEDES THE WHOLE-NET FORM OF D-245.  D-245's INTENT STANDS - the long
+# high-current BAT_PROTECTED_P trunk is 1.50 mm - but its implementation applied
+# that floor to every segment carrying the net name.  The same net also feeds
+# the MAX17048 fuel-gauge sense input, the LTC4368 VOUT sense input and a test
+# point.  None of those carries load current, and none of those land patterns
+# can physically accept 1.20 mm.  As written, D-245 made BAT_PROTECTED_P
+# UNROUTABLE.
+#
+# WIDTH IS A PATH ROLE, NOT A PROPERTY OF THE NET NAME.
+#
+# ENFORCEMENT.  The trunk floor below applies to the WHOLE net.  It is relaxed
+# ONLY inside a small named rule area that bounds ONE approved branch, by the
+# rules in section 10b at the end of this file, and only through
+# enclosedByArea(), which requires the ENTIRE track to lie inside that area.
+# A narrow branch therefore cannot wander: the moment it leaves its own area it
+# is measured against the trunk floor and fails.  There is no construction here
+# that lets a long high-current run masquerade as a branch, and none that lets
+# a branch violate the trunk rule.
+#
+# WHY THE LTC4368 TAPS ARE NOT CURRENT PATHS.  The LTC4368 is a CONTROLLER: it
+# drives back-to-back external MOSFETs and the pack current flows through Q2/Q3,
+# never through U18.  Pins 1 (VIN), 8 (VOUT) and 9 (SENSE) are microamp inputs
+# on an MSOP-10 whose 0.50 mm pitch admits at most 0.25 mm of copper.
+#
+# WHY U11.2 IS DIFFERENT.  It is a TRUE HIGH-CURRENT endpoint - the BQ25185 BAT
+# pin.  Its width is limited by TI's own DLH0010A land pattern, 0.2 mm pads on
+# 0.4 mm pitch, so 0.20 mm is the widest copper that can leave that pad whatever
+# any rule says: THE PACKAGE IS THE BOTTLENECK, NOT THE RULE.  The escape is
+# bounded, measured, flares outward immediately and carries no via; the exact
+# profile is in pcb/FBV2_P2_POWER_ROUTING.md.
+#
+# A SHUNT STUB - a decoupling capacitor, a clamp diode, a divider top, a test
+# point - hangs OFF the current path rather than sitting IN it.  Where the
+# placement leaves no corridor at the class width, its stub may be narrower
+# INSIDE ITS OWN BOUNDED AREA AND NOWHERE ELSE.  Every width used still clears
+# IPC-2221B for the full 1.5 A pack current on 1 oz external copper at a 10 degC
+# rise (0.50 mm carries 1.45 A), which these stubs never see.
+#
+# U14 IS TIGHTER STILL, AND THE ARITHMETIC IS EXACT.  U14 sits 1.245 mm from
+# the west board edge with its pin row FACING that edge, so the only escape from
+# U14.2 / U14.3 is the strip between the edge and the pad row.  Copper must be
+# >= 0.500 mm from the edge and >= 0.200 mm from the pads, whose west edge is at
+# x = 0.895.  A track of width w running along that strip therefore needs its
+# centre at x >= 0.500 + w/2 AND at x <= 0.695 - w/2, which has a solution only
+# for w <= 0.195 mm: A 0.20 mm TRACK DOES NOT FIT, BY 5 MICRONS.  At 0.15 mm -
+# the board's own min_track_width, and 1.7x JLCPCB's 0.09 mm multilayer
+# minimum - the window is 0.575 to 0.620 and it fits.  That tap carries the MAX17048's sense-input
+# current, which is nanoamps.  FLAGGED FOR RATIFICATION: FBV2-P2-002C section 5
+# locked 0.20 mm, and 0.20 mm does not physically exist at this pad.
+#
+# JLCPCB capability, checked live 2026-08-24 against the vendor's own page:
+# minimum track width / spacing on a 1 oz MULTILAYER board is 0.09 / 0.09 mm.
+# Nothing in this block is fab-limited.
+# ---------------------------------------------------------------------
+
+(rule "BAT_PROTECTED_P high-current trunk width - D-249"
+	(constraint track_width (min 1.20mm) (opt 1.50mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P'"))
+
+
+# ---------------------------------------------------------------------
+# 6. USB 2.0 - FULL SPEED, ON F.Cu OVER In1, NO VIAS, NO THEATRE
+#
+# The ESP32-S3 has no High-Speed PHY: this link is USB 2.0 FULL SPEED,
+# 12 Mbit/s, with a 4-20 ns specified rise time.  The critical length
+# at the fastest permitted edge is t_r * v / 6 = 4 ns * 150 mm/ns / 6
+# = 100 mm.  MEASURED ON THIS BOARD the whole path is:
+#     J3 (42.0, 5.3) -> U10 (50.4, 5.3)             8.5 mm
+#     U10 -> R33 / R34 (54.8 / 58.4, 8.7)           3.5 / 7.5 mm
+#     R33/R34 -> U1.13 / U1.14 (46.8 / 45.5, 28.8)  21.9 / 24.3 mm
+# i.e. ~40 mm per side, ELECTRICALLY SHORT, all of it on F.Cu in the
+# bottom band, entirely clear of the ESP32 antenna keepout.
+#
+# CONSEQUENCE, STATED PLAINLY: this pair does NOT need impedance
+# control, does NOT need length matching and does NOT need a via.  The
+# intrinsic placement mismatch is 2.4 mm = 17 ps of skew against a
+# ~1 ns Full-Speed budget.  The 90 ohm geometry below is retained as
+# good practice, not as a gate.
+#
+# STACKUP-TO-CONFIRM.  The 90 ohm figure was computed for h = 0.2104 mm
+# prepreg, Dk 4.4, t = 35 um -> W 0.30 / S 0.20 = 89.3 ohm.  TWO things
+# are unconfirmed and are recorded rather than assumed: (a) the BOARD
+# FILE CARRIES NO STACKUP OBJECT at all, so the fabricator would build
+# to its own default; (b) Dk 4.4 is not JLCPCB's published figure for
+# 7628 prepreg.  Neither matters at Full Speed over 40 mm, which is why
+# this is a documentation item and not a blocker.  If impedance control
+# is ever ordered, re-derive W/S from the fabricator's own stackup
+# before changing these numbers.
+#
+# ESD: U10 USBLC6-2SC6 sits between J3 and the 22 R series resistors -
+# the correct order.  Its GND pin must reach In1 through at least two
+# vias placed at the pad, and the J3 -> U10 run must stay short and
+# direct.  No stub is permitted on either D+ or D-.
+# ---------------------------------------------------------------------
+
+(rule "USB pair is forbidden on In2 - it has no business leaving F.Cu"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('USB_D')"))
+
+(rule "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
+	(layer outer)
+	(constraint diff_pair_gap (min 0.18mm) (opt 0.20mm) (max 0.24mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+(rule "USB 2.0 trace width on the outer layers"
+	(layer outer)
+	(constraint track_width (min 0.23mm) (opt 0.25mm) (max 0.27mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+# The J3 fanout and the R33/R34 splay are legitimately uncoupled; the
+# resistors are 3.6 mm apart in X, so declaring the budget is honest
+# where pretending the pair stays coupled through them would not be.
+(rule "USB uncoupled length budget"
+	(constraint diff_pair_uncoupled (max 25mm))
+	(condition "A.hasNetclass('USB_D')"))
+
+
+# ---------------------------------------------------------------------
+# 7. NFC FRONT END - DESIGNED, NOT DEFERRED
+#
+# This section replaces the retired RF_DEFERRED_NFC rule (R8).  The
+# ST25R3916 front end is a REAL differential transmit chain that must
+# be routed, and every component in it is on B.Cu:
+#
+#   U9.13 RFO1 -> L5 -> C71 -> R114 -> J7.1     (arm A)
+#   U9.15 RFO2 -> L6 -> C72 -> R115 -> J7.2     (arm B)
+#   receive:  R116 / R117 dividers -> RFI1 / RFI2
+#   crystal:  Y1 27.12 MHz with C79 / C80
+#
+# ENCODED: B.Cu confinement, a via prohibition on both transmit arms
+# and on the crystal, and a width floor that is about SYMMETRY, not
+# heat - the coil current is only ~187 mA (D-204) and the thermal
+# minimum is 0.036 mm.
+#
+# NOT ENCODABLE, AND THEREFORE A PLACEMENT PRECONDITION: differential
+# symmetry.  MEASURED ON THE CURRENT PLACEMENT the two arms are not
+# symmetric - NFC_MATCH_A spans 24.18 mm and NFC_MATCH_B spans
+# 34.21 mm, L5 and L6 sit 19.8 mm apart on OPPOSITE sides of U9, and
+# the crystal load caps sit 13-15 mm from Y1 on the far side of the IC.
+# R_q is 1.1 ohm per arm and the network Q is ~21; a 10 mm arm-length
+# mismatch is not something routing can absorb.  That is PM-3.  These
+# rules constrain routing; they cannot repair placement.
+# ---------------------------------------------------------------------
+
+(rule "NFC transmit arms stay on B.Cu"
+	(layer "F.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('NFC_RF')"))
+
+(rule "NFC transmit arms are forbidden on In2"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('NFC_RF')"))
+
+(rule "NFC transmit arms carry no via - a via is an asymmetry"
+	(severity error)
+	(constraint disallow via)
+	(condition "A.hasNetclass('NFC_RF')"))
+
+(rule "NFC transmit arm minimum width - equal both arms"
+	(constraint track_width (min 0.30mm) (opt 0.40mm))
+	(condition "A.hasNetclass('NFC_RF')"))
+
+(rule "NFC transmit arm routed clearance"
+	(constraint clearance (min 0.25mm))
+	(condition "A.hasNetclass('NFC_RF') && A.Type != 'Pad' && B.Type != 'Pad'"))
+
+(rule "NFC crystal nets stay on B.Cu"
+	(layer "F.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('NFC_OSC')"))
+
+(rule "NFC crystal nets are forbidden on In2"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track via)
+	(condition "A.hasNetclass('NFC_OSC')"))
+
+(rule "NFC crystal nets carry no via"
+	(severity error)
+	(constraint disallow via)
+	(condition "A.hasNetclass('NFC_OSC')"))
+
+(rule "NFC receive path stays on B.Cu"
+	(layer "F.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('NFC_RX')"))
+
+
+# ---------------------------------------------------------------------
+# 8. VIA CLASSES - MAINSTREAM THROUGH VIAS ONLY
+#
+#   GENERAL_SIGNAL  0.30 mm drill / 0.60 mm pad / 0.150 mm ring
+#   POWER           0.40 mm drill / 0.80 mm pad / 0.200 mm ring
+#   THERMAL         0.25 mm drill / 0.55 mm pad / 0.150 mm ring
+#
+# JLCPCB 4-layer floor is 0.15 mm drill (verified live 2026-08-24) and
+# ~0.1275 mm ring, so none of these sits at the fab minimum.  No
+# microvias, no blind or buried vias.  A through via occupies EVERY
+# copper layer, including In1 - plan In1 keepouts accordingly.
+# ---------------------------------------------------------------------
+
+(rule "No microvias on this board"
+	(severity error)
+	(constraint disallow micro_via))
+
+(rule "No blind vias on this board"
+	(severity error)
+	(constraint disallow blind_via))
+
+(rule "No buried vias on this board"
+	(severity error)
+	(constraint disallow buried_via))
+
+(rule "Via annular ring floor"
+	(constraint annular_width (min 0.125mm)))
+
+(rule "POWER-class vias use the 0.40 mm drill"
+	(constraint hole_size (min 0.40mm))
+	(condition "A.Type == 'Via' && (A.hasNetclass('BAT_MAIN') || A.hasNetclass('SYS_MAIN') || A.hasNetclass('P3V3') || A.hasNetclass('ACC_3V3') || A.hasNetclass('ACC_5V') || A.hasNetclass('NFC_5V_PA') || A.hasNetclass('VBUS_CHG'))"))
+
+
+# =====================================================================
+# 9. PRECEDENCE TAIL - ORDER HERE IS LOAD-BEARING
+#
+# KiCad applies the LAST matching custom rule, not the first.  That was
+# established empirically during Beta-DM Routing Pass 1: with the
+# necking rules at the end of the file they beat the section-5 rail
+# clearances, and when they were moved to the front the land-pattern
+# rules stopped winning and U13 reported four false 0.15 mm pad-pair
+# errors.
+#
+# Required order, weakest first:
+#   1. sections 2-8 above   - layer policy, RF, rails, vias
+#   2. pad-escape necking   - vendor pitch governs inside 6 courtyards
+#   3. land-pattern rules   - vendor land pattern governs pad-vs-pad
+# Moving either block earlier silently breaks the one below it.
+#
+# LAND-PATTERN BLOCK, RE-MEASURED AT FBV2-P2-000.  Every figure below
+# was re-measured on THIS board rather than inherited:
+#
+#   footprint          package                       min pad gap
+#   U9  ST25R3916-AQET AQROOT_Beta:ST25R3916_AQET    lead->pad 0.1750
+#                                                    corner lead 0.0621
+#   U13 TPS61023       SOT-563                       0.1500
+#   U16 TCA4307DGKR    VSSOP-8 3x3 P0.65             0.1500
+#   D3 D4 D5           SOT-563                       0.1500
+#   D2  TPD4E1B06      SOT-563                       0.1500  <- NEW
+#   U18 LTC4368-1      MSOP-10 3x3 P0.5              0.1500  <- NEW
+#   U19 TLV7032        SOT-23-8                      0.1500  <- NEW
+#   U21 TPS61023       SOT-563                       0.1500  <- NEW
+#
+# The four NEW entries are the 21 clearance violations FBV2-P1-002
+# classified and left for this task.  All four are stock KiCad library
+# land patterns whose 0.150 mm gap is a property of the vendor drawing,
+# not of the placement.  Adding them takes the board's DRC from 47
+# violations to 26 without weakening any routing clearance anywhere.
+# =====================================================================
+
+(rule "Pad-escape necking - width, fine-pitch power packages"
+	(constraint track_width (min 0.20mm))
+	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')"))
+
+(rule "Pad-escape necking - clearance, fine-pitch power packages"
+	(constraint clearance (min 0.20mm))
+	(condition "(A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')) && (B.intersectsCourtyard('U11') || B.intersectsCourtyard('U12') || B.intersectsCourtyard('U13') || B.intersectsCourtyard('U14') || B.intersectsCourtyard('U17') || B.intersectsCourtyard('U9'))"))
+
+(rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
+	(constraint clearance (min 0.05mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
+
+(rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U13') && B.memberOfFootprint('U13')"))
+
+(rule "FP-U16 TCA4307DGKR VSSOP-8 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U16') && B.memberOfFootprint('U16')"))
+
+(rule "FP-U18 LTC4368-1 MSOP-10 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U18') && B.memberOfFootprint('U18')"))
+
+(rule "FP-U19 TLV7032 SOT-23-8 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U19') && B.memberOfFootprint('U19')"))
+
+(rule "FP-U21 TPS61023 SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U21') && B.memberOfFootprint('U21')"))
+
+(rule "FP-D2 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D2') && B.memberOfFootprint('D2')"))
+
+(rule "FP-D3 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D3') && B.memberOfFootprint('D3')"))
+
+(rule "FP-D4 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D4') && B.memberOfFootprint('D4')"))
+
+(rule "FP-D5 TPD4E1B06DRLR SOT-563 intra-footprint land pattern"
+	(constraint clearance (min 0.13mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('D5') && B.memberOfFootprint('D5')"))
+
+
+# ---------------------------------------------------------------------
+# 10. U1 ESP32-S3-WROOM-1 THERMAL-PAD VIAS  (P1-O5, D-228)
+#
+# The stock RF_Module:ESP32-S3-WROOM-1 land pattern carries TWELVE
+# plated holes on pad 41, the exposed thermal pad: 0.20 mm DRILL in a
+# 0.60 mm pad, i.e. a 0.200 mm annular ring.  That geometry is the
+# MANUFACTURER's and it is what conducts the module's dissipation into
+# the In1.Cu ground plane.  It is NOT a routing via.
+#
+# FABRICATOR CAPABILITY, verified live 2026-08-24 against the JLCPCB
+# multilayer capability table: minimum via hole 0.15 mm; surcharge
+# applies only to "0.2 mm or 0.25 mm hole size WITH a via diameter LESS
+# THAN 0.45 mm".  The 0.60 mm pad is above that threshold: SUPPORTED ON
+# THE INTENDED JLC04161H-7628 STACK AT NO PREMIUM.
+#
+# This rule is a GUARD, not a waiver.  It pins the manufacturer
+# geometry to U1's own pads so that if the global floor is ever raised
+# to 0.30 mm - which is the right floor for ROUTING vias - the thermal
+# array does not silently become illegal and get "corrected" away.  The
+# global minimum is NOT lowered and no other hole is affected.
+# ---------------------------------------------------------------------
+
+(rule "FP-U1 ESP32-S3-WROOM-1 manufacturer thermal-pad vias (0.20 mm drill)"
+	(constraint hole_size (min 0.20mm) (max 0.20mm))
+	(condition "A.Type == 'Pad' && A.memberOfFootprint('U1') && A.Pad_Number == '41'"))
+
+
+# =====================================================================
+# 10b. PATH-ROLE AREA OVERRIDES  (D-249, FBV2-P2-002C)
+#
+# THESE RULES ARE LAST IN THE FILE ON PURPOSE, AND MOVING THEM BREAKS THEM.
+#
+# Section 9 already records that KiCad applies the LAST matching rule, and that
+# the pad-escape necking and land-pattern blocks must sit near the end so they
+# beat the section-5 rail widths.  These path-role overrides must in turn beat
+# THOSE, because they are the most specific statement on the board: one named
+# net, inside one named area that bounds exactly one approved branch.
+#
+# Each area is generated from its own routed branch's bounding box plus 0.3 mm
+# and is written back by the router, so it cannot drift away from the copper it
+# describes.  enclosedByArea() requires the WHOLE track to lie inside, so a
+# branch that leaves its area is measured against the trunk floor and fails.
+#
+# Within this block the rules run WIDEST FIRST and NARROWEST LAST, so where two
+# bounded areas overlap the lower floor governs.
+# =====================================================================
+
+(rule "BOUNDED SHUNT STUB BAT_PROTECTED_P to (node) at 1.00 mm - D-249"
+	(constraint track_width (min 1.00mm) (opt 1.00mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_STUB_1')"))
+
+(rule "BOUNDED SHUNT STUB BAT_RAW to (node) at 0.40 mm - D-249"
+	(constraint track_width (min 0.40mm) (opt 0.40mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_STUB_0')"))
+
+(rule "BAT_PROTECTED_P U11 BAT-pin escape - D-249"
+	(constraint track_width (min 0.20mm) (opt 1.50mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_ESCAPE_U11')"))
+
+(rule "BAT_PROTECTED_P LTC4368 VOUT sense tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "BAT_SENSE Kelvin sense tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "BAT_RAW LTC4368 VIN supply tap - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_TAP_U18')"))
+
+(rule "BOUNDED SHUNT STUB BAT_RAW to (node) at 0.20 mm - D-249"
+	(constraint track_width (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_STUB_2')"))
+
+(rule "BAT_PROTECTED_P fuel-gauge and test taps - D-249"
+	(constraint track_width (min 0.15mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U14')"))
+
+(rule "BAT_RAW LTC4368 VIN supply tap - local fine-pitch clearance, PR-48"
+	(constraint clearance (min 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_TAP_U18')"))
+
+(rule "BAT_PROTECTED_P fuel-gauge and test taps - local fine-pitch clearance, PR-48"
+	(constraint clearance (min 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U14')"))
+
+(rule "BAT_MAIN is outer-layer only - In2 - D-264"
+	(layer "In2.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('BAT_MAIN') && !A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "BAT_MAIN is outer-layer only - In3 - D-264"
+	(layer "In3.Cu")
+	(severity error)
+	(constraint disallow track)
+	(condition "A.hasNetclass('BAT_MAIN') && !A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "BAT_MAIN routed clearance - current path role - D-269"
+	(constraint clearance (min 0.30mm))
+	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad' && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_1') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_2') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-266 BAT_PROTECTED_P Kelvin reservation vias - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_PROTECTED_P' && A.enclosedByArea('BAT_PROT_TAP_U18')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->R76.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_3')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-257 LTC_GATE U18.10->Q3.4 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_GATE' && A.enclosedByArea('FINE_ESC_4')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.65mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW R80.1->Q2.7 escape via - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.40mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.65mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-263 BAT_RAW D12.1->R77.1 escape via - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.40mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/BAT_RAW' && A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 LTC_SHDN U18.6->Q4.3 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/LTC_SHDN' && A.enclosedByArea('FINE_ESC_7')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 N_POL TP23.1->U19.3 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/N_POL' && A.enclosedByArea('FINE_ESC_8')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_POL TP24.1->U19.2 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_POL' && A.enclosedByArea('FINE_ESC_9')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 REF_HO R91.2->U19.5 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/REF_HO' && A.enclosedByArea('FINE_ESC_10')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC U19.8->C60.1 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_11')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape via, D-257"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape annular ring, D-257"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
+
+(rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape hole, D-257"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
