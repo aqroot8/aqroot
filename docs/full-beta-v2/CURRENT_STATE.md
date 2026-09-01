@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-086 / D-384 (U3.14 obstacle attribution and R7-only minimum-scope
+  cluster screen; no authoritative PCB change):** after replaying the sole
+  viable seven-route prefix, ten R7 translations from 0.25–1.00 mm expose zero
+  U3.14 sites on In2 or In3. The wall is dominated by U3.15, U3.13, and local
+  track copper; moving R7 west only replaces R7.2 with C4.2, and offsets of
+  0.50 mm or more break both accepted R7 pad-pair contracts. All incomplete
+  candidates retain real KiCad DRC regressions. Evidence/harness:
+  `u3_xgpio9_r7_cluster_086.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** bounded
+  ordered local refloor of complete XGPIO8/XGPIO9/ACC_3V3_EN branches, reserve
+  U3.14 first, then replay U3.13 and U3.15 while preserving the earlier prefix;
+  do not introduce blind vias without an owner manufacturing decision.
 - **FBV2-P2-085 / D-383 (XGPIO5/XGPIO4 layer-allocation permutation; no
   authoritative PCB change):** all four In2/In3 allocations were replayed.
   Only the existing XGPIO5=In3/XGPIO4=In2 allocation preserves all seven

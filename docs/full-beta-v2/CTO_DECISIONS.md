@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-384 · 2026-09-01 · routing characterization:** after deterministic replay
+of the sole viable D-383 seven-route prefix, ten bounded R7-only translations
+from 0.25 to 1.00 mm expose zero U3.14 sites on either In2 or In3. The baseline
+escape wall is U3.15 (22 hits), U3.13 (18), track copper (8), and R7.2 (5).
+Moving R7 west removes R7.2 but only reveals C4.2 while the adjacent U3 pads
+and track copper remain dominant; offsets of 0.50 mm or more also break both
+accepted R7 pad-pair contracts. Real KiCad DRC remains regressed in every
+incomplete scratch prefix, exact authority withdrawal passes, and the
+authoritative board remains byte-identical (`a4b93b9b…`). R7-only cluster
+geometry is closed. Next is bounded ordered local reflooring of the three
+adjacent U3.13/U3.14/U3.15 branches: withdraw complete XGPIO8, XGPIO9, and
+ACC_3V3_EN branches, reserve U3.14 first, then replay both neighbors while
+preserving the earlier proven prefix. Blind vias remain excluded absent an
+owner manufacturing decision. No owner decision is open.
+
 **D-383 · 2026-09-01 · routing characterization:** all four proven-layer
 allocations for XGPIO5/XGPIO4 were replayed before the fixed XGPIO2, XGPIO3,
 XGPIO1, XGPIO0 and XGPIO8 schedule. Only the existing In3/In2 allocation closes
