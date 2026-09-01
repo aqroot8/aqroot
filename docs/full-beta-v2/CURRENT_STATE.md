@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-089 / D-387 (D-386 violation attribution; no authoritative PCB
+  change):** corrected scratch DRC requires the authoritative project basename
+  and a zone refill; D-386's 112-clearance headline mixed in harness artifacts.
+  Exact item-level baseline subtraction attributes the dominant genuine
+  collision set to retained B.Cu ACC_POWER_FAULT_N (15 reports against XGPIO1,
+  XGPIO2, and XGPIO6), with two ACC_DETECT_N/XGPIO0 collisions and isolated
+  endpoint clearances. Duplicate/co-located and dangling transaction vias also
+  remain, so the candidate is not promotable. Evidence/harness:
+  `u3_transaction_violation_attribution_089.py` / `.json`. Board remains
+  byte-identical (`a4b93b9b…`); no owner decision; readiness remains 78%.
+  **Next:** withdraw and freshly replay complete ACC_POWER_FAULT_N after the
+  D-386 ordered transaction, then ACC_DETECT_N only if still required, using
+  the corrected same-basename/refilled real-DRC gate.
 - **FBV2-P2-088 / D-386 (complete ACC_3V3_EN branch replacement; no
   authoritative PCB change):** after the selected D-385 XGPIO9/In2 then
   XGPIO8/In3 ordered prefix, complete ACC_3V3_EN closes on In3 through

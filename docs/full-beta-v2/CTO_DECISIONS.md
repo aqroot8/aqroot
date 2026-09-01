@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-387 · 2026-09-01 · routing characterization:** item-level real-KiCad-DRC
+attribution of the complete D-386 In3 transaction identifies two scratch-gate
+requirements: use the authoritative project basename so the custom rules load,
+and refill zones after copper edits.  The earlier 112-clearance headline is
+therefore not authoritative.  With those corrections and exact baseline
+subtraction, the dominant collision source is the retained B.Cu
+ACC_POWER_FAULT_N branch: 15 short/crossing/clearance reports against XGPIO1,
+XGPIO2, and XGPIO6.  ACC_DETECT_N contributes two against XGPIO0; the remaining
+local endpoint clearances are isolated.  Added non-collision defects still
+include duplicate/co-located and dangling transaction vias, so no copper is
+promoted.  The authoritative board remains byte-identical (`a4b93b9b…`).  Next
+is complete ACC_POWER_FAULT_N branch withdrawal and fresh replay after the
+D-386 ordered transaction, followed by ACC_DETECT_N only if its two collisions
+remain; the corrected same-basename/refilled DRC gate is mandatory.  No owner
+decision is open.
+
 **D-386 · 2026-09-01 · routing characterization:** complete replacement of
 ACC_3V3_EN after the selected D-385 U3.14-first prefix closes the whole
 four-pad branch on In3.  The R98.1↔U3.15 haul reserves through-via sites at

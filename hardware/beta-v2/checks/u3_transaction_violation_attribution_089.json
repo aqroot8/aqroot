@@ -1,0 +1,602 @@
+{
+  "added_collision_details": [
+    {
+      "description": "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+      "items": [
+        {
+          "description": "Pad 5 [/XGPIO1] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        },
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 1.5532 mm",
+          "pos": {
+            "x": 60.25,
+            "y": 77.6
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 1.1878 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.675
+          }
+        },
+        {
+          "description": "Pad 5 [/XGPIO1] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 1.1628 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.675
+          }
+        },
+        {
+          "description": "Pad 5 [/XGPIO1] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 0.6042 mm",
+          "pos": {
+            "x": 60.8,
+            "y": 77.85
+          }
+        },
+        {
+          "description": "Pad 5 [/XGPIO1] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1750 mm)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Pad 5 [/XGPIO1] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+      "items": [
+        {
+          "description": "Track [/XGPIO7] on In2.Cu, length 6.5070 mm",
+          "pos": {
+            "x": 65.25,
+            "y": 72.975
+          }
+        },
+        {
+          "description": "Via [/01_POWER_TREE/BAT_PROTECTED_P] on F.Cu - B.Cu",
+          "pos": {
+            "x": 64.2,
+            "y": 73.875
+          }
+        }
+      ],
+      "nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/XGPIO7"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.0768 mm)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Track [/XGPIO2] on B.Cu, length 1.1878 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 78.175
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO2"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Tracks crossing",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Track [/XGPIO2] on B.Cu, length 0.4950 mm",
+          "pos": {
+            "x": 61.05,
+            "y": 78.2
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO2"
+      ],
+      "type": "tracks_crossing"
+    },
+    {
+      "description": "Items shorting two nets (nets /XGPIO2 and /ACC_POWER_FAULT_N)",
+      "items": [
+        {
+          "description": "Track [/XGPIO2] on B.Cu, length 0.5000 mm",
+          "pos": {
+            "x": 61.4,
+            "y": 77.85
+          }
+        },
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO2"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1000 mm)",
+      "items": [
+        {
+          "description": "Via [/XGPIO2] on F.Cu - B.Cu",
+          "pos": {
+            "x": 61.9,
+            "y": 77.85
+          }
+        },
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 0.8500 mm",
+          "pos": {
+            "x": 61.6,
+            "y": 78.25
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO2"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
+      "items": [
+        {
+          "description": "Pad 4 [/XGPIO0] of U3 on B.Cu",
+          "pos": {
+            "x": 59.8625,
+            "y": 76.875
+          }
+        },
+        {
+          "description": "Track [/ACC_DETECT_N] on B.Cu, length 1.1628 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.025
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_DETECT_N",
+        "/XGPIO0"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Clearance violation (netclass 'I2C' clearance 0.2000 mm; actual 0.0757 mm)",
+      "items": [
+        {
+          "description": "Pad 22 [/I2C_SCL_INT] of U3 on B.Cu",
+          "pos": {
+            "x": 54.1375,
+            "y": 76.225
+          }
+        },
+        {
+          "description": "Via [/XGPIO5] on F.Cu - B.Cu",
+          "pos": {
+            "x": 55.25,
+            "y": 76.35
+          }
+        }
+      ],
+      "nets": [
+        "/I2C_SCL_INT",
+        "/XGPIO5"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2273 mm)",
+      "items": [
+        {
+          "description": "Track [/XGPIO1] on In3.Cu, length 2.9964 mm",
+          "pos": {
+            "x": 64.775,
+            "y": 72.5
+          }
+        },
+        {
+          "description": "Via [/01_POWER_TREE/BAT_PROTECTED_P] on F.Cu - B.Cu",
+          "pos": {
+            "x": 64.2,
+            "y": 72.975
+          }
+        }
+      ],
+      "nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/XGPIO1"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Clearance violation (rule 'BAT_MAIN routed clearance - current path role - D-269' clearance 0.3000 mm; actual 0.2458 mm)",
+      "items": [
+        {
+          "description": "Track [/XGPIO1] on In3.Cu, length 25.9250 mm",
+          "pos": {
+            "x": 64.775,
+            "y": 46.575
+          }
+        },
+        {
+          "description": "Via [/01_POWER_TREE/BAT_PROTECTED_P] on F.Cu - B.Cu",
+          "pos": {
+            "x": 64.2,
+            "y": 72.975
+          }
+        }
+      ],
+      "nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/XGPIO1"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Tracks crossing",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Track [/XGPIO1] on B.Cu, length 0.7071 mm",
+          "pos": {
+            "x": 63.7,
+            "y": 78.05
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "tracks_crossing"
+    },
+    {
+      "description": "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+      "items": [
+        {
+          "description": "Track [/XGPIO1] on B.Cu, length 1.0607 mm",
+          "pos": {
+            "x": 61.05,
+            "y": 77.5
+          }
+        },
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 0.7778 mm",
+          "pos": {
+            "x": 61.05,
+            "y": 77.7
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1447 mm)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Track [/XGPIO1] on B.Cu, length 1.1878 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.525
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "clearance"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Track [/XGPIO1] on B.Cu, length 0.4500 mm",
+          "pos": {
+            "x": 63.2,
+            "y": 78.55
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 5.6269 mm",
+          "pos": {
+            "x": 66.25,
+            "y": 79.25
+          }
+        },
+        {
+          "description": "Via [/XGPIO1] on F.Cu - B.Cu",
+          "pos": {
+            "x": 62.75,
+            "y": 78.55
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO1"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)",
+      "items": [
+        {
+          "description": "Track [/ACC_POWER_FAULT_N] on B.Cu, length 7.0502 mm",
+          "pos": {
+            "x": 59.25,
+            "y": 35.15
+          }
+        },
+        {
+          "description": "Via [/XGPIO6] on F.Cu - B.Cu",
+          "pos": {
+            "x": 58.95,
+            "y": 36.8
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_POWER_FAULT_N",
+        "/XGPIO6"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
+      "items": [
+        {
+          "description": "Track [/ACC_DETECT_N] on B.Cu, length 1.1628 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 77.025
+          }
+        },
+        {
+          "description": "Track [/XGPIO0] on B.Cu, length 1.1878 mm",
+          "pos": {
+            "x": 59.8625,
+            "y": 76.875
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_DETECT_N",
+        "/XGPIO0"
+      ],
+      "type": "shorting_items"
+    },
+    {
+      "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1303 mm)",
+      "items": [
+        {
+          "description": "Pad 20 [/ACC_PWR_EN] of U3 on B.Cu",
+          "pos": {
+            "x": 54.1375,
+            "y": 77.525
+          }
+        },
+        {
+          "description": "Via [/XGPIO3] on F.Cu - B.Cu",
+          "pos": {
+            "x": 55.3,
+            "y": 77.7
+          }
+        }
+      ],
+      "nets": [
+        "/ACC_PWR_EN",
+        "/XGPIO3"
+      ],
+      "type": "clearance"
+    }
+  ],
+  "added_counts": {
+    "clearance": 9,
+    "hole_clearance": 1,
+    "hole_to_hole": 1,
+    "holes_co_located": 1,
+    "shorting_items": 11,
+    "solder_mask_bridge": 5,
+    "tracks_crossing": 2,
+    "via_dangling": 9
+  },
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "baseline_counts": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "collision_pair_counts": {
+    "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+    "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+    "/ACC_DETECT_N | /XGPIO0": 2,
+    "/ACC_POWER_FAULT_N | /XGPIO1": 10,
+    "/ACC_POWER_FAULT_N | /XGPIO2": 4,
+    "/ACC_POWER_FAULT_N | /XGPIO6": 1,
+    "/ACC_PWR_EN | /XGPIO3": 1,
+    "/I2C_SCL_INT | /XGPIO5": 1
+  },
+  "conclusion": "COLLISIONS_ATTRIBUTED_MINIMUM_REPLAY_SCOPE_IDENTIFIED",
+  "d386_reported_candidate_counts": {
+    "annular_width": 22,
+    "clearance": 113,
+    "drill_out_of_range": 34,
+    "hole_clearance": 38,
+    "hole_to_hole": 1,
+    "holes_co_located": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 11,
+    "solder_mask_bridge": 6,
+    "track_width": 74,
+    "tracks_crossing": 2,
+    "unconnected_items": 499,
+    "via_dangling": 9,
+    "via_diameter": 22
+  },
+  "decision": "D-387",
+  "dominant_collision_source": "/ACC_POWER_FAULT_N retained B.Cu branch",
+  "harness_findings": {
+    "d386_112_clearances_not_authoritative": true,
+    "same_basename_rules_required": true,
+    "zone_refill_required_after_scratch_edit": true
+  },
+  "method": "same_basename_real_rules_plus_zone_refill_item_level_attribution",
+  "minimum_next_scope": [
+    "/ACC_POWER_FAULT_N",
+    "/ACC_DETECT_N"
+  ],
+  "promotion_candidate": false,
+  "refilled_candidate_counts": {
+    "clearance": 9,
+    "hole_clearance": 6,
+    "hole_to_hole": 1,
+    "holes_co_located": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 11,
+    "solder_mask_bridge": 6,
+    "tracks_crossing": 2,
+    "via_dangling": 9
+  },
+  "schema_version": 1,
+  "source_decision": "D-386"
+}
