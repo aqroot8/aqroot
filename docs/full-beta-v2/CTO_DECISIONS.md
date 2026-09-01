@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-388 · 2026-09-01 · routing characterization:** complete scratch withdrawal
+of retained collision-producing branches after the proven D-386 In3 transaction
+reduces exact-baseline-subtracted copper collisions from 22 to 7 when all 57
+ACC_POWER_FAULT_N tracks are removed, then to 5 when all 22 ACC_DETECT_N tracks
+and its via are also removed. This confirms that those two complete branches,
+not the new ordered XGPIO9/XGPIO8/ACC_3V3_EN connectivity, cause 17 of 22
+collisions. The five residual clearances are isolated retained branches against
+XGPIO1/XGPIO7/XGPIO3/XGPIO5; nine dangling transaction vias and one
+duplicate/co-located hole remain. This is characterization only: withdrawn
+branches are electrically open, no copper is promoted, and the authoritative
+board remains byte-identical (`a4b93b9b…`). Next is fresh complete replay of
+ACC_POWER_FAULT_N and ACC_DETECT_N after the D-386 ordered prefix, with via
+deduplication/removal before the corrected same-basename/refilled real-DRC gate;
+then attribute the five isolated retained-branch clearances. No owner decision
+is open.
+
 **D-387 · 2026-09-01 · routing characterization:** item-level real-KiCad-DRC
 attribution of the complete D-386 In3 transaction identifies two scratch-gate
 requirements: use the authoritative project basename so the custom rules load,

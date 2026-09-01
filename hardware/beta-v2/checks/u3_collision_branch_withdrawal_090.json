@@ -1,0 +1,126 @@
+{
+  "authoritative_board_sha256": "a4b93b9bc71da5e491022d65a8393fee7b11232b6b976d3d0702efd6eae1f782",
+  "authoritative_unchanged": true,
+  "conclusion": "DOMINANT_RETAINED_BRANCH_COLLISIONS_REMOVED",
+  "decision": "D-388",
+  "detect_collisions_remained_after_fault_withdrawal": {
+    "/ACC_DETECT_N | /XGPIO0": 2
+  },
+  "fault_plus_detect_withdrawal": {
+    "added_collision_count": 5,
+    "added_collision_types": {
+      "clearance": 5
+    },
+    "added_counts": {
+      "clearance": 5,
+      "hole_clearance": 1,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "via_dangling": 9
+    },
+    "collision_pair_counts": {
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+      "/ACC_PWR_EN | /XGPIO3": 1,
+      "/I2C_SCL_INT | /XGPIO5": 1
+    },
+    "drc_counts": {
+      "clearance": 5,
+      "hole_clearance": 6,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1,
+      "via_dangling": 9
+    },
+    "pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_COLLISION_BRANCH_WITHDRAWAL_090/fault_detect_withdrawn/aqroot-Beta-v2.kicad_pcb",
+    "removed": {
+      "/ACC_DETECT_N | PCB_TRACK": 22,
+      "/ACC_DETECT_N | PCB_VIA": 1
+    }
+  },
+  "fault_withdrawal": {
+    "added_collision_count": 7,
+    "added_collision_types": {
+      "clearance": 5,
+      "shorting_items": 2
+    },
+    "added_counts": {
+      "clearance": 5,
+      "hole_clearance": 1,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "shorting_items": 2,
+      "solder_mask_bridge": 1,
+      "via_dangling": 9
+    },
+    "collision_pair_counts": {
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+      "/ACC_DETECT_N | /XGPIO0": 2,
+      "/ACC_PWR_EN | /XGPIO3": 1,
+      "/I2C_SCL_INT | /XGPIO5": 1
+    },
+    "drc_counts": {
+      "clearance": 5,
+      "hole_clearance": 6,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "lib_footprint_issues": 199,
+      "shorting_items": 2,
+      "solder_mask_bridge": 2,
+      "via_dangling": 9
+    },
+    "pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_COLLISION_BRANCH_WITHDRAWAL_090/fault_withdrawn/aqroot-Beta-v2.kicad_pcb",
+    "removed": {
+      "/ACC_POWER_FAULT_N | PCB_TRACK": 57
+    }
+  },
+  "method": "complete_retained_branch_withdrawal_same_basename_real_rules_zone_refill",
+  "promotion_candidate": false,
+  "schema_version": 1,
+  "seed": {
+    "added_collision_count": 22,
+    "added_collision_types": {
+      "clearance": 8,
+      "shorting_items": 12,
+      "tracks_crossing": 2
+    },
+    "added_counts": {
+      "clearance": 8,
+      "hole_clearance": 1,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "shorting_items": 12,
+      "solder_mask_bridge": 5,
+      "tracks_crossing": 2,
+      "via_dangling": 9
+    },
+    "collision_pair_counts": {
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO1": 2,
+      "/01_POWER_TREE/BAT_PROTECTED_P | /XGPIO7": 1,
+      "/ACC_DETECT_N | /XGPIO0": 2,
+      "/ACC_POWER_FAULT_N | /XGPIO1": 10,
+      "/ACC_POWER_FAULT_N | /XGPIO2": 4,
+      "/ACC_POWER_FAULT_N | /XGPIO6": 1,
+      "/ACC_PWR_EN | /XGPIO3": 1,
+      "/I2C_SCL_INT | /XGPIO5": 1
+    },
+    "drc_counts": {
+      "clearance": 8,
+      "hole_clearance": 6,
+      "hole_to_hole": 1,
+      "holes_co_located": 1,
+      "lib_footprint_issues": 199,
+      "shorting_items": 12,
+      "solder_mask_bridge": 6,
+      "tracks_crossing": 2,
+      "via_dangling": 9
+    },
+    "pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_COLLISION_BRANCH_WITHDRAWAL_090/seed/aqroot-Beta-v2.kicad_pcb"
+  },
+  "source_decisions": [
+    "D-386",
+    "D-387"
+  ]
+}

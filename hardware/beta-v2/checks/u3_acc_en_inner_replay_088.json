@@ -23,13 +23,13 @@
       "candidate_pcb": "/home/aqroot8/aqroot/hardware/beta-v2/checks/w/U3_R58_IMPACT_REPLAY_069/seed/acc_i2.kicad_pcb",
       "drc_after": {
         "annular_width": 22,
-        "clearance": 111,
+        "clearance": 108,
         "drill_out_of_range": 34,
         "hole_clearance": 34,
         "hole_to_hole": 1,
         "holes_co_located": 1,
         "lib_footprint_issues": 199,
-        "shorting_items": 9,
+        "shorting_items": 12,
         "solder_mask_bridge": 6,
         "track_width": 74,
         "tracks_crossing": 2,
@@ -44,7 +44,7 @@
         ],
         "clearance": [
           0,
-          111
+          108
         ],
         "drill_out_of_range": [
           0,
@@ -64,7 +64,7 @@
         ],
         "shorting_items": [
           0,
-          9
+          12
         ],
         "solder_mask_bridge": [
           1,
@@ -118,8 +118,7 @@
           "Clearance violation ( clearance 0.2000 mm; actual 0.0621 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.0621 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.0757 mm)",
-          "Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)",
-          "Clearance violation ( clearance 0.2000 mm; actual 0.1290 mm)",
+          "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1303 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)",
@@ -192,8 +191,6 @@
           "Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)",
-          "Clearance violation ( clearance 0.2000 mm; actual 0.1862 mm)",
-          "Clearance violation ( clearance 0.2000 mm; actual 0.1865 mm)",
           "Clearance violation (zone clearance 0.2500 mm; actual 0.0000 mm)",
           "Clearance violation (zone clearance 0.2500 mm; actual 0.0000 mm)",
           "Clearance violation (zone clearance 0.2500 mm; actual 0.0000 mm)",
@@ -304,15 +301,18 @@
           "Drilled holes co-located"
         ],
         "shorting_items": [
+          "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
           "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
           "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
-          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
-          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO2)",
-          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)",
-          "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
           "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
           "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
-          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)"
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO2 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
         ],
         "solder_mask_bridge": [
           "Rear solder mask aperture bridges items with different nets",
@@ -749,8 +749,8 @@
           "Clearance violation ( clearance 0.2000 mm; actual 0.0621 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.0757 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.0768 mm)",
+          "Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1303 mm)",
-          "Clearance violation ( clearance 0.2000 mm; actual 0.1447 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)",
           "Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)",
@@ -939,18 +939,18 @@
           "Drilled holes co-located"
         ],
         "shorting_items": [
+          "Items shorting two nets (nets /ACC_DETECT_N and /XGPIO0)",
           "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
           "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
-          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO2)",
-          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO6)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
+          "Items shorting two nets (nets /ACC_POWER_FAULT_N and /XGPIO1)",
           "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
-          "Items shorting two nets (nets /XGPIO0 and /ACC_DETECT_N)",
           "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
           "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
           "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
           "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
-          "Items shorting two nets (nets /XGPIO1 and /ACC_POWER_FAULT_N)",
-          "Items shorting two nets (nets /XGPIO2 and /ACC_POWER_FAULT_N)"
+          "Items shorting two nets (nets /XGPIO2 and /ACC_POWER_FAULT_N)",
+          "Items shorting two nets (nets /XGPIO6 and /ACC_POWER_FAULT_N)"
         ],
         "solder_mask_bridge": [
           "Rear solder mask aperture bridges items with different nets",

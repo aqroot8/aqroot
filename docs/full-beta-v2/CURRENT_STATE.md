@@ -13,6 +13,20 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **FBV2-P2-090 / D-388 (dominant collision branch withdrawal; no authoritative
+  PCB change):** after reconstructing the complete D-386 In3 transaction with
+  the corrected real-DRC setup, withdrawing all 57 ACC_POWER_FAULT_N tracks
+  reduces added copper collisions 22→7; also withdrawing all 22 ACC_DETECT_N
+  tracks plus its via reduces them 7→5. Thus the two retained branches explain
+  17/22 collision reports. Five isolated retained-branch clearances, nine
+  dangling transaction vias, and one duplicate/co-located hole remain. The
+  scratch candidates are electrically open and not promotable. Evidence/harness:
+  `u3_collision_branch_withdrawal_090.py` / `.json`. Board remains byte-identical
+  (`a4b93b9b…`); no owner decision; readiness remains 78%. **Next:** freshly
+  replay complete ACC_POWER_FAULT_N and ACC_DETECT_N after the D-386 ordered
+  prefix, deduplicate/remove transaction vias, then run the corrected
+  same-basename/refilled real-KiCad DRC gate and attribute the five residual
+  clearances.
 - **FBV2-P2-089 / D-387 (D-386 violation attribution; no authoritative PCB
   change):** corrected scratch DRC requires the authoritative project basename
   and a zone refill; D-386's 112-clearance headline mixed in harness artifacts.
