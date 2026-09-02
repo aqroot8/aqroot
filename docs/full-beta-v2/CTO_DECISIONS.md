@@ -9,6 +9,36 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-464 · 2026-09-02 · Demo ESP32 EN reset tree routed and promoted:** the
+fitted `Net-(U1-EN)` power-on-reset network now connects U1.3, C1.2, and R1.1
+as one island. The atomic boxed-endpoint framework replaces the rejected
+D-321 same-face detour with a 9.915176 mm U1-to-cap leg on In3 and a
+36.042111 mm cap-to-pull-up leg on In2. Both branch orders reproduce the same
+15 add-only objects: 11 tracks / 45.957287 mm and four ordinary vias, with no
+accepted-copper removal or wrong-net addition. The authoritative refilled
+schematic-parity KiCad DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports. Fitted connectivity improves
+66->65 open retained nets and 482->480 edges; ratsnest 511->509. Board
+`702e3deb...`; D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Next, freshly rank an independent retained
+control tree outside parked power, USB, NFC, U2, and connector-package walls;
+begin with the three-land `CC1101_CS_N` candidate. No owner decision is open.
+
+**D-463 · 2026-09-02 · Demo BQ25185 TS/MR add-only families bounded:** the
+independent 60.570 mm `Net-(U11-TS_MR)` control net was screened using the
+D-448-proven U11.6 B.Cu escape.  The qualified two-via framework reserves both
+ends but finds no 0.20 mm In2 or In3 join.  A separate 0.20 mm B.Cu planar
+search made no result within a bounded 60 second run and was terminated in
+scratch; it did not modify the authoritative board.  Both exact contracts now
+live in `route_local_two_pad.py`, so neither family needs blind replay.  Board
+`e1d5d5d8...` remains byte-identical at 66 open retained nets / 482 edges and
+the accepted real refilled schematic-parity DRC signature remains 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and `hardware/beta-v2/`
+remain intact.  Park this add-only wall.  Next, screen the independent fitted
+three-land `Net-(U1-EN)` reset tree as one atomic transaction.  No owner
+decision is open.
+
 **D-462 · 2026-09-02 · Demo GPIO45 VDD_SPI strap tree promoted:** the retained
 ESP32-S3 boot-strap network now connects U1.26, fitted 10 kOhm R111.1, and TP1.1
 as one copper island.  Both atomic branch orders pass; the selected candidate

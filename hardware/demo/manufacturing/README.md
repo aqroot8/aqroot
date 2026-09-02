@@ -1560,3 +1560,23 @@ fanouts for adjacent J1.34/J1.36 before either long haul, then attach U1 and J2
 atomically.  If two legal barrels cannot be exposed, park the paired wall and
 independently gate the already reproducible complete SCK tree.  No owner
 decision is open.
+
+# BQ25185 TS/MR add-only wall (2026-09-02)
+
+`route_local_two_pad.py` retains two exact `Net-(U11-TS_MR)` contracts. The
+qualified `BQ25185_TS_MR` inner-haul case reserves both B.Cu endpoints but has
+no In2/In3 join. `BQ25185_TS_MR_PLANAR` is the independent same-face fallback;
+run it only under a 60 second external timeout because the generic planar wave
+does not terminate usefully in the current congestion. Neither case emitted
+authoritative copper. Park both until surrounding geometry changes; next route
+the fitted three-land `Net-(U1-EN)` reset tree atomically.
+
+# ESP32 EN reset tree (2026-09-02)
+
+`route_mcu_en_tree_scratch.py` atomically screens both orders of the two boxed
+endpoint legs retained in `route_local_two_pad.py`. The accepted D-464 result
+connects U1.3/C1.2/R1.1 with 11 add-only 0.20 mm tracks and four ordinary vias:
+the 9.915176 mm U1-to-C1 leg uses In3 and the 36.042111 mm C1-to-R1 leg uses
+In2. Both orders produce the same clean connectivity and 199/5/1 refilled
+parity-DRC result. Do not restore the rejected D-321 same-face reset detour.
+Next, freshly screen the independent three-land `CC1101_CS_N` control tree.

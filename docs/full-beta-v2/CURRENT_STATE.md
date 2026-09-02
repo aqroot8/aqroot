@@ -13,6 +13,24 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-464 (ESP32 EN reset tree promoted):** the fitted U1.3/C1.2/R1.1
+  power-on-reset network is one island through 11 add-only 0.20 mm tracks
+  (45.957287 mm) and four ordinary vias. The short U1-to-cap leg uses In3;
+  the cap-to-pull-up leg uses In2, avoiding the rejected D-321 same-face
+  detour. Both atomic branch orders pass with no accepted-copper removal or
+  wrong-net addition. Real refilled parity DRC remains 199/5/1; fitted opens
+  improve 66->65 nets and 482->480 edges, and ratsnest 511->509. Board
+  `702e3deb...`; all Demo invariants and production hardware remain intact.
+  **Next:** freshly screen the independent three-land `CC1101_CS_N` control
+  tree outside the parked power/USB/NFC/U2/package walls. No owner decision.
+- **Demo D-463 (BQ25185 TS/MR add-only wall parked):** the D-448-proven U11.6
+  escape and the R38.1 escape both reserve, but neither In2 nor In3 admits the
+  0.20 mm join. A separate planar B.Cu search produced no result in a bounded
+  60 second scratch run. Both contracts are retained in the local two-pad
+  harness; no copper was emitted or promoted. Board `e1d5d5d8...` remains at
+  66 open retained nets / 482 edges with real refilled parity DRC 199/5/1.
+  **Next:** screen fitted three-land `Net-(U1-EN)` as one atomic reset tree.
+  No owner decision.
 - **Demo D-462 (GPIO45 VDD_SPI strap promoted):** U1.26, fitted 10 kOhm
   R111.1, and TP1.1 are now one copper island through 23 add-only 0.20 mm
   segments (19 F.Cu / four In2.Cu) and two ordinary vias. Both branch orders

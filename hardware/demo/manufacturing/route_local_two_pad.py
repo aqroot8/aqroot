@@ -223,6 +223,50 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "BQ25185_TS_MR": {
+        "net": "Net-(U11-TS_MR)",
+        "pads": ("U11.6", "R38.1"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+        # D-448 proved U11.6 has a legal B.Cu reservation even though the
+        # adjacent U11.8/U11.9 pocket is blocked.  Keep the long charger-
+        # control haul off the congested component face.
+        "inner_long_haul_plan": {
+            "a": "U11.6", "b": "R38.1",
+            "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BQ25185_TS_MR_PLANAR": {
+        "net": "Net-(U11-TS_MR)",
+        "pads": ("U11.6", "R38.1"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "MCU_EN_U1_C1": {
+        "net": "Net-(U1-EN)",
+        "pads": ("U1.3", "C1.2"),
+        "ignored_connected_pads": ("R1.1",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        # The same-face natural MST is the D-321 wall.  Reserve the two boxed
+        # endpoints and move the short reset-sensitive leg to a signal inner.
+        "inner_long_haul_plan": {
+            "a": "U1.3", "b": "C1.2", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "MCU_EN_C1_R1": {
+        "net": "Net-(U1-EN)",
+        "pads": ("C1.2", "R1.1"),
+        "ignored_connected_pads": ("U1.3",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "C1.2", "b": "R1.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "LTC4368_FAULT_TP18": {
         "net": "/01_POWER_TREE/LTC4368_FAULT_N",
         "pads": ("R82.1", "TP18.1"),
