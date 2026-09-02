@@ -159,6 +159,13 @@ ROUTES = {
         "clearance": 200_000,
         "floor_override": {"U21.5": 200_000},
     },
+    "ACC_5V_ILIM": {
+        "net": "/01_POWER_TREE/ACC_5V_ILIM",
+        "pads": ("U22.4", "R101.1"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "USB_CC1": {
         "net": "Net-(J3-CC1)",
         "pads": ("J3.A5", "R31.1"),

@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-442 · 2026-09-02 · Demo ACC_5V_ILIM routed and promoted:** fresh fitted-pad
+ranking selected the independent Demo-required U22 current-limit programming
+net, outside every parked routing family.  The qualified local framework closes
+U22.4→R101.1 with seven add-only 0.20 mm B.Cu segments (42.417480 mm), zero
+vias, zero removed accepted objects, and identical physical geometry on two
+clean candidates.  The authoritative refilled schematic-parity DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports, while fitted opens improve 74→73 nets and 497→496 edges and ratsnest
+526→525.  D-269 battery protection, independent D-186 controls, all RGB
+replacement routes, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Board SHA-256 `86cff98b...`. Next, route or
+bound the independent `ACC_5V_BOOST_EN` tree without disturbing the accepted
+accessory-power core. No owner decision.
+
 **D-441 · 2026-09-02 · Demo ACC_PWR_EN east-perimeter inner family bounded:**
 the recovered D-440 successor first exposed an invalid characterization tactic:
 all 160 cases exhausted a 0.5 s generic grid-search budget before deciding the

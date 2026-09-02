@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ACC_5V_ILIM route (2026-09-02)
+
+The retained U22 current-limit programming net is promoted from U22.4 to
+R101.1 as seven add-only 0.20 mm B.Cu segments (42.417480 mm), with no vias and
+no accepted-copper removal. Two clean candidates reproduce identical physical
+geometry. The authoritative refilled schematic-parity DRC remains 199/5/1;
+the fitted ledger improves from 74 to 73 open nets and 497 to 496 open edges.
+Board SHA-256 is `86cff98b...`. Route or bound `ACC_5V_BOOST_EN` next while
+preserving the accepted accessory-power core and independent D-186 controls.
+
 ## ACC_PWR_EN east-perimeter inner screen (2026-09-02)
 
 The recovered D-440 successor bounds five explicit east-side inner waypoints

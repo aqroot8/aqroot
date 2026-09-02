@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-442 (ACC_5V_ILIM promoted):** the retained U22 current-limit setting
+  net now connects U22.4 to R101.1 with seven add-only 0.20 mm B.Cu segments
+  (42.417480 mm), no vias, no accepted-copper removal, and deterministic replay
+  geometry.  Real refilled schematic-parity DRC remains 199/5/1; fitted opens
+  improve 74→73 nets and 497→496 edges, and ratsnest 526→525.  D-269/D-186,
+  all RGB replacements, XGPIO4/XGPIO5, and approved Demo NC contacts remain
+  intact. Board `86cff98b...`; production hardware is untouched. **Next:**
+  route or bound the independent `ACC_5V_BOOST_EN` tree, preserving the accepted
+  accessory-power core and both independent D-186 disconnect controls. No owner
+  decision.
 - **Demo D-441 (ACC_PWR_EN east-perimeter inner family bounded):** the recovered
   successor now uses exact fixed-segment legality instead of a generic search
   timeout.  All 160 combinations of five east X waypoints, In2/In3, and four
