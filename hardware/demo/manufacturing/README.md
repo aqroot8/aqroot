@@ -389,3 +389,23 @@ mm SYS and 0.80 mm peak-feed trunks, and real-DRC each candidate against the
 D-269 corridor and `ACC_DETECT_N`. Replay the four-component inner-layer bridge
 only after both launches pass. Do not retry generic `reserve_escape`, the fixed
 north launches, or relax either clearance contract. No owner decision is open.
+
+The recovered directional-neck sweep was completed on 2026-09-02. The bounded
+5-degree / 0.025 mm enumeration tests every straight package-local neck from
+0.20 through 1.50 mm, immediately widens to the required 0.50 mm (`U11.1`) or
+0.80 mm (`U21.3`) trunk, and accepts only a trunk ending at a legal ordinary
+0.90/0.40 mm through-via. Neither pad has a direct radial neck/trunk/via result.
+For `U11.1`, 352 otherwise-clear ray endpoints lack an all-layer via site; for
+`U21.3`, 702 do. The finite monotonic-prefix stopping rule makes a clean replay
+complete in about two minutes while preserving exhaustive coverage of the
+declared rays and lengths. The authoritative PCB remains byte-identical at
+`fd346ae6...`; no DRC rule or clearance contract changed.
+
+This closes direct radial ordinary-via placement, not the SYS route or the
+fine-pitch launch class. The next highest-leverage bounded task is to retain the
+legal directional neck/trunk anchors and enumerate short B.Cu doglegs to nearby
+ordinary through-via sites. Only after both package ends have legal sites should
+the already-proven four-component inner-layer bridge be replayed. Do not retry
+the fixed north launches, generic radial escape, or a via exactly at the ray
+endpoint. Blind/microvias remain excluded absent an owner manufacturing
+decision; no owner decision is currently open.
