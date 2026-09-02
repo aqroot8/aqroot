@@ -4120,3 +4120,20 @@ XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
 parked under the routing-wall iteration policy. Next freshly screen an
 independent retained local cluster outside the parked power, USB, NFC, audio,
 shared-bus, and U2-package walls. No owner decision is open.
+# D-505 · 2026-09-02 · Demo display-backlight strap fanouts qualified
+
+The explicit successor to the parked generic `DISP_BL_CTL_STRAP` endpoint wall
+screens 252 F.Cu perimeter/ordinary-via shapes at each of U1.16, TP2.1, and
+R109.1. It finds respectively 21, 34, and 11 legal 0.60/0.30 mm fanouts. All
+three endpoint pairs coexist (714 U1/TP2, 231 U1/R109, and 374 TP2/R109
+combinations), and the first deterministic triple reserves vias at
+`(46.5,122.785)`, `(41.472198,117.010499)`, and
+`(52.529031,112.910322)` mm.
+
+This is characterization only: no partial candidate is emitted and the board
+remains byte-identical at `04dc3e8a...`, 56 open retained nets / 460 edges.
+D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted
+`ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next use the exact
+coherent witness to join the two short branches on distinct signal layers and
+replay the already-qualified U1.16-to-R108.1 branch as one atomic full-tree
+promotion attempt. No owner decision is open.

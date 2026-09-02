@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Display-backlight strap coherent fanouts qualified (2026-09-02)
+
+`screen_disp_bl_strap_fanouts.py` replaces the parked generic endpoint attempt
+with an explicit three-land package-pocket reservation screen. It exhaustively
+tests 252 perimeter shapes at each of U1.16, TP2.1, and R109.1 and finds 21,
+34, and 11 legal ordinary 0.60/0.30 mm fanouts. All three endpoint pairs have
+compatible reservations (714, 231, and 374 combinations), and the first
+deterministic triple coexists at vias `(46.5,122.785)`,
+`(41.472198,117.010499)`, and `(52.529031,112.910322)` mm. The authoritative
+board remains byte-identical at `04dc3e8a...`, 56 open retained nets / 460
+edges. Next reserve this exact triple, join the short branches on distinct
+signal layers, and replay the already-qualified U1.16-to-R108.1 branch as one
+complete-tree transaction under the full promotion gate.
+
 ## SX1262 DIO1 mixed-inner haul family bounded (2026-09-02)
 
 `route_sx1262_dio1_btn_b_refloor_scratch.py` now preserves the D-503 atomic

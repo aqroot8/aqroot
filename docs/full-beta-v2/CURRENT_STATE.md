@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-505 (display-backlight strap coherent fanouts qualified):** a new
+  explicit package-pocket screen tests 252 perimeter/via shapes at each of
+  U1.16, TP2.1, and R109.1. It finds 21/34/11 legal ordinary fanouts, 714/231/
+  374 compatible pair reservations, and a coherent first triple at `(46.5,
+  122.785)`, `(41.472198,117.010499)`, and `(52.529031,112.910322)` mm. No
+  partial copper is emitted; PCB remains byte-identical at `04dc3e8a...`, 56
+  open retained nets / 460 edges, and production hardware is unchanged.
+  **Next:** reserve the exact triple, join its short branches on distinct
+  signal layers, then replay the qualified U1.16-to-R108.1 branch atomically
+  and promote only through the full-board gate. No owner decision.
 - **Demo D-504 (SX1262 DIO1 mixed-inner haul family bounded):** the recovered
   successor extends the D-503 atomic harness with one ordinary transition via
   between In2 and In3. All 16 U8.13 layer/site cases coexist with the
