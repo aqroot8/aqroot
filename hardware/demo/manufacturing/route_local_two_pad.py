@@ -21,7 +21,8 @@ ROUTES = {
         "pads": ("U12.12", "R43.1"),
         "ignored_connected_pads": ("TP13.1", "SW9.1"),
         "ignored_dnp_pads": ("R68.2",),
-        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 300_000,
         "inner_long_haul_plan": {
             "a": "U12.12", "b": "R43.1", "a_near": "B", "b_near": "B",
             "inner": ["I2", "I3"],
@@ -32,14 +33,16 @@ ROUTES = {
         "pads": ("U12.12", "TP13.1"),
         "ignored_connected_pads": ("R43.1", "SW9.1"),
         "ignored_dnp_pads": ("R68.2",),
-        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 300_000,
     },
     "SW9_A_TESTPOINT_SWITCH": {
         "net": "Net-(SW9-A)",
         "pads": ("TP13.1", "SW9.1"),
         "ignored_connected_pads": ("R43.1", "U12.12"),
         "ignored_dnp_pads": ("R68.2",),
-        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 300_000,
         "inner_long_haul_plan": {
             "a": "TP13.1", "b": "SW9.1", "a_near": "B", "b_near": "F",
             "inner": ["I2", "I3"],

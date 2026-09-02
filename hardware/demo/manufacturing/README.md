@@ -2,6 +2,23 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Physical power-switch enable tree promoted (2026-09-02)
+
+The retained `Net-(SW9-A)` tree now connects `U12.12`, `R43.1`, `TP13.1`,
+and physical slide switch `SW9.1`; the `R68.2` bypass remains DNP and is not
+treated as a fitted endpoint. The bounded northern-perimeter harness closes the
+previous 56 mm-class `U12.12`-to-`R43.1` wall, then atomically replays both
+local branches. The accepted route adds 23 segments and four ordinary
+0.60/0.30 mm vias, all on `Net-(SW9-A)`, with zero accepted-copper removal.
+
+Independent zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 60 to 59 open retained nets and 469 to 466 open
+edges; ratsnest improves 498 to 495. D-269, D-186, all three RGB replacement
+nets, XGPIO4/XGPIO5, approved Demo NC contacts, and production hardware remain
+intact. Next, freshly rank another independent retained power or interface tree
+outside the parked package-fanout walls; manufacturing export remains premature.
+
 ## Power-switch enable tree bounded (2026-09-02)
 
 `Net-(SW9-A)` has four fitted lands (U12.12, R43.1, TP13.1, SW9.1); R68.2 is
