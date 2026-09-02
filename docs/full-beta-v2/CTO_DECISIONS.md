@@ -4153,3 +4153,22 @@ XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
 `hardware/beta-v2/` remain intact. Next co-search the already-qualified
 21/34/11 fanout sets with both short-branch joins; fanout coexistence alone is
 not sufficient. No owner decision is open.
+
+# D-507 · 2026-09-02 · Demo display-backlight co-search made resumable
+
+The recovered D-506 successor replaces the single fixed witness with a coherent
+co-search across the qualified 21 U1.16, 34 TP2.1, and 11 R109.1 fanouts. Its
+initial unbounded form produced no result within a 240 second scratch-only run,
+so the harness now accepts deterministic endpoint-pair windows and reports exact
+start/stop counters. Partial windows are explicitly forbidden from promotion;
+the complete-tree replay, real refilled schematic-parity DRC, accepted-copper
+comparison, and connectivity gate remain mandatory for any full-search winner.
+
+The first durable window screened U1/TP2 pair indices 0--63 on both distinct
+layer assignments. All 64 `I2` first joins and all 64 `I3` first joins reject;
+therefore no R109 fanout or second join was attempted, no candidate was emitted,
+and the authoritative board remains byte-identical at `04dc3e8a...`, 56 open
+retained nets / 460 edges. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts,
+accepted `ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next continue
+the same materially unchanged co-search at `--pair-start 64` in bounded parallel
+layer windows; do not replay indices 0--63. No owner decision is open.

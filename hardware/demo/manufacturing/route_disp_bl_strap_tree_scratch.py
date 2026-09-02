@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atomically route/gate the display-backlight strap using the D-505 witness."""
+"""Co-search qualified fanouts and atomically gate the display-backlight strap."""
 import argparse, hashlib, json, subprocess, sys, tempfile
 from collections import Counter
 from pathlib import Path
@@ -12,11 +12,7 @@ LEDGER = Path(__file__).with_name("routing_ledger.py")
 NET = "/02_MCU_CORE/DISP_BL_CTL_STRAP"
 WIDTH = CLEARANCE = 200_000
 ACCEPTED = {"lib_footprint_issues", "hole_clearance", "solder_mask_bridge"}
-WITNESS = {
- "U1.16": (((45250000,122285000),(46500000,122285000),(46500000,122785000)),(46500000,122785000)),
- "TP2.1": (((42222198,117760499),(41472198,117760499),(41472198,117010499)),(41472198,117010499)),
- "R109.1": (((51779031,113910322),(52529031,113910322),(52529031,112910322)),(52529031,112910322)),
-}
+REFS = ("U1.16", "TP2.1", "R109.1")
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 import incremental_router as ir
 import qrouter as qr
@@ -35,13 +31,24 @@ def copper(p):
 def emit(b,a,z,layer):
  if any(qr.seg_shape_dist(*a,*z,s)<b.margin(s,WIDTH,CLEARANCE,CLEARANCE) for s in b.obstacles(layer,NET)): return False
  b.track(NET,layer,*a,*z,WIDTH); return True
+def compact(points): return tuple(p for n,p in enumerate(points) if not n or p != points[n-1])
+def candidates(pad):
+ px,py=pad["x"],pad["y"]; out=[]
+ for dx,dy in ((1,0),(-1,0),(0,1),(0,-1)):
+  for reach in range(750000,2250001,250000):
+   shoulder=(px+dx*reach,py+dy*reach)
+   for offset in range(-1000000,1000001,250000):
+    via=(shoulder[0],shoulder[1]+offset) if dx else (shoulder[0]+offset,shoulder[1])
+    out.append((compact(((px,py),shoulder,via)),via))
+ return out
 def place(b,path,via):
  if not all(b.point_free(layer,NET,*via,600000,CLEARANCE,CLEARANCE,25000) for layer in b.cu): return False
  if not all(emit(b,a,z,"F") for a,z in zip(path,path[1:])): return False
  b.via(NET,*via,600000,300000); return True
 def join(b,a,z,layer):
- direct=qr.join_reserved(b,NET,a,z,WIDTH,CLEARANCE,CLEARANCE,layer=layer)
- if direct.get("ok"): return {**direct,"family":"direct"}
+ mark=b.mark()
+ if emit(b,a,z,layer): return {"ok":True,"family":"direct","tested":1}
+ b.revert(mark)
  paths=[(a,(a[0],z[1]),z),(a,(z[0],a[1]),z)]
  x0,x1=sorted((a[0],z[0])); y0,y1=sorted((a[1],z[1]))
  for x in range(x0-2000000,x1+2000001,250000): paths.append((a,(x,a[1]),(x,z[1]),z))
@@ -53,17 +60,64 @@ def join(b,a,z,layer):
            "waypoints_mm":[[x/1e6,y/1e6] for x,y in path[1:-1]]}
   b.revert(mark)
  return {"ok":False,"reason":"NO_LOCAL_DOGLEG","tested":len(paths)}
-def run_case(work,base,layers):
+def qualify(seed,pads):
+ out={}
+ for ref in REFS:
+  rows=[]
+  for row in candidates(pads[ref]):
+   mark=seed.mark()
+   if place(seed,*row): rows.append(row)
+   seed.revert(mark)
+  out[ref]=rows
+ return out
+def search(pads,qualified,layers,pair_start=0,max_pairs=None):
+ b=qr.QBoard(BOARD); ir.inject_existing_via_obstacles(b)
+ stats={"endpoint_pairs_tested":0,"first_joins":0,"third_fanouts_tested":0,
+        "coherent_triples":0,"second_joins":0,"pair_start":pair_start,
+        "pair_stop":None,"search_complete":False}
+ # The first join depends only on the U1/TP2 pair.  Keep it placed while
+ # screening every R109 fanout instead of recomputing it eleven times.
+ pair_index=0
+ for u1 in qualified[REFS[0]]:
+  for tp2 in qualified[REFS[1]]:
+   if pair_index < pair_start:
+    pair_index+=1; continue
+   if max_pairs is not None and stats["endpoint_pairs_tested"] >= max_pairs:
+    stats["pair_stop"]=pair_index
+    return None,stats
+   pair_index+=1
+   stats["endpoint_pairs_tested"]+=1; pair_mark=b.mark()
+   if not place(b,*u1) or not place(b,*tp2): b.revert(pair_mark); continue
+   first=join(b,u1[1],tp2[1],layers[0])
+   if not first.get("ok"): b.revert(pair_mark); continue
+   stats["first_joins"]+=1
+   for r109 in qualified[REFS[2]]:
+    stats["third_fanouts_tested"]+=1; branch_mark=b.mark()
+    if not place(b,*r109): b.revert(branch_mark); continue
+    stats["coherent_triples"]+=1
+    second=join(b,tp2[1],r109[1],layers[1])
+    if second.get("ok"):
+     stats["second_joins"]+=1
+     stats["pair_stop"]=pair_index
+     return {"rows":(u1,tp2,r109),"first":first,"second":second},stats
+    b.revert(branch_mark)
+   b.revert(pair_mark)
+ stats["pair_stop"]=pair_index; stats["search_complete"]=True
+ return None,stats
+def run_case(work,base,layers,pads,qualified,pair_start,max_pairs):
  s=work/f"disp-bl-strap-{layers[0]}-{layers[1]}.kicad_pcb"
  for x in (".kicad_pcb",".kicad_dru",".kicad_pro"): s.with_suffix(x).write_bytes(BOARD.with_suffix(x).read_bytes())
+ witness,stats=search(pads,qualified,layers,pair_start,max_pairs)
+ result={"layers":layers,"search":stats,"promotion_candidate":False,"path":s,
+         "replay":{"ok":False,"reason":"NOT_ATTEMPTED"}}
+ if witness is None: return result
  b=qr.QBoard(s); ir.inject_existing_via_obstacles(b)
- pads={p["ref"] for p in ir.physical_net_pads(b,NET)}
- if pads!={"U1.16","TP2.1","R108.1","R109.1"}: raise RuntimeError(f"unexpected fitted pads: {sorted(pads)}")
- fans={r:place(b,*WITNESS[r]) for r in WITNESS}; joins={}
+ fans={r:place(b,*row) for r,row in zip(REFS,witness["rows"])}; joins={}
  first=f"U1_TP2_{layers[0]}"; second=f"TP2_R109_{layers[1]}"
- if all(fans.values()): joins[first]=join(b,WITNESS["U1.16"][1],WITNESS["TP2.1"][1],layers[0])
- if joins.get(first,{}).get("ok"): joins[second]=join(b,WITNESS["TP2.1"][1],WITNESS["R109.1"][1],layers[1])
- result={"fanouts":fans,"joins":joins,"replay":{"ok":False,"reason":"NOT_ATTEMPTED"},"promotion_candidate":False,"path":s}
+ if all(fans.values()): joins[first]=join(b,witness["rows"][0][1],witness["rows"][1][1],layers[0])
+ if joins.get(first,{}).get("ok"): joins[second]=join(b,witness["rows"][1][1],witness["rows"][2][1],layers[1])
+ result.update({"fanouts":fans,"joins":joins,"witness":{
+  r:{"via_mm":[row[1][0]/1e6,row[1][1]/1e6]} for r,row in zip(REFS,witness["rows"])}})
  if not joins.get(second,{}).get("ok"): return result
  b.save(s)
  rr=subprocess.run([sys.executable,str(LOCAL),"DISP_BL_STRAP_U1_R108","--route",str(s)],text=True,capture_output=True,check=True)
@@ -79,16 +133,26 @@ def run_case(work,base,layers):
  result["promotion_candidate"]=not attr and not removed and not result["wrong_net_additions"] and target["open_edges"]==0
  return result
 def main():
- ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true"); a=ap.parse_args()
+ ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true")
+ ap.add_argument("--pair-start",type=int,default=0); ap.add_argument("--max-pairs",type=int)
+ ap.add_argument("--layers",choices=("I2-I3","I3-I2","both"),default="both"); a=ap.parse_args()
+ if a.pair_start < 0 or (a.max_pairs is not None and a.max_pairs < 1): ap.error("pair bounds must be positive")
  before,base=sha(BOARD),copper(BOARD)
  with tempfile.TemporaryDirectory(prefix="aqroot-demo-disp-bl-strap-") as td:
-  cases=[run_case(Path(td),base,layers) for layers in (("I2","I3"),("I3","I2"))]
+  seed=qr.QBoard(BOARD); ir.inject_existing_via_obstacles(seed)
+  physical={p["ref"]:p for p in ir.physical_net_pads(seed,NET)}
+  if set(physical)!={"U1.16","TP2.1","R108.1","R109.1"}: raise RuntimeError(f"unexpected fitted pads: {sorted(physical)}")
+  qualified=qualify(seed,physical)
+  assignments=(("I2","I3"),("I3","I2")) if a.layers=="both" else (tuple(a.layers.split("-")),)
+  cases=[run_case(Path(td),base,layers,physical,qualified,a.pair_start,a.max_pairs) for layers in assignments]
   winners=[c for c in cases if c["promotion_candidate"]]; c=winners[0] if winners else cases[-1]
   if winners and a.candidate: a.candidate.write_bytes(c["path"].read_bytes())
   if a.promote:
+   if a.pair_start or a.max_pairs is not None or a.layers != "both": raise RuntimeError("refuse promotion from bounded search")
    if not winners or sha(BOARD)!=before: raise RuntimeError("refuse promotion: gate failed or authority changed")
    BOARD.write_bytes(c["path"].read_bytes())
   for row in cases: row.pop("path",None)
- print(json.dumps({"schema":2,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,"cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True))
+ print(json.dumps({"schema":3,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
+  "qualified_fanouts":{r:len(v) for r,v in qualified.items()},"cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True))
  return 0 if winners else 2
 if __name__=="__main__": raise SystemExit(main())
