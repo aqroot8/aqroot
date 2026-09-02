@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory 5 V switch-node refloor bound (2026-09-02)
+
+`screen_acc_5v_lx_refloor.py` closes the first coordinated placement question.
+Moving `C65` 1.0 mm east does not open `U21.5`; the launch remains boxed by the
+adjacent TPS61023 lands. Rotating `U21` 180 degrees in place does open the
+launch. Rotating both `U21` and `L4` 180 degrees reduces the deterministic B.Cu
+route from 13.593 mm to 6.255 mm, versus a 3.782 mm pad-to-pad displacement.
+
+This is characterization, not promotable geometry. A `U21` rotation changes
+the physical land positions of all six pins, so the next transaction must
+withdraw and replay the complete fitted `ACC_5V_FB`, `ACC_5V_BOOST_EN`,
+`BQ25185_SYS`, GND, `ACC_5V_RAW`, and `ACC_5V_LX` branches atomically. Preserve
+the accepted `ACC_5V_RAW` tree and safe-low enable; minimize the switch loop;
+promote only if the full refilled schematic-parity gate and fitted ledger pass.
+The authoritative board remains byte-identical at `37718bc7...`.
+
 ## Accessory 5 V switch-node wall (2026-09-02)
 
 `ACC_5V_LX` is a fitted two-pad switch node from `U21.5` to `L4.2`, spanning

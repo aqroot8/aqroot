@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-415 · 2026-09-02 · Demo accessory boost refloor lever bounded:** a
+deterministic four-case scratch screen proves that moving `C65` 1.0 mm east
+does not open `U21.5`; the wall is the adjacent TPS61023 land fanout, not the
+output capacitor alone. Rotating `U21` 180 degrees in place opens the launch.
+Rotating both `U21` and `L4` 180 degrees yields the shorter observed legal B.Cu
+switch route: 6.255 mm versus 13.593 mm with only U21 rotated. This is not
+promotable geometry because rotating U21 changes all six physical endpoints.
+The next bounded transaction must withdraw and replay the complete fitted
+`ACC_5V_FB`, `ACC_5V_BOOST_EN`, `BQ25185_SYS`, GND, `ACC_5V_RAW`, and
+`ACC_5V_LX` branches atomically, preserving the accepted raw-output tree and
+reset-safe enable while minimizing loop area. `screen_acc_5v_lx_refloor.py`
+reproduces the result and proves the authoritative board byte-identical at
+`37718bc7...`; no PCB/rule/placement or `hardware/beta-v2/` change was made.
+No owner decision is open.
+
 **D-414 · 2026-09-02 · Demo accessory 5 V switch-node wall characterized:**
 `ACC_5V_LX` is a fitted two-pad switch node from `U21.5` to `L4.2`, spanning
 4.020 mm. A new allowlisted power-aware screen confines it to B.Cu at the

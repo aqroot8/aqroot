@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-415 (accessory boost refloor lever bounded; no PCB change):** moving
+  `C65` 1.0 mm east does not open `U21.5`. Rotating U21 180 degrees does;
+  rotating both U21 and L4 180 degrees gives the shorter screened switch route
+  (6.255 mm versus 13.593 mm). This is characterization only because all six
+  U21 endpoint branches must be atomically replayed. The authoritative board
+  remains `37718bc7...`; `hardware/beta-v2/` is untouched. **Next:** implement
+  the complete six-branch U21 refloor/replay transaction, preserving the
+  accepted ACC_5V_RAW tree and reset-safe enable, then run the authoritative
+  refilled full-board and fitted-ledger gates. No owner decision.
 - **Demo D-414 (accessory 5 V switch-node wall; no PCB change):**
   `ACC_5V_LX` is a 4.020 mm fitted `U21.5`–`L4.2` switch node. The new bounded
   power-aware screen proves no legal B.Cu launch at either the locked 0.40 mm
