@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-434 · 2026-09-02 · Demo connector-side USB planar tree wall bounded:**
+the connector-side D+/D- transaction is distinct from the parked MCU-side USB
+wall. `screen_usb_connector_pair.py` exhaustively screens both pair orders and
+all six node orders for each three-pad tree (72 atomic cases total), enforcing
+the locked USB contract: 0.23 mm width, 0.20 mm clearance, F.Cu only, and zero
+vias. The P tree closes in all 36 cases where it is first. The N tree returns
+`NO_LEGAL_ESCAPE` in all 72 cases, including all 36 cases where it is attempted
+before any P copper. Therefore route order and tree attachment order cannot
+close the pair in the accepted geometry. No candidate copper, placement, or
+rule change is promoted; the authoritative PCB remains byte-identical at
+`2afa51d9...` and `hardware/beta-v2/` is untouched. Next, explicitly reserve
+distinct F.Cu perimeter fanouts from J3.A7, J3.B7, and U10.1 before joining the
+N tree; if that family is empty, screen a bounded local J3/U10 placement
+transaction while preserving the F.Cu-only/zero-via contract. No owner
+decision is open.
+
 **D-433 · 2026-09-02 · Demo V3V3 feedback tree promoted:** the retained
 TPS63020 feedback pads U12.3/R39.2/R40.1 are one connected island. The
 feedback-specific add-only tree uses independent 0.20 mm In2/In3 branches and

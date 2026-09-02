@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-434 (connector-side USB planar tree wall bounded):** a new
+  exhaustive coherent-pair screen tests both pair orders and all 36 attachment
+  orders for each three-land connector tree under the locked 0.23 mm width,
+  0.20 mm clearance, F.Cu-only, zero-via contract. Across 72 cases, the P tree
+  completes whenever attempted first (36/36), but the N tree returns
+  `NO_LEGAL_ESCAPE` in every case, both before and after P. No complete pair
+  exists and no copper is promoted; board `2afa51d9...` and production hardware
+  are unchanged. **Next:** explicitly enumerate F.Cu perimeter fanouts for the
+  two N connector lands and U10.1 before joining them; if none coexist, bound a
+  local USB connector/ESD placement transaction without weakening the USB
+  layer/via contract. No owner decision.
 - **Demo D-433 (V3V3 feedback tree promoted):** retained U12.3, R39.2, and
   R40.1 now form one island through separate 0.20 mm In2/In3 branches and
   three ordinary 0.60/0.30 mm vias, with one U12-side barrel shared by both

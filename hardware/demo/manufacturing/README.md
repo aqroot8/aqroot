@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Connector-side USB planar-tree screen (2026-09-02)
+
+`screen_usb_connector_pair.py` treats the reversible USB-C lands and U10 ESD
+inputs as two complete three-pad trees. It exhaustively tests both pair orders
+and every node-attachment order: 72 atomic cases at the locked 0.23 mm width,
+0.20 mm clearance, F.Cu-only, zero-via USB contract.
+
+The P tree completes in all 36 cases where it is attempted first. The N tree
+reports `NO_LEGAL_ESCAPE` in every case, including all 36 attempts made before
+P adds copper. No complete pair exists in this planar family. The authoritative
+board remains byte-identical at `2afa51d9...`; no copper, placement, rule, or
+production-hardware change was made.
+
+Next, pre-reserve distinct F.Cu perimeter fanouts for J3.A7, J3.B7, and U10.1
+before joining the N tree. If those three launches cannot coexist, bound a
+local J3/U10 placement transaction without weakening the USB layer/via
+contract. Manufacturing export remains premature and no owner decision is
+open.
+
 ## V3V3 feedback-tree promotion (2026-09-02)
 
 The retained TPS63020 feedback net is complete across U12.3, R39.2, and
