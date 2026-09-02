@@ -65,9 +65,23 @@ remains exactly 199 footprint-library, 5 inherited hole-clearance, and 1
 inherited solder-mask-bridge report, with no new attributable class. Board hash:
 `b85533a559f81ae8b49366b76ddbfcdaace3a0086c434d525d06eee0893729d4`.
 
-Next, route and independently gate the coherent three-net IR power/output
-cluster (`IR_GATE`, `IR_LED_A`, `IR_LED_K`), targeting the ledger's five open
-edges. Preserve the locked 12 ohm current limit, 22 uF local reservoir,
-low-side FET topology, and outer-layer/high-current constraints. Manufacturing
-export resumes only after all retained connections are closed. Population-flag
-synchronization and MPN coverage remain subsequent release blockers.
+IR routing characterization on 2026-09-02 corrected the earlier cluster
+assumption. The fitted-pad ledger proves that `IR_GATE` is a separate long-haul
+signal: its three pads (`R22.2`, `Q1.1`, and the safe-off pull-down `R23.1`)
+span **110.586 mm** and account for two open edges. The LED-current loop is the
+genuinely local cluster: `IR_LED_A` spans 9.282 mm with two open edges and
+`IR_LED_K` spans 5.307 mm with one. `R123` is DNP and must not be counted as a
+required routing endpoint or used to satisfy fitted connectivity.
+
+A first combined scratch topology was rejected before promotion: forcing all
+three nets through one outer/inner-layer pattern crossed accepted top-edge
+copper and did not provide a legal local current loop. The authoritative board
+remains byte-identical. Do not retry the three nets as one nominally local
+batch. Next, route and independently gate only `IR_LED_A` and `IR_LED_K`,
+targeting exactly three retained open edges with deliberate outer-layer copper;
+preserve the locked 12 ohm `R24` current limit, `R123` DNP trim option, test
+point `TP39`, and the compact `D1`-`Q1` pulsed-current loop. Then route
+`IR_GATE` as a separate low-speed long-haul task while preserving `R22` and
+the `R23` reset-safe pull-down. Manufacturing export resumes only after all
+retained connections are closed. Population-flag synchronization and MPN
+coverage remain subsequent release blockers.

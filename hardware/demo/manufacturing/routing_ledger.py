@@ -189,6 +189,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("output", nargs="?", type=Path)
     args = parser.parse_args()
+    if args.output:
+        output = args.output.resolve()
+        if output == BOARD.resolve() or output.suffix == ".kicad_pcb":
+            parser.error("output must be a JSON report path, not a KiCad PCB")
     report = generate()
     encoded = json.dumps(report, indent=2) + "\n"
     if args.output:
