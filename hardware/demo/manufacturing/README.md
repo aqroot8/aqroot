@@ -645,3 +645,26 @@ reversed endpoints as a pair. Do not retry rigid R33/R34 pivots, inner-layer
 hops, the generic independent-leg router, or delete the accepted ESD copper.
 If that planar search cannot close, park this materially unchanged USB wall and
 select another retained net from the fitted-pad ledger.
+
+The bounded whole-board F.Cu perimeter screen on 2026-09-02 closes that final
+USB tactic without changing the board. `screen_usb_mcu_perimeter.py` searches
+all 4,444,481 legal-grid cells at 0.050 mm resolution with the locked 0.23 mm
+width, 0.20 mm clearance, zero vias, and both insertion orders. Each polarity
+has eight legal resistor-side launches and only two MCU-side launches. All four
+destination-facing ranked launch combinations independently return
+`NO_FULL_BOARD_FCU_PATH` before the other polarity is inserted. Two clean runs
+are byte-identical (`sha256 2da46557b16b626cd400d4f51d2a4837198e2c0280782c238d21b7cf8efcbdf5`).
+
+The scratch full-board refill/DRC remains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports, with no
+attributable class. The authoritative PCB remains byte-identical at
+`c052390c...`; accepted USB ESD, battery, accessory-power, RGB, and XGPIO4/5
+copper is untouched. Together with the rejected inner-layer crossover and the
+bounded resistor-pivot proof, the materially unchanged MCU-side USB wall is now
+PARKED. Do not retry those tactics or weaken the USB layer/coupling contract.
+
+The next independent bounded task is a coordinated symmetric route screen for
+the local `NFC_RFO1`/`NFC_RFO2` pair (one retained open edge each, 4.263 mm and
+5.538 mm spans). Preserve the differential NFC output geometry and tuning
+network; do not promote one arm alone. The fitted ledger remains 95 open nets /
+538 retained open edges, and no owner decision is open.

@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-403 · 2026-09-02 · Demo USB F.Cu perimeter wall parked:** the final bounded
+outer-layer tactic searched the complete 72 x 148 mm board domain at 0.050 mm
+resolution, with the locked 0.23 mm USB width, 0.20 mm clearance, zero vias,
+and both N-first and P-first orders. Each first leg has eight legal resistor-side
+launches and only two MCU-side launches; all four destination-facing ranked
+launch pairs for each polarity return `NO_FULL_BOARD_FCU_PATH` across 4,444,481
+cells before the second leg is inserted. Two clean runs are byte-identical
+(`sha256 2da46557...`), real refilled schematic-parity DRC remains exactly the
+accepted 199 footprint-library, 5 hole-clearance, and 1 solder-mask-bridge
+classes, and the authoritative board remains byte-identical (`c052390c...`).
+Together with D-401/D-402, this closes inner hops, rigid resistor pivots, and
+the bounded planar circumnavigation family without weakening USB rules or
+deleting accepted ESD copper. Park this materially unchanged USB wall. Next,
+build a coordinated symmetric screen for the local `NFC_RFO1/RFO2` output pair;
+no owner decision is open.
+
 **D-402 · 2026-09-02 · Demo USB resistor-order characterization:** a bounded
 R33/R34 refloor screen pins each pad 1 to its exact accepted ESD-side copper
 anchor and enumerates all 16 orthogonal pose combinations; two clean runs are
