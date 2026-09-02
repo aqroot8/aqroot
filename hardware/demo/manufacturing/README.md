@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Community Port Accessory Detect tree promoted (2026-09-02)
+
+The Demo-required `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR` tree now connects
+`D5.6`, series resistor `R64.2`, test point `TP43.1`, and J5 contact 21 as one
+fitted copper island. All six branch orders pass the atomic add-only harness.
+The accepted route adds 20 F.Cu segments, removes no accepted copper, and adds
+no wrong-net object. Independent zone-refilled schematic-parity KiCad DRC
+remains exactly 199 footprint-library / five hole-clearance / one solder-mask-
+bridge reports. Fitted connectivity improves 59 to 58 open retained nets and
+466 to 463 open edges; ratsnest improves 495 to 492. D-269, D-186, the three
+RGB replacement nets, XGPIO4/XGPIO5, the approved Demo NC contacts, and
+production hardware remain intact. Next, freshly rank the retained accessory-
+power control/status trees, beginning with `ACC_5V_BOOST_EN`; manufacturing
+export remains premature.
+
 ## Physical power-switch enable tree promoted (2026-09-02)
 
 The retained `Net-(SW9-A)` tree now connects `U12.12`, `R43.1`, `TP13.1`,

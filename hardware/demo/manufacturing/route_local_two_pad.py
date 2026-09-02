@@ -16,6 +16,24 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "ACC_DETECT_HDR_TVS_RESISTOR": {
+        "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+        "pads": ("D5.6", "R64.2"),
+        "ignored_connected_pads": ("TP43.1", "J5.21"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "ACC_DETECT_HDR_RESISTOR_TESTPOINT": {
+        "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+        "pads": ("R64.2", "TP43.1"),
+        "ignored_connected_pads": ("D5.6", "J5.21"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "ACC_DETECT_HDR_RESISTOR_CONNECTOR": {
+        "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+        "pads": ("R64.2", "J5.21"),
+        "ignored_connected_pads": ("D5.6", "TP43.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
     "SW9_A_U12_PULLDOWN": {
         "net": "Net-(SW9-A)",
         "pads": ("U12.12", "R43.1"),

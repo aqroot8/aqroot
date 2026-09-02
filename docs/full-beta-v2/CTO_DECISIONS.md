@@ -3572,3 +3572,18 @@ copper, and `hardware/beta-v2/` remain intact. Park this unchanged inner-tree
 family. Revisit it only as part of the existing U21/L4/R99 power-core refloor
 transaction; next freshly rank an independent retained control tree. No owner
 decision is open.
+
+# D-470 · 2026-09-02 · Demo Community Port Accessory Detect tree promoted
+
+The retained `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR` tree is complete: `D5.6`,
+`R64.2`, `TP43.1`, and Demo-required J5.21 form one fitted copper island. A new
+atomic harness proves all six three-leg orders, refuses partial promotion, and
+accepts only add-only target-net copper with complete fitted connectivity and
+real refilled schematic-parity KiCad DRC. The promoted order adds 20 F.Cu
+segments, removes zero accepted copper, and leaves the DRC signature at the
+accepted 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge
+reports. Fitted connectivity improves 59→58 open nets and 466→463 open edges;
+ratsnest improves 495→492. D-269, D-186, all three RGB replacements,
+XGPIO4/XGPIO5, approved Demo NCs, and `hardware/beta-v2/` remain intact. Next
+freshly screen the independent retained accessory-power control/status trees,
+beginning with `ACC_5V_BOOST_EN`. No owner decision is open.
