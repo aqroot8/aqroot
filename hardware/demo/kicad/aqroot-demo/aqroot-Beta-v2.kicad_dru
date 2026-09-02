@@ -718,14 +718,16 @@
 # U21 uses the same TPS61023 SOT-563 as U13. Its U21.6 output requires a
 # measured 0.510 mm-long, 0.25 mm-wide neck before widening to the ACC_5V
 # 0.40 mm floor; courtyard containment keeps this exception package-local.
-# U22's 0.65 mm-pitch DDC load-switch package likewise requires a measured
-# 0.5125 mm-long, 0.25 mm-wide output neck before the ACC_5V 0.40 mm floor.
+# U20/U22's 0.65 mm-pitch DDC load-switch packages likewise require measured
+# package-local output necks before their accessory-rail width floors.  U16.8
+# uses a 0.1125 mm stepped launch wholly inside its 0.65 mm-pitch VSSOP
+# courtyard before reaching the ACC_3V3 0.35 mm floor.
 # =====================================================================
 
 
 (rule "Pad-escape necking - width, fine-pitch power packages"
 	(constraint track_width (min 0.20mm))
-	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U21') || A.intersectsCourtyard('U22') || A.intersectsCourtyard('U9')"))
+	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U16') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U20') || A.intersectsCourtyard('U21') || A.intersectsCourtyard('U22') || A.intersectsCourtyard('U9')"))
 
 (rule "Pad-escape necking - clearance, fine-pitch power packages"
 	(constraint clearance (min 0.20mm))

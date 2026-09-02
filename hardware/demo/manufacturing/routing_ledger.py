@@ -109,9 +109,9 @@ def sheet(net: str) -> str:
     return match.group(1) if match else ("GLOBAL" if net else "NO_NET")
 
 
-def generate() -> dict:
+def generate(board_path: Path = BOARD) -> dict:
     fitted, dnp = schematic_population()
-    board = pcbnew.LoadBoard(str(BOARD.resolve()))
+    board = pcbnew.LoadBoard(str(board_path.resolve()))
     board.BuildConnectivity()
     connectivity = board.GetConnectivity()
 
@@ -159,8 +159,8 @@ def generate() -> dict:
     open_nets = [row for row in nets if row["open_edges"]]
     return {
         "schema": 1,
-        "board": str(BOARD.relative_to(ROOT)),
-        "board_sha256": sha256(BOARD),
+        "board": str(board_path),
+        "board_sha256": sha256(board_path),
         "population": {
             "schematic_fitted_references": len(fitted),
             "schematic_dnp_references": sorted(dnp),
@@ -188,12 +188,13 @@ def generate() -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("output", nargs="?", type=Path)
+    parser.add_argument("--board", type=Path, default=BOARD)
     args = parser.parse_args()
     if args.output:
         output = args.output.resolve()
         if output == BOARD.resolve() or output.suffix == ".kicad_pcb":
             parser.error("output must be a JSON report path, not a KiCad PCB")
-    report = generate()
+    report = generate(args.board)
     encoded = json.dumps(report, indent=2) + "\n"
     if args.output:
         args.output.write_text(encoded, encoding="utf-8")

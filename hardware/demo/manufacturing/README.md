@@ -336,5 +336,15 @@ fixed via and do not withdraw the accepted ILIM, XGPIO4, SDA, or 5 V copper.
 The authoritative PCB remains byte-identical at `209987cc...`; no owner
 decision is open.
 
+The recovered landing-enumeration candidate after `612b29a` closes the complete
+15-pad tree and passes the authoritative refilled KiCad gate. It is promoted as
+68 add-only tracks and eleven 0.90/0.40 mm through-vias, all on `ACC_3V3_SW`;
+there are zero missing accepted copper objects, zero placement changes, and no
+new DRC class. Both Community Port contacts and Qwiic are in the same connected
+component as U20.5. The route and its bounded U20/U16 package-neck rules are
+pinned in `AQROOT_DEMO_ACC_3V3_SW_ROUTE.md`; the authoritative board hash is
+`fd346ae6...`. The prior fixed-landing rejection remains useful negative
+evidence, but no longer describes the live routing state.
+
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
