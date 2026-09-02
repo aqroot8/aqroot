@@ -9,6 +9,25 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-405 · 2026-09-02 · Demo NFC RFO pair promoted:** the U9 package-launch
+wall is closed by using the clearance distinction already encoded in the
+authoritative DRU: both 0.30 mm-wide RFO arms use 0.20 mm clearance to package
+pads and retain the `NFC_RF` 0.25 mm routed-copper clearance.  RFO2-first then
+RFO1 closes both arms atomically on B.Cu with zero vias.  Both U9 launches are
+identical 0.925 mm segments and both inductor launches are identical 1.105 mm
+segments; total routed lengths are 8.674 mm (RFO2) and 6.074 mm (RFO1), the
+2.600 mm difference following the asymmetric locked placement rather than an
+unequal rule treatment.  The full refilled schematic-parity KiCad gate retains
+exactly 199 footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge reports with no attributable class.  Each net is one copper
+island, retained opens fall 95→93 and edges 538→536, the PCB delta is exactly
+12 add-only 0.30 mm B.Cu segments on the two allowlisted nets, and accepted
+battery/accessory/RGB/XGPIO copper is unchanged.  Authoritative PCB SHA-256 is
+`ed13ce4b...`; `hardware/beta-v2/` is untouched.  Next, route the coherent
+local NFC receive pair `NFC_RXA/NFC_RXB` under its existing class constraints,
+then continue through the crystal pair; do not reopen the parked USB wall. No
+owner decision is open.
+
 **D-404 · 2026-09-02 · Demo NFC RFO package-launch wall characterized:** the
 atomic `NFC_RFO1/RFO2` screen first exposed route-order contention: routing
 RFO1 first boxes U9.15, while RFO2-first closes both geometric paths at 0.30 mm

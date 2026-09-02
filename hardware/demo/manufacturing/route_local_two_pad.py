@@ -113,6 +113,11 @@ ROUTES = {
         "pads": ("U9.13", "L5.1"),
         "layer": "B",
         "width": 300_000,
+        # U9 is a 0.50 mm-pitch UFQFPN.  The board rules intentionally apply
+        # the 0.25 mm routed-clearance floor only when neither item is a pad;
+        # use the ordinary 0.20 mm package-land clearance until the trace has
+        # cleared the package, then retain 0.25 mm against routed copper.
+        "pad_clearance": 200_000,
         "clearance": 250_000,
     },
     "NFC_RFO2": {
@@ -120,6 +125,7 @@ ROUTES = {
         "pads": ("U9.15", "L6.1"),
         "layer": "B",
         "width": 300_000,
+        "pad_clearance": 200_000,
         "clearance": 250_000,
     },
 }
@@ -140,7 +146,8 @@ def route(path: Path, name: str):
     a, b = (pads[ref] for ref in rule["pads"])
     result = qr.connect_role(
         board, rule["net"], a, b, rule["layer"], rule["width"],
-        rule["clearance"], rule["clearance"], G=25_000,
+        rule.get("pad_clearance", rule["clearance"]), rule["clearance"],
+        G=25_000,
     )
     board.save(path)
     print(json.dumps({"name": name, "rule": rule, "result": result}, sort_keys=True))

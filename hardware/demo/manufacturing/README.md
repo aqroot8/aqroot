@@ -693,3 +693,30 @@ B.Cu-only routing, zero vias, and atomic pair promotion; review arm geometry and
 the complete NFC tuning path before accepting it. Do not retry the disproven
 global 0.20 mm-clearance tactic or promote only one arm. The ledger remains 95
 open retained nets / 538 retained open edges, and no owner decision is open.
+
+The follow-up closes and promotes the NFC output pair atomically.  The existing
+DRU deliberately applies the 0.25 mm `NFC_RF` routed-clearance rule only when
+neither item is a pad, so the routing framework now models that distinction:
+0.20 mm to package lands and 0.25 mm to routed copper, without changing the DRU
+or reducing the 0.30 mm trace width.  RFO2-first then RFO1 closes on B.Cu with
+zero vias.  Both U9 launches are 0.925 mm and both inductor launches are
+1.105 mm; total copper is 8.674 mm for RFO2 and 6.074 mm for RFO1.  The 2.600 mm
+arm difference is imposed by the existing asymmetric placement, while the
+package treatment itself is identical.
+
+Two clean scratch runs reproduce the same routes and geometry digest
+`026652a473125bde...`.  The independent refilled schematic-parity KiCad DRC
+contains only 199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge report.  Both RFO nets are one copper island;
+retained opens fall 95→93, retained edges 538→536, and ratsnest 567→565.  The
+board delta is exactly 12 add-only 0.30 mm B.Cu segments on the two RFO nets,
+with no via, footprint, zone, placement, net-assignment, or accepted-copper
+removal.  Battery/accessory-power, all three RGB replacements, XGPIO4/XGPIO5,
+and `ACC_5V_SW_EN` remain connected; `hardware/beta-v2/` is untouched.  The
+authoritative PCB hash is `ed13ce4b547085cd46b7ef01c5965e0d5fa3869581459d0965c4e0ec756efb79`.
+
+Next, take the coherent local `NFC_RXA`/`NFC_RXB` receive pair through the same
+scratch-first/full-board gate discipline, then the `NFC_XIN`/`NFC_XOUT` crystal
+pair.  Preserve the full tuning path and do not revisit the parked MCU USB wall
+without a material geometry change.  Manufacturing export remains premature
+at 93 retained open nets / 536 retained open edges; no owner decision is open.
