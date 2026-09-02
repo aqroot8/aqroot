@@ -409,3 +409,28 @@ the already-proven four-component inner-layer bridge be replayed. Do not retry
 the fixed north launches, generic radial escape, or a via exactly at the ray
 endpoint. Blind/microvias remain excluded absent an owner manufacturing
 decision; no owner decision is currently open.
+
+The recovered dogleg-landing sweep was completed and replayed cleanly on
+2026-09-02. It retains every legal directional neck/trunk anchor from the
+previous screen, then searches 0.25--2.00 mm full-width B.Cu doglegs at
+5-degree and 0.050 mm resolution for an ordinary 0.90/0.40 mm through-via
+site. Both package walls now have solutions: `U11.1` exposes 302 legal anchors
+and the bounded result cap of 48 candidate landings; `U21.3` exposes 526
+anchors and 48 candidate landings. The first ranked results are respectively a
+0.325 mm, 55-degree neck plus 0.250 mm trunk and 0.350 mm dogleg to
+`(66.9773,79.3185)`, and a 0.875 mm, 180-degree neck plus 0.250 mm trunk and
+0.250 mm dogleg to `(56.0480,39.6349)`.
+
+Two clean runs produced byte-identical JSON (`104fe4e3...`). The authoritative
+PCB remains byte-identical at `fd346ae6...`; no accepted copper, placement, or
+rule changed. This closes the ordinary-via landing search at both package
+walls but is still characterization, not routed copper: the geometric screen
+does not replace real KiCad DRC or connectivity validation.
+
+Next, instantiate the shortest ranked landing at each wall in scratch, replay
+the already-proven four-component `BQ25185_SYS` inner-layer bridge, and promote
+only a complete 13-pad tree that passes the authoritative refilled full-board
+KiCad DRC, fitted-pad connectivity, D-269, and accepted-copper preservation
+gates. If either first-ranked landing fails real DRC, advance through the
+persisted ranked candidates instead of reopening the closed radial searches.
+No owner decision is open.
