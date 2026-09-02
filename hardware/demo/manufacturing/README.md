@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC VDD_RF package-land wall (2026-09-02)
+
+The adjacent four-land ST25R3916 `NFC_VDD_RF` tree is not promotable with the
+proven local planar framework.  A lower-branch-first atomic screen fails before
+emitting copper because U9.14 has no legal 0.20 mm B.Cu escape; stable blockers
+are U9.15, U9.13, exposed pad U9.33, and U9.10.  Upper/cap-spine generic searches
+also exceed the bounded local-search window, so branch order cannot repair the
+lower-land precondition.  Real refilled schematic-parity DRC remains 199/5/1,
+the target remains three open edges, and board `97d60cde...` is unchanged.
+Park the unchanged planar family.  Next, freshly rank an independent retained
+local cluster; revisit VDD_RF only with an explicit package-fanout or bounded
+local U9/passive placement transaction.
+
 ## NFC VDD_AM decoupling-tree promotion (2026-09-02)
 
 The retained ST25R3916 `NFC_VDD_AM` rail now connects U9.11, C51.1, and

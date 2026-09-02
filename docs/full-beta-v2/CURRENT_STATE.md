@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-450 (NFC VDD_RF planar family bounded):** the retained four-land
+  U9.9/U9.14/C49.1/C50.1 rail remains open.  A lower-branch-first atomic screen
+  emits no copper because U9.14 has no legal 0.20 mm B.Cu escape; stable
+  blockers are U9.15, U9.13, U9.33, and U9.10.  The generic upper and capacitor-
+  spine searches also exceed the bounded local-search window, so branch order
+  cannot cure the lower-land precondition.  Real refilled schematic-parity DRC
+  remains 199/5/1, target connectivity stays at three open edges, board
+  `97d60cde...` is byte-identical, and production hardware is untouched.  Park
+  the unchanged planar family. **Next:** freshly rank an independent retained
+  local cluster; revisit VDD_RF only with an explicit package fanout or bounded
+  local U9/passive placement transaction. No owner decision.
 - **Demo D-449 (NFC VDD_AM tree promoted):** the retained ST25R3916 analog-
   modulator rail now connects U9.11, C51.1, and C52.1 as one island through
   18 add-only 0.30 mm B.Cu segments (60.878940 mm), with no vias, placement

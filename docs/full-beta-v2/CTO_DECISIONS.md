@@ -3129,3 +3129,22 @@ XGPIO4/XGPIO5, approved Demo NCs, accepted NFC signal/tuning copper, and
 `hardware/beta-v2/` remain intact. Next, screen the adjacent retained
 `NFC_VDD_RF` four-land supply tree as one coherent local transaction. No owner
 decision is open.
+
+# D-450 · 2026-09-02 · Demo NFC VDD_RF planar family bounded
+
+The retained four-land `NFC_VDD_RF` tree remains open.  A deterministic
+lower-branch-first atomic screen fails before emitting copper because U9.14
+has no legal 0.20 mm B.Cu escape; the exact stable blockers are U9.15 (81
+samples), U9.13 (48), exposed pad U9.33 (22), and U9.10 (15).  The generic
+upper and C49.1-to-C50.1 spine searches also exceed the bounded local-search
+window, so changing branch order cannot remove the lower-land precondition.
+The reusable harness records search timeouts instead of hanging and rejects
+partial trees.  Real refilled schematic-parity DRC remains at the accepted
+199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge signature;
+the target remains three open edges, zero copper is added or removed, and the
+authoritative board remains byte-identical at `97d60cde...`.  D-269, D-186,
+all three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted NFC
+copper, and `hardware/beta-v2/` remain intact.  Park this unchanged planar
+family.  Next freshly rank an independent retained local cluster; revisit
+VDD_RF only through an explicit package-fanout or bounded local U9/passive
+placement transaction.  No owner decision is open.
