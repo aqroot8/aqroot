@@ -123,12 +123,34 @@ copper or a fitted pad. Blind/microvias and via-in-pad remain excluded: neither
 has an approved manufacturing contract, and via-in-pad at the 0.675 x 0.350 mm
 U21 land would compromise assembly.
 
-Next, perform a bounded ordered local obstacle-resolution study around U21/U22:
-first test whether a minimal TP10 placement adjustment exposes a compliant U21
-south escape, then independently determine the minimum connectivity-preserving
-refloor of the nearby `ACC_POWER_FAULT_N` branch needed to expose U22.2. Do not
-touch the accepted `ACC_5V_SW_EN`, `XGPIO4`, or `XGPIO5` copper, and do not
-promote any placement/refloor candidate unless the complete `ACC_5V_RAW`
-six-pad cluster closes under the authoritative full-board gate. Manufacturing
-export resumes only after all retained connections are closed; population-flag
-synchronization and MPN coverage remain subsequent release blockers.
+The ordered local-obstacle study on 2026-09-02 disproved both initially proposed
+minimal levers without changing the authoritative board. Moving `TP10` alone
+cannot expose U21.6: a 0.40 mm B.Cu route from U21.6 toward C65.1 still crosses
+the accepted `ACC_POWER_FAULT_N` segment from (59.25, 35.15) to
+(59.20, 42.20), independently of TP10's position. The route also confirms that
+U21's 0.15 mm package pad-to-pad spacing needs the existing local rule; it is
+not permission to relax the 0.25 mm routed-clearance contract elsewhere.
+
+A second scratch candidate removed only that crossing fault segment and the
+long U22-side fault segment from (52.35, 56.80) to (52.90, 39.85), preserving
+their endpoints with 0.60/0.30 mm through-vias and straight In2 replacements.
+Refilled KiCad DRC rejected the candidate with five new clearance violations,
+three new hole-clearance violations, and an `ACC_POWER_FAULT_N`/`XGPIO4` short.
+The exact endpoint conflicts are TP10 at (59.20, 42.20), R50 at
+(52.35, 56.80), TP9 at (52.90, 39.85), L4 at (59.25, 35.15), and the retained
+`XGPIO4` In2 haul at the U21-side via. Thus a segment-for-segment layer lift is
+not a legal connectivity-preserving refloor. `ACC_POWER_FAULT_N` remains fully
+connected on the authoritative board; the retained ledger remains 572 open
+edges / 601 raw ratsnest, and board hash remains
+`b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+
+Next, test one bounded local placement transaction: refloor only the optional
+test-point/passive obstacles (`TP9`, `TP10`, and, only if required, `R50`) far
+enough to create offset legal via landings for those same two fault branches;
+do not move U21, U22, L4, C65/C66, or any connector. Reject it if it cannot
+preserve `NFC_5V_EN`, `NFC_5V_PA_PENDING`, and `EXT_SCL_BUF` routing obligations
+while closing the complete six-pad `ACC_5V_RAW` cluster. Never touch accepted
+`ACC_5V_SW_EN`, `XGPIO4`, or `XGPIO5` copper, and promote only after the
+authoritative full-board gate. Manufacturing export resumes only after all
+retained connections are closed; population-flag synchronization and MPN
+coverage remain subsequent release blockers.
