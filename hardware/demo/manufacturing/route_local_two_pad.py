@@ -16,6 +16,28 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "U12_PS_SYNC_PULLDOWN_TP": {
+        "net": "Net-(U12-PS_SYNC)",
+        "pads": ("R42.2", "TP14.1"),
+        "ignored_connected_pads": ("U12.13",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "U12_PS_SYNC_PULLDOWN_IC": {
+        "net": "Net-(U12-PS_SYNC)",
+        "pads": ("R42.2", "U12.13"),
+        "ignored_connected_pads": ("TP14.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "U12_PS_SYNC_PULLDOWN_IC_INNER": {
+        "net": "Net-(U12-PS_SYNC)",
+        "pads": ("R42.2", "U12.13"),
+        "ignored_connected_pads": ("TP14.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R42.2", "b": "U12.13", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "U12_PG_PULLUP_TP": {
         "net": "Net-(U12-PG)",
         "pads": ("R41.2", "TP8.1"),

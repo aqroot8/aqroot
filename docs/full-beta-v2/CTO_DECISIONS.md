@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-475 · 2026-09-02 · Demo TPS63020 PS/SYNC tree routed and promoted:** the
+fitted `Net-(U12-PS_SYNC)` endpoints U12.13, R42.2, and TP14.1 now form one
+copper island. The recovered atomic harness bounds both branch orders and
+ordinary-via In2/In3 alternatives, rejects partial candidates, and now refuses
+stale connected targets. The accepted route adds 33 0.20 mm B.Cu segments,
+104.815272 mm total, with no vias, accepted-copper removal, or wrong-net
+addition. Independent real zone-refilled schematic-parity KiCad DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports. Fitted connectivity improves 62->61 open retained nets and 473->471
+edges; ratsnest 502->500. Board `135f3652...`; D-269/D-186, all RGB
+replacements, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Next freshly rank another independent
+retained tree outside documented unchanged walls. No owner decision is open.
+
 **D-474 · 2026-09-02 · Demo display-backlight control strap tree bounded:**
 the fresh post-D-473 retained-net ranking selected the four-land
 `DISP_BL_CTL_STRAP` tree U1.16/R108.1/R109.1/TP2.1. A reusable atomic harness

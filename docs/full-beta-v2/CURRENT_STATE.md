@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-475 (TPS63020 PS/SYNC tree promoted):** `U12.13`, `R42.2`, and
+  `TP14.1` now form one `Net-(U12-PS_SYNC)` island through 33 add-only 0.20 mm
+  B.Cu segments (104.815272 mm) and no vias. The recovered atomic harness
+  bounds both branch orders and inner-haul alternatives, refuses partial
+  candidates, and now preflights stale connected targets. Accepted copper is
+  intact and independent real refilled parity DRC remains 199/5/1. Fitted
+  connectivity improves 62->61 open retained nets and 473->471 edges;
+  ratsnest 502->500. Board `135f3652...`; all Demo invariants and production
+  hardware remain intact. **Next:** freshly rank another independent retained
+  tree outside documented unchanged walls. No owner decision.
 - **Demo D-474 (display-backlight control strap bounded):** all six atomic
   orders of U1.16/R108.1/R109.1/TP2.1 were screened. The long U1-to-R108 leg
   is legal through the ordinary-via inner-haul framework, but both short legs

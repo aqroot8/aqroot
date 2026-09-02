@@ -2,6 +2,24 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## TPS63020 PS/SYNC pull-down tree promoted (2026-09-02)
+
+The fitted `Net-(U12-PS_SYNC)` configuration tree now connects `U12.13`,
+pull-down `R42.2`, and test point `TP14.1` as one island. The recovered atomic
+harness bounds both branch orders plus ordinary-via In2/In3 long-haul
+alternatives and refuses partial or stale-target promotion. The accepted route
+is add-only: 33 segments / 104.815272 mm of 0.20 mm B.Cu, with no vias and no
+accepted-copper removal.
+
+Independent zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 62 to 61 open retained nets and 473 to 471 open
+edges; ratsnest improves 502 to 500. Board SHA-256 is `135f3652...`. D-269,
+D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, and
+production hardware remain intact. Next, freshly rank another independent
+retained tree outside documented unchanged walls; manufacturing export remains
+premature.
+
 ## Display-backlight control strap wall (2026-09-02)
 
 `route_disp_bl_strap_tree_scratch.py` atomically screens all six orders of the
