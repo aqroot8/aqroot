@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-492 (SX1262 RX-enable staged family bounded):** all 32 In2/In3 and
+  four-by-four endpoint-site cases ran for U3.19-to-R74.1. Twenty reserve both
+  ordinary vias, but every one rejects all 563 horizontal, vertical, and
+  two-spine corridors; 12 fail endpoint coexistence. The proven radio leg is
+  not emitted and no partial candidate exists. Board `be285abf...` remains at
+  57 open retained nets / 461 edges with real refilled parity DRC 199/5/1.
+  Park this unchanged haul family. **Next:** freshly rank an independent
+  retained control/interface tree; revisit only after changed geometry or a
+  coherent U3/radio refloor. No owner decision.
 - **Demo D-491 (SX1262 RX-enable generic family bounded):** exact atomic
   contracts cover fitted `/SX1262_RXEN` lands U3.19, R74.1, and U8.6 in both
   branch orders. Correct live-board inspection establishes all three lands are

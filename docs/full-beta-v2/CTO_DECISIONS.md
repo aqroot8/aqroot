@@ -3845,3 +3845,21 @@ nets / 461 edges. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, Demo NC
 contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
 intact. Next broaden only U3.19-to-R74.1 with staged/perimeter corridors, then
 replay the proven radio leg atomically. No owner decision is open.
+
+# D-492 · 2026-09-02 · Demo SX1262 RX-enable staged family bounded
+
+The D-491 successor now screens four ordinary via sites at each end of the
+U3.19-to-R74.1 leg on both In2 and In3, followed by 563 explicit horizontal,
+vertical, and two-spine corridors. All 32 layer/site cases ran. Twenty reserve
+both endpoints but every staged join is blocked by accepted geometry; the
+remaining 12 fail endpoint coexistence. The proven R74.1-to-U8.6 radio leg is
+therefore never emitted, and atomic gating leaves no partial candidate.
+
+The authoritative PCB remains byte-identical at `be285abf...`, 57 open
+retained nets / 461 edges. Independent real zone-refilled schematic-parity DRC
+remains exactly 199 footprint-library / five hole-clearance / one solder-mask-
+bridge reports. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Park this unchanged RX-enable haul family. Next freshly rank an
+independent retained control/interface tree; revisit RX-enable only after
+changed surrounding geometry or a coherent U3/radio refloor. No owner decision.

@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 RX-enable staged family bounded (2026-09-02)
+
+The D-491 successor enumerates four ordinary endpoint sites on both inner
+layers and 563 explicit horizontal, vertical, and two-spine corridors for
+U3.19-to-R74.1. Twenty of 32 cases reserve both endpoints, but no corridor
+joins; 12 fail endpoint coexistence. Atomic gating emits neither the partial
+haul nor the otherwise-proven radio leg. Board `be285abf...` remains at 57
+open retained nets / 461 edges and real refilled parity DRC remains 199/5/1.
+Park this unchanged family and freshly rank an independent retained tree.
+
 ## SX1262 RX-enable generic family bounded (2026-09-02)
 
 `route_sx1262_rxen_tree_scratch.py` atomically screens both branch orders for
