@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-459 (U9 supply-refloor pose/impact screen):** 36 bounded U9 poses
+  (0/90/180/270 degrees over a +/-0.5 mm, 0.5 mm grid) expose five poses where
+  both `NFC_VDD_D` and `NFC_VDD_A` have legal 0.30 mm B.Cu launches. The
+  minimum-change winner is U9 +0.5 mm east at 0 degrees; rotation is unnecessary.
+  Its atomic replay boundary is exactly eight accepted U9-attached segments:
+  XIN/XOUT (one each), RFO1/RFO2 (one each), AGDC (two), and VDD_AM (two).
+  Unreplayed real parity DRC has 15 attributable reports, as expected for a
+  characterization pose, so neither placement nor copper is promoted. Board
+  `360b8261...`, connectivity 67/484, and production hardware remain unchanged.
+  **Next:** atomically translate U9 +0.5 mm east, withdraw/replay exactly those
+  six accepted nets, place/route both VDD_D/VDD_A trees, and require the full
+  accepted-copper/connectivity/refilled-DRC gate before promotion. No owner decision.
 - **Demo D-458 (NFC VDD_D/VDD_A local pair bounded):** all eight atomic
   net/branch orders for the adjacent three-land `NFC_VDD_D` and `NFC_VDD_A`
   decoupling trees fail before emitting copper. U9.3 has no legal 0.30 mm B.Cu

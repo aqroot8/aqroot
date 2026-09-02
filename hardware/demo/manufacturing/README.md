@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC U9 supply-refloor pose/impact screen (2026-09-02)
+
+`screen_nfc_u9_supply_refloor.py` tests 36 U9 poses and identifies five that
+unlock legal 0.30 mm B.Cu launches for both VDD_D and VDD_A. The lowest-impact
+pose translates U9 0.5 mm east without rotation. Its exact accepted-copper
+replay boundary is eight pad-attached segments across XIN, XOUT, RFO1, RFO2,
+AGDC, and VDD_AM. The deliberately unreplayed pose has 15 attributable real
+parity-DRC reports, so no placement or copper is promoted. Board `360b8261...`
+and fitted connectivity 67/484 remain unchanged. Next, implement the complete
+atomic east-translation/replay plus both supply trees and accept it only if the
+full-board preservation, connectivity, and refilled-DRC gate passes.
+
 ## NFC VDD_D/VDD_A package-land wall (2026-09-02)
 
 `route_nfc_vdd_da_pair_scratch.py` atomically screens both adjacent ST25R3916

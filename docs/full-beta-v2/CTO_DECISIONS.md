@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-459 · 2026-09-02 · Demo U9 supply-refloor pose and replay boundary:** a
+deterministic 36-pose screen covers U9 rotations 0/90/180/270 degrees and a
++/-0.5 mm translation grid. Five poses expose legal 0.30 mm B.Cu launches for
+both `NFC_VDD_D` and `NFC_VDD_A`; the minimum-change pose is U9 translated
+0.5 mm east with orientation unchanged. It avoids a package rotation and makes
+the D-458 wall actionable. Moving U9 invalidates exactly eight accepted
+pad-attached segments on six nets: XIN and XOUT one each, RFO1 and RFO2 one
+each, AGDC two, and VDD_AM two. Real refilled schematic-parity DRC on the
+unreplayed best pose reports 15 attributable items (three clearance, one
+courtyard overlap, nine shorts, and two dangling tracks), so this is strictly
+characterization and no incomplete placement is promoted. Board `360b8261...`,
+fitted connectivity 67/484, D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and
+`hardware/beta-v2/` remain unchanged. Next, implement one atomic +0.5 mm-east
+U9 transaction that withdraws/replays exactly the six impacted accepted nets
+and completes both supply trees through the full-board gate. No owner decision.
+
 **D-458 · 2026-09-02 · Demo NFC VDD_D/VDD_A local pair bounded:** the fresh
 fitted ledger selected the adjacent 10.504 mm / 10.696 mm ST25R3916 digital and
 analog decoupling trees as one coherent transaction. A reusable atomic harness
