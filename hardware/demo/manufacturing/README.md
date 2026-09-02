@@ -255,5 +255,25 @@ Next, run a bounded C67 placement/landing screen that keeps the capacitor close
 to U22 output and preserves its return loop, then replay this complete tree.
 If no legal C67 landing exists within that electrical placement envelope, test
 a local TP29-owned via branch; do not retry the disproven direct U22.5 via.
+
+The bounded C67 screen on 2026-09-02 corrected a harness-level face assumption:
+`C67`, `TP29`, and `TP42` are F.Cu parts, while `U22` and `C38` are on B.Cu.
+The original all-B.Cu reservation therefore described the present placement,
+not congestion.  The face-aware harness flips C67 to the U22 face and screens
+six 0.5 mm-grid placements within 4.4 mm of U22.5.  Every placement reserves all
+four SMD exits and completes the six-join fitted-pad tree with ordinary
+0.90/0.40 mm power vias; the wall is no longer via capacity or inner-layer
+connectivity.
+
+None of the six is promotable as drawn.  Real zone-refilled KiCad DRC attributes
+one expected width report to the 0.5125 mm U22.5 package neck in every case; the
+Demo DRU package-neck exception currently names U13/U21 but not U22.  Each
+straight U22-to-C67 trunk also intersects either C67.2/GND or the retained
+`ACC_DETECT_N` B.Cu haul.  This closes blind C67 translation and proves the next
+bounded alternative: add U22 to the same tightly courtyard-scoped 0.25 mm neck
+contract, then route the B.Cu launch around C67.2 and `ACC_DETECT_N` before
+replaying the now-proven face-aware tree.  Do not move or withdraw the retained
+detect branch.  The authoritative board remains byte-identical at `ab456948...`.
+
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.

@@ -20,6 +20,22 @@ import qrouter as qr  # noqa: E402
 NET = "/ACC_5V_SW"
 SMD_ORDER = ("C67.1", "TP29.1", "TP42.1", "C38.1")
 PTH_ORDER = ("J5.1", "J5.24")
+C67_CANDIDATES_MM = (
+    (58.775, 44.350),
+    (59.275, 44.350),
+    (59.775, 44.350),
+    (58.775, 44.850),
+    (59.275, 44.850),
+    (59.775, 44.850),
+)
+
+
+def exclusive_face(pad):
+    """Return the copper face of an SMD pad, rejecting ambiguous geometry."""
+    faces = [face for face in ("F", "B") if pad[face]]
+    if len(faces) != 1:
+        raise ValueError(f"{pad['ref']} is not an exclusive-face SMD pad: {faces}")
+    return faces[0]
 
 
 def route_scratch(path: Path):
@@ -30,9 +46,10 @@ def route_scratch(path: Path):
                 round(sum(pads[r]["y"] for r in SMD_ORDER + PTH_ORDER) / 6))
     reservations = []
     for ref in SMD_ORDER:
+        near = exclusive_face(pads[ref])
         result = qr.reserve_escape(
             routed, NET, pads[ref], 400_000, 250_000, 250_000,
-            near="B", far="I3", G=25_000, fine=25_000,
+            near=near, far="I3", G=25_000, fine=25_000,
             via_dia=900_000, via_drill=400_000, target=centroid,
             site_separation=450_000,
         )
@@ -48,8 +65,6 @@ def route_scratch(path: Path):
     routed.track(NET, "B", pads["U22.5"]["x"], pads["U22.5"]["y"],
                  56_650_000, 43_000_000, 250_000)
     routed.track(NET, "B", 56_650_000, 43_000_000,
-                 58_000_000, 44_350_000, 400_000)
-    routed.track(NET, "B", 58_000_000, 44_350_000,
                  pads["C67.1"]["x"], pads["C67.1"]["y"], 400_000)
 
     anchors = [(r["pad"], tuple(r["via"])) for r in reservations]
@@ -97,38 +112,53 @@ def build_candidate(path: Path):
     subprocess.run([sys.executable, __file__, "--route", str(path)], check=True)
 
 
+def place_c67(path: Path, x_mm: float, y_mm: float):
+    board = pcbnew.LoadBoard(str(path))
+    footprint = board.FindFootprintByReference("C67")
+    if not footprint.IsFlipped():
+        footprint.Flip(footprint.GetPosition(), False)
+    footprint.SetPosition(pcbnew.VECTOR2I_MM(x_mm, y_mm))
+    pcbnew.SaveBoard(str(path), board)
+
+
 def main():
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
+    candidates = []
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-acc-5v-sw-") as temporary:
-        scratch = Path(temporary) / BOARD.name
-        scratch.write_bytes(BOARD.read_bytes())
-        scratch.with_suffix(".kicad_dru").write_bytes(BOARD.with_suffix(".kicad_dru").read_bytes())
-        scratch.with_suffix(".kicad_pro").write_bytes(BOARD.with_suffix(".kicad_pro").read_bytes())
-        child = subprocess.run([sys.executable, __file__, "--route", str(scratch)],
-                               check=True, text=True, capture_output=True)
-        route = json.loads(child.stdout)
-        drc = Path(temporary) / "drc.json"
-        completed = subprocess.run([
-            "kicad-cli", "pcb", "drc", "--refill-zones", "--save-board",
-            "--format", "json", "--units", "mm", "--severity-all",
-            "--schematic-parity", "-o", str(drc), str(scratch),
-        ], text=True, capture_output=True)
-        violations = json.loads(drc.read_text()).get("violations", []) if drc.exists() else []
-        types = {}
-        for row in violations:
-            types[row.get("type", "unknown")] = types.get(row.get("type", "unknown"), 0) + 1
-        attributable = [row for row in violations if row.get("type") not in {
-            "lib_footprint_issues", "hole_clearance", "solder_mask_bridge"
-        }]
-    complete = (len(route["reservations"]) == 4 and len(route["joins"]) == 5
-                and all(r.get("ok") for r in route["reservations"] + route["joins"]))
+        for index, position in enumerate(C67_CANDIDATES_MM):
+            scratch = Path(temporary) / f"candidate-{index}" / BOARD.name
+            scratch.parent.mkdir()
+            scratch.write_bytes(BOARD.read_bytes())
+            scratch.with_suffix(".kicad_dru").write_bytes(BOARD.with_suffix(".kicad_dru").read_bytes())
+            scratch.with_suffix(".kicad_pro").write_bytes(BOARD.with_suffix(".kicad_pro").read_bytes())
+            place_c67(scratch, *position)
+            child = subprocess.run([sys.executable, __file__, "--route", str(scratch)],
+                                   check=True, text=True, capture_output=True)
+            route = json.loads(child.stdout)
+            drc = scratch.parent / "drc.json"
+            completed = subprocess.run([
+                "kicad-cli", "pcb", "drc", "--refill-zones", "--save-board",
+                "--format", "json", "--units", "mm", "--severity-all",
+                "--schematic-parity", "-o", str(drc), str(scratch),
+            ], text=True, capture_output=True)
+            violations = json.loads(drc.read_text()).get("violations", []) if drc.exists() else []
+            types = {}
+            for row in violations:
+                types[row.get("type", "unknown")] = types.get(row.get("type", "unknown"), 0) + 1
+            attributable = [row for row in violations if row.get("type") not in {
+                "lib_footprint_issues", "hole_clearance", "solder_mask_bridge"
+            }]
+            complete = (len(route["reservations"]) == 4 and len(route["joins"]) == 5
+                        and all(r.get("ok") for r in route["reservations"] + route["joins"]))
+            candidates.append({"c67_position_mm": position, "route": route,
+                               "complete_route": complete, "drc_exit": completed.returncode,
+                               "drc_types": types, "attributable_drc": attributable,
+                               "promotion_candidate": complete and not attributable})
     report = {
         "schema": 1, "authoritative_board_sha256": before,
         "authoritative_unchanged": before == hashlib.sha256(BOARD.read_bytes()).hexdigest(),
-        "route": route, "complete_route": complete, "drc_exit": completed.returncode,
-        "drc_types": types, "attributable_drc": attributable,
-        "drc_stderr": completed.stderr.strip(),
-        "promotion_candidate": complete and not attributable,
+        "candidates": candidates,
+        "promotion_candidate": any(c["promotion_candidate"] for c in candidates),
     }
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0 if report["authoritative_unchanged"] else 2
