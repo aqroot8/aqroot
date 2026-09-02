@@ -120,6 +120,38 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "EXT_SDA_BUF_PULLUP": {
+        "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+        "pads": ("U16.7", "R49.2"),
+        "ignored_connected_pads": ("R48.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "EXT_SDA_BUF_SERIES": {
+        "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+        "pads": ("U16.7", "R48.1"),
+        "ignored_connected_pads": ("R49.2",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U16.7", "b": "R48.1", "a_near": "B", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "EXT_SCL_BUF_PULLUP": {
+        "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "pads": ("U16.2", "R50.2"),
+        "ignored_connected_pads": ("R47.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "EXT_SCL_BUF_SERIES": {
+        "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "pads": ("U16.2", "R47.1"),
+        "ignored_connected_pads": ("R50.2",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U16.2", "b": "R47.1", "a_near": "B", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "NFC_IRQ": {
         "net": "/NFC_IRQ",
         "pads": ("U1.11", "U9.27"),

@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## External-I2C buffer local-tree wall (2026-09-02)
+
+`route_ext_i2c_buffer_pair_scratch.py` atomically screens both orders of the
+four local `EXT_SDA_BUF`/`EXT_SCL_BUF` edges and rejects partial trees. Each
+U16-to-pull-up B.Cu leg routes, but neither mixed-face series leg completes
+through the qualified ordinary-via In2/In3 framework: U16.7 has no reachable
+via site and U16.2 has no inner join after both endpoint reservations. The
+SCL-first planar branch also passes the accepted `ACC_3V3_SW` via at
+`(55.350,56.550)` by 0.2445 mm against the locked 0.250 mm rule. No copper is
+promoted; board `360b8261...`, fitted connectivity 67 open nets / 484 edges,
+and real refilled schematic-parity DRC 199/5/1 remain unchanged. Park this
+add-only family pending an explicit U16 package-fanout/corridor transaction;
+freshly rank another independent retained local cluster next.
+
 ## Radio/NFC package-fanout wall narrowed (2026-09-02)
 
 `screen_package_fanout_transaction.py` replaces the generic endpoint search

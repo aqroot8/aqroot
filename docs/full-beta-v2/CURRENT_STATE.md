@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-457 (external-I2C buffer local trees bounded):** both orders of the
+  coherent `EXT_SDA_BUF`/`EXT_SCL_BUF` four-edge transaction were screened.
+  The local U16-to-pull-up B.Cu branches route, but the mixed-face series legs
+  fail the qualified ordinary-via inner framework: U16.7 has no via site and
+  the U16.2 leg has no In2/In3 join. SCL-first also places its otherwise legal
+  pull-up branch 0.2445 mm from the accepted `ACC_3V3_SW` via at
+  (55.350,56.550), below the locked 0.250 mm rule. No partial copper is
+  promoted; board `360b8261...`, fitted connectivity 67/484, real refilled
+  parity DRC 199/5/1, and production hardware are unchanged. **Next:** freshly
+  rank another independent retained local cluster; revisit this pair only with
+  an explicit U16 package-fanout/corridor transaction. No owner decision.
 - **Demo D-456 (radio interrupt/control cluster advanced):** the retained
   `SX1262_BUSY` signal now connects U1.12 to U8.14 through one short F.Cu
   escape, one short B.Cu escape, two ordinary 0.60/0.30 mm vias, and a

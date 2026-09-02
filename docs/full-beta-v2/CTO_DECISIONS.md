@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-457 · 2026-09-02 · Demo external-I2C buffer local-tree family bounded:**
+the fresh fitted ledger selected the two Demo-required U16-side buffered I2C
+trees as a coherent four-edge local transaction.  The reusable atomic harness
+screens both bus orders and refuses partial promotion.  Each U16-to-pull-up
+B.Cu branch routes, but the mixed-face series branches do not complete through
+the qualified ordinary 0.60/0.30 mm via and In2/In3 framework: `EXT_SDA_BUF`
+cannot reserve a via from U16.7, while `EXT_SCL_BUF` reserves both endpoints but
+has no 0.20 mm inner join.  SCL-first also proves its planar pull-up route is
+only 0.2445 mm from the accepted `ACC_3V3_SW` via at (55.350,56.550), below the
+locked 0.250 mm rule.  No partial copper is promoted; the authoritative board
+remains byte-identical at `360b8261...`, fitted connectivity remains 67 open
+nets / 484 edges, and real refilled schematic-parity DRC remains 199/5/1.
+D-269, D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and `hardware/beta-v2/` remain
+intact.  Park this unchanged add-only family; next freshly rank another
+independent retained local cluster, or revisit only with an explicit U16
+package-fanout/corridor transaction.  No owner decision.
+
 **D-454 · 2026-09-02 · Demo LED_A explicit perimeter family bounded:** the
 D-453 successor reserves J1.1's perpendicular F.Cu launch and exhaustively
 screens 60 fixed orthogonal corridors across three launch depths, five turn
