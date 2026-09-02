@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC digital/analog supply launch wall (2026-09-02)
+
+`route_nfc_supply_pair_scratch.py` adds an atomic framework for the two local
+three-land `NFC_VDD_D` and `NFC_VDD_A` decoupling trees. Both upper-first and
+lower-first orders were screened at 0.30 mm supply width with the existing
+0.20 mm UFQFPN escape floor. `U9.3` and `U9.7` both return
+`NO_LEGAL_ESCAPE`; all eight arm attempts stop before adding copper.
+
+Both scratch boards reproduce zero target-net geometry and the accepted real
+refilled schematic-parity KiCad DRC signature of 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports. The
+authoritative PCB remains byte-identical at `37718bc7...`; accepted NFC signal
+copper and `hardware/beta-v2/` are unchanged. Next, screen explicit outward
+U9.3/U9.7 fanouts to separate package-local via sites, then close each pair of
+decouplers on an inner layer. Do not repeat the generic B.Cu launch family.
+
 ## Accessory 5 V raw In3 transition wall (2026-09-02)
 
 `screen_acc_5v_raw_in3_transition.py` bounds the D-419 non-planar alternative:

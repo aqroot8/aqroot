@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-421 · 2026-09-02 · Demo NFC local supply generic launch wall:** the new
+atomic `NFC_VDD_D`/`NFC_VDD_A` supply-tree screen bounds both upper-first and
+lower-first orders at the locked 0.20 mm UFQFPN escape floor. Neither `U9.3`
+nor `U9.7` has a legal generic B.Cu escape in the accepted NFC geometry; all
+eight attempted arms stop before emitting copper. Both candidates retain the
+exact accepted refilled schematic-parity KiCad DRC signature (199 footprint
+library, five inherited hole-clearance, one inherited solder-mask bridge), and
+the authoritative board remains byte-identical at `37718bc7...`. The harness
+now encodes the two three-land supply obligations atomically. Next, screen
+explicit outward U9.3/U9.7 fanouts to independent package-local via sites and
+join each pair of decouplers on an inner layer; preserve all accepted NFC
+signal copper. No owner decision is open.
+
 **D-420 · 2026-09-02 · Demo accessory boost In3 transition wall PARKED:** the
 exact D-419 alternative is bounded by six courtyard-local U21.6 raw-transition
 sites and two In3 returns to the accepted raw-tree via. With the proven generic

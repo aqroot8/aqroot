@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-421 (NFC VDD_D/VDD_A generic launches bounded):** both atomic
+  upper-first and lower-first supply-tree orders fail before emitting copper:
+  U9.3 and U9.7 each report `NO_LEGAL_ESCAPE` at the 0.20 mm UFQFPN escape
+  floor. Both refilled parity screens retain exactly the accepted 199/5/1 DRC
+  signature; board remains `37718bc7...` and `hardware/beta-v2/` is untouched.
+  **Next:** explicitly reserve outward U9.3/U9.7 fanouts and independent local
+  via sites, then join each decoupler pair on an inner layer. No owner decision.
 - **Demo D-420 (accessory boost In3 transition bounded; wall PARKED):** all
   12 package-local U21.6 raw-via/In3-return combinations fail real refilled
   parity DRC twice while LX remains on B.Cu. The best case still physically
