@@ -13,6 +13,12 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-515 (WAKE_INT_N mixed-upper cases 16--31 bounded):** the next 16
+  one-transition-via cases preserve the complete qualified lower tree and
+  reserve both upper escapes, but all reject after 22,560 transition sites and
+  49,968 leg combinations. No candidate exists; board remains `04dc3e8a...`,
+  56 open nets / 460 edges, with real DRC 199/5/1. Cases 0--31 are exhausted.
+  **Next:** continue at `--case-start 32`. No owner decision is open.
 - **Demo D-514 (WAKE_INT_N mixed-upper cases 0--15 bounded):** the atomic
   five-land harness now supports one ordinary In2/In3 transition via in the
   final U1.23-to-R3.1 branch. Cases 0--15 preserve the D-512 U3 launch and

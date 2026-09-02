@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-515 · 2026-09-02 · Demo WAKE_INT_N mixed-upper cases 16--31 bounded:**
+the resumable D-514 one-transition-via family now covers the next 16 atomic
+five-land cases.  Every case preserves the qualified U3.1 launch and both
+proven middle branches, reserves both upper endpoint escapes, then rejects
+with `NO_MIXED_ONE_VIA_UPPER_CORRIDOR` after 22,560 transition sites and
+49,968 leg combinations.  No candidate or partial copper is emitted;
+authoritative board `04dc3e8a...` remains byte-identical at 56 open retained
+nets / 460 edges and the accepted real refilled schematic-parity DRC signature
+remains 199/5/1.  Cases 0--31 are exhausted.  Continue at `--case-start 32`;
+do not replay them.  No owner decision is open.
+
 **D-477 · 2026-09-02 · Demo power-switch enable tree advanced and bounded:**
 the fresh D-476 target `Net-(SW9-A)` has four fitted lands: U12.12, R43.1,
 TP13.1, and front-side SW9.1; R68.2 is the DNP alternate strap and is now
