@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-445 (backlight switch node promoted):** the compact post-refloor
+  `BL_SW` cluster now connects U17.1, L3.2, and D8.2 with nine add-only
+  0.40 mm B.Cu segments (16.204500 mm), no vias, and no accepted-copper
+  removal. The atomic harness also rejects stacked branch output by collapsing
+  its one exact same-net launch duplicate before the gate. Two clean candidates
+  reproduce geometry digest `c403c986...`. Real refilled schematic-parity DRC
+  remains 199/5/1; fitted opens improve 73→72 nets and 496→494 edges, and
+  ratsnest 525→523. D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NCs, and
+  production hardware remain intact. Board `71958623...`. **Next:** screen the
+  independent local `NFC_AGDC` analog-decoupling tree, preserving the accepted
+  NFC differential/tuning geometry and all parked walls. No owner decision.
 - **Demo D-444 (ACC_5V_BOOST_EN IC-first inner family bounded):** the atomic
   D-443 successor reserves the U3.16/U21.2 IC escapes before any passive
   branch.  A 0.60/0.30 mm ordinary through via cannot escape U3.16; the

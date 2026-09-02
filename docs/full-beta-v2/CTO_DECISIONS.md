@@ -9,6 +9,25 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-445 · 2026-09-02 · Demo backlight switch node routed and promoted:** fresh
+post-D-444 fitted-pad ranking selected the compact post-refloor `BL_SW` power
+cluster outside all parked walls. The power-aware atomic transaction connects
+U17.1, L3.2, and D8.2 with nine unique add-only 0.40 mm B.Cu segments totaling
+16.204500 mm, zero vias, zero inner-layer switching copper, and zero accepted-
+copper removal. An initial clean replay exposed one exact duplicate L3 launch
+emitted by the two branch routes; the harness now removes only exact same-net
+duplicates in the scratch transaction before gating, and refuses partial or
+stacked copper. Two corrected clean candidates reproduce identical physical
+geometry (`c403c986...`). The authoritative refilled schematic-parity KiCad DRC
+remains exactly 199 footprint-library / five hole-clearance / one solder-mask-
+bridge reports. Fitted opens improve 73→72 nets and 496→494 edges; ratsnest
+525→523. D-269 battery safety, independent D-186 accessory controls, all three
+RGB replacements, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, approved Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Board SHA-256 `71958623...`. Next, screen
+the independent local `NFC_AGDC` analog-decoupling tree while preserving the
+accepted NFC differential/tuning geometry and all parked walls. No owner
+decision.
+
 **D-444 · 2026-09-02 · Demo ACC_5V_BOOST_EN IC-first inner family bounded:**
 the exact D-443 successor is now encoded as an atomic complete-tree harness:
 reserve U3.16 and U21.2 package escapes, join them on In2/In3, then attach

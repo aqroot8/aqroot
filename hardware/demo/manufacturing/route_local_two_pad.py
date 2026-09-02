@@ -159,6 +159,26 @@ ROUTES = {
         "clearance": 200_000,
         "floor_override": {"U21.5": 200_000},
     },
+    "BL_SW_U17_L3": {
+        "net": "/03_SPI_A_DISPLAY_SD/BL_SW",
+        "pads": ("U17.1", "L3.2"),
+        "ignored_connected_pads": ("D8.2",),
+        "layer": "B",
+        "width": 400_000,
+        "clearance": 200_000,
+        # The SOT-23 driver land needs a short package neck before the
+        # switch-node trunk reaches its locked 0.40 mm width.
+        "floor_override": {"U17.1": 200_000},
+    },
+    "BL_SW_L3_D8": {
+        "net": "/03_SPI_A_DISPLAY_SD/BL_SW",
+        "pads": ("L3.2", "D8.2"),
+        "ignored_connected_pads": ("U17.1",),
+        "layer": "B",
+        "width": 400_000,
+        "clearance": 200_000,
+        "floor_override": {"D8.2": 200_000},
+    },
     "ACC_5V_ILIM": {
         "net": "/01_POWER_TREE/ACC_5V_ILIM",
         "pads": ("U22.4", "R101.1"),
