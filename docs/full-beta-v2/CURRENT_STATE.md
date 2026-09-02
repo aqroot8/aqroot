@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-420 (accessory boost In3 transition bounded; wall PARKED):** all
+  12 package-local U21.6 raw-via/In3-return combinations fail real refilled
+  parity DRC twice while LX remains on B.Cu. The best case still physically
+  shorts the raw neck/barrel to the LX launch and leaves 0.225 mm to the
+  retained raw-tree via against 0.250 mm required clearance. Board remains
+  `37718bc7...`; no geometry/rule/copper promoted. This is the fifth unchanged
+  boost-wall characterization, so policy parks it. **Next:** screen the
+  independent local `NFC_VDD_D`/`NFC_VDD_A` supply-decoupling cluster while
+  preserving accepted NFC signal copper. No owner decision.
 - **Demo D-419 (accessory boost planar crossover bounded; no PCB change):**
   with R99 fixed +0.5 mm east, 12 coordinated B.Cu LX/raw outer-corridor cases
   all fail the real refilled parity DRC. Moving the raw detour farther west and

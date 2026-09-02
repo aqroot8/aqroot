@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory 5 V raw In3 transition wall (2026-09-02)
+
+`screen_acc_5v_raw_in3_transition.py` bounds the D-419 non-planar alternative:
+six courtyard-local U21.6 raw-via sites crossed with two In3 approaches to the
+accepted raw-tree via, while the proven generic `ACC_5V_LX` route stays on
+B.Cu. All 12 cases fail the real refilled schematic-parity DRC in two clean
+runs. The best site, `(56.20,39.40)` mm, still shorts the 0.25 mm U21.6 neck
+and 0.90/0.40 mm raw transition barrel to the LX launch; the LX return also
+misses the retained raw-tree via by 0.225 mm against the required 0.250 mm.
+Moving the transition south only adds conflicts.
+
+No PCB, placement, rule, or accepted copper was promoted; the authoritative
+board remains byte-identical at `37718bc7...`. This is the fifth consecutive
+non-promoting increment on the materially unchanged boost-core wall, so it is
+now **PARKED** under the autonomy policy. Revisit only after surrounding
+geometry changes or as part of a justified broader refloor. Next, advance the
+independent local NFC supply/decoupling cluster, beginning with a coherent
+screen of `NFC_VDD_D` and `NFC_VDD_A`; preserve all accepted NFC signal copper.
+
 ## Accessory 5 V R99/raw-neck boundary (2026-09-02)
 
 `screen_acc_5v_raw_neck_refloor.py` tests 16 LX-first combinations: four R99

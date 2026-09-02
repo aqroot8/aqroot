@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-420 · 2026-09-02 · Demo accessory boost In3 transition wall PARKED:** the
+exact D-419 alternative is bounded by six courtyard-local U21.6 raw-transition
+sites and two In3 returns to the accepted raw-tree via. With the proven generic
+LX path retained on B.Cu, none of 12 cases passes real refilled
+schematic-parity KiCad DRC; two clean runs reproduce zero candidates. The best
+site `(56.20,39.40)` mm still shorts both its 0.25 mm raw neck and 0.90/0.40 mm
+barrel to the LX launch, while the LX return has only 0.225 mm to the existing
+raw via against 0.250 mm required. Southward sites add conflicts. No PCB,
+placement, rule, or accepted copper was promoted; the authoritative board is
+byte-identical at `37718bc7...`. This is the fifth consecutive non-promoting
+iteration on materially unchanged boost-core geometry, so the autonomy policy
+parks the wall. Revisit only after surrounding geometry changes or in a
+justified broader refloor. Next, screen the independent local NFC
+`NFC_VDD_D/NFC_VDD_A` supply-decoupling cluster while preserving all accepted
+NFC signal copper. No owner decision is open.
+
 **D-419 · 2026-09-02 · Demo accessory boost planar corridor wall:** the
 post-D-418 paired screen fixes the accepted minimum `R99` move (+0.5 mm east),
 routes explicit inner `ACC_5V_LX` and outer `ACC_5V_RAW` B.Cu corridors, and
