@@ -348,3 +348,25 @@ evidence, but no longer describes the live routing state.
 
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
+
+The recovered `BQ25185_SYS` scratch harness was bounded and characterized on
+2026-09-02.  A 0.050 mm search grid reserves escapes from all 13 fitted pads,
+including the charger, main regulator, accessory boost, switch, and local
+capacitors.  The outer-layer shortest-edge forest closes eight joins but leaves
+four components: the U12/capacitor group, the U21/L4/C64/C33 group, `U11.1`,
+and `SW9.2`.  It is therefore not a promotion candidate.
+
+Real refilled KiCad DRC localizes the fixed launch defects.  The explicit
+`U11.1` north launch is only 0.047 mm clear of `C23.2` and 0.200 mm clear of
+the retained `BAT_PROTECTED_P` corridor, below the 0.200 mm SYS and 0.300 mm
+D-269 contracts.  The explicit `U21.3` launch is 0.2126 mm clear of retained
+`ACC_DETECT_N`, below the 0.250 mm SYS routed-clearance rule.  One unused
+F.Cu-to-B.Cu reservation remains dangling in the incomplete forest.  The
+authoritative PCB remains byte-identical at `fd346ae6...`; no accepted copper,
+placement, rule, or `hardware/beta-v2/` file changed.
+
+Next, enumerate package-local legal launch anchors for `U11.1` and `U21.3`
+instead of retrying their disproven fixed north launches, then reserve an
+ordinary power-via/inner-layer bridge between the four proven components.
+Preserve the D-269 battery corridor, `ACC_DETECT_N`, and all accepted accessory
+power copper.  No owner decision is open.
