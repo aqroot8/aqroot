@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_GATE_S explicit shared-hub planar family bounded (2026-09-02)
+
+`route_wake_gate_s_tree_scratch.py` now uses the one qualified R63 via as an
+explicit shared hub instead of asking the generic engine for a second barrel.
+All eight R66.1 ordinary-via endpoint sites were screened on each signal inner
+layer. Every escape is legal, but each rejects all 165 bounded planar joins to
+the hub, so Q10 is deliberately not attached and no partial candidate is
+emitted. Board `04dc3e8a...` remains byte-identical at 56 open nets / 460
+edges. Next preserve the endpoint witnesses and add one bounded In2/In3
+transition to the R66-to-hub haul, then attach Q10 and gate the entire tree.
+
 ## WAKE_GATE_S qualified-fanout full-tree replay bounded (2026-09-02)
 
 `route_wake_gate_s_tree_scratch.py` now reserves the exact D-520 R63.2 B.Cu

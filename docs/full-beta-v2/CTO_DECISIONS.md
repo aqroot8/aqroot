@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-522 · 2026-09-02 · Demo WAKE_GATE_S explicit shared-hub planar family bounded:**
+The D-521 successor no longer asks the generic two-pad engine to allocate a
+second R63 barrel. It reserves the qualified R63.2 B.Cu fanout and ordinary via
+at `(55.2,57.985)` mm as one shared hub, then independently screens all eight
+R66.1 ordinary-via endpoint sites in both possible distinct-layer assignments.
+All 16 R66 escapes are legal. Every case rejects all 165 direct, orthogonal,
+vertical-spine, and horizontal-spine planar joins to the hub, so Q10 is not
+attached and the harness emits no partial candidate. Board `04dc3e8a...`
+remains byte-identical at 56 open retained nets / 460 edges; D-269/D-186, all
+RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Next preserve the qualified
+R63 and R66 fanouts and screen one ordinary In2/In3 transition in the R66-to-hub
+haul; only then attach the independent Q10 branch and gate the complete tree
+atomically. No owner decision is open.
+
 **D-521 · 2026-09-02 · Demo WAKE_GATE_S qualified-fanout full-tree replay bounded:**
 The D-520 successor now reserves the exact legal R63.2 B.Cu shoulder and
 ordinary via at `(55.2,57.985)` mm before replaying both complete three-land

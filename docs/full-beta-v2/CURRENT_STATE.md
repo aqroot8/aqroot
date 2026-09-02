@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-522 (WAKE_GATE_S explicit shared-hub planar family bounded):** the
+  successor now treats the qualified R63 via as one shared hub and reserves
+  ordinary-via fanouts at the far lands. All eight R66.1 endpoint sites were
+  screened on each of In2 and In3; every escape is legal, but all 165 direct,
+  orthogonal, vertical-spine, and horizontal-spine joins per case reject before
+  Q10 routing. No candidate is emitted; board remains `04dc3e8a...`, 56 open
+  nets / 460 edges. **Next:** retain the qualified R63 and R66 fanouts and
+  screen a bounded one-transition In2/In3 R66-to-hub haul before attaching the
+  independent Q10 branch atomically. No owner decision is open.
 - **Demo D-521 (WAKE_GATE_S qualified-fanout replay bounded):** both atomic
   branch orders reserve the exact D-520 R63.2 fanout/via and close their first
   far branch. The generic engine does not reuse that on-net hub for branch two;
