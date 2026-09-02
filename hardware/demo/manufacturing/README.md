@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## CC1101 GDO0 U7 fanout qualified (2026-09-02)
+
+`screen_cc1101_gdo0_u7_fanout.py` turns the generic `U7.15 NO_VIA_SITE`
+result into a package-specific launch family. It exhaustively tests 429 B.Cu
+west/east shoulder shapes and finds 105 legal ordinary 0.60/0.30 mm via
+fanouts at 0.20 mm width/clearance. The first witness at `(18.5, 140.75)` mm
+passes real refilled schematic-parity DRC at the accepted 199/5/1 baseline
+plus one expected scratch dangling via. It is characterization-only and emits
+no partial candidate. Next reserve a qualified U7.15 fanout and the U1.8
+launch before screening the complete inner-layer haul atomically.
+
 ## BQ25185 shared B.Cu fanout family bounded (2026-09-02)
 
 `screen_bq25185_status_shared_fanout.py` exhaustively qualifies 231 westward

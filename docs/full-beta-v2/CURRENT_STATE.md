@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-500 (CC1101 GDO0 radio fanout qualified):** the generic fitted
+  `U1.8`-to-`U7.15` contract reproduces `NO_VIA_SITE` at the bottom-side radio
+  land. A package-specific scratch screen tests 429 west/east 0.20 mm B.Cu
+  shoulder shapes with ordinary 0.60/0.30 mm vias and finds 105 legal
+  fanouts. The first witness, via at `(18.5, 140.75)` mm, passes real refilled
+  schematic-parity DRC with only accepted 199 library / five hole / one mask
+  reports plus its expected scratch dangling via. No partial copper is
+  promoted; board `be285abf...` remains at 57 open retained nets / 461 edges.
+  **Next:** reserve this qualified U7.15 launch and an MCU launch, then screen
+  the complete U1.8-to-U7.15 inner haul atomically. No owner decision.
 - **Demo D-499 (shared U9 SPI-B perimeter fanout bounded):** live-board pad
   inspection corrects D-498's prose: U9.30/U9.31/U9.32 are native F.Cu QFN
   lands, not B.Cu.  The package-specific successor exhaustively tested 950

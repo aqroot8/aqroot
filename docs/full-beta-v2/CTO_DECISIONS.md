@@ -4014,3 +4014,23 @@ intact. Park this unchanged SPI-B endpoint wall; revisit it only through a
 coherent U9 placement/local-copper transaction or changed surrounding
 geometry. Next freshly screen the independent fitted `/CC1101_GDO0` two-land
 control link. No owner decision is open.
+
+# D-500 · 2026-09-02 · Demo CC1101 GDO0 radio fanout qualified
+
+The fitted `/CC1101_GDO0` link remains open between U1.8 and U7.15. The exact
+generic long-haul contract reserves the MCU side but reproduces `NO_VIA_SITE`
+at bottom-side U7.15. Its package-specific successor exhaustively screens 429
+west/east 0.20 mm B.Cu shoulder shapes with the ordinary 0.60/0.30 mm via and
+0.20 mm clearance contract. It finds 105 legal fanouts. The first witness
+runs west to a via at `(18.5, 140.75)` mm and passes real zone-refilled
+schematic-parity KiCad DRC with exactly the accepted 199 footprint-library /
+five hole-clearance / one solder-mask-bridge reports plus the expected single
+scratch dangling-via report.
+
+No partial route or authoritative copper is emitted. The board remains
+byte-identical at `be285abf...`, with 57 open retained nets / 461 edges and
+authoritative real DRC 199/5/1. D-269/D-186, all three RGB replacements,
+XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next reserve this qualified U7.15 launch
+and an ordinary U1.8 launch, then screen the complete inner-layer haul as one
+atomic transaction. No owner decision is open.
