@@ -3883,3 +3883,22 @@ nets / 461 edges; D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and
 `hardware/beta-v2/` remain intact. Next stage distinct U2.9/U2.10 package
 fanouts and inner-layer joins as one coherent pair, then replay both complete
 status trees atomically. No owner decision is open.
+
+# D-494 · 2026-09-02 · Demo BQ25185 paired U2 fanout wall bounded
+
+The coherent D-493 successor reserves both adjacent expander launches before
+attempting either status haul, then would replay both complete four-land trees
+as one atomic unit. All 128 distinct-layer, four-by-four U2-site, two pull-up-
+site, and status-order cases completed. Each status land has legal ordinary
+0.60/0.30 mm escapes in isolation (32 STAT1 and eight STAT2 reservations), but
+no pair coexists: after either first reservation, the adjacent U2 land returns
+`NO_VIA_SITE`. No case therefore reaches a pull-up reservation or staged join,
+and no partial or authoritative copper is emitted.
+
+Independent real zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports. Board
+`be285abf...` remains byte-identical at 57 open retained nets / 461 edges;
+D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Do not replay staged status
+corridors until both launches coexist. Next screen one bounded shared
+U2.9/U2.10 package-fanout or local refloor transaction. No owner decision.

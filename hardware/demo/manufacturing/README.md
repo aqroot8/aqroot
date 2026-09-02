@@ -2,6 +2,15 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185 paired status fanout wall bounded (2026-09-02)
+
+`route_bq25185_status_pair_staged_scratch.py` screens both adjacent U2 status
+launches before either long haul, across 128 distinct-layer/site/order cases.
+Each land can reserve an ordinary via alone, but no U2.9/U2.10 reservation pair
+coexists; the second launch always reports `NO_VIA_SITE`. No pull-up join or
+partial copper is emitted. Next use a shared package-fanout or bounded local
+refloor transaction; do not replay the staged corridors on unchanged geometry.
+
 ## SX1262 RX-enable staged family bounded (2026-09-02)
 
 The D-491 successor enumerates four ordinary endpoint sites on both inner

@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-494 (BQ25185 paired U2 fanout wall bounded):** the coherent staged
+  successor screened 128 distinct-layer, U2-site, pull-up-site, and status-order
+  cases while reserving both adjacent U2.9/U2.10 launches before either haul.
+  Each status land has legal ordinary 0.60/0.30 mm escapes in isolation, but no
+  tested pair coexists: the second U2 land always returns `NO_VIA_SITE`, so no
+  pull-up join or partial copper is emitted. Board `be285abf...` remains at 57
+  open retained nets / 461 edges with independent real refilled parity DRC
+  199/5/1. **Next:** screen one bounded shared U2.9/U2.10 package-fanout or
+  local refloor transaction; do not replay staged corridors until both launches
+  coexist. No owner decision.
 - **Demo D-493 (BQ25185 dual-status generic family bounded):** exact allowlisted
   contracts now cover both fitted four-land charger status trees and an atomic
   paired harness refuses partial STAT1/STAT2 promotion. Fresh generic screens
