@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-517 (WAKE_INT_N mixed-upper cases 48--63 bounded; wall parked):**
+  the fourth 16-case one-transition-via window preserves the complete qualified
+  lower tree and reserves both upper escapes, but all cases reject after 22,560
+  transition sites and 49,968 leg combinations. No candidate exists; board
+  remains `04dc3e8a...`, 56 open nets / 460 edges, with real DRC 199/5/1.
+  Cases 0--63 are exhausted. This is the fifth consecutive non-promoting
+  unchanged-wall iteration after D-513, so the family is PARKED. **Next:**
+  freshly rank an independent retained routing cluster; revisit WAKE_INT_N only
+  after changed geometry or through a broader coherent refloor transaction.
+  No owner decision is open.
 - **Demo D-516 (WAKE_INT_N mixed-upper cases 32--47 bounded):** the third
   16-case one-transition-via window preserves the complete qualified lower
   tree and reserves both upper escapes, but all cases reject after 22,560

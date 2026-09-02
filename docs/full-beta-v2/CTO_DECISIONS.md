@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-517 · 2026-09-02 · Demo WAKE_INT_N mixed-upper cases 48--63 bounded; wall parked:**
+The fourth non-overlapping 16-case mixed-layer window preserves the complete
+qualified lower tree and reserves both upper escapes in every case, but all
+22,560 transition sites and 49,968 direct/x-then-y/y-then-x leg combinations
+reject without a complete U1.23-to-R3.1 join. No candidate or partial copper is
+emitted. Independent real refilled schematic-parity DRC remains 199 footprint-
+library / five hole-clearance / one solder-mask-bridge reports; board
+`04dc3e8a...` remains byte-identical at 56 open retained nets / 460 edges.
+Cases 0--63 are exhausted. This is the fifth consecutive non-promoting
+unchanged-wall iteration after D-513, so park the WAKE_INT_N upper-haul family
+under the autonomy policy. Revisit only after changed surrounding geometry or
+through a broader coherent refloor transaction. Next freshly rank an
+independent retained routing cluster; no owner decision is open.
+
 **D-516 · 2026-09-02 · Demo WAKE_INT_N mixed-upper cases 32--47 bounded:**
 the resumable D-514 one-transition-via family now covers the third 16-case
 window of the atomic five-land search. Every case preserves the qualified
