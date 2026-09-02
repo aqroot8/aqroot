@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB-C shield tree promoted (2026-09-02)
+
+The five fitted `Net-(J3-SHIELD)` lands are now one connected copper island.
+The atomic route attaches `R32.1` through two ordinary 0.60/0.30 mm vias, then
+joins all four plated J3 shield stakes on B.Cu. It adds twelve 0.30 mm segments
+and two vias, removes no accepted copper, and adds no wrong-net object. Two
+clean scratch runs reproduce geometry digest `08990b0b...`. The independent
+refilled schematic-parity KiCad DRC remains exactly at the accepted 199
+footprint-library / 5 hole-clearance / 1 solder-mask-bridge signature. Fitted
+opens improve 70→69 nets and 490→486 edges; ratsnest improves 519→515. Next,
+screen the independent local five-land `LED_A` backlight-current distribution
+tree as one coherent transaction.
+
 ## U2/button pull-up branch wall (2026-09-02)
 
 The coherent `BTN_DOWN_N` / `BTN_LEFT_N` / `BTN_A_N` local-branch batch is not

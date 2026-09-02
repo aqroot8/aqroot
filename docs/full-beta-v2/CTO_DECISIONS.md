@@ -3165,3 +3165,19 @@ approved Demo NCs, accepted NFC copper, and `hardware/beta-v2/` remain intact.
 Park this shared U2-side family and revisit it only through a bounded U2 package-
 fanout or local placement transaction. Next freshly rank an independent
 retained local cluster. No owner decision is open.
+
+# D-452 · 2026-09-02 · Demo USB-C shield tree promoted
+
+The retained USB-C shield network is complete: all four plated J3 shield stakes
+and R32.1 form one fitted copper island. The atomic route adds twelve 0.30 mm
+F.Cu/B.Cu segments and two ordinary 0.60/0.30 mm vias; the resistor-side hop
+avoids disturbing the accepted USB signal and CC fanout. Zero accepted copper
+is removed and zero wrong-net object is added. Two scratch runs reproduce
+physical geometry digest `08990b0b...`. Real refilled schematic-parity DRC
+remains at the accepted 199 footprint-library / 5 hole-clearance / 1 solder-
+mask-bridge signature. Fitted opens improve 70→69 nets and 490→486 edges;
+ratsnest improves 519→515. Board SHA-256 is `a819ade1...`; D-269, D-186, all
+three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, and
+`hardware/beta-v2/` remain intact. Next, screen the independent local five-land
+`LED_A` backlight-current distribution tree as one coherent transaction. No
+owner decision is open.

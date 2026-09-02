@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-452 (USB-C shield tree promoted):** all four plated J3 shield stakes
+  and R32.1 now form one fitted copper island through twelve add-only 0.30 mm
+  F.Cu/B.Cu segments and two ordinary 0.60/0.30 mm vias. The dedicated
+  resistor-side hop preserves the accepted USB signal/CC fanout; no accepted
+  copper is removed and no wrong-net object is added. Two scratch runs
+  reproduce geometry digest `08990b0b...`; independent refilled schematic-
+  parity DRC remains at the accepted 199/5/1 signature. Fitted opens improve
+  70→69 nets and 490→486 edges; ratsnest 519→515. Board `a819ade1...`;
+  D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and production hardware remain
+  intact. **Next:** coherently screen the local five-land `LED_A` backlight-
+  current distribution tree. No owner decision.
 - **Demo D-451 (U2/button pull-up family bounded):** an atomic three-net batch
   targeted the equivalent U2-to-pull-up branches of `BTN_DOWN_N`, `BTN_LEFT_N`,
   and `BTN_A_N`. The generic B.Cu topology fails its first branch with
