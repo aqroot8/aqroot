@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-489 (IR receiver tree routed and promoted):** fitted
+  `/IR_RX_GPIO44` endpoints U1.36, TP40.1, and U6.1 now form one copper island.
+  The atomic two-order harness routes both branches through ordinary In2
+  fanouts and rejects partial promotion. Both orders pass; the selected route
+  adds 14 target-only objects (five F.Cu segments, five In2 segments, four
+  vias), 137.787206 mm total, with no accepted-copper removal. Independent real
+  zone-refilled schematic-parity DRC remains 199/5/1. Connectivity improves
+  58->57 open retained nets and 463->461 edges; board `be285abf...`.
+  D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and production hardware remain
+  intact. **Next:** freshly screen `/SX1262_RST_N` as an atomic three-land
+  reset tree; do not revisit parked audio geometry. No owner decision.
 - **Demo D-488 (I2S speaker-data staged family bounded):** the live
   `/I2S_SPK_DOUT` U1.34/U5.1 link now has a reusable endpoint-site and staged-
   corridor harness. All 32 In2/In3 and four-by-four endpoint-site cases ran;

@@ -2,6 +2,15 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## IR receiver tree promoted (2026-09-02)
+
+`route_ir_rx_tree_scratch.py` atomically screens both branch orders for fitted
+`/IR_RX_GPIO44` lands U1.36, TP40.1, and U6.1. Both orders close through In2;
+the promoted route adds 14 target-only objects and removes no accepted copper.
+The complete tree has zero open edges, fitted board connectivity is 57 open
+nets / 461 edges, and independent real refilled parity DRC remains 199/5/1.
+Board `be285abf...`; manufacturing export remains premature.
+
 ## I2S speaker-data staged family bounded (2026-09-02)
 
 `route_i2s_spk_dout_scratch.py` is the D-430 successor for the live fitted

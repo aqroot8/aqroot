@@ -16,6 +16,26 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "IR_RX_MCU_TP": {
+        "net": "/IR_RX_GPIO44",
+        "pads": ("U1.36", "TP40.1"),
+        "ignored_connected_pads": ("U6.1",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.36", "b": "TP40.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "IR_RX_TP_RECEIVER": {
+        "net": "/IR_RX_GPIO44",
+        "pads": ("TP40.1", "U6.1"),
+        "ignored_connected_pads": ("U1.36",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "TP40.1", "b": "U6.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "TCA4307_READY_IC_PULLUP": {
         "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
         "pads": ("U16.5", "R46.2"),

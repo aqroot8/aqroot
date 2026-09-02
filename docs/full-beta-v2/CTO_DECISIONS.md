@@ -3792,3 +3792,22 @@ intact. Park this unchanged audio-data haul wall. Next freshly rank an
 independent retained control tree, beginning with `/IR_RX_GPIO44` only as an
 atomic three-land tree or `/SX1262_RST_N`; do not replay parked audio geometry.
 No owner decision is open.
+
+# D-489 · 2026-09-02 · Demo IR receiver tree routed and promoted
+
+The required `/IR_RX_GPIO44` signal now connects all three fitted lands:
+U1.36, TP40.1, and U6.1. A reusable atomic harness screens both branch orders
+and refuses partial promotion. Both orders independently close the MCU-to-test-
+point and test-point-to-receiver branches through ordinary In2 fanouts. The
+selected route adds 14 target-net copper objects: five 0.20 mm F.Cu segments,
+five 0.20 mm In2 segments, and four 0.60/0.30 mm through-vias, totaling
+137.787206 mm of track. It removes no accepted copper and adds nothing on any
+other net.
+
+Independent real zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 58->57 open retained nets and 463->461 edges;
+ratsnest improves 492->490. Board `be285abf...`; D-269/D-186, all RGB
+replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Next freshly screen
+`/SX1262_RST_N` as an atomic three-land reset tree. No owner decision is open.
