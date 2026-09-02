@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-436 · 2026-09-02 · Demo U10-only USB refloor rejected by fixed-launch
+invariant:** `screen_usb_u10_placement.py` bounds 50 local U10 candidates over
+±1.0 mm on a 0.5 mm grid and 0°/180° rotation while keeping mechanically
+locked J3 fixed. Every candidate is pruned at the unchanged necessary
+condition: J3.B7 has zero legal F.Cu launch at the locked 0.23 mm width,
+0.20 mm clearance, and zero-via USB contract. Two clean runs are byte-identical
+and both report 50/50 pruned, zero viable. Because moving U10 cannot change
+the fixed connector-pad/edge pocket, accepted U10.4/U10.6 ESD branches are not
+withdrawn and no futile replay is attempted. Board `2afa51d9...` and
+`hardware/beta-v2/` remain untouched. Park the connector-side USB wall until a
+mechanically and electrically justified connector-footprint/copper contract
+change is available. Next, screen the retained Demo-required XGPIO4/XGPIO5
+connector-side header trees as one coherent low-speed pair. No owner decision
+is open.
+
 **D-435 · 2026-09-02 · Demo connector-side USB N launch pocket bounded:**
 exhaustive cardinal/diagonal F.Cu launch enumeration at 0.050 and 0.025 mm
 grids gives J3.B7 zero legal 0.23 mm launches at 0.20 mm clearance while J3.A7

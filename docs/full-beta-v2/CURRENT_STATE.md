@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-436 (U10-only USB refloor rejected):** a deterministic 50-case
+  ±1.0 mm/0.5 mm-grid/0°–180° U10 placement screen proves every case retains
+  the fixed J3.B7 zero-launch precondition under the locked F.Cu-only,
+  0.23 mm/0.20 mm/zero-via USB contract. All cases are pruned before accepted
+  U10 branches are withdrawn; two clean runs are identical. Board
+  `2afa51d9...` and production hardware are unchanged. The connector-side USB
+  wall is parked pending a justified connector-footprint or copper-contract
+  change. **Next:** coherently screen retained Demo-required XGPIO4/XGPIO5
+  connector-side header trees. No owner decision.
 - **Demo D-435 (connector-side USB N launch pocket bounded):** exhaustive
   cardinal/diagonal F.Cu launch enumeration at 0.050 and 0.025 mm grids finds
   legal launches for J3.A7 and U10.1, but zero for J3.B7. Stable blockers are
