@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-481 (I2S clock-pair generic family bounded):** exact reusable
+  contracts and an atomic eight-order harness now cover both fitted
+  `/I2S_BCLK` and `/I2S_LRCLK` three-land trees across U1, U5, and MK1. The
+  U1-to-U5 branch of either clock reserves both ordinary endpoint vias but has
+  no 0.20 mm In2/In3 join. Starting toward the rear microphone fails earlier:
+  MK1.6 and MK1.5 have no legal ordinary-via escape in the packed microphone
+  land field. All eight clock/branch orders emit zero copper and retain real
+  refilled parity DRC 199/5/1. Board `f4411e57...` remains byte-identical at
+  58 open retained nets / 463 edges. **Next:** screen one coherent MK1
+  package-fanout transaction for BCLK/LRCLK together, reserving distinct rear
+  escapes before either long haul; do not replay this generic family unchanged.
+  No owner decision.
 - **Demo D-480 (SX1262 chip-select tree family bounded):** exact atomic
   contracts now cover fitted U1.10/R27.2/U8.19, both hub choices, and both
   branch orders. The direct U1-hub topology cannot reserve an ordinary via at

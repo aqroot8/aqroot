@@ -236,6 +236,46 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "I2S_BCLK_MCU_AMP": {
+        "net": "/I2S_BCLK",
+        "pads": ("U1.32", "U5.16"),
+        "ignored_connected_pads": ("MK1.6",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.32", "b": "U5.16", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "I2S_BCLK_MCU_MIC": {
+        "net": "/I2S_BCLK",
+        "pads": ("U1.32", "MK1.6"),
+        "ignored_connected_pads": ("U5.16",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.32", "b": "MK1.6", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "I2S_LRCLK_MCU_AMP": {
+        "net": "/I2S_LRCLK",
+        "pads": ("U1.33", "U5.14"),
+        "ignored_connected_pads": ("MK1.5",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.33", "b": "U5.14", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "I2S_LRCLK_MCU_MIC": {
+        "net": "/I2S_LRCLK",
+        "pads": ("U1.33", "MK1.5"),
+        "ignored_connected_pads": ("U5.14",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.33", "b": "MK1.5", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "CC1101_GDO0": {
         "net": "/CC1101_GDO0",
         "pads": ("U1.8", "U7.15"),

@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## I2S clock-pair generic family bounded (2026-09-02)
+
+`route_i2s_clock_pair_scratch.py` atomically screens both fitted three-land
+clock trees in eight meaningful clock/branch orders. Exact contracts cover
+U1.32/U5.16/MK1.6 (`I2S_BCLK`) and U1.33/U5.14/MK1.5 (`I2S_LRCLK`). For either
+clock, the U1-to-U5 branch reserves its endpoints but has no 0.20 mm In2/In3
+join. Starting with the microphone branch proves a shared package wall: neither
+rear MK1 clock land has a legal ordinary 0.60/0.30 mm via escape in the packed
+microphone field. All orders emit zero copper and preserve real refilled
+schematic-parity DRC at 199 footprint-library / five hole-clearance / one
+solder-mask-bridge reports. Board `f4411e57...` remains at 58 open retained
+nets / 463 edges. Next, reserve distinct BCLK/LRCLK rear fanouts as one coherent
+MK1 package transaction before attaching U1 and U5; do not replay the unchanged
+generic family.
+
 ## SX1262 chip-select tree family bounded (2026-09-02)
 
 The retained `/SX1262_CS_N` tree now has exact reusable contracts for fitted

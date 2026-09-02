@@ -3639,3 +3639,20 @@ accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Park
 this unchanged package/pull-up family; next freshly screen the independent
 retained I2S clock/data cluster, prioritizing `/I2S_BCLK` and `/I2S_LRCLK` as a
 coherent clock pair. No owner decision is open.
+# D-481 · 2026-09-02 · Demo I2S clock-pair generic family bounded
+
+The retained `/I2S_BCLK` and `/I2S_LRCLK` trees now have exact reusable
+contracts for all six fitted endpoints plus one atomic harness covering eight
+meaningful clock and branch orders. For both clocks, the MCU-to-amplifier leg
+can reserve ordinary endpoint vias but no 0.20 mm In2/In3 join exists in the
+accepted congestion. The alternate microphone-first orders expose the stronger
+shared precondition: rear lands MK1.6 and MK1.5 have no legal ordinary 0.60/0.30
+mm via escape within the packed microphone footprint field. Every order emits
+zero copper. Independent real refilled schematic-parity KiCad DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports; board `f4411e57...` remains byte-identical at 58 open retained nets /
+463 edges. D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, accepted
+accessory-power copper, and `hardware/beta-v2/` remain intact. Do not replay the
+generic family unchanged. Next screen a coherent MK1 package-fanout transaction
+that reserves distinct BCLK/LRCLK rear escapes before attaching U1 and U5. No
+owner decision is open.
