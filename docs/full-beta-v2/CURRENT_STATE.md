@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-433 (V3V3 feedback tree promoted):** retained U12.3, R39.2, and
+  R40.1 now form one island through separate 0.20 mm In2/In3 branches and
+  three ordinary 0.60/0.30 mm vias, with one U12-side barrel shared by both
+  branches. The add-only transaction contributes 13 objects, preserves the
+  completed switch nodes, and retains the accepted refilled parity DRC
+  signature of 199/5/1. Fitted opens improve 77→76 nets and 503→501 edges;
+  ratsnest 532→530. Board `2afa51d9...`; production hardware is untouched.
+  **Next:** screen the connector-side USB D+/D− pair as one coherent
+  differential transaction. No owner decision.
 - **Demo D-432 (U12/L1 switch pair promoted):** both buck-boost switch nodes
   now connect their paired U12 lands to L1 with nine add-only B.Cu objects,
   short 0.20 mm package joins, immediate 0.40 mm trunks, and no vias or inner

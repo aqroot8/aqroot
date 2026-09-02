@@ -2,6 +2,24 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## V3V3 feedback-tree promotion (2026-09-02)
+
+The retained TPS63020 feedback net is complete across U12.3, R39.2, and
+R40.1. A direct B.Cu divider route was blocked, and the first In2 divider
+candidate missed a retained D-269 BPP barrel clearance by 0.0575 mm. The
+accepted feedback-specific topology instead roots both branches at U12.3:
+R40.1 uses In2, R39.2 uses In3, and the branches share one ordinary U12-side
+through-via. The final transaction adds ten 0.20 mm tracks and three
+0.60/0.30 mm vias, with no accepted-copper removal.
+
+The authoritative refilled schematic-parity DRC remains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge reports. Fitted open nets improve 77 to 76, open edges 503
+to 501, and raw ratsnest 532 to 530. Board hash is `2afa51d9...`;
+`hardware/beta-v2/` remains untouched. Next, screen connector-side USB D+/D−
+as a coherent differential pair. Manufacturing export remains premature and
+no owner decision is open.
+
 ## U12/L1 buck-boost switch-pair promotion (2026-09-02)
 
 Both retained TPS63020 switch nodes are complete across the paired U12 lands

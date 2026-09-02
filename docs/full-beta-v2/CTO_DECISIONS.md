@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-433 · 2026-09-02 · Demo V3V3 feedback tree promoted:** the retained
+TPS63020 feedback pads U12.3/R39.2/R40.1 are one connected island. The
+feedback-specific add-only tree uses independent 0.20 mm In2/In3 branches and
+three ordinary 0.60/0.30 mm through-vias; the two branches share one physical
+U12-side barrel rather than retaining a redundant coincident via. It adds 13
+copper objects, removes no accepted copper, and keeps the completed U12/L1
+switch nodes unchanged. Real refilled schematic-parity DRC remains at the
+accepted 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge
+signature. Fitted opens improve 77→76 nets and 503→501 edges; ratsnest
+532→530. Board `2afa51d9...`; D-269, D-186, XGPIO4/XGPIO5, approved Demo NC
+contacts, and `hardware/beta-v2/` remain intact. Next, screen the coherent
+connector-side USB D+/D− pair; the shorter ACC_5V_LX and ISET nets are parked
+walls and BL_SW is a switching-power cluster requiring a separate power-aware
+transaction. No owner decision is open.
+
 **D-432 · 2026-09-02 · Demo U12/L1 switch pair promoted:** both retained
 TPS63020 buck-boost switch nets are complete across L1 and the paired U12
 lands. The atomic route adds nine B.Cu-only objects: 0.20 mm package-land
