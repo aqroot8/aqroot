@@ -3902,3 +3902,29 @@ D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
 power copper, and `hardware/beta-v2/` remain intact. Do not replay staged status
 corridors until both launches coexist. Next screen one bounded shared
 U2.9/U2.10 package-fanout or local refloor transaction. No owner decision.
+
+# D-495 · 2026-09-02 · Demo BQ25185 shared B.Cu fanout family bounded
+
+The unfinished D-494 successor was recovered rather than discarded. Its first
+run exposed a harness defect: a 5,000-case cap was applied to the raw
+lexicographic Cartesian product before individual fanout qualification, so the
+reported zero pairs covered only a biased prefix. The screen now exhaustively
+qualifies each status land first and considers pairs and insertion orders only
+from legal individual shapes.
+
+At the fixed 0.20 mm width/clearance and ordinary 0.60/0.30 mm via contract,
+all 231 westward B.Cu doglegs for U2.9 and all 231 for U2.10 were tested.
+Neither land has a legal individual dogleg in this family; consequently there
+are zero qualified pair orders, no real-DRC candidate, and no partial or
+authoritative copper. This is an endpoint-fanout wall, not evidence against the
+already-qualified inner status corridors.
+
+Independent full-project zone-refilled schematic-parity KiCad DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports. Fitted connectivity remains 57 open retained nets / 461 edges and
+board `be285abf...` is byte-identical. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo
+NC contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Do not replay another unchanged B.Cu west-fanout. Next screen one
+bounded local U2 status-neighborhood refloor transaction that opens two
+distinct launches, then replay both complete D-494 status trees atomically.
+No owner decision.

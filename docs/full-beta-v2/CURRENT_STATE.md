@@ -13,6 +13,21 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-495 (BQ25185 shared B.Cu fanout family bounded):** recovered and
+  corrected the unfinished package-specific screen mandated by D-494. The
+  original 5,000-case cap preceded fanout qualification and sampled only a
+  lexicographically biased product prefix; it is replaced by exhaustive
+  individual qualification followed by pair/order screening. All 231 westward
+  0.20 mm B.Cu doglegs per U2 status land were tested (462 total) with ordinary
+  0.60/0.30 mm vias and 0.20 mm clearance. Neither U2.9 nor U2.10 has a legal
+  individual dogleg in this family, so zero pair orders exist and no real-DRC
+  candidate or partial copper is emitted. Independent full-project saved-refill
+  schematic-parity KiCad DRC remains 199 footprint-library / five hole-clearance
+  / one solder-mask-bridge reports; connectivity remains 57 open retained nets
+  / 461 edges and board `be285abf...` is byte-identical. **Next:** do not replay
+  another unchanged B.Cu west-fanout. Screen one bounded local U2 status-
+  neighborhood refloor transaction that opens two distinct launches, then
+  replay the D-494 complete paired trees atomically. No owner decision.
 - **Demo D-494 (BQ25185 paired U2 fanout wall bounded):** the coherent staged
   successor screened 128 distinct-layer, U2-site, pull-up-site, and status-order
   cases while reserving both adjacent U2.9/U2.10 launches before either haul.

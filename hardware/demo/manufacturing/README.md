@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185 shared B.Cu fanout family bounded (2026-09-02)
+
+`screen_bq25185_status_shared_fanout.py` exhaustively qualifies 231 westward
+0.20 mm B.Cu doglegs per adjacent U2 status land before considering pairs. The
+recovered WIP's biased product-prefix cap was corrected. Neither U2.9 nor
+U2.10 has a legal individual dogleg with an ordinary 0.60/0.30 mm via in this
+family, so no pair/order or partial candidate exists. Board `be285abf...`
+remains byte-identical at 57 open retained nets / 461 edges and real refilled
+parity DRC remains 199/5/1. Next use a bounded local U2 status-neighborhood
+refloor transaction to open two distinct launches; do not replay this B.Cu
+fanout family on unchanged geometry.
+
 ## BQ25185 paired status fanout wall bounded (2026-09-02)
 
 `route_bq25185_status_pair_staged_scratch.py` screens both adjacent U2 status
