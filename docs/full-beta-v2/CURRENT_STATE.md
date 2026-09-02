@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-482 (MK1 clock-fanout rule-area wall bounded):** four coherent,
+  staggered two-via layouts reserve geometrically clear east fanouts for both
+  MK1.5 `/I2S_LRCLK` and MK1.6 `/I2S_BCLK`, but real refilled parity DRC rejects
+  every case with exactly two `items_not_allowed` errors. The board-level 5 x
+  7 mm `MIC_ACOUSTIC_KEEPOUT` covers the signal lands and forbids their B.Cu
+  launches; this is stronger than the D-481 generic-router wall, and ordinary
+  fanout retries cannot change it. The screen emits no authoritative copper;
+  board `f4411e57...` remains byte-identical at 58 open retained nets / 463
+  edges and accepted DRC 199/5/1. **Next:** audit the rule-area polygon against
+  the locked acoustic-port keepout and footprint geometry, then narrow/split
+  only a proven over-broad rule area in one fully gated transaction. No owner
+  decision.
 - **Demo D-481 (I2S clock-pair generic family bounded):** exact reusable
   contracts and an atomic eight-order harness now cover both fitted
   `/I2S_BCLK` and `/I2S_LRCLK` three-land trees across U1, U5, and MK1. The

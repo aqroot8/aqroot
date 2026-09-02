@@ -3656,3 +3656,21 @@ accessory-power copper, and `hardware/beta-v2/` remain intact. Do not replay the
 generic family unchanged. Next screen a coherent MK1 package-fanout transaction
 that reserves distinct BCLK/LRCLK rear escapes before attaching U1 and U5. No
 owner decision is open.
+
+# D-482 · 2026-09-02 · Demo MK1 clock-fanout rule-area wall bounded
+
+The coherent MK1 fanout screen tested four staggered ordinary-via layouts for
+rear lands MK1.5 `/I2S_LRCLK` and MK1.6 `/I2S_BCLK`. All candidate via sites are
+geometrically clear east of the package, but real refilled schematic-parity
+KiCad DRC rejects every paired breakout with exactly two `items_not_allowed`
+errors: the 5 x 7 mm board-level `MIC_ACOUSTIC_KEEPOUT` covers both signal
+lands and forbids every B.Cu launch out of them. Each scratch result otherwise
+retains the accepted 199 footprint-library / five hole-clearance / one
+solder-mask-bridge signature; the two `via_dangling` reports are expected for a
+fanout-only screen. The authoritative board remains byte-identical at
+`f4411e57...`, 58 open retained nets / 463 edges. D-269/D-186, RGB,
+XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Do not retry package geometry inside the
+unchanged keepout. Next audit the rule-area polygon against the locked acoustic
+port/seal region and footprint; narrow or split it only if proven over-broad,
+and only as an atomic full-board-gated transaction. No owner decision is open.

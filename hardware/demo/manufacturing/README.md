@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## MK1 clock-fanout rule-area wall bounded (2026-09-02)
+
+`screen_mk1_i2s_clock_fanout.py` reserves `/I2S_LRCLK` and `/I2S_BCLK`
+together using four staggered ordinary-via layouts east of rear microphone
+lands MK1.5/MK1.6. All eight via sites are geometrically clear, but every
+two-net candidate is correctly rejected by real refilled schematic-parity DRC:
+the board-level 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` forbids each B.Cu launch while
+covering the signal lands themselves. Each case reports exactly two
+`items_not_allowed` errors plus the accepted 199/5/1 baseline and two expected
+dangling scratch vias. The authoritative board remains byte-identical at
+`f4411e57...`, 58 open retained nets / 463 edges. Do not retry another fanout
+shape inside the unchanged rule area. Next, audit the rule-area polygon against
+the locked acoustic-port keepout and footprint geometry, then transactionally
+narrow or split only an over-broad rule area if that preserves the microphone
+seal and passes the full board gate.
+
 ## I2S clock-pair generic family bounded (2026-09-02)
 
 `route_i2s_clock_pair_scratch.py` atomically screens both fitted three-land
