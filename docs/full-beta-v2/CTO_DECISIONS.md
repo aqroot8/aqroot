@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-453 · 2026-09-02 · Demo LED_A planar distribution family bounded:** the
+coherent five-land display-backlight anode screen tests both directions of a
+0.30 mm F.Cu chain at 0.20 mm clearance. R73.2/R70.2/R72.2/R71.2 connect
+cleanly with fourteen scratch segments, but R71.2-to-J1.1 returns `NO_PATH`
+whether attempted first or last. No partial copper is promoted. Real refilled
+schematic-parity DRC remains exactly 199 footprint-library / five hole-
+clearance / one solder-mask-bridge reports, fitted connectivity remains 69
+open nets / 486 edges, and board `a819ade1...` is byte-identical. The qualified
+inner-haul framework correctly refuses this wide/current net and is not a
+fallback. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and production
+hardware remain intact. Next, reserve explicit F.Cu escapes at J1.1 and the
+ballast spine and screen a bounded perimeter-waypoint family without reducing
+the 0.30 mm current-path width. No owner decision.
+
 **D-446 · 2026-09-02 · Demo NFC AGDC decoupling tree routed and promoted:**
 the fitted C53.1/U9.24/C54.1 analog-reference tree is now one connected
 island.  The atomic add-only transaction uses 17 B.Cu segments at 0.30 mm,

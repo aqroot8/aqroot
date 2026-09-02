@@ -209,6 +209,30 @@ ROUTES = {
         "clearance": 200_000,
         "floor_override": {"D8.2": 200_000},
     },
+    "LED_A_R73_R70": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+        "pads": ("R73.2", "R70.2"),
+        "ignored_connected_pads": ("R71.2", "R72.2", "J1.1"),
+        "layer": "F", "width": 300_000, "clearance": 200_000,
+    },
+    "LED_A_R70_R72": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+        "pads": ("R70.2", "R72.2"),
+        "ignored_connected_pads": ("R73.2", "R71.2", "J1.1"),
+        "layer": "F", "width": 300_000, "clearance": 200_000,
+    },
+    "LED_A_R72_R71": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+        "pads": ("R72.2", "R71.2"),
+        "ignored_connected_pads": ("R73.2", "R70.2", "J1.1"),
+        "layer": "F", "width": 300_000, "clearance": 200_000,
+    },
+    "LED_A_R71_J1": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+        "pads": ("R71.2", "J1.1"),
+        "ignored_connected_pads": ("R73.2", "R70.2", "R72.2"),
+        "layer": "F", "width": 300_000, "clearance": 200_000,
+    },
     "ACC_5V_ILIM": {
         "net": "/01_POWER_TREE/ACC_5V_ILIM",
         "pads": ("U22.4", "R101.1"),

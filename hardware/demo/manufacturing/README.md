@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## LED_A planar distribution wall (2026-09-02)
+
+The coherent five-land display-backlight anode transaction was screened in
+both chain orders at 0.30 mm width and 0.20 mm clearance on F.Cu.  The four
+ballast lands R73.2/R70.2/R72.2/R71.2 connect cleanly with fourteen candidate
+segments, but the required R71.2-to-J1.1 feed reports `NO_PATH` whether it is
+attempted first or last.  The full-board scratch DRC remains exactly 199
+footprint-library / 5 hole-clearance / 1 solder-mask-bridge reports and no
+partial copper is promoted.  The qualified inner-haul framework correctly
+refuses this 0.30 mm current-distribution net as low-speed-signal-only, so that
+is not an acceptable fallback.  Board `a819ade1...` remains byte-identical.
+Next, reserve explicit F.Cu escapes at J1.1 and the ballast spine and screen a
+bounded perimeter waypoint family; do not retry the generic planar chain or
+weaken the current-path width.
+
 ## USB-C shield tree promoted (2026-09-02)
 
 The five fitted `Net-(J3-SHIELD)` lands are now one connected copper island.

@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-453 (LED_A planar family bounded):** both orders of the coherent
+  five-land 0.30 mm F.Cu chain connect all four ballast lands but reproduce the
+  same `NO_PATH` on the final R71.2-to-J1.1 feed, whether that feed is first or
+  last. No partial copper is promoted; scratch refilled schematic-parity DRC
+  remains 199/5/1 and board `a819ade1...` is byte-identical. The qualified
+  inner-haul framework correctly refuses a wide/current net. **Next:** reserve
+  explicit J1.1 and ballast-spine F.Cu escapes and bound a perimeter-waypoint
+  family without reducing the 0.30 mm current-path width. No owner decision.
 - **Demo D-452 (USB-C shield tree promoted):** all four plated J3 shield stakes
   and R32.1 now form one fitted copper island through twelve add-only 0.30 mm
   F.Cu/B.Cu segments and two ordinary 0.60/0.30 mm vias. The dedicated
