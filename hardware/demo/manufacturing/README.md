@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC U9 atomic supply-refloor replay screen (2026-09-02)
+
+`route_nfc_u9_supply_refloor_scratch.py` implements the fixed +0.5 mm-east U9
+transaction with an exact eight-segment withdrawal boundary, allowlisted replay,
+both new supply trees, fitted-connectivity checks, and real refilled parity DRC.
+Signal-first is blocked at the shifted RFO1 launch after XIN/XOUT/RFO2 replay;
+supply-first is blocked at the VDD_D lower branch after its upper branch. Both
+partial candidates are rejected; neither removes copper outside the measured
+boundary or adds copper on another net. The authoritative board remains
+`360b8261...` at 67 open retained nets / 484 edges. Next enumerate the bounded
+within-family orders at this fixed pose, beginning RFO1-first and VDD_D-lower-
+first, without weakening the atomic promotion gate.
+
 ## NFC U9 supply-refloor pose/impact screen (2026-09-02)
 
 `screen_nfc_u9_supply_refloor.py` tests 36 U9 poses and identifies five that

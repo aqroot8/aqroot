@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-460 · 2026-09-02 · Demo U9 atomic refloor replay framework bounded:**
+`route_nfc_u9_supply_refloor_scratch.py` now performs the D-459 transaction in
+scratch: it withdraws exactly the eight accepted U9-attached segments, moves U9
+0.5 mm east, replays only the six affected accepted nets, attempts both new
+VDD_D/VDD_A trees, and rejects the whole transaction unless connectivity,
+accepted-copper preservation, allowlisted-net scope, and real refilled parity
+DRC all pass. Two coherent macro orders were screened. Signal-first restores
+XIN, XOUT, and RFO2 but U9.13 RFO1 then has `NO_LEGAL_ESCAPE`; supply-first
+closes the VDD_D upper branch but its lower branch has `NO_PATH`. Both candidates
+are intentionally rejected, with zero out-of-boundary copper removal and zero
+wrong-net addition. The authoritative board stays byte-identical at
+`360b8261...`, fitted connectivity 67/484, and D-269/D-186, RGB, XGPIO4/XGPIO5,
+Demo NCs, and `hardware/beta-v2/` remain intact. Next enumerate the bounded
+within-family branch orders at the fixed D-459 pose, beginning RFO1-before-RFO2
+and VDD_D-lower-before-upper; promote only a complete atomic full-gate pass. No
+owner decision.
+
 **D-459 · 2026-09-02 · Demo U9 supply-refloor pose and replay boundary:** a
 deterministic 36-pose screen covers U9 rotations 0/90/180/270 degrees and a
 +/-0.5 mm translation grid. Five poses expose legal 0.30 mm B.Cu launches for

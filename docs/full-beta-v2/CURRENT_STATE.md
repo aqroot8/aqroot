@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-460 (U9 atomic refloor/replay framework bounded):** the complete
+  scratch transaction withdraws exactly eight accepted U9-attached segments,
+  moves U9 0.5 mm east, scopes all additions to the eight affected/new NFC nets,
+  and requires fitted connectivity plus real refilled parity DRC before any
+  promotion. Signal-first reaches RFO1 `NO_LEGAL_ESCAPE` after restoring
+  XIN/XOUT/RFO2; supply-first reaches VDD_D-lower `NO_PATH` after closing its
+  upper branch. Both candidates are rejected with no removal outside the exact
+  replay boundary and no wrong-net additions. Board `360b8261...` and 67/484
+  connectivity remain authoritative. **Next:** enumerate bounded within-family
+  orders at the fixed pose, starting RFO1-first and VDD_D-lower-first; accept
+  only the complete atomic transaction. No owner decision.
 - **Demo D-459 (U9 supply-refloor pose/impact screen):** 36 bounded U9 poses
   (0/90/180/270 degrees over a +/-0.5 mm, 0.5 mm grid) expose five poses where
   both `NFC_VDD_D` and `NFC_VDD_A` have legal 0.30 mm B.Cu launches. The
