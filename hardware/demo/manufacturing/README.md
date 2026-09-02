@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_GATE_S one-transition shared-hub family bounded (2026-09-02)
+
+The shared-hub harness now broadens only the R66.1-to-R63 haul through one
+ordinary 0.60/0.30 mm In2/In3 transition via. Both layer orders and all eight
+qualified R66 endpoint escapes were screened over a 1,763-site local lattice;
+each case exhausted 5,193 direct/orthogonal leg pairs without reaching the
+qualified hub. Q10 is therefore deliberately not attached and no partial
+candidate is emitted. Board `04dc3e8a...` remains byte-identical at 56 open
+nets / 460 edges. Next use the fifth and final unchanged-wall iteration for a
+bounded two-transition R66-to-hub family; park WAKE_GATE_S if that also fails.
+
 ## WAKE_GATE_S explicit shared-hub planar family bounded (2026-09-02)
 
 `route_wake_gate_s_tree_scratch.py` now uses the one qualified R63 via as an

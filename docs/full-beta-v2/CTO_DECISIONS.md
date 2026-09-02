@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-523 · 2026-09-02 · Demo WAKE_GATE_S one-transition shared-hub family bounded:**
+The atomic successor preserves the exact qualified R63.2 fanout/hub and tests
+all eight legal R66.1 endpoint escapes in both inner-layer orders. For each of
+the 16 cases it sweeps the complete local 0.5 mm transition lattice from
+`x=45..66`, `y=48..68` mm: 1,763 ordinary-via sites and 5,193 legal-site
+direct/x-then-y/y-then-x leg pairs. No one-transition In2/In3 path reaches the
+hub. Q10 is therefore not attached and no partial candidate is emitted.
+Authoritative board `04dc3e8a...` remains byte-identical at 56 open retained
+nets / 460 edges; D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved
+Demo NC contacts, accepted accessory-power copper, and `hardware/beta-v2/`
+remain intact. Use the fifth and final consecutive unchanged-wall iteration
+for a bounded two-transition R66-to-hub family; park WAKE_GATE_S if it also
+fails. No owner decision is open.
+
 **D-522 · 2026-09-02 · Demo WAKE_GATE_S explicit shared-hub planar family bounded:**
 The D-521 successor no longer asks the generic two-pad engine to allocate a
 second R63 barrel. It reserves the qualified R63.2 B.Cu fanout and ordinary via

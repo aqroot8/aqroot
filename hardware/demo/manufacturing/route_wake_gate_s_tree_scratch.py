@@ -70,7 +70,51 @@ def join_hub(board, layer, start):
         board.revert(mark)
     return {"ok": False, "reason": "NO_HUB_JOIN", "tested": len(families)}
 
-def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3")):
+def compact(points):
+    return tuple(p for i, p in enumerate(points) if not i or p != points[i-1])
+
+def leg_paths(a, b):
+    yield "direct", compact((a, b))
+    yield "x_then_y", compact((a, (b[0], a[1]), b))
+    yield "y_then_x", compact((a, (a[0], b[1]), b))
+
+def mixed_join_hub(board, first, start):
+    """Join R66 to the qualified hub through one ordinary In2/In3 via."""
+    second = "I3" if first == "I2" else "I2"
+    hub = R63_FANOUT[-1]
+    tested_sites = tested_paths = 0
+    # This lattice covers the complete local wake-gate rectangle with a small
+    # perimeter allowance.  Endpoint escapes and the R63 hub are already
+    # independently qualified, so only the intervening haul is broadened.
+    for via in ((x, y) for x in range(45_000_000, 66_000_001, 500_000)
+                for y in range(48_000_000, 68_000_001, 500_000)):
+        tested_sites += 1
+        if not all(board.point_free(layer, NET, *via, 600_000,
+                                    200_000, 200_000, 25_000)
+                   for layer in board.cu):
+            continue
+        for left_name, left in leg_paths(start, via):
+            for right_name, right in leg_paths(via, hub):
+                tested_paths += 1; mark = board.mark()
+                left_ok = all(emit(board, first, a, b)
+                              for a, b in zip(left, left[1:]))
+                if left_ok:
+                    board.via(NET, *via, 600_000, 300_000)
+                right_ok = left_ok and all(emit(board, second, a, b)
+                                           for a, b in zip(right, right[1:]))
+                if right_ok:
+                    return {"ok": True, "family": "mixed_one_via",
+                            "layer_order": [first, second],
+                            "leg_families": [left_name, right_name],
+                            "transition_via_mm": [via[0]/1e6, via[1]/1e6],
+                            "tested_sites": tested_sites,
+                            "tested_paths": tested_paths}
+                board.revert(mark)
+    return {"ok": False, "reason": "NO_MIXED_ONE_VIA_HUB_JOIN",
+            "layer_order": [first, second], "tested_sites": tested_sites,
+            "tested_paths": tested_paths}
+
+def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3"), mixed=True):
     p=work/f"r66-{r66_site}-q10-{q10_site}.kicad_pcb"
     for s in (".kicad_pcb",".kicad_dru",".kicad_pro"): p.with_suffix(s).write_bytes(BOARD.with_suffix(s).read_bytes())
     reserve_r63_fanout(p)
@@ -84,7 +128,9 @@ def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3")):
             target=R63_FANOUT[-1],site_index=site,site_separation=250_000)
         route={"ref":ref,"layer":layer,"site":site,"escape":escape}
         if escape.get("ok"):
-            route["join"]=join_hub(board,layer,escape["via"])
+            route["join"]=(mixed_join_hub(board,layer,escape["via"])
+                           if mixed and ref == "R66.1"
+                           else join_hub(board,layer,escape["via"]))
         routes.append(route)
         if not escape.get("ok") or not route.get("join",{}).get("ok"): break
     board.save(p)
@@ -104,18 +150,19 @@ def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3")):
     return {"r66_site":r66_site,"q10_site":q10_site,"layer_order":layer_order,"routes":routes,"drc_types":dict(types),"attributable_drc_count":len(attributable),"target_open_edges":target["open_edges"],"connectivity":ledger["connectivity"],"removed_accepted_copper_items":sum(removed.values()),"added_items":sum(added.values()),"wrong_net_additions":sum(n for k,n in added.items() if k[0]!=NET),"promotion_candidate":ok,"candidate_sha256":sha(p),"path":p}
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true"); a=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true")
+    ap.add_argument("--single-layer",action="store_true",help="reproduce the D-522 planar family"); a=ap.parse_args()
     before=sha(BOARD); baseline=copper(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-wake-gate-") as td:
         cases=[]
         for layer_order in (("I2","I3"),("I3","I2")):
             for r66_site in range(8):
                 # Do not multiply identical R66 failures by all Q10 sites.
-                first=run_case(Path(td),r66_site,0,baseline,layer_order); cases.append(first)
+                first=run_case(Path(td),r66_site,0,baseline,layer_order,not a.single_layer); cases.append(first)
                 if first["promotion_candidate"]: break
                 if len(first["routes"]) == 2:
                     for q10_site in range(1,8):
-                        case=run_case(Path(td),r66_site,q10_site,baseline,layer_order); cases.append(case)
+                        case=run_case(Path(td),r66_site,q10_site,baseline,layer_order,not a.single_layer); cases.append(case)
                         if case["promotion_candidate"]: break
                 if any(c["promotion_candidate"] for c in cases): break
             if any(c["promotion_candidate"] for c in cases): break
@@ -125,10 +172,12 @@ def main():
             if not winners or sha(BOARD)!=before: raise RuntimeError("refuse promotion")
             BOARD.write_bytes(winners[0]["path"].read_bytes())
         for c in cases: c.pop("path",None)
-    print(json.dumps({"schema":3,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
+    print(json.dumps({"schema":4,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
+                      "mode":"single_layer" if a.single_layer else "r66_mixed_one_via",
                       "search_contract":{"far_endpoint_sites_each":8,
                                            "layer_orders":[["I2","I3"],["I3","I2"]],
-                                           "hub_join_families_each":165},
+                                           "hub_join_families_each":165,
+                                           "transition_lattice_mm":{"x":[45,66,.5],"y":[48,68,.5]}},
                       "reserved_r63_fanout":{"path_mm":[[x/1e6,y/1e6] for x,y in R63_FANOUT],
                                                 "via_mm":[x/1e6 for x in R63_FANOUT[-1]],
                                                 "via_diameter_mm":.6,"via_drill_mm":.3},

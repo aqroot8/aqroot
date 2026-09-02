@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-523 (WAKE_GATE_S one-transition shared-hub family bounded):** the
+  atomic harness preserves the qualified R63 hub and tests all eight legal R66
+  escapes in both layer orders with one ordinary 0.60/0.30 mm In2/In3
+  transition. Every case exhausts the full 1,763-site local lattice and 5,193
+  direct/orthogonal leg pairs without reaching the hub, so Q10 is not attached
+  and no partial candidate is emitted. Board remains byte-identical at
+  `04dc3e8a...`, 56 open nets / 460 edges. **Next:** use the fifth and final
+  unchanged-wall iteration for a bounded two-transition R66-to-hub family;
+  park WAKE_GATE_S if it also fails. No owner decision is open.
 - **Demo D-522 (WAKE_GATE_S explicit shared-hub planar family bounded):** the
   successor now treats the qualified R63 via as one shared hub and reserves
   ordinary-via fanouts at the far lands. All eight R66.1 endpoint sites were
