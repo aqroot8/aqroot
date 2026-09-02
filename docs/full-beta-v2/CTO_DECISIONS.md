@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-476 · 2026-09-02 · Demo Community Port wake tree routed and promoted:**
+the required `/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR` endpoints D5.4, R66.2,
+and J5.20 now form one copper island. The atomic harness screens both branch
+orders and rejects partial or stale candidates. A first B.Cu assumption was
+safely refused because D5.4 is front-side; the corrected F.Cu family adds 15
+0.20 mm segments, 50.783108 mm total, with no vias, accepted-copper removal,
+or wrong-net addition. Independent real zone-refilled schematic-parity KiCad
+DRC remains exactly 199 footprint-library / five hole-clearance / one
+solder-mask-bridge reports. Fitted connectivity improves 61->60 open retained
+nets and 471->469 edges; ratsnest 500->498. Board `c6959452...`; D-269/D-186,
+all RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Next freshly rank another independent
+retained power/status tree, beginning with `Net-(SW9-A)`. No owner decision is
+open.
+
 **D-475 · 2026-09-02 · Demo TPS63020 PS/SYNC tree routed and promoted:** the
 fitted `Net-(U12-PS_SYNC)` endpoints U12.13, R42.2, and TP14.1 now form one
 copper island. The recovered atomic harness bounds both branch orders and

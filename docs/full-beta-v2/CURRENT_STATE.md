@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-476 (Community Port wake tree promoted):** D5.4, R66.2, and the
+  required J5.20 wake/attention contact now form one island through 15 add-only
+  0.20 mm F.Cu segments (50.783108 mm) and no vias. Both atomic branch orders
+  pass; an initial B.Cu topology was deterministically refused before copper
+  because D5.4 is front-side. Accepted copper is intact and independent real
+  refilled parity DRC remains 199/5/1. Fitted connectivity improves 61->60
+  open retained nets and 471->469 edges; ratsnest 500->498. Board
+  `c6959452...`; all Demo invariants and production hardware remain intact.
+  **Next:** freshly screen the independent retained `Net-(SW9-A)` power-enable
+  tree outside documented unchanged walls. No owner decision.
 - **Demo D-475 (TPS63020 PS/SYNC tree promoted):** `U12.13`, `R42.2`, and
   `TP14.1` now form one `Net-(U12-PS_SYNC)` island through 33 add-only 0.20 mm
   B.Cu segments (104.815272 mm) and no vias. The recovered atomic harness

@@ -16,6 +16,18 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "WAKE_ATTN_HDR_TVS_RESISTOR": {
+        "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+        "pads": ("D5.4", "R66.2"),
+        "ignored_connected_pads": ("J5.20",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "WAKE_ATTN_HDR_TVS_CONNECTOR": {
+        "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+        "pads": ("D5.4", "J5.20"),
+        "ignored_connected_pads": ("R66.2",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
     "U12_PS_SYNC_PULLDOWN_TP": {
         "net": "Net-(U12-PS_SYNC)",
         "pads": ("R42.2", "TP14.1"),

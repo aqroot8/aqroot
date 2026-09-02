@@ -2,6 +2,23 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Community Port wake/attention tree promoted (2026-09-02)
+
+The required `/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR` tree now connects TVS land
+`D5.4`, series resistor `R66.2`, and Community Port contact `J5.20` as one
+island. Both atomic branch orders pass. The first B.Cu-only attempt was safely
+refused before emitting copper because D5.4 is front-side; the corrected route
+adds 15 F.Cu segments / 50.783108 mm at 0.20 mm, with no vias or accepted-copper
+removal.
+
+Independent zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 61 to 60 open retained nets and 471 to 469 open
+edges; ratsnest improves 500 to 498. Board SHA-256 is `c6959452...`. D-269,
+D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, and
+production hardware remain intact. Next, freshly screen the independent
+`Net-(SW9-A)` power-enable tree; manufacturing export remains premature.
+
 ## TPS63020 PS/SYNC pull-down tree promoted (2026-09-02)
 
 The fitted `Net-(U12-PS_SYNC)` configuration tree now connects `U12.13`,
