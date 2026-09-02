@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-399 · 2026-09-02 · routed Demo increment:** the generic independent-leg
+primitive cannot route `/USB_D_MCU_N` on F.Cu at either 0.050 or 0.025 mm grid
+resolution, so it is closed for the remaining MCU-side USB pair; no isolated
+USB leg was promoted.  The same bounded iteration adds population-aware local
+routing and promotes `DISP_SDO` from fitted `J1.33` to `TP36.1`, explicitly
+excluding schematic-DNP `R112.1` from the routing obligation.  The result is
+four add-only 0.20 mm F.Cu segments (4.649 mm), zero vias, and zero removed
+accepted copper objects.  The authoritative refilled full-board KiCad gate
+retains exactly 199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge report with no attributable violation.  The
+fitted ledger moves 541 -> 540 open edges, 570 -> 569 raw ratsnest, and 98 ->
+97 open retained nets.  `ACC_5V_SW_EN`, both public XGPIOs, all RGB replacement
+nets, retained battery/power copper, and `hardware/beta-v2/` are unchanged.
+Board hash `4a6e1275...`.  Next, implement a genuinely coordinated MCU-side USB
+corridor primitive rather than retrying the generic single-leg router.
+`BQ25185_SYS` remains parked and no owner decision is open.
+
 **D-398 · 2026-09-02 · routed Demo increment:** the coordinated local USB ESD
 pair now connects `U10.6` to `R33.1` and `U10.4` to `R34.1` with 21 add-only
 0.23 mm F.Cu segments and zero vias.  The bounded endpoint fanouts feed a

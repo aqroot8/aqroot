@@ -37,6 +37,14 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "DISP_SDO": {
+        "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
+        "pads": ("J1.33", "TP36.1"),
+        "ignored_dnp_pads": ("R112.1",),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "USB_D_ESD_N": {
         "net": "/01_POWER_TREE/USB_D_ESD_N",
         "pads": ("R33.1", "U10.6"),
@@ -47,6 +55,20 @@ ROUTES = {
     "USB_D_ESD_P": {
         "net": "/01_POWER_TREE/USB_D_ESD_P",
         "pads": ("R34.1", "U10.4"),
+        "layer": "F",
+        "width": 230_000,
+        "clearance": 200_000,
+    },
+    "USB_D_MCU_N": {
+        "net": "/USB_D_MCU_N",
+        "pads": ("R33.2", "U1.13"),
+        "layer": "F",
+        "width": 230_000,
+        "clearance": 200_000,
+    },
+    "USB_D_MCU_P": {
+        "net": "/USB_D_MCU_P",
+        "pads": ("R34.2", "U1.14"),
         "layer": "F",
         "width": 230_000,
         "clearance": 200_000,
@@ -73,6 +95,11 @@ def route(path: Path, name: str):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, rule["net"])}
+    ignored = set(rule.get("ignored_dnp_pads", ()))
+    unexpected_ignored = ignored - set(pads)
+    if unexpected_ignored:
+        raise RuntimeError(f"missing declared DNP pads: {sorted(unexpected_ignored)}")
+    pads = {ref: pad for ref, pad in pads.items() if ref not in ignored}
     if set(pads) != set(rule["pads"]):
         raise RuntimeError(f"unexpected fitted pads: {sorted(pads)}")
     a, b = (pads[ref] for ref in rule["pads"])

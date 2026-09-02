@@ -561,3 +561,26 @@ zero-via transaction and review the whole connector-to-MCU USB pair.  Do not
 promote an independently routed leg.  `BQ25185_SYS` remains parked;
 manufacturing export remains premature while 98 retained multi-pad nets are
 open, and no owner decision is open.
+
+The next bounded screen closes the generic independent-leg tactic for the
+MCU-side USB pair: `/USB_D_MCU_N` has no legal F.Cu path at either 0.050 or
+0.025 mm grid resolution, before adding the P leg. No USB copper was promoted.
+A genuinely coordinated corridor primitive remains the required next USB
+step; do not retry the generic single-leg router or promote one leg alone.
+
+The same iteration extends the local two-pad framework with explicit
+schematic-DNP pad exclusion and promotes `DISP_SDO` from fitted `J1.33` to
+`TP36.1`, leaving DNP `R112.1` outside the routing obligation. The route is
+four add-only 0.20 mm F.Cu segments (4.649 mm), with zero vias and zero removed
+accepted copper objects. The authoritative refilled full-board KiCad gate
+retains exactly 199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge report, with no attributable violation. The
+fitted ledger moves 541 to 540 open edges, 570 to 569 raw ratsnest, and 98 to
+97 open retained nets. All accepted USB, battery, accessory-power, RGB, and
+XGPIO4/5 copper remains unchanged; `hardware/beta-v2/` is untouched. Board
+hash: `4a6e12756b4fbbc9269a6f18256bc055485740c4d4ecf178455c7d20498a2306`.
+
+Next, build the coordinated MCU-side USB corridor primitive and review the
+whole connector-to-MCU pair. `BQ25185_SYS` remains parked. Manufacturing
+export remains premature while 97 retained multi-pad nets are open; no owner
+decision is open.
