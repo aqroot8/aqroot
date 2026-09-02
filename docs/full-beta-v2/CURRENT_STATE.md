@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-424 (Native A internal leg promoted):** `/NATIVE_A` now connects
+  U1.31 to R61.1 with 11 add-only 0.20 mm F.Cu segments (20.149286 mm), no
+  vias, and no accepted-copper removal. Both A-first and B-first atomic screens
+  reproduce the same result: Native A closes, while `/NATIVE_B` has no generic
+  0.20 mm F.Cu path. The refilled parity DRC stays at the accepted 199/5/1
+  signature; fitted opens improve 84→83 nets and 515→514 edges, and ratsnest
+  544→543. Board `5d5a45c5...`; production hardware is untouched. **Next:**
+  explicit endpoint-escape/perimeter screening for Native B. No owner decision.
 - **Demo D-423 (NFC analog west-via family PARKED):** a deterministic 0.025 mm
   enumeration finds zero legal 0.60/0.30 mm through-via sites reachable from
   the D-422 westward U9.7 neck, before the accepted oscillator envelope is

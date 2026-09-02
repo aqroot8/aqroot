@@ -2,6 +2,27 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Native GPIO internal-pair screen and Native A promotion (2026-09-02)
+
+A fresh fitted ledger ranked `/NATIVE_A` and `/NATIVE_B` as the shortest
+unparked coherent pair of Demo-required internal signal legs. The atomic
+`route_native_gpio_pair_scratch.py` harness screens both launch orders. Both
+orders produce the same result: Native A closes, while Native B reports
+`NO_PATH` at both 0.050 and 0.025 mm grid resolution even when attempted first.
+
+The independent, order-invariant Native A result is promoted from U1.31 to
+R61.1: 11 add-only 0.20 mm F.Cu segments, 20.149286 mm, and no vias. The
+authoritative refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited solder-
+mask-bridge reports. Fitted open nets improve 84 to 83, fitted open edges 515
+to 514, and raw ratsnest 544 to 543. No accepted copper was removed; retained
+battery/accessory safety, RGB, XGPIO4/XGPIO5, NFC, and production hardware are
+unchanged. Board SHA-256 is `5d5a45c5...`.
+
+Next, screen an explicit endpoint-escape/perimeter corridor for `/NATIVE_B`;
+do not repeat the disproven generic same-face path. Manufacturing export
+remains premature and no owner decision is open.
+
 ## NFC analog-supply legal-via enumeration (2026-09-02)
 
 `enumerate_nfc_supply_corridors.py` applies the D-422 westward U9.7 launch seed

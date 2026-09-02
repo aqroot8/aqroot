@@ -16,6 +16,20 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "NATIVE_A": {
+        "net": "/NATIVE_A",
+        "pads": ("U1.31", "R61.1"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "NATIVE_B": {
+        "net": "/NATIVE_B",
+        "pads": ("U1.24", "R62.1"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "DIO2_TXEN": {
         "net": "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
         "pads": ("U8.7", "U8.8"),
@@ -361,6 +375,7 @@ def main():
     parser.add_argument("name", choices=sorted(ROUTES))
     parser.add_argument("--route", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--candidate", type=Path)
+    parser.add_argument("--promote", action="store_true")
     args = parser.parse_args()
     if args.route:
         route(args.route, args.name)
@@ -392,6 +407,10 @@ def main():
     promotion = routed["result"].get("ok", False) and not attributable
     if args.candidate and promotion:
         args.candidate.write_bytes(candidate)
+    if args.promote:
+        if not promotion or before != hashlib.sha256(BOARD.read_bytes()).hexdigest():
+            raise RuntimeError("refuse promotion: gate failed or authority changed")
+        BOARD.write_bytes(candidate)
     print(json.dumps({
         "schema": 1, "authoritative_board_sha256": before,
         "authoritative_unchanged": before == hashlib.sha256(BOARD.read_bytes()).hexdigest(),

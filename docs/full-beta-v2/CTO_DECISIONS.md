@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-424 · 2026-09-02 · Demo Native A internal leg promoted:** a fresh fitted
+ledger selected the two retained native-GPIO internal legs as the shortest
+independent unparked functional pair. Both atomic launch orders reproduce the
+same split result: `/NATIVE_A` closes, while `/NATIVE_B` has no legal 0.20 mm
+F.Cu corridor even when attempted first. The complete Native A leg from U1.31
+to R61.1 is promoted with 11 add-only 0.20 mm F.Cu segments (20.149286 mm), no
+vias, and no accepted-copper removal. The authoritative refilled schematic-
+parity DRC remains exactly 199 footprint-library, five inherited hole-
+clearance, and one inherited solder-mask-bridge reports. Fitted opens improve
+84→83 nets and 515→514 edges; raw ratsnest improves 544→543. D-269/D-186,
+all RGB replacements, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, accepted NFC copper, and
+`hardware/beta-v2/` remain unchanged. Board SHA-256 is `5d5a45c5...`. Next,
+screen an explicit endpoint-escape/perimeter corridor for the required Native
+B internal leg; do not replay the failed generic F.Cu path. No owner decision.
+
 **D-423 · 2026-09-02 · Demo NFC analog-supply west-via family PARKED:** the
 deterministic D-422 successor enumerates 0.60/0.30 mm through-via sites
 reachable from the proven westward U9.7 neck at 0.025 mm resolution, enforcing
