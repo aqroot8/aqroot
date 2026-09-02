@@ -29,6 +29,15 @@ LAYOUTS = (
 )
 SPINE_X = tuple(range(10_000_000, 66_000_001, 4_000_000))
 SPINE_Y = tuple(range(102_000_000, 142_000_001, 4_000_000))
+# D-485 bounded the interior two-spine family.  These lanes deliberately
+# extend beyond that search: first around the open north/west perimeter, then
+# through a three-spine dogleg that may change Y twice around a blocker.
+PERIMETER_Y = tuple(y for y in range(143_000_000, 146_000_001, 500_000))
+PERIMETER_X = tuple(range(3_000_000, 8_000_001, 1_000_000))
+DOGLEG_Y_PAIRS = tuple((a, b) for a, b in (
+    (104, 120), (104, 136), (120, 104), (120, 136),
+    (136, 104), (136, 120), (108, 140), (140, 108),
+))
 
 def um(v): return int(round(v * 1_000_000))
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -57,18 +66,52 @@ def emit(board, net, layer, a, b):
     board.track(net, layer, *a, *b, WIDTH)
     return {"ok": True, "mm": math.hypot(b[0]-a[0], b[1]-a[1])/1e6}
 
+def emit_path(board, net, layer, points):
+    mark = board.mark(); legs = []
+    for p, q in zip(points, points[1:]):
+        leg = emit(board, net, layer, p, q); legs.append(leg)
+        if not leg["ok"]:
+            board.revert(mark)
+            return None
+    return sum(leg.get("mm", 0) for leg in legs)
+
 def staged_join(board, net, layer, a, b):
     tested = 0
+    for y in PERIMETER_Y:
+        tested += 1
+        points = (a, (a[0], y), (b[0], y), b)
+        length = emit_path(board, net, layer, points)
+        if length is not None:
+            return {"ok": True, "tested": tested, "family": "north_perimeter",
+                    "waypoints_mm": [[p[0]/1e6, p[1]/1e6] for p in points[1:-1]], "mm": length}
+    for x in PERIMETER_X:
+        tested += 1
+        points = (a, (x, a[1]), (x, b[1]), b)
+        length = emit_path(board, net, layer, points)
+        if length is not None:
+            return {"ok": True, "tested": tested, "family": "west_perimeter",
+                    "waypoints_mm": [[p[0]/1e6, p[1]/1e6] for p in points[1:-1]], "mm": length}
     for x in SPINE_X:
         for y in SPINE_Y:
-            tested += 1; mark = board.mark()
+            tested += 1
             points = (a, (x, a[1]), (x, y), (b[0], y), b)
-            legs = [emit(board, net, layer, p, q) for p, q in zip(points, points[1:])]
-            if all(leg["ok"] for leg in legs):
-                return {"ok": True, "tested": tested, "spine_mm": [x/1e6, y/1e6],
-                        "mm": sum(leg.get("mm", 0) for leg in legs)}
-            board.revert(mark)
-    return {"ok": False, "tested": tested, "reason": "NO_STAGED_CORRIDOR"}
+            length = emit_path(board, net, layer, points)
+            if length is not None:
+                return {"ok": True, "tested": tested, "family": "two_spine_replay",
+                        "waypoints_mm": [[p[0]/1e6, p[1]/1e6] for p in points[1:-1]], "mm": length}
+    # The new three-spine family uses a west lane plus two independently
+    # selected horizontal lanes.  It is intentionally bounded to the open
+    # perimeter X lanes and the established 4 mm Y lattice.
+    for x in PERIMETER_X:
+        for y1_mm, y2_mm in DOGLEG_Y_PAIRS:
+            y1, y2 = um(y1_mm), um(y2_mm)
+            tested += 1
+            points = (a, (a[0], y1), (x, y1), (x, y2), (b[0], y2), b)
+            length = emit_path(board, net, layer, points)
+            if length is not None:
+                return {"ok": True, "tested": tested, "family": "three_spine_west",
+                        "waypoints_mm": [[p[0]/1e6, p[1]/1e6] for p in points[1:-1]], "mm": length}
+    return {"ok": False, "tested": tested, "reason": "NO_PERIMETER_OR_THREE_SPINE_CORRIDOR"}
 
 def run_case(work, layout, layers, clock_order, branch_order, baseline):
     scratch = work / (f"{clock_order[0]}-{layers['LRCLK']}-{layout['LRCLK'][0]:.2f}.kicad_pcb")

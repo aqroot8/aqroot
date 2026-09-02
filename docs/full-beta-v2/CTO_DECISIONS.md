@@ -3728,3 +3728,21 @@ XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
 `hardware/beta-v2/` remain intact. Next retain the qualified MK1 fanouts and
 screen a genuinely broader three-spine or perimeter MCU-to-MK1 long-haul
 family. No owner decision is open.
+
+# D-486 · 2026-09-02 · Demo MK1 clock perimeter/three-spine family bounded
+
+The D-485 successor retains the qualified MK1 fanouts and MCU-hub topology but
+broadens the first long haul to seven north-perimeter lanes, six west-perimeter
+lanes, all 165 established interior corridors, and 48 explicit west
+three-spine doglegs. Across all 32 fanout, distinct-layer, clock-order, and
+endpoint-reservation cases, both U1 and U5 escapes reserve but the first
+MCU-to-MK1 branch fails all 226 corridors for either clock. No partial candidate
+or authoritative copper is emitted. The board remains byte-identical at
+`044ebb60...`, 58 open retained nets / 463 edges, with accepted real refilled
+schematic-parity DRC 199 footprint-library / five hole-clearance / one
+solder-mask-bridge reports. D-269/D-186, RGB replacements, XGPIO4/XGPIO5, Demo
+NC contacts, accessory-power copper, and `hardware/beta-v2/` remain intact.
+Park this unchanged clock-haul wall. Next freshly screen the independent fitted
+`/I2S_MIC_DIN` data tree, then the remaining audio-data family; revisit the
+clock pair only after changed geometry or a broader coherent refloor
+transaction. No owner decision is open.

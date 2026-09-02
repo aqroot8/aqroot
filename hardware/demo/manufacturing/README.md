@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## MK1 clock perimeter/three-spine family bounded (2026-09-02)
+
+The paired-clock atomic harness now screens a genuinely broader long-haul
+family after D-485: seven north-perimeter lanes, six west-perimeter lanes, the
+165 established interior corridors, and 48 west three-spine doglegs per first
+clock. Across all 32 qualified fanout/layer/clock/reservation combinations the
+U1 and U5 endpoint escapes still reserve, but every first MCU-to-MK1 haul fails
+all 226 corridors. No partial candidate or authoritative copper is emitted;
+the board remains `044ebb60...` at 58/463. Park this unchanged clock-haul wall.
+Next freshly screen the independent fitted `/I2S_MIC_DIN` data tree, then the
+remaining audio-data family; do not replay another rectilinear clock corridor
+without changed geometry or a broader refloor transaction.
+
 ## MCU-hub MK1 clock topology bounded (2026-09-02)
 
 The complete paired-clock harness now implements the D-484 successor topology:

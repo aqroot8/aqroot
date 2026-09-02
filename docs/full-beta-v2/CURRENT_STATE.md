@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-486 (MK1 clock perimeter/three-spine family bounded):** the atomic
+  paired-clock harness adds seven north-perimeter lanes, six west-perimeter
+  lanes, and 48 west three-spine doglegs to the 165 established interior
+  corridors. All 32 fanout/layer/clock/reservation cases reserve U1/U5 escapes,
+  but the first MCU-to-MK1 haul fails all 226 corridors in every case. No
+  partial copper is emitted; board `044ebb60...` remains at 58/463. Park this
+  unchanged clock-haul wall. **Next:** freshly screen the independent fitted
+  `/I2S_MIC_DIN` data tree, then the remaining audio-data family. No owner
+  decision.
 - **Demo D-485 (MCU-hub MK1 clock topology bounded):** the D-484 successor
   reverses each clock tree so U1 is the hub, MK1 is the long branch, and U5 is
   the short stub. Across all 32 fanout/layer/clock/reservation combinations,
