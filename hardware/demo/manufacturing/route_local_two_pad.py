@@ -23,6 +23,27 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "MAX17048_ALRT_N": {
+        "net": "/01_POWER_TREE/MAX17048_ALRT_N",
+        "pads": ("TP11.1", "U14.5"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "NFC_MATCH_A": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+        "pads": ("C71.2", "R114.1"),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 200_000,
+    },
+    "NFC_MATCH_B": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+        "pads": ("C72.2", "R115.1"),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 200_000,
+    },
 }
 
 

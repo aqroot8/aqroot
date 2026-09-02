@@ -477,3 +477,24 @@ pair `MAX17048_ALRT_N` (TP11.1/U14.5), followed by other short one-edge local
 nets. Keep `BQ25185_SYS` parked until its revisit conditions are met. The RGB
 replacement nets, both public XGPIOs, accessory switch enables, and accepted
 power/battery copper remain unchanged; no owner decision is open.
+
+The bounded follow-up first closes the direct `MAX17048_ALRT_N` tactic: both
+ends are on B.Cu, but the 0.20 mm same-face router finds no legal corridor;
+F.Cu is inapplicable because TP11 is a back-side SMD pad. The board stayed
+unchanged during both scratch screens. The next coherent local alternative
+promotes the symmetric `NFC_MATCH_A` and `NFC_MATCH_B` pair instead. Each arm
+is a straight 1.900 mm B.Cu connection with three 0.30 mm segments and zero
+vias, satisfying the existing equal-arm/minimum-width NFC rule.
+
+The refilled full-board KiCad gate retains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports, with
+no attributable violation. Both two-pad nets are single copper islands,
+ratsnest falls 575 to 573, and the board diff is exactly six add-only B.Cu
+segments on the two allowlisted nets; no zone, via, placement, net assignment,
+or accepted copper changes. `hardware/beta-v2/` remains byte-identical. Board
+hash after refill: `f449e932ee7374cf6377f75bb7b3624f3a16489b1bd43c1a3d234776d2342609`.
+
+Next, use the fitted-pad ledger to select another bounded local connection;
+do not retry `MAX17048_ALRT_N` with the direct same-face tactic and keep
+`BQ25185_SYS` parked. Manufacturing export remains premature while 101
+retained multi-pad nets are still open. No owner decision is open.
