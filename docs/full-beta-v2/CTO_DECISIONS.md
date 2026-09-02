@@ -3811,3 +3811,18 @@ ratsnest improves 492->490. Board `be285abf...`; D-269/D-186, all RGB
 replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
 power copper, and `hardware/beta-v2/` remain intact. Next freshly screen
 `/SX1262_RST_N` as an atomic three-land reset tree. No owner decision is open.
+# D-490 · 2026-09-02 · Demo SX1262 reset package-land wall bounded
+
+The required `/SX1262_RST_N` tree has exact reusable contracts for fitted
+U2.5, R13.1, and U8.15 plus an atomic two-order harness. Expander-first and
+radio-first both stop at the same order-independent precondition: R13.1 has no
+legal ordinary 0.60/0.30 mm escape to In2 or In3. Both cases emit zero copper,
+remove nothing, and retain the real refilled schematic-parity DRC signature of
+199 footprint-library / five hole-clearance / one solder-mask-bridge reports.
+The authoritative PCB remains byte-identical at `be285abf...`, 57 open retained
+nets / 461 edges. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Park this unchanged package-land wall. Next freshly screen the
+independent fitted `/SX1262_RXEN` three-land control tree; revisit reset only
+through an R13 fanout/refloor transaction or changed local geometry. No owner
+decision is open.

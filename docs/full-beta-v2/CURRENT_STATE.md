@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-490 (SX1262 reset tree package-land wall bounded):** exact atomic
+  contracts now cover fitted `/SX1262_RST_N` lands U2.5, R13.1, and U8.15 in
+  both branch orders.  The expander-first case reaches `NO_LEGAL_ESCAPE` while
+  reserving R13.1; the radio-first case reaches the same result at R13.1.
+  Neither In2 nor In3 provides an ordinary 0.60/0.30 mm escape from the reset
+  pull-down land, so both orders emit zero copper.  The authoritative board
+  remains byte-identical at `be285abf...`, 57 open retained nets / 461 edges,
+  with independent real refilled parity DRC 199/5/1.  Park this unchanged
+  package-land wall. **Next:** freshly screen the independent fitted
+  `/SX1262_RXEN` three-land control tree; revisit reset only through an R13
+  fanout/refloor transaction or changed local geometry. No owner decision.
 - **Demo D-489 (IR receiver tree routed and promoted):** fitted
   `/IR_RX_GPIO44` endpoints U1.36, TP40.1, and U6.1 now form one copper island.
   The atomic two-order harness routes both branches through ordinary In2

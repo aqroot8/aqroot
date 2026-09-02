@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 reset package-land wall bounded (2026-09-02)
+
+`route_sx1262_rst_tree_scratch.py` atomically screens both branch orders for
+fitted `/SX1262_RST_N` lands U2.5, R13.1, and U8.15. Both orders stop cleanly
+because R13.1 has no ordinary 0.60/0.30 mm escape to either In2 or In3. No
+candidate or partial copper is emitted. Board `be285abf...` remains at 57 open
+retained nets / 461 edges and independent real refilled parity DRC remains
+199/5/1. Revisit only through an R13 fanout/refloor transaction or changed
+geometry; next screen the independent `/SX1262_RXEN` control tree.
+
 ## IR receiver tree promoted (2026-09-02)
 
 `route_ir_rx_tree_scratch.py` atomically screens both branch orders for fitted

@@ -374,6 +374,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "SX1262_RST_EXPANDER_PULLDOWN": {
+        "net": "/SX1262_RST_N",
+        "pads": ("U2.5", "R13.1"),
+        "ignored_connected_pads": ("U8.15",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U2.5", "b": "R13.1", "a_near": "B", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SX1262_RST_PULLDOWN_RADIO": {
+        "net": "/SX1262_RST_N",
+        "pads": ("R13.1", "U8.15"),
+        "ignored_connected_pads": ("U2.5",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R13.1", "b": "U8.15", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "BOOT_MCU_PULLUP": {
         "net": "/02_MCU_CORE/BOOT_N",
         "pads": ("U1.27", "R2.2"),
