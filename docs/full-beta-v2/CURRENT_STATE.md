@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-513 (WAKE_INT_N upper staged family bounded):** the recovered
+  atomic successor preserves the D-512 U3.1 witness and proven middle chain,
+  then screens every In2/In3 and 8-by-8 U1.23/R3.1 escape-site combination.
+  Both upper escapes coexist in 112 of 128 cases, but all 98,000 direct,
+  orthogonal, perimeter, vertical-spine, and two-spine joins are blocked; the
+  other 16 cases fail endpoint reservation. No partial candidate is emitted.
+  Board remains byte-identical at `04dc3e8a...`, 56 open nets / 460 edges,
+  with real refilled parity DRC 199/5/1. **Next:** preserve the full atomic
+  tree and screen a bounded mixed-In2/In3 upper haul with one ordinary
+  transition via; do not repeat the exhausted single-layer family. No owner
+  decision.
 - **Demo D-512 (WAKE_INT_N lower endpoint qualified):** a package-specific
   screen exhausts 14,355 U3.1 B.Cu fanout shapes, finds nine legal shapes, and
   proves the first witness via `(53.75,83.00)` coexists with both clean

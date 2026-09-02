@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_INT_N upper staged corridor family bounded (2026-09-02)
+
+Recovered `route_wake_int_upper_staged_scratch.py` preserves the exact D-512
+U3.1 fanout and replays both proven middle branches before attempting the final
+U1.23-to-R3.1 branch. All 128 In2/In3 and 8-by-8 upper endpoint-site cases were
+screened. Both ordinary 0.60/0.30 mm endpoint escapes coexist in 112 cases,
+but every one rejects all 875 direct/orthogonal/perimeter/vertical/two-spine
+corridors (98,000 joins total); 16 cases fail endpoint reservation. No partial
+candidate is emitted. Authoritative board `04dc3e8a...` remains byte-identical
+at 56 open retained nets / 460 edges and real refilled schematic-parity DRC
+199/5/1. Next preserve the entire atomic tree and screen one bounded mixed-
+In2/In3 upper haul with an ordinary layer-transition via; do not replay this
+exhausted single-layer family.
+
 ## WAKE_INT_N U3 fanout and middle chain qualified (2026-09-02)
 
 `screen_wake_int_u3_fanout.py` exhausts 14,355 package-local B.Cu

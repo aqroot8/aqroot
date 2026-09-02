@@ -4261,3 +4261,25 @@ intact. Next preserve this exact lower witness and broaden only the
 U1.23-to-R3.1 join family; replay and promote the complete five-land tree only
 if that final branch closes under the authoritative gate. No owner decision is
 open.
+
+# D-513 · 2026-09-02 · Demo WAKE_INT_N upper staged corridor family bounded
+
+The recovered D-512 successor preserves the exact U3.1 fanout witness and
+replays both proven U2.1-to-Q10.3 and Q10.3-to-U1.23 middle branches before
+co-searching the final U1.23-to-R3.1 branch.  It screens all 128 combinations
+of In2/In3 and eight ordinary 0.60/0.30 mm escape sites at each upper endpoint
+at the locked 0.20 mm width/clearance.  Both endpoint escapes coexist in 112
+cases; the remaining 16 fail the first endpoint reservation.  Every coexisting
+case rejects all 875 direct, orthogonal, north-perimeter, vertical-spine, and
+two-spine corridors: 98,000 staged joins in total.
+
+The complete five-land tree therefore has no promotion candidate in this
+family, and the harness emits no partial copper.  Independent real
+zone-refilled schematic-parity KiCad DRC remains exactly 199 footprint-library
+/ five hole-clearance / one solder-mask-bridge reports.  Board `04dc3e8a...`
+remains byte-identical at 56 open retained nets / 460 edges; D-269/D-186, all
+three RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted
+accessory-power copper, and `hardware/beta-v2/` remain intact.  Next use a
+bounded mixed-In2/In3 upper haul with one ordinary layer-transition via while
+preserving the complete atomic tree; do not repeat this exhausted single-layer
+staged family.  No owner decision is open.
