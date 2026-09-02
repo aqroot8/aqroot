@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ACC_PWR_EN planar-tree screen (2026-09-02)
+
+`route_acc_pwr_en_tree_scratch.py` atomically screens the required R17.1,
+U16.1, and U3.20 accessory-isolation enable tree and rejects partial routes.
+The generic 0.20 mm B.Cu topology is not viable: R17.1→U16.1 takes an 85.344 mm
+detour with three real accessory-rail clearance violations, and U16.1→U3.20
+has no legal 0.20 mm corridor at 0.050 or 0.025 mm grid. Only one of two fitted
+edges closes. No candidate is promoted and the authoritative board remains
+`2830082d...`. Next, reserve escapes at U16.1/U3.20 and join them on In2/In3
+before attaching R17.1; do not retry the generic planar tree.
+
 ## Retained XGPIO4/XGPIO5 header-pair promotion (2026-09-02)
 
 The D-437 successor constrains the XGPIO5 header leg through an explicit

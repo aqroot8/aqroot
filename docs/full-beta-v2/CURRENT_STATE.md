@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-439 (ACC_PWR_EN planar tree bounded):** the fresh-ledger-selected
+  three-land accessory-isolation control does not admit a generic 0.20 mm B.Cu
+  tree. R17.1→U16.1 detours 85.344 mm and adds three accessory-rail clearance
+  violations; U16.1→U3.20 reports `NO_PATH` at 0.050/0.025 mm. No partial
+  copper is promoted; board `2830082d...` and production hardware are
+  unchanged. **Next:** pre-reserve U16.1/U3.20 package escapes and screen an
+  In2/In3 join, then attach R17.1 atomically. No owner decision.
 - **Demo D-438 (retained XGPIO4/XGPIO5 header pair promoted):** an explicit
   `(62.500,30.500)` mm waypoint keeps XGPIO5 clear of both accepted
   accessory-power barrels. The atomic XGPIO5-first transaction adds 21 F.Cu

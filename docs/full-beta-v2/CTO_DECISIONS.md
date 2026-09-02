@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-439 · 2026-09-02 · Demo ACC_PWR_EN planar tree bounded:** a fresh fitted
+ledger selected the required three-land accessory-isolation enable as the
+highest-ranked short independent control cluster outside parked walls.  The
+new atomic harness routes `R17.1`–`U16.1`–`U3.20` and gates real refilled
+schematic-parity DRC, fitted connectivity, accepted-copper preservation, and
+wrong-net additions.  Generic 0.20 mm B.Cu routing is rejected: the first arm
+takes an 85.344 mm detour and violates the locked accessory-rail clearances at
+three accepted vias (0.2455, 0.2254, and 0.2352 mm actual), while the
+`U16.1`–`U3.20` arm has no legal corridor at either 0.050 or 0.025 mm grid.
+Only one of two open edges closes, so no partial copper is promoted.  Board
+`2830082d...`, D-269/D-186, all replacement RGB and retained XGPIO copper, and
+`hardware/beta-v2/` remain unchanged.  Next, reserve package-side escapes at
+U16.1 and U3.20 and screen a short In2/In3 join before attaching R17.1; do not
+replay the generic planar tree.  No owner decision.
+
 **D-438 · 2026-09-02 · Demo retained XGPIO4/XGPIO5 header pair promoted:**
 the D-437 successor adds a reusable ordered-waypoint option to the local
 two-pad router and constrains the XGPIO5 header leg through `(62.500,30.500)`
