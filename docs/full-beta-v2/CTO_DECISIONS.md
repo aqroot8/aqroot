@@ -3928,3 +3928,26 @@ intact. Do not replay another unchanged B.Cu west-fanout. Next screen one
 bounded local U2 status-neighborhood refloor transaction that opens two
 distinct launches, then replay both complete D-494 status trees atomically.
 No owner decision.
+
+# D-496 · 2026-09-02 · Demo BQ25185 local status-neighborhood refloor bounded
+
+The recovered D-495 successor tests a coherent copper-withdrawal boundary in
+scratch. It removes only complete nearby nets, never geometric fragments, and
+screens subsets in increasing cardinality before attempting two distinct
+U2.9/U2.10 launches at the locked 0.20 mm width/clearance and ordinary
+0.60/0.30 mm via contract.
+
+All eight subsets of the three measured neighboring routed nets were tested:
+`/TOUCH_RST_N` (18 copper items), `/DISP_RST_N` (12), and
+`/SD_CARD_DETECT_N` (29). Even withdrawing all three nets and all 59 copper
+items leaves every one of 16 layer, order, and site cases at `NO_VIA_SITE` on
+the second launch. Therefore this local copper-withdrawal refloor cannot expose
+the required paired status fanout and creates no replay or promotion candidate.
+
+The authoritative board remains byte-identical at `be285abf...`, with 57 open
+retained nets / 461 edges; accepted copper, D-269/D-186, RGB, XGPIO4/XGPIO5,
+Demo NC contacts, accessory-power routing, and `hardware/beta-v2/` remain
+intact. Park the materially unchanged U2 status package wall until a broader
+component-placement transaction is justified. Next freshly screen the
+independent shared SPI-B clock/data cluster as a coherent batch. No owner
+decision is open.

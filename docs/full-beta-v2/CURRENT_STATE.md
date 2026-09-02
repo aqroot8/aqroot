@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-496 (BQ25185 local status-neighborhood refloor bounded):** the
+  recovered scratch-only successor withdraws whole neighboring nets in
+  minimum-cardinality order and asks whether U2.9/U2.10 can simultaneously
+  reach distinct ordinary 0.60/0.30 mm vias. All eight subsets of the measured
+  `/TOUCH_RST_N` (18 items), `/DISP_RST_N` (12), and `/SD_CARD_DETECT_N` (29)
+  neighborhood were screened, including withdrawal of all 59 copper items.
+  Every subset fails all 16 layer/order/site cases at the second launch with
+  `NO_VIA_SITE`; no replay candidate exists. The authoritative PCB remains
+  byte-identical at `be285abf...`, 57 open retained nets / 461 edges. Park the
+  unchanged U2 status package wall until a broader placement transaction is
+  justified. **Next:** freshly screen the independent shared SPI-B
+  clock/data cluster as a coherent batch, outside parked power, USB, NFC,
+  audio, radio-control, and U2-package walls. No owner decision.
 - **Demo D-495 (BQ25185 shared B.Cu fanout family bounded):** recovered and
   corrected the unfinished package-specific screen mandated by D-494. The
   original 5,000-case cap preceded fanout qualification and sampled only a

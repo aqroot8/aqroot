@@ -1982,3 +1982,17 @@ equivalent expander branches: U2.9-to-R127.2 and U2.10-to-R128.2 both return
 `NO_PATH` at 0.05 and 0.025 mm grids with 0.20 mm width/clearance. No copper was
 promoted; the next mechanism is a coherent paired U2 package-fanout and
 inner-layer join before replaying both complete trees.
+
+## BQ25185 status-neighborhood withdrawal wall (2026-09-02)
+
+`screen_u2_status_neighborhood_refloor.py` bounds the D-495 follow-up without
+touching the authoritative board.  It withdraws complete nets, not geometric
+fragments, and tests minimum-cardinality subsets of the three routed nets
+measured nearest U2.9/U2.10: `/TOUCH_RST_N` (18 copper items), `/DISP_RST_N`
+(12), and `/SD_CARD_DETECT_N` (29).  All eight subsets, including withdrawal
+of all 59 items, fail all 16 paired ordinary-via launch cases with
+`NO_VIA_SITE`.  Board `be285abf...` remains byte-identical.  This local
+copper-withdrawal refloor cannot unlock the charger-status pair; park the
+unchanged U2 status package wall until a broader component-placement
+transaction is justified.  Next freshly screen the independent shared SPI-B
+clock/data cluster rather than replaying another U2 fanout family.
