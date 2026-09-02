@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-446 (NFC AGDC tree promoted):** C53.1, U9.24, and C54.1 now form
+  one connected island through 17 add-only 0.30 mm B.Cu segments
+  (40.626806 mm), with no vias, inner copper, placement change, or accepted-
+  copper removal. Both branch orders reproduce the same lengths and clean
+  result. Real refilled schematic-parity DRC remains 199/5/1; fitted opens
+  improve 72→71 nets and 494→492 edges, and ratsnest 523→521. D-269/D-186,
+  RGB, XGPIO4/XGPIO5, approved Demo NCs, accepted NFC differential/tuning
+  copper, and production hardware remain intact. Board `7a764bac...`.
+  **Next:** screen the independent 5.683 mm `ISET` charger-programming net;
+  leave the shorter parked `ACC_5V_LX` switch-node wall for its defined
+  power-core refloor transaction. No owner decision.
 - **Demo D-445 (backlight switch node promoted):** the compact post-refloor
   `BL_SW` cluster now connects U17.1, L3.2, and D8.2 with nine add-only
   0.40 mm B.Cu segments (16.204500 mm), no vias, and no accepted-copper

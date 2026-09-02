@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC AGDC decoupling-tree promotion (2026-09-02)
+
+The fitted C53.1/U9.24/C54.1 tree is complete with 17 add-only 0.30 mm B.Cu
+segments (40.626806 mm), no vias, and no accepted-copper removal. Both branch
+orders reproduce the same clean geometry. Refilled schematic-parity DRC stays
+at 199/5/1; fitted connectivity improves to 71 open nets / 492 open edges and
+ratsnest 521. Board SHA-256 is `7a764bac...`. Next, screen the independent
+5.683 mm `ISET` charger-programming net; the shorter `ACC_5V_LX` wall remains
+parked for its power-core refloor transaction.
+
 ## ACC_5V_BOOST_EN planar-tree screen (2026-09-02)
 
 `route_acc_5v_boost_en_tree_scratch.py` atomically screens all six launch

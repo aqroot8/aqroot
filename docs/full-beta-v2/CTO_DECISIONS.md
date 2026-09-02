@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-446 · 2026-09-02 · Demo NFC AGDC decoupling tree routed and promoted:**
+the fitted C53.1/U9.24/C54.1 analog-reference tree is now one connected
+island.  The atomic add-only transaction uses 17 B.Cu segments at 0.30 mm,
+40.626806 mm total, with no vias, inner-layer copper, placement change, or
+accepted-copper removal. Both branch orders reproduce the same route lengths
+and clean result. Real refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted opens improve 72→71 nets and 494→492 edges; ratsnest improves 523→521.
+D-269 battery safety, D-186 accessory sequencing, all three RGB replacements,
+XGPIO4/XGPIO5, `ACC_5V_SW_EN`, approved Demo NC contacts, accepted NFC
+differential/tuning copper, and `hardware/beta-v2/` remain intact. Board
+SHA-256 `7a764bac...`. Next, screen the independent 5.683 mm `ISET` charger-
+programming net; keep the shorter `ACC_5V_LX` switch-node wall parked pending
+its already-defined power-core refloor transaction. No owner decision.
+
 **D-445 · 2026-09-02 · Demo backlight switch node routed and promoted:** fresh
 post-D-444 fitted-pad ranking selected the compact post-refloor `BL_SW` power
 cluster outside all parked walls. The power-aware atomic transaction connects
