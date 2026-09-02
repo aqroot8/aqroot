@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-527 (NFC_5V_EN mixed-inner cases 4--7 bounded):** the next
+  resumable window pairs U2 site one with TP10 sites zero through three on
+  In2. Every escape pair coexists, but each case exhausts 1,870 transition
+  sites / 7,218 leg combinations without a complete join. No candidate or
+  partial copper; board remains `04dc3e8a...`, 56 open nets / 460 edges, with
+  independent real refilled parity DRC 199/5/1. Cases 0--7 are exhausted;
+  this is unchanged-wall iteration three. **Next:** continue at
+  `--case-start 8`; do not replay cases 0--7. No owner decision.
 - **Demo D-526 (NFC_5V_EN mixed-inner cases 0--3 bounded):** the atomic
   harness now supports four sites per endpoint, resumable windows, and one
   ordinary In2/In3 transition. The first four In2 cases pair U2 site zero

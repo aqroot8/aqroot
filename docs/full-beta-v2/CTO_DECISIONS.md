@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-527 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 4--7 bounded:**
+The next non-overlapping D-526 window pairs U2 endpoint site one with TP10
+sites zero through three on In2. All four endpoint-escape reservations coexist,
+but every case exhausts 1,870 transition sites and 7,218 direct/x-then-y/
+y-then-x leg combinations without a complete one-transition In2-to-In3 haul.
+No candidate or partial copper is emitted. Independent real zone-refilled
+schematic-parity DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports; board `04dc3e8a...` remains
+byte-identical at 56 open retained nets / 460 edges. D-269/D-186, all RGB
+replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-power
+copper, and `hardware/beta-v2/` remain intact. Cases 0--7 are exhausted;
+continue at `--case-start 8` and do not replay them. This is the third
+non-promoting iteration on the unchanged NFC_5V_EN wall. No owner decision is
+open.
+
 **D-526 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 0--3 bounded:**
 The D-525 atomic harness now supports four deterministic sites per endpoint,
 resumable case windows, and one ordinary In2/In3 transition in the U2.6-to-
