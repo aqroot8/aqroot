@@ -13,6 +13,23 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-471 (stale-target routing preflight hardened):** the live ledger
+  proves `VBUS_PRESENT` is already one connected four-pad island with zero open
+  edges.  Its legacy harness previously attempted redundant copper and real
+  DRC caught two co-located-via pairs; it now refuses the target before router
+  construction.  No candidate or copper was emitted; board `65bf079a...`
+  remains at 63 open retained nets / 475 edges. **Next:** screen the genuinely
+  open connector-side USB D+/D- pair under its differential-pair contract. No
+  owner decision.
+- **Demo D-470 (ACC_PWR_EN isolation-control tree bounded):** both atomic
+  orders of the fitted U16.1/R17.1/U3.20 tree were screened.  Using R17 as the
+  hub produces an 81.841 mm B.Cu detour with five real clearances and leaves no
+  ordinary-via site at R17.  The bounded alternative reserves ordinary vias at
+  U16/U3 and keeps R17 local, but neither In2 nor In3 admits the 0.20 mm join.
+  No copper was emitted or promoted; board `65bf079a...` remains at 63 open
+  retained nets / 475 edges and real parity DRC 199/5/1. **Next:** freshly rank
+  an independent retained control tree; revisit this net only through a U16
+  package-fanout/corridor transaction. No owner decision.
 - **Demo D-469 (ACC_5V_FB inner-tree family bounded):** the coherent retained
   U21.1/R99.2/R100.1 feedback tree was screened in both branch orders and both
   In2/In3 assignments at 0.20 mm width and 0.25 mm routed clearance. R99.2 has

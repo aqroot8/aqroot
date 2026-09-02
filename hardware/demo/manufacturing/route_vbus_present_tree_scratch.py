@@ -56,6 +56,26 @@ def main():
         scratch = work / BOARD.name
         for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
             scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
+        baseline_ledger_path = work / "baseline-ledger.json"
+        subprocess.run([sys.executable, str(LEDGER), "--board", str(scratch),
+                        str(baseline_ledger_path)], check=True,
+                       stdout=subprocess.DEVNULL)
+        baseline_ledger = json.loads(baseline_ledger_path.read_text())
+        baseline_row = next(r for r in baseline_ledger["nets"]
+                            if r["net"] == NET)
+        if baseline_row["open_edges"] == 0:
+            print(json.dumps({
+                "schema": 1,
+                "authoritative_board_sha256": before_sha,
+                "authoritative_unchanged": sha256(BOARD) == before_sha,
+                "target": NET,
+                "target_open_edges": 0,
+                "target_copper_islands": baseline_row["copper_islands"],
+                "connectivity": baseline_ledger["connectivity"],
+                "promotion_candidate": False,
+                "refusal": "target is already connected; refuse duplicate copper",
+            }, indent=2, sort_keys=True))
+            return 2
         board = qr.QBoard(scratch)
         ir.inject_existing_via_obstacles(board)
         pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}

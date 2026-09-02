@@ -9,6 +9,32 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-471 · 2026-09-02 · Demo stale-target routing preflight hardened:** live
+ledger reconstruction proved `/01_POWER_TREE/VBUS_PRESENT` is already one
+connected four-pad island with zero open edges.  The legacy standalone harness
+would nevertheless add 13 redundant objects, including two pairs of
+co-located vias; real KiCad DRC rejected that scratch board.  The harness now
+checks fitted connectivity before constructing a router board and deterministically
+refuses already-connected targets.  Re-test reports board `65bf079a...`
+unchanged at 63 open retained nets / 475 edges; no candidate or authoritative
+copper is emitted.  Next, screen the genuinely open connector-side USB D+/D-
+pair, while preserving its differential-pair contract.  No owner decision.
+
+**D-470 · 2026-09-02 · Demo ACC_PWR_EN isolation-control tree bounded:** the
+fresh retained-net ranking selected the three-land U16.1/R17.1/U3.20 accessory
+I2C isolation-enable tree.  A reusable atomic harness screens both branch
+orders and refuses partial promotion.  The first hub topology routes U16-R17
+only through an 81.840614 mm B.Cu detour that creates five real clearance
+reports, while R17 has no reachable ordinary 0.60/0.30 mm via site for the
+long U3 haul.  The bounded alternative correctly keeps R17 local and reserves
+ordinary vias at U16/U3, but neither In2 nor In3 admits the 0.20 mm join.  No
+candidate is emitted; authoritative board `65bf079a...`, fitted connectivity
+63 open nets / 475 edges, real refilled schematic-parity DRC 199/5/1,
+D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and `hardware/beta-v2/` remain
+unchanged.  Park this add-only family.  Next freshly rank an independent
+retained control tree; revisit only with an explicit U16 package-fanout and
+corridor transaction.  No owner decision is open.
+
 **D-468 · 2026-09-02 · Demo LED_K perimeter precondition exhausted:** the
 D-467 successor now reserves the connector escape before screening any long
 haul. At the required final 0.30 mm width and clearance, qualified ordinary

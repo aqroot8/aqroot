@@ -2,6 +2,29 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Connected-target preflight hardening (2026-09-02)
+
+The live routing ledger reports `/01_POWER_TREE/VBUS_PRESENT` as one connected
+four-pad island with zero open edges.  Its legacy standalone harness could
+still attempt 13 redundant copper objects and duplicate two existing via
+locations; real DRC rejected that scratch result with two `holes_co_located`
+reports.  `route_vbus_present_tree_scratch.py` now checks fitted connectivity
+first and deterministically refuses an already-connected target without
+constructing a router board or emitting a candidate.  The authoritative board
+remains `65bf079a...`, 63 open retained nets / 475 edges.  Next screen the open
+connector-side USB D+/D- pair under its differential-pair constraints.
+
+## ACC_PWR_EN isolation-control tree wall (2026-09-02)
+
+`route_acc_pwr_en_tree_scratch.py` atomically screens the retained U16.1,
+R17.1, and U3.20 tree in both orders.  Hub selection at R17 is invalid: its
+U16 branch takes an 81.841 mm B.Cu detour with five real clearance reports and
+R17 has no ordinary-via site for the long haul.  The bounded alternative keeps
+R17 as a local stub and reserves U16/U3 through vias, but neither In2 nor In3
+admits the 0.20 mm join.  No candidate or partial copper is promoted.  Park
+this add-only family pending a U16 package-fanout/corridor transaction; next
+freshly rank an independent retained control tree.
+
 ## LED_K perimeter precondition (2026-09-02)
 
 `screen_led_k_perimeter.py` first enumerates a required 0.30 mm-clear ordinary
