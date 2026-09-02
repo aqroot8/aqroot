@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-526 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 0--3 bounded:**
+The D-525 atomic harness now supports four deterministic sites per endpoint,
+resumable case windows, and one ordinary In2/In3 transition in the U2.6-to-
+TP10.1 haul.  The first four cases cover U2 site zero against TP10 sites
+zero through three on In2.  Both endpoint escapes coexist in every case, but
+each exhausts 1,870 transition sites and 7,218 direct/x-then-y/y-then-x leg
+combinations without a complete join.  The proven U13.2/R14.1 local branches
+are replayed only after a haul witness, so no partial candidate or authoritative
+copper is emitted.  Independent real zone-refilled schematic-parity DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports; board `04dc3e8a...` remains byte-identical at 56 open retained nets /
+460 edges.  D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo
+NCs, accepted accessory-power copper, and `hardware/beta-v2/` remain intact.
+Continue the non-overlapping mixed-inner window at `--case-start 4`; do not
+replay cases 0--3.  No owner decision is open.
+
 **D-525 · 2026-09-02 · Demo NFC_5V_EN four-land tree first family bounded:**
 Fresh fitted-net ranking selected the previously uncharacterized retained
 `NFC_5V_EN` tree. Live topology corrected the initial three-land assumption:

@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_5V_EN mixed-inner cases 0--3 bounded (2026-09-02)
+
+The atomic harness now supports four endpoint sites, resumable case windows,
+and one ordinary In2/In3 transition in the long haul. Cases 0--3 cover U2 site
+zero against TP10 sites zero through three on In2. All four escape pairs
+coexist, but each exhausts 1,870 transition sites and 7,218 leg combinations
+without a join. The proven local branches are replayed only after a haul
+witness, so no partial candidate is emitted. Board `04dc3e8a...` remains
+byte-identical at 56 open nets / 460 edges with real refilled parity DRC
+199/5/1. Continue at `--case-start 4`; do not replay cases 0--3.
+
 ## NFC_5V_EN four-land first family bounded (2026-09-02)
 
 The live fitted tree contains U2.6, U13.2, R14.1, and TP10.1. The new atomic
