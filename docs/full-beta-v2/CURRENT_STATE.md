@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-413 (fuel-gauge alert promoted):** `MAX17048_ALRT_N` is complete
+  from TP11.1 to U14.5 with 4.306134 mm of 0.20 mm copper and two 0.60/0.30 mm
+  through-vias on an In3 hop. In2 is proven closed; two clean In3 screens
+  reproduce identical physical geometry. The authoritative refilled full-board
+  gate remains the accepted 199 footprint-library / 5 hole-clearance / 1
+  solder-mask-bridge signature, with no accepted copper removed. Fitted opens
+  improve 85→84 nets and 516→515 edges; raw ratsnest improves 545→544. Board
+  hash `37718bc7...`; `hardware/beta-v2/` is untouched. **Next:** bounded,
+  power-aware routing of the accessory 5 V boost switching cluster, beginning
+  with `ACC_5V_LX`; do not route it as an ordinary signal. No owner decision.
 - **Demo D-412 (NFC receiver-input wall; no authoritative PCB change):** both
   `NFC_RFI1/RFI2` launch orders fail at U9.22/U9.23 even with the DRU-legal
   0.20 mm courtyard neck; moving only unrouted C17 1.25 mm east does not clear

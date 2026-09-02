@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## MAX17048 alert route promotion (2026-09-02)
+
+`MAX17048_ALRT_N` now connects TP11.1 to U14.5 with an add-only, two-via In3
+hop: 4.306134 mm of 0.20 mm copper and two 0.60/0.30 mm through-vias. The
+bounded screen proves In2 closed and reproduces identical In3 physical geometry
+twice. The refilled full-board KiCad gate retains only the accepted 199
+footprint-library, five hole-clearance, and one solder-mask-bridge reports.
+No accepted copper was removed; fitted opens improve 85→84 nets and 516→515
+edges, and raw ratsnest improves 545→544. Board hash is `37718bc7...` and
+`hardware/beta-v2/` remains untouched.
+
+Next, screen the local accessory 5 V boost switching cluster, beginning with
+`ACC_5V_LX` and then its feedback branch. Use power-topology-aware geometry;
+the switching node must not be handled as a generic signal. No owner decision
+is open.
+
 ## NFC receiver-input wall (2026-09-02)
 
 The atomic `NFC_RFI1/RFI2` harness closes neither U9 package launch in either

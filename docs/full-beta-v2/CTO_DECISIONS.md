@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-413 · 2026-09-02 · Demo fuel-gauge alert route promoted:**
+`MAX17048_ALRT_N` now connects `TP11.1` to `U14.5` through a bounded In3.Cu
+hop. The add-only route is 4.306134 mm of 0.20 mm copper with two standard
+0.60/0.30 mm through-vias at (5.250,81.200) and (2.675,81.225) mm. In2 is
+proven closed; two clean In3 screens reproduce identical physical geometry.
+The authoritative refilled schematic-parity KiCad gate retains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited solder-mask
+bridge reports, with no attributable class. The delta is four segments and two
+vias on the target net, with zero accepted-copper removals. Fitted opens improve
+85→84 nets and 516→515 edges; raw ratsnest improves 545→544. D-269 battery
+copper, D-186 accessory controls, all RGB replacements, XGPIO4/XGPIO5, accepted
+NFC copper, and `hardware/beta-v2/` remain unchanged. Authoritative PCB SHA-256
+is `37718bc7...`. Next, take the adjacent accessory 5 V boost switching cluster
+(`ACC_5V_LX` then its feedback branch) through a power-topology-aware bounded
+screen; do not treat the switching node as an ordinary signal. No owner decision
+is open.
+
 **D-412 · 2026-09-02 · Demo NFC receiver-input wall characterized:** the
 atomic `NFC_RFI1/RFI2` B.Cu/no-via harness screens both launch orders with the
 locked 0.30 mm NFC trunk, 0.25 mm routed clearance, and the courtyard-legal
