@@ -370,3 +370,22 @@ instead of retrying their disproven fixed north launches, then reserve an
 ordinary power-via/inner-layer bridge between the four proven components.
 Preserve the D-269 battery corridor, `ACC_DETECT_N`, and all accepted accessory
 power copper.  No owner decision is open.
+
+The focused package-launch enumeration on 2026-09-02 closes the generic radial
+escape tactic. `enumerate_bq25185_sys_launches.py` applies the actual local
+width/clearance contracts on a 0.025 mm grid and searches reachable ordinary
+0.90/0.40 mm B.Cu-to-In3 power-via sites. `U11.1` has zero generic escapes at
+0.20 mm width / 0.30 mm D-269 clearance, dominated by adjacent `U11.2` (57
+blocked samples). `U21.3` has zero at 0.25 mm / 0.25 mm, dominated by adjacent
+`U21.2` (48) and `U21.1` (7). The authoritative board remains byte-identical at
+`fd346ae6...`; accepted battery, accessory-power, RGB, and XGPIO4/5 copper is
+untouched.
+
+This does not prove the fixed packages unroutable: both are fine-pitch lands
+whose accepted solution class is a tightly courtyard-scoped directional neck,
+as already used for U20/U21/U22 power pins. Next, add a bounded angular/length
+directional-neck sweep for `U11.1` and `U21.3`, immediately widen to their 0.50
+mm SYS and 0.80 mm peak-feed trunks, and real-DRC each candidate against the
+D-269 corridor and `ACC_DETECT_N`. Replay the four-component inner-layer bridge
+only after both launches pass. Do not retry generic `reserve_escape`, the fixed
+north launches, or relax either clearance contract. No owner decision is open.
