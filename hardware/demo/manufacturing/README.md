@@ -2,6 +2,15 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_INT_N mixed-upper cases 32--47 bounded (2026-09-02)
+
+The resumable one-transition-via screen now covers cases 32--47. All preserve
+the complete qualified lower tree and reserve both upper escapes, but reject
+after 22,560 transition sites and 49,968 leg combinations. No candidate is
+emitted; board `04dc3e8a...` remains at 56 open nets / 460 edges with real
+refilled schematic-parity DRC 199/5/1. Cases 0--47 are exhausted. Continue at
+`--case-start 48`; do not replay them.
+
 ## WAKE_INT_N mixed-upper cases 16--31 bounded (2026-09-02)
 
 The resumable one-transition-via screen now covers cases 16--31. All preserve

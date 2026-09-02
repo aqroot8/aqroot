@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-516 (WAKE_INT_N mixed-upper cases 32--47 bounded):** the third
+  16-case one-transition-via window preserves the complete qualified lower
+  tree and reserves both upper escapes, but all cases reject after 22,560
+  transition sites and 49,968 leg combinations. No candidate exists; board
+  remains `04dc3e8a...`, 56 open nets / 460 edges, with real DRC 199/5/1.
+  Cases 0--47 are exhausted. **Next:** continue at `--case-start 48`. No owner
+  decision is open.
 - **Demo D-515 (WAKE_INT_N mixed-upper cases 16--31 bounded):** the next 16
   one-transition-via cases preserve the complete qualified lower tree and
   reserve both upper escapes, but all reject after 22,560 transition sites and
