@@ -401,6 +401,20 @@ ROUTES = {
         "layer": "B", "width": 300_000, "clearance": 200_000,
         "floor_override": {"U9.7": 200_000},
     },
+    "NFC_VDD_AM_UPPER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "pads": ("U9.11", "C51.1"),
+        "ignored_connected_pads": ("C52.1",),
+        "layer": "B", "width": 300_000, "clearance": 200_000,
+        "floor_override": {"U9.11": 200_000},
+    },
+    "NFC_VDD_AM_LOWER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "pads": ("U9.11", "C52.1"),
+        "ignored_connected_pads": ("C51.1",),
+        "layer": "B", "width": 300_000, "clearance": 200_000,
+        "floor_override": {"U9.11": 200_000},
+    },
     "NFC_RXA_UPPER": {
         "net": "/04_SPI_B_RADIOS_NFC/NFC_RXA",
         "pads": ("C75.2", "C76.1"),

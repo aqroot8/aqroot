@@ -3113,3 +3113,19 @@ the three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted NFC
 copper, and `hardware/beta-v2/` remain unchanged. Park the U11 package pocket;
 next freshly rank an independent retained local net or coherent local cluster.
 No owner decision is open.
+
+# D-449 · 2026-09-02 · Demo NFC VDD_AM decoupling tree promoted
+
+The retained ST25R3916 analog-modulator supply tree is complete: U9.11,
+C51.1, and C52.1 form one fitted copper island through 18 add-only 0.30 mm
+B.Cu segments totaling 60.878940 mm. Both upper-first and lower-first atomic
+screens close the two open edges with no vias, placement change, accepted-
+copper removal, wrong-net addition, or new real KiCad DRC class. The refilled
+schematic-parity signature remains the accepted 199 footprint-library / 5
+hole-clearance / 1 solder-mask-bridge reports. Fitted connectivity improves
+71→70 open nets and 492→490 open edges; ratsnest improves 521→519. Board
+SHA-256 is `97d60cde...`; D-269, D-186, all three RGB replacements, retained
+XGPIO4/XGPIO5, approved Demo NCs, accepted NFC signal/tuning copper, and
+`hardware/beta-v2/` remain intact. Next, screen the adjacent retained
+`NFC_VDD_RF` four-land supply tree as one coherent local transaction. No owner
+decision is open.

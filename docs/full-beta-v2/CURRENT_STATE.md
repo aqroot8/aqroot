@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-449 (NFC VDD_AM tree promoted):** the retained ST25R3916 analog-
+  modulator rail now connects U9.11, C51.1, and C52.1 as one island through
+  18 add-only 0.30 mm B.Cu segments (60.878940 mm), with no vias, placement
+  change, or accepted-copper removal. Both branch orders close the tree and
+  pass real refilled schematic-parity DRC at the accepted 199/5/1 signature.
+  Fitted opens improve 71→70 nets and 492→490 edges; ratsnest 521→519.
+  Board `97d60cde...`; D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, accepted
+  NFC tuning copper, and production hardware remain intact. **Next:** screen
+  the adjacent retained `NFC_VDD_RF` four-land supply tree as one coherent
+  local transaction. No owner decision.
 - **Demo D-448 (U11 branch-order family exhausted):** a deterministic 128-case
   scratch screen tried both U11.6/U11.9 reservation orders and all eight 2 mm
   directions per land at locked 0.20 mm B.Cu width/clearance before U11.8 ISET.

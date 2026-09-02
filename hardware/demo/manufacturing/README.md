@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC VDD_AM decoupling-tree promotion (2026-09-02)
+
+The retained ST25R3916 `NFC_VDD_AM` rail now connects U9.11, C51.1, and
+C52.1 as one fitted island. The atomic transaction adds 18 B.Cu-only 0.30 mm
+segments (60.878940 mm), no vias, removes no accepted copper, and reproduces
+a clean result in both branch orders. Real refilled schematic-parity DRC
+remains at the accepted 199 footprint-library / 5 hole-clearance / 1
+solder-mask-bridge signature. Fitted opens improve 71 to 70 nets and 492 to
+490 edges; ratsnest improves 521 to 519. Board SHA-256 is `97d60cde...`.
+Next, screen the adjacent four-land `NFC_VDD_RF` supply tree as one coherent
+local transaction while preserving all accepted NFC signal/tuning copper.
+
 ## U11 adjacent-branch reservation screen (2026-09-02)
 
 `screen_u11_iset_escape_transaction.py` exhausts both branch orders and all
