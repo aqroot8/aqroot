@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## U11 adjacent-branch reservation screen (2026-09-02)
+
+`screen_u11_iset_escape_transaction.py` exhausts both branch orders and all
+eight 2 mm directional targets for U11.6 (`TS_MR`) and U11.9 (`STAT1`) before
+attempting U11.8 (`ISET`): 128 scratch-only cases at 0.20 mm width/clearance on
+B.Cu. U11.6 reserves successfully in all 64 TS-first cases. U11.9 has no legal
+escape in all 64 STAT1-first cases and after every U11.6 reservation, so zero
+case reaches ISET and zero candidate is emitted. The package pocket is parked;
+do not retry branch ordering in place. The authoritative board remains
+`7a764bac...`. Next, freshly rank an independent retained local net/cluster.
+
 ## ISET package-land wall and local-route guard (2026-09-02)
 
 The 5.683 mm `/01_POWER_TREE/ISET` net remains open: U11.8 has no legal

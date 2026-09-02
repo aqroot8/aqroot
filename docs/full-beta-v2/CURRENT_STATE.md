@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-448 (U11 branch-order family exhausted):** a deterministic 128-case
+  scratch screen tried both U11.6/U11.9 reservation orders and all eight 2 mm
+  directions per land at locked 0.20 mm B.Cu width/clearance before U11.8 ISET.
+  U11.6 reserves in all 64 TS-first cases; U11.9 has no legal escape in all 64
+  STAT1-first cases and after every TS reservation. Zero case reaches ISET and
+  no copper is emitted. Board `7a764bac...` and production hardware are
+  unchanged. Park this package pocket and freshly rank an independent retained
+  local net/cluster. No owner decision.
 - **Demo D-447 (ISET wall + promotion guard):** the 5.683 mm charger-current
   programming net remains open because U11.8 has no legal 0.20 mm B.Cu escape;
   blockers are adjacent U11.6/U11.9, accepted tracks, and the board edge. No

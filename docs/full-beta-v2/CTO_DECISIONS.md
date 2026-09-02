@@ -3098,3 +3098,18 @@ decision is open.  **Next:** bound a U11-local escape transaction for ISET that
 atomically reserves the adjacent U11.6/U11.9 branches before U11.8, without
 moving U11 or weakening 0.20 mm clearance; if empty, park the package pocket
 and freshly rank an independent retained net.
+
+# D-448 · 2026-09-02 · Demo U11 adjacent-branch ordering family exhausted
+
+The D-447 successor deterministically screens both U11.6 (`TS_MR`) / U11.9
+(`STAT1`) reservation orders and all eight 2 mm directional targets per land
+before attempting U11.8 (`ISET`): 128 scratch-only cases at the locked 0.20 mm
+B.Cu width and clearance. U11.6 reserves successfully in all 64 TS-first cases.
+U11.9 returns `NO_LEGAL_ESCAPE` in all 64 STAT1-first cases and after every
+successful TS reservation, so zero case can reach ISET and no candidate copper
+is emitted. This disproves branch ordering as the in-place package-pocket lever.
+The authoritative board remains byte-identical at `7a764bac...`; D-269, D-186,
+the three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted NFC
+copper, and `hardware/beta-v2/` remain unchanged. Park the U11 package pocket;
+next freshly rank an independent retained local net or coherent local cluster.
+No owner decision is open.
