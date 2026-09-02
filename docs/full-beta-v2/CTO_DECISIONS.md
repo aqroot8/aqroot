@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-520 · 2026-09-02 · Demo WAKE_GATE_S generic tree bounded; R63 launch qualified:**
+The retained Community Port wake-gate signal was freshly selected after the
+D-519 successor text was found stale (`CC1101_GDO0` was already promoted by
+D-501). A new atomic harness covers fitted R66.1, R63.2, and Q10.2 in both
+branch orders. Both pristine orders stop at R63.2 `NO_VIA_SITE`, add/remove no
+copper, and reproduce the accepted real refilled schematic-parity DRC signature
+of 199 footprint-library / five hole-clearance / one solder-mask-bridge reports.
+A bounded package-local successor screens 1,248 B.Cu orthogonal shoulder/via
+shapes and finds two legal 0.20 mm width/clearance fanouts. The first witness
+runs from R63.2 via `(55.2,57.735)` to an ordinary 0.60/0.30 mm via at
+`(55.2,57.985)` mm. This is characterization only: board `04dc3e8a...` remains
+byte-identical at 56 open retained nets / 460 edges; D-269/D-186, RGB,
+XGPIO4/XGPIO5, Demo NCs, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next reserve this exact R63 launch and
+screen both complete WAKE_GATE_S branch orders atomically. No owner decision
+is open.
+
 **D-519 · 2026-09-02 · Demo NFC_IRQ mixed-inner haul bounded; wall parked:**
 The D-518 successor extends the atomic complete-link harness with one ordinary
 In2/In3 transition via while preserving the qualified U9.27 front-side fanout.

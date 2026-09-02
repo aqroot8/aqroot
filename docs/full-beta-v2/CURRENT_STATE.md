@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-520 (WAKE_GATE_S R63 launch qualified):** a new atomic two-order
+  harness covers the three fitted wake-gate lands R66.1/R63.2/Q10.2. Both
+  generic orders stop at R63.2 `NO_VIA_SITE`; a package-local 1,248-shape
+  screen then finds two legal B.Cu fanouts and an ordinary-via witness at
+  `(55.2,57.985)` mm. No partial copper is emitted; board remains
+  `04dc3e8a...`, 56 open nets / 460 edges, with real DRC 199/5/1. **Next:**
+  reserve this witness and screen both full-tree branch orders atomically.
+  No owner decision is open.
 - **Demo D-519 (NFC_IRQ mixed-inner haul bounded; wall parked):** the atomic
   complete-link harness preserves the qualified U9.27 fanout and tests all 16
   U1.11 escape cases with one ordinary In2/In3 transition. The three coexisting

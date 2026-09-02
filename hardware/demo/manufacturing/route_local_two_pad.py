@@ -121,6 +121,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "WAKE_GATE_PULLUP_SERIES": {
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "pads": ("R66.1", "R63.2"),
+        "ignored_connected_pads": ("Q10.2",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R66.1", "b": "R63.2", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "WAKE_GATE_SERIES_FET": {
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "pads": ("R63.2", "Q10.2"),
+        "ignored_connected_pads": ("R66.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R63.2", "b": "Q10.2", "a_near": "B", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "ACC_DETECT_HDR_TVS_RESISTOR": {
         "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
         "pads": ("D5.6", "R64.2"),

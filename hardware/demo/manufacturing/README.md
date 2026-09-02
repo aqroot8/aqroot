@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_GATE_S generic tree bounded; R63 fanout qualified (2026-09-02)
+
+The previously uncharacterized retained Community Port wake-gate node has an
+atomic two-order tree harness covering fitted R66.1, R63.2, and Q10.2. Both
+generic orders stop on the B.Cu R63.2 ordinary-via launch with no partial
+copper. A package-local 1,248-shape successor finds two legal fanouts; the
+first runs from R63.2 through `(55.2,57.735)` to a 0.60/0.30 mm via at
+`(55.2,57.985)` mm. Board `04dc3e8a...` remains byte-identical at 56 open
+nets / 460 edges and real refilled parity DRC remains 199/5/1. Next reserve
+this exact witness and screen both complete branch orders atomically.
+
 ## NFC_IRQ mixed-inner haul family bounded (2026-09-02)
 
 `route_nfc_irq_scratch.py` now preserves the qualified U9.27 front-side fanout
