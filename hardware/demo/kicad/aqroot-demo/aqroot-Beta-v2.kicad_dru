@@ -715,11 +715,15 @@
 # land patterns whose 0.150 mm gap is a property of the vendor drawing,
 # not of the placement.  Adding them takes the board's DRC from 47
 # violations to 26 without weakening any routing clearance anywhere.
+# U21 uses the same TPS61023 SOT-563 as U13. Its U21.6 output requires a
+# measured 0.510 mm-long, 0.25 mm-wide neck before widening to the ACC_5V
+# 0.40 mm floor; courtyard containment keeps this exception package-local.
 # =====================================================================
+
 
 (rule "Pad-escape necking - width, fine-pitch power packages"
 	(constraint track_width (min 0.20mm))
-	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')"))
+	(condition "A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U21') || A.intersectsCourtyard('U9')"))
 
 (rule "Pad-escape necking - clearance, fine-pitch power packages"
 	(constraint clearance (min 0.20mm))

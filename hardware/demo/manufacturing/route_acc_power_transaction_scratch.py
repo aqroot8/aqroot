@@ -3,6 +3,7 @@
 
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -22,6 +23,7 @@ POWER = "/01_POWER_TREE/ACC_5V_RAW"
 MOVES_MM = {"TP9": (49.50, 39.25), "TP10": (63.50, 42.75), "R50": (49.50, 57.735)}
 FAULT_ORDER = ("U22.6", "R103.2", "U20.6", "TP27.1", "U3.18", "TP33.1")
 POWER_ORDER = ("C65.1", "R99.1", "C66.1", "TP28.1", "U22.2")
+NECK_LENGTH_UM = int(os.environ.get("AQROOT_ACC_NECK_LENGTH_UM", "510"))
 
 
 def point(x, y):
@@ -100,7 +102,7 @@ def route_scratch(path):
         # Use the intended output-capacitor branch as its package escape; C65's
         # larger land then owns the compliant power via.
         power_pads = {p["ref"]: p for p in ir.physical_net_pads(routed, POWER)}
-        neck_end_x = power_pads["U21.6"]["x"] + 450_000
+        neck_end_x = power_pads["U21.6"]["x"] + NECK_LENGTH_UM * 1_000
         routed.track(POWER, "B", power_pads["U21.6"]["x"], power_pads["U21.6"]["y"],
                      neck_end_x, power_pads["U21.6"]["y"], 250_000)
         routed.track(POWER, "B", neck_end_x, power_pads["U21.6"]["y"],
@@ -154,6 +156,7 @@ def main():
                 and all(row.get("ok") for row in power["reservations"] + power["joins"]))
     report = {
         "schema": 1, "authoritative_board_sha256": before,
+        "neck_length_mm": NECK_LENGTH_UM / 1000,
         "authoritative_unchanged": before == hashlib.sha256(BOARD.read_bytes()).hexdigest(),
         "scratch_moves_mm": MOVES_MM, "withdrawn_fault_objects": removed,
         "fault": route["fault"], "power": power,
@@ -171,8 +174,30 @@ def main():
     return 0 if report["authoritative_unchanged"] else 2
 
 
+def build_candidate(path):
+    """Write the complete deterministic transaction to a caller-owned board."""
+    board = pcbnew.LoadBoard(str(BOARD))
+    footprints = {fp.GetReference(): fp for fp in board.GetFootprints()}
+    for ref, xy in MOVES_MM.items():
+        footprints[ref].SetPosition(point(*xy))
+    for item in list(board.GetTracks()):
+        if item.GetNetname() == FAULT:
+            board.Remove(item)
+    board.Save(str(path))
+    path.with_suffix(".kicad_dru").write_bytes(
+        BOARD.with_suffix(".kicad_dru").read_bytes()
+    )
+    subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--route", str(path)],
+        check=True,
+    )
+
+
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "--route":
         route_scratch(sys.argv[2])
+        raise SystemExit(0)
+    if len(sys.argv) == 3 and sys.argv[1] == "--build":
+        build_candidate(Path(sys.argv[2]))
         raise SystemExit(0)
     raise SystemExit(main())

@@ -214,12 +214,26 @@ width and 0.20 mm clearance at this fixed 0.15 mm pad-to-pad package geometry.
 The authoritative board remains unchanged at `b74cd3c0...`, with 572 retained
 open edges / 601 raw ratsnest.
 
-Next, characterize the shortest DRC-clean U21.6 package neck (start with 0.25 mm
-width and move the 0.40 mm widening point beyond 0.45 mm), then encode only that
-necessary pad-local exception in the existing U21 local rule. Re-run the atomic
-fault-plus-power transaction, fitted-pad connectivity, retained-ledger
-preservation, and authoritative refilled full-board DRC gate. Promote only if
-the exception is geometrically bounded to the U21.6 package escape and the
-remainder of `ACC_5V_RAW` stays at least 0.40 mm with 0.25 mm routed clearance.
+The atomic fault-plus-power transaction was promoted on 2026-09-02. A bounded
+0.005 mm sweep found that a 0.505 mm U21.6 neck still violates clearance while
+0.510 mm passes. The promoted launch is therefore 0.25 mm wide for 0.510 mm
+inside U21's courtyard, then immediately widens to the required 0.40 mm. U21
+was added to the existing fine-pitch package-neck width rule alongside the
+identical U13 TPS61023 package; the general `ACC_5V` width and 0.25 mm routed
+clearance rules remain unchanged outside the courtyard.
+
+The transaction replaces the complete `ACC_POWER_FAULT_N` branch, moves only
+optional `TP9`, `TP10`, and `R50`, and closes all six fitted `ACC_5V_RAW` pads
+using five 0.90/0.40 mm power vias. Retained open edges move exactly 572 -> 567
+and raw ratsnest 601 -> 596; `ACC_5V_RAW` alone changes from five open edges to
+zero and no retained net regresses. The authoritative refilled full-board DRC
+signature remains exactly 199 footprint-library, 5 inherited hole-clearance,
+and 1 inherited solder-mask-bridge report, with no clearance, short, crossing,
+width, via, dangling, or schematic-parity regression. Board hash:
+`ab4569487b781a164f14d392f7c1159c48fefbdad40522ced42e4af78a71c5b4`.
+
+Next, close the six remaining fitted-pad edges on `ACC_5V_SW` as the coherent
+downstream accessory-power increment, preserving the accepted U22 switch,
+`ACC_5V_SW_EN`, fault branch, connector endpoints, and the new U21 transaction.
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
