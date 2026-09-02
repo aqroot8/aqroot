@@ -42,6 +42,14 @@ def corridors(a, b):
     for x in range(3_000_000, 68_000_001, 2_000_000): yield (a, (x, a[1]), (x, b[1]), b)
     for y in range(38_000_000, 118_000_001, 2_000_000): yield (a, (a[0], y), (b[0], y), b)
 
+def compact(points):
+    return tuple(p for i, p in enumerate(points) if not i or p != points[i-1])
+
+def leg_paths(a, b):
+    yield "direct", compact((a, b))
+    yield "x_then_y", compact((a, (b[0], a[1]), b))
+    yield "y_then_x", compact((a, (a[0], b[1]), b))
+
 def join(board, a, b, layer):
     for index, points in enumerate(corridors(a, b)):
         mark = board.mark()
@@ -51,7 +59,41 @@ def join(board, a, b, layer):
         board.revert(mark)
     return {"ok": False, "reason": "NO_STAGED_CORRIDOR"}
 
-def run_case(work, inner, site, baseline):
+def mixed_join(board, first, a, b):
+    """Join the qualified escapes through one ordinary In2/In3 transition."""
+    second = "I3" if first == "I2" else "I2"
+    tested_sites = tested_paths = 0
+    # Sweep the full interior between the NFC pocket and MCU region on a
+    # finite 2 mm lattice. Endpoint-local geometry is already qualified.
+    for via in ((x, y) for x in range(3_000_000, 68_000_001, 2_000_000)
+                for y in range(38_000_000, 124_000_001, 2_000_000)):
+        tested_sites += 1
+        if not all(board.point_free(layer, NET, *via, 600_000,
+                                    CLEARANCE, CLEARANCE, 25_000)
+                   for layer in board.cu):
+            continue
+        for left_name, left in leg_paths(a, via):
+            for right_name, right in leg_paths(via, b):
+                tested_paths += 1; mark = board.mark()
+                left_ok = all(emit(board, p, q, first)
+                              for p, q in zip(left, left[1:]))
+                if left_ok:
+                    board.via(NET, *via, 600_000, 300_000)
+                right_ok = left_ok and all(emit(board, p, q, second)
+                                           for p, q in zip(right, right[1:]))
+                if right_ok:
+                    return {"ok": True, "family": "mixed_one_via",
+                            "layer_order": [first, second],
+                            "leg_families": [left_name, right_name],
+                            "transition_via_mm": [via[0]/1e6, via[1]/1e6],
+                            "tested_sites": tested_sites,
+                            "tested_paths": tested_paths}
+                board.revert(mark)
+    return {"ok": False, "reason": "NO_MIXED_ONE_VIA_CORRIDOR",
+            "layer_order": [first, second], "tested_sites": tested_sites,
+            "tested_paths": tested_paths}
+
+def run_case(work, inner, site, baseline, mixed):
     scratch = work / f"{inner}-{site}.kicad_pcb"
     for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"): scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
     board = qr.QBoard(scratch); ir.inject_existing_via_obstacles(board)
@@ -62,7 +104,8 @@ def run_case(work, inner, site, baseline):
     if fanout: board.via(NET,*U9_VIA,600_000,300_000)
     u1 = qr.reserve_escape(board, NET, pads["U1.11"], WIDTH, CLEARANCE, CLEARANCE, near="F", far=inner,
                            via_dia=600_000, via_drill=300_000, target=U9_VIA, site_index=site, site_separation=300_000) if fanout else {"ok":False}
-    joined = join(board,u1["via"],U9_VIA,inner) if u1.get("ok") else u1
+    joined = ((mixed_join(board,inner,u1["via"],U9_VIA) if mixed
+               else join(board,u1["via"],U9_VIA,inner)) if u1.get("ok") else u1)
     result={"inner":inner,"site":site,"fanout":fanout,"u1":u1,"join":joined,"promotion_candidate":False,"path":scratch}
     if not joined.get("ok"): return result
     board.save(scratch); drc=scratch.with_suffix(".drc.json")
@@ -78,17 +121,23 @@ def run_case(work, inner, site, baseline):
     return result
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true"); args=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true")
+    ap.add_argument("--single-layer",action="store_true",help="reproduce the D-518 planar family"); args=ap.parse_args()
     before=sha(BOARD); baseline=copper(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-nfc-irq-") as td:
         matrix=(("I2",0),) if args.promote else tuple((layer,site) for layer in ("I2","I3") for site in range(8))
-        cases=[run_case(Path(td),*case,baseline) for case in matrix]; winners=[c for c in cases if c["promotion_candidate"]]
+        cases=[]
+        for case in matrix:
+            result=run_case(Path(td),*case,baseline,mixed=not args.single_layer); cases.append(result)
+            if result["promotion_candidate"]: break
+        winners=[c for c in cases if c["promotion_candidate"]]
         if winners and args.candidate: args.candidate.write_bytes(winners[0]["path"].read_bytes())
         if args.promote:
             if not winners or sha(BOARD)!=before: raise RuntimeError("refuse promotion")
             BOARD.write_bytes(winners[0]["path"].read_bytes())
         for c in cases: c.pop("path",None)
-    print(json.dumps({"schema":1,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,"cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True))
+    print(json.dumps({"schema":1,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
+      "mode":"single_layer" if args.single_layer else "mixed_one_via","cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True))
     return 0 if winners else 2
 
 if __name__=="__main__": raise SystemExit(main())

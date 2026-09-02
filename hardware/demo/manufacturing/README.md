@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_IRQ mixed-inner haul family bounded (2026-09-02)
+
+`route_nfc_irq_scratch.py` now preserves the qualified U9.27 front-side fanout
+and screens one ordinary In2/In3 transition across the full NFC-to-MCU interior.
+All 16 U1 escape cases ran; the three coexisting In3 escapes each exhausted
+1,452 transition sites and 5,994 legal direct/orthogonal leg combinations with
+no complete link. No partial candidate was emitted. Board `04dc3e8a...` remains
+byte-identical at 56 open retained nets / 460 edges. Park this unchanged haul
+family; next reserve the qualified CC1101 GDO0 U7.15 fanout and screen its
+complete U1.8-to-U7.15 inner-layer haul atomically.
+
 ## NFC_IRQ package fanout qualified; planar haul bounded (2026-09-02)
 
 `screen_nfc_irq_u9_fanout.py` corrects the U9.27 layer assumption from the live

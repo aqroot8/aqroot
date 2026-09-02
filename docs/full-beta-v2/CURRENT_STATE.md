@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-519 (NFC_IRQ mixed-inner haul bounded; wall parked):** the atomic
+  complete-link harness preserves the qualified U9.27 fanout and tests all 16
+  U1.11 escape cases with one ordinary In2/In3 transition. The three coexisting
+  In3 escapes each exhaust 1,452 transition sites and 5,994 direct/orthogonal
+  leg combinations with no complete link. No partial candidate exists; board
+  remains byte-identical at `04dc3e8a...`, 56 open nets / 460 edges. **Next:**
+  reserve the qualified CC1101 GDO0 U7.15 fanout and screen the complete
+  U1.8-to-U7.15 inner haul atomically. No owner decision is open.
 - **Demo D-518 (NFC_IRQ package fanout qualified; planar haul bounded):** a
   package-specific 60-shape screen finds 23 legal U9.27 front-side fanouts and
   a clean ordinary-via witness at `(35.0,36.0)` mm. Atomic complete-link replay

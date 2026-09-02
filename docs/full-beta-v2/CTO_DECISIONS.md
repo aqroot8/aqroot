@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-519 · 2026-09-02 · Demo NFC_IRQ mixed-inner haul bounded; wall parked:**
+The D-518 successor extends the atomic complete-link harness with one ordinary
+In2/In3 transition via while preserving the qualified U9.27 front-side fanout.
+All 16 U1.11 layer/site cases run. Three In3 escapes coexist; each exhausts a
+full 1,452-site interior lattice and 5,994 legal direct/x-then-y/y-then-x leg
+combinations without a complete join. No candidate or partial copper is
+emitted. The authoritative board remains byte-identical at `04dc3e8a...`, 56
+open retained nets / 460 edges; the accepted real refilled schematic-parity
+DRC signature remains 199 footprint-library / five hole-clearance / one solder-
+mask-bridge reports. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and
+`hardware/beta-v2/` remain intact. Park this unchanged NFC IRQ haul family;
+next reserve the qualified CC1101 GDO0 U7.15 fanout and screen the complete
+U1.8-to-U7.15 inner-layer haul atomically. No owner decision is open.
+
 **D-518 · 2026-09-02 · Demo NFC_IRQ package fanout qualified; planar haul bounded:**
 The D-456 package-specific successor corrects the live endpoint assumption:
 U9.27 is a front-side QFN land. A deterministic 60-shape outward fanout screen
