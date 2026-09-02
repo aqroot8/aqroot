@@ -3710,3 +3710,21 @@ accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Do not
 repeat the unchanged MK1-hub/two-spine family. Next screen an MCU-hub topology
 with the amplifier as a stub, or a bounded three-spine/perimeter MK1-to-U1 haul.
 No owner decision is open.
+
+# D-485 · 2026-09-02 · Demo MCU-hub MK1 clock topology bounded
+
+The D-484 successor reverses both complete clock trees: U1 is the hub, MK1 is
+the long branch, and U5 is the short stub. The atomic harness screens all 32
+qualified MK1 fanout, distinct I2/I3, clock-order, and endpoint-reservation
+combinations. Both U1 and U5 ordinary-via escapes reserve in every case, but
+the first MCU-to-MK1 branch fails all 165 two-spine corridors for either clock;
+the amplifier stub is therefore never emitted and no partial candidate exists.
+Hub reversal alone is bounded and refuted. The authoritative board remains
+byte-identical at `044ebb60...`, 58 open retained nets / 463 edges, with the
+accepted real refilled parity DRC signature 199/5/1. The stale BOOT recovery
+harness is now preflight-hardened to refuse its already-connected D-469 target
+before it can duplicate accepted landing vias. D-269/D-186, RGB replacements,
+XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next retain the qualified MK1 fanouts and
+screen a genuinely broader three-spine or perimeter MCU-to-MK1 long-haul
+family. No owner decision is open.

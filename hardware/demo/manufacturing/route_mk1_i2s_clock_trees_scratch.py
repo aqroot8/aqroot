@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screen complete I2S BCLK/LRCLK trees after reserving both MK1 fanouts."""
+"""Screen complete I2S clock trees with the MCU as hub and U5 as a stub."""
 
 import argparse, hashlib, itertools, json, math, subprocess, sys, tempfile
 from collections import Counter
@@ -94,8 +94,14 @@ def run_case(work, layout, layers, clock_order, branch_order, baseline):
             routes.append({"clock": name, "role": role, "reserve": reserved})
             if not reserved.get("ok"): return finish(scratch, board, routes, baseline, False)
             endpoints[role] = reserved["via"]
-        for role in branch_order:
-            joined = staged_join(board, spec["net"], layer, hubs[name], endpoints[role])
+        # D-484 proved that an MK1 hub consumes the available two-spine
+        # corridor on the amplifier branch before reaching the MCU.  Reverse
+        # the tree: make the MCU escape the hub, take the long MK1 leg first,
+        # then attach U5 as the short branch.  branch_order still governs
+        # endpoint reservation so both package-order interactions are tested.
+        for role, start, end in (("mk", endpoints["mcu"], hubs[name]),
+                                 ("amp_stub", endpoints["mcu"], endpoints["amp"])):
+            joined = staged_join(board, spec["net"], layer, start, end)
             routes.append({"clock": name, "role": role, "join": joined})
             if not joined.get("ok"): return finish(scratch, board, routes, baseline, False)
     return finish(scratch, board, routes, baseline, True)

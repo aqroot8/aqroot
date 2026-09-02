@@ -104,6 +104,21 @@ def main():
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--promote", action="store_true")
     args = parser.parse_args(); before = sha256(BOARD); baseline = copper(BOARD)
+    # This recovery tree was promoted by D-469.  Refuse stale replay before
+    # the generic leg router can duplicate its accepted landing vias.
+    with tempfile.TemporaryDirectory(prefix="aqroot-demo-boot-preflight-") as preflight:
+        ledger_path = Path(preflight) / "ledger.json"
+        subprocess.run([sys.executable, str(LEDGER), "--board", str(BOARD),
+                        str(ledger_path)], check=True, stdout=subprocess.DEVNULL)
+        target = next(row for row in json.loads(ledger_path.read_text())["nets"]
+                      if row["net"] == NET)
+    if target["open_edges"] == 0:
+        print(json.dumps({"schema": 1, "authoritative_board_sha256": before,
+                          "authoritative_unchanged": True,
+                          "reason": "REFUSED_ALREADY_CONNECTED",
+                          "target_open_edges": 0, "cases": [],
+                          "promotion_candidates": 0}, indent=2, sort_keys=True))
+        return 0
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-boot-tree-") as temporary:
         cases = [run_case(Path(temporary), order, baseline) for order in itertools.permutations(LEGS)]
         winners = [case for case in cases if case["promotion_candidate"]]

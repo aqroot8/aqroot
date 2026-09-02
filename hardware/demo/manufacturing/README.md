@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## MCU-hub MK1 clock topology bounded (2026-09-02)
+
+The complete paired-clock harness now implements the D-484 successor topology:
+U1 is the hub, MK1 is the long branch, and U5 is attached as the short stub.
+All 32 combinations reserve both U1/U5 endpoints, but the first MCU-to-MK1
+branch still fails all 165 two-spine corridors on either clock/layer before the
+stub is attempted. This proves hub reversal alone does not open the shared
+long-haul wall. No partial copper or authoritative board change was emitted;
+the board remains `044ebb60...` at 58/463. The next bounded alternative is a
+three-spine or perimeter long-haul family, retaining the qualified MK1 fanouts.
+The stale BOOT harness now refuses its already-connected D-469 target before
+replaying and duplicating accepted vias.
+
 ## Complete MK1 clock-tree staged family bounded (2026-09-02)
 
 `route_mk1_i2s_clock_trees_scratch.py` turns the qualified paired microphone

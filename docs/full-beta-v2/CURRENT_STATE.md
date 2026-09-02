@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-485 (MCU-hub MK1 clock topology bounded):** the D-484 successor
+  reverses each clock tree so U1 is the hub, MK1 is the long branch, and U5 is
+  the short stub. Across all 32 fanout/layer/clock/reservation combinations,
+  both U1/U5 endpoint escapes reserve, but the first MCU-to-MK1 branch fails
+  all 165 two-spine corridors for either clock. No partial copper is emitted;
+  board `044ebb60...` remains at 58/463. The stale BOOT harness is also
+  preflight-hardened to refuse its already-connected D-469 target. **Next:**
+  retain the qualified MK1 fanouts and screen a three-spine or perimeter
+  MCU-to-MK1 long-haul family. No owner decision.
 - **Demo D-484 (complete MK1 clock-tree staged family bounded):** a new atomic
   harness screens 32 complete paired-tree cases: four qualified MK1 fanouts,
   both distinct I2/I3 assignments, both clock priorities, and both branch
