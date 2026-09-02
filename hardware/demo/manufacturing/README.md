@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## GPIO45 VDD_SPI strap promotion (2026-09-02)
+
+The retained ESP32-S3 strap tree now connects U1.26, R111.1, and TP1.1 as one
+fitted copper island. `route_gpio45_vddspi_strap_scratch.py` gates both branch
+orders and promotes 23 add-only 0.20 mm segments (19 F.Cu, four In2.Cu) plus two
+ordinary 0.60/0.30 mm vias. No accepted copper is removed and no wrong-net item
+is added. The real refilled schematic-parity DRC signature remains exactly 199
+footprint-library, five hole-clearance, and one solder-mask-bridge reports.
+Fitted connectivity improves 67 to 66 open nets and 484 to 482 open edges;
+ratsnest improves 513 to 511. Board SHA-256 is `e1d5d5d8...`, and the production
+tree is byte-identical. Next, screen the independent `Net-(U11-TS_MR)` control
+net using the U11.6 escape proven by D-448; do not reopen the parked U11.8/U11.9
+package pocket.
+
 ## NFC U9 refloor preflight rejection (2026-09-02)
 
 The atomic U9 harness now runs real schematic-parity DRC immediately after its

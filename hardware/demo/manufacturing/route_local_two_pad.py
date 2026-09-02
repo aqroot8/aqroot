@@ -16,6 +16,22 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "GPIO45_VDDSPI_U1_R111": {
+        "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "pads": ("U1.26", "R111.1"),
+        "ignored_connected_pads": ("TP1.1",),
+        "layer": "F", "width": 200_000, "clearance": 250_000,
+        "inner_long_haul_plan": {
+            "a": "U1.26", "b": "R111.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "GPIO45_VDDSPI_R111_TP1": {
+        "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "pads": ("R111.1", "TP1.1"),
+        "ignored_connected_pads": ("U1.26",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
     "SPI_A_SCK_DISPLAY": {
         "net": "/SPI_A_SCK",
         "pads": ("U1.20", "J1.36"),

@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-462 · 2026-09-02 · Demo GPIO45 VDD_SPI strap tree promoted:** the retained
+ESP32-S3 boot-strap network now connects U1.26, fitted 10 kOhm R111.1, and TP1.1
+as one copper island.  Both atomic branch orders pass; the selected candidate
+adds 23 0.20 mm segments (19 F.Cu, four In2.Cu) and two ordinary 0.60/0.30 mm
+through vias, totaling 79.772863 mm, with no accepted-copper removal or wrong-
+net addition.  The U1-to-R111 leg uses reserved F.Cu escapes and a 27.154463 mm
+In2 haul; the R111-to-TP1 branch remains on F.Cu.  Independent real refilled
+schematic-parity DRC retains exactly 199 footprint-library / five hole-clearance
+/ one solder-mask-bridge reports and no attributable class.  Fitted connectivity
+improves 67->66 open nets and 484->482 edges; ratsnest improves 513->511. Board
+SHA-256 is `e1d5d5d8...`; D-269, D-186, all three RGB replacements, retained
+XGPIO4/XGPIO5, approved Demo NC contacts, and `hardware/beta-v2/` remain intact.
+Next, screen the independent `Net-(U11-TS_MR)` control net using the U11.6
+escape already proven by D-448, without reopening the parked U11.8/U11.9 package
+pocket. No owner decision is open.
+
 **D-461 · 2026-09-02 · Demo fixed U9 east-refloor transaction rejected at preflight:**
 the D-460 successor tested the requested RFO1-before-RFO2 and VDD_D-lower-
 before-upper orders, but found a stronger order-independent failure.  Immediately

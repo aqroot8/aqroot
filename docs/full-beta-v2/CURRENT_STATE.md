@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-462 (GPIO45 VDD_SPI strap promoted):** U1.26, fitted 10 kOhm
+  R111.1, and TP1.1 are now one copper island through 23 add-only 0.20 mm
+  segments (19 F.Cu / four In2.Cu) and two ordinary vias. Both branch orders
+  pass the atomic gate; independent refilled parity DRC remains 199/5/1 with
+  no attributable class. Connectivity improves 67->66 open retained nets and
+  484->482 edges; ratsnest 513->511. Board `e1d5d5d8...`; accepted copper,
+  D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and production hardware remain
+  intact. **Next:** screen `Net-(U11-TS_MR)` using D-448's proven U11.6 escape,
+  without reopening the parked U11.8/U11.9 package pocket. No owner decision.
 - **Demo D-461 (fixed U9 east-refloor parked):** the new post-move/pre-route
   parity-DRC gate proves the +0.5 mm-east pose is illegal before branch ordering:
   U9 overlaps C17's courtyard and shifted pads intersect retained NFC copper
