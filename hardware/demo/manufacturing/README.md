@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 DIO1 mixed-inner haul family bounded (2026-09-02)
+
+`route_sx1262_dio1_btn_b_refloor_scratch.py` now preserves the D-503 atomic
+boundary while screening one ordinary transition via between In2 and In3.
+All 16 U8.13 layer/site cases again coexist with the qualified U2.20 launch.
+Each case exhausts 3,021 transition sites and 11,520 direct/orthogonal leg
+combinations: 48,336 sites and 184,320 combinations total, with no complete
+haul. `BTN_B_N` replay is therefore never attempted and no partial candidate
+is emitted. Board `04dc3e8a...` remains 56/460. Park this unchanged-geometry
+DIO1 haul wall; next freshly screen an independent retained local cluster
+outside the parked power, USB, NFC, audio, shared-bus, and U2-package walls.
+
 ## SX1262 DIO1 atomic refloor/haul family bounded (2026-09-02)
 
 `route_sx1262_dio1_btn_b_refloor_scratch.py` implements the D-502 transaction

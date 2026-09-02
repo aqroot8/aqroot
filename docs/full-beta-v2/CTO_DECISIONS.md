@@ -4102,3 +4102,21 @@ replacements, XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
 and screen one bounded mixed-In2/In3 haul with an intermediate ordinary
 layer-transition via; do not repeat the exhausted single-layer family. No
 owner decision is open.
+
+# D-504 · 2026-09-02 · Demo SX1262 DIO1 mixed-inner haul family bounded
+
+The recovered D-503 successor preserves the complete atomic transaction while
+adding one ordinary 0.60/0.30 mm layer-transition via between In2 and In3.
+Every one of the 16 U8.13 layer/site cases again reserves both the qualified
+U2.20 launch and its U8.13 escape. Each case exhausts 3,021 transition-via
+sites and 11,520 direct/x-then-y/y-then-x leg combinations without completing
+the haul: 48,336 sites and 184,320 combinations total across both layer orders.
+
+The harness never reaches `BTN_B_N` replay and correctly emits no partial
+candidate. The authoritative PCB remains byte-identical at `04dc3e8a...`, with
+56 open retained nets / 460 edges. D-269/D-186, all RGB replacements,
+XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
+`hardware/beta-v2/` remain intact. The unchanged-geometry DIO1 haul wall is
+parked under the routing-wall iteration policy. Next freshly screen an
+independent retained local cluster outside the parked power, USB, NFC, audio,
+shared-bus, and U2-package walls. No owner decision is open.

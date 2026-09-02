@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-504 (SX1262 DIO1 mixed-inner haul family bounded):** the recovered
+  successor extends the D-503 atomic harness with one ordinary transition via
+  between In2 and In3. All 16 U8.13 layer/site cases coexist with the
+  qualified U2.20 launch, but each exhausts 3,021 transition sites and 11,520
+  direct/orthogonal leg combinations without a complete haul: 48,336 sites
+  and 184,320 combinations total. `BTN_B_N` replay is never attempted and no
+  partial candidate is emitted. PCB remains byte-identical at `04dc3e8a...`,
+  56 open retained nets / 460 edges; production hardware is unchanged. This
+  unchanged-geometry DIO1 haul wall is now parked. **Next:** freshly screen an
+  independent retained local cluster outside the parked power, USB, NFC,
+  audio, shared-bus, and U2-package walls. No owner decision.
 - **Demo D-503 (SX1262 DIO1 atomic refloor/haul family bounded):** the
   D-502 minimum-boundary transaction is now a reproducible scratch harness.
   Each of 16 cases withdraws all 21 accepted `BTN_B_N` copper objects, reserves

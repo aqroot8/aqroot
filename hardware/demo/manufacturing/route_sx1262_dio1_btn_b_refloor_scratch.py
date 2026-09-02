@@ -85,6 +85,58 @@ def join(board, a, b, layer):
     return {"ok": False, "reason": "NO_STAGED_CORRIDOR", "tested": tested}
 
 
+def compact(points):
+    return tuple(point for index, point in enumerate(points)
+                 if not index or point != points[index - 1])
+
+
+def leg_paths(a, b):
+    """Small deterministic family for either side of a transition via."""
+    yield "direct", compact((a, b))
+    yield "x_then_y", compact((a, (b[0], a[1]), b))
+    yield "y_then_x", compact((a, (a[0], b[1]), b))
+
+
+def mixed_join(board, a, b, first):
+    """Join through one ordinary via, changing between In2 and In3 once."""
+    second = "I3" if first == "I2" else "I2"
+    tested_sites = tested_paths = 0
+    # A deterministic 1 mm screening lattice bounds this family to 3,021
+    # ordinary through-via sites per layer order.
+    sites = ((x, y) for x in range(4_000_000, 56_000_001, 1_000_000)
+             for y in range(90_000_000, 146_000_001, 1_000_000))
+    for via in sites:
+        tested_sites += 1
+        if not all(board.point_free(layer, DIO, *via, 600_000,
+                                    CLEARANCE, CLEARANCE, 25_000)
+                   for layer in board.cu):
+            continue
+        for left_name, left in leg_paths(a, via):
+            for right_name, right in leg_paths(via, b):
+                tested_paths += 1; mark = board.mark()
+                left_ok = all(emit(board, p, q, first)
+                              for p, q in zip(left, left[1:]))
+                if left_ok:
+                    board.via(DIO, *via, 600_000, 300_000)
+                right_ok = left_ok and all(emit(board, p, q, second)
+                                           for p, q in zip(right, right[1:]))
+                if right_ok:
+                    return {"ok": True, "family": "mixed_one_via",
+                            "layer_order": [first, second],
+                            "leg_families": [left_name, right_name],
+                            "transition_via_mm": [via[0] / 1e6, via[1] / 1e6],
+                            "tested_sites": tested_sites,
+                            "tested_paths": tested_paths,
+                            "mm": (sum(math.hypot(q[0]-p[0], q[1]-p[1])
+                                       for p, q in zip(left, left[1:])) +
+                                   sum(math.hypot(q[0]-p[0], q[1]-p[1])
+                                       for p, q in zip(right, right[1:]))) / 1e6}
+                board.revert(mark)
+    return {"ok": False, "reason": "NO_MIXED_ONE_VIA_CORRIDOR",
+            "layer_order": [first, second], "tested_sites": tested_sites,
+            "tested_paths": tested_paths}
+
+
 def replay_btn(board):
     group = ir.GROUPS["BTN_B_N"]
     pads = ir.physical_net_pads(board, BTN)
@@ -103,8 +155,8 @@ def replay_btn(board):
     return rows
 
 
-def run_case(work, inner, u8_site, baseline):
-    scratch = work / f"{inner}-{u8_site}.kicad_pcb"
+def run_case(work, inner, u8_site, baseline, mixed):
+    scratch = work / f"{'mixed' if mixed else 'single'}-{inner}-{u8_site}.kicad_pcb"
     for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
         scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
     prep = subprocess.run([sys.executable, __file__, "--prepare", str(scratch)],
@@ -127,11 +179,14 @@ def run_case(work, inner, u8_site, baseline):
                                via_dia=600_000, via_drill=300_000,
                                target=U2_VIA, site_index=u8_site,
                                site_separation=300_000)
-    if u8.get("ok"): haul = join(board, U2_VIA, u8["via"], inner)
+    if u8.get("ok"):
+        haul = (mixed_join(board, U2_VIA, u8["via"], inner) if mixed
+                else join(board, U2_VIA, u8["via"], inner))
     if haul.get("ok"): btn = replay_btn(board)
     if btn and all(row["ok"] for row in btn):
         ir.refill_planes(board.b); board.save(scratch)
-    result = {"inner": inner, "u8_site": u8_site, "withdrawn_btn_items": withdrawn,
+    result = {"mode": "mixed_one_via" if mixed else "single_layer",
+              "inner": inner, "u8_site": u8_site, "withdrawn_btn_items": withdrawn,
               "u2_fanout": u2_ok, "u8_escape": u8, "haul": haul,
               "btn_replay": btn, "promotion_candidate": False, "path": scratch}
     if not (btn and all(row["ok"] for row in btn)): return result
@@ -162,6 +217,8 @@ def run_case(work, inner, u8_site, baseline):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--candidate", type=Path); ap.add_argument("--promote", action="store_true")
+    ap.add_argument("--single-layer", action="store_true",
+                    help="reproduce the exhausted D-503 family")
     ap.add_argument("--prepare", type=Path)
     args = ap.parse_args()
     if args.prepare:
@@ -169,7 +226,9 @@ def main():
     before, baseline = sha(BOARD), copper(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-dio1-btn-refloor-") as td:
         matrix = (("I3", 0),) if args.promote else tuple((layer, site) for layer in ("I2", "I3") for site in range(8))
-        cases = [run_case(Path(td), layer, site, baseline) for layer, site in matrix]
+        cases = [run_case(Path(td), layer, site, baseline,
+                          mixed=not args.single_layer)
+                 for layer, site in matrix]
         winners = [row for row in cases if row["promotion_candidate"]]
         if winners and args.candidate: args.candidate.write_bytes(winners[0]["path"].read_bytes())
         if args.promote:
