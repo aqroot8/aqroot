@@ -584,3 +584,28 @@ Next, build the coordinated MCU-side USB corridor primitive and review the
 whole connector-to-MCU pair. `BQ25185_SYS` remains parked. Manufacturing
 export remains premature while 97 retained multi-pad nets are open; no owner
 decision is open.
+
+The next bounded iteration reconfirmed why the remaining MCU-side USB pair
+needs a new primitive: the resistor endpoints are ordered N/P from left to
+right while the ESP32 endpoints are P/N, and the generic empty-pair F.Cu
+screen still cannot route the N leg at either 0.050 or 0.025 mm resolution.
+A coordinated solution must explicitly handle that endpoint crossover while
+keeping the pair within its coupling contract; fixed-offset reuse of the ESD
+pair and single-leg promotion remain closed.
+
+The independent coherent alternative promoted both USB-C configuration
+straps. `Net-(J3-CC1)` connects `J3.A5` to `R31.1` in six F.Cu segments
+(11.474888 mm), and `Net-(J3-CC2)` connects `J3.B5` to `R30.1` in eight F.Cu
+segments (14.066030 mm). All 14 segments are 0.20 mm wide; there are no vias,
+no missing accepted copper objects, and no placement or rule change. The
+authoritative refilled, schematic-parity KiCad gate remains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited solder-
+mask-bridge report. Retained open edges fall 540 -> 538, raw ratsnest 569 ->
+567, and open retained nets 97 -> 95. Board hash: `c052390c09b542cbcff7904aa6518bc42f41026aa892e30c6c94405dfa8373e2`.
+
+A same-face `ISET` screen was also rejected before promotion: `U11.8` has no
+legal 0.20 mm B.Cu escape between adjacent charger lands, existing copper, and
+the board edge. Do not retry that generic tactic. `BQ25185_SYS` remains parked.
+The next highest-leverage fabrication blocker is the endpoint-order-aware
+coordinated `/USB_D_MCU_N` and `/USB_D_MCU_P` transaction; no owner decision
+is open and manufacturing export remains premature.

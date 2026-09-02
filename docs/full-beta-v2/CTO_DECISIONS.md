@@ -9,6 +9,24 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-400 · 2026-09-02 · routed Demo increment:** after the remaining MCU-side
+USB pair again confirmed that the generic independent-leg primitive cannot
+escape `/USB_D_MCU_N` on F.Cu, the coherent USB-C configuration pair was
+selected as the independent bounded alternative. `Net-(J3-CC1)` now connects
+`J3.A5` to `R31.1` and `Net-(J3-CC2)` connects `J3.B5` to `R30.1` with 14
+add-only 0.20 mm F.Cu segments, zero vias, and zero accepted-copper removals.
+The authoritative zone-refilled, schematic-parity KiCad gate remains exactly
+199 footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge report with no attributable violation. The fitted ledger
+moves 540 -> 538 open edges, raw ratsnest 569 -> 567, and 97 -> 95 open
+retained nets. A same-face `ISET` attempt was rejected without board change at
+`U11.8` (`NO_LEGAL_ESCAPE` against adjacent charger lands, existing track, and
+board edge); do not retry that generic tactic. RGB, `ACC_5V_SW_EN`, XGPIO4/5,
+retained battery/power copper, and `hardware/beta-v2/` are unchanged. Board
+hash `c052390c...`. Next, implement an endpoint-order-aware coordinated
+MCU-side USB pair transaction; fixed-offset reuse and single-leg promotion
+remain closed. `BQ25185_SYS` stays parked and no owner decision is open.
+
 **D-399 · 2026-09-02 · routed Demo increment:** the generic independent-leg
 primitive cannot route `/USB_D_MCU_N` on F.Cu at either 0.050 or 0.025 mm grid
 resolution, so it is closed for the remaining MCU-side USB pair; no isolated

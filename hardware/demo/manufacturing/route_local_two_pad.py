@@ -37,6 +37,27 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "ISET": {
+        "net": "/01_POWER_TREE/ISET",
+        "pads": ("R37.1", "U11.8"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "USB_CC1": {
+        "net": "Net-(J3-CC1)",
+        "pads": ("J3.A5", "R31.1"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "USB_CC2": {
+        "net": "Net-(J3-CC2)",
+        "pads": ("J3.B5", "R30.1"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "DISP_SDO": {
         "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
         "pads": ("J1.33", "TP36.1"),
