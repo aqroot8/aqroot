@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-531 (USB VBUS planar neck/pour refuted; POFV qualified):** a
+  deterministic 0.50-to-0.15 mm launch sweep proves the coincident J3.A9/B4
+  VBUS land has no planar escape. Both lateral gaps are exactly the 0.200 mm
+  clearance floor, leaving zero positive-width throat, and the verified
+  locating hole blocks inward escape. The existing 0.35/0.20 mm plated-over-
+  filled through-via process fits each 0.60 mm VBUS land with 0.125 mm host
+  copper per side and is therefore the qualified successor. No rule or copper
+  changed; board `04dc3e8a...` remains at 56 open nets / 460 edges. **Next:**
+  add a tightly scoped J3 VBUS POFV corridor and route the complete RAW tree
+  over an outer-layer 0.50 mm trunk to C20/R35/U10 under the full gate. No
+  owner decision; POFV is already required by the locked stackup.
 - **Demo D-530 (USB_VBUS_RAW ordinary-track wall bounded):** fresh ledger
   ranking selected the uncharacterized USB power-entry cluster (14 open edges
   across RAW/CHG). The new seven-land atomic RAW harness closes R35.1-C20.1,

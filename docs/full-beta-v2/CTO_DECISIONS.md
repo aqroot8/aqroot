@@ -9,6 +9,31 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-531 · 2026-09-02 · Demo USB VBUS planar neck/pour refuted; POFV boundary qualified:**
+The D-530 successor derives the connector escape from the verified live GCT
+land pattern rather than weakening the 0.50 mm trunk. A deterministic screen
+tests 0.50, 0.35, 0.30, 0.25, 0.20, and 0.15 mm F.Cu launches. The decisive
+coincident `J3.A9/B4` VBUS land has no legal launch at any width. Its two
+lateral copper gaps are each exactly 0.200 mm, so the required 0.200 mm
+clearance leaves no positive-width planar throat; the inward direction is
+occupied by the verified Ø0.65 locating hole. A connector-local pour has the
+same geometric boundary as a trace and therefore cannot fix this land.
+
+The board's already-approved plated-over-filled through-via process is
+geometrically sufficient: a 0.35/0.20 mm POFV centered in each 0.60 mm VBUS
+land leaves 0.125 mm host-land copper per side and uses the same 0.075 mm
+plated annulus already fitted at Q3.3. This qualifies geometry/process reuse,
+not copper promotion: the VBUS power-class via rule still needs a tightly
+scoped J3 POFV corridor, and the complete seven-land RAW tree must be routed
+and gated atomically before either connector via is authoritative. Board
+`04dc3e8a...` remains byte-identical at 56 open retained nets / 460 edges;
+D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, accepted accessory-power copper,
+and `hardware/beta-v2/` remain intact. Next add the scoped J3 VBUS POFV rule
+and atomically route both connector islands on an outer-copper 0.50 mm trunk
+to C20/R35/U10; promote only after full refilled parity DRC, connectivity, and
+accepted-copper preservation pass. No owner decision is open because the
+required POFV fabrication process is already part of the locked stackup.
+
 **D-530 · 2026-09-02 · Demo USB_VBUS_RAW ordinary-track wall bounded:**
 Fresh live-ledger ranking selected the previously uncharacterized USB power-
 entry cluster, whose `USB_VBUS_RAW` and `USB_VBUS_CHG` nets account for 14

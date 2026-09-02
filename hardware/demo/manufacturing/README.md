@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB VBUS POFV boundary qualified (2026-09-02)
+
+The D-530 planar-pour/neck successor is now bounded. J3.A9/B4 has no legal
+F.Cu launch from 0.50 down through 0.15 mm: both side gaps are exactly the
+0.200 mm clearance floor, leaving no positive-width copper throat, while the
+verified Ø0.65 locating hole blocks the inward direction. A pour cannot cross
+that boundary either. The existing 0.35/0.20 mm plated-over-filled through-via
+process fits the 0.60 mm VBUS lands with 0.125 mm host copper per side, matching
+the already-fitted Q3.3 process geometry. No rule/copper was changed and board
+`04dc3e8a...` stays at 56 open nets / 460 edges. Next implement a tightly
+scoped J3 VBUS POFV rule and atomically route both connector islands over an
+outer-layer 0.50 mm trunk to C20/R35/U10; partial connector copper is forbidden.
+
 ## USB_VBUS_RAW ordinary-track wall bounded (2026-09-02)
 
 Fresh live-ledger ranking selected the previously uncharacterized USB power
