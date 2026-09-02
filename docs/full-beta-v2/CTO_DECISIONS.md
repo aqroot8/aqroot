@@ -9,6 +9,29 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-530 · 2026-09-02 · Demo USB_VBUS_RAW ordinary-track wall bounded:**
+Fresh live-ledger ranking selected the previously uncharacterized USB power-
+entry cluster, whose `USB_VBUS_RAW` and `USB_VBUS_CHG` nets account for 14
+retained open edges. A new atomic scratch harness covers all seven fitted
+`USB_VBUS_RAW` lands at the locked `VBUS_CHG` 0.50 mm width / 0.20 mm
+clearance. The R35.1-to-C20.1 local branch closes cleanly in 4.627535 mm, but
+the first USB-C branch stops at `J3.A9 NO_LEGAL_ESCAPE`. An independent
+package screen then proves zero legal full-width F.Cu launches for all four
+coincident VBUS lands (`J3.A4/B9` and `J3.A9/B4`) at both 0.05 and 0.025 mm
+grids; the blockers are the board edge, adjacent J3 signal/ground lands, and
+J3 mechanical pads. The scratch candidate adds four target-net segments,
+removes no copper, and has exactly the accepted real refilled parity-DRC
+signature 199/5/1, but remains three edges open and is correctly rejected.
+No candidate or partial copper is promoted; authoritative board
+`04dc3e8a...` remains byte-identical at 56 open retained nets / 460 edges.
+Do not retry an ordinary 0.50 mm trace launch or revive the retired inherited
+0.55/0.25 mm via assumption. Next derive and gate a connector-local F.Cu
+power-pour/neck transaction from the actual USB current requirement and
+mainstream-fab geometry, then attach C20/R35/U10 atomically; do not weaken the
+VBUS_CHG trunk or clearance contract. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo
+NCs, accepted accessory power, and `hardware/beta-v2/` remain intact. No owner
+decision is open.
+
 **D-529 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 12--15 bounded;
 wall parked:** The fifth non-overlapping D-526 window pairs U2 endpoint site
 three with TP10 sites zero through three on In2. All four endpoint-escape

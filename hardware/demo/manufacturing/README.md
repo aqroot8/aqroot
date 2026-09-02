@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_RAW ordinary-track wall bounded (2026-09-02)
+
+Fresh live-ledger ranking selected the previously uncharacterized USB power
+entry: `USB_VBUS_RAW` plus `USB_VBUS_CHG` carry 14 retained open edges. The new
+atomic seven-land RAW harness uses the locked 0.50 mm `VBUS_CHG` width and
+0.20 mm clearance. R35.1-to-C20.1 closes cleanly, but the first connector
+branch stops at `J3.A9 NO_LEGAL_ESCAPE`. A separate package screen confirms
+zero full-width F.Cu launches from J3.A4, A9, B4, or B9 at both 0.05 and
+0.025 mm grids. The scratch partial adds four target-net segments, removes no
+copper, and keeps real refilled parity DRC at 199/5/1, but remains three edges
+open and is rejected. The authoritative PCB remains byte-identical at
+`04dc3e8a...`, 56 open retained nets / 460 edges. Next derive a connector-local
+F.Cu power-pour/neck transaction from the actual current and fab geometry,
+then attach C20/R35/U10 atomically. Do not retry an ordinary 0.50 mm trace
+launch, revive the retired 0.55/0.25 mm via premise, or weaken `VBUS_CHG`.
+
 ## NFC_5V_EN mixed-inner cases 12--15 bounded; wall parked (2026-09-02)
 
 The fifth non-promoting iteration paired U2 endpoint site three with all four

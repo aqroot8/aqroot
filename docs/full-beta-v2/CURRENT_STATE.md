@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-530 (USB_VBUS_RAW ordinary-track wall bounded):** fresh ledger
+  ranking selected the uncharacterized USB power-entry cluster (14 open edges
+  across RAW/CHG). The new seven-land atomic RAW harness closes R35.1-C20.1,
+  but all four J3 VBUS lands have zero legal 0.50 mm F.Cu escapes at 0.05 and
+  0.025 mm grids. The clean scratch partial has accepted 199/5/1 DRC and no
+  removals, but remains three edges open and is rejected. Board `04dc3e8a...`
+  remains byte-identical at 56 open retained nets / 460 edges. **Next:** derive
+  a connector-local F.Cu power-pour/neck transaction from current capacity and
+  fab geometry, then attach C20/R35/U10 atomically; do not retry an ordinary
+  full-width trace launch or weaken `VBUS_CHG`. No owner decision.
 - **Demo D-529 (NFC_5V_EN mixed-inner cases 12--15 bounded; wall parked):**
   the fifth non-promoting window pairs U2 site three with TP10 sites zero
   through three on In2. Every escape pair coexists, but each case exhausts
