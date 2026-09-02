@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-417 · 2026-09-02 · Demo accessory boost B.Cu topology bounded:** an
+LX-first scratch screen preserves the accepted five-via `ACC_5V_RAW`
+distribution tree and tests five bounded `L4` offsets after rotating `U21/L4`
+180 degrees.  All five switch-node cases close (5.255–6.255 mm), proving the
+LX-first lever is durable, but none passes real KiCad DRC.  `L4` alone cannot
+clear the rotated `L4`/`R99` courtyard overlap; the straight restored U21.6 raw
+neck crosses accepted `ACC_DETECT_N` and misses the 0.25 mm power clearance to
+LX and the accepted raw via.  No placement, copper, rule, or PCB was promoted;
+the authoritative board remains byte-identical at `37718bc7...`.  Do not retry
+an `L4`-only move or the straight raw neck.  Next, include `R99` in the minimum
+placement boundary and explicitly route the U21.6-to-tree B.Cu neck around
+`ACC_DETECT_N`, LX, and the (55.85,38.00) raw via before replaying FB/EN/input/GND.
+No owner decision is open.
+
 **D-416 · 2026-09-02 · Demo accessory boost power-core replay bounded:** a
 deterministic scratch transaction rotates `U21`/`L4` 180 degrees, withdraws all
 19 accepted `ACC_5V_RAW` objects, and tests both power-core branches. Ordering

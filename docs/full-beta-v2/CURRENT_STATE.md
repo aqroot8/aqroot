@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-417 (accessory boost B.Cu topology bounded; no PCB change):** five
+  LX-first, accepted-raw-tree-preserving cases all close `ACC_5V_LX`
+  (5.255–6.255 mm), but no `L4`-only offset clears real KiCad DRC.  The remaining
+  minimum wall is explicit: rotated `L4` overlaps `R99`, while the straight
+  U21.6 raw-tree neck crosses accepted `ACC_DETECT_N` and violates clearance to
+  LX/the accepted raw via at (55.85,38.00).  Board remains `37718bc7...` and
+  `hardware/beta-v2/` is untouched. **Next:** include `R99` in the bounded
+  placement transaction and route the raw B.Cu neck around those three fixed
+  obstacles, then replay FB/EN/input/GND atomically. No owner decision.
 - **Demo D-416 (accessory boost power-core replay bounded; no PCB change):**
   the 180-degree U21/L4 refloor is order-sensitive. LX-first closes
   `ACC_5V_LX` in 6.213 mm, after which all five `ACC_5V_RAW` endpoints close;

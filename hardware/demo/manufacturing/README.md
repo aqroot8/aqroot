@@ -915,3 +915,14 @@ Next, route `NFC_XIN` and `NFC_XOUT` as one coherent crystal transaction and
 review the complete oscillator geometry. Keep the MCU USB and `BQ25185_SYS`
 walls parked. Manufacturing export remains premature at 91 retained open nets /
 532 retained open edges; no owner decision is open.
+### ACC_5V boost B.Cu core screen
+
+`screen_acc_5v_bcu_core.py` replays `ACC_5V_LX` first after the 180-degree
+`U21`/`L4` rotation, preserves the accepted five-via `ACC_5V_RAW` distribution
+tree, and screens five bounded `L4` offsets.  It changes only scratch boards and
+reports real refilled KiCad DRC.  The current result closes LX in every case but
+proves that moving `L4` alone does not remove the rotated `L4`/`R99` courtyard
+overlap; the restored straight U21.6 raw neck also crosses `ACC_DETECT_N` and
+misses the power-copper clearance to LX/the accepted raw via.  The next replay
+must route that neck around those fixed obstacles and include `R99` in the
+minimum placement boundary.
