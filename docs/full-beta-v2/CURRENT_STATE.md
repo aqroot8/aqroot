@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-455 (LTC4368 fault test-point branch promoted):** the isolated
+  `TP18.1` island is now joined to the retained `LTC4368_FAULT_N` safety/status
+  tree by nine add-only 0.20 mm B.Cu segments (39.822537 mm), routed with the
+  stricter 0.30 mm clearance. The five fitted lands are one island; fitted
+  connectivity improves 69→68 open nets / 486→485 edges and ratsnest 515→514.
+  Real refilled schematic-parity DRC remains 199/5/1, with no accepted copper
+  removed. Board `bbb69e92...`; D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and
+  production hardware remain intact. **Next:** screen a coherent retained
+  sub-GHz/NFC interrupt/control cluster, beginning with the one-edge
+  `NFC_IRQ`, `SX1262_BUSY`, and `SX1262_DIO1` signals. No owner decision.
 - **Demo D-454 (LED_A explicit perimeter family bounded):** 60 fixed F.Cu
   corridors reserve the legal J1.1 perpendicular launch across three depths,
   five turn columns, and four ballast-spine approach rows at the locked 0.30 mm

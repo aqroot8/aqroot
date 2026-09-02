@@ -3210,3 +3210,18 @@ three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, and
 `hardware/beta-v2/` remain intact. Next, screen the independent local five-land
 `LED_A` backlight-current distribution tree as one coherent transaction. No
 owner decision is open.
+
+# D-455 · 2026-09-02 · Demo LTC4368 fault test-point branch promoted
+
+The retained reverse/over-voltage protection fault network is complete: the
+previously isolated TP18.1 test point now joins U18.7, R81.2, R82.1, and Q9.1
+as one fitted copper island. The route adds nine 0.20 mm B.Cu segments totaling
+39.822537 mm, removes no accepted copper, and uses the stricter 0.300 mm
+clearance applicable in the battery-safety region. Real refilled schematic-
+parity DRC remains at the accepted 199 footprint-library / 5 hole-clearance /
+1 solder-mask-bridge signature. Fitted opens improve 69→68 nets and 486→485
+edges; ratsnest improves 515→514. Board SHA-256 is `bbb69e92...`; D-269,
+D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, and
+`hardware/beta-v2/` remain intact. Next, screen the coherent retained
+sub-GHz/NFC interrupt/control cluster beginning with `NFC_IRQ`, `SX1262_BUSY`,
+and `SX1262_DIO1`. No owner decision is open.

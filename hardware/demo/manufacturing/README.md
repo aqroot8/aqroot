@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## LTC4368 fault test-point branch promoted (2026-09-02)
+
+The isolated `TP18.1` island is now joined to the retained
+`LTC4368_FAULT_N` safety/status tree. The add-only route is nine 0.20 mm B.Cu
+segments totaling 39.822537 mm and uses 0.300 mm clearance; it removes no
+accepted copper. All five fitted lands are one island. Real refilled
+schematic-parity DRC remains at the accepted 199 footprint-library / 5
+hole-clearance / 1 solder-mask-bridge signature; fitted connectivity improves
+69→68 open nets and 486→485 edges, and ratsnest improves 515→514. Board
+`bbb69e92...`; the production tree is unchanged. Next, screen a coherent
+retained sub-GHz/NFC interrupt/control cluster beginning with `NFC_IRQ`,
+`SX1262_BUSY`, and `SX1262_DIO1`.
+
 ## LED_A explicit perimeter wall (2026-09-02)
 
 `screen_led_a_perimeter.py` reserves J1.1's perpendicular F.Cu launch and

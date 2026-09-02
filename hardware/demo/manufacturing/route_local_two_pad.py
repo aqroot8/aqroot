@@ -148,6 +148,14 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "LTC4368_FAULT_TP18": {
+        "net": "/01_POWER_TREE/LTC4368_FAULT_N",
+        "pads": ("R82.1", "TP18.1"),
+        "ignored_connected_pads": ("U18.7", "R81.2", "Q9.1"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 300_000,
+    },
     "BTN_DOWN_U2_PULLUP": {
         "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
         "pads": ("U2.14", "R5.2"),
