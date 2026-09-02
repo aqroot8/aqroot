@@ -16,6 +16,30 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "WAKE_INT_U3_U2": {
+        "net": "/WAKE_INT_N", "pads": ("U3.1", "U2.1"),
+        "ignored_connected_pads": ("Q10.3", "U1.23", "R3.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U3.1", "b": "U2.1", "a_near": "B", "b_near": "B", "inner": ["I2", "I3"]},
+    },
+    "WAKE_INT_U2_Q10": {
+        "net": "/WAKE_INT_N", "pads": ("U2.1", "Q10.3"),
+        "ignored_connected_pads": ("U3.1", "U1.23", "R3.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U2.1", "b": "Q10.3", "a_near": "B", "b_near": "F", "inner": ["I2", "I3"]},
+    },
+    "WAKE_INT_Q10_U1": {
+        "net": "/WAKE_INT_N", "pads": ("Q10.3", "U1.23"),
+        "ignored_connected_pads": ("U3.1", "U2.1", "R3.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "Q10.3", "b": "U1.23", "a_near": "F", "b_near": "F", "inner": ["I2", "I3"]},
+    },
+    "WAKE_INT_U1_R3": {
+        "net": "/WAKE_INT_N", "pads": ("U1.23", "R3.1"),
+        "ignored_connected_pads": ("U3.1", "U2.1", "Q10.3"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U1.23", "b": "R3.1", "a_near": "F", "b_near": "F", "inner": ["I2", "I3"]},
+    },
     "SPI_B_SCK_U8_U7": {
         "net": "/SPI_B_SCK", "pads": ("U8.18", "U7.18"),
         "ignored_connected_pads": ("U1.4", "U9.30"),

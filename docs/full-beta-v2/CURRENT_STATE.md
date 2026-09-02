@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-511 (WAKE_INT_N atomic generic tree bounded):** a reusable atomic
+  harness and four exact contracts cover all five fitted interrupt lands. Four
+  rotations put each branch first on pristine geometry. U2.1-to-Q10.3 and
+  Q10.3-to-U1.23 close, while U3.1-to-U2.1 stops at pristine `U3.1
+  NO_VIA_SITE` and U1.23-to-R3.1 stops at pristine `NO_PATH`; no partial tree
+  can be emitted. Board remains byte-identical at `04dc3e8a...`, 56 open nets /
+  460 edges. **Next:** screen a package-specific U3.1 perimeter fanout while
+  reserving the proven middle chain, then broaden only the U1/R3 join. No owner
+  decision.
 - **Demo D-510 (display-backlight pair window 192--255 bounded; wall parked):**
   both distinct `I2`/`I3` assignments reject all 64 first joins before any
   R109 fanout or second join. Pair indices 0--255 are exhausted with no

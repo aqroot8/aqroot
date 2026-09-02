@@ -4220,3 +4220,22 @@ three RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted
 independent required five-land `/WAKE_INT_N` shared-interrupt tree as one atomic
 transaction; do not continue display pair index 256 without materially changed
 geometry or a broader coherent refloor. No owner decision is open.
+
+# D-511 · 2026-09-02 · Demo WAKE_INT_N atomic generic tree bounded
+
+The required five-land `/WAKE_INT_N` shared-interrupt tree now has a reusable
+no-partial-promotion harness and exact contracts for U3.1, U2.1, Q10.3, U1.23,
+and R3.1. Four bounded rotations place every branch first on pristine geometry.
+The middle U2.1-to-Q10.3 and Q10.3-to-U1.23 branches close through ordinary
+inner-layer fanouts. The lower U3.1-to-U2.1 branch instead stops at pristine
+`U3.1 NO_VIA_SITE`, and the upper U1.23-to-R3.1 branch stops at pristine
+`NO_PATH`; rotations that first reserve the clean middle chain reach the same
+upper wall. No complete candidate exists, so the harness emits no board and
+does not claim the real-DRC promotion gate. All scratch cases remove zero
+accepted objects and add zero wrong-net objects. The authoritative PCB remains
+byte-identical at `04dc3e8a...`, 56 open retained nets / 460 edges; D-269/D-186,
+RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next screen a package-specific U3.1
+perimeter fanout while reserving the proven U2/Q10/U1 middle chain; if that
+coexists, broaden only the U1/R3 corridor and replay the entire tree atomically.
+No owner decision is open.

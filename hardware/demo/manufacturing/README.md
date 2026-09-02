@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_INT_N atomic generic tree bounded (2026-09-02)
+
+`route_wake_int_tree_scratch.py` and four explicit two-pad contracts now cover
+all five fitted `/WAKE_INT_N` lands as one no-partial-promotion transaction.
+Four bounded rotations put every branch first on pristine geometry. The
+U2.1-to-Q10.3 and Q10.3-to-U1.23 branches close through ordinary inner-layer
+fanouts, but pristine U3.1-to-U2.1 stops at `U3.1 NO_VIA_SITE` and pristine
+U1.23-to-R3.1 stops at `NO_PATH`; the two rotations that first route the clean
+middle branches also stop at U1/R3. No complete candidate exists, so real DRC
+and promotion are deliberately not asserted. No accepted copper was removed or
+wrong-net copper added in scratch, and authoritative board `04dc3e8a...`
+remains byte-identical at 56 open retained nets / 460 edges. Next screen one
+package-specific U3.1 perimeter fanout family while reserving the already-clean
+U2/Q10/U1 middle chain; then broaden only the U1/R3 join if the launch coexists.
+
 ## Display-backlight coherent pair wall parked (2026-09-02)
 
 The resumable `route_disp_bl_strap_tree_scratch.py` co-search has now screened
