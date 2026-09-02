@@ -865,9 +865,11 @@
 	(constraint disallow track)
 	(condition "A.hasNetclass('BAT_MAIN') && !A.enclosedByArea('BAT_SENSE_KELVIN') && !A.enclosedByArea('BAT_PROT_TAP_U18') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
 
+# Divider-tap corridors relax only their enclosed low-current track segments.
+# Retained BAT_MAIN vias always keep the full D-269 antipad to GND planes.
 (rule "BAT_MAIN routed clearance - current path role - D-269"
 	(constraint clearance (min 0.30mm))
-	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad' && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_1') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_2') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')"))
+	(condition "A.hasNetclass('BAT_MAIN') && A.Type != 'Pad' && B.Type != 'Pad' && (A.Type == 'Via' || (!A.enclosedByArea('BAT_RAW_DIVIDER_TAP_0') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_1') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_2') && !A.enclosedByArea('BAT_RAW_DIVIDER_TAP_3')))"))
 
 (rule "D-257 Q3_CS Q3.3->Q3.1 escape - fine-pitch escape via, D-257"
 	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
