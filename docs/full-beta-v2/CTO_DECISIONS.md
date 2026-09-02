@@ -3993,3 +3993,24 @@ accessory-power copper, and `hardware/beta-v2/` remain intact. Next screen one
 package-specific shared B.Cu perimeter fanout for U9.30/U9.31, reserving both
 launches before replaying all three D-497 complete trees atomically. No owner
 decision is open.
+
+# D-499 · 2026-09-02 · Demo shared U9 SPI-B perimeter wall bounded
+
+Live-board inspection corrects the D-498 successor's layer wording:
+U9.30/U9.31/U9.32 are native F.Cu QFN lands, not B.Cu.  The bounded
+package-specific screen exhaustively tested 950 explicit outward F.Cu
+shoulder-and-via shapes for each binding land at the locked 0.20 mm
+width/clearance and ordinary 0.60/0.30 mm via contract. U9.30 and U9.31 each
+have 12 legal individual fanouts, but no fanout pair coexists in either
+insertion order: all 288 ordered pairs reject before real-DRC candidacy.
+
+No candidate, partial route, or authoritative copper was emitted. The board
+remains byte-identical at `be285abf...`, with 57 open retained nets / 461
+edges. Independent real zone-refilled schematic-parity KiCad DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports. D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo
+NC contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Park this unchanged SPI-B endpoint wall; revisit it only through a
+coherent U9 placement/local-copper transaction or changed surrounding
+geometry. Next freshly screen the independent fitted `/CC1101_GDO0` two-land
+control link. No owner decision is open.

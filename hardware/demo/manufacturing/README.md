@@ -2025,3 +2025,14 @@ partial promotion exists.  The authoritative PCB stays byte-identical at
 `be285abf...`, 57 open retained nets / 461 edges.  Next use a package-specific
 shared B.Cu perimeter fanout for U9.30/U9.31, reserving both launches before
 the D-497 complete-tree replay.
+
+## Shared U9 SPI-B perimeter fanout screen (2026-09-02)
+
+`screen_spi_b_u9_shared_fanout.py` corrects the prior prose layer assumption
+from the live PCB: U9.30/U9.31 are F.Cu QFN lands.  It tests 950 explicit
+outward shoulder-and-via shapes per land, then reserves both launches in both
+orders before accepting a witness.  Each land has 12 legal individual shapes,
+but none of the 288 ordered pairs coexist at 0.20 mm width/clearance with
+ordinary 0.60/0.30 mm through-vias.  The screen is scratch-only and emits no
+partial copper.  Park this unchanged endpoint wall; next freshly screen the
+independent fitted `/CC1101_GDO0` two-land control link.

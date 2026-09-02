@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-499 (shared U9 SPI-B perimeter fanout bounded):** live-board pad
+  inspection corrects D-498's prose: U9.30/U9.31/U9.32 are native F.Cu QFN
+  lands, not B.Cu.  The package-specific successor exhaustively tested 950
+  staggered F.Cu shoulder/via shapes per binding land.  U9.30 and U9.31 each
+  have 12 legal individual fanouts, but none of 288 ordered pairs coexist at
+  the locked 0.20 mm width/clearance and ordinary 0.60/0.30 mm via contract.
+  No candidate or partial copper was emitted. PCB remains byte-identical at
+  `be285abf...`, 57 open retained nets / 461 edges; real refilled
+  schematic-parity DRC remains 199 library / five hole / one mask reports.
+  **Next:** park the unchanged SPI-B U9 endpoint wall and freshly screen the
+  independent fitted `/CC1101_GDO0` two-land control link. No owner decision.
 - **Demo D-498 (SPI-B package-fanout capacity isolated):** the bounded
   bus-aware successor individually qualified and then coherently reserved the
   adjacent SPI-B package lands before any haul. U1.4/U1.5/U1.6 coexist on
