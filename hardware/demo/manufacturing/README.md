@@ -25,6 +25,17 @@ D-186 invariants, and production-tree hash check. `/SPI_A_MOSI` remains a later
 critical-path wall; manufacturing export remains premature and no owner
 decision is open.
 
+## Audio/radio long-haul screen (2026-09-02)
+
+The generic reserved-escape framework now defines `/I2S_SPK_DOUT` and
+`/CC1101_GDO0`. The 33.605 mm speaker-data link reserves ordinary 0.60/0.30 mm
+vias from both F.Cu endpoints, but neither In2 nor In3 joins at 0.20 mm; a
+same-face search also exceeded the bounded 90-second screen. The 40.033 mm
+CC1101 link fails earlier because U7.15 has no reachable legal ordinary via
+site from B.Cu. Both runs leave the board byte-identical and refilled parity
+DRC at 199/5/1. Do not retry either unchanged topology. Next, rank a short
+independent local retained cluster. No owner decision is open.
+
 ## SPI-A MISO promotion (2026-09-02)
 
 The fitted MISO topology is U1.21 to microSD J2.7 only. R112 remains DNP, so

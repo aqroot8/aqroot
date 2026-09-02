@@ -13,6 +13,12 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-430 (audio/radio long-haul characterization):** reserved-escape
+  screens bound two freshly ranked nets without PCB change. `/I2S_SPK_DOUT`
+  reserves both endpoint vias but has no 0.20 mm In2/In3 join;
+  `/CC1101_GDO0` cannot expose an ordinary through-via from U7.15 B.Cu.
+  Refilled parity DRC remains 199/5/1 and board `aed8d911...` is byte-identical.
+  **Next:** rank a short independent local retained cluster. No owner decision.
 - **Demo D-429 (SPI-A clock tree promoted):** `/SPI_A_SCK` now connects fitted
   U1.20, J1.36, and J2.5 with 14 add-only 0.20 mm track segments and four
   ordinary 0.60/0.30 mm through-vias (72.751257 mm total) on F.Cu/In2.Cu.

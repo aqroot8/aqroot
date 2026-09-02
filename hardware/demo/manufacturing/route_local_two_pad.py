@@ -93,6 +93,33 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "I2S_SPK_DOUT": {
+        "net": "/I2S_SPK_DOUT",
+        "pads": ("U1.34", "U5.1"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+        # Same-face search is unbounded in the live congestion and the
+        # deterministic reserved-via screen reaches both endpoints but finds
+        # no In2/In3 join.  Keep this explicit plan as the reproducible wall.
+        "inner_long_haul_plan": {
+            "a": "U1.34", "b": "U5.1",
+            "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "CC1101_GDO0": {
+        "net": "/CC1101_GDO0",
+        "pads": ("U1.8", "U7.15"),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.8", "b": "U7.15",
+            "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "DIO2_TXEN": {
         "net": "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
         "pads": ("U8.7", "U8.8"),

@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-430 · 2026-09-02 · Demo audio/radio long-haul families bounded:** fresh
+post-D-429 ranking selected `/I2S_SPK_DOUT`, then independent
+`/CC1101_GDO0`. The existing reserved-escape framework now encodes their exact
+fitted endpoints. Speaker data reserves ordinary vias from U1.34 and U5.1 but
+has no 0.20 mm In2/In3 join; its same-face search exceeded 90 seconds. CC1101
+GDO0 fails earlier because U7.15 has no reachable ordinary via site from B.Cu.
+Both screens retain refilled parity DRC 199/5/1 and PCB SHA-256
+`aed8d9111f695f53f05f57f8212f8c2041a3248e5c70217e9a8ee930fcef7996`.
+No PCB, rule, copper, or `hardware/beta-v2/` change was promoted. Do not retry
+unchanged topologies. Next, rank a short local retained cluster. No owner
+decision is open.
+
 **D-429 · 2026-09-02 · Demo SPI-A clock tree promoted:** the independently
 gated clock-first route closes fitted `/SPI_A_SCK` pads U1.20, J1.36, and J2.5.
 It adds 14 tracks and four ordinary 0.60/0.30 mm through-vias, all 0.20 mm
