@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-444 · 2026-09-02 · Demo ACC_5V_BOOST_EN IC-first inner family bounded:**
+the exact D-443 successor is now encoded as an atomic complete-tree harness:
+reserve U3.16 and U21.2 package escapes, join them on In2/In3, then attach
+R102.1 and TP30.1 only if the IC haul succeeds.  The ordinary 0.60/0.30 mm
+through-via family stops at U3.16 with `NO_VIA_SITE`.  The board-minimum
+ordinary 0.50/0.30 mm family reserves both endpoints but neither signal inner
+layer admits the 0.20 mm join (`NO_PATH`); no passive branch or partial copper
+is emitted.  Real refilled schematic-parity KiCad DRC remains exactly the
+accepted 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports, fitted connectivity remains 73 open nets / 496 edges, and board
+`86cff98b...`, D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` are unchanged.  Park both materially unchanged IC-first
+through-via families; do not retry the D-443 planar family.  Next, freshly rank
+an independent retained net or coherent local cluster outside parked walls.
+No owner decision.
+
 **D-443 · 2026-09-02 · Demo ACC_5V_BOOST_EN planar family bounded:** the new
 complete-tree harness screens every launch order for fitted U3.16, R102.1,
 TP30.1, and U21.2 and refuses partial promotion. All six orders close the three

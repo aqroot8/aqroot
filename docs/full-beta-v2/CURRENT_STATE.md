@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-444 (ACC_5V_BOOST_EN IC-first inner family bounded):** the atomic
+  D-443 successor reserves the U3.16/U21.2 IC escapes before any passive
+  branch.  A 0.60/0.30 mm ordinary through via cannot escape U3.16; the
+  board-minimum ordinary 0.50/0.30 mm family reserves both IC endpoints but
+  finds no 0.20 mm In2/In3 join.  No partial copper is emitted, real refilled
+  parity DRC remains 199/5/1, fitted connectivity remains 73/496, and board
+  `86cff98b...` plus production hardware are unchanged.  Both IC-first
+  through-via families and the D-443 planar family are parked. **Next:**
+  freshly rank an independent retained net or coherent local cluster outside
+  parked walls. No owner decision.
 - **Demo D-443 (ACC_5V_BOOST_EN planar family bounded):** a new atomic harness
   screens all six branch orders for U3.16/R102.1/TP30.1/U21.2. Every order
   reaches zero fitted open edges, but real refilled schematic-parity DRC

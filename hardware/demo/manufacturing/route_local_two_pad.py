@@ -173,6 +173,22 @@ ROUTES = {
         "layer": "B", "width": 200_000, "pad_clearance": 200_000,
         "clearance": 275_000,
     },
+    "ACC_5V_BOOST_EN_U3_U21_INNER": {
+        "net": "/ACC_5V_BOOST_EN",
+        "pads": ("U3.16", "U21.2"),
+        "ignored_connected_pads": ("R102.1", "TP30.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        # D-443 proved that every complete planar tree crosses the already
+        # accepted accessory-rail via field.  Reserve both IC escapes first
+        # and carry the long control haul on a signal inner layer.
+        "inner_long_haul_plan": {
+            "a": "U3.16", "b": "U21.2",
+            "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+        "via_dia": 500_000,
+        "via_drill": 300_000,
+    },
     "ACC_5V_BOOST_EN_R102_TP30": {
         "net": "/ACC_5V_BOOST_EN",
         "pads": ("R102.1", "TP30.1"),
@@ -508,8 +524,8 @@ def route(path: Path, name: str):
             "width": rule["width"],
             "clr_pad": rule.get("pad_clearance", rule["clearance"]),
             "clr_trk": rule["clearance"],
-            "via_dia": 600_000,
-            "via_drill": 300_000,
+            "via_dia": rule.get("via_dia", 600_000),
+            "via_drill": rule.get("via_drill", 300_000),
             "inner_long_haul_plan": rule["inner_long_haul_plan"],
         }
         attempts = ir.route_inner_long_haul_plan(
