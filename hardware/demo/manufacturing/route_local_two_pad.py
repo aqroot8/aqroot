@@ -160,6 +160,38 @@ ROUTES = {
         "width": 300_000,
         "clearance": 250_000,
     },
+    "NFC_XIN_CRYSTAL": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "pads": ("U9.5", "Y1.3"),
+        "ignored_connected_pads": ("C80.1",),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "NFC_XIN_CAP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "pads": ("Y1.3", "C80.1"),
+        "ignored_connected_pads": ("U9.5",),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "NFC_XOUT_CRYSTAL": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "pads": ("U9.4", "Y1.1"),
+        "ignored_connected_pads": ("C79.1",),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
+    "NFC_XOUT_CAP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "pads": ("Y1.1", "C79.1"),
+        "ignored_connected_pads": ("U9.4",),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
 }
 
 

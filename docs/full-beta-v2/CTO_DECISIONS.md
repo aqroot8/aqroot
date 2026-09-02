@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-407 · 2026-09-02 · Demo NFC crystal pair launch-order wall characterized:**
+the generic same-face/no-via framework was screened in both complete launch
+orders. XIN-first closes the complete three-pad `NFC_XIN` arm (5.307285 mm) but
+leaves `U9.4` with `NO_LEGAL_ESCAPE`; XOUT-first closes the complete three-pad
+`NFC_XOUT` arm (9.037437 mm) but leaves `U9.5` with `NO_LEGAL_ESCAPE`. Both
+partial candidates reproduce deterministically by route geometry and retain
+exactly the accepted real refilled KiCad DRC classes (199 footprint-library,
+five inherited hole-clearance, one inherited solder-mask bridge). This proves
+an adjacent-package-pad launch-corridor ordering wall, not a clearance-rule or
+load-capacitor wall. Partial oscillator copper is rejected; the authoritative
+PCB remains byte-identical at `c6008821...`. The reusable harness now exposes
+both orders explicitly. Next, reserve two independent explicit U9.4/U9.5 B.Cu
+launch exits before either crystal join, then atomically replay both three-pad
+arms; only consider a bounded Y1 placement ECO if that geometry is exhausted.
+No owner decision is open.
+
 **D-406 · 2026-09-02 · Demo NFC receive pair promoted:** both three-pad
 `NFC_RXA` and `NFC_RXB` arms are now complete as one symmetric transaction.
 Each arm uses ten add-only 0.30 mm B.Cu segments, totals 7.309798 mm, and uses

@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC crystal launch wall (2026-09-02)
+
+`route_nfc_crystal_pair_scratch.py` deterministically screens both complete
+three-pad `NFC_XIN`/`NFC_XOUT` launch orders. XIN-first closes XIN and its load
+capacitor but boxes `U9.4`; XOUT-first closes XOUT and its load capacitor but
+boxes `U9.5`. Both partial candidates retain the accepted real refilled KiCad
+DRC signature (199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge report), so the failure is a shared B.Cu package
+launch corridor at adjacent U9 pads rather than a DRC/rule or load-capacitor
+wall. No partial crystal copper is promotable. Next, screen an explicit
+two-launch geometry that reserves independent north/south exits before either
+long crystal join; preserve short, no-via, same-face crystal routing and do not
+move the 27.12 MHz crystal unless that bounded geometry is exhausted.
+
 The deterministic candidate exporter is `export_candidate.sh`. It writes only to
 a new caller-supplied directory, generates full/fitted BOMs, an assembly position
 file, all six copper layers, paste/mask/silkscreen/outline Gerbers, separate PTH
