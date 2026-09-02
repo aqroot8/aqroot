@@ -232,8 +232,28 @@ and 1 inherited solder-mask-bridge report, with no clearance, short, crossing,
 width, via, dangling, or schematic-parity regression. Board hash:
 `ab4569487b781a164f14d392f7c1159c48fefbdad40522ced42e4af78a71c5b4`.
 
-Next, close the six remaining fitted-pad edges on `ACC_5V_SW` as the coherent
-downstream accessory-power increment, preserving the accepted U22 switch,
-`ACC_5V_SW_EN`, fault branch, connector endpoints, and the new U21 transaction.
+The first downstream `ACC_5V_SW` screen on 2026-09-02 is characterization-only.
+The retained ledger proves seven isolated fitted pads / six open edges:
+`U22.5`, `C38.1`, `C67.1`, `TP29.1`, `TP42.1`, `J5.1`, and `J5.24`.
+`route_acc_5v_sw_scratch.py` first tested an ordinary 0.40 mm / 0.25 mm-clearance
+tree with 0.90/0.40 mm power vias.  The direct transaction stops at U22.5 with
+`NO_LEGAL_ESCAPE`: the fixed fine-pitch load-switch output cannot own an
+ordinary power via in its package pocket.
+
+The next bounded alternative reused the accepted U21 package-neck pattern: a
+0.25 mm local launch from U22.5, widening immediately to 0.40 mm, with nearby
+output capacitor C67 intended to own the compliant via.  This advances the
+same deterministic screen to C67.1, which also returns `NO_LEGAL_ESCAPE` before
+any inner-layer join.  Two clean runs produced byte-identical JSON
+(`sha256 3b20c6c52ed474d2195943cc134556a0c85758e0947698daa2afa492067c02b5`)
+and the real refilled DRC stayed exactly at the accepted 199 footprint-library,
+5 inherited hole-clearance, and 1 inherited solder-mask-bridge reports.  The
+authoritative board remains byte-identical at `ab456948...`; accepted U22,
+`ACC_5V_SW_EN`, fault, `ACC_5V_RAW`, XGPIO4/5, and battery copper were untouched.
+
+Next, run a bounded C67 placement/landing screen that keeps the capacitor close
+to U22 output and preserves its return loop, then replay this complete tree.
+If no legal C67 landing exists within that electrical placement envelope, test
+a local TP29-owned via branch; do not retry the disproven direct U22.5 via.
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
