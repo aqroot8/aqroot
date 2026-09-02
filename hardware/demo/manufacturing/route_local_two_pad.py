@@ -16,6 +16,51 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "SPI_B_SCK_U8_U7": {
+        "net": "/SPI_B_SCK", "pads": ("U8.18", "U7.18"),
+        "ignored_connected_pads": ("U1.4", "U9.30"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "SPI_B_SCK_U7_U1": {
+        "net": "/SPI_B_SCK", "pads": ("U7.18", "U1.4"),
+        "ignored_connected_pads": ("U8.18", "U9.30"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U7.18", "b": "U1.4", "a_near": "B", "b_near": "F", "inner": ["I2", "I3"]},
+    },
+    "SPI_B_SCK_U1_U9": {
+        "net": "/SPI_B_SCK", "pads": ("U1.4", "U9.30"),
+        "ignored_connected_pads": ("U8.18", "U7.18"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U1.4", "b": "U9.30", "a_near": "F", "b_near": "B", "inner": ["I2", "I3"]},
+    },
+    "SPI_B_MOSI_U8_U7": {
+        "net": "/SPI_B_MOSI", "pads": ("U8.17", "U7.17"),
+        "ignored_connected_pads": ("U1.5", "U9.31"), "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "SPI_B_MOSI_U7_U1": {
+        "net": "/SPI_B_MOSI", "pads": ("U7.17", "U1.5"),
+        "ignored_connected_pads": ("U8.17", "U9.31"), "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U7.17", "b": "U1.5", "a_near": "B", "b_near": "F", "inner": ["I2", "I3"]},
+    },
+    "SPI_B_MOSI_U1_U9": {
+        "net": "/SPI_B_MOSI", "pads": ("U1.5", "U9.31"),
+        "ignored_connected_pads": ("U8.17", "U7.17"), "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U1.5", "b": "U9.31", "a_near": "F", "b_near": "B", "inner": ["I2", "I3"]},
+    },
+    "SPI_B_MISO_U8_U7": {
+        "net": "/SPI_B_MISO", "pads": ("U8.16", "U7.16"),
+        "ignored_connected_pads": ("U1.6", "U9.32"), "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "SPI_B_MISO_U7_U1": {
+        "net": "/SPI_B_MISO", "pads": ("U7.16", "U1.6"),
+        "ignored_connected_pads": ("U8.16", "U9.32"), "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U7.16", "b": "U1.6", "a_near": "B", "b_near": "F", "inner": ["I2", "I3"]},
+    },
+    "SPI_B_MISO_U1_U9": {
+        "net": "/SPI_B_MISO", "pads": ("U1.6", "U9.32"),
+        "ignored_connected_pads": ("U8.16", "U7.16"), "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {"a": "U1.6", "b": "U9.32", "a_near": "F", "b_near": "B", "inner": ["I2", "I3"]},
+    },
     "IR_RX_MCU_TP": {
         "net": "/IR_RX_GPIO44",
         "pads": ("U1.36", "TP40.1"),

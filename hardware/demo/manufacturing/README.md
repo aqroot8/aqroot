@@ -1996,3 +1996,18 @@ copper-withdrawal refloor cannot unlock the charger-status pair; park the
 unchanged U2 status package wall until a broader component-placement
 transaction is justified.  Next freshly screen the independent shared SPI-B
 clock/data cluster rather than replaying another U2 fanout family.
+
+## Shared SPI-B four-endpoint batch screen (2026-09-02)
+
+`route_spi_b_bus_scratch.py` treats `/SPI_B_SCK`, `/SPI_B_MOSI`, and
+`/SPI_B_MISO` as one coherent fitted-device batch spanning U8, U7, U1, and U9.
+It reuses the accepted 0.20 mm, ordinary 0.60/0.30 mm via inner-haul framework
+and screens all six bus orders without changing the authoritative board.  The
+U8-to-U7 B.Cu leg succeeds for every first-selected net.  MOSI and MISO then
+stop at their U7-to-U1 inner launch with `NO_VIA_SITE`; SCK closes U8-to-U7 and
+U7-to-U1 but stops at U1-to-U9 with `NO_LEGAL_ESCAPE`.  The identical result
+for both relevant permutations makes blind bus-order replay unproductive.
+Board `be285abf...` remains byte-identical at 57 open retained nets / 461
+edges.  Next reserve the three adjacent U1.4/U1.5/U1.6 and U9.30/U9.31/U9.32
+package fanouts as a bounded bus-aware transaction before attempting any long
+haul; include the U7.16/U7.17 launch pair in the same capacity screen.

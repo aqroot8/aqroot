@@ -3951,3 +3951,24 @@ intact. Park the materially unchanged U2 status package wall until a broader
 component-placement transaction is justified. Next freshly screen the
 independent shared SPI-B clock/data cluster as a coherent batch. No owner
 decision is open.
+# D-497 · 2026-09-02 · Demo shared SPI-B four-endpoint batch bounded
+
+The fresh independent routing cluster was screened as one atomic family rather
+than three unrelated nets. `route_spi_b_bus_scratch.py` exercises all six bus
+orders for `/SPI_B_SCK`, `/SPI_B_MOSI`, and `/SPI_B_MISO`, each spanning the
+SX1262 U8, CC1101 U7, ESP32 U1, and ST25R3916 U9, at the locked 0.20 mm
+width/clearance and ordinary 0.60/0.30 mm via contract.
+
+Every first-selected net closes its local U8-to-U7 B.Cu leg. MOSI and MISO then
+fail U7-to-U1 at `NO_VIA_SITE`; SCK closes U7-to-U1 but fails U1-to-U9 at
+`NO_LEGAL_ESCAPE`. Both permutations relevant to each first-selected net return
+the same boundary, so changing only bus order cannot produce a complete tree or
+an atomic promotion candidate. The framework and explicit fitted-pad maps are
+durable for the successor.
+
+The authoritative board remains byte-identical at `be285abf...`, 57 open
+retained nets / 461 edges. Accepted copper, D-269/D-186, the three RGB routes,
+XGPIO4/XGPIO5, Demo NC contacts, and `hardware/beta-v2/` remain intact. Next
+screen a bounded bus-aware package-fanout reservation across adjacent
+U1.4/U1.5/U1.6 and U9.30/U9.31/U9.32, including the binding U7.16/U7.17 pair,
+before replaying the long hauls. No owner decision is open.

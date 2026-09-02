@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-497 (shared SPI-B batch bounded):** a new scratch-only atomic
+  harness screens all six orders of the three four-endpoint SPI-B trees using
+  the accepted 0.20 mm ordinary-via inner-haul framework. The U8-to-U7 local
+  leg succeeds for every first-selected net. MOSI/MISO then fail their U7-to-U1
+  launches at `NO_VIA_SITE`; SCK reaches U1 but its U1-to-U9 completion fails
+  `NO_LEGAL_ESCAPE`. The order-independent endpoint failures define the next
+  mechanism and no copper is promotable. PCB remains byte-identical at
+  `be285abf...`, 57 open retained nets / 461 edges. **Next:** bounded bus-aware
+  reservation of the adjacent U1.4-U1.6, U9.30-U9.32, and U7.16/U7.17 package
+  fanouts before long-haul replay. No owner decision.
 - **Demo D-496 (BQ25185 local status-neighborhood refloor bounded):** the
   recovered scratch-only successor withdraws whole neighboring nets in
   minimum-cardinality order and asks whether U2.9/U2.10 can simultaneously
