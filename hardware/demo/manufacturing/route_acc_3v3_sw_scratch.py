@@ -90,6 +90,9 @@ def route_scratch(path: Path):
             index = parent[index]
         return index
 
+    # Exhaust the finite 15-anchor graph.  The first screen's arbitrary
+    # twelve-failure cutoff stopped before longer cross-component joins and
+    # incorrectly made the C63/R63 corridor look terminal.
     edges = sorted(
         ((a, b) for a in range(len(anchors)) for b in range(a + 1, len(anchors))),
         key=lambda pair: sum(
@@ -98,7 +101,6 @@ def route_scratch(path: Path):
         ),
     )
     joins = []
-    failed_edges = 0
     for a, b in edges:
         if root(a) == root(b):
             continue
@@ -116,9 +118,6 @@ def route_scratch(path: Path):
             # A blocked shortest edge is not a terminal routing wall: retain
             # the current forest and screen the remaining ranked edges for an
             # alternate legal spanning-tree connection.
-            failed_edges += 1
-            if failed_edges >= 12:
-                break
             continue
         parent[root(b)] = root(a)
         if len({root(index) for index in range(len(anchors))}) == 1:

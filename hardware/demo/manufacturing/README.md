@@ -314,10 +314,25 @@ bridge reports.  Later incomplete prefixes show only expected neck-width,
 dangling-via, and open-forest collision artifacts and are not promotable.
 
 `route_acc_3v3_sw_scratch.py` now preserves this result and bounds alternate-
-edge spanning-tree search to twelve failed corridors.  Next, rank alternate
-joins within that budget, beginning with the two components separated by the
-C63/R63 wall; only if a complete tree exists should U20/U16 receive tightly
-courtyard-scoped DRU neck exceptions and the authoritative full-board gate run.
+edge spanning-tree search across the complete finite 15-anchor graph.
+
+The exhaustive alternate-edge screen on 2026-09-02 corrects the apparent
+C63/R63 wall.  After 28 rejected corridors it finds all 14 required joins: the
+two forest components bridge through `U20.5` to `J8.2`, and the remaining
+long-haul branches close through `Q10.1` and `J5.3`.  The inner-layer spanning
+tree is therefore feasible without moving retained copper.
+
+The candidate is not promotable because the two manually seeded package-neck
+landings precede the generic reservation gate.  Real refilled DRC rejects the
+U20 via at `(50.250,64.750)` against retained `ACC_3V3_ILIM`.  It rejects the
+U16 via at `(62.500,55.725)` against adjacent `U16.7/EXT_SDA_BUF`, retained
+`XGPIO4` on In2, and retained `ACC_5V_SW` on In3.  The only two width reports
+are the expected 0.5125 mm package necks; no DRU exception was added because
+their landing geometry is not yet legal.  Thus the next bounded task is an
+explicit face-aware landing enumeration for `U20.5` and `U16.8`, followed by
+replay of this now-proven full spanning tree.  Do not retry either rejected
+fixed via and do not withdraw the accepted ILIM, XGPIO4, SDA, or 5 V copper.
+
 The authoritative PCB remains byte-identical at `209987cc...`; no owner
 decision is open.
 
