@@ -4034,3 +4034,21 @@ XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-power copper, and
 `hardware/beta-v2/` remain intact. Next reserve this qualified U7.15 launch
 and an ordinary U1.8 launch, then screen the complete inner-layer haul as one
 atomic transaction. No owner decision is open.
+# D-501 · 2026-09-02 · Demo CC1101 GDO0 routed and promoted
+
+The D-500-qualified U7.15 B.Cu west shoulder to the ordinary 0.60/0.30 mm via
+at `(18.5, 140.75)` mm now forms one atomic route with a reserved U1.8 F.Cu
+escape and an In3 haul.  The selected route adds 13 `/CC1101_GDO0`-only copper
+objects: three F.Cu segments, two B.Cu segments, six In3 segments, and two
+vias, totaling 64.957952 mm.  It removes no accepted copper and adds nothing
+on another net.
+
+Independent real zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 57->56 open retained nets and 461->460 edges;
+`/CC1101_GDO0` has zero open edges and board SHA-256 is `04dc3e8a...`.
+D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact.  Next freshly screen required `/SX1262_DIO1` only through a bounded
+U2.20 package-fanout/refloor transaction; its unchanged ordinary-via family
+remains parked. No owner decision is open.

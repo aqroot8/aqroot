@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-501 (CC1101 GDO0 routed and promoted):** the D-500-qualified
+  U7.15 B.Cu shoulder/via was combined atomically with a U1.8 escape and an
+  In3 haul.  The selected route adds 13 target-only copper objects (three
+  F.Cu segments, two B.Cu segments, six In3 segments, and two ordinary
+  0.60/0.30 mm vias), totaling 64.957952 mm, with no accepted-copper removal.
+  Independent real zone-refilled schematic-parity DRC remains exactly 199
+  library / five hole / one mask reports.  `/CC1101_GDO0` is one copper
+  island; retained connectivity improves 57->56 open nets and 461->460
+  edges; board `04dc3e8a...`.  D-269/D-186, all RGB replacements,
+  XGPIO4/XGPIO5, approved Demo NCs, and `hardware/beta-v2/` remain intact.
+  **Next:** freshly screen the remaining required radio interrupt
+  `/SX1262_DIO1` only through a bounded U2.20 package-fanout/refloor
+  transaction; do not replay its parked ordinary-via family. No owner decision.
 - **Demo D-500 (CC1101 GDO0 radio fanout qualified):** the generic fitted
   `U1.8`-to-`U7.15` contract reproduces `NO_VIA_SITE` at the bottom-side radio
   land. A package-specific scratch screen tests 429 west/east 0.20 mm B.Cu

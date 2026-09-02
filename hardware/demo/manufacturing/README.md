@@ -2047,3 +2047,15 @@ but none of the 288 ordered pairs coexist at 0.20 mm width/clearance with
 ordinary 0.60/0.30 mm through-vias.  The screen is scratch-only and emits no
 partial copper.  Park this unchanged endpoint wall; next freshly screen the
 independent fitted `/CC1101_GDO0` two-land control link.
+## CC1101 GDO0 complete route (2026-09-02)
+
+`route_cc1101_gdo0_scratch.py` reuses the D-500-qualified U7.15 B.Cu fanout,
+screens eight MCU escape sites on each inner signal layer, and accepts only a
+complete target-only link after real refill, schematic-parity DRC, fitted
+connectivity, and accepted-copper preservation all pass.  In2 rejects all
+eight joins; In3 produces eight clean witnesses.  The promoted witness adds
+13 target-only objects and 64.957952 mm of track, closes `/CC1101_GDO0`, and
+improves retained connectivity to 56 open nets / 460 edges.  Real DRC remains
+199 library / five hole / one mask reports.  Next screen `/SX1262_DIO1` only
+through a bounded U2.20 package-fanout/refloor transaction, not its parked
+ordinary-via family.
