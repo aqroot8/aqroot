@@ -136,6 +136,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "CC1101_CS_MCU_PULLUP": {
+        "net": "/CC1101_CS_N",
+        "pads": ("U1.7", "R28.2"),
+        "ignored_connected_pads": ("U7.19",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.7", "b": "R28.2", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "CC1101_CS_MCU_RADIO": {
+        "net": "/CC1101_CS_N",
+        "pads": ("U1.7", "U7.19"),
+        "ignored_connected_pads": ("R28.2",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.7", "b": "U7.19", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "EXT_SDA_BUF_PULLUP": {
         "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
         "pads": ("U16.7", "R49.2"),

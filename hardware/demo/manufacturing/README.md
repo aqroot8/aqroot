@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## CC1101 chip-select tree (2026-09-02)
+
+`route_cc1101_cs_tree_scratch.py` atomically screens both orders of the fitted
+U1.7/R28.2/U7.19 tree using the qualified boxed-endpoint inner-haul framework.
+The accepted result uses In2 for the pull-up leg and In3 for the radio leg:
+eight add-only 0.20 mm tracks (49.438285 mm) and four ordinary vias. Both
+orders close the tree with identical physical geometry, zero accepted-copper
+removal, and real refilled schematic-parity DRC 199/5/1. Next, freshly screen
+the fitted three-land `/02_MCU_CORE/BOOT_N` recovery tree.
+
 ## GPIO45 VDD_SPI strap promotion (2026-09-02)
 
 The retained ESP32-S3 strap tree now connects U1.26, R111.1, and TP1.1 as one

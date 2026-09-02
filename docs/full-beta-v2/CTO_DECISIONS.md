@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-465 · 2026-09-02 · Demo CC1101 chip-select tree routed and promoted:** the
+fitted `CC1101_CS_N` network now connects U1.7, its fitted 10 kOhm pull-up
+R28.2, and radio-module land U7.19 as one island. Both atomic branch orders
+reproduce the same 12 add-only objects: eight 0.20 mm tracks totaling
+49.438285 mm and four ordinary 0.60/0.30 mm through vias. The short MCU-to-
+pull-up leg uses In2 and the long MCU-to-radio haul uses In3; no accepted
+copper is removed and no wrong-net object is added. Independent real refilled
+schematic-parity KiCad DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports. Fitted connectivity improves
+65->64 open retained nets and 480->478 edges; ratsnest 509->507. Board
+`c244d48e...`; D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo
+NC contacts, and `hardware/beta-v2/` remain intact. Next, freshly screen the
+independent fitted three-land `/02_MCU_CORE/BOOT_N` recovery tree outside the
+parked power/USB/NFC/U2/package walls. No owner decision is open.
+
 **D-464 · 2026-09-02 · Demo ESP32 EN reset tree routed and promoted:** the
 fitted `Net-(U1-EN)` power-on-reset network now connects U1.3, C1.2, and R1.1
 as one island. The atomic boxed-endpoint framework replaces the rejected

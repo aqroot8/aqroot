@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-465 (CC1101 chip-select tree promoted):** U1.7, fitted pull-up
+  R28.2, and U7.19 now form one copper island through eight add-only 0.20 mm
+  tracks (49.438285 mm) and four ordinary vias. The local pull-up leg uses In2
+  and the long radio leg uses In3; both atomic branch orders reproduce the same
+  clean 12-object geometry. Independent real refilled parity DRC remains
+  199/5/1; fitted opens improve 65->64 nets and 480->478 edges, and ratsnest
+  509->507. Board `c244d48e...`; all Demo invariants and production hardware
+  remain intact. **Next:** freshly screen the independent fitted three-land
+  `/02_MCU_CORE/BOOT_N` recovery tree outside parked walls. No owner decision.
 - **Demo D-464 (ESP32 EN reset tree promoted):** the fitted U1.3/C1.2/R1.1
   power-on-reset network is one island through 11 add-only 0.20 mm tracks
   (45.957287 mm) and four ordinary vias. The short U1-to-cap leg uses In3;
