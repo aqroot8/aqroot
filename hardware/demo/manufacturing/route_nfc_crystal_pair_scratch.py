@@ -21,6 +21,15 @@ ORDERS = {
 }
 NETS = ("/04_SPI_B_RADIOS_NFC/NFC_XIN", "/04_SPI_B_RADIOS_NFC/NFC_XOUT")
 ACCEPTED = {"lib_footprint_issues", "hole_clearance", "solder_mask_bridge"}
+PLACEMENTS = {
+    # Rotate Y1 to match U9's vertical pin order and exchange the two load
+    # capacitors so each remains on the outside of its oscillator arm.
+    "rotate-swap-caps": {
+        "Y1": (28.6, 30.0, 180.0),
+        "C79": (28.6, 32.9, 0.0),
+        "C80": (28.6, 27.1, 0.0),
+    },
+}
 
 
 def sha256(path: Path) -> str:
@@ -48,6 +57,8 @@ def main() -> int:
     parser.add_argument("--launch-order", choices=sorted(ORDERS), default="xout-first")
     parser.add_argument("--rotate-crystal-180", action="store_true",
                         help="characterize an in-place Y1 pin-order correction")
+    parser.add_argument("--placement", choices=sorted(PLACEMENTS),
+                        help="screen a coherent Y1/C79/C80 placement transaction")
     args = parser.parse_args()
     before = sha256(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-nfc-crystal-") as temporary:
@@ -55,11 +66,27 @@ def main() -> int:
         scratch = work / BOARD.name
         for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
             scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
+        if args.rotate_crystal_180 and args.placement:
+            parser.error("select either --rotate-crystal-180 or --placement")
+        placement_delta = {}
         if args.rotate_crystal_180:
             rotated = pcbnew.LoadBoard(str(scratch))
             crystal = rotated.FindFootprintByReference("Y1")
             crystal.SetOrientationDegrees((crystal.GetOrientationDegrees() + 180.0) % 360.0)
             pcbnew.SaveBoard(str(scratch), rotated)
+        elif args.placement:
+            placed = pcbnew.LoadBoard(str(scratch))
+            for ref, (x_mm, y_mm, angle) in PLACEMENTS[args.placement].items():
+                footprint = placed.FindFootprintByReference(ref)
+                old = footprint.GetPosition()
+                placement_delta[ref] = {
+                    "from_mm": [old.x / 1e6, old.y / 1e6,
+                                footprint.GetOrientationDegrees()],
+                    "to_mm": [x_mm, y_mm, angle],
+                }
+                footprint.SetPosition(pcbnew.VECTOR2I_MM(x_mm, y_mm))
+                footprint.SetOrientationDegrees(angle)
+            pcbnew.SaveBoard(str(scratch), placed)
         routes = []
         for name in ORDERS[args.launch_order]:
             run = subprocess.run([sys.executable, str(LOCAL), name, "--route", str(scratch)],
@@ -83,7 +110,7 @@ def main() -> int:
         # sends a load-capacitor branch around the cluster.  It is deliberately
         # characterization-only until Y1/C79/C80 are screened as one placement
         # transaction and the complete oscillator geometry is reviewed.
-        geometry_reviewed = not args.rotate_crystal_180
+        geometry_reviewed = bool(args.placement)
         promotion = electrically_complete and not attributable and geometry_reviewed
         candidate = scratch.read_bytes()
         if args.candidate and promotion:
@@ -92,6 +119,8 @@ def main() -> int:
                   "authoritative_unchanged": before == sha256(BOARD),
                   "tactic": "atomic local NFC crystal/load-cap pair; B.Cu, no vias",
                   "crystal_rotation_delta_deg": 180 if args.rotate_crystal_180 else 0,
+                  "placement_tactic": args.placement,
+                  "placement_delta": placement_delta,
                   "electrically_complete": electrically_complete,
                   "oscillator_geometry_reviewed": geometry_reviewed,
                   "launch_order": args.launch_order,

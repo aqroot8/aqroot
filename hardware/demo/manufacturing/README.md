@@ -34,6 +34,27 @@ rotated pin order with U9, and restores short, balanced crystal and load-cap
 branches. Promote placement and both nets only as one add/reposition transaction
 after the authoritative full-board gate. No owner decision is open.
 
+That coherent transaction is now promoted. `Y1` rotates 180 degrees in place;
+`C79` and `C80` exchange their existing `(28.6,27.1)` and `(28.6,32.9)` mm
+positions so both load capacitors remain outside the aligned arms. XIN and XOUT
+use 11 and eight add-only 0.20 mm B.Cu segments, respectively, with zero vias;
+their complete lengths are 8.537437 and 5.422361 mm. Both launch orders produce
+identical geometry digest `0148d20322aa24fc...`.
+
+The authoritative refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited solder-mask
+bridge report. No accepted copper was removed, and the only added copper is 19
+segments on the two oscillator nets. The fitted ledger moves 91 to 89 open
+nets, 532 to 528 open edges, and raw ratsnest 561 to 557. The authoritative
+board hash is `2d54a40da1ec0f53e0cdf75bb35b63cc84aa7d435e8ef0cce896d7dbb69bec1e`.
+Battery/accessory-power, RGB, XGPIO4/XGPIO5, and all other NFC paths remain
+connected; `hardware/beta-v2/` is untouched.
+
+Next, select the highest-leverage independent retained-net cluster from the
+fitted ledger. Keep the materially unchanged MCU USB and `BQ25185_SYS` walls
+parked. Manufacturing export remains premature at 89 retained open nets / 528
+retained open edges; no owner decision is open.
+
 The deterministic candidate exporter is `export_candidate.sh`. It writes only to
 a new caller-supplied directory, generates full/fitted BOMs, an assembly position
 file, all six copper layers, paste/mask/silkscreen/outline Gerbers, separate PTH

@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-409 · 2026-09-02 · Demo NFC crystal transaction promoted:** `Y1` is
+rotated 180 degrees in place and `C79`/`C80` exchange their existing positions,
+aligning the oscillator pin order with U9 while keeping each load capacitor
+outside its arm. Both routing orders reproduce identical geometry digest
+`0148d203...`; the complete B.Cu/no-via arms are 8.537437 mm XIN and
+5.422361 mm XOUT. The authoritative refilled schematic-parity KiCad gate
+retains exactly 199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge reports with no attributable class. The PCB delta
+is 19 add-only segments on the two oscillator nets, zero vias and zero accepted
+copper removals; retained opens fall 91→89 nets and 532→528 edges, raw ratsnest
+561→557. D-269 battery copper, D-186 accessory controls, RGB, XGPIO4/XGPIO5,
+the NFC matching/output/receive paths, and `hardware/beta-v2/` are unchanged.
+Authoritative PCB SHA-256 is `2d54a40d...`. Next, select the highest-leverage
+independent retained-net cluster from the fitted ledger; MCU USB and
+`BQ25185_SYS` remain parked. No owner decision is open.
+
 **D-408 · 2026-09-02 · Demo NFC crystal crossover cause isolated:** the
 bounded reserved-launch screen proves that the current U9 and Y1 XIN/XOUT pad
 orders are reversed on B.Cu. Rotating Y1 180 degrees in place closes all four
