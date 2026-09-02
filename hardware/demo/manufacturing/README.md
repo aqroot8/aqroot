@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Radio/NFC package-fanout wall narrowed (2026-09-02)
+
+`screen_package_fanout_transaction.py` replaces the generic endpoint search
+with explicit package-aware 0.20 mm necks and ordinary 0.60/0.30 mm via sites
+for the two remaining control-cluster endpoints.  Real KiCad scratch DRC proves
+that neither is an add-only escape: U9.27's only outward route crosses the
+accepted `NFC_AGDC` fanout, while U2.20's only inward route crosses the accepted
+`BTN_B_N` fanout and violates clearance to the accepted `ACC_5V_SW_EN` via.
+The authoritative board remains byte-identical at `360b8261...`; no HDI or
+via-in-pad assumption was introduced.  Park `NFC_IRQ` and `SX1262_DIO1` until a
+bounded accepted-copper fanout transaction is justified.  Next, rank an
+independent retained local cluster; do not replay either unchanged add-only
+escape family.
+
 ## Radio interrupt/control cluster advance (2026-09-02)
 
 `SX1262_BUSY` is now complete from U1.12 to U8.14 with two ordinary
