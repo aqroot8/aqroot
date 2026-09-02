@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-427 (SPI-A shared clock/data wall bounded):** both complete-tree
+  launch orders are clean but mutually exclude the adjacent J1 display via
+  pocket: clock-first closes SCK and leaves MOSI one edge open; data-first
+  closes MOSI and leaves SCK one edge open.  Separate In2/In3 assignment does
+  not solve a through-via-site wall.  No partial tree or copper is promoted;
+  the board remains `7e20e227...` with the accepted 199/5/1 DRC signature.
+  **Next:** atomically pre-reserve distinct J1.34/J1.36 perimeter fanouts before
+  either haul; fall back to an independently gated complete SCK promotion only
+  if the paired reservation is impossible. No owner decision.
 - **Demo D-426 (SPI-A MISO promoted):** `/SPI_A_MISO` now connects fitted pads
   U1.21 and J2.7 using three 0.20 mm F.Cu escape segments, two ordinary
   0.60/0.30 mm vias, and three 0.20 mm In2.Cu segments (28.739064 mm total).

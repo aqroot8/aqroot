@@ -16,6 +16,46 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "SPI_A_SCK_DISPLAY": {
+        "net": "/SPI_A_SCK",
+        "pads": ("U1.20", "J1.36"),
+        "ignored_connected_pads": ("J2.5",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.20", "b": "J1.36", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SPI_A_SCK_SD": {
+        "net": "/SPI_A_SCK",
+        "pads": ("U1.20", "J2.5"),
+        "ignored_connected_pads": ("J1.36",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.20", "b": "J2.5", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SPI_A_MOSI_DISPLAY": {
+        "net": "/SPI_A_MOSI",
+        "pads": ("U1.19", "J1.34"),
+        "ignored_connected_pads": ("J2.3",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.19", "b": "J1.34", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SPI_A_MOSI_SD": {
+        "net": "/SPI_A_MOSI",
+        "pads": ("U1.19", "J2.3"),
+        "ignored_connected_pads": ("J1.34",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.19", "b": "J2.3", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "SPI_A_MISO": {
         "net": "/SPI_A_MISO",
         "pads": ("U1.21", "J2.7"),

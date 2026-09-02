@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-427 · 2026-09-02 · Demo shared SPI-A clock/data atomic wall bounded:**
+the new complete-tree harness screens `/SPI_A_SCK` and `/SPI_A_MOSI` in both
+launch orders, with each fitted U1/J1/J2 tree required to reach zero open
+edges.  Whichever display branch reserves the shared J1 escape region first
+closes its complete tree; the second display branch then reports
+`NO_VIA_SITE`.  Clock-first closes SCK and leaves MOSI at one open edge;
+data-first closes MOSI and leaves SCK at one.  Assigning the nets to separate
+In2/In3 hauls does not help because the limiting 0.60/0.30 mm through-via
+pocket spans all copper layers.  Every scratch candidate retains the accepted
+199/5/1 refilled parity DRC signature, removes no accepted copper, and the
+authoritative board remains byte-identical at `7e20e227...`.  No partial bus
+tree is promoted.  Next, co-reserve two distinct J1.34/J1.36 perimeter fanouts
+before either inner haul, then attach the MCU and microSD branches atomically;
+if that cannot expose two legal barrels, park the paired wall and promote the
+independently complete SCK tree only after a fresh full gate.  No owner
+decision is open.
+
 **D-426 · 2026-09-02 · Demo SPI-A MISO promoted with display isolation preserved:**
 the fitted topology is exactly U1.21 to microSD J2.7; R112.2 is excluded because
 R112 remains DNP per D-114 and must not connect display SDO to the read bus. A

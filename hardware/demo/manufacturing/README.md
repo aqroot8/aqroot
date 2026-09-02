@@ -1093,3 +1093,22 @@ KiCad can label coincident geometry as short, crossing, or clearance between
 runs. The planar outer-corridor family is parked. Next, screen a package-local
 U21.6 transition into the existing In3 raw tree with LX retained on B.Cu before
 attempting the full six-branch placement transaction.
+
+## Shared SPI-A clock/data wall (2026-09-02)
+
+`route_spi_a_clock_data_scratch.py` now requires both fitted three-pad trees,
+`SPI_A_SCK` and `SPI_A_MOSI`, to close in one add-only transaction.  Both launch
+orders pass real refilled schematic-parity DRC with exactly the inherited
+199 footprint-library, five hole-clearance, and one solder-mask-bridge reports,
+and remove no accepted copper.  Clock-first closes SCK but leaves the MOSI
+display branch at `NO_VIA_SITE`; data-first closes MOSI but leaves the SCK
+display branch at the same wall.  Pinning the two nets to separate In2/In3
+hauls does not change the result because ordinary through vias occupy all
+copper layers.
+
+No partial tree is promoted and the authoritative board remains byte-identical
+at `7e20e227...`.  The next bounded tactic is to reserve distinct perimeter
+fanouts for adjacent J1.34/J1.36 before either long haul, then attach U1 and J2
+atomically.  If two legal barrels cannot be exposed, park the paired wall and
+independently gate the already reproducible complete SCK tree.  No owner
+decision is open.
