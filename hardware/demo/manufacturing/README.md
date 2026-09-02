@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## I2S speaker-data staged family bounded (2026-09-02)
+
+`route_i2s_spk_dout_scratch.py` is the D-430 successor for the live fitted
+`/I2S_SPK_DOUT` U1.34/U5.1 link. It enumerates four ordinary-via sites at each
+endpoint on both In2 and In3, then screens 1,168 north/west perimeter,
+two-spine, and three-spine corridors whenever both endpoints reserve. All 32
+site/layer cases ran; eight reserve both endpoints, but no staged join exists.
+No partial copper or candidate is emitted. The authoritative board remains
+byte-identical at `044ebb60...`, 58 open retained nets / 463 edges, and an
+independent real refilled schematic-parity DRC remains 199/5/1. Park this
+unchanged audio-data haul wall and freshly rank an independent retained
+control tree; manufacturing export remains premature.
+
 ## MK1 clock perimeter/three-spine family bounded (2026-09-02)
 
 The paired-clock atomic harness now screens a genuinely broader long-haul

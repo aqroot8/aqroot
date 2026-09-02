@@ -3770,3 +3770,25 @@ remain intact. Park this unchanged microphone-data haul wall. Next freshly
 screen the remaining independent fitted audio-data net `/I2S_DOUT`; revisit
 this wall only after changed geometry or a coherent audio refloor transaction.
 No owner decision is open.
+
+# D-488 · 2026-09-02 · Demo I2S speaker-data staged family bounded
+
+The remaining independent fitted audio-data link is `/I2S_SPK_DOUT`, not the
+stale shorthand `/I2S_DOUT`: U1.34 to U5.1. Its D-430 generic direct-inner wall
+now has a durable broader successor. The atomic harness enumerates four
+ordinary 0.60/0.30 mm via sites at each endpoint on both In2 and In3, then
+screens 1,168 north-perimeter, west-perimeter, two-spine, and three-spine
+corridors for every case in which both endpoints reserve.
+
+All 32 site/layer cases complete deterministically. Both vias coexist in eight
+cases, four per inner layer, but every one rejects all 1,168 staged corridors.
+No candidate or partial copper is emitted. The authoritative PCB remains byte-
+identical at `044ebb606eb9a505dd513def40c736a0c38c3ddc7d94456a7cf2f038007a0843`,
+58 open retained nets / 463 edges. Independent real zone-refilled schematic-
+parity KiCad DRC remains exactly 199 footprint-library / five hole-clearance /
+one solder-mask-bridge reports. D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo
+NC contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Park this unchanged audio-data haul wall. Next freshly rank an
+independent retained control tree, beginning with `/IR_RX_GPIO44` only as an
+atomic three-land tree or `/SX1262_RST_N`; do not replay parked audio geometry.
+No owner decision is open.

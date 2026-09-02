@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-488 (I2S speaker-data staged family bounded):** the live
+  `/I2S_SPK_DOUT` U1.34/U5.1 link now has a reusable endpoint-site and staged-
+  corridor harness. All 32 In2/In3 and four-by-four endpoint-site cases ran;
+  both ordinary vias coexist in eight cases, but every such case rejects all
+  1,168 north/west perimeter, two-spine, and three-spine corridors. No copper
+  is emitted or promoted; board `044ebb60...` remains at 58/463 and independent
+  real refilled parity DRC remains 199/5/1. Park the unchanged audio-data haul
+  wall. **Next:** freshly rank an independent retained two-pad control net,
+  beginning with `/IR_RX_GPIO44` only through an atomic three-land tree or
+  `/SX1262_RST_N`; do not replay parked audio geometry. No owner decision.
 - **Demo D-487 (I2S microphone data tree staged family bounded):** exact
   reusable contracts and an atomic two-order harness now cover fitted
   `U1.35/R120.1/MK1.7`. The MCU-to-pulldown branch closes cleanly on In2 with
