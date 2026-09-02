@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## VBUS-present local-tree promotion (2026-09-02)
+
+`/01_POWER_TREE/VBUS_PRESENT` is complete across C68.1, R105.1, R104.2, and
+TP31.1. The deterministic transaction reserves TP31 first with a two-via In3
+hop, then closes the three short passive branches on B.Cu. It adds 13 target-net
+objects at 0.20 mm, removes no accepted copper, and adds no wrong-net geometry.
+
+The authoritative refilled schematic-parity DRC retains exactly 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+reports. Fitted open nets improve 80 to 79, open edges 510 to 507, and raw
+ratsnest 539 to 536. Board hash is `f8d555d4...`; `hardware/beta-v2/` remains
+untouched. Next, screen the short L1/U12 buck-boost switching cluster as an
+atomic power-aware transaction. Manufacturing export remains premature and no
+owner decision is open.
+
 ## SPI-A paired J1 fanout wall (2026-09-02)
 
 `screen_spi_a_j1_pair.py` implements the D-427 successor: it reserves distinct

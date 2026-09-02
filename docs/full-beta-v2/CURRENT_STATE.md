@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-431 (VBUS-present local tree promoted):**
+  `/01_POWER_TREE/VBUS_PRESENT` now connects fitted C68.1, R105.1, R104.2,
+  and TP31.1 with 13 add-only objects: two ordinary 0.60/0.30 mm through-vias
+  and 0.20 mm B.Cu/In3.Cu copper. The TP31 branch reserves the In3 hop first;
+  the remaining passive branches close on B.Cu. Refilled parity DRC remains
+  199/5/1, with no accepted-copper removal or wrong-net addition. Fitted opens
+  improve 80→79 nets and 510→507 edges; ratsnest 539→536. Board
+  `f8d555d4...`; production hardware is untouched. **Next:** screen the short
+  local retained buck-boost L1/U12 switching cluster as a power-aware atomic
+  transaction, preserving the new VBUS-present tree. No owner decision.
 - **Demo D-430 (audio/radio long-haul characterization):** reserved-escape
   screens bound two freshly ranked nets without PCB change. `/I2S_SPK_DOUT`
   reserves both endpoint vias but has no 0.20 mm In2/In3 join;

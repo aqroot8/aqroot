@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-431 · 2026-09-02 · Demo VBUS-present local tree promoted:** the fitted
+`VBUS_PRESENT` endpoints C68.1/R105.1/R104.2/TP31.1 are one connected island.
+The add-only transaction uses two ordinary 0.60/0.30 mm vias and 0.20 mm
+B.Cu/In3.Cu copper, with the TP31 In3 hop reserved before the short B.Cu
+passive branches. Real refilled schematic-parity DRC remains at the accepted
+199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge signature;
+zero accepted copper is removed and no wrong-net object is added. Fitted opens
+improve 80→79 nets and 510→507 edges; ratsnest 539→536. Board `f8d555d4...`;
+`hardware/beta-v2/` is untouched. Next, bound the short L1/U12 switching
+cluster with power-topology-aware geometry. No owner decision is open.
+
 **D-430 · 2026-09-02 · Demo audio/radio long-haul families bounded:** fresh
 post-D-429 ranking selected `/I2S_SPK_DOUT`, then independent
 `/CC1101_GDO0`. The existing reserved-escape framework now encodes their exact
