@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_5V_EN mixed-inner cases 12--15 bounded; wall parked (2026-09-02)
+
+The fifth non-promoting iteration paired U2 endpoint site three with all four
+TP10 sites on In2. Every endpoint reservation coexists, but each case rejects
+all 1,870 ordinary transition sites and 7,218 direct/orthogonal leg
+combinations. No candidate or partial copper was emitted; the authoritative
+board remains byte-identical at `04dc3e8a...`, 56 open retained nets / 460
+edges. Cases 0--15 are exhausted. The materially unchanged `NFC_5V_EN` wall is
+now PARKED under the autonomy policy; do not continue into the remaining case
+matrix without changed geometry or a broader coherent refloor. Freshly rank an
+independent retained control/interface cluster next.
+
 ## NFC_5V_EN mixed-inner cases 8--11 bounded (2026-09-02)
 
 The resumable atomic harness paired U2 site two with all four TP10 sites on

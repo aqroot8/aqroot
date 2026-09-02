@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-529 (NFC_5V_EN mixed-inner cases 12--15 bounded; wall parked):**
+  the fifth non-promoting window pairs U2 site three with TP10 sites zero
+  through three on In2. Every escape pair coexists, but each case exhausts
+  1,870 transition sites / 7,218 leg combinations without a complete join.
+  No candidate or partial copper; board remains byte-identical at
+  `04dc3e8a...`, 56 open retained nets / 460 edges. Cases 0--15 are exhausted.
+  The unchanged `NFC_5V_EN` wall is now PARKED under the autonomy policy;
+  revisit only after changed geometry, an unlocking promotion, or a broader
+  coherent refloor. **Next:** freshly rank an independent retained
+  control/interface cluster from the live ledger. No owner decision.
 - **Demo D-528 (NFC_5V_EN mixed-inner cases 8--11 bounded):** the next
   resumable window pairs U2 site two with TP10 sites zero through three on
   In2. Every escape pair coexists, but each case exhausts 1,870 transition
