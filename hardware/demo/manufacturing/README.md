@@ -2011,3 +2011,17 @@ Board `be285abf...` remains byte-identical at 57 open retained nets / 461
 edges.  Next reserve the three adjacent U1.4/U1.5/U1.6 and U9.30/U9.31/U9.32
 package fanouts as a bounded bus-aware transaction before attempting any long
 haul; include the U7.16/U7.17 launch pair in the same capacity screen.
+
+## Shared SPI-B package-fanout capacity screen (2026-09-02)
+
+`screen_spi_b_package_fanouts.py` qualifies every adjacent package land in
+isolation across eight site indices and both In2/In3 targets, then reserves
+each package group coherently before any long haul.  U1.4/U1.5/U1.6 have
+15/10/16 qualified cases and coexist in the first tested combination.  The
+binding U7.17/U7.16 pair has 7/6 qualified cases and coexists after nine
+ordered combinations.  U9.32 has all 16 generic cases, while U9.30 and U9.31
+each fail all 16 with `NO_LEGAL_ESCAPE`; therefore no three-line U9 witness or
+partial promotion exists.  The authoritative PCB stays byte-identical at
+`be285abf...`, 57 open retained nets / 461 edges.  Next use a package-specific
+shared B.Cu perimeter fanout for U9.30/U9.31, reserving both launches before
+the D-497 complete-tree replay.

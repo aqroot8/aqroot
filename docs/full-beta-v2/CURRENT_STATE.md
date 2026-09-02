@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-498 (SPI-B package-fanout capacity isolated):** the bounded
+  bus-aware successor individually qualified and then coherently reserved the
+  adjacent SPI-B package lands before any haul. U1.4/U1.5/U1.6 coexist on
+  ordinary 0.60/0.30 mm fanouts, as do U7.17/U7.16. At U9, U9.32 has 16
+  qualified layer/site cases, but U9.30 and U9.31 each return
+  `NO_LEGAL_ESCAPE` in all 16 cases, so the three-line group cannot coexist
+  and no partial copper is emitted. PCB remains byte-identical at
+  `be285abf...`, 57 open retained nets / 461 edges. **Next:** screen one
+  package-specific shared U9.30/U9.31 B.Cu fanout transaction around the QFN
+  perimeter, reserving both launches before replaying the D-497 bus trees.
+  No owner decision.
 - **Demo D-497 (shared SPI-B batch bounded):** a new scratch-only atomic
   harness screens all six orders of the three four-endpoint SPI-B trees using
   the accepted 0.20 mm ordinary-via inner-haul framework. The U8-to-U7 local

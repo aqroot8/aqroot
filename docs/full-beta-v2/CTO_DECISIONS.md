@@ -3972,3 +3972,24 @@ XGPIO4/XGPIO5, Demo NC contacts, and `hardware/beta-v2/` remain intact. Next
 screen a bounded bus-aware package-fanout reservation across adjacent
 U1.4/U1.5/U1.6 and U9.30/U9.31/U9.32, including the binding U7.16/U7.17 pair,
 before replaying the long hauls. No owner decision is open.
+
+# D-498 · 2026-09-02 · Demo SPI-B package-fanout capacity isolated
+
+The D-497 successor now screens adjacent bus lands as coherent package groups
+before attempting any long haul. At the locked 0.20 mm width/clearance and
+ordinary 0.60/0.30 mm via contract, U1.4/U1.5/U1.6 individually provide
+15/10/16 qualified layer/site cases and coexist in one reservation set.
+U7.17/U7.16 provide 7/6 qualified cases and coexist after nine ordered
+combinations. These results remove both previously observed U7-to-U1 generic
+launch failures as structural package-capacity blockers.
+
+The remaining endpoint wall is isolated to the NFC QFN: U9.32 qualifies in
+all 16 generic cases, while U9.30 and U9.31 each return `NO_LEGAL_ESCAPE` in
+all 16 cases. The U9 three-line group therefore has no generic coexistence
+witness, no bus tree is partially emitted, and no authoritative copper is
+changed. Board `be285abf...` remains byte-identical at 57 open retained nets /
+461 edges; D-269/D-186, the three RGB routes, XGPIO4/XGPIO5, Demo NC contacts,
+accessory-power copper, and `hardware/beta-v2/` remain intact. Next screen one
+package-specific shared B.Cu perimeter fanout for U9.30/U9.31, reserving both
+launches before replaying all three D-497 complete trees atomically. No owner
+decision is open.
