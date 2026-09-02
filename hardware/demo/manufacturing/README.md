@@ -609,3 +609,19 @@ the board edge. Do not retry that generic tactic. `BQ25185_SYS` remains parked.
 The next highest-leverage fabrication blocker is the endpoint-order-aware
 coordinated `/USB_D_MCU_N` and `/USB_D_MCU_P` transaction; no owner decision
 is open and manufacturing export remains premature.
+
+The bounded endpoint-order crossover screen on 2026-09-02 proves that both MCU
+legs are geometrically routable when each uses a symmetric 0.60/0.30 mm
+two-via hop: N closes on In2 in 22.027355 mm and P closes on In3 in 24.527890
+mm. Real refilled KiCad DRC rejects the complete transaction with five
+`items_not_allowed` reports from the locked rule that forbids USB copper on
+In2/In3; all other reports remain the accepted 199 footprint-library, five
+hole-clearance, and one solder-mask-bridge classes. The authoritative board is
+unchanged. Do not weaken the USB layer contract or retry an inner-layer
+crossover.
+
+Next, run a bounded R33/R34 order/refloor impact screen. It must first determine
+whether endpoint order can be corrected while preserving the accepted
+connector-side ESD pair copper; if not, close that tactic without moving parts
+and return to an explicitly coupled F.Cu perimeter corridor search. Do not
+delete accepted USB copper merely to make the resistor order convenient.

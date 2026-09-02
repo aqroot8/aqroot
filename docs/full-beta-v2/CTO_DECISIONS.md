@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-401 · 2026-09-02 · Demo USB crossover characterization:** the endpoint-
+order-aware MCU-side pair closes geometrically with symmetric two-via hops:
+`/USB_D_MCU_N` routes on In2 in 22.027355 mm and `/USB_D_MCU_P` on In3 in
+24.527890 mm, each at 0.23 mm with two 0.60/0.30 mm vias. The authoritative
+refilled KiCad gate rejects the complete scratch transaction with exactly five
+`items_not_allowed` reports because the locked USB contract forbids the pair
+on In2/In3; no other attributable class appears. No copper, placement, or rule
+was promoted and the authoritative board remains byte-identical. Do not weaken
+the layer contract or retry an inner crossover. Next, bound an R33/R34 order
+impact/refloor that preserves the accepted connector-side ESD copper; otherwise
+return to a coupled F.Cu perimeter-corridor search. No owner decision is open.
+
 **D-400 · 2026-09-02 · routed Demo increment:** after the remaining MCU-side
 USB pair again confirmed that the generic independent-leg primitive cannot
 escape `/USB_D_MCU_N` on F.Cu, the coherent USB-C configuration pair was
