@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-432 · 2026-09-02 · Demo U12/L1 switch pair promoted:** both retained
+TPS63020 buck-boost switch nets are complete across L1 and the paired U12
+lands. The atomic route adds nine B.Cu-only objects: 0.20 mm package-land
+joins flaring immediately to 0.40 mm switch trunks, with zero vias or inner
+switching copper. The two physical paths are 15.335 mm and 3.977 mm; all four
+fitted open edges close. Real refilled schematic-parity DRC remains at the
+accepted 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge
+signature, no accepted copper is removed, and fitted opens improve 79→77
+nets and 507→503 edges; ratsnest 536→532. Board `3c5d425f...`;
+`hardware/beta-v2/` is untouched. Next, bound the local U12 `V3V3_FB`
+feedback tree while preserving this switch-loop geometry. No owner decision
+is open.
+
 **D-431 · 2026-09-02 · Demo VBUS-present local tree promoted:** the fitted
 `VBUS_PRESENT` endpoints C68.1/R105.1/R104.2/TP31.1 are one connected island.
 The add-only transaction uses two ordinary 0.60/0.30 mm vias and 0.20 mm

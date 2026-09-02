@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-432 (U12/L1 switch pair promoted):** both buck-boost switch nodes
+  now connect their paired U12 lands to L1 with nine add-only B.Cu objects,
+  short 0.20 mm package joins, immediate 0.40 mm trunks, and no vias or inner
+  switching copper. The two paths are 15.335 mm and 3.977 mm. Refilled parity
+  DRC remains 199/5/1; fitted opens improve 79→77 nets and 507→503 edges, and
+  ratsnest 536→532. Board `3c5d425f...`; production hardware is untouched.
+  **Next:** screen the local three-land `V3V3_FB` feedback tree without
+  disturbing the completed switch geometry. No owner decision.
 - **Demo D-431 (VBUS-present local tree promoted):**
   `/01_POWER_TREE/VBUS_PRESENT` now connects fitted C68.1, R105.1, R104.2,
   and TP31.1 with 13 add-only objects: two ordinary 0.60/0.30 mm through-vias

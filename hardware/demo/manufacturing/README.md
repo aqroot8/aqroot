@@ -2,6 +2,23 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## U12/L1 buck-boost switch-pair promotion (2026-09-02)
+
+Both retained TPS63020 switch nodes are complete across the paired U12 lands
+and L1. The deterministic atomic transaction adds nine B.Cu objects: short
+0.20 mm VSON land joins that flare immediately into 0.40 mm switch trunks.
+There are no vias and no switching tracks on inner layers. The two completed
+paths measure 15.335 mm and 3.977 mm and close four fitted open edges.
+
+The authoritative refilled schematic-parity DRC remains exactly 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+reports. No accepted copper is removed. Fitted open nets improve 79 to 77,
+open edges 507 to 503, and raw ratsnest 536 to 532. Board hash is
+`3c5d425f...`; `hardware/beta-v2/` remains untouched. Next, screen the local
+three-land `V3V3_FB` feedback tree while preserving the completed switch-loop
+geometry. Manufacturing export remains premature and no owner decision is
+open.
+
 ## VBUS-present local-tree promotion (2026-09-02)
 
 `/01_POWER_TREE/VBUS_PRESENT` is complete across C68.1, R105.1, R104.2, and
