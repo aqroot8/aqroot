@@ -23,8 +23,11 @@ import qrouter as qr  # noqa: E402
 
 NET = "/01_POWER_TREE/BQ25185_SYS"
 CASES = {
+    # D-269 applies to the SYS/BAT current-path relationship even inside the
+    # charger breakout.  Screening the neck at only 0.20 mm produced apparent
+    # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.
     "U11.1": {"neck_width": 200_000, "trunk_width": 500_000,
-               "local_clearance": 200_000, "clearance": 300_000},
+               "local_clearance": 300_000, "clearance": 300_000},
     "U21.3": {"neck_width": 250_000, "trunk_width": 800_000,
                "local_clearance": 200_000, "clearance": 250_000},
 }

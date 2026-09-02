@@ -434,3 +434,28 @@ KiCad DRC, fitted-pad connectivity, D-269, and accepted-copper preservation
 gates. If either first-ranked landing fails real DRC, advance through the
 persisted ranked candidates instead of reopening the closed radial searches.
 No owner decision is open.
+
+The inner-layer replay on 2026-09-02 closes all 13 fitted pads with twelve
+successful joins, but the authoritative real KiCad gate rejects the U11.1
+launch: its 0.20 mm package neck is exactly 0.2000 mm from retained
+`BAT_PROTECTED_P`, while D-269 requires 0.3000 mm. This is structural at the
+adjacent package breakout, so advancing through the other ranked 0.20 mm-local
+neck candidates cannot change the limiting clearance. The landing enumerator
+now applies 0.300 mm to the U11.1 neck itself and will no longer emit those
+false-positive candidates. U21.3 and the complete ordinary-through-via I2/I3
+spanning framework are proven reusable; no candidate copper was promoted and
+the authoritative board remains unchanged.
+
+The corrected deterministic replay confirms the boundary: U11.1 has zero
+legal anchors/candidates (all 72 angular prefixes stop at adjacent U11.2),
+while U21.3 retains 526 anchors and 48 bounded candidates. The authoritative
+board hash remains `fd346ae6...`.
+
+This is the fifth consecutive non-promoting iteration on the unchanged
+`BQ25185_SYS` wall, so the wall is PARKED under the autonomy policy. Revisit it
+only after materially changed surrounding geometry, an approved package-local
+rule treatment that preserves D-269's safety intent, or a manufacturing-layer
+decision. The next bounded iteration must select an independent unrouted
+Demo-required net from the routing ledger and make measurable board progress;
+do not spend another iteration rescreening this unchanged charger breakout.
+No owner decision is currently open.

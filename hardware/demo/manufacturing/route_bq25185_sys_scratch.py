@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Characterize a complete outer-layer BQ25185_SYS fitted-pad tree in scratch."""
+"""Characterize a complete BQ25185_SYS fitted-pad tree in scratch.
+
+The ranked package doglegs and through-via reservations close the 13-pad tree
+over I2/I3.  Promotion still requires the real full-board gate; in particular,
+the geometric landing screen must not override D-269 at U11.1.
+"""
 
 import argparse
 import hashlib
@@ -22,6 +27,22 @@ FITTED = (
     "SW9.2", "U11.1", "U12.1", "U12.10", "U12.11", "U21.3",
 )
 FINE_PITCH = {"U11.1", "U12.1", "U12.10", "U12.11", "U21.3"}
+DOGLEG = {
+    "U11.1": {
+        "neck_end": (66_586_400, 78_866_200),
+        "anchor": (66_729_800, 79_071_000),
+        "via": (66_977_300, 79_318_500),
+        "neck_width": 200_000, "trunk_width": 500_000,
+        "clearance": 300_000,
+    },
+    "U21.3": {
+        "neck_end": (56_212_500, 39_400_000),
+        "anchor": (55_962_500, 39_400_000),
+        "via": (56_048_000, 39_634_900),
+        "neck_width": 250_000, "trunk_width": 800_000,
+        "clearance": 250_000,
+    },
+}
 
 
 def face(pad):
@@ -62,36 +83,25 @@ def route(path: Path):
                 return
             anchors.append((ref, tuple(result["via"])))
             continue
-        if ref == "U11.1":
-            # BQ25185 WSON has 0.20 mm-high lands on 0.40 mm pitch.  The
-            # generic radial flare cannot represent its one legal direction:
-            # leave top-edge pad 1 away from adjacent BAT pad 2, then widen
-            # outside the body.  A west launch runs parallel to BAT and fails
-            # D-269 even though it clears the package land pattern.
-            neck_end = (pad["x"], 79_200_000)
-            anchor = (pad["x"], 79_500_000)
-            board.track(NET, "B", pad["x"], pad["y"], *neck_end, 200_000)
-            board.track(NET, "B", *neck_end, *anchor, 500_000)
+        if ref in DOGLEG:
+            landing = DOGLEG[ref]
+            neck_end = landing["neck_end"]
+            anchor = landing["anchor"]
+            via = landing["via"]
+            board.track(NET, "B", pad["x"], pad["y"], *neck_end,
+                        landing["neck_width"])
+            board.track(NET, "B", *neck_end, *anchor,
+                        landing["trunk_width"])
+            board.track(NET, "B", *anchor, *via, landing["trunk_width"])
+            board.via(NET, *via, 900_000, 400_000)
             reservations.append({
-                "pad": ref, "ok": True, "face": "B", "anchor": list(anchor),
-                "neck_mm": 0.6, "neck_width_mm": 0.2,
-                "launch": "outward_wson_land_width",
+                "pad": ref, "ok": True, "face": "B", "via": list(via),
+                "neck_width_mm": landing["neck_width"] / 1e6,
+                "trunk_width_mm": landing["trunk_width"] / 1e6,
+                "clearance_mm": landing["clearance"] / 1e6,
+                "launch": "ranked_directional_dogleg_landing",
             })
-            anchors.append((ref, anchor))
-        elif ref == "U21.3":
-            # The SYS input is the end pad on the TPS61023 west column.  Launch
-            # away from P2, then immediately widen to the 0.80 mm peak-current
-            # feed required by D-185.  L4.1 is connected by the tree later.
-            neck_end = (pad["x"], 38_890_000)
-            anchor = (pad["x"], 38_500_000)
-            board.track(NET, "B", pad["x"], pad["y"], *neck_end, 250_000)
-            board.track(NET, "B", *neck_end, *anchor, 800_000)
-            reservations.append({
-                "pad": ref, "ok": True, "face": "B", "anchor": list(anchor),
-                "neck_mm": 0.51, "neck_width_mm": 0.25,
-                "sub_trunk_width_mm": 0.8, "launch": "outward_peak_feed",
-            })
-            anchors.append((ref, anchor))
+            anchors.append((ref, via))
         elif ref in FINE_PITCH:
             flare = board.flare(NET, pad, "B", 500_000, 250_000,
                                 250_000, 250_000, 25_000)
@@ -100,16 +110,55 @@ def route(path: Path):
                 board.save(path)
                 print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
                 return
-            anchor = (flare["x"], flare["y"])
+            escape = {"x": flare["x"], "y": flare["y"], "ln": 0,
+                      "w": 500_000}
+            sites = board.via_sites(
+                "B", "I2", NET, escape, 500_000, 900_000,
+                250_000, 250_000, 25_000, span=5_000_000,
+                via_drill=400_000, hole_clr=250_000, limit=96,
+                separation=450_000,
+            )
+            sites = [(x, y) for x, y in sites if all(board.point_free(
+                layer, NET, x, y, 900_000, 250_000, 250_000, 25_000
+            ) for layer in board.cu)]
+            landing = None
+            for site in sites:
+                mark = board.mark()
+                joined = qr.join_reserved(
+                    board, NET, (flare["x"], flare["y"]), site, 500_000,
+                    250_000, 250_000, layer="B", G=25_000, fine=25_000,
+                )
+                if joined.get("ok"):
+                    landing = (site, joined)
+                    break
+                board.revert(mark)
+            if landing is None:
+                reservations.append({"pad": ref, "ok": False,
+                                     "reason": "NO_LANDING_PATH"})
+                board.save(path)
+                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                return
+            anchor, joined = landing
+            board.via(NET, *anchor, 900_000, 400_000)
             reservations.append({
-                "pad": ref, "ok": True, "face": "B", "anchor": list(anchor),
+                "pad": ref, "ok": True, "face": "B", "via": list(anchor),
                 "neck_mm": flare["neck_len"], "sub_trunk_mm": flare["sub_trunk"],
+                "landing": joined,
             })
             anchors.append((ref, anchor))
         else:
-            reservations.append({"pad": ref, "ok": True, "face": "B",
-                                 "anchor": [pad["x"], pad["y"]]})
-            anchors.append((ref, (pad["x"], pad["y"])))
+            result = qr.reserve_escape(
+                board, NET, pad, 500_000, 250_000, 250_000,
+                near="B", far="I2", G=GRID, fine=25_000,
+                via_dia=900_000, via_drill=400_000, target=centroid,
+                site_separation=450_000,
+            )
+            reservations.append({"pad": ref, **result})
+            if not result.get("ok"):
+                board.save(path)
+                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                return
+            anchors.append((ref, tuple(result["via"])))
 
     parent = list(range(len(anchors)))
 
@@ -129,10 +178,15 @@ def route(path: Path):
         if root(a) == root(b):
             continue
         print(f"join {anchors[a][0]} {anchors[b][0]}", file=sys.stderr, flush=True)
-        result = qr.join_reserved(
-            board, NET, anchors[a][1], anchors[b][1], 500_000,
-            250_000, 250_000, layer="B", G=GRID, fine=GRID,
-        )
+        result = None
+        for layer in ("I2", "I3"):
+            result = qr.join_reserved(
+                board, NET, anchors[a][1], anchors[b][1], 500_000,
+                250_000, 250_000, layer=layer, G=GRID, fine=25_000,
+            )
+            if result.get("ok"):
+                result["selected_layer"] = layer
+                break
         joins.append({"a": anchors[a][0], "b": anchors[b][0], **result})
         if not result.get("ok"):
             continue
