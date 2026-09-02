@@ -56,12 +56,18 @@ off-board and `BOSS1/BOSS2` are PCB-only mechanical references.
 
 ## Next bounded task
 
-Route and independently gate the four-net local speaker-output cluster
-(`SPK_P`, `SPK_N`, `SPK_P_CONN`, `SPK_N_CONN`). It is the largest coherent
-open cluster whose four nets are all two-pad connections in one local region;
-route the class-D P/N pair with matched, compact geometry and keep the connector
-legs equally deliberate. Preserve all accepted copper and require a ledger
-581-edge reduction by exactly four plus a real full-board DRC with no new
-attributable class before promotion. Manufacturing export resumes only after all
-retained connections are closed. Population-flag synchronization and MPN
-coverage remain subsequent release blockers.
+The speaker-output cluster was promoted on 2026-09-02. `SPK_P`, `SPK_N`,
+`SPK_P_CONN`, and `SPK_N_CONN` now connect `U5` through `R121`/`R122` to `J6`.
+The class-D legs use 0.25 mm outer-layer copper with two 0.60/0.30 mm vias per
+leg; connector legs remain on F.Cu. The retained ledger moved exactly 581 ->
+577 edges and the raw ratsnest 610 -> 606. The authoritative refilled KiCad DRC
+remains exactly 199 footprint-library, 5 inherited hole-clearance, and 1
+inherited solder-mask-bridge report, with no new attributable class. Board hash:
+`b85533a559f81ae8b49366b76ddbfcdaace3a0086c434d525d06eee0893729d4`.
+
+Next, route and independently gate the coherent three-net IR power/output
+cluster (`IR_GATE`, `IR_LED_A`, `IR_LED_K`), targeting the ledger's five open
+edges. Preserve the locked 12 ohm current limit, 22 uF local reservoir,
+low-side FET topology, and outer-layer/high-current constraints. Manufacturing
+export resumes only after all retained connections are closed. Population-flag
+synchronization and MPN coverage remain subsequent release blockers.
