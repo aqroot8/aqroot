@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ACC_5V_BOOST_EN planar-tree screen (2026-09-02)
+
+`route_acc_5v_boost_en_tree_scratch.py` atomically screens all six launch
+orders for the required U3.16/R102.1/TP30.1/U21.2 boost-enable tree. Every
+order closes all three fitted open edges on B.Cu, but real refilled
+schematic-parity KiCad DRC rejects every candidate at the same four accepted
+accessory-rail vias. Actual clearances are 0.2254--0.2352 mm against the locked
+0.250 mm rule. Replaying with a conservative 0.275 mm router search clearance
+does not change those four exact crossings, so order and generic planar search
+margin are not the lever. No copper is promoted; the authoritative board
+remains `86cff98b...` with fitted connectivity 73 open nets / 496 edges and
+the accepted 199/5/1 DRC signature. Next, reserve U3.16 and U21.2 escapes and
+screen an In2/In3 control haul before attaching R102.1 and TP30.1; do not retry
+the unchanged planar family.
+
 ## ACC_5V_ILIM route (2026-09-02)
 
 The retained U22 current-limit programming net is promoted from U22.4 to

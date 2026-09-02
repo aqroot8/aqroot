@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-443 · 2026-09-02 · Demo ACC_5V_BOOST_EN planar family bounded:** the new
+complete-tree harness screens every launch order for fitted U3.16, R102.1,
+TP30.1, and U21.2 and refuses partial promotion. All six orders close the three
+open edges, but real refilled schematic-parity KiCad DRC rejects every
+candidate at the same accepted accessory-rail vias: 0.2338 mm to
+`ACC_5V_RAW` at (55.850,38.000), and 0.2254/0.2294/0.2352 mm to `ACC_5V_SW`
+at (62.250,36.850), (62.225,48.675), and (62.525,39.025), against the locked
+0.250 mm rule. Replaying with a conservative 0.275 mm router search clearance
+does not alter those crossings, so neither branch order nor a wider generic
+B.Cu search margin is the missing lever. No copper is promoted; authoritative
+board `86cff98b...`, fitted connectivity 73 open nets / 496 edges, accepted
+199/5/1 DRC, D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, and
+`hardware/beta-v2/` remain unchanged. Park this materially unchanged planar
+family. Next, reserve U3.16/U21.2 escapes and screen an In2/In3 control haul
+before attaching R102.1/TP30.1. No owner decision.
+
 **D-442 · 2026-09-02 · Demo ACC_5V_ILIM routed and promoted:** fresh fitted-pad
 ranking selected the independent Demo-required U22 current-limit programming
 net, outside every parked routing family.  The qualified local framework closes

@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-443 (ACC_5V_BOOST_EN planar family bounded):** a new atomic harness
+  screens all six branch orders for U3.16/R102.1/TP30.1/U21.2. Every order
+  reaches zero fitted open edges, but real refilled schematic-parity DRC
+  rejects all candidates at the same four accepted accessory-rail vias
+  (0.2254--0.2352 mm actual versus 0.250 mm required). A conservative
+  0.275 mm router search margin reproduces the same crossings, proving branch
+  order and generic B.Cu planar margin are not the lever. No copper is
+  promoted; board `86cff98b...`, fitted connectivity 73/496, D-269/D-186,
+  RGB, XGPIO4/XGPIO5, approved Demo NCs, and production hardware are unchanged.
+  **Next:** reserve U3.16/U21.2 endpoint escapes and screen an In2/In3 control
+  haul before attaching R102.1/TP30.1. No owner decision.
 - **Demo D-442 (ACC_5V_ILIM promoted):** the retained U22 current-limit setting
   net now connects U22.4 to R101.1 with seven add-only 0.20 mm B.Cu segments
   (42.417480 mm), no vias, no accepted-copper removal, and deterministic replay

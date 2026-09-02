@@ -166,6 +166,27 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "ACC_5V_BOOST_EN_U3_R102": {
+        "net": "/ACC_5V_BOOST_EN",
+        "pads": ("U3.16", "R102.1"),
+        "ignored_connected_pads": ("TP30.1", "U21.2"),
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 275_000,
+    },
+    "ACC_5V_BOOST_EN_R102_TP30": {
+        "net": "/ACC_5V_BOOST_EN",
+        "pads": ("R102.1", "TP30.1"),
+        "ignored_connected_pads": ("U3.16", "U21.2"),
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 275_000,
+    },
+    "ACC_5V_BOOST_EN_TP30_U21": {
+        "net": "/ACC_5V_BOOST_EN",
+        "pads": ("TP30.1", "U21.2"),
+        "ignored_connected_pads": ("U3.16", "R102.1"),
+        "layer": "B", "width": 200_000, "pad_clearance": 200_000,
+        "clearance": 275_000,
+    },
     "USB_CC1": {
         "net": "Net-(J3-CC1)",
         "pads": ("J3.A5", "R31.1"),
