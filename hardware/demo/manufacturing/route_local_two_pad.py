@@ -192,6 +192,42 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "NFC_EMCA_L": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+        "pads": ("L5.2", "C71.1"),
+        "ignored_connected_pads": ("C69.1", "C73.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_EMCA_SHUNT": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+        "pads": ("C71.1", "C73.1"),
+        "ignored_connected_pads": ("C69.1", "L5.2"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_EMCA_CAP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+        "pads": ("C73.1", "C69.1"),
+        "ignored_connected_pads": ("C71.1", "L5.2"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_EMCB_L": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCB",
+        "pads": ("L6.2", "C72.1"),
+        "ignored_connected_pads": ("C70.1", "C74.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_EMCB_SHUNT": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCB",
+        "pads": ("C72.1", "C74.1"),
+        "ignored_connected_pads": ("C70.1", "L6.2"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_EMCB_CAP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCB",
+        "pads": ("C74.1", "C70.1"),
+        "ignored_connected_pads": ("C72.1", "L6.2"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
 }
 
 

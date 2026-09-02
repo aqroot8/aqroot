@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC EMC pair promotion (2026-09-02)
+
+The symmetric fitted `NFC_EMCA` and `NFC_EMCB` four-pad nodes are now complete.
+Each uses 13 segments / 8.755267 mm of 0.30 mm B.Cu with no vias. The atomic
+scratch gate closes all eight fitted pads, adds exactly 26 target-net segments,
+removes no accepted copper, and retains the refilled schematic-parity KiCad DRC
+signature of 199 footprint-library, five inherited hole-clearance, and one
+inherited solder-mask-bridge report. Fitted connectivity improves 89 to 87 open
+nets and 528 to 522 open edges; raw ratsnest improves 557 to 551. Board hash is
+`b1fad08fd1b2039d9e8e72e8cd9e13da6b3d53de0c1b7c6a9b906a961eb66dbe`.
+
+Next is the adjacent symmetric `NFC_ANT_A/B` four-pad pair. Preserve direct
+J7/test-point access, the accepted receive-divider branches, and the completed
+EMC/match/output network. MCU USB and `BQ25185_SYS` remain parked. No owner
+decision is open.
+
 ## NFC crystal launch wall (2026-09-02)
 
 `route_nfc_crystal_pair_scratch.py` deterministically screens both complete

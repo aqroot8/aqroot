@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-410 · 2026-09-02 · Demo NFC EMC pair promoted:** the symmetric fitted
+`NFC_EMCA`/`NFC_EMCB` four-pad nodes are complete as one add-only transaction.
+Each arm uses 13 segments / 8.755267 mm of 0.30 mm B.Cu with no vias. Both
+launch orders pass; the promoted A-first order adds exactly 26 target-net
+segments and removes zero accepted copper. The authoritative refilled
+schematic-parity KiCad gate remains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports with no
+attributable class. Fitted opens improve 89→87 nets and 528→522 edges; raw
+ratsnest improves 557→551. D-269 battery copper, D-186 accessory controls, all
+three RGB replacements, XGPIO4/XGPIO5, previously accepted NFC copper, and
+`hardware/beta-v2/` remain unchanged. Authoritative PCB SHA-256 is
+`b1fad08f...`. Next is the adjacent symmetric `NFC_ANT_A/B` four-pad pair,
+preserving direct antenna/test-point access and the accepted receive-divider
+branches. No owner decision is open.
+
 **D-409 · 2026-09-02 · Demo NFC crystal transaction promoted:** `Y1` is
 rotated 180 degrees in place and `C79`/`C80` exchange their existing positions,
 aligning the oscillator pin order with U9 while keeping each load capacitor
