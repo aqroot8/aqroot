@@ -459,3 +459,21 @@ decision. The next bounded iteration must select an independent unrouted
 Demo-required net from the routing ledger and make measurable board progress;
 do not spend another iteration rescreening this unchanged charger breakout.
 No owner decision is currently open.
+
+The next independent increment on 2026-09-02 promotes the local SX1262 module
+control strap `DIO2_TXEN`. `route_local_two_pad.py` is a deliberately small
+allowlisted harness for deterministic same-face, two-pad Demo nets; its first
+use joins adjacent U8.7/U8.8 with three 0.20 mm B.Cu segments (2.320 mm, zero
+vias). The authoritative refill and full-board KiCad DRC retain exactly the
+accepted 199 footprint-library, 5 inherited hole-clearance, and 1 inherited
+solder-mask-bridge reports, with no attributable violation. The fitted pads
+are one copper island, ratsnest falls 576 to 575, and an object multiset proves
+zero accepted track/via removals or changes and exactly those three additions.
+`hardware/beta-v2/` remains byte-identical. Board hash after refill:
+`f7b5cda56285d503df16a96a6ef4a68df5a6f979e7b1452b1c63c90160ad3ed0`.
+
+The next highest-leverage independent blocker is the adjacent local power-tree
+pair `MAX17048_ALRT_N` (TP11.1/U14.5), followed by other short one-edge local
+nets. Keep `BQ25185_SYS` parked until its revisit conditions are met. The RGB
+replacement nets, both public XGPIOs, accessory switch enables, and accepted
+power/battery copper remain unchanged; no owner decision is open.
