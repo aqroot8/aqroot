@@ -128,6 +128,38 @@ ROUTES = {
         "pad_clearance": 200_000,
         "clearance": 250_000,
     },
+    "NFC_RXA_UPPER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RXA",
+        "pads": ("C75.2", "C76.1"),
+        "ignored_connected_pads": ("R116.1",),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
+    "NFC_RXA_LOWER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RXA",
+        "pads": ("C76.1", "R116.1"),
+        "ignored_connected_pads": ("C75.2",),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
+    "NFC_RXB_LOWER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RXB",
+        "pads": ("C77.2", "C78.1"),
+        "ignored_connected_pads": ("R117.1",),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
+    "NFC_RXB_UPPER": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RXB",
+        "pads": ("C78.1", "R117.1"),
+        "ignored_connected_pads": ("C77.2",),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
 }
 
 
@@ -136,7 +168,9 @@ def route(path: Path, name: str):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, rule["net"])}
-    ignored = set(rule.get("ignored_dnp_pads", ()))
+    ignored = set(rule.get("ignored_dnp_pads", ())) | set(
+        rule.get("ignored_connected_pads", ())
+    )
     unexpected_ignored = ignored - set(pads)
     if unexpected_ignored:
         raise RuntimeError(f"missing declared DNP pads: {sorted(unexpected_ignored)}")

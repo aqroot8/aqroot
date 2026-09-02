@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-406 · 2026-09-02 · Demo NFC receive pair promoted:** both three-pad
+`NFC_RXA` and `NFC_RXB` arms are now complete as one symmetric transaction.
+Each arm uses ten add-only 0.30 mm B.Cu segments, totals 7.309798 mm, and uses
+zero vias; the arm-length delta is exactly 0.0 mm. Two clean scratch replays
+produce identical geometry digest `c27a31d1...`. The authoritative refilled
+schematic-parity KiCad gate retains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports with no
+attributable class. Both receive nets are single copper islands; retained open
+nets fall 93→91, retained edges 536→532, and raw ratsnest 565→561. The PCB
+delta is exactly 20 add-only segments on the two allowlisted nets with no via,
+placement, rule, net-assignment, accepted-copper removal, or
+`hardware/beta-v2/` change. RGB, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, D-269 battery
+copper, and the complete NFC output/matching paths remain connected.
+Authoritative PCB SHA-256 is `c6008821...`. Next, route the coherent
+`NFC_XIN/NFC_XOUT` crystal pair under the same atomic/full-board gate discipline;
+the MCU USB and `BQ25185_SYS` walls remain parked. No owner decision is open.
+
 **D-405 · 2026-09-02 · Demo NFC RFO pair promoted:** the U9 package-launch
 wall is closed by using the clearance distinction already encoded in the
 authoritative DRU: both 0.30 mm-wide RFO arms use 0.20 mm clearance to package

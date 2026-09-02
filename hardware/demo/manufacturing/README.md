@@ -720,3 +720,24 @@ scratch-first/full-board gate discipline, then the `NFC_XIN`/`NFC_XOUT` crystal
 pair.  Preserve the full tuning path and do not revisit the parked MCU USB wall
 without a material geometry change.  Manufacturing export remains premature
 at 93 retained open nets / 536 retained open edges; no owner decision is open.
+
+The next bounded increment promotes both three-pad NFC receive arms atomically.
+`NFC_RXA` and `NFC_RXB` each use ten add-only 0.30 mm B.Cu segments, total
+7.309798 mm, and have zero vias and zero arm-length delta. Two clean scratch
+replays reproduce geometry digest `c27a31d182019135...`; generated KiCad UUIDs
+vary, while the complete physical geometry is identical.
+
+The authoritative zone-refilled schematic-parity KiCad DRC retains exactly 199
+footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge reports, with no attributable class. Both receive nets are
+single copper islands; retained open nets fall 93→91, retained edges 536→532,
+and raw ratsnest 565→561. The board delta is exactly 20 add-only B.Cu segments
+on the two allowlisted nets, with no vias or accepted-copper removals. The full
+NFC output/matching path, battery/accessory-power copper, RGB replacements,
+XGPIO4/XGPIO5, and `ACC_5V_SW_EN` remain connected; `hardware/beta-v2/` is
+untouched. Board hash: `c60088214d12c81dcb00c8bc3a12c933efc5d676e034153259ce75d985ca67ee`.
+
+Next, route `NFC_XIN` and `NFC_XOUT` as one coherent crystal transaction and
+review the complete oscillator geometry. Keep the MCU USB and `BQ25185_SYS`
+walls parked. Manufacturing export remains premature at 91 retained open nets /
+532 retained open edges; no owner decision is open.
