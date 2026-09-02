@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-412 (NFC receiver-input wall; no authoritative PCB change):** both
+  `NFC_RFI1/RFI2` launch orders fail at U9.22/U9.23 even with the DRU-legal
+  0.20 mm courtyard neck; moving only unrouted C17 1.25 mm east does not clear
+  the accepted RFO2/package-land obstruction. The refilled full-board signature
+  remains the accepted 199 footprint-library / 5 hole-clearance / 1 solder-mask
+  bridge classes and board hash `0a5c99d1...`. The wall is parked. **Next:**
+  screen `MAX17048_ALRT_N` with a bounded two-via inner-layer hop; direct B.Cu
+  is closed. No owner decision is open.
 - **FBV2-P2-097 / D-395 (complete fault replay + detect-wall obstacle-class
   attribution; no authoritative PCB change):** deterministic replay of the
   37.496 mm TP33.1↔TP27.1 B.Cu suffix closes ACC_POWER_FAULT_N and preserves

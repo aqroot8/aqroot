@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC receiver-input wall (2026-09-02)
+
+The atomic `NFC_RFI1/RFI2` harness closes neither U9 package launch in either
+order. The locked 0.30 mm B.Cu trunks cannot escape U9.22/U9.23, and the
+courtyard-legal 0.20 mm neck does not change that result. Moving only unrouted
+decoupler C17 east by 1.25 mm also leaves both pins trapped by the accepted RFO2
+arm and adjacent U9 lands. Both clean baseline orders reproduce the unchanged
+board hash `0a5c99d1a97d22a90a353f8d09abcc982d6c1aa46e006404ec8bf211df489486`
+and the accepted 199/5/1 DRC signature. No copper or placement was promoted.
+
+This materially unchanged package-edge wall is parked. Next, use a bounded
+two-via inner-layer hop for the local `MAX17048_ALRT_N` connection; its generic
+direct B.Cu route has `NO_PATH`. Preserve all accepted NFC and power copper.
+No owner decision is open.
+
 ## NFC antenna pair promotion (2026-09-02)
 
 The symmetric fitted `NFC_ANT_A` and `NFC_ANT_B` four-pad nodes are now

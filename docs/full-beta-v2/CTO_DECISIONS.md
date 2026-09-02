@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-412 · 2026-09-02 · Demo NFC receiver-input wall characterized:** the
+atomic `NFC_RFI1/RFI2` B.Cu/no-via harness screens both launch orders with the
+locked 0.30 mm NFC trunk, 0.25 mm routed clearance, and the courtyard-legal
+0.20 mm U9 neck. Both U9.22 and U9.23 have `NO_LEGAL_ESCAPE`; moving only the
+unrouted local decoupler C17 east from (38.75,30.25) to (40.00,30.25) mm still
+leaves both launches blocked by the already accepted RFO2 arm and adjacent U9
+lands. Both clean authoritative-board orders are byte-identical (`0a5c99d1...`)
+and retain exactly 199 footprint-library, five inherited hole-clearance, and
+one inherited solder-mask-bridge report. No placement or copper is promoted;
+the board, D-269/D-186, RGB, XGPIO4/XGPIO5, and `hardware/beta-v2/` remain
+unchanged. Park this materially unchanged NFC package-edge wall until a broader
+accepted-copper-preserving local refloor is justified. Next, screen the 2.529 mm
+`MAX17048_ALRT_N` connection with a bounded two-via inner-layer hop; its direct
+B.Cu corridor is closed. No owner decision is open.
+
 **D-411 · 2026-09-02 · Demo NFC antenna pair promoted:** the symmetric fitted
 `NFC_ANT_A`/`NFC_ANT_B` four-pad nodes are complete as one add-only transaction.
 The A/B trees use 14/16 segments and 34.205680/21.063397 mm of 0.30 mm B.Cu,

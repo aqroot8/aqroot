@@ -128,6 +128,24 @@ ROUTES = {
         "pad_clearance": 200_000,
         "clearance": 250_000,
     },
+    "NFC_RFI1": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "pads": ("U9.22", "R116.2"),
+        "layer": "B",
+        "width": 300_000,
+        "pad_clearance": 200_000,
+        "clearance": 250_000,
+        "floor_override": {"U9.22": 200_000},
+    },
+    "NFC_RFI2": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "pads": ("U9.23", "R117.2"),
+        "layer": "B",
+        "width": 300_000,
+        "pad_clearance": 200_000,
+        "clearance": 250_000,
+        "floor_override": {"U9.23": 200_000},
+    },
     "NFC_RXA_UPPER": {
         "net": "/04_SPI_B_RADIOS_NFC/NFC_RXA",
         "pads": ("C75.2", "C76.1"),
@@ -282,11 +300,19 @@ def route(path: Path, name: str):
     if set(pads) != set(rule["pads"]):
         raise RuntimeError(f"unexpected fitted pads: {sorted(pads)}")
     a, b = (pads[ref] for ref in rule["pads"])
-    result = qr.connect_role(
-        board, rule["net"], a, b, rule["layer"], rule["width"],
-        rule.get("pad_clearance", rule["clearance"]), rule["clearance"],
-        G=25_000,
-    )
+    if rule.get("floor_override"):
+        result = qr.connect(
+            board, rule["net"], a, b, rule["layer"], rule["width"],
+            rule["width"], rule.get("pad_clearance", rule["clearance"]),
+            rule["clearance"], G=25_000,
+            floor_override=rule["floor_override"],
+        )
+    else:
+        result = qr.connect_role(
+            board, rule["net"], a, b, rule["layer"], rule["width"],
+            rule.get("pad_clearance", rule["clearance"]), rule["clearance"],
+            G=25_000,
+        )
     board.save(path)
     print(json.dumps({"name": name, "rule": rule, "result": result}, sort_keys=True))
 
