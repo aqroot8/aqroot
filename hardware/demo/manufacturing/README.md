@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_INT_N U3 fanout and middle chain qualified (2026-09-02)
+
+`screen_wake_int_u3_fanout.py` exhausts 14,355 package-local B.Cu
+shoulder/ordinary-via shapes from U3.1 at 0.20 mm width/clearance and finds
+nine legal fanouts. The first deterministic shape reaches an ordinary
+0.60/0.30 mm via at `(53.75,83.00)` mm. It remains legal while the existing
+two-pad framework completes both proven U2.1-to-Q10.3 and Q10.3-to-U1.23
+branches in the same scratch transaction. No partial candidate is emitted.
+Authoritative board `04dc3e8a...` remains byte-identical at 56 open retained
+nets / 460 edges and real refilled schematic-parity DRC 199/5/1. Next preserve
+this exact lower witness and broaden only U1.23-to-R3.1 before replaying the
+entire five-land tree atomically.
+
 ## WAKE_INT_N atomic generic tree bounded (2026-09-02)
 
 `route_wake_int_tree_scratch.py` and four explicit two-pad contracts now cover

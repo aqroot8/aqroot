@@ -4239,3 +4239,25 @@ RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
 perimeter fanout while reserving the proven U2/Q10/U1 middle chain; if that
 coexists, broaden only the U1/R3 corridor and replay the entire tree atomically.
 No owner decision is open.
+
+# D-512 · 2026-09-02 · Demo WAKE_INT_N U3 fanout/middle-chain witness qualified
+
+The package-specific successor exhaustively screens 14,355 local B.Cu
+shoulder/ordinary-via shapes from fitted U3.1 at the locked 0.20 mm
+width/clearance and 0.60/0.30 mm via contract. Nine shapes are legal. The first
+deterministic witness runs west from U3.1 to `(53.75,81.575)` and north to a
+via at `(53.75,83.00)` mm. With that exact fanout reserved, both already-proven
+middle branches, U2.1-to-Q10.3 and Q10.3-to-U1.23, complete in one scratch
+transaction. The lower U3 package launch is therefore qualified and is not a
+structural capacity wall.
+
+This is characterization only: no partial tree or authoritative copper is
+emitted. Independent real zone-refilled schematic-parity KiCad DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports. Board `04dc3e8a...` remains byte-identical at 56 open retained nets /
+460 edges; D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Next preserve this exact lower witness and broaden only the
+U1.23-to-R3.1 join family; replay and promote the complete five-land tree only
+if that final branch closes under the authoritative gate. No owner decision is
+open.

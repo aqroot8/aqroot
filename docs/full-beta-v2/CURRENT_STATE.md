@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-512 (WAKE_INT_N lower endpoint qualified):** a package-specific
+  screen exhausts 14,355 U3.1 B.Cu fanout shapes, finds nine legal shapes, and
+  proves the first witness via `(53.75,83.00)` coexists with both clean
+  U2-to-Q10 and Q10-to-U1 middle branches. The authoritative board stays
+  byte-identical at `04dc3e8a...`, 56 open nets / 460 edges, with real DRC
+  199/5/1. **Next:** preserve that exact lower witness, broaden only the
+  U1.23-to-R3.1 join, and gate the entire five-land tree atomically. No owner
+  decision.
 - **Demo D-511 (WAKE_INT_N atomic generic tree bounded):** a reusable atomic
   harness and four exact contracts cover all five fitted interrupt lands. Four
   rotations put each branch first on pristine geometry. U2.1-to-Q10.3 and
