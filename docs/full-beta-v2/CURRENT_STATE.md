@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-491 (SX1262 RX-enable generic family bounded):** exact atomic
+  contracts cover fitted `/SX1262_RXEN` lands U3.19, R74.1, and U8.6 in both
+  branch orders. Correct live-board inspection establishes all three lands are
+  native B.Cu. The R74.1-to-U8.6 radio leg closes cleanly on In2 with seven
+  add-only objects, but U3.19-to-R74.1 has no 0.20 mm In2/In3 join after both
+  ordinary endpoint escapes reserve. Atomic gating discards the clean partial
+  leg. Board `be285abf...` remains byte-identical at 57 open retained nets /
+  461 edges and real refilled parity DRC remains 199/5/1. **Next:** broaden
+  only the U3.19-to-R74.1 haul with staged/perimeter corridors, then replay the
+  proven radio leg atomically. No owner decision.
 - **Demo D-490 (SX1262 reset tree package-land wall bounded):** exact atomic
   contracts now cover fitted `/SX1262_RST_N` lands U2.5, R13.1, and U8.15 in
   both branch orders.  The expander-first case reaches `NO_LEGAL_ESCAPE` while

@@ -3826,3 +3826,22 @@ intact. Park this unchanged package-land wall. Next freshly screen the
 independent fitted `/SX1262_RXEN` three-land control tree; revisit reset only
 through an R13 fanout/refloor transaction or changed local geometry. No owner
 decision is open.
+
+# D-491 · 2026-09-02 · Demo SX1262 RX-enable generic family bounded
+
+The required `/SX1262_RXEN` tree now has exact reusable contracts for fitted
+U3.19, R74.1, and U8.6 plus an atomic two-order harness. Live-board validation
+corrects the initial assumption about R74.1: all three lands are native B.Cu.
+With that contract, R74.1-to-U8.6 closes cleanly on In2 with seven add-only
+objects and 23.730286 mm of track. The remaining U3.19-to-R74.1 leg reserves
+both ordinary 0.60/0.30 mm endpoint escapes but has no 0.20 mm direct In2 or
+In3 join. Reversing branch order reaches the same join wall before emitting
+copper. Atomic gating discards the clean partial radio leg.
+
+Independent real zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports. The
+authoritative PCB remains byte-identical at `be285abf...`, 57 open retained
+nets / 461 edges. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact. Next broaden only U3.19-to-R74.1 with staged/perimeter corridors, then
+replay the proven radio leg atomically. No owner decision is open.

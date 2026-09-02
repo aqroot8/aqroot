@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 RX-enable generic family bounded (2026-09-02)
+
+`route_sx1262_rxen_tree_scratch.py` atomically screens both branch orders for
+fitted `/SX1262_RXEN` lands U3.19, R74.1, and U8.6. All are B.Cu lands. The
+R74.1-to-U8.6 leg closes on In2 with seven add-only objects, but the independent
+U3.19-to-R74.1 leg cannot join its two legal ordinary endpoint escapes on In2
+or In3. The clean partial leg is discarded. Board `be285abf...` remains at 57
+open retained nets / 461 edges and real refilled parity DRC remains 199/5/1.
+Next broaden only the expander-to-pull-down haul with staged/perimeter
+corridors, then replay the proven radio leg atomically.
+
 ## SX1262 reset package-land wall bounded (2026-09-02)
 
 `route_sx1262_rst_tree_scratch.py` atomically screens both branch orders for

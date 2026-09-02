@@ -394,6 +394,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "SX1262_RXEN_EXPANDER_PULLDOWN": {
+        "net": "/SX1262_RXEN",
+        "pads": ("U3.19", "R74.1"),
+        "ignored_connected_pads": ("U8.6",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U3.19", "b": "R74.1", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SX1262_RXEN_PULLDOWN_RADIO": {
+        "net": "/SX1262_RXEN",
+        "pads": ("R74.1", "U8.6"),
+        "ignored_connected_pads": ("U3.19",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R74.1", "b": "U8.6", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "BOOT_MCU_PULLUP": {
         "net": "/02_MCU_CORE/BOOT_N",
         "pads": ("U1.27", "R2.2"),
