@@ -76,12 +76,22 @@ required routing endpoint or used to satisfy fitted connectivity.
 A first combined scratch topology was rejected before promotion: forcing all
 three nets through one outer/inner-layer pattern crossed accepted top-edge
 copper and did not provide a legal local current loop. The authoritative board
-remains byte-identical. Do not retry the three nets as one nominally local
-batch. Next, route and independently gate only `IR_LED_A` and `IR_LED_K`,
-targeting exactly three retained open edges with deliberate outer-layer copper;
-preserve the locked 12 ohm `R24` current limit, `R123` DNP trim option, test
-point `TP39`, and the compact `D1`-`Q1` pulsed-current loop. Then route
-`IR_GATE` as a separate low-speed long-haul task while preserving `R22` and
-the `R23` reset-safe pull-down. Manufacturing export resumes only after all
-retained connections are closed. Population-flag synchronization and MPN
-coverage remain subsequent release blockers.
+did not absorb that attempt.
+
+The separated local-current task was promoted on 2026-09-02. `IR_LED_A` now
+connects fitted `R24.1`, `D1.2`, and `TP39.1`; `IR_LED_K` connects `D1.1` to
+`Q1.3`. Both use 0.30 mm F.Cu with no vias, preserve the 12 ohm current limit,
+leave DNP trim `R123` electrically optional, and keep the emitter/FET loop at
+the top edge. The retained ledger moved exactly 577 -> 574 edges and raw
+ratsnest 606 -> 603. Real KiCad DRC remains exactly 199 footprint-library, 5
+inherited hole-clearance, and 1 inherited solder-mask-bridge report, with no
+new attributable class. Board hash:
+`ddebb3500f445524bd932aaff055f7c60f6d5bca17cee25f64ed0624d2bfbf67`.
+
+Next, route and independently gate `IR_GATE` as a low-speed long-haul task,
+targeting its two retained open edges between `R22.2`, `Q1.1`, and `R23.1`.
+Preserve the `R22` gate resistor, the `R23` reset-safe pull-down, accepted
+top-edge current-loop copper, and unrelated retained connectivity.
+Manufacturing export resumes only after all retained connections are closed.
+Population-flag synchronization and MPN coverage remain subsequent release
+blockers.
