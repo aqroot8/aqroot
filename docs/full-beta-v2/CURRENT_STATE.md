@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-487 (I2S microphone data tree staged family bounded):** exact
+  reusable contracts and an atomic two-order harness now cover fitted
+  `U1.35/R120.1/MK1.7`. The MCU-to-pulldown branch closes cleanly on In2 with
+  seven add-only objects, but the pulldown-to-microphone branch has no legal
+  join. A broader screen reserves both endpoints across 32 In2/In3 site cases
+  and rejects all 178 north-perimeter, west-perimeter, and two-spine corridors
+  per case. No partial copper is promoted; board `044ebb60...` remains at
+  58/463 with real refilled parity DRC 199/5/1. Park this unchanged data-haul
+  wall. **Next:** freshly screen the remaining independent fitted audio-data
+  net `/I2S_DOUT`, outside the parked MK1 clock/data families. No owner
+  decision.
 - **Demo D-486 (MK1 clock perimeter/three-spine family bounded):** the atomic
   paired-clock harness adds seven north-perimeter lanes, six west-perimeter
   lanes, and 48 west three-spine doglegs to the 165 established interior

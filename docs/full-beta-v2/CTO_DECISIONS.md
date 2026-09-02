@@ -3746,3 +3746,27 @@ Park this unchanged clock-haul wall. Next freshly screen the independent fitted
 `/I2S_MIC_DIN` data tree, then the remaining audio-data family; revisit the
 clock pair only after changed geometry or a broader coherent refloor
 transaction. No owner decision is open.
+
+# D-487 · 2026-09-02 · Demo I2S microphone data staged family bounded
+
+The recovered unfinished work now provides exact reusable two-pad contracts
+for fitted `/I2S_MIC_DIN` endpoints U1.35, R120.1, and MK1.7 plus an atomic
+two-order complete-tree harness. U1.35-to-R120.1 closes cleanly on In2 with
+seven add-only objects and reduces the target from two open edges to one while
+retaining the accepted real refilled schematic-parity DRC signature of 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports. The
+R120.1-to-MK1.7 branch fails the generic direct inner join in either order.
+
+The durable successor enumerates four reserved-via sites at each endpoint on
+both In2 and In3. Both endpoints reserve successfully, including the terminal
+R120.1 site at (61.000, 109.650) mm and MK1.7 site at (5.950, 100.150) mm on
+In3, but every one of the 32 site/layer cases rejects all 178 bounded
+north-perimeter, west-perimeter, and two-spine corridors. The atomic gate
+therefore refuses promotion rather than retaining the otherwise clean first
+branch. The authoritative board remains byte-identical at `044ebb60...`, 58
+open retained nets / 463 edges. D-269/D-186, RGB replacements, XGPIO4/XGPIO5,
+Demo NC contacts, accepted accessory-power copper, and `hardware/beta-v2/`
+remain intact. Park this unchanged microphone-data haul wall. Next freshly
+screen the remaining independent fitted audio-data net `/I2S_DOUT`; revisit
+this wall only after changed geometry or a coherent audio refloor transaction.
+No owner decision is open.

@@ -236,6 +236,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "I2S_MIC_DIN_MCU_PULLDOWN": {
+        "net": "/I2S_MIC_DIN",
+        "pads": ("U1.35", "R120.1"),
+        "ignored_connected_pads": ("MK1.7",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.35", "b": "R120.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "I2S_MIC_DIN_MCU_MIC": {
+        "net": "/I2S_MIC_DIN",
+        "pads": ("R120.1", "MK1.7"),
+        "ignored_connected_pads": ("U1.35",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R120.1", "b": "MK1.7", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "I2S_BCLK_MCU_AMP": {
         "net": "/I2S_BCLK",
         "pads": ("U1.32", "U5.16"),
