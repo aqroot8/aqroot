@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-422 · 2026-09-02 · Demo NFC supply inner-fanout topology bounded:** the
+first explicit non-planar `NFC_VDD_D`/`NFC_VDD_A` screen replaces the exhausted
+generic B.Cu launch family with short westward U9.3/U9.7 necks, independent
+0.60/0.30 mm through-vias, and separate In2/In3 decoupler trees. The digital
+rail fanout itself is viable, but the analog In3 return to `C47`/`C48` crosses
+the already accepted `NFC_XIN` oscillator envelope. Real refilled
+schematic-parity DRC reports two `NFC_VDD_A`/`NFC_XIN` shorts, four clearance
+violations, one track crossing, and one additional hole-clearance report above
+the accepted 199/5/1 signature. No candidate is promoted; the authoritative
+board remains byte-identical at `37718bc7...`, and `hardware/beta-v2/` is
+untouched. Next, enumerate analog-rail via sites and inner-layer corridors
+outside the complete crystal envelope while retaining the proven independent
+westward package fanout concept. Do not move or remove accepted oscillator
+copper. No owner decision is open.
+
 **D-421 · 2026-09-02 · Demo NFC local supply generic launch wall:** the new
 atomic `NFC_VDD_D`/`NFC_VDD_A` supply-tree screen bounds both upper-first and
 lower-first orders at the locked 0.20 mm UFQFPN escape floor. Neither `U9.3`

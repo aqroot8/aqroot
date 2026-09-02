@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC supply explicit inner-fanout screen (2026-09-02)
+
+The first D-421 follow-on used short westward 0.30 mm B.Cu necks from U9.3 and
+U9.7, independent 0.60/0.30 mm through-vias, an In2 digital-supply tree, and an
+In3 analog-supply tree to the two decouplers on each rail. This establishes a
+concrete non-planar topology rather than repeating the generic B.Cu router.
+
+The candidate is rejected. Real refilled schematic-parity DRC adds two shorts
+between `NFC_VDD_A` and the accepted `NFC_XIN` arm, four clearances, one track
+crossing, and one hole-clearance report above the accepted 199/5/1 signature.
+The digital west-fanout was not the limiting geometry; the analog inner return
+entered the completed oscillator envelope. No candidate copper or placement
+was retained, and the authoritative PCB remains `37718bc7...`.
+
+Next, enumerate U9.7 analog via sites and In2/In3 corridors outside the entire
+`NFC_XIN`/`NFC_XOUT` geometry, then replay both three-land supply trees as one
+transaction. Preserve the accepted oscillator and all other NFC copper; do not
+repeat the rejected straight analog return through the crystal envelope.
+
 ## NFC digital/analog supply launch wall (2026-09-02)
 
 `route_nfc_supply_pair_scratch.py` adds an atomic framework for the two local

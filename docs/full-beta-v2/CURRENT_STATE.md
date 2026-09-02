@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-422 (NFC supply inner-fanout topology bounded):** explicit westward
+  U9.3/U9.7 necks and independent via/inner-layer trees advance beyond the
+  generic launch wall, but the first analog In3 corridor crosses accepted
+  `NFC_XIN` copper (2 shorts, 4 clearances, 1 crossing, +1 hole-clearance).
+  Nothing was promoted; board remains `37718bc7...` and production hardware is
+  untouched. **Next:** enumerate analog supply via/corridor sites outside the
+  complete oscillator envelope, preserving the independent fanout topology
+  and every accepted NFC segment. No owner decision.
 - **Demo D-421 (NFC VDD_D/VDD_A generic launches bounded):** both atomic
   upper-first and lower-first supply-tree orders fail before emitting copper:
   U9.3 and U9.7 each report `NO_LEGAL_ESCAPE` at the 0.20 mm UFQFPN escape
