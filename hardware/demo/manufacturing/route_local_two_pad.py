@@ -37,6 +37,20 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "USB_D_ESD_N": {
+        "net": "/01_POWER_TREE/USB_D_ESD_N",
+        "pads": ("R33.1", "U10.6"),
+        "layer": "F",
+        "width": 230_000,
+        "clearance": 200_000,
+    },
+    "USB_D_ESD_P": {
+        "net": "/01_POWER_TREE/USB_D_ESD_P",
+        "pads": ("R34.1", "U10.4"),
+        "layer": "F",
+        "width": 230_000,
+        "clearance": 200_000,
+    },
     "NFC_MATCH_A": {
         "net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
         "pads": ("C71.2", "R114.1"),

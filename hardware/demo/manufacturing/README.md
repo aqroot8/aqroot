@@ -517,3 +517,25 @@ the USB differential topology and do not treat a single-leg route as a
 promotable pair unless skew/coupling review passes. Keep `BQ25185_SYS` parked.
 Manufacturing export remains premature while 100 retained multi-pad nets are
 open. No owner decision is open.
+
+The bounded `USB_D_ESD_N/P` screen on 2026-09-02 closes the independent-leg
+tactic without changing the authoritative board. `route_usb_esd_pair_scratch.py`
+routes both local ESD-to-series-resistor legs sequentially on F.Cu using the
+locked 0.23 mm USB width and 0.20 mm clearance. Both routes close with zero
+vias, at 13.513695 mm for N and 11.618521 mm for P (1.895174 mm skew).
+
+The real zone-refilled full-board KiCad DRC rejects that topology with exactly
+one attributable `diff_pair_gap_out_of_range` error: the two independent
+detours separate by 0.7246 mm, above the locked 0.24 mm maximum. All other DRC
+classes remain the accepted 199 footprint-library, five inherited hole-
+clearance and one inherited solder-mask-bridge reports. Two clean runs produce
+byte-identical JSON (`sha256 b2b98236dd9f190d7e48a4efce1cd9d158f5df70ea1da84bf148bdd719b79073`).
+The authoritative board remains byte-identical at `654a9ff7...`; retained open
+edges remain 543, raw ratsnest 572, and accepted USB, battery, accessory-power,
+RGB and XGPIO4/5 copper is untouched.
+
+Next, implement a coordinated paired-path primitive for these two local legs:
+0.23 mm width, fixed 0.20 mm gap, F.Cu only, zero vias, with real KiCad pair-gap,
+uncoupled-length and skew review. Do not retry the disproven independent-leg
+tactic. Keep `BQ25185_SYS` parked. Manufacturing export remains premature while
+100 retained multi-pad nets are open; no owner decision is open.

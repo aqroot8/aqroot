@@ -9,6 +9,18 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-397 · 2026-09-02 · Demo USB-pair characterization:** the bounded
+`USB_D_ESD_N/P` independent-leg screen closes both local ESD-to-series-resistor
+connections on F.Cu at the required 0.23 mm width with zero vias, but real
+zone-refilled KiCad DRC rejects the result: the independently generated detours
+separate by 0.7246 mm where the locked pair maximum is 0.24 mm. Lengths are
+13.513695 mm N and 11.618521 mm P (1.895174 mm skew). Two clean runs produce
+byte-identical evidence (`b2b98236...`). No copper is promoted and the board
+remains byte-identical (`654a9ff7...`). The next bounded task is a coordinated
+paired-path primitive with fixed 0.20 mm gap, 0.23 mm width, F.Cu only and zero
+vias; do not retry sequential independent routing. `BQ25185_SYS` remains parked
+and no owner decision is open.
+
 **D-396 · 2026-09-02 · routed Demo increment:** `ILIM_VSET` now connects
 `R36.1` to `U11.7` with five add-only 0.20 mm B.Cu segments and no vias. The
 authoritative refilled full-board KiCad gate retains exactly 199 footprint-
