@@ -33,11 +33,35 @@ The generated files from this baseline are characterization artifacts only and
 were deliberately not promoted into the repository. The authoritative Demo PCB
 and schematic were not changed, and `hardware/beta-v2/` remained untouched.
 
+## Retained-net routing ledger
+
+`routing_ledger.py` is the deterministic connectivity authority for Demo routing
+completion. It derives the 294 fitted references from the schematic BOM, removes
+only the 16 explicit schematic-DNP references from routing obligations, and uses
+KiCad's copper connectivity over distinct physical pad lands. The eight approved
+Demo NC contacts are audited by exact identity (`J5.9`-`J5.12` and
+`J5.15`-`J5.18`); no other connector contact is exempted.
+
+Run it from the repository root:
+
+```text
+hardware/demo/manufacturing/routing_ledger.py /tmp/demo-routing-ledger.json
+```
+
+The accepted `988149f` baseline is pinned in `routing-ledger-baseline.json`:
+173 retained multi-pad nets, 59 already connected, 114 open, and 581 retained
+open edges. This reconciles exactly with KiCad's raw 610-edge ratsnest after
+removing the 29 edges owed only by unpopulated DNP pads. `LS1` is correctly
+off-board and `BOSS1/BOSS2` are PCB-only mechanical references.
+
 ## Next bounded task
 
-Return to retained-net routing completion. Build a Demo-specific routing ledger
-from real KiCad connectivity, classifying only the eight approved J5 contacts as
-NC. Use it to choose the largest safe retained-net cluster for the next copper
-promotion. Manufacturing export resumes only after all retained connections are
-closed. Population-flag synchronization and MPN coverage remain subsequent
-release blockers.
+Route and independently gate the four-net local speaker-output cluster
+(`SPK_P`, `SPK_N`, `SPK_P_CONN`, `SPK_N_CONN`). It is the largest coherent
+open cluster whose four nets are all two-pad connections in one local region;
+route the class-D P/N pair with matched, compact geometry and keep the connector
+legs equally deliberate. Preserve all accepted copper and require a ledger
+581-edge reduction by exactly four plus a real full-board DRC with no new
+attributable class before promotion. Manufacturing export resumes only after all
+retained connections are closed. Population-flag synchronization and MPN
+coverage remain subsequent release blockers.

@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "source_commit": "988149f",
+  "board_sha256": "cb4774b5ab76eb427bd70f0fb7dde17b7a1d7eb3c860826e94efeb7c9f91e93d",
+  "raw_board_ratsnest": 610,
+  "schematic_fitted_references": 294,
+  "schematic_dnp_references": 16,
+  "dnp_only_open_edges": 29,
+  "approved_demo_nc_contacts": [
+    "J5.9",
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18"
+  ],
+  "retained_multi_pad_nets": 173,
+  "connected_retained_nets": 59,
+  "open_retained_nets": 114,
+  "retained_open_edges": 581,
+  "next_cluster": {
+    "nets": [
+      "/06_AUDIO/SPK_P",
+      "/06_AUDIO/SPK_N",
+      "/06_AUDIO/SPK_P_CONN",
+      "/06_AUDIO/SPK_N_CONN"
+    ],
+    "pads_per_net": 2,
+    "expected_open_edge_reduction": 4
+  }
+}
