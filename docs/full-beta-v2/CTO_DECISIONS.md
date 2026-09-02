@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-472 · 2026-09-02 · Demo parked USB connector-pair replay preflight
+hardened:** the D-471 handoff named the connector-side USB pair even though
+D-434 through D-436 had already proved its fixed J3.B7 package-land launch
+precondition empty and parked the family.  A fresh 72-case run on board
+`65bf079a...` reproduced the exact result: P completes in all 36 first-tree
+cases, while N returns `NO_LEGAL_ESCAPE` in all 72 orders.  The coherent-pair
+harness now checks J3.B7's required 0.23 mm F.Cu launch before router replay and
+returns `REFUSED_FIXED_CONNECTOR_LAND` with zero cases when the precondition is
+empty.  Re-test leaves the authoritative board unchanged at 63 open retained
+nets / 475 edges.  Park this family pending a justified connector-footprint or
+copper-contract change; next freshly rank an independent retained net outside
+documented unchanged walls.  No owner decision is open.
+
 **D-471 · 2026-09-02 · Demo stale-target routing preflight hardened:** live
 ledger reconstruction proved `/01_POWER_TREE/VBUS_PRESENT` is already one
 connected four-pad island with zero open edges.  The legacy standalone harness

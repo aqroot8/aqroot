@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Parked USB connector-pair preflight hardening (2026-09-02)
+
+A fresh exhaustive run on board `65bf079a...` reproduced D-434: P completes in
+all 36 cases where it is first, while N returns `NO_LEGAL_ESCAPE` in all 72
+orders because mechanically fixed J3.B7 has no legal 0.23 mm F.Cu launch.
+`screen_usb_connector_pair.py` now checks that necessary package-land condition
+before constructing any of the 72 router cases and deterministically returns
+`REFUSED_FIXED_CONNECTOR_LAND` with zero cases. No board or production hardware
+changed. Park this family until a justified connector-footprint or USB copper-
+contract change; next freshly rank an independent retained net outside the
+documented unchanged walls.
+
 ## Connected-target preflight hardening (2026-09-02)
 
 The live routing ledger reports `/01_POWER_TREE/VBUS_PRESENT` as one connected

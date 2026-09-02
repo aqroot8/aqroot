@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-472 (parked USB pair replay preflight hardened):** a fresh 72-case
+  connector-side USB run reproduced D-434 exactly: P completes in all 36
+  first-tree cases, while N has no legal route in any order because fixed
+  J3.B7 has no 0.23 mm F.Cu launch. The harness now refuses that stable
+  package-land precondition before replaying tree orders, reporting
+  `REFUSED_FIXED_CONNECTOR_LAND` and zero cases. Board `65bf079a...` remains at
+  63 open retained nets / 475 edges. **Next:** freshly rank an independent
+  retained net outside documented unchanged walls; revisit connector USB only
+  after a justified connector-footprint or copper-contract change. No owner
+  decision.
 - **Demo D-471 (stale-target routing preflight hardened):** the live ledger
   proves `VBUS_PRESENT` is already one connected four-pad island with zero open
   edges.  Its legacy harness previously attempted redundant copper and real

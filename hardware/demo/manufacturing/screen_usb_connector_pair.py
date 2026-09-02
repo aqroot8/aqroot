@@ -66,6 +66,32 @@ def run_case(source, work, pair_order, n_order, p_order):
 
 def main():
     before = sha256(BOARD)
+    # D-435/D-436: every complete N tree requires a legal launch from the
+    # mechanically fixed reversible connector land J3.B7.  Check that stable
+    # package-land precondition before replaying 72 attachment orders.
+    preflight_board = qr.QBoard(BOARD)
+    ir.inject_existing_via_obstacles(preflight_board)
+    n_pads = {pad["ref"]: pad for pad in ir.physical_net_pads(
+        preflight_board, PAIR["N"][0])}
+    if set(n_pads) != set(PAIR["N"][1]):
+        raise RuntimeError(f"{PAIR['N'][0]}: unexpected pads {sorted(n_pads)}")
+    launches = preflight_board.escape(
+        n_pads["J3.B7"], "F", WIDTH, WIDTH, CLEARANCE, CLEARANCE, GRID,
+        preflight_board.ex0, preflight_board.ey0)
+    if not launches:
+        print(json.dumps({
+            "schema": 1,
+            "authoritative_board_sha256": before,
+            "authoritative_unchanged": before == sha256(BOARD),
+            "contract": "both three-pad USB-C trees; F.Cu only; 0.23 mm width; 0.20 mm clearance; zero vias",
+            "preflight": "J3.B7 must have a legal F.Cu launch",
+            "preflight_result": "REFUSED_FIXED_CONNECTOR_LAND",
+            "failure": preflight_board.escape_why[0],
+            "cases_tested": 0,
+            "complete_case_count": 0,
+            "promotion_candidate": False,
+        }, indent=2, sort_keys=True))
+        return 0
     permutations = {key: list(itertools.permutations(value[1]))
                     for key, value in PAIR.items()}
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-usb-connector-") as temporary:
