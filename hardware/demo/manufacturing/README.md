@@ -144,13 +144,27 @@ connected on the authoritative board; the retained ledger remains 572 open
 edges / 601 raw ratsnest, and board hash remains
 `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
 
-Next, test one bounded local placement transaction: refloor only the optional
-test-point/passive obstacles (`TP9`, `TP10`, and, only if required, `R50`) far
-enough to create offset legal via landings for those same two fault branches;
-do not move U21, U22, L4, C65/C66, or any connector. Reject it if it cannot
-preserve `NFC_5V_EN`, `NFC_5V_PA_PENDING`, and `EXT_SCL_BUF` routing obligations
-while closing the complete six-pad `ACC_5V_RAW` cluster. Never touch accepted
-`ACC_5V_SW_EN`, `XGPIO4`, or `XGPIO5` copper, and promote only after the
-authoritative full-board gate. Manufacturing export resumes only after all
-retained connections are closed; population-flag synchronization and MPN
-coverage remain subsequent release blockers.
+The bounded optional-obstacle placement transaction was characterized on
+2026-09-02 and rejected without changing the authoritative board. Moving `TP9`
+from (52.25, 39.25) to (49.50, 39.25), `TP10` from (58.50, 42.75) to
+(63.50, 42.75), and `R50` from (51.525, 57.735) to (49.50, 57.735) clears all
+three previously measured TP9/TP10/R50 conflicts. Straight In3 replacements of
+the same two removed `ACC_POWER_FAULT_N` segments then eliminate those endpoint
+violations, but real refilled KiCad DRC still rejects the transaction at exactly
+the two fixed obstacles: the (59.25, 35.15) via is only 0.045 mm from `L4.2`
+and has only 0.195 mm hole clearance, while the (59.20, 42.20) via shorts the
+retained `XGPIO4` In2 haul. The moved optional parts introduce no other
+geometric DRC class. Therefore optional-part placement alone cannot produce a
+legal fault refloor, and no placement or copper was promoted. The authoritative
+ledger remains 572 retained open edges / 601 raw ratsnest and board hash remains
+`b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+
+Next, enumerate explicit offset landing pairs for the U21-side fault branch
+around the fixed `L4.2` and `XGPIO4` conflicts, with the proven TP9/TP10/R50
+placement transaction replayed in scratch. Test B.Cu stubs to distinct legal
+0.60/0.30 mm signal-via sites on In3; do not move U21, U22, L4, C65/C66, any
+connector, or accepted `ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Only after the
+fault refloor is legal should the complete six-pad `ACC_5V_RAW` power tree be
+attempted. Manufacturing export resumes only after all retained connections are
+closed; population-flag synchronization and MPN coverage remain subsequent
+release blockers.
