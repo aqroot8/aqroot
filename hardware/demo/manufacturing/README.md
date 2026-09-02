@@ -171,13 +171,25 @@ distinct landing pairs. A clean rerun is byte-identical, and the authoritative
 board remains unchanged at
 `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
 
-Next, replace the complete fitted-pad `ACC_POWER_FAULT_N` branch in scratch
-rather than preserving these two geometrically boxed intermediate endpoints.
-Reserve legal escapes from its actual fitted pads first, route the long haul on
-In3, and replay every fitted pad before attempting `ACC_5V_RAW`. Preserve U21,
-U22, L4, C65/C66, every connector, and accepted `ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5`
-copper. Promote only a complete branch plus six-pad power-tree transaction that
-passes the authoritative connectivity and refilled full-board DRC gate.
+The complete-branch fitted-pad escape screen on 2026-09-02 establishes the
+replacement framework's missing prerequisite. After withdrawing all 57 fault
+tracks in scratch and replaying the characterized TP9/TP10/R50 moves,
+`enumerate_acc_fault_pad_escapes.py` found ordinary B.Cu-to-In3 0.60/0.30 mm
+through-via sites from every actual fitted pad: `R103.2` 96, `TP27.1` 96,
+`TP33.1` 94, `U20.6` 36, `U22.6` 60, and `U3.18` 24. A clean rerun produced
+byte-identical JSON evidence. The authoritative board remained byte-identical
+at `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+Thus the fitted endpoints are not intrinsically boxed after complete branch
+withdrawal; the closed tactic was preserving its obsolete intermediate
+landings.
+
+Next, reserve one mutually distinct legal site per fitted fault pad in a single
+scratch transaction, connect the In3 branch, and replay all six fitted pads.
+Then attempt `ACC_5V_RAW` against that closed replacement and run the
+authoritative connectivity and refilled full-board DRC gate. Preserve U21,
+U22, L4, C65/C66, every connector, and accepted
+`ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Promote only a complete branch plus
+six-pad power-tree transaction that passes the full gate.
 Manufacturing export resumes only after all retained connections are closed;
 population-flag synchronization and MPN coverage remain subsequent release
 blockers.
