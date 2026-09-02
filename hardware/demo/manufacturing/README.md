@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory 5 V switch-node wall (2026-09-02)
+
+`ACC_5V_LX` is a fitted two-pad switch node from `U21.5` to `L4.2`, spanning
+4.020 mm. The local routing framework now pins its power-specific contract:
+B.Cu only, 0.40 mm trunk width, 0.20 mm clearance, and an explicitly reported
+0.20 mm U21 package-escape floor. An ordinary 0.40 mm launch returns
+`NO_LEGAL_ESCAPE`; the bounded fine-pitch retry also returns
+`NO_LEGAL_ESCAPE`, dominated by `U21.4`, accepted `C65.1`/`ACC_5V_RAW`, and
+adjacent U21 lands. Two clean screens are identical and emit no scratch copper.
+
+The authoritative PCB remains byte-identical at `37718bc7...`. Its refilled
+schematic-parity DRC signature remains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports. No
+rule, placement, or accepted copper changed. The next bounded tactic is a
+coordinated local `U21`/`L4`/`C65` cluster-refloor screen that preserves and
+revalidates the accepted `ACC_5V_RAW` transaction while minimizing switch-loop
+area; do not retry the generic launch or relax switch-node width/separation.
+No owner decision is open.
+
 ## MAX17048 alert route promotion (2026-09-02)
 
 `MAX17048_ALRT_N` now connects TP11.1 to U14.5 with an add-only, two-via In3

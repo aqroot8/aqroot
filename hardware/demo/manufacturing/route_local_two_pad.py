@@ -44,6 +44,17 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "ACC_5V_LX": {
+        "net": "/01_POWER_TREE/ACC_5V_LX",
+        "pads": ("U21.5", "L4.2"),
+        "layer": "B",
+        # Keep the complete switch node on the component-side outer layer and
+        # at the locked SWITCH_NODE width floor.  Victim-net separations are
+        # enforced independently by the board DRU during the full-board gate.
+        "width": 400_000,
+        "clearance": 200_000,
+        "floor_override": {"U21.5": 200_000},
+    },
     "USB_CC1": {
         "net": "Net-(J3-CC1)",
         "pads": ("J3.A5", "R31.1"),

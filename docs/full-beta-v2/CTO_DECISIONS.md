@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-414 · 2026-09-02 · Demo accessory 5 V switch-node wall characterized:**
+`ACC_5V_LX` is a fitted two-pad switch node from `U21.5` to `L4.2`, spanning
+4.020 mm. A new allowlisted power-aware screen confines it to B.Cu at the
+locked 0.40 mm switch-node width. The ordinary launch returns
+`NO_LEGAL_ESCAPE`; a bounded retry at the existing courtyard-scoped 0.20 mm
+U21 escape floor also returns `NO_LEGAL_ESCAPE`, dominated by adjacent U21
+lands and accepted `C65.1`/`ACC_5V_RAW` geometry. Two clean runs emit no copper
+and retain the exact accepted 199 footprint-library / 5 hole-clearance / 1
+solder-mask-bridge full-board signature. The authoritative PCB remains
+byte-identical at `37718bc7...`; no rule, placement, accepted copper, or
+`hardware/beta-v2/` file changed. Do not retry the generic launch or weaken the
+switch-node width/separation contract. Next, screen a coordinated local
+`U21`/`L4`/`C65` cluster refloor that preserves and revalidates the accepted
+`ACC_5V_RAW` transaction while minimizing switch-loop area. No owner decision
+is open.
+
 **D-413 · 2026-09-02 · Demo fuel-gauge alert route promoted:**
 `MAX17048_ALRT_N` now connects `TP11.1` to `U14.5` through a bounded In3.Cu
 hop. The add-only route is 4.306134 mm of 0.20 mm copper with two standard

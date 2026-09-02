@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-414 (accessory 5 V switch-node wall; no PCB change):**
+  `ACC_5V_LX` is a 4.020 mm fitted `U21.5`–`L4.2` switch node. The new bounded
+  power-aware screen proves no legal B.Cu launch at either the locked 0.40 mm
+  trunk width or the courtyard-scoped 0.20 mm U21 escape floor; blockers are
+  adjacent U21 lands and accepted `C65.1`/`ACC_5V_RAW` geometry. Two clean
+  screens emit no copper. The authoritative board stays `37718bc7...` with the
+  accepted 199/5/1 DRC signature and `hardware/beta-v2/` untouched. **Next:**
+  coordinated local `U21`/`L4`/`C65` cluster-refloor screen, preserving and
+  revalidating accepted `ACC_5V_RAW` copper and minimizing switch-loop area.
+  No owner decision.
 - **Demo D-413 (fuel-gauge alert promoted):** `MAX17048_ALRT_N` is complete
   from TP11.1 to U14.5 with 4.306134 mm of 0.20 mm copper and two 0.60/0.30 mm
   through-vias on an In3 hop. In2 is proven closed; two clean In3 screens
