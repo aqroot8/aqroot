@@ -275,5 +275,31 @@ contract, then route the B.Cu launch around C67.2 and `ACC_DETECT_N` before
 replaying the now-proven face-aware tree.  Do not move or withdraw the retained
 detect branch.  The authoritative board remains byte-identical at `ab456948...`.
 
+The recovered `ACC_5V_SW` transaction was promoted on 2026-09-02.  U22.5 uses
+the minimum measured 0.25 mm by 0.5125 mm package-local neck before widening to
+the unchanged 0.40 mm `ACC_5V` floor; U22 was added only to the existing
+courtyard-scoped fine-pitch power-package neck rule.  The remainder of the
+route uses 0.40 mm copper and five ordinary 0.90/0.40 mm power vias.  All seven
+fitted pads (`U22.5`, `C38.1`, `C67.1`, `TP29.1`, `TP42.1`, `J5.1`, and
+`J5.24`) are one copper island, including both required Community Port output
+contacts.
+
+The promoted board delta is add-only: 20 tracks, five vias, 73.507 mm, all on
+`ACC_5V_SW`; no footprint, accepted copper, or zone was removed or moved.
+Retained open edges move exactly 567 -> 561 and raw ratsnest 596 -> 590, with
+`ACC_5V_SW` alone changing from six open edges to zero and no retained net
+regressing.  The authoritative zone-refilled full-board DRC remains exactly
+199 footprint-library, 5 inherited hole-clearance, and 1 inherited
+solder-mask-bridge report, with no clearance, short, crossing, width, via,
+dangling, or schematic-parity regression.  `ACC_5V_SW_EN`, the independent
+boost enable, the fault branch, XGPIO4/5, RGB, and retained battery safety
+copper remain connected.  Board hash:
+`209987cc3ab432dd6d2bb6c1ff5dfee0b8c0983bc77faace5db5c1904a100934`.
+
+Next, close the coherent `ACC_3V3_SW` switched-output cluster.  It is the
+highest-leverage remaining accessory-power fabrication blocker at 14 retained
+open edges; preserve U20, its fault branch and safe-state enable, both J5 rail
+contacts, and the accepted 5 V transaction.
+
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
