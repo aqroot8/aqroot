@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-429 · 2026-09-02 · Demo SPI-A clock tree promoted:** the independently
+gated clock-first route closes fitted `/SPI_A_SCK` pads U1.20, J1.36, and J2.5.
+It adds 14 tracks and four ordinary 0.60/0.30 mm through-vias, all 0.20 mm
+copper on F.Cu/In2.Cu and 72.751257 mm total, with zero accepted-copper
+removals. Two clean candidates have identical physical geometry; generated
+KiCad UUIDs differ as expected. The authoritative zone-refilled schematic-
+parity DRC retains exactly 199 footprint-library, five inherited hole-
+clearance, and one inherited solder-mask-bridge reports with no attributable
+class. Fitted opens improve 81→80 nets and 512→510 edges; raw ratsnest improves
+541→539. D-269 battery paths, D-186 controls, all RGB replacements,
+XGPIO4/XGPIO5, and `hardware/beta-v2/` remain intact. Board SHA-256 is
+`aed8d9111f695f53f05f57f8212f8c2041a3248e5c70217e9a8ee930fcef7996`.
+MOSI remains open and the D-428 adjacent-J1 family stays parked. Next, freshly
+rank an independent retained net/coherent local cluster; revisit MOSI only
+after a material geometry or refloor change. No owner decision is open.
+
 **D-428 · 2026-09-02 · Demo paired SPI-A J1 fanout wall PARKED:** the exact
 D-427 successor co-reserves distinct ordinary 0.60/0.30 mm through-via fanouts
 for adjacent display pads J1.36 (`/SPI_A_SCK`) and J1.34 (`/SPI_A_MOSI`) before

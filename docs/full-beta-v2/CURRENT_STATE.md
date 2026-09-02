@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-429 (SPI-A clock tree promoted):** `/SPI_A_SCK` now connects fitted
+  U1.20, J1.36, and J2.5 with 14 add-only 0.20 mm track segments and four
+  ordinary 0.60/0.30 mm through-vias (72.751257 mm total) on F.Cu/In2.Cu.
+  Two clean candidates reproduce identical physical geometry. The authoritative
+  refilled parity DRC stays at the accepted 199/5/1 signature; fitted opens
+  improve 81→80 nets and 512→510 edges, and ratsnest 541→539. Board
+  `aed8d911...`; MOSI remains open and its unchanged adjacent-J1 wall remains
+  parked. **Next:** freshly rank an independent retained net or coherent local
+  cluster; do not retry MOSI without a material fanout/refloor change. No owner
+  decision.
 - **Demo D-428 (SPI-A paired J1 fanout wall PARKED):** the D-427 successor
   pre-reserves distinct ordinary 0.60/0.30 mm through-via fanouts for J1.36
   (`/SPI_A_SCK`) and adjacent J1.34 (`/SPI_A_MOSI`) before either inner haul.

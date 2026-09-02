@@ -1119,6 +1119,16 @@ attempting the full six-branch placement transaction.
 
 ## Shared SPI-A clock/data wall (2026-09-02)
 
+The follow-up promotes the independently reproducible clock tree. The shared
+harness now accepts `--only sck`/`--only mosi`; `--only sck` closes U1.20,
+J1.36, and J2.5 with 14 add-only 0.20 mm F.Cu/In2.Cu segments and four ordinary
+0.60/0.30 mm vias (72.751257 mm). Two clean candidates reproduce identical
+physical geometry, and the authoritative refilled parity gate retains the
+accepted 199/5/1 signature with no attributable class. MOSI remains open and
+the paired adjacent-J1 family remains parked. Next, freshly rank an independent
+retained net or coherent local cluster; do not retry MOSI without material
+geometry change.
+
 `route_spi_a_clock_data_scratch.py` now requires both fitted three-pad trees,
 `SPI_A_SCK` and `SPI_A_MOSI`, to close in one add-only transaction.  Both launch
 orders pass real refilled schematic-parity DRC with exactly the inherited
