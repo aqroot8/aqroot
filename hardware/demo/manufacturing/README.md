@@ -183,13 +183,25 @@ Thus the fitted endpoints are not intrinsically boxed after complete branch
 withdrawal; the closed tactic was preserving its obsolete intermediate
 landings.
 
-Next, reserve one mutually distinct legal site per fitted fault pad in a single
-scratch transaction, connect the In3 branch, and replay all six fitted pads.
-Then attempt `ACC_5V_RAW` against that closed replacement and run the
-authoritative connectivity and refilled full-board DRC gate. Preserve U21,
-U22, L4, C65/C66, every connector, and accepted
-`ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Promote only a complete branch plus
-six-pad power-tree transaction that passes the full gate.
+The complete replacement transaction was closed in scratch on 2026-09-02 by
+`route_acc_fault_branch_scratch.py`. It reserves mutually legal 0.60/0.30 mm
+through-via escapes from all six fitted pads, then uses a shortest-edge-first
+tree. Four joins close on In3; the locally blocked `U3.18`--`TP33.1` join closes
+on In2 in 2.344 mm. All six pads form one branch through five joins. A real
+zone-refilled KiCad DRC returns exactly the accepted inherited classes: 199
+footprint-library, 5 hole-clearance, and 1 solder-mask bridge, with no new
+clearance, shorting, crossing, annular, via-diameter, or dangling report. A
+clean rerun returns the same reservations, joins, lengths, and DRC signature.
+The authoritative board remains byte-identical at
+`b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+
+Next, replay this closed replacement in scratch and route all six fitted
+`ACC_5V_RAW` pads with the required 0.40 mm minimum track, 0.25 mm routed
+clearance, and compliant 0.90/0.40 mm power vias. Run fitted-pad connectivity,
+retained-ledger preservation, and the authoritative refilled full-board DRC
+gate. Preserve U21, U22, L4, C65/C66, every connector, and accepted
+`ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Promote only the complete fault-branch
+plus six-pad power transaction; neither half is independently promotable.
 Manufacturing export resumes only after all retained connections are closed;
 population-flag synchronization and MPN coverage remain subsequent release
 blockers.
