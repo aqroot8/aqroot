@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-419 (accessory boost planar crossover bounded; no PCB change):**
+  with R99 fixed +0.5 mm east, 12 coordinated B.Cu LX/raw outer-corridor cases
+  all fail the real refilled parity DRC. Moving the raw detour farther west and
+  south never clears its invariant return through retained `BQ25185_SYS`; GND,
+  LX, crossing, and clearance collisions remain secondary. Two clean runs
+  reproduce zero candidates (KiCad varies coincident-item classifications).
+  Board remains `37718bc7...`; `hardware/beta-v2/` is untouched. **Next:**
+  screen a courtyard-local U21.6 raw transition to the accepted In3 raw tree,
+  retaining LX on B.Cu; do not widen the disproven planar family. No owner
+  decision.
 - **Demo D-418 (accessory boost R99/raw-neck boundary; no PCB change):** the
   16-case LX-first screen finds +0.5 mm east as the minimum tested R99 move
   that clears the rotated L4 courtyard without the via/dangling regressions of

@@ -944,3 +944,16 @@ overlap; the restored straight U21.6 raw neck also crosses `ACC_DETECT_N` and
 misses the power-copper clearance to LX/the accepted raw via.  The next replay
 must route that neck around those fixed obstacles and include `R99` in the
 minimum placement boundary.
+
+### ACC_5V coordinated corridor screen
+
+`screen_acc_5v_corridor_pair.py` fixes the D-418 R99 placement and bounds 12
+explicit LX-inner/raw-outer B.Cu corridors without changing the authoritative
+board. All cases fail the real refilled schematic-parity DRC. Increasing the
+raw detour westward and southward does not clear the retained `BQ25185_SYS`
+field on its return to the accepted raw tree; GND/LX/crossing and clearance
+collisions are secondary. Two clean runs reproduce zero candidates, although
+KiCad can label coincident geometry as short, crossing, or clearance between
+runs. The planar outer-corridor family is parked. Next, screen a package-local
+U21.6 transition into the existing In3 raw tree with LX retained on B.Cu before
+attempting the full six-branch placement transaction.

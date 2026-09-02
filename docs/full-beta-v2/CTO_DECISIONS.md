@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-419 · 2026-09-02 · Demo accessory boost planar corridor wall:** the
+post-D-418 paired screen fixes the accepted minimum `R99` move (+0.5 mm east),
+routes explicit inner `ACC_5V_LX` and outer `ACC_5V_RAW` B.Cu corridors, and
+bounds 12 west/south combinations. None passes real refilled schematic-parity
+KiCad DRC. Extending the raw detour from x=55.10 to 54.70 mm and y=35.30 to
+34.50 mm does not clear its return: every case encounters retained
+`BQ25185_SYS`, with additional GND/LX/crossing or sub-0.25 mm clearance
+collisions. Two clean runs reproduce zero candidates; KiCad's coincident-item
+classification varies between short/crossing/clearance, so the durable
+predicate is that every case has attributable physical overlap. No PCB,
+placement, rule, or accepted copper was promoted; the authoritative board
+remains byte-identical at `37718bc7...`. Do not widen this planar outer-corridor
+family. Next, screen a courtyard-local `U21.6` raw layer transition into the
+accepted In3 raw tree while retaining LX on B.Cu, then atomically replay
+FB/EN/input/GND if and only if that core closes. No owner decision is open.
+
 **D-418 · 2026-09-02 · Demo accessory boost R99/raw-neck boundary:** a
 16-case scratch screen admits `R99` to the rotated U21/L4 placement boundary
 and tests four explicit B.Cu raw-neck topologies after LX-first reservation.
