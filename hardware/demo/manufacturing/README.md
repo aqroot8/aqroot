@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_INT_N mixed-upper cases 0--15 bounded (2026-09-02)
+
+`route_wake_int_upper_staged_scratch.py` now defaults to a one-via In2/In3
+upper join; `--single-layer` retains D-513 reproduction. The first 16 of 128
+cases preserve the complete qualified lower tree and have coexisting upper
+escapes. All reject after 22,560 transition sites and 49,968 leg combinations.
+No partial candidate is emitted; board `04dc3e8a...` remains at 56 open nets /
+460 edges with real refilled schematic-parity DRC 199/5/1. Continue at
+`--case-start 16`; do not replay cases 0--15.
+
 ## WAKE_INT_N upper staged corridor family bounded (2026-09-02)
 
 Recovered `route_wake_int_upper_staged_scratch.py` preserves the exact D-512

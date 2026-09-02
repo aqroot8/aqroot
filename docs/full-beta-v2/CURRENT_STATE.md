@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-514 (WAKE_INT_N mixed-upper cases 0--15 bounded):** the atomic
+  five-land harness now supports one ordinary In2/In3 transition via in the
+  final U1.23-to-R3.1 branch. Cases 0--15 preserve the D-512 U3 launch and
+  proven middle chain; both endpoint escapes coexist in all 16, but 22,560
+  transition sites and 49,968 leg combinations yield no complete join. No
+  partial candidate exists. Board remains `04dc3e8a...`, 56 open nets / 460
+  edges, with real DRC 199/5/1. **Next:** continue at `--case-start 16`. No
+  owner decision is open.
 - **Demo D-513 (WAKE_INT_N upper staged family bounded):** the recovered
   atomic successor preserves the D-512 U3.1 witness and proven middle chain,
   then screens every In2/In3 and 8-by-8 U1.23/R3.1 escape-site combination.

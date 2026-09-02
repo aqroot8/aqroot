@@ -3,8 +3,10 @@
 
 Every case reserves the qualified U3.1 fanout, replays the proven
 U2.1->Q10.3->U1.23 middle chain, then co-searches ordinary U1.23/R3.1
-escapes and bounded north/interior staged corridors.  Partial trees are never
-promotion candidates.
+escapes and bounded north/interior staged corridors.  The default successor
+uses one ordinary transition via between In2 and In3; ``--single-layer``
+reproduces the exhausted D-513 family.  Partial trees are never promotion
+candidates.
 """
 
 import argparse, hashlib, itertools, json, math, subprocess, sys, tempfile
@@ -92,6 +94,53 @@ def staged_join(board, layer, a, b):
             "tested": len(families)}
 
 
+def compact(points):
+    return tuple(point for index, point in enumerate(points)
+                 if not index or point != points[index - 1])
+
+
+def leg_paths(a, b):
+    yield "direct", compact((a, b))
+    yield "x_then_y", compact((a, (b[0], a[1]), b))
+    yield "y_then_x", compact((a, (a[0], b[1]), b))
+
+
+def mixed_join(board, first, a, b):
+    """Join the upper branch with one ordinary In2/In3 transition via."""
+    second = "I3" if first == "I2" else "I2"
+    tested_sites = tested_paths = 0
+    # The final branch is confined to the north MCU region.  A 0.5 mm lattice
+    # is a finite 1,410-site family for each layer order.
+    sites = ((x, y) for x in range(38_000_000, 61_000_001, 500_000)
+             for y in range(132_000_000, 146_500_001, 500_000))
+    for via in sites:
+        tested_sites += 1
+        if not all(board.point_free(layer, NET, *via, 600_000,
+                                    CLEARANCE, CLEARANCE, 25_000)
+                   for layer in board.cu):
+            continue
+        for left_name, left in leg_paths(a, via):
+            for right_name, right in leg_paths(via, b):
+                tested_paths += 1; mark = board.mark()
+                left_ok = all(emit(board, first, p, q)
+                              for p, q in zip(left, left[1:]))
+                if left_ok:
+                    board.via(NET, *via, 600_000, 300_000)
+                right_ok = left_ok and all(emit(board, second, p, q)
+                                           for p, q in zip(right, right[1:]))
+                if right_ok:
+                    return {"ok": True, "family": "mixed_one_via",
+                            "layer_order": [first, second],
+                            "leg_families": [left_name, right_name],
+                            "transition_via_mm": [via[0]/1e6, via[1]/1e6],
+                            "tested_sites": tested_sites,
+                            "tested_paths": tested_paths}
+                board.revert(mark)
+    return {"ok": False, "reason": "NO_MIXED_ONE_VIA_UPPER_CORRIDOR",
+            "layer_order": [first, second], "tested_sites": tested_sites,
+            "tested_paths": tested_paths}
+
+
 def seed_tree(target):
     for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
         target.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
@@ -138,7 +187,7 @@ def seed_tree(target):
     return routes
 
 
-def run_case(work, seeded, seed_routes, layer, u1_site, r3_site, baseline):
+def run_case(work, seeded, seed_routes, layer, u1_site, r3_site, baseline, mixed):
     scratch = work / f"{layer}-{u1_site}-{r3_site}.kicad_pcb"
     for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
         scratch.with_suffix(suffix).write_bytes(seeded.with_suffix(suffix).read_bytes())
@@ -164,7 +213,8 @@ def run_case(work, seeded, seed_routes, layer, u1_site, r3_site, baseline):
                     "reason": "ENDPOINT_ESCAPE_FAILED", "promotion_candidate": False,
                     "path": scratch}
         endpoints.append(result["via"])
-    joined = staged_join(board, layer, *endpoints); board.save(scratch)
+    joined = (mixed_join(board, layer, *endpoints) if mixed
+              else staged_join(board, layer, *endpoints)); board.save(scratch)
     if not joined["ok"]:
         return {"layer": layer, "u1_site": u1_site, "r3_site": r3_site,
                 "routes": routes, "reserved": reserved, "join": joined,
@@ -195,6 +245,8 @@ def run_case(work, seeded, seed_routes, layer, u1_site, r3_site, baseline):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true")
+    ap.add_argument("--single-layer", action="store_true",
+                    help="reproduce the exhausted D-513 family")
     ap.add_argument("--case-start",type=int,default=0); ap.add_argument("--case-count",type=int,default=16); args=ap.parse_args()
     before=sha(BOARD); baseline=copper(BOARD); cases=[]
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-wake-upper-") as td:
@@ -203,7 +255,8 @@ def main():
         universe=list(itertools.product(("I2","I3"),range(8),range(8)))
         selected=universe[args.case_start:args.case_start+args.case_count]
         for layer,u1,r3 in selected:
-            case=run_case(work,seeded,seed_routes,layer,u1,r3,baseline); cases.append(case)
+            case=run_case(work,seeded,seed_routes,layer,u1,r3,baseline,
+                          mixed=not args.single_layer); cases.append(case)
             if case.get("promotion_candidate"): break
         winners=[c for c in cases if c.get("promotion_candidate")]
         if winners and args.candidate: args.candidate.write_bytes(winners[0]["path"].read_bytes())
@@ -214,6 +267,7 @@ def main():
     print(json.dumps({"schema":1,"authoritative_board_sha256":before,
         "authoritative_unchanged":sha(BOARD)==before,"cases_tested":len(cases),
         "case_start":args.case_start,"case_stop":args.case_start+len(cases),"case_universe":len(universe),
+        "mode":"single_layer" if args.single_layer else "mixed_one_via",
         "cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True))
     return 0 if winners else 2
 

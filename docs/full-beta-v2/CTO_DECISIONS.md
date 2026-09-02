@@ -4283,3 +4283,20 @@ accessory-power copper, and `hardware/beta-v2/` remain intact.  Next use a
 bounded mixed-In2/In3 upper haul with one ordinary layer-transition via while
 preserving the complete atomic tree; do not repeat this exhausted single-layer
 staged family.  No owner decision is open.
+
+# D-514 · 2026-09-02 · Demo WAKE_INT_N mixed-upper cases 0--15 bounded
+
+The D-513 successor extends the atomic five-land harness with one ordinary
+0.60/0.30 mm transition via between In2 and In3 in the final U1.23-to-R3.1
+branch. The first non-overlapping window covers cases 0--15. Both endpoint
+escapes coexist in all 16 cases, but all 22,560 transition sites and 49,968
+direct/x-then-y/y-then-x leg combinations reject without a complete join.
+
+The harness emits no partial candidate. Independent real zone-refilled
+schematic-parity KiCad DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports. Board `04dc3e8a...` remains
+byte-identical at 56 open retained nets / 460 edges; D-269/D-186, all three RGB
+replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Next continue the resumable
+mixed-layer search at `--case-start 16`; do not replay cases 0--15. No owner
+decision is open.
