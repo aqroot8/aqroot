@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-524 (WAKE_GATE_S two-transition R66 haul qualified; wall parked):**
+  all 16 qualified R66 endpoint/layer cases reach the shared R63 hub through
+  two ordinary In2/In3 transition vias.  After reserving each complete R66
+  branch, Q10 site zero rejects all 169 planar joins, so the atomic three-land
+  tree still has no candidate and no partial copper is emitted.  Board remains
+  byte-identical at `04dc3e8a...`, 56 open nets / 460 edges; real refilled
+  schematic-parity DRC remains 199/5/1.  This fifth unchanged-wall iteration
+  parks WAKE_GATE_S. **Next:** freshly rank an independent retained routing
+  cluster; revisit this wall only after changed geometry or in a broader
+  coherent refloor. No owner decision is open.
 - **Demo D-523 (WAKE_GATE_S one-transition shared-hub family bounded):** the
   atomic harness preserves the qualified R63 hub and tests all eight legal R66
   escapes in both layer orders with one ordinary 0.60/0.30 mm In2/In3

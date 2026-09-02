@@ -9,6 +9,25 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-524 · 2026-09-02 · Demo WAKE_GATE_S two-transition R66 haul qualified; wall parked:**
+The recovered fifth unchanged-wall iteration adds a bounded two-transition
+In2/In3/In2 (and inverse) family between each qualified R66.1 escape and the
+shared R63.2 hub.  All 16 layer/site cases now close that formerly blocked
+branch.  The first In2 witness uses ordinary 0.60/0.30 mm transitions at
+`(45.0,48.0)` and `(56.0,67.5)` mm; the first inverse witness uses
+`(45.0,57.5)` and `(53.0,62.5)` mm.  With each witness reserved, the independent
+Q10.2 site-zero planar branch rejects all 169 joins, so no complete three-land
+tree, candidate, or partial authoritative copper is emitted.
+Authoritative board `04dc3e8a...` remains byte-identical at 56 open retained
+nets / 460 edges; independent real refilled schematic-parity DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports.  D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo NC
+contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
+intact.  The materially unchanged WAKE_GATE_S family has consumed its fifth
+non-promoting iteration and is PARKED.  Next freshly rank an independent
+retained routing cluster; revisit only after changed surrounding geometry or
+as a broader coherent refloor transaction.  No owner decision is open.
+
 **D-523 · 2026-09-02 · Demo WAKE_GATE_S one-transition shared-hub family bounded:**
 The atomic successor preserves the exact qualified R63.2 fanout/hub and tests
 all eight legal R66.1 endpoint escapes in both inner-layer orders. For each of

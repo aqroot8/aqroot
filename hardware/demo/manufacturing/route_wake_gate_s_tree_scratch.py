@@ -114,7 +114,74 @@ def mixed_join_hub(board, first, start):
             "layer_order": [first, second], "tested_sites": tested_sites,
             "tested_paths": tested_paths}
 
-def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3"), mixed=True):
+def mixed_two_join_hub(board, first, start):
+    """Join R66 to the hub through a first/second/first layer dogleg."""
+    second = "I3" if first == "I2" else "I2"
+    hub = R63_FANOUT[-1]
+    sites = [(x, y) for x in range(45_000_000, 66_000_001, 500_000)
+             for y in range(48_000_000, 68_000_001, 500_000)]
+    # Board obstacles are static during this search except for same-net trial
+    # copper.  Qualify ordinary transition barrels once rather than repeating
+    # the full-board point test inside the quadratic via-pair loop.  The only
+    # new hole-to-hole relationship is via1/via2, checked explicitly below.
+    free_sites = [p for p in sites
+                  if all(board.point_free(layer, NET, *p, 600_000,
+                                          200_000, 200_000, 25_000)
+                         for layer in board.cu)]
+    right_options = []
+    for via2 in free_sites:
+        for right_name, right in leg_paths(via2, hub):
+            mark = board.mark()
+            if all(emit(board, first, a, b) for a, b in zip(right, right[1:])):
+                right_options.append((via2, right_name, right))
+            board.revert(mark)
+    tested_first_sites = tested_second_sites = tested_paths = 0
+    # Build the two outside legs first.  This sharply bounds the cross-layer
+    # co-search to transition barrels that are actually reachable from both
+    # endpoints, while still covering the complete D-523 local lattice.
+    for via1 in free_sites:
+        tested_first_sites += 1
+        for left_name, left in leg_paths(start, via1):
+            outer_mark = board.mark()
+            if not all(emit(board, first, a, b) for a, b in zip(left, left[1:])):
+                board.revert(outer_mark); continue
+            board.via(NET, *via1, 600_000, 300_000)
+            for via2, right_name, right in right_options:
+                tested_second_sites += 1
+                # D-257: 0.30 mm drills require >=0.25 mm hole-to-hole.
+                if math.hypot(via2[0]-via1[0], via2[1]-via1[1]) < 550_000:
+                    continue
+                right_mark = board.mark()
+                if not all(emit(board, first, a, b)
+                           for a, b in zip(right, right[1:])):
+                    board.revert(right_mark); continue
+                board.via(NET, *via2, 600_000, 300_000)
+                for middle_name, middle in leg_paths(via1, via2):
+                    tested_paths += 1; middle_mark = board.mark()
+                    if all(emit(board, second, a, b)
+                           for a, b in zip(middle, middle[1:])):
+                        return {"ok": True, "family": "mixed_two_via",
+                                "layer_order": [first, second, first],
+                                "leg_families": [left_name, middle_name, right_name],
+                                "transition_vias_mm": [[via1[0]/1e6, via1[1]/1e6],
+                                                       [via2[0]/1e6, via2[1]/1e6]],
+                                "static_legal_sites": len(free_sites),
+                                "static_right_options": len(right_options),
+                                "tested_first_sites": tested_first_sites,
+                                "tested_second_sites": tested_second_sites,
+                                "tested_paths": tested_paths}
+                    board.revert(middle_mark)
+                board.revert(right_mark)
+            board.revert(outer_mark)
+    return {"ok": False, "reason": "NO_MIXED_TWO_VIA_HUB_JOIN",
+            "layer_order": [first, second, first],
+            "static_legal_sites": len(free_sites),
+            "static_right_options": len(right_options),
+            "tested_first_sites": tested_first_sites,
+            "tested_second_sites": tested_second_sites,
+            "tested_paths": tested_paths}
+
+def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3"), mode="one"):
     p=work/f"r66-{r66_site}-q10-{q10_site}.kicad_pcb"
     for s in (".kicad_pcb",".kicad_dru",".kicad_pro"): p.with_suffix(s).write_bytes(BOARD.with_suffix(s).read_bytes())
     reserve_r63_fanout(p)
@@ -128,8 +195,10 @@ def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3"), mixed=
             target=R63_FANOUT[-1],site_index=site,site_separation=250_000)
         route={"ref":ref,"layer":layer,"site":site,"escape":escape}
         if escape.get("ok"):
-            route["join"]=(mixed_join_hub(board,layer,escape["via"])
-                           if mixed and ref == "R66.1"
+            route["join"]=(mixed_two_join_hub(board,layer,escape["via"])
+                           if mode == "two" and ref == "R66.1"
+                           else mixed_join_hub(board,layer,escape["via"])
+                           if mode == "one" and ref == "R66.1"
                            else join_hub(board,layer,escape["via"]))
         routes.append(route)
         if not escape.get("ok") or not route.get("join",{}).get("ok"): break
@@ -151,18 +220,25 @@ def run_case(work, r66_site, q10_site, baseline, layer_order=("I2","I3"), mixed=
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--candidate",type=Path); ap.add_argument("--promote",action="store_true")
-    ap.add_argument("--single-layer",action="store_true",help="reproduce the D-522 planar family"); a=ap.parse_args()
+    ap.add_argument("--single-layer",action="store_true",help="reproduce the D-522 planar family")
+    ap.add_argument("--two-transition",action="store_true",help="screen the final two-transition family")
+    a=ap.parse_args()
     before=sha(BOARD); baseline=copper(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-wake-gate-") as td:
         cases=[]
         for layer_order in (("I2","I3"),("I3","I2")):
             for r66_site in range(8):
                 # Do not multiply identical R66 failures by all Q10 sites.
-                first=run_case(Path(td),r66_site,0,baseline,layer_order,not a.single_layer); cases.append(first)
+                mode = "planar" if a.single_layer else "two" if a.two_transition else "one"
+                first=run_case(Path(td),r66_site,0,baseline,layer_order,mode); cases.append(first)
                 if first["promotion_candidate"]: break
-                if len(first["routes"]) == 2:
+                # The two-transition R66 search is the expensive object of
+                # this bounded family.  Do not recompute an identical R66
+                # witness for seven Q10 variants; a surviving Q10 wall is the
+                # explicit successor transaction.
+                if len(first["routes"]) == 2 and mode != "two":
                     for q10_site in range(1,8):
-                        case=run_case(Path(td),r66_site,q10_site,baseline,layer_order,not a.single_layer); cases.append(case)
+                        case=run_case(Path(td),r66_site,q10_site,baseline,layer_order,mode); cases.append(case)
                         if case["promotion_candidate"]: break
                 if any(c["promotion_candidate"] for c in cases): break
             if any(c["promotion_candidate"] for c in cases): break
@@ -173,7 +249,7 @@ def main():
             BOARD.write_bytes(winners[0]["path"].read_bytes())
         for c in cases: c.pop("path",None)
     print(json.dumps({"schema":4,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
-                      "mode":"single_layer" if a.single_layer else "r66_mixed_one_via",
+                      "mode":"single_layer" if a.single_layer else "r66_mixed_two_via" if a.two_transition else "r66_mixed_one_via",
                       "search_contract":{"far_endpoint_sites_each":8,
                                            "layer_orders":[["I2","I3"],["I3","I2"]],
                                            "hub_join_families_each":165,

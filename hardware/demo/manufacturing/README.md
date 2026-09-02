@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_GATE_S two-transition R66 haul qualified; wall parked (2026-09-02)
+
+The recovered atomic harness now permits two ordinary transitions in the
+R66.1-to-R63.2 shared-hub haul. All eight endpoint sites in both layer orders
+close that branch. With each R66 witness reserved, Q10.2 site zero still rejects
+all 169 bounded planar joins, so no complete tree or partial candidate is
+emitted. Board `04dc3e8a...` remains byte-identical at 56 open nets / 460 edges
+and independent real refilled parity DRC remains 199/5/1. This is the fifth
+non-promoting unchanged-wall iteration, so WAKE_GATE_S is parked. Next freshly
+rank an independent retained cluster; revisit only after changed geometry or
+through a broader coherent refloor transaction.
+
 ## WAKE_GATE_S one-transition shared-hub family bounded (2026-09-02)
 
 The shared-hub harness now broadens only the R66.1-to-R63 haul through one
