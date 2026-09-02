@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## WAKE_GATE_S qualified-fanout full-tree replay bounded (2026-09-02)
+
+`route_wake_gate_s_tree_scratch.py` now reserves the exact D-520 R63.2 B.Cu
+fanout and 0.60/0.30 mm via before both branch orders. Either far branch closes
+when first, but the generic two-pad engine tries to allocate a second R63 via
+for the other branch and returns `NO_VIA_SITE`; the partial cases also fail
+real parity DRC and are never emitted. Board `04dc3e8a...` remains byte-identical
+at 56 open nets / 460 edges. Next use the qualified via as one explicit shared
+hub, with distinct-layer joins from R66.1 and Q10.2, and accept only the whole
+three-land tree.
+
 ## WAKE_GATE_S generic tree bounded; R63 fanout qualified (2026-09-02)
 
 The previously uncharacterized retained Community Port wake-gate node has an

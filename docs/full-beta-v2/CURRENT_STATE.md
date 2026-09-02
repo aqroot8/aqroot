@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-521 (WAKE_GATE_S qualified-fanout replay bounded):** both atomic
+  branch orders reserve the exact D-520 R63.2 fanout/via and close their first
+  far branch. The generic engine does not reuse that on-net hub for branch two;
+  it requests a second R63 barrel, stops at `NO_VIA_SITE`, and leaves one open
+  edge with attributable partial-route DRC. No candidate is emitted; board
+  remains `04dc3e8a...`, 56 open nets / 460 edges. **Next:** route R66.1 and
+  Q10.2 to the single qualified R63 hub on distinct inner layers, then gate the
+  complete tree atomically. No owner decision is open.
 - **Demo D-520 (WAKE_GATE_S R63 launch qualified):** a new atomic two-order
   harness covers the three fitted wake-gate lands R66.1/R63.2/Q10.2. Both
   generic orders stop at R63.2 `NO_VIA_SITE`; a package-local 1,248-shape

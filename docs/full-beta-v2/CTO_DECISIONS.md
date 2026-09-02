@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-521 · 2026-09-02 · Demo WAKE_GATE_S qualified-fanout full-tree replay bounded:**
+The D-520 successor now reserves the exact legal R63.2 B.Cu shoulder and
+ordinary via at `(55.2,57.985)` mm before replaying both complete three-land
+tree orders. Each order closes whichever far branch is routed first, but the
+generic two-pad engine does not reuse the reserved on-net hub: the second
+branch attempts a fresh R63.2 barrel and stops at `NO_VIA_SITE`. Both partial
+cases remain at one open edge and real refilled schematic-parity DRC rejects
+them with four or six attributable clearances plus one dangling via. No
+candidate or authoritative copper is emitted. Board `04dc3e8a...` remains
+byte-identical at 56 open retained nets / 460 edges; D-269/D-186, RGB,
+XGPIO4/XGPIO5, Demo NCs, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next treat the qualified R63 via as the
+single shared hub: reserve far-end fanouts at R66.1 and Q10.2, join them to the
+hub on distinct In2/In3 layers, and gate the complete tree atomically without
+allocating another R63 barrel. No owner decision is open.
+
 **D-520 · 2026-09-02 · Demo WAKE_GATE_S generic tree bounded; R63 launch qualified:**
 The retained Community Port wake-gate signal was freshly selected after the
 D-519 successor text was found stale (`CC1101_GDO0` was already promoted by

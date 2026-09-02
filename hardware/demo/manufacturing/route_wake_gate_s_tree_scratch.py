@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atomically screen the retained three-land accessory wake-gate signal."""
+"""Atomically screen WAKE_GATE_S with the qualified R63 shared fanout reserved."""
 
 import argparse, hashlib, itertools, json, subprocess, sys, tempfile
 from collections import Counter
@@ -13,6 +13,8 @@ LEDGER = Path(__file__).with_name("routing_ledger.py")
 NET = "/09_COMMUNITY_HEADER/WAKE_GATE_S"
 LEGS = ("WAKE_GATE_PULLUP_SERIES", "WAKE_GATE_SERIES_FET")
 ACCEPTED = {"lib_footprint_issues", "hole_clearance", "solder_mask_bridge"}
+R63_FANOUT = ((55_700_000, 57_735_000), (55_200_000, 57_735_000),
+              (55_200_000, 57_985_000))
 
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def copper(p):
@@ -26,9 +28,24 @@ def copper(p):
         out[k]+=1
     return out
 
+def reserve_r63_fanout(path):
+    """Install the first D-520-qualified R63.2 B.Cu launch witness."""
+    board = pcbnew.LoadBoard(str(path)); net = board.FindNet(NET)
+    for start, end in zip(R63_FANOUT, R63_FANOUT[1:]):
+        track = pcbnew.PCB_TRACK(board); track.SetNet(net)
+        track.SetLayer(pcbnew.B_Cu); track.SetWidth(200_000)
+        track.SetStart(pcbnew.VECTOR2I(*start)); track.SetEnd(pcbnew.VECTOR2I(*end))
+        board.Add(track)
+    via = pcbnew.PCB_VIA(board); via.SetNet(net)
+    via.SetPosition(pcbnew.VECTOR2I(*R63_FANOUT[-1]))
+    via.SetWidth(600_000); via.SetDrill(300_000)
+    via.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu); board.Add(via)
+    pcbnew.SaveBoard(str(path), board)
+
 def run_case(work, order, baseline):
     p=work/("-".join(order)+".kicad_pcb")
     for s in (".kicad_pcb",".kicad_dru",".kicad_pro"): p.with_suffix(s).write_bytes(BOARD.with_suffix(s).read_bytes())
+    reserve_r63_fanout(p)
     routes=[]
     for leg in order:
         r=subprocess.run([sys.executable,str(LOCAL),leg,"--route",str(p)],text=True,capture_output=True,check=True)
@@ -54,5 +71,9 @@ def main():
             if not winners or sha(BOARD)!=before: raise RuntimeError("refuse promotion")
             BOARD.write_bytes(winners[0]["path"].read_bytes())
         for c in cases: c.pop("path",None)
-    print(json.dumps({"schema":1,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,"cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True)); return 0 if winners else 2
+    print(json.dumps({"schema":2,"authoritative_board_sha256":before,"authoritative_unchanged":sha(BOARD)==before,
+                      "reserved_r63_fanout":{"path_mm":[[x/1e6,y/1e6] for x,y in R63_FANOUT],
+                                                "via_mm":[x/1e6 for x in R63_FANOUT[-1]],
+                                                "via_diameter_mm":.6,"via_drill_mm":.3},
+                      "cases":cases,"promotion_candidates":len(winners)},indent=2,sort_keys=True)); return 0 if winners else 2
 if __name__=="__main__": raise SystemExit(main())
