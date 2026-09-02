@@ -2,6 +2,29 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SPI-A paired J1 fanout wall (2026-09-02)
+
+`screen_spi_a_j1_pair.py` implements the D-427 successor: it reserves distinct
+ordinary 0.60/0.30 mm through-via fanouts for adjacent display pads J1.36
+(`/SPI_A_SCK`) and J1.34 (`/SPI_A_MOSI`) before either net can claim an inner
+haul. It screens the first four ranked escape sites for each pad with both
+In2/In3 assignments, for 32 atomic cases total.
+
+No complete pair exists in this bounded family. Eleven cases fail while
+reserving the two J1 barrels; of the 21 cases that reserve both, 16 fail the
+SCK join to U1.20 and five fail the MOSI join to U1.19. Zero case completes
+both three-pad trees, so no partial copper is promoted. The harness is retained
+as deterministic wall evidence and the authoritative PCB remains byte-identical
+at `7e20e227...`.
+
+The adjacent J1 paired-fanout wall is now parked. Next, promote the independently
+complete `/SPI_A_SCK` tree using the already-proven clock-first transaction,
+but only after a fresh authoritative refilled schematic-parity DRC,
+connectivity/ledger comparison, accepted-copper preservation check, D-269 and
+D-186 invariants, and production-tree hash check. `/SPI_A_MOSI` remains a later
+critical-path wall; manufacturing export remains premature and no owner
+decision is open.
+
 ## SPI-A MISO promotion (2026-09-02)
 
 The fitted MISO topology is U1.21 to microSD J2.7 only. R112 remains DNP, so

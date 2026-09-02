@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-428 · 2026-09-02 · Demo paired SPI-A J1 fanout wall PARKED:** the exact
+D-427 successor co-reserves distinct ordinary 0.60/0.30 mm through-via fanouts
+for adjacent display pads J1.36 (`/SPI_A_SCK`) and J1.34 (`/SPI_A_MOSI`) before
+either net claims an inner haul. Both In2/In3 assignments and the first four
+ranked sites per pad produce 32 atomic cases: 11 fail paired barrel reservation,
+16 reserve both barrels but fail the SCK join to U1.20, and five reserve both
+but fail the MOSI join to U1.19. No case completes both three-pad trees, so no
+partial copper is promoted. The deterministic harness is retained, the
+authoritative board remains byte-identical at `7e20e227...`, and
+`hardware/beta-v2/` is untouched. Park this materially unchanged adjacent-J1
+through-via family. Next, independently promote the already-proven clock-first
+complete SCK tree through a fresh authoritative full gate; leave MOSI open for
+a materially different fanout/refloor transaction. No owner decision is open.
+
 **D-427 · 2026-09-02 · Demo shared SPI-A clock/data atomic wall bounded:**
 the new complete-tree harness screens `/SPI_A_SCK` and `/SPI_A_MOSI` in both
 launch orders, with each fitted U1/J1/J2 tree required to reach zero open

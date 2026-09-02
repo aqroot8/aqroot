@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-428 (SPI-A paired J1 fanout wall PARKED):** the D-427 successor
+  pre-reserves distinct ordinary 0.60/0.30 mm through-via fanouts for J1.36
+  (`/SPI_A_SCK`) and adjacent J1.34 (`/SPI_A_MOSI`) before either inner haul.
+  Across both In2/In3 assignments and the first four ranked sites per pad, all
+  32 atomic cases fail: 11 at paired barrel reservation, 16 at the SCK MCU
+  join, and five at the MOSI MCU join. Zero complete tree pair exists and no
+  partial copper is promoted; board `7e20e227...` and production hardware are
+  unchanged. **Next:** promote the independently complete clock-first SCK tree
+  through a fresh full gate, leaving MOSI open and parked for a materially new
+  fanout/refloor transaction. No owner decision.
 - **Demo D-427 (SPI-A shared clock/data wall bounded):** both complete-tree
   launch orders are clean but mutually exclude the adjacent J1 display via
   pocket: clock-first closes SCK and leaves MOSI one edge open; data-first
