@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-437 (retained XGPIO4/XGPIO5 header pair bounded):** the atomic gate
+  closes all four connector-side edges in both launch orders, but real KiCad
+  DRC rejects promotion. The best split-clearance result leaves XGPIO5 only
+  0.2334 mm from the accepted `ACC_5V_RAW` via at `(61.375,34.300)` versus the
+  locked 0.250 mm rule. Board `2afa51d9...` and production hardware are
+  unchanged. **Next:** explicit XGPIO5 waypoint/corridor path-shaping around
+  that via, then complete atomic pair replay. No owner decision.
 - **Demo D-436 (U10-only USB refloor rejected):** a deterministic 50-case
   ±1.0 mm/0.5 mm-grid/0°–180° U10 placement screen proves every case retains
   the fixed J3.B7 zero-launch precondition under the locked F.Cu-only,

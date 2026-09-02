@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Retained XGPIO4/XGPIO5 header-pair screen (2026-09-02)
+
+`route_xgpio45_header_pair_scratch.py` atomically routes and gates the fitted
+R55/D4/J5.13 and R56/D4/J5.14 trees without touching their accepted internal
+U3 legs. Both launch orders close all four edges, but real schematic-parity DRC
+rejects them. With 0.20 mm fine-pad clearance and a conservative 0.275 mm track
+search, XGPIO5-first leaves one stable violation: 0.2334 mm from its F.Cu
+segment to the accepted `ACC_5V_RAW` via at `(61.375,34.300)`, below the locked
+0.250 mm requirement. No copper was promoted. Next, explicitly shape XGPIO5
+around that via and replay the complete pair through the same gate.
+
 ## Connector-side USB N perimeter enumeration (2026-09-02)
 
 `enumerate_usb_connector_n_fanouts.py` exhaustively checks all four cardinal

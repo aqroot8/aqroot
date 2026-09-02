@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-437 · 2026-09-02 · Demo retained XGPIO4/XGPIO5 header-pair generic route bounded:**
+`route_xgpio45_header_pair_scratch.py` treats the two required three-land
+connector-side trees atomically and gates accepted-copper preservation,
+fitted-pad connectivity, schematic-parity KiCad DRC, and wrong-net additions.
+Both launch orders close all four open edges (fitted open nets 76→74, edges
+501→497; ratsnest 530→526), but neither is promotable. A split 0.20 mm fine-pad
+/ 0.275 mm track-clearance search reduces XGPIO5-first to one stable violation:
+an XGPIO5 F.Cu segment passes the accepted `ACC_5V_RAW` via at
+`(61.375,34.300)` by 0.2334 mm against the locked 0.250 mm rule. Two clean
+repeats reproduce the connectivity and violation. No copper is promoted;
+board `2afa51d9...`, internal XGPIO4/XGPIO5, D-269/D-186, RGB,
+`ACC_5V_SW_EN`, and `hardware/beta-v2/` remain untouched. Next, add a bounded
+XGPIO5 waypoint/corridor around that exact via, then replay the complete pair
+through this gate. No owner decision is open.
+
 **D-436 · 2026-09-02 · Demo U10-only USB refloor rejected by fixed-launch
 invariant:** `screen_usb_u10_placement.py` bounds 50 local U10 candidates over
 ±1.0 mm on a 0.5 mm grid and 0°/180° rotation while keeping mechanically
