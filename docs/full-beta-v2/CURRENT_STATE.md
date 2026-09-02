@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-416 (accessory boost power-core replay bounded; no PCB change):**
+  the 180-degree U21/L4 refloor is order-sensitive. LX-first closes
+  `ACC_5V_LX` in 6.213 mm, after which all five `ACC_5V_RAW` endpoints close;
+  raw-first re-boxes U21.5. The generic inner-layer raw replay is not
+  promotable: real KiCad DRC reports a clearance, track crossing, courtyard
+  overlap, package-neck width reports, and three extra solder-mask bridges.
+  The authoritative board remains `37718bc7...`; accepted copper and
+  `hardware/beta-v2/` are untouched. **Next:** LX-first topology-specific B.Cu
+  replay of the accepted raw-output tree, resolve the U21/L4 courtyard
+  interaction, then replay FB/EN/input/GND and gate all six branches atomically.
+  No owner decision.
 - **Demo D-415 (accessory boost refloor lever bounded; no PCB change):** moving
   `C65` 1.0 mm east does not open `U21.5`. Rotating U21 180 degrees does;
   rotating both U21 and L4 180 degrees gives the shorter screened switch route

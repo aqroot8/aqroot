@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-416 · 2026-09-02 · Demo accessory boost power-core replay bounded:** a
+deterministic scratch transaction rotates `U21`/`L4` 180 degrees, withdraws all
+19 accepted `ACC_5V_RAW` objects, and tests both power-core branches. Ordering
+is material: `ACC_5V_LX` first closes in 6.213 mm and the complete five-endpoint
+raw-output tree then closes; raw-first re-boxes `U21.5`. The combined generic
+inner-layer raw-tree candidate is rejected by real KiCad DRC (one clearance,
+one track crossing, one courtyard overlap, plus package-neck width reports and
+three additional solder-mask-bridge reports). No PCB, placement, rule, or
+accepted copper was promoted; the authoritative board remains byte-identical
+at `37718bc7...`. Do not retry raw-first or promote the generic tree. Next,
+screen an LX-first, topology-specific B.Cu raw-output replay which preserves the
+accepted C65/R99/C66/TP28/U22 tree geometry where possible, explicitly clears
+the U21/L4 courtyard interaction, and then replays the remaining four U21
+branches before promotion. No owner decision is open.
+
 **D-415 · 2026-09-02 · Demo accessory boost refloor lever bounded:** a
 deterministic four-case scratch screen proves that moving `C65` 1.0 mm east
 does not open `U21.5`; the wall is the adjacent TPS61023 land fanout, not the

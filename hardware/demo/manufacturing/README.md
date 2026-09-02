@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory 5 V power-core replay bound (2026-09-02)
+
+`screen_acc_5v_power_core_refloor.py` advances the U21/L4 refloor from a launch
+probe to a complete two-net power-core transaction. It withdraws the 19
+accepted `ACC_5V_RAW` objects in scratch, rotates U21 and L4 180 degrees, routes
+`ACC_5V_LX` first, then rebuilds the five-endpoint raw-output tree. LX closes in
+6.213 mm and the raw tree closes all endpoints. Reversing that order re-boxes
+U21.5, so LX-first is now a fixed transaction constraint.
+
+The candidate is rejected, not promoted. The generic inner-layer raw tree adds
+one clearance and one track-crossing violation; the placement produces one
+courtyard overlap, package-neck width reports, and three additional
+solder-mask-bridge reports. The next screen must keep LX first, replay the raw
+tree with topology-specific B.Cu geometry while preserving its accepted
+C65/R99/C66/TP28/U22 structure where possible, and explicitly clear the U21/L4
+courtyard interaction. Only then should FB, enable, input, and GND be replayed
+as the remaining half of the six-branch atomic transaction. The authoritative
+PCB remains byte-identical at `37718bc7...`.
+
 ## Accessory 5 V switch-node refloor bound (2026-09-02)
 
 `screen_acc_5v_lx_refloor.py` closes the first coordinated placement question.
