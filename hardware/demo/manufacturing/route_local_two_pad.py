@@ -156,6 +156,26 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "BOOT_MCU_PULLUP": {
+        "net": "/02_MCU_CORE/BOOT_N",
+        "pads": ("U1.27", "R2.2"),
+        "ignored_connected_pads": ("SW1.1",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.27", "b": "R2.2", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BOOT_MCU_SWITCH": {
+        "net": "/02_MCU_CORE/BOOT_N",
+        "pads": ("U1.27", "SW1.1"),
+        "ignored_connected_pads": ("R2.2",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.27", "b": "SW1.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "EXT_SDA_BUF_PULLUP": {
         "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
         "pads": ("U16.7", "R49.2"),

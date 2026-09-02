@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-466 (BOOT recovery tree promoted):** U1.27, R2.2, and both physical
+  SW1.1 lands now form one island through sixteen add-only 0.20 mm tracks
+  (63.283285 mm) and five ordinary vias. The duplicated switch lands are joined
+  on In2 because accepted `SD_CS_N` separates them on F.Cu. Both atomic branch
+  orders pass; independent real refilled parity DRC remains 199/5/1. Fitted
+  opens improve 64->63 nets and 478->475 edges; ratsnest 507->504. Board
+  `65bf079a...`; all Demo invariants and production hardware remain intact.
+  **Next:** screen the independent four-land `LED_K` backlight-return tree as
+  one coherent transaction. No owner decision.
 - **Demo D-465 (CC1101 chip-select tree promoted):** U1.7, fitted pull-up
   R28.2, and U7.19 now form one copper island through eight add-only 0.20 mm
   tracks (49.438285 mm) and four ordinary vias. The local pull-up leg uses In2

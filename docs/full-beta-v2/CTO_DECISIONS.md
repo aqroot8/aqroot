@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-466 · 2026-09-02 · Demo BOOT recovery tree routed and promoted:** all four
+fitted `/02_MCU_CORE/BOOT_N` lands (U1.27, R2.2, and both physical SW1.1
+terminals) now form one copper island. The atomic transaction adds sixteen
+0.20 mm tracks totaling 63.283285 mm and five ordinary 0.60/0.30 mm vias; the
+MCU branches use In2/In3, while the east switch land receives a separate short
+F.Cu escape and joins the west-land route on In2 because accepted `SD_CS_N`
+separates the duplicated F.Cu lands. Both branch orders pass the full gate;
+zero accepted copper is removed and zero wrong-net object is added. Independent
+real refilled schematic-parity KiCad DRC remains exactly 199 footprint-library
+/ five hole-clearance / one solder-mask-bridge reports. Fitted connectivity
+improves 64->63 open retained nets and 478->475 edges; ratsnest 507->504. Board
+`65bf079a...`; D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo
+NC contacts, and `hardware/beta-v2/` remain intact. Next, screen the independent
+four-land `/03_SPI_A_DISPLAY_SD/LED_K` backlight-return tree as one coherent
+transaction. No owner decision is open.
+
 **D-465 · 2026-09-02 · Demo CC1101 chip-select tree routed and promoted:** the
 fitted `CC1101_CS_N` network now connects U1.7, its fitted 10 kOhm pull-up
 R28.2, and radio-module land U7.19 as one island. Both atomic branch orders

@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BOOT recovery tree (2026-09-02)
+
+`route_boot_tree_scratch.py` atomically gates both orders of the fitted U1.27,
+R2.2, and duplicated SW1.1 recovery tree. The accepted route adds sixteen
+0.20 mm tracks and five ordinary vias, closes all three fitted open edges,
+removes no accepted copper, and preserves real refilled schematic-parity DRC
+at 199/5/1. The east SW1 land uses its own F.Cu escape and joins on In2 because
+accepted `SD_CS_N` separates the two switch lands on F.Cu. Next, screen the
+independent four-land `LED_K` backlight-return tree.
+
 ## CC1101 chip-select tree (2026-09-02)
 
 `route_cc1101_cs_tree_scratch.py` atomically screens both orders of the fitted
