@@ -159,12 +159,25 @@ legal fault refloor, and no placement or copper was promoted. The authoritative
 ledger remains 572 retained open edges / 601 raw ratsnest and board hash remains
 `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
 
-Next, enumerate explicit offset landing pairs for the U21-side fault branch
-around the fixed `L4.2` and `XGPIO4` conflicts, with the proven TP9/TP10/R50
-placement transaction replayed in scratch. Test B.Cu stubs to distinct legal
-0.60/0.30 mm signal-via sites on In3; do not move U21, U22, L4, C65/C66, any
-connector, or accepted `ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Only after the
-fault refloor is legal should the complete six-pad `ACC_5V_RAW` power tree be
-attempted. Manufacturing export resumes only after all retained connections are
-closed; population-flag synchronization and MPN coverage remain subsequent
-release blockers.
+The explicit offset-landing enumeration on 2026-09-02 closes that proposed
+segment-local tactic. `enumerate_acc_fault_landings.py` withdraws only the
+U21-side fault segment in scratch, replays the proven TP9/TP10/R50 moves, and
+uses the established routing geometry engine at 0.025 mm resolution to search
+for B.Cu-reachable, all-copper-layer-clear 0.60/0.30 mm signal-via sites within
+3.0 mm of both old endpoints. With 0.20 mm signal width/clearance, 0.25 mm hole
+clearance, and 0.30 mm material separation between reported sites, both
+`(59.25,35.15)` and `(59.20,42.20)` return zero sites and therefore zero
+distinct landing pairs. A clean rerun is byte-identical, and the authoritative
+board remains unchanged at
+`b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+
+Next, replace the complete fitted-pad `ACC_POWER_FAULT_N` branch in scratch
+rather than preserving these two geometrically boxed intermediate endpoints.
+Reserve legal escapes from its actual fitted pads first, route the long haul on
+In3, and replay every fitted pad before attempting `ACC_5V_RAW`. Preserve U21,
+U22, L4, C65/C66, every connector, and accepted `ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5`
+copper. Promote only a complete branch plus six-pad power-tree transaction that
+passes the authoritative connectivity and refilled full-board DRC gate.
+Manufacturing export resumes only after all retained connections are closed;
+population-flag synchronization and MPN coverage remain subsequent release
+blockers.
