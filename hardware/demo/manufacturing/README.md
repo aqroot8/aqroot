@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_5V_EN mixed-inner cases 8--11 bounded (2026-09-02)
+
+The resumable atomic harness paired U2 site two with all four TP10 sites on
+In2. Every endpoint reservation coexists, but each case rejects all 1,870
+ordinary transition sites and 7,218 direct/orthogonal leg combinations. No
+candidate or partial copper was emitted; the authoritative board stays
+`04dc3e8a...`, 56 open retained nets / 460 edges, with accepted real refilled
+parity DRC 199/5/1. Cases 0--11 are exhausted. This is unchanged-wall iteration
+four; run the final bounded window at `--case-start 12`, then park the family
+if it fails. Do not replay cases 0--11.
+
 ## NFC_5V_EN mixed-inner cases 4--7 bounded (2026-09-02)
 
 The next non-overlapping window pairs U2 endpoint site one with TP10 sites

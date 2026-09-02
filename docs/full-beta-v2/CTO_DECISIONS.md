@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-528 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 8--11 bounded:**
+The next non-overlapping D-526 window pairs U2 endpoint site two with TP10
+sites zero through three on In2. All four endpoint-escape reservations coexist,
+but every case exhausts 1,870 transition sites and 7,218 direct/x-then-y/
+y-then-x leg combinations without a complete one-transition In2-to-In3 haul.
+No candidate or partial copper is emitted. The authoritative board remains
+byte-identical at `04dc3e8a...`, with 56 open retained nets / 460 edges and
+the accepted real refilled schematic-parity DRC signature of 199 footprint-
+library / five hole-clearance / one solder-mask-bridge reports. D-269/D-186,
+all RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Cases 0--11 are exhausted;
+continue at `--case-start 12` and do not replay them. This is the fourth
+non-promoting iteration on the unchanged NFC_5V_EN wall; the next window is
+the final unchanged-wall iteration and must park the family if it fails. No
+owner decision is open.
+
 **D-527 · 2026-09-02 · Demo NFC_5V_EN mixed-inner cases 4--7 bounded:**
 The next non-overlapping D-526 window pairs U2 endpoint site one with TP10
 sites zero through three on In2. All four endpoint-escape reservations coexist,
