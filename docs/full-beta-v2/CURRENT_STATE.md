@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-418 (accessory boost R99/raw-neck boundary; no PCB change):** the
+  16-case LX-first screen finds +0.5 mm east as the minimum tested R99 move
+  that clears the rotated L4 courtyard without the via/dangling regressions of
+  larger moves. All LX routes close; no explicit raw neck passes. North paths
+  hit retained BQ25185/ILIM copper. South paths avoid crossing reports but
+  still collide with LX and miss raw clearance (0.225 mm actual versus 0.250 mm
+  required). The board remains `37718bc7...`; `hardware/beta-v2/` is untouched.
+  **Next:** fix R99 at +0.5 mm, coordinately reserve nonintersecting LX/raw
+  south corridors, then replay FB/EN/input/GND atomically. Do not retry north
+  necks or larger R99 moves. No owner decision.
 - **Demo D-417 (accessory boost B.Cu topology bounded; no PCB change):** five
   LX-first, accepted-raw-tree-preserving cases all close `ACC_5V_LX`
   (5.255–6.255 mm), but no `L4`-only offset clears real KiCad DRC.  The remaining

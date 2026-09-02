@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-418 · 2026-09-02 · Demo accessory boost R99/raw-neck boundary:** a
+16-case scratch screen admits `R99` to the rotated U21/L4 placement boundary
+and tests four explicit B.Cu raw-neck topologies after LX-first reservation.
+Moving R99 0.5 mm east is the unique minimum tested move that clears the
+L4/R99 courtyard overlap without the via-in-courtyard and dangling-copper
+regressions produced by 1.0–1.5 mm moves. All 16 LX routes close, but no raw
+neck passes real KiCad DRC: north paths collide with retained BQ25185/ILIM
+copper; south paths eliminate track-crossing reports but still collide with
+the LX corridor and retain a 0.225 mm actual versus 0.250 mm required raw
+clearance. Two clean runs reproduce these engineering predicates; KiCad may
+classify coincident scratch collisions as short versus crossing. No PCB,
+placement, rule, or copper was promoted; the authoritative board remains
+byte-identical at `37718bc7...`. Fix R99 at +0.5 mm for the next screen and
+reserve a coordinated nonintersecting LX/raw south corridor before replaying
+FB/EN/input/GND atomically. Do not retry north necks or larger R99 moves. No
+owner decision is open.
+
 **D-417 · 2026-09-02 · Demo accessory boost B.Cu topology bounded:** an
 LX-first scratch screen preserves the accepted five-via `ACC_5V_RAW`
 distribution tree and tests five bounded `L4` offsets after rotating `U21/L4`

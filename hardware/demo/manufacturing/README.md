@@ -2,6 +2,24 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory 5 V R99/raw-neck boundary (2026-09-02)
+
+`screen_acc_5v_raw_neck_refloor.py` tests 16 LX-first combinations: four R99
+offsets and four explicit B.Cu raw necks. A 0.5 mm east R99 move is the only
+minimum tested placement that removes the L4/R99 courtyard overlap without the
+via-in-courtyard and dangling-copper regressions of larger moves. Every LX
+route closes. No raw neck passes: north paths collide with retained
+BQ25185/ILIM copper; south paths remove crossing reports but still intersect
+LX and retain a 0.225 mm versus 0.250 mm raw-clearance miss. KiCad can label a
+coincident scratch collision as short versus crossing across runs, while these
+engineering predicates reproduce.
+
+No placement or copper is promoted and the board stays byte-identical at
+`37718bc7...`. The next bounded transaction should fix R99 at +0.5 mm and
+coordinately reserve separate LX/raw south corridors before atomically
+replaying FB, enable, input, and GND. Do not retry north necks or larger R99
+moves.
+
 ## Accessory 5 V power-core replay bound (2026-09-02)
 
 `screen_acc_5v_power_core_refloor.py` advances the U21/L4 refloor from a launch
