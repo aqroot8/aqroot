@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-518 · 2026-09-02 · Demo NFC_IRQ package fanout qualified; planar haul bounded:**
+The D-456 package-specific successor corrects the live endpoint assumption:
+U9.27 is a front-side QFN land. A deterministic 60-shape outward fanout screen
+finds 23 legal 0.20 mm shapes and a real-refilled-DRC-clean ordinary 0.60/0.30
+mm via witness at `(35.0,36.0)` mm. The atomic complete-link harness then
+reserves that witness and screens eight U1.11 sites on each of In2/In3. Three
+In3 U1 escapes coexist, but all 228 direct/orthogonal/one-spine joins reject;
+no partial candidate is emitted. Independent real refilled schematic-parity
+DRC remains exactly 199 footprint-library / five hole-clearance / one solder-
+mask-bridge reports. Board `04dc3e8a...` remains byte-identical at 56 open
+retained nets / 460 edges; D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs, and
+`hardware/beta-v2/` remain intact. Next preserve both qualified escapes and
+screen one bounded mixed-In2/In3 haul with one ordinary transition via before
+replaying the complete link. No owner decision is open.
+
 **D-517 · 2026-09-02 · Demo WAKE_INT_N mixed-upper cases 48--63 bounded; wall parked:**
 The fourth non-overlapping 16-case mixed-layer window preserves the complete
 qualified lower tree and reserves both upper escapes in every case, but all

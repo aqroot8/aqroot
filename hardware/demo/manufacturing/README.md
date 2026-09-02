@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_IRQ package fanout qualified; planar haul bounded (2026-09-02)
+
+`screen_nfc_irq_u9_fanout.py` corrects the U9.27 layer assumption from the live
+PCB and tests 60 package-specific front-side shapes. Twenty-three are legal;
+the first clean real-DRC witness reaches an ordinary via at `(35.0,36.0)` mm.
+`route_nfc_irq_scratch.py` then treats U1.11-to-U9.27 as one atomic link. Three
+of 16 U1 escape cases coexist with the U9 witness, but none of 228 planar
+direct/orthogonal/one-spine joins completes. No partial copper is emitted.
+Board `04dc3e8a...` remains at 56 open nets / 460 edges with refilled parity
+DRC 199/5/1. Next preserve both qualified endpoint escapes and screen one
+bounded mixed-In2/In3 haul with a single ordinary transition via.
+
 ## WAKE_INT_N mixed-upper cases 48--63 bounded; wall parked (2026-09-02)
 
 The fourth non-overlapping 16-case one-transition-via window preserves the

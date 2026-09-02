@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-518 (NFC_IRQ package fanout qualified; planar haul bounded):** a
+  package-specific 60-shape screen finds 23 legal U9.27 front-side fanouts and
+  a clean ordinary-via witness at `(35.0,36.0)` mm. Atomic complete-link replay
+  finds three coexisting In3 U1.11 escapes, but all 228 planar staged joins
+  reject. No partial candidate exists; board remains `04dc3e8a...`, 56 open
+  nets / 460 edges, with real DRC 199/5/1. **Next:** preserve the qualified
+  endpoint escapes and screen a bounded mixed-In2/In3 haul with one ordinary
+  transition via. No owner decision is open.
 - **Demo D-517 (WAKE_INT_N mixed-upper cases 48--63 bounded; wall parked):**
   the fourth 16-case one-transition-via window preserves the complete qualified
   lower tree and reserves both upper escapes, but all cases reject after 22,560
