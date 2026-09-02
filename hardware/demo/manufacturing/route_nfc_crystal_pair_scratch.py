@@ -46,6 +46,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--launch-order", choices=sorted(ORDERS), default="xout-first")
+    parser.add_argument("--rotate-crystal-180", action="store_true",
+                        help="characterize an in-place Y1 pin-order correction")
     args = parser.parse_args()
     before = sha256(BOARD)
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-nfc-crystal-") as temporary:
@@ -53,6 +55,11 @@ def main() -> int:
         scratch = work / BOARD.name
         for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
             scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
+        if args.rotate_crystal_180:
+            rotated = pcbnew.LoadBoard(str(scratch))
+            crystal = rotated.FindFootprintByReference("Y1")
+            crystal.SetOrientationDegrees((crystal.GetOrientationDegrees() + 180.0) % 360.0)
+            pcbnew.SaveBoard(str(scratch), rotated)
         routes = []
         for name in ORDERS[args.launch_order]:
             run = subprocess.run([sys.executable, str(LOCAL), name, "--route", str(scratch)],
@@ -71,13 +78,22 @@ def main() -> int:
         attributable = [{"type": v["type"], "description": v["description"]}
                         for v in violations if v.get("type") not in ACCEPTED]
         lengths, digest = geometry(scratch)
-        promotion = all(route["result"].get("ok") for route in routes) and not attributable
+        electrically_complete = all(route["result"].get("ok") for route in routes)
+        # Rotation proves the pin-order cause, but the generic sequential router
+        # sends a load-capacitor branch around the cluster.  It is deliberately
+        # characterization-only until Y1/C79/C80 are screened as one placement
+        # transaction and the complete oscillator geometry is reviewed.
+        geometry_reviewed = not args.rotate_crystal_180
+        promotion = electrically_complete and not attributable and geometry_reviewed
         candidate = scratch.read_bytes()
         if args.candidate and promotion:
             args.candidate.write_bytes(candidate)
         report = {"schema": 1, "authoritative_board_sha256": before,
                   "authoritative_unchanged": before == sha256(BOARD),
                   "tactic": "atomic local NFC crystal/load-cap pair; B.Cu, no vias",
+                  "crystal_rotation_delta_deg": 180 if args.rotate_crystal_180 else 0,
+                  "electrically_complete": electrically_complete,
+                  "oscillator_geometry_reviewed": geometry_reviewed,
                   "launch_order": args.launch_order,
                   "routes": routes, "lengths_mm": lengths, "drc_exit": run.returncode,
                   "drc_types": types, "attributable_drc": attributable,

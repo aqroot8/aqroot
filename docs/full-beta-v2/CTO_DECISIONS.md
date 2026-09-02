@@ -9,6 +9,15 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-408 · 2026-09-02 · Demo NFC crystal crossover cause isolated:** the
+bounded reserved-launch screen proves that the current U9 and Y1 XIN/XOUT pad
+orders are reversed on B.Cu. Rotating Y1 180 degrees in place closes all four
+crystal/load-cap edges without a new real KiCad DRC class, but the generic route
+creates 15.602/7.122 mm net lengths with an outside-routed load-cap branch, so
+no placement or copper is promoted. The durable next transaction is a coherent
+rotated-Y1/C79/C80 placement screen followed by atomic pair routing and the full
+board gate; this is within CTO authority and opens no owner decision.
+
 **D-407 · 2026-09-02 · Demo NFC crystal pair launch-order wall characterized:**
 the generic same-face/no-via framework was screened in both complete launch
 orders. XIN-first closes the complete three-pad `NFC_XIN` arm (5.307285 mm) but

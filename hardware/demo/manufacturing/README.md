@@ -16,6 +16,24 @@ two-launch geometry that reserves independent north/south exits before either
 long crystal join; preserve short, no-via, same-face crystal routing and do not
 move the 27.12 MHz crystal unless that bounded geometry is exhausted.
 
+The reserved two-launch alternative is now exhausted and the wall cause is
+sharper. `U9.5` (XIN) is north of `U9.4` (XOUT), while the present Y1 orientation
+puts pin 3 (XIN) south-east of pin 1 (XOUT); the two required same-face routes
+therefore exchange vertical order. An in-place 180-degree Y1 rotation removes
+that forced crossover and all four crystal/load-cap edges route with the exact
+accepted real KiCad DRC signature. It is not promotable geometry: the sequential
+result is 15.602 mm XIN and 7.122 mm XOUT; one load-cap branch necessarily takes
+the long outside path in each sequential ordering. The exact path geometry is
+reproducible even though generated KiCad UUIDs vary.
+`route_nfc_crystal_pair_scratch.py --rotate-crystal-180` preserves this
+deterministic proof and refuses candidate emission despite electrical closure.
+
+Next, screen a coherent `Y1`/`C79`/`C80` placement transaction which keeps Y1's
+center unless a small translation materially improves both arms, aligns the
+rotated pin order with U9, and restores short, balanced crystal and load-cap
+branches. Promote placement and both nets only as one add/reposition transaction
+after the authoritative full-board gate. No owner decision is open.
+
 The deterministic candidate exporter is `export_candidate.sh`. It writes only to
 a new caller-supplied directory, generates full/fitted BOMs, an assembly position
 file, all six copper layers, paste/mask/silkscreen/outline Gerbers, separate PTH
