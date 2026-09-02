@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-510 (display-backlight pair window 192--255 bounded; wall parked):**
+  both distinct `I2`/`I3` assignments reject all 64 first joins before any
+  R109 fanout or second join. Pair indices 0--255 are exhausted with no
+  candidate or replay; PCB remains byte-identical at `04dc3e8a...`, 56 open
+  retained nets / 460 edges. This is the fifth consecutive non-promoting
+  unchanged-wall iteration, so the family is PARKED. **Next:** freshly screen
+  the independent required five-land `/WAKE_INT_N` shared-interrupt tree as one
+  atomic transaction. No owner decision.
 - **Demo D-506 (display-backlight first-witness join wall bounded):** the D-505
   three-fanout witness now has an atomic route/gate harness. Both distinct-layer
   assignments were tested; each exact fanout triple reserves, but U1.16-to-TP2.1

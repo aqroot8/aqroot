@@ -4203,3 +4203,20 @@ D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC
 contacts, accepted `ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next
 continue the unchanged bounded co-search at `--pair-start 192`; do not replay
 indices 0--191. No owner decision is open.
+
+# D-510 · 2026-09-02 · Demo display-backlight coherent pairs 192--255 bounded and wall parked
+
+The resumable display-backlight strap co-search screened pair indices 192--255
+for both distinct `I2`/`I3` short-branch assignments. All 64 first joins on
+each assignment reject before any R109.1 fanout or second join is attempted.
+Indices 0--255 are now exhausted without a coherent first-branch witness.
+
+This is the fifth consecutive non-promoting iteration on the materially
+unchanged display-strap wall, so the family is PARKED under the autonomy-policy
+budget. No candidate, replay, or authoritative copper was emitted. Board
+`04dc3e8a...` remains at 56 open retained nets / 460 edges; D-269/D-186, all
+three RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted
+`ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next freshly screen the
+independent required five-land `/WAKE_INT_N` shared-interrupt tree as one atomic
+transaction; do not continue display pair index 256 without materially changed
+geometry or a broader coherent refloor. No owner decision is open.

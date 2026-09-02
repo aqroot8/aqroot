@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Display-backlight coherent pair wall parked (2026-09-02)
+
+The resumable `route_disp_bl_strap_tree_scratch.py` co-search has now screened
+U1.16/TP2.1 fanout-pair indices 0--255 on both distinct short-branch inner-layer
+assignments. The final 192--255 window rejects all 64 first joins per assignment
+before R109 fanout or replay. No candidate or authoritative copper was emitted;
+board `04dc3e8a...` remains 56/460. This materially unchanged wall has reached
+the five-iteration budget and is PARKED. Next screen `/WAKE_INT_N` as an atomic
+five-land shared-interrupt tree; do not resume at index 256 absent changed
+geometry or a broader coherent refloor.
+
 ## Display-backlight first-witness join wall bounded (2026-09-02)
 
 `route_disp_bl_strap_tree_scratch.py` now consumes the exact D-505 coherent
