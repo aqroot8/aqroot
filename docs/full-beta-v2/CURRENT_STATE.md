@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-454 (LED_A explicit perimeter family bounded):** 60 fixed F.Cu
+  corridors reserve the legal J1.1 perpendicular launch across three depths,
+  five turn columns, and four ballast-spine approach rows at the locked 0.30 mm
+  width / 0.20 mm clearance. None reaches R71.2: 12 block on the lateral leg,
+  16 on the turn toward the spine, and 32 on the final approach. No copper is
+  promoted; board `a819ade1...`, fitted connectivity 69 open nets / 486 edges,
+  and refilled parity DRC 199/5/1 remain unchanged. Park this wall until a
+  bounded placement transaction or materially changed geometry is justified.
+  **Next:** freshly rank an independent retained local cluster.
 - **Demo D-453 (LED_A planar family bounded):** both orders of the coherent
   five-land 0.30 mm F.Cu chain connect all four ballast lands but reproduce the
   same `NO_PATH` on the final R71.2-to-J1.1 feed, whether that feed is first or

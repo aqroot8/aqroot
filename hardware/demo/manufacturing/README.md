@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## LED_A explicit perimeter wall (2026-09-02)
+
+`screen_led_a_perimeter.py` reserves J1.1's perpendicular F.Cu launch and
+screens 60 deterministic orthogonal corridors at the locked 0.30 mm width and
+0.20 mm clearance. The launch is legal in every case, but no corridor reaches
+R71.2: 12 block on the lateral leg, 16 on the turn toward the ballast spine,
+and 32 on the final approach. No partial or authoritative copper is emitted;
+board `a819ade1...`, fitted connectivity 69 open nets / 486 edges, and real
+refilled schematic-parity DRC 199/5/1 remain unchanged. Park LED_A until a
+bounded J1/ballast placement transaction or changed surrounding geometry is
+justified. Next, freshly rank an independent retained local cluster.
+
 ## LED_A planar distribution wall (2026-09-02)
 
 The coherent five-land display-backlight anode transaction was screened in

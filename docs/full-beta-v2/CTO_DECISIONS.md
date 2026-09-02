@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-454 · 2026-09-02 · Demo LED_A explicit perimeter family bounded:** the
+D-453 successor reserves J1.1's perpendicular F.Cu launch and exhaustively
+screens 60 fixed orthogonal corridors across three launch depths, five turn
+columns, and four ballast-spine approach rows at the locked 0.30 mm width and
+0.20 mm clearance. The connector launch is legal in every case, but no feed
+reaches R71.2: 12 cases block on the lateral perimeter leg, 16 on the turn
+toward the spine, and 32 on the final R71.2 approach. Therefore neither route
+order nor this explicit in-place perimeter family is the lever. The atomic
+screen emits no authoritative copper; board `a819ade1...`, fitted connectivity
+69 open nets / 486 edges, and real refilled schematic-parity DRC 199/5/1 remain
+unchanged. D-269, D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and production
+hardware remain intact. Park LED_A until a bounded J1/ballast placement
+transaction or materially changed surrounding geometry is justified. Next,
+freshly rank an independent retained local cluster. No owner decision.
+
 **D-453 · 2026-09-02 · Demo LED_A planar distribution family bounded:** the
 coherent five-land display-backlight anode screen tests both directions of a
 0.30 mm F.Cu chain at 0.20 mm clearance. R73.2/R70.2/R72.2/R71.2 connect
