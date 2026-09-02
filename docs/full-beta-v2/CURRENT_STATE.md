@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-484 (complete MK1 clock-tree staged family bounded):** a new atomic
+  harness screens 32 complete paired-tree cases: four qualified MK1 fanouts,
+  both distinct I2/I3 assignments, both clock priorities, and both branch
+  priorities. All U1/U5 endpoint vias reserve and every MK1-to-amplifier branch
+  closes, but the subsequent MK1-hub-to-MCU branch fails all 165 two-spine
+  corridors for the first clock. No partial candidate is emitted. Independent
+  saved-refill parity DRC remains 199/5/1 and connectivity 58/463; board
+  `044ebb60...` is unchanged. **Next:** change topology to an MCU hub with an
+  amplifier stub, or add a bounded three-spine/perimeter MK1-to-U1 haul. No
+  owner decision.
 - **Demo D-483 (microphone acoustic rule area corrected and promoted):** the
   board's 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` was proven inconsistent with MK1's
   locked footprint, whose dashed seal exclusion is a 2.0 mm diameter circle

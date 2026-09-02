@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Complete MK1 clock-tree staged family bounded (2026-09-02)
+
+`route_mk1_i2s_clock_trees_scratch.py` turns the qualified paired microphone
+fanouts into one atomic complete-tree screen. It covers all four staggered MK1
+layouts, both distinct I2/I3 clock assignments, both clock priorities, and both
+amplifier/MCU branch priorities: 32 deterministic cases. Every U1 and U5 clock
+endpoint reserves a legal ordinary via, and every microphone-to-amplifier leg
+finds a staged corridor. The remaining microphone-hub-to-MCU leg fails all 165
+two-spine corridors for whichever clock is attempted first, so no case reaches
+the second clock and no scratch result is promotable. No partial copper is
+emitted. The authoritative board remains `044ebb60...`; independent saved-refill
+schematic-parity DRC is exactly 199/5/1 and connectivity remains 58/463. Do not
+repeat this hub-and-two-spine topology. Next screen an MCU-hub tree with the
+amplifier as a short branch, or a three-spine/perimeter haul from MK1 to U1.
+
 ## MK1 acoustic keepout correction promoted (2026-09-02)
 
 The over-broad 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` was replaced by a conservative

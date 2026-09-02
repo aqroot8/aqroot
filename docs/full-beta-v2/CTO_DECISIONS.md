@@ -3692,3 +3692,21 @@ D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper,
 and `hardware/beta-v2/` intact. Next extend the qualified paired fanouts into
 one atomic complete BCLK/LRCLK tree screen with distinct staged inner-layer
 corridors before attaching the U1/U5 branches. No owner decision is open.
+
+# D-484 · 2026-09-02 · Demo complete MK1 clock-tree staged family bounded
+
+The complete paired `/I2S_BCLK` and `/I2S_LRCLK` tree now has a reusable atomic
+screen covering all four D-483-qualified MK1 fanouts, both distinct I2/I3 layer
+assignments, both clock priorities, and both amplifier/MCU branch priorities.
+All 32 cases reserve legal ordinary U1 and U5 endpoint vias. Every first
+MK1-hub-to-amplifier leg closes, but the following MK1-hub-to-MCU leg fails all
+165 explicit two-spine corridors for whichever clock is attempted first. Thus
+no case reaches the second clock and no partial candidate is emitted. The
+authoritative board remains byte-identical at `044ebb60...`, 58 open retained
+nets / 463 edges. Independent real saved-refill schematic-parity DRC remains
+exactly 199 footprint-library / five hole-clearance / one solder-mask-bridge
+reports. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, Demo NC contacts,
+accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Do not
+repeat the unchanged MK1-hub/two-spine family. Next screen an MCU-hub topology
+with the amplifier as a stub, or a bounded three-spine/perimeter MK1-to-U1 haul.
+No owner decision is open.
