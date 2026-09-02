@@ -3863,3 +3863,23 @@ contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
 intact. Park this unchanged RX-enable haul family. Next freshly rank an
 independent retained control/interface tree; revisit RX-enable only after
 changed surrounding geometry or a coherent U3/radio refloor. No owner decision.
+
+# D-493 · 2026-09-02 · Demo BQ25185 dual-status generic family bounded
+
+Fresh fitted-ledger ranking selected the coherent charger-status pair outside
+the parked power-core, USB, NFC, audio, and radio-control walls. Exact
+allowlisted contracts now cover all three branches of each four-land
+`/BQ25185_STAT1` and `/BQ25185_STAT2` tree, and a reusable paired harness makes
+the two trees one atomic promotion unit so partial charger telemetry cannot be
+accepted.
+
+The first equivalent branches expose the binding generic-family wall:
+U2.9-to-R127.2 and U2.10-to-R128.2 each return `NO_PATH` at both 0.05 and
+0.025 mm grids with required 0.20 mm width and clearance. No authoritative
+copper was emitted. A fresh real zone-refilled schematic-parity KiCad DRC
+retains exactly 199 footprint-library / five hole-clearance / one solder-mask-
+bridge reports. Board `be285abf...` remains byte-identical at 57 open retained
+nets / 461 edges; D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and
+`hardware/beta-v2/` remain intact. Next stage distinct U2.9/U2.10 package
+fanouts and inner-layer joins as one coherent pair, then replay both complete
+status trees atomically. No owner decision is open.

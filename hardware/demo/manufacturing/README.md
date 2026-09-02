@@ -1951,3 +1951,13 @@ open and the scratch board has two attributable clearances. No candidate is
 written and the authoritative PCB is unchanged. Park this inner-only family;
 the next ACC_5V_FB attempt belongs inside the existing U21/L4/R99 power-core
 refloor transaction.
+# BQ25185 dual-status generic family (2026-09-02)
+
+`route_local_two_pad.py` now carries exact fitted contracts for all three
+branches of both `/BQ25185_STAT1` and `/BQ25185_STAT2` four-land trees.
+`route_bq25185_status_pair_scratch.py` treats the two trees as one atomic unit
+and rejects partial status wiring. The generic family is bounded at the two
+equivalent expander branches: U2.9-to-R127.2 and U2.10-to-R128.2 both return
+`NO_PATH` at 0.05 and 0.025 mm grids with 0.20 mm width/clearance. No copper was
+promoted; the next mechanism is a coherent paired U2 package-fanout and
+inner-layer join before replaying both complete trees.

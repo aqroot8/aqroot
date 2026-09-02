@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-493 (BQ25185 dual-status generic family bounded):** exact allowlisted
+  contracts now cover both fitted four-land charger status trees and an atomic
+  paired harness refuses partial STAT1/STAT2 promotion. Fresh generic screens
+  stop at the equivalent U2-to-pull-up branches: U2.9-to-R127.2 and
+  U2.10-to-R128.2 each return `NO_PATH` at both 0.05 and 0.025 mm grids under
+  the required 0.20 mm width/clearance. No authoritative copper changed. Board
+  `be285abf...` remains at 57 open retained nets / 461 edges with real refilled
+  parity DRC 199/5/1. **Next:** stage distinct U2.9/U2.10 package fanouts and
+  inner-layer joins as one coherent pair, then replay both complete trees
+  atomically. No owner decision.
 - **Demo D-492 (SX1262 RX-enable staged family bounded):** all 32 In2/In3 and
   four-by-four endpoint-site cases ran for U3.19-to-R74.1. Twenty reserve both
   ordinary vias, but every one rejects all 563 horizontal, vertical, and

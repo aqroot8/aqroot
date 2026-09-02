@@ -328,6 +328,44 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "BQ25185_STAT1_U2_PULLUP": {
+        "net": "/BQ25185_STAT1", "pads": ("U2.9", "R127.2"),
+        "ignored_connected_pads": ("U11.9", "TP6.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "BQ25185_STAT1_PULLUP_CHARGER": {
+        "net": "/BQ25185_STAT1", "pads": ("R127.2", "U11.9"),
+        "ignored_connected_pads": ("U2.9", "TP6.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R127.2", "b": "U11.9", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BQ25185_STAT1_PULLUP_TP": {
+        "net": "/BQ25185_STAT1", "pads": ("R127.2", "TP6.1"),
+        "ignored_connected_pads": ("U2.9", "U11.9"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "BQ25185_STAT2_U2_PULLUP": {
+        "net": "/BQ25185_STAT2", "pads": ("U2.10", "R128.2"),
+        "ignored_connected_pads": ("U11.3", "TP7.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "BQ25185_STAT2_PULLUP_CHARGER": {
+        "net": "/BQ25185_STAT2", "pads": ("R128.2", "U11.3"),
+        "ignored_connected_pads": ("U2.10", "TP7.1"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R128.2", "b": "U11.3", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BQ25185_STAT2_PULLUP_TP": {
+        "net": "/BQ25185_STAT2", "pads": ("R128.2", "TP7.1"),
+        "ignored_connected_pads": ("U2.10", "U11.3"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
     "CC1101_CS_MCU_PULLUP": {
         "net": "/CC1101_CS_N",
         "pads": ("U1.7", "R28.2"),
