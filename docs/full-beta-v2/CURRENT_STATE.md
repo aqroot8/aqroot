@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-479 (TCA4307 READY staged family bounded):** the reusable atomic
+  harness now reserves both READY endpoints once and screens 612 explicit
+  two-spine Manhattan corridors. On In2 both ordinary 0.60/0.30 mm endpoint
+  vias reserve cleanly at (59.500,59.450) and (16.900,112.250), but every
+  four-leg join is blocked by accepted geometry; on In3 R46.2 has no legal
+  via site. No partial copper is emitted. Board `f4411e57...` remains at 58
+  open retained nets / 463 edges with real refilled parity DRC 199/5/1.
+  **Next:** park this unchanged long-haul family and freshly rank an independent
+  retained control/status tree. No owner decision.
 - **Demo D-478 (TCA4307 READY tree framework advanced):** exact reusable
   contracts now cover fitted U16.5/R46.2/TP44.1. The local B.Cu branch routes
   cleanly in scratch (7.378838 mm), reduces the target 2->1 open edges, and

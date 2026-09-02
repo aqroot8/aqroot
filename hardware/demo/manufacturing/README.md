@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## TCA4307 READY staged family bounded (2026-09-02)
+
+`route_tca4307_ready_tree_scratch.py` reserves both READY endpoints once and
+atomically screens 612 explicit two-spine inner-layer corridors before replaying
+the local U16 branch. Both In2 endpoint vias reserve cleanly, but accepted
+geometry blocks every four-leg join; In3 cannot reserve R46.2. The harness
+emits no partial copper and retains real refilled schematic-parity DRC at 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports. Board
+`f4411e57...` remains at 58 open retained nets / 463 edges. Park this unchanged
+long-haul family and freshly rank an independent retained tree.
+
 ## TCA4307 READY status tree framework advanced (2026-09-02)
 
 The fitted `/09_COMMUNITY_HEADER/TCA4307_READY` tree now has exact local and

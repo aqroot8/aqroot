@@ -3602,3 +3602,21 @@ candidate or authoritative copper was emitted. Board `f4411e57...` remains at
 XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-power copper, and
 `hardware/beta-v2/` remain intact. Next, stage R46.2-to-TP44.1, then replay
 both READY legs atomically. No owner decision is open.
+
+# D-479 · 2026-09-02 · Demo TCA4307 READY staged family bounded
+
+The retained `/09_COMMUNITY_HEADER/TCA4307_READY` long leg now has a reusable
+atomic staged-corridor harness. It reserves the fitted R46.2 and TP44.1 ends
+once, screens 612 explicit two-spine Manhattan corridors across In2/In3, then
+would replay the already-proven U16.5-to-R46.2 local branch only after a complete
+long haul. On In2 both ordinary 0.60/0.30 mm endpoint vias reserve cleanly at
+(59.500,59.450) and (16.900,112.250), but all 612 four-leg joins are blocked by
+accepted geometry. On In3 R46.2 has no legal ordinary via site. No partial
+candidate or authoritative copper is emitted. Independent real refilled
+schematic-parity KiCad DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports; board `f4411e57...` remains
+byte-identical at 58 open retained nets / 463 edges. D-269/D-186, all RGB
+replacement nets, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
+power copper, and `hardware/beta-v2/` remain intact. Park this unchanged
+long-haul family; next freshly rank an independent retained control/status tree.
+No owner decision is open.
