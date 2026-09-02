@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Retained XGPIO4/XGPIO5 header-pair promotion (2026-09-02)
+
+The D-437 successor constrains the XGPIO5 header leg through an explicit
+`(62.500,30.500)` mm waypoint, clear of both accepted accessory-power barrels.
+Two clean XGPIO5-first candidates have identical physical copper geometry. The
+promoted atomic pair adds 21 F.Cu segments and no vias: nine segments / 24.844979
+mm on XGPIO4 and 12 segments / 20.817576 mm on XGPIO5. Both three-land trees are
+connected, no accepted copper is removed, and real refilled schematic-parity
+DRC remains exactly 199 footprint-library, five inherited hole-clearance, and
+one inherited solder-mask-bridge reports. Fitted opens improve 76→74 nets and
+501→497 edges; ratsnest improves 530→526. Board hash is `2830082d...` and
+`hardware/beta-v2/` remains untouched.
+
 ## Retained XGPIO4/XGPIO5 header-pair screen (2026-09-02)
 
 `route_xgpio45_header_pair_scratch.py` atomically routes and gates the fitted

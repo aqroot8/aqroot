@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-438 (retained XGPIO4/XGPIO5 header pair promoted):** an explicit
+  `(62.500,30.500)` mm waypoint keeps XGPIO5 clear of both accepted
+  accessory-power barrels. The atomic XGPIO5-first transaction adds 21 F.Cu
+  segments and no vias, removes no accepted copper, and connects both complete
+  R55/D4/J5.13 and R56/D4/J5.14 trees. Real refilled parity DRC remains
+  199/5/1; fitted opens improve 76→74 nets and 501→497 edges, and ratsnest
+  530→526. Board `2830082d...`; production hardware is untouched. **Next:**
+  freshly rank an independent retained net or coherent local cluster, excluding
+  all parked materially unchanged walls. No owner decision.
 - **Demo D-437 (retained XGPIO4/XGPIO5 header pair bounded):** the atomic gate
   closes all four connector-side edges in both launch orders, but real KiCad
   DRC rejects promotion. The best split-clearance result leaves XGPIO5 only

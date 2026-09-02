@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-438 · 2026-09-02 · Demo retained XGPIO4/XGPIO5 header pair promoted:**
+the D-437 successor adds a reusable ordered-waypoint option to the local
+two-pad router and constrains the XGPIO5 header leg through `(62.500,30.500)`
+mm, north-east of both accepted accessory-power barrels. Two clean XGPIO5-first
+runs produce identical physical copper geometry. The atomic promotion adds
+exactly 21 F.Cu segments (XGPIO4: 9 segments / 24.844979 mm; XGPIO5: 12
+segments / 20.817576 mm), no vias, removes no accepted copper, and connects
+R55/D4/J5.13 plus R56/D4/J5.14. Fitted opens improve 76→74 nets and 501→497
+edges; ratsnest improves 530→526. Real refilled schematic-parity DRC remains
+exactly 199 footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge reports. Board `2830082d...`; internal XGPIO4/XGPIO5,
+D-269/D-186, all RGB replacements, `ACC_5V_SW_EN`, approved Demo NC contacts,
+and `hardware/beta-v2/` remain intact. Next, freshly rank an independent
+retained net or coherent local cluster, excluding the parked accessory-boost,
+USB, NFC-supply, ISET, and unchanged long-haul walls. No owner decision.
+
 **D-437 · 2026-09-02 · Demo retained XGPIO4/XGPIO5 header-pair generic route bounded:**
 `route_xgpio45_header_pair_scratch.py` treats the two required three-land
 connector-side trees atomically and gates accepted-copper preservation,

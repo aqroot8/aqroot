@@ -236,6 +236,10 @@ ROUTES = {
         "ignored_connected_pads": ("R56.2",),
         "layer": "F", "width": 200_000, "pad_clearance": 200_000,
         "clearance": 275_000,
+        # Keep the long header leg north-east of the accepted ACC_5V_RAW via
+        # at (61.375, 34.300).  The generic diagonal clears its barrel by only
+        # 0.2334 mm against the locked 0.250 mm routed-clearance rule.
+        "waypoints": ((62_500_000, 30_500_000),),
     },
     "NFC_MATCH_A": {
         "net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
@@ -486,6 +490,28 @@ def route(path: Path, name: str):
         result = attempts[-1][3]
         result["attempt"] = attempts[-1][2]
         result["inner"] = attempts[-1][4]
+    elif rule.get("waypoints"):
+        nodes = [a] + [
+            {"ref": f"(waypoint-{index})", "x": x, "y": y,
+             "anchor": True, "net": rule["net"]}
+            for index, (x, y) in enumerate(rule["waypoints"], 1)
+        ] + [b]
+        legs = []
+        for left, right in zip(nodes, nodes[1:]):
+            leg = qr.connect_role(
+                board, rule["net"], left, right, rule["layer"], rule["width"],
+                rule.get("pad_clearance", rule["clearance"]), rule["clearance"],
+                G=25_000,
+            )
+            legs.append(leg)
+            if not leg.get("ok"):
+                break
+        result = {
+            "ok": len(legs) == len(nodes) - 1 and all(leg.get("ok") for leg in legs),
+            "waypoints": [[x / 1e6, y / 1e6] for x, y in rule["waypoints"]],
+            "legs": legs,
+            "mm": sum(leg.get("mm", 0) for leg in legs),
+        }
     elif rule.get("floor_override"):
         result = qr.connect(
             board, rule["net"], a, b, rule["layer"], rule["width"],
