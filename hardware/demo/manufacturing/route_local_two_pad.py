@@ -29,6 +29,14 @@ ROUTES = {
         "layer": "F",
         "width": 200_000,
         "clearance": 200_000,
+        # The generic same-face route is a reproduced D-424 wall.  Reuse the
+        # qualified low-speed endpoint-reservation framework: give each F.Cu
+        # endpoint its own short escape/via, then join on a signal inner layer.
+        "inner_long_haul_plan": {
+            "a": "U1.24", "b": "R62.1",
+            "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
     },
     "DIO2_TXEN": {
         "net": "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
@@ -353,7 +361,22 @@ def route(path: Path, name: str):
     if set(pads) != set(rule["pads"]):
         raise RuntimeError(f"unexpected fitted pads: {sorted(pads)}")
     a, b = (pads[ref] for ref in rule["pads"])
-    if rule.get("floor_override"):
+    if rule.get("inner_long_haul_plan"):
+        group = {
+            "width": rule["width"],
+            "clr_pad": rule.get("pad_clearance", rule["clearance"]),
+            "clr_trk": rule["clearance"],
+            "via_dia": 600_000,
+            "via_drill": 300_000,
+            "inner_long_haul_plan": rule["inner_long_haul_plan"],
+        }
+        attempts = ir.route_inner_long_haul_plan(
+            board, rule["net"], list(pads.values()), group
+        )
+        result = attempts[-1][3]
+        result["attempt"] = attempts[-1][2]
+        result["inner"] = attempts[-1][4]
+    elif rule.get("floor_override"):
         result = qr.connect(
             board, rule["net"], a, b, rule["layer"], rule["width"],
             rule["width"], rule.get("pad_clearance", rule["clearance"]),

@@ -2,6 +2,26 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Native B endpoint-reservation promotion (2026-09-02)
+
+The D-424 generic F.Cu wall is closed with the already-qualified low-speed
+inner-haul framework. U1.24 and R62.1 each use a short 0.20 mm F.Cu escape and
+ordinary 0.60/0.30 mm through-via; four 0.20 mm In2.Cu segments join the via
+anchors. The complete route is 20.436636 mm, six segments plus two vias, and
+adds copper only on `/NATIVE_B`.
+
+The authoritative refilled schematic-parity DRC retains exactly 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+reports. The fitted ledger proves both pads are one island; fitted open nets
+improve 83 to 82, open edges 514 to 513, and raw ratsnest 543 to 542. No
+accepted copper was removed, `hardware/beta-v2/` is byte-identical, and the
+authoritative PCB SHA-256 is `b92701c2...`.
+
+Next, freshly screen `/SPI_A_MISO` as a bus-aware transaction while preserving
+the accepted SD/display copper. The accessory-boost, NFC-input, ISET, and USB
+walls remain parked; manufacturing export is premature and no owner decision
+is open.
+
 ## Native GPIO internal-pair screen and Native A promotion (2026-09-02)
 
 A fresh fitted ledger ranked `/NATIVE_A` and `/NATIVE_B` as the shortest

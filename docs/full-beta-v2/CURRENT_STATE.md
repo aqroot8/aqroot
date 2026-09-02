@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-425 (Native B internal leg promoted):** `/NATIVE_B` now connects
+  U1.24 to R62.1 through two short 0.20 mm F.Cu escapes, ordinary 0.60/0.30 mm
+  through-vias at (44.050,132.450) and (43.850,114.800) mm, and a 0.20 mm In2
+  join. The 20.436636 mm add-only route is six segments plus two vias and
+  removes no accepted copper. The refilled parity DRC stays at the accepted
+  199/5/1 signature; fitted opens improve 83→82 nets and 514→513 edges, and
+  ratsnest 543→542. Board `b92701c2...`; production hardware is untouched.
+  **Next:** bus-aware bounded screen of `/SPI_A_MISO`, preserving accepted
+  SD/display copper and excluding every parked unchanged wall. No owner decision.
 - **Demo D-424 (Native A internal leg promoted):** `/NATIVE_A` now connects
   U1.31 to R61.1 with 11 add-only 0.20 mm F.Cu segments (20.149286 mm), no
   vias, and no accepted-copper removal. Both A-first and B-first atomic screens

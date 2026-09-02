@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-425 · 2026-09-02 · Demo Native B internal leg promoted:** the D-424
+generic F.Cu wall is closed by reusing the qualified low-speed endpoint-
+reservation framework. Short 0.20 mm F.Cu escapes from U1.24 and R62.1 reach
+ordinary 0.60/0.30 mm through-vias at (44.050,132.450) and
+(43.850,114.800) mm; four 0.20 mm In2.Cu segments join the anchors. The
+20.436636 mm route adds exactly six segments and two vias on `/NATIVE_B`,
+removes zero accepted copper, and connects both fitted pads. The authoritative
+refilled schematic-parity DRC remains exactly 199 footprint-library, five
+inherited hole-clearance, and one inherited solder-mask-bridge reports. Fitted
+opens improve 83→82 nets and 514→513 edges; raw ratsnest improves 543→542.
+D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, accepted
+NFC copper, and `hardware/beta-v2/` remain unchanged. Board SHA-256 is
+`b92701c2...`. Next, freshly screen `/SPI_A_MISO`, the shortest unparked
+Demo-required functional signal after excluding the parked accessory-boost,
+NFC-input, ISET, and USB walls; treat it as a bus-aware transaction and do not
+disturb the accepted SD/display copper. No owner decision is open.
+
 **D-424 · 2026-09-02 · Demo Native A internal leg promoted:** a fresh fitted
 ledger selected the two retained native-GPIO internal legs as the shortest
 independent unparked functional pair. Both atomic launch orders reproduce the
