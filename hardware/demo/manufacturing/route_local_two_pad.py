@@ -16,6 +16,21 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "SPI_A_MISO": {
+        "net": "/SPI_A_MISO",
+        "pads": ("U1.21", "J2.7"),
+        # R112 is deliberately DNP: fitting it would connect display SDO to
+        # the microSD read bus.  Route only the fitted MCU/socket endpoints.
+        "ignored_dnp_pads": ("R112.2",),
+        "layer": "F",
+        "width": 200_000,
+        "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.21", "b": "J2.7",
+            "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "NATIVE_A": {
         "net": "/NATIVE_A",
         "pads": ("U1.31", "R61.1"),

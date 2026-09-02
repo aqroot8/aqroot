@@ -2,6 +2,25 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SPI-A MISO promotion (2026-09-02)
+
+The fitted MISO topology is U1.21 to microSD J2.7 only. R112 remains DNP, so
+the display SDO provision is intentionally excluded and cannot contend with
+microSD reads. A generic F.Cu screen reproduced `NO_PATH`; the qualified
+endpoint-reservation framework then closed the net with three 0.20 mm F.Cu
+segments, three 0.20 mm In2.Cu segments, and two ordinary 0.60/0.30 mm vias.
+The route is 28.739064 mm and removes no accepted copper.
+
+The authoritative refilled schematic-parity DRC remains exactly 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+reports. Fitted open nets improve 82 to 81, open edges 513 to 512, and raw
+ratsnest 542 to 541. `hardware/beta-v2/` is unchanged and the authoritative
+PCB SHA-256 is `7e20e227...`.
+
+Next, screen `/SPI_A_SCK` and `/SPI_A_MOSI` as one bus-aware bounded pair; they
+own four remaining fitted open edges. Manufacturing export remains premature
+and no owner decision is open.
+
 ## Native B endpoint-reservation promotion (2026-09-02)
 
 The D-424 generic F.Cu wall is closed with the already-qualified low-speed

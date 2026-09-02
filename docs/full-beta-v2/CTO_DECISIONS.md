@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-426 · 2026-09-02 · Demo SPI-A MISO promoted with display isolation preserved:**
+the fitted topology is exactly U1.21 to microSD J2.7; R112.2 is excluded because
+R112 remains DNP per D-114 and must not connect display SDO to the read bus. A
+generic 0.20 mm F.Cu screen returned `NO_PATH` without emitting copper. Reusing
+the qualified endpoint-reservation framework closes the net with three 0.20 mm
+F.Cu escape segments, three 0.20 mm In2.Cu segments, and ordinary 0.60/0.30 mm
+through-vias at (43.300,128.650) and (18.800,131.250) mm. The 28.739064 mm
+add-only route removes zero accepted objects. Real refilled schematic-parity
+KiCad DRC retains exactly 199 footprint-library, five inherited hole-clearance,
+and one inherited solder-mask-bridge reports. Fitted opens improve 82→81 nets
+and 513→512 edges; raw ratsnest improves 542→541. D-269/D-186, RGB,
+XGPIO4/XGPIO5, accepted SD/display copper, and `hardware/beta-v2/` are unchanged.
+Board SHA-256 is `7e20e227...`. Next, screen `/SPI_A_SCK` and `/SPI_A_MOSI` as
+one bus-aware bounded pair; together they own four remaining fitted open edges.
+No owner decision is open.
+
 **D-425 · 2026-09-02 · Demo Native B internal leg promoted:** the D-424
 generic F.Cu wall is closed by reusing the qualified low-speed endpoint-
 reservation framework. Short 0.20 mm F.Cu escapes from U1.24 and R62.1 reach

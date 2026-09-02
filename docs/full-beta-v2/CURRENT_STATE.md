@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-426 (SPI-A MISO promoted):** `/SPI_A_MISO` now connects fitted pads
+  U1.21 and J2.7 using three 0.20 mm F.Cu escape segments, two ordinary
+  0.60/0.30 mm vias, and three 0.20 mm In2.Cu segments (28.739064 mm total).
+  R112 stays DNP and display SDO therefore remains isolated from the microSD
+  read bus. The change is add-only; refilled parity DRC stays at the accepted
+  199/5/1 signature. Fitted opens improve 82→81 nets and 513→512 edges;
+  ratsnest improves 542→541. Board `7e20e227...`; production hardware is
+  untouched. **Next:** atomically screen `/SPI_A_SCK` and `/SPI_A_MOSI`, which
+  together own four fitted open edges, without disturbing accepted bus copper.
+  No owner decision.
 - **Demo D-425 (Native B internal leg promoted):** `/NATIVE_B` now connects
   U1.24 to R62.1 through two short 0.20 mm F.Cu escapes, ordinary 0.60/0.30 mm
   through-vias at (44.050,132.450) and (43.850,114.800) mm, and a 0.20 mm In2
