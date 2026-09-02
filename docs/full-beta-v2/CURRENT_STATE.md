@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-468 (LED_K connector breakout wall bounded):** qualified 0.30 mm
+  width/clearance enumeration finds zero ordinary 0.60/0.30 mm via sites from
+  either same-net FPC land J1.2/J1.3 to In2 or In3. The 576 perimeter families
+  therefore fail their shared package precondition before emitting copper;
+  board `65bf079a...` remains at 63 open retained nets / 475 edges. **Next:**
+  freshly rank an independent retained net; revisit LED_K only with an explicit
+  connector-footprint breakout transaction that proves the current-path
+  contract. No owner decision.
 - **Demo D-467 (LED_K current-width wall bounded):** the atomic four-land
   harness proves the ordinary inner-haul family is not promotable at the
   required 0.30 mm width/clearance. A widened complete scratch tree fails three

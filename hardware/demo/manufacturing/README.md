@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## LED_K perimeter precondition (2026-09-02)
+
+`screen_led_k_perimeter.py` first enumerates a required 0.30 mm-clear ordinary
+escape/via from both same-net FPC lands to both signal inner layers. All four
+J1.2/J1.3 × In2/In3 combinations have zero 0.60/0.30 mm via sites, so none of
+the 576 bounded perimeter families can begin and no partial copper is emitted.
+Do not retry ordinary vias or perimeter lanes. Revisit only through a bounded
+connector-footprint breakout transaction that proves the LED-current contract;
+meanwhile freshly rank an independent retained net.
+
 ## LED_K current-width wall (2026-09-02)
 
 `route_led_k_tree_scratch.py` atomically screens J1.2/J1.3, U17.3, and R69.1.

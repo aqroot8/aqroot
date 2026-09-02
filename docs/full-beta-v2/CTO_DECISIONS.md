@@ -9,6 +9,24 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-468 · 2026-09-02 · Demo LED_K perimeter precondition exhausted:** the
+D-467 successor now reserves the connector escape before screening any long
+haul. At the required final 0.30 mm width and clearance, qualified ordinary
+0.60/0.30 mm via-site enumeration finds zero sites from either same-net FPC
+land (`J1.2` or `J1.3`) to either routable signal inner layer (In2 or In3).
+Consequently none of the 576 bounded perimeter families can legally begin and
+no partial copper is emitted. The failure is a connector-package breakout
+precondition, not an inner-layer corridor or driver-side wall. Real refilled
+schematic-parity DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports; board `65bf079a...` remains
+at 63 open retained nets / 475 edges. D-269, D-186, RGB, XGPIO4/XGPIO5, Demo
+NC contacts, accepted accessory-power/NFC copper, and `hardware/beta-v2/`
+remain unchanged. Park the ordinary LED_K perimeter family. Next freshly rank
+an independent retained net; revisit LED_K only through a bounded
+connector-footprint breakout transaction that explicitly proves the governed
+current-path contract, not another ordinary-via or perimeter retry. No owner
+decision is open.
+
 **D-467 · 2026-09-02 · Demo LED_K current-width inner-haul family bounded:**
 the four fitted backlight-return lands are J1.2, J1.3, U17.3, and R69.1, with
 the connector on F.Cu and driver/sense lands on B.Cu. A reusable atomic harness
