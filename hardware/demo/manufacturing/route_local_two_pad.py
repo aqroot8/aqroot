@@ -228,6 +228,42 @@ ROUTES = {
         "ignored_connected_pads": ("C72.1", "L6.2"),
         "layer": "B", "width": 300_000, "clearance": 250_000,
     },
+    "NFC_ANTA_MATCH": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_A",
+        "pads": ("R114.2", "C75.1"),
+        "ignored_connected_pads": ("J7.1", "TP37.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_ANTA_CONN": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_A",
+        "pads": ("C75.1", "J7.1"),
+        "ignored_connected_pads": ("R114.2", "TP37.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_ANTA_TP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_A",
+        "pads": ("R114.2", "TP37.1"),
+        "ignored_connected_pads": ("C75.1", "J7.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_ANTB_MATCH": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+        "pads": ("R115.2", "C77.1"),
+        "ignored_connected_pads": ("J7.2", "TP38.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_ANTB_CONN": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+        "pads": ("C77.1", "J7.2"),
+        "ignored_connected_pads": ("R115.2", "TP38.1"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
+    "NFC_ANTB_TP": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+        "pads": ("R115.2", "TP38.1"),
+        "ignored_connected_pads": ("C77.1", "J7.2"),
+        "layer": "B", "width": 300_000, "clearance": 250_000,
+    },
 }
 
 

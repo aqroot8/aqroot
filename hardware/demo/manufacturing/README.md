@@ -2,6 +2,26 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC antenna pair promotion (2026-09-02)
+
+The symmetric fitted `NFC_ANT_A` and `NFC_ANT_B` four-pad nodes are now
+complete. The A/B trees use 14/16 segments and 34.205680/21.063397 mm of
+0.30 mm B.Cu with no vias. Each matching resistor retains direct test-point
+access, while the antenna connector joins through the receive-divider
+capacitor. Both atomic launch orders pass; the promoted A-first order adds
+exactly 30 target-net segments and removes no accepted copper.
+
+The authoritative refilled schematic-parity KiCad DRC signature remains 199
+footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge report, with no attributable class. Fitted connectivity
+improves 87 to 85 open nets and 522 to 516 open edges; raw ratsnest improves
+551 to 545. Board hash is
+`0a5c99d1a97d22a90a353f8d09abcc982d6c1aa46e006404ec8bf211df489486`.
+
+Next is the adjacent symmetric `NFC_RFI1/RFI2` two-pad input pair. Preserve the
+completed receive-divider, antenna, EMC/match/output, and crystal copper. MCU
+USB and `BQ25185_SYS` remain parked. No owner decision is open.
+
 ## NFC EMC pair promotion (2026-09-02)
 
 The symmetric fitted `NFC_EMCA` and `NFC_EMCB` four-pad nodes are now complete.
