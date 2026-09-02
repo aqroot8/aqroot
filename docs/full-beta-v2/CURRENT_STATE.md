@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-451 (U2/button pull-up family bounded):** an atomic three-net batch
+  targeted the equivalent U2-to-pull-up branches of `BTN_DOWN_N`, `BTN_LEFT_N`,
+  and `BTN_A_N`. The generic B.Cu topology fails its first branch with
+  `NO_PATH`; the qualified reserved-via In2/In3 alternative fails earlier
+  because U2.14 exposes no legal ordinary through-via site. Both screens emit
+  zero copper, retain each target at three fitted open edges, and preserve real
+  refilled schematic-parity DRC at 199/5/1. Board `97d60cde...` and production
+  hardware are unchanged. Park this shared U2-side family; revisit only through
+  a bounded U2 package-fanout or local placement transaction. **Next:** freshly
+  rank an independent retained local cluster. No owner decision.
 - **Demo D-450 (NFC VDD_RF planar family bounded):** the retained four-land
   U9.9/U9.14/C49.1/C50.1 rail remains open.  A lower-branch-first atomic screen
   emits no copper because U9.14 has no legal 0.20 mm B.Cu escape; stable

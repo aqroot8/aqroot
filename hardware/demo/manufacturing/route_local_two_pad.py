@@ -148,6 +148,36 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "BTN_DOWN_U2_PULLUP": {
+        "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "pads": ("U2.14", "R5.2"),
+        "ignored_connected_pads": ("SW3.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U2.14", "b": "R5.2", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BTN_LEFT_U2_PULLUP": {
+        "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "pads": ("U2.15", "R6.2"),
+        "ignored_connected_pads": ("SW4.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U2.15", "b": "R6.2", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "BTN_A_U2_PULLUP": {
+        "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "pads": ("U2.17", "R8.2"),
+        "ignored_connected_pads": ("SW6.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U2.17", "b": "R8.2", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "ACC_5V_LX": {
         "net": "/01_POWER_TREE/ACC_5V_LX",
         "pads": ("U21.5", "L4.2"),

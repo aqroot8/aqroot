@@ -3148,3 +3148,20 @@ copper, and `hardware/beta-v2/` remain intact.  Park this unchanged planar
 family.  Next freshly rank an independent retained local cluster; revisit
 VDD_RF only through an explicit package-fanout or bounded local U9/passive
 placement transaction.  No owner decision is open.
+
+# D-451 · 2026-09-02 · Demo U2/button pull-up family bounded
+
+The coherent three-net screen for `/08_BUTTONS_EXPANDERS/BTN_DOWN_N`,
+`BTN_LEFT_N`, and `BTN_A_N` cannot promote the equivalent U2-to-pull-up local
+branches with either qualified generic topology. The atomic B.Cu planar batch
+fails its first required U2.14-to-R5.2 branch with `NO_PATH`. The qualified
+reserved-via In2/In3 alternative fails earlier because U2.14 has no legal
+ordinary through-via site from B.Cu. Both screens emit zero copper, retain all
+three targets at three fitted open edges, and preserve real refilled schematic-
+parity DRC at the accepted 199 footprint-library / 5 hole-clearance / 1 solder-
+mask-bridge signature. The authoritative board remains byte-identical at
+`97d60cde...`; D-269, D-186, all three RGB replacements, XGPIO4/XGPIO5,
+approved Demo NCs, accepted NFC copper, and `hardware/beta-v2/` remain intact.
+Park this shared U2-side family and revisit it only through a bounded U2 package-
+fanout or local placement transaction. Next freshly rank an independent
+retained local cluster. No owner decision is open.

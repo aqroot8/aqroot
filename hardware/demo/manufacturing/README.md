@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## U2/button pull-up branch wall (2026-09-02)
+
+The coherent `BTN_DOWN_N` / `BTN_LEFT_N` / `BTN_A_N` local-branch batch is not
+promotable with either qualified generic topology. The atomic planar screen
+fails its first required `U2.14` to `R5.2` branch with `NO_PATH`; the reserved-
+via In2/In3 alternative fails earlier because `U2.14` has no legal ordinary
+through-via site from B.Cu. Both screens emit zero copper, retain all three
+nets at three fitted open edges, and preserve the real refilled schematic-
+parity DRC signature of 199/5/1. Park this shared U2-side family; revisit it
+only through a bounded U2 package fanout or local placement transaction.
+Next, freshly rank an independent retained local cluster.
+
 ## NFC VDD_RF package-land wall (2026-09-02)
 
 The adjacent four-land ST25R3916 `NFC_VDD_RF` tree is not promotable with the
