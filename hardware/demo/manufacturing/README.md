@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Power-switch enable tree bounded (2026-09-02)
+
+`Net-(SW9-A)` has four fitted lands (U12.12, R43.1, TP13.1, SW9.1); R68.2 is
+the DNP alternate strap and is explicitly excluded by the new reusable leg
+contracts. U12.12-to-TP13.1 closes on B.Cu. TP13.1-to-SW9.1 first refuses the
+incorrect B.Cu-only assumption because SW9 is front-side, then closes through
+two ordinary vias and In2. The remaining 56 mm-class U12.12-to-R43.1
+endpoint-reserved inner-haul did not complete within 60 seconds. No partial
+candidate or authoritative copper was emitted. Next, bound a staged-waypoint
+or perimeter inner-haul for that long leg and then replay all three legs as
+one atomic tree.
+
 ## Community Port wake/attention tree promoted (2026-09-02)
 
 The required `/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR` tree now connects TVS land

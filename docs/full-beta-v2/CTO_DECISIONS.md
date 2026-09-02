@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-477 · 2026-09-02 · Demo power-switch enable tree advanced and bounded:**
+the fresh D-476 target `Net-(SW9-A)` has four fitted lands: U12.12, R43.1,
+TP13.1, and front-side SW9.1; R68.2 is the DNP alternate strap and is now
+explicitly excluded by all three reusable leg contracts. The local U12.12 to
+TP13.1 B.Cu leg closes deterministically (20.801153 mm). The cross-face
+TP13.1-to-SW9.1 leg correctly refuses an impossible B.Cu-only assumption, then
+closes through two ordinary vias and a 1.882817 mm In2 join (4.529873 mm
+total). The remaining 56 mm-class U12.12-to-R43.1 leg did not complete within
+the bounded 60 second endpoint-reserved inner-haul screen; no candidate or
+partial copper was emitted. Board `c6959452...`, 60 open retained nets / 469
+edges, real refilled parity DRC 199/5/1, D-269/D-186, RGB, XGPIO4/XGPIO5,
+Demo NCs, and `hardware/beta-v2/` remain unchanged. Park only the generic long
+leg; next use a bounded staged-waypoint/perimeter inner-haul family for
+U12.12-to-R43.1, then replay all three legs atomically. No owner decision.
+
 **D-476 · 2026-09-02 · Demo Community Port wake tree routed and promoted:**
 the required `/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR` endpoints D5.4, R66.2,
 and J5.20 now form one copper island. The atomic harness screens both branch

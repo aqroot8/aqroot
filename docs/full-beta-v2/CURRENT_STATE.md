@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-477 (power-switch enable tree advanced):** reusable contracts now
+  model fitted U12.12/R43.1/TP13.1/SW9.1 and explicitly exclude DNP R68.2.
+  U12.12-to-TP13.1 closes on B.Cu; TP13.1-to-front-side SW9.1 closes through
+  two ordinary vias and In2 after correctly refusing B.Cu-only routing. The
+  remaining 56 mm-class U12.12-to-R43.1 inner-haul screen bounded out at 60 s,
+  so no partial candidate or copper was emitted. Board `c6959452...` remains
+  at 60 open retained nets / 469 edges with accepted DRC 199/5/1. **Next:**
+  bound a staged-waypoint/perimeter inner-haul family for the remaining long
+  leg, then replay the complete tree atomically. No owner decision.
 - **Demo D-476 (Community Port wake tree promoted):** D5.4, R66.2, and the
   required J5.20 wake/attention contact now form one island through 15 add-only
   0.20 mm F.Cu segments (50.783108 mm) and no vias. Both atomic branch orders

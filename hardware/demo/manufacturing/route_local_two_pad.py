@@ -16,6 +16,35 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "SW9_A_U12_PULLDOWN": {
+        "net": "Net-(SW9-A)",
+        "pads": ("U12.12", "R43.1"),
+        "ignored_connected_pads": ("TP13.1", "SW9.1"),
+        "ignored_dnp_pads": ("R68.2",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U12.12", "b": "R43.1", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SW9_A_U12_TESTPOINT": {
+        "net": "Net-(SW9-A)",
+        "pads": ("U12.12", "TP13.1"),
+        "ignored_connected_pads": ("R43.1", "SW9.1"),
+        "ignored_dnp_pads": ("R68.2",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "SW9_A_TESTPOINT_SWITCH": {
+        "net": "Net-(SW9-A)",
+        "pads": ("TP13.1", "SW9.1"),
+        "ignored_connected_pads": ("R43.1", "U12.12"),
+        "ignored_dnp_pads": ("R68.2",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "TP13.1", "b": "SW9.1", "a_near": "B", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "WAKE_ATTN_HDR_TVS_RESISTOR": {
         "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
         "pads": ("D5.4", "R66.2"),
