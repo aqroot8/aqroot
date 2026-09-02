@@ -301,5 +301,25 @@ highest-leverage remaining accessory-power fabrication blocker at 14 retained
 open edges; preserve U20, its fault branch and safe-state enable, both J5 rail
 contacts, and the accepted 5 V transaction.
 
+The first bounded `ACC_3V3_SW` screen on 2026-09-02 is characterization-only.
+The fitted-pad ledger confirms 15 isolated pads / 14 open edges.  A generic
+face-aware 0.40 mm tree immediately proves U20.5 has no ordinary power escape;
+reusing the accepted TPS22950 0.25 mm by 0.5125 mm package-neck pattern clears
+U20.5.  The same issue occurs at U16.8; an equally short package-local launch
+then reserves all ten SMD escapes, and the scratch forest completes six joins
+before the shortest C63.1-to-R63.1 In3 edge returns `NO_PATH`.  Real refilled
+DRC on the generic failed-prefix case remains exactly at the accepted 199
+footprint-library, 5 inherited hole-clearance, and 1 inherited solder-mask-
+bridge reports.  Later incomplete prefixes show only expected neck-width,
+dangling-via, and open-forest collision artifacts and are not promotable.
+
+`route_acc_3v3_sw_scratch.py` now preserves this result and bounds alternate-
+edge spanning-tree search to twelve failed corridors.  Next, rank alternate
+joins within that budget, beginning with the two components separated by the
+C63/R63 wall; only if a complete tree exists should U20/U16 receive tightly
+courtyard-scoped DRU neck exceptions and the authoritative full-board gate run.
+The authoritative PCB remains byte-identical at `209987cc...`; no owner
+decision is open.
+
 Manufacturing export resumes after retained routing closes; population-flag
 synchronization and MPN coverage remain later release blockers.
