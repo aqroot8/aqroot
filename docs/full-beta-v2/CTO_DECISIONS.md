@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-402 · 2026-09-02 · Demo USB resistor-order characterization:** a bounded
+R33/R34 refloor screen pins each pad 1 to its exact accepted ESD-side copper
+anchor and enumerates all 16 orthogonal pose combinations; two clean runs are
+byte-identical and none reverses the MCU-side N/P endpoint order. The stronger
+continuous bound also closes arbitrary rotations: the anchors are 3.596114 mm
+apart in X and each pad-pair radius is 1.650000 mm, leaving P pad 2 at least
+0.296114 mm right of N pad 2 in every anchor-preserving pose. Thus rigid
+resistor pivots cannot remove the crossover; swapping references/nets would
+misconnect the accepted ESD pair. No placement, copper, rule, or schematic was
+promoted and the authoritative board remains byte-identical (`c052390c...`).
+Next, bound an explicitly coupled F.Cu perimeter/circumnavigation search; do not
+retry rigid pivots, inner hops, generic independent legs, or delete accepted
+ESD copper. No owner decision is open.
+
 **D-401 · 2026-09-02 · Demo USB crossover characterization:** the endpoint-
 order-aware MCU-side pair closes geometrically with symmetric two-via hops:
 `/USB_D_MCU_N` routes on In2 in 22.027355 mm and `/USB_D_MCU_P` on In3 in

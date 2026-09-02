@@ -625,3 +625,23 @@ whether endpoint order can be corrected while preserving the accepted
 connector-side ESD pair copper; if not, close that tactic without moving parts
 and return to an explicitly coupled F.Cu perimeter corridor search. Do not
 delete accepted USB copper merely to make the resistor order convenient.
+
+The bounded R33/R34 order screen on 2026-09-02 closes the rigid-pivot refloor
+without changing the board. `screen_usb_series_order.py` pins each resistor's
+pad 1 to the exact accepted ESD-side copper anchor and enumerates all 16
+orthogonal pose combinations twice with byte-identical evidence. None reverses
+the MCU-side endpoint order. More strongly, the pad-1 anchors are 3.596114 mm
+apart in X and each 0603 pad pair has a 1.650000 mm centre radius, so even
+arbitrary continuous rotations leave P pad 2 at least **0.296114 mm** to the
+right of N pad 2. The resistor pair therefore cannot correct the N/P crossover
+while preserving both accepted pad-1 anchors. Swapping the references or net
+identities would instead misconnect the already routed ESD pair and is not an
+electrical refloor.
+
+The authoritative PCB remains byte-identical at `c052390c...`; no footprint,
+copper, rule, or schematic change was promoted. The next bounded USB tactic is
+an explicitly coupled F.Cu perimeter/circumnavigation search that handles the
+reversed endpoints as a pair. Do not retry rigid R33/R34 pivots, inner-layer
+hops, the generic independent-leg router, or delete the accepted ESD copper.
+If that planar search cannot close, park this materially unchanged USB wall and
+select another retained net from the fitted-pad ledger.
