@@ -88,10 +88,21 @@ inherited hole-clearance, and 1 inherited solder-mask-bridge report, with no
 new attributable class. Board hash:
 `ddebb3500f445524bd932aaff055f7c60f6d5bca17cee25f64ed0624d2bfbf67`.
 
-Next, route and independently gate `IR_GATE` as a low-speed long-haul task,
-targeting its two retained open edges between `R22.2`, `Q1.1`, and `R23.1`.
-Preserve the `R22` gate resistor, the `R23` reset-safe pull-down, accepted
-top-edge current-loop copper, and unrelated retained connectivity.
-Manufacturing export resumes only after all retained connections are closed.
-Population-flag synchronization and MPN coverage remain subsequent release
-blockers.
+The separated `IR_GATE` task was promoted on 2026-09-02. The FET gate and
+reset-safe `R23` pull-down join on 0.20 mm F.Cu at the top edge; a two-via
+0.60/0.30 mm In2.Cu haul reaches `R22.2` without bypassing the series gate
+resistor. All three fitted pads are one copper island. The retained ledger
+moved exactly 574 -> 572 edges and raw ratsnest 603 -> 601. A zone-refilled
+full-board KiCad DRC remains exactly 267 total reports / 499 raw unconnected
+items, with no `IR_GATE` report or new attributable class. Board hash:
+`b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
+
+Next, characterize and route the local `ACC_5V_RAW` boost-output cluster as one
+bounded switching-power transaction. It has six fitted pads and five retained
+open edges across only 13.001 mm, so it is the highest-leverage compact
+non-plane cluster. Preserve U21's output loop, U22 input decoupling, locked
+width/clearance rules, and the already accepted `ACC_5V_SW_EN` copper. Do not
+fold `ACC_5V_SW` connector distribution or plane-net work into that local
+transaction. Manufacturing export resumes only after all retained connections
+are closed; population-flag synchronization and MPN coverage remain subsequent
+release blockers.
