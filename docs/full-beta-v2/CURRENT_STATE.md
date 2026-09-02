@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-483 (microphone acoustic rule area corrected and promoted):** the
+  board's 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` was proven inconsistent with MK1's
+  locked footprint, whose dashed seal exclusion is a 2.0 mm diameter circle
+  centered on the 1.05 mm NPTH. The rule area is now the conservative 2 x 2 mm
+  bounding square around that circle and still forbids tracks, vias, and pours
+  on all four governed copper layers. Real saved-refill parity DRC remains
+  exactly 199/5/1; fitted connectivity remains 58 open nets / 463 edges; and
+  exact comparison proves zero track, via, or pad change. All four paired MK1
+  clock-fanout layouts now pass real DRC. Board `044ebb60...` is promoted.
+  **Next:** extend the qualified paired MK1 fanouts into one atomic complete
+  BCLK/LRCLK tree screen, staging distinct inner-layer corridors before the
+  U1/U5 branches. No owner decision.
 - **Demo D-482 (MK1 clock-fanout rule-area wall bounded):** four coherent,
   staggered two-via layouts reserve geometrically clear east fanouts for both
   MK1.5 `/I2S_LRCLK` and MK1.6 `/I2S_BCLK`, but real refilled parity DRC rejects

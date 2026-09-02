@@ -3674,3 +3674,21 @@ XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper, and
 unchanged keepout. Next audit the rule-area polygon against the locked acoustic
 port/seal region and footprint; narrow or split it only if proven over-broad,
 and only as an atomic full-board-gated transaction. No owner decision is open.
+
+# D-483 · 2026-09-02 · Demo microphone acoustic rule area corrected
+
+The D-482 audit proves the board-level 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` was
+over-broad: MK1's locked footprint defines the no-copper/seal region as the
+2.0 mm-diameter dashed circle centered on its 1.05 mm NPTH, while the larger
+rectangle covered the microphone's required signal lands. The authoritative
+rule area is now the conservative 2 x 2 mm bounding square around that circle;
+it still forbids tracks, vias, and pours on F.Cu, B.Cu, In1.Cu, and In2.Cu.
+Saved-refill schematic-parity DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports. Fitted connectivity remains
+58 open retained nets / 463 edges, and exact comparison against D-482 finds
+zero track, via, or pad change. All four coherent paired MK1 clock-fanout
+layouts now pass real refilled DRC. Board `044ebb60...` is promoted with D-269,
+D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted accessory-power copper,
+and `hardware/beta-v2/` intact. Next extend the qualified paired fanouts into
+one atomic complete BCLK/LRCLK tree screen with distinct staged inner-layer
+corridors before attaching the U1/U5 branches. No owner decision is open.

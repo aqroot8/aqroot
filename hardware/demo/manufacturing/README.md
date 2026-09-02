@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## MK1 acoustic keepout correction promoted (2026-09-02)
+
+The over-broad 5 x 7 mm `MIC_ACOUSTIC_KEEPOUT` was replaced by a conservative
+2 x 2 mm bounding square around the locked footprint's 2.0 mm-diameter dashed
+acoustic seal region and concentric 1.05 mm NPTH. Tracks, vias, and pours remain
+forbidden on every governed layer inside the full seal region, while MK1.5/6
+are no longer incorrectly inside it. A saved real refill retains parity DRC
+199/5/1 and fitted connectivity 58/463; exact comparison finds no track, via,
+or pad change. All four paired clock-fanout layouts now pass real DRC. Board
+`044ebb60...` is promoted. Next extend those qualified fanouts into an atomic
+complete BCLK/LRCLK tree screen with distinct staged inner corridors.
+
 ## MK1 clock-fanout rule-area wall bounded (2026-09-02)
 
 `screen_mk1_i2s_clock_fanout.py` reserves `/I2S_LRCLK` and `/I2S_BCLK`
