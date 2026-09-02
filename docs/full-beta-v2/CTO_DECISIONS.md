@@ -3075,3 +3075,26 @@ Open items. Nothing downstream of an item may be locked until it is decided.
 A pending item closes by being moved into a numbered `D-xxx` row above, with its
 date, and by an entry in [CHANGELOG.md](CHANGELOG.md). It is removed from this
 table only when it has a home in the locked sections.
+# D-447 · 2026-09-02 · Demo ISET package-land wall bounded; local-route promotion guard hardened
+
+The retained BQ25185 charge-current programming net `/01_POWER_TREE/ISET`
+remains open between R37.1 and U11.8.  The qualified 0.20 mm B.Cu local router
+finds no legal escape from U11.8: stable blockers are U11.6 (22 samples), U11.9
+(22), accepted track geometry (6), and the board edge (5).  No candidate copper
+is emitted and the authoritative board remains byte-identical at `7a764bac...`;
+real refilled schematic-parity DRC remains at the accepted 199 footprint-library
+/ 5 hole-clearance / 1 solder-mask-bridge signature.
+
+The adjacent `ILIM_VSET` fallback exposed a reusable gate defect: that net was
+already one fitted copper island, but the local router could reproduce five
+coincident segments with new UUIDs.  The candidate was rejected, the board was
+restored exactly, and `route_local_two_pad.py` now requires a strict fitted
+open-edge reduction in addition to route success and clean DRC before writing
+or promoting a candidate.  Regression proves `ILIM_VSET` now reports 0→0 and
+is non-promotable, while ISET reports 1→1 and remains non-promotable.  D-269,
+D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC contacts,
+accepted NFC copper, and `hardware/beta-v2/` remain unchanged.  No owner
+decision is open.  **Next:** bound a U11-local escape transaction for ISET that
+atomically reserves the adjacent U11.6/U11.9 branches before U11.8, without
+moving U11 or weakening 0.20 mm clearance; if empty, park the package pocket
+and freshly rank an independent retained net.

@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-447 (ISET wall + promotion guard):** the 5.683 mm charger-current
+  programming net remains open because U11.8 has no legal 0.20 mm B.Cu escape;
+  blockers are adjacent U11.6/U11.9, accepted tracks, and the board edge. No
+  copper was emitted. An adjacent fallback revealed that the local router could
+  propose duplicate coincident copper on an already-connected net; the shared
+  gate now requires fitted open-edge reduction before candidate output or
+  promotion. `ILIM_VSET` correctly rejects at 0→0 and ISET at 1→1. Board
+  `7a764bac...`, accepted 199/5/1 DRC, D-269/D-186, RGB, XGPIO4/XGPIO5, Demo
+  NCs, and production hardware remain unchanged. **Next:** reserve the local
+  U11.6/U11.9 branch geometry before attempting U11.8; park the pocket if that
+  bounded family is empty. No owner decision.
 - **Demo D-446 (NFC AGDC tree promoted):** C53.1, U9.24, and C54.1 now form
   one connected island through 17 add-only 0.30 mm B.Cu segments
   (40.626806 mm), with no vias, inner copper, placement change, or accepted-

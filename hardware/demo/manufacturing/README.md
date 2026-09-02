@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ISET package-land wall and local-route guard (2026-09-02)
+
+The 5.683 mm `/01_POWER_TREE/ISET` net remains open: U11.8 has no legal
+0.20 mm B.Cu escape between U11.6, U11.9, accepted track geometry, and the
+board edge. No copper was emitted. A fallback attempt against already-connected
+`ILIM_VSET` exposed a duplicate-copper false promotion; the shared local
+two-pad gate now requires fitted open-edge reduction before candidate output
+or promotion. Regression rejects `ILIM_VSET` at 0→0 and ISET at 1→1. The
+authoritative board remains `7a764bac...` and real refilled schematic-parity
+DRC remains 199/5/1. Next, reserve the adjacent U11.6/U11.9 branches before a
+bounded U11.8 escape attempt; park the pocket if that family is empty.
+
 ## NFC AGDC decoupling-tree promotion (2026-09-02)
 
 The fitted C53.1/U9.24/C54.1 tree is complete with 17 add-only 0.30 mm B.Cu

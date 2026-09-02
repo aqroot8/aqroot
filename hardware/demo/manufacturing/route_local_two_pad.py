@@ -540,6 +540,15 @@ ROUTES = {
 }
 
 
+def ledger_net(board: Path, net: str, report: Path):
+    subprocess.run([
+        sys.executable, str(ROOT / "hardware/demo/manufacturing/routing_ledger.py"),
+        "--board", str(board), str(report),
+    ], check=True, text=True, capture_output=True)
+    ledger = json.loads(report.read_text())
+    return next(item for item in ledger["nets"] if item["net"] == net)
+
+
 def route(path: Path, name: str):
     rule = ROUTES[name]
     board = qr.QBoard(path)
@@ -622,6 +631,9 @@ def main():
 
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-local-") as temporary:
+        before_net = ledger_net(
+            BOARD, ROUTES[args.name]["net"], Path(temporary) / "before-ledger.json"
+        )
         scratch = Path(temporary) / BOARD.name
         for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
             scratch.with_suffix(suffix).write_bytes(BOARD.with_suffix(suffix).read_bytes())
@@ -643,7 +655,15 @@ def main():
             kind = violation.get("type", "unknown")
             types[kind] = types.get(kind, 0) + 1
         candidate = scratch.read_bytes()
-    promotion = routed["result"].get("ok", False) and not attributable
+        after_net = ledger_net(
+            scratch, ROUTES[args.name]["net"], Path(temporary) / "after-ledger.json"
+        )
+    connectivity_progress = after_net["open_edges"] < before_net["open_edges"]
+    promotion = (
+        routed["result"].get("ok", False)
+        and not attributable
+        and connectivity_progress
+    )
     if args.candidate and promotion:
         args.candidate.write_bytes(candidate)
     if args.promote:
@@ -655,6 +675,11 @@ def main():
         "authoritative_unchanged": before == hashlib.sha256(BOARD.read_bytes()).hexdigest(),
         "route": routed, "drc_exit": completed.returncode, "drc_types": types,
         "attributable_drc": attributable, "promotion_candidate": promotion,
+        "connectivity": {
+            "before_open_edges": before_net["open_edges"],
+            "after_open_edges": after_net["open_edges"],
+            "progress": connectivity_progress,
+        },
         "candidate_sha256": hashlib.sha256(candidate).hexdigest(),
     }, indent=2, sort_keys=True))
     return 0
