@@ -2,6 +2,23 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## TPS63020 power-good tree promoted (2026-09-02)
+
+The fitted `Net-(U12-PG)` status tree now connects `U12.14`, pull-up `R41.2`,
+and test point `TP8.1` as one island. A reusable atomic harness screens both
+branch orders and refuses partial promotion. Both orders reproduce the same 16
+add-only 0.20 mm B.Cu segments with no vias: 66.680740 mm for the IC branch and
+36.121897 mm for the test-point branch. No accepted copper is removed.
+
+Independent zone-refilled schematic-parity KiCad DRC remains exactly 199
+footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Fitted connectivity improves 63 to 62 open retained nets and 475 to 473 open
+edges; ratsnest improves 504 to 502. Board SHA-256 is `fa6ae0b4...`. D-269,
+D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts, and production hardware
+remain intact. Next, freshly rank another independent retained status/control
+tree outside documented unchanged walls; manufacturing export remains
+premature.
+
 ## Parked USB connector-pair preflight hardening (2026-09-02)
 
 A fresh exhaustive run on board `65bf079a...` reproduced D-434: P completes in

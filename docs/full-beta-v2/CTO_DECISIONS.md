@@ -9,6 +9,19 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-473 · 2026-09-02 · Demo TPS63020 power-good tree routed and promoted:**
+the fitted `Net-(U12-PG)` endpoints U12.14, R41.2, and TP8.1 now form one
+copper island. A reusable atomic harness screens both branch orders; both
+reproduce the same 16 add-only 0.20 mm B.Cu segments, 102.802637 mm total,
+with no vias, accepted-copper removal, or wrong-net addition. Independent real
+zone-refilled schematic-parity KiCad DRC remains exactly 199 footprint-library
+/ five hole-clearance / one solder-mask-bridge reports. Fitted connectivity
+improves 63->62 open retained nets and 475->473 edges; ratsnest 504->502. Board
+`fa6ae0b4...`; D-269/D-186, all RGB replacements, XGPIO4/XGPIO5, approved Demo
+NC contacts, and `hardware/beta-v2/` remain intact. Next freshly rank another
+independent retained status/control tree outside documented unchanged walls.
+No owner decision is open.
+
 **D-472 · 2026-09-02 · Demo parked USB connector-pair replay preflight
 hardened:** the D-471 handoff named the connector-side USB pair even though
 D-434 through D-436 had already proved its fixed J3.B7 package-land launch

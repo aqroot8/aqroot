@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-473 (TPS63020 power-good tree promoted):** `U12.14`, `R41.2`, and
+  `TP8.1` now form one `Net-(U12-PG)` island through 16 add-only 0.20 mm B.Cu
+  segments and no vias. Both atomic branch orders reproduce the same geometry;
+  accepted copper is intact and independent real refilled parity DRC remains
+  199/5/1. Fitted connectivity improves 63->62 open retained nets and 475->473
+  edges; ratsnest 504->502. Board `fa6ae0b4...`; all Demo invariants and
+  production hardware remain intact. **Next:** freshly rank another independent
+  retained status/control tree outside documented unchanged walls. No owner
+  decision.
 - **Demo D-472 (parked USB pair replay preflight hardened):** a fresh 72-case
   connector-side USB run reproduced D-434 exactly: P completes in all 36
   first-tree cases, while N has no legal route in any order because fixed

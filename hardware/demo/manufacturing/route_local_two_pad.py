@@ -16,6 +16,18 @@ import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
 
 ROUTES = {
+    "U12_PG_PULLUP_TP": {
+        "net": "Net-(U12-PG)",
+        "pads": ("R41.2", "TP8.1"),
+        "ignored_connected_pads": ("U12.14",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
+    "U12_PG_PULLUP_IC": {
+        "net": "Net-(U12-PG)",
+        "pads": ("R41.2", "U12.14"),
+        "ignored_connected_pads": ("TP8.1",),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+    },
     "GPIO45_VDDSPI_U1_R111": {
         "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
         "pads": ("U1.26", "R111.1"),
