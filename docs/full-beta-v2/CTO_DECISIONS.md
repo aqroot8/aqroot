@@ -9,6 +9,16 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-435 · 2026-09-02 · Demo connector-side USB N launch pocket bounded:**
+exhaustive cardinal/diagonal F.Cu launch enumeration at 0.050 and 0.025 mm
+grids gives J3.B7 zero legal 0.23 mm launches at 0.20 mm clearance while J3.A7
+and U10.1 retain legal launches. Stable blockers are J3.A6, board edge, J3.A5,
+and accepted track geometry, so this is a package-land escape wall rather than
+a downstream tree-ordering wall. No copper, placement, rule, or production
+hardware changes. Next keep mechanically locked J3 fixed and bound a local U10
+placement plus complete displaced-branch replay. The USB F.Cu-only, 0.23 mm,
+0.20 mm-clearance, zero-via contract remains locked. No owner decision.
+
 **D-434 · 2026-09-02 · Demo connector-side USB planar tree wall bounded:**
 the connector-side D+/D- transaction is distinct from the parked MCU-side USB
 wall. `screen_usb_connector_pair.py` exhaustively screens both pair orders and

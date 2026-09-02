@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Connector-side USB N perimeter enumeration (2026-09-02)
+
+`enumerate_usb_connector_n_fanouts.py` exhaustively checks all four cardinal
+and four diagonal F.Cu launch families at both 0.050 and 0.025 mm grids for
+J3.A7, J3.B7, and U10.1. J3.A7 and U10.1 expose legal launches at both grids;
+J3.B7 exposes zero. Its stable blockers are adjacent J3.A6, the board edge,
+J3.A5, and accepted track geometry. The wall is therefore the reversible
+connector land pocket, not a downstream pair-join ordering problem.
+
+No copper or placement changed and the authoritative board remains
+`2afa51d9...`. Next, bound a local J3/U10 placement transaction that preserves
+J3's locked mechanical position and atomically replays every displaced U10
+branch; do not weaken the F.Cu-only, 0.23 mm, zero-via USB contract.
+
 ## Connector-side USB planar-tree screen (2026-09-02)
 
 `screen_usb_connector_pair.py` treats the reversible USB-C lands and U10 ESD

@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-435 (connector-side USB N launch pocket bounded):** exhaustive
+  cardinal/diagonal F.Cu launch enumeration at 0.050 and 0.025 mm grids finds
+  legal launches for J3.A7 and U10.1, but zero for J3.B7. Stable blockers are
+  adjacent J3.A6, the board edge, J3.A5, and accepted track geometry, so the
+  wall precedes any downstream pair join. Board `2afa51d9...` and production
+  hardware are unchanged. **Next:** bound a local J3/U10 placement transaction,
+  keeping J3 mechanically fixed and atomically replaying all displaced U10
+  branches under the locked F.Cu-only/0.23 mm/zero-via USB contract. No owner
+  decision.
 - **Demo D-434 (connector-side USB planar tree wall bounded):** a new
   exhaustive coherent-pair screen tests both pair orders and all 36 attachment
   orders for each three-land connector tree under the locked 0.23 mm width,
