@@ -4081,3 +4081,24 @@ Next atomically withdraw and replay the complete BTN_B tree while reserving
 this U2.20 launch and completing the U2.20-to-U8.13 inner haul. Promotion
 requires both required nets connected and the authoritative full-board gate.
 No owner decision is open.
+
+# D-503 · 2026-09-02 · Demo SX1262 DIO1 atomic refloor/haul family bounded
+
+The D-502 successor is implemented as a reusable scratch-only atomic harness.
+Every case withdraws the complete accepted `/08_BUTTONS_EXPANDERS/BTN_B_N`
+tree (21 copper objects), reserves the qualified U2.20 B.Cu path to the
+ordinary via at `(56.0,87.75)` mm, and reserves an ordinary U8.13 escape before
+attempting the haul. Eight distinct U8.13 sites on each of In2 and In3 coexist
+with the U2 fanout in all 16 cases.
+
+No tested single-inner-layer haul closes. Each case exhaustively rejects 1,702
+horizontal, vertical, and two-spine corridors, 27,232 corridors total. The
+harness therefore never reaches BTN_B replay and correctly emits no partial
+candidate: neither the clean endpoints nor withdrawn required button copper
+may be promoted alone. The authoritative PCB remains byte-identical at
+`04dc3e8a...`, with 56 open retained nets / 460 edges. D-269/D-186, all RGB
+replacements, XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
+`hardware/beta-v2/` remain intact. Next preserve this qualified atomic boundary
+and screen one bounded mixed-In2/In3 haul with an intermediate ordinary
+layer-transition via; do not repeat the exhausted single-layer family. No
+owner decision is open.

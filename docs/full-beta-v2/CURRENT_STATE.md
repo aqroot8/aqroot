@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-503 (SX1262 DIO1 atomic refloor/haul family bounded):** the
+  D-502 minimum-boundary transaction is now a reproducible scratch harness.
+  Each of 16 cases withdraws all 21 accepted `BTN_B_N` copper objects, reserves
+  the qualified U2.20 launch, and successfully reserves one of eight U8.13
+  ordinary-via escapes on In2 or In3.  Both endpoint escapes coexist in every
+  case, but all 27,232 direct staged horizontal/vertical/two-spine inner-layer
+  corridors are blocked, so the harness correctly refuses BTN_B replay and
+  partial promotion.  PCB remains byte-identical at `04dc3e8a...`, 56 open
+  retained nets / 460 edges; production hardware is unchanged. **Next:** keep
+  this qualified endpoint/refloor boundary and screen one bounded mixed-In2/In3
+  haul with an intermediate ordinary layer-transition via; do not repeat the
+  proven single-layer corridor family. No owner decision.
 - **Demo D-502 (SX1262 DIO1 U2 fanout/refloor boundary qualified):** a new
   exhaustive scratch screen tests 5,050 package-specific U2.20 B.Cu
   perimeter/under-body doglegs with the locked 0.20 mm width/clearance and

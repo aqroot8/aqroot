@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 DIO1 atomic refloor/haul family bounded (2026-09-02)
+
+`route_sx1262_dio1_btn_b_refloor_scratch.py` implements the D-502 transaction
+without touching authority: withdraw all 21 `BTN_B_N` objects, reserve the
+qualified U2.20 fanout, route DIO1, then replay all four physical BTN_B lands.
+Across eight U8.13 escape sites on each of In2/In3, both endpoint escapes
+coexist in all 16 cases. All 1,702 horizontal/vertical/two-spine corridors per
+case (27,232 total) are blocked, so BTN_B replay is deliberately not attempted
+and no partial copper is emitted. Board `04dc3e8a...` remains 56/460. Next keep
+the qualified atomic boundary and screen a bounded mixed-In2/In3 haul using an
+intermediate ordinary transition via; do not repeat this single-layer family.
+
 ## SX1262 DIO1 U2 refloor boundary qualified (2026-09-02)
 
 `screen_sx1262_dio1_u2_fanout.py` exhaustively tests 5,050 U2.20 B.Cu
