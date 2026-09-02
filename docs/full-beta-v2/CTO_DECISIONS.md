@@ -3587,3 +3587,18 @@ ratsnest improves 495→492. D-269, D-186, all three RGB replacements,
 XGPIO4/XGPIO5, approved Demo NCs, and `hardware/beta-v2/` remain intact. Next
 freshly screen the independent retained accessory-power control/status trees,
 beginning with `ACC_5V_BOOST_EN`. No owner decision is open.
+# D-478 · 2026-09-02 · Demo TCA4307 READY tree framework advanced
+
+The previously uncharacterized retained `/09_COMMUNITY_HEADER/TCA4307_READY`
+tree now has exact allowlisted contracts for U16.5-to-R46.2 and
+R46.2-to-TP44.1. The local B.Cu branch routes cleanly in scratch with 7.378838 mm
+of 0.20 mm copper, reduces the fitted tree from two open edges to one, removes
+no accepted copper, and preserves real refilled schematic-parity KiCad DRC at
+the accepted 199 footprint-library / five hole-clearance / one solder-mask-
+bridge signature. The independent 74 mm-class test-point leg exceeded the
+bounded reserved-via In2/In3 search window and was terminated; no partial
+candidate or authoritative copper was emitted. Board `f4411e57...` remains at
+58 open retained nets / 463 edges; D-269, D-186, all RGB replacement nets,
+XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next, stage R46.2-to-TP44.1, then replay
+both READY legs atomically. No owner decision is open.

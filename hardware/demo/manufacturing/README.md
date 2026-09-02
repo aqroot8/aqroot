@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## TCA4307 READY status tree framework advanced (2026-09-02)
+
+The fitted `/09_COMMUNITY_HEADER/TCA4307_READY` tree now has exact local and
+long-haul contracts. U16.5-to-R46.2 routes cleanly in scratch with 7.378838 mm
+of 0.20 mm B.Cu, reduces target connectivity from two to one open edge, and
+retains real refilled schematic-parity DRC at 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports. The independent 74 mm-class
+R46.2-to-TP44.1 In2/In3 search exceeded its bounded window and was terminated.
+No partial copper was promoted; board `f4411e57...` remains at 58 open retained
+nets / 463 edges. Next, stage the test-point haul and replay both legs atomically.
+
 ## Community Port Accessory Detect tree promoted (2026-09-02)
 
 The Demo-required `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR` tree now connects

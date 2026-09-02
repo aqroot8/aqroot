@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-478 (TCA4307 READY tree framework advanced):** exact reusable
+  contracts now cover fitted U16.5/R46.2/TP44.1. The local B.Cu branch routes
+  cleanly in scratch (7.378838 mm), reduces the target 2->1 open edges, and
+  retains real refilled parity DRC 199/5/1. The independent 74 mm-class
+  R46.2-to-TP44.1 inner haul exceeded its bounded window and was terminated;
+  no partial copper was promoted. Board `f4411e57...` remains at 58 open
+  retained nets / 463 edges. **Next:** stage the test-point haul, then replay
+  both legs atomically. No owner decision.
 - **Demo D-477 (power-switch enable tree advanced):** reusable contracts now
   model fitted U12.12/R43.1/TP13.1/SW9.1 and explicitly exclude DNP R68.2.
   U12.12-to-TP13.1 closes on B.Cu; TP13.1-to-front-side SW9.1 closes through
