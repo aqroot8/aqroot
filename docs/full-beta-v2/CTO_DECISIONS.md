@@ -3225,3 +3225,22 @@ D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs, and
 `hardware/beta-v2/` remain intact. Next, screen the coherent retained
 sub-GHz/NFC interrupt/control cluster beginning with `NFC_IRQ`, `SX1262_BUSY`,
 and `SX1262_DIO1`. No owner decision is open.
+
+# D-456 · 2026-09-02 · Demo radio interrupt/control cluster advanced
+
+The retained `SX1262_BUSY` signal is promoted complete from U1.12 to U8.14.
+The add-only route is one F.Cu escape, one B.Cu escape, two ordinary 0.60/0.30
+mm vias, and four 0.20 mm In2 segments: eight copper objects and 58.702654 mm
+total, with no accepted-copper removal. Real refilled schematic-parity DRC
+remains at the accepted 199 footprint-library / 5 hole-clearance / 1 solder-
+mask-bridge signature. Fitted connectivity improves 68→67 open nets and
+485→484 open edges; ratsnest improves 514→513. Board SHA-256 is `360b8261...`.
+
+The coherent screen also bounds the two unpromoted cluster members. `NFC_IRQ`
+cannot reserve an ordinary via at U9.27 because of U9.28, U9.26, U9.25, and the
+U9 exposed pad. `SX1262_DIO1` cannot reserve one at U2.20 because of U2.21,
+U2.18, U2.19, and accepted track geometry. Both failures precede the long haul
+and emit no copper. D-269, D-186, all three RGB replacements, XGPIO4/XGPIO5,
+approved Demo NCs, and `hardware/beta-v2/` remain intact. Next, bound an
+explicit package-fanout transaction for U9.27 and U2.20 before retrying either
+haul. No owner decision is open.

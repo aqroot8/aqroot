@@ -13,6 +13,20 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-456 (radio interrupt/control cluster advanced):** the retained
+  `SX1262_BUSY` signal now connects U1.12 to U8.14 through one short F.Cu
+  escape, one short B.Cu escape, two ordinary 0.60/0.30 mm vias, and a
+  0.20 mm In2 haul (58.702654 mm total). Eight add-only copper objects close
+  the net; fitted connectivity improves 68→67 open nets / 485→484 edges and
+  ratsnest 514→513. Real refilled schematic-parity DRC remains 199/5/1 and
+  no accepted copper is removed. The same bounded framework emits no copper
+  for `NFC_IRQ` because U9.27 has no legal ordinary-via escape, or for
+  `SX1262_DIO1` because U2.20 has none; their stable blockers are recorded by
+  the reusable allowlisted cases. Board `360b8261...`; D-269/D-186, RGB,
+  XGPIO4/XGPIO5, Demo NCs, and production hardware remain intact. **Next:**
+  bound a package-fanout transaction for U9.27 and U2.20 before retrying either
+  long haul; do not replay the unchanged generic inner-haul family. No owner
+  decision.
 - **Demo D-455 (LTC4368 fault test-point branch promoted):** the isolated
   `TP18.1` island is now joined to the retained `LTC4368_FAULT_N` safety/status
   tree by nine add-only 0.20 mm B.Cu segments (39.822537 mm), routed with the

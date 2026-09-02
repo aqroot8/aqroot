@@ -120,6 +120,33 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "NFC_IRQ": {
+        "net": "/NFC_IRQ",
+        "pads": ("U1.11", "U9.27"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.11", "b": "U9.27", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SX1262_BUSY": {
+        "net": "/SX1262_BUSY",
+        "pads": ("U1.12", "U8.14"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.12", "b": "U8.14", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SX1262_DIO1": {
+        "net": "/SX1262_DIO1",
+        "pads": ("U2.20", "U8.13"),
+        "layer": "B", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U2.20", "b": "U8.13", "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "DIO2_TXEN": {
         "net": "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
         "pads": ("U8.7", "U8.8"),

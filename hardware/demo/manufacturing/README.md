@@ -2,6 +2,23 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Radio interrupt/control cluster advance (2026-09-02)
+
+`SX1262_BUSY` is now complete from U1.12 to U8.14 with two ordinary
+0.60/0.30 mm vias and a 0.20 mm In2 haul. The add-only route contributes eight
+copper objects and 58.702654 mm, removes no accepted copper, and improves fitted
+connectivity from 68 to 67 open nets / 485 to 484 open edges; ratsnest improves
+514 to 513. Real refilled schematic-parity DRC remains at the accepted 199
+footprint-library / 5 hole-clearance / 1 solder-mask-bridge signature.
+
+The same qualified endpoint-reservation framework bounds the other two cluster
+members without emitting copper: `NFC_IRQ` has no ordinary-via escape at U9.27
+(blocked by U9.28/U9.26/U9.25/U9.33), and `SX1262_DIO1` has none at U2.20
+(blocked by U2.21/U2.18/U2.19 and accepted track geometry). Board `360b8261...`;
+production hardware is unchanged. Next, screen an explicit package-fanout
+transaction for U9.27 and U2.20; do not replay the unchanged generic inner-haul
+family.
+
 ## LTC4368 fault test-point branch promoted (2026-09-02)
 
 The isolated `TP18.1` island is now joined to the retained
