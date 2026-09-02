@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-474 · 2026-09-02 · Demo display-backlight control strap tree bounded:**
+the fresh post-D-473 retained-net ranking selected the four-land
+`DISP_BL_CTL_STRAP` tree U1.16/R108.1/R109.1/TP2.1. A reusable atomic harness
+screens all six branch orders and refuses partial promotion. The long
+U1.16-to-R108.1 branch routes through the qualified ordinary-via inner-haul
+framework with eight add-only scratch objects, but both remaining short legs
+return `NO_PATH` regardless of order. Replacing their In2/In3 reservations
+with an independent F.Cu planar family reproduces the same result. No
+candidate is emitted; authoritative board `fa6ae0b4...`, fitted connectivity
+62 open retained nets / 473 edges, and real refilled schematic-parity DRC
+199/5/1 remain unchanged. D-269/D-186, all RGB replacements, XGPIO4/XGPIO5,
+approved Demo NC contacts, and `hardware/beta-v2/` remain intact. Park this
+unchanged add-only family; revisit only through an explicit U1/TP2/R109
+fanout transaction or changed surrounding geometry. Next freshly rank another
+independent retained status/control tree. No owner decision is open.
+
 **D-473 · 2026-09-02 · Demo TPS63020 power-good tree routed and promoted:**
 the fitted `Net-(U12-PG)` endpoints U12.14, R41.2, and TP8.1 now form one
 copper island. A reusable atomic harness screens both branch orders; both

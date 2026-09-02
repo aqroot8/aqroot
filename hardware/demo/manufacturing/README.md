@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Display-backlight control strap wall (2026-09-02)
+
+`route_disp_bl_strap_tree_scratch.py` atomically screens all six orders of the
+four-land `DISP_BL_CTL_STRAP` tree. The long U1.16-to-R108.1 branch is legal
+through the qualified ordinary-via inner-haul framework, adding eight scratch
+objects. Neither short U1.16-to-TP2.1 nor TP2.1-to-R109.1 branch has a legal
+route in the current geometry: both the ordinary In2/In3 endpoint-reservation
+family and a separate F.Cu planar fallback return `NO_PATH`. No partial copper
+is accepted or emitted. Park this unchanged add-only family; revisit only with
+an explicit U1/TP2/R109 fanout transaction or changed surrounding geometry.
+Freshly rank another independent retained tree next.
+
 ## TPS63020 power-good tree promoted (2026-09-02)
 
 The fitted `Net-(U12-PG)` status tree now connects `U12.14`, pull-up `R41.2`,

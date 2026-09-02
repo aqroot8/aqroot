@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-474 (display-backlight control strap bounded):** all six atomic
+  orders of U1.16/R108.1/R109.1/TP2.1 were screened. The long U1-to-R108 leg
+  is legal through the ordinary-via inner-haul framework, but both short legs
+  return `NO_PATH` under both In2/In3 reservations and an independent F.Cu
+  planar fallback. No partial candidate or copper was emitted; board
+  `fa6ae0b4...` remains at 62 open retained nets / 473 edges with real
+  refilled parity DRC 199/5/1. **Next:** freshly rank another independent
+  retained status/control tree; revisit this tree only through an explicit
+  U1/TP2/R109 fanout transaction or changed geometry. No owner decision.
 - **Demo D-473 (TPS63020 power-good tree promoted):** `U12.14`, `R41.2`, and
   `TP8.1` now form one `Net-(U12-PG)` island through 16 add-only 0.20 mm B.Cu
   segments and no vias. Both atomic branch orders reproduce the same geometry;

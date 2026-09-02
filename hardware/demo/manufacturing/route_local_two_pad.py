@@ -338,6 +338,48 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "DISP_BL_STRAP_U1_TP2": {
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "pads": ("U1.16", "TP2.1"),
+        "ignored_connected_pads": ("R108.1", "R109.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "DISP_BL_STRAP_U1_TP2_INNER": {
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "pads": ("U1.16", "TP2.1"),
+        "ignored_connected_pads": ("R108.1", "R109.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.16", "b": "TP2.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "DISP_BL_STRAP_TP2_R109": {
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "pads": ("TP2.1", "R109.1"),
+        "ignored_connected_pads": ("U1.16", "R108.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "DISP_BL_STRAP_TP2_R109_INNER": {
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "pads": ("TP2.1", "R109.1"),
+        "ignored_connected_pads": ("U1.16", "R108.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "TP2.1", "b": "R109.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "DISP_BL_STRAP_U1_R108": {
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "pads": ("U1.16", "R108.1"),
+        "ignored_connected_pads": ("TP2.1", "R109.1"),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.16", "b": "R108.1", "a_near": "F", "b_near": "F",
+            "inner": ["I2", "I3"],
+        },
+    },
     "LTC4368_FAULT_TP18": {
         "net": "/01_POWER_TREE/LTC4368_FAULT_N",
         "pads": ("R82.1", "TP18.1"),
