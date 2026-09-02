@@ -97,12 +97,38 @@ full-board KiCad DRC remains exactly 267 total reports / 499 raw unconnected
 items, with no `IR_GATE` report or new attributable class. Board hash:
 `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
 
-Next, characterize and route the local `ACC_5V_RAW` boost-output cluster as one
-bounded switching-power transaction. It has six fitted pads and five retained
-open edges across only 13.001 mm, so it is the highest-leverage compact
-non-plane cluster. Preserve U21's output loop, U22 input decoupling, locked
-width/clearance rules, and the already accepted `ACC_5V_SW_EN` copper. Do not
-fold `ACC_5V_SW` connector distribution or plane-net work into that local
-transaction. Manufacturing export resumes only after all retained connections
-are closed; population-flag synchronization and MPN coverage remain subsequent
-release blockers.
+The first bounded `ACC_5V_RAW` transaction was characterized on 2026-09-02 and
+rejected before promotion. The fitted-pad ledger confirms six isolated pads and
+five retained open edges across 13.001 mm: `U21.6`, `C65.1`, `C66.1`, `R99.1`,
+`TP28.1`, and `U22.2`. This is an `ACC_5V` power-class route, so it requires at
+least 0.40 mm track width (0.60 mm preferred), 0.25 mm routed clearance, and a
+power via with at least a 0.40 mm drill. The board's 0.25 mm minimum annular
+width makes the usable ordinary through-via geometry 0.90/0.40 mm, not the
+0.60/0.30 mm signal-via pattern.
+
+A scratch topology kept the U21-to-C65 output connection on B.Cu and attempted
+an In3 distribution tree through five 0.80/0.40 mm vias. Real zone-refilled
+KiCad DRC rejected it: the proposed pad escapes crossed or shorted the accepted
+`ACC_POWER_FAULT_N`, `ACC_DETECT_N`, and `XGPIO5` copper, and the 0.80 mm vias
+failed the annular-width/diameter rules. No part of this attempt entered the
+authoritative PCB.
+
+The durable wall is endpoint-local rather than an In3 capacity problem.
+Accepted B.Cu `ACC_POWER_FAULT_N` and `ACC_DETECT_N` branches bound the U21.6
+escape channel on its east and west sides; fitted `TP10` closes its south exit.
+At U22.2, the same accepted fault branch crosses the only direct west escape,
+while adjacent U22 pads block north, south, and east. A compliant 0.90/0.40 mm
+via cannot be placed in either endpoint pocket without colliding with retained
+copper or a fitted pad. Blind/microvias and via-in-pad remain excluded: neither
+has an approved manufacturing contract, and via-in-pad at the 0.675 x 0.350 mm
+U21 land would compromise assembly.
+
+Next, perform a bounded ordered local obstacle-resolution study around U21/U22:
+first test whether a minimal TP10 placement adjustment exposes a compliant U21
+south escape, then independently determine the minimum connectivity-preserving
+refloor of the nearby `ACC_POWER_FAULT_N` branch needed to expose U22.2. Do not
+touch the accepted `ACC_5V_SW_EN`, `XGPIO4`, or `XGPIO5` copper, and do not
+promote any placement/refloor candidate unless the complete `ACC_5V_RAW`
+six-pad cluster closes under the authoritative full-board gate. Manufacturing
+export resumes only after all retained connections are closed; population-flag
+synchronization and MPN coverage remain subsequent release blockers.
