@@ -4187,3 +4187,19 @@ D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC
 contacts, accepted `ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next
 continue the unchanged bounded co-search at `--pair-start 128`; do not replay
 indices 0--127. No owner decision is open.
+
+# D-509 · 2026-09-02 · Demo display-backlight coherent pairs 128--191 bounded
+
+The resumable display-backlight strap co-search screened the next
+non-overlapping U1.16/TP2.1 fanout-pair window, indices 128--191, for both
+distinct `I2`/`I3` short-branch layer assignments. All 64 first joins on each
+assignment reject before any R109.1 fanout or second join is attempted. Pair
+indices 0--191 are therefore exhausted without a coherent first-branch
+witness.
+
+No candidate, replay, or authoritative copper was emitted. The board remains
+byte-identical at `04dc3e8a...`, with 56 open retained nets / 460 edges.
+D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC
+contacts, accepted `ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact. Next
+continue the unchanged bounded co-search at `--pair-start 192`; do not replay
+indices 0--191. No owner decision is open.
