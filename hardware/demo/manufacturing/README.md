@@ -498,3 +498,22 @@ Next, use the fitted-pad ledger to select another bounded local connection;
 do not retry `MAX17048_ALRT_N` with the direct same-face tactic and keep
 `BQ25185_SYS` parked. Manufacturing export remains premature while 101
 retained multi-pad nets are still open. No owner decision is open.
+
+The next independent increment on 2026-09-02 promotes `ILIM_VSET`, the local
+BQ25185 charger input-limit programming connection from `R36.1` to `U11.7`.
+The deterministic two-pad framework adds five 0.20 mm B.Cu segments (4.809 mm,
+zero vias). The authoritative refilled full-board KiCad DRC remains exactly
+199 footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge report, with no attributable violation; schematic parity
+was enabled. Both fitted pads are one copper island, retained open edges move
+544 -> 543, raw ratsnest 573 -> 572, and the PCB delta is add-only. Accepted
+battery and accessory-power copper, the routed RGB replacements, XGPIO4/5,
+and `ACC_5V_SW_EN` remain untouched. Board hash:
+`654a9ff75d8e7ff8853297e4b5bd1d4d1f15d8b81bfc7199acec87518bfa4ff1`.
+
+Next, select another independent short fitted-pad edge from the ledger;
+`USB_D_ESD_N` is the shortest uncharacterized non-charger candidate. Preserve
+the USB differential topology and do not treat a single-leg route as a
+promotable pair unless skew/coupling review passes. Keep `BQ25185_SYS` parked.
+Manufacturing export remains premature while 100 retained multi-pad nets are
+open. No owner decision is open.

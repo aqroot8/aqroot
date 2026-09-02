@@ -9,6 +9,17 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-396 · 2026-09-02 · routed Demo increment:** `ILIM_VSET` now connects
+`R36.1` to `U11.7` with five add-only 0.20 mm B.Cu segments and no vias. The
+authoritative refilled full-board KiCad gate retains exactly 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+report with no attributable violation; the fitted-pad ledger moves 544 -> 543
+open edges and 573 -> 572 raw ratsnest. Accepted power, battery, RGB, XGPIO4/5,
+and `ACC_5V_SW_EN` copper is unchanged. Board hash `654a9ff7...`. Next is an
+independent short fitted-pad connection, prioritizing a coherent USB
+differential-pair transaction over an isolated leg. `BQ25185_SYS` remains
+parked under the routing-wall policy. No owner decision is open.
+
 **D-395 · 2026-09-01 · routing characterization:** deterministic replay of
 the D-394 shortest 0.200 mm B.Cu TP33.1↔TP27.1 suffix after the D-393
 XGPIO0/In2 plus U3.18/In3 candidate closes both ACC_POWER_FAULT_N and XGPIO0

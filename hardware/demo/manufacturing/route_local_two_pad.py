@@ -30,6 +30,13 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "ILIM_VSET": {
+        "net": "/01_POWER_TREE/ILIM_VSET",
+        "pads": ("R36.1", "U11.7"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "NFC_MATCH_A": {
         "net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
         "pads": ("C71.2", "R114.1"),
