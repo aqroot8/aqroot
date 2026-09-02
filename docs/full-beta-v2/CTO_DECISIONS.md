@@ -9,6 +9,21 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-423 · 2026-09-02 · Demo NFC analog-supply west-via family PARKED:** the
+deterministic D-422 successor enumerates 0.60/0.30 mm through-via sites
+reachable from the proven westward U9.7 neck at 0.025 mm resolution, enforcing
+B.Cu/In3 copper legality and the 0.25 mm hole-clearance floor before excluding
+the complete accepted oscillator envelope. It finds zero package-side sites
+even before that envelope filter. In contrast, the two analog decoupler lands
+have 204 and 217 legal candidate sites, so inner-layer capacity is not binding;
+the package-local barrel pocket is. Moving only the analog return cannot repair
+D-422. No copper, placement, rule, or schematic changed; the authoritative PCB
+remains `37718bc7...` and `hardware/beta-v2/` is untouched. Park this materially
+unchanged west-neck/via family. Next, select the highest-ranked independent
+retained net or small functional cluster from a fresh fitted ledger; revisit
+NFC_VDD_A only with a different package-fanout direction or bounded local
+placement transaction. No owner decision is open.
+
 **D-422 · 2026-09-02 · Demo NFC supply inner-fanout topology bounded:** the
 first explicit non-planar `NFC_VDD_D`/`NFC_VDD_A` screen replaces the exhausted
 generic B.Cu launch family with short westward U9.3/U9.7 necks, independent

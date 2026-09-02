@@ -2,6 +2,28 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC analog-supply legal-via enumeration (2026-09-02)
+
+`enumerate_nfc_supply_corridors.py` applies the D-422 westward U9.7 launch seed
+to the accepted board at 0.025 mm resolution and searches for reachable
+0.60/0.30 mm through-via sites.  The barrel is checked against B.Cu and In3,
+the 0.25 mm hole-clearance floor is enforced, and sites are then filtered
+outside a conservative envelope around every accepted `NFC_XIN`/`NFC_XOUT`
+track (via radius plus 0.20 mm clearance).
+
+The package side has **zero reachable legal via sites before the oscillator
+filter is even applied**.  This is not an inner-layer-capacity wall: C47.1 and
+C48.1 expose 204 and 217 legal landing sites respectively.  It sharpens the
+D-422 result: its package-local analog barrel was itself non-promotable, and
+moving only the inner return cannot repair the transaction.  The authoritative
+PCB stays byte-identical at `37718bc7...`; no copper, placement, or rule changed.
+
+This materially unchanged U9.7 west-neck/via family is parked.  Next, select
+the highest-ranked independent retained net or small functional cluster from a
+fresh fitted ledger.  Revisit the analog supply only with a materially
+different package-fanout direction or a bounded local placement transaction;
+do not retry westward barrel placement or disturb accepted oscillator copper.
+
 ## NFC supply explicit inner-fanout screen (2026-09-02)
 
 The first D-421 follow-on used short westward 0.30 mm B.Cu necks from U9.3 and

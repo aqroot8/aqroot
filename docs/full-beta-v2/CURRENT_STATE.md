@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-423 (NFC analog west-via family PARKED):** a deterministic 0.025 mm
+  enumeration finds zero legal 0.60/0.30 mm through-via sites reachable from
+  the D-422 westward U9.7 neck, before the accepted oscillator envelope is
+  excluded. C47.1/C48.1 independently expose 204/217 legal landing sites, so
+  the wall is the package-local barrel pocket rather than In3 capacity. No
+  copper/placement/rule change; board remains `37718bc7...` and production is
+  untouched. **Next:** freshly rank an independent retained net/small cluster;
+  revisit NFC_VDD_A only with a different fanout direction or local placement
+  transaction. No owner decision.
 - **Demo D-422 (NFC supply inner-fanout topology bounded):** explicit westward
   U9.3/U9.7 necks and independent via/inner-layer trees advance beyond the
   generic launch wall, but the first analog In3 corridor crosses accepted
