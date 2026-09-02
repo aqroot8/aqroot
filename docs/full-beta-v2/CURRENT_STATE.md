@@ -13,6 +13,19 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-502 (SX1262 DIO1 U2 fanout/refloor boundary qualified):** a new
+  exhaustive scratch screen tests 5,050 package-specific U2.20 B.Cu
+  perimeter/under-body doglegs with the locked 0.20 mm width/clearance and
+  ordinary 0.60/0.30 mm via. None is legal on unchanged geometry. Withdrawing
+  only the complete accepted `/08_BUTTONS_EXPANDERS/BTN_B_N` tree exposes a
+  clean witness after eight cases: U2.20 west under the body to an ordinary
+  via at `(56.0,87.75)` mm. Real refilled parity DRC adds only the expected
+  scratch dangling via relative to the withdrawn-board signature. The
+  authoritative board remains byte-identical at `04dc3e8a...`, 56 open
+  retained nets / 460 edges; production hardware is unchanged. **Next:** one
+  atomic transaction must withdraw/replay the complete BTN_B tree, reserve
+  this U2.20 fanout, complete the U2.20-to-U8.13 inner haul, and promote only
+  if both required nets and the full-board gate pass. No owner decision.
 - **Demo D-501 (CC1101 GDO0 routed and promoted):** the D-500-qualified
   U7.15 B.Cu shoulder/via was combined atomically with a U1.8 escape and an
   In3 haul.  The selected route adds 13 target-only copper objects (three

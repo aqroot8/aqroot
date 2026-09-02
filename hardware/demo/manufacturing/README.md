@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 DIO1 U2 refloor boundary qualified (2026-09-02)
+
+`screen_sx1262_dio1_u2_fanout.py` exhaustively tests 5,050 U2.20 B.Cu
+perimeter/under-body doglegs. Unchanged geometry has zero legal ordinary
+0.60/0.30 mm via fanouts at 0.20 mm width/clearance. A complete-net withdrawal
+screen identifies a minimum one-net boundary: withdrawing only the accepted
+`BTN_B_N` tree exposes a clean U2.20 path through `(56.75,88.975)` and
+`(56.75,87.75)` to a via at `(56.0,87.75)` mm after eight cases. Real refilled
+parity DRC adds only the expected scratch dangling via relative to the
+withdrawn-board signature. No partial candidate is emitted; board `04dc3e8a...`
+remains at 56 open retained nets / 460 edges. Next atomically withdraw/replay
+the complete BTN_B tree while routing the qualified DIO1 fanout and full
+U2.20-to-U8.13 haul; neither net may be promoted alone.
+
 ## CC1101 GDO0 U7 fanout qualified (2026-09-02)
 
 `screen_cc1101_gdo0_u7_fanout.py` turns the generic `U7.15 NO_VIA_SITE`

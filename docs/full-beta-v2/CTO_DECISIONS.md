@@ -4052,3 +4052,32 @@ contacts, accepted accessory-power copper, and `hardware/beta-v2/` remain
 intact.  Next freshly screen required `/SX1262_DIO1` only through a bounded
 U2.20 package-fanout/refloor transaction; its unchanged ordinary-via family
 remains parked. No owner decision is open.
+
+# D-502 · 2026-09-02 · Demo SX1262 DIO1 U2 refloor boundary qualified
+
+The required `/SX1262_DIO1` link remains open between U2.20 and U8.13. A new
+package-specific scratch screen exhaustively tests 5,050 B.Cu perimeter and
+under-body doglegs from U2.20 at the locked 0.20 mm width/clearance and
+ordinary 0.60/0.30 mm via contract. Unchanged geometry provides zero legal
+fanouts, confirming that the parked generic failure is structural rather than
+an unlucky endpoint choice.
+
+A bounded complete-net withdrawal screen finds a minimum one-net replay
+boundary. Withdrawing only `/08_BUTTONS_EXPANDERS/BTN_B_N` exposes a legal
+fanout after eight cases: U2.20 runs west to `(56.75,88.975)`, north to
+`(56.75,87.75)`, then west to an ordinary via at `(56.0,87.75)` mm. Real
+zone-refilled schematic-parity DRC on the scratch transaction adds only the
+expected dangling-via marker relative to the withdrawn-board signature. Two
+other one-net withdrawals (`ACC_5V_SW_EN` and `TOUCH_INT_N`) also expose
+geometric witnesses, but BTN_B is the smallest/least safety-coupled replay
+boundary and is therefore selected; accepted accessory-power copper remains
+outside the successor transaction.
+
+No partial route or authoritative copper is emitted. The Demo PCB remains
+byte-identical at `04dc3e8a...`, with 56 open retained nets / 460 edges;
+D-269/D-186, all three RGB replacements, XGPIO4/XGPIO5, approved Demo NC
+contacts, accepted `ACC_5V_SW_EN`, and `hardware/beta-v2/` remain intact.
+Next atomically withdraw and replay the complete BTN_B tree while reserving
+this U2.20 launch and completing the U2.20-to-U8.13 inner haul. Promotion
+requires both required nets connected and the authoritative full-board gate.
+No owner decision is open.
