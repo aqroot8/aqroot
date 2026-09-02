@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-506 (display-backlight first-witness join wall bounded):** the D-505
+  three-fanout witness now has an atomic route/gate harness. Both distinct-layer
+  assignments were tested; each exact fanout triple reserves, but U1.16-to-TP2.1
+  cannot join on either In2 or In3 through the direct, two elbow, or 77 local
+  one-spine alternatives (79 paths/layer). No fourth branch is replayed and no
+  partial copper is emitted; PCB remains byte-identical at `04dc3e8a...`, 56
+  open retained nets / 460 edges. **Next:** co-search the already-qualified
+  21/34/11 fanout sets with short-branch join feasibility, rather than assuming
+  the first coexistence witness is routable. No owner decision.
 - **Demo D-505 (display-backlight strap coherent fanouts qualified):** a new
   explicit package-pocket screen tests 252 perimeter/via shapes at each of
   U1.16, TP2.1, and R109.1. It finds 21/34/11 legal ordinary fanouts, 714/231/

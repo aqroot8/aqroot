@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Display-backlight first-witness join wall bounded (2026-09-02)
+
+`route_disp_bl_strap_tree_scratch.py` now consumes the exact D-505 coherent
+fanout witness as one atomic complete-tree transaction. The three F.Cu launches
+reserve in both cases, but U1.16-to-TP2.1 cannot join on either In2 or In3 via
+the direct path, both orthogonal elbows, or 77 local 0.25 mm one-spine lanes
+(79 paths per layer). The TP2/R109 join and qualified U1/R108 replay are never
+attempted after that failure, so no partial candidate is emitted. Board
+`04dc3e8a...` remains 56 open retained nets / 460 edges. Next co-search the
+qualified 21/34/11 fanout sets with branch-join feasibility; do not treat the
+first coexistence-only witness as a route witness.
+
 ## Display-backlight strap coherent fanouts qualified (2026-09-02)
 
 `screen_disp_bl_strap_fanouts.py` replaces the parked generic endpoint attempt

@@ -4137,3 +4137,19 @@ D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, accepted
 coherent witness to join the two short branches on distinct signal layers and
 replay the already-qualified U1.16-to-R108.1 branch as one atomic full-tree
 promotion attempt. No owner decision is open.
+
+# D-506 · 2026-09-02 · Demo display-backlight first-witness join wall bounded
+
+The D-505 successor converts its exact three-fanout witness into a reusable
+atomic complete-tree harness. All three F.Cu fanouts reserve in both distinct
+signal-layer assignments. The first required U1.16-to-TP2.1 branch nevertheless
+has no join on either In2 or In3 through the direct path, two orthogonal elbows,
+or 77 local 0.25 mm one-spine lanes: 79 deterministic paths per layer.
+
+The harness stops before TP2-to-R109 and the already-qualified U1-to-R108 replay,
+emits no partial candidate, and leaves the authoritative PCB byte-identical at
+`04dc3e8a...`, 56 open retained nets / 460 edges. D-269/D-186, RGB,
+XGPIO4/XGPIO5, Demo NC contacts, accepted `ACC_5V_SW_EN`, and
+`hardware/beta-v2/` remain intact. Next co-search the already-qualified
+21/34/11 fanout sets with both short-branch joins; fanout coexistence alone is
+not sufficient. No owner decision is open.
