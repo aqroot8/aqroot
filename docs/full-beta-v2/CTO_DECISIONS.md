@@ -9,6 +9,20 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-440 · 2026-09-02 · Demo ACC_PWR_EN reserved-site inner family bounded:**
+the exact D-439 successor reserves ordinary 0.60/0.30 mm through-via escapes
+at U16.1 and U3.20 before either endpoint claims an inner corridor. Both In2
+and In3 are screened across the first four independently ranked sites at each
+endpoint (32 atomic cases). Every case exposes both B.Cu package escapes, but
+none admits a 0.20 mm inner join inside the qualified local-haul envelope.
+Two nearest-site runs and the complete enumeration leave target connectivity
+at two open edges and retain the exact accepted 199 footprint-library / five
+hole-clearance / one solder-mask-bridge DRC signature. No copper is promoted;
+board `2830082d...`, D-269/D-186, RGB, XGPIO4/XGPIO5, approved Demo NC contacts,
+and `hardware/beta-v2/` remain unchanged. Next, screen a bounded outer-perimeter
+inner waypoint family beyond the local-haul envelope; do not replay the planar
+tree or these 32 site pairs. No owner decision.
+
 **D-439 · 2026-09-02 · Demo ACC_PWR_EN planar tree bounded:** a fresh fitted
 ledger selected the required three-land accessory-isolation enable as the
 highest-ranked short independent control cluster outside parked walls.  The

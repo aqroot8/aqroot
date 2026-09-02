@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-440 (ACC_PWR_EN reserved-site inner family bounded):** all 32
+  combinations of the first four U16.1/U3.20 ordinary-via sites on In2/In3
+  reserve both B.Cu package escapes, but none has a legal 0.20 mm inner join
+  inside the qualified local-haul envelope. No copper is promoted; target
+  connectivity remains two open edges, refilled parity DRC remains 199/5/1,
+  and board `2830082d...` plus production hardware are unchanged. **Next:**
+  screen a bounded outer-perimeter inner waypoint family; do not replay the
+  generic planar or enumerated local-inner families. No owner decision.
 - **Demo D-439 (ACC_PWR_EN planar tree bounded):** the fresh-ledger-selected
   three-land accessory-isolation control does not admit a generic 0.20 mm B.Cu
   tree. R17.1→U16.1 detours 85.344 mm and adds three accessory-rail clearance

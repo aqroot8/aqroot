@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ACC_PWR_EN reserved-site inner screen (2026-09-02)
+
+The D-439 successor reserves ordinary 0.60/0.30 mm vias from U16.1 and U3.20,
+then screens the first four independently ranked sites per endpoint on both
+In2 and In3. All 32 atomic cases expose both B.Cu package escapes, but none has
+a legal 0.20 mm inner join inside the qualified local-haul envelope. The target
+remains at two open edges; real refilled schematic-parity DRC remains 199/5/1;
+no accepted copper is removed and no candidate is promoted. Next, screen a
+bounded outer-perimeter inner waypoint family rather than replaying either
+the generic planar tree or these local site pairs.
+
 ## ACC_PWR_EN planar-tree screen (2026-09-02)
 
 `route_acc_pwr_en_tree_scratch.py` atomically screens the required R17.1,

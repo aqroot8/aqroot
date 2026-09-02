@@ -61,11 +61,54 @@ def main():
         if set(pads) != set(PADS):
             raise RuntimeError(f"unexpected fitted pads: {sorted(pads)}")
         routes = []
-        for a, b in BRANCHES:
-            routes.append(qr.connect_role(board, NET, pads[a], pads[b], "B",
-                                          200_000, 200_000, 200_000, G=25_000))
-            if not routes[-1].get("ok"):
+        attempts = []
+        for inner in ("I2", "I3"):
+            for u16_site in range(4):
+                for u3_site in range(4):
+                    mark = board.mark()
+                    a = qr.reserve_escape(
+                        board, NET, pads["U16.1"], 200_000, 200_000, 200_000,
+                        near="B", far=inner, via_dia=600_000,
+                        via_drill=300_000, target=(pads["U3.20"]["x"], pads["U3.20"]["y"]),
+                        site_index=u16_site, site_separation=300_000,
+                    )
+                    b = {"ok": False, "reason": "NOT_ATTEMPTED"}
+                    joined = {"ok": False, "reason": "NOT_ATTEMPTED"}
+                    if a.get("ok"):
+                        b = qr.reserve_escape(
+                            board, NET, pads["U3.20"], 200_000, 200_000, 200_000,
+                            near="B", far=inner, via_dia=600_000,
+                            via_drill=300_000,
+                            target=(pads["U16.1"]["x"], pads["U16.1"]["y"]),
+                            site_index=u3_site, site_separation=300_000,
+                        )
+                    if b.get("ok"):
+                        joined = qr.join_reserved(
+                            board, NET, a["via"], b["via"], 200_000,
+                            200_000, 200_000, layer=inner,
+                        )
+                    attempts.append({"inner": inner, "u16_site": u16_site,
+                                     "u3_site": u3_site, "a": a, "b": b,
+                                     "join": joined})
+                    if joined.get("ok"):
+                        routes = [dict(joined, ok=True, inner=inner,
+                                       attempt="reserved-site-enumeration",
+                                       vias=2, via_xy=a["via_xy"] + b["via_xy"],
+                                       mm=a["mm"] + b["mm"] + joined["mm"])]
+                        break
+                    board.revert(mark)
+                if routes:
+                    break
+            if routes:
                 break
+        if not routes:
+            routes = [{"ok": False, "attempt": "reserved-site-enumeration",
+                       "cases": len(attempts), "last": attempts[-1]}]
+        if routes[-1].get("ok"):
+            routes.append(qr.connect_role(
+                board, NET, pads["R17.1"], pads["U16.1"], "B",
+                200_000, 200_000, 200_000, G=25_000,
+            ))
         board.save(scratch)
         drc = work / "drc.json"
         checked = subprocess.run([
@@ -99,7 +142,13 @@ def main():
         report = {
             "schema": 1, "authoritative_board_sha256": before_sha,
             "authoritative_unchanged": sha256(BOARD) == before_sha,
-            "routes": routes, "drc_exit": checked.returncode,
+            "routes": routes, "reserved_site_cases": len(attempts),
+            "reserved_site_outcomes": dict(Counter(
+                attempt["join"].get("reason", "OK")
+                if attempt["join"].get("ok") is not True else "OK"
+                for attempt in attempts
+            )),
+            "drc_exit": checked.returncode,
             "drc_types": dict(types), "attributable_drc": attributable,
             "removed_accepted_copper_items": sum(removed.values()),
             "added_items": sum(added.values()), "wrong_net_additions": wrong,
