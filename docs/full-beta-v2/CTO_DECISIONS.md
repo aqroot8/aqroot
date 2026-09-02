@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-458 · 2026-09-02 · Demo NFC VDD_D/VDD_A local pair bounded:** the fresh
+fitted ledger selected the adjacent 10.504 mm / 10.696 mm ST25R3916 digital and
+analog decoupling trees as one coherent transaction. A reusable atomic harness
+screens all eight net-first and upper/lower branch orders and refuses partial
+promotion. Every case fails before emitting copper. U9.3 (`NFC_VDD_D`) has no
+legal 0.30 mm B.Cu escape at the qualified 0.20 mm package-land clearance;
+stable blockers are U9.4, U9.2, U9.1, and exposed pad U9.33. U9.7
+(`NFC_VDD_A`) is equivalently blocked by U9.8, U9.6, U9.33, and Y1.4. All
+scratch gates retain the accepted real refilled schematic-parity DRC signature
+of 199 footprint-library, five inherited hole-clearance, and one inherited
+solder-mask-bridge report. No accepted copper, placement, schematic, rule, or
+production hardware changes; the authoritative board remains byte-identical at
+`360b8261...`, with fitted connectivity 67 open nets / 484 edges. Park this
+planar family. Next bound a coherent U9 supply-fanout/nearby-passive placement
+transaction covering VDD_D and VDD_A; do not replay branch ordering in the
+unchanged geometry. No owner decision.
+
 **D-457 · 2026-09-02 · Demo external-I2C buffer local-tree family bounded:**
 the fresh fitted ledger selected the two Demo-required U16-side buffered I2C
 trees as a coherent four-edge local transaction.  The reusable atomic harness

@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-458 (NFC VDD_D/VDD_A local pair bounded):** all eight atomic
+  net/branch orders for the adjacent three-land `NFC_VDD_D` and `NFC_VDD_A`
+  decoupling trees fail before emitting copper. U9.3 has no legal 0.30 mm B.Cu
+  escape at the qualified 0.20 mm package-land clearance (blocked by U9.4,
+  U9.2, U9.1, and U9.33); U9.7 is equivalently blocked by U9.8, U9.6, U9.33,
+  and Y1.4. The authoritative board remains `360b8261...`, fitted connectivity
+  remains 67/484, and all scratch gates retain real refilled parity DRC 199/5/1.
+  **Next:** bound one coherent U9 supply-fanout/nearby-passive placement
+  transaction covering VDD_D and VDD_A; do not replay planar branch order.
+  No owner decision.
 - **Demo D-457 (external-I2C buffer local trees bounded):** both orders of the
   coherent `EXT_SDA_BUF`/`EXT_SCL_BUF` four-edge transaction were screened.
   The local U16-to-pull-up B.Cu branches route, but the mixed-face series legs
