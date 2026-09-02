@@ -268,6 +268,32 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "SX1262_CS_MCU_PULLUP": {
+        "net": "/SX1262_CS_N",
+        "pads": ("U1.10", "R27.2"),
+        "ignored_connected_pads": ("U8.19",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+    },
+    "SX1262_CS_MCU_RADIO_DIRECT": {
+        "net": "/SX1262_CS_N",
+        "pads": ("U1.10", "U8.19"),
+        "ignored_connected_pads": ("R27.2",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "U1.10", "b": "U8.19", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "SX1262_CS_MCU_RADIO": {
+        "net": "/SX1262_CS_N",
+        "pads": ("R27.2", "U8.19"),
+        "ignored_connected_pads": ("U1.10",),
+        "layer": "F", "width": 200_000, "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R27.2", "b": "U8.19", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
     "BOOT_MCU_PULLUP": {
         "net": "/02_MCU_CORE/BOOT_N",
         "pads": ("U1.27", "R2.2"),

@@ -3620,3 +3620,22 @@ replacement nets, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
 power copper, and `hardware/beta-v2/` remain intact. Park this unchanged
 long-haul family; next freshly rank an independent retained control/status tree.
 No owner decision is open.
+
+# D-480 · 2026-09-02 · Demo SX1262 chip-select tree family bounded
+
+The retained `/SX1262_CS_N` tree now has reusable exact contracts and an atomic
+two-order harness for fitted U1.10, R27.2, and U8.19. The direct U1-hub topology
+fails its shared precondition because U1.10 has no reachable ordinary 0.60/0.30
+mm through-via site. The bounded alternate makes R27.2 the hub: its local
+U1.10-to-R27.2 branch has no legal 0.20 mm F.Cu corridor at either 0.05 or
+0.025 mm search grid, while the independent R27.2-to-U8.19 inner-haul branch
+cannot reserve an ordinary via at R27.2. Thus neither branch order can begin a
+complete tree and zero scratch copper is emitted. Independent real refilled
+schematic-parity KiCad DRC remains exactly 199 footprint-library / five
+hole-clearance / one solder-mask-bridge reports; the authoritative board
+`f4411e57...` remains byte-identical at 58 open retained nets / 463 edges.
+D-269/D-186, all RGB replacement nets, XGPIO4/XGPIO5, approved Demo NC contacts,
+accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Park
+this unchanged package/pull-up family; next freshly screen the independent
+retained I2S clock/data cluster, prioritizing `/I2S_BCLK` and `/I2S_LRCLK` as a
+coherent clock pair. No owner decision is open.

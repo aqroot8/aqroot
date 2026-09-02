@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-480 (SX1262 chip-select tree family bounded):** exact atomic
+  contracts now cover fitted U1.10/R27.2/U8.19, both hub choices, and both
+  branch orders. The direct U1-hub topology cannot reserve an ordinary via at
+  U1.10. The alternate
+  pull-up hub cannot route the U1.10-to-R27.2 0.20 mm F.Cu leg at either fine
+  grid, and R27.2 cannot reserve an ordinary via for the radio haul. Both
+  orders emit zero copper; board `f4411e57...` remains at 58 open retained nets
+  / 463 edges with real refilled parity DRC 199/5/1. **Next:** park this
+  unchanged family and freshly screen the retained I2S clock/data cluster,
+  prioritizing `/I2S_BCLK` and `/I2S_LRCLK` as a coherent pair. No owner decision.
 - **Demo D-479 (TCA4307 READY staged family bounded):** the reusable atomic
   harness now reserves both READY endpoints once and screens 612 explicit
   two-spine Manhattan corridors. On In2 both ordinary 0.60/0.30 mm endpoint

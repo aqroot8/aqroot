@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## SX1262 chip-select tree family bounded (2026-09-02)
+
+The retained `/SX1262_CS_N` tree now has exact reusable contracts for fitted
+U1.10, R27.2, and U8.19. The bounded screening covers both branch orders and
+two hub choices. U1 as hub is impossible because U1.10 has no reachable ordinary
+0.60/0.30 mm via site. Using the pull-up as hub also fails independently:
+U1.10-to-R27.2 has no legal 0.20 mm F.Cu corridor at either 0.05 or 0.025 mm
+search grid, and R27.2 has no reachable ordinary via site for the radio haul.
+Both orders emit zero copper and preserve real refilled schematic-parity DRC at
+199 footprint-library / five hole-clearance / one solder-mask-bridge reports.
+Board `f4411e57...` remains at 58 open retained nets / 463 edges. Park this
+unchanged family; next freshly screen the independent retained I2S clock/data
+cluster, beginning with the one-edge `/I2S_SPK_DOUT` successor topology only if
+new endpoint geometry is available, otherwise `/I2S_BCLK` and `/I2S_LRCLK` as
+one coherent clock pair.
+
 ## TCA4307 READY staged family bounded (2026-09-02)
 
 `route_tca4307_ready_tree_scratch.py` reserves both READY endpoints once and
