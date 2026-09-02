@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-441 (ACC_PWR_EN east-perimeter inner family bounded):** the recovered
+  successor now uses exact fixed-segment legality instead of a generic search
+  timeout.  All 160 combinations of five east X waypoints, In2/In3, and four
+  U16.1/U3.20 reserved-via sites reserve both package escapes but fail the first
+  orthogonal inner leg.  No join copper is emitted; target connectivity remains
+  two open edges, refilled parity DRC remains 199/5/1, and board `2830082d...`
+  plus production hardware are unchanged.  This unchanged orthogonal family is
+  parked. **Next:** freshly rank an independent retained net or coherent local
+  cluster, excluding all parked families. No owner decision.
 - **Demo D-440 (ACC_PWR_EN reserved-site inner family bounded):** all 32
   combinations of the first four U16.1/U3.20 ordinary-via sites on In2/In3
   reserve both B.Cu package escapes, but none has a legal 0.20 mm inner join

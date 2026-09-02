@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-441 · 2026-09-02 · Demo ACC_PWR_EN east-perimeter inner family bounded:**
+the recovered D-440 successor first exposed an invalid characterization tactic:
+all 160 cases exhausted a 0.5 s generic grid-search budget before deciding the
+first fixed waypoint leg.  Replacing that search with exact segment/obstacle
+geometry makes the same finite family deterministic.  Across five east-side X
+coordinates (64--68 mm), both In2/In3, and the first four independently ranked
+via sites at U16.1 and U3.20, all 160 cases reserve both B.Cu escapes but the
+first orthogonal inner leg is blocked.  No case emits join copper.  The board
+remains byte-identical at `2830082d...`, target connectivity remains two open
+edges, and real refilled schematic-parity DRC remains exactly 199 footprint-
+library / five hole-clearance / one solder-mask-bridge reports.  No copper is
+promoted; D-269/D-186, all RGB replacement routes, XGPIO4/XGPIO5, approved Demo
+NC contacts, and `hardware/beta-v2/` remain unchanged.  Park this materially
+unchanged ACC_PWR_EN via-to-east orthogonal family and freshly rank an
+independent retained net or coherent local cluster.  No owner decision.
+
 **D-440 · 2026-09-02 · Demo ACC_PWR_EN reserved-site inner family bounded:**
 the exact D-439 successor reserves ordinary 0.60/0.30 mm through-via escapes
 at U16.1 and U3.20 before either endpoint claims an inner corridor. Both In2

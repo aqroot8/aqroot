@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,8 @@ LEDGER = Path(__file__).with_name("routing_ledger.py")
 NET = "/ACC_PWR_EN"
 PADS = ("R17.1", "U16.1", "U3.20")
 BRANCHES = (("R17.1", "U16.1"), ("U16.1", "U3.20"))
+EAST_INNER_WAYPOINT_X = (64_000_000, 65_000_000, 66_000_000,
+                         67_000_000, 68_000_000)
 ACCEPTED = {"lib_footprint_issues", "hole_clearance", "solder_mask_bridge"}
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 import incremental_router as ir  # noqa: E402
@@ -43,6 +46,46 @@ def copper(board):
     return result
 
 
+def emit_clear_segment(board, layer, a, b, width=200_000,
+                       clr_pad=200_000, clr_trk=200_000):
+    """Emit one fixed corridor leg only when exact obstacle geometry permits."""
+    blockers = []
+    for shape in board.obstacles(layer, NET):
+        margin = board.margin(shape, width, clr_pad, clr_trk)
+        if qr.seg_shape_dist(a[0], a[1], b[0], b[1], shape) < margin:
+            blockers.append(shape.tag)
+    edge = qr.EDGE_CLR + width / 2
+    if not (board.ex0 + edge <= min(a[0], b[0]) and
+            max(a[0], b[0]) <= board.ex1 - edge and
+            board.ey0 + edge <= min(a[1], b[1]) and
+            max(a[1], b[1]) <= board.ey1 - edge):
+        blockers.append("board_edge")
+    if blockers:
+        return {"ok": False, "reason": "BLOCKED_FIXED_LEG",
+                "blockers": sorted(set(blockers))[:8]}
+    board.track(NET, layer, a[0], a[1], b[0], b[1], width)
+    return {"ok": True, "reason": "OK",
+            "mm": math.hypot(b[0] - a[0], b[1] - a[1]) / 1e6}
+
+
+def join_via_waypoints(board, va, vb, layer, x):
+    """Join reserved barrels through a fixed east-side inner-layer corridor."""
+    points = (va, (x, va[1]), (x, vb[1]), vb)
+    legs = []
+    for left, right in zip(points, points[1:]):
+        leg = emit_clear_segment(board, layer, left, right)
+        legs.append(leg)
+        if not leg["ok"]:
+            break
+    return {
+        "ok": len(legs) == 3 and all(leg.get("ok") for leg in legs),
+        "reason": "OK" if len(legs) == 3 and all(leg.get("ok") for leg in legs)
+        else legs[-1].get("reason", "NO_PATH"),
+        "waypoint_x_mm": x / 1e6, "legs": legs,
+        "mm": sum(leg.get("mm", 0) for leg in legs),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate", type=Path)
@@ -63,7 +106,8 @@ def main():
         routes = []
         attempts = []
         for inner in ("I2", "I3"):
-            for u16_site in range(4):
+            for waypoint_x in EAST_INNER_WAYPOINT_X:
+              for u16_site in range(4):
                 for u3_site in range(4):
                     mark = board.mark()
                     a = qr.reserve_escape(
@@ -83,12 +127,12 @@ def main():
                             site_index=u3_site, site_separation=300_000,
                         )
                     if b.get("ok"):
-                        joined = qr.join_reserved(
-                            board, NET, a["via"], b["via"], 200_000,
-                            200_000, 200_000, layer=inner,
-                        )
+                        joined = join_via_waypoints(
+                            board, a["via"], b["via"], inner, waypoint_x)
                     attempts.append({"inner": inner, "u16_site": u16_site,
-                                     "u3_site": u3_site, "a": a, "b": b,
+                                     "u3_site": u3_site,
+                                     "waypoint_x_mm": waypoint_x / 1e6,
+                                     "a": a, "b": b,
                                      "join": joined})
                     if joined.get("ok"):
                         routes = [dict(joined, ok=True, inner=inner,
@@ -99,10 +143,13 @@ def main():
                     board.revert(mark)
                 if routes:
                     break
+              if routes:
+                break
             if routes:
                 break
         if not routes:
             routes = [{"ok": False, "attempt": "reserved-site-enumeration",
+                       "waypoint_x_mm": [x / 1e6 for x in EAST_INNER_WAYPOINT_X],
                        "cases": len(attempts), "last": attempts[-1]}]
         if routes[-1].get("ok"):
             routes.append(qr.connect_role(

@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## ACC_PWR_EN east-perimeter inner screen (2026-09-02)
+
+The recovered D-440 successor bounds five explicit east-side inner waypoints
+from X=64 through 68 mm across both signal inner layers and the first four
+reserved via sites at each endpoint.  An initial generic grid-search version
+timed out in all 160 cases and was rejected as inconclusive.  The retained
+harness instead checks each fixed orthogonal segment directly against exact
+router obstacle geometry before emitting it.
+
+All 160 deterministic cases reserve ordinary 0.60/0.30 mm U16.1 and U3.20 B.Cu
+escapes, but the first inner leg is blocked in every case.  No join copper is
+emitted or promoted.  The authoritative board remains `2830082d...`, target
+connectivity remains two open edges, and real refilled schematic-parity DRC
+remains 199/5/1.  Park this materially unchanged via-to-east orthogonal family;
+freshly rank an independent retained net or coherent local cluster next.
+
 ## ACC_PWR_EN reserved-site inner screen (2026-09-02)
 
 The D-439 successor reserves ordinary 0.60/0.30 mm vias from U16.1 and U3.20,
