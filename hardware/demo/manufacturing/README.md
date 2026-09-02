@@ -195,13 +195,31 @@ clean rerun returns the same reservations, joins, lengths, and DRC signature.
 The authoritative board remains byte-identical at
 `b74cd3c059c50bc4edeb7ba17b6b20a2067abe19ae31e159bc6d5c517f757b24`.
 
-Next, replay this closed replacement in scratch and route all six fitted
-`ACC_5V_RAW` pads with the required 0.40 mm minimum track, 0.25 mm routed
-clearance, and compliant 0.90/0.40 mm power vias. Run fitted-pad connectivity,
-retained-ledger preservation, and the authoritative refilled full-board DRC
-gate. Preserve U21, U22, L4, C65/C66, every connector, and accepted
-`ACC_5V_SW_EN`/`XGPIO4`/`XGPIO5` copper. Promote only the complete fault-branch
-plus six-pad power transaction; neither half is independently promotable.
-Manufacturing export resumes only after all retained connections are closed;
-population-flag synchronization and MPN coverage remain subsequent release
-blockers.
+The atomic power transaction screen on 2026-09-02 advances the wall to the
+package-neck contract. `route_acc_power_transaction_scratch.py` replays the
+complete legal fault replacement, joins U21.6 locally to C65.1, and reserves
+compliant 0.90/0.40 mm power vias at C65.1, R99.1, C66.1, TP28.1, and U22.2.
+Four inner-layer joins close the tree, so all six fitted `ACC_5V_RAW` pads have
+a complete scratch topology. In particular, U22.2 is no longer boxed after the
+fault refloor; its legal power via lands at (52.600, 43.000) mm.
+
+Real refilled KiCad DRC proves that the remaining failure is intrinsic to the
+U21 package launch. A 0.40 mm trace leaving U21.6 has only 0.125 mm clearance
+to adjacent switch-node pad U21.5, below the 0.200 mm requirement. A short
+0.25 mm by 0.45 mm B.Cu package neck removes that direct conflict, but the
+blanket `ACC_5V minimum width` rule rejects the neck; widening after 0.45 mm is
+still 0.1709 mm from U21.5. Thus neither moving optional obstacles nor another
+inner-layer permutation can satisfy the present simultaneous 0.40 mm minimum
+width and 0.20 mm clearance at this fixed 0.15 mm pad-to-pad package geometry.
+The authoritative board remains unchanged at `b74cd3c0...`, with 572 retained
+open edges / 601 raw ratsnest.
+
+Next, characterize the shortest DRC-clean U21.6 package neck (start with 0.25 mm
+width and move the 0.40 mm widening point beyond 0.45 mm), then encode only that
+necessary pad-local exception in the existing U21 local rule. Re-run the atomic
+fault-plus-power transaction, fitted-pad connectivity, retained-ledger
+preservation, and authoritative refilled full-board DRC gate. Promote only if
+the exception is geometrically bounded to the U21.6 package escape and the
+remainder of `ACC_5V_RAW` stays at least 0.40 mm with 0.25 mm routed clearance.
+Manufacturing export resumes after retained routing closes; population-flag
+synchronization and MPN coverage remain later release blockers.
