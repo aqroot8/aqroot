@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-398 · 2026-09-02 · routed Demo increment:** the coordinated local USB ESD
+pair now connects `U10.6` to `R33.1` and `U10.4` to `R34.1` with 21 add-only
+0.23 mm F.Cu segments and zero vias.  The bounded endpoint fanouts feed a
+fixed-gap shared corridor; the final lengths are 13.513695 mm N and 11.878490
+mm P (1.635205 mm skew), within the accepted Full-Speed USB no-length-matching
+contract.  Two clean scratch runs produce byte-identical deterministic evidence
+(`53cfb700...`).  The authoritative refill/full-board KiCad gate retains only
+the accepted 199 footprint-library, five inherited hole-clearance and one
+inherited solder-mask-bridge reports, with no pair-gap, uncoupled-length,
+width, clearance, short, crossing, dangling or parity violation.  The fitted
+ledger moves 543 -> 541 open edges and 572 -> 570 raw ratsnest.  No accepted
+copper was removed and `hardware/beta-v2/` is untouched.  Board hash
+`103a102c...`.  Next, route the remaining `USB_D_MCU_N/P` pair as one
+coordinated F.Cu/zero-via transaction; do not route a single leg independently.
+`BQ25185_SYS` remains parked and no owner decision is open.
+
 **D-397 · 2026-09-02 · Demo USB-pair characterization:** the bounded
 `USB_D_ESD_N/P` independent-leg screen closes both local ESD-to-series-resistor
 connections on F.Cu at the required 0.23 mm width with zero vias, but real

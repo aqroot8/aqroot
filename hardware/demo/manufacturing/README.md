@@ -539,3 +539,25 @@ Next, implement a coordinated paired-path primitive for these two local legs:
 uncoupled-length and skew review. Do not retry the disproven independent-leg
 tactic. Keep `BQ25185_SYS` parked. Manufacturing export remains premature while
 100 retained multi-pad nets are open; no owner decision is open.
+
+The coordinated follow-up promotes both local USB ESD legs together.  It keeps
+the 0.23 mm traces entirely on F.Cu with zero vias, normalizes the shared
+corridor inside the 0.18--0.24 mm pair-gap contract, and leaves only the
+placement-required endpoint splays uncoupled.  Final lengths are 13.513695 mm N
+and 11.878490 mm P; the 1.635205 mm skew is below the already accepted 2.4 mm
+intrinsic placement skew and the design intentionally requires no Full-Speed
+USB length matching.  Clean replays have identical deterministic evidence.
+
+The authoritative zone-refilled full-board KiCad gate reports exactly the
+accepted 199 footprint-library, five inherited hole-clearance and one inherited
+solder-mask-bridge issues and no attributable class.  Both nets are single
+copper islands; retained open edges fall 543 to 541 and raw ratsnest 572 to
+570.  The board delta is exactly 21 add-only F.Cu segments on the pair, with no
+accepted copper, placement, via, net assignment, rule, or `hardware/beta-v2/`
+change.  Board hash: `103a102c4ecf3bce0f5dca28f6266dd986e094f4256d8c3c8d7d650032ce369c`.
+
+Next, route `/USB_D_MCU_N` and `/USB_D_MCU_P` as one coordinated F.Cu,
+zero-via transaction and review the whole connector-to-MCU USB pair.  Do not
+promote an independently routed leg.  `BQ25185_SYS` remains parked;
+manufacturing export remains premature while 98 retained multi-pad nets are
+open, and no owner decision is open.
