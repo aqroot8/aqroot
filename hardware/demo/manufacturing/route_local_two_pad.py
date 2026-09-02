@@ -176,6 +176,25 @@ ROUTES = {
             "inner": ["I2", "I3"],
         },
     },
+    "LED_K_DISPLAY_DRIVER": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+        "pads": ("J1.2", "U17.3"),
+        "ignored_connected_pads": ("J1.3", "R69.1"),
+        # The generic inner-haul planner is intentionally limited to 0.20 mm
+        # signals.  This scratch-only search width is widened to the 0.30 mm
+        # backlight-current contract before the authoritative DRC gate.
+        "layer": "F", "width": 200_000, "clearance": 300_000,
+        "inner_long_haul_plan": {
+            "a": "J1.2", "b": "U17.3", "a_near": "F", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
+    },
+    "LED_K_DRIVER_SENSE": {
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+        "pads": ("U17.3", "R69.1"),
+        "ignored_connected_pads": ("J1.2", "J1.3"),
+        "layer": "B", "width": 300_000, "clearance": 300_000,
+    },
     "EXT_SDA_BUF_PULLUP": {
         "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
         "pads": ("U16.7", "R49.2"),

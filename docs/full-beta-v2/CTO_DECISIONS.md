@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-467 · 2026-09-02 · Demo LED_K current-width inner-haul family bounded:**
+the four fitted backlight-return lands are J1.2, J1.3, U17.3, and R69.1, with
+the connector on F.Cu and driver/sense lands on B.Cu. A reusable atomic harness
+now gates the long display-to-driver leg, local driver-to-sense leg, and the
+duplicated J1 lands at the required final 0.30 mm width. The ordinary
+low-speed inner-haul framework correctly refuses this current-width net. A
+scratch-only 0.20 mm search widened to 0.30 mm closes all three open edges with
+20 add-only objects, but real refilled schematic-parity DRC rejects it at three
+0.30 mm `LED_BOOST` clearance points (J1 escape 0.2718 mm, IR_GATE crossing
+0.2127 mm, DISP_DC crossing 0.2571 mm). Searching with the true 0.30 mm
+clearance returns `NO_LEGAL_ESCAPE` at J1.2. No partial copper is promoted;
+board `65bf079a...`, fitted connectivity 63 open nets / 475 edges, D-269,
+D-186, RGB, XGPIO4/XGPIO5, Demo NC contacts, and production hardware remain
+unchanged. Next, reserve an explicit 0.30 mm-clear J1.2 F.Cu escape/via and
+screen a perimeter inner-layer corridor before attaching the B.Cu U17/R69
+branch atomically. No owner decision is open.
+
 **D-466 · 2026-09-02 · Demo BOOT recovery tree routed and promoted:** all four
 fitted `/02_MCU_CORE/BOOT_N` lands (U1.27, R2.2, and both physical SW1.1
 terminals) now form one copper island. The atomic transaction adds sixteen

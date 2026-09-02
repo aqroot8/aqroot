@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## LED_K current-width wall (2026-09-02)
+
+`route_led_k_tree_scratch.py` atomically screens J1.2/J1.3, U17.3, and R69.1.
+The ordinary inner-haul framework correctly refuses the 0.30 mm current net.
+A scratch 0.20 mm search widened to the required 0.30 mm final copper closes
+the tree but fails three real `LED_BOOST` 0.30 mm-clearance checks; searching
+at true clearance instead returns `NO_LEGAL_ESCAPE` at J1.2. No copper was
+promoted. Next, reserve an explicit J1.2 F.Cu escape/via and screen a perimeter
+inner-layer corridor before attaching the local B.Cu U17/R69 branch.
+
 ## BOOT recovery tree (2026-09-02)
 
 `route_boot_tree_scratch.py` atomically gates both orders of the fitted U1.27,

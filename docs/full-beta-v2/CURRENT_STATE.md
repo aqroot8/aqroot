@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-467 (LED_K current-width wall bounded):** the atomic four-land
+  harness proves the ordinary inner-haul family is not promotable at the
+  required 0.30 mm width/clearance. A widened complete scratch tree fails three
+  real `LED_BOOST` clearances; true-clearance search stops at `J1.2` with
+  `NO_LEGAL_ESCAPE`. No copper was promoted and board `65bf079a...` remains at
+  63 open retained nets / 475 edges. **Next:** reserve a 0.30 mm-clear J1.2
+  escape/via and screen a perimeter inner-layer corridor, then attach U17/R69
+  atomically. No owner decision.
 - **Demo D-466 (BOOT recovery tree promoted):** U1.27, R2.2, and both physical
   SW1.1 lands now form one island through sixteen add-only 0.20 mm tracks
   (63.283285 mm) and five ordinary vias. The duplicated switch lands are joined
