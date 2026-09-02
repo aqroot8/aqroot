@@ -1620,3 +1620,16 @@ the 9.915176 mm U1-to-C1 leg uses In3 and the 36.042111 mm C1-to-R1 leg uses
 In2. Both orders produce the same clean connectivity and 199/5/1 refilled
 parity-DRC result. Do not restore the rejected D-321 same-face reset detour.
 Next, freshly screen the independent three-land `CC1101_CS_N` control tree.
+
+## ACC_5V feedback inner-tree wall (2026-09-02)
+
+`route_acc_5v_fb_tree_scratch.py` atomically screens both branch orders and
+both In2/In3 assignments for U21.1, R99.2, and R100.1. It preserves the
+0.20 mm feedback width, 0.25 mm routed clearance, and ordinary 0.60/0.30 mm
+via contract, and accepts only a complete tree with real refilled parity DRC.
+R99.2 has no reachable via site in all four cases. R100.1 can be reached only
+when assigned to In3, but that partial branch is rejected because R99 remains
+open and the scratch board has two attributable clearances. No candidate is
+written and the authoritative PCB is unchanged. Park this inner-only family;
+the next ACC_5V_FB attempt belongs inside the existing U21/L4/R99 power-core
+refloor transaction.

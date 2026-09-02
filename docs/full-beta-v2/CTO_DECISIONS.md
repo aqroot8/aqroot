@@ -3440,3 +3440,23 @@ and emit no copper. D-269, D-186, all three RGB replacements, XGPIO4/XGPIO5,
 approved Demo NCs, and `hardware/beta-v2/` remain intact. Next, bound an
 explicit package-fanout transaction for U9.27 and U2.20 before retrying either
 haul. No owner decision is open.
+
+# D-469 · 2026-09-02 · Demo ACC_5V_FB inner-tree family bounded
+
+The retained TPS61023 accessory-boost feedback tree remains open between
+U21.1, R99.2, and R100.1. A new atomic scratch harness screens both branch
+orders and both assignments of the branches to In2/In3 using 0.20 mm copper,
+0.25 mm routed clearance, and ordinary 0.60/0.30 mm through vias. R99.2 has no
+reachable legal via site in all four cases. The one R100-first/In3 branch that
+routes is still non-promotable: R99 remains isolated and real refilled KiCad
+DRC reports two attributable clearances. All other cases emit zero copper.
+
+The authoritative board remains byte-identical at `65bf079a...`, fitted
+connectivity remains 63 open nets / 475 edges, and independent real refilled
+schematic-parity DRC remains the accepted 199 footprint-library / 5
+hole-clearance / 1 solder-mask-bridge signature. D-269, D-186, all three RGB
+replacements, XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-power
+copper, and `hardware/beta-v2/` remain intact. Park this unchanged inner-tree
+family. Revisit it only as part of the existing U21/L4/R99 power-core refloor
+transaction; next freshly rank an independent retained control tree. No owner
+decision is open.

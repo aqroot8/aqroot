@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-469 (ACC_5V_FB inner-tree family bounded):** the coherent retained
+  U21.1/R99.2/R100.1 feedback tree was screened in both branch orders and both
+  In2/In3 assignments at 0.20 mm width and 0.25 mm routed clearance. R99.2 has
+  no reachable ordinary 0.60/0.30 mm via site in every case. The only legal
+  R100-first branch reaches R100.1 on In3, but is rejected both because the
+  R99 branch remains impossible and because it creates two real clearance
+  reports. No copper was emitted or promoted; board `65bf079a...` remains at
+  63 open retained nets / 475 edges and real parity DRC 199/5/1. **Next:**
+  freshly rank an independent retained control tree; revisit ACC_5V_FB only
+  through the already-defined U21/L4/R99 power-core refloor transaction. No
+  owner decision.
 - **Demo D-468 (LED_K connector breakout wall bounded):** qualified 0.30 mm
   width/clearance enumeration finds zero ordinary 0.60/0.30 mm via sites from
   either same-net FPC land J1.2/J1.3 to In2 or In3. The 576 perimeter families
