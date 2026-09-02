@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-461 · 2026-09-02 · Demo fixed U9 east-refloor transaction rejected at preflight:**
+the D-460 successor tested the requested RFO1-before-RFO2 and VDD_D-lower-
+before-upper orders, but found a stronger order-independent failure.  Immediately
+after the exact eight-segment withdrawal and 0.5 mm east move, before any replay,
+real schematic-parity KiCad DRC reports a new U9/C17 courtyard overlap, five
+shorting reports and one 0.1229/0.2000 mm clearance failure where retained NFC
+copper intersects the shifted package.  RFO1-first independently returns
+`NO_LEGAL_ESCAPE`; VDD_D-lower-first returns `NO_PATH`.  The atomic harness now
+runs this post-move preflight and refuses all branch routing when the placement
+transaction is already illegal.  Four clean macro-order checks stop at the same
+precondition; the authoritative board remains byte-identical at `360b8261...`,
+67 open retained nets / 484 edges, with D-269/D-186, RGB, XGPIO4/XGPIO5, Demo
+NCs, and `hardware/beta-v2/` intact.  Park the fixed east-only pose.  Next freshly
+rank an independent retained net; revisit U9 only through a broader bounded
+U9/C17/passive refloor that withdraws and replays every impacted local branch.
+No owner decision.
+
 **D-460 · 2026-09-02 · Demo U9 atomic refloor replay framework bounded:**
 `route_nfc_u9_supply_refloor_scratch.py` now performs the D-459 transaction in
 scratch: it withdraws exactly the eight accepted U9-attached segments, moves U9

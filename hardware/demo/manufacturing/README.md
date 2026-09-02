@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC U9 refloor preflight rejection (2026-09-02)
+
+The atomic U9 harness now runs real schematic-parity DRC immediately after its
+eight-segment withdrawal and fixed 0.5 mm-east move. That preflight rejects the
+pose before routing: U9 overlaps C17's courtyard and shifted pads intersect
+retained NFC copper (five shorts and one clearance failure). The requested
+RFO1-first and VDD_D-lower-first screens also fail independently. All four
+registered macro orders stop at the same precondition, so the fixed pose is
+parked and cannot emit a candidate. The authoritative board remains
+`360b8261...` at 67 open retained nets / 484 edges. Freshly rank an independent
+retained net; revisit U9 only as a broader bounded U9/C17/passive refloor with a
+complete impacted-copper replay boundary.
+
 ## NFC U9 atomic supply-refloor replay screen (2026-09-02)
 
 `route_nfc_u9_supply_refloor_scratch.py` implements the fixed +0.5 mm-east U9

@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-461 (fixed U9 east-refloor parked):** the new post-move/pre-route
+  parity-DRC gate proves the +0.5 mm-east pose is illegal before branch ordering:
+  U9 overlaps C17's courtyard and shifted pads intersect retained NFC copper
+  (five shorts plus one 0.1229/0.2000 mm clearance failure). RFO1-first also has
+  `NO_LEGAL_ESCAPE`; VDD_D-lower-first has `NO_PATH`. Four macro orders now stop
+  at preflight, preventing partial or misleading candidates. Board `360b8261...`
+  and 67/484 connectivity remain authoritative. **Next:** freshly rank an
+  independent retained net; U9 requires a broader U9/C17/passive transaction,
+  not another order replay at the fixed pose. No owner decision.
 - **Demo D-460 (U9 atomic refloor/replay framework bounded):** the complete
   scratch transaction withdraws exactly eight accepted U9-attached segments,
   moves U9 0.5 mm east, scopes all additions to the eight affected/new NFC nets,

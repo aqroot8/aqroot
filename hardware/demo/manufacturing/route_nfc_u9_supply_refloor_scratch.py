@@ -45,6 +45,27 @@ ORDERS = {
         "NFC_AGDC_UPPER", "NFC_AGDC_LOWER",
         "NFC_RFO2", "NFC_RFO1", "NFC_XOUT_CRYSTAL", "NFC_XIN_CRYSTAL",
     ),
+    "signals-rfo1-first": (
+        "NFC_XOUT_CRYSTAL", "NFC_XIN_CRYSTAL", "NFC_RFO1", "NFC_RFO2",
+        "NFC_AGDC_UPPER", "NFC_AGDC_LOWER",
+        "NFC_VDD_AM_UPPER", "NFC_VDD_AM_LOWER",
+        "NFC_VDD_D_UPPER", "NFC_VDD_D_LOWER",
+        "NFC_VDD_A_UPPER", "NFC_VDD_A_LOWER",
+    ),
+    "supplies-lower-first": (
+        "NFC_VDD_D_LOWER", "NFC_VDD_D_UPPER",
+        "NFC_VDD_A_LOWER", "NFC_VDD_A_UPPER",
+        "NFC_VDD_AM_LOWER", "NFC_VDD_AM_UPPER",
+        "NFC_AGDC_LOWER", "NFC_AGDC_UPPER",
+        "NFC_RFO1", "NFC_RFO2", "NFC_XOUT_CRYSTAL", "NFC_XIN_CRYSTAL",
+    ),
+    "signals-rfo1-lower-first": (
+        "NFC_XOUT_CRYSTAL", "NFC_XIN_CRYSTAL", "NFC_RFO1", "NFC_RFO2",
+        "NFC_AGDC_LOWER", "NFC_AGDC_UPPER",
+        "NFC_VDD_AM_LOWER", "NFC_VDD_AM_UPPER",
+        "NFC_VDD_D_LOWER", "NFC_VDD_D_UPPER",
+        "NFC_VDD_A_LOWER", "NFC_VDD_A_UPPER",
+    ),
 }
 
 
@@ -95,6 +116,17 @@ def move_and_withdraw(path):
     return {"old": old, "withdrawn": removed}
 
 
+def drc(path, output, save=False):
+    command = ["kicad-cli", "pcb", "drc"]
+    if save:
+        command += ["--refill-zones", "--save-board"]
+    command += ["--format", "json", "--units", "mm", "--severity-all",
+                "--schematic-parity", "-o", str(output), str(path)]
+    subprocess.run(command, text=True, capture_output=True)
+    violations = json.loads(output.read_text()).get("violations", [])
+    return violations, [v for v in violations if v.get("type") not in ACCEPTED_DRC]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--order", choices=sorted(ORDERS), default="signals-first")
@@ -111,8 +143,11 @@ def main():
                                   text=True, capture_output=True, check=True)
         prepared = json.loads(prepared.stdout.splitlines()[0])
         old, withdrawn = prepared["old"], prepared["withdrawn"]
+        preflight_path = Path(td) / "preflight-drc.json"
+        preflight_violations, preflight_attributable = drc(
+            scratch, preflight_path, save=False)
         routes = []
-        for name in ORDERS[args.order]:
+        for name in (() if preflight_attributable else ORDERS[args.order]):
             run = subprocess.run([sys.executable, str(LOCAL), name, "--route", str(scratch)],
                                  text=True, capture_output=True)
             if run.returncode not in (0, 2) or not run.stdout.strip():
@@ -129,13 +164,8 @@ def main():
         removed = baseline - after
         added = after - baseline
         drc_path = Path(td) / "drc.json"
-        subprocess.run(["kicad-cli", "pcb", "drc", "--refill-zones", "--save-board",
-                        "--format", "json", "--units", "mm", "--severity-all",
-                        "--schematic-parity", "-o", str(drc_path), str(scratch)],
-                       text=True, capture_output=True)
-        violations = json.loads(drc_path.read_text()).get("violations", [])
+        violations, attributable = drc(scratch, drc_path, save=True)
         types = Counter(v.get("type", "unknown") for v in violations)
-        attributable = [v for v in violations if v.get("type") not in ACCEPTED_DRC]
         ledger_path = Path(td) / "ledger.json"
         subprocess.run([sys.executable, str(LEDGER), "--board", str(scratch),
                         str(ledger_path)], check=True, stdout=subprocess.DEVNULL)
@@ -143,7 +173,7 @@ def main():
         targets = {r["net"]: r["open_edges"] for r in ledger["nets"] if r["net"] in ALL_NETS}
         outside_removed = [list(k) for k in removed if k[0] not in REPLAY_NETS]
         wrong_added = [list(k) for k in added if k[0] not in ALL_NETS]
-        route_ok = len(routes) == len(ORDERS[args.order]) and all(
+        route_ok = not preflight_attributable and len(routes) == len(ORDERS[args.order]) and all(
             r.get("result", {}).get("ok") for r in routes)
         ok = (route_ok and targets == {n: 0 for n in ALL_NETS} and not attributable
               and not outside_removed and not wrong_added
@@ -158,6 +188,9 @@ def main():
             "schema": 1, "authoritative_board_sha256": before_hash,
             "authoritative_unchanged": sha256(BOARD) == before_hash,
             "order": args.order, "u9_delta_mm": [0.5, 0.0],
+            "preflight_drc_types": dict(Counter(
+                v.get("type", "unknown") for v in preflight_violations)),
+            "preflight_attributable_drc": preflight_attributable,
             "withdrawn_pad_attached_items": len(withdrawn),
             "withdrawn_by_net": dict(Counter(x[0] for x in withdrawn)),
             "routes": routes, "target_open_edges": targets,
