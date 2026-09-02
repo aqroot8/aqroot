@@ -108,6 +108,20 @@ ROUTES = {
         "width": 300_000,
         "clearance": 200_000,
     },
+    "NFC_RFO1": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "pads": ("U9.13", "L5.1"),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
+    "NFC_RFO2": {
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "pads": ("U9.15", "L6.1"),
+        "layer": "B",
+        "width": 300_000,
+        "clearance": 250_000,
+    },
 }
 
 

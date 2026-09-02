@@ -9,6 +9,22 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-404 · 2026-09-02 · Demo NFC RFO package-launch wall characterized:** the
+atomic `NFC_RFO1/RFO2` screen first exposed route-order contention: routing
+RFO1 first boxes U9.15, while RFO2-first closes both geometric paths at 0.30 mm
+width. Real KiCad DRC rejected that apparent solution because the harness had
+used 0.20 mm clearance while the authoritative `NFC_RF` routed-clearance rule
+requires 0.25 mm. After correcting the screen to 0.25 mm, both bare U9 launches
+return `NO_LEGAL_ESCAPE`; U9.13/U9.15 are 0.30 mm lands on a 0.50 mm pitch, so
+the full-width launch has only 0.20 mm to its adjacent package lands before it
+can leave the UFQFPN perimeter. Two clean corrected runs reproduce the same
+zero-copper result and accepted DRC signature (199 footprint-library, 5
+hole-clearance, 1 solder-mask-bridge). No arm was promoted and the authoritative
+board remains byte-identical (`c052390c...`). Next, measure and gate one
+identical, courtyard-scoped package-neck clearance treatment for both RFO arms;
+the 0.30 mm width, 0.25 mm clearance outside U9, B.Cu-only, no-via, symmetry,
+and tuning-network contracts remain unchanged. No owner decision is open.
+
 **D-403 · 2026-09-02 · Demo USB F.Cu perimeter wall parked:** the final bounded
 outer-layer tactic searched the complete 72 x 148 mm board domain at 0.050 mm
 resolution, with the locked 0.23 mm USB width, 0.20 mm clearance, zero vias,

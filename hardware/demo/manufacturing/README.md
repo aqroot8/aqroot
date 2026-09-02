@@ -668,3 +668,28 @@ the local `NFC_RFO1`/`NFC_RFO2` pair (one retained open edge each, 4.263 mm and
 5.538 mm spans). Preserve the differential NFC output geometry and tuning
 network; do not promote one arm alone. The fitted ledger remains 95 open nets /
 538 retained open edges, and no owner decision is open.
+
+The coordinated NFC output-arm screen on 2026-09-02 is characterization-only.
+The initial 0.20 mm-clearance replay found that route order matters: RFO1-first
+boxes U9.15, while RFO2-first geometrically closes both arms. Real KiCad DRC
+correctly rejected that replay with three `NFC_RF` clearance violations because
+the authoritative routed-clearance contract is 0.25 mm. The harness was then
+corrected rather than weakening the rule or promoting partial copper.
+
+At the correct 0.30 mm width / 0.25 mm clearance, both bare launches return
+`NO_LEGAL_ESCAPE`. U9.13 and U9.15 are 0.30 mm-wide lands on 0.50 mm pitch, so a
+full-width trace has only 0.20 mm to the neighboring U9 land while it remains
+inside the package perimeter. This is a package-neck wall, not a downstream
+route-capacity wall. Two corrected runs reproduce the same zero-track geometry
+hash and accepted refilled schematic-parity DRC signature: 199 footprint-
+library, five inherited hole-clearance, and one inherited solder-mask-bridge
+report. No NFC copper entered the authoritative PCB, whose hash remains
+`c052390c09b542cbcff7904aa6518bc42f41026aa892e30c6c94405dfa8373e2`.
+
+Next, measure the minimum identical neck length needed for U9.13 and U9.15 and
+screen a single courtyard-scoped package-launch clearance treatment applied to
+both arms. Keep 0.30 mm width and 0.25 mm clearance everywhere outside U9,
+B.Cu-only routing, zero vias, and atomic pair promotion; review arm geometry and
+the complete NFC tuning path before accepting it. Do not retry the disproven
+global 0.20 mm-clearance tactic or promote only one arm. The ledger remains 95
+open retained nets / 538 retained open edges, and no owner decision is open.
