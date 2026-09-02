@@ -9,6 +9,24 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-525 · 2026-09-02 · Demo NFC_5V_EN four-land tree first family bounded:**
+Fresh fitted-net ranking selected the previously uncharacterized retained
+`NFC_5V_EN` tree. Live topology corrected the initial three-land assumption:
+U13.2 remains a fourth fitted endpoint with U2.6, R14.1, and TP10.1. The new
+atomic harness screens both branch orders, In2/In3, and the first two ordinary
+via sites at each long-haul endpoint (16 cases). Both local U13/R14-to-TP10
+branches close in either order. U2/TP10 escapes coexist in 12 cases, but every
+direct, orthogonal, and 0.5 mm horizontal/vertical spine join rejects; four
+cases cannot reserve both endpoints. No complete candidate or partial copper
+is emitted. Authoritative board `04dc3e8a...` remains byte-identical at 56 open
+retained nets / 460 edges; real refilled schematic-parity DRC remains exactly
+199 footprint-library / five hole-clearance / one solder-mask-bridge reports.
+D-269/D-186, the three RGB replacements, XGPIO4/XGPIO5, approved Demo NCs,
+accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Next
+broaden only the U2.6-to-TP10 haul with additional endpoint sites and a bounded
+mixed-In2/In3 transition; retain the proven local branches and atomic gate. No
+owner decision is open.
+
 **D-524 · 2026-09-02 · Demo WAKE_GATE_S two-transition R66 haul qualified; wall parked:**
 The recovered fifth unchanged-wall iteration adds a bounded two-transition
 In2/In3/In2 (and inverse) family between each qualified R66.1 escape and the

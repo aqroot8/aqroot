@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## NFC_5V_EN four-land first family bounded (2026-09-02)
+
+The live fitted tree contains U2.6, U13.2, R14.1, and TP10.1. The new atomic
+harness screens both branch orders, both inner layers, and two sites at each
+long-haul endpoint. The two local branches close; 12 of 16 cases reserve both
+U2/TP10 escapes, but all direct, orthogonal, and 0.5 mm spine joins reject. No
+partial candidate is emitted. Board `04dc3e8a...` remains byte-identical at
+56 open nets / 460 edges with real refilled parity DRC 199/5/1. Next preserve
+the local witnesses and broaden only the haul with more endpoint sites and one
+bounded mixed-In2/In3 transition.
+
 ## WAKE_GATE_S two-transition R66 haul qualified; wall parked (2026-09-02)
 
 The recovered atomic harness now permits two ordinary transitions in the

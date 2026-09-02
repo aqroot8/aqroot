@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-525 (NFC_5V_EN four-land first family bounded):** live fitted
+  topology is U2.6/U13.2/R14.1/TP10.1. Both local branches close, while the
+  first two endpoint sites on In2/In3 produce 12 coexisting escape pairs but
+  no direct/elbow/0.5 mm spine U2-to-TP10 join. No candidate or partial copper;
+  board remains `04dc3e8a...`, 56 open nets / 460 edges, real refilled parity
+  DRC 199/5/1. **Next:** preserve the local witnesses and broaden only the
+  U2.6/TP10 haul through additional sites plus one mixed-inner transition. No
+  owner decision is open.
 - **Demo D-524 (WAKE_GATE_S two-transition R66 haul qualified; wall parked):**
   all 16 qualified R66 endpoint/layer cases reach the shared R63 hub through
   two ordinary In2/In3 transition vias.  After reserving each complete R66
