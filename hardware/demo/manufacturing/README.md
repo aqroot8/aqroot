@@ -2,6 +2,26 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS corrected 24-case witness window exhausted (2026-09-03)
+
+Corrected case 23 varies the final qualified `U12.10` witness at via
+`(66.9327,103.5245)` mm. All 13 governed endpoints reserve and nine joins
+complete; all 15 cross-component trials report `NO_PATH`. The same four
+components remain: the main U12/SW9/capacitor tree, isolated `U11.1`, the
+`C33.1`/`C64.1` pair, and the `L4.1`/`U21.3` pair. Canonical compact-JSON
+result SHA-256 is
+`81aff166c84908ba8d8bff3373daf5cc3a40eb6103b074138a590189101383ba`.
+
+Cases 0--23 exhaust this corrected witness family. Do not replay or extend it
+without materially new board geometry or a broader refloor/bridge transaction.
+No replay, DRC, candidate, or promotion is claimed for the incomplete tree;
+zero wrong-net additions/removals occurred. Board `64e5ae37...` remains
+byte-identical at 54 open retained nets / 446 edges, with SYS at 12 open edges.
+Next build a reusable four-component cross-component bridge/refloor search,
+beginning with isolated `U11.1`, behind the existing atomic replay and
+full-board gate. D-269/D-186, RGB, XGPIO4/XGPIO5, accepted copper, and
+`hardware/beta-v2/` remain intact. No owner decision is open.
+
 ## BQ25185_SYS corrected twenty-third atomic case bounded (2026-09-03)
 
 Corrected case 22 varies the twenty-third qualified `U12.10` witness at via

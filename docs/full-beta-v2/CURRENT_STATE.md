@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-575 (corrected 24-case SYS witness window exhausted; no promotion):**
+  final case 23 uses the twenty-fourth qualified `U12.10` witness at via
+  `(66.9327,103.5245)` mm. All 13 endpoints reserve and nine joins complete;
+  all 15 cross-component attempts report `NO_PATH`, leaving the same main,
+  isolated U11.1, C33/C64, and L4/U21 components. Canonical compact evidence
+  is `81aff166...`; zero wrong-net additions/removals occurred. Authority stays
+  byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges, with SYS
+  at 12 open edges. Cases 0--23 exhaust this corrected witness family; do not
+  replay it without materially new geometry. **Next:** implement a broader
+  reusable four-component bridge/refloor search, beginning at isolated U11.1,
+  behind the existing atomic replay/full-board gate. No owner decision.
 - **Demo D-574 (corrected twenty-third atomic SYS case bounded; no promotion):**
   case 22 varies the twenty-third qualified `U12.10` witness at via
   `(66.8543,103.5029)` mm, reserves all 13 endpoints, and again completes nine

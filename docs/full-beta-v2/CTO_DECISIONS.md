@@ -1,5 +1,32 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-575 · 2026-09-03 · Demo BQ25185_SYS corrected atomic witness window exhausted
+
+Corrected atomic case 23 varies the twenty-fourth and final qualified
+`U12.10` witness at via `(66.9327,103.5245)` mm. All 13 governed endpoints
+reserve and nine joins complete. All 15 remaining cross-component trials
+report `NO_PATH`, leaving the same four components: the main
+U12/SW9/capacitor tree, isolated `U11.1`, the `C33.1`/`C64.1` pair, and the
+`L4.1`/`U21.3` pair. Canonical compact-JSON result SHA-256 is
+`81aff166c84908ba8d8bff3373daf5cc3a40eb6103b074138a590189101383ba`.
+
+Cases 0--23 now exhaust the corrected qualified `U12.10` witness family.
+This family is closed and must not be replayed without materially new board
+geometry or a broader refloor/bridge transaction. Because the SYS tree is
+incomplete, complete-net replay, real refilled parity DRC, candidate emission,
+and promotion correctly do not occur. The harness reports zero wrong-net
+additions/removals. The authoritative PCB remains byte-identical at
+`64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe`,
+54 open retained nets / 446 edges; `BQ25185_SYS` remains at 12 open edges.
+`ACC_5V_SW_EN`, all three RGB routes, XGPIO4/XGPIO5, D-269/D-186, accepted
+copper, and `hardware/beta-v2/` remain intact.
+
+The next bounded SYS iteration must change the lever: build a reusable
+cross-component bridge/refloor search around the four persistent components,
+starting with the isolated `U11.1` join, and preserve the existing atomic
+replay/full-board promotion gate. Do not extend or replay the exhausted
+U12.10-witness window. No owner decision is open.
+
 # D-574 · 2026-09-03 · Demo BQ25185_SYS corrected twenty-third atomic case bounded
 
 Corrected atomic case 22 varies the twenty-third qualified `U12.10` witness
