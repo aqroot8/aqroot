@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-544 (BQ25185_SYS minimum IR refloor transaction bounded; no
+  promotion):** the atomic harness withdraws all 14 accepted IR_RX_GPIO44
+  objects and tests all 24 qualified C26 doglegs before complete SYS and IR
+  replay gates. Every case stops at pristine `C27.1 NO_VIA_SITE`, even with
+  C27 reserved first. Authority remains `64e5ae37...`, 54 open retained nets /
+  446 edges, DRC 199/5/1. **Next:** inventory the C27 pocket and screen the
+  smallest joint complete-net withdrawal/replay boundary. No owner decision.
 - **Demo D-543 (BQ25185_SYS C26 minimum pocket-refloor boundary qualified; no
   promotion):** six complete accepted copper nets within 5 mm of `C26.2` were
   withdrawn one at a time on isolated scratch boards and screened through the

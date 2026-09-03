@@ -1,5 +1,25 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-544 · 2026-09-03 · Demo BQ25185_SYS minimum IR refloor transaction bounded
+
+The D-543 successor adds a reusable atomic harness that withdraws all 14
+accepted `/IR_RX_GPIO44` objects, replays each qualified C26 dogleg, requires
+all 13 `BQ25185_SYS` lands, and only then would replay both IR branches before
+connectivity, accepted-copper, and real refilled parity-DRC gates. The SYS
+harness accepts an explicit qualified C26 witness without weakening its locked
+0.50/0.250 mm haul or 0.90/0.40 mm power-via contract.
+
+All 24 cases reject at `C27.1 NO_VIA_SITE`. C27 is tested first, before C24,
+C26, or any other new SYS copper, so this is not caused by a selected C26
+dogleg or route order. No partial candidate is emitted. Board `64e5ae37...`
+remains byte-identical at 54 open retained nets / 446 edges; independent real
+refilled parity DRC remains 199 footprint-library / five inherited hole-
+clearance / one inherited solder-mask-bridge reports. D-269/D-186, all RGB
+routes, XGPIO4/XGPIO5, Demo NCs, accepted charger/accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next inventory the C27 pocket and screen the
+smallest joint complete-net withdrawal/replay boundary, retaining IR only if
+C26 still requires it. No owner decision is open.
+
 **Status: LIVING DOCUMENT. This is the current source of truth.**
 
 When an older transcript, audit or architecture note conflicts with a ruling in

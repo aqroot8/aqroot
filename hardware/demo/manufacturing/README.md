@@ -2531,3 +2531,14 @@ improves retained connectivity to 56 open nets / 460 edges.  Real DRC remains
 199 library / five hole / one mask reports.  Next screen `/SX1262_DIO1` only
 through a bounded U2.20 package-fanout/refloor transaction, not its parked
 ordinary-via family.
+
+## BQ25185 SYS / IR_RX minimum refloor transaction (2026-09-03)
+
+`route_bq25185_sys_ir_refloor_scratch.py` withdraws all 14 accepted
+`/IR_RX_GPIO44` objects, replays qualified C26 doglegs, requires the complete
+13-land `BQ25185_SYS` tree, and only then replays both IR branches and runs
+connectivity plus real refilled parity DRC. The SYS harness now accepts an
+explicit C26 witness without weakening its 0.50/0.250 mm haul or 0.90/0.40 mm
+power-via contract. All 24 C26 witnesses stop at pristine `C27.1 NO_VIA_SITE`,
+even with C27 first. Next inventory the C27 pocket and screen the smallest
+joint complete-net withdrawal/replay boundary.

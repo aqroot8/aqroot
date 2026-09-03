@@ -54,7 +54,7 @@ def face(pad):
     return faces[0]
 
 
-def route(path: Path):
+def route(path: Path, c26_candidate=None):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -67,10 +67,29 @@ def route(path: Path):
     )
     reservations = []
     anchors = []
-    for ref in FITTED:
+    order = FITTED if not c26_candidate else (
+        "C27.1", "C24.1", "C26.2", *FITTED[3:]
+    )
+    for ref in order:
         print(f"reserve {ref}", file=sys.stderr, flush=True)
         pad = pads[ref]
         near = face(pad)
+        if ref == "C26.2" and c26_candidate:
+            def point(key):
+                return tuple(round(value * 1e6) for value in c26_candidate[key])
+            neck_end = point("neck_end_mm")
+            anchor = point("anchor_mm")
+            via = point("via_mm")
+            board.track(NET, "B", pad["x"], pad["y"], *neck_end, 500_000)
+            board.track(NET, "B", *neck_end, *anchor, 500_000)
+            board.track(NET, "B", *anchor, *via, 500_000)
+            board.via(NET, *via, 900_000, 400_000)
+            reservations.append({"pad": ref, "ok": True, "face": "B",
+                                 "via": list(via),
+                                 "launch": "qualified_c26_refloor_dogleg",
+                                 "candidate": c26_candidate})
+            anchors.append((ref, via))
+            continue
         if near == "F":
             result = qr.reserve_escape(
                 board, NET, pad, 500_000, 250_000, 250_000,
@@ -207,9 +226,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--route", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--c26-candidate-json", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
-        route(args.route)
+        route(args.route, json.loads(args.c26_candidate_json)
+              if args.c26_candidate_json else None)
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:
