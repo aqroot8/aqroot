@@ -1,5 +1,27 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-574 · 2026-09-03 · Demo BQ25185_SYS corrected twenty-third atomic case bounded
+
+Corrected atomic case 22 varies the twenty-third qualified `U12.10` witness
+at via `(66.8543,103.5029)` mm. All 13 governed endpoints reserve and nine
+joins complete before the finite 24-trial window is exhausted. The same four
+components remain: the main U12/SW9/capacitor tree, isolated `U11.1`, the
+`C33.1`/`C64.1` pair, and the `L4.1`/`U21.3` pair. All 15 attempted
+cross-component joins report `NO_PATH`; canonical compact-JSON result SHA-256
+is `c7f13e3177fb612aa3d5a6e2acbac54889105f34344fb7c3c77d04cb28bd2b54`.
+
+Because the SYS tree is incomplete, complete-net replay, real refilled parity
+DRC, candidate emission, and promotion correctly do not occur. The harness
+reports zero wrong-net additions/removals and the authoritative PCB remains
+byte-identical at
+`64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe`,
+54 open retained nets / 446 edges; `BQ25185_SYS` itself remains at 12 open
+edges. `ACC_5V_SW_EN`, all three RGB routes, XGPIO4/XGPIO5, D-269/D-186, all
+accepted copper, and `hardware/beta-v2/` remain intact. `BQ25185_SYS` is an
+immediate board-completion critical path, so the finite non-overlapping
+witness window remains within the routing-wall policy exception. Continue at
+case 23 without replaying cases 0--22. No owner decision is open.
+
 # D-573 · 2026-09-03 · Demo BQ25185_SYS corrected twenty-second atomic case bounded
 
 Corrected atomic case 21 varies the twenty-second qualified `U12.10` witness
