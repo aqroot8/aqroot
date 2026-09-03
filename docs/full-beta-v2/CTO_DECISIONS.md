@@ -5697,3 +5697,117 @@ Next attack `+3V3`, which is now the largest remaining block at 79 of the 203
 retained open edges and, unlike `GND`, owns no pour -- so decide between a
 maze MST over ~80 terminals and adding a `+3V3` pour on an internal signal
 layer, on screening evidence rather than assumption. No owner decision is open.
+
+# D-580 · 2026-09-03 · Demo +3V3 In3 plane; pour added and 56 pads stitched, PROMOTED
+
+After D-579 the board's 203 retained open edges were dominated by one net:
+`+3V3` owned 79 of them, across 80 fitted pads and a 157.7 mm span, and owned
+NO COPPER AT ALL -- 80 pads, 80 islands, not one track. Completing it pad-to-pad
+would have spent roughly eighty long P3V3-class runs on the two inner signal
+layers. Completing it as a POUR spends one zone plus one short via per pad,
+which is the primitive that had already planted 204 GND islands.
+
+That choice was made on evidence, not on assumption.
+`hardware/demo/manufacturing/screen_inner_plane.py` is read-only with respect
+to the authority: it copies the project, appends ONE unfilled zone reusing the
+In1/In4 GND reference pours' own outline and fill parameters verbatim
+(0.5 mm edge inset, `min_thickness` 0.2 mm, `connect_pads yes` at 0.25 mm,
+`thermal_gap` 0.3 mm), asks the REAL KiCad engine to fill it, and then measures
+what actually filled. `island_removal_mode 1` (keep) is required for that first
+fill and only for it: a net that owns no copper yet has no connection for
+mode 0 to spare, so mode 0 would delete the pour it is being asked to judge.
+
+The screen answered both halves of the question. On `In3.Cu` the pour fills
+9111.0 mm^2 in 39 islands, 7789.5 mm^2 of it in ONE piece, and the WORST of all
+82 measured pads sits 0.355 mm from copper. On `In2.Cu` it fills 8235.4 mm^2 in
+70 islands with a worst pad reach of 0.396 mm. Both are reachable; `In3.Cu` is
+the less fragmented pour, and it is also the less-used inner signal layer
+(996.7 mm of existing track against In2's 1739.4 mm), so the plane displaces
+less future routing. Both layers were then driven through the full promotion
+gate: identical stitch geometry in each case -- 56 stitched, 56 vias,
+72.178 mm -- but `In3.Cu` closes the board to 155 retained open edges against
+`In2.Cu`'s 159, because a pour broken into 70 pieces leaves more components
+behind than one broken into 39. `In3.Cu` wins on every axis measured.
+
+`route_maze_batch.py` gained a `--plane NET:LAYER` mode and one new gate
+clause. The mode adds the pour UNFILLED, fills it with the real KiCad engine,
+runs the ORDINARY `maze3d.stitch_net` primitive against it unchanged, and then
+flips `island_removal_mode` back to 0 (remove) BEFORE the authoritative DRC, so
+the promoted board can carry no pour island that the stitch did not actually
+connect. Gate clause 6 requires the candidate's zone inventory to differ from
+the authority's by exactly ONE added zone, on the requested net and layer, with
+no surviving zone's net, layer, outline or fill parameters changed.
+
+Two width floors were made explicit rather than inherited. A stitch stub is a
+few tenths of a millimetre from a pad to a barrel directly beneath it, not a
+cross-board rail run, so `--stitch-width` / `--stitch-via` size it from the
+`.kicad_dru` CLASS FLOOR instead of the netclass default -- and both overrides
+are clamped UPWARDS, to `P3V3 minimum width on the outer layers` (0.40 mm), to
+`POWER-class vias use the 0.40 mm drill` and to the 0.125 mm annular ring, so a
+request can never ask for copper KiCad's own `track_width`, `hole_size` or
+`annular_width` checks would refuse. At the netclass default 0.60 mm the stitch
+plants 50 pads; at the DRU floor 0.40 mm with a 0.70 mm barrel it plants 56.
+
+**The pour and 56 stitched pads are PROMOTED.** `+3V3` open edges fall
+79 -> 31, whole-board retained open edges **203 -> 155**, and the raw board
+ratsnest 223 -> 173. No net regressed; open retained nets stay at 33 because
+`+3V3` is not yet closed. The 26 pads that did not stitch are reported, not
+hidden: 15 `NO_LEGAL_ESCAPE` (`J1.7/9/35/40/42` on the display FPC, `U4.2/3/5/8/12`,
+`U5.2/7`, `U12.4/5`, `U9.1`) and 11 `NO_VIA_SITE` (`C5.1`, `C7.1`, `R2.1`,
+`R19.1`, `R26.1`, `R27.1`, `R39.1`, `R127.1`, `U3.21`, `U5.8`, `U17.5`).
+
+The promotion was re-proved a second time, independently of the driver, by the
+new reusable `hardware/demo/manufacturing/verify_promotion.py`, which reads only
+the committed board and the promoted board. All twelve of its checks PASS:
+0 objects removed; 137 added (81 tracks + 56 vias) and every one on `+3V3`;
+every added track exactly 0.400 mm and on `F.Cu`/`B.Cu` only; every added via
+exactly 0.700/0.400 mm, meeting the POWER drill floor with a 0.150 mm annular
+ring; the zone inventory changed by exactly the one claimed `+3V3` / `In3.Cu`
+pour with nothing lost; real zone-refilled schematic-parity KiCad DRC reports
+exactly 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge with
+ZERO attributable violations and ZERO schematic-parity errors; the board is
+fill-stable; the retained D-269/D-186 rule text is still live; and
+`hardware/beta-v2/` is untouched.
+
+The battery-safety contract was measured, not assumed. KiCad's own fill honours
+the custom rules: the promoted `In3.Cu` `+3V3` pour stands exactly 0.300 mm from
+`BAT_PROTECTED_P`, `BAT_RAW` and `BAT_SENSE` -- the D-269 `BAT_MAIN` routed
+clearance to the millimetre -- and 0.250 mm from the ordinary `N_BATDIV` and
+`REC_BAT_LOW`, which is the zone's own clearance. After island removal the
+pour keeps 8770.9 mm^2 in 7 connected islands.
+
+Placing the plane on `In3.Cu` does NOT close that layer to further routing.
+`QBoard.grid` rasterises rule areas, pads, holes and tracks as obstacles but not
+filled pours, so the maze router still routes freely across In3; KiCad refills
+the pour around any new track at 0.25 mm, and if such a track ever SPLIT the
+plane the gate's own no-net-regressed clause would see `+3V3`'s open edges rise
+and refuse the promotion. Electrically the pour sits directly above the In4
+reference plane, giving the 3.3 V rail a plane pair it did not have.
+`ACC_5V_SW_EN`, all three `FRONT_RGB_*_N` replacements, XGPIO4/XGPIO5, the
+approved Demo NC contacts J5.9-12 / J5.15-18 and every previously accepted
+route are untouched -- no copper was moved or removed. `qrouter.py`,
+`incremental_router.py` and `maze3d.py` are unmodified.
+
+Authority advances from
+`d9d62ae34eaf188312efbd82025dd9d39fee65136dd53d76c0675d1ef2cdc88c` to
+`785aac86a55bd09319aef1edeae2838f5ddcdd6f1a1efa67e62fd9a01726d27f`.
+Compact evidence is
+`hardware/demo/manufacturing/evidence/d580-3v3-plane-stitch56.json`
+(canonical SHA-256 `2212986ed50c7862a044d8768b7a0ab4e243cf5633c0151bda7a95220fcb39ab`)
+and the independent re-proof is
+`hardware/demo/manufacturing/evidence/d580-verify.json`
+(canonical SHA-256 `2d3a74e54344b9c4c08de002dd4e870453186a639c2536da22beb0ad4da68e10`).
+As with D-579 the promoted board is not byte-reproducible across runs -- KiCad
+assigns a fresh UUID to every new track, via and zone -- but every property is
+re-proved on the actual candidate, so the DECISION reproduces even though the
+BYTES do not.
+
+Next close `+3V3` the rest of the way. Its residual 31 edges are now a
+DIFFERENT and much smaller problem than the 79 it started with: six of them
+join the seven surviving pour islands to each other, which `maze3d.route_join`
+can do island-to-island, and the remaining 24 are single pads whose 0.40 mm
+stub cannot escape a fine-pitch field or find a 0.70 mm barrel -- a case for a
+necked escape governed by the DRU's own fine-pitch exceptions, or for a second
+`+3V3` pour on `In2.Cu` that reaches them from the other side. Then apply the
+same `--plane` mechanism to `GND`'s residual 26 edges. No owner decision is
+open.

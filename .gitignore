@@ -43,3 +43,11 @@ hardware/beta-v2/checks/__pycache__/
 # The blessed prefix_002w_manifest.json is the evidence of record; this file is
 # not required and must never be committed.
 hardware/beta-v2/checks/probe_002w_prefix.json
+
+# Demo router scratch workspaces.  route_maze_batch.py / screen_inner_plane.py /
+# verify_promotion.py build project-faithful copies of the whole KiCad project
+# in a `--work` directory so they can refill, DRC and diff without touching the
+# authority.  They are regenerated on every run and must never be committed;
+# the evidence of record is hardware/demo/manufacturing/evidence/.
+/w[0-9]*/
+/w-*/

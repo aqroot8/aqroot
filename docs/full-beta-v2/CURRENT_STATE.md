@@ -13,6 +13,37 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-580 (`+3V3` In3 plane; pour + 56 stitched pads PROMOTED):** `+3V3`
+  owned 79 of the 203 retained open edges left by D-579 across 80 pads and no
+  copper at all. `screen_inner_plane.py` (read-only) screened a pour on both
+  inner signal layers against the real KiCad fill engine: `In3.Cu` fills
+  9111.0 mm2 in 39 islands, worst pad reach 0.355 mm; `In2.Cu` 8235.4 mm2 in 70
+  islands, 0.396 mm. Both were then driven through the FULL gate: identical
+  stitch geometry, but In3 closes to 155 retained open edges against In2's 159,
+  and In3 is also the less-used signal layer. `route_maze_batch.py` gained
+  `--plane NET:LAYER` (pour added unfilled, filled by KiCad, ordinary
+  `maze3d.stitch_net` unchanged, `island_removal_mode` restored to 0 before the
+  authoritative DRC) plus gate clause 6 on the zone inventory, and
+  `--stitch-width`/`--stitch-via`, which size a stub from the `.kicad_dru` CLASS
+  FLOOR (0.40 mm P3V3 outer width, 0.40 mm POWER drill, 0.125 mm annular) rather
+  than the cross-board netclass default and are clamped only UPWARDS -- worth
+  6 extra pads over the 0.60 mm default. `+3V3` open edges 79 -> 31, whole-board
+  retained open edges **203 -> 155**, ratsnest 223 -> 173, no net regressed; the
+  26 that failed are reported (15 `NO_LEGAL_ESCAPE`, 11 `NO_VIA_SITE`).
+  Re-proved independently by the new reusable `verify_promotion.py`, all 12
+  checks PASS: 0 removed, 137 added and all on `+3V3`, every track 0.400 mm on
+  F/B, every via 0.700/0.400, exactly one zone added, real zone-refilled
+  schematic-parity KiCad DRC exactly 199/5/1 with ZERO attributable and ZERO
+  parity errors, fill-stable, D-269/D-186 rule text live, `hardware/beta-v2/`
+  untouched. Measured battery safety: the pour stands exactly 0.300 mm from
+  `BAT_PROTECTED_P`/`BAT_RAW`/`BAT_SENSE` (D-269 to the millimetre). A pour is
+  not a router obstacle (`QBoard.grid` rasterises rule areas, pads, holes and
+  tracks only), so In3 stays routable and any plane split would be caught by the
+  gate's no-net-regressed clause. Authority `d9d62ae3...` -> `785aac86...`;
+  evidence `2212986e...` + `2d3a74e5...`. **Next:** close `+3V3`'s residual 31
+  edges -- 6 are island-to-island joins between the 7 surviving pour islands,
+  24 are single pads needing a necked escape or a second `In2.Cu` pour -- then
+  apply `--plane` to `GND`'s residual 26. No owner decision.
 - **Demo D-579 (whole-board GND plane stitch; 204 islands PROMOTED):** `GND`
   was the only net owning filled pours (In1/In4) and carried 225 of the 402
   retained open edges left by D-578. `maze3d.stitch_net` now proves what it
