@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-549 (BQ25185_SYS L4/U12.10 coexistence wall bounded; no promotion):**
+  the recovered atomic SYS transaction now withdraws complete `NFC_ANT_B`,
+  reserves qualified L4 doglegs, and can replay the exact accepted 16-segment
+  antenna tree. A corrected 24-case window varies every qualified L4 witness
+  first. All 24 reserve L4 plus the preceding ten SYS endpoints, then stop at
+  `U12.10 NO_FLARE`; no joins, replay, candidate, or authoritative copper are
+  emitted. Authority remains byte-identical at `64e5ae37...`, 54 open retained
+  nets / 446 edges. **Next:** reserve U12.10 first and co-search its qualified
+  flare/landing family with all 24 L4 witnesses; if both orders fail, inventory
+  the minimum complete-net refloor boundary in the joint pocket. No owner
+  decision.
 - **Demo D-548 (BQ25185_SYS L4 minimum pocket-refloor boundary qualified; no
   promotion):** all six complete accepted copper nets within 5 mm of `L4.1`
   expose 48 governed SYS landings when withdrawn individually. The minimum

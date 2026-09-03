@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS L4/U12.10 coexistence boundary bounded (2026-09-03)
+
+The atomic SYS transaction now includes complete `NFC_ANT_B` withdrawal, a
+qualified L4 dogleg, and exact accepted antenna replay. A corrected 24-case
+window varies all 24 qualified L4 witnesses first. Every witness reserves with
+the preceding ten SYS endpoints, but all stop at `U12.10 NO_FLARE`; therefore
+the boundary is joint L4/U12.10 coexistence, not L4 site-zero quality. No
+candidate or partial copper is emitted; board `64e5ae37...` remains unchanged
+at 54 open retained nets / 446 edges. Next reserve U12.10 before L4 and
+co-search both qualified endpoint families, then inventory only the joint
+pocket if neither order coexists.
+
 ## BQ25185_SYS L4 pocket boundary qualified (2026-09-03)
 
 The generic complete-net pocket screen now covers `L4.1`. All six isolated

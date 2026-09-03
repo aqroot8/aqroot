@@ -1,5 +1,28 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-549 · 2026-09-03 · Demo BQ25185_SYS L4/U12.10 coexistence wall bounded
+
+The recovered D-548 successor extends the atomic 13-land SYS transaction with
+complete `NFC_ANT_B` withdrawal, a qualified `L4.1` dogleg, and exact replay of
+all 16 accepted antenna-B segments.  Its first implementation incorrectly held
+L4 site zero fixed while varying C28.  The corrected deterministic case order
+varies all 24 qualified L4 witnesses first behind fixed qualified C26/C27/C28
+witnesses.
+
+Every L4 witness reserves successfully together with C26, C24, C27, C28, C33,
+C64, SW9, U11.1, and U12.1.  All 24 then stop at `U12.10 NO_FLARE`, before any
+SYS joins or withdrawn-net replay.  This proves a joint L4/U12.10 coexistence
+boundary rather than a deficient individual L4 witness.  No partial candidate
+is emitted and the authoritative PCB remains byte-identical at `64e5ae37...`,
+54 open retained nets / 446 edges.  D-269/D-186, USB, RGB, XGPIO4/XGPIO5, Demo
+NCs, accessory power, and `hardware/beta-v2/` remain intact.
+
+Next reserve U12.10 before L4 and co-search the 24 qualified L4 witnesses with
+the previously qualified U12.10 flare/landing family.  If neither reservation
+order coexists, inventory the minimum complete accepted-copper refloor boundary
+in the joint pocket; do not weaken the 0.50/0.250 mm SYS haul or ordinary
+0.90/0.40 mm via contract.  No owner decision is open.
+
 # D-548 · 2026-09-03 · Demo BQ25185_SYS L4 minimum pocket-refloor boundary qualified
 
 The reusable complete-net pocket screen now accepts every governed SYS land
