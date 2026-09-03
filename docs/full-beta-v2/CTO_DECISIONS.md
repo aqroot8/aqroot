@@ -5600,3 +5600,100 @@ canonical SHA-256
 Next drive the remaining 33 open retained nets through this same gate in
 coherent batches, splitting on the first attributable DRC report rather than
 returning to per-net corridor enumeration. No owner decision is open.
+
+# D-579 · 2026-09-03 · Demo whole-board GND plane stitch; 204 islands PROMOTED
+
+`GND` is the only net on this board that owns filled pours -- the In1.Cu and
+In4.Cu reference planes -- and 226 of its 246 pads sat on their own copper
+island, unconnected to either plane. That single net carried 225 of the 402
+retained open edges left after D-578: more than half the whole board's
+remaining connectivity work, and every one of those edges a real fabrication
+blocker, not a cosmetic ratsnest line.
+
+`maze3d.stitch_net` already existed for this shape and is not all-or-nothing:
+each island is an independent transaction, because one island that cannot
+reach the pour says nothing about the two hundred that can. What blocked it
+was not the search but two soundness defects the first whole-board run
+exposed, both now fixed in `maze3d.py`.
+
+**The smoother is not a proof.** `QBoard.grid` widens every obstacle by a
+0.75-cell guard band so that the CONTINUOUS segment between two proved cells
+cannot reach an obstacle the cells themselves clear. That is sound for one
+wavefront step. It is NOT sound for `QBoard.smooth`, which replaces a
+staircase with a single straight run tens of cells long and accepts it on
+`QBoard.clear_line`, which samples twice per cell and ROUNDS each sample to
+the nearest lattice cell -- so a long shallow diagonal has its samples rounded
+back onto free cells while the line grazes one that is not. `verify_laid`
+closes that loop: it re-proves every object a transaction has just laid
+ANALYTICALLY, against the same obstacle set and the same clearance the search
+was meant to honour, with no lattice and no guard band in the argument.
+`QBoard.margin` is its floor and the `.kicad_dru` netclass overlay can only
+raise it, so it can never admit copper the raster would have refused.
+
+**Nothing is exempt.** A segment lying wholly inside the pad it leaves was
+briefly treated as copper the board already carries. KiCad does not see it
+that way. A 0.35 mm-tall pad on 0.50 mm pitch tolerates its 0.150 mm
+neighbour gap under the footprint's own pad-to-pad allowance, but a 0.30 mm
+GND track drawn down the middle of that same pad is a TRACK and owes the full
+0.200 mm routed clearance, which at 0.175 mm it does not meet. The first
+whole-board stitch produced exactly three of those, at `U18.4`, `U13.4` and
+`U21.4`, and all three were real KiCad clearance errors. The exemption is
+removed and every emitted segment is proved in full. The pad-centre stub is
+not merely proved but no longer emitted: `_pocket_escapes` starts its polyline
+on a cell of the pad's OWN CORE -- at least half a track width inside the pad
+-- which already terminates inside the pad, so KiCad's connectivity engine
+joins it there and the centre segment buys nothing. That is why the stricter
+rule RAISED yield rather than lowering it: all three pads now stitch legally,
+by a launch the illegal centre stub had been masking.
+
+`_pocket_escapes` itself is the third piece and is strictly additive.
+`QBoard.escape` casts ONE STRAIGHT stub along eight rays at a fixed length, so
+it cannot stop short of the first obstacle it could legally clear and it
+cannot TURN -- and the way out of a pin field is usually one short run and a
+bend. The pocket escape walks a few millimetres of board around the terminal
+on the SAME `QBoard.grid` and the SAME DRU overlay at a QUARTER of the routing
+pitch, terminating on any cell the whole-board lattice already calls free. The
+finer pitch shrinks only the RASTERISATION GUARD BAND, never a clearance.
+`QBoard.escape` is still asked first and its answers still taken in its own
+order, so no accepted route changes.
+
+**204 of the 233 unplanted GND islands are PROMOTED** in one gated
+transaction: 204 through vias and 255.455 mm of 0.300 mm track. `GND` open
+edges fall 225 -> 26 and whole-board retained open edges 402 -> 203; the raw
+board ratsnest falls 430 -> 223. No net regressed. The 29 that did not stitch
+are reported, not hidden: 17 `NO_VIA_SITE` (no legal 0.60 mm barrel within
+8 mm), 11 `NO_LEGAL_ESCAPE` (`D2.2`, `D4.2`, `D5.2`, `J1.43`, `MK1.4`,
+`U11.4`, `U14.4`, `U9.6/12/16/26`) and one `UNPROVED_GEOMETRY` -- `U14.1`,
+correctly rejected by `verify_laid` for coming within 0.275 mm of
+`BAT_PROTECTED_P` under D-269's 0.300 mm rule. That rejection is the new
+machinery doing exactly its job on the battery-safety net.
+
+Re-verified independently of the driver, from the two board files alone: 0
+objects removed, 514 objects added and every one of them on `GND`. Real
+zone-refilled schematic-parity KiCad DRC on the promoted authority reports
+exactly 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge, ZERO
+attributable violations and ZERO schematic-parity errors. The board is
+byte-identical after a further `--refill-zones --save-board`, so its pours are
+fill-stable. Approved Demo NC contacts J5.9-12 / J5.15-18 are exactly as
+expected. D-269 and D-186 remain active DRU rules under a clean DRC;
+`ACC_5V_SW_EN`, all three `FRONT_RGB_*_N` replacements, XGPIO4/XGPIO5 and
+every previously accepted route are untouched -- no copper was moved or
+removed. `qrouter.py` and `incremental_router.py` are unmodified.
+`hardware/beta-v2/` is unmodified.
+
+Authority advances from
+`61df98a1eb20deb6b9c3222333d2f8e587891bd6145f3d480057948c395b3722` to
+`d9d62ae34eaf188312efbd82025dd9d39fee65136dd53d76c0675d1ef2cdc88c`.
+Compact evidence is `hardware/demo/manufacturing/evidence/d579-gnd-stitch204.json`,
+canonical SHA-256
+`24c8ba0b9a7cdc71bdd52d700ac4c8722bbe560451b84e309442bceaf0dd3717`.
+Note that the promoted board is NOT byte-reproducible across runs: KiCad
+assigns a fresh UUID to every new track and via, so two identical routing runs
+differ in those UUIDs alone. The gate re-proves every property on the actual
+candidate it is about to write, so reproducibility of the DECISION does not
+depend on reproducibility of the BYTES.
+
+Next attack `+3V3`, which is now the largest remaining block at 79 of the 203
+retained open edges and, unlike `GND`, owns no pour -- so decide between a
+maze MST over ~80 terminals and adding a `+3V3` pour on an internal signal
+layer, on screening evidence rather than assumption. No owner decision is open.

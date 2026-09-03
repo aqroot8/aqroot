@@ -171,6 +171,54 @@ WAVE_STEPS = 6000
 # --------------------------------------------------------------------------- #
 # grids
 # --------------------------------------------------------------------------- #
+def dru_overlay(qb, net, mycls, cls, layer, width, clr_pad, clr_trk,
+                ox, oy, G, nx, ny):
+    """Cells blocked by a .kicad_dru clearance `QBoard.margin` cannot see.
+
+    Everything except the clearance number -- the obstacle set, the exact
+    shape distance, the 0.75-cell guard band -- is exactly what `QBoard.grid`
+    does, so this can only ever ADD blocked cells to it.  An obstacle whose
+    required clearance does not EXCEED the base is skipped outright, which
+    keeps the overlay empty for the common net.
+
+    It is a module function rather than a `Field` method because the pocket
+    escape (`_pocket_escapes`) rasterises a SMALL window at a FINER pitch and
+    owes that window exactly the same overlay: one implementation, so a lattice
+    can never be built to a weaker rule than the whole-board one.
+    """
+    blk = np.zeros((ny, nx), dtype=bool)
+    guard = G * 0.75
+    for s in qb.obstacles(layer, net):
+        if not s.net:
+            continue                          # keep-out: no clearance concept
+        kind = _kind(s)
+        if kind == 'ko':
+            continue
+        base = clr_trk if kind == 'track' else clr_pad
+        ocls = cls.get(s.net, 'Default')
+        req = base
+        if kind != 'pad':                     # rule (a): both sides routed
+            req = max(req, CLASS_TRK_CLR.get(ocls, 0),
+                      CLASS_TRK_CLR.get(mycls, 0))
+        req = max(req,                        # rule (b): one side routed
+                  PAIR_CLR.get((ocls, mycls), 0),
+                  PAIR_CLR.get((mycls, ocls), 0))
+        if req <= base:
+            continue
+        mm_ = width / 2.0 + req + guard
+        bx0, by0, bx1, by1 = s.bbox(mm_)
+        i0 = max(0, int(math.floor((bx0 - ox) / G)))
+        i1 = min(nx - 1, int(math.ceil((bx1 - ox) / G)))
+        j0 = max(0, int(math.floor((by0 - oy) / G)))
+        j1 = min(ny - 1, int(math.ceil((by1 - oy) / G)))
+        if i1 < i0 or j1 < j0:
+            continue
+        X, Y = np.meshgrid((ox + np.arange(i0, i1 + 1) * G).astype(float),
+                           (oy + np.arange(j0, j1 + 1) * G).astype(float))
+        blk[j0:j1 + 1, i0:i1 + 1] |= (s.dist_np(X, Y) < mm_)
+    return blk
+
+
 class Field(object):
     """The blocked/via-legal lattice for ONE net at ONE width, whole board.
 
@@ -218,46 +266,10 @@ class Field(object):
                            | self.dru_overlay(L, self.width))
 
     def dru_overlay(self, layer, width):
-        """Cells blocked by a .kicad_dru clearance `QBoard.margin` cannot see.
-
-        Everything except the clearance number -- the obstacle set, the exact
-        shape distance, the 0.75-cell guard band -- is exactly what
-        `QBoard.grid` does, so this can only ever ADD blocked cells to it.  An
-        obstacle whose required clearance does not EXCEED the base is skipped
-        outright, which keeps the overlay empty for the common net.
-        """
-        blk = np.zeros((self.ny, self.nx), dtype=bool)
-        guard = self.G * 0.75
-        for s in self.qb.obstacles(layer, self.net):
-            if not s.net:
-                continue                      # keep-out: no clearance concept
-            kind = _kind(s)
-            if kind == 'ko':
-                continue
-            base = self.clr_trk if kind == 'track' else self.clr_pad
-            ocls = self.cls.get(s.net, 'Default')
-            req = base
-            if kind != 'pad':                 # rule (a): both sides routed
-                req = max(req, CLASS_TRK_CLR.get(ocls, 0),
-                          CLASS_TRK_CLR.get(self.mycls, 0))
-            req = max(req,                    # rule (b): one side routed
-                      PAIR_CLR.get((ocls, self.mycls), 0),
-                      PAIR_CLR.get((self.mycls, ocls), 0))
-            if req <= base:
-                continue
-            mm_ = width / 2.0 + req + guard
-            bx0, by0, bx1, by1 = s.bbox(mm_)
-            i0 = max(0, int(math.floor((bx0 - self.ox) / self.G)))
-            i1 = min(self.nx - 1, int(math.ceil((bx1 - self.ox) / self.G)))
-            j0 = max(0, int(math.floor((by0 - self.oy) / self.G)))
-            j1 = min(self.ny - 1, int(math.ceil((by1 - self.oy) / self.G)))
-            if i1 < i0 or j1 < j0:
-                continue
-            X, Y = np.meshgrid(
-                (self.ox + np.arange(i0, i1 + 1) * self.G).astype(float),
-                (self.oy + np.arange(j0, j1 + 1) * self.G).astype(float))
-            blk[j0:j1 + 1, i0:i1 + 1] |= (s.dist_np(X, Y) < mm_)
-        return blk
+        """This Field's view of `dru_overlay` -- see the module function."""
+        return dru_overlay(self.qb, self.net, self.mycls, self.cls, layer,
+                           width, self.clr_pad, self.clr_trk,
+                           self.ox, self.oy, self.G, self.nx, self.ny)
 
     # -- via legality ------------------------------------------------------- #
     def _via_grid(self):
@@ -313,15 +325,420 @@ class Field(object):
 
 
 # --------------------------------------------------------------------------- #
+# analytic proof of emitted geometry
+# --------------------------------------------------------------------------- #
+# THE LATTICE PROVES CELLS.  THE BOARD CARRIES SEGMENTS.
+#
+# `QBoard.grid` widens every obstacle by a 0.75-cell guard band precisely so
+# that the CONTINUOUS segment between two proved cells cannot reach an obstacle
+# the cells themselves clear.  That is sound for a step of the wavefront, which
+# is one cell long.  It is NOT sound for the output of `QBoard.smooth`, which
+# replaces a staircase with a single straight run tens of cells long and
+# accepts it on the evidence of `QBoard.clear_line` -- and `clear_line` samples
+# the run twice per cell and ROUNDS each sample to the nearest lattice cell.
+# A long, shallow diagonal therefore has its samples rounded back onto cells
+# that are free while the line itself grazes a cell that is not.
+#
+# The first whole-board GND stitch produced exactly four of these out of 205
+# islands: four 0.30 mm GND runs sitting 0.175 mm from a foreign pad on a
+# 0.200 mm rule, each 0.025 mm -- a quarter of one lattice cell -- short.
+#
+# `verify_laid` closes the loop by re-proving every object a transaction has
+# just laid ANALYTICALLY, against the same obstacle set and the same clearance
+# the search was meant to honour, with no lattice and no guard band in the
+# argument.  It is deliberately at least as strict as the raster: `margin()` is
+# its floor and the .kicad_dru netclass overlay can only raise it.  So it can
+# never admit copper the lattice would have refused, and a transaction it
+# rejects is reverted whole -- the caller loses that island or that join, and
+# the board never sees geometry that has not been proved as geometry.
+def obs_clearance(qb, field, s, width):
+    """The clearance this net owes ONE obstacle for `width` copper.
+
+    `QBoard.margin` is the floor.  The two netclass-keyed .kicad_dru families a
+    single per-net scalar cannot express -- `CLASS_TRK_CLR` and `PAIR_CLR` --
+    raise it by exactly the rule `dru_overlay` rasterises, so the analytic test
+    and the lattice cannot disagree about WHICH rule applies.
+    """
+    req = qb.margin(s, width, field.clr_pad, field.clr_trk)
+    kind = _kind(s)
+    if not s.net or kind == 'ko':
+        return req
+    base = field.clr_trk if kind == 'track' else field.clr_pad
+    ocls = field.cls.get(s.net, 'Default')
+    extra = base
+    if kind != 'pad':                     # rule (a): both sides routed copper
+        extra = max(extra, CLASS_TRK_CLR.get(ocls, 0),
+                    CLASS_TRK_CLR.get(field.mycls, 0))
+    extra = max(extra,                    # rule (b): one side routed copper
+                PAIR_CLR.get((ocls, field.mycls), 0),
+                PAIR_CLR.get((field.mycls, ocls), 0))
+    return max(req, width / 2.0 + extra)
+
+
+def _near(qb, field, layer, x0, y0, x1, y1, slack):
+    """Obstacles on `layer` whose expanded bbox can touch this segment.
+
+    One linear pass over the layer's shapes per verified transaction.  The
+    exact test is only ever run on what survives, which is what keeps a
+    per-island proof affordable at two hundred islands.
+    """
+    out = []
+    for s in qb.obstacles(layer, field.net):
+        bx0, by0, bx1, by1 = s.bbox(slack)
+        if (min(x0, x1) > bx1 or max(x0, x1) < bx0 or
+                min(y0, y1) > by1 or max(y0, y1) < by0):
+            continue
+        out.append(s)
+    return out
+
+
+def _lname(qb, lid):
+    for k, v in qr.LNAME.items():
+        if v == lid:
+            return k
+    return None
+
+
+def verify_laid(qb, field, mark):
+    """Re-prove every object laid since `mark`.  None when clean.
+
+    Returns dict(kind, ...) naming the first object that fails, so the caller
+    can report WHY it reverted rather than merely that it did.
+
+    NOTHING IS EXEMPT.  A track segment that lies wholly inside the pad it
+    leaves looks like copper the board already carries, and it was briefly
+    treated as such -- but KiCad does not see it that way.  A 0.35 mm-tall pad
+    on 0.50 mm pitch tolerates its 0.150 mm neighbour gap under the footprint's
+    own pad-to-pad allowance, while a 0.30 mm track drawn down the middle of
+    that same pad is a TRACK and owes the full 0.200 mm routed clearance, which
+    at 0.175 mm it does not meet.  The first whole-board GND stitch produced
+    exactly three of those, one each at `U18.4`, `U13.4` and `U21.4`, and all
+    three were real DRC errors.  An island whose escape cannot be proved as a
+    track is simply not stitched; the other two hundred are unaffected.
+    """
+    laid = qb.laid[mark[0]:]
+    if not laid:
+        return None
+    tracks, vias = [], []
+    for t in laid:
+        if t.GetClass() == 'PCB_VIA':
+            vias.append(t)
+        else:
+            tracks.append(t)
+
+    for t in tracks:
+        L = _lname(qb, t.GetLayer())
+        if L is None:
+            return dict(kind='track', why='unmapped layer %d' % t.GetLayer())
+        a, b = t.GetStart(), t.GetEnd()
+        w = float(t.GetWidth())
+        half = w / 2.0
+        for (x, y) in ((a.x, a.y), (b.x, b.y)):
+            if (x < qb.ex0 + qr.EDGE_CLR + half or
+                    x > qb.ex1 - qr.EDGE_CLR - half or
+                    y < qb.ey0 + qr.EDGE_CLR + half or
+                    y > qb.ey1 - qr.EDGE_CLR - half):
+                return dict(kind='track', layer=L, why='board edge clearance',
+                            at=(round(x / 1e6, 4), round(y / 1e6, 4)))
+        slack = half + max(field.clr_pad, field.clr_trk) + 500000
+        for s in _near(qb, field, L, a.x, a.y, b.x, b.y, slack):
+            need = obs_clearance(qb, field, s, w)
+            bx0, by0, bx1, by1 = s.bbox(need)
+            if (min(a.x, b.x) > bx1 or max(a.x, b.x) < bx0 or
+                    min(a.y, b.y) > by1 or max(a.y, b.y) < by0):
+                continue
+            d = qr.seg_shape_dist(a.x, a.y, b.x, b.y, s)
+            if d < need:
+                return dict(kind='track', layer=L,
+                            at=(round(a.x / 1e6, 4), round(a.y / 1e6, 4)),
+                            to=(round(b.x / 1e6, 4), round(b.y / 1e6, 4)),
+                            against=(s.net or 'keep-out'), tag=s.tag,
+                            gap_mm=round((d - half) / 1e6, 4),
+                            need_mm=round((need - half) / 1e6, 4))
+
+    for v in vias:
+        pos = v.GetPosition()
+        dia, drill = float(v.GetWidth()), float(v.GetDrill())
+        for L in qb.cu:
+            for s in _near(qb, field, L, pos.x, pos.y, pos.x, pos.y,
+                           dia / 2.0 + max(field.clr_pad, field.clr_trk)
+                           + 500000):
+                need = obs_clearance(qb, field, s, dia)
+                if s.dist(pos.x, pos.y) < need:
+                    return dict(kind='via', layer=L,
+                                at=(round(pos.x / 1e6, 4),
+                                    round(pos.y / 1e6, 4)),
+                                against=(s.net or 'keep-out'), tag=s.tag)
+        # HOLE TO HOLE HAS NO SAME-NET EXEMPTION -- it is a drill rule.
+        for h in qb.holes:
+            if h.cx == pos.x and h.cy == pos.y:
+                continue                  # this barrel's own hole
+            need = drill / 2.0 + h.r + HOLE_CLR
+            if math.hypot(h.cx - pos.x, h.cy - pos.y) < need:
+                return dict(kind='via', why='hole-to-hole',
+                            at=(round(pos.x / 1e6, 4), round(pos.y / 1e6, 4)),
+                            against=(h.net or '?'), tag=h.tag)
+    return None
+
+
+# --------------------------------------------------------------------------- #
 # escapes
 # --------------------------------------------------------------------------- #
-def pad_escapes(qb, field, pad, toward, limit=8):
+# A pad that reports NO LEGAL ESCAPE is very often not enclosed at all.
+# `QBoard.escape` casts ONE STRAIGHT stub along eight rays and fixes its length
+# at `pad extent + clearance + half-width + slack`, the shortest slack being
+# 0.15 mm.  Two independent things go wrong with that in a dense pocket:
+#
+#   * the stub is FORCED PAST the first obstacle it could legally stop short
+#     of.  `U14.7` (`I2C_SCL_INT`, a 0.50 mm-pitch WSON on the west edge) has
+#     exactly one open side, east, and a foreign `BAT_PROT_SHDN_CTL` track
+#     crossing 0.75 mm east of it.  A launch point 0.40 mm east clears both the
+#     0.35 mm-away neighbour pads AND that track at the full 0.200 mm rule; the
+#     mandatory 0.80 mm stub does not, so the pad is reported enclosed.
+#   * a straight stub cannot TURN.  The way out of a pin field is usually one
+#     short run and a bend, which no ray in any ray set can express.
+#
+# `_pocket_escapes` replaces the ray cast with a LOCAL WAVEFRONT: a few
+# millimetres of board around the terminal, rasterised by the SAME
+# `QBoard.grid` and the SAME `dru_overlay` at a QUARTER of the routing pitch,
+# walked by the SAME 8-connected no-corner-cutting step the trunk uses, and
+# terminated on any cell the WHOLE-BOARD lattice already calls free.  It hands
+# the global wavefront a genuinely free seed plus the polyline that reaches it.
+#
+# Two things make it sound rather than merely permissive:
+#
+#   * the finer pitch shrinks only the RASTERISATION GUARD BAND (0.75 cell),
+#     never a clearance.  At 0.100 mm a cell needs 0.375 mm from a 0.200 mm-rule
+#     pad; the lane down the middle of a 0.50 mm-pitch pin field offers 0.350 mm
+#     and is therefore reported blocked, though a 0.200 mm track fits it with
+#     0.200 mm to spare.  At 0.025 mm the guard is 0.019 mm and the same lane is
+#     correctly open.  The DRU clearance itself is untouched.
+#   * the seed cells are the pad's OWN CORE -- the points at least half a track
+#     width inside its own shape.  That is a CONNECTIVITY guarantee only: a
+#     polyline starting there terminates inside the pad, so KiCad joins it, and
+#     no separate centre stub is needed.  It is NOT a clearance licence.  Every
+#     emitted segment, the first one included, is held to the full routed rule
+#     by `_stub_legal` before it is chosen and by `verify_laid` after it is
+#     laid; every cell after the first is a genuinely free lattice cell.
+#
+# This is strictly additive.  `QBoard.escape` is still asked first and its
+# answers are still taken in its own order, so no route that exists today is
+# changed; a pocket escape only ever ADDS a launch option.
+ESCAPE_SUB = 4                  # local lattice pitch = G / ESCAPE_SUB
+ESCAPE_WIN_MM = 4.0             # half-window of board around the terminal
+ESCAPE_SPREAD_MM = 0.6          # keep returned launch points this far apart
+
+
+def _pad_core(pad, X, Y, half):
+    """Mask of window points at least `half` inside the pad's own shape.
+
+    A track between two of these is contained in the pad's existing copper, so
+    it adds no copper anywhere and cannot violate a clearance.  Rounded corners
+    are handled by testing the INNER box and adding the corner radius back,
+    which is exact for a roundrect and conservative for anything else.
+    """
+    a = math.radians(pad['ang'])
+    ca, sa = math.cos(a), math.sin(a)
+    ax = np.abs((X - pad['x']) * ca + (Y - pad['y']) * sa)
+    ay = np.abs(-(X - pad['x']) * sa + (Y - pad['y']) * ca)
+    ihx, ihy = max(pad['hx'] - pad['r'], 0.0), max(pad['hy'] - pad['r'], 0.0)
+    depth = pad['r'] + np.minimum(ihx - ax, ihy - ay)
+    return (ax <= ihx) & (ay <= ihy) & (depth >= half)
+
+
+def _pocket_escapes(qb, field, pad, layer, prefer, limit):
+    """Walk one terminal out of its pocket on a local, finer lattice.
+
+    Returns launch points that are FREE on the whole-board lattice, each with
+    the `path` (an nm polyline starting at the pad centre) that reaches it.
+    """
+    G, sub = field.G, ESCAPE_SUB
+    g = max(1, G // sub)
+    if g * sub != G:
+        return []
+    ci, cj = field.cell(pad['x'], pad['y'])
+    r = int(math.ceil(ESCAPE_WIN_MM * qr.MM / float(G)))
+    i0, i1 = max(0, ci - r), min(field.nx - 1, ci + r)
+    j0, j1 = max(0, cj - r), min(field.ny - 1, cj + r)
+    if i1 - i0 < 2 or j1 - j0 < 2:
+        return []
+    ox, oy = field.ox + i0 * G, field.oy + j0 * G
+    x1, y1 = field.ox + i1 * G, field.oy + j1 * G
+    nx, ny = (i1 - i0) * sub + 1, (j1 - j0) * sub + 1
+    blk = (qb.grid(layer, field.net, field.width, field.clr_pad, field.clr_trk,
+                   ox, oy, x1, y1, g)
+           | dru_overlay(qb, field.net, field.mycls, field.cls, layer,
+                         field.width, field.clr_pad, field.clr_trk,
+                         ox, oy, g, nx, ny))
+    if blk.shape != (ny, nx):
+        return []
+    # obstacles that can possibly touch this window, each with the clearance
+    # `obs_clearance` says this net owes it -- the same number `verify_laid`
+    # will re-prove the emitted polyline against, so the window search and the
+    # final proof cannot disagree.
+    obs = []
+    for s in qb.obstacles(layer, field.net):
+        req = obs_clearance(qb, field, s, field.width)
+        bx0, by0, bx1, by1 = s.bbox(req)
+        if bx1 < ox or bx0 > x1 or by1 < oy or by0 > y1:
+            continue
+        obs.append((s, req))
+    X, Y = np.meshgrid((ox + np.arange(nx) * g).astype(float),
+                       (oy + np.arange(ny) * g).astype(float))
+    core = _pad_core(pad, X, Y, field.width / 2.0)
+    si, sj = int(round((pad['x'] - ox) / g)), int(round((pad['y'] - oy) / g))
+    if not (0 <= si < nx and 0 <= sj < ny):
+        return []
+    core[sj, si] = True             # the centre always anchors the connection
+    free = (~blk) | core
+
+    # goal cells: whole-board lattice cells this window contains that the
+    # GLOBAL grid already calls free -- the seed the trunk wavefront wants.
+    goal = np.zeros((ny, nx), dtype=bool)
+    goal[::sub, ::sub] = ~field.blk[layer][j0:j1 + 1, i0:i1 + 1]
+    goal &= free
+    goal &= ~core                   # a launch point must be OUT of the pad
+
+    dist = np.full((ny, nx), -1, dtype=np.int32)
+    cur = core & free
+    dist[cur] = 0
+    hits = []
+    for d in range(1, (max(nx, ny) + 1) * 2):
+        nxt = _shift_or(cur, free) & free & (dist < 0)
+        if not nxt.any():
+            break
+        dist[nxt] = d
+        got = nxt & goal
+        if got.any():
+            js, iss = np.nonzero(got)
+            hits += [(d, int(a), int(b)) for a, b in zip(iss, js)]
+            if len(hits) >= limit * 24:
+                break
+        cur = nxt
+    if not hits:
+        return []
+
+    px = py = None
+    if prefer is not None and math.hypot(*prefer) > 0:
+        n = math.hypot(*prefer)
+        px, py = prefer[0] / n, prefer[1] / n
+
+    def rank(h):
+        d, i, j = h
+        if px is None:
+            return (d, i, j)
+        dx, dy = ox + i * g - pad['x'], oy + j * g - pad['y']
+        n = math.hypot(dx, dy) or 1.0
+        return (d, -(dx / n * px + dy / n * py), i, j)
+
+    hits.sort(key=rank)
+    spread = ESCAPE_SPREAD_MM * qr.MM
+    out, taken = [], []
+    for d, i, j in hits:
+        x, y = ox + i * g, oy + j * g
+        if any(math.hypot(x - a, y - b) < spread for a, b in taken):
+            continue
+        cells = _descend_local(dist, i, j)
+        if cells is None:
+            continue
+        b2 = blk.copy()
+        for (a, b) in (cells[0], cells[-1]):
+            b2[b, a] = False
+        pts = qr.simplify(qb.smooth(b2, cells), ox, oy, g)
+        # `pts[0]` is a cell of the pad's OWN CORE -- at least half a track
+        # width inside its shape -- so the polyline already terminates inside
+        # the pad and KiCad's connectivity engine joins it there.  Do NOT
+        # prepend the pad centre: that adds a segment which buys no
+        # connectivity and must still clear every foreign pad in the pin field.
+        if not _stub_legal(qb, field, layer, pts, pad, obs):
+            continue
+        ln = sum(math.hypot(q[0] - t[0], q[1] - t[1])
+                 for t, q in zip(pts, pts[1:]))
+        taken.append((x, y))
+        out.append(dict(x=x, y=y, w=field.width, ln=ln, path=pts))
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _stub_legal(qb, field, layer, pts, pad, obs):
+    """Re-prove an emitted pocket polyline ANALYTICALLY, segment by segment.
+
+    The wavefront proved LATTICE CELLS clear; this proves the CONTINUOUS
+    segments between them, against the same obstacle set and the same
+    `QBoard.margin` that `QBoard.escape` uses on its straight stub.  EVERY
+    segment is held to the full rule, including the one that starts inside the
+    pad's own copper -- see `verify_laid` for why that segment is not special.
+    Rejecting here rather than at emission time is what lets `_pocket_escapes`
+    fall through to its next candidate instead of losing the terminal.
+    """
+    half = field.width / 2.0
+    for a, b in zip(pts, pts[1:]):
+        if a == b:
+            continue
+        for (x, y) in (a, b):
+            if (x < qb.ex0 + qr.EDGE_CLR + half or
+                    x > qb.ex1 - qr.EDGE_CLR - half or
+                    y < qb.ey0 + qr.EDGE_CLR + half or
+                    y > qb.ey1 - qr.EDGE_CLR - half):
+                return False
+        for s, req in obs:
+            bx0, by0, bx1, by1 = s.bbox(req)
+            if (min(a[0], b[0]) > bx1 or max(a[0], b[0]) < bx0 or
+                    min(a[1], b[1]) > by1 or max(a[1], b[1]) < by0):
+                continue
+            if qr.seg_shape_dist(a[0], a[1], b[0], b[1], s) < req:
+                return False
+    return True
+
+
+def _descend_local(dist, i, j):
+    """Walk a local distance field downhill to a zero cell."""
+    cells = [(i, j)]
+    ny, nx = dist.shape
+    while dist[j, i] > 0:
+        want = dist[j, i] - 1
+        step = None
+        for (dx, dy) in D8:
+            vi, vj = i + dx, j + dy
+            if 0 <= vi < nx and 0 <= vj < ny and dist[vj, vi] == want:
+                step = (vi, vj)
+                break
+        if step is None:
+            return None
+        i, j = step
+        cells.append((i, j))
+    cells.reverse()
+    return cells
+
+
+def emit_escape(qb, net, layer, pad, e):
+    """Lay ONE escape -- a straight `QBoard.escape` stub or a pocket polyline.
+
+    Returns the run length in nm.  A degenerate zero-length segment is never
+    emitted: a launch point that rounds onto the pad centre needs no copper of
+    its own, the trunk already starts inside the pad.  Every segment that IS
+    emitted is proved in full by `verify_laid`; none is exempt.
+    """
+    pts = e.get('path') or [(pad['x'], pad['y']), (e['x'], e['y'])]
+    total = 0.0
+    for a, b in zip(pts, pts[1:]):
+        if a == b:
+            continue
+        qb.track(net, layer, a[0], a[1], b[0], b[1], e['w'])
+        total += math.hypot(b[0] - a[0], b[1] - a[1])
+    return total
+
+
+def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
     """Legal launch points for one pad, on every outer layer it lives on.
 
-    Delegates to the accepted `QBoard.escape`, which owns PR-5B (never narrower
-    than the rule minimum) and PR-5C (the stub is analytically cleared against
-    the same obstacle set as the trunk).  Returns a list of
-    dict(layer, x, y, w, ln, pad).
+    `QBoard.escape` is asked FIRST and its answers are kept in its own order --
+    it owns PR-5B (never narrower than the rule minimum) and PR-5C (the stub is
+    analytically cleared against the same obstacle set as the trunk).
+    `_pocket_escapes` then ADDS the launch points a straight stub of fixed
+    length cannot reach.  Returns a list of dict(layer, x, y, w, ln, pad, i, j)
+    with an optional `path` polyline.
     """
     out = []
     for L in ('F', 'B'):
@@ -330,14 +747,24 @@ def pad_escapes(qb, field, pad, toward, limit=8):
         prefer = None
         if toward is not None:
             prefer = (toward[0] - pad['x'], toward[1] - pad['y'])
-        for c in qb.escape(pad, L, field.width, field.width, field.clr_pad,
-                           field.clr_trk, field.G, field.ox, field.oy,
-                           prefer=prefer)[:limit]:
+        cands = list(qb.escape(pad, L, field.width, field.width, field.clr_pad,
+                               field.clr_trk, field.G, field.ox, field.oy,
+                               prefer=prefer)[:limit])
+        seen = set((c['x'], c['y']) for c in cands)
+        if pocket:
+            for c in _pocket_escapes(qb, field, pad, L, prefer, limit):
+                if (c['x'], c['y']) not in seen:
+                    seen.add((c['x'], c['y']))
+                    cands.append(c)
+        for c in cands:
             i, j = field.cell(c['x'], c['y'])
             if not field.inside(i, j):
                 continue
-            out.append(dict(layer=L, x=c['x'], y=c['y'], w=c['w'],
-                            ln=c['ln'], pad=pad, i=i, j=j))
+            e = dict(layer=L, x=c['x'], y=c['y'], w=c['w'],
+                     ln=c['ln'], pad=pad, i=i, j=j)
+            if c.get('path'):
+                e['path'] = c['path']
+            out.append(e)
     return out
 
 
@@ -607,9 +1034,7 @@ def route_join(qb, field, src_pads, dst_pads, escape_limit=8, via_cost_mm=1.5,
                                 % (gap / 1e6, need / 1e6))
 
     m = qb.mark()
-    qb.track(net, start['layer'], start['pad']['x'], start['pad']['y'],
-             start['x'], start['y'], start['w'])
-    total += start['ln']
+    total += emit_escape(qb, net, start['layer'], start['pad'], start)
     prev = None
     for k, pts in polylines:
         if prev is not None:
@@ -621,9 +1046,14 @@ def route_join(qb, field, src_pads, dst_pads, escape_limit=8, via_cost_mm=1.5,
             qb.track(net, k, a[0], a[1], b[0], b[1], field.width)
             total += math.hypot(b[0] - a[0], b[1] - a[1])
         prev = k
-    qb.track(net, finish['layer'], finish['pad']['x'], finish['pad']['y'],
-             finish['x'], finish['y'], finish['w'])
-    total += finish['ln']
+    total += emit_escape(qb, net, finish['layer'], finish['pad'], finish)
+    # THE SMOOTHER IS NOT A PROOF.  Re-prove the emitted geometry analytically
+    # and drop the join whole if any segment or barrel fails; a join that
+    # cannot be proved as geometry must not reach the gate as copper.
+    bad = verify_laid(qb, field, m)
+    if bad is not None:
+        qb.revert(m)
+        return dict(ok=False, reason='UNPROVED_GEOMETRY', detail=bad)
     return dict(ok=True, mm=total / 1e6, vias=len(vias),
                 via_xy=[(round(x / 1e6, 4), round(y / 1e6, 4)) for x, y in vias],
                 layers=[k for k, _ in polylines],
@@ -890,14 +1320,23 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
             blk[j, i] = False
         cells = qb.smooth(blk, cells)
     pts = qr.simplify(cells, field.ox, field.oy, field.G)
-    qb.track(net, L, pad['x'], pad['y'], e['x'], e['y'], e['w'])
-    total = e['ln']
+    m = qb.mark()
+    total = emit_escape(qb, net, L, pad, e)
     for a, b in zip(pts, pts[1:]):
         qb.track(net, L, a[0], a[1], b[0], b[1], field.width)
         total += math.hypot(b[0] - a[0], b[1] - a[1])
     vx, vy = pts[-1]
     qb.via(net, vx, vy, field.via_dia, field.via_drill)
     forbid_via(field, vx, vy)
+    # Prove the stub, the run and the barrel analytically.  `stitch_net` owns
+    # the revert, so this island simply reports that it could not be proved and
+    # the other two hundred are unaffected.
+    bad = verify_laid(qb, field, m)
+    if bad is not None:
+        return dict(ok=False, reason='UNPROVED_GEOMETRY', pad=pad['ref'],
+                    why='%s at %s vs %s' % (bad.get('kind'), bad.get('at'),
+                                            bad.get('against', bad.get('why'))),
+                    detail=bad)
     return dict(ok=True, pad=pad['ref'], layer=L, mm=round(total / 1e6, 3),
                 via_xy=(round(vx / 1e6, 4), round(vy / 1e6, 4)))
 

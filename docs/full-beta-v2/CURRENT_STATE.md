@@ -13,6 +13,28 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-579 (whole-board GND plane stitch; 204 islands PROMOTED):** `GND`
+  was the only net owning filled pours (In1/In4) and carried 225 of the 402
+  retained open edges left by D-578. `maze3d.stitch_net` now proves what it
+  lays: `verify_laid` re-proves every emitted object ANALYTICALLY (the
+  `QBoard.smooth`/`clear_line` staircase-to-straight-run step is not a proof),
+  NOTHING is exempt (a track inside its own pad is still a track and owes the
+  full routed clearance -- three real DRC errors at `U18.4`/`U13.4`/`U21.4`),
+  and `_pocket_escapes` starts its polyline on a cell of the pad's own core so
+  the useless centre stub is never emitted. Tightening RAISED yield. 204 of
+  233 unplanted islands promoted: 204 vias, 255.455 mm of 0.300 mm track;
+  `GND` open edges 225 -> 26, whole-board retained open edges **402 -> 203**,
+  raw ratsnest 430 -> 223, no net regressed. The 29 that failed are reported
+  (17 `NO_VIA_SITE`, 11 `NO_LEGAL_ESCAPE`, 1 `UNPROVED_GEOMETRY` at `U14.1`
+  correctly rejected under D-269). Verified from the board files alone: 0
+  removed, 514 added and all on `GND`; real zone-refilled schematic-parity
+  KiCad DRC exactly 199/5/1 inherited with ZERO attributable and ZERO parity
+  errors; fill-stable. Authority `61df98a1...` -> `d9d62ae3...`; evidence
+  `24c8ba0b...`. `qrouter.py`/`incremental_router.py` unmodified; D-269/D-186,
+  RGB, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, approved Demo NC and `hardware/beta-v2/`
+  intact. **Next:** `+3V3`, now the largest block at 79 of 203 edges and
+  pour-less -- screen maze MST vs. adding a `+3V3` internal pour. No owner
+  decision.
 - **Demo D-578 (whole-board all-layer maze router; 21 nets PROMOTED):** the
   hand-authored single-layer corridor families that produced every `NO_PATH`
   from D-4xx to D-577 are replaced by `maze3d.py`, one reusable multi-source /

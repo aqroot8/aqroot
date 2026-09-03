@@ -1,0 +1,129 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "base_board_sha256": "61df98a1eb20deb6b9c3222333d2f8e587891bd6145f3d480057948c395b3722",
+ "beta_v2_modified": false,
+ "connectivity": {
+  "after": {
+   "connected_retained_nets": 140,
+   "open_retained_nets": 33,
+   "raw_board_ratsnest": 223,
+   "retained_multi_pad_nets": 173,
+   "retained_open_edges": 203
+  },
+  "before": {
+   "connected_retained_nets": 140,
+   "open_retained_nets": 33,
+   "raw_board_ratsnest": 430,
+   "retained_multi_pad_nets": 173,
+   "retained_open_edges": 402
+  },
+  "gnd_open_edges_after": 26,
+  "gnd_open_edges_before": 225,
+  "nets_regressed": []
+ },
+ "copper_preservation": {
+  "added_object_nets": [
+   "GND"
+  ],
+  "added_objects": 514,
+  "foreign_added_nets": [],
+  "removed_objects": 0
+ },
+ "decision": "D-579",
+ "drc": {
+  "attributable": 0,
+  "exit": 0,
+  "inherited_baseline": {
+   "hole_clearance": 5,
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  },
+  "refill_zones": true,
+  "schematic_parity_errors": 0,
+  "violation_types": {
+   "hole_clearance": 5,
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  }
+ },
+ "failed_nets": [],
+ "fill_stable": true,
+ "mode": "stitch",
+ "promoted_board_sha256": "d9d62ae34eaf188312efbd82025dd9d39fee65136dd53d76c0675d1ef2cdc88c",
+ "routed_nets": [
+  "GND"
+ ],
+ "stitch": {
+  "contract": {
+   "clr": 200000,
+   "netclass": "GND",
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 300000
+  },
+  "failure_reasons": {
+   "NO_LEGAL_ESCAPE": 11,
+   "NO_VIA_SITE": 17,
+   "UNPROVED_GEOMETRY": 1
+  },
+  "islands_stitched": 204,
+  "islands_unreachable": 29,
+  "track_mm": 255.455,
+  "unreachable_islands": [
+   "C1.1",
+   "C37.2",
+   "C63.2",
+   "D2.2",
+   "D4.2",
+   "D5.2",
+   "J1.43",
+   "J1.50",
+   "J3.A12,J3.B1",
+   "MK1.4",
+   "R110.2",
+   "R111.2",
+   "R36.2",
+   "R40.2",
+   "U11.11",
+   "U11.4",
+   "U11.5",
+   "U14.1",
+   "U14.4",
+   "U17.2",
+   "U2.12",
+   "U2.2",
+   "U2.3",
+   "U3.12",
+   "U3.3",
+   "U9.12",
+   "U9.16",
+   "U9.26",
+   "U9.6"
+  ],
+  "vias": 204
+ },
+ "title": "Demo whole-board GND plane stitch; 204 islands PROMOTED"
+}
