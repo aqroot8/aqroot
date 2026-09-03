@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-535 (USB VBUS RAW + shield atomic refloor promoted):** the complete
+  old 14-object shield tree was withdrawn, the qualified seven-land RAW route
+  installed, and all five shield lands replayed at the live 0.250 mm VBUS
+  clearance. Both replay orders close; order zero is promoted. RAW falls from
+  four opens to zero, shield remains at zero, and the board improves to 55 open
+  retained nets / 456 edges. Real refilled parity DRC remains exactly 199/5/1
+  with no attributable violation; board SHA-256 is `801cfa7e...`. D-269/D-186,
+  RGB, XGPIO4/XGPIO5, Demo NCs, accessory-power copper, and production hardware
+  are intact. **Next:** atomically route the adjacent `USB_VBUS_CHG` charger-
+  entry tree (10 open edges) while preserving the qualified RAW/shield boundary.
+  No owner decision is open.
 - **Demo D-531 (USB VBUS planar neck/pour refuted; POFV qualified):** a
   deterministic 0.50-to-0.15 mm launch sweep proves the coincident J3.A9/B4
   VBUS land has no planar escape. Both lateral gaps are exactly the 0.200 mm

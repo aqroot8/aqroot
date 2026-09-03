@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_RAW plus shield atomic refloor promoted (2026-09-03)
+
+`route_usb_vbus_shield_refloor_scratch.py` withdraws the complete old shield
+tree, installs the qualified seven-land RAW site-zero route, and replays all
+five shield lands in one gated transaction. A 0.20 mm shield replay was
+rejected by real DRC; both deterministic orders pass when the live 0.250 mm
+VBUS clearance is enforced. Order zero is promoted. RAW is fully connected,
+the shield remains fully connected, and the board improves to 55 open retained
+nets / 456 edges with real refilled schematic-parity DRC 199/5/1 and no
+attributable report. Board SHA-256 is `801cfa7e...`. Next route the adjacent
+10-edge `USB_VBUS_CHG` charger-entry tree without disturbing this boundary.
+
 ## USB_VBUS_RAW shield-refloor boundary qualified (2026-09-03)
 
 `screen_usb_vbus_bcu_refloor.py` proves the minimum complete-net boundary for

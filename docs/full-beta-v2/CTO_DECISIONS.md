@@ -9,6 +9,31 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-535 · 2026-09-03 · Demo USB_VBUS_RAW plus shield atomic refloor promoted:**
+The D-534 minimum boundary is implemented as a reusable two-net transaction.
+It withdraws all 14 accepted `Net-(J3-SHIELD)` copper objects, installs the
+complete qualified seven-land `/01_POWER_TREE/USB_VBUS_RAW` site-zero route,
+then replays all five shield lands around the new 0.50 mm B.Cu VBUS trunk.  A
+first replay using only the RAW harness's 0.20 mm geometric obstacle clearance
+correctly failed real DRC with eight/nine VBUS-rule clearance reports and was
+not promoted.  Enforcing the live `VBUS_CHG routed clearance` value of 0.250 mm
+for the shield replay makes both deterministic branch orders pass.
+
+The promoted order removes only the complete old 14-object shield tree and
+adds 21 RAW objects (nine F.Cu tracks, eight B.Cu tracks, four vias) plus a
+complete 25-object shield tree (two F.Cu tracks, 21 B.Cu tracks, two vias).
+Fresh ledger connectivity closes RAW from four open edges to zero and keeps
+the shield at zero; the full board improves from 56 open retained nets / 460
+edges to 55 / 456.  Independent real zone-refilled schematic-parity DRC is
+exactly 199 footprint-library / five inherited hole-clearance / one inherited
+solder-mask-bridge reports with no clearance, dangling, short, or crossing
+violation.  Board SHA-256 is `801cfa7e...`.  D-269/D-186, all three RGB routes,
+XGPIO4/XGPIO5, approved Demo NCs, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact.  Next route the adjacent retained
+`USB_VBUS_CHG` charger-entry tree (10 open edges) as one atomic power transaction
+without disturbing the now-qualified RAW/shield boundary.  No owner decision
+is open.
+
 **D-534 · 2026-09-03 · Demo USB_VBUS_RAW minimum shield-refloor boundary qualified:**
 The D-533 successor inventories the complete accepted B.Cu nets in the
 screened C20-to-J3.A9 north-edge corridor and finds exactly one copper
