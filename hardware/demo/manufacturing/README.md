@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_CHG whole-tree endpoint boundary bounded (2026-09-03)
+
+`route_usb_vbus_chg_tree_scratch.py` is the atomic 11-land successor to the
+promoted RAW/shield transaction. It holds the live 0.50 mm width, 0.250 mm
+clearance, and 0.90/0.40 mm via contract. Independent screens qualify nine
+endpoint escapes; only `R91.1` and `U11.10` have no legal full-width escape.
+The complete transaction stops at the first wall and emits no partial candidate.
+The authoritative board remains `801cfa7e...`, 55 open nets / 456 edges, with
+accepted DRC 199/5/1. Next qualify governed package necks at those two lands and
+replay them through this whole-tree gate; keep every inner haul at 0.50 mm.
+
 ## USB_VBUS_RAW plus shield atomic refloor promoted (2026-09-03)
 
 `route_usb_vbus_shield_refloor_scratch.py` withdraws the complete old shield

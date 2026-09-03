@@ -9,6 +9,26 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-536 · 2026-09-03 · Demo USB_VBUS_CHG whole-tree endpoint boundary bounded:**
+The first reusable atomic harness for the adjacent 11-land
+`/01_POWER_TREE/USB_VBUS_CHG` tree enforces the live 0.50 mm width, 0.250 mm
+routed clearance, and 0.90/0.40 mm ordinary-via process. Independent clean-board
+screens qualify ordinary In2 escapes for nine lands. `R91.1` has no legal
+full-width escape, blocked by its local programming-resistor cluster and accepted
+tracks; `U11.10` independently has no legal full-width escape, bounded by the
+charger package, `R36.1`, and the board edge. The atomic ordered screen reserves
+the first seven lands and stops correctly at `R91.1`; it emits no candidate and
+cannot promote dangling partial copper.
+
+Real scratch DRC is the accepted 199 footprint-library / five inherited
+hole-clearance / one inherited solder-mask-bridge reports plus seven expected
+dangling scratch vias. The authoritative PCB remains byte-identical at
+`801cfa7e...`, 55 open retained nets / 456 edges. D-269/D-186, USB RAW/shield,
+all three RGB routes, XGPIO4/XGPIO5, Demo NCs, accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next derive package-specific governed necks
+for `R91.1` and `U11.10`, then replay them into this whole-tree atomic harness;
+do not weaken the 0.50/0.250 mm haul contract. No owner decision is open.
+
 **D-535 · 2026-09-03 · Demo USB_VBUS_RAW plus shield atomic refloor promoted:**
 The D-534 minimum boundary is implemented as a reusable two-net transaction.
 It withdraws all 14 accepted `Net-(J3-SHIELD)` copper objects, installs the

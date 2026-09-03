@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-536 (USB VBUS CHG whole-tree endpoint boundary bounded):** a new
+  atomic 11-land harness enforces 0.50 mm width, 0.250 mm clearance, and
+  0.90/0.40 mm vias. Clean-board screens qualify nine endpoint escapes;
+  `R91.1` and `U11.10` independently have no legal full-width escape. The
+  ordered transaction reserves seven endpoints then refuses the `R91.1` wall,
+  with no candidate or authoritative copper emitted. Board `801cfa7e...`
+  remains at 55 open retained nets / 456 edges and authoritative DRC 199/5/1.
+  **Next:** qualify package-specific governed necks at `R91.1` and `U11.10`,
+  then replay both into the complete atomic tree without weakening the haul.
+  No owner decision is open.
 - **Demo D-535 (USB VBUS RAW + shield atomic refloor promoted):** the complete
   old 14-object shield tree was withdrawn, the qualified seven-land RAW route
   installed, and all five shield lands replayed at the live 0.250 mm VBUS
