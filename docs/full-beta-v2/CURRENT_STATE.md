@@ -13,6 +13,13 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-560 (corrected ninth atomic SYS case bounded; no promotion):** case
+  8 varies the ninth qualified U12.10 witness, reserves all 13 endpoints, and
+  again completes nine joins before exhausting 24 trials. All 15 failed joins
+  are `NO_PATH`; the same four components remain: the main U12/SW9/capacitor
+  tree, isolated U11.1, the C33/C64 pair, and the L4/U21 pair. Authority stays
+  byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges. **Next:**
+  continue the corrected non-overlapping window at case 9. No owner decision.
 - **Demo D-559 (corrected eighth atomic SYS case bounded; no promotion):** case
   7 varies the eighth qualified U12.10 witness, reserves all 13 endpoints, and
   again completes nine joins before exhausting 24 trials. All 15 failed joins

@@ -2723,3 +2723,13 @@ explicit C26 witness without weakening its 0.50/0.250 mm haul or 0.90/0.40 mm
 power-via contract. All 24 C26 witnesses stop at pristine `C27.1 NO_VIA_SITE`,
 even with C27 first. Next inventory the C27 pocket and screen the smallest
 joint complete-net withdrawal/replay boundary.
+
+## BQ25185 SYS corrected atomic case 8 (2026-09-03)
+
+The resumable complete-net refloor harness screened corrected case 8 with the
+ninth qualified `U12.10` witness. All 13 governed endpoints reserve and nine
+joins complete; the other 15 finite trials report `NO_PATH`, leaving the same
+four components: the main U12/SW9/capacitor tree, isolated U11.1, C33/C64, and
+L4/U21. The incomplete tree correctly prevents all replay, DRC, candidate, and
+promotion stages. Board `64e5ae37...` remains byte-identical at 54 open
+retained nets / 446 edges. Continue at case 9 without replaying cases 0--8.
