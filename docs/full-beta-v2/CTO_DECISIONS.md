@@ -5527,3 +5527,76 @@ Beta-v2 modification was introduced.
 This closes the unchanged fixed-dogleg waypoint family. Do not replay it
 without materially changed surrounding geometry. Park BQ25185_SYS and advance
 an independent retained-net transaction.
+
+# D-578 · 2026-09-03 · Demo whole-board all-layer maze router; 21 retained nets PROMOTED
+
+Every Demo routing harness from D-4xx to D-577 joined two reserved endpoints by
+enumerating a hand-authored corridor family -- direct, x-then-y, y-then-x, a
+spine lattice, and at most one brute-forced transition via -- on ONE signal
+layer declared before the search began. Those families are large but shallow:
+an L-shape cannot walk around an obstacle it does not already straddle. On a
+board whose inner layers measure 81.2 % (In2) and 89.7 % (In3) free at
+0.20/0.20 mm, that run of `NO_PATH` decisions was reporting a limit of the
+SEARCH, not a capacity wall in the COPPER.
+
+`hardware/demo/manufacturing/maze3d.py` replaces the family with one reusable
+primitive. `route_join` runs a single breadth-first wavefront over the whole
+(layer, x, y) lattice: in plane it is the 8-connected no-corner-cutting
+wavefront already qualified in `qrouter.wave`; between planes it adds a
+through-via move at an explicit `via_cost_mm`, delivered on a delayed frontier
+so the cost is honoured exactly. It is multi-source and multi-target -- every
+legal escape of every pad in the source island seeds it and every escape of the
+target island terminates it -- so the router chooses the pad pair, the layers
+and the via count instead of receiving them. Blocked grids come from the SAME
+`QBoard.grid` rasteriser, the SAME per-obstacle margin and the SAME 0.75-cell
+guard band the accepted single-layer harnesses use; no clearance is relaxed.
+Via legality is rasterised on every copper layer of the stack including the
+In1/In4 GND references, plus an explicit hole-to-hole test. Nets that own a
+filled pour are completed by `stitch_net` onto that pour rather than by a
+pad-to-pad MST. `qrouter.py` and `incremental_router.py` are NOT modified, so
+every existing G-contract fixture and accepted route stays byte-identical.
+
+`route_maze_batch.py` is the authority around that proposer. It routes each net
+at its OWN netclass width/via/clearance raised where the project DRU is
+stricter, restricts a netclass to the layers the DRU permits, and refuses to
+touch the authoritative board unless real KiCad `--refill-zones --save-board
+--severity-all --schematic-parity` DRC is clean outside the three inherited
+classes, the whole-board retained open-edge count strictly decreases with no
+net regressed, no pre-existing object is removed, and every ADDED object lies
+on a net that SUCCEEDED -- which proves each failed net's revert rather than
+assuming it. Matched USB differential pairs and the NFC receive arms are
+excluded by name: their length/symmetry physics is not modelled here and they
+keep their purpose-built harnesses.
+
+Twenty-one retained nets are PROMOTED in one gated transaction:
+`ACC_5V_FB`, `ISET`, `DISP_BL_CTL_STRAP`, `BTN_A_N`, `EXT_SCL`, `EXT_SCL_BUF`,
+`EXT_SDA_BUF`, `NATIVE_A_HDR`, `NATIVE_B_HDR`, `TCA4307_READY`, `WAKE_GATE_S`,
+`I2S_BCLK`, `I2S_MIC_DIN`, `I2S_SPK_DOUT`, `NFC_5V_EN`, `SPI_A_MOSI`,
+`SPI_B_MISO`, `SX1262_CS_N`, `SX1262_RST_N`, `SX1262_RXEN` and
+`Net-(U11-TS_MR)`. Each closes to zero open edges. Whole-board retained open
+edges fall 446 -> 402 and open retained nets 54 -> 33; no net regressed. This
+includes `DISP_BL_CTL_STRAP`, a wall characterized as boxed and unroutable by
+the corridor families, and both Community-Port native GPIO header nets.
+
+The promotion was re-verified independently of the driver, from the two board
+files alone: 0 objects removed, 439 objects added and every one of them on one
+of the 21 routed nets; real zone-refilled schematic-parity KiCad DRC reports
+exactly 199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge and
+ZERO attributable violations and ZERO schematic-parity errors; the promoted
+board is byte-identical after `--refill-zones --save-board`, so its pours are
+fill-stable. Approved Demo NC contacts J5.9-12 / J5.15-18 remain exactly as
+expected. D-269 and D-186 stay active DRU rules under a clean DRC, and
+`ACC_5V_SW_EN`, all three RGB replacements, XGPIO4/XGPIO5 and every previously
+accepted route are untouched -- no copper was moved or removed. `hardware/beta-v2/`
+is unmodified.
+
+Authority advances from
+`64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe` to
+`61df98a1eb20deb6b9c3222333d2f8e587891bd6145f3d480057948c395b3722`.
+Compact evidence is `hardware/demo/manufacturing/evidence/d578-maze-batch21.json`,
+canonical SHA-256
+`97f6ff521132b6ee35366756117101578a99803169505484e53f5909b76c09f0`.
+
+Next drive the remaining 33 open retained nets through this same gate in
+coherent batches, splitting on the first attributable DRC report rather than
+returning to per-net corridor enumeration. No owner decision is open.

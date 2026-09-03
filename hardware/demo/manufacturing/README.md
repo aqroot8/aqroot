@@ -2,6 +2,39 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Whole-board all-layer maze router; 21 nets promoted (2026-09-03)
+
+`maze3d.py` + `route_maze_batch.py` replace the hand-authored single-layer
+corridor families. `maze3d.route_join` is one multi-source / multi-target
+breadth-first wavefront over the whole `(layer, x, y)` lattice with a costed
+through-via move, built on the SAME `QBoard.grid` rasteriser, margins and guard
+band as the accepted harnesses; `route_maze_batch.py` is the authority that
+routes each net at its own DRU-raised netclass contract and refuses to write the
+board unless real zone-refilled schematic-parity KiCad DRC is clean outside the
+three inherited classes, whole-board retained open edges strictly decrease with
+no net regressed, no object is removed, and every added object is on a net that
+succeeded. `qrouter.py` and `incremental_router.py` are unmodified.
+
+Twenty-one retained nets promoted in one transaction: whole-board retained open
+edges **446 -> 402**, open retained nets **54 -> 33**, each routed net closed to
+zero. Independently re-verified from the board files: 0 removed / 439 added
+objects all on routed nets, DRC exactly 199 footprint-library / 5
+hole-clearance / 1 solder-mask-bridge with zero attributable and zero
+schematic-parity reports, board fill-stable. Authority `64e5ae37...` ->
+`61df98a1...`; evidence `evidence/d578-maze-batch21.json`
+(`97f6ff52...`). D-269/D-186, RGB, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, approved Demo
+NC contacts and `hardware/beta-v2/` intact.
+
+Usage:
+
+    python3 route_maze_batch.py NET [NET ...] --work DIR --out DIR/run.json [--promote]
+
+Next: batch the remaining 33 open retained nets through the same gate, splitting
+on the first attributable DRC report. Do NOT return to per-net corridor
+enumeration for a net this router has not been tried on.
+
+Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
+
 ## BQ25185_SYS U11.1 two-net pocket boundary exhausted (2026-09-03)
 
 The governed SYS pocket framework now screens complete-net withdrawal sets of

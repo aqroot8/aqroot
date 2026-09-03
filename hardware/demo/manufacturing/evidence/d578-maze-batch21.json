@@ -1,0 +1,116 @@
+{
+  "approved_demo_nc": {
+    "expected": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "missing": [],
+    "observed": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "unexpected": []
+  },
+  "base_board_sha256": "64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe",
+  "connectivity": {
+    "after": {
+      "connected_retained_nets": 140,
+      "open_retained_nets": 33,
+      "raw_board_ratsnest": 430,
+      "retained_multi_pad_nets": 173,
+      "retained_open_edges": 402
+    },
+    "before": {
+      "connected_retained_nets": 119,
+      "open_retained_nets": 54,
+      "raw_board_ratsnest": 475,
+      "retained_multi_pad_nets": 173,
+      "retained_open_edges": 446
+    },
+    "nets_regressed": []
+  },
+  "copper_preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/ACC_5V_FB",
+      "/01_POWER_TREE/ISET",
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "/09_COMMUNITY_HEADER/EXT_SCL",
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+      "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "/I2S_BCLK",
+      "/I2S_MIC_DIN",
+      "/I2S_SPK_DOUT",
+      "/NFC_5V_EN",
+      "/SPI_A_MOSI",
+      "/SPI_B_MISO",
+      "/SX1262_CS_N",
+      "/SX1262_RST_N",
+      "/SX1262_RXEN",
+      "Net-(U11-TS_MR)"
+    ],
+    "added_objects": 439,
+    "foreign_added_nets": [],
+    "removed_objects": 0
+  },
+  "decision": "D-578",
+  "drc": {
+    "attributable": 0,
+    "exit": 0,
+    "inherited_baseline": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "refill_zones": true,
+    "schematic_parity_errors": 0,
+    "violation_types": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    }
+  },
+  "promoted_board_sha256": "61df98a1eb20deb6b9c3222333d2f8e587891bd6145f3d480057948c395b3722",
+  "routed_nets": [
+    "/01_POWER_TREE/ACC_5V_FB",
+    "/01_POWER_TREE/ISET",
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/09_COMMUNITY_HEADER/EXT_SCL",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/I2S_BCLK",
+    "/I2S_MIC_DIN",
+    "/I2S_SPK_DOUT",
+    "/NFC_5V_EN",
+    "/SPI_A_MOSI",
+    "/SPI_B_MISO",
+    "/SX1262_CS_N",
+    "/SX1262_RST_N",
+    "/SX1262_RXEN",
+    "Net-(U11-TS_MR)"
+  ],
+  "schema": 1,
+  "transaction": "maze3d whole-board all-layer 21-net batch",
+  "zone_refill_stable": true
+}

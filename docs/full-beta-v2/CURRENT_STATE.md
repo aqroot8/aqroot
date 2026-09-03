@@ -13,6 +13,29 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-578 (whole-board all-layer maze router; 21 nets PROMOTED):** the
+  hand-authored single-layer corridor families that produced every `NO_PATH`
+  from D-4xx to D-577 are replaced by `maze3d.py`, one reusable multi-source /
+  multi-target breadth-first wavefront over the whole `(layer, x, y)` lattice
+  with an explicit costed through-via move, and by the `route_maze_batch.py`
+  authority around it. Twenty-one retained nets promoted in one gated
+  transaction; whole-board retained open edges **446 -> 402**, open retained
+  nets **54 -> 33**, every routed net closed to zero, none regressed. Verified
+  independently from the board files: 0 copper objects removed, 439 added and
+  all on routed nets, real zone-refilled schematic-parity KiCad DRC exactly
+  199/5/1 inherited with ZERO attributable and ZERO parity errors, and the
+  board is fill-stable. Authority advances `64e5ae37...` -> `61df98a1...`;
+  evidence `97f6ff52...`. `qrouter.py`/`incremental_router.py` unmodified;
+  D-269/D-186, RGB, XGPIO4/XGPIO5, `ACC_5V_SW_EN`, approved Demo NC, and
+  `hardware/beta-v2/` intact. **Next:** batch the remaining 33 open retained
+  nets through the same gate. No owner decision.
+- **Demo D-577 (SYS U11.1 waypoint-bridge family bounded; no promotion):** the
+  fixed qualified U11.1 dogleg was preserved while a bounded two-leg waypoint
+  bridge screened 48 candidate joins across In2 and In3. Every trial failed the
+  first leg with `NO_PATH`; SYS stays four-component and unpromotable. Authority
+  was byte-identical at `64e5ae37...`. This closes the unchanged fixed-dogleg
+  waypoint family; `BQ25185_SYS` is PARKED for the corridor approach and is now
+  a target for the D-578 maze router instead. No owner decision.
 - **Demo D-576 (U11.1 two-net pocket boundary exhausted; no promotion):** the
   reusable governed SYS pocket screen now enumerates complete-net withdrawal
   sets up to size two. All seven single-net and 21 two-net cases around isolated
