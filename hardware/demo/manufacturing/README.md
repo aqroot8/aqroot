@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_CHG minimum refloor transaction bounded (2026-09-03)
+
+`route_usb_vbus_chg_refloor_scratch.py` is the atomic D-539 harness. It removes
+complete `REC_LIM_IN` and `ILIM_VSET` copper only on scratch boards, installs
+the two qualified governed CHG necks, routes the complete eleven-land tree,
+and then replays both removed nets. Case zero closes every CHG join at the
+locked 0.50/0.250 mm haul contract but cannot replay `REC_LIM_IN` at
+0.200/0.200 mm from Q5.3 to R95.1. Authority remains `801cfa7e...` and no
+partial candidate is retained. Next add a bounded joint `REC_LIM_IN` replay
+refloor around that complete tree; the larger qualified `REC_GATE_N` boundary
+is the fallback. Do not spend the next iteration enumerating equivalent CHG
+neck pairs before addressing the replay wall.
+
 ## USB_VBUS_CHG minimum pocket-refloor boundary qualified (2026-09-03)
 
 `screen_usb_vbus_chg_pocket_refloor.py` inventories every accepted copper net

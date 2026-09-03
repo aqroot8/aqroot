@@ -9,6 +9,28 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-539 · 2026-09-03 · Demo USB_VBUS_CHG minimum refloor transaction bounded:**
+The recovered D-538 successor adds an atomic scratch harness that withdraws
+the complete `REC_LIM_IN` and `ILIM_VSET` trees, installs the two qualified
+governed package necks, routes all eleven `USB_VBUS_CHG` lands, and then
+requires both displaced nets to replay before it can emit or promote a
+candidate. Case zero closes all ten CHG joins at the locked 0.50 mm haul width
+and 0.250 mm clearance, using ordinary 0.90/0.40 mm vias outside the governed
+R91/U11 necks. Replay then deterministically stops at `REC_LIM_IN`: no legal
+0.200/0.200 mm B.Cu corridor remains from `Q5.3` to `R95.1`. `ILIM_VSET` is
+never attempted because atomic replay correctly stops at the first failure.
+
+This rejects the minimum two-net / 12-object boundary as currently routed; it
+does not reject the complete CHG topology or justify leaving either control
+net open. The remaining 34 neck pairs are not blindly enumerated because the
+failure is now the displaced-net replay geometry, not a CHG join. The
+authoritative PCB is byte-identical at `801cfa7e...`; no DRC candidate or
+partial copper is promoted. D-269/D-186, USB RAW/shield, RGB, XGPIO4/XGPIO5,
+Demo NCs, accessory-power copper, and `hardware/beta-v2/` remain intact. Next
+screen a bounded joint `REC_LIM_IN` replay refloor around the case-zero CHG
+tree, with the larger already-qualified `REC_GATE_N` + `ILIM_VSET` boundary as
+the fallback atomic transaction. No owner decision is open.
+
 **D-538 · 2026-09-03 · Demo USB_VBUS_CHG minimum pocket-refloor boundary qualified:**
 The D-537 successor deterministically inventories all accepted copper nets
 having a track/via endpoint within 5 mm of `R91.1` or `U11.10`, then removes

@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-539 (USB VBUS CHG minimum refloor transaction bounded):** the
+  recovered atomic harness withdraws complete `REC_LIM_IN` + `ILIM_VSET`,
+  routes all eleven CHG lands, and requires both nets to replay. Case zero
+  closes all ten 0.50/0.250 mm CHG joins, then correctly rejects when
+  `REC_LIM_IN` has no remaining 0.200/0.200 mm B.Cu path from Q5.3 to R95.1.
+  No candidate or partial copper is promoted; authority remains byte-identical
+  at `801cfa7e...`. **Next:** jointly refloor the `REC_LIM_IN` replay around
+  the case-zero CHG tree; fall back to the qualified `REC_GATE_N` +
+  `ILIM_VSET` atomic boundary if needed. No owner decision is open.
 - **Demo D-538 (USB VBUS CHG minimum pocket-refloor boundary qualified):**
   all 14 complete accepted copper nets with endpoints inside the two 5 mm
   wall pockets were screened individually on scratch boards. At `R91.1`,

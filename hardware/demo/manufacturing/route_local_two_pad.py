@@ -660,6 +660,13 @@ ROUTES = {
         "width": 200_000,
         "clearance": 200_000,
     },
+    "REC_LIM_IN": {
+        "net": "/01_POWER_TREE/REC_LIM_IN",
+        "pads": ("Q5.3", "R95.1"),
+        "layer": "B",
+        "width": 200_000,
+        "clearance": 200_000,
+    },
     "ISET": {
         "net": "/01_POWER_TREE/ISET",
         "pads": ("R37.1", "U11.8"),
