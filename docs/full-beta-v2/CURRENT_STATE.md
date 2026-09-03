@@ -3490,3 +3490,21 @@
    (D-297); `place_003l.json`, `place_002z/` candidate set.
 - **Never** trust this checkpoint over a conflicting `CTO_DECISIONS.md`; repair this file if they
   diverge.
+# Demo update — USB_VBUS_RAW POFV transaction advanced (D-532, 2026-09-02)
+
+The connector-local 0.35/0.20 mm POFV exception is now encoded as a reusable,
+net- and named-area-scoped DRU framework. The atomic seven-land harness inserts
+both J3 POFVs only together, keeps the outer B.Cu trunk at 0.50 mm, and uses
+the existing 0.35 mm `VBUS_CHG` minimum only for the short U10.5 package neck.
+All eight screened C20 ordinary-via sites coexist with the first legal U10
+escape and both connector POFVs, but the first C20-to-J3.A9 B.Cu join returns
+`NO_PATH` in every case. No incomplete candidate is promotable.
+
+The authoritative board remains byte-identical at `04dc3e8a...`, 56 open
+retained nets / 460 edges. Independent refilled schematic-parity DRC remains
+199 footprint-library / five inherited hole-clearance / one inherited
+solder-mask-bridge reports. D-269/D-186, all three RGB replacements,
+XGPIO4/XGPIO5, Demo NCs, accepted accessory-power copper, and
+`hardware/beta-v2/` remain intact. Next screen explicit staged 0.50 mm B.Cu
+perimeter corridors between the qualified endpoints as one complete RAW-tree
+transaction; do not relax the width/clearance or promote partial copper.

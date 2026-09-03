@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_RAW POFV transaction advances to B.Cu haul wall (2026-09-02)
+
+`route_usb_vbus_raw_tree_scratch.py` now carries the complete D-531 boundary:
+two named pad-sized J3 rule areas, two 0.35/0.20 mm POFVs inserted atomically,
+ordinary 0.80/0.40 mm endpoint vias, a 0.50 mm B.Cu trunk, and a 0.35 mm neck
+only inside the U10.5 package escape. C20 endpoint sites 0--7 all coexist with
+the first legal U10 escape and both POFVs, but every case returns `NO_PATH` on
+the first 0.50 mm C20-to-A9 B.Cu join. Incomplete candidates are rejected; real
+scratch DRC finds no POFV-rule violation, and authoritative DRC remains 199/5/1.
+Board `04dc3e8a...` stays byte-identical at 56 open nets / 460 edges. Next add
+explicit staged B.Cu perimeter corridors between these qualified endpoints and
+accept only the complete seven-land tree.
+
 ## USB VBUS POFV boundary qualified (2026-09-02)
 
 The D-530 planar-pour/neck successor is now bounded. J3.A9/B4 has no legal

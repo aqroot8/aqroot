@@ -17,13 +17,83 @@ BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 LEDGER = Path(__file__).with_name("routing_ledger.py")
 NET = "/01_POWER_TREE/USB_VBUS_RAW"
 PADS = ("C20.1", "J3.A4", "J3.A9", "J3.B4", "J3.B9", "R35.1", "U10.5")
-# A4/B9 and A9/B4 are coincident USB-C lands and connect as physical islands.
-BRANCHES = (("R35.1", "C20.1"), ("C20.1", "J3.A9"),
-            ("J3.A9", "J3.A4"), ("J3.A4", "U10.5"))
 ACCEPTED = {"lib_footprint_issues", "hole_clearance", "solder_mask_bridge"}
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 import incremental_router as ir  # noqa: E402
 import qrouter as qr  # noqa: E402
+
+WIDTH = 500_000
+CLEARANCE = 200_000
+POFV_DIAMETER = 350_000
+POFV_DRILL = 200_000
+
+
+def add_rule_area(raw, name, cx, cy):
+    zone = pcbnew.ZONE(raw)
+    zone.SetIsRuleArea(True)
+    zone.SetZoneName(name)
+    zone.SetLayerSet(pcbnew.LSET.AllCuMask(raw.GetCopperLayerCount()))
+    zone.SetDoNotAllowTracks(False)
+    zone.SetDoNotAllowVias(False)
+    zone.SetDoNotAllowPads(False)
+    zone.SetDoNotAllowZoneFills(False)
+    zone.SetDoNotAllowFootprints(False)
+    outline = zone.Outline()
+    outline.NewOutline()
+    # Keep the exception wholly inside the 0.60 x 1.15 mm connector land.
+    for x, y in ((cx - 250_000, cy - 250_000),
+                 (cx + 250_000, cy - 250_000),
+                 (cx + 250_000, cy + 250_000),
+                 (cx - 250_000, cy + 250_000)):
+        outline.Append(x, y)
+    raw.Add(zone)
+
+
+def route_candidate(scratch, pads, c20_site=0, u10_site=0):
+    raw = pcbnew.LoadBoard(str(scratch))
+    for ref, name in (("J3.A9", "USB_VBUS_J3_A9_POFV"),
+                      ("J3.A4", "USB_VBUS_J3_A4_POFV")):
+        add_rule_area(raw, name, pads[ref]["x"], pads[ref]["y"])
+    pcbnew.SaveBoard(str(scratch), raw)
+
+    board = qr.QBoard(scratch)
+    ir.inject_existing_via_obstacles(board)
+    # Local load/decoupling branch stays on F.Cu.
+    routes = [qr.connect_role(board, NET, pads["R35.1"], pads["C20.1"],
+                              "F", WIDTH, CLEARANCE, CLEARANCE, G=25_000)]
+    if not routes[-1].get("ok"):
+        return board, routes
+
+    # Escape the two non-connector endpoints with ordinary power vias.  The
+    # connector islands themselves use only the two qualified in-land POFVs.
+    c20 = qr.reserve_escape(board, NET, pads["C20.1"], WIDTH, CLEARANCE,
+                            CLEARANCE, near="F", far="B", via_dia=800_000,
+                            via_drill=400_000, target=(40_600_000, 146_380_000),
+                            site_index=c20_site, site_separation=300_000)
+    routes.append(c20)
+    if not c20.get("ok"):
+        return board, routes
+    # U10.5 is a 0.60 mm-wide SOT-23 land.  Use the governed 0.35 mm
+    # VBUS_CHG minimum only for its package neck; the B.Cu haul stays 0.50 mm.
+    u10 = qr.reserve_escape(board, NET, pads["U10.5"], 350_000, CLEARANCE,
+                            CLEARANCE, near="F", far="B", via_dia=800_000,
+                            via_drill=400_000, target=(45_400_000, 146_380_000),
+                            site_index=u10_site, site_separation=300_000)
+    routes.append(u10)
+    if not u10.get("ok"):
+        return board, routes
+
+    a9 = (pads["J3.A9"]["x"], pads["J3.A9"]["y"])
+    a4 = (pads["J3.A4"]["x"], pads["J3.A4"]["y"])
+    board.via(NET, *a9, POFV_DIAMETER, POFV_DRILL)
+    board.via(NET, *a4, POFV_DIAMETER, POFV_DRILL)
+    for left, right in ((c20["via"], a9), (a9, a4), (a4, u10["via"])):
+        joined = qr.join_reserved(board, NET, left, right, WIDTH, CLEARANCE,
+                                  CLEARANCE, layer="B")
+        routes.append(joined)
+        if not joined.get("ok"):
+            return board, routes
+    return board, routes
 
 
 def sha256(path):
@@ -49,6 +119,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--promote", action="store_true")
+    parser.add_argument("--c20-site", type=int, default=0)
+    parser.add_argument("--u10-site", type=int, default=0)
     args = parser.parse_args()
     before_sha = sha256(BOARD)
     baseline = copper(pcbnew.LoadBoard(str(BOARD)))
@@ -67,18 +139,12 @@ def main():
                               "promotion_candidate": False,
                               "refusal": "target is already connected"}, indent=2))
             return 2
-        board = qr.QBoard(scratch)
-        ir.inject_existing_via_obstacles(board)
-        physical = ir.physical_net_pads(board, NET)
+        seed = qr.QBoard(scratch)
+        physical = ir.physical_net_pads(seed, NET)
         if {p["ref"] for p in physical} != set(PADS):
             raise RuntimeError(f"unexpected fitted pads: {sorted(p['ref'] for p in physical)}")
         pads = {p["ref"]: p for p in physical}
-        routes = []
-        for a, b in BRANCHES:
-            routes.append(qr.connect_role(board, NET, pads[a], pads[b], "F",
-                                           500_000, 200_000, 200_000, G=25_000))
-            if not routes[-1].get("ok"):
-                break
+        board, routes = route_candidate(scratch, pads, args.c20_site, args.u10_site)
         board.save(scratch)
         drc = work / "drc.json"
         checked = subprocess.run([

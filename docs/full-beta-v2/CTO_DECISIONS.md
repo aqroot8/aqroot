@@ -9,6 +9,30 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-532 · 2026-09-02 · Demo USB_VBUS_RAW POFV transaction advances to B.Cu haul wall:**
+The D-531 successor adds three tightly scoped DRU constraints for 0.35/0.20 mm
+POFV geometry only on `/01_POWER_TREE/USB_VBUS_RAW` inside two named,
+pad-sized J3 rule areas. The atomic seven-land harness creates those areas,
+routes the clean R35.1-to-C20.1 F.Cu branch, reserves ordinary power-via
+escapes at C20.1 and U10.5, and inserts both qualified connector-land POFVs
+before accepting any candidate. U10.5 requires only the existing governed
+0.35 mm `VBUS_CHG` package neck; every B.Cu trunk remains 0.50 mm.
+
+The first bounded endpoint matrix tests C20 sites 0--7 against the first legal
+U10 site. All eight endpoint pairs and both J3 POFVs are individually legal,
+but every case stops at the first C20-to-J3.A9 0.50 mm B.Cu join with
+`NO_PATH`. Scratch real DRC reports no POFV diameter, drill, annular-ring, or
+clearance violation; incomplete candidates show only expected dangling vias
+and are rejected. Independent authoritative refilled schematic-parity DRC
+remains exactly 199 footprint-library / five inherited hole-clearance / one
+inherited solder-mask-bridge reports. The board remains byte-identical at
+`04dc3e8a...`, 56 open retained nets / 460 edges; no copper, footprint, zone,
+or placement was promoted, and `hardware/beta-v2/` is untouched. Next preserve
+the qualified endpoint escapes and screen explicit staged 0.50 mm B.Cu
+perimeter corridors from C20 to A9, then A4 to U10, atomically. Do not relax
+the VBUS width/clearance or promote either connector island alone. No owner
+decision is open.
+
 **D-531 · 2026-09-02 · Demo USB VBUS planar neck/pour refuted; POFV boundary qualified:**
 The D-530 successor derives the connector escape from the verified live GCT
 land pattern rather than weakening the 0.50 mm trunk. A deterministic screen

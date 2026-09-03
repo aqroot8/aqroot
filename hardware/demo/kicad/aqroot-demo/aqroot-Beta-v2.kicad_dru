@@ -891,6 +891,23 @@
 	(constraint hole_size (min 0.20mm) (opt 0.20mm))
 	(condition "A.NetName == '/01_POWER_TREE/Q3_CS' && A.enclosedByArea('FINE_ESC_0')"))
 
+# D-531: the coincident J3 USB-C VBUS lands have no positive-width planar
+# throat at the 0.20 mm clearance floor.  These two pad-sized rule areas reuse
+# the already-approved 0.35/0.20 mm plated-over-filled through-via process.
+# The exception is net- and location-scoped; all USB VBUS routing outside the
+# connector lands retains the ordinary POWER-via contract.
+(rule "D-531 USB_VBUS_RAW J3 POFV diameter"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == '/01_POWER_TREE/USB_VBUS_RAW' && (A.enclosedByArea('USB_VBUS_J3_A9_POFV') || A.enclosedByArea('USB_VBUS_J3_A4_POFV'))"))
+
+(rule "D-531 USB_VBUS_RAW J3 POFV annular ring"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '/01_POWER_TREE/USB_VBUS_RAW' && (A.enclosedByArea('USB_VBUS_J3_A9_POFV') || A.enclosedByArea('USB_VBUS_J3_A4_POFV'))"))
+
+(rule "D-531 USB_VBUS_RAW J3 POFV hole"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == '/01_POWER_TREE/USB_VBUS_RAW' && (A.enclosedByArea('USB_VBUS_J3_A9_POFV') || A.enclosedByArea('USB_VBUS_J3_A4_POFV'))"))
+
 (rule "D-266 BAT_SENSE Kelvin reservation vias - fine-pitch escape via, D-257"
 	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
 	(condition "A.NetName == '/01_POWER_TREE/BAT_SENSE' && A.enclosedByArea('BAT_SENSE_KELVIN')"))
