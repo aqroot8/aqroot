@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-550 (BQ25185_SYS U12.10 minimum refloor boundary qualified; no
+  promotion):** reserving U12.10 before L4 still yields `NO_FLARE` in all 24
+  L4-witness cases, proving L4 is not the immediate blocker. The governed
+  U12.10 complete-net pocket screen tested eight nearby accepted nets; only
+  withdrawing all 27 `Net-(SW9-A)` objects exposes routes (48 candidates).
+  Result hash `2a0fc2ba...`; authority remains byte-identical at `64e5ae37...`,
+  54 open retained nets / 446 edges. **Next:** atomically withdraw/replay the
+  complete SW9-A tree, reserve a qualified U12.10 dogleg, then continue through
+  L4 and the existing full SYS/replay/DRC gate. No owner decision.
 - **Demo D-549 (BQ25185_SYS L4/U12.10 coexistence wall bounded; no promotion):**
   the recovered atomic SYS transaction now withdraws complete `NFC_ANT_B`,
   reserves qualified L4 doglegs, and can replay the exact accepted 16-segment

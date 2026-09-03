@@ -1,5 +1,27 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-550 · 2026-09-03 · Demo BQ25185_SYS U12.10 minimum refloor boundary qualified
+
+The recovered atomic SYS transaction now supports an explicit `U12.10`-before-
+`L4.1` reservation order.  All 24 qualified L4 witnesses still stop at
+`U12.10 NO_FLARE` after the six preceding SYS lands, before L4 is installed.
+This corrects D-549's provisional coexistence diagnosis: accepted copper in the
+U12 VOUT pocket, not the later L4 barrel, is the immediate wall.
+
+The reusable complete-net pocket screen was extended with the governed U12.10
+fine-pitch contract (0.20 mm package neck, 0.50 mm haul, 0.250 mm clearance,
+ordinary 0.90/0.40 mm via).  Eight accepted nets within 5 mm were withdrawn one
+at a time.  Only complete `Net-(SW9-A)` withdrawal exposes landings: 48
+candidates after removing its 27 objects.  L1 switch nodes, USB_VBUS_CHG,
+PS_SYNC, PG, IR_RX_GPIO44, and V3V3_FB expose none.  Canonical pocket result
+SHA-256 is `2a0fc2ba...`; authority remains byte-identical at `64e5ae37...`, 54
+open retained nets / 446 edges.  No partial candidate is emitted.
+
+Next extend the atomic SYS transaction with complete `Net-(SW9-A)` withdrawal,
+a qualified U12.10 dogleg, and exact SW9-A replay before the existing L4 and
+full-tree/replay/DRC gates.  Preserve every accepted power and safety contract.
+No owner decision is open.
+
 # D-549 · 2026-09-03 · Demo BQ25185_SYS L4/U12.10 coexistence wall bounded
 
 The recovered D-548 successor extends the atomic 13-land SYS transaction with

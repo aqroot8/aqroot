@@ -48,6 +48,11 @@ CASES = {
     # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.
     "U11.1": {"neck_width": 200_000, "trunk_width": 500_000,
                "local_clearance": 300_000, "clearance": 300_000},
+    # TPS63020 VOUT land.  The package neck may use the 0.20 mm fine-pitch
+    # escape, but the SYS haul and ordinary power barrel retain the governed
+    # 0.50 mm / 0.25 mm contract outside the package courtyard.
+    "U12.10": {"neck_width": 200_000, "trunk_width": 500_000,
+                "local_clearance": 200_000, "clearance": 250_000},
     "U21.3": {"neck_width": 250_000, "trunk_width": 800_000,
                "local_clearance": 200_000, "clearance": 250_000},
 }

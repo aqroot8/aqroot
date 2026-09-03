@@ -55,7 +55,7 @@ def face(pad):
 
 
 def route(path: Path, c26_candidate=None, c27_candidate=None,
-          c28_candidate=None, l4_candidate=None):
+          c28_candidate=None, l4_candidate=None, u12_10_first=False):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -71,7 +71,10 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
     # Keep the recovered D-548 order explicit.  D-549 proves that reserving
     # any qualified L4 barrel here makes the later U12.10 flare disappear; the
     # successor must test U12.10-first as a materially different transaction.
-    order = FITTED
+    order = list(FITTED)
+    if u12_10_first:
+        order.remove("U12.10")
+        order.insert(order.index("L4.1"), "U12.10")
     for ref in order:
         print(f"reserve {ref}", file=sys.stderr, flush=True)
         pad = pads[ref]
@@ -236,13 +239,16 @@ def main():
     parser.add_argument("--c27-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--c28-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--l4-candidate-json", help=argparse.SUPPRESS)
+    parser.add_argument("--u12-10-first", action="store_true",
+                        help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
         route(args.route,
               json.loads(args.c26_candidate_json) if args.c26_candidate_json else None,
               json.loads(args.c27_candidate_json) if args.c27_candidate_json else None,
               json.loads(args.c28_candidate_json) if args.c28_candidate_json else None,
-              json.loads(args.l4_candidate_json) if args.l4_candidate_json else None)
+              json.loads(args.l4_candidate_json) if args.l4_candidate_json else None,
+              args.u12_10_first)
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:

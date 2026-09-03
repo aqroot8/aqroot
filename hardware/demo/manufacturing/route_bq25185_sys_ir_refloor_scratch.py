@@ -138,6 +138,7 @@ def main():
                 "--c27-candidate-json", json.dumps(c27_candidate),
                 "--c28-candidate-json", json.dumps(c28_candidate),
                 "--l4-candidate-json", json.dumps(l4_candidate),
+                "--u12-10-first",
             ], check=True, text=True, capture_output=True).stdout)
             successful = [join for join in routed["joins"] if join.get("ok")]
             sys_complete = len(routed["reservations"]) == len(sysroute.FITTED) and all(row.get("ok") for row in routed["reservations"]) and len(successful) == len(sysroute.FITTED)-1
@@ -162,7 +163,7 @@ def main():
             wrong_removed = sum(n for key,n in removed.items() if key[0] not in refloor_nets)
             wrong_added = sum(n for key,n in added.items() if key[0] not in (*refloor_nets, sysroute.NET))
             ok = complete and all(opens.get(net) == 0 for net in (sysroute.NET, *refloor_nets)) and not attributable and not wrong_removed and not wrong_added
-            row = {"case": index, "c26_candidate": c26_candidate, "c27_candidate": c27_candidate, "c28_candidate": c28_candidate, "l4_candidate": l4_candidate, "sys_complete": sys_complete, "sys_route": routed, "refloor_replay": replay, "open_edges": opens, "drc_exit": drc_exit, "drc_types": dict(types), "attributable_drc_count": len(attributable), "removed_wrong_net_items": wrong_removed, "added_wrong_net_items": wrong_added, "promotion_candidate": ok, "path": scratch}
+            row = {"case": index, "reservation_order": "u12_10_before_l4", "c26_candidate": c26_candidate, "c27_candidate": c27_candidate, "c28_candidate": c28_candidate, "l4_candidate": l4_candidate, "sys_complete": sys_complete, "sys_route": routed, "refloor_replay": replay, "open_edges": opens, "drc_exit": drc_exit, "drc_types": dict(types), "attributable_drc_count": len(attributable), "removed_wrong_net_items": wrong_removed, "added_wrong_net_items": wrong_added, "promotion_candidate": ok, "path": scratch}
             rows.append(row)
             if ok: winner = row; break
         if winner and args.candidate: args.candidate.write_bytes(winner["path"].read_bytes())
@@ -170,7 +171,7 @@ def main():
             if not winner or sha(BOARD) != before: raise RuntimeError("refuse promotion: atomic gate failed or authority changed")
             BOARD.write_bytes(winner["path"].read_bytes())
         for row in rows: row.pop("path", None)
-    print(json.dumps({"schema": 5, "authoritative_board_sha256": before, "authoritative_unchanged": sha(BOARD) == before, "withdrawn_complete_refloor_items": removed_refloor, "c26_candidates_available": len(scans["C26.2"]), "c27_candidates_available": len(scans["C27.1"]), "c28_candidates_available": len(scans["C28.1"]), "l4_candidates_available": len(scans["L4.1"]), "case_order": "c26_c27_c28_l4_with_l4_varying_first", "candidate_quadruples_available": len(cases), "cases_tested": len(rows), "promotion_candidate": winner is not None, "cases": rows}, indent=2, sort_keys=True))
+    print(json.dumps({"schema": 6, "authoritative_board_sha256": before, "authoritative_unchanged": sha(BOARD) == before, "withdrawn_complete_refloor_items": removed_refloor, "c26_candidates_available": len(scans["C26.2"]), "c27_candidates_available": len(scans["C27.1"]), "c28_candidates_available": len(scans["C28.1"]), "l4_candidates_available": len(scans["L4.1"]), "reservation_order": "u12_10_before_l4", "case_order": "c26_c27_c28_l4_with_l4_varying_first", "candidate_quadruples_available": len(cases), "cases_tested": len(rows), "promotion_candidate": winner is not None, "cases": rows}, indent=2, sort_keys=True))
     return 0 if winner else 2
 
 if __name__ == "__main__": raise SystemExit(main())

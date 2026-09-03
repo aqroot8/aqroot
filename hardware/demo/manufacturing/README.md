@@ -2,6 +2,16 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS U12.10 pocket boundary qualified (2026-09-03)
+
+The atomic harness can now reserve U12.10 before L4. All 24 L4-witness cases
+still stop at `U12.10 NO_FLARE`, proving the immediate wall predates L4. The
+governed U12.10 pocket screen tested eight complete nearby accepted nets; only
+complete withdrawal of the 27-object `Net-(SW9-A)` tree exposes landings (48).
+Canonical result hash is `2a0fc2ba...`; board `64e5ae37...` remains unchanged at
+54 open retained nets / 446 edges. Next add complete SW9-A withdrawal/replay and
+a qualified U12.10 dogleg to the existing atomic SYS transaction.
+
 ## BQ25185_SYS L4/U12.10 coexistence boundary bounded (2026-09-03)
 
 The atomic SYS transaction now includes complete `NFC_ANT_B` withdrawal, a
