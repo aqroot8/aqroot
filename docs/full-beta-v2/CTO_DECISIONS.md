@@ -1,5 +1,25 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-576 · 2026-09-03 · Demo BQ25185_SYS U11.1 two-net pocket boundary exhausted
+
+The reusable governed SYS pocket screen now accepts complete-net withdrawal
+sets of size one or two. At isolated `U11.1`, it deterministically screened all
+seven nearby single-net cases and all 21 unique two-net combinations within the
+existing 5 mm pocket contract. None of the 28 cases exposes a new qualified
+0.50 mm / 0.250 mm SYS landing with the 0.90/0.40 mm power-via contract.
+Canonical compact-JSON evidence SHA-256 is
+`899dc224d43de8362b86db617975515761e62fe1bba087e0aa6a92cbee0d87a5`.
+
+This closes the local one/two-complete-net endpoint-refloor family; do not
+replay it without materially changed geometry. It does not invalidate the
+already-qualified fixed U11.1 dogleg used by the atomic SYS harness. The next
+lever is a bounded waypointed cross-component join search from that fixed
+dogleg to the main SYS component, followed by complete atomic SYS/replay/full-
+board gating if a join is found. No candidate copper was emitted. The
+authoritative PCB remains byte-identical at `64e5ae37...`; D-269/D-186,
+`ACC_5V_SW_EN`, RGB, XGPIO4/XGPIO5, accepted copper, and
+`hardware/beta-v2/` remain intact. No owner decision is open.
+
 # D-575 · 2026-09-03 · Demo BQ25185_SYS corrected atomic witness window exhausted
 
 Corrected atomic case 23 varies the twenty-fourth and final qualified

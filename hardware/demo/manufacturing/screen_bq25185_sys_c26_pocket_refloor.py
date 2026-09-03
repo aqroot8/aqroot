@@ -5,7 +5,7 @@ Despite the historical filename, ``--wall`` supports every governed SYS land
 registered by the shared dogleg enumerator.
 """
 
-import argparse, hashlib, json, math, subprocess, sys, tempfile
+import argparse, hashlib, itertools, json, math, subprocess, sys, tempfile
 from collections import Counter
 from pathlib import Path
 import pcbnew
@@ -60,6 +60,8 @@ def main():
                         default=DEFAULT_WALL)
     parser.add_argument("--only-net", action="append",
                         help="screen only this inventoried net (repeatable)")
+    parser.add_argument("--max-withdrawals", type=int, choices=(1, 2), default=1,
+                        help="screen complete-net withdrawal sets up to this size")
     args = parser.parse_args()
     if args.prepare:
         print(json.dumps(withdraw(args.prepare, args.net)))
@@ -71,22 +73,37 @@ def main():
         if unknown:
             parser.error(f"net is not in the {wall} pocket inventory: {unknown}")
         nearby = {net: nearby[net] for net in args.only_net}
+    withdrawal_sets = [combo for size in range(1, args.max_withdrawals + 1)
+                       for combo in itertools.combinations(nearby, size)]
     with tempfile.TemporaryDirectory(prefix=f"aqroot-demo-sys-{wall.lower().replace('.', '-')}-pocket-") as td:
-        for index, net in enumerate(nearby):
+        for index, nets in enumerate(withdrawal_sets):
             scratch = Path(td)/f"case-{index}.kicad_pcb"
             scratch.write_bytes(BOARD.read_bytes())
-            prepared = subprocess.run([sys.executable, __file__, "--prepare",
-                                       str(scratch), "--net", net], check=True,
-                                      text=True, capture_output=True)
-            removed = last_json(prepared.stdout)
+            removed = []
+            for net in nets:
+                prepared = subprocess.run([sys.executable, __file__, "--prepare",
+                                           str(scratch), "--net", net], check=True,
+                                          text=True, capture_output=True)
+                removed.append({"net": net, **last_json(prepared.stdout)})
             run = subprocess.run([sys.executable, str(Path(landings.__file__)), "--board", str(scratch), "--pad", wall], check=True, text=True, capture_output=True)
             row = json.loads(run.stdout)["pads"][0]
-            cases.append({"withdrawn_net": net, "withdrawn": removed, "candidate_count": row["candidate_count"], "first_candidates": row["candidates"][:4], "blockers": row["blockers"]})
+            cases.append({"withdrawn_nets": list(nets), "withdrawn": removed,
+                          "candidate_count": row["candidate_count"],
+                          "first_candidates": row["candidates"][:4],
+                          "blockers": row["blockers"]})
     winners = [case for case in cases if case["candidate_count"]]
     print(json.dumps({"schema": 1, "wall": wall, "authoritative_board_sha256": before,
         "authoritative_unchanged": sha256(BOARD) == before,
-        "contract": {"radius_mm": RADIUS/1e6, "withdrawal_scope": "one complete copper net per case", "sys_width_mm": 0.5, "sys_clearance_mm": 0.25, "power_via_mm": {"diameter": 0.9, "drill": 0.4}, "characterization_only": True, "promotion_requires_complete_sys_tree_and_net_replay": True},
-        "inventory": nearby, "cases_tested": len(cases), "single_net_winners": winners, "cases": cases, "promotion_candidate": False}, indent=2, sort_keys=True))
+        "contract": {"radius_mm": RADIUS/1e6,
+                     "withdrawal_scope": f"complete copper net sets of size 1..{args.max_withdrawals}",
+                     "maximum_withdrawals": args.max_withdrawals,
+                     "sys_width_mm": 0.5, "sys_clearance_mm": 0.25,
+                     "power_via_mm": {"diameter": 0.9, "drill": 0.4},
+                     "characterization_only": True,
+                     "promotion_requires_complete_sys_tree_and_all_net_replay": True},
+        "inventory": nearby, "cases_tested": len(cases),
+        "winning_withdrawal_sets": winners, "cases": cases,
+        "promotion_candidate": False}, indent=2, sort_keys=True))
     return 0 if winners else 2
 
 if __name__ == "__main__": raise SystemExit(main())

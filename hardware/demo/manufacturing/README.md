@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS U11.1 two-net pocket boundary exhausted (2026-09-03)
+
+The governed SYS pocket framework now screens complete-net withdrawal sets of
+size one or two. At isolated `U11.1`, all seven single-net and 21 unique two-net
+cases inside the 5 mm pocket produce zero new qualified 0.50/0.250 mm SYS
+landings using 0.90/0.40 mm power vias. Compact result SHA-256 is
+`899dc224d43de8362b86db617975515761e62fe1bba087e0aa6a92cbee0d87a5`.
+
+This closes the local endpoint-refloor family without invalidating the fixed
+qualified U11.1 dogleg already used by the atomic harness. Do not replay these
+28 cases without changed geometry. Next implement a bounded waypointed join
+search from the fixed U11.1 dogleg to the main SYS component, with any winner
+passing the existing complete SYS/replay/refilled-parity gate. No candidate
+copper was emitted; board `64e5ae37...`, D-269/D-186, RGB, XGPIO4/XGPIO5,
+`ACC_5V_SW_EN`, accepted copper, and `hardware/beta-v2/` remain intact.
+
 ## BQ25185_SYS corrected 24-case witness window exhausted (2026-09-03)
 
 Corrected case 23 varies the final qualified `U12.10` witness at via

@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-576 (U11.1 two-net pocket boundary exhausted; no promotion):** the
+  reusable governed SYS pocket screen now enumerates complete-net withdrawal
+  sets up to size two. All seven single-net and 21 two-net cases around isolated
+  `U11.1` produce zero new qualified SYS landings; compact evidence is
+  `899dc224...` and authority remains byte-identical at `64e5ae37...`. This
+  closes the local endpoint-refloor family but preserves the already-qualified
+  fixed U11.1 dogleg. **Next:** build a bounded waypointed join search from that
+  dogleg to the main SYS component, then use the existing complete atomic
+  replay/full-board gate. No owner decision.
 - **Demo D-575 (corrected 24-case SYS witness window exhausted; no promotion):**
   final case 23 uses the twenty-fourth qualified `U12.10` witness at via
   `(66.9327,103.5245)` mm. All 13 endpoints reserve and nine joins complete;
