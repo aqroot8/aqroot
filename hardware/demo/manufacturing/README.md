@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS L4 pocket boundary qualified (2026-09-03)
+
+The generic complete-net pocket screen now covers `L4.1`. All six isolated
+nearby-net withdrawals expose 48 governed SYS doglegs. The minimum complete
+boundary is the 16 B.Cu segments of `NFC_ANT_B`; the 19-object `ACC_5V_RAW`
+tree is the next-smallest fallback. This is characterization only: neither NFC
+nor accessory power may remain open. Result hash is `9009241d...`; board
+`64e5ae37...` remains byte-identical at 54 open retained nets / 446 edges.
+Next add the first L4 witness and complete `NFC_ANT_B` replay to the existing
+atomic SYS transaction, accepting only zero-open connectivity and real DRC.
+
 ## BQ25185_SYS joint C26/C27/C28 refloor and L4 boundary (2026-09-03)
 
 The atomic SYS transaction now includes complete `Net-(L1-Pad1)` withdrawal,

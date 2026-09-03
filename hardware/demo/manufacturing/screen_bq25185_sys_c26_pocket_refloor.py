@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Screen one-complete-net withdrawals around a boxed BQ25185 SYS land."""
+"""Screen one-complete-net withdrawals around a boxed BQ25185 SYS land.
+
+Despite the historical filename, ``--wall`` supports every governed SYS land
+registered by the shared dogleg enumerator.
+"""
 
 import argparse, hashlib, json, math, subprocess, sys, tempfile
 from collections import Counter

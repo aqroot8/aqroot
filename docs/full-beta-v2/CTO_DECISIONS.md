@@ -1,5 +1,34 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-548 · 2026-09-03 · Demo BQ25185_SYS L4 minimum pocket-refloor boundary qualified
+
+The reusable complete-net pocket screen now accepts every governed SYS land
+registered by the shared dogleg enumerator and was applied to pristine `L4.1`
+without changing authoritative copper. Six accepted nets have track/via
+endpoints within 5 mm. With each complete net withdrawn in an isolated scratch
+board, all six cases expose 48 bounded ordinary 0.90/0.40 mm SYS-via landings at
+the locked 0.50/0.250 mm geometry. The minimum boundary by complete copper
+object count is `/04_SPI_B_RADIOS_NFC/NFC_ANT_B` at 16 B.Cu segments; the next
+smallest is `/01_POWER_TREE/ACC_5V_RAW` at 19 objects (nine B.Cu, five In3.Cu,
+five vias). This is characterization only and does not authorize leaving the
+NFC antenna path or either accessory-power rail open.
+
+The full result hash is `9009241ddadfb11031f5ee50a26f2392f707b9d5fa594bcd7f79c5a1b3a6d44a`.
+Board `64e5ae37...` remains byte-identical at 54 open retained nets / 446 edges;
+D-269/D-186, accepted USB charger and accessory-power copper, all three RGB
+routes, `ACC_5V_SW_EN`, XGPIO4/XGPIO5, Demo NCs, and `hardware/beta-v2/` remain
+untouched. The continued SYS-wall work is the autonomy-policy exception for an
+immediate fabrication critical path: this retained 12-edge power tree cannot be
+left open at release, and each bounded iteration has materially extended the
+same complete atomic transaction to a newly exposed endpoint.
+
+Next extend the atomic SYS transaction with complete `NFC_ANT_B` withdrawal,
+reserve the first L4 witness, and require the antenna tree to replay with its
+accepted topology plus zero open edges and no attributable real KiCad DRC. If
+that minimum boundary cannot replay, test the already-qualified 19-object
+`ACC_5V_RAW` fallback as a complete power-cluster refloor. No owner decision is
+open.
+
 # D-547 · 2026-09-03 · Demo BQ25185_SYS joint refloor advances to L4 boundary
 
 The atomic SYS transaction now withdraws complete `IR_RX_GPIO44`,

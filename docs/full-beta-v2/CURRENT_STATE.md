@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-548 (BQ25185_SYS L4 minimum pocket-refloor boundary qualified; no
+  promotion):** all six complete accepted copper nets within 5 mm of `L4.1`
+  expose 48 governed SYS landings when withdrawn individually. The minimum
+  boundary is the 16-segment B.Cu `NFC_ANT_B` tree; `ACC_5V_RAW` is the
+  19-object fallback. Result hash `9009241d...`; authority remains
+  byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges. The SYS
+  sequence remains on the immediate-fabrication-critical-path exception because
+  the retained 12-edge power tree must close and each iteration reaches a newly
+  exposed endpoint. **Next:** atomically add complete `NFC_ANT_B` withdrawal,
+  the first L4 witness, and exact antenna replay to the full SYS transaction;
+  fall back to a complete `ACC_5V_RAW` power-cluster refloor if replay fails. No
+  owner decision.
 - **Demo D-547 (joint SYS refloor advances to L4; no promotion):** the atomic
   harness now also withdraws/replays all five accepted `Net-(L1-Pad1)` B.Cu
   segments and reserves qualified C28 SYS doglegs. Eight bounded C26/C27/C28

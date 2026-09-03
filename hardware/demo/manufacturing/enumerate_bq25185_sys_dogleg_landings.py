@@ -38,6 +38,11 @@ CASES = {
     # haul and ordinary power-via contract.
     "C28.1": {"neck_width": 500_000, "trunk_width": 500_000,
                "local_clearance": 250_000, "clearance": 250_000},
+    # The joint C26/C27/C28 transaction reaches the accessory-boost input
+    # inductor next.  Screen this ordinary SYS land with the same locked
+    # current-path geometry before extending the atomic full-tree replay.
+    "L4.1": {"neck_width": 500_000, "trunk_width": 500_000,
+              "local_clearance": 250_000, "clearance": 250_000},
     # D-269 applies to the SYS/BAT current-path relationship even inside the
     # charger breakout.  Screening the neck at only 0.20 mm produced apparent
     # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.
