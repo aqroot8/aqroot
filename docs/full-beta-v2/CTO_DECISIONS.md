@@ -5505,3 +5505,25 @@ replacements, XGPIO4/XGPIO5, approved Demo NC contacts, accepted accessory-
 power copper, and `hardware/beta-v2/` remain intact. Next continue the resumable
 mixed-layer search at `--case-start 16`; do not replay cases 0--15. No owner
 decision is open.
+
+# D-577 · 2026-09-03 · Demo BQ25185_SYS U11 waypoint-bridge family bounded
+
+The D-576 successor was executed manually after the autonomous model limits
+were exhausted. The existing fixed qualified U11.1 dogleg was preserved while
+a bounded two-leg waypoint bridge search screened 48 candidate joins across
+both routable internal signal layers, In2 and In3.
+
+Every bridge trial failed on the first leg with `NO_PATH`; no 0.50 mm SYS
+corridor exists from the fixed U11.1 landing to the tested main-component
+waypoints on either internal signal layer. The complete atomic SYS case
+therefore remains incomplete with four connected components and is not
+promotable.
+
+The authoritative Demo PCB remained byte-identical at SHA-256
+`64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe`.
+No attributable DRC issue, wrong-net copper, partial candidate, or production
+Beta-v2 modification was introduced.
+
+This closes the unchanged fixed-dogleg waypoint family. Do not replay it
+without materially changed surrounding geometry. Park BQ25185_SYS and advance
+an independent retained-net transaction.

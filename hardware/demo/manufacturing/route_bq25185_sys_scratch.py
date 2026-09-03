@@ -56,7 +56,9 @@ def face(pad):
 
 def route(path: Path, c26_candidate=None, c27_candidate=None,
           c28_candidate=None, l4_candidate=None, u12_10_candidate=None,
-          u12_10_first=False, join_trial_limit=None):
+          u12_10_first=False, join_trial_limit=None,
+          u11_waypoint_bridge=False, bridge_trial_limit=48,
+          bridge_layers=("I2", "I3")):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -210,6 +212,69 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
                              for axis in (0, 1)),
     )
     joins = []
+    bridge_trials = []
+    if u11_waypoint_bridge:
+        u11_index = next(i for i, row in enumerate(anchors)
+                         if row[0] == "U11.1")
+        ax, ay = anchors[u11_index][1]
+        targets = sorted(
+            (i for i in range(len(anchors)) if i != u11_index),
+            key=lambda i: ((anchors[i][1][0] - ax) ** 2
+                           + (anchors[i][1][1] - ay) ** 2,
+                           anchors[i][0]),
+        )
+        offsets = (0, -500_000, 500_000, -1_000_000, 1_000_000,
+                   -1_500_000, 1_500_000, -2_000_000, 2_000_000)
+        for target_index in targets:
+            if len(bridge_trials) >= bridge_trial_limit:
+                break
+            bx, by = anchors[target_index][1]
+            midx, midy = (ax + bx) // 2, (ay + by) // 2
+            candidates = [(ax, by), (bx, ay)]
+            candidates.extend((midx + offset, midy) for offset in offsets)
+            candidates.extend((midx, midy + offset) for offset in offsets[1:])
+            seen = set()
+            for waypoint in candidates:
+                if waypoint in seen:
+                    continue
+                seen.add(waypoint)
+                for layer in bridge_layers:
+                    if len(bridge_trials) >= bridge_trial_limit:
+                        break
+                    mark = board.mark()
+                    first = qr.join_reserved(
+                        board, NET, (ax, ay), waypoint, 500_000,
+                        250_000, 250_000, layer=layer, G=GRID, fine=25_000,
+                    )
+                    second = {"ok": False, "reason": "NOT_ATTEMPTED"}
+                    if first.get("ok"):
+                        second = qr.join_reserved(
+                            board, NET, waypoint, (bx, by), 500_000,
+                            250_000, 250_000, layer=layer, G=GRID,
+                            fine=25_000,
+                        )
+                    record = {
+                        "a": "U11.1", "b": anchors[target_index][0],
+                        "layer": layer, "waypoint": list(waypoint),
+                        "ok": bool(first.get("ok") and second.get("ok")),
+                        "first": first, "second": second,
+                    }
+                    bridge_trials.append(record)
+                    if record["ok"]:
+                        parent[root(target_index)] = root(u11_index)
+                        joins.append({
+                            "a": "U11.1", "b": anchors[target_index][0],
+                            "ok": True, "selected_layer": layer,
+                            "strategy": "bounded_waypoint_bridge",
+                            "waypoint": list(waypoint),
+                            "legs": [first, second],
+                        })
+                        break
+                    board.revert(mark)
+                if bridge_trials and bridge_trials[-1]["ok"]:
+                    break
+            if bridge_trials and bridge_trials[-1]["ok"]:
+                break
     join_search_exhausted = False
     for a, b in edges:
         if root(a) == root(b):
@@ -235,6 +300,10 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
             break
     board.save(path)
     print(json.dumps({"reservations": reservations, "joins": joins,
+                      "u11_waypoint_bridge": u11_waypoint_bridge,
+                      "bridge_trial_limit": bridge_trial_limit,
+                      "bridge_layers": list(bridge_layers),
+                      "bridge_trials": bridge_trials,
                       "join_trial_limit": join_trial_limit,
                       "join_search_exhausted": join_search_exhausted,
                       "components_remaining": len({root(i) for i in range(len(anchors))})},
@@ -253,6 +322,12 @@ def main():
     parser.add_argument("--u12-10-first", action="store_true",
                         help=argparse.SUPPRESS)
     parser.add_argument("--join-trial-limit", type=int, help=argparse.SUPPRESS)
+    parser.add_argument("--u11-waypoint-bridge", action="store_true",
+                        help=argparse.SUPPRESS)
+    parser.add_argument("--bridge-trial-limit", type=int, default=48,
+                        help=argparse.SUPPRESS)
+    parser.add_argument("--bridge-layers", default="I2,I3",
+                        help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
         route(args.route,
@@ -261,7 +336,9 @@ def main():
               json.loads(args.c28_candidate_json) if args.c28_candidate_json else None,
               json.loads(args.l4_candidate_json) if args.l4_candidate_json else None,
               json.loads(args.u12_10_candidate_json) if args.u12_10_candidate_json else None,
-              args.u12_10_first, args.join_trial_limit)
+              args.u12_10_first, args.join_trial_limit,
+              args.u11_waypoint_bridge, args.bridge_trial_limit,
+              tuple(args.bridge_layers.split(",")))
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:

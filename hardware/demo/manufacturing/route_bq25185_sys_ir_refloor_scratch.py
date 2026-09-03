@@ -127,7 +127,7 @@ def replay_sw9_a(path):
             "mode": "exact_authoritative_complete_net_geometry"}
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--candidate", type=Path); ap.add_argument("--promote", action="store_true"); ap.add_argument("--case-start", type=int, default=0); ap.add_argument("--case-limit", type=int, default=24); ap.add_argument("--case-timeout", type=int, default=240); ap.add_argument("--join-trial-limit", type=int, default=24); ap.add_argument("--measure", type=Path, help=argparse.SUPPRESS); args = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--candidate", type=Path); ap.add_argument("--promote", action="store_true"); ap.add_argument("--case-start", type=int, default=0); ap.add_argument("--case-limit", type=int, default=24); ap.add_argument("--case-timeout", type=int, default=240); ap.add_argument("--join-trial-limit", type=int, default=24); ap.add_argument("--u11-waypoint-bridge", action="store_true"); ap.add_argument("--bridge-trial-limit", type=int, default=48); ap.add_argument("--bridge-layers", default="I2,I3"); ap.add_argument("--measure", type=Path, help=argparse.SUPPRESS); args = ap.parse_args()
     if args.measure:
         print(json.dumps({"items": [[list(key), count] for key, count in copper(args.measure).items()]})); return 0
     minimum_join_trials = len(sysroute.FITTED) - 1
@@ -167,7 +167,7 @@ def main():
             for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
                 scratch.with_suffix(suffix).write_bytes(seed.with_suffix(suffix).read_bytes())
             try:
-                routed = last_json(subprocess.run([
+                command = [
                     sys.executable, str(Path(sysroute.__file__)), "--route", str(scratch),
                     "--c26-candidate-json", json.dumps(c26_candidate),
                     "--c27-candidate-json", json.dumps(c27_candidate),
@@ -176,7 +176,12 @@ def main():
                     "--u12-10-candidate-json", json.dumps(u12_10_candidate),
                     "--u12-10-first",
                     "--join-trial-limit", str(args.join_trial_limit),
-                ], check=True, text=True, capture_output=True,
+                ]
+                if args.u11_waypoint_bridge:
+                    command.extend(["--u11-waypoint-bridge", "--bridge-trial-limit",
+                                    str(args.bridge_trial_limit),
+                                    "--bridge-layers", args.bridge_layers])
+                routed = last_json(subprocess.run(command, check=True, text=True, capture_output=True,
                    timeout=args.case_timeout).stdout)
             except subprocess.TimeoutExpired as exc:
                 rows.append({"case": index, "reservation_order": "u12_10_before_l4",
@@ -216,7 +221,7 @@ def main():
             if not winner or sha(BOARD) != before: raise RuntimeError("refuse promotion: atomic gate failed or authority changed")
             BOARD.write_bytes(winner["path"].read_bytes())
         for row in rows: row.pop("path", None)
-    print(json.dumps({"schema": 9, "authoritative_board_sha256": before, "authoritative_unchanged": sha(BOARD) == before, "withdrawn_complete_refloor_items": removed_refloor, "c26_candidates_available": len(scans["C26.2"]), "c27_candidates_available": len(scans["C27.1"]), "c28_candidates_available": len(scans["C28.1"]), "l4_candidates_available": len(scans["L4.1"]), "u12_10_candidates_available": len(scans["U12.10"]), "reservation_order": "u12_10_before_l4", "case_order": "c26_c27_c28_l4_u12_10_with_u12_10_varying_first", "candidate_quintuples_available": len(cases), "case_start": args.case_start, "case_stop": args.case_start + len(rows), "case_timeout_seconds": args.case_timeout, "join_trial_limit": args.join_trial_limit, "cases_tested": len(rows), "promotion_candidate": winner is not None, "cases": rows}, indent=2, sort_keys=True))
+    print(json.dumps({"schema": 10, "authoritative_board_sha256": before, "authoritative_unchanged": sha(BOARD) == before, "withdrawn_complete_refloor_items": removed_refloor, "c26_candidates_available": len(scans["C26.2"]), "c27_candidates_available": len(scans["C27.1"]), "c28_candidates_available": len(scans["C28.1"]), "l4_candidates_available": len(scans["L4.1"]), "u12_10_candidates_available": len(scans["U12.10"]), "reservation_order": "u12_10_before_l4", "case_order": "c26_c27_c28_l4_u12_10_with_u12_10_varying_first", "candidate_quintuples_available": len(cases), "case_start": args.case_start, "case_stop": args.case_start + len(rows), "case_timeout_seconds": args.case_timeout, "join_trial_limit": args.join_trial_limit, "u11_waypoint_bridge": args.u11_waypoint_bridge, "bridge_trial_limit": args.bridge_trial_limit, "bridge_layers": args.bridge_layers, "cases_tested": len(rows), "promotion_candidate": winner is not None, "cases": rows}, indent=2, sort_keys=True))
     return 0 if winner else 2
 
 if __name__ == "__main__": raise SystemExit(main())

@@ -2975,3 +2975,14 @@ four components: the main U12/SW9/capacitor tree, isolated U11.1, C33/C64, and
 L4/U21. The incomplete tree correctly prevents all replay, DRC, candidate, and
 promotion stages. Board `64e5ae37...` remains byte-identical at 54 open
 retained nets / 446 edges. Continue at case 9 without replaying cases 0--8.
+
+## BQ25185_SYS U11 waypoint bridge family bounded (2026-09-03)
+
+The D-576 successor extends the SYS scratch framework with a bounded U11.1
+two-leg waypoint bridge search. One representative atomic refloor case was
+screened with 48 waypoint trials across In2/In3. Every trial stops on the first
+leg with `NO_PATH` at the locked 0.50 mm SYS width; the complete SYS tree still
+has four components and cannot be promoted. Authority remains byte-identical
+at `64e5ae37...`, with zero attributable DRC delta. Park this unchanged U11
+waypoint family until surrounding geometry materially changes and continue on
+an independent retained-net transaction.
