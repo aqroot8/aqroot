@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-546 (joint SYS refloor advances to C28; no promotion):** the atomic
+  harness now withdraws/replays complete `IR_RX_GPIO44` and `ILIM_VSET` and
+  reserves qualified C26/C27 SYS doglegs. All eight bounded pairs clear both
+  prior walls and stop at `C28.1`. A complete-net pocket screen finds the
+  minimum C28 boundary is the five B.Cu objects of `Net-(L1-Pad1)`; focused
+  result hash `44b34650...` reproduces 48 governed candidates. Authority stays
+  byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges. **Next:**
+  add complete L1-pad1 withdrawal/replay and a qualified C28 reservation to
+  the same atomic full-tree gate. No owner decision.
 - **Demo D-545 (BQ25185_SYS C27 minimum pocket-refloor boundary qualified; no
   promotion):** the recovered pocket framework now supports arbitrary named
   SYS lands and screens all seven complete accepted copper nets within 5 mm of

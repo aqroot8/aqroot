@@ -1,5 +1,28 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-546 · 2026-09-03 · Demo BQ25185_SYS joint refloor advances to C28 boundary
+
+The atomic SYS harness now withdraws complete `IR_RX_GPIO44` and
+`/01_POWER_TREE/ILIM_VSET`, reserves independent qualified C26 and C27
+0.50/0.250 mm doglegs with ordinary 0.90/0.40 mm vias, requires the complete
+13-land SYS tree, and replays both displaced nets before connectivity and real
+KiCad DRC acceptance. Eight deterministic C26/C27 pairs all pass the two prior
+walls and stop at pristine `C28.1` with `NO_LEGAL_ESCAPE`; no partial copper is
+promotable.
+
+The generalized 5 mm pocket screen then tested all six accepted copper nets
+around C28 by isolated complete-net withdrawal. Two expose 48 legal governed
+doglegs. The minimum boundary is `Net-(L1-Pad1)`: five B.Cu objects. A focused
+repeat reproduces result hash `44b34650...` and first witness: 75-degree launch,
+0.20 mm neck, 1.00 mm trunk, then a 0.45 mm 50-degree dogleg to
+`(68.9998, 94.7488)` mm. Characterization only; board `64e5ae37...` remains
+byte-identical at 54 open retained nets / 446 edges.
+
+Next extend the same transaction to withdraw/replay complete `Net-(L1-Pad1)`,
+reserve the qualified C28 witness, and continue the full SYS tree under the
+authoritative gate. Preserve the promoted USB charger tree, D-269/D-186,
+`ACC_5V_SW_EN`, and all accepted RGB copper. No owner decision is open.
+
 # D-545 · 2026-09-03 · Demo BQ25185_SYS C27 minimum pocket-refloor boundary qualified
 
 The recovered C26 sensitivity framework is generalized to any named governed

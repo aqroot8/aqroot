@@ -33,6 +33,11 @@ CASES = {
     # contract while searching its independent local pocket.
     "C27.1": {"neck_width": 500_000, "trunk_width": 500_000,
                "local_clearance": 250_000, "clearance": 250_000},
+    # Successor wall exposed only after the qualified C26/C27 refloor pair.
+    # It is another bulk SYS capacitor land, so retain the identical governed
+    # haul and ordinary power-via contract.
+    "C28.1": {"neck_width": 500_000, "trunk_width": 500_000,
+               "local_clearance": 250_000, "clearance": 250_000},
     # D-269 applies to the SYS/BAT current-path relationship even inside the
     # charger breakout.  Screening the neck at only 0.20 mm produced apparent
     # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.

@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS joint C26/C27 refloor and C28 boundary (2026-09-03)
+
+`route_bq25185_sys_ir_refloor_scratch.py` now treats complete
+`IR_RX_GPIO44` plus `ILIM_VSET` withdrawal/replay and both qualified SYS
+doglegs as one atomic transaction. Eight bounded C26/C27 pairs advance to
+`C28.1`, where every case stops before joins with `NO_LEGAL_ESCAPE`; no partial
+copper is emitted. The generalized pocket screen tests all six accepted nets
+within 5 mm of C28. The minimum complete withdrawal is the five B.Cu objects
+of `Net-(L1-Pad1)`, exposing 48 governed 0.50/0.250 mm doglegs with ordinary
+0.90/0.40 mm vias. Focused evidence hash is `44b34650...`; the authoritative
+board remains byte-identical at `64e5ae37...`, 54 open nets / 446 edges. Next
+extend the same transaction with complete L1-pad1 withdrawal/replay and the
+qualified C28 witness, then continue the 13-land SYS tree under the full gate.
+
 ## BQ25185_SYS C27 minimum pocket-refloor boundary qualified (2026-09-03)
 
 The generalized `screen_bq25185_sys_c26_pocket_refloor.py` inventories all

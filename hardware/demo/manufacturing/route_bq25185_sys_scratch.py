@@ -54,7 +54,7 @@ def face(pad):
     return faces[0]
 
 
-def route(path: Path, c26_candidate=None):
+def route(path: Path, c26_candidate=None, c27_candidate=None):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -67,16 +67,16 @@ def route(path: Path, c26_candidate=None):
     )
     reservations = []
     anchors = []
-    order = FITTED if not c26_candidate else (
-        "C27.1", "C24.1", "C26.2", *FITTED[3:]
-    )
+    order = FITTED if not (c26_candidate or c27_candidate) else FITTED
     for ref in order:
         print(f"reserve {ref}", file=sys.stderr, flush=True)
         pad = pads[ref]
         near = face(pad)
-        if ref == "C26.2" and c26_candidate:
+        qualified = (c26_candidate if ref == "C26.2" else
+                     c27_candidate if ref == "C27.1" else None)
+        if qualified:
             def point(key):
-                return tuple(round(value * 1e6) for value in c26_candidate[key])
+                return tuple(round(value * 1e6) for value in qualified[key])
             neck_end = point("neck_end_mm")
             anchor = point("anchor_mm")
             via = point("via_mm")
@@ -86,8 +86,8 @@ def route(path: Path, c26_candidate=None):
             board.via(NET, *via, 900_000, 400_000)
             reservations.append({"pad": ref, "ok": True, "face": "B",
                                  "via": list(via),
-                                 "launch": "qualified_c26_refloor_dogleg",
-                                 "candidate": c26_candidate})
+                                 "launch": f"qualified_{ref.lower().replace('.', '_')}_refloor_dogleg",
+                                 "candidate": qualified})
             anchors.append((ref, via))
             continue
         if near == "F":
@@ -227,10 +227,12 @@ def main():
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--route", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--c26-candidate-json", help=argparse.SUPPRESS)
+    parser.add_argument("--c27-candidate-json", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
-        route(args.route, json.loads(args.c26_candidate_json)
-              if args.c26_candidate_json else None)
+        route(args.route,
+              json.loads(args.c26_candidate_json) if args.c26_candidate_json else None,
+              json.loads(args.c27_candidate_json) if args.c27_candidate_json else None)
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:
