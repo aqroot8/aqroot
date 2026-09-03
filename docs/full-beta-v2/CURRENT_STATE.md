@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-538 (USB VBUS CHG minimum pocket-refloor boundary qualified):**
+  all 14 complete accepted copper nets with endpoints inside the two 5 mm
+  wall pockets were screened individually on scratch boards. At `R91.1`,
+  withdrawing either `REC_GATE_N` (18 objects) or the smaller `REC_LIM_IN`
+  (7 objects) exposes seven governed-neck candidates. At `U11.10`, only
+  `ILIM_VSET` (5 objects) exposes candidates (five). Thus the minimum joint
+  boundary is two complete nets / 12 objects: `REC_LIM_IN` + `ILIM_VSET`.
+  Authority remains byte-identical at `801cfa7e...`, 55 open nets / 456
+  edges, DRC 199/5/1. **Next:** screen both R91 alternatives together with
+  `ILIM_VSET`, the full 11-land CHG route, and complete replay of every
+  withdrawn net as one atomic transaction. No owner decision is open.
 - **Demo D-537 (USB VBUS CHG governed-neck family bounded):** a reusable
   two-wall screen preserves the 0.50/0.250 mm haul and ordinary 0.90/0.40 mm
   via contract while testing a 0.30/0.250 mm `R91.1` neck and the governed

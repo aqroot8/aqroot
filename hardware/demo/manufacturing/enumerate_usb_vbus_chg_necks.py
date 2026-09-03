@@ -6,6 +6,7 @@ only permits a narrower B.Cu launch from R91.1 or U11.10, widens to the haul
 width, and requires an immediately reachable 0.90/0.40 mm all-layer via.
 """
 
+import argparse
 import hashlib
 import json
 import math
@@ -129,6 +130,11 @@ def scan():
 
 
 def main():
+    global BOARD
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--board", type=Path, default=BOARD)
+    args = parser.parse_args()
+    BOARD = args.board
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     rows = scan()
     print(json.dumps({

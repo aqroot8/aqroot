@@ -9,6 +9,29 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-538 · 2026-09-03 · Demo USB_VBUS_CHG minimum pocket-refloor boundary qualified:**
+The D-537 successor deterministically inventories all accepted copper nets
+having a track/via endpoint within 5 mm of `R91.1` or `U11.10`, then removes
+one complete net at a time only on isolated scratch boards and reruns the
+governed-neck screen. Fourteen cases cover ten resistor-pocket nets and four
+charger-pocket nets. At `R91.1`, complete withdrawal of `REC_GATE_N` (18
+objects) or `REC_LIM_IN` (seven objects) independently exposes seven neck/via
+candidates. At `U11.10`, only complete withdrawal of `ILIM_VSET` (five B.Cu
+objects) exposes candidates, producing five. Every other single-net case
+remains blocked.
+
+The minimum joint complete-net withdrawal boundary is therefore two nets and
+12 copper objects: `REC_LIM_IN` plus `ILIM_VSET`; `REC_GATE_N` is a larger
+fallback boundary. This is characterization, not permission to leave either
+control network open. The authoritative PCB stays byte-identical at
+`801cfa7e...`, 55 open retained nets / 456 edges, with accepted real refilled
+parity DRC 199/5/1. D-269/D-186, USB RAW/shield, RGB, XGPIO4/XGPIO5, Demo NCs,
+accessory-power copper, and `hardware/beta-v2/` remain intact. Next screen the
+two R91 alternatives with `ILIM_VSET`, reserve both governed CHG necks, route
+the complete 11-land CHG tree, and replay every withdrawn net in one atomic
+full-board-gated transaction. Do not withdraw the nearby safety-current nets
+`BAT_RAW` or `BAT_PROTECTED_P`. No owner decision is open.
+
 **D-537 · 2026-09-03 · Demo USB_VBUS_CHG governed-neck family bounded:**
 The D-536 successor adds a reusable two-wall package-neck screen without
 changing the authoritative PCB. `R91.1` is screened with a 0.30 mm neck and

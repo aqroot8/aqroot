@@ -2,6 +2,21 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_CHG minimum pocket-refloor boundary qualified (2026-09-03)
+
+`screen_usb_vbus_chg_pocket_refloor.py` inventories every accepted copper net
+with an endpoint inside either 5 mm wall pocket and tests all 14 complete-net
+single-withdrawal cases on isolated scratch boards. Three cases open governed
+necks: `REC_GATE_N` (18 objects) or the smaller `REC_LIM_IN` (7 objects) at
+`R91.1`, and uniquely `ILIM_VSET` (5 objects) at `U11.10`. No safety copper is
+changed on authority; board `801cfa7e...` remains unchanged.
+
+The minimum joint boundary is therefore two complete nets and 12 objects:
+`REC_LIM_IN` plus `ILIM_VSET`. Next test both R91 alternatives atomically:
+withdraw the complete R91 net plus `ILIM_VSET`, reserve both qualified necks,
+route the complete 11-land CHG tree, replay both withdrawn nets, and accept
+only a full-board PASS. Do not withdraw `BAT_RAW` or `BAT_PROTECTED_P`.
+
 ## USB_VBUS_CHG governed-neck family bounded (2026-09-03)
 
 `enumerate_usb_vbus_chg_necks.py` is the reusable D-537 successor to the
