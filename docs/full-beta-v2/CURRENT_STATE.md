@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-563 (corrected twelfth atomic SYS case bounded; no promotion):**
+  case 11 varies the twelfth qualified U12.10 witness, reserves all 13
+  endpoints, and again completes nine joins before exhausting 24 trials. All
+  15 failed joins are `NO_PATH`; the same four components remain: the main
+  U12/SW9/capacitor tree, isolated U11.1, the C33/C64 pair, and the L4/U21
+  pair. Canonical compact-JSON result hash is `d077b3ee...`; authority stays
+  byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges. SYS is
+  an immediate board-completion critical path, so its finite non-overlapping
+  window uses the routing-wall policy exception. **Next:** continue at case
+  12 without replaying cases 0--11. No owner decision.
 - **Demo D-562 (corrected eleventh atomic SYS case bounded; no promotion):**
   case 10 varies the eleventh qualified U12.10 witness, reserves all 13
   endpoints, and again completes nine joins before exhausting 24 trials. All
