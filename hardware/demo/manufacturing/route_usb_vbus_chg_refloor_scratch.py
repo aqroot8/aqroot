@@ -135,8 +135,12 @@ def main():
                 drc_exit=run.returncode; violations=json.loads(drc.read_text()).get("violations",[]); types=Counter(v.get("type","unknown") for v in violations); attributable=[v for v in violations if v.get("type") not in chg.ACCEPTED]
                 lp=scratch.with_suffix(".ledger.json"); subprocess.run([sys.executable,str(LEDGER),"--board",str(scratch),str(lp)],check=True,stdout=subprocess.DEVNULL); ledger=json.loads(lp.read_text()); opens={r["net"]:r["open_edges"] for r in ledger["nets"] if r["net"] in (chg.NET,*WITHDRAWN)}
             after=copper(scratch); removed_final=baseline-after; added=after-baseline
-            ok=(complete and all(opens.get(n)==0 for n in (chg.NET,*WITHDRAWN)) and not attributable and not removed_final and not any(k[0] not in (chg.NET,*WITHDRAWN) for k in added))
-            row={"case":idx,"reservations":reservations,"joins":joins,"replay":replay,"open_edges":opens,"drc_exit":drc_exit,"drc_types":dict(types),"attributable_drc_count":len(attributable),"removed_accepted_items":sum(removed_final.values()),"promotion_candidate":ok,"path":scratch}; cases.append(row)
+            removed_by_net=Counter()
+            for key,count in removed_final.items(): removed_by_net[key[0]]+=count
+            wrong_removed=sum(count for key,count in removed_final.items() if key[0] not in WITHDRAWN)
+            wrong_added=sum(count for key,count in added.items() if key[0] not in (chg.NET,*WITHDRAWN))
+            ok=(complete and all(opens.get(n)==0 for n in (chg.NET,*WITHDRAWN)) and not attributable and not wrong_removed and not wrong_added)
+            row={"case":idx,"reservations":reservations,"joins":joins,"replay":replay,"open_edges":opens,"drc_exit":drc_exit,"drc_types":dict(types),"attributable_drc_count":len(attributable),"attributable_drc":attributable,"removed_refloor_items":dict(removed_by_net),"removed_wrong_net_items":wrong_removed,"added_wrong_net_items":wrong_added,"promotion_candidate":ok,"path":scratch}; cases.append(row)
             if ok: winner=row; break
         if winner and args.candidate: args.candidate.write_bytes(winner["path"].read_bytes())
         if args.promote:

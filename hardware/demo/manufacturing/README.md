@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_CHG atomic refloor promoted (2026-09-03)
+
+The D-539 transaction now replays `REC_LIM_IN` on In2 and `ILIM_VSET` on In3,
+with 0.200/0.200 mm B.Cu package escapes and ordinary 0.60/0.30 mm transition
+vias. The CHG tree preserves the hard 0.35 mm R91 neck, governed 0.20 mm U11
+neck, 0.50/0.250 mm hauls, and ordinary 0.90/0.40 mm power vias. Case zero
+closes all three complete nets and passes real refilled schematic-parity DRC
+at the unchanged 199/5/1 signature with no attributable violation or wrong-net
+copper removal/addition. The promoted board is `64e5ae37...`, 54 open retained
+nets / 446 edges. Next route the 12-edge `BQ25185_SYS` tree atomically.
+
 ## USB_VBUS_CHG minimum refloor transaction bounded (2026-09-03)
 
 `route_usb_vbus_chg_refloor_scratch.py` is the atomic D-539 harness. It removes

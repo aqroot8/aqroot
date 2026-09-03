@@ -659,6 +659,11 @@ ROUTES = {
         "layer": "B",
         "width": 200_000,
         "clearance": 200_000,
+        "inner_long_haul_plan": {
+            "a": "R36.1", "b": "U11.7",
+            "a_near": "B", "b_near": "B",
+            "inner": ["I3", "I2"],
+        },
     },
     "REC_LIM_IN": {
         "net": "/01_POWER_TREE/REC_LIM_IN",
@@ -666,6 +671,15 @@ ROUTES = {
         "layer": "B",
         "width": 200_000,
         "clearance": 200_000,
+        # The promoted planar tree occupies the R91 charger pocket.  D-539
+        # proves that a B.Cu replay cannot coexist with the complete
+        # USB_VBUS_CHG tree, so reserve both local land escapes first and
+        # carry only the displaced long control haul on a signal inner layer.
+        "inner_long_haul_plan": {
+            "a": "Q5.3", "b": "R95.1",
+            "a_near": "B", "b_near": "B",
+            "inner": ["I2", "I3"],
+        },
     },
     "ISET": {
         "net": "/01_POWER_TREE/ISET",

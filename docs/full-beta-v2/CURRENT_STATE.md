@@ -13,6 +13,17 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-540 (USB VBUS CHG atomic refloor promoted):** the minimum
+  `REC_LIM_IN` + `ILIM_VSET` withdrawal boundary now replays through separate
+  spare inner layers while preserving 0.200/0.200 mm local control escapes.
+  All eleven CHG lands connect at the governed 0.35 mm R91 / 0.20 mm U11
+  package necks and locked 0.50/0.250 mm hauls. All three transaction nets are
+  at zero open edges; the board improves to 54 open retained nets / 446 edges.
+  Independent refilled parity DRC remains 199/5/1 with no attributable report;
+  board SHA-256 is `64e5ae37...`. D-269/D-186, RGB, XGPIO4/XGPIO5, Demo NCs,
+  accessory power, and production hardware remain intact. **Next:** route the
+  retained 12-edge `BQ25185_SYS` tree as one governed complete-net power
+  transaction. No owner decision is open.
 - **Demo D-539 (USB VBUS CHG minimum refloor transaction bounded):** the
   recovered atomic harness withdraws complete `REC_LIM_IN` + `ILIM_VSET`,
   routes all eleven CHG lands, and requires both nets to replay. Case zero

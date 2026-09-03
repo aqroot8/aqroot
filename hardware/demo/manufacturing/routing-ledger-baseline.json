@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
-  "board_sha256": "7a764bac68b88d5846ebe3d86b9a040b95d4a9029ba2ffa234b26b804da7ce7d",
+  "board_sha256": "64e5ae373d645c0c124e025e798f37a1f833ef26ba3d45c8c45b4ed73432ecbe",
   "population": {
     "schematic_fitted_references": 294,
     "schematic_dnp_references": [
@@ -55,24 +55,24 @@
     "unexpected": []
   },
   "connectivity": {
-    "raw_board_ratsnest": 521,
+    "raw_board_ratsnest": 475,
     "retained_multi_pad_nets": 173,
-    "connected_retained_nets": 102,
-    "open_retained_nets": 71,
-    "retained_open_edges": 492
+    "connected_retained_nets": 119,
+    "open_retained_nets": 54,
+    "retained_open_edges": 446
   },
   "sheet_summary": [
     {
       "sheet": "01_POWER_TREE",
       "nets": 46,
-      "open_nets": 9,
-      "open_edges": 35
+      "open_nets": 6,
+      "open_edges": 20
     },
     {
       "sheet": "02_MCU_CORE",
       "nets": 4,
-      "open_nets": 3,
-      "open_edges": 8
+      "open_nets": 1,
+      "open_edges": 3
     },
     {
       "sheet": "03_SPI_A_DISPLAY_SD",
@@ -83,8 +83,8 @@
     {
       "sheet": "04_SPI_B_RADIOS_NFC",
       "nets": 20,
-      "open_nets": 6,
-      "open_edges": 11
+      "open_nets": 5,
+      "open_edges": 9
     },
     {
       "sheet": "05_I2C_DEVICES",
@@ -113,14 +113,14 @@
     {
       "sheet": "09_COMMUNITY_HEADER",
       "nets": 12,
-      "open_nets": 10,
-      "open_edges": 25
+      "open_nets": 8,
+      "open_edges": 20
     },
     {
       "sheet": "GLOBAL",
       "nets": 67,
-      "open_nets": 37,
-      "open_edges": 392
+      "open_nets": 28,
+      "open_edges": 373
     }
   ],
   "nets": [
@@ -1132,49 +1132,6 @@
       ]
     },
     {
-      "net": "/01_POWER_TREE/USB_VBUS_CHG",
-      "sheet": "01_POWER_TREE",
-      "pads": 11,
-      "copper_islands": 11,
-      "open_edges": 10,
-      "span_mm": 145.212,
-      "groups": [
-        [
-          "C23.2@66.025,80.250"
-        ],
-        [
-          "D10.2@13.050,30.000"
-        ],
-        [
-          "D11.2@16.550,30.000"
-        ],
-        [
-          "Q5.2@1.637,23.515"
-        ],
-        [
-          "R104.1@1.300,90.435"
-        ],
-        [
-          "R35.2@36.825,136.250"
-        ],
-        [
-          "R84.1@12.825,28.000"
-        ],
-        [
-          "R91.1@8.000,17.625"
-        ],
-        [
-          "R94.1@8.000,12.075"
-        ],
-        [
-          "R96.1@8.000,7.575"
-        ],
-        [
-          "U11.10@68.600,78.600"
-        ]
-      ]
-    },
-    {
       "net": "/I2C_SCL_INT",
       "sheet": "GLOBAL",
       "pads": 9,
@@ -1305,33 +1262,6 @@
       ]
     },
     {
-      "net": "/01_POWER_TREE/USB_VBUS_RAW",
-      "sheet": "01_POWER_TREE",
-      "pads": 7,
-      "copper_islands": 5,
-      "open_edges": 4,
-      "span_mm": 20.656,
-      "groups": [
-        [
-          "C20.1@34.536,140.608"
-        ],
-        [
-          "J3.A4@45.400,146.380",
-          "J3.B9@45.400,146.380"
-        ],
-        [
-          "J3.A9@40.600,146.380",
-          "J3.B4@40.600,146.380"
-        ],
-        [
-          "R35.1@35.175,136.250"
-        ],
-        [
-          "U10.5@52.538,142.700"
-        ]
-      ]
-    },
-    {
       "net": "/03_SPI_A_DISPLAY_SD/LED_A",
       "sheet": "03_SPI_A_DISPLAY_SD",
       "pads": 5,
@@ -1428,53 +1358,6 @@
         ],
         [
           "U3.1@54.138,81.575"
-        ]
-      ]
-    },
-    {
-      "net": "Net-(J3-SHIELD)",
-      "sheet": "GLOBAL",
-      "pads": 5,
-      "copper_islands": 5,
-      "open_edges": 4,
-      "span_mm": 12.875,
-      "groups": [
-        [
-          "J3.SH@38.680,141.625"
-        ],
-        [
-          "J3.SH@38.680,145.805"
-        ],
-        [
-          "J3.SH@47.320,141.625"
-        ],
-        [
-          "J3.SH@47.320,145.805"
-        ],
-        [
-          "R32.1@50.033,139.732"
-        ]
-      ]
-    },
-    {
-      "net": "/02_MCU_CORE/BOOT_N",
-      "sheet": "02_MCU_CORE",
-      "pads": 4,
-      "copper_islands": 4,
-      "open_edges": 3,
-      "span_mm": 41.86,
-      "groups": [
-        [
-          "R2.2@57.070,113.679"
-        ],
-        [
-          "SW1.1@24.320,139.750"
-        ],
-        [
-          "SW1.1@32.280,139.750"
-        ],
-        [
-          "U1.27@46.500,136.750"
         ]
       ]
     },
@@ -1611,28 +1494,6 @@
       ]
     },
     {
-      "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
-      "sheet": "09_COMMUNITY_HEADER",
-      "pads": 4,
-      "copper_islands": 4,
-      "open_edges": 3,
-      "span_mm": 40.906,
-      "groups": [
-        [
-          "D5.6@60.183,21.178"
-        ],
-        [
-          "J5.21@65.900,60.800"
-        ],
-        [
-          "R64.2@59.682,38.119"
-        ],
-        [
-          "TP43.1@55.731,35.330"
-        ]
-      ]
-    },
-    {
       "net": "/ACC_5V_BOOST_EN",
       "sheet": "GLOBAL",
       "pads": 4,
@@ -1765,28 +1626,6 @@
       ]
     },
     {
-      "net": "Net-(SW9-A)",
-      "sheet": "GLOBAL",
-      "pads": 4,
-      "copper_islands": 4,
-      "open_edges": 3,
-      "span_mm": 56.413,
-      "groups": [
-        [
-          "R43.1@19.190,120.335"
-        ],
-        [
-          "SW9.1@63.950,89.000"
-        ],
-        [
-          "TP13.1@65.500,93.000"
-        ],
-        [
-          "U12.12@66.100,102.800"
-        ]
-      ]
-    },
-    {
       "net": "/01_POWER_TREE/ACC_5V_FB",
       "sheet": "01_POWER_TREE",
       "pads": 3,
@@ -1844,25 +1683,6 @@
       ]
     },
     {
-      "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
-      "sheet": "02_MCU_CORE",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 36.378,
-      "groups": [
-        [
-          "R111.1@60.354,112.782"
-        ],
-        [
-          "TP1.1@62.783,144.656"
-        ],
-        [
-          "U1.26@45.250,134.985"
-        ]
-      ]
-    },
-    {
       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
       "sheet": "04_SPI_B_RADIOS_NFC",
       "pads": 3,
@@ -1878,25 +1698,6 @@
         ],
         [
           "U9.7@31.725,28.750"
-        ]
-      ]
-    },
-    {
-      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
-      "sheet": "04_SPI_B_RADIOS_NFC",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 15.297,
-      "groups": [
-        [
-          "C51.1@30.250,22.500"
-        ],
-        [
-          "C52.1@30.425,37.500"
-        ],
-        [
-          "U9.11@33.250,27.725"
         ]
       ]
     },
@@ -2015,25 +1816,6 @@
       ]
     },
     {
-      "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
-      "sheet": "09_COMMUNITY_HEADER",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 43.626,
-      "groups": [
-        [
-          "D5.4@60.183,22.178"
-        ],
-        [
-          "J5.20@65.900,58.260"
-        ],
-        [
-          "R66.2@59.895,15.049"
-        ]
-      ]
-    },
-    {
       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
       "sheet": "09_COMMUNITY_HEADER",
       "pads": 3,
@@ -2068,25 +1850,6 @@
         ],
         [
           "U3.20@59.862,78.975"
-        ]
-      ]
-    },
-    {
-      "net": "/CC1101_CS_N",
-      "sheet": "GLOBAL",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 42.476,
-      "groups": [
-        [
-          "R28.2@54.837,111.621"
-        ],
-        [
-          "U1.7@55.390,119.250"
-        ],
-        [
-          "U7.19@20.000,135.110"
         ]
       ]
     },
@@ -2144,25 +1907,6 @@
         ],
         [
           "U1.35@56.660,136.750"
-        ]
-      ]
-    },
-    {
-      "net": "/IR_RX_GPIO44",
-      "sheet": "GLOBAL",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 132.299,
-      "groups": [
-        [
-          "TP40.1@63.248,108.355"
-        ],
-        [
-          "U1.36@57.930,136.750"
-        ],
-        [
-          "U6.1@64.210,4.600"
         ]
       ]
     },
@@ -2281,63 +2025,6 @@
       ]
     },
     {
-      "net": "Net-(U1-EN)",
-      "sheet": "GLOBAL",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 25.653,
-      "groups": [
-        [
-          "C1.2@53.116,116.620"
-        ],
-        [
-          "R1.1@56.625,141.197"
-        ],
-        [
-          "U1.3@60.470,119.250"
-        ]
-      ]
-    },
-    {
-      "net": "Net-(U12-PG)",
-      "sheet": "GLOBAL",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 55.388,
-      "groups": [
-        [
-          "R41.2@14.140,120.335"
-        ],
-        [
-          "TP8.1@38.000,124.500"
-        ],
-        [
-          "U12.14@65.100,102.800"
-        ]
-      ]
-    },
-    {
-      "net": "Net-(U12-PS_SYNC)",
-      "sheet": "GLOBAL",
-      "pads": 3,
-      "copper_islands": 3,
-      "open_edges": 2,
-      "span_mm": 52.777,
-      "groups": [
-        [
-          "R42.2@17.490,120.335"
-        ],
-        [
-          "TP14.1@40.500,124.500"
-        ],
-        [
-          "U12.13@65.600,102.800"
-        ]
-      ]
-    },
-    {
       "net": "/01_POWER_TREE/ACC_5V_LX",
       "sheet": "01_POWER_TREE",
       "pads": 2,
@@ -2366,25 +2053,6 @@
         ],
         [
           "U11.8@68.600,77.800"
-        ]
-      ]
-    },
-    {
-      "net": "/01_POWER_TREE/LTC4368_FAULT_N",
-      "sheet": "01_POWER_TREE",
-      "pads": 5,
-      "copper_islands": 2,
-      "open_edges": 1,
-      "span_mm": 63.939,
-      "groups": [
-        [
-          "Q9.1@1.637,10.255",
-          "R81.2@5.825,73.000",
-          "R82.1@7.500,73.825",
-          "U18.7@5.900,67.000"
-        ],
-        [
-          "TP18.1@8.500,44.500"
         ]
       ]
     },
@@ -2421,22 +2089,6 @@
       ]
     },
     {
-      "net": "/CC1101_GDO0",
-      "sheet": "GLOBAL",
-      "pads": 2,
-      "copper_islands": 2,
-      "open_edges": 1,
-      "span_mm": 40.033,
-      "groups": [
-        [
-          "U1.8@54.120,119.250"
-        ],
-        [
-          "U7.15@20.000,140.190"
-        ]
-      ]
-    },
-    {
       "net": "/I2S_SPK_DOUT",
       "sheet": "GLOBAL",
       "pads": 2,
@@ -2465,22 +2117,6 @@
         ],
         [
           "U9.27@34.750,32.275"
-        ]
-      ]
-    },
-    {
-      "net": "/SX1262_BUSY",
-      "sheet": "GLOBAL",
-      "pads": 2,
-      "copper_islands": 2,
-      "open_edges": 1,
-      "span_mm": 51.117,
-      "groups": [
-        [
-          "U1.12@49.040,119.250"
-        ],
-        [
-          "U8.14@3.000,141.460"
         ]
       ]
     },
@@ -2714,6 +2350,23 @@
         [
           "R36.1@67.925,80.250",
           "U11.7@68.600,77.400"
+        ]
+      ]
+    },
+    {
+      "net": "/01_POWER_TREE/LTC4368_FAULT_N",
+      "sheet": "01_POWER_TREE",
+      "pads": 5,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 63.939,
+      "groups": [
+        [
+          "Q9.1@1.637,10.255",
+          "R81.2@5.825,73.000",
+          "R82.1@7.500,73.825",
+          "TP18.1@8.500,44.500",
+          "U18.7@5.900,67.000"
         ]
       ]
     },
@@ -3044,6 +2697,48 @@
       ]
     },
     {
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "sheet": "01_POWER_TREE",
+      "pads": 11,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 145.212,
+      "groups": [
+        [
+          "C23.2@66.025,80.250",
+          "D10.2@13.050,30.000",
+          "D11.2@16.550,30.000",
+          "Q5.2@1.637,23.515",
+          "R104.1@1.300,90.435",
+          "R35.2@36.825,136.250",
+          "R84.1@12.825,28.000",
+          "R91.1@8.000,17.625",
+          "R94.1@8.000,12.075",
+          "R96.1@8.000,7.575",
+          "U11.10@68.600,78.600"
+        ]
+      ]
+    },
+    {
+      "net": "/01_POWER_TREE/USB_VBUS_RAW",
+      "sheet": "01_POWER_TREE",
+      "pads": 7,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 20.656,
+      "groups": [
+        [
+          "C20.1@34.536,140.608",
+          "J3.A4@45.400,146.380",
+          "J3.A9@40.600,146.380",
+          "J3.B4@40.600,146.380",
+          "J3.B9@45.400,146.380",
+          "R35.1@35.175,136.250",
+          "U10.5@52.538,142.700"
+        ]
+      ]
+    },
+    {
       "net": "/01_POWER_TREE/V3V3_FB",
       "sheet": "01_POWER_TREE",
       "pads": 3,
@@ -3114,6 +2809,37 @@
         [
           "D11.1@14.450,30.000",
           "R87.1@8.000,25.025"
+        ]
+      ]
+    },
+    {
+      "net": "/02_MCU_CORE/BOOT_N",
+      "sheet": "02_MCU_CORE",
+      "pads": 4,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 41.86,
+      "groups": [
+        [
+          "R2.2@57.070,113.679",
+          "SW1.1@24.320,139.750",
+          "SW1.1@32.280,139.750",
+          "U1.27@46.500,136.750"
+        ]
+      ]
+    },
+    {
+      "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+      "sheet": "02_MCU_CORE",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 36.378,
+      "groups": [
+        [
+          "R111.1@60.354,112.782",
+          "TP1.1@62.783,144.656",
+          "U1.26@45.250,134.985"
         ]
       ]
     },
@@ -3336,6 +3062,21 @@
           "C77.2@50.275,32.200",
           "C78.1@48.725,34.300",
           "R117.1@45.275,34.300"
+        ]
+      ]
+    },
+    {
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+      "sheet": "04_SPI_B_RADIOS_NFC",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 15.297,
+      "groups": [
+        [
+          "C51.1@30.250,22.500",
+          "C52.1@30.425,37.500",
+          "U9.11@33.250,27.725"
         ]
       ]
     },
@@ -3603,6 +3344,37 @@
       ]
     },
     {
+      "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+      "sheet": "09_COMMUNITY_HEADER",
+      "pads": 4,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 40.906,
+      "groups": [
+        [
+          "D5.6@60.183,21.178",
+          "J5.21@65.900,60.800",
+          "R64.2@59.682,38.119",
+          "TP43.1@55.731,35.330"
+        ]
+      ]
+    },
+    {
+      "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+      "sheet": "09_COMMUNITY_HEADER",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 43.626,
+      "groups": [
+        [
+          "D5.4@60.183,22.178",
+          "J5.20@65.900,58.260",
+          "R66.2@59.895,15.049"
+        ]
+      ]
+    },
+    {
       "net": "/09_COMMUNITY_HEADER/XGPIO4_HDR",
       "sheet": "09_COMMUNITY_HEADER",
       "pads": 3,
@@ -3775,6 +3547,35 @@
       ]
     },
     {
+      "net": "/CC1101_CS_N",
+      "sheet": "GLOBAL",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 42.476,
+      "groups": [
+        [
+          "R28.2@54.837,111.621",
+          "U1.7@55.390,119.250",
+          "U7.19@20.000,135.110"
+        ]
+      ]
+    },
+    {
+      "net": "/CC1101_GDO0",
+      "sheet": "GLOBAL",
+      "pads": 2,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 40.033,
+      "groups": [
+        [
+          "U1.8@54.120,119.250",
+          "U7.15@20.000,140.190"
+        ]
+      ]
+    },
+    {
       "net": "/DISP_BL_CTL",
       "sheet": "GLOBAL",
       "pads": 2,
@@ -3829,6 +3630,21 @@
           "J1.10@40.410,96.000",
           "R16.1@34.360,88.620",
           "U2.8@54.138,87.025"
+        ]
+      ]
+    },
+    {
+      "net": "/IR_RX_GPIO44",
+      "sheet": "GLOBAL",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 132.299,
+      "groups": [
+        [
+          "TP40.1@63.248,108.355",
+          "U1.36@57.930,136.750",
+          "U6.1@64.210,4.600"
         ]
       ]
     },
@@ -3930,6 +3746,20 @@
           "J1.36@27.410,96.000",
           "J2.5@16.594,132.462",
           "U1.20@45.250,127.365"
+        ]
+      ]
+    },
+    {
+      "net": "/SX1262_BUSY",
+      "sheet": "GLOBAL",
+      "pads": 2,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 51.117,
+      "groups": [
+        [
+          "U1.12@49.040,119.250",
+          "U8.14@3.000,141.460"
         ]
       ]
     },
@@ -4061,6 +3891,23 @@
       ]
     },
     {
+      "net": "Net-(J3-SHIELD)",
+      "sheet": "GLOBAL",
+      "pads": 5,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 12.875,
+      "groups": [
+        [
+          "J3.SH@38.680,141.625",
+          "J3.SH@38.680,145.805",
+          "J3.SH@47.320,141.625",
+          "J3.SH@47.320,145.805",
+          "R32.1@50.033,139.732"
+        ]
+      ]
+    },
+    {
       "net": "Net-(L1-Pad1)",
       "sheet": "GLOBAL",
       "pads": 3,
@@ -4087,6 +3934,67 @@
           "L1.2@67.785,96.600",
           "U12.6@67.600,100.000",
           "U12.7@68.100,100.000"
+        ]
+      ]
+    },
+    {
+      "net": "Net-(SW9-A)",
+      "sheet": "GLOBAL",
+      "pads": 4,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 56.413,
+      "groups": [
+        [
+          "R43.1@19.190,120.335",
+          "SW9.1@63.950,89.000",
+          "TP13.1@65.500,93.000",
+          "U12.12@66.100,102.800"
+        ]
+      ]
+    },
+    {
+      "net": "Net-(U1-EN)",
+      "sheet": "GLOBAL",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 25.653,
+      "groups": [
+        [
+          "C1.2@53.116,116.620",
+          "R1.1@56.625,141.197",
+          "U1.3@60.470,119.250"
+        ]
+      ]
+    },
+    {
+      "net": "Net-(U12-PG)",
+      "sheet": "GLOBAL",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 55.388,
+      "groups": [
+        [
+          "R41.2@14.140,120.335",
+          "TP8.1@38.000,124.500",
+          "U12.14@65.100,102.800"
+        ]
+      ]
+    },
+    {
+      "net": "Net-(U12-PS_SYNC)",
+      "sheet": "GLOBAL",
+      "pads": 3,
+      "copper_islands": 1,
+      "open_edges": 0,
+      "span_mm": 52.777,
+      "groups": [
+        [
+          "R42.2@17.490,120.335",
+          "TP14.1@40.500,124.500",
+          "U12.13@65.600,102.800"
         ]
       ]
     }

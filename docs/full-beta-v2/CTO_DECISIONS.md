@@ -9,6 +9,28 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-540 · 2026-09-03 · Demo USB_VBUS_CHG atomic refloor promoted:**
+The recovered D-539 transaction was completed by adding a reusable inner-long-
+haul replay plan to the two-pad router. The two displaced control nets retain
+their 0.200/0.200 mm B.Cu package escapes, then use ordinary 0.60/0.30 mm vias
+and separate spare signal layers for their long hauls: `REC_LIM_IN` on In2 and
+`ILIM_VSET` on In3. The governed `R91.1` neck is held at the board's hard
+0.35 mm VBUS_CHG minimum; `U11.10` retains its existing 0.20/0.20 mm
+fine-pitch exception. Every charger haul outside those package necks remains
+0.50/0.250 mm with ordinary 0.90/0.40 mm vias.
+
+Case zero closes all eleven `USB_VBUS_CHG` lands and replays both complete
+withdrawn nets. Fresh ledger evidence shows all three nets at zero open edges;
+the board improves from 55 to 54 open retained nets and from 456 to 446 open
+edges. Independent real zone-refilled schematic-parity DRC remains exactly 199
+footprint-library / five inherited hole-clearance / one inherited solder-mask-
+bridge reports, with no attributable violation. No copper outside the two
+explicitly refloored nets was removed or added. Board SHA-256 is
+`64e5ae37...`; D-269/D-186, USB RAW/shield, RGB, XGPIO4/XGPIO5, Demo NCs,
+accepted accessory-power copper, and `hardware/beta-v2/` remain intact. Next
+ranked fabrication blocker is the retained 12-edge `BQ25185_SYS` power tree;
+route it as one governed complete-net transaction. No owner decision is open.
+
 **D-539 · 2026-09-03 · Demo USB_VBUS_CHG minimum refloor transaction bounded:**
 The recovered D-538 successor adds an atomic scratch harness that withdraws
 the complete `REC_LIM_IN` and `ILIM_VSET` trees, installs the two qualified

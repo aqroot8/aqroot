@@ -22,9 +22,9 @@ import qrouter as qr  # noqa: E402
 
 NET = "/01_POWER_TREE/USB_VBUS_CHG"
 CASES = {
-    # The 0.80 mm resistor land can carry a 0.30 mm local launch while retaining
-    # the net's 0.25 mm routed clearance outside any package exception.
-    "R91.1": {"neck_width": 300_000, "local_clearance": 250_000,
+    # Keep the resistor launch at the board's hard VBUS_CHG minimum width;
+    # narrower physical witnesses are not eligible for real-DRC promotion.
+    "R91.1": {"neck_width": 350_000, "local_clearance": 250_000,
               "angles": tuple(range(120, 241, 20))},
     # U11 is already governed by the board's fine-pitch 0.20/0.20 mm courtyard
     # rules.  The exception ends before the 0.50/0.25 mm haul begins.
