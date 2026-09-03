@@ -23,6 +23,11 @@ import qrouter as qr  # noqa: E402
 
 NET = "/01_POWER_TREE/BQ25185_SYS"
 CASES = {
+    # The accepted USB charger refloor boxes this 0805 bypass land.  Preserve
+    # the full SYS haul geometry while testing whether one short turn after a
+    # legal straight prefix can reach an ordinary all-layer barrel site.
+    "C26.2": {"neck_width": 500_000, "trunk_width": 500_000,
+               "local_clearance": 250_000, "clearance": 250_000},
     # D-269 applies to the SYS/BAT current-path relationship even inside the
     # charger breakout.  Screening the neck at only 0.20 mm produced apparent
     # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.
@@ -37,30 +42,103 @@ TRUNK_LENGTHS = (250_000, 500_000, 750_000, 1_000_000, 1_500_000)
 DOGLEG_LENGTHS = tuple(range(250_000, 2_025_000, 50_000))
 
 
-def segment_blocker(board, width, clearance, start, end):
-    for shape in board.obstacles("B", NET):
+def obstacle_index(board, shapes, width, clearance):
+    """Index obstacles by their exact expanded collision bounding boxes."""
+    buckets = {}
+    for shape in shapes:
         margin = board.margin(shape, width, clearance, clearance)
-        sx0, sy0, sx1, sy1 = shape.bbox(margin)
-        if (max(start[0], end[0]) < sx0 or min(start[0], end[0]) > sx1 or
-                max(start[1], end[1]) < sy0 or min(start[1], end[1]) > sy1):
-            continue
-        if qr.seg_shape_dist(*start, *end, shape) < margin:
-            return shape.tag
+        x0, y0, x1, y1 = shape.bbox(margin)
+        for bx in range(math.floor(x0 / VIA_BUCKET),
+                        math.floor(x1 / VIA_BUCKET) + 1):
+            for by in range(math.floor(y0 / VIA_BUCKET),
+                            math.floor(y1 / VIA_BUCKET) + 1):
+                buckets.setdefault((bx, by), []).append((shape, margin))
+    return buckets
+
+
+def segment_blocker(index, start, end):
+    seen = set()
+    x0, x1 = sorted((start[0], end[0]))
+    y0, y1 = sorted((start[1], end[1]))
+    for bx in range(math.floor(x0 / VIA_BUCKET),
+                    math.floor(x1 / VIA_BUCKET) + 1):
+        for by in range(math.floor(y0 / VIA_BUCKET),
+                        math.floor(y1 / VIA_BUCKET) + 1):
+            for shape, margin in index.get((bx, by), ()):
+                identity = id(shape)
+                if identity in seen:
+                    continue
+                seen.add(identity)
+                sx0, sy0, sx1, sy1 = shape.bbox(margin)
+                if (x1 < sx0 or x0 > sx1 or y1 < sy0 or y0 > sy1):
+                    continue
+                if qr.seg_shape_dist(*start, *end, shape) < margin:
+                    return shape.tag
     return None
 
 
-def via_free(board, point, clearance):
-    return all(board.point_free(layer, NET, *point, 900_000, clearance,
-                                clearance, 25_000) for layer in board.cu)
+VIA_BUCKET = 2_000_000
 
 
-def scan():
+def via_index(board, obstacles_by_layer, clearance):
+    """Index exact expanded via obstacles into coarse 2 mm spatial buckets."""
+    width = 900_000
+    guard = 25_000 * 0.75
+    indexes = {}
+    for layer, shapes in obstacles_by_layer.items():
+        buckets = {}
+        for shape in shapes:
+            margin = board.margin(shape, width, clearance, clearance) + guard
+            x0, y0, x1, y1 = shape.bbox(margin)
+            for bx in range(math.floor(x0 / VIA_BUCKET),
+                            math.floor(x1 / VIA_BUCKET) + 1):
+                for by in range(math.floor(y0 / VIA_BUCKET),
+                                math.floor(y1 / VIA_BUCKET) + 1):
+                    buckets.setdefault((bx, by), []).append((shape, margin))
+        indexes[layer] = buckets
+    return indexes
+
+
+def via_free(board, indexes, point):
+    """Fast equivalent of QBoard.point_free() for a fixed 0.90 mm barrel.
+
+    The generic helper walks every board shape for every candidate.  This
+    bounded enumerator can reject by expanded bounding box first, preserving
+    the exact margin, distance, edge, and 25 um guard tests while making the
+    exhaustive dogleg family practical.
+    """
+    width = 900_000
+    guard = 25_000 * 0.75
+    edge_limit = qr.EDGE_CLR + width / 2.0 + guard
+    x, y = point
+    if not (board.ex0 + edge_limit <= x <= board.ex1 - edge_limit and
+            board.ey0 + edge_limit <= y <= board.ey1 - edge_limit):
+        return False
+    bucket = (math.floor(x / VIA_BUCKET), math.floor(y / VIA_BUCKET))
+    for layer in board.cu:
+        for shape, margin in indexes[layer].get(bucket, ()):
+            if shape.dist(x, y) < margin:
+                return False
+    return True
+
+
+def scan(selected_pads=None):
     board = qr.QBoard(BOARD)
     ir.inject_existing_via_obstacles(board)
+    obstacles_by_layer = {layer: tuple(board.obstacles(layer, NET))
+                          for layer in board.cu}
     pads = {pad["ref"]: pad for pad in ir.physical_net_pads(board, NET)}
     rows = []
     for ref, rule in CASES.items():
+        if selected_pads and ref not in selected_pads:
+            continue
         pad = pads[ref]
+        indexes = via_index(board, obstacles_by_layer, rule["clearance"])
+        bcu_shapes = obstacles_by_layer["B"]
+        neck_index = obstacle_index(board, bcu_shapes, rule["neck_width"],
+                                    rule["local_clearance"])
+        trunk_index = obstacle_index(board, bcu_shapes, rule["trunk_width"],
+                                     rule["clearance"])
         anchors = []
         candidates = []
         blockers = Counter()
@@ -72,8 +150,7 @@ def scan():
             for neck_length in NECK_LENGTHS:
                 neck_end = (round(pad["x"] + ux * neck_length),
                             round(pad["y"] + uy * neck_length))
-                blocker = segment_blocker(board, rule["neck_width"],
-                                          rule["local_clearance"],
+                blocker = segment_blocker(neck_index,
                                           (pad["x"], pad["y"]), neck_end)
                 if blocker:
                     blockers[f"neck:{blocker}"] += 1
@@ -81,8 +158,7 @@ def scan():
                 for trunk_length in TRUNK_LENGTHS:
                     anchor = (round(neck_end[0] + ux * trunk_length),
                               round(neck_end[1] + uy * trunk_length))
-                    blocker = segment_blocker(board, rule["trunk_width"],
-                                              rule["clearance"], neck_end, anchor)
+                    blocker = segment_blocker(trunk_index, neck_end, anchor)
                     if blocker:
                         blockers[f"trunk:{blocker}"] += 1
                         break
@@ -99,12 +175,11 @@ def scan():
                 for dogleg_length in DOGLEG_LENGTHS:
                     site = (round(anchor[0] + ux * dogleg_length),
                             round(anchor[1] + uy * dogleg_length))
-                    blocker = segment_blocker(board, rule["trunk_width"],
-                                              rule["clearance"], anchor, site)
+                    blocker = segment_blocker(trunk_index, anchor, site)
                     if blocker:
                         blockers[f"dogleg:{blocker}"] += 1
                         break
-                    if site in seen_sites or not via_free(board, site, rule["clearance"]):
+                    if site in seen_sites or not via_free(board, indexes, site):
                         blockers["dogleg:no_all_layer_via_site"] += 1
                         continue
                     seen_sites.add(site)
@@ -143,9 +218,11 @@ def scan():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--pad", action="append", choices=tuple(CASES),
+                        help="screen only this wall pad (repeatable)")
     args = parser.parse_args()
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
-    rows = scan()
+    rows = scan(set(args.pad) if args.pad else None)
     report = {
         "schema": 1, "board": str(BOARD.relative_to(ROOT)), "net": NET,
         "authoritative_board_sha256": before,

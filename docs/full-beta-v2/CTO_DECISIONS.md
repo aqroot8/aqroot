@@ -9,6 +9,27 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-542 · 2026-09-03 · Demo BQ25185_SYS C26 dogleg family bounded:**
+The recovered short-dogleg enumerator now includes the boxed `C26.2` endpoint
+and uses exact expanded-obstacle spatial indexes for both segment and all-layer
+via tests.  This is a performance change only: a deterministic 500-case
+comparison against the original predicates found zero blocked/free mismatches.
+Two complete runs reproduce the same report SHA-256 `4eaaa5d5...` in about
+49 seconds rather than exceeding the prior 240-second bound.
+
+The finite 5-degree / 50-um dogleg family finds 2,422 legal straight anchors
+but zero ordinary 0.90/0.40 mm via landings.  Of the terminal tests, 2,367,480
+are rejected because no site is free on every copper layer; retained keepouts,
+`R127`, tracks, and vias bind the rest.  Scratch project refilled schematic-
+parity DRC remains exactly 199 footprint-library / five inherited hole-
+clearance / one inherited solder-mask-bridge reports.  No copper or placement
+is promoted; board `64e5ae37...` remains byte-identical at 54 open retained
+nets / 446 edges, and `hardware/beta-v2/` is untouched.  Next inventory the
+complete accepted copper nets occupying the C26 pocket and screen the minimum
+complete-net withdrawal/replay boundary as part of the full 13-land SYS
+transaction.  Do not repeat the exhausted straight/dogleg families or reduce
+the 0.50/0.250 mm SYS contract.  No owner decision is open.
+
 **D-541 · 2026-09-03 · Demo BQ25185_SYS first endpoint wall bounded:**
 The first post-D-540 complete 13-land SYS transaction stops at `C26.2`, before
 any inner-layer tree join. Reversing the reservation order proves this is not

@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS C26 dogleg family bounded (2026-09-03)
+
+The recovered dogleg enumerator adds `C26.2` and exact spatial indexes without
+changing collision geometry.  A 500-case equivalence test found zero mismatches
+against the original predicates, and two runs reproduce report hash
+`4eaaa5d5...` in about 49 seconds.  The exhaustive 5-degree / 50-um family
+extends 2,422 legal straight anchors but finds zero ordinary 0.90/0.40 mm
+all-layer via landings; 2,367,480 terminal sites fail the all-layer test.
+Scratch project refilled parity DRC remains 199/5/1.  No copper is promoted;
+board `64e5ae37...` remains at 54 open retained nets / 446 edges.  Next
+inventory complete accepted copper nets in the C26 pocket and screen the
+minimum atomic withdrawal/replay boundary with the full 13-land SYS tree; do
+not retry the exhausted straight/dogleg families or weaken 0.50/0.250 mm SYS.
+
 ## BQ25185_SYS C26 endpoint wall bounded (2026-09-03)
 
 The complete 13-land SYS harness now reserves `C26.2` before `C24.1`, proving
