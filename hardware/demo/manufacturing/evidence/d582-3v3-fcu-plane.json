@@ -1,0 +1,214 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "5b112b177531f2084457ba0bc6531394c80362d00d1b1392afb372ab71c94cf4",
+  "authoritative_unchanged": true,
+  "candidate_sha256": "1aa80b3e2a89986e45e52ec96bd488f752483b9103ca0062605e26102fc079c9",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 138,
+    "retained_open_edges_before": 150
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "failed_nets": [
+    "+3V3"
+  ],
+  "inherited_within_baseline": true,
+  "plane": {
+    "clearance": 0.25,
+    "first_fill_exit": 0,
+    "island_removal_restored": true,
+    "layer": "F.Cu",
+    "name": "F +3V3 PLANE",
+    "net": "+3V3"
+  },
+  "preservation": {
+    "added_object_nets": [],
+    "foreign_added_nets": [],
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "zone_inventory_ok": true,
+    "zones_added": [
+      [
+        "+3V3",
+        [
+          "F.Cu"
+        ],
+        "F +3V3 PLANE",
+        200000,
+        250000,
+        0,
+        [
+          [
+            500000,
+            500000
+          ],
+          [
+            71500000,
+            500000
+          ],
+          [
+            71500000,
+            147500000
+          ],
+          [
+            500000,
+            147500000
+          ]
+        ]
+      ]
+    ],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "1aa80b3e2a89986e45e52ec96bd488f752483b9103ca0062605e26102fc079c9",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "+3V3"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "P3V3",
+        "via_dia": 700000,
+        "via_drill": 400000,
+        "width": 400000
+      },
+      "failures": [
+        {
+          "island": [
+            "C5.1"
+          ],
+          "pad": "C5.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C7.1"
+          ],
+          "pad": "C7.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R127.1"
+          ],
+          "pad": "R127.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.4"
+          ],
+          "pad": "U12.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+        },
+        {
+          "island": [
+            "U12.5"
+          ],
+          "pad": "U12.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+        },
+        {
+          "island": [
+            "U17.5"
+          ],
+          "pad": "U17.5",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U3.21"
+          ],
+          "pad": "U3.21",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.70 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)"
+        },
+        {
+          "island": [
+            "U4.2"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.3"
+          ],
+          "pad": "U4.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x54), C6.2 (x7), U4.1 (x6), R119.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+        },
+        {
+          "island": [
+            "U9.1"
+          ],
+          "pad": "U9.1",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U9.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.2 (x72)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch",
+      "net": "+3V3",
+      "ok": false,
+      "seconds": 2.0,
+      "stitched": 0,
+      "unreachable": 14,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [],
+  "schema": 1
+}

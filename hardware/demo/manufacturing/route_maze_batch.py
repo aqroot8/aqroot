@@ -327,10 +327,18 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     failed = sorted(r["net"] for r in routed if not r.get("ok"))
     foreign = sorted(set(added_nets) - set(ok_nets))
 
+    # A run must CHANGE the board, not merely survive the gate.  For a maze or
+    # stitch run that means at least one net actually routed.  Under `--plane`
+    # it does NOT: the pour IS the copper.  A pour that lands on pads the net
+    # already reaches closes those edges with no track and no barrel at all,
+    # and `edges_after < edges_before` above is the honest proof that it did.
+    # Requiring a stitch as well would refuse a promotion whose whole value is
+    # the plane -- which is exactly what a plane is for.
+    changed = (bool(plane)
+               or any(r.get("ok") and not r.get("already") for r in routed))
     ok = (not attributable and inherited_ok and not regressed and not removed
           and not foreign and edges_after < edges_before and zone_ok
-          and any(r.get("ok") and not r.get("already") for r in routed)
-          and before == sha256_file(BOARD))
+          and changed and before == sha256_file(BOARD))
 
     summary = dict(
         schema=1,

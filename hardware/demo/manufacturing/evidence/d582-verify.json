@@ -1,0 +1,97 @@
+{
+  "added_object_nets": [],
+  "added_track_layers": [],
+  "added_track_widths_nm": [],
+  "added_tracks": 0,
+  "added_via_dia_drill_nm": [],
+  "added_vias": 0,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_nets": [
+    "+3V3"
+  ],
+  "claimed_planes": [
+    [
+      "+3V3",
+      "F.Cu"
+    ]
+  ],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 156
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 156
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 0,
+  "objects_removed": 0,
+  "pre_board_sha256": "5b112b177531f2084457ba0bc6531394c80362d00d1b1392afb372ab71c94cf4",
+  "promoted_board_sha256": "1aa80b3e2a89986e45e52ec96bd488f752483b9103ca0062605e26102fc079c9",
+  "ref": "HEAD",
+  "removed_sample": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [
+    [
+      "+3V3",
+      [
+        "F.Cu"
+      ],
+      "F +3V3 PLANE",
+      200000,
+      250000,
+      0,
+      2,
+      [
+        [
+          500000,
+          500000
+        ],
+        [
+          71500000,
+          500000
+        ],
+        [
+          71500000,
+          147500000
+        ],
+        [
+          500000,
+          147500000
+        ]
+      ]
+    ]
+  ],
+  "zones_removed": []
+}
