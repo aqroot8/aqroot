@@ -54,7 +54,8 @@ def face(pad):
     return faces[0]
 
 
-def route(path: Path, c26_candidate=None, c27_candidate=None):
+def route(path: Path, c26_candidate=None, c27_candidate=None,
+          c28_candidate=None):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -67,13 +68,14 @@ def route(path: Path, c26_candidate=None, c27_candidate=None):
     )
     reservations = []
     anchors = []
-    order = FITTED if not (c26_candidate or c27_candidate) else FITTED
+    order = FITTED
     for ref in order:
         print(f"reserve {ref}", file=sys.stderr, flush=True)
         pad = pads[ref]
         near = face(pad)
         qualified = (c26_candidate if ref == "C26.2" else
-                     c27_candidate if ref == "C27.1" else None)
+                     c27_candidate if ref == "C27.1" else
+                     c28_candidate if ref == "C28.1" else None)
         if qualified:
             def point(key):
                 return tuple(round(value * 1e6) for value in qualified[key])
@@ -228,11 +230,13 @@ def main():
     parser.add_argument("--route", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--c26-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--c27-candidate-json", help=argparse.SUPPRESS)
+    parser.add_argument("--c28-candidate-json", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
         route(args.route,
               json.loads(args.c26_candidate_json) if args.c26_candidate_json else None,
-              json.loads(args.c27_candidate_json) if args.c27_candidate_json else None)
+              json.loads(args.c27_candidate_json) if args.c27_candidate_json else None,
+              json.loads(args.c28_candidate_json) if args.c28_candidate_json else None)
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:

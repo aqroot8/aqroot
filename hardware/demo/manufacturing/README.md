@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS joint C26/C27/C28 refloor and L4 boundary (2026-09-03)
+
+The atomic SYS transaction now includes complete `Net-(L1-Pad1)` withdrawal,
+a qualified C28 dogleg, and exact replay of all five accepted switch-node B.Cu
+segments. Eight bounded C26/C27/C28 triples clear the three prior endpoint
+walls and stop at pristine `L4.1` with `NO_VIA_SITE`; no partial copper is
+emitted. Canonical result hash is `d4bdffe8...`. The authoritative board
+remains byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges.
+Next inventory complete accepted copper in the L4.1 pocket and screen the
+minimum withdrawal/replay boundary, then extend this same 13-land transaction.
+
 ## BQ25185_SYS joint C26/C27 refloor and C28 boundary (2026-09-03)
 
 `route_bq25185_sys_ir_refloor_scratch.py` now treats complete

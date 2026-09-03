@@ -13,6 +13,15 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-547 (joint SYS refloor advances to L4; no promotion):** the atomic
+  harness now also withdraws/replays all five accepted `Net-(L1-Pad1)` B.Cu
+  segments and reserves qualified C28 SYS doglegs. Eight bounded C26/C27/C28
+  triples clear all three prior walls and stop at pristine `L4.1` with
+  `NO_VIA_SITE`; no partial copper or candidate is emitted. Canonical result
+  hash `d4bdffe8...`; authority remains byte-identical at `64e5ae37...`, 54
+  open retained nets / 446 edges. **Next:** inventory the L4.1 pocket and
+  screen the minimum complete-net withdrawal/replay boundary before extending
+  this same full-tree transaction. No owner decision.
 - **Demo D-546 (joint SYS refloor advances to C28; no promotion):** the atomic
   harness now withdraws/replays complete `IR_RX_GPIO44` and `ILIM_VSET` and
   reserves qualified C26/C27 SYS doglegs. All eight bounded pairs clear both

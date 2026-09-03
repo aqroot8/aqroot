@@ -1,5 +1,25 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-547 · 2026-09-03 · Demo BQ25185_SYS joint refloor advances to L4 boundary
+
+The atomic SYS transaction now withdraws complete `IR_RX_GPIO44`,
+`/01_POWER_TREE/ILIM_VSET`, and `Net-(L1-Pad1)`, reserves qualified C26, C27,
+and C28 doglegs at the locked 0.50/0.250 mm SYS contract with ordinary
+0.90/0.40 mm vias, and requires replay of every displaced net before any
+candidate can reach connectivity and real KiCad DRC acceptance. The L1 replay
+is the exact accepted five-segment B.Cu switch-node geometry.
+
+All eight bounded C26/C27/C28 triples clear the three prior endpoint walls and
+stop at pristine `L4.1` with `NO_VIA_SITE`. No partial copper or candidate is
+emitted. Canonical result hash is `d4bdffe8fe89c41e2bdb51d069132880459804b25f73bb81f444136c1a9ee8fe`.
+Board `64e5ae37...` remains byte-identical at 54 open retained nets / 446
+edges; accepted USB charger, D-269/D-186, `ACC_5V_SW_EN`, RGB copper,
+XGPIO4/XGPIO5, Demo NCs, and `hardware/beta-v2/` remain untouched.
+
+Next inventory the complete accepted copper nets within the L4.1 pocket and
+screen the minimum complete-net withdrawal/replay boundary, then extend this
+same atomic 13-land SYS transaction. No owner decision is open.
+
 # D-546 · 2026-09-03 · Demo BQ25185_SYS joint refloor advances to C28 boundary
 
 The atomic SYS harness now withdraws complete `IR_RX_GPIO44` and
