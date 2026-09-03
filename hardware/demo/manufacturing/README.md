@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS atomic SW9-A refloor harness bounded (2026-09-03)
+
+The recovered D-550 successor now withdraws/replays the complete 27-object
+`Net-(SW9-A)` tree, injects qualified U12.10 doglegs before L4, and preserves
+the existing all-or-nothing SYS/connectivity/refill/real-DRC gate.  Case windows
+are resumable; route children have explicit time/join bounds; child and replay
+records use final-JSON extraction because KiCad/SWIG may write diagnostics to
+stdout.  An inherited pre-bound run reached case 6 after 46 minutes but emitted
+no complete case record or candidate and was safely stopped.  Authority remains
+`64e5ae37...`, 54 open retained nets / 446 edges.  Start corrected screening at
+case 0; do not treat the partial inherited output as evidence.
+
 ## BQ25185_SYS U12.10 pocket boundary qualified (2026-09-03)
 
 The atomic harness can now reserve U12.10 before L4. All 24 L4-witness cases

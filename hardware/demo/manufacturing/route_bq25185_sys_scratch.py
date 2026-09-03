@@ -55,7 +55,8 @@ def face(pad):
 
 
 def route(path: Path, c26_candidate=None, c27_candidate=None,
-          c28_candidate=None, l4_candidate=None, u12_10_first=False):
+          c28_candidate=None, l4_candidate=None, u12_10_candidate=None,
+          u12_10_first=False, join_trial_limit=None):
     board = qr.QBoard(path)
     ir.inject_existing_via_obstacles(board)
     pads = {p["ref"]: p for p in ir.physical_net_pads(board, NET)}
@@ -82,7 +83,8 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
         qualified = (c26_candidate if ref == "C26.2" else
                      c27_candidate if ref == "C27.1" else
                      c28_candidate if ref == "C28.1" else
-                     l4_candidate if ref == "L4.1" else None)
+                     l4_candidate if ref == "L4.1" else
+                     u12_10_candidate if ref == "U12.10" else None)
         if qualified:
             def point(key):
                 return tuple(round(value * 1e6) for value in qualified[key])
@@ -208,9 +210,13 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
                              for axis in (0, 1)),
     )
     joins = []
+    join_search_exhausted = False
     for a, b in edges:
         if root(a) == root(b):
             continue
+        if join_trial_limit is not None and len(joins) >= join_trial_limit:
+            join_search_exhausted = True
+            break
         print(f"join {anchors[a][0]} {anchors[b][0]}", file=sys.stderr, flush=True)
         result = None
         for layer in ("I2", "I3"):
@@ -228,7 +234,11 @@ def route(path: Path, c26_candidate=None, c27_candidate=None,
         if len({root(i) for i in range(len(anchors))}) == 1:
             break
     board.save(path)
-    print(json.dumps({"reservations": reservations, "joins": joins}, sort_keys=True))
+    print(json.dumps({"reservations": reservations, "joins": joins,
+                      "join_trial_limit": join_trial_limit,
+                      "join_search_exhausted": join_search_exhausted,
+                      "components_remaining": len({root(i) for i in range(len(anchors))})},
+                     sort_keys=True))
 
 
 def main():
@@ -239,8 +249,10 @@ def main():
     parser.add_argument("--c27-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--c28-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--l4-candidate-json", help=argparse.SUPPRESS)
+    parser.add_argument("--u12-10-candidate-json", help=argparse.SUPPRESS)
     parser.add_argument("--u12-10-first", action="store_true",
                         help=argparse.SUPPRESS)
+    parser.add_argument("--join-trial-limit", type=int, help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.route:
         route(args.route,
@@ -248,7 +260,8 @@ def main():
               json.loads(args.c27_candidate_json) if args.c27_candidate_json else None,
               json.loads(args.c28_candidate_json) if args.c28_candidate_json else None,
               json.loads(args.l4_candidate_json) if args.l4_candidate_json else None,
-              args.u12_10_first)
+              json.loads(args.u12_10_candidate_json) if args.u12_10_candidate_json else None,
+              args.u12_10_first, args.join_trial_limit)
         return 0
     before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-bq25185-sys-") as temp:

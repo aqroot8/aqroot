@@ -1,5 +1,30 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-551 · 2026-09-03 · Demo BQ25185_SYS atomic harness recovered and bounded
+
+The unfinished D-550 successor was recovered without changing authoritative
+copper.  It adds complete 27-object `Net-(SW9-A)` withdrawal and exact replay,
+injects qualified `U12.10` doglegs ahead of `L4.1`, and retains the existing
+all-or-nothing SYS/connectivity/refill/real-DRC promotion gate.  The search is
+now resumable by case index and each route child has explicit time and join
+trial bounds.  KiCad/SWIG diagnostics may appear on stdout, so all child and
+replay results now use the existing final-JSON extractor instead of assuming
+pure JSON output.
+
+The inherited pre-bound run had reached case 6 after 46 minutes but was still
+inside an unbounded join.  It produced only diagnostic text, no complete case
+record or candidate, and was stopped after its exact PID, temp-only working
+directory, and output target were verified.  Its partial output is not accepted
+evidence and cases 0 onward remain unscreened under the corrected harness.
+
+Syntax and focused noisy-output/timeout-helper tests pass.  The authoritative
+board remains byte-identical at `64e5ae37...`, 54 open retained nets / 446
+edges; `Net-(SW9-A)` and every prior replay net remain at zero open edges,
+`ACC_5V_SW_EN` and XGPIO4/XGPIO5 remain connected, and `hardware/beta-v2/` is
+untouched.  Next run non-overlapping corrected case windows, beginning at case
+0, and promote only a complete atomic candidate passing the existing full-board
+gate.  No owner decision is open.
+
 # D-550 · 2026-09-03 · Demo BQ25185_SYS U12.10 minimum refloor boundary qualified
 
 The recovered atomic SYS transaction now supports an explicit `U12.10`-before-

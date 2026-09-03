@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-551 (atomic SYS harness recovered/bounded; no promotion):** the
+  unfinished D-550 successor now withdraws/replays complete `Net-(SW9-A)`,
+  injects qualified U12.10 doglegs before L4, supports resumable case windows,
+  bounds route children by time/join trials, and tolerates KiCad/SWIG stdout
+  diagnostics via final-JSON extraction.  The inherited unbounded run stopped
+  in case 6 after 46 minutes and produced no complete case evidence or
+  candidate; it was safely stopped.  Authority remains `64e5ae37...`, 54 open
+  retained nets / 446 edges. **Next:** run corrected non-overlapping windows
+  from case 0 and promote only on the complete atomic full-board gate. No owner
+  decision.
 - **Demo D-550 (BQ25185_SYS U12.10 minimum refloor boundary qualified; no
   promotion):** reserving U12.10 before L4 still yields `NO_FLARE` in all 24
   L4-witness cases, proving L4 is not the immediate blocker. The governed
