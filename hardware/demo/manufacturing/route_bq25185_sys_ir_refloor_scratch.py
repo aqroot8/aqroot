@@ -127,9 +127,12 @@ def replay_sw9_a(path):
             "mode": "exact_authoritative_complete_net_geometry"}
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--candidate", type=Path); ap.add_argument("--promote", action="store_true"); ap.add_argument("--case-start", type=int, default=0); ap.add_argument("--case-limit", type=int, default=24); ap.add_argument("--case-timeout", type=int, default=240); ap.add_argument("--join-trial-limit", type=int, default=8); ap.add_argument("--measure", type=Path, help=argparse.SUPPRESS); args = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--candidate", type=Path); ap.add_argument("--promote", action="store_true"); ap.add_argument("--case-start", type=int, default=0); ap.add_argument("--case-limit", type=int, default=24); ap.add_argument("--case-timeout", type=int, default=240); ap.add_argument("--join-trial-limit", type=int, default=24); ap.add_argument("--measure", type=Path, help=argparse.SUPPRESS); args = ap.parse_args()
     if args.measure:
         print(json.dumps({"items": [[list(key), count] for key, count in copper(args.measure).items()]})); return 0
+    minimum_join_trials = len(sysroute.FITTED) - 1
+    if args.join_trial_limit < minimum_join_trials:
+        ap.error(f"--join-trial-limit must be >= {minimum_join_trials} for the {len(sysroute.FITTED)}-land SYS tree")
     before = sha(BOARD); baseline = measured_copper(BOARD); rows = []; winner = None
     with tempfile.TemporaryDirectory(prefix="aqroot-demo-sys-ir-refloor-") as td:
         work = Path(td); seed = work / "seed.kicad_pcb"

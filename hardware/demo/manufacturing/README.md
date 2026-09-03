@@ -2,6 +2,30 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS corrected second atomic case bounded (2026-09-03)
+
+Corrected case 1 varies the next qualified `U12.10` witness and again reserves
+all 13 governed SYS endpoints.  It completes nine joins, then exhausts the
+finite 24-trial window with the same four components remaining.  The changed
+`U12.10` landing does not change the immediate join topology: `U11.1` remains
+isolated, while the `C33.1`/`C64.1` and `L4.1`/`U21.3` groups remain separate
+from the main tree.  No replay, DRC, candidate, or promotion is claimed for an
+incomplete SYS tree.  Authority remains `64e5ae37...`, 54 open retained nets /
+446 edges.  Continue the corrected non-overlapping window at case 2.
+
+## BQ25185_SYS corrected first atomic case bounded (2026-09-03)
+
+The D-551 eight-join cap was structurally too small: a 13-land tree requires at
+least 12 successful joins.  The harness now defaults to 24 bounded attempts and
+rejects any requested limit below 12.  Corrected case 0 places every governed
+endpoint and completes nine joins, but exhausts all 24 attempts with four
+components remaining.  Fifteen joins report `NO_PATH`, concentrated around
+`U11.1` plus the still-separated `C33.1` and accessory-boost group.  No replay,
+DRC, candidate, or promotion is claimed for an incomplete SYS tree.  Authority
+remains `64e5ae37...`, 54 open retained nets / 446 edges.  Continue at case 1
+with the corrected >=12-attempt contract; do not reuse the invalid D-551
+eight-attempt results as routing evidence.
+
 ## BQ25185_SYS atomic SW9-A refloor harness bounded (2026-09-03)
 
 The recovered D-550 successor now withdraws/replays the complete 27-object

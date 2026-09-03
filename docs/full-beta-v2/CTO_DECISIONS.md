@@ -1,5 +1,42 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-553 · 2026-09-03 · Demo BQ25185_SYS corrected second atomic case bounded
+
+Corrected atomic case 1 varies the next qualified `U12.10` witness.  All 13
+governed SYS endpoints reserve and nine joins complete before the finite
+24-trial search is exhausted with four components remaining.  The changed
+U12.10 landing does not alter the immediate join topology: `U11.1` remains
+isolated, while `C33.1`/`C64.1` and `L4.1`/`U21.3` remain separate from the main
+tree.  Fifteen attempted cross-component joins report `NO_PATH`.
+
+Because the SYS tree is incomplete, withdrawn-net replay and real refilled
+parity DRC correctly do not run; no candidate or partial copper is emitted.
+The authoritative PCB remains byte-identical at `64e5ae37...`, 54 open
+retained nets / 446 edges.  `ACC_5V_SW_EN`, XGPIO4/XGPIO5, D-269/D-186, all
+accepted copper, and `hardware/beta-v2/` remain intact.  Continue the corrected
+non-overlapping screen at case 2.  No owner decision is open.
+
+# D-552 · 2026-09-03 · Demo BQ25185_SYS corrected first atomic case bounded
+
+The first D-551 window exposed a harness-bound defect, not a routing verdict:
+its eight-attempt join limit makes a 13-land tree mathematically impossible
+because at least 12 successful joins are required.  The atomic harness now
+defaults to 24 finite attempts and rejects any requested limit below 12.
+
+Corrected case 0 places all 13 governed SYS endpoints without a reservation
+failure and completes nine joins.  It then exhausts all 24 attempts with four
+components remaining.  The other 15 joins report `NO_PATH`, concentrated on
+the isolated `U11.1` group, with `C33.1` and the accessory-boost group also
+still separated.  Since the SYS tree is incomplete, the replay and full-board
+DRC stages correctly do not run and no candidate is emitted or promoted.
+
+The authoritative PCB remains byte-identical at `64e5ae37...`, 54 open
+retained nets / 446 edges.  `ACC_5V_SW_EN`, XGPIO4/XGPIO5, D-269/D-186 and all
+accepted copper remain intact; `hardware/beta-v2/` is untouched.  Continue the
+corrected non-overlapping screen at case 1.  The prior eight-attempt cases are
+invalid as routing evidence and must not be used to park this family.  No owner
+decision is open.
+
 # D-551 · 2026-09-03 · Demo BQ25185_SYS atomic harness recovered and bounded
 
 The unfinished D-550 successor was recovered without changing authoritative

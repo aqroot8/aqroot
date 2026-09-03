@@ -13,6 +13,21 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-553 (corrected second atomic SYS case bounded; no promotion):**
+  case 1 varies the next qualified U12.10 witness, reserves all 13 endpoints,
+  and again completes nine joins before exhausting 24 trials with the same
+  four components remaining. U11.1 stays isolated; the C33/C64 and L4/U21
+  groups also remain separate from the main tree. Authority is byte-identical
+  at `64e5ae37...`, 54 open retained nets / 446 edges. **Next:** continue the
+  corrected non-overlapping window at case 2. No owner decision.
+- **Demo D-552 (corrected first atomic SYS case bounded; no promotion):** the
+  D-551 eight-attempt cap could never complete a 13-land tree.  The harness now
+  defaults to 24 and rejects limits below the required 12 joins.  Corrected
+  case 0 places every endpoint and achieves nine joins, then exhausts 24
+  attempts with four components remaining; the 15 failed joins are `NO_PATH`,
+  chiefly around `U11.1` plus separated `C33.1` and accessory-boost groups.
+  Authority remains `64e5ae37...`, 54 open retained nets / 446 edges. **Next:**
+  continue the corrected non-overlapping window at case 1. No owner decision.
 - **Demo D-551 (atomic SYS harness recovered/bounded; no promotion):** the
   unfinished D-550 successor now withdraws/replays complete `Net-(SW9-A)`,
   injects qualified U12.10 doglegs before L4, supports resumable case windows,
