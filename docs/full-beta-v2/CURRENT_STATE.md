@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-573 (corrected twenty-second atomic SYS case bounded; no promotion):**
+  case 21 varies the twenty-second qualified `U12.10` witness at via
+  `(66.8402,103.5250)` mm, reserves all 13 endpoints, and again completes nine
+  joins before exhausting 24 trials. All 15 failed joins are `NO_PATH`; the
+  same four components remain: the main U12/SW9/capacitor tree, isolated
+  `U11.1`, the C33/C64 pair, and the L4/U21 pair. The harness reports zero
+  wrong-net additions/removals and authority stays byte-identical at
+  `64e5ae37...`, 54 open retained nets / 446 edges; SYS remains at 12 open
+  edges. Its incomplete tree correctly prevents replay, DRC, candidate, and
+  promotion. SYS is an immediate board-completion critical path, so its finite
+  non-overlapping window uses the routing-wall policy exception. **Next:**
+  continue at case 22 without replaying cases 0--21. No owner decision.
 - **Demo D-572 (corrected twenty-first atomic SYS case bounded; no promotion):**
   case 20 varies the twenty-first qualified `U12.10` witness at via
   `(66.9305,103.4996)` mm, reserves all 13 endpoints, and again completes nine
