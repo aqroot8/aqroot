@@ -122,8 +122,8 @@ def via_free(board, indexes, point):
     return True
 
 
-def scan(selected_pads=None):
-    board = qr.QBoard(BOARD)
+def scan(selected_pads=None, board_path=BOARD):
+    board = qr.QBoard(board_path)
     ir.inject_existing_via_obstacles(board)
     obstacles_by_layer = {layer: tuple(board.obstacles(layer, NET))
                           for layer in board.cu}
@@ -218,15 +218,21 @@ def scan(selected_pads=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--board", type=Path, default=BOARD,
+                        help="board copy to screen (defaults to authority)")
     parser.add_argument("--pad", action="append", choices=tuple(CASES),
                         help="screen only this wall pad (repeatable)")
     args = parser.parse_args()
-    before = hashlib.sha256(BOARD.read_bytes()).hexdigest()
-    rows = scan(set(args.pad) if args.pad else None)
+    before = hashlib.sha256(args.board.read_bytes()).hexdigest()
+    rows = scan(set(args.pad) if args.pad else None, args.board)
+    unchanged = before == hashlib.sha256(args.board.read_bytes()).hexdigest()
     report = {
-        "schema": 1, "board": str(BOARD.relative_to(ROOT)), "net": NET,
+        "schema": 1, "board": str(args.board), "net": NET,
         "authoritative_board_sha256": before,
-        "authoritative_unchanged": before == hashlib.sha256(BOARD.read_bytes()).hexdigest(),
+        # Keep the original key for callers while naming scratch-board checks
+        # accurately for the new pocket-refloor screen.
+        "authoritative_unchanged": unchanged,
+        "screened_board_unchanged": unchanged,
         "method": "all_legal_directional_anchors_then_5deg_50um_short_dogleg",
         "dogleg_length_range_mm": [0.25, 2.0], "dogleg_length_step_mm": 0.05,
         "power_via_mm": {"diameter": 0.90, "drill": 0.40},
@@ -239,7 +245,7 @@ def main():
         args.output.write_text(encoded, encoding="utf-8")
     else:
         print(encoded, end="")
-    return 0 if report["authoritative_unchanged"] else 2
+    return 0 if report["screened_board_unchanged"] else 2
 
 
 if __name__ == "__main__":

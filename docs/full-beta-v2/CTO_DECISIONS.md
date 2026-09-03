@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-543 · 2026-09-03 · Demo BQ25185_SYS C26 minimum pocket-refloor boundary
+qualified:** `screen_bq25185_sys_c26_pocket_refloor.py` inventories all complete
+accepted copper nets with an object within 5 mm of `C26.2`, removes exactly one
+complete net per isolated scratch case, and reruns the exhaustive D-542 dogleg
+family. Six cases were tested. `/IR_RX_GPIO44`, `Net-(U12-PS_SYNC)`, and
+`/01_POWER_TREE/USB_VBUS_CHG` each open exactly 48 ordinary 0.90/0.40 mm via
+landings; their complete withdrawals contain 14, 33, and 58 copper objects,
+respectively. `Net-(U12-PG)`, `Net-(SW9-A)`, and the GPIO45 strap open none.
+
+The minimum demonstrated atomic refloor boundary is therefore complete
+`/IR_RX_GPIO44`, not the newly promoted charger tree. No authority copper,
+placement, rules, or topology changed; board `64e5ae37...` remains at 54 open
+retained nets / 446 edges and `hardware/beta-v2/` is untouched. Next withdraw
+and replay the complete IR RX net around one qualified C26 escape and the full
+13-land SYS transaction, promoting only after the authoritative full-board
+gate. No owner decision is open.
+
 **D-542 · 2026-09-03 · Demo BQ25185_SYS C26 dogleg family bounded:**
 The recovered short-dogleg enumerator now includes the boxed `C26.2` endpoint
 and uses exact expanded-obstacle spatial indexes for both segment and all-layer

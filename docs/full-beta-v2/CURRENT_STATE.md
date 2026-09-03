@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-543 (BQ25185_SYS C26 minimum pocket-refloor boundary qualified; no
+  promotion):** six complete accepted copper nets within 5 mm of `C26.2` were
+  withdrawn one at a time on isolated scratch boards and screened through the
+  exhaustive dogleg family. Three open 48 legal ordinary SYS via sites each:
+  `/IR_RX_GPIO44` (minimum, 14 objects), `Net-(U12-PS_SYNC)` (33), and
+  `/01_POWER_TREE/USB_VBUS_CHG` (58); U12 PG, SW9-A, and GPIO45 strap open none.
+  Authority `64e5ae37...` remains unchanged at 54 open retained nets / 446
+  edges. **Next:** atomically withdraw/replay complete IR_RX_GPIO44 around a
+  qualified C26 escape and the full 13-land SYS tree, then run the full-board
+  gate. Preserve the accepted charger tree. No owner decision is open.
 - **Demo D-542 (BQ25185_SYS C26 dogleg family bounded; no promotion):** the
   recovered enumerator now completes in about 49 seconds using exact spatial
   indexes; 500 original-predicate comparisons show zero mismatches and two

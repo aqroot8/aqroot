@@ -2,6 +2,19 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS C26 minimum pocket-refloor boundary qualified (2026-09-03)
+
+`screen_bq25185_sys_c26_pocket_refloor.py` inventories every complete accepted
+copper net within 5 mm of `C26.2` and tests six isolated single-net withdrawals
+against the exhaustive dogleg family. Three open exactly 48 ordinary 0.90/0.40
+mm SYS via landings: `/IR_RX_GPIO44` (14 complete-net objects),
+`Net-(U12-PS_SYNC)` (33), and `/01_POWER_TREE/USB_VBUS_CHG` (58). U12 PG,
+SW9-A, and the GPIO45 strap do not open a landing. The authoritative board is
+unchanged at `64e5ae37...`, 54 open retained nets / 446 edges. Next build the
+minimum atomic transaction: withdraw complete IR_RX_GPIO44, reserve a qualified
+C26 escape, route the full 13-land SYS tree, replay IR_RX_GPIO44, and accept only
+on the full-board gate. Do not disturb the newly promoted charger tree.
+
 ## BQ25185_SYS C26 dogleg family bounded (2026-09-03)
 
 The recovered dogleg enumerator adds `C26.2` and exact spatial indexes without
