@@ -23,7 +23,9 @@ import qrouter as qr  # noqa: E402
 NET = "/01_POWER_TREE/BQ25185_SYS"
 GRID = 50_000
 FITTED = (
-    "C24.1", "C26.2", "C27.1", "C28.1", "C33.1", "C64.1", "L4.1",
+    # Test the boxed C26 endpoint before its less-constrained C24 neighbor so
+    # an intrinsic C26 wall cannot be misclassified as an ordering casualty.
+    "C26.2", "C24.1", "C27.1", "C28.1", "C33.1", "C64.1", "L4.1",
     "SW9.2", "U11.1", "U12.1", "U12.10", "U12.11", "U21.3",
 )
 FINE_PITCH = {"U11.1", "U12.1", "U12.10", "U12.11", "U21.3"}
@@ -79,7 +81,8 @@ def route(path: Path):
             reservations.append({"pad": ref, **result})
             if not result.get("ok"):
                 board.save(path)
-                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                print(json.dumps({"reservations": reservations,
+                                  "joins": []}, sort_keys=True))
                 return
             anchors.append((ref, tuple(result["via"])))
             continue
@@ -108,7 +111,8 @@ def route(path: Path):
             if flare is None:
                 reservations.append({"pad": ref, "ok": False, "reason": "NO_FLARE"})
                 board.save(path)
-                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                print(json.dumps({"reservations": reservations,
+                                  "joins": []}, sort_keys=True))
                 return
             escape = {"x": flare["x"], "y": flare["y"], "ln": 0,
                       "w": 500_000}
@@ -136,7 +140,8 @@ def route(path: Path):
                 reservations.append({"pad": ref, "ok": False,
                                      "reason": "NO_LANDING_PATH"})
                 board.save(path)
-                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                print(json.dumps({"reservations": reservations,
+                                  "joins": []}, sort_keys=True))
                 return
             anchor, joined = landing
             board.via(NET, *anchor, 900_000, 400_000)
@@ -156,7 +161,8 @@ def route(path: Path):
             reservations.append({"pad": ref, **result})
             if not result.get("ok"):
                 board.save(path)
-                print(json.dumps({"reservations": reservations, "joins": []}, sort_keys=True))
+                print(json.dumps({"reservations": reservations,
+                                  "joins": []}, sort_keys=True))
                 return
             anchors.append((ref, tuple(result["via"])))
 

@@ -13,6 +13,14 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-541 (BQ25185_SYS C26 endpoint wall bounded; no promotion):** the
+  complete 13-land transaction now tests boxed `C26.2` first. It has no generic
+  0.90/0.40 mm via escape, and the full 5-degree / 25-um straight directional
+  screen finds zero legal 0.50/0.250 mm launch-to-via candidates. Scratch real
+  DRC is unchanged at 199/5/1 with no attributable report. Board `64e5ae37...`
+  remains byte-identical at 54 open retained nets / 446 edges. **Next:** screen
+  bounded C26 short-dogleg landings, then a minimum complete-net pocket refloor
+  if needed. No owner decision is open.
 - **Demo D-540 (USB VBUS CHG atomic refloor promoted):** the minimum
   `REC_LIM_IN` + `ILIM_VSET` withdrawal boundary now replays through separate
   spare inner layers while preserving 0.200/0.200 mm local control escapes.

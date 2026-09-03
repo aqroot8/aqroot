@@ -25,6 +25,13 @@ import qrouter as qr  # noqa: E402
 
 NET = "/01_POWER_TREE/BQ25185_SYS"
 CASES = {
+    # The current accepted USB charger refloor leaves this 0805 bypass land
+    # without a generic 0.90/0.40 mm barrel site.  Keep the full SYS geometry
+    # while checking whether a deterministic directional launch reaches one.
+    "C26.2": {
+        "neck_width": 500_000, "trunk_width": 500_000,
+        "local_clearance": 250_000, "clearance": 250_000,
+    },
     "U11.1": {
         "neck_width": 200_000, "trunk_width": 500_000,
         "local_clearance": 200_000, "clearance": 300_000,

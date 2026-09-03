@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS C26 endpoint wall bounded (2026-09-03)
+
+The complete 13-land SYS harness now reserves `C26.2` before `C24.1`, proving
+the wall is intrinsic rather than a reservation-order casualty. C26 has no
+generic 0.90/0.40 mm power-via escape. Its new full-geometry directional case
+exhausts the 5-degree / 25-um straight-launch family with zero candidates and
+no attributable real-DRC report. No copper is promoted; board `64e5ae37...`
+remains at 54 open retained nets / 446 edges. Next extend the bounded short-
+dogleg screen to C26, then inventory a minimum complete-net pocket refloor if
+needed; do not reduce the 0.50/0.250 mm SYS contract.
+
 ## USB_VBUS_CHG atomic refloor promoted (2026-09-03)
 
 The D-539 transaction now replays `REC_LIM_IN` on In2 and `ILIM_VSET` on In3,

@@ -9,6 +9,23 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-541 · 2026-09-03 · Demo BQ25185_SYS first endpoint wall bounded:**
+The first post-D-540 complete 13-land SYS transaction stops at `C26.2`, before
+any inner-layer tree join. Reversing the reservation order proves this is not
+`C24.1` consuming a shared barrel site; `C26.2` has no generic ordinary
+0.90/0.40 mm via escape on the accepted board. A new full-geometry case in the
+directional-neck screen exhausts the 5-degree / 25-um straight-launch family
+with zero candidates: 4,080 clear prefixes end without an all-layer via site,
+and retained keepouts, `R127`, tracks, and vias bind the remainder. Scratch
+real DRC remains the inherited 199/5/1 signature with no attributable report.
+
+No copper or placement is promoted; board `64e5ae37...` remains byte-identical
+at 54 open retained nets / 446 edges, and `hardware/beta-v2/` is untouched.
+Next extend the existing short-dogleg landing screen to `C26.2`; if that finite
+family also fails, inventory its local complete-net copper occupants and test
+the minimum atomic withdrawal/replay boundary with the full SYS tree. Do not
+reduce the 0.50/0.250 mm SYS geometry. No owner decision is open.
+
 **D-540 · 2026-09-03 · Demo USB_VBUS_CHG atomic refloor promoted:**
 The recovered D-539 transaction was completed by adding a reusable inner-long-
 haul replay plan to the two-pad router. The two displaced control nets retain
