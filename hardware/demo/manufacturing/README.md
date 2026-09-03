@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS C27 minimum pocket-refloor boundary qualified (2026-09-03)
+
+The generalized `screen_bq25185_sys_c26_pocket_refloor.py` inventories all
+seven complete accepted copper nets within 5 mm of `C27.1` and tests each on
+an isolated scratch board. Every single-net withdrawal exposes exactly 48
+ordinary 0.90/0.40 mm SYS via landings, proving that accepted copper occupancy,
+not the C27 package geometry, is the wall. The minimum complete boundary is
+`/01_POWER_TREE/ILIM_VSET`: nine objects (five B.Cu tracks, two In3.Cu tracks,
+and two vias). A focused repeat reproduces the complete case record hash
+`dc6f7f38...`. This is characterization only; the authoritative board remains
+byte-identical at `64e5ae37...`, 54 open retained nets / 446 edges. Next extend
+the atomic SYS/IR harness to withdraw complete `ILIM_VSET`, reserve the first
+qualified C27 witness, route the full 13-land SYS tree, and replay both
+`IR_RX_GPIO44` and `ILIM_VSET`; accept only on the full-board gate. Preserve
+the promoted USB charger tree and the accepted `ACC_5V_SW_EN` route.
+
 ## BQ25185_SYS C26 minimum pocket-refloor boundary qualified (2026-09-03)
 
 `screen_bq25185_sys_c26_pocket_refloor.py` inventories every complete accepted

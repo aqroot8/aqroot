@@ -28,6 +28,11 @@ CASES = {
     # legal straight prefix can reach an ordinary all-layer barrel site.
     "C26.2": {"neck_width": 500_000, "trunk_width": 500_000,
                "local_clearance": 250_000, "clearance": 250_000},
+    # The full-tree transaction reaches this bulk SYS capacitor first after a
+    # qualified C26 refloor.  Keep the same governed SYS haul and power-via
+    # contract while searching its independent local pocket.
+    "C27.1": {"neck_width": 500_000, "trunk_width": 500_000,
+               "local_clearance": 250_000, "clearance": 250_000},
     # D-269 applies to the SYS/BAT current-path relationship even inside the
     # charger breakout.  Screening the neck at only 0.20 mm produced apparent
     # landings that real KiCad DRC correctly rejected at exactly 0.20 mm.

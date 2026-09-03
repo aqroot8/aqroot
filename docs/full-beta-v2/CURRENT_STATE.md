@@ -13,6 +13,18 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-545 (BQ25185_SYS C27 minimum pocket-refloor boundary qualified; no
+  promotion):** the recovered pocket framework now supports arbitrary named
+  SYS lands and screens all seven complete accepted copper nets within 5 mm of
+  `C27.1`. Every isolated single-net withdrawal exposes exactly 48 ordinary
+  0.90/0.40 mm SYS via landings, proving an accepted-copper occupancy wall.
+  The minimum complete boundary is `/01_POWER_TREE/ILIM_VSET` at nine objects
+  (five B.Cu, two In3.Cu, two vias); a focused repeat reproduces case hash
+  `dc6f7f38...`. Authority remains `64e5ae37...`, 54 open retained nets / 446
+  edges. **Next:** extend the atomic SYS/IR transaction to withdraw/replay
+  complete `ILIM_VSET`, reserve the first C27 witness, and route the complete
+  13-land SYS tree under the full-board gate. Preserve USB charger copper and
+  `ACC_5V_SW_EN`. No owner decision.
 - **Demo D-544 (BQ25185_SYS minimum IR refloor transaction bounded; no
   promotion):** the atomic harness withdraws all 14 accepted IR_RX_GPIO44
   objects and tests all 24 qualified C26 doglegs before complete SYS and IR

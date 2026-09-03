@@ -1,5 +1,28 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-545 · 2026-09-03 · Demo BQ25185_SYS C27 minimum pocket-refloor boundary qualified
+
+The recovered C26 sensitivity framework is generalized to any named governed
+SYS land and applies the exhaustive dogleg screen independently after complete
+copper-net withdrawals. Around `C27.1`, the 5 mm inventory contains seven
+accepted nets. Every isolated withdrawal exposes exactly 48 legal 0.50/0.250
+mm SYS doglegs terminating in ordinary 0.90/0.40 mm all-layer vias, so C27 is
+not an intrinsic package wall; it is boxed by accepted copper.
+
+The minimum complete withdrawal is `/01_POWER_TREE/ILIM_VSET`: nine objects
+(five B.Cu tracks, two In3.Cu tracks, two vias). A second focused execution
+reproduces the complete case record hash `dc6f7f38...` and first witness:
+310-degree launch, 0.75 mm neck, 1.50 mm trunk, then a 1.90 mm 295-degree
+dogleg to `(68.7742, 71.5544)` mm. This evidence is characterization only;
+neither `ILIM_VSET` nor any other copper is removed on authority. Board
+`64e5ae37...` remains byte-identical at 54 open retained nets / 446 edges.
+
+Next extend the D-544 atomic transaction to withdraw complete `IR_RX_GPIO44`
+and `ILIM_VSET`, reserve the qualified C26 and C27 witnesses, route the entire
+13-land `BQ25185_SYS` tree, replay both withdrawn nets, and run the authoritative
+full-board gate. Do not disturb the promoted USB charger tree, BAT_PROTECTED_P,
+or the accepted `ACC_5V_SW_EN` route. No owner decision is open.
+
 # D-544 · 2026-09-03 · Demo BQ25185_SYS minimum IR refloor transaction bounded
 
 The D-543 successor adds a reusable atomic harness that withdraws all 14
