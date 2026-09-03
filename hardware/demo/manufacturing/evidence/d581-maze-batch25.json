@@ -1,0 +1,1130 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "785aac86a55bd09319aef1edeae2838f5ddcdd6f1a1efa67e62fd9a01726d27f",
+  "authoritative_unchanged": true,
+  "candidate_sha256": "5b112b177531f2084457ba0bc6531394c80362d00d1b1392afb372ab71c94cf4",
+  "connectivity": {
+    "nets_improved": [
+      "/03_SPI_A_DISPLAY_SD/LED_BOOST"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 33,
+    "retained_open_edges_after": 150,
+    "retained_open_edges_before": 155
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "failed_nets": [
+    "/01_POWER_TREE/ACC_5V_LX",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/03_SPI_A_DISPLAY_SD/LED_A",
+    "/03_SPI_A_DISPLAY_SD/LED_K",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_PWR_EN",
+    "/BQ25185_STAT1",
+    "/BQ25185_STAT2",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/I2S_LRCLK",
+    "/NFC_CS_N",
+    "/NFC_IRQ",
+    "/NFC_SUPPLY",
+    "/SPI_B_MOSI",
+    "/SPI_B_SCK",
+    "/SX1262_DIO1",
+    "/WAKE_INT_N"
+  ],
+  "inherited_within_baseline": true,
+  "plane": null,
+  "preservation": {
+    "added_object_nets": [
+      "/03_SPI_A_DISPLAY_SD/LED_BOOST"
+    ],
+    "foreign_added_nets": [],
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "5b112b177531f2084457ba0bc6531394c80362d00d1b1392afb372ab71c94cf4",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+    "/NFC_SUPPLY",
+    "/03_SPI_A_DISPLAY_SD/LED_A",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/WAKE_INT_N",
+    "/03_SPI_A_DISPLAY_SD/LED_K",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/ACC_5V_BOOST_EN",
+    "/BQ25185_STAT1",
+    "/BQ25185_STAT2",
+    "/SPI_B_MOSI",
+    "/SPI_B_SCK",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+    "/ACC_PWR_EN",
+    "/I2S_LRCLK",
+    "/NFC_CS_N",
+    "/01_POWER_TREE/ACC_5V_LX",
+    "/NFC_IRQ",
+    "/SX1262_DIO1"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 250000,
+        "netclass": "SYS_MAIN",
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "islands": 16,
+      "joins": [
+        {
+          "dst_escapes": 9,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 9,
+          "why": "no all-layer corridor at 0.800 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "I2C",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 9,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U14.7"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U14.7: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U14.8 (x25), U14.6 (x13), track (x9), U14.5 (x9)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/I2C_SCL_INT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "I2C",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 9,
+      "joins": [
+        {
+          "from": "J1.45",
+          "layers": [
+            "F",
+            "I3",
+            "B"
+          ],
+          "mm": 29.489576125991153,
+          "ok": true,
+          "to": "U14.8",
+          "via_xy": [
+            [
+              19.1,
+              100.2
+            ],
+            [
+              2.7,
+              83.8
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "J1.45",
+          "layers": [
+            "F",
+            "I2",
+            "F"
+          ],
+          "mm": 32.50078240543412,
+          "ok": true,
+          "to": "R19.2",
+          "via_xy": [
+            [
+              32.5,
+              105.4
+            ],
+            [
+              42.5,
+              120.7
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "R19.2",
+          "layers": [
+            "F",
+            "I2",
+            "F",
+            "I2",
+            "B",
+            "I2",
+            "F"
+          ],
+          "mm": 53.4481238489424,
+          "ok": true,
+          "to": "TP4.1",
+          "via_xy": [
+            [
+              41.1,
+              125.4
+            ],
+            [
+              30.8,
+              128.5
+            ],
+            [
+              40.8,
+              118.6
+            ],
+            [
+              42.0,
+              114.4
+            ],
+            [
+              47.7,
+              108.7
+            ],
+            [
+              52.2,
+              110.3
+            ]
+          ],
+          "vias": 6
+        },
+        {
+          "dst_escapes": 1,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 9,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 16.0
+    },
+    {
+      "contract": {
+        "clr": 300000,
+        "netclass": "LED_BOOST",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "islands": 6,
+      "joins": [
+        {
+          "from": "C44.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 11.743532042540988,
+          "ok": true,
+          "to": "D8.1",
+          "via_xy": [
+            [
+              4.6,
+              116.5
+            ],
+            [
+              4.5,
+              122.8
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "C44.1",
+          "layers": [
+            "B",
+            "I2",
+            "F"
+          ],
+          "mm": 37.88999401539951,
+          "ok": true,
+          "to": "R70.1",
+          "via_xy": [
+            [
+              14.3,
+              105.0
+            ],
+            [
+              27.6,
+              92.1
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "R70.1",
+          "layers": [
+            "F"
+          ],
+          "mm": 2.0481353125154396,
+          "ok": true,
+          "to": "R73.1",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "R73.1",
+          "layers": [
+            "F"
+          ],
+          "mm": 4.618981334850939,
+          "ok": true,
+          "to": "R72.1",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "R72.1",
+          "layers": [
+            "F"
+          ],
+          "mm": 4.284046787247497,
+          "ok": true,
+          "to": "R71.1",
+          "via_xy": [],
+          "vias": 0
+        }
+      ],
+      "mm": 60.585,
+      "mode": "maze",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+      "ok": true,
+      "seconds": 8.9,
+      "vias": 4
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "P3V3",
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "islands": 7,
+      "joins": [
+        {
+          "from": "C19.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 12.669790547764178,
+          "ok": true,
+          "to": "TP32.1",
+          "via_xy": [
+            [
+              35.3,
+              46.5
+            ],
+            [
+              36.0,
+              48.0
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "ok": false,
+          "pads": [
+            "U9.10"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/NFC_SUPPLY",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 3.2
+    },
+    {
+      "contract": {
+        "clr": 300000,
+        "netclass": "LED_BOOST",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "islands": 5,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "J1.1"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_SRC",
+          "why": "no legal escape on the source island"
+        }
+      ],
+      "mode": "maze",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "seconds": 1.1
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "I2C",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 5,
+      "joins": [
+        {
+          "dst_escapes": 11,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 1.4
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 5,
+      "joins": [
+        {
+          "from": "Q10.3",
+          "layers": [
+            "F",
+            "I3",
+            "F"
+          ],
+          "mm": 33.831955152073775,
+          "ok": true,
+          "to": "U1.23",
+          "via_xy": [
+            [
+              63.1,
+              117.5
+            ],
+            [
+              51.0,
+              135.4
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "U1.23",
+          "layers": [
+            "F",
+            "B",
+            "F"
+          ],
+          "mm": 17.608639765462776,
+          "ok": true,
+          "to": "R3.1",
+          "via_xy": [
+            [
+              48.4,
+              135.4
+            ],
+            [
+              52.6,
+              144.9
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "dst_escapes": 7,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 13,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/WAKE_INT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 7.7
+    },
+    {
+      "contract": {
+        "clr": 300000,
+        "netclass": "LED_BOOST",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "J1.2"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_SRC",
+          "why": "J1.3: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.4 (x45), J1.1 (x24), J1. (x3)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "seconds": 1.1
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "dst_escapes": 1,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 13,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "dst_escapes": 10,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 8,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 14.7
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "dst_escapes": 10,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 6,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 14.7
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "dst_escapes": 10,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 11,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/ACC_5V_BOOST_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 19.1
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "from": "R127.2",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 17.83328667281953,
+          "ok": true,
+          "to": "TP6.1",
+          "via_xy": [
+            [
+              63.5,
+              107.0
+            ],
+            [
+              70.4,
+              97.4
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "ok": false,
+          "pads": [
+            "U11.9"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/BQ25185_STAT1",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 3.8
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "from": "R128.2",
+          "layers": [
+            "B",
+            "I3",
+            "B"
+          ],
+          "mm": 16.6006060899803,
+          "ok": true,
+          "to": "TP7.1",
+          "via_xy": [
+            [
+              54.4,
+              105.5
+            ],
+            [
+              61.8,
+              98.5
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "dst_escapes": 10,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 13,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/BQ25185_STAT2",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 3.8
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "from": "U1.5",
+          "layers": [
+            "F",
+            "B",
+            "F",
+            "B",
+            "I3",
+            "B"
+          ],
+          "mm": 48.45492894147672,
+          "ok": true,
+          "to": "U7.17",
+          "via_xy": [
+            [
+              55.9,
+              123.9
+            ],
+            [
+              51.2,
+              126.4
+            ],
+            [
+              48.6,
+              128.8
+            ],
+            [
+              42.9,
+              132.4
+            ],
+            [
+              24.2,
+              135.1
+            ]
+          ],
+          "vias": 5
+        },
+        {
+          "from": "U7.17",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 20.88759379364402,
+          "ok": true,
+          "to": "U8.17",
+          "via_xy": [
+            [
+              21.5,
+              135.8
+            ],
+            [
+              14.0,
+              137.5
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "dst_escapes": 1,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 9,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/SPI_B_MOSI",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 11.0
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 4,
+      "joins": [
+        {
+          "from": "U1.4",
+          "layers": [
+            "F",
+            "B",
+            "F",
+            "B",
+            "I3",
+            "B"
+          ],
+          "mm": 49.84712096524531,
+          "ok": true,
+          "to": "U7.18",
+          "via_xy": [
+            [
+              55.9,
+              123.9
+            ],
+            [
+              51.2,
+              126.4
+            ],
+            [
+              48.6,
+              128.8
+            ],
+            [
+              42.9,
+              132.4
+            ],
+            [
+              24.2,
+              135.1
+            ]
+          ],
+          "vias": 5
+        },
+        {
+          "from": "U7.18",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 19.489392903095496,
+          "ok": true,
+          "to": "U8.18",
+          "via_xy": [
+            [
+              21.4,
+              135.9
+            ],
+            [
+              14.0,
+              137.5
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "dst_escapes": 1,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 10,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/SPI_B_SCK",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 10.9
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U9.7"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U9.7: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.8 (x27), U9.6 (x18), U9.33 (x8), Y1.4 (x5)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U9.3"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U9.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.4 (x27), U9.2 (x18), U9.1 (x9), U9.33 (x8)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "dst_escapes": 9,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 6,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/ACC_PWR_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 1.3
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "I2S",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U5.14"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U5.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.15 (x13), U5.13 (x13), track (x9), U5.2 (x6)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/I2S_LRCLK",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "from": "R29.2",
+          "layers": [
+            "F",
+            "B",
+            "I2",
+            "F",
+            "I2",
+            "F"
+          ],
+          "mm": 51.822485378070674,
+          "ok": true,
+          "to": "U1.17",
+          "via_xy": [
+            [
+              49.2,
+              112.8
+            ],
+            [
+              40.7,
+              115.7
+            ],
+            [
+              40.8,
+              118.6
+            ],
+            [
+              30.8,
+              128.5
+            ],
+            [
+              41.1,
+              125.4
+            ]
+          ],
+          "vias": 5
+        },
+        {
+          "ok": false,
+          "pads": [
+            "U9.29"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U9.29: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.30 (x23), U9.28 (x15), U9.33 (x8), track (x5)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/NFC_CS_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 8.1
+    },
+    {
+      "contract": {
+        "clr": 300000,
+        "netclass": "SWITCH_NODE",
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U21.5"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.0
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U9.27"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U9.27: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.28 (x25), U9.26 (x12), U9.25 (x9), U9.33 (x8)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/NFC_IRQ",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 1.2
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "Default",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "dst_escapes": 10,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "mode": "maze",
+      "net": "/SX1262_DIO1",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 20.4
+    }
+  ],
+  "routed_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST"
+  ],
+  "schema": 1
+}
