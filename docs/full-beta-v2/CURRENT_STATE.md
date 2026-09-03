@@ -3490,20 +3490,22 @@
    (D-297); `place_003l.json`, `place_002z/` candidate set.
 - **Never** trust this checkpoint over a conflicting `CTO_DECISIONS.md`; repair this file if they
   diverge.
-# Demo update — USB_VBUS_RAW explicit B.Cu perimeter bounded (D-533, 2026-09-03)
+# Demo update — USB_VBUS_RAW shield-refloor boundary qualified (D-534, 2026-09-03)
 
-The atomic seven-land harness now carries a deterministic 0.50 mm B.Cu
-perimeter family and a repaired promotion-stage count.  Each of the eight
-qualified C20 escape sites coexists with the U10 escape and both J3 POFVs, but
-all 1,407 direct/orthogonal/perimeter/spine paths per site reject at the first
-C20-to-J3.A9 join: 11,256 explicit paths total.  No incomplete candidate is
-promotable and the 0.50/0.20 mm VBUS contract was not relaxed.
+The complete-net corridor inventory identifies only `Net-(J3-SHIELD)` as
+accepted B.Cu copper binding the C20-to-J3.A9 north-edge window.  Withdrawing
+its complete 14-object tree in scratch (10 B.Cu, two F.Cu, two vias) unlocks
+all eight qualified C20 escape cases.  Every case closes all six routing
+stages of the seven-land RAW geometry at the locked 0.50/0.20 mm contract;
+the first haul consistently uses the explicit y=143.0/x=41.0 mm reverse
+two-spine family.  This is a minimum one-net refloor witness, not a candidate:
+the shield has not yet been replayed around the new VBUS trunk.
 
 The authoritative board remains byte-identical at `04dc3e8a...`, 56 open
 retained nets / 460 edges. Independent refilled schematic-parity DRC remains
 199 footprint-library / five inherited hole-clearance / one inherited
 solder-mask-bridge reports. D-269/D-186, all three RGB replacements,
 XGPIO4/XGPIO5, Demo NCs, accepted accessory-power copper, and
-`hardware/beta-v2/` remain intact. Next identify the complete B.Cu nets binding
-the C20-to-A9 corridor, screen the minimum complete-net withdrawal boundary,
-and replay every withdrawn route together with the complete RAW tree atomically.
+`hardware/beta-v2/` remain intact. Next atomically withdraw the shield, route
+the complete RAW tree using site zero, replay the complete shield tree around
+the VBUS trunk, and promote only if both nets connect under the full gate.

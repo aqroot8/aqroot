@@ -2,6 +2,17 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_RAW shield-refloor boundary qualified (2026-09-03)
+
+`screen_usb_vbus_bcu_refloor.py` proves the minimum complete-net boundary for
+the blocked north-edge haul.  The only accepted B.Cu occupant in the corridor
+is `Net-(J3-SHIELD)`.  With its complete 14-object copper tree withdrawn in
+scratch, all eight qualified C20 cases close the complete seven-land RAW
+geometry at 0.50 mm width / 0.20 mm clearance.  No candidate is emitted because
+the shield is not yet replayed.  Board `04dc3e8a...` remains unchanged at 56
+open retained nets / 460 edges with authoritative DRC 199/5/1.  Next build one
+atomic RAW-plus-shield replay transaction using the site-zero witness.
+
 ## USB_VBUS_RAW explicit B.Cu perimeter bounded (2026-09-03)
 
 The atomic RAW-tree harness now screens a finite 0.50 mm B.Cu Manhattan

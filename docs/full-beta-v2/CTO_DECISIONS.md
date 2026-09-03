@@ -9,6 +9,29 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-534 · 2026-09-03 · Demo USB_VBUS_RAW minimum shield-refloor boundary qualified:**
+The D-533 successor inventories the complete accepted B.Cu nets in the
+screened C20-to-J3.A9 north-edge corridor and finds exactly one copper
+occupant: `Net-(J3-SHIELD)`.  A new scratch-only complete-net sensitivity
+harness withdraws all 14 shield objects (10 B.Cu tracks, two F.Cu tracks, two
+vias) and replays the complete seven-land RAW routing geometry for each of the
+eight qualified C20 escape sites.  All eight cases close all six routing
+stages at the locked 0.50 mm width / 0.20 mm clearance contract.  Their first
+haul uses the same deterministic `two_spine_rev` family through y=143.0 mm and
+x=41.0 mm; no rule or connector POFV geometry is relaxed.
+
+This is characterization only: withdrawn shield copper is not yet replayed,
+so no candidate or partial RAW island is emitted.  Independent authoritative
+refilled schematic-parity DRC remains exactly 199 footprint-library / five
+inherited hole-clearance / one inherited solder-mask-bridge reports.  Board
+`04dc3e8a...` remains byte-identical at 56 open retained nets / 460 edges;
+D-269/D-186, all RGB routes, XGPIO4/XGPIO5, Demo NCs, accepted accessory-power
+copper, and `hardware/beta-v2/` remain intact.  Next atomically withdraw the
+complete shield net, route the complete RAW tree using the site-zero witness,
+then replay the complete shield tree around the new VBUS trunk.  Promotion
+requires both nets connected and the authoritative full-board gate.  No owner
+decision is open.
+
 **D-533 · 2026-09-03 · Demo USB_VBUS_RAW explicit B.Cu perimeter family bounded:**
 The D-532 successor replaces the generic first join with a deterministic
 0.50 mm B.Cu perimeter family and repairs the scratch harness's stale
