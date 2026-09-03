@@ -9,6 +9,30 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-537 · 2026-09-03 · Demo USB_VBUS_CHG governed-neck family bounded:**
+The D-536 successor adds a reusable two-wall package-neck screen without
+changing the authoritative PCB. `R91.1` is screened with a 0.30 mm neck and
+the full 0.250 mm routed clearance; `U11.10` uses the existing U11-courtyard
+0.20/0.20 mm fine-pitch rule. Every candidate must widen to the unchanged
+0.50/0.250 mm haul and terminate at an ordinary 0.90/0.40 mm all-layer via.
+The first collinear family and the broader direct/x-then-y/y-then-x local
+dogleg family both produce zero complete candidates. The bounded dogleg screen
+covers 7 resistor-side and 9 charger-side directions, 14 neck lengths per
+direction, and a 0.50 mm-grid 5 x 5 mm landing window. R91 is dominated by
+existing tracks and the R90/R92 divider cluster; U11 is bounded by U11.9,
+R36, existing tracks, and the east board edge.
+
+This rules out another add-only one-neck/one-via retry in the screened package
+pockets; it does not weaken or refute the 0.50/0.250 mm haul. Real refilled
+schematic-parity DRC remains exactly 199 footprint-library / five inherited
+hole-clearance / one inherited solder-mask-bridge reports. Board `801cfa7e...`
+remains at 55 open retained nets / 456 edges, with the CHG tree at 10 edges.
+D-269/D-186, USB RAW/shield, all RGB routes, XGPIO4/XGPIO5, Demo NCs,
+accessory-power copper, and `hardware/beta-v2/` remain intact. Next inventory
+the complete accepted copper nets binding the two 5 x 5 mm package pockets and
+screen the minimum atomic complete-net withdrawal/replay set before replaying
+the 11-land CHG tree. No owner decision is open.
+
 **D-536 · 2026-09-03 · Demo USB_VBUS_CHG whole-tree endpoint boundary bounded:**
 The first reusable atomic harness for the adjacent 11-land
 `/01_POWER_TREE/USB_VBUS_CHG` tree enforces the live 0.50 mm width, 0.250 mm

@@ -2,6 +2,22 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_CHG governed-neck family bounded (2026-09-03)
+
+`enumerate_usb_vbus_chg_necks.py` is the reusable D-537 successor to the
+whole-tree endpoint screen. It permits only package-local narrowing: 0.30 mm
+at `R91.1` with the full 0.250 mm clearance, and the already-governed U11
+0.20/0.20 mm fine-pitch neck at `U11.10`. Every route must widen to the locked
+0.50/0.250 mm haul and reach an ordinary 0.90/0.40 mm all-layer via.
+
+Both the initial collinear family and the direct/one-elbow 5 x 5 mm dogleg
+family produce zero candidates. Existing tracks plus R90/R92 bind the R91
+pocket; U11.9, R36, accepted tracks, and the east board edge bind U11. This is
+characterization only: board `801cfa7e...` remains unchanged at 55 open nets /
+456 edges with real refilled parity DRC 199/5/1. Next inventory complete nets
+in both package pockets and screen the minimum atomic withdrawal/replay set
+together with the complete 11-land CHG tree.
+
 ## USB_VBUS_CHG whole-tree endpoint boundary bounded (2026-09-03)
 
 `route_usb_vbus_chg_tree_scratch.py` is the atomic 11-land successor to the

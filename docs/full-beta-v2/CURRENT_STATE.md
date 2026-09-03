@@ -13,6 +13,16 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-537 (USB VBUS CHG governed-neck family bounded):** a reusable
+  two-wall screen preserves the 0.50/0.250 mm haul and ordinary 0.90/0.40 mm
+  via contract while testing a 0.30/0.250 mm `R91.1` neck and the governed
+  0.20/0.20 mm `U11.10` fine-pitch neck. Collinear and local one-dogleg
+  families both yield zero complete candidates in bounded 5 x 5 mm landing
+  windows. Board `801cfa7e...` remains unchanged at 55 open retained nets /
+  456 edges and authoritative DRC 199/5/1. **Next:** inventory the complete
+  accepted copper nets binding both package pockets, then screen the minimum
+  atomic complete-net withdrawal/replay set together with the full 11-land
+  CHG tree. No owner decision is open.
 - **Demo D-536 (USB VBUS CHG whole-tree endpoint boundary bounded):** a new
   atomic 11-land harness enforces 0.50 mm width, 0.250 mm clearance, and
   0.90/0.40 mm vias. Clean-board screens qualify nine endpoint escapes;
