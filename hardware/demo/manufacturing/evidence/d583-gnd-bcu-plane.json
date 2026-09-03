@@ -1,0 +1,175 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "1aa80b3e2a89986e45e52ec96bd488f752483b9103ca0062605e26102fc079c9",
+  "authoritative_unchanged": true,
+  "candidate_sha256": "5b929a007c4d5d2b3fc0b5830c9906a4f908bbd5748148fd037573700175f3b4",
+  "connectivity": {
+    "nets_improved": [
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 126,
+    "retained_open_edges_before": 138
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "failed_nets": [
+    "GND"
+  ],
+  "inherited_within_baseline": true,
+  "plane": {
+    "clearance": 0.25,
+    "first_fill_exit": 0,
+    "island_removal_restored": true,
+    "layer": "B.Cu",
+    "name": "B GND PLANE",
+    "net": "GND"
+  },
+  "preservation": {
+    "added_object_nets": [],
+    "foreign_added_nets": [],
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "zone_inventory_ok": true,
+    "zones_added": [
+      [
+        "GND",
+        [
+          "B.Cu"
+        ],
+        "B GND PLANE",
+        200000,
+        250000,
+        0,
+        [
+          [
+            500000,
+            500000
+          ],
+          [
+            71500000,
+            500000
+          ],
+          [
+            71500000,
+            147500000
+          ],
+          [
+            500000,
+            147500000
+          ]
+        ]
+      ]
+    ],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "5b929a007c4d5d2b3fc0b5830c9906a4f908bbd5748148fd037573700175f3b4",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "GND"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "netclass": "GND",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "failures": [
+        {
+          "island": [
+            "C1.1"
+          ],
+          "pad": "C1.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "D2.2"
+          ],
+          "pad": "D2.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D2.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D2.1 (x66), D4.1 (x2), D5.3 (x2), D5.1 (x2)"
+        },
+        {
+          "island": [
+            "D4.2"
+          ],
+          "pad": "D4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D4.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D4.1 (x72)"
+        },
+        {
+          "island": [
+            "D5.2"
+          ],
+          "pad": "D5.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D5.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D5.1 (x72)"
+        },
+        {
+          "island": [
+            "J1.43"
+          ],
+          "pad": "J1.43",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "J1.43: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.44 (x45), J1.41 (x18), TP36.1 (x3), J1.40 (x1)"
+        },
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "R110.2"
+          ],
+          "pad": "R110.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R111.2"
+          ],
+          "pad": "R111.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch",
+      "net": "GND",
+      "ok": false,
+      "seconds": 1.9,
+      "stitched": 0,
+      "unreachable": 9,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [],
+  "schema": 1
+}
