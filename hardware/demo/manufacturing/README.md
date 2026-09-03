@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS corrected third atomic case bounded (2026-09-03)
+
+Corrected case 2 varies the third qualified `U12.10` witness.  All 13 governed
+endpoints reserve and nine joins complete before the finite 24-trial window is
+exhausted.  The same four components remain: the main U12/SW9/capacitor tree,
+isolated `U11.1`, the `C33.1`/`C64.1` pair, and the `L4.1`/`U21.3` pair.  All
+15 attempted cross-component joins report `NO_PATH`; canonical structured
+result SHA-256 is `84c78bd6453d0eb0e0e3d206ab69469b1eb8bd585585c4cf53d6e9c67d31e1e5`.
+No replay, DRC, candidate, or promotion is claimed for an incomplete SYS tree.
+Authority remains `64e5ae37...`, 54 open retained nets / 446 edges. Continue
+the corrected non-overlapping window at case 3.
+
 ## BQ25185_SYS corrected second atomic case bounded (2026-09-03)
 
 Corrected case 1 varies the next qualified `U12.10` witness and again reserves

@@ -1,5 +1,22 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-554 · 2026-09-03 · Demo BQ25185_SYS corrected third atomic case bounded
+
+Corrected atomic case 2 varies the third qualified `U12.10` witness.  All 13
+governed SYS endpoints reserve and nine joins complete before the finite
+24-trial search is exhausted.  The resulting forest is unchanged in structure:
+the main U12/SW9/C24/C26/C27/C28 component, isolated `U11.1`, the
+`C33.1`/`C64.1` pair, and the `L4.1`/`U21.3` pair.  All 15 attempted
+cross-component joins report `NO_PATH`.  Canonical structured result SHA-256
+is `84c78bd6453d0eb0e0e3d206ab69469b1eb8bd585585c4cf53d6e9c67d31e1e5`.
+
+Because the SYS tree is incomplete, withdrawn-net replay and real refilled
+parity DRC correctly do not run; no candidate or partial copper is emitted.
+The authoritative PCB remains byte-identical at `64e5ae37...`, 54 open
+retained nets / 446 edges.  `ACC_5V_SW_EN`, XGPIO4/XGPIO5, D-269/D-186, all
+accepted copper, and `hardware/beta-v2/` remain intact.  Continue the corrected
+non-overlapping screen at case 3.  No owner decision is open.
+
 # D-553 · 2026-09-03 · Demo BQ25185_SYS corrected second atomic case bounded
 
 Corrected atomic case 1 varies the next qualified `U12.10` witness.  All 13
