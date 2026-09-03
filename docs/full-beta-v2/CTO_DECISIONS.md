@@ -9,6 +9,29 @@ never deleted, so the history of the decision stays readable.
 Established: 2026-08-22
 Last updated: 2026-08-24 (FBV2-P1-002)
 
+**D-533 · 2026-09-03 · Demo USB_VBUS_RAW explicit B.Cu perimeter family bounded:**
+The D-532 successor replaces the generic first join with a deterministic
+0.50 mm B.Cu perimeter family and repairs the scratch harness's stale
+`BRANCHES` promotion-count reference.  For each of the eight already-qualified
+C20 ordinary-via sites it atomically reserves the first legal U10 escape,
+inserts both J3 POFVs, and screens 1,407 direct, orthogonal, north-perimeter,
+vertical-spine, and two-spine paths from C20 to J3.A9.  All 11,256 explicit
+paths reject before the A9-to-A4 and A4-to-U10 branches; no partial candidate
+is promotable.  This rules out an ordinary same-layer Manhattan perimeter
+solution in the screened north-edge window without weakening the locked
+0.50/0.20 mm VBUS contract.
+
+Independent authoritative refilled schematic-parity DRC remains exactly 199
+footprint-library / five inherited hole-clearance / one inherited solder-mask-
+bridge reports.  Board `04dc3e8a...` remains byte-identical at 56 open retained
+nets / 460 edges; D-269/D-186, all three RGB routes, XGPIO4/XGPIO5, Demo NCs,
+accepted accessory-power copper, and `hardware/beta-v2/` remain intact.  Next
+identify the complete B.Cu nets that bind the C20-to-A9 corridor, screen a
+bounded minimum complete-net withdrawal set, and atomically replay every
+withdrawn route together with the complete seven-land RAW tree.  Do not move
+connector POFVs, relax VBUS geometry, or promote a partial island.  No owner
+decision is open.
+
 **D-532 · 2026-09-02 · Demo USB_VBUS_RAW POFV transaction advances to B.Cu haul wall:**
 The D-531 successor adds three tightly scoped DRU constraints for 0.35/0.20 mm
 POFV geometry only on `/01_POWER_TREE/USB_VBUS_RAW` inside two named,

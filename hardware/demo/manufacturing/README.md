@@ -2,6 +2,18 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## USB_VBUS_RAW explicit B.Cu perimeter bounded (2026-09-03)
+
+The atomic RAW-tree harness now screens a finite 0.50 mm B.Cu Manhattan
+perimeter family and has a repaired promotion-stage predicate.  Across all
+eight qualified C20 escapes, 11,256 explicit direct, orthogonal, north-edge,
+vertical-spine, and two-spine paths reject at the first C20-to-J3.A9 join.
+Endpoint escapes and both J3 POFVs remain qualified, but no partial candidate
+is emitted.  Board `04dc3e8a...` remains unchanged at 56 open nets / 460 edges
+with authoritative DRC 199/5/1.  Next bound the complete B.Cu nets occupying
+this corridor and test a minimum complete-net withdrawal plus atomic replay;
+do not weaken the 0.50/0.20 mm VBUS contract or promote connector islands.
+
 ## USB_VBUS_RAW POFV transaction advances to B.Cu haul wall (2026-09-02)
 
 `route_usb_vbus_raw_tree_scratch.py` now carries the complete D-531 boundary:

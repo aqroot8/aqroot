@@ -3,7 +3,9 @@
 
 import argparse
 import hashlib
+import itertools
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -26,6 +28,64 @@ WIDTH = 500_000
 CLEARANCE = 200_000
 POFV_DIAMETER = 350_000
 POFV_DRILL = 200_000
+EXPECTED_STAGES = 6
+
+
+def emit(board, left, right):
+    """Emit one legal 0.50 mm B.Cu trunk segment."""
+    for shape in board.obstacles("B", NET):
+        if qr.seg_shape_dist(*left, *right, shape) < board.margin(
+                shape, WIDTH, CLEARANCE, CLEARANCE):
+            return False
+    edge = qr.EDGE_CLR + WIDTH / 2
+    if not (board.ex0 + edge <= min(left[0], right[0]) and
+            max(left[0], right[0]) <= board.ex1 - edge and
+            board.ey0 + edge <= min(left[1], right[1]) and
+            max(left[1], right[1]) <= board.ey1 - edge):
+        return False
+    board.track(NET, "B", *left, *right, WIDTH)
+    return True
+
+
+def compact(points):
+    return tuple(point for index, point in enumerate(points)
+                 if not index or point != points[index - 1])
+
+
+def perimeter_families(left, right):
+    """Finite Manhattan families around the north-edge USB connector."""
+    yield "direct", compact((left, right))
+    yield "x_then_y", compact((left, (right[0], left[1]), right))
+    yield "y_then_x", compact((left, (left[0], right[1]), right))
+    for y in range(140_500_000, 147_500_001, 250_000):
+        yield "north_y", compact((left, (left[0], y), (right[0], y), right))
+    for x in range(33_000_000, 54_000_001, 250_000):
+        yield "vertical_x", compact((left, (x, left[1]), (x, right[1]), right))
+    for x, y in itertools.product(range(33_000_000, 54_000_001, 500_000),
+                                  range(140_500_000, 147_500_001, 500_000)):
+        yield "two_spine", compact((left, (x, left[1]), (x, y),
+                                     (right[0], y), right))
+        yield "two_spine_rev", compact((left, (left[0], y), (x, y),
+                                         (x, right[1]), right))
+
+
+def staged_join(board, left, right):
+    tested = 0
+    for family, points in perimeter_families(left, right):
+        tested += 1
+        mark = board.mark()
+        if all(emit(board, a, b) for a, b in zip(points, points[1:])):
+            length = sum(math.hypot(b[0] - a[0], b[1] - a[1])
+                         for a, b in zip(points, points[1:]))
+            return {"ok": True, "family": family, "tested": tested,
+                    "mm": length / 1e6, "grid": 0.25, "vias": 0,
+                    "layer": "B", "trunk_mm": WIDTH / 1e6,
+                    "minw": WIDTH / 1e6,
+                    "waypoints_mm": [[x / 1e6, y / 1e6]
+                                     for x, y in points[1:-1]]}
+        board.revert(mark)
+    return {"ok": False, "reason": "NO_STAGED_BCU_PERIMETER",
+            "tested": tested}
 
 
 def add_rule_area(raw, name, cx, cy):
@@ -88,8 +148,7 @@ def route_candidate(scratch, pads, c20_site=0, u10_site=0):
     board.via(NET, *a9, POFV_DIAMETER, POFV_DRILL)
     board.via(NET, *a4, POFV_DIAMETER, POFV_DRILL)
     for left, right in ((c20["via"], a9), (a9, a4), (a4, u10["via"])):
-        joined = qr.join_reserved(board, NET, left, right, WIDTH, CLEARANCE,
-                                  CLEARANCE, layer="B")
+        joined = staged_join(board, left, right)
         routes.append(joined)
         if not joined.get("ok"):
             return board, routes
@@ -164,7 +223,7 @@ def main():
                         str(ledger_path)], check=True, stdout=subprocess.DEVNULL)
         ledger = json.loads(ledger_path.read_text())
         row = next(r for r in ledger["nets"] if r["net"] == NET)
-        promotion = (len(routes) == len(BRANCHES) and all(r.get("ok") for r in routes)
+        promotion = (len(routes) == EXPECTED_STAGES and all(r.get("ok") for r in routes)
                      and row["open_edges"] == 0 and not attributable
                      and not removed and not wrong)
         candidate = scratch.read_bytes()
