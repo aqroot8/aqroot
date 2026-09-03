@@ -2,6 +2,20 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## BQ25185_SYS corrected nineteenth atomic case bounded (2026-09-03)
+
+Corrected case 18 varies the nineteenth qualified `U12.10` witness at via
+`(66.8525,103.3775)` mm. All 13 governed endpoints reserve and nine joins
+complete before the finite 24-trial window is exhausted. The same four
+components remain: the main U12/SW9/capacitor tree, isolated `U11.1`, the
+`C33.1`/`C64.1` pair, and the `L4.1`/`U21.3` pair. All 15 attempted
+cross-component joins report `NO_PATH`. No replay, DRC, candidate, or
+promotion is claimed for an incomplete SYS tree. The harness reports zero
+wrong-net additions/removals. Authority remains `64e5ae37...`, 54 open
+retained nets / 446 edges. SYS is an immediate board-completion critical path,
+so the finite non-overlapping window continues under the routing-wall policy
+exception. Continue at case 19 without replaying cases 0--18.
+
 ## BQ25185_SYS corrected eighteenth atomic case bounded (2026-09-03)
 
 Corrected case 17 varies the eighteenth qualified `U12.10` witness. All 13
