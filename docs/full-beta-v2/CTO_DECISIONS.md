@@ -5811,3 +5811,131 @@ necked escape governed by the DRU's own fine-pitch exceptions, or for a second
 `+3V3` pour on `In2.Cu` that reaches them from the other side. Then apply the
 same `--plane` mechanism to `GND`'s residual 26 edges. No owner decision is
 open.
+
+# D-581 · 2026-09-03 · Demo LED_BOOST PROMOTED via a 25-net whole-board maze batch
+
+Recovered an already-gated but uncommitted promotion. A 25-net whole-board maze
+batch over the 33 open retained nets left by D-580 closed exactly one:
+`/03_SPI_A_DISPLAY_SD/LED_BOOST`, the display backlight boost supply, whose 6
+copper islands were joined by 5 maze legs -- 60.585 mm of 0.300 mm track and 4
+through vias across `B.Cu` / `F.Cu` / `In2.Cu`.
+
+Whole-board retained open edges **155 -> 150**, open retained nets 33 -> 32, no
+net regressed. The 24 nets that failed are reported in the evidence, not hidden.
+
+Re-proved independently by `verify_promotion.py` from the two board files alone,
+all twelve checks PASS: 0 objects removed, 26 added and every one on
+`LED_BOOST`, every added track exactly 0.300 mm, every via 0.600/0.300 mm with a
+0.150 mm annular ring, zone inventory unchanged, real zone-refilled
+schematic-parity KiCad DRC exactly 199 lib_footprint / 5 hole_clearance / 1
+solder_mask_bridge inherited with ZERO attributable and ZERO parity errors,
+fill-stable, D-269 and D-186 rule text live, `hardware/beta-v2/` untouched.
+
+Authority `785aac86...` -> `5b112b17...`.  Evidence
+`hardware/demo/manufacturing/evidence/d581-maze-batch25.json` and
+`d581-verify.json`.  Commit `54ff7ba` carries the full record.
+
+# D-582 · 2026-09-03 · Demo +3V3 F.Cu plane; 12 edges closed by the pour alone, PROMOTED
+
+The first promotion on this board whose entire value is a POUR: it adds ZERO
+tracks and ZERO vias and still closes 12 retained open edges.
+
+`+3V3` owned 31 of the 150 retained open edges left by D-581, over 32 islands
+D-580's stitch could not plant (`NO_LEGAL_ESCAPE` / `NO_VIA_SITE`). A pour
+reaches such an island three ways a stitch PROPOSAL cannot model: `connect_pads`
+bonds it directly to every same-net pad it overlaps on its own layer; it
+inherits through barrels planted for other planes; and it merges two islands of
+an existing pour once barrels on both land in one island of the new one. None of
+that is visible until the real KiCad fill engine has run, so the new read-only
+`screen_plane_only.py` runs exactly that experiment on a scratch copy and
+reports the connectivity, DRC and fill deltas. Six candidates screened, all with
+zero attributable DRC and no regression:
+
+    +3V3 B.Cu  -13   +3V3 F.Cu  -12   GND B.Cu  -12
+    +3V3 In2    -5   GND  F.Cu   -2   GND In2/In3  0
+
+`F.Cu` was chosen over the marginally larger `B.Cu` candidate on RF grounds, not
+edge count: U7 (433 MHz), U8 (915 MHz LoRa), U9 (ST25R3916) and J7 (NFC antenna
+connector) are ALL on B.Cu, so the back side is the layer whose pour needs an RF
+review and the front side is the one that does not. It also improves copper
+balance -- In1/In3/In4 were poured and F.Cu was bare.
+
+Result: `+3V3` open edges 31 -> 19, whole-board retained open edges
+**150 -> 138**, no net regressed, no copper object added or removed.
+
+One gate clause was corrected rather than weakened: a run must CHANGE the board,
+which for a maze or stitch run means a net actually routed -- but under
+`--plane` the pour IS the copper, so `edges_after < edges_before` is the honest
+proof, and requiring a stitch as well would refuse a promotion whose whole value
+is the plane.
+
+Re-proved independently by `verify_promotion.py`, all twelve checks PASS: 0
+objects added, 0 removed, exactly one zone added (`+3V3` on F.Cu, 7008.4 mm2 in
+16 islands after island removal), no surviving zone changed, real zone-refilled
+schematic-parity KiCad DRC exactly 199/5/1 inherited with ZERO attributable and
+ZERO parity errors, fill-stable, D-269/D-186 rule text live, `hardware/beta-v2/`
+untouched. Measured battery safety: the pour stands at exactly 0.300 mm from
+`BAT_PROTECTED_P`, `BAT_RAW` and `BAT_SENSE` -- D-269 to the millimetre -- and
+0.250 mm from `J4.1` `BAT_CONNECTOR_P`, which is outside the BAT_MAIN class.
+
+Authority `5b112b17...` -> `1aa80b3e...`.  Evidence
+`hardware/demo/manufacturing/evidence/d582-3v3-fcu-plane.json` and
+`d582-verify.json`.  Commit `406c05f` carries the full record.
+
+# D-583 · 2026-09-03 · Demo GND B.Cu plane; 12 more edges closed by the pour alone, PROMOTED
+
+The second pour-only promotion, and the last outer layer this board had bare.
+
+After D-582 the two power nets still owned 45 of the 138 retained open edges --
+`GND` 26 and `+3V3` 19. `GND` is the only net that already owned pours (the In1
+and In4 reference planes), yet 26 of its pads sat on their own copper island,
+and D-579's whole-board stitch had already reported exactly why: 17
+`NO_VIA_SITE` and 11 `NO_LEGAL_ESCAPE`. Those pads do not need a better search;
+they need copper ON THEIR OWN LAYER, which `connect_pads` then bonds without a
+via, a track or an escape.
+
+`screen_plane_only.py` ran that experiment against the real KiCad fill engine on
+a scratch copy: `B.Cu` fills 7351.5 mm2 in 40 islands, `GND` open edges 26 -> 14,
+zero attributable DRC, nothing regressed. The full gate reproduced it exactly.
+The stitch found no additional island it could plant (9 reported: 4
+`NO_VIA_SITE` at `C1.1` / `J3.A12` / `R110.2` / `R111.2`, 5 `NO_LEGAL_ESCAPE` at
+`D2.2` / `D4.2` / `D5.2` / `J1.43` / `MK1.4`), so the promotion adds ZERO tracks
+and ZERO vias.
+
+Result: whole-board retained open edges **138 -> 126**, `GND` 26 -> 14, no net
+regressed, no copper object added or removed. Concretely the pour bonded `R36.2`,
+`U14.4`, `U17.2`, `U2.12`, `U3.3`, `U3.12` and the NFC controller's own ground
+pads `U9.6` / `U9.12` / `U9.26` straight to board ground, and merged
+`U11.4/5/11` into one island and `U2.2`/`U2.3` into another.
+
+B.Cu carries the RF side of this board, so the pour was reviewed on measurement,
+not on the fact that it filled. Minimum distance from the pour is 0.400 mm to
+`NFC_ANT_A/B`, `NFC_EMCA/B`, `NFC_RXA/B`, 0.401 mm to `NFC_MATCH_A/B`, 0.350 mm
+to `NFC_RFO1/2` and `NFC_XOUT` and 0.345 mm to `NFC_XIN`, against the
+`.kicad_dru` section-7 floor of 0.250 mm. A ground VOID over the matching
+network was considered and REJECTED: the same `.kicad_dru` records "one
+continuous reference for digital, audio, RF, NFC and power -- no split by
+function, and specifically NO isolated analog-ground island", so carving one
+would contradict the board's recorded grounding architecture to chase a
+parasitic the discrete tuning network C75-C78 absorbs. The residual is ~1 pF of
+coplanar capacitance per arm and is recorded, not hidden. U7/U8 are shielded
+Ebyte modules whose board interface is DC and SPI, and their stamp antenna pads
+`U7.21`/`U8.21` are netless so no pour can reach them. Measured by polygon
+intersection, the B.Cu pour puts 0.0000 mm2 inside the WROOM ANTENNA KEEPOUT.
+
+Measured battery safety: the pour stands 0.350 mm from `BAT_PROTECTED_P`,
+0.500 mm from `BAT_RAW`, 0.750 mm from `BAT_SENSE`, 0.700 mm from `BAT_MID` and
+0.600 mm from `BAT_CONNECTOR_P`, all above the D-269 `BAT_MAIN` 0.300 mm routed
+clearance.
+
+Re-proved independently by `verify_promotion.py`, all twelve checks PASS: 0
+objects added, 0 removed, exactly one zone added (`GND` on B.Cu) with no
+surviving zone changed, real zone-refilled schematic-parity KiCad DRC exactly
+199/5/1 inherited with ZERO attributable and ZERO parity errors, fill-stable,
+D-269 and D-186 rule text live, `hardware/beta-v2/` untouched. `ACC_5V_SW_EN`,
+all three `FRONT_RGB_*_N` replacements, XGPIO4/XGPIO5 and the approved Demo NC
+contacts J5.9-12 / J5.15-18 are untouched.
+
+Authority `1aa80b3e...` -> `5b929a00...`.  Evidence
+`hardware/demo/manufacturing/evidence/d583-gnd-bcu-plane.json` and
+`d583-verify.json`.  Commit `3d689e1` carries the full record.
