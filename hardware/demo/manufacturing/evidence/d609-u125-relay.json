@@ -1,0 +1,336 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "body_landing": true,
+ "cap": 14,
+ "grid": 100000,
+ "guard": "evidence/d608-pour-bond-guard-next.json",
+ "guard_sha256": "afe26f7fee089bb3c9f81deac9ade29f7e73d28dc63b1003a0d7bfa17897a50b",
+ "max_mm": 8.0,
+ "method": "read-only; foreign tracks cut in the in-memory obstacle model and re-offered to the real maze3d.stitch_pad through the promoter's own Field, verify_laid proving each, every trial reverted; the connectivity price is measured by KiCad's own BuildConnectivity on a scratch copy",
+ "nets": [
+  {
+   "body_landing": {
+    "body": [
+     "C10.1",
+     "C12.2",
+     "C13.1",
+     "C14.1",
+     "C15.1",
+     "C16.1",
+     "C17.1",
+     "C18.1"
+    ],
+    "body_pads": 72,
+    "cells": {
+     "F": 602169,
+     "I3": 857188
+    },
+    "erode": 0,
+    "total": 887227
+   },
+   "lands": [
+    {
+     "candidates": 14,
+     "cut_radius_mm": 8.0,
+     "cut_shape": "disc",
+     "cuts": [
+      {
+       "a_mm": [
+        67.6,
+        99.5
+       ],
+       "b_mm": [
+        67.785,
+        99.315
+       ],
+       "layer": "B",
+       "mm": 0.2616,
+       "net": "Net-(L1-Pad2)",
+       "removed_mm": 0.2616,
+       "stubs_mm": [],
+       "whole_track": true,
+       "width_mm": 0.4
+      },
+      {
+       "a_mm": [
+        66.1,
+        99.25
+       ],
+       "b_mm": [
+        70.075,
+        75.425
+       ],
+       "layer": "I3",
+       "mm": 24.1543,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "removed_mm": 11.3879,
+       "stubs_mm": [
+        [
+         [
+          67.9741,
+          88.0174
+         ],
+         [
+          70.075,
+          75.425
+         ]
+        ]
+       ],
+       "whole_track": false,
+       "width_mm": 0.2
+      }
+     ],
+     "foreign_vias": [
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        63.0,
+        102.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.1,
+        100.2
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.1,
+        99.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.3,
+        104.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        63.0,
+        103.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.3,
+        101.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.4,
+        100.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        67.8,
+        100.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        67.7,
+        101.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(SW9-A)",
+       "xy_mm": [
+        66.35,
+        103.65
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(SW9-A)",
+       "xy_mm": [
+        65.5,
+        91.95
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BQ25185_SYS",
+       "xy_mm": [
+        61.2,
+        103.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+       "xy_mm": [
+        61.1,
+        95.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT1",
+       "xy_mm": [
+        70.4,
+        97.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT1",
+       "xy_mm": [
+        63.5,
+        107.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT2",
+       "xy_mm": [
+        63.2,
+        99.8
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "xy_mm": [
+        66.1,
+        99.25
+       ]
+      }
+     ],
+     "land": [
+      "U12.5"
+     ],
+     "price": {
+      "clusters_after": {
+       "/01_POWER_TREE/V3V3_FB": 2,
+       "Net-(L1-Pad2)": 1
+      },
+      "clusters_before": {
+       "/01_POWER_TREE/V3V3_FB": 1,
+       "Net-(L1-Pad2)": 1
+      },
+      "free": false,
+      "stubs_left": 1,
+      "tracks_split": 2,
+      "worse": {
+       "/01_POWER_TREE/V3V3_FB": [
+        1,
+        2
+       ]
+      }
+     },
+     "relay": {
+      "all_relaid": false,
+      "tracks": [
+       {
+        "a_mm": [
+         66.1,
+         99.25
+        ],
+        "b_mm": [
+         70.075,
+         75.425
+        ],
+        "layer": [
+         "I3"
+        ],
+        "layers_allowed": [
+         "I3"
+        ],
+        "max_mm": 74.4198,
+        "mm": null,
+        "mm_by_layer": null,
+        "net": "/01_POWER_TREE/V3V3_FB",
+        "ok": false,
+        "own_layer": true,
+        "reason": "NO_PATH",
+        "tracks": 1,
+        "vias": null,
+        "was_mm": 24.1543,
+        "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 74.420 mm budget"
+       },
+       {
+        "a_mm": [
+         67.6,
+         99.5
+        ],
+        "b_mm": [
+         67.785,
+         99.315
+        ],
+        "layer": [
+         "B"
+        ],
+        "layers_allowed": [
+         "F",
+         "B"
+        ],
+        "max_mm": 50.5271,
+        "mm": null,
+        "mm_by_layer": null,
+        "net": "Net-(L1-Pad2)",
+        "ok": false,
+        "own_layer": false,
+        "reason": "NO_PATH",
+        "tracks": 1,
+        "vias": null,
+        "was_mm": 0.2616,
+        "why": "no all-layer corridor at 0.400 mm between the two ends of this track once the site is reserved, inside the 50.527 mm budget"
+       }
+      ]
+     },
+     "stitch": {
+      "layer": "B",
+      "mm": 3.955,
+      "pad": "U12.5",
+      "via_xy": [
+       66.6,
+       96.0
+      ]
+     },
+     "verdict": "SEGMENT_SET_OPENS"
+    }
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "rung": {
+    "clr": 200000,
+    "name": "floor",
+    "needs_licence": false,
+    "via_dia": 650000,
+    "via_drill": 400000,
+    "width": 400000
+   }
+  }
+ ],
+ "pads": [
+  "U12.5"
+ ],
+ "question": "for every open pour land that fails stitch_pad with NO_VIA_SITE, is the pocket full of CUTTABLE foreign track -- so that a SEGMENT eviction would open a barrel site -- or is it full of pads and barrels no split can touch",
+ "relay_own_layer": true,
+ "rung": "floor",
+ "schema": 1
+}

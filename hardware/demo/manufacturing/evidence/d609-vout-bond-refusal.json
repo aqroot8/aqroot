@@ -1,0 +1,281 @@
+{
+ "attributable": [
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.2574 mm"
+   ],
+   "pos": [
+    66.725,
+    99.075
+   ],
+   "type": "track_width"
+  },
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.1414 mm"
+   ],
+   "pos": [
+    65.3,
+    99.2
+   ],
+   "type": "track_width"
+  },
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.3363 mm"
+   ],
+   "pos": [
+    66.6,
+    98.85
+   ],
+   "type": "track_width"
+  },
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.2574 mm"
+   ],
+   "pos": [
+    65.925,
+    98.625
+   ],
+   "type": "track_width"
+  },
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.4250 mm"
+   ],
+   "pos": [
+    66.35,
+    98.625
+   ],
+   "type": "track_width"
+  },
+  {
+   "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+   "items": [
+    "Track [+3V3] on B.Cu, length 0.6021 mm"
+   ],
+   "pos": [
+    65.7,
+    98.75
+   ],
+   "type": "track_width"
+  }
+ ],
+ "authority_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "candidate_sha256": "45ae80b57afbb3caba90320960ccce3aa82c128b2751dca2793c4bf13bdf5d0f",
+ "connectivity": {
+  "nets_improved": [
+   "+3V3"
+  ],
+  "nets_regressed": [
+   "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "open_retained_nets_after": 29,
+  "open_retained_nets_before": 29,
+  "retained_open_edges_after": 58,
+  "retained_open_edges_before": 58
+ },
+ "decision": "D-609",
+ "drc_types": {
+  "hole_clearance": 5,
+  "lib_footprint_issues": 199,
+  "solder_mask_bridge": 1,
+  "track_width": 6
+ },
+ "ledger": {
+  "+3V3": {
+   "after": 8,
+   "before": 9
+  },
+  "/01_POWER_TREE/BQ25185_SYS": {
+   "after": 8,
+   "before": 7
+  }
+ },
+ "narrow_copper": {
+  "necking_rule": {
+   "courtyards": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "min_width_mm": 0.2
+  },
+  "total_mm": 2.7866,
+  "unlicensed": [
+   {
+    "a_mm": [
+     65.3,
+     99.2
+    ],
+    "b_mm": [
+     65.2,
+     99.1
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.1414,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     65.7,
+     98.75
+    ],
+    "b_mm": [
+     65.3,
+     99.2
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.6021,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     65.925,
+     98.625
+    ],
+    "b_mm": [
+     65.7,
+     98.75
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.2574,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     66.35,
+     98.625
+    ],
+    "b_mm": [
+     65.925,
+     98.625
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.425,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     66.6,
+     98.85
+    ],
+    "b_mm": [
+     66.35,
+     98.625
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.3363,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     66.725,
+     99.075
+    ],
+    "b_mm": [
+     66.6,
+     98.85
+    ],
+    "class_floor_mm": 0.4,
+    "intersects": [],
+    "layer": "B.Cu",
+    "mm": 0.2574,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "verdict": "OUTSIDE",
+    "wholly_inside": [],
+    "width_mm": 0.2
+   }
+  ],
+  "unlicensed_mm": 2.0196,
+  "verdicts": {
+   "INSIDE": 0,
+   "INTERSECTS": 2,
+   "OUTSIDE": 6
+  }
+ },
+ "next_transaction": "ONE per-pad `enclosedByArea` WIDTH licence covering the six unlicensed segments -- x in [65.05, 66.90], y in [98.45, 99.45] mm with the doctrine's 0.150 mm end-cap overhang -- plus --repair-planes so the BQ25185_SYS pour this run severs is re-stitched inside the same transaction.  The relief emitter draws a square around the BARREL and must learn to draw an area around the RUN.",
+ "pads_named": [
+  "U12.4",
+  "U12.5"
+ ],
+ "promotion_candidate": false,
+ "question": "does a 0.200 mm relief run bond the U12 VOUT island to the +3V3 plane after KiCad's own refill, and what refuses it?",
+ "schema": 1,
+ "stitch": [
+  {
+   "area": null,
+   "island": [
+    "U12.4",
+    "U12.5"
+   ],
+   "layer": "B",
+   "licence": null,
+   "mm": 2.787,
+   "needs_licence": false,
+   "pad": "U12.4",
+   "rung": 2,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "via_xy": [
+    65.2,
+    99.1
+   ],
+   "width": 200000,
+   "xy": [
+    65200000,
+    99100000
+   ]
+  }
+ ],
+ "verdict": "REFUSED, twice, and BOTH refusals are exact.  The BOND ITSELF WORKS: after the real zone refill the fitted-pad ledger moves +3V3 from 9 open edges to 8 -- the TPS63020's own VOUT island is connected to the rail it makes.  What refuses the run is (1) six of the eight laid tracks lie OUTSIDE every courtyard the board's own pad-escape necking rule names, so KiCad judges them against 'P3V3 minimum width on the outer layers' (0.400 mm) and reports six track_width errors, and (2) the run crosses the BQ25185_SYS B.Cu pour and severs it, 7 -> 8, so clause 4 sees a 1-for-1 trade at 58 -> 58 and no net may regress.",
+ "widths_offered": [
+  600000,
+  400000,
+  200000
+ ]
+}

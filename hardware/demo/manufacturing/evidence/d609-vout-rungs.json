@@ -1,0 +1,333 @@
+{
+ "authoritative_unchanged": true,
+ "board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "body_landing": {
+  "body": [
+   "C10.1",
+   "C12.2",
+   "C13.1",
+   "C14.1",
+   "C15.1",
+   "C16.1",
+   "C17.1",
+   "C18.1"
+  ],
+  "body_pads": 72,
+  "cells": {
+   "F": 602169,
+   "I3": 857188
+  },
+  "erode": 0,
+  "total": 887227
+ },
+ "body_pads": 72,
+ "island": [
+  "U12.4",
+  "U12.5"
+ ],
+ "islands": 10,
+ "layers": [
+  "F",
+  "B",
+  "I2",
+  "I3"
+ ],
+ "nearest_body_cell": [
+  {
+   "mm": 0.1414,
+   "pad": "U12.4",
+   "xy_mm": [
+    66.5,
+    99.9
+   ]
+  },
+  {
+   "mm": 0.2236,
+   "pad": "U12.5",
+   "xy_mm": [
+    67.3,
+    100.1
+   ]
+  }
+ ],
+ "net": "+3V3",
+ "netclass": "P3V3",
+ "question": "on the CURRENT board, at which rung -- if any -- does a barrel bond the U12 VOUT island to the +3V3 plane body?",
+ "rungs": [
+  {
+   "body_cells": 887227,
+   "clr_mm": 0.2,
+   "neck": false,
+   "needs_licence": false,
+   "pads": [
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    }
+   ],
+   "rung": "0 floor",
+   "via_mm": [
+    0.65,
+    0.4
+   ],
+   "width_mm": 0.4
+  },
+  {
+   "body_cells": 887227,
+   "clr_mm": 0.2,
+   "neck": false,
+   "needs_licence": false,
+   "pads": [
+    {
+     "landing": "body",
+     "mm": 2.787,
+     "ok": true,
+     "pad": "U12.4",
+     "reason": null,
+     "via_xy": [
+      65.2,
+      99.1
+     ],
+     "why": null
+    },
+    {
+     "landing": "any",
+     "mm": 2.787,
+     "ok": true,
+     "pad": "U12.4",
+     "reason": null,
+     "via_xy": [
+      65.2,
+      99.1
+     ],
+     "why": null
+    },
+    {
+     "landing": "body",
+     "mm": 2.91,
+     "ok": true,
+     "pad": "U12.5",
+     "reason": null,
+     "via_xy": [
+      65.2,
+      99.1
+     ],
+     "why": null
+    },
+    {
+     "landing": "any",
+     "mm": 2.91,
+     "ok": true,
+     "pad": "U12.5",
+     "reason": null,
+     "via_xy": [
+      65.2,
+      99.1
+     ],
+     "why": null
+    }
+   ],
+   "rung": "1 relief width",
+   "via_mm": [
+    0.65,
+    0.4
+   ],
+   "width_mm": 0.2
+  },
+  {
+   "body_cells": 887227,
+   "clr_mm": 0.2,
+   "neck": false,
+   "needs_licence": true,
+   "pads": [
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    }
+   ],
+   "rung": "2 relief barrel",
+   "via_mm": [
+    0.35,
+    0.2
+   ],
+   "width_mm": 0.4
+  },
+  {
+   "body_cells": 887227,
+   "clr_mm": 0.2,
+   "neck": false,
+   "needs_licence": true,
+   "pads": [
+    {
+     "landing": "body",
+     "mm": 2.645,
+     "ok": true,
+     "pad": "U12.4",
+     "reason": null,
+     "via_xy": [
+      65.3,
+      99.2
+     ],
+     "why": null
+    },
+    {
+     "landing": "any",
+     "mm": 2.645,
+     "ok": true,
+     "pad": "U12.4",
+     "reason": null,
+     "via_xy": [
+      65.3,
+      99.2
+     ],
+     "why": null
+    },
+    {
+     "landing": "body",
+     "mm": 2.769,
+     "ok": true,
+     "pad": "U12.5",
+     "reason": null,
+     "via_xy": [
+      65.3,
+      99.2
+     ],
+     "why": null
+    },
+    {
+     "landing": "any",
+     "mm": 2.769,
+     "ok": true,
+     "pad": "U12.5",
+     "reason": null,
+     "via_xy": [
+      65.3,
+      99.2
+     ],
+     "why": null
+    }
+   ],
+   "rung": "3 both",
+   "via_mm": [
+    0.35,
+    0.2
+   ],
+   "width_mm": 0.2
+  },
+  {
+   "body_cells": 887227,
+   "clr_mm": 0.2,
+   "neck": true,
+   "needs_licence": false,
+   "pads": [
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.65 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "reason": "NO_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "landing": "body",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.65 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "landing": "any",
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "reason": "NO_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    }
+   ],
+   "rung": "4 floor + neck",
+   "via_mm": [
+    0.65,
+    0.4
+   ],
+   "width_mm": 0.4
+  }
+ ],
+ "schema": 1
+}

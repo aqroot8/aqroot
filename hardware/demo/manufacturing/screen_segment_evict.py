@@ -247,7 +247,7 @@ def chain_ends_mm(cuts):
 
 
 def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
-                via_cost_mm=1.5):
+                via_cost_mm=1.5, own_layer=False):
     """Would every track this land CUTS go back, between its own two ends?
 
     D-608, and the run that paid for it.  This screen's job used to end at "a
@@ -268,7 +268,8 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
     """
     import qrouter as qr
     import maze3d as mz
-    from route_maze_batch import net_contract, permitted_layers, guard_for
+    from route_maze_batch import (net_contract, permitted_layers, guard_for,
+                                  detour_layers)
 
     by_net = {}
     for (L, seg, c) in cuts:
@@ -292,7 +293,8 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
             lkeys = {c["layer"] for c in recs}
             widths = {c["width_mm"] for c in recs}
             con = net_contract(qb.b, net)
-            layers = permitted_layers(qb.routable, con["layers"], reserved, net)
+            permitted = permitted_layers(qb.routable, con["layers"], reserved,
+                                         net)
             was = sum(c["mm"] for c in recs)
             rec = dict(net=net, layer=sorted(lkeys), was_mm=round(was, 4),
                        max_mm=round(was + 2.0 * math.pi * radius / 1e6, 4),
@@ -303,6 +305,11 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
                 out.append(rec); ok_all = False
                 continue
             lkey = sorted(lkeys)[0]
+            # D-609.  The writer's own `detour_layers` decides this, so the
+            # screen and the gate cannot disagree about whether a track may be
+            # put back where it already is.
+            layers, spent = detour_layers(permitted, lkey, own_layer)
+            rec.update(layers_allowed=list(layers), own_layer=spent)
             if lkey not in layers:
                 rec.update(ok=False, reason="UNDETOURABLE_LAYER",
                            why="layer %s is not in this net's contract %s -- "
@@ -336,6 +343,7 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
             rec.update(ok=bool(r.get("ok")), reason=r.get("reason"),
                        why=str(r.get("why"))[:200] if r.get("why") else None,
                        mm=r.get("mm"), vias=r.get("vias"),
+                       mm_by_layer=r.get("mm_by_layer"),
                        a_mm=list(ends[0]), b_mm=list(ends[1]))
             ok_all = ok_all and bool(r.get("ok"))
             out.append(rec)
@@ -562,6 +570,20 @@ def main():
                          "land has to CUT actually go back between its own two "
                          "ends?  A land that opens and cannot be relaid is a "
                          "gate run this screen owes nobody")
+    ap.add_argument("--pad", action="append", default=[], metavar="REF.NUM",
+                    help="D-609: offer ONLY these pads as a land's launch.  An "
+                         "island's stitch site is decided by which of its pads "
+                         "is tried first, and island membership moves whenever "
+                         "a promotion joins two orphans; this names the land "
+                         "instead of inheriting it.  Repeatable")
+    ap.add_argument("--relay-own-layer", action="store_true",
+                    help="D-609: price the relay with the OWN-LAYER allowance "
+                         "-- a track being put back may be put back on the "
+                         "layer it already lawfully occupies, even a reserved "
+                         "inner plane, and on that ONE layer only.  This is "
+                         "`route_maze_batch.py --detour-own-layer` measured "
+                         "read-only; without it every legacy In3 track still "
+                         "reports UNDETOURABLE_LAYER")
     ap.add_argument("--no-price", action="store_true",
                     help="skip the KiCad connectivity price (lattice only)")
     ap.add_argument("--plan-out", type=Path,
@@ -648,6 +670,21 @@ def main():
         for island in islands:
             if island is body:
                 continue
+            # D-609.  `try_island` takes the FIRST pad of an island that opens
+            # and `stitch_pad` then takes the first legal barrel by distance,
+            # so WHICH pad launches is decided by island order -- and island
+            # membership moves whenever a promotion joins two orphans.  D-608
+            # measured `U12.5` at a 1.136 mm stitch behind a 0.8 mm disc; the
+            # same board with `U12.4` and `U12.5` merged into one island offers
+            # `U12.4` first, at 3.982 mm behind an 8 mm one.  `--pad` says which
+            # land of the island is being measured.  It narrows only the
+            # LAUNCH: the island, the body, the cut window and the verdict are
+            # unchanged, so this cannot invent a site that was not there.
+            island_all = island
+            if a.pad:
+                island = [p for p in island_all if p["ref"] in set(a.pad)]
+                if not island:
+                    continue
             base = try_island(qb, field, island, a.max_mm, land_ok)
             refs = [p["ref"] for p in island]
             if base and base.get("ok"):
@@ -767,7 +804,8 @@ def main():
                 land["price"] = connectivity_price(a.board, cuts, tmp)
             if not a.no_relay:
                 land["relay"] = relay_price(
-                    qb, a.grid, reserved, held, site, radius, [net], spec)
+                    qb, a.grid, reserved, held, site, radius, [net], spec,
+                    own_layer=a.relay_own_layer)
             rec["lands"].append(land)
             print("  %-24s %-22s %s  cut %d track(s) r=%.2fmm  stitch %.3fmm %s"
                   % (net[:24], ",".join(refs)[:22], land["verdict"],
@@ -823,6 +861,8 @@ def main():
         authoritative_unchanged=(board_sha == after),
         grid=a.grid, max_mm=a.max_mm, cap=a.cap, rung=a.rung,
         body_landing=bool(a.body_landing),
+        relay_own_layer=bool(a.relay_own_layer),
+        pads=list(a.pad),
         guard=str(a.guard) if a.guard else None,
         guard_sha256=(hashlib.sha256(a.guard.read_bytes()).hexdigest()
                       if a.guard else None),

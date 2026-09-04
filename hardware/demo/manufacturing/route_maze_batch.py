@@ -946,6 +946,60 @@ def permitted_layers(routable, contract_layers, reserved, net):
     return keep or allowed
 
 
+# --------------------------------------------------------------------------- #
+# A DETOUR MAY RE-LAY A TRACK ON THE LAYER IT ALREADY LAWFULLY OCCUPIES
+# --------------------------------------------------------------------------- #
+# D-609.  `reserved_inner_planes` is a rule about NEW copper: do not cut a slot
+# through somebody else's plane.  A DETOUR is not new copper.  It removes an
+# existing track WHOLE and lays it again between its OWN TWO END COORDINATES,
+# and D-607 built it precisely so that nothing is stranded and the cut net's
+# cluster count cannot move.  Applying the plane reservation to it therefore
+# answers a question nobody asked: the slot ALREADY EXISTS, it was cut before
+# the plane was poured, and the only thing in dispute is where within a
+# millimetre or two of itself it runs.
+#
+# The census is in `evidence/d608-undetourable-copper.json` and it is not
+# small: 111 tracks / 969.6 mm of this board's 3054 / 8712.6 mm lie on a layer
+# their own net may no longer route on, 29 (net, layer) pairs, EVERY ONE on
+# `In3.Cu` -- legacy signal copper routed before the `+3V3` pour existed.
+# `relay_price` reports each of them `UNDETOURABLE_LAYER`, and the FIRST thing
+# that blocked is the single highest-leverage bond on this board: `U12.5`, the
+# `TPS63020`'s own `VOUT`, whose barrel site is crossed by 27.119 mm of
+# `/01_POWER_TREE/USB_VBUS_CHG` on `In3.Cu`.
+#
+# THE ALLOWANCE IS THE TIGHTEST ONE THAT EXISTS, AND THAT IS DELIBERATE.  A
+# detour that spends it routes on THAT ONE LAYER AND NOTHING ELSE -- not on the
+# union of its contract and its own layer.  Two consequences follow by
+# construction rather than by clause:
+#
+#   * it CANNOT add a via, because a single-layer `Field` has no second layer
+#     to via to -- so this allowance can never drill a new hole and a new
+#     antipad through the plane it is being let back onto;
+#   * it cannot wander onto a DIFFERENT reserved plane, because the only layer
+#     it was given is the one it already had.
+#
+# What it can still do is occupy MORE of that plane than it did -- the bound is
+# `was + 2*pi*R`, so at `R = 0.8 mm` the worst case is about 5 mm of extra slot.
+# That is not free and it is not hidden: `mm_by_layer` reports it, gate clause 4
+# measures the plane's own connectivity after a real refill, and a detour that
+# actually severs the plane it crosses regresses that net and refuses the run.
+# The allowance is OPT-IN per run for the same reason: it is a judgement about
+# ONE transaction's copper, not a change to what this board considers routable.
+def detour_layers(permitted, lkey, own_layer):
+    """The layers ONE detour may use, and whether it spent the D-609 allowance.
+
+    Returns (layers, spent).  Absent the allowance, or when the track's layer
+    is one this net may route on anyway, this is exactly `permitted` and
+    nothing about the run changes.
+    """
+    permitted = tuple(permitted)
+    if lkey in permitted:
+        return permitted, False
+    if not own_layer:
+        return permitted, False
+    return (lkey,), True
+
+
 # Nets excluded from generic maze routing.  Each is a documented physics or
 # governance constraint the maze proposer does not model, NOT a difficulty
 # judgement: it must keep being routed by its own purpose-built harness.
@@ -1108,7 +1162,9 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_islands=False, join_island_max_mm=0.0,
             escape_relief=False, relief_via=None, detour_plan=None,
             body_landing=False, join_orphans=False,
-            join_orphan_max_mm=JOIN_ORPHAN_MAX_MM):
+            join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
+            detour_own_layer=False, relief_extra_width=0,
+            relief_pads=()):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1143,6 +1199,12 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     # the board's rules were written to allow.  None => the router behaves
     # exactly as it did before this flag existed.
     neck_rule = mz.neck_rule(qb, neck_max_mm or mz.NECK_MAX_MM) if neck else None
+    # D-609.  The board's own pad-escape necking rule, read WHETHER OR NOT
+    # `--neck` was asked for: `--neck` is a ROUTING lever (may this pad launch
+    # narrow?) and this is a LICENCE fact (how narrow does the `.kicad_dru`
+    # already allow inside the courtyards it names?).  The relief width ladder
+    # is clamped to it, so no flag can ask for a width the board never names.
+    licensed_neck = mz.neck_rule(qb)
 
     # BOND STITCHES RUN BEFORE ANY SIGNAL COPPER, and that ordering is the
     # whole point of the lever.  The tube a bond retires is copper the router
@@ -1167,9 +1229,12 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         c = contracts[net]
         t0 = time.time()
         g = guard_for(guard_spec, net) if guard_spec else None
+        # D-609.  A track being PUT BACK may be put back on the layer it was
+        # already lawfully on, and on nothing else -- see `detour_layers`.
+        layers, own = detour_layers(c["layers"], d["lkey"], detour_own_layer)
         field = mz.Field(qb, net, d["width_nm"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
-                         layers=c["layers"], guard=g)
+                         layers=layers, guard=g)
         r = mz.route_points(qb, field, tuple(d["a_nm"]), tuple(d["b_nm"]),
                             d["lkey"], via_cost_mm=via_cost_mm,
                             max_mm=d.get("max_mm", 0.0))
@@ -1177,13 +1242,15 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         r.pop("mark", None)
         r.update(net=net, layer=d["layer"], was_mm=d["mm"],
                  max_mm=d.get("max_mm"), width_nm=d["width_nm"],
+                 lkey=d["lkey"], layers_allowed=list(layers), own_layer=own,
                  a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
                  b_mm=[round(v / 1e6, 4) for v in d["b_nm"]],
                  seconds=round(time.time() - t0, 1))
         detours.append(r)
-        print("  %-44s detour %s %.3f->%.3f mm %s"
+        print("  %-44s detour %s %.3f->%.3f mm %s%s"
               % (net, "ok" if r.get("ok") else r.get("reason"), d["mm"],
-                 r.get("mm", 0.0), d["layer"]), file=sys.stderr, flush=True)
+                 r.get("mm", 0.0), d["layer"], " OWN-LAYER" if own else ""),
+              file=sys.stderr, flush=True)
 
     bonds = []
     for net in sorted(bond_by_net):
@@ -1355,12 +1422,43 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 # where a class floor is already at or above its netclass.
                 w_floor = max(BOARD_TRACK_MIN,
                               DRU_CLASS.get(c["netclass"], {}).get("width", 0))
-                widths = tuple(sorted({c["width"], min(c["width"], w_floor)},
-                                      reverse=True))
+                widths = sorted({c["width"], min(c["width"], w_floor)},
+                                reverse=True)
+                # D-609.  ONE MORE RUNG, AND THE BOARD -- NOT THE CALLER --
+                # SAYS HOW NARROW IT MAY BE.  `U12.4`/`U12.5` are the
+                # `TPS63020`'s own `VOUT` pins and the rail has no connection
+                # to them at all.  The width ladder measured why: at the P3V3
+                # 0.400 mm floor NEITHER pin has a legal escape, at 0.250 mm
+                # neither reaches a barrel, and at 0.200 mm BOTH escape, run
+                # under 4.2 mm and plant an ORDINARY 0.65/0.40 mm POWER barrel
+                # inside the plane BODY.  The wall was never the barrel and
+                # never the pocket; it was the RUN.
+                #
+                # The rung is not a number this driver may choose.  It is
+                # clamped UP to `maze3d.neck_rule`'s own minimum -- the width
+                # `.kicad_dru`'s "Pad-escape necking - width, fine-pitch power
+                # packages" already grants inside the ten courtyards it names,
+                # `U12` among them -- and up to board setup's
+                # `min_track_width`.  So this flag can ask for copper the board
+                # already licenses somewhere, and can never invent a width the
+                # board does not name at all.  WHERE that copper may lie is
+                # KiCad's own question and gate clause 3 asks it: a segment
+                # that leaves the licensed courtyard is judged at the class
+                # floor and the whole run is refused.
+                if relief_extra_width:
+                    floor = max(BOARD_TRACK_MIN, relief_extra_width)
+                    if licensed_neck is not None:
+                        floor = max(floor, licensed_neck.min_w)
+                    if floor < widths[-1]:
+                        widths.append(floor)
+                widths = tuple(widths)
                 rs = mz.relief_stitch(
                     qb, net, widths, c["clr_pad"], c["clr"], rv[0], rv[1],
                     via_floors(c["netclass"]), G=grid, layers=c["layers"],
-                    neck=neck_rule, guard=g, land_ok=land_ok)
+                    neck=neck_rule, guard=g, land_ok=land_ok,
+                    pads=(set(relief_pads) or None))
+                rs["widths_offered"] = [w for w in widths]
+                rs["pads_named"] = sorted(relief_pads or ())
                 r["escape_relief"] = rs
                 r["mode"] = r["mode"] + "+relief"
                 r["ok"] = bool(r.get("ok")) or bool(rs.get("stitched"))
@@ -1524,7 +1622,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
          escape_relief=False, relief_via=None, detour_spec=None,
          body_landing=False, join_orphans=False,
-         join_orphan_max_mm=JOIN_ORPHAN_MAX_MM):
+         join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
+         detour_own_layer=False, relief_extra_width=0,
+         relief_pads=()):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1654,6 +1754,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # doing it twice would put the same copper down twice.
         if detour is not None and use_search_levers:
             cmd += ["--detour-plan", str(work / "detour.json")]
+            if detour_own_layer:
+                cmd += ["--detour-own-layer"]
         if stitch_width:
             cmd += ["--stitch-width", str(stitch_width)]
         if stitch_via:
@@ -1698,6 +1800,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--escape-relief"]
             if relief_via:
                 cmd += ["--relief-via", "%d:%d" % relief_via]
+            if relief_extra_width:
+                cmd += ["--relief-extra-width", str(relief_extra_width)]
+            cmd += [x for r in relief_pads for x in ("--relief-pad", r)]
         # THE BOND IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- same
         # reading as `--bridge` directly above.
         if bond_pads and use_search_levers:
@@ -1761,6 +1866,23 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                           a_mm=d["a_mm"], b_mm=d["b_mm"],
                           reason=d.get("reason"), why=d.get("why"))
                      for d in detoured if not d.get("ok")]
+    # D-609.  A detour that spent the OWN-LAYER allowance was handed exactly
+    # one layer, so it cannot have left that layer and cannot have drilled a
+    # barrel: a single-layer `Field` has nowhere to via to.  That is true by
+    # CONSTRUCTION -- which is precisely why the authority states it as a
+    # clause rather than trusting it.  A future caller that widens the
+    # allowance to a layer SET meets this refusal, not a silent new hole
+    # through somebody else's plane.
+    for d in detoured:
+        if not (d.get("ok") and d.get("own_layer")):
+            continue
+        if list(d.get("layers") or []) != [d["lkey"]] or d.get("vias"):
+            detour_failed.append(dict(
+                net=d["net"], layer=d["layer"], a_mm=d["a_mm"],
+                b_mm=d["b_mm"], reason="OWN_LAYER_ESCAPED",
+                why="the own-layer allowance let this detour onto %s with %s "
+                    "via(s); it is licensed for %s alone and for no barrel"
+                    % (d.get("layers"), d.get("vias"), d["lkey"])))
 
     if plane_zone:
         # Every requested region, not just the first: `keep` was a scaffold for
@@ -2014,6 +2136,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                      removed_mm=detour.get("removed_mm"),
                      nets=detour.get("nets"),
                      guard_spec=str(detour_guard_file),
+                     own_layer_requested=bool(detour_own_layer),
+                     own_layer_spent=[
+                         dict(net=d["net"], layer=d["layer"],
+                              was_mm=d["was_mm"], mm=d.get("mm"),
+                              max_mm=d.get("max_mm"),
+                              mm_by_layer=d.get("mm_by_layer"),
+                              vias=d.get("vias"))
+                         for d in detoured if d.get("own_layer")],
                      relaid=detoured, failed=detour_failed,
                      all_relaid=(not detour_failed))
                 if detour else None),
@@ -2031,6 +2161,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         escape_relief=dict(
             requested=bool(escape_relief),
             via=list(relief_via or RELIEF_VIA),
+            extra_width=relief_extra_width or None,
+            pads=list(relief_pads),
             lands_still_open=relief_open,
             lands_closed_ok=(not relief_open),
             stitched=sum(len((r.get("escape_relief") or {}).get("stitches", ()))
@@ -2202,6 +2334,26 @@ def main():
                          "around the barrel it actually laid and clause 6 "
                          "audits it.  Screen it first with "
                          "screen_pad_escape_relief.py")
+    ap.add_argument("--relief-pad", action="append", default=[],
+                    metavar="REF.NUM",
+                    help="D-609: offer --escape-relief ONLY these lands.  A "
+                         "relief spends a licence or a narrow rung, which is "
+                         "the most expensive copper a run can lay; naming the "
+                         "lands keeps one measured exception from becoming "
+                         "twenty unmeasured ones.  Repeatable; empty means "
+                         "every orphan land, exactly as before")
+    ap.add_argument("--relief-extra-width", type=int, default=0,
+                    help="D-609: add ONE more, narrower rung to the "
+                         "--escape-relief width ladder, in nm.  Clamped UP to "
+                         "board setup's min_track_width AND to the minimum "
+                         "the board's own `.kicad_dru` pad-escape necking rule "
+                         "already grants inside the fine-pitch power-package "
+                         "courtyards it names, so this can ask for copper the "
+                         "board licenses somewhere and can never invent a "
+                         "width the board does not name.  WHERE that copper "
+                         "may lie stays KiCad's question: gate clause 3 judges "
+                         "any segment outside a licensed courtyard at the "
+                         "class floor and refuses the run")
     ap.add_argument("--relief-via", default=None,
                     help="DIA:DRILL in nm for --escape-relief barrels "
                          "(default 350000:200000, the fine-pitch process this "
@@ -2227,6 +2379,18 @@ def main():
                          "the removals by signature and a detour that will not "
                          "route refuses the whole run.  Screen it first with "
                          "screen_segment_evict.py --plan-out")
+    ap.add_argument("--detour-own-layer", action="store_true",
+                    help="D-609: let a detour re-lay its track on the layer it "
+                         "ALREADY lawfully occupies, even when that layer is a "
+                         "RESERVED inner plane.  The reservation is a rule "
+                         "about NEW copper; a detour puts EXISTING copper back "
+                         "between its own two ends and the slot is already "
+                         "there.  A detour that spends this is given that ONE "
+                         "layer and nothing else, so it can add no via and can "
+                         "reach no other plane; clause 4 still measures the "
+                         "crossed plane's own connectivity after a real refill. "
+                         "Price it first with screen_segment_evict.py "
+                         "--relay-own-layer")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -2263,7 +2427,9 @@ def main():
                 a.escape_relief, relief_via,
                 json.loads(a.detour_plan.read_text()) if a.detour_plan
                 else None,
-                a.body_landing, a.join_orphans, a.join_orphan_max_mm)
+                a.body_landing, a.join_orphans, a.join_orphan_max_mm,
+                a.detour_own_layer, a.relief_extra_width,
+                tuple(a.relief_pad))
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -2312,6 +2478,9 @@ def main():
                  join_island_max_mm=a.join_island_max_mm,
                  escape_relief=a.escape_relief, relief_via=relief_via,
                  detour_spec=a.detour_spec, body_landing=a.body_landing,
+                 detour_own_layer=a.detour_own_layer,
+                 relief_extra_width=a.relief_extra_width,
+                 relief_pads=tuple(a.relief_pad),
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm)
     if a.work:

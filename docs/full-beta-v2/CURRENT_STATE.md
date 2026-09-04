@@ -13,6 +13,86 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-609 (THE `U12` VOUT BOND IS A **WIDTH** WALL, NOT A POCKET WALL; the
+  own-layer detour built and spent, the bond PROVED to close after the refill,
+  and REFUSED twice on evidence):** D-608 named one next task -- bond the
+  `TPS63020`'s own `VOUT` island to `+3V3`, "the single highest-leverage
+  fabrication blocker on this board" -- and one lever for it. Both were done;
+  the lever works and the task did not need it. Authority
+  `78280a13...` **UNCHANGED -- no copper promoted**, no candidate written, zero
+  zones, zero rule areas, zero `.kicad_dru` change, zero licence spent.
+  D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and
+  `hardware/beta-v2/` untouched.
+  **THE LEVER.** `reserved_inner_planes` is a rule about NEW copper; a DETOUR
+  puts EXISTING copper back between its own two ends, so the slot already
+  exists. `detour_layers` + `--detour-own-layer` + `screen_segment_evict.py
+  --relay-own-layer` grant the TIGHTEST form: that ONE layer and nothing else,
+  so by construction it can add **no via** (a single-layer `Field` has nowhere
+  to via to) and can reach no other plane; clause `OWN_LAYER_ESCAPED` says so
+  anyway. Without the flag `detour_layers` returns its input and every run is
+  byte-identical. **It moved the census:** D-608's 111 tracks / 969.6 mm on 29
+  `In3.Cu` (net, layer) pairs are no longer `UNDETOURABLE_LAYER`; the survivors
+  answer on geometry (`V3V3_FB` `NO_PATH` past an 8 mm disc in 74.420 mm).
+  **THE BOARD MOVED UNDER THE MEASUREMENT.** D-608's own join merged `U12.4`
+  and `U12.5` into one island, and `screen_segment_evict.py` takes whichever
+  pad is tried FIRST -- so it now answers (66.6, 96.0) behind an **8 mm** disc
+  where D-608 recorded (66.9, 98.8) behind 0.8 mm. New `--pad REF.NUM` names
+  the land. **A site measured on a board is a site measured on THAT board**: a
+  promotion that joins two orphans invalidates every stitch site of both.
+  **THE WALL WAS THE RUN.** Rung by rung with `--body-landing`: at 0.400 mm
+  neither `VOUT` pin has a legal escape, at 0.400+neck / 0.350 / 0.300 /
+  0.250 mm neither reaches a barrel, and at **0.200 mm BOTH** escape, run under
+  4.2 mm and plant an **ORDINARY 0.65/0.40 mm POWER barrel inside the plane
+  BODY** -- no relief barrel, no via licence, no segment eviction. Offered one
+  transaction they take TWO independent barrels: `U12.4` -> (65.1, 99.0) in
+  2.928 mm, `U12.5` -> (64.1, 98.7) in 4.157 mm. **The bounded-pour
+  alternative is priced and REFUSED:** all 94/177/259 via-legal cells within
+  4 mm are plane BODY, but the nearest is 2.0 mm away through a 0.29 mm gap no
+  zone can thread, and going north would put the regulator's OUTPUT between
+  `L1`'s SWITCH NODES.
+  **THE GATE RUN, AND BOTH REFUSALS ARE THE ANSWER.** New
+  `--relief-extra-width` adds one narrower rung and **the BOARD says how
+  narrow**: clamped up to `min_track_width` AND to `maze3d.neck_rule`'s own
+  0.200 mm, the width `.kicad_dru`'s "Pad-escape necking - width, fine-pitch
+  power packages" already grants inside the ten courtyards it names, `U12`
+  among them; new `--relief-pad` names the lands a relief may be spent on.
+  (1) **THE BOND WORKS** -- after KiCad's own refill the ledger moves `+3V3`
+  **9 -> 8**, 8 tracks / 2.787 mm / one barrel at (65.2, 99.1); first time that
+  bond has closed on a refilled board. (2) **Six real `track_width` errors**:
+  new read-only `audit_narrow_copper.py` agrees with KiCad OBJECT FOR
+  OBJECT -- 2 tracks INTERSECT `U12`'s courtyard and KiCad licensed exactly
+  those 2; **6 lie OUTSIDE every named courtyard, 2.0196 mm between
+  (65.2, 99.1) and (66.725, 99.375)**, and KiCad flagged exactly those 6;
+  **ZERO are WHOLLY INSIDE**, so even the two that passed did so by
+  `intersectsCourtyard`, the shape `FBV2_P2_ROUTING_PLAN.md` section 17
+  clause 2 forbids leaning on. (3) **`BQ25185_SYS` 7 -> 8** -- the run severs
+  that net's `B.Cu` pour, so the board trades 58 for 58 and clause 4 refuses.
+  **THE CLAUSE-4 ELECTRICAL RULING, MADE NOW.** IPC-2221B at this board's own
+  copper (1 oz outer, dT = 10 K; the method reproduces `.kicad_dru` section 5's
+  printed table, 0.300 mm -> 0.999 A vs its printed 1.0 A): one 0.200 mm outer
+  neck = **0.745 A**, two in parallel = **1.489 A**, against a 1.0 A design
+  current and a 0.64 A measured peak; R = 7.19 / 10.21 mOhm, 4.22 mOhm in
+  parallel, 4.2 mV at 1.0 A. **The bond is SOUND AT TWO PARALLEL NECKS and
+  THIN AT ONE**, so the promoting transaction must lay BOTH -- which
+  `relief_stitch` cannot do today, because it stops at the first pad of an
+  island that opens. The PRODUCTION answer is a placement change (`L1` sits
+  0.41 mm off `U12`'s courtyard and boxes the `VOUT` row in) and is recorded as
+  a Full Beta v2 item, not smuggled into Demo.
+  Evidence `d609-relay-own-layer.json`, `d609-u125-relay.json`,
+  `d609-vout-rungs.json`, `d609-vout-widths.json`, `d609-vout-via-sites.json`,
+  `d609-vout-bond-gate.json`, `d609-narrow-copper-audit.json`,
+  `d609-vout-bond-refusal.json`, `d609-width-ladder-rerun.json`,
+  `d609-protected-copper.json` (15 nets / 393 objects, IDENTICAL to D-608).
+  Tracked tooling: `screen_pad_width_ladder.py` (the ladder, re-run
+  byte-identical) and `audit_narrow_copper.py`; the two one-shot probes were
+  scratch under the gitignored `w/d609/` and nothing depends on them.
+  **Next -- a SPEC, not a search:** (1) author ONE per-pad `enclosedByArea`
+  WIDTH licence over x in [65.05, 66.90], y in [98.45, 99.45] mm with clause
+  7's 0.150 mm end-cap overhang, BEFORE the router runs; (2) teach the relief
+  emitter to draw an area around the RUN as well as the BARREL; (3) let
+  `relief_stitch` lay the SECOND parallel bond on the same island; (4) carry
+  `--repair-planes` for the `BQ25185_SYS` pour the run severs; (5) re-gate.
+  No owner decision.
 - **Demo D-608 (THE `+3V3` RAIL'S OWN REGULATOR OUTPUT WAS OPEN, and the move
   that closed it did not exist -- two orphans of one net may reach EACH
   OTHER):** `U12` is the `TPS63020` buck-boost, the part that MAKES `+3V3`, and
@@ -98,8 +178,13 @@
   `d608-detour-plan-body.json`, `d608-verify.json`,
   `d608-protected-copper.json`, `d608-pour-bond-guard-next.json`.
   **Next: bond the `U12` `VOUT` island to the `+3V3` plane -- the single
-  highest-leverage fabrication blocker on this board.** Its bond is already
-  measured: `U12.5` reaches `+3V3` body copper at (66.9, 98.8), 1.136 mm of run,
+  highest-leverage fabrication blocker on this board.**
+  *(D-609 SUPERSEDES the route below and KEEPS the goal. The lever named here
+  was built and it works, but the site quoted here was measured on `cfd10db1`
+  and D-608's own join invalidated it: on the promoted board the same land
+  answers (66.6, 96.0) behind an 8 mm disc, and the real wall is the RUN
+  WIDTH, not the pocket. See D-609.)*
+  Its bond was measured on the PRE-D-608 board as: `U12.5` reaches `+3V3` body copper at (66.9, 98.8), 1.136 mm of run,
   behind a 0.80 mm disc over four foreign tracks, three of which relay today and
   one of which -- `/01_POWER_TREE/USB_VBUS_CHG` on `In3.Cu` -- is
   `UNDETOURABLE_LAYER`. The bounded lever is named: **let a detour re-lay a

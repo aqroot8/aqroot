@@ -1,0 +1,1350 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "body_landing": true,
+ "cap": 14,
+ "grid": 100000,
+ "guard": "evidence/d608-pour-bond-guard-next.json",
+ "guard_sha256": "afe26f7fee089bb3c9f81deac9ade29f7e73d28dc63b1003a0d7bfa17897a50b",
+ "max_mm": 8.0,
+ "method": "read-only; foreign tracks cut in the in-memory obstacle model and re-offered to the real maze3d.stitch_pad through the promoter's own Field, verify_laid proving each, every trial reverted; the connectivity price is measured by KiCad's own BuildConnectivity on a scratch copy",
+ "nets": [
+  {
+   "body_landing": {
+    "body": [
+     "C10.1",
+     "C12.2",
+     "C13.1",
+     "C14.1",
+     "C15.1",
+     "C16.1",
+     "C17.1",
+     "C18.1"
+    ],
+    "body_pads": 72,
+    "cells": {
+     "F": 602169,
+     "I3": 857188
+    },
+    "erode": 0,
+    "total": 887227
+   },
+   "lands": [
+    {
+     "candidates": 14,
+     "foreign_vias": [
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "xy_mm": [
+        57.3,
+        56.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.9,
+        61.3
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        56.4,
+        62.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        55.8,
+        62.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.8,
+        57.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        57.6,
+        53.6
+       ]
+      },
+      {
+       "dia_mm": 0.45,
+       "net": "GND",
+       "xy_mm": [
+        53.9,
+        56.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        55.6,
+        61.7
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        55.9,
+        59.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.7,
+        58.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        62.4,
+        61.8
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        55.4,
+        61.1
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        53.0,
+        62.5
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        57.4,
+        60.65
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        51.425,
+        58.65
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        49.4,
+        58.575
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        61.5,
+        62.4
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        55.35,
+        56.55
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        61.325,
+        56.05
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        58.125,
+        62.375
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        59.975,
+        60.425
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/ACC_3V3_SW",
+       "xy_mm": [
+        58.9,
+        63.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+       "xy_mm": [
+        63.0,
+        63.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+       "xy_mm": [
+        56.2,
+        51.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+       "xy_mm": [
+        58.6,
+        65.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/I2C_SDA_INT",
+       "xy_mm": [
+        63.7,
+        52.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/I2C_SCL_INT",
+       "xy_mm": [
+        59.6,
+        64.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+       "xy_mm": [
+        56.4,
+        52.8
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+       "xy_mm": [
+        63.8,
+        53.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_5V_SW_EN",
+       "xy_mm": [
+        53.75,
+        52.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_POWER_FAULT_N",
+       "xy_mm": [
+        53.05,
+        56.575
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_POWER_FAULT_N",
+       "xy_mm": [
+        56.55,
+        64.25
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_POWER_FAULT_N",
+       "xy_mm": [
+        52.2,
+        63.8
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+       "xy_mm": [
+        59.2,
+        59.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(U11-TS_MR)",
+       "xy_mm": [
+        49.7,
+        60.2
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_PWR_EN",
+       "xy_mm": [
+        53.9,
+        59.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_PWR_EN",
+       "xy_mm": [
+        51.5,
+        54.9
+       ]
+      }
+     ],
+     "land": [
+      "R129.1"
+     ],
+     "tracks": [
+      {
+       "a_mm": [
+        54.9,
+        59.0
+       ],
+       "b_mm": [
+        57.3,
+        56.6
+       ],
+       "layer": "I3",
+       "mm": 3.3941,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        59.05,
+        58.65
+       ],
+       "b_mm": [
+        53.6,
+        58.75
+       ],
+       "layer": "B",
+       "mm": 5.4509,
+       "net": "/ACC_DETECT_N",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        56.4,
+        57.0
+       ],
+       "b_mm": [
+        58.2,
+        56.3
+       ],
+       "layer": "B",
+       "mm": 1.9313,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        57.3,
+        56.6
+       ],
+       "b_mm": [
+        56.4,
+        57.0
+       ],
+       "layer": "B",
+       "mm": 0.9849,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        55.7,
+        57.735
+       ],
+       "b_mm": [
+        56.4,
+        57.0
+       ],
+       "layer": "B",
+       "mm": 1.015,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        55.0,
+        53.2
+       ],
+       "b_mm": [
+        63.3,
+        61.7
+       ],
+       "layer": "I3",
+       "mm": 11.8802,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        58.2,
+        56.3
+       ],
+       "b_mm": [
+        58.5,
+        55.8
+       ],
+       "layer": "B",
+       "mm": 0.5831,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        59.05,
+        57.735
+       ],
+       "b_mm": [
+        59.05,
+        56.8
+       ],
+       "layer": "B",
+       "mm": 0.935,
+       "net": "/ACC_DETECT_N",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        59.05,
+        57.735
+       ],
+       "b_mm": [
+        59.05,
+        58.65
+       ],
+       "layer": "B",
+       "mm": 0.915,
+       "net": "/ACC_DETECT_N",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        59.05,
+        56.8
+       ],
+       "b_mm": [
+        59.05,
+        52.4
+       ],
+       "layer": "B",
+       "mm": 4.4,
+       "net": "/ACC_DETECT_N",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        55.9,
+        59.325
+       ],
+       "b_mm": [
+        56.1,
+        59.3
+       ],
+       "layer": "B",
+       "mm": 0.2016,
+       "net": "GND",
+       "width_mm": 0.3
+      },
+      {
+       "a_mm": [
+        56.1,
+        59.3
+       ],
+       "b_mm": [
+        55.9,
+        59.4
+       ],
+       "layer": "B",
+       "mm": 0.2236,
+       "net": "GND",
+       "width_mm": 0.3
+      },
+      {
+       "a_mm": [
+        58.5,
+        55.8
+       ],
+       "b_mm": [
+        58.3,
+        52.5
+       ],
+       "layer": "B",
+       "mm": 3.3061,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        56.45,
+        55.65
+       ],
+       "b_mm": [
+        56.3,
+        55.65
+       ],
+       "layer": "B",
+       "mm": 0.15,
+       "net": "/ACC_PWR_EN",
+       "width_mm": 0.2
+      }
+     ],
+     "verdict": "SEGMENT_WALL",
+     "why": "every unprotected foreign track inside 8.0 mm cut at once and the barrel site is still NO_BODY_VIA_SITE"
+    },
+    {
+     "candidates": 14,
+     "foreign_vias": [
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "xy_mm": [
+        63.7,
+        78.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.7,
+        69.5
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        62.1,
+        71.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.2,
+        69.1
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        63.4,
+        75.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        60.1,
+        68.0
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        66.6,
+        66.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        70.9,
+        72.2
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        57.5,
+        72.8
+       ]
+      },
+      {
+       "dia_mm": 0.35,
+       "net": "GND",
+       "xy_mm": [
+        67.3,
+        77.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        58.0,
+        72.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        63.0,
+        76.4
+       ]
+      },
+      {
+       "dia_mm": 0.5,
+       "net": "GND",
+       "xy_mm": [
+        64.5,
+        77.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        58.3,
+        70.2
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        65.3,
+        64.6
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        57.7,
+        70.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.5,
+        70.1
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/I2C_SDA_INT",
+       "xy_mm": [
+        69.2,
+        65.4
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "xy_mm": [
+        65.25,
+        79.2
+       ]
+      },
+      {
+       "dia_mm": 0.9,
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "xy_mm": [
+        66.8,
+        79.4464
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "xy_mm": [
+        58.8,
+        68.85
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "xy_mm": [
+        63.3,
+        72.975
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "xy_mm": [
+        63.3,
+        73.875
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "xy_mm": [
+        64.2,
+        72.975
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "xy_mm": [
+        64.2,
+        73.875
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/01_POWER_TREE/ILIM_VSET",
+       "xy_mm": [
+        69.25,
+        76.45
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/ACC_POWER_FAULT_N",
+       "xy_mm": [
+        61.725,
+        77.45
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+       "xy_mm": [
+        60.8,
+        65.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "xy_mm": [
+        58.825,
+        72.75
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "xy_mm": [
+        67.325,
+        72.675
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(U11-TS_MR)",
+       "xy_mm": [
+        66.6,
+        70.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(U11-TS_MR)",
+       "xy_mm": [
+        64.7,
+        70.5
+       ]
+      }
+     ],
+     "land": [
+      "R39.1"
+     ],
+     "tracks": [
+      {
+       "a_mm": [
+        65.25,
+        79.2
+       ],
+       "b_mm": [
+        66.5,
+        72.25
+       ],
+       "layer": "I3",
+       "mm": 7.0615,
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "width_mm": 0.5
+      },
+      {
+       "a_mm": [
+        66.5,
+        72.25
+       ],
+       "b_mm": [
+        67.4,
+        71.5
+       ],
+       "layer": "I3",
+       "mm": 1.1715,
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "width_mm": 0.5
+      },
+      {
+       "a_mm": [
+        66.5,
+        71.6
+       ],
+       "b_mm": [
+        66.6,
+        73.1
+       ],
+       "layer": "B",
+       "mm": 1.5033,
+       "net": "Net-(U11-TS_MR)",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        66.6,
+        70.9
+       ],
+       "b_mm": [
+        66.5,
+        71.6
+       ],
+       "layer": "B",
+       "mm": 0.7071,
+       "net": "Net-(U11-TS_MR)",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        65.4,
+        73.3
+       ],
+       "b_mm": [
+        64.2,
+        71.1
+       ],
+       "layer": "I3",
+       "mm": 2.506,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        64.7,
+        70.5
+       ],
+       "b_mm": [
+        66.6,
+        70.9
+       ],
+       "layer": "I2",
+       "mm": 1.9416,
+       "net": "Net-(U11-TS_MR)",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        68.6,
+        70.3
+       ],
+       "b_mm": [
+        66.4,
+        72.6
+       ],
+       "layer": "F",
+       "mm": 3.1828,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        66.4,
+        72.6
+       ],
+       "b_mm": [
+        66.4,
+        74.2
+       ],
+       "layer": "F",
+       "mm": 1.6,
+       "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        67.3,
+        71.6
+       ],
+       "b_mm": [
+        65.1,
+        74.2
+       ],
+       "layer": "I2",
+       "mm": 3.4059,
+       "net": "/NFC_5V_EN",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        63.7,
+        78.3
+       ],
+       "b_mm": [
+        65.4,
+        73.3
+       ],
+       "layer": "I3",
+       "mm": 5.2811,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        58.3,
+        64.3
+       ],
+       "b_mm": [
+        64.7,
+        70.5
+       ],
+       "layer": "F",
+       "mm": 8.9107,
+       "net": "Net-(U11-TS_MR)",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        67.4,
+        71.5
+       ],
+       "b_mm": [
+        71.2,
+        75.6
+       ],
+       "layer": "I3",
+       "mm": 5.5902,
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "width_mm": 0.5
+      },
+      {
+       "a_mm": [
+        64.2,
+        71.1
+       ],
+       "b_mm": [
+        58.6,
+        64.5
+       ],
+       "layer": "I3",
+       "mm": 8.6556,
+       "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+       "width_mm": 0.2
+      },
+      {
+       "a_mm": [
+        67.2,
+        52.8
+       ],
+       "b_mm": [
+        67.3,
+        71.6
+       ],
+       "layer": "I2",
+       "mm": 18.8003,
+       "net": "/NFC_5V_EN",
+       "width_mm": 0.2
+      }
+     ],
+     "verdict": "SEGMENT_WALL",
+     "why": "every unprotected foreign track inside 8.0 mm cut at once and the barrel site is still NO_BODY_VIA_SITE"
+    },
+    {
+     "candidates": 14,
+     "cut_radius_mm": 8.0,
+     "cut_shape": "disc",
+     "cuts": [
+      {
+       "a_mm": [
+        67.6,
+        99.5
+       ],
+       "b_mm": [
+        67.785,
+        99.315
+       ],
+       "layer": "B",
+       "mm": 0.2616,
+       "net": "Net-(L1-Pad2)",
+       "removed_mm": 0.2616,
+       "stubs_mm": [],
+       "whole_track": true,
+       "width_mm": 0.4
+      },
+      {
+       "a_mm": [
+        66.1,
+        99.25
+       ],
+       "b_mm": [
+        70.075,
+        75.425
+       ],
+       "layer": "I3",
+       "mm": 24.1543,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "removed_mm": 11.3879,
+       "stubs_mm": [
+        [
+         [
+          67.9741,
+          88.0174
+         ],
+         [
+          70.075,
+          75.425
+         ]
+        ]
+       ],
+       "whole_track": false,
+       "width_mm": 0.2
+      }
+     ],
+     "foreign_vias": [
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        63.0,
+        102.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.1,
+        100.2
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.1,
+        99.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        61.3,
+        104.5
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        63.0,
+        103.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.3,
+        101.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        64.4,
+        100.3
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        67.8,
+        100.9
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "GND",
+       "xy_mm": [
+        67.7,
+        101.7
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(SW9-A)",
+       "xy_mm": [
+        66.35,
+        103.65
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "Net-(SW9-A)",
+       "xy_mm": [
+        65.5,
+        91.95
+       ]
+      },
+      {
+       "dia_mm": 0.8,
+       "net": "/01_POWER_TREE/BQ25185_SYS",
+       "xy_mm": [
+        61.2,
+        103.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+       "xy_mm": [
+        61.1,
+        95.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT1",
+       "xy_mm": [
+        70.4,
+        97.4
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT1",
+       "xy_mm": [
+        63.5,
+        107.0
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/BQ25185_STAT2",
+       "xy_mm": [
+        63.2,
+        99.8
+       ]
+      },
+      {
+       "dia_mm": 0.6,
+       "net": "/01_POWER_TREE/V3V3_FB",
+       "xy_mm": [
+        66.1,
+        99.25
+       ]
+      }
+     ],
+     "land": [
+      "U12.4",
+      "U12.5"
+     ],
+     "price": {
+      "clusters_after": {
+       "/01_POWER_TREE/V3V3_FB": 2,
+       "Net-(L1-Pad2)": 1
+      },
+      "clusters_before": {
+       "/01_POWER_TREE/V3V3_FB": 1,
+       "Net-(L1-Pad2)": 1
+      },
+      "free": false,
+      "stubs_left": 1,
+      "tracks_split": 2,
+      "worse": {
+       "/01_POWER_TREE/V3V3_FB": [
+        1,
+        2
+       ]
+      }
+     },
+     "relay": {
+      "all_relaid": false,
+      "tracks": [
+       {
+        "a_mm": [
+         66.1,
+         99.25
+        ],
+        "b_mm": [
+         70.075,
+         75.425
+        ],
+        "layer": [
+         "I3"
+        ],
+        "layers_allowed": [
+         "I3"
+        ],
+        "max_mm": 74.4198,
+        "mm": null,
+        "mm_by_layer": null,
+        "net": "/01_POWER_TREE/V3V3_FB",
+        "ok": false,
+        "own_layer": true,
+        "reason": "NO_PATH",
+        "tracks": 1,
+        "vias": null,
+        "was_mm": 24.1543,
+        "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 74.420 mm budget"
+       },
+       {
+        "a_mm": [
+         67.6,
+         99.5
+        ],
+        "b_mm": [
+         67.785,
+         99.315
+        ],
+        "layer": [
+         "B"
+        ],
+        "layers_allowed": [
+         "F",
+         "B"
+        ],
+        "max_mm": 50.5271,
+        "mm": null,
+        "mm_by_layer": null,
+        "net": "Net-(L1-Pad2)",
+        "ok": false,
+        "own_layer": false,
+        "reason": "NO_PATH",
+        "tracks": 1,
+        "vias": null,
+        "was_mm": 0.2616,
+        "why": "no all-layer corridor at 0.400 mm between the two ends of this track once the site is reserved, inside the 50.527 mm budget"
+       }
+      ]
+     },
+     "stitch": {
+      "layer": "B",
+      "mm": 3.982,
+      "pad": "U12.4",
+      "via_xy": [
+       66.6,
+       96.0
+      ]
+     },
+     "verdict": "SEGMENT_SET_OPENS"
+    },
+    {
+     "land": [
+      "U4.12"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)"
+    },
+    {
+     "land": [
+      "U4.2"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)"
+    },
+    {
+     "land": [
+      "U4.3"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x54), C6.2 (x7), U4.1 (x6), R119.2 (x3)"
+    },
+    {
+     "land": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+    },
+    {
+     "land": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+    },
+    {
+     "land": [
+      "U5.2"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "verdict": "NOT_A_POCKET",
+     "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+    }
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "rung": {
+    "clr": 200000,
+    "name": "floor",
+    "needs_licence": false,
+    "via_dia": 650000,
+    "via_drill": 400000,
+    "width": 400000
+   }
+  }
+ ],
+ "question": "for every open pour land that fails stitch_pad with NO_VIA_SITE, is the pocket full of CUTTABLE foreign track -- so that a SEGMENT eviction would open a barrel site -- or is it full of pads and barrels no split can touch",
+ "relay_own_layer": true,
+ "rung": "floor",
+ "schema": 1
+}

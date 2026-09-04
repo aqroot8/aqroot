@@ -1,0 +1,187 @@
+{
+ "added_tracks": 8,
+ "authority": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "authority_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "candidate": "/tmp/d609-gate/aqroot-Beta-v2.kicad_pcb",
+ "candidate_sha256": "45ae80b57afbb3caba90320960ccce3aa82c128b2751dca2793c4bf13bdf5d0f",
+ "narrow": [
+  {
+   "a_mm": [
+    65.3,
+    99.2
+   ],
+   "b_mm": [
+    65.2,
+    99.1
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.1414,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    65.7,
+    98.75
+   ],
+   "b_mm": [
+    65.3,
+    99.2
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.6021,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    65.925,
+    98.625
+   ],
+   "b_mm": [
+    65.7,
+    98.75
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.2574,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    66.35,
+    98.625
+   ],
+   "b_mm": [
+    65.925,
+    98.625
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.425,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    66.6,
+    98.85
+   ],
+   "b_mm": [
+    66.35,
+    98.625
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.3363,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    66.6,
+    99.825
+   ],
+   "b_mm": [
+    66.725,
+    99.375
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [
+    "U12"
+   ],
+   "layer": "B.Cu",
+   "mm": 0.467,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "INTERSECTS",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    66.725,
+    99.075
+   ],
+   "b_mm": [
+    66.6,
+    98.85
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [],
+   "layer": "B.Cu",
+   "mm": 0.2574,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "OUTSIDE",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    66.725,
+    99.375
+   ],
+   "b_mm": [
+    66.725,
+    99.075
+   ],
+   "class_floor_mm": 0.4,
+   "intersects": [
+    "U12"
+   ],
+   "layer": "B.Cu",
+   "mm": 0.3,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "verdict": "INTERSECTS",
+   "wholly_inside": [],
+   "width_mm": 0.2
+  }
+ ],
+ "narrow_mm": 2.7866,
+ "necking_rule": {
+  "courtyards": [
+   "U11",
+   "U12",
+   "U13",
+   "U14",
+   "U16",
+   "U17",
+   "U20",
+   "U21",
+   "U22",
+   "U9"
+  ],
+  "min_width_mm": 0.2
+ },
+ "schema": 1,
+ "verdicts": {
+  "INSIDE": 0,
+  "INTERSECTS": 2,
+  "OUTSIDE": 6
+ }
+}

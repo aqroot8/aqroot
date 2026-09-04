@@ -740,6 +740,24 @@ discovers a pad that cannot be escaped at its class width or clearance:
 > after KiCad's refill, so it is a gate clause on the refilled candidate's ledger and never a
 > check inside the proposer. See `CTO_DECISIONS.md` D-606.
 
+> **Clause 4's width REVIEW TRIGGER, exercised for the first time — AQROOT Demo, D-609
+> (2026-09-04).** `U12` is the `TPS63020` and pins 4/5 are its `VOUT`; at the P3V3 0.400 mm
+> floor neither pin has a legal escape and at 0.250 mm neither reaches a barrel, so the bond
+> that connects the 3.3 V rail to its own regulator exists only at **0.200 mm** — the width
+> the board's own `Pad-escape necking - width, fine-pitch power packages` rule already grants
+> inside `U12`'s courtyard. Two parallel bonds of 2.928 mm and 4.157 mm total 7.085 mm and
+> trip the 6.0 mm trigger. **The ruling, on IPC-2221B at this board's own copper (1 oz outer,
+> ΔT = 10 K, the method that reproduces §5's own table): one 0.200 mm neck carries 0.745 A,
+> two in parallel 1.489 A, against a 1.0 A design current and a 0.64 A measured peak — SOUND
+> AT TWO PARALLEL NECKS, THIN AT ONE.** Clause 6's "widen immediately" cannot be met here and
+> is answered by redundancy instead of by width; the production answer is a placement change
+> (`L1` sits 0.41 mm off `U12`'s courtyard and boxes the `VOUT` row in), recorded as a Full
+> Beta v2 item. Clause 2 was also measured rather than assumed: of eight tracks the run laid,
+> **zero** were wholly inside a named courtyard, two merely intersected one — and KiCad
+> licensed exactly those two and flagged the other six. `intersectsCourtyard` is not a licence
+> a relief may lean on, and now there is a board measurement saying so. See
+> `CTO_DECISIONS.md` D-609.
+
 ---
 
 ## 18. Opportunity and simplification scan

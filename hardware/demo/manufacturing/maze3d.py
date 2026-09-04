@@ -2976,6 +2976,12 @@ def _emit_path(qb, field, path, net, head=None, tail=None):
                         'nothing to lay')
     m = qb.mark()
     total, vias = 0.0, []
+    # PER-LAYER LENGTH, BECAUSE A LAYER IS NOT ALWAYS JUST A PLACE.  `layers`
+    # already said WHICH layers a run touched; on a RESERVED inner plane the
+    # question a caller has to answer is HOW MUCH, because foreign copper there
+    # is a slot through somebody else's plane and its area is width x length.
+    # Additive: every existing caller reads `mm` and `layers` unchanged.
+    by_layer = {}
     prev = None
     for k, pts in polylines:
         if prev is not None:
@@ -2985,7 +2991,9 @@ def _emit_path(qb, field, path, net, head=None, tail=None):
             vias.append((vx, vy))
         for a, b in zip(pts, pts[1:]):
             qb.track(net, k, a[0], a[1], b[0], b[1], field.width)
-            total += math.hypot(b[0] - a[0], b[1] - a[1])
+            d = math.hypot(b[0] - a[0], b[1] - a[1])
+            total += d
+            by_layer[k] = by_layer.get(k, 0.0) + d
         prev = k
     bad = verify_laid(qb, field, m)
     if bad is not None:
@@ -2994,6 +3002,8 @@ def _emit_path(qb, field, path, net, head=None, tail=None):
     return dict(ok=True, mm=total / 1e6, vias=len(vias), mark=m,
                 via_xy=[(round(x / 1e6, 4), round(y / 1e6, 4))
                         for x, y in vias],
+                mm_by_layer={k: round(v / 1e6, 4)
+                             for k, v in sorted(by_layer.items())},
                 layers=[k for k, _ in polylines])
 
 
@@ -3398,8 +3408,10 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
     if not emit:
         qb.revert(r['mark'])
         return dict(ok=True, dry=True, mm=r['mm'], vias=r['vias'],
-                    layers=r['layers'], via_xy=r['via_xy'])
+                    layers=r['layers'], mm_by_layer=r['mm_by_layer'],
+                    via_xy=r['via_xy'])
     return dict(ok=True, mm=r['mm'], vias=r['vias'], layers=r['layers'],
+                mm_by_layer=r['mm_by_layer'],
                 via_xy=r['via_xy'], mark=r['mark'])
 
 
@@ -3445,7 +3457,8 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
 # different claim and would have to be measured as one.
 def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                   floors, G=100000, layers=None, neck=None, guard=None,
-                  max_mm=8.0, escape_limit=12, licence=True, land_ok=None):
+                  max_mm=8.0, escape_limit=12, licence=True, land_ok=None,
+                  pads=None):
     """Stitch each orphan island of a pour-owning net with a LICENSED barrel.
 
     `widths` is a ladder, widest first; an island served at one width is
@@ -3480,6 +3493,15 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
             hit = None
             for pad in island:
                 ref = pad['ref']
+                # D-609.  `pads` NAMES the lands this transaction is spending
+                # its licence -- or its narrow rung -- on.  A relief is the
+                # most expensive thing a run can lay, and offering the whole
+                # ladder to every orphan on the board is how one land's
+                # measured exception becomes twenty unmeasured ones.  None
+                # means "every land", which is what every caller before this
+                # one asked for and gets byte-identically.
+                if pads is not None and ref not in pads:
+                    continue
                 lic = None if plain else (escape_licence(qb, net, ref)
                                           if licence else None)
                 if licence and not _barrel_licensed(via_dia, via_drill,

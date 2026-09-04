@@ -1,0 +1,314 @@
+{
+ "authoritative_unchanged": true,
+ "board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "island": [
+  "U12.4",
+  "U12.5"
+ ],
+ "layers": [
+  "F",
+  "B",
+  "I2",
+  "I3"
+ ],
+ "net": "+3V3",
+ "netclass": "P3V3",
+ "question": "what is the WIDEST run that bonds a U12 VOUT pin to the +3V3 plane BODY at the ordinary 0.65/0.40 mm barrel, and on which layer does it lie?",
+ "rungs": [
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.4
+  },
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.35
+  },
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.3
+  },
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": []
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": []
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.25
+  },
+  {
+   "pads": [
+    {
+     "layer": "B",
+     "mm": 2.928,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 3.052,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 2.928,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 4.157,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      64.1,
+      98.7
+     ]
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.2
+  },
+  {
+   "pads": [
+    {
+     "layer": "B",
+     "mm": 2.856,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 3.019,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 2.856,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ]
+    },
+    {
+     "layer": "B",
+     "mm": 4.13,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      64.1,
+      98.7
+     ]
+    }
+   ],
+   "via_mm": [
+    0.8,
+    0.4
+   ],
+   "width_mm": 0.15
+  }
+ ],
+ "schema": 1
+}

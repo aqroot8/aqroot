@@ -1,0 +1,177 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "body_landing": true,
+ "island": [
+  "U12.4",
+  "U12.5"
+ ],
+ "layers": [
+  "F",
+  "B",
+  "I2",
+  "I3"
+ ],
+ "net": "+3V3",
+ "netclass": "P3V3",
+ "pads": [
+  "U12.4",
+  "U12.5"
+ ],
+ "question": "holding the barrel constant, what is the WIDEST run that bonds these lands to the plane BODY, and on which layer does it lie?",
+ "rungs": [
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+    }
+   ],
+   "width_mm": 0.4
+  },
+  {
+   "pads": [
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U12.6 (x26), U12.15 (x12), track (x8), U12.1 (x5)"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": [],
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": "NO_LEGAL_ESCAPE",
+     "via_xy": [],
+     "why": "U12.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U12.6 (x26), U12.15 (x12), track (x8), U12.1 (x5)"
+    }
+   ],
+   "width_mm": 0.25
+  },
+  {
+   "pads": [
+    {
+     "layer": "B",
+     "mm": 2.928,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ],
+     "why": null
+    },
+    {
+     "layer": "B",
+     "mm": 3.052,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "alone",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ],
+     "why": null
+    },
+    {
+     "layer": "B",
+     "mm": 2.928,
+     "ok": true,
+     "pad": "U12.4",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      65.1,
+      99.0
+     ],
+     "why": null
+    },
+    {
+     "layer": "B",
+     "mm": 4.157,
+     "ok": true,
+     "pad": "U12.5",
+     "pass_": "together",
+     "reason": null,
+     "via_xy": [
+      64.1,
+      98.7
+     ],
+     "why": null
+    }
+   ],
+   "width_mm": 0.2
+  }
+ ],
+ "schema": 1,
+ "via_mm": [
+  0.8,
+  0.4
+ ]
+}

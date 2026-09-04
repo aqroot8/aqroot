@@ -6305,6 +6305,195 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-609 · 2026-09-04 · Demo THE U12 VOUT BOND IS A WIDTH WALL, NOT A POCKET WALL: the own-layer detour built and spent, the bond PROVED to work after the refill, and REFUSED twice on evidence
+
+D-608 named one next task and one lever for it. Both were done. The lever
+works; the task it was built for turned out not to need it, because the wall
+was never where D-608 measured it.
+
+    authority 78280a13... UNCHANGED -- NO copper promoted
+    +3V3        9 -> 8 open edges AFTER KiCad's own refill   THE BOND WORKS
+    BQ25185_SYS 7 -> 8                                        and pays for it
+    whole board 58 -> 58 -- clause 4 REFUSED (a net regressed)
+    6 real `track_width` errors -- clause 3 REFUSED
+    zero zones, zero rule areas, zero `.kicad_dru` change, zero licence spent
+
+`D-269`/`D-186`, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/XGPIO5 and
+`hardware/beta-v2/` untouched. The authoritative board is byte-identical
+before and after; no candidate was written.
+
+## The lever D-608 named, built and priced
+
+`reserved_inner_planes` is a rule about NEW copper: do not cut a slot through
+somebody else's plane. A DETOUR is not new copper -- D-607 built it to remove
+an existing track WHOLE and lay it again between its OWN TWO END COORDINATES,
+so nothing is stranded and the cut net's cluster count cannot move. The slot
+therefore ALREADY EXISTS and the only thing in dispute is where within a
+millimetre or two of itself the track runs. `route_maze_batch.detour_layers`
++ `--detour-own-layer` + `screen_segment_evict.py --relay-own-layer` grant
+exactly that.
+
+**The allowance is the tightest one that exists, and that is deliberate.** A
+detour that spends it is given THAT ONE LAYER AND NOTHING ELSE -- not the union
+of its contract and its own layer. Two consequences follow by construction
+rather than by clause: it cannot add a via, because a single-layer `Field` has
+no second layer to via to, so this allowance can never drill a new hole and a
+new antipad through the plane it is being let back onto; and it cannot wander
+onto a different reserved plane, because the only layer it was given is the one
+it already had. Gate clause `OWN_LAYER_ESCAPED` states both as a refusal
+anyway, so a future caller who widens the allowance to a layer SET meets a stop
+rather than a silent new hole. Without the flag `detour_layers` returns its
+input unchanged and every existing run is byte-identical.
+
+**It moved the census.** D-608 measured 111 tracks / 969.6 mm on 29
+(net, layer) pairs, EVERY ONE on `In3.Cu`, as `UNDETOURABLE_LAYER` -- cuttable
+and never restorable. Re-priced with the allowance that refusal is gone and the
+survivors answer on GEOMETRY: `/01_POWER_TREE/V3V3_FB` comes back `NO_PATH`
+past an 8 mm reserved disc inside a 74.420 mm budget. A corridor question, not
+a policy one.
+
+## The board moved under the measurement
+
+D-608's own orphan join merged `U12.4` and `U12.5` into ONE island.
+`screen_segment_evict.py` decides a land's stitch site by whichever pad of an
+island is tried FIRST, so on the promoted board it now answers with a different
+pad, a different site (66.6, 96.0), a different pair of crossing tracks and an
+**8 mm** disc where D-608 recorded 0.8 mm at (66.9, 98.8). New `--pad REF.NUM`
+names the land instead of inheriting it; asking `U12.5` by name reproduces the
+NEW answer, not the old one. **A site measured on a board is a site measured on
+THAT board.** A promotion that joins two orphans invalidates every stitch site
+of both, and nothing in the repository said so before this.
+
+## The wall was never the barrel and never the pocket -- it was the RUN
+
+`w/d609/probe_vout_bond.py` and the new tracked `screen_pad_width_ladder.py` re-ask the
+current board from scratch, one lever per rung, with `--body-landing` on:
+
+    run width    U12.4                 U12.5                barrel
+    0.400 mm     NO_LEGAL_ESCAPE       NO_LEGAL_ESCAPE      0.65/0.40 ordinary
+    0.400+neck   NO_BODY_VIA_SITE      NO_BODY_VIA_SITE     0.65/0.40 ordinary
+    0.350 mm     NO_BODY_VIA_SITE      NO_LEGAL_ESCAPE      0.65/0.40 ordinary
+    0.300 mm     NO_BODY_VIA_SITE      NO_LEGAL_ESCAPE      0.65/0.40 ordinary
+    0.250 mm     NO_BODY_VIA_SITE      NO_LEGAL_ESCAPE      0.65/0.40 ordinary
+    0.200 mm     OK  B.Cu 2.928 mm     OK  B.Cu 3.052 mm    0.65/0.40 ordinary
+    0.150 mm     OK  B.Cu 2.856 mm     OK  B.Cu 3.019 mm    0.65/0.40 ordinary
+
+At 0.200 mm BOTH `VOUT` pins escape, run under 4.2 mm and plant an ORDINARY
+0.65/0.40 mm POWER-class through barrel INSIDE THE PLANE BODY -- no relief
+barrel, no via licence, no segment eviction, none of D-606's or D-607's
+machinery. Offered the same transaction they take two INDEPENDENT barrels,
+`U12.4` -> (65.1, 99.0) in 2.928 mm and `U12.5` -> (64.1, 98.7) in 4.157 mm,
+which is what a regulator output actually wants: two parallel paths.
+
+Every previous run's `NO_LEGAL_ESCAPE` / `NO_VIA_SITE` / `NO_DRU_LICENCE` was
+true, and so was D-608's reading of them; what none of them varied was the one
+lever that was binding.
+
+## The pour alternative, priced and refused
+
+A bounded `+3V3` pour on `B.Cu` over the `VOUT` lands would owe no track width
+at all -- a zone is two-dimensional copper -- and this board already carries two
+bounded `B.Cu` pours (`BQ25185_SYS`, 114.2 and 10.8 mm2), so the instrument
+exists and has precedent. `w/d609/probe_vout_via_sites.py` maps every via-legal
+lattice cell within 4 mm of the pins: 94 at the netclass barrel, 177 at the
+POWER floor, 259 at the board minimum, and **every single one is also plane
+BODY**. But the nearest is (65.1, 99.0), **2.0 mm away**, and the corridor to it
+threads the 0.29 mm gap between `/01_POWER_TREE/V3V3_FB`'s track and
+`Net-(L1-Pad2)`'s, north of `U12` and south of `L1`. A zone cannot thread a
+corridor a 0.2 mm track barely fits, and taking the pour north between `L1`'s
+own terminals would put the regulator's OUTPUT copper between its SWITCH NODES.
+Refused on geometry and on physics, not on appetite.
+
+## The gate run, and why both refusals are the answer
+
+`--relief-extra-width` adds ONE more rung to the `--escape-relief` width ladder
+and **the BOARD, not the caller, says how narrow it may be**: the rung is
+clamped UP to board setup's `min_track_width` and to `maze3d.neck_rule`'s own
+minimum -- the 0.200 mm the `.kicad_dru` rule "Pad-escape necking - width,
+fine-pitch power packages" already grants inside the ten courtyards it names,
+`U12` among them. So the flag can ask for copper the board licenses somewhere
+and can never invent a width the board does not name at all. WHERE that copper
+may lie stays KiCad's question. `--relief-pad` names the lands a relief may be
+spent on, because offering a licence or a narrow rung to every orphan on the
+board is how one measured exception becomes twenty unmeasured ones; the same
+run left `R129.1`, `R39.1`, `U5.2` and the five `U4` lands untouched.
+
+    python3 route_maze_batch.py "+3V3" \
+        --guard evidence/d608-pour-bond-guard-next.json \
+        --escape-relief --relief-via 650000:400000 \
+        --relief-extra-width 200000 \
+        --relief-pad U12.4 --relief-pad U12.5 \
+        --body-landing --split-islands
+
+1. **THE BOND WORKS.** After KiCad's own `--refill-zones` the fitted-pad ledger
+   moves `+3V3` **9 -> 8**. The `TPS63020`'s output island is connected to the
+   rail it makes. 8 tracks, 2.787 mm, one 0.65/0.40 mm barrel at (65.2, 99.1),
+   zero rule areas, zero `.kicad_dru` change. This is the first time that bond
+   has been shown to close on a refilled board.
+2. **SIX REAL `track_width` ERRORS**, and they are the doctrine's own warning
+   made visible. New read-only `audit_narrow_copper.py` asks where each
+   sub-class-width track lies relative to the courtyards the necking rule names
+   and **agrees with KiCad object for object**: 2 of the 8 tracks INTERSECT
+   `U12`'s courtyard and KiCad licensed exactly those 2; 6 lie OUTSIDE every
+   named courtyard -- **2.0196 mm of `+3V3` copper north of `U12`, between
+   (65.2, 99.1) and (66.725, 99.375)** -- and KiCad flagged exactly those 6
+   against "P3V3 minimum width on the outer layers". **ZERO tracks are WHOLLY
+   INSIDE any courtyard**, so even the two that passed did so by
+   `intersectsCourtyard`, which `FBV2_P2_ROUTING_PLAN.md` section 17 clause 2
+   names as the shape a relief must never lean on. The run is refused, and it
+   is refused for the right reason.
+3. **`BQ25185_SYS` 7 -> 8.** The run crosses that net's `B.Cu` pour and severs
+   it, so the whole board trades 58 for 58 and clause 4 refuses any run in
+   which a net regresses. `--repair-planes` exists for exactly this and was
+   deliberately not spent on a run clause 3 was already going to refuse.
+
+## The electrical ruling section 17 clause 4 asks for
+
+Clause 4 makes a total narrow-WIDTH run of 6.0 mm a REVIEW TRIGGER -- "a new
+ruling, not an automatic stop" -- and clause 6 asks for widening after the
+escape. Two 0.200 mm bonds of 2.928 and 4.157 mm total 7.085 mm and trip it.
+IPC-2221B at this board's own copper (1 oz outer, 35 um, dT = 10 K), by the
+method that reproduces `.kicad_dru` section 5's own printed table
+(0.300 mm -> 0.999 A against its printed 1.0 A figure):
+
+    0.200 mm outer      0.745 A at dT=10 K       1.010 A at dT=20 K
+    two in parallel     1.489 A at dT=10 K
+    P3V3 design current 1.0 A         measured peak 0.64 A
+    R = 7.19 mOhm and 10.21 mOhm, 4.22 mOhm in parallel, 4.2 mV at 1.0 A
+
+**RULING.** One neck alone already carries more than the 0.64 A measured peak
+at dT = 10 K, and the pair carries more than the 1.0 A DESIGN current with
+margin. The bond is SOUND AT TWO PARALLEL NECKS and THIN AT ONE. The
+transaction that promotes it must therefore lay BOTH -- which `relief_stitch`
+cannot do today, because it stops at the first pad of an island that opens.
+This is a Demo/Kickstarter prototype ruling on a bond whose alternative is a
+board with no 3.3 V rail at all; the PRODUCTION answer is a placement change
+(`L1` is 0.41 mm from `U12`'s courtyard and boxes the `VOUT` row in), and that
+is recorded here as the Full Beta v2 item it is, not smuggled into Demo.
+
+## Next -- a spec, not a search
+
+1. Author ONE per-pad `enclosedByArea` WIDTH licence -- the standing doctrine's
+   own instrument, spent on WIDTH for the first time -- covering the six
+   unlicensed segments, x in [65.05, 66.90] and y in [98.45, 99.45] mm, with
+   clause 7's 0.150 mm end-cap overhang, BEFORE the router runs.
+2. Teach the relief emitter to draw an area around the RUN as well as around
+   the BARREL; today `bridge_area_sexpr` draws a square sized from the barrel
+   and nothing sizes an area from a polyline.
+3. Let `relief_stitch` lay the SECOND parallel bond on the same island.
+4. Carry `--repair-planes` so the `BQ25185_SYS` pour the run severs is
+   re-stitched inside the same transaction.
+5. Re-gate, and promote only on a full PASS.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d609-relay-own-layer.json`, `d609-u125-relay.json`, `d609-vout-rungs.json`,
+`d609-vout-widths.json`, `d609-vout-via-sites.json`,
+`d609-vout-bond-gate.json`, `d609-narrow-copper-audit.json`,
+`d609-vout-bond-refusal.json`, `d609-width-ladder-rerun.json`,
+`d609-protected-copper.json` (15 nets / 393 objects, IDENTICAL to D-608).
+The two reusable pieces are TRACKED: `screen_pad_width_ladder.py` (the width ladder, re-run and byte-identical, `d609-width-ladder-rerun.json`) and `audit_narrow_copper.py`. `probe_vout_bond.py` and `probe_vout_via_sites.py` were one-shot scratch under the gitignored `hardware/demo/manufacturing/w/d609/`; their full results are the evidence JSONs above and nothing depends on the files.
+No owner decision is open.
+
 # D-608 · 2026-09-04 · Demo THE +3V3 RAIL'S OWN REGULATOR OUTPUT WAS OPEN, and the move that closed it did not exist: two orphans of one net may reach EACH OTHER
 
 Two calibrated predicates and one missing primitive. The predicates cost this
