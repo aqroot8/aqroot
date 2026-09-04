@@ -1,0 +1,616 @@
+{
+  "base_open_edges": 126,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5b929a007c4d5d2b3fc0b5830c9906a4f908bbd5748148fd037573700175f3b4",
+  "grid": 100000,
+  "neck": false,
+  "nets": [
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "net_edges_after": 1,
+      "net_edges_before": 1,
+      "orphaned_pads": {},
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ],
+      "mm": 203.758,
+      "mode": "maze+partial",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_edges_after": 10,
+      "net_edges_before": 12,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 9
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/01_POWER_TREE/USB_D_CONN_N"
+      ],
+      "mm": 5.932,
+      "mode": "maze+partial",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 0
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/01_POWER_TREE/USB_D_CONN_P"
+      ],
+      "mm": 5.006,
+      "mode": "maze+partial",
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 0
+    },
+    {
+      "board_delta": -3,
+      "board_edges_after": 123,
+      "board_edges_before": 126,
+      "improved": [
+        "/03_SPI_A_DISPLAY_SD/LED_A"
+      ],
+      "mm": 15.62,
+      "mode": "maze+partial",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+      "net_edges_after": 1,
+      "net_edges_before": 4,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/03_SPI_A_DISPLAY_SD/LED_K"
+      ],
+      "mm": 13.72,
+      "mode": "maze+partial",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+      "net_edges_after": 2,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+      ],
+      "mm": 10.765,
+      "mode": "maze+partial",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+      ],
+      "mm": 12.805,
+      "mode": "maze+partial",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+      ],
+      "mm": 22.509,
+      "mode": "maze+partial",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 4
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+      ],
+      "mm": 74.857,
+      "mode": "maze+partial",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {
+        "GND": [
+          "U3.12@54.138,74.425"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "GND"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 4
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N"
+      ],
+      "mm": 75.642,
+      "mode": "maze+partial",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 4
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/09_COMMUNITY_HEADER/EXT_SDA"
+      ],
+      "mm": 98.588,
+      "mode": "maze+partial",
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "net_edges_after": 2,
+      "net_edges_before": 4,
+      "orphaned_pads": {
+        "GND": [
+          "U3.12@54.138,74.425"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "GND"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 2
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [
+        "/ACC_5V_BOOST_EN"
+      ],
+      "mm": 67.122,
+      "mode": "maze+partial",
+      "net": "/ACC_5V_BOOST_EN",
+      "net_edges_after": 2,
+      "net_edges_before": 3,
+      "orphaned_pads": {
+        "GND": [
+          "U3.12@54.138,74.425"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "GND"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 7
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/ACC_PWR_EN",
+      "net_edges_after": 2,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": "NO_PATH",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/BQ25185_STAT1"
+      ],
+      "mm": 17.833,
+      "mode": "maze+partial",
+      "net": "/BQ25185_STAT1",
+      "net_edges_after": 2,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/BQ25185_STAT2"
+      ],
+      "mm": 19.488,
+      "mode": "maze+partial",
+      "net": "/BQ25185_STAT2",
+      "net_edges_after": 2,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 2
+    },
+    {
+      "board_delta": -3,
+      "board_edges_after": 123,
+      "board_edges_before": 126,
+      "improved": [
+        "/I2C_SCL_INT"
+      ],
+      "mm": 173.482,
+      "mode": "maze+partial",
+      "net": "/I2C_SCL_INT",
+      "net_edges_after": 3,
+      "net_edges_before": 8,
+      "orphaned_pads": {
+        "+3V3": [
+          "J1.35@27.910,96.000"
+        ],
+        "GND": [
+          "U3.12@54.138,74.425"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "+3V3",
+        "GND"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 14
+    },
+    {
+      "board_delta": -5,
+      "board_edges_after": 121,
+      "board_edges_before": 126,
+      "improved": [
+        "/I2C_SDA_INT"
+      ],
+      "mm": 256.092,
+      "mode": "maze+partial",
+      "net": "/I2C_SDA_INT",
+      "net_edges_after": 1,
+      "net_edges_before": 8,
+      "orphaned_pads": {
+        "+3V3": [
+          "R19.1@40.997,120.996",
+          "R26.1@41.196,124.123"
+        ],
+        "GND": [
+          "U3.12@54.138,74.425"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "+3V3",
+        "GND"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 26
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 125,
+      "board_edges_before": 126,
+      "improved": [
+        "/I2S_LRCLK"
+      ],
+      "mm": 77.498,
+      "mode": "maze+partial",
+      "net": "/I2S_LRCLK",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 5
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [
+        "/NFC_CS_N"
+      ],
+      "mm": 51.822,
+      "mode": "maze+partial",
+      "net": "/NFC_CS_N",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {
+        "+3V3": [
+          "R19.1@40.997,120.996",
+          "R26.1@41.196,124.123"
+        ]
+      },
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [
+        "+3V3"
+      ],
+      "routed": true,
+      "verdict": "POUR_DAMAGE",
+      "vias": 5
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/NFC_IRQ",
+      "net_edges_after": 1,
+      "net_edges_before": 1,
+      "orphaned_pads": {},
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": -3,
+      "board_edges_after": 123,
+      "board_edges_before": 126,
+      "improved": [
+        "/NFC_SUPPLY"
+      ],
+      "mm": 132.634,
+      "mode": "maze+partial",
+      "net": "/NFC_SUPPLY",
+      "net_edges_after": 2,
+      "net_edges_before": 5,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 6
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/SPI_B_MOSI"
+      ],
+      "mm": 73.553,
+      "mode": "maze+partial",
+      "net": "/SPI_B_MOSI",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 7
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/SPI_B_SCK"
+      ],
+      "mm": 73.371,
+      "mode": "maze+partial",
+      "net": "/SPI_B_SCK",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 7
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/SX1262_DIO1",
+      "net_edges_after": 1,
+      "net_edges_before": 1,
+      "orphaned_pads": {},
+      "reason": "NO_PATH",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/USB_D_MCU_N",
+      "net_edges_after": 1,
+      "net_edges_before": 1,
+      "orphaned_pads": {},
+      "reason": "NO_PATH",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": 0,
+      "board_edges_after": 126,
+      "board_edges_before": 126,
+      "improved": [],
+      "mm": 0.0,
+      "mode": "maze+partial",
+      "net": "/USB_D_MCU_P",
+      "net_edges_after": 1,
+      "net_edges_before": 1,
+      "orphaned_pads": {},
+      "reason": "NO_PATH",
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": false,
+      "verdict": "NO_COPPER",
+      "vias": null
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 124,
+      "board_edges_before": 126,
+      "improved": [
+        "/WAKE_INT_N"
+      ],
+      "mm": 49.945,
+      "mode": "maze+partial",
+      "net": "/WAKE_INT_N",
+      "net_edges_after": 2,
+      "net_edges_before": 4,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 6
+    }
+  ],
+  "partial": true,
+  "pour_owning_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "schema": 1,
+  "summary": {
+    "verdicts": {
+      "NO_COPPER": 6,
+      "POUR_DAMAGE": 6,
+      "PROMOTABLE": 16
+    }
+  }
+}

@@ -18,11 +18,17 @@ unless every gate below passes on a scratch copy.
     4. the fitted-pad routing ledger shows the whole board's retained open
        edges strictly DECREASE and no other net regress -- measured after the
        optional `--repair-planes` stitch and its own second refill and DRC, so
-       a pour a signal track split is given the barrel that re-bonds it before
-       the verdict, and is still a refusal if that barrel does not exist;
+       a pour a signal track split is given the barrel -- or, inside the
+       stitch's own 8 mm locality window, the short track -- that re-bonds it
+       before the verdict, and is still a refusal if neither exists;
     5. every pre-existing track/via signature still exists, and every ADDED
        object is on a net that SUCCEEDED -- copper is added, never moved or
-       removed, and every failed net's revert is proven rather than assumed;
+       removed, and every failed net's revert is proven rather than assumed.
+       The ONE exception is `--evict`, and it is an exception in bookkeeping
+       only: a removal is legal solely when the object is on a NAMED evicted
+       net and lies wholly inside the corridor the requested nets themselves
+       define, and clause 4 then still requires that evicted net to end the
+       transaction no worse off than it started;
     6. with `--plane`, the candidate's zone inventory differs from the
        authority's by exactly ONE added zone, on the requested net and layer,
        and no existing zone's net, layer, outline or fill parameters changed.
@@ -81,11 +87,188 @@ DRU_CLASS = {
     "P3V3":         dict(width=400000, clr=200000, drill=400000, layers=None),
     "BAT_MAIN":     dict(width=600000, clr=300000, drill=400000, layers=None),
     "NFC_RF":       dict(clr=200000, layers=None),
-    "USB_D":        dict(clr=200000, layers=("F", "B")),
+    # USB_D is the one class on this board whose layer set is a SINGLE layer,
+    # and the first screen that actually routed it proved why.  Given `F, B`
+    # the maze reached every USB pad -- all four nets routed, 126 -> 121 open
+    # edges -- and the authoritative gate then refused the run on NINE real
+    # KiCad violations, all from the same root: eight `items_not_allowed`,
+    # one per through via, because `USB pair is forbidden on In2` and a F-to-B
+    # barrel PIERCES In2; plus one `diff_pair_uncoupled_length_too_long`,
+    # because a `USB_D_CONN_P` that is free to dive to B.Cu takes 36.653 mm to
+    # reach a pad 8.465 mm away and the DRU's uncoupled budget is 25 mm.
+    #
+    # Both are the same mistake, and `.kicad_dru` section 6 already names the
+    # fix in its own heading: "USB 2.0 - FULL SPEED, ON F.Cu OVER In1, NO
+    # VIAS, NO THEATRE".  On ONE routable layer the maze's via move has no
+    # second layer to land on, so it cannot emit a barrel AT ALL -- the
+    # In2 prohibition stops being a rule the router may break and becomes a
+    # shape it cannot express -- and the path collapses toward the direct run,
+    # which is what keeps the pair inside its uncoupled budget.
+    #
+    # WHAT THAT COSTS, MEASURED, so the contract is not read as free.  Only the
+    # CONNECTOR half of the pair is routable under it.  On F.Cu alone
+    # `USB_D_MCU_P` (R34.2 -> U1.14, 24.281 mm) and `USB_D_MCU_N` (R33.2 ->
+    # U1.13, 21.858 mm) are both `NO_PATH` with healthy terminals -- 10/9 and
+    # 11/9 legal escapes -- and NO whole-net rip-up opens either: the sixteen
+    # nets with the most copper in each corridor were each removed BOARD-WIDE,
+    # one at a time, and all thirty-two trials stayed `NO_PATH`.  The corridor
+    # only opens with every one of the 104 F.Cu routed nets gone at once
+    # (28.645 mm / 32.011 mm), which is a diagnosis and not a transaction.
+    # So the MCU half is a recorded CROSSING-COPPER wall under this contract:
+    # it is not a placement wall -- with F and B it routes today in 22.771 mm
+    # and 22.344 mm with two vias each -- and closing it needs either a real
+    # `.kicad_dru` section-6 ruling on whether a through via that merely
+    # PIERCES In2 is the In2 excursion that rule forbids, or an F.Cu
+    # refloorplan of the MCU fanout.  Neither is smuggled in here.
+    "USB_D":        dict(clr=200000, layers=("F",)),
 }
 
 # `(rule "Via annular ring floor") (constraint annular_width (min 0.125mm))`.
 ANNULAR_MIN = 125000
+
+# The plane repair's residual-join bound, in millimetres.  It is not a taste
+# figure: `maze3d.stitch_pad` and `maze3d.join_residual_islands` both work in an
+# 8 mm window (`escape_limit=8`, `near=8`), so a re-bond inside that window is
+# the same LOCAL question the stitch was already asking, answered with track
+# instead of a barrel.  Anything longer stops being a repair.
+REPAIR_JOIN_MAX_MM = 8.0
+
+# --------------------------------------------------------------------------- #
+# EVICTION -- THE ONE PLACE THIS DRIVER MAY REMOVE COPPER
+# --------------------------------------------------------------------------- #
+# Every promotion from D-578 to D-583 only ADDED copper, and clause 5 said so in
+# the strongest possible terms: nothing pre-existing may disappear.  That rule
+# was right for a board being filled from empty and it is the wrong rule for a
+# board that is now congested, because it makes the order in which nets happened
+# to be routed permanent.  `screen_corridor_blockers.py` measured the cost
+# exactly: `/01_POWER_TREE/USB_D_CONN_P` cannot reach `U10.3` -- 7.5 mm, both
+# terminals healthy with 8 and 10 legal escapes -- because eight ground segments
+# and two barrels a later whole-board maze batch laid are standing in a corridor
+# the `.kicad_dru` had already reserved for the USB pair.  No search fixes that.
+# The copper has to move.
+#
+# So eviction is added as a BOOKKEEPING exception to clause 5 and nothing more.
+# It does not relax clause 3 (real KiCad DRC) or clause 4 (no net regresses, the
+# whole board improves).  Four properties keep it a transaction rather than a
+# licence:
+#
+#   * ONLY NAMED NETS.  `--evict` takes explicit net names.  A run can never
+#     discover for itself that some net is in the way and delete it.
+#   * ONLY INSIDE THE CORRIDOR THE REQUESTED NETS THEMSELVES DEFINE.  The window
+#     is the bounding box of ONE requested net's own fitted pads grown by
+#     `--evict-margin-mm`, computed PER NET and never unioned, so asking for
+#     twenty nets buys twenty local windows and not one board-sized one.
+#   * ONLY ROUTED COPPER, ONLY WHOLLY CONTAINED, ONLY ON A LAYER THAT ACTUALLY
+#     OBSTRUCTS.  A pad is where a part is soldered and is never evictable.  A
+#     track that merely CROSSES the window is left alone, because a track cannot
+#     be ripped up piecewise and pretending otherwise reports an opening no
+#     transaction can deliver.  And copper on a layer the requested nets may not
+#     route on is not in anybody's way, so it is not touched: with the USB pair
+#     pinned to `F.Cu`, a ground track on `In2` inside the same box stays.
+#   * THE EVICTED NET IS RE-PROPOSED, NOT ABANDONED.  Any evicted net whose open
+#     edges grew is handed to the repair pass along with the pour-owning nets,
+#     at the same 8 mm locality bound, and clause 4 then still requires it to
+#     end the transaction NO WORSE OFF than it started.  A rip-up whose reroute
+#     fails is a refusal, exactly as if the copper had never been touched.
+#
+# `--evict` is OFF by default, so every accepted result reproduces without it.
+EVICT_MARGIN_MM = 3.0
+ROUTED_TAGS = ("PCB_TRACK", "PCB_VIA")
+
+
+def evict_boxes(board, nets, margin_nm):
+    """One corridor window per requested net: its own pad bbox plus a margin.
+
+    Per net, deliberately.  A union over several requested nets would grow one
+    window big enough to contain copper that is nowhere near any corridor, and
+    the report would then claim an authority the transaction does not have.
+    """
+    span = {}
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            name = pad.GetNetname()
+            if name not in nets:
+                continue
+            p = pad.GetPosition()
+            box = span.get(name)
+            span[name] = (p.x, p.y, p.x, p.y) if box is None else (
+                min(box[0], p.x), min(box[1], p.y),
+                max(box[2], p.x), max(box[3], p.y))
+    return {n: (b[0] - margin_nm, b[1] - margin_nm,
+                b[2] + margin_nm, b[3] + margin_nm)
+            for n, b in span.items()}
+
+
+def evict_copper(path, nets, evict_nets, margin_nm):
+    """Rip up the evictable copper IN PLACE and describe every removal.
+
+    Runs in the `--evict-apply` CHILD, never in the authority process, and for a
+    concrete reason: removing tracks from a loaded `BOARD` and saving it leaves
+    this KiCad build's SWIG bindings returning an untyped `SwigPyObject` from
+    the next `LoadBoard`, so the gate's own later `plane_nets` / `zones` /
+    `copper` reads would silently fail.  Every other board MUTATION in this
+    module already happens in a child; this one is no different.
+
+    Copper is evictable only if it is ROUTED (a pad is where a part is soldered
+    and is never touched), on a NAMED net, WHOLLY inside one requested net's own
+    corridor window, and on a layer the requested nets are actually permitted to
+    route on -- copper that obstructs nothing is nobody's business.  A via is a
+    barrel through the whole stack, so it obstructs on every layer, which is the
+    honest reading rather than the convenient one.
+    """
+    import pcbnew
+    import qrouter as qr
+    import incremental_router as ir
+
+    board = pcbnew.LoadBoard(str(path))
+    reserved = reserved_inner_planes(board)
+    routable = qr.ROUTABLE.get(board.GetCopperLayerCount(), ("F", "B"))
+    short = set()
+    for n in nets:
+        c = net_contract(board, n)
+        short.update(permitted_layers(routable, c["layers"], reserved, n))
+    boxes = evict_boxes(board, set(nets), margin_nm)
+    missing = sorted(set(nets) - set(boxes))
+    if missing:
+        raise SystemExit("--evict: requested nets own no pads: %s"
+                         % ", ".join(missing))
+    keep_layers = {qr.LNAME[s] for s in short}
+
+    def contained(item):
+        bb = item.GetBoundingBox()
+        return any(bb.GetLeft() >= box[0] and bb.GetTop() >= box[1]
+                   and bb.GetRight() <= box[2] and bb.GetBottom() <= box[3]
+                   for box in boxes.values())
+
+    doomed = []
+    for t in board.GetTracks():
+        cls = t.GetClass()
+        if cls not in ROUTED_TAGS or t.GetNetname() not in evict_nets:
+            continue
+        if cls == "PCB_TRACK" and t.GetLayer() not in keep_layers:
+            continue
+        if contained(t):
+            doomed.append(t)
+
+    sigs = []
+    for t in doomed:
+        sigs.append(ir._via_sig(t) if t.GetClass() == "PCB_VIA"
+                    else ir._track_sig(t))
+        board.Remove(t)
+    pcbnew.SaveBoard(str(path), board)
+    return dict(
+        evicted_nets=sorted(set(evict_nets)),
+        corridor_layers=sorted(short),
+        margin_mm=round(margin_nm / 1e6, 3),
+        corridors={n: dict(
+            box_mm=[round(v / 1e6, 3) for v in b],
+            area_mm2=round((b[2] - b[0]) * (b[3] - b[1]) / 1e12, 3))
+            for n, b in sorted(boxes.items())},
+        removed_signatures=sorted(str(s) for s in sigs),
+        removed_count=len(sigs),
+        removed_by_net={n: sum(1 for s in sigs if s[1] == n)
+                        for n in sorted({s[1] for s in sigs})})
+
 
 # --------------------------------------------------------------------------- #
 # INNER PLANES ARE NOT SIGNAL LAYERS ANY MORE
@@ -151,9 +334,22 @@ def permitted_layers(routable, contract_layers, reserved, net):
 # Nets excluded from generic maze routing.  Each is a documented physics or
 # governance constraint the maze proposer does not model, NOT a difficulty
 # judgement: it must keep being routed by its own purpose-built harness.
+# The USB pair was here and is NOT any more, and the reason is a measurement
+# rather than a change of appetite.  The exclusion said the maze does not model
+# "gap / uncoupled DRU" physics, which is true of the PROPOSER and irrelevant to
+# the AUTHORITY: `diff_pair_gap`, `diff_pair_uncoupled` and the In2 prohibition
+# are real KiCad constraints that gate clause 3 already runs at
+# `--severity-all`, and the first F/B screen was refused BY THEM -- eight
+# `items_not_allowed` and one `diff_pair_uncoupled_length_too_long`.  A rule the
+# gate enforces does not need a second enforcement by abstention.
+#
+# The physics itself is recorded in `.kicad_dru` section 6 and is not in doubt:
+# ESP32-S3 has no High-Speed PHY, so this is USB 2.0 FULL SPEED at 12 Mbit/s
+# over ~40 mm, "does NOT need impedance control, does NOT need length matching
+# and does NOT need a via".  What the pair DOES need -- stay on F.Cu, keep the
+# uncoupled budget -- is expressed to the router as the `USB_D` single-layer
+# contract above and re-proved by KiCad afterwards.
 EXCLUDE = {
-    "/USB_D_MCU_P", "/USB_D_MCU_N",     # matched diff pair (gap/uncoupled DRU)
-    "/01_POWER_TREE/USB_D_CONN_P", "/01_POWER_TREE/USB_D_CONN_N",
     "/04_SPI_B_RADIOS_NFC/NFC_RFI1",    # NFC receive arms: length/symmetry
     "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
 }
@@ -409,7 +605,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          plane=None, zone_clearance=0.25, stitch_width=0, stitch_via=None,
          join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
          partial=False, attempt_cap=0, repair_planes=False,
-         split_islands=False):
+         split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
+         evict=(), evict_margin_mm=EVICT_MARGIN_MM):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -419,6 +616,27 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             BOARD.with_suffix(suffix).read_bytes())
 
     base_ledger = ledger(BOARD, work / "ledger-before.json")
+
+    # `--evict`: rip up the named nets' routed copper inside the requested
+    # nets' own corridor windows, on the layers those nets may actually route
+    # on -- see the doctrine above.  It runs FIRST, on the scratch copy, so the
+    # proposal that follows sees the opened corridor and every later clause
+    # measures the whole transaction rather than half of it.
+    eviction = None
+    if evict:
+        # The child reports through a FILE, not through stdout.  Removing
+        # tracks from a `BOARD` leaves SWIG objects it has no destructor for,
+        # and it announces every one of them on stdout at interpreter shutdown
+        # -- after the report -- so a stdout contract here would be hostage to
+        # how many objects a run happened to evict.
+        report = work / "eviction.json"
+        subprocess.run(
+            [sys.executable, __file__, "--evict-apply", str(scratch),
+             "--evict-report", str(report),
+             "--evict-margin-mm", str(evict_margin_mm)]
+            + [x for n in evict for x in ("--evict", n)]
+            + list(nets), check=True, text=True, capture_output=True)
+        eviction = json.loads(report.read_text())
 
     # `--plane`: give a plane-less power net a pour, then let the ordinary
     # stitch primitive plant its islands on it.  The pour is added UNFILLED and
@@ -447,10 +665,24 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--stitch-via", "%d:%d" % stitch_via]
         if neck:
             cmd += ["--neck", "--neck-max-mm", str(neck_max_mm)]
-        # The repair is a STITCH and nothing else.  `--join-residual` and
-        # `--partial` are search levers for the primary proposal; handing them
-        # to the repair would let it lay whole-board tracks of its own, which is
-        # a second routing run wearing a repair's name.
+        # The repair is a STITCH and a BOUNDED LOCAL RE-BOND, and nothing else.
+        # `--partial` is a search lever for the primary proposal; handing it to
+        # the repair would let it lay whole-board tracks of its own, which is a
+        # second routing run wearing a repair's name.
+        #
+        # `--join-residual` IS the repair's business, and the first `--partial`
+        # run proved it.  A signal track that slots an outer pour severs the
+        # pads the pour was bonding, and `stitch_pad` can only answer with a
+        # BARREL: a pad it reports `NO_VIA_SITE` for -- `U3.12` on the expander,
+        # 4.213 mm from the nearest ground pad still on the plane -- has no
+        # barrel to plant and the whole run is refused for a bond a couple of
+        # millimetres of track would restore.  So the repair may also maze-join
+        # exactly the islands its own stitch reported unreachable, bounded by
+        # `--repair-join-max-mm`, whose default is the 8 mm LOCALITY WINDOW
+        # `stitch_pad`/`join_residual_islands` already use (`escape_limit` and
+        # `near`) -- read from the primitive, not invented here.  The bound is
+        # what keeps this a repair: it cannot haul across the board, and any
+        # join over it is reverted and reported `TOO_LONG` rather than taken.
         #
         # `--split-islands` is ALWAYS the repair's question -- an island that
         # sits on its own severed piece of pour is exactly what the repair must
@@ -469,6 +701,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                 cmd += ["--partial", "--attempt-cap", str(attempt_cap)]
             if join_residual or partial:
                 cmd += ["--join-max-mm", str(join_max_mm)]
+        else:
+            cmd += ["--join-residual",
+                    "--join-max-mm", str(repair_join_max_mm)]
         return json.loads(subprocess.run(
             cmd + list(target_nets), check=True, text=True,
             capture_output=True).stdout)["results"]
@@ -492,14 +727,25 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # PLANE REPAIR -- see the doctrine above `gate`.
     # ------------------------------------------------------------------ #
     repair = None
-    if repair_planes:
+    if repair_planes or eviction:
         mid = ledger(scratch, work / "ledger-mid.json")
         was = {r["net"]: r["open_edges"] for r in base_ledger["nets"]}
         now = {r["net"]: r["open_edges"] for r in mid["nets"]}
         owners = set(plane_nets(scratch))
+        # A net this run RIPPED UP is repairable for the same reason a pour a
+        # track slotted is: the run itself created the break, and the doctrine
+        # is that an evicted net is re-proposed rather than abandoned.  It is
+        # offered to the SAME bounded repair child -- 8 mm joins, no whole-board
+        # search levers -- so a plane-less evicted net gets a short local
+        # reroute and a pour-owning one gets its barrel.  Clause 4 still has the
+        # last word: a rip-up whose reroute fails is a refusal.
+        repairable = owners | set(eviction["evicted_nets"] if eviction else ())
         hurt = sorted(n for n, v in now.items()
-                      if v > was.get(n, v) and n in owners)
+                      if v > was.get(n, v) and n in repairable)
         repair = dict(candidates=hurt,
+                      join_max_mm=repair_join_max_mm,
+                      evicted_nets=sorted(eviction["evicted_nets"]) if eviction
+                      else [],
                       pour_owning_nets=sorted(owners),
                       regressed_before_repair=sorted(
                           n for n, v in now.items() if v > was.get(n, v)),
@@ -536,7 +782,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                        for z in zone_added))
 
     base_cu, cand_cu = copper(BOARD), copper(scratch)
+    # Clause 5 is unweakened, it is PARAMETERISED.  Without `--evict` the
+    # licensed-removal set is empty and `removed` must be empty, exactly as
+    # before.  With it, a removal is legal only if this run's own eviction
+    # step recorded that signature -- so a removal the transaction did not
+    # authorise, or one the repair child made on its own, is still a refusal.
+    licensed = set((eviction or {}).get("removed_signatures", ()))
     removed = sorted(str(k) for k in (base_cu - cand_cu))
+    unlicensed = sorted(set(removed) - licensed)
     added_nets = sorted({k[1] for k in (cand_cu - base_cu)})
     # A net that fails is reverted atomically by `maze3d.route_net`, so a
     # partial batch is still promotable: the promotion set is exactly the nets
@@ -564,9 +817,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     changed = (bool(plane)
                or any(r.get("ok") and not r.get("already") for r in routed)
                or any(not r.get("already") for r in repaired))
-    ok = (not attributable and inherited_ok and not regressed and not removed
-          and not foreign and edges_after < edges_before and zone_ok
-          and changed and before == sha256_file(BOARD))
+    ok = (not attributable and inherited_ok and not regressed
+          and not unlicensed and not foreign and edges_after < edges_before
+          and zone_ok and changed and before == sha256_file(BOARD))
 
     summary = dict(
         schema=1,
@@ -588,7 +841,11 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             nets_improved=closed, nets_regressed=regressed),
         plane=plane_zone,
         plane_repair=repair,
-        preservation=dict(removed_objects=removed, added_object_nets=added_nets,
+        eviction=eviction,
+        preservation=dict(removed_objects=removed,
+                          unlicensed_removals=unlicensed,
+                          licensed_removals=len(licensed),
+                          added_object_nets=added_nets,
                           foreign_added_nets=foreign,
                           reverted_failures_clean=(not foreign),
                           zones_added=zone_added, zones_removed=zone_lost,
@@ -613,6 +870,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("nets", nargs="*")
     ap.add_argument("--propose", type=Path, help=argparse.SUPPRESS)
+    ap.add_argument("--evict-apply", type=Path, help=argparse.SUPPRESS)
+    ap.add_argument("--evict-report", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--grid", type=int, default=100000)
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
@@ -653,6 +912,22 @@ def main():
                          "open edges grew, then refill and re-measure; a "
                          "signal track that slots a pour is repaired by a "
                          "barrel rather than refusing the whole run")
+    ap.add_argument("--repair-join-max-mm", type=float,
+                    default=REPAIR_JOIN_MAX_MM,
+                    help="bound in millimetres on ONE plane-repair residual "
+                         "join; the default is the 8 mm locality window the "
+                         "stitch primitive itself uses")
+    ap.add_argument("--evict", action="append", default=[],
+                    metavar="NET",
+                    help="rip up this net's ROUTED copper where it lies wholly "
+                         "inside a requested net's own corridor window and on "
+                         "a layer those nets may route on; repeatable.  The "
+                         "evicted net is re-proposed by the bounded repair "
+                         "pass and clause 4 still requires it to end no worse "
+                         "off than it started")
+    ap.add_argument("--evict-margin-mm", type=float, default=EVICT_MARGIN_MM,
+                    help="how far outside a requested net's own pad bounding "
+                         "box the eviction corridor extends")
     ap.add_argument("--stitch-via", default=None,
                     help="DIA:DRILL in nm for stitch barrels; clamped UP to "
                          "the DRU hole-size and annular-ring floors")
@@ -670,6 +945,14 @@ def main():
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands)
         return 0
+    if a.evict_apply:
+        doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
+                           int(round(a.evict_margin_mm * 1e6)))
+        text = json.dumps(doc, indent=2, sort_keys=True, default=str)
+        if a.evict_report:
+            a.evict_report.write_text(text + "\n", encoding="utf-8")
+        print(text)
+        return 0
     if not a.nets:
         ap.error("name at least one net")
     bad = sorted(set(a.nets) & EXCLUDE)
@@ -682,7 +965,9 @@ def main():
                  neck=a.neck, neck_max_mm=a.neck_max_mm,
                  partial=a.partial, attempt_cap=a.attempt_cap,
                  repair_planes=a.repair_planes,
-                 split_islands=a.split_islands)
+                 split_islands=a.split_islands,
+                 repair_join_max_mm=a.repair_join_max_mm,
+                 evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

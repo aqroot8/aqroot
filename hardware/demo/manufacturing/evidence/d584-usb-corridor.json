@@ -1,0 +1,761 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755",
+  "grid": 100000,
+  "nets": [
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 5.585,
+            "nets_removed": 9,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 11,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 6
+          },
+          "corridor_nets": {
+            "/01_POWER_TREE/USB_D_CONN_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 10,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_VBUS_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/SPI_B_SCK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 0,
+              "vias": 1
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "GND": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 8,
+              "vias": 2
+            },
+            "Net-(J3-CC1)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "Net-(J3-CC2)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "Net-(J3-SHIELD)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            }
+          },
+          "direct_mm": 7.993,
+          "dst": [
+            "U10.3"
+          ],
+          "set_opener": {
+            "mm": 4.429,
+            "rip_up_nets": [
+              "GND",
+              "/I2S_LRCLK"
+            ]
+          },
+          "single_openers": [],
+          "src": [
+            "J3.A6",
+            "J3.B6"
+          ],
+          "verdict": "RIPUP_SET"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F"
+      ],
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D",
+      "width_mm": 0.25
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 4.428,
+            "nets_removed": 9,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 9,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 10
+          },
+          "corridor_nets": {
+            "/01_POWER_TREE/USB_D_CONN_P": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_VBUS_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/SPI_B_SCK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 0,
+              "vias": 1
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "GND": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 9,
+              "vias": 3
+            },
+            "Net-(J3-CC1)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "Net-(J3-CC2)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "Net-(J3-SHIELD)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            }
+          },
+          "direct_mm": 8.403,
+          "dst": [
+            "U10.1"
+          ],
+          "set_opener": {
+            "mm": 3.808,
+            "rip_up_nets": [
+              "/I2S_LRCLK",
+              "Net-(J3-CC1)"
+            ]
+          },
+          "single_openers": [],
+          "src": [
+            "J3.A7",
+            "J3.B7"
+          ],
+          "verdict": "RIPUP_SET"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F"
+      ],
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "netclass": "USB_D",
+      "width_mm": 0.25
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 0.0,
+            "nets_removed": 34,
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          "baseline": {
+            "dst_escapes": 9,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 10
+          },
+          "board_wide_stripped": {
+            "executable": false,
+            "mm": 28.645,
+            "nets_stripped": 120,
+            "ok": true,
+            "reason": null
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/01_POWER_TREE/USB_D_ESD_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_D_ESD_P": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/02_MCU_CORE/BOOT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/02_MCU_CORE/DISP_BL_CTL_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 6,
+              "vias": 4
+            },
+            "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 1
+            },
+            "/02_MCU_CORE/UART0_TXD_DBG": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 1
+            },
+            "/BMI270_INT1_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/CC1101_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "/CC1101_GDO0": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "/DISP_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/DISP_DC": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/I2S_BCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 2
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/I2S_MIC_DIN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "/I2S_SPK_DOUT": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 1
+            },
+            "/IR_RX_GPIO44": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/IR_TX_GPIO16": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NATIVE_A": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NATIVE_B": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/SD_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/SPI_A_MISO": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/SPI_A_MOSI": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "/SPI_A_SCK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/SPI_B_MISO": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 2
+            },
+            "/SPI_B_MOSI": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/SPI_B_SCK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "/SX1262_BUSY": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/SX1262_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 7,
+              "vias": 6
+            },
+            "GND": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "Net-(J3-SHIELD)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "Net-(U1-EN)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 3
+            }
+          },
+          "direct_mm": 24.281,
+          "dst": [
+            "U1.14"
+          ],
+          "src": [
+            "R34.2"
+          ],
+          "verdict": "CROSSING_COPPER_WALL"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F"
+      ],
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D",
+      "width_mm": 0.25
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 0.0,
+            "nets_removed": 29,
+            "ok": false,
+            "reason": "NO_PATH"
+          },
+          "baseline": {
+            "dst_escapes": 9,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 9
+          },
+          "board_wide_stripped": {
+            "executable": false,
+            "mm": 32.011,
+            "nets_stripped": 120,
+            "ok": true,
+            "reason": null
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 1
+            },
+            "/01_POWER_TREE/USB_D_ESD_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_D_ESD_P": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/02_MCU_CORE/BOOT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/02_MCU_CORE/DISP_BL_CTL_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/02_MCU_CORE/UART0_TXD_DBG": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/BMI270_INT1_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/CC1101_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "/CC1101_GDO0": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "/I2S_BCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 2
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/I2S_MIC_DIN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "/I2S_SPK_DOUT": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 1
+            },
+            "/IR_RX_GPIO44": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/IR_TX_GPIO16": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NATIVE_A": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/SD_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/SPI_A_MOSI": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 1
+            },
+            "/SPI_B_MISO": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 2
+            },
+            "/SPI_B_MOSI": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/SPI_B_SCK": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 1
+            },
+            "/SX1262_BUSY": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "/SX1262_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 2
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 4
+            },
+            "GND": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 1
+            },
+            "Net-(J3-SHIELD)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            },
+            "Net-(U1-EN)": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 2
+            }
+          },
+          "direct_mm": 21.858,
+          "dst": [
+            "U1.13"
+          ],
+          "src": [
+            "R33.2"
+          ],
+          "verdict": "CROSSING_COPPER_WALL"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F"
+      ],
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D",
+      "width_mm": 0.25
+    }
+  ],
+  "schema": 1,
+  "summary": {
+    "verdicts": {
+      "CROSSING_COPPER_WALL": 2,
+      "RIPUP_SET": 2
+    }
+  }
+}

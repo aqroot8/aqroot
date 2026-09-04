@@ -5939,3 +5939,222 @@ contacts J5.9-12 / J5.15-18 are untouched.
 Authority `1aa80b3e...` -> `5b929a00...`.  Evidence
 `hardware/demo/manufacturing/evidence/d583-gnd-bcu-plane.json` and
 `d583-verify.json`.  Commit `3d689e1` carries the full record.
+
+# D-584 · 2026-09-04 · Demo 16-net best-effort batch PROMOTED; the pour-damage screen that found it
+
+The largest single promotion this board has taken since D-579, and the first
+one selected by MEASUREMENT of what the gate would refuse rather than by a
+guess at what would route. Whole-board retained open edges **126 -> 101**,
+sixteen nets improved, ZERO nets regressed, ZERO copper removed, ZERO zones
+touched, ZERO attributable DRC.
+
+## Why the clean-seam guess had stopped working
+
+D-582 and D-583 poured BOTH outer layers -- `+3V3` on `F.Cu`, `GND` on `B.Cu`
+-- and the entire value of each was connectivity a pour delivers with no track
+and no via: twelve edges apiece, bonded by `connect_pads` alone. That value is
+also a liability, and after D-583 it became the dominant term in every routing
+decision left on this board. A signal track laid across an outer layer is a
+SLOT through the pour that owns it: KiCad re-pours around the slot, the pour
+splits, and every pad that was bonded ACROSS the cut goes open. Gate clause 4
+refuses any run in which a net regresses -- correctly -- so ONE orphaned pour
+pad refuses a whole transaction however many real edges it closed.
+
+Measured, not asserted: a `--partial --repair-planes` run on `/I2C_SCL_INT` +
+`/I2C_SDA_INT` closes ELEVEN retained open edges (8 -> 3 and 8 -> 2), comes out
+EIGHT edges ahead on the whole board, produces zero attributable DRC -- and is
+refused, because it orphans exactly four pads: `+3V3` `J1.35`, `R19.1`, `R26.1`
+and `GND` `U3.12`. The D-584 repair levers were then tested against those four
+pads directly and ALL FOUR COMBINATIONS FAIL: class-default geometry and the
+`.kicad_dru` class floor (0.40 mm stub / 0.65 mm barrel), each with and without
+`--neck`. `J1.35` has no legal escape even at 0.400 mm inside the display FPC
+pin field; `R19.1`, `R26.1` and `U3.12` have no legal barrel within 8 mm at any
+permitted diameter. The refusal is real and the repair cannot lift it.
+
+## The screen
+
+`screen_pour_damage.py` (new, read-only) therefore asks the question the gate
+actually answers, one net at a time, before any batch is proposed: not "does
+this net route" but "does this net route WITHOUT orphaning a pour pad". One
+scratch board per net, because attribution is the whole point -- a batch tells
+you the pours broke and not whose copper broke them, and the gate refuses on
+the net. Every candidate is refilled by the REAL `kicad-cli` engine, because
+`connect_pads` bonding, island removal and the re-pour around a new slot are
+KiCad's own behaviour and a screen that modelled them would be predicting the
+thing it exists to measure. Every candidate is then measured by the SAME
+authoritative `routing_ledger.py` clause 4 will use. It drops exactly one
+authoritative step -- DRC -- which is what makes it affordable per net, so a
+`PROMOTABLE` verdict is a PREDICTION and never a promotion.
+
+Twenty-eight open plane-less nets screened in parallel against the D-583
+authority board `5b929a00...`:
+
+    PROMOTABLE     16 nets, 26 edges      POUR_DAMAGE   6 nets
+    NO_COPPER       6 nets                NET_REGRESSION 0
+
+## The promotion
+
+All sixteen `PROMOTABLE` nets went through the full gate as ONE transaction and
+the batch behaved exactly as the screen predicted -- 126 -> 101, all sixteen
+improved, none regressed, and the plane repair had NOTHING to do (`candidates`
+empty), which is the cleanest possible confirmation that the screen selected on
+the right property. 307 objects added, 245 tracks and 62 vias, none removed:
+
+    BQ25185_SYS   208.160 mm  9 vias   NFC_SUPPLY     132.634 mm  6 vias
+    I2S_LRCLK      98.365 mm  6 vias   SPI_B_SCK       81.012 mm  5 vias
+    BTN_LEFT_N     77.831 mm  5 vias   SPI_B_MOSI      73.553 mm  7 vias
+    WAKE_INT_N     50.187 mm  8 vias   NFC_VDD_RF      22.509 mm  4 vias
+    BQ25185_STAT2  21.699 mm  2 vias   BQ25185_STAT1   17.833 mm  2 vias
+    LED_A          15.620 mm  2 vias   LED_K           13.720 mm  2 vias
+    NFC_VDD_D      12.805 mm  2 vias   NFC_VDD_A       11.405 mm  2 vias
+    USB_D_CONN_P    6.741 mm  0 vias   USB_D_CONN_N     5.932 mm  0 vias
+
+`BQ25185_SYS` is the headline. It consumed D-570 through D-577 -- eight
+consecutive non-promoting iterations of atomic-window replay, pocket refloor and
+waypoint-bridge search -- and was PARKED as four irreconcilable components.
+`--partial` closes it from 12 open edges to 10 with 208.160 mm of 0.80 mm
+`SYS_MAIN` track and 9 0.80/0.40 mm barrels, because a union-find Kruskal over
+every island pair does not need the ONE all-or-nothing MST that every previous
+harness demanded. The park was correct at the time and the framework, not the
+geometry, is what changed.
+
+Every net's geometry is its own netclass, read from the board and re-measured
+on the promoted copper: `SYS_MAIN` 0.80 mm / 0.80-0.40 via; `P3V3`
+(`NFC_SUPPLY`) 0.60 mm / 0.80-0.40; `LED_A`/`LED_K` 0.30 mm; the rest 0.20 mm /
+0.60-0.30. Added copper lies on `F.Cu`, `B.Cu` and `In2.Cu` ONLY -- nothing was
+laid on `In1`/`In4` (`GND` reference) or `In3` (`+3V3`), which is the inner-
+plane reservation D-584's framework reads from the board rather than from a
+ledger.
+
+## USB-C data: the connector-side shorts are now real copper
+
+`/01_POWER_TREE/USB_D_CONN_P` and `USB_D_CONN_N` are promoted on `F.Cu` with
+0.25 mm track and **ZERO vias**, which is what `.kicad_dru` section 6 demands
+in its own heading -- "USB 2.0 - FULL SPEED, ON F.Cu OVER In1, NO VIAS, NO
+THEATRE". The `USB_D` layer contract was corrected to a SINGLE layer to get
+that, and the correction is a measurement: given `F, B` the maze reaches every
+USB pad and the authoritative gate then refuses the run on NINE real KiCad
+violations -- eight `items_not_allowed`, one per through via, because a F-to-B
+barrel PIERCES `In2` and section 6 disallows `track via` there, plus one
+`diff_pair_uncoupled_length_too_long`, because a `USB_D_CONN_P` free to dive to
+`B.Cu` takes 36.653 mm to reach a pad 8.465 mm away against a 25 mm budget. On
+one routable layer the via move has no second layer to land on, so the
+prohibition stops being a rule the router may break and becomes a shape it
+cannot express. The USB nets were removed from `EXCLUDE` for the same reason:
+the exclusion said the maze does not model diff-pair physics, which is true of
+the PROPOSER and irrelevant to the AUTHORITY -- `diff_pair_gap`,
+`diff_pair_uncoupled` and the `In2` prohibition are real constraints clause 3
+already runs at `--severity-all`, and a rule the gate enforces does not need a
+second enforcement by abstention.
+
+## Two Demo-required USB walls, characterized and PARKED
+
+`screen_corridor_blockers.py` (new, read-only) answers the half of the failure
+space `screen_enclosed_pads.py` cannot: a net whose pads all launch fine and
+whose islands still cannot see each other. It removes only ROUTED copper, only
+copper lying WHOLLY inside the corridor window -- the only copper an eviction
+transaction may take -- and it uses the same `route_join` at the net's own
+contract, so a corridor it calls open is one the real proposer would take.
+Measured on the promoted board `d831b4f4...`:
+
+  * **J3 SOUTH-BAND WALL** (`USB_D_CONN_P` -> `U10.3`, `USB_D_CONN_N` ->
+    `U10.1`; 1 edge each). Both are `RIPUP_SET`, and the per-object minimal-
+    eviction search added to that screen shows why no rip-up is worth taking.
+    On the D-583 board the MINIMAL set that opens `USB_D_CONN_P` is exactly
+    THREE objects and they are exactly `J3.A1`/`B12`'s own ground escape --
+    the 0.30 mm chain from (46.35,146.80) east to the barrel at (49.50,147.10).
+    The geometry says it must be: J3's sixteen lands sit in one row at
+    y = 146.380 with the connector shell to the NORTH, the board edge at
+    y = 148.000 to the SOUTH, and `min_copper_edge_clearance` 0.50 mm. The
+    usable south band is therefore y in [147.155, 147.500] -- 0.345 mm, ONE
+    0.25 mm track and no more, and no legal 0.60 mm `GND` barrel anywhere in
+    it. That single band is contested by D+ east-bound, D- east-bound and the
+    `A1`/`B12` ground escape. Worse, the D+ and D- lands INTERLEAVE
+    (D+ 42.250/43.250, D- 42.750/43.750), so the two shorts must cross, and
+    with the north side available only under the shell exactly one of them may
+    take it. This is not a search failure and no eviction fixes it: the fix is
+    a J3 FANOUT TRANSACTION -- D+ short north under the shell, D- short south,
+    and `A1`/`B12` re-bonded to a barrel placed in the shell interior instead
+    of 3.3 mm east along the one band the pair needs.
+  * **USB MCU-SIDE CROSSING-COPPER WALL** (`USB_D_MCU_P` R34.2 -> U1.14
+    24.281 mm, `USB_D_MCU_N` R33.2 -> U1.13 21.858 mm; 1 edge each). Both
+    terminals are healthy (10/9 and 9/9 legal escapes). Dropping every
+    containment-bounded foreign object in the corridor -- 34 and 29 nets --
+    leaves both `NO_PATH`; stripping every routed object on `F.Cu` board-wide
+    (120 nets, a diagnosis and not a transaction) opens them at 28.645 mm and
+    32.011 mm. Grid refinement is NOT the missing ingredient and this was
+    measured rather than assumed: both stay `NO_PATH` at 100 um, 50 um AND
+    25 um. The wall is crossing copper no containment-bounded eviction may
+    take, so closing it needs an `F.Cu` refloorplan of the MCU fanout.
+
+Both walls are PARKED, not solved. USB-C data/programming is a Demo-REQUIRED
+feature and these four edges are the last of it, so the park is recorded with
+the geometry that would have to change, not with a promise to try harder.
+
+## `--evict`, and its first transaction correctly REFUSED
+
+The in-flight `--evict` lever is committed as designed and OFF by default: a
+removal is legal solely when the object is on a NAMED evicted net, lies wholly
+inside the corridor the requested nets themselves define, and sits on a layer
+those nets may actually route on; the evicted net is then re-proposed by the
+bounded repair pass and clause 4 still requires it to end NO WORSE OFF than it
+started. Clause 5 is PARAMETERISED, not weakened -- with no `--evict` the
+licensed-removal set is empty and any removal is still a refusal, which this
+promotion demonstrates (`licensed_removals` 0, `removed_objects` empty).
+
+Its first real transaction -- evict `GND` from the J3 corridor and route both
+USB connector nets -- was REFUSED by the gate and the refusal is kept as
+evidence rather than tuned away. It routed `USB_D_CONN_P` (2 -> 0) and left
+`GND` at 15 against 14: the repair re-planted two of the three evicted barrels
+but `J3.A1`/`B12` had no path home, for the south-band reason above. A rip-up
+whose reroute fails is a refusal, exactly as the doctrine says.
+
+## Independent re-proof
+
+`verify_promotion.py` re-derived the promotion from the two board files alone;
+all twelve checks PASS. 0 objects removed; 307 added and every one on a claimed
+net; widths {0.20, 0.25, 0.30, 0.60, 0.80} mm on `F.Cu`/`B.Cu`/`In2.Cu` only;
+vias {0.60/0.30, 0.80/0.40} meeting the drill and 0.125 mm annular floors; zone
+inventory unchanged (0 added, 0 removed); real zone-refilled schematic-parity
+KiCad DRC at `--severity-all` exactly 199 `lib_footprint_issues` / 5
+`hole_clearance` / 1 `solder_mask_bridge` inherited, with ZERO attributable and
+ZERO schematic-parity errors; the board is fill-stable; the D-269 / D-186 rule
+text is still live; `hardware/beta-v2/` is untouched.
+
+Independently re-measured on the promoted board: the 405 copper objects on
+`ACC_5V_SW_EN`, all three `FRONT_RGB_*_N` replacements, XGPIO4 / XGPIO5,
+`ACC_3V3_SW*` and every `BAT_*` net are BYTE-IDENTICAL to D-583, and J5.9-12 /
+J5.15-18 remain the approved Demo NC contacts.
+
+Authority `5b929a007c4d5d2b3fc0b5830c9906a4f908bbd5748148fd037573700175f3b4`
+-> `d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755`.
+Evidence: `d584-partial-batch16.json` (`b396f397...`), `d584-verify.json`
+(`ee3751a7...`), `d584-pour-damage.json` (`6307f025...`),
+`d584-pour-damage-next.json` (`2dc0c956...`), `d584-usb-corridor.json`
+(`491724bc...`), `d584-i2c-pour-refusal.json` (`4b6e7865...`) and
+`d584-evict-refused.json` (`8cec8b98...`), all under
+`hardware/demo/manufacturing/evidence/`. As since D-579 the promoted board is
+not byte-reproducible across runs -- KiCad assigns a fresh UUID to every new
+track and via -- but every property is re-proved on the actual candidate.
+
+## Next, and it is precise
+
+The screen was re-run on the promoted board and it is the cleanest handoff this
+project has produced: **ZERO nets remain `PROMOTABLE`**. The clean seam is
+mined out. Twenty-two nets are `NO_COPPER` -- the `--partial` proposer can lay
+nothing more for them at all -- and the remaining SIX are `POUR_DAMAGE` and are
+blocked by exactly the SAME FOUR PADS:
+
+    GND  U3.12  @ 54.138, 74.425      +3V3 R19.1 @ 40.997, 120.996
+    +3V3 J1.35  @ 27.910, 96.000      +3V3 R26.1 @ 41.196, 124.123
+
+Those four pads gate `/I2C_SDA_INT` (-5), `/I2C_SCL_INT` (-3),
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N` (-1), `/09_COMMUNITY_HEADER/EXT_SDA` (-1),
+`/NFC_CS_N` and `/ACC_5V_BOOST_EN` -- about ten more retained edges, including
+the whole internal I2C bus. Each is bonded ONLY by an outer pour and none can
+take a barrel or an escape at any permitted geometry, so the next bounded
+framework task is POUR-BOND PROTECTION: keep foreign copper out of the pour
+neck that bonds a pad whose only bond is the pour, so the slot is never cut in
+the first place. That is a router-side obstacle, it is measurable by the screen
+that found the problem, and it does not need any of the four pads to become
+stitchable. No owner decision is open.

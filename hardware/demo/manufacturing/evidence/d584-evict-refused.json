@@ -1,0 +1,546 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "5b929a007c4d5d2b3fc0b5830c9906a4f908bbd5748148fd037573700175f3b4",
+  "authoritative_unchanged": true,
+  "candidate_sha256": "b6f7b8e22d396b11543bf7cc2e85cd5201935fa8fb10478b6df92ddf06a0f439",
+  "connectivity": {
+    "nets_improved": [
+      "/01_POWER_TREE/USB_D_CONN_P"
+    ],
+    "nets_regressed": [
+      "GND"
+    ],
+    "open_retained_nets_after": 31,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 125,
+    "retained_open_edges_before": 126
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": {
+    "corridor_layers": [
+      "F"
+    ],
+    "corridors": {
+      "/01_POWER_TREE/USB_D_CONN_N": {
+        "area_mm2": 143.638,
+        "box_mm": [
+          39.75,
+          138.75,
+          53.263,
+          149.38
+        ]
+      },
+      "/01_POWER_TREE/USB_D_CONN_P": {
+        "area_mm2": 122.329,
+        "box_mm": [
+          39.25,
+          140.65,
+          53.263,
+          149.38
+        ]
+      }
+    },
+    "evicted_nets": [
+      "GND"
+    ],
+    "margin_mm": 3.0,
+    "removed_by_net": {
+      "GND": 12
+    },
+    "removed_count": 12,
+    "removed_signatures": [
+      "('T', 'GND', 0, (46350000, 146800000), (47050000, 147225000), 300000)",
+      "('T', 'GND', 0, (47050000, 147225000), (47525000, 147225000), 300000)",
+      "('T', 'GND', 0, (47525000, 147225000), (49500000, 147200000), 300000)",
+      "('T', 'GND', 0, (48900000, 144700000), (49100000, 144100000), 300000)",
+      "('T', 'GND', 0, (49100000, 143625000), (49100000, 144100000), 300000)",
+      "('T', 'GND', 0, (49100000, 143625000), (49325000, 143150000), 300000)",
+      "('T', 'GND', 0, (49325000, 143150000), (49750000, 142850000), 300000)",
+      "('T', 'GND', 0, (49500000, 147100000), (49500000, 147200000), 300000)",
+      "('T', 'GND', 0, (51683265, 139732230), (52600000, 139700000), 300000)",
+      "('V', 'GND', (48900000, 144700000), 600000, 300000)",
+      "('V', 'GND', (49500000, 147100000), 600000, 300000)",
+      "('V', 'GND', (52600000, 139700000), 600000, 300000)"
+    ]
+  },
+  "failed_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N"
+  ],
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [
+      "GND"
+    ],
+    "evicted_nets": [
+      "GND"
+    ],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "GND"
+    ],
+    "regressed_before_repair": [
+      "GND"
+    ],
+    "retained_open_edges_before_repair": 127,
+    "routed": [
+      {
+        "contract": {
+          "clr": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "reserved_inner_planes": {
+            "I1": [
+              "GND"
+            ],
+            "I3": [
+              "+3V3"
+            ],
+            "I4": [
+              "GND"
+            ]
+          },
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "width": 300000
+        },
+        "failures": [
+          {
+            "island": [
+              "C1.1"
+            ],
+            "pad": "C1.1",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "C37.2"
+            ],
+            "pad": "C37.2",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "C63.2"
+            ],
+            "pad": "C63.2",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "D2.2"
+            ],
+            "pad": "D2.2",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "D2.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D2.1 (x66), D4.1 (x2), D5.3 (x2), D5.1 (x2)"
+          },
+          {
+            "island": [
+              "D4.2"
+            ],
+            "pad": "D4.2",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "D4.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D4.1 (x72)"
+          },
+          {
+            "island": [
+              "D5.2"
+            ],
+            "pad": "D5.2",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "D5.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D5.1 (x72)"
+          },
+          {
+            "island": [
+              "J1.43"
+            ],
+            "pad": "J1.43",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "J1.43: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.44 (x45), J1.41 (x18), TP36.1 (x3), J1.40 (x1)"
+          },
+          {
+            "island": [
+              "J3.A1",
+              "J3.B12"
+            ],
+            "pad": "J3.A1",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "J3.A12",
+              "J3.B1"
+            ],
+            "pad": "J3.A12",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "MK1.4"
+            ],
+            "pad": "MK1.4",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+          },
+          {
+            "island": [
+              "R110.2"
+            ],
+            "pad": "R110.2",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "R111.2"
+            ],
+            "pad": "R111.2",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "U11.4",
+              "U11.5",
+              "U11.11"
+            ],
+            "pad": "U11.4",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "U11.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U11.3 (x34), U11.2 (x19), U11.1 (x8), C27.1 (x6)"
+          },
+          {
+            "island": [
+              "U2.2",
+              "U2.3"
+            ],
+            "pad": "U2.2",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+          },
+          {
+            "island": [
+              "U9.16"
+            ],
+            "pad": "U9.16",
+            "reason": "NO_LEGAL_ESCAPE",
+            "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+          }
+        ],
+        "mm": 3.07,
+        "mode": "stitch+join",
+        "net": "GND",
+        "ok": true,
+        "residual_join": {
+          "failures": [
+            {
+              "dst_escapes": 88,
+              "island": [
+                "U11.4",
+                "U11.5",
+                "U11.11"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 18,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "island": [
+                "D5.2"
+              ],
+              "pads": [
+                "D5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "no legal escape on the source island"
+            },
+            {
+              "dst_escapes": 79,
+              "island": [
+                "C63.2"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 9,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "pads": [
+                "U9.16"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "U9.26: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.27 (x42), U9.25 (x18), U9.22 (x6), U9.23 (x3)"
+            },
+            {
+              "island": [
+                "D2.2"
+              ],
+              "pads": [
+                "D2.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "no legal escape on the source island"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "pads": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "no legal escape on the source island"
+            },
+            {
+              "island": [
+                "J1.43"
+              ],
+              "pads": [
+                "J1.43"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "no legal escape on the source island"
+            },
+            {
+              "dst_escapes": 87,
+              "island": [
+                "R111.2"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 6,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "dst_escapes": 86,
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 12,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "island": [
+                "D4.2"
+              ],
+              "pads": [
+                "D4.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "U21.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U21.5 (x33), L4.1 (x11), U21.2 (x7), C65.1 (x7)"
+            },
+            {
+              "dst_escapes": 95,
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 2,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "dst_escapes": 93,
+              "island": [
+                "J3.A1",
+                "J3.B12"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 2,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "dst_escapes": 181,
+              "island": [
+                "C1.1"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 8,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "dst_escapes": 82,
+              "island": [
+                "U2.2",
+                "U2.3"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 18,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            },
+            {
+              "dst_escapes": 181,
+              "island": [
+                "R110.2"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 8,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "GND",
+          "ok": false,
+          "unreachable": 15,
+          "vias": 0
+        },
+        "seconds": 126.2,
+        "stitched": 2,
+        "unreachable": 15,
+        "via_xy": [
+          [
+            52.6,
+            139.7
+          ],
+          [
+            48.9,
+            144.7
+          ]
+        ],
+        "vias": 2
+      }
+    ]
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/USB_D_CONN_P"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 12,
+    "removed_objects": [
+      "('T', 'GND', 0, (46350000, 146800000), (47050000, 147225000), 300000)",
+      "('T', 'GND', 0, (47050000, 147225000), (47525000, 147225000), 300000)",
+      "('T', 'GND', 0, (47525000, 147225000), (49500000, 147200000), 300000)",
+      "('T', 'GND', 0, (49500000, 147100000), (49500000, 147200000), 300000)",
+      "('V', 'GND', (49500000, 147100000), 600000, 300000)"
+    ],
+    "reverted_failures_clean": true,
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "/01_POWER_TREE/USB_D_CONN_P",
+    "/01_POWER_TREE/USB_D_CONN_N"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "layers": [
+          "F"
+        ],
+        "netclass": "USB_D",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 550000,
+        "via_drill": 250000,
+        "width": 250000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "from": "J3.A6",
+          "layers": [
+            "F"
+          ],
+          "mm": 5.006249709669433,
+          "ok": true,
+          "to": "J3.B6",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "J3.A6",
+          "layers": [
+            "F"
+          ],
+          "mm": 9.450110554058375,
+          "ok": true,
+          "to": "U10.3",
+          "via_xy": [],
+          "vias": 0
+        }
+      ],
+      "mm": 14.456,
+      "mode": "maze",
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "ok": true,
+      "seconds": 1.4,
+      "vias": 0
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "layers": [
+          "F"
+        ],
+        "netclass": "USB_D",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 550000,
+        "via_drill": 250000,
+        "width": 250000
+      },
+      "islands": 3,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "J3.B7"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "J3.B7: NO LEGAL ESCAPE at >= 0.250 mm; blocked by J3.A6 (x21), board_edge (x21), J3.A5 (x15), track (x9)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 0.9
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/USB_D_CONN_P",
+    "GND"
+  ],
+  "schema": 1
+}

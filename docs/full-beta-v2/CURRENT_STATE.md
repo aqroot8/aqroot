@@ -13,6 +13,69 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-584 (16-net best-effort batch PROMOTED; pour-damage screen):** the
+  largest promotion since D-579 and the first selected by MEASURING what the
+  gate would refuse. After D-582/D-583 poured BOTH outer layers, any signal
+  track on `F.Cu`/`B.Cu` SLOTS a pour and orphans the pads it bonded, and
+  clause 4 then refuses the whole run -- an `/I2C_SCL_INT`+`/I2C_SDA_INT`
+  `--partial` batch closes ELEVEN edges, comes out eight ahead, has zero
+  attributable DRC and is refused for FOUR orphaned pads. New read-only
+  `screen_pour_damage.py` asks that question per net before any batch: one
+  scratch board per net (attribution is the point), the REAL `kicad-cli` fill
+  engine, the SAME authoritative `routing_ledger.py`, and only DRC dropped --
+  so `PROMOTABLE` is a prediction, never a promotion. 28 nets screened ->
+  16 `PROMOTABLE` (26 edges) / 6 `POUR_DAMAGE` / 6 `NO_COPPER`. All sixteen
+  went through the full gate as ONE transaction and behaved exactly as
+  predicted: whole-board retained open edges **126 -> 101**, sixteen nets
+  improved, ZERO regressed, the plane repair had NOTHING to do, 307 objects
+  added (245 tracks + 62 vias), zero removed, zero zones touched.
+  `BQ25185_SYS` -- PARKED after eight non-promoting iterations D-570..D-577 --
+  closes 12 -> 10 under `--partial`'s union-find Kruskal; the park was correct
+  and the FRAMEWORK, not the geometry, is what changed.
+  `USB_D_CONN_P`/`USB_D_CONN_N` are promoted on `F.Cu` with 0.25 mm track and
+  **ZERO vias**, after the `USB_D` contract was corrected to a SINGLE layer --
+  a measurement, not taste: with `F, B` the gate refused the run on NINE real
+  KiCad violations (8 `items_not_allowed`, one per through via piercing the
+  `In2` prohibition, + 1 `diff_pair_uncoupled_length_too_long` at 36.653 mm
+  against a 25 mm budget). Re-proved independently by `verify_promotion.py`,
+  all 12 checks PASS: 0 removed, 307 added all on claimed nets, widths
+  {0.20,0.25,0.30,0.60,0.80} on `F`/`B`/`In2` ONLY (nothing on the reserved
+  `In1`/`In4`/`In3` planes), vias {0.60/0.30, 0.80/0.40}, zone inventory
+  unchanged, real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO
+  attributable and ZERO parity errors, fill-stable, D-269/D-186 live,
+  `hardware/beta-v2/` untouched. The 405 copper objects on `ACC_5V_SW_EN`,
+  all three `FRONT_RGB_*_N`, XGPIO4/5, `ACC_3V3_SW*` and every `BAT_*` net are
+  BYTE-IDENTICAL to D-583; J5.9-12/15-18 remain approved NC. Two Demo-required
+  USB walls characterized and PARKED by the new read-only
+  `screen_corridor_blockers.py` (+ its per-object minimal-eviction search):
+  the **J3 SOUTH-BAND WALL** -- J3's sixteen lands in one row at y=146.380,
+  shell to the north, board edge at y=148.000 and `min_copper_edge_clearance`
+  0.50 mm leave a usable band of y in [147.155,147.500] = 0.345 mm, ONE
+  0.25 mm track, contested by D+ east, D- east and `J3.A1`/`B12`'s ground
+  escape, with D+/D- lands INTERLEAVED so the two shorts must cross; the
+  minimal `GND` eviction that opens the pair is exactly `A1`/`B12`'s own
+  escape, so the fix is a J3 FANOUT TRANSACTION, not a search -- and the
+  **USB MCU-SIDE CROSSING-COPPER WALL**, `NO_PATH` at 100/50/25 um grids and
+  after dropping every containment-bounded object (34/29 nets), opening only
+  when all 120 `F.Cu` nets are stripped board-wide, so it needs an `F.Cu` MCU
+  fanout refloorplan. `--evict` is committed OFF by default; its first real
+  transaction was correctly REFUSED (routed `USB_D_CONN_P` but left `GND` 14
+  -> 15) and the refusal is kept as evidence. Authority `5b929a00...` ->
+  `d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755`.
+  Evidence `d584-partial-batch16.json`, `d584-verify.json`,
+  `d584-pour-damage.json`, `d584-pour-damage-next.json`,
+  `d584-usb-corridor.json`, `d584-i2c-pour-refusal.json`,
+  `d584-evict-refused.json`. **Next:** the screen re-run on the promoted board
+  reports **ZERO `PROMOTABLE` nets left** -- the clean seam is mined out. 22
+  nets are `NO_COPPER`; the remaining 6 are `POUR_DAMAGE` blocked by exactly
+  FOUR pads (`GND` `U3.12`, `+3V3` `J1.35`/`R19.1`/`R26.1`), which gate
+  `/I2C_SDA_INT` (-5), `/I2C_SCL_INT` (-3), `BTN_DOWN_N` (-1), `EXT_SDA` (-1),
+  `/NFC_CS_N` and `/ACC_5V_BOOST_EN` -- ~10 edges including the whole internal
+  I2C bus. All four are bonded ONLY by an outer pour and none takes a barrel
+  or an escape at ANY permitted geometry (proved for class-default AND the
+  `.kicad_dru` class floor, each with and without `--neck`), so the next
+  bounded framework task is POUR-BOND PROTECTION: keep foreign copper out of
+  the pour neck bonding a pad whose only bond is the pour. No owner decision.
 - **Demo D-580 (`+3V3` In3 plane; pour + 56 stitched pads PROMOTED):** `+3V3`
   owned 79 of the 203 retained open edges left by D-579 across 80 pads and no
   copper at all. `screen_inner_plane.py` (read-only) screened a pour on both
