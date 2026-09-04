@@ -1,0 +1,376 @@
+{
+ "+3V3": [
+  {
+   "cluster": [
+    "R19.1",
+    "R26.1"
+   ],
+   "pads": 2,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "R19.1",
+   "pour_same_layer": false,
+   "pad_mm": 8.255
+  },
+  {
+   "cluster": [
+    "U5.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U5.2",
+   "pour_same_layer": false,
+   "pad_mm": 2.386
+  },
+  {
+   "cluster": [
+    "U9.1"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "F",
+   "pour_from": "U9.1",
+   "pour_same_layer": false,
+   "pad_mm": 6.427
+  },
+  {
+   "cluster": [
+    "C5.1"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "F",
+   "pour_from": "C5.1",
+   "pour_same_layer": false,
+   "pad_mm": 6.023
+  },
+  {
+   "cluster": [
+    "U4.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U4.2",
+   "pour_same_layer": false,
+   "pad_mm": 1.651
+  },
+  {
+   "cluster": [
+    "U4.3"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U4.3",
+   "pour_same_layer": false,
+   "pad_mm": 1.72
+  },
+  {
+   "cluster": [
+    "U4.5"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U4.5",
+   "pour_same_layer": false,
+   "pad_mm": 2.581
+  },
+  {
+   "cluster": [
+    "U4.8"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U4.8",
+   "pour_same_layer": false,
+   "pad_mm": 4.095
+  },
+  {
+   "cluster": [
+    "U4.12"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I3",
+   "pour_from": "U4.12",
+   "pour_same_layer": false,
+   "pad_mm": 3.382
+  },
+  {
+   "cluster": [
+    "U17.5"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "F",
+   "pour_from": "U17.5",
+   "pour_same_layer": false,
+   "pad_mm": 4.519
+  },
+  {
+   "cluster": [
+    "U3.21"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "F",
+   "pour_from": "U3.21",
+   "pour_same_layer": false,
+   "pad_mm": 1.95
+  },
+  {
+   "cluster": [
+    "U12.5"
+   ],
+   "pads": 1,
+   "pour_mm": 0.213,
+   "pour_layer": "I3",
+   "pour_from": "U12.5",
+   "pour_same_layer": false,
+   "pad_mm": 11.107
+  },
+  {
+   "cluster": [
+    "R127.1"
+   ],
+   "pads": 1,
+   "pour_mm": 0.355,
+   "pour_layer": "I3",
+   "pour_from": "R127.1",
+   "pour_same_layer": false,
+   "pad_mm": 9.103
+  },
+  {
+   "cluster": [
+    "R129.1"
+   ],
+   "pads": 1,
+   "pour_mm": 0.543,
+   "pour_layer": "F",
+   "pour_from": "R129.1",
+   "pour_same_layer": false,
+   "pad_mm": 6.951
+  },
+  {
+   "cluster": [
+    "U12.4"
+   ],
+   "pads": 1,
+   "pour_mm": 0.706,
+   "pour_layer": "I3",
+   "pour_from": "U12.4",
+   "pour_same_layer": false,
+   "pad_mm": 10.788
+  },
+  {
+   "cluster": [
+    "C3.1",
+    "R2.1",
+    "R27.1"
+   ],
+   "pads": 3,
+   "pour_mm": 1.269,
+   "pour_layer": "F",
+   "pour_from": "R2.1",
+   "pour_same_layer": true,
+   "pad_mm": 3.037
+  },
+  {
+   "cluster": [
+    "R39.1"
+   ],
+   "pads": 1,
+   "pour_mm": 1.682,
+   "pour_layer": "I3",
+   "pour_from": "R39.1",
+   "pour_same_layer": false,
+   "pad_mm": 9.567
+  },
+  {
+   "cluster": [
+    "C7.1"
+   ],
+   "pads": 1,
+   "pour_mm": 1.69,
+   "pour_layer": "I3",
+   "pour_from": "C7.1",
+   "pour_same_layer": false,
+   "pad_mm": 4.229
+  },
+  {
+   "cluster": [
+    "U1.2"
+   ],
+   "pads": 1,
+   "pour_mm": 1.775,
+   "pour_layer": "I3",
+   "pour_from": "U1.2",
+   "pour_same_layer": false,
+   "pad_mm": 11.461
+  }
+ ],
+ "GND": [
+  {
+   "cluster": [
+    "D4.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "B",
+   "pour_from": "D4.2",
+   "pour_same_layer": false,
+   "pad_mm": 3.435
+  },
+  {
+   "cluster": [
+    "J3.A12",
+    "J3.B1"
+   ],
+   "pads": 2,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "J3.A12",
+   "pour_same_layer": false,
+   "pad_mm": 3.456
+  },
+  {
+   "cluster": [
+    "R111.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "R111.2",
+   "pour_same_layer": false,
+   "pad_mm": 2.519
+  },
+  {
+   "cluster": [
+    "J1.43"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "B",
+   "pour_from": "J1.43",
+   "pour_same_layer": false,
+   "pad_mm": 2.5
+  },
+  {
+   "cluster": [
+    "D5.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "B",
+   "pour_from": "D5.2",
+   "pour_same_layer": false,
+   "pad_mm": 0.58
+  },
+  {
+   "cluster": [
+    "D2.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "B",
+   "pour_from": "D2.2",
+   "pour_same_layer": false,
+   "pad_mm": 2.118
+  },
+  {
+   "cluster": [
+    "R110.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "R110.2",
+   "pour_same_layer": false,
+   "pad_mm": 7.316
+  },
+  {
+   "cluster": [
+    "C1.1"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "C1.1",
+   "pour_same_layer": false,
+   "pad_mm": 5.503
+  },
+  {
+   "cluster": [
+    "U9.16"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "U9.16",
+   "pour_same_layer": false,
+   "pad_mm": 2.0
+  },
+  {
+   "cluster": [
+    "U2.2",
+    "U2.3"
+   ],
+   "pads": 2,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "U2.2",
+   "pour_same_layer": false,
+   "pad_mm": 5.762
+  },
+  {
+   "cluster": [
+    "U11.11",
+    "U11.4",
+    "U11.5"
+   ],
+   "pads": 3,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "U11.4",
+   "pour_same_layer": false,
+   "pad_mm": 0.5
+  },
+  {
+   "cluster": [
+    "C37.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "C37.2",
+   "pour_same_layer": false,
+   "pad_mm": 3.3
+  },
+  {
+   "cluster": [
+    "C63.2"
+   ],
+   "pads": 1,
+   "pour_mm": 0.0,
+   "pour_layer": "I1",
+   "pour_from": "C63.2",
+   "pour_same_layer": false,
+   "pad_mm": 1.851
+  },
+  {
+   "cluster": [
+    "MK1.4"
+   ],
+   "pads": 1,
+   "pour_mm": 0.775,
+   "pour_layer": "I4",
+   "pour_from": "MK1.4",
+   "pour_same_layer": false,
+   "pad_mm": 2.209
+  }
+ ]
+}

@@ -65,7 +65,9 @@ import pcbnew                                            # noqa: E402
 import qrouter as qr                                     # noqa: E402
 import incremental_router as ir                          # noqa: E402
 import maze3d as mz                                      # noqa: E402
-from route_maze_batch import net_contract                # noqa: E402
+from route_maze_batch import (net_contract, DRU_CLASS,   # noqa: E402
+                              ANNULAR_MIN, load_guard, guard_for,
+                              reserved_inner_planes, permitted_layers)
 
 BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 
@@ -229,7 +231,41 @@ def coverage(field, poly):
     return mask
 
 
-def screen_net(qb, board, net, contract, grid):
+def stitch_contract(board, net, stitch_width, stitch_via):
+    """`net_contract` re-clamped to the geometry the PLANE STITCH actually lays.
+
+    THIS SCREEN ASKED THE WRONG QUESTION ONCE, AND THE BOARD SAID SO.
+
+    A bridge is a barrel, and the barrel a plane stitch plants is not the
+    netclass via.  `route_maze_batch` clamps a stitch to the `.kicad_dru` CLASS
+    FLOOR -- the POWER 0.40 mm drill and the 0.125 mm annular ring -- because a
+    stitch stub is a few tenths of a millimetre from a pad to the pour directly
+    under it, not a cross-board rail run.  On `+3V3` that is a 0.65 mm barrel
+    against the netclass 0.80 mm, and `Field.via_ok` is built at the barrel
+    DIAMETER, so screening at the netclass figure asks for 0.075 mm more
+    clearance on all six layers than the stitch will ever need and reports
+    sites as illegal that the router can take.
+
+    The clamps here are the SAME ones `route_maze_batch.propose` applies, and
+    they only ever raise: the drill is clamped up to the class floor and the
+    diameter up to drill + 2 x the annular minimum, so this can never propose a
+    barrel KiCad's own `hole_size` / `annular_width` checks would refuse.
+    Passing neither option reproduces `net_contract` exactly.
+    """
+    c = net_contract(board, net)
+    if stitch_width:
+        c["width"] = max(stitch_width,
+                         DRU_CLASS.get(c["netclass"], {}).get("width", 0))
+    if stitch_via:
+        drill = max(stitch_via[1],
+                    DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
+        c["via_drill"] = drill
+        c["via_dia"] = max(stitch_via[0], drill + 2 * ANNULAR_MIN)
+    return c
+
+
+def screen_net(qb, board, net, contract, grid, layers=None,
+               guard=None):
     islands = filled_islands(board, net)
     if not islands:
         return dict(net=net, plane=False)
@@ -244,7 +280,8 @@ def screen_net(qb, board, net, contract, grid):
 
     field = mz.Field(qb, net, contract['width'], contract['clr'],
                      contract['clr'], contract['via_dia'],
-                     contract['via_drill'], grid)
+                     contract['via_drill'], grid,
+                     layers=layers, guard=guard)
 
     # per-cluster coverage, unioned over layers, plus per (cluster, layer)
     cov, cov_layer = {}, {}
@@ -326,6 +363,18 @@ def main():
     # severed, which by definition does not exist on the promoted board.
     ap.add_argument("--board", type=Path, default=BOARD)
     ap.add_argument("--grid", type=int, default=100000)
+    ap.add_argument("--stitch-width", type=int, default=0,
+                    help="screen at this track width, clamped UP to the "
+                         ".kicad_dru class floor (0 = the netclass width)")
+    ap.add_argument("--stitch-via", default=None, metavar="DIA:DRILL",
+                    help="screen at this barrel, clamped UP to the .kicad_dru "
+                         "class drill floor and the annular minimum "
+                         "(default: the netclass via)")
+    ap.add_argument("--guard", type=Path,
+                    help="a pour_bond_guard.py spec; its tubes are removed "
+                         "from the via lattice exactly as the router removes "
+                         "them, so a site this screen reports is one the gate "
+                         "would also admit")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 
@@ -337,11 +386,20 @@ def main():
     nets = a.nets or sorted({z.GetNetname() for z in board.Zones()
                              if not z.GetIsRuleArea() and z.IsFilled()
                              and z.GetNetname()})
+    via = tuple(int(v) for v in a.stitch_via.split(":")) if a.stitch_via else None
+    guard_spec = load_guard(a.guard)
+    reserved = reserved_inner_planes(board)
     out = dict(schema=1, board=str(board_path), board_sha256=sha256(board_path),
-               grid_nm=a.grid, nets=[])
+               grid_nm=a.grid, nets=[],
+               stitch_width=a.stitch_width, stitch_via=a.stitch_via,
+               guard=str(a.guard) if a.guard else None,
+               guard_sha256=sha256(a.guard) if a.guard else None)
     for net in nets:
-        out['nets'].append(screen_net(qb, board, net,
-                                      net_contract(board, net), a.grid))
+        c = stitch_contract(board, net, a.stitch_width, via)
+        out['nets'].append(screen_net(
+            qb, board, net, c, a.grid,
+            layers=permitted_layers(qb.routable, c['layers'], reserved, net),
+            guard=guard_for(guard_spec, net) if guard_spec else None))
     text = json.dumps(out, indent=2, sort_keys=True)
     if a.out:
         a.out.write_text(text, encoding="utf-8")

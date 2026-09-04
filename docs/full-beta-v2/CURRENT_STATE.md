@@ -13,6 +13,80 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-594 (pour residual opened and MEASURED; 2 edges PROMOTED, the
+  barrel wall named):** D-585 named the pour residual -- 33 of 91 retained open
+  edges, `+3V3` 19 and `GND` 14 -- as the largest block and the next task.
+  It had never been re-offered to the stitch: `--repair-planes` only serves a
+  pour-owning net THE RUN ITSELF regressed, so the residual left by D-579/D-580
+  has sat untouched while D-582..D-585 changed the board under it. Driven
+  through the FULL gate as an ordinary primary proposal with every lever --
+  `--split-islands` (the residual is exactly the case the default predicate
+  hides), `--join-residual` at 8 mm, `--neck` at 1.5 mm, `--repair-planes`, and
+  D-585's regenerated 45-tube guard -- and at the `.kicad_dru` CLASS FLOORS
+  (`--stitch-width 300000 --stitch-via 600000:300000`, clamped UPWARDS per net
+  to 0.400 mm / 0.650x0.400 on `+3V3` and left at 0.300 / 0.600x0.300 on `GND`).
+  Whole-board retained open edges **91 -> 89**, ratsnest 107 -> 105, `+3V3`
+  19 -> 17 (`U3.21`, `U9.1`), ZERO nets regressed, the plane repair had nothing
+  to do, `GND` stitched nothing and was reverted whole; 9 objects added
+  (6 tracks + 3 vias, 2.025 mm), zero removed, zero zones touched. `U9.1` is
+  the FIRST DRU-licensed pad-escape neck ever promoted here -- no legal
+  0.400 mm launch in any of 72 headings, one 0.200 mm segment wholly inside
+  U9's courtyard, zero `track_width` DRC reports. That exposed a gap in the
+  independent verifier and closed it: `verify_promotion.py --neck` admits a
+  narrow track only on the board's own terms -- at least the necking minimum
+  AND wholly inside a courtyard the rule NAMES, proved with the same
+  `maze3d.Neck` that confined the search, on the CONTINUOUS segment -- rather
+  than by lowering the asserted floor, which would have admitted 0.200 mm
+  anywhere. Opt-in; OFF path proved byte-identical. Re-proved independently,
+  all 12 checks PASS: 0 removed, 9 added all on `+3V3`, widths {0.200, 0.400}
+  on `F`/`B` ONLY (nothing on the reserved `In1`/`In4`/`In3`), the single
+  narrow segment licensed with zero strays, vias 0.650/0.400, zone inventory
+  unchanged, real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO
+  attributable and ZERO parity errors, fill-stable, D-269/D-186 live,
+  `hardware/beta-v2/` untouched. All 15 protected nets (393 objects:
+  `ACC_5V_SW_EN`, `ACC_3V3_SW`, three `FRONT_RGB_*_N`, XGPIO4/5 + headers,
+  every `BAT_*`) BYTE-IDENTICAL to D-585; J5.9-12/15-18 approved NC intact.
+  Authority `b2b787a3...` ->
+  `4627ed9cec35eff63da926e75b4989ad8c558c621334af974381e16f15e9eb45`.
+  **The other 30 clusters were diagnosed rather than asserted.** The escape
+  wall is nearly gone -- `--neck` moved `U9.1`, `U11.4/5/11`, `U12.4`, `U12.5`
+  off it, exactly the courtyards the DRU rule names; what remains on it is the
+  packages the rule does NOT name (`U4` x5, `U5.2`, `D2.2`, `D4.2`, `D5.2`,
+  `J1.43`, `MK1.4`, `U9.16`). The real wall is a POCKET: for 22 clusters a
+  wavefront from every escape reaches only **19-1339 lattice cells**
+  (0.19-13.4 mm2) containing ZERO legal barrel sites, while the nearest legal
+  barrel sits 1.166-7.240 mm away beyond the pocket wall. Of the 13 clusters
+  that still own a severed pour island (up to 52.89 mm2), ELEVEN have ZERO
+  legal 0.60/0.65 mm barrel cells anywhere inside their own copper. Two things
+  came out of that measurement. **(1) `stitch_pad` plants the NEAREST legal
+  barrel, not one that does WORK** -- `U1.2` got a barrel at (61.9,119.7) and
+  its edge did not close (3 stitches, 2 edges), because the primitive has no
+  notion of what its barrel LANDS on and it merged the cluster with its own
+  In3 island; the corrected `screen_pour_bridges.py` had already named the
+  right site, (63.1,123.4), one of 1688 where `U1.2`'s F copper lies over the
+  BODY's In3. The promoted barrel is legal, on-net and DRC-clean so it stays.
+  **(2) The board's ALREADY-COMMITTED fine-pitch barrel unlocks four more** --
+  the `.kicad_dru` carries six named 0.35/0.20 mm/0.075 mm annular via rules
+  (D-257/D-266/D-531), so that drill needs no new fab capability, and at that
+  geometry `+3V3` `R19.1`/`R26.1` (18 sites), `+3V3` `R129.1` (1),
+  `GND` `C63.2` (13) and `GND` `U11.11/4/5` (6) each gain a zero-track,
+  zero-escape bridge straight to the body. `screen_pour_bridges.py` --
+  recovered by D-584, never once run -- now takes `--stitch-width`/
+  `--stitch-via` with the same upward-only clamps, honours reserved inner
+  planes and applies the guard; OFF path reproduces exactly.
+  Evidence `d594-plane-residual-stitch.json`, `d594-verify.json`,
+  `d594-protected-copper.json`, `d594-pour-residual-pockets.json`,
+  `d594-orphan-pour-gap.json`, `d594-orphan-barrel-stitch.json`,
+  `d594-orphan-barrel-fine.json`, `d594-pour-bridges-stitch.json`,
+  `d594-pour-bridges-contract-off.json`.
+  **Next:** the pour residual is 31 of 89 and its next task is a specific batch,
+  not a search -- fix the stitch landing rule, add a bridge emitter (one barrel,
+  no track, no escape; no primitive emits this today), add the five named
+  `.kicad_dru` fine-pitch via rules those bridges need, and take all five
+  clusters through the gate as ONE transaction. Measured payoff **+5 edges,
+  89 -> 84**, five vias, zero tracks. Beyond it the residual is a
+  fanout/floorplan wall on `U4`, `D2`/`D4`/`D5`, `J1.43` and `MK1.4`, whose
+  pads cannot launch at any width the board licenses. No owner decision.
 - **Demo D-585 (pour-bond protection; 5 nets PROMOTED, the pour-damage refusal
   class RETIRED):** D-584 left six nets that routed cleanly and were refused for
   exactly FOUR pads -- `+3V3` `J1.35`/`R19.1`/`R26.1`, `GND` `U3.12` -- each

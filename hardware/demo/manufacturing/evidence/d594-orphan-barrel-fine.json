@@ -1,0 +1,153 @@
+{
+ "+3V3": [
+  {
+   "cluster": [
+    "C3.1",
+    "R2.1",
+    "R27.1"
+   ],
+   "layer": "F",
+   "cells": 1141,
+   "legal_barrel_cells": 22,
+   "over": {
+    "I3/C3.1,R2.1": 15
+   }
+  },
+  {
+   "cluster": [
+    "C3.1",
+    "R2.1",
+    "R27.1"
+   ],
+   "layer": "I3",
+   "cells": 5294,
+   "legal_barrel_cells": 256,
+   "over": {
+    "F/C3.1,R2.1": 15
+   }
+  },
+  {
+   "cluster": [
+    "R129.1"
+   ],
+   "layer": "F",
+   "cells": 803,
+   "legal_barrel_cells": 4,
+   "over": {
+    "I3/R129.1": 4
+   }
+  },
+  {
+   "cluster": [
+    "R129.1"
+   ],
+   "layer": "I3",
+   "cells": 2668,
+   "legal_barrel_cells": 5,
+   "over": {
+    "F/BODY": 1,
+    "F/R129.1": 4
+   }
+  },
+  {
+   "cluster": [
+    "R19.1",
+    "R26.1"
+   ],
+   "layer": "F",
+   "cells": 2046,
+   "legal_barrel_cells": 18,
+   "over": {
+    "I3/BODY": 18
+   }
+  },
+  {
+   "cluster": [
+    "U1.2"
+   ],
+   "layer": "F",
+   "cells": 7179,
+   "legal_barrel_cells": 2518,
+   "over": {
+    "I3/BODY": 2225,
+    "I3/U1.2": 293
+   }
+  },
+  {
+   "cluster": [
+    "U1.2"
+   ],
+   "layer": "I3",
+   "cells": 2755,
+   "legal_barrel_cells": 396,
+   "over": {
+    "F/U1.2": 293
+   }
+  },
+  {
+   "cluster": [
+    "U5.2"
+   ],
+   "layer": "F",
+   "cells": 16,
+   "legal_barrel_cells": 0,
+   "over": {}
+  }
+ ],
+ "GND": [
+  {
+   "cluster": [
+    "C37.2"
+   ],
+   "layer": "B",
+   "cells": 515,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "C63.2"
+   ],
+   "layer": "B",
+   "cells": 839,
+   "legal_barrel_cells": 13,
+   "over": {
+    "I1/BODY": 13,
+    "I4/BODY": 13
+   }
+  },
+  {
+   "cluster": [
+    "U11.11",
+    "U11.4",
+    "U11.5"
+   ],
+   "layer": "B",
+   "cells": 502,
+   "legal_barrel_cells": 6,
+   "over": {
+    "I1/BODY": 6,
+    "I4/BODY": 6
+   }
+  },
+  {
+   "cluster": [
+    "U2.2",
+    "U2.3"
+   ],
+   "layer": "B",
+   "cells": 308,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "U9.16"
+   ],
+   "layer": "B",
+   "cells": 31,
+   "legal_barrel_cells": 0,
+   "over": {}
+  }
+ ]
+}

@@ -1,0 +1,432 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "b2b787a334d83b16e680485e520fcaba131d6cb83c9a91bac165da494923c0d5",
+  "grid_nm": 100000,
+  "guard": null,
+  "guard_sha256": null,
+  "nets": [
+    {
+      "body_pads": 60,
+      "bridgeable": 1,
+      "clusters": 20,
+      "contract": {
+        "clr": 200000,
+        "known_class": true,
+        "layers": null,
+        "net": "+3V3",
+        "netclass": "P3V3",
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "detail": [
+        {
+          "bridge": null,
+          "cluster": [
+            "C3.1",
+            "R2.1",
+            "R27.1"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 11.32
+            },
+            {
+              "layer": "I3",
+              "mm2": 52.89
+            }
+          ],
+          "pads": 3,
+          "why": "no legal 0.80 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R19.1",
+            "R26.1"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 20.53
+            }
+          ],
+          "pads": 2,
+          "why": "no legal 0.80 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "C5.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "C7.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R127.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R129.1"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 7.99
+            },
+            {
+              "layer": "I3",
+              "mm2": 26.56
+            }
+          ],
+          "pads": 1,
+          "why": "no legal 0.80 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R39.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": {
+            "from_layer": "F",
+            "sites": 1434,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "to_layer": "I3",
+            "xy": [
+              63.0,
+              123.6
+            ]
+          },
+          "cluster": [
+            "U1.2"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 71.48
+            },
+            {
+              "layer": "I3",
+              "mm2": 27.32
+            }
+          ],
+          "pads": 1
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U12.4"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U12.5"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U17.5"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U3.21"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U4.12"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U4.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U4.3"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U4.5"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U4.8"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U5.2"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 0.18
+            }
+          ],
+          "pads": 1,
+          "why": "no legal 0.80 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U9.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        }
+      ],
+      "net": "+3V3",
+      "orphans": 19,
+      "plane": true
+    },
+    {
+      "body_pads": 236,
+      "bridgeable": 0,
+      "clusters": 15,
+      "contract": {
+        "clr": 200000,
+        "known_class": true,
+        "layers": null,
+        "net": "GND",
+        "netclass": "GND",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "detail": [
+        {
+          "bridge": null,
+          "cluster": [
+            "U11.11",
+            "U11.4",
+            "U11.5"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 5.03
+            }
+          ],
+          "pads": 3,
+          "why": "no legal 0.60 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "islands": [],
+          "pads": 2,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U2.2",
+            "U2.3"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 3.03
+            }
+          ],
+          "pads": 2,
+          "why": "no legal 0.60 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "C1.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "C37.2"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 5.27
+            }
+          ],
+          "pads": 1,
+          "why": "no legal 0.60 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "C63.2"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 8.42
+            }
+          ],
+          "pads": 1,
+          "why": "no legal 0.60 mm barrel inside this island over any other cluster"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "D2.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "D4.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "D5.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "J1.43"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "MK1.4"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R110.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "R111.2"
+          ],
+          "islands": [],
+          "pads": 1,
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "bridge": null,
+          "cluster": [
+            "U9.16"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 0.35
+            }
+          ],
+          "pads": 1,
+          "why": "no legal 0.60 mm barrel inside this island over any other cluster"
+        }
+      ],
+      "net": "GND",
+      "orphans": 14,
+      "plane": true
+    }
+  ],
+  "schema": 1,
+  "stitch_via": null,
+  "stitch_width": 0
+}

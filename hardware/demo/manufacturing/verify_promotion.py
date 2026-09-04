@@ -10,8 +10,11 @@ driver's scratch tree, its ledger or its evidence JSON:
 
   * NO pre-existing track or via was moved or removed;
   * every ADDED object lies on one of the nets the promotion claimed;
-  * every added track meets the width the caller asserts, and every added via
-    meets the drill and annular-ring floors it asserts;
+  * every added track meets the width the caller asserts -- or, if it is
+    narrower, is a DRU-LICENSED pad-escape neck: at least the necking minimum
+    AND lying wholly inside one of the courtyards the `.kicad_dru` rule names,
+    proved with the same `maze3d.Neck` the router was confined by;
+  * every added via meets the drill and annular-ring floors it asserts;
   * the zone inventory changed by exactly the pours the caller asserts, and no
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
@@ -108,6 +111,61 @@ def drc(path, out):
         unconnected_items=len(report.get("unconnected_items", [])))
 
 
+def neck_proof(path, tracks, floor):
+    """Which added tracks are narrower than `floor`, and are they licensed?
+
+    A plane stitch out of a fine-pitch power package launches at the
+    `.kicad_dru` "Pad-escape necking - width" minimum, not at the class floor,
+    and D-594's `U9.1` barrel is the first promotion to carry one.  Asserting
+    the class floor and watching it fail says nothing useful; LOWERING the
+    asserted floor to the neck says nothing at all, because it would then admit
+    a 0.20 mm segment anywhere on the board.
+
+    So a narrow segment is admitted only on the terms the board's own rule
+    grants it: at least the necking minimum, and lying wholly inside one of the
+    courtyards that rule NAMES.  Containment is proved by `maze3d.Neck` -- the
+    same class, read from the same `.kicad_dru`, that confined the search --
+    and on the CONTINUOUS segment, not merely its endpoints, because KiCad
+    matches a rule against the copper and a straight run between two inside
+    points can still bulge across a re-entrant courtyard edge.
+
+    Returns (ok, detail).  With no narrow track at all this is vacuously true
+    and reports so, which is what every prior promotion will report.
+    """
+    narrow = [x for x in tracks if floor and x[7] < floor]
+    if not narrow:
+        return True, dict(narrow_tracks=0, licensed=0, neck=None)
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
+    import pcbnew
+    import maze3d as mz
+    board = pcbnew.LoadBoard(str(path))
+
+    class _Shim(object):                 # `neck_rule` reads only `qb.b`
+        pass
+    shim = _Shim()
+    shim.b = board
+    neck = mz.neck_rule(shim)
+    detail = dict(narrow_tracks=len(narrow),
+                  neck=(dict(min_width_nm=neck.min_w, refs=list(neck.refs))
+                        if neck else None),
+                  strays=[])
+    if neck is None:
+        return False, detail
+    ok = True
+    for x in narrow:
+        _k, net, layer, x0, y0, x1, y1, w = x
+        outside = neck.outside([(x0, y0), (x1, y1)])
+        if w < neck.min_w or outside > 0:
+            ok = False
+            detail["strays"].append(dict(net=net, layer=layer, width_nm=w,
+                                         start=[x0, y0], end=[x1, y1],
+                                         outside_nm=round(outside, 1)))
+    detail["licensed"] = len(narrow) - len(detail["strays"])
+    return ok, detail
+
+
 def stage(rev, work):
     """A project-faithful copy of the board at `rev` (or of the worktree)."""
     cell = Path(work)
@@ -136,6 +194,11 @@ def main():
                          "repeatable, omit when no pour was added")
     ap.add_argument("--track-width", type=int, default=0,
                     help="nm floor every added track must meet")
+    ap.add_argument("--neck", action="store_true",
+                    help="admit an added track BELOW --track-width when it is "
+                         "a .kicad_dru-licensed pad-escape neck: at least the "
+                         "rule's minimum width and wholly inside one of the "
+                         "courtyards the rule names")
     ap.add_argument("--via-drill", type=int, default=0,
                     help="nm floor every added via drill must meet")
     ap.add_argument("--annular", type=int, default=125000,
@@ -170,6 +233,8 @@ def main():
     contracts = {k: (v in dru) for k, v in DRU_CONTRACTS.items()}
 
     widths = sorted({x[7] for x in tracks})
+    neck_ok, neck_detail = (neck_proof(post, tracks, a.track_width)
+                            if a.neck else (True, None))
     layers = sorted({x[2] for x in tracks})
     vdims = sorted({(x[4], x[5]) for x in vias})
 
@@ -178,7 +243,8 @@ def main():
         added_only_on_claimed_nets=set(added_nets) <= set(nets),
         zone_inventory_as_claimed=(not zlost and zclaim == planes),
         track_width_floor_met=(not a.track_width
-                               or all(w >= a.track_width for w in widths)),
+                               or all(w >= a.track_width for w in widths)
+                               or (a.neck and neck_ok)),
         via_drill_floor_met=(not a.via_drill
                              or all(d >= a.via_drill for _dia, d in vdims)),
         annular_floor_met=all((dia - d) / 2 >= a.annular for dia, d in vdims),
@@ -202,6 +268,7 @@ def main():
         added_tracks=len(tracks), added_vias=len(vias),
         added_track_widths_nm=widths, added_track_layers=layers,
         added_via_dia_drill_nm=[list(v) for v in vdims],
+        pad_escape_neck=neck_detail,
         zones_added=zadded, zones_removed=zlost,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",

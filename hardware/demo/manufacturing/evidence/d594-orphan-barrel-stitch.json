@@ -1,0 +1,136 @@
+{
+ "+3V3": [
+  {
+   "cluster": [
+    "C3.1",
+    "R2.1",
+    "R27.1"
+   ],
+   "layer": "F",
+   "cells": 1141,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "C3.1",
+    "R2.1",
+    "R27.1"
+   ],
+   "layer": "I3",
+   "cells": 5294,
+   "legal_barrel_cells": 103,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "R129.1"
+   ],
+   "layer": "F",
+   "cells": 803,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "R129.1"
+   ],
+   "layer": "I3",
+   "cells": 2668,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "R19.1",
+    "R26.1"
+   ],
+   "layer": "F",
+   "cells": 2046,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "U1.2"
+   ],
+   "layer": "F",
+   "cells": 7179,
+   "legal_barrel_cells": 1801,
+   "over": {
+    "I3/BODY": 1688,
+    "I3/U1.2": 113
+   }
+  },
+  {
+   "cluster": [
+    "U1.2"
+   ],
+   "layer": "I3",
+   "cells": 2755,
+   "legal_barrel_cells": 150,
+   "over": {
+    "F/U1.2": 113
+   }
+  },
+  {
+   "cluster": [
+    "U5.2"
+   ],
+   "layer": "F",
+   "cells": 16,
+   "legal_barrel_cells": 0,
+   "over": {}
+  }
+ ],
+ "GND": [
+  {
+   "cluster": [
+    "C37.2"
+   ],
+   "layer": "B",
+   "cells": 515,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "C63.2"
+   ],
+   "layer": "B",
+   "cells": 839,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "U11.11",
+    "U11.4",
+    "U11.5"
+   ],
+   "layer": "B",
+   "cells": 502,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "U2.2",
+    "U2.3"
+   ],
+   "layer": "B",
+   "cells": 308,
+   "legal_barrel_cells": 0,
+   "over": {}
+  },
+  {
+   "cluster": [
+    "U9.16"
+   ],
+   "layer": "B",
+   "cells": 31,
+   "legal_barrel_cells": 0,
+   "over": {}
+  }
+ ]
+}
