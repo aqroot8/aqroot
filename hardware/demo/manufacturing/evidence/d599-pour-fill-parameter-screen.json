@@ -1,0 +1,45 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "conclusion": "The 27 plane-orphan edges are NOT reachable by any fill parameter.  The pads are boxed in by foreign copper, exactly as D-595 measured barrel-site by barrel-site.  The next instrument for this block is an EVICTION screen aimed at barrel SITES -- whose copper stands on the orphan cluster's own island -- not another fill experiment.",
+  "control": {
+    "fill_area_mm2": 40903.385,
+    "gnd_open_edges": 12,
+    "open_retained_nets": 32,
+    "plus3v3_open_edges": 15,
+    "raw_ratsnest": 92,
+    "retained_open_edges": 76,
+    "sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04"
+  },
+  "note": "READ-ONLY zone-FILL-PARAMETER screen of the pour residual -- the 27 plane-orphan open edges (+3V3 15, GND 12) that D-595 left as a floorplan wall.  Before any refloorplan is attempted the CHEAPEST hypothesis had to be eliminated: that the orphans are an artefact of how the pours are FILLED rather than of where the copper is.  Three variants were built from the authoritative board, refilled by the real KiCad engine (`kicad-cli pcb drc --refill-zones --save-board`) and measured with `routing_ledger.py`.  ZERO edges closed by any of them.  The residual is geometry, not fill policy.",
+  "schema": 1,
+  "variants": [
+    {
+      "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+      "change": "SetPadConnection(ZONE_CONNECTION_FULL) on all 7 non-rule-area zones",
+      "result": "VACUOUS -- byte-identical board",
+      "retained_open_edges": 76,
+      "tag": "solid",
+      "why": "the pours ALREADY connect pads solidly.  In this KiCad build ZONE_CONNECTION_FULL == 2 and ZONE_CONNECTION_THERMAL == 1, and every pour on this board carries `padconn 2`.  The 15 pad-level `(zone_connect 2)` overrides in the board file are the U1 heatsink pads and are FULL as well.  THERMAL RELIEF IS NOT WHY ANY PAD ON THIS BOARD IS ORPHAN -- do not re-measure this."
+    },
+    {
+      "board_sha256": "425b64680312",
+      "change": "SetLocalClearance(0.200 mm) on all 7 non-rule-area zones (0.250 -> the .kicad_dru routed floor)",
+      "fill_area_mm2": 41537.731,
+      "gnd_open_edges": 12,
+      "open_retained_nets": 32,
+      "plus3v3_open_edges": 15,
+      "raw_ratsnest": 92,
+      "result": "REAL but WORTHLESS -- refill grew by 634.346 mm2 of copper and closed ZERO edges",
+      "retained_open_edges": 76,
+      "tag": "clr200",
+      "verdict": "REFUSED on its merits.  It spends 0.05 mm of pour-to-signal margin board-wide -- every plane against every routed track on six layers -- and buys no connectivity at all.  A change that reduces fabrication margin for a measured zero is not a promotion."
+    },
+    {
+      "change": "solid + clr200 together",
+      "result": "identical to clr200 (solid is vacuous)",
+      "retained_open_edges": 76,
+      "tag": "both"
+    }
+  ]
+}

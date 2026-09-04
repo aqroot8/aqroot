@@ -52,15 +52,31 @@ Four questions, in escalating cost, and the verdict is whichever answers first:
      32.011 mm under 1b.
   2. SINGLE.  One foreign net at a time.  Any that opens the corridor alone is
      the cheapest possible rip-up and is reported with the resulting run length.
+
+  2W. WHOLE-NET SINGLE -- asked only where question 1 failed and 1b opened.
+     `CROSSING_COPPER_WALL` used to be a dead end here, and it stopped being
+     one when D-596 built `route_maze_batch.py --evict-whole`: a named net's
+     ENTIRE routed copper, every object, every layer, board-wide, removed in
+     one transaction on condition that the same net is REQUESTED and therefore
+     re-proposed as a primary net inside it.  That IS an executable unit, so
+     the screen owes it a candidate.  Question 2W strips one CROSSING net
+     whole, board-wide, and asks the corridor again.  Its candidate list is
+     `crossing_nets` -- every foreign net whose routed copper INTERSECTS the
+     window, a superset of question 2's wholly-contained set, because the whole
+     point is the track question 2 had to leave in place.  A net that opens it
+     is reported with the object count a real `--evict-whole` would have to
+     move and with whether `protected_copper.py` forbids touching it at all.
   3. SET.  If none opens it alone, accumulate greedily -- keep the net that
      most reduces the blocked cell count along the straight corridor -- until
      the corridor opens or the candidates run out.
 
-Only `RIPUP_SINGLE` and `RIPUP_SET` name a transaction.  `CROSSING_COPPER_WALL`
-and `PLACEMENT_WALL` are both refusals; they differ in what would have to
-change next -- a whole-net reroute or a refloorplan for the first, placement or
-a layer contract for the second -- and reporting one as the other sends the
-next iteration down the wrong road.
+`RIPUP_SINGLE`, `RIPUP_WHOLE_SINGLE` and `RIPUP_SET` name a transaction.
+`CROSSING_COPPER_WALL` and `PLACEMENT_WALL` are both refusals; they differ in
+what would have to change next -- a whole-net reroute or a refloorplan for the
+first, placement or a layer contract for the second -- and reporting one as the
+other sends the next iteration down the wrong road.  A `CROSSING_COPPER_WALL`
+that survives 2W is a STRONGER refusal than one that was never asked: it says
+no SINGLE whole-net reroute opens the corridor either.
 
 Nothing here promotes copper.  Its output is the input to a rip-up-and-reroute
 transaction, which is an ordinary gated `route_maze_batch.py` run: the ripped
@@ -79,6 +95,8 @@ ROOT = Path(__file__).resolve().parents[3]
 BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
+
+from protected_copper import PROTECTED
 
 MARGIN = 3000000        # nm: how far outside the island bbox still counts
 ROUTED = ("track", "via")
@@ -110,6 +128,42 @@ def corridor_nets(qb, layers, box, mynet):
             rec = out.setdefault(s.net, dict(track=0, via=0, layers=set()))
             rec[s.tag] += 1
             rec["layers"].add(L)
+    return out
+
+
+def crossing_nets(qb, layers, box, mynet):
+    """Foreign nets with routed copper that INTERSECTS `box` on `layers`.
+
+    A strict superset of `corridor_nets`.  That function answers question 2,
+    whose unit is a containment-bounded `--evict`, so it must ignore a track
+    that merely crosses the window.  This one answers question 2W, whose unit
+    is `--evict-whole`: the net goes away everywhere and is re-proposed, so a
+    crossing track is exactly as evictable as a contained one and pretending
+    otherwise would hide the only candidate that matters.
+
+    The tallies reported are BOARD-WIDE -- the objects an `--evict-whole` would
+    actually move -- not the ones inside the window, because those are the
+    figure that decides whether the trade is worth making.
+    """
+    x0, y0, x1, y1 = box
+    hit = set()
+    for L in layers:
+        for s in qb.shapes[L]:
+            if s.net in (None, mynet) or s.tag not in ROUTED:
+                continue
+            a, b, c, d = s.bbox(0)
+            if c < x0 or d < y0 or a > x1 or b > y1:
+                continue
+            hit.add(s.net)
+    out = {}
+    for n in hit:
+        rec = dict(track=0, via=0, layers=set())
+        for L in qb.shapes:
+            for s in qb.shapes[L]:
+                if s.net == n and s.tag in ROUTED:
+                    rec[s.tag] += 1
+                    rec["layers"].add(L)
+        out[n] = rec
     return out
 
 
@@ -303,6 +357,12 @@ def main():
     ap.add_argument("--escape-limit", type=int, default=8)
     ap.add_argument("--max-set", type=int, default=6,
                     help="greedy accumulation depth for question 3")
+    ap.add_argument("--no-whole", action="store_true",
+                    help="skip question 2W, the whole-net board-wide single "
+                         "strip that names an --evict-whole transaction")
+    ap.add_argument("--whole-cap", type=int, default=60,
+                    help="question 2W skips a candidate carrying more than "
+                         "this many routed objects board-wide; 0 = no cap")
     ap.add_argument("--no-minimal", action="store_true",
                     help="skip the per-object minimal-eviction search that "
                          "runs when a single net's rip-up opens a corridor")
@@ -379,8 +439,48 @@ def main():
                     nets_stripped=len(everywhere), executable=False)
                 edge["verdict"] = ("CROSSING_COPPER_WALL" if free.get("ok")
                                    else "PLACEMENT_WALL")
+
+                # ---- 2W. whole-net single -- the ONE executable question a
+                # crossing wall still has left.  Skipped when 1b said the wall
+                # is placement: no rip-up of any size opens that.
+                if free.get("ok") and not a.no_whole:
+                    cross = crossing_nets(qb, layers, box, net)
+                    edge["crossing_nets"] = {
+                        k: dict(tracks=v["track"], vias=v["via"],
+                                layers=sorted(v["layers"]),
+                                protected=bool(PROTECTED.search(k)))
+                        for k, v in sorted(cross.items())}
+                    wholes, capped = [], []
+                    for fn in sorted(cross):
+                        n_obj = cross[fn]["track"] + cross[fn]["via"]
+                        if a.whole_cap and n_obj > a.whole_cap:
+                            # NOT SILENT.  A candidate this screen declined to
+                            # test is reported, because "no opener found" and
+                            # "no opener LOOKED FOR" are different answers.
+                            capped.append(dict(net=fn, objects=n_obj))
+                            continue
+                        with Without(qb, field, [fn], UNBOUNDED):
+                            r = mz.route_join(qb, field, src, dst,
+                                              a.escape_limit, a.via_cost,
+                                              emit=False)
+                        if r.get("ok"):
+                            wholes.append(dict(
+                                rip_up_net=fn, mm=round(r.get("mm", 0.0), 3),
+                                tracks=cross[fn]["track"],
+                                vias=cross[fn]["via"],
+                                objects=n_obj,
+                                protected=bool(PROTECTED.search(fn))))
+                    edge["whole_net_openers"] = sorted(
+                        wholes, key=lambda d: (d["protected"], d["objects"]))
+                    edge["whole_net_untested_over_cap"] = capped
+                    if any(not w["protected"] for w in wholes):
+                        edge["verdict"] = "RIPUP_WHOLE_SINGLE"
+
                 rec["edges"].append(edge)
-                print("  %-44s %s" % (net, edge["verdict"]),
+                print("  %-44s %s%s" % (
+                    net, edge["verdict"],
+                    (" " + edge["whole_net_openers"][0]["rip_up_net"])
+                    if edge.get("whole_net_openers") else ""),
                       file=sys.stderr, flush=True)
                 continue
 

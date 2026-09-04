@@ -1,0 +1,111 @@
+{
+  "added_object_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/NFC_CS_N",
+    "/SPI_B_MOSI"
+  ],
+  "added_track_layers": [
+    "B.Cu",
+    "F.Cu",
+    "In2.Cu"
+  ],
+  "added_track_widths_nm": [
+    200000
+  ],
+  "added_tracks": 47,
+  "added_via_dia_drill_nm": [
+    [
+      600000,
+      300000
+    ]
+  ],
+  "added_vias": 12,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+  ],
+  "claimed_nets": [
+    "/NFC_CS_N",
+    "/SPI_B_MOSI",
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 90
+  },
+  "drc_pre": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 92
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 90
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 59,
+  "objects_removed": 15,
+  "pad_escape_neck": null,
+  "pour_bridge": null,
+  "pre_board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "promoted_board_sha256": "b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233",
+  "ref": "HEAD",
+  "removed_object_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+  ],
+  "removed_sample": [
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 23950000, 30200000, 27000000, 26950000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 27000000, 26950000, 27025000, 26400000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 27025000, 26400000, 29850000, 23600000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 27525000, 33950000, 23950000, 30200000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 29850000, 23600000, 32675000, 23600000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 32675000, 23600000, 33475000, 22750000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 32800000, 35500000, 33225000, 37500000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 33475000, 22750000, 33225000, 22500000, 300000)"
+  ],
+  "rule_areas_added": [],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

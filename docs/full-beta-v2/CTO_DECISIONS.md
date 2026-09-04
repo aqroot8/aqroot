@@ -6305,6 +6305,148 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-599 · 2026-09-04 · Demo rip-up-and-reroute; NFC/SPI-B fanout, 2 edges PROMOTED, an analog reference repaired, and the USB corridor named as the next blocker
+
+`/NFC_CS_N` read `CROSSING_COPPER_WALL` on the board D-598 promoted. That is a
+refusal, not a plan, and it stopped being one because the screen learned a
+question it did not have. Whole-board retained open edges **76 -> 74**, raw
+ratsnest 92 -> 90, open retained nets 32 -> 30, `/NFC_CS_N` 1 -> 0,
+`/SPI_B_MOSI` 1 -> 0, ZERO nets regressed, zero zones touched. Authority
+`83b6a140...` ->
+`b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233`.
+
+**THE CAPABILITY -- QUESTION 2W, the question `--evict-whole` deserved all
+along.** `screen_corridor_blockers.py` asked four questions and none of them
+matched the strongest instrument the router owns. Question 2 tries one foreign
+net at a time but may only remove copper WHOLLY INSIDE the corridor window,
+because that is what a containment-bounded `--evict` executes; a track that
+merely CROSSES the window is left in place, and when it is the wall the screen
+reported `CROSSING_COPPER_WALL` and stopped. D-596 built `--evict-whole` for
+exactly that case -- a named net's entire routed copper, every object, every
+layer, board-wide, on condition that the net is also REQUESTED and re-proposed
+inside the same transaction. That IS an executable unit and the screen owed it a
+candidate. Question **2W** strips one CROSSING net whole and asks the corridor
+again, over the new `crossing_nets` -- every foreign net whose copper INTERSECTS
+the window, a strict superset of question 2's set, because the whole point is the
+track question 2 had to leave behind. Every opener carries the object count a
+real `--evict-whole` would move and a `protected` flag from `protected_copper.py`;
+a candidate skipped by `--whole-cap` is REPORTED in
+`whole_net_untested_over_cap`, because "no opener found" and "no opener LOOKED
+FOR" are different answers. On its first run it converted `/NFC_CS_N` from
+`CROSSING_COPPER_WALL` to `RIPUP_WHOLE_SINGLE /04_SPI_B_RADIOS_NFC/NFC_AGDC`.
+The OFF path is unchanged: `--no-whole`, and every non-crossing edge takes the
+identical code path it took before.
+
+**THE EVICTED NET IS THE ONE THAT GAINS MOST, and that was not the plan.**
+`NFC_AGDC` is the ST25R3916's analog reference node and the schematic states, in
+ST DS12484's own words, that its decoupling **"must be placed very close to the
+pin during PCB layout"**. It was carrying **17 `B.Cu` tracks and 40.627 mm** of
+copper to reach two capacitors 6.1 mm and 9.5 mm from `U9.24`. Rebuilt from bare
+pads it takes **15 tracks and 22.656 mm** -- `C54.1 -> U9.24` in 7.58 mm,
+`C53.1 -> U9.24` in 15.08 mm. The rip-up REPAIRS a documented layout requirement
+the board was quietly violating; the two closed edges are the second benefit.
+
+**THE U9 FANOUT FITS EXACTLY TWO OF THREE, MEASURED IN THREE ORDERINGS.**
+`U9.29`/`U9.30`/`U9.31` are adjacent lands on a 0.5 mm-pitch UFQFPN-32 and
+whichever of `NFC_CS_N`/`SPI_B_SCK`/`SPI_B_MOSI` is routed LAST returns
+`NO_LEGAL_ESCAPE_DST` every time -- `CS,SCK,MOSI` closes CS+MOSI, `SCK,CS,MOSI`
+closes CS+SCK, and the same order with `--neck` is behaviourally identical with
+`necks: NONE`. **`--neck` was VACUOUS for the third promotion running** even
+though `U9` IS one of the ten courtyards the `.kicad_dru` necking rule names:
+the third land is denied a CORRIDOR, not a WIDTH, and a width lever cannot buy a
+corridor. The promoted ordering is the first -- 8.4 mm leaner, one barrel
+cheaper, and it leaves the CLOCK rather than a data line for later, on the view
+that committing `SPI_B_SCK` to the longest of the three paths is the choice
+hardest to undo. This is the SHARED-CORRIDOR ALLOCATION wall D-596 and D-598
+both recorded, now shown to hold for a PIN FIELD as well as a corridor.
+
+**RE-PROVED INDEPENDENTLY, all 14 checks PASS** (`verify_promotion.py
+--evicted`): 15 objects removed and every one on the evicted net; 59 added
+(47 tracks + 12 vias) and every one on a claimed net; every track 0.200 mm on
+`F`/`B`/`In2`; every barrel 0.60/0.30 mm; zone and rule-area inventories
+unchanged; KiCad's OWN unconnected-item count **92 -> 90**; real zone-refilled
+schematic-parity DRC at `--severity-all` exactly 199 / 5 / 1 inherited with ZERO
+attributable and ZERO parity reports; fill-stable; D-269 / D-186 rule text live;
+`hardware/beta-v2/` untouched. `protected_copper.py`: 15 nets / 393 objects
+BYTE-IDENTICAL. `pour_bond_contract.py` P1-P4 PASS on the regenerated 48-tube
+guard; `neck_contract.py` passes. J5.9-12 / J5.15-18 remain approved NC.
+
+**OPEN SI ITEM, RECORDED NOT HIDDEN.** The two new branches are long --
+`/NFC_CS_N` +100.07 mm and `/SPI_B_MOSI` +116.86 mm. That is PLACEMENT, not
+routing: `U9` sits at (35.8, 27.7) and `U1` at (46, 120), 93 mm apart, and the
+straight-line island gap for `NFC_CS_N` is 82.95 mm, so the realized path is
+1.21x direct. At a 10 MHz SPI clock with ~2 ns edges the critical length is
+about 50 mm, so these branches are electrically long. **RULING: run the
+ST25R3916 SPI link at 1-4 MHz on the Demo and reduce the ESP32-S3 GPIO drive
+strength on this bus.** NFC throughput is not a demonstrated Demo feature, and
+an electrically long CONNECTED branch is strictly better than the open net it
+replaces on a MUST-HAVE feature. This is a firmware/DFM note, not a fabrication
+blocker, and it is not an owner decision.
+
+**TWO NEGATIVE RESULTS BANKED so they are never re-measured.**
+(1) The 27 plane-orphan edges (`+3V3` 15, `GND` 12) are NOT a fill artefact. The
+pours already connect pads SOLIDLY -- in this KiCad build
+`ZONE_CONNECTION_FULL == 2` and every pour carries `padconn 2`, so **thermal
+relief is not why any pad on this board is orphan** -- and dropping the zone
+clearance from 0.250 mm to the 0.200 mm DRU floor grew the fill by 634.346 mm2
+and closed ZERO edges. That variant is **REFUSED on its merits**: it spends
+pour-to-signal margin on all six layers for a measured nothing.
+(2) `--neck`, third vacuous run, above.
+
+**THE NEXT FABRICATION BLOCKER IS THE USB LINK, AND IT IS GETTING WORSE.**
+USB-C data/programming is a Demo MUST-HAVE and "USB differential routing and
+constraints complete" is an explicit release gate; four edges are open. Measured
+on `83b6a140`: question 2W finds NO whole-net opener for either connector edge
+(13 crossing candidates each; `GND` and `/I2C_SDA_INT` reported as untested over
+the cap). Evicting the ENTIRE USB family board-wide leaves `J3 -> U10` and
+`R33/34 -> U1` `NO_PATH`, so **the wall is not USB-internal**. A free-space BFS
+over the router's own blocked grid finds NO `F.Cu` corridor for those two legs
+at even the single 0.25 mm width, let alone the 0.70 mm a coupled pair needs.
+And the `USB_D` contract note records the MCU half routing in 22.771 / 22.344 mm
+with TWO vias each under `F+B`; **today `USB_D_MCU_N` is `NO_PATH` under `F+B`
+and `USB_D_MCU_P` needs 30.766 mm and FOUR barrels.** `.kicad_dru` section 6
+reserves that corridor in WORDS and nothing enforces the reservation on a
+router, so every whole-board maze batch since has been free to lay copper in it
+-- 44 foreign `F.Cu` nets now do. A greedy whole-net cut re-opens `J3 -> U10` at
+3.51 mm of free path (RECOVERABLE) and `R33/34 -> U1` only at 76.80 mm for a
+21.9 mm leg (NOT recoverable as a lane, against a 25 mm `diff_pair_uncoupled`
+budget).
+
+**THE In2 THROUGH-VIA RULING WAS CONSIDERED AND NOT TAKEN.** `.kicad_dru`
+section 6 disallows `track` AND `via` for `USB_D` on `In2.Cu`, and on a
+six-layer board that forbids every through barrel, which over-reaches the rule's
+own title ("it has no business leaving F.Cu"). Relaxing it is the cheap answer
+and it is **REFUSED because it buys nothing at this geometry**: with `F+B`
+already permitted -- barrels and all -- `MCU_N` is `NO_PATH` and `MCU_P` needs
+30.766 mm and four vias. A rule that is not the binding constraint must not be
+weakened; the binding constraint is the missing corridor. Revisit only if a
+corridor reservation plus a pair proposer still leaves the MCU leg short.
+
+Evidence `d599-verify.json`, `d599-protected-copper.json`,
+`d599-guard-contract.json`, `d599-neck-contract.json`,
+`d599-pour-bond-guard-next.json`, `d599-pour-damage-next.json`,
+`d599-pour-fill-parameter-screen.json`, `d599-usb-corridor-measurement.json`,
+`d599-corridor-rescreen-a.json`, `d599-corridor-rescreen-b.json`.
+
+**Next, in order of leverage.** (1) A **corridor RESERVATION the router
+honours** -- recovering the USB corridor without reserving it loses it again to
+the next batch. `maze3d.Field` already takes
+`guard={layer: [(x, y, keepout_nm), ...]}` and `route_maze_batch` already has
+`--guard`; what is missing is an emitter that samples a reserved centreline and
+an `exempt` list on a guard record, since `guard_for` exempts only the single
+net a record names and a corridor must exempt a whole netclass. (2) A
+**differential-PAIR proposer** -- a per-net maze cannot hold `diff_pair_gap` or
+an uncoupled-length budget, and the first `F/B` USB screen was refused by KiCad
+for exactly that, at 36.653 mm for an 8.465 mm leg; a fat-centreline wavefront
+at `2*W + gap = 0.70 mm` split into two tracks offset by +/-0.225 mm meets the
+gap by construction, and its second customer is `NFC_RFI1`/`NFC_RFI2`, the two
+nets `route_maze_batch.EXCLUDE` holds out. (3)
+`/09_COMMUNITY_HEADER/EXT_SDA`, 3 edges, opener `/09_COMMUNITY_HEADER/EXT_SCL`
+-- named `RIPUP_SINGLE` by this iteration's re-screen and NOT consumed by it;
+Community Port SDA is a Demo scope requirement. Re-screen before believing it:
+a rip-up verdict is a property of a board, not of a net. No owner decision is
+open.
+
 # D-598 · 2026-09-04 · Demo accessory-power control; both switched-rail enables improved, 2 edges PROMOTED
 
 The Demo scope requires **software-controlled switched 3.3 V and 5 V accessory

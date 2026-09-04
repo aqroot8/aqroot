@@ -1,0 +1,132 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "contract": {
+    "clr_mm": 0.2,
+    "layers": [
+      "F"
+    ],
+    "netclass": "USB_D",
+    "why_single_layer": "route_maze_batch.DRU_CLASS: on ONE routable layer the maze cannot express a barrel at all, so the .kicad_dru 'USB pair is forbidden on In2' rule becomes a shape the router cannot draw rather than a rule it may break.",
+    "width_mm": 0.25
+  },
+  "free_space_corridor": {
+    "method": "BFS over maze3d.Field.blk on F.Cu at a 0.05 mm lattice between the free cells within 2.5 mm of each terminal group -- the same blocked grid route_join searches, so a corridor this says is absent is one the router cannot find either.",
+    "usb_family_evicted": {
+      "J3->U10 @0.25mm": "NO CORRIDOR",
+      "J3->U10 @0.70mm(coupled pair)": "NO CORRIDOR",
+      "R33/34->U1 @0.25mm": "NO CORRIDOR",
+      "R33/34->U1 @0.70mm": "NO CORRIDOR",
+      "U10->R33/34 @0.25mm": "0.76 mm",
+      "U10->R33/34 @0.70mm": "1.09 mm"
+    }
+  },
+  "greedy_whole_net_cut": {
+    "J3->U10": {
+      "extra_nets_beyond_usb_family": [
+        "Net-(J3-CC2)",
+        "/SPI_A_MOSI",
+        "/AMP_SD_MODE",
+        "/SD_CARD_DETECT_N",
+        "/I2C_SDA_INT",
+        "/I2S_LRCLK"
+      ],
+      "free_path_mm": 3.51,
+      "note": "greedy, NOT minimal -- blocked_along ties at 182 cells throughout, so the ranking carried no information and the order is effectively alphabetical",
+      "opens": true,
+      "verdict": "RECOVERABLE -- a 3.51 mm free path for a 7.3 mm direct leg"
+    },
+    "R33/34->U1": {
+      "extra_nets_beyond_usb_family": [
+        "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/SD_CARD_DETECT_N"
+      ],
+      "free_path_mm": 76.8,
+      "opens": true,
+      "verdict": "NOT RECOVERABLE AS A LANE -- 76.80 mm of free path for a 21.9/24.3 mm direct leg is a 3.2-3.5x detour against a 25 mm diff_pair_uncoupled budget.  Opening the corridor is not the same as having one."
+    }
+  },
+  "next_capabilities_named": [
+    {
+      "name": "corridor reservation honoured by the router",
+      "shape": "maze3d.Field already takes `guard={layer: [(x, y, keepout_nm), ...]}` and route_maze_batch already has --guard.  A corridor is the same object as a pour-bond tube: points with a keep-out radius.  What is missing is (a) an emitter that samples a reserved centreline and (b) an `exempt` list on a guard record, since guard_for only exempts the single net named on the record and a corridor must exempt a whole netclass.",
+      "why": "stop the bleeding before recovering anything; a corridor recovered and not reserved is lost again by the next batch"
+    },
+    {
+      "name": "differential-PAIR proposer",
+      "second_customer": "/04_SPI_B_RADIOS_NFC/NFC_RFI1 and NFC_RFI2, the two nets route_maze_batch.EXCLUDE holds out for length/symmetry",
+      "why": "a per-net maze cannot hold diff_pair_gap or a diff_pair_uncoupled budget; the first F/B screen was refused by KiCad for exactly that, at 36.653 mm for an 8.465 mm leg.  A fat-centreline wavefront at 2*W + gap = 0.70 mm, split into two tracks offset by +/-0.225 mm, meets the gap by construction and leaves only the fanout uncoupled."
+    }
+  ],
+  "not_done_and_why": [
+    "The In2 through-via ruling was NOT taken.  It would have been the cheap answer -- .kicad_dru 'USB pair is forbidden on In2' disallows `via` as well as `track`, and on a 6-layer board that forbids EVERY through barrel, which over-reaches the rule's own title ('it has no business leaving F.Cu').  It is not taken because it buys NOTHING at this geometry: with F+B already permitted -- vias and all -- MCU_N is NO_PATH and MCU_P needs 30.766 mm and four barrels.  Relaxing a rule that is not the binding constraint would spend real safety margin for no connection."
+  ],
+  "note": "READ-ONLY measurement of the USB 2.0 link on the authoritative board. USB-C data/programming is a Demo MUST-HAVE feature and 'USB differential routing and constraints complete' is an explicit release gate, so its four open edges are scope-critical rather than ordinary.  Everything below is measured; nothing is inferred from the earlier contract note, which is shown to be STALE.",
+  "open_edges": {
+    "/01_POWER_TREE/USB_D_CONN_N": 1,
+    "/01_POWER_TREE/USB_D_CONN_P": 1,
+    "/USB_D_MCU_N": 1,
+    "/USB_D_MCU_P": 1
+  },
+  "q2w_whole_net_single": {
+    "candidates_tested": 13,
+    "capability": "screen_corridor_blockers.py question 2W, added this iteration",
+    "crossing_candidates": [
+      "/01_POWER_TREE/USB_D_CONN_N",
+      "/01_POWER_TREE/USB_D_CONN_P",
+      "/01_POWER_TREE/USB_D_ESD_N",
+      "/01_POWER_TREE/USB_D_ESD_P",
+      "/01_POWER_TREE/USB_VBUS_RAW",
+      "/I2C_SDA_INT",
+      "/I2S_LRCLK",
+      "/SD_CS_N",
+      "/SPI_B_SCK",
+      "/WAKE_INT_N",
+      "GND",
+      "Net-(J3-CC1)",
+      "Net-(J3-CC2)",
+      "Net-(J3-SHIELD)"
+    ],
+    "result": "NO OPENER on either connector edge",
+    "skipped_over_60_object_cap": [
+      "GND (1548 objects)",
+      "/I2C_SDA_INT (256 objects)"
+    ]
+  },
+  "regression_since_the_contract_note": {
+    "conclusion": "THE RESERVED CORRIDOR IS BEING CONSUMED.  .kicad_dru section 6 reserves F.Cu over In1 for this pair in words, and nothing in the tool chain enforces that reservation on a router, so every whole-board maze batch since has been free to lay copper in it -- and has.  44 foreign F.Cu nets now carry copper inside the USB window.  This is a FABRICATION-CRITICAL trend, not a static wall.",
+    "contract_note_recorded": {
+      "/USB_D_MCU_N": "22.771 mm, 2 vias, F+B",
+      "/USB_D_MCU_P": "22.344 mm, 2 vias, F+B"
+    },
+    "measured_today_on_83b6a140": {
+      "/01_POWER_TREE/USB_D_CONN_N": "NO_PATH on F+B",
+      "/01_POWER_TREE/USB_D_CONN_P": "NO_PATH on F+B",
+      "/USB_D_MCU_N": "NO_PATH on F+B",
+      "/USB_D_MCU_P": "30.766 mm, 4 vias, F+B"
+    }
+  },
+  "schema": 1,
+  "usb_family_eviction": {
+    "conclusion": "THE WALL IS NOT USB-INTERNAL.  Evicting every USB net board-wide changes nothing about the two hauls.",
+    "evicted": [
+      "/01_POWER_TREE/USB_D_CONN_N",
+      "/01_POWER_TREE/USB_D_CONN_P",
+      "/01_POWER_TREE/USB_D_ESD_N",
+      "/01_POWER_TREE/USB_D_ESD_P",
+      "/USB_D_MCU_N",
+      "/USB_D_MCU_P"
+    ],
+    "routes": {
+      "J3.A6->J3.B6": "OK",
+      "J3.A6->U10.3": "NO_PATH",
+      "J3.A7->J3.B7": "OK",
+      "J3.B7->U10.1": "NO_PATH",
+      "R33.1->U10.6": "OK 11.57 mm",
+      "R33.2->U1.13": "NO_PATH",
+      "R34.1->U10.4": "OK 6.53 mm",
+      "R34.2->U1.14": "NO_PATH"
+    }
+  }
+}
