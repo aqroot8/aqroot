@@ -113,6 +113,16 @@ off the board.  `screen_segment_evict.py --plan-out` writes the
         --detour-spec PLAN.json --stitch-width ... --stitch-via ... \
         --split-islands --promote
 
+**ONE TRAP THIS RUN WALKED INTO, RECORDED SO THE NEXT ONE DOES NOT.**  A scratch
+`.kicad_pcb` copied on its own has NO NETCLASSES: `net_contract` reads the class
+off `NETINFO_ITEM`, KiCad resolves that through the PROJECT's netclass patterns,
+and without the `.kicad_pro` beside it every net reads back `Default`.  A
+hand-driven `--propose` on such a copy will route `+3V3` at 0.200 mm with a
+0.50/0.25 mm barrel and report it without complaint -- which is how a screening
+run here briefly believed a `P3V3` land opened at a contract the DRU forbids.
+`gate` copies `.kicad_pcb`, `.kicad_dru` AND `.kicad_pro` together for exactly
+this reason; anything driving the proposer by hand owes the same three files.
+
 **PROOF.**  All 14 `verify_promotion.py` checks PASS from the two board files
 alone: 2 objects removed and both on claimed evicted nets; 15 added and every
 one on a claimed net; tracks 0.150 / 0.200 / 0.300 mm on `F.Cu`/`B.Cu`/`In2.Cu`

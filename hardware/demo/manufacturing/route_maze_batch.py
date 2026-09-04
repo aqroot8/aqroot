@@ -1103,6 +1103,15 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     import incremental_router as ir
     import maze3d as mz
 
+    # A SCRATCH BOARD WITHOUT ITS `.kicad_pro` HAS NO NETCLASSES, AND IT SAYS SO
+    # QUIETLY.  `net_contract` reads the class off `NETINFO_ITEM`, which KiCad
+    # resolves through the PROJECT's netclass patterns -- so a `.kicad_pcb`
+    # copied on its own reads back `Default` for EVERY net, and this child would
+    # then route `+3V3` at 0.200 mm with a 0.50/0.25 mm barrel and report it
+    # without complaint.  `gate` copies `.kicad_pcb`, `.kicad_dru` AND
+    # `.kicad_pro` together for exactly this reason; anything driving `--propose`
+    # by hand owes the same three files, or its measurement is of a board that
+    # does not exist.
     ref = pcbnew.LoadBoard(str(path))
     contracts = {n: net_contract(ref, n) for n in nets}
     bond_by_net = pad_owner_nets(ref, bond_pads) if bond_pads else {}
