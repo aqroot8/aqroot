@@ -8,7 +8,11 @@ decided it was legal.  This module re-derives every promotion property a second
 time, from the committed board and the promoted board, without reading the
 driver's scratch tree, its ledger or its evidence JSON:
 
-  * NO pre-existing track or via was moved or removed;
+  * NO pre-existing track or via was moved or removed -- or, with `--evicted`,
+    every removal lies on a net the promotion NAMED as ripped up, and KiCad's
+    own unconnected-item count did not rise, which is the independent half of
+    the driver's clause 4: a rip-up that stranded anything shows up here even
+    though this module never reads a ledger;
   * every ADDED object lies on one of the nets the promotion claimed;
   * every added track meets the width the caller asserts -- or, if it is
     narrower, is a DRU-LICENSED pad-escape neck: at least the necking minimum
@@ -338,6 +342,12 @@ def main():
                          "whole footprint inside a rule area the rule names, "
                          "on the net the rule names, meeting every minimum "
                          "that rule states")
+    ap.add_argument("--evicted", action="append", default=[],
+                    metavar="NET",
+                    help="a net this promotion RIPPED UP.  Removals are then "
+                         "legal, but only on these nets, and the board's "
+                         "unconnected-item count is measured before and after "
+                         "so a rip-up that stranded copper cannot pass")
     ap.add_argument("--rule-area", action="append", default=[],
                     help="name of a rule area the promotion claims to have "
                          "ADDED; repeatable, omit when none was added")
@@ -366,6 +376,12 @@ def main():
     zlost = [z for z in zpre if z not in zpost]
     zclaim = sorted((z[0], z[1][0]) for z in zadded)
 
+    removed_nets = sorted({x[1] for x in (before - after)})
+    # KiCad's own connectivity, measured on BOTH boards.  Only asked for when a
+    # rip-up happened: it costs a whole extra refilled DRC pass, and with no
+    # removals there is nothing it could catch that `nothing_removed` does not.
+    pre_drc = drc(pre, tmp / "drc-0.json") if a.evicted else None
+
     first = drc(post, tmp / "drc-1.json")
     refilled = sha256_file(post)
     second = drc(post, tmp / "drc-2.json")
@@ -384,7 +400,11 @@ def main():
     vdims = sorted({(x[4], x[5]) for x in vias})
 
     checks = dict(
-        nothing_removed=not removed,
+        nothing_removed=(not removed if not a.evicted else
+                         set(removed_nets) <= set(a.evicted)),
+        unconnected_not_increased=(
+            True if pre_drc is None
+            else first["unconnected_items"] <= pre_drc["unconnected_items"]),
         added_only_on_claimed_nets=set(added_nets) <= set(nets),
         zone_inventory_as_claimed=(not zlost and zclaim == planes),
         track_width_floor_met=(not a.track_width
@@ -416,6 +436,8 @@ def main():
         pre_board_sha256=sha256_file(pre),
         promoted_board_sha256=sha256_file(BOARD),
         objects_removed=len(removed), removed_sample=removed[:8],
+        removed_object_nets=removed_nets, claimed_evicted_nets=sorted(a.evicted),
+        drc_pre=pre_drc,
         objects_added=len(added), added_object_nets=added_nets,
         added_tracks=len(tracks), added_vias=len(vias),
         added_track_widths_nm=widths, added_track_layers=layers,

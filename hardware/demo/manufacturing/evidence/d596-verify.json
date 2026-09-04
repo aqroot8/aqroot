@@ -1,0 +1,128 @@
+{
+  "added_object_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/I2C_SCL_INT",
+    "/NFC_CS_N",
+    "/SPI_A_MOSI",
+    "/SPI_B_MOSI",
+    "/SPI_B_SCK"
+  ],
+  "added_track_layers": [
+    "B.Cu",
+    "F.Cu",
+    "In2.Cu"
+  ],
+  "added_track_widths_nm": [
+    200000
+  ],
+  "added_tracks": 108,
+  "added_via_dia_drill_nm": [
+    [
+      600000,
+      300000
+    ]
+  ],
+  "added_vias": 27,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/SPI_A_MOSI",
+    "/SPI_B_MOSI"
+  ],
+  "claimed_nets": [
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/SPI_B_SCK",
+    "/NFC_CS_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/SPI_B_MOSI",
+    "/SPI_A_MOSI",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 97
+  },
+  "drc_pre": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 101
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 97
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 135,
+  "objects_removed": 42,
+  "pad_escape_neck": {
+    "licensed": 0,
+    "narrow_tracks": 0,
+    "neck": null
+  },
+  "pour_bridge": null,
+  "pre_board_sha256": "2140f6a9f4cf29653e0490451d10e4ccd1a3dee5061a00bb828029d60d3f3da6",
+  "promoted_board_sha256": "db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382",
+  "ref": "HEAD",
+  "removed_object_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/SPI_A_MOSI",
+    "/SPI_B_MOSI"
+  ],
+  "removed_sample": [
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 43900000, 86900000, 23700000, 107100000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 50200000, 85900000, 43900000, 86900000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 51100000, 86600000, 51100000, 87400000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 51100000, 87400000, 49300000, 88700000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 51300000, 85500000, 51100000, 86600000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 58000000, 87600000, 58700000, 87000000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'B.Cu', 59862500, 87025000, 58700000, 87000000, 200000)",
+    "('trk', '/08_BUTTONS_EXPANDERS/BTN_A_N', 'In3.Cu', 49300000, 88700000, 57100000, 88500000, 200000)"
+  ],
+  "rule_areas_added": [],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

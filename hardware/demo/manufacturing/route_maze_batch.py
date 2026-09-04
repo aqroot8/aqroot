@@ -309,6 +309,22 @@ REPAIR_JOIN_MAX_MM = 8.0
 #     end the transaction NO WORSE OFF than it started.  A rip-up whose reroute
 #     fails is a refusal, exactly as if the copper had never been touched.
 #
+# `--evict-whole` IS THE OTHER HONEST UNIT, and the board asked for it.  The
+# first eviction transaction here ripped `/09_COMMUNITY_HEADER/EXT_SCL` inside
+# the `EXT_SDA` window and was refused for `track_dangling`: `EXT_SCL` carries
+# legacy copper on `In3.Cu`, a RESERVED plane layer that is never in
+# `keep_layers`, so the window took its barrels and left its fragments.  The
+# closure below rescues the contained ones; the cascade then outgrew what the
+# 8 mm repair pass could rebuild, and the run was refused again -- correctly, on
+# clause 4.  Both failures say the same thing: when the point of the rip-up is
+# to REROUTE a net rather than to clear a strip of it, the net is the unit.
+# `--evict-whole` therefore removes every routed object of a named net on every
+# layer, and REQUIRES that net to be requested, so it is rebuilt by the same
+# primary proposer at its own contract instead of by the local repair.  Blast
+# radius is still exactly one named net per name, clause 4 still demands it end
+# no worse off, and the reserved inner planes come out cleaner than they went
+# in, because a foreign fragment on a poured plane is a slot that this removes.
+#
 # `--evict` is OFF by default, so every accepted result reproduces without it.
 EVICT_MARGIN_MM = 3.0
 ROUTED_TAGS = ("PCB_TRACK", "PCB_VIA")
@@ -337,7 +353,156 @@ def evict_boxes(board, nets, margin_nm):
             for n, b in span.items()}
 
 
-def evict_copper(path, nets, evict_nets, margin_nm):
+# --------------------------------------------------------------------------- #
+# EVICTION MUST BE CLOSED UNDER DANGLEMENT
+# --------------------------------------------------------------------------- #
+# The first `--evict` transaction on this board -- `/09_COMMUNITY_HEADER/EXT_SDA`
+# with `/09_COMMUNITY_HEADER/EXT_SCL` ripped up -- routed, regressed nothing,
+# re-proposed the evicted net in full, and was still refused, for three
+# `track_dangling` warnings on `In3.Cu`.
+#
+# The cause is a seam between two of eviction's own rules.  A VIA obstructs on
+# every layer, so it is evictable wherever it sits; a TRACK is evictable only on
+# a layer the requested nets may actually route on.  `EXT_SCL` carries legacy
+# copper on `In3.Cu` -- laid before D-580 poured `+3V3` there -- which is now a
+# RESERVED plane layer and therefore never in `keep_layers`.  Removing the
+# barrels that terminated those three fragments left them stranded: real copper,
+# on a plane, connected to nothing, which is exactly what KiCad reported.
+#
+# The layer rule is still right -- eviction should be minimal, and a foreign
+# net's copper on a layer nobody is routing on obstructs nothing.  What was
+# missing is that minimality is a property of the SELECTION, not a licence to
+# leave the board in a state the selection created.  So the selection is
+# unchanged and a CLOSURE is added on top of it:
+#
+#   * SUPPORT IS MEASURED TWICE.  An endpoint is supported when some other
+#     object of its own net -- a pad it lands in, a barrel at that point, or
+#     another track that meets or crosses it on that layer -- holds it.  Support
+#     is computed BEFORE the removals and again after, and only an object that
+#     the removals themselves stranded is added.  Copper that was already
+#     dangling on the authoritative board is not this transaction's business and
+#     is left exactly where it is.
+#   * ONLY THE EVICTED NETS, ONLY INSIDE THE SAME WINDOWS.  The closure obeys
+#     every clause the selection obeys except the layer filter, because the
+#     object it removes is one this run's own removals made purposeless.
+#   * WHAT IT CANNOT REACH, IT REPORTS.  A stranded object outside every corridor
+#     window is named in `dangling_unevictable` rather than silently left, so the
+#     DRC refusal that follows has an explanation in the same record.
+#   * FIXED POINT.  Removing a stranded track can strand the next one, so the
+#     closure iterates until nothing changes.
+#
+# Removing a foreign net's copper from a poured inner plane is also the strictly
+# better outcome on its own terms: that fragment was a slot through `+3V3`, and
+# the repair pass re-proposes the whole evicted net on `F`/`B`/`In2` only.
+def _pt(v):
+    return (int(v.x), int(v.y))
+
+
+def uid(item):
+    return item.m_Uuid.AsString()
+
+
+def _meets(track, pt):
+    """Does `pt` lie on this track's centreline (endpoint or T-junction)?"""
+    a, b = _pt(track.GetStart()), _pt(track.GetEnd())
+    if pt == a or pt == b:
+        return True
+    ax, ay = a
+    bx, by = b
+    px, py = pt
+    if (bx - ax) * (py - ay) != (by - ay) * (px - ax):
+        return False
+    return (min(ax, bx) <= px <= max(ax, bx)
+            and min(ay, by) <= py <= max(ay, by))
+
+
+def _supported(obj, survivors, pads):
+    """Is every end of this routed object held by other copper of its net?
+
+    A via is held when anything at all meets it; a track needs BOTH ends.
+    """
+    import pcbnew
+    if obj.GetClass() == "PCB_VIA":
+        ends = [(_pt(obj.GetStart()), None)]
+    else:
+        L = obj.GetLayer()
+        ends = [(_pt(obj.GetStart()), L), (_pt(obj.GetEnd()), L)]
+    for pt, layer in ends:
+        ok = False
+        for o in survivors:
+            if o is obj:
+                continue
+            if o.GetClass() == "PCB_VIA":
+                if _pt(o.GetStart()) == pt and (layer is None
+                                                or o.IsOnLayer(layer)):
+                    ok = True
+                    break
+            elif layer is None or o.GetLayer() == layer:
+                if _meets(o, pt):
+                    ok = True
+                    break
+        if not ok:
+            for p in pads:
+                if (layer is None or p.IsOnLayer(layer)) and p.HitTest(
+                        pcbnew.VECTOR2I(pt[0], pt[1])):
+                    ok = True
+                    break
+        if not ok:
+            return False
+    return True
+
+
+def evict_closure(board, evict_nets, doomed, contained):
+    """Objects this run's own removals stranded, and the ones it cannot reach.
+
+    Returns `(extra, unevictable)`.  `extra` is appended to `doomed`;
+    `unevictable` names stranded copper outside every corridor window.
+    """
+    live = {}
+    pads = {}
+    for t in board.GetTracks():
+        if t.GetClass() in ROUTED_TAGS and t.GetNetname() in evict_nets:
+            live.setdefault(t.GetNetname(), []).append(t)
+    for fp in board.GetFootprints():
+        for p in fp.Pads():
+            if p.GetNetname() in evict_nets:
+                pads.setdefault(p.GetNetname(), []).append(p)
+
+    # Identity is the item UUID, never `id()`: `doomed` and `live` were built
+    # from separate `GetTracks()` walks and this KiCad build hands out a fresh
+    # SWIG proxy each time, so a Python identity set would silently match
+    # nothing and the closure would find nothing to do.
+    was = {uid(o): _supported(o, live[n], pads.get(n, []))
+           for n in live for o in live[n]}
+    gone = {uid(o) for o in doomed}
+    extra, unevictable = [], []
+    while True:
+        added = False
+        for net, objs in live.items():
+            keep = [o for o in objs if uid(o) not in gone]
+            for o in keep:
+                if not was.get(uid(o), True):
+                    continue            # already dangling before this run
+                if _supported(o, keep, pads.get(net, [])):
+                    continue
+                gone.add(uid(o))
+                added = True
+                if contained(o):
+                    extra.append(o)
+                else:
+                    unevictable.append(dict(
+                        net=net,
+                        kind="via" if o.GetClass() == "PCB_VIA" else "track",
+                        layer=(None if o.GetClass() == "PCB_VIA"
+                               else board.GetLayerName(o.GetLayer())),
+                        xy_mm=[round(v / 1e6, 4)
+                               for v in _pt(o.GetStart())]))
+        if not added:
+            break
+    return extra, unevictable
+
+
+def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
     """Rip up the evictable copper IN PLACE and describe every removal.
 
     Runs in the `--evict-apply` CHILD, never in the authority process, and for a
@@ -373,6 +538,8 @@ def evict_copper(path, nets, evict_nets, margin_nm):
     keep_layers = {qr.LNAME[s] for s in short}
 
     def contained(item):
+        if whole:
+            return True
         bb = item.GetBoundingBox()
         return any(bb.GetLeft() >= box[0] and bb.GetTop() >= box[1]
                    and bb.GetRight() <= box[2] and bb.GetBottom() <= box[3]
@@ -383,10 +550,14 @@ def evict_copper(path, nets, evict_nets, margin_nm):
         cls = t.GetClass()
         if cls not in ROUTED_TAGS or t.GetNetname() not in evict_nets:
             continue
-        if cls == "PCB_TRACK" and t.GetLayer() not in keep_layers:
+        if not whole and cls == "PCB_TRACK" and t.GetLayer() not in keep_layers:
             continue
         if contained(t):
             doomed.append(t)
+
+    extra, unevictable = evict_closure(board, set(evict_nets), doomed,
+                                       contained)
+    doomed += extra
 
     sigs = []
     for t in doomed:
@@ -396,6 +567,7 @@ def evict_copper(path, nets, evict_nets, margin_nm):
     pcbnew.SaveBoard(str(path), board)
     return dict(
         evicted_nets=sorted(set(evict_nets)),
+        whole_net=bool(whole),
         corridor_layers=sorted(short),
         margin_mm=round(margin_nm / 1e6, 3),
         corridors={n: dict(
@@ -404,6 +576,8 @@ def evict_copper(path, nets, evict_nets, margin_nm):
             for n, b in sorted(boxes.items())},
         removed_signatures=sorted(str(s) for s in sigs),
         removed_count=len(sigs),
+        closure_count=len(extra),
+        dangling_unevictable=unevictable,
         removed_by_net={n: sum(1 for s in sigs if s[1] == n)
                         for n in sorted({s[1] for s in sigs})})
 
@@ -788,7 +962,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
          partial=False, attempt_cap=0, repair_planes=False,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
-         evict=(), evict_margin_mm=EVICT_MARGIN_MM, guard=None,
+         evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
+         guard=None,
          bridge=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
@@ -817,6 +992,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             [sys.executable, __file__, "--evict-apply", str(scratch),
              "--evict-report", str(report),
              "--evict-margin-mm", str(evict_margin_mm)]
+            + (["--evict-whole"] if evict_whole else [])
             + [x for n in evict for x in ("--evict", n)]
             + list(nets), check=True, text=True, capture_output=True)
         eviction = json.loads(report.read_text())
@@ -1167,6 +1343,16 @@ def main():
                          "evicted net is re-proposed by the bounded repair "
                          "pass and clause 4 still requires it to end no worse "
                          "off than it started")
+    ap.add_argument("--evict-whole", action="store_true",
+                    help="rip up the named evicted nets ENTIRELY -- every "
+                         "routed object, every layer, board-wide -- instead of "
+                         "only what lies inside a corridor window.  The honest "
+                         "unit when the evicted net is itself re-proposed: it "
+                         "strands nothing and it clears that net's legacy "
+                         "copper off the reserved inner planes.  Every named "
+                         "net must therefore also be REQUESTED, so it is "
+                         "re-routed as a primary proposal rather than by the "
+                         "8 mm local repair pass")
     ap.add_argument("--evict-margin-mm", type=float, default=EVICT_MARGIN_MM,
                     help="how far outside a requested net's own pad bounding "
                          "box the eviction corridor extends")
@@ -1203,7 +1389,8 @@ def main():
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
-                           int(round(a.evict_margin_mm * 1e6)))
+                           int(round(a.evict_margin_mm * 1e6)),
+                           whole=a.evict_whole)
         text = json.dumps(doc, indent=2, sort_keys=True, default=str)
         if a.evict_report:
             a.evict_report.write_text(text + "\n", encoding="utf-8")
@@ -1214,6 +1401,14 @@ def main():
     bad = sorted(set(a.nets) & EXCLUDE)
     if bad:
         ap.error("excluded from generic maze routing: %s" % ", ".join(bad))
+    if a.evict_whole:
+        if not a.evict:
+            ap.error("--evict-whole needs at least one --evict NET")
+        orphan = sorted(set(a.evict) - set(a.nets))
+        if orphan:
+            ap.error("--evict-whole: %s must also be REQUESTED, or the rip-up "
+                     "leaves it to the 8 mm repair pass, which cannot rebuild "
+                     "a whole net" % ", ".join(orphan))
 
     extra = dict(plane=a.plane, zone_clearance=a.zone_clearance,
                  stitch_width=a.stitch_width, stitch_via=via,
@@ -1224,6 +1419,7 @@ def main():
                  split_islands=a.split_islands,
                  repair_join_max_mm=a.repair_join_max_mm,
                  evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
+                 evict_whole=a.evict_whole,
                  guard=a.guard, bridge=a.bridge)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,

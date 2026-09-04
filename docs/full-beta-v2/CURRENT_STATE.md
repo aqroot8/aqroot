@@ -13,6 +13,83 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-596 (rip-up-and-reroute; 4 edges PROMOTED, eviction made whole):**
+  D-595 mined out the pour-bridge seam and left two floorplan walls. This
+  attacks the OTHER half of the tail instead -- the 32 edges on 17 functional
+  nets that fail `NO_PATH` -- and it is the first promotion here that REMOVES
+  accepted copper to add better copper. Whole-board retained open edges
+  **85 -> 81**, ratsnest 101 -> 97, four nets improved (`/I2C_SCL_INT` 7->6,
+  `/NFC_CS_N` 2->1, `/SPI_B_SCK` 2->1, `BTN_DOWN_N` 2->1), ZERO nets regressed,
+  zero zones touched. Authority `2140f6a9...` ->
+  `db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382`.
+  **The cheap lever was tried first and was VACUOUS:** D-585's screen re-run
+  with D-594's `--neck` ON changed nothing -- all 28 open non-pour nets returned
+  the identical reason, because the `.kicad_dru` necking rule names TEN
+  fine-pitch power courtyards (`U9`, `U11`-`U14`, `U16`, `U17`, `U20`-`U22`) and
+  every pad still on the escape wall (`U4`, `U5`, `D2`/`D4`/`D5`, `J1`, `MK1`,
+  `U1`, `U2`, `U3`) sits outside all ten. So this went to the CORRIDOR, not the
+  terminal. `screen_corridor_blockers.py` -- written at D-584 for the USB pair,
+  never run on anything else -- was run across the `NO_PATH` set and named an
+  EXECUTABLE rip-up for 16 of 26 edges over 12 nets, a `CROSSING_COPPER_WALL`
+  for 6, a placement wall for 2; `/SX1262_DIO1` and `NFC_VDD_RF` remain
+  UNSCREENED (their process was stopped after 80 min). **Two of its refusals are
+  permanent:**
+  `BTN_LEFT_N` is walled by `FRONT_RGB_R_N` and `/ACC_PWR_EN` +
+  `/ACC_5V_BOOST_EN` partly by `/ACC_3V3_SW` -- both PROTECTED Demo copper, so
+  those are walls and not candidates.
+  **TWO FRAMEWORK FIXES, both in `route_maze_batch.py`, both OFF by default.**
+  (1) `evict_closure`: eviction is now CLOSED UNDER DANGLEMENT. The first
+  transaction ripped `EXT_SCL` inside the `EXT_SDA` window, routed, regressed
+  nothing and was refused for three `track_dangling` on `In3.Cu` -- a via
+  obstructs on every layer so it is evictable anywhere, a track only on a layer
+  the requested nets may route on, and `In3` has been a RESERVED plane since
+  D-580, so the window took the barrels and left the fragments. Endpoint support
+  is now measured before AND after the removals and only what the removals
+  themselves stranded is taken; what it cannot reach it NAMES in
+  `dangling_unevictable`. Identity is the item UUID, never `id()` (two
+  `GetTracks()` walks hand out different SWIG proxies -- a bug made once).
+  (2) `--evict-whole`: the window is the wrong unit when the point is to REROUTE
+  a net. It rips up every routed object of a named net on every layer,
+  board-wide, and REQUIRES that net to be REQUESTED so the primary proposer
+  rebuilds it rather than the 8 mm repair pass. It strands nothing and it clears
+  legacy foreign copper off the poured inner plane: `In3.Cu` **115 -> 112
+  foreign tracks, 996.69 -> 974.88 mm**.
+  **PROMOTED:** four blocked nets each +1 edge; `/SPI_B_MOSI`, `/SPI_A_MOSI` and
+  `BTN_A_N` evicted whole and rebuilt (82.92 / 87.93 / 84.96 mm). A wider trial
+  offering eight more nets produced the IDENTICAL 81 -- this batch is the
+  ceiling at this geometry, not an arbitrary stop. A five-net eviction that also
+  took `/SPI_A_SCK` + `/NATIVE_B` reached 82, regressed `/NATIVE_B`, and was
+  refused.
+  **`verify_promotion.py --evicted NET`** re-proves a rip-up from the two board
+  files alone: removals licensed only on named nets, and KiCad's OWN
+  unconnected-item count measured on BOTH boards, **101 -> 97**. All 14 checks
+  PASS: 42 removed all on evicted nets, 135 added (108 tracks + 27 vias) all on
+  claimed nets, every track 0.200 mm on `F`/`B`/`In2` ONLY (nothing on reserved
+  `In1`/`In3`/`In4`), barrels 0.600/0.300, zone and rule-area inventories
+  unchanged, real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO
+  attributable and ZERO parity errors, fill-stable, D-269/D-186 live,
+  `hardware/beta-v2/` untouched. `protected_copper.py`: 15 nets / 393 objects
+  BYTE-IDENTICAL to D-595; J5.9-12/15-18 approved NC intact.
+  `pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
+  regenerated 45-tube guard (110.142 mm, 1112 points).
+  **REFUSED ON ITS MERITS, in four orderings:** `/09_COMMUNITY_HEADER/EXT_SDA`.
+  It and `EXT_SCL` both need a ~45 mm north-south haul from the `D2`/`R47`/`R48`
+  cluster to `J8` and the board fits exactly ONE -- whichever is proposed first
+  takes the lane. Board-positive (85 -> 84) and still refused, because clause 4
+  forbids a regression however favourable the total. **The community-header I2C
+  pair needs a SHARED corridor and a greedy per-net maze cannot allocate one.**
+  Evidence `d596-evict-reroute-batch.json`, `d596-verify.json`,
+  `d596-protected-copper.json`, `d596-corridor-blockers.json`,
+  `d596-neck-screen-vacuous.json`, `d596-pour-damage-next.json`,
+  `d596-pour-bond-guard-next.json`, `d596-guard-contract.json`,
+  `d596-neck-contract.json`.
+  **Next:** another gated `--evict-whole` batch on the openers the screen
+  already named for `/ACC_PWR_EN`, `/ACC_5V_BOOST_EN` and the second
+  `/SPI_B_SCK` edge -- re-screened first on `db5f997f`, because those verdicts
+  were measured on `2140f6a9`. Beyond it, two named capabilities in order of
+  value: a PAIRED-NET corridor allocator for the community-header I2C haul, and
+  a systematic `--evict-whole` sweep of the 974.88 mm of foreign copper still
+  slotting the `+3V3` `In3` plane. No owner decision.
 - **Demo D-595 (pour bridges; 4 edges PROMOTED with FOUR barrels and no
   track):** D-594 named the pour residual and left a specific batch rather than
   a search. This is that batch, and it is the first promotion here that adds

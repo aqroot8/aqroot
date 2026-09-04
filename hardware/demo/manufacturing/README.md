@@ -2,6 +2,68 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Rip-up-and-reroute: 4 edges promoted, eviction made whole (2026-09-04)
+
+D-585's screen said the same thing about every open net on this board for two
+promotions running: 17 `NO_PATH`, 11 `NO_LEGAL_ESCAPE`.  D-594 built `--neck`
+for the escape half, and re-running that screen with the lever ON changed
+NOTHING -- all 28 nets returned the same reason
+(`evidence/d596-neck-screen-vacuous.json`).  The necking rule names ten
+fine-pitch power courtyards and every pad still on the escape wall sits outside
+all of them.  So this iteration went to the CORRIDOR instead of the terminal.
+
+`screen_corridor_blockers.py` was run for the first time across the `NO_PATH`
+set (`evidence/d596-corridor-blockers.json`) and named an executable rip-up for
+16 of 26 edges over 12 nets; `/SX1262_DIO1` and `NFC_VDD_RF` are still
+unscreened.  Four of those openings became copper:
+
+    whole-board retained open edges   85 -> 81
+    raw ratsnest                      101 -> 97
+    improved  /I2C_SCL_INT  /NFC_CS_N  /SPI_B_SCK  BTN_DOWN_N
+    regressed none
+    authority 2140f6a9... -> db5f997f...
+
+Two framework fixes were needed and both are in `route_maze_batch.py`:
+
+  * **Eviction is now CLOSED UNDER DANGLEMENT.**  The first transaction ripped
+    `/09_COMMUNITY_HEADER/EXT_SCL` inside the `EXT_SDA` window, routed, regressed
+    nothing -- and was refused for three `track_dangling` reports on `In3.Cu`.  A
+    via obstructs on every layer so it is evictable anywhere; a track is
+    evictable only on a layer the requested nets may route on, and `In3` is a
+    RESERVED plane.  The window took the barrels and left the fragments.
+    `evict_closure` now measures endpoint support before and after the removals
+    and takes anything the removals themselves stranded, reporting what it
+    cannot reach in `dangling_unevictable`.
+  * **`--evict-whole`** is the honest unit when the point of the rip-up is to
+    REROUTE a net rather than clear a strip of it: every routed object of a named
+    net, every layer, board-wide, and that net must also be REQUESTED so the
+    primary proposer rebuilds it instead of the 8 mm repair pass.  It strands
+    nothing and it clears legacy foreign copper off the poured inner plane --
+    `In3.Cu` went 115 -> 112 foreign tracks, 996.69 -> 974.88 mm.
+
+`verify_promotion.py --evicted NET` re-proves a rip-up independently: removals
+are licensed only on named nets, and KiCad's OWN unconnected-item count is
+measured on both boards (101 -> 97), so a rip-up that stranded anything fails
+here without this module ever reading a ledger.  All 14 checks PASS; 42 removed
+on the three evicted nets, 135 added (108 tracks + 27 vias) all 0.200 mm on
+`F`/`B`/`In2` with 0.60/0.30 mm barrels, DRC exactly 199/5/1 with zero
+attributable and zero parity errors, fill-stable.  `protected_copper.py`: 15
+nets / 393 objects byte-identical.
+
+Usage:
+
+    python3 route_maze_batch.py BLOCKED_NET OPENER_NET --partial --neck \
+        --guard evidence/d596-pour-bond-guard-next.json \
+        --evict OPENER_NET --evict-whole --promote \
+        --work DIR --out DIR/run.json
+
+Next: the screen already names the openers for `/ACC_PWR_EN`,
+`/ACC_5V_BOOST_EN` and the second `/SPI_B_SCK` edge.  `/ACC_3V3_SW` and
+`FRONT_RGB_R_N` appear as openers and are PROTECTED -- those edges are walls,
+not candidates.
+
+Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
+
 ## Whole-board all-layer maze router; 21 nets promoted (2026-09-03)
 
 `maze3d.py` + `route_maze_batch.py` replace the hand-authored single-layer

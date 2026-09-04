@@ -6305,6 +6305,168 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-596 · 2026-09-04 · Demo rip-up-and-reroute; 4 edges PROMOTED, eviction made whole
+
+D-595 mined out the pour-bridge seam and left two FLOORPLAN walls behind it.
+This decision does not attack them. It attacks the OTHER half of the open-edge
+tail -- the 32 edges on 17 functional nets that fail `NO_PATH` -- and it is the
+first promotion on this board that REMOVES accepted copper in order to add
+better copper. Whole-board retained open edges **85 -> 81**, raw ratsnest
+101 -> 97, four nets improved (`/I2C_SCL_INT`, `/NFC_CS_N`, `/SPI_B_SCK`,
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N`), **ZERO nets regressed**, zero zones
+touched. Authority `2140f6a9...` ->
+`db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382`.
+
+## The cheap lever was tried first, and it was VACUOUS
+
+D-585's screen has now said the same thing about this board for three
+promotions: 17 nets `NO_PATH`, 11 `NO_LEGAL_ESCAPE_SRC/DST`. D-594 built
+`--neck` for the escape half and moved five plane-net pads off that wall with
+it, so the obvious next move was to re-run the screen with the lever ON. It
+was run, and it changed **nothing**: all 28 open non-pour nets returned exactly
+the reason they returned with the lever OFF (`d596-neck-screen-vacuous.json`).
+The reason is structural and worth writing down rather than re-measuring later:
+the `.kicad_dru` necking rule names TEN fine-pitch power courtyards -- `U9`,
+`U11`-`U14`, `U16`, `U17`, `U20`-`U22` -- and every pad still on the escape
+wall (`U4`, `U5`, `D2`/`D4`/`D5`, `J1`, `MK1`, `U1`, `U2`, `U3`) sits outside
+all ten. The escape wall that remains is not a width problem the board has
+already licensed a cure for; it is a set of packages the rule does not name.
+**A NON-PROMOTING MEASUREMENT IS STILL THE RIGHT FIRST MOVE WHEN IT COSTS TEN
+MINUTES AND RETIRES A HYPOTHESIS.**
+
+## The corridor question, asked for the first time at board scale
+
+`screen_corridor_blockers.py` was written at D-584 for the USB pair and had
+never been run on anything else. It was run here across the `NO_PATH` set
+(`d596-corridor-blockers.json`, read-only, pre-promotion board `2140f6a9`) and
+it converts a dead end into a work list: over 12 nets / 26 edges it named an
+EXECUTABLE rip-up for 16, a `CROSSING_COPPER_WALL` for 6, a placement wall for
+2 and already-open corridors for 2, plus four more edge verdicts from a fifth
+process that was stopped after 80 minutes -- `/SX1262_DIO1` and
+`/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` are therefore still UNSCREENED and are named
+as such in the record. Two of its answers are refusals that matter as
+much as the openings: `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` is walled by
+`FRONT_RGB_R_N` and `/ACC_PWR_EN` + `/ACC_5V_BOOST_EN` are walled (in part) by
+`/ACC_3V3_SW`. Both are PROTECTED Demo copper. Those edges are therefore
+**walls, not candidates**, and no future iteration should re-derive that.
+
+The screen carries NO pour-bond guard, so it is a hypothesis generator and was
+treated as one: every candidate was driven through the full authority gate,
+which does carry the 45 guarded bond tubes, and three of the first four pairs
+survived.
+
+## Two framework gaps the board found, and the fixes
+
+**(1) EVICTION WAS NOT CLOSED UNDER DANGLEMENT.** The first transaction --
+`/09_COMMUNITY_HEADER/EXT_SDA` with `/09_COMMUNITY_HEADER/EXT_SCL` ripped up
+inside the requested net's own window -- routed, closed an edge, regressed
+nothing, and was refused for three `track_dangling` reports on `In3.Cu`. The
+cause is a seam between two of eviction's own rules, both of which are right on
+their own: a VIA obstructs on every layer so it is evictable wherever it sits,
+while a TRACK is evictable only on a layer the requested nets may actually route
+on -- and `In3.Cu` has been a RESERVED plane since D-580 poured `+3V3` on it, so
+it is never in `keep_layers`. `EXT_SCL` carries legacy copper there from before
+that pour. The window took its barrels and left its fragments.
+
+Minimality is a property of the SELECTION, not a licence to leave the board in a
+state the selection created. `evict_closure` therefore measures endpoint support
+-- a pad the end lands in, a barrel at that point, or another track of the same
+net that meets or crosses it on that layer -- BEFORE the removals and again
+after, and adds only what the removals themselves stranded. Copper that was
+already dangling is not this transaction's business. What it cannot reach inside
+a corridor window it NAMES, in `dangling_unevictable`, so the DRC refusal that
+follows has its explanation in the same record. Identity is the item UUID and
+not `id()`: `doomed` and the closure's own inventory come from separate
+`GetTracks()` walks and this KiCad build hands out a fresh SWIG proxy each time,
+which is a bug this file made once and will not make twice.
+
+**(2) THE WINDOW IS THE WRONG UNIT WHEN THE POINT IS TO REROUTE A NET.** With
+the closure in place the same transaction was refused again, correctly, on
+clause 4: the cascade outgrew what the 8 mm local repair pass could rebuild and
+`EXT_SCL` regressed. Both failures say one thing. `--evict-whole` therefore rips
+up every routed object of a named net on every layer, board-wide, and REQUIRES
+that net to be REQUESTED so the primary proposer rebuilds it at its own contract
+instead of the repair pass. Blast radius is still exactly one named net per
+name; clause 4 still demands it end no worse off; and the reserved inner planes
+come out CLEANER than they went in, because a foreign fragment on a poured plane
+is a slot through it. Measured: `In3.Cu` foreign copper **115 -> 112 tracks,
+996.69 -> 974.88 mm**.
+
+Both levers are OFF by default and unreachable without `--evict`; the no-eviction
+path is byte-identical.
+
+## What was promoted, and why this batch
+
+Six nets requested, three of them ripped up whole:
+
+    /I2C_SCL_INT          blocked   +1 edge     internal I2C clock (7 -> 6)
+    /NFC_CS_N             blocked   +1 edge     NFC chip select   (2 -> 1)
+    /SPI_B_SCK            blocked   +1 edge     radio SPI clock   (2 -> 1)
+    BTN_DOWN_N            blocked   +1 edge     D-pad down        (2 -> 1)
+    /SPI_B_MOSI           EVICTED   rebuilt whole, 82.92 mm, 7 vias
+    /SPI_A_MOSI           EVICTED   rebuilt whole, 87.93 mm, 4 vias, 0 open
+    BTN_A_N               EVICTED   rebuilt whole, 84.96 mm, 9 vias, 0 open
+
+Every one is a Demo-required functional net -- the internal I2C bus the
+touchscreen, IMU, fuel gauge and expanders all sit on; the NFC and LoRa SPI-B
+bus; a D-pad button. `/I2C_SDA_INT` was requested and declined; so were
+`/WAKE_INT_N`, `/SX1262_DIO1`, `BTN_LEFT_N`, `EXT_SDA`, `NFC_VDD_RF`,
+`/ACC_PWR_EN` and `/ACC_5V_BOOST_EN` in a wider trial that produced the
+identical 81, which is the measurement that says this batch is the ceiling at
+this geometry rather than an arbitrary stopping point. A five-net eviction that
+also took `/SPI_A_SCK` and `/NATIVE_B` reached 82 and regressed `/NATIVE_B`; it
+was refused and is recorded so it is not retried.
+
+`/09_COMMUNITY_HEADER/EXT_SDA` is the one candidate that was ATTEMPTED AND
+REFUSED on its merits, in four orderings. It and `EXT_SCL` both need a ~45 mm
+north-south haul from the `D2`/`R47`/`R48` cluster to `J8`, and the board fits
+exactly one: whichever is proposed first takes the lane and the other loses an
+edge. Board-positive (85 -> 84) and still refused, because clause 4 forbids a
+regression however favourable the total. **The community-header I2C pair needs a
+SHARED corridor, and a greedy per-net maze cannot allocate one** -- that is a
+router capability, not a search parameter, and it is the named next task.
+
+## Proof
+
+`verify_promotion.py --evicted NET` re-proves a rip-up from the two board files
+alone: removals are licensed ONLY on nets the promotion named, and KiCad's own
+unconnected-item count is measured on BOTH boards -- **101 -> 97** -- so a
+rip-up that stranded anything fails here without this module reading a ledger,
+a scratch tree or the driver's own evidence. All **14 checks PASS**: 42 objects
+removed, all three on evicted nets; 135 added (108 tracks + 27 vias) all on
+claimed nets; every track 0.200 mm on `F`/`B`/`In2` ONLY -- nothing on the
+reserved `In1`/`In3`/`In4` -- every barrel 0.600/0.300 mm; zone inventory and
+rule-area inventory unchanged; real zone-refilled schematic-parity DRC exactly
+199 footprint-library / 5 hole-clearance / 1 solder-mask-bridge with ZERO
+attributable and ZERO parity errors; fill-stable; D-269/D-186 live;
+`hardware/beta-v2/` untouched.
+
+`protected_copper.py`: all 15 protected nets, 393 objects -- `ACC_5V_SW_EN`,
+`ACC_3V3_SW`, the three `FRONT_RGB_*_N`, `XGPIO4`/`XGPIO5` + headers, every
+`BAT_*` -- BYTE-IDENTICAL to D-595. J5.9-12 / J5.15-18 remain approved NC.
+`pour_bond_contract.py` P1-P4 PASS on the regenerated 45-tube guard
+(110.142 mm, 1112 points); `neck_contract.py` N1-N3 PASS.
+
+Evidence `d596-evict-reroute-batch.json`, `d596-verify.json`,
+`d596-protected-copper.json`, `d596-corridor-blockers.json`,
+`d596-neck-screen-vacuous.json`, `d596-pour-damage-next.json`,
+`d596-pour-bond-guard-next.json`, `d596-guard-contract.json`,
+`d596-neck-contract.json`.
+
+## Next
+
+The corridor screen has already named the openers for the three edges this
+batch did not take -- `/ACC_PWR_EN` (`/09_COMMUNITY_HEADER/EXT_SCL_BUF`,
+`/SX1262_RXEN`, `/ACC_POWER_FAULT_N`), `/ACC_5V_BOOST_EN`
+(`/09_COMMUNITY_HEADER/TCA4307_READY`, `/ACC_DETECT_N`, `/ACC_5V_FB`) and the
+second `/SPI_B_SCK` edge (`/SX1262_RXEN`, `/NFC_AGDC`) -- so the next bounded
+task is another gated `--evict-whole` batch, re-screened first on `db5f997f`
+because those verdicts were measured on `2140f6a9`. Beyond it sit two named
+capabilities, in order of value: a PAIRED-NET corridor allocator for the
+community-header I2C haul, and a systematic `--evict-whole` sweep of the
+974.88 mm of foreign copper still slotting the `+3V3` `In3` plane. No owner
+decision.
+
 # D-595 · 2026-09-04 · Demo pour bridges; 4 edges PROMOTED with FOUR barrels and no track
 
 D-594 named the pour residual as the largest block of open edges on this board
