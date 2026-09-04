@@ -76,8 +76,15 @@ def load_rev_module(rev, name="maze3d_base"):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rev", default=BASE_REV)
+    # THE SPEC THIS CHECK JUDGES IS THE ONE THE BOARD IS ROUTED AGAINST.
+    # D-610.  The default was D-585's spec, derived on the board as it stood
+    # twenty-five decisions ago, and P2 -- "a tube is real copper, on THIS
+    # board" -- has been failing against it ever since the pours moved.  That
+    # is a true statement about a stale artifact and a false alarm about the
+    # guard in force, which is the thing this file exists to police.  Pass
+    # `--guard` explicitly to audit any other spec.
     ap.add_argument("--guard", type=Path,
-                    default=MANU / "evidence/d585-pour-bond-guard.json")
+                    default=MANU / "evidence/d610-pour-bond-guard-bonded.json")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 

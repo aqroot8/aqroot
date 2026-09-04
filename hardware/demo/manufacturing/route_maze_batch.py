@@ -276,6 +276,63 @@ def bridge_area_sexpr(name, x_nm, y_nm, via_dia_nm,
         pts=" ".join("(xy %g %g)" % q for q in pts))
 
 
+# --------------------------------------------------------------------------- #
+# THE WIDTH LICENCE IS DECLARED BEFORE THE ROUTER MOVES -- D-610
+# --------------------------------------------------------------------------- #
+# D-606's `PAD_ESCAPE_<REF>` areas license a BARREL and are drawn by the
+# promoting transaction AROUND the barrel it actually laid, sized from it.  That
+# is safe for a barrel because a barrel is a point: its area is a fixed square
+# whose only free parameter is where the point is, and clause 6 audits the count
+# and the shape.
+#
+# A RUN IS NOT A POINT, and an area drawn around whatever run the router
+# happened to lay would be a licence whose EXTENT the router chooses.  That is
+# a blank cheque written in the one currency this board treats as most
+# expensive.  So the rectangle is DECLARED -- in a tracked JSON spec, reviewed
+# and committed BEFORE the run, exactly as `--guard` and `--detour-spec`
+# already are -- and the transaction draws that rectangle and no other.  A run
+# that does not fit is refused by `maze3d._run_licence` with
+# `RUN_OUTSIDE_LICENCE_AREA`, three minutes before real DRC would have said the
+# same thing less clearly.
+#
+#   {"schema": 1, "net": "+3V3",
+#    "areas": {"U12.4": [x0, y0, x1, y1], ...}}      millimetres
+#
+# The `.kicad_dru` rule naming `PAD_ESCAPE_RUN_<REF>` must exist as well; the
+# spec says WHERE the area is, the rule says WHAT it grants, and neither alone
+# lays a micron of copper.
+def load_run_areas(path):
+    """{REF.NUM: (x0, y0, x1, y1) in nm} from a declared width-licence spec."""
+    if not path:
+        return {}
+    doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    out = {}
+    for ref, box in (doc.get("areas") or {}).items():
+        if len(box) != 4:
+            raise SystemExit("--relief-run-area: %s needs [x0,y0,x1,y1] mm"
+                             % ref)
+        x0, y0, x1, y1 = (float(v) for v in box)
+        if x1 <= x0 or y1 <= y0:
+            raise SystemExit("--relief-run-area: %s rectangle is empty" % ref)
+        out[ref] = tuple(int(round(v * 1e6)) for v in (x0, y0, x1, y1))
+    return out
+
+
+def run_area_sexpr(name, x0_nm, y0_nm, x1_nm, y1_nm):
+    """The DECLARED rectangle, as the same all-permitted rule area a bridge draws.
+
+    Same object, same keep-out flags (every one `allowed`), same clause-6
+    audit; only the outline differs, because a run has an extent and a barrel
+    does not.
+    """
+    x0, y0, x1, y1 = (v / 1e6 for v in (x0_nm, y0_nm, x1_nm, y1_nm))
+    pts = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    return RULE_AREA % dict(
+        name=name,
+        uuid=str(uuid.uuid5(uuid.NAMESPACE_URL, "aqroot-demo/rule-area/" + name)),
+        pts=" ".join("(xy %g %g)" % q for q in pts))
+
+
 def rule_areas(path):
     """A comparable signature for every RULE AREA on a board.
 
@@ -1124,8 +1181,16 @@ def guard_for(spec, net):
     for g in spec.get("guards", ()):
         if not g.get("ok") or g["net"] == net or net in g.get("exempt", ()):
             continue
+        # D-610.  `point_keepout` is the PER-POINT figure: the widest disc the
+        # tube actually occupies THERE, capped at the spec's own tube radius.
+        # `keepout_radius` -- the single narrowest-place figure -- is the
+        # fallback, so a spec written before this existed (and every
+        # `detour_guard` record, which is a disc and not a tube) reads exactly
+        # as it did.
+        per = g.get("point_keepout")
         out.setdefault(g["lkey"], []).extend(
-            (p[0], p[1], g["keepout_radius"]) for p in g["points"])
+            (p[0], p[1], (per[i] if per else g["keepout_radius"]))
+            for i, p in enumerate(g["points"]))
     return out
 
 
@@ -1164,7 +1229,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             body_landing=False, join_orphans=False,
             join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
             detour_own_layer=False, relief_extra_width=0,
-            relief_pads=()):
+            relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1452,13 +1517,25 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                     if floor < widths[-1]:
                         widths.append(floor)
                 widths = tuple(widths)
+                # D-610.  A run NARROWER than the class floor is licensed
+                # copper or it is no copper: `narrow_below` is that floor and
+                # `run_areas` is the declared rectangle each licence is
+                # granted over.  Without a declared spec `narrow_below` is 0
+                # and every rung behaves exactly as D-609's did -- laid, and
+                # judged by real DRC -- so the measurement run that DISCOVERS
+                # the rectangle is still expressible.
                 rs = mz.relief_stitch(
                     qb, net, widths, c["clr_pad"], c["clr"], rv[0], rv[1],
                     via_floors(c["netclass"]), G=grid, layers=c["layers"],
                     neck=neck_rule, guard=g, land_ok=land_ok,
-                    pads=(set(relief_pads) or None))
+                    pads=(set(relief_pads) or None),
+                    bonds_per_island=max(1, relief_bonds_per_island),
+                    narrow_below=(w_floor if relief_run_areas else 0),
+                    run_areas=relief_run_areas)
                 rs["widths_offered"] = [w for w in widths]
                 rs["pads_named"] = sorted(relief_pads or ())
+                rs["bonds_per_island"] = max(1, relief_bonds_per_island)
+                rs["run_areas_declared"] = sorted(relief_run_areas or ())
                 r["escape_relief"] = rs
                 r["mode"] = r["mode"] + "+relief"
                 r["ok"] = bool(r.get("ok")) or bool(rs.get("stitched"))
@@ -1624,7 +1701,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          body_landing=False, join_orphans=False,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
          detour_own_layer=False, relief_extra_width=0,
-         relief_pads=()):
+         relief_pads=(), relief_bonds_per_island=1, relief_run_area=None):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1802,6 +1879,11 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                 cmd += ["--relief-via", "%d:%d" % relief_via]
             if relief_extra_width:
                 cmd += ["--relief-extra-width", str(relief_extra_width)]
+            if relief_bonds_per_island > 1:
+                cmd += ["--relief-bonds-per-island",
+                        str(relief_bonds_per_island)]
+            if relief_run_area:
+                cmd += ["--relief-run-area", str(Path(relief_run_area).resolve())]
             cmd += [x for r in relief_pads for x in ("--relief-pad", r)]
         # THE BOND IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- same
         # reading as `--bridge` directly above.
@@ -1930,9 +2012,28 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                                          via_dia=b["via_dia"],
                                          via_drill=b["via_drill"],
                                          licence=b.get("licence")))
+            # D-610.  THE RUN'S OWN AREA.  `b["run_rect"]` is the DECLARED
+            # rectangle out of the tracked spec, not a box measured off the
+            # copper, and `maze3d._run_licence` has already proved the copper
+            # fits inside it.  Same object, same clause-6 audit as the barrel
+            # area beside it.
+            if b.get("run_area"):
+                bridge_areas.append(dict(kind="pad-escape-run",
+                                         name=b["run_area"], net=r["net"],
+                                         cluster=b["island"],
+                                         rect=b["run_rect"],
+                                         bbox=b.get("run_bbox"),
+                                         width_licence=b.get("run_licence_nm")))
+    seen_areas = set()
     for a in bridge_areas:
-        insert_zone(scratch, bridge_area_sexpr(a["name"], a["xy"][0],
-                                               a["xy"][1], a["via_dia"]))
+        if a["name"] in seen_areas:
+            continue
+        seen_areas.add(a["name"])
+        if a.get("rect"):
+            insert_zone(scratch, run_area_sexpr(a["name"], *a["rect"]))
+        else:
+            insert_zone(scratch, bridge_area_sexpr(a["name"], a["xy"][0],
+                                                   a["xy"][1], a["via_dia"]))
 
     drc_json = work / "drc.json"
     done = full_drc(scratch, drc_json)
@@ -2012,7 +2113,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     ra_lost = [z for z in ra_before if z not in ra_after]
     want_areas = {a["name"] for a in bridge_areas}
     rule_area_ok = (not ra_lost
-                    and len(ra_added) == len(bridge_areas)
+                    and len(ra_added) == len(want_areas)
                     and all(z[0] in want_areas and len(z[1]) == 6
                             and not any(z[2:6]) for z in ra_added))
     zone_ok = zone_ok and rule_area_ok
@@ -2163,6 +2264,18 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             via=list(relief_via or RELIEF_VIA),
             extra_width=relief_extra_width or None,
             pads=list(relief_pads),
+            bonds_per_island=relief_bonds_per_island,
+            # PROVENANCE, not a clause -- the same claim `guard` makes above.
+            # A width licence is a permanent grant; a promotion cannot be
+            # reproduced from its own evidence unless the evidence names the
+            # spec that declared its rectangles and hashes it.
+            run_area_spec=(dict(path=str(relief_run_area),
+                                sha256=sha256_file(Path(relief_run_area)),
+                                areas={k: [v / 1e6 for v in box] for k, box
+                                       in load_run_areas(relief_run_area).items()})
+                           if relief_run_area else None),
+            run_areas_drawn=sorted({a["name"] for a in bridge_areas
+                                    if a.get("kind") == "pad-escape-run"}),
             lands_still_open=relief_open,
             lands_closed_ok=(not relief_open),
             stitched=sum(len((r.get("escape_relief") or {}).get("stitches", ()))
@@ -2354,6 +2467,31 @@ def main():
                          "may lie stays KiCad's question: gate clause 3 judges "
                          "any segment outside a licensed courtyard at the "
                          "class floor and refuses the run")
+    ap.add_argument("--relief-bonds-per-island", type=int, default=1,
+                    help="D-610: let --escape-relief bond up to this many "
+                         "SEPARATE lands of ONE island.  The default 1 is the "
+                         "D-606 behaviour: an island is retired the moment any "
+                         "one of its pads reaches the plane, which is right "
+                         "when the question is CONNECTIVITY.  It is wrong when "
+                         "the question is CURRENT: two 0.200 mm necks in "
+                         "parallel carry 1.489 A where one carries 0.745 A, so "
+                         "the `U12` VOUT bond is sound at two and thin at one "
+                         "(FBV2_P2_ROUTING_PLAN.md section 17 clause 4, ruled "
+                         "in D-609).  Every bond past the first closes no edge "
+                         "and must ride with one that does -- clause 4 is "
+                         "unchanged and still requires the board to improve")
+    ap.add_argument("--relief-run-area", type=Path,
+                    help="D-610: a tracked JSON spec DECLARING the rectangle "
+                         "of each `PAD_ESCAPE_RUN_<REF>` width-licence area, "
+                         "in mm: {\"areas\": {\"U12.4\": [x0,y0,x1,y1]}}.  "
+                         "With this, a relief run narrower than its class "
+                         "floor is laid ONLY where the .kicad_dru grants that "
+                         "net that width inside that named area AND the whole "
+                         "run fits the declared rectangle; without it the "
+                         "narrow rung behaves exactly as D-609's did and is "
+                         "judged by real DRC alone.  The rectangle is declared "
+                         "BEFORE the router runs and the transaction draws "
+                         "that rectangle and no other")
     ap.add_argument("--relief-via", default=None,
                     help="DIA:DRILL in nm for --escape-relief barrels "
                          "(default 350000:200000, the fine-pitch process this "
@@ -2429,7 +2567,8 @@ def main():
                 else None,
                 a.body_landing, a.join_orphans, a.join_orphan_max_mm,
                 a.detour_own_layer, a.relief_extra_width,
-                tuple(a.relief_pad))
+                tuple(a.relief_pad), a.relief_bonds_per_island,
+                load_run_areas(a.relief_run_area))
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -2481,6 +2620,8 @@ def main():
                  detour_own_layer=a.detour_own_layer,
                  relief_extra_width=a.relief_extra_width,
                  relief_pads=tuple(a.relief_pad),
+                 relief_bonds_per_island=a.relief_bonds_per_island,
+                 relief_run_area=a.relief_run_area,
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm)
     if a.work:

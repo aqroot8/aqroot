@@ -758,6 +758,37 @@ discovers a pad that cannot be escaped at its class width or clearance:
 > a relief may lean on, and now there is a board measurement saying so. See
 > `CTO_DECISIONS.md` D-609.
 
+> **The doctrine spent on WIDTH for the first time, and clause 4's ruling REMADE — AQROOT Demo,
+> D-610 (2026-09-04).** D-606 instantiated clause 1 on the BARREL; this is clause 1 on the
+> **width**, and the reason it had to exist is D-609's own measurement, now recorded as a board
+> fact: an `intersectsCourtyard` rule is not a licence a relief may lean on, because KiCad
+> licensed the two tracks that intersected `U12`'s courtyard and flagged the six that did not.
+> `.kicad_dru` section 13 grants `+3V3` a 0.200 mm track inside **one** area,
+> `PAD_ESCAPE_RUN_U12_4`, and all seven tracks of the promoted `VOUT` bond are `enclosedByArea`
+> -licensed by it — clause 3's own-area sufficiency proved per track and per area, never against
+> a union.
+>
+> **Clause 7's overhang is load-bearing and is now instrumented.** The rectangle is the run's own
+> narrow-copper bounding box grown by 0.150 mm on every side, and it is **DECLARED IN A TRACKED
+> SPEC BEFORE THE ROUTER RUNS** (`evidence/d610-relief-run-areas.json`) rather than drawn around
+> whatever the router laid. A barrel is a point and may have its area sized from it; a run has an
+> EXTENT, and an area sized from the run is a licence whose size the router chooses.
+>
+> **Clause 4's electrical ruling is REMADE, because its premise was a measurement artefact.**
+> D-609 ruled the bond "sound at two parallel necks, thin at one" and required both. It could see
+> two necks only because the pour-bond guard was letting a barrel sit inside the `BQ25185_SYS`
+> `U12.1` bond tube — three defects, all measured and fixed in D-610. With the guard correct,
+> exactly ONE neck exists: `U12.5` is `NO_BODY_VIA_SITE` at every rung of the width ladder
+> crossed with every rung of the barrel ladder. **The ruling is therefore that ONE neck is
+> promoted, knowingly derated:** 0.742 A at ΔT = 10 K against a 0.64 A measured peak (16 % margin)
+> and a 1.0 A design figure that is a rail-WIDTH convention, not a load; 2.756 mm of narrow run,
+> so clause 4's 6.0 mm REVIEW TRIGGER does not engage at all. `audit_bond_ampacity.py` re-derives
+> §5's own printed table to within 0.9 % before ruling, and reports the barrel at 1.457 A — not
+> the bottleneck. The alternative was a 3.3 V rail with no connection to the regulator that makes
+> it; D-607 took the same trade at 0.150 mm on `GND` and said so. Clause 6's "widen immediately"
+> still cannot be met here: the production answer remains the `L1` placement change, a Full Beta
+> v2 item. See `CTO_DECISIONS.md` D-610.
+
 ---
 
 ## 18. Opportunity and simplification scan

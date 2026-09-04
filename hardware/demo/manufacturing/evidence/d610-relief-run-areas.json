@@ -1,0 +1,22 @@
+{
+ "schema": 1,
+ "decision": "D-610",
+ "net": "+3V3",
+ "units": "mm",
+ "why": "The rectangle of every PAD_ESCAPE_RUN_<REF> width-licence rule area, DECLARED before the router runs. A barrel is a point and its area may be drawn around it; a RUN has an extent, so an area drawn around whatever the router laid would be a licence whose size the router chooses. route_maze_batch.py --relief-run-area draws exactly these rectangles and maze3d._run_licence refuses any run that does not fit one.",
+ "areas": {
+  "U12.4": [64.85, 98.375, 66.975, 100.075]
+ },
+ "derivation": {
+  "U12.4": {
+   "measured_on_board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+   "guard": "evidence/d610-pour-bond-guard-next.json",
+   "run_width_nm": 200000,
+   "barrel_nm": [350000, 200000],
+   "narrow_copper_bbox_mm": [65.0, 98.525, 66.825, 99.925],
+   "end_cap_overhang_mm": 0.15,
+   "clause": "FBV2_P2_ROUTING_PLAN.md section 17 clause 7",
+   "probe": "w/d610/probe_run_geometry.py (scratch), evidence/d610-run-geometry.json"
+  }
+ }
+}

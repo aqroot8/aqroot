@@ -475,11 +475,24 @@ class Field(object):
         # guard is therefore ANDed out of the via lattice once, here: `via_ok`
         # is built once and only ever narrowed afterwards (`forbid_via`), so
         # one application holds for the life of the Field.
-        for m in self._guard.values():
+        #
+        # AND IT IS THE BARREL'S OWN MASK, NOT THE TRACK'S -- D-610.  This used
+        # to reuse `self._guard`, whose radius carries `self.width / 2`.  A
+        # 0.65 mm barrel is more than three times as wide as a 0.20 mm track
+        # and its antipad is on EVERY layer, so the track mask let a barrel
+        # sit where its own copper cannot fit.  MEASURED: with the `U12.1`
+        # bond tube in force at a 0.275 mm keepout, the `U12` `VOUT` relief
+        # planted a 0.65 mm barrel 0.5315 mm from the tube -- clear of the
+        # 0.475 mm the TRACK mask asked for, 0.0685 mm inside the 0.600 mm the
+        # BARREL owes -- KiCad's refill ate the tube, and `BQ25185_SYS`
+        # `U12.1` came away on a 0.473 mm2 island of its own.  That is the
+        # clause-4 regression that refused D-609 and D-610's first two runs.
+        for m in self._guard_masks(width=self.via_dia,
+                                   layers=set(qb.cu)).values():
             self.via_ok &= ~m
 
     # -- pour-bond guard ---------------------------------------------------- #
-    def _guard_masks(self):
+    def _guard_masks(self, width=None, layers=None):
         """Cells this net may not take because a bond tube runs through them.
 
         The tube itself owes `keepout` -- its own half-width plus the zone
@@ -487,14 +500,22 @@ class Field(object):
         half-width and one lattice cell, the same guard band `QBoard.grid`
         widens every other obstacle by, so a straight run `QBoard.smooth`
         accepts between two clear cells cannot graze the tube either.
+
+        `width` and `layers` default to this Field's TRACK width and the layers
+        it may route on, which is the only call this method had before D-610.
+        The BARREL passes its own diameter and the WHOLE stack: a through via
+        is copper on every layer, so it owes a tube on `In2` exactly what it
+        owes one on `B`, and it owes it at 0.65 mm rather than at 0.20 mm.
         """
+        width = self.width if width is None else width
+        layers = self.layers if layers is None else layers
         out = {}
         for L, pts in self.guard.items():
-            if L not in self.layers or not pts:
+            if L not in layers or not pts:
                 continue
             m = np.zeros((self.ny, self.nx), dtype=bool)
             for (x, y, keepout) in pts:
-                R = keepout + self.width / 2.0 + self.G
+                R = keepout + width / 2.0 + self.G
                 i0 = max(0, int(math.floor((x - R - self.ox) / self.G)))
                 i1 = min(self.nx - 1, int(math.ceil((x + R - self.ox) / self.G)))
                 j0 = max(0, int(math.floor((y - R - self.oy) / self.G)))
@@ -2361,6 +2382,89 @@ def escape_licence(qb, net, ref):
     return area_licence(qb, net, escape_area_name(ref))
 
 
+ESCAPE_RUN_AREA_PREFIX = "PAD_ESCAPE_RUN_"
+
+
+def escape_run_area_name(ref):
+    """The rule-area name that licenses THIS PAD's escape RUN width.
+
+    `U12.4` -> `PAD_ESCAPE_RUN_U12_4`.  A DIFFERENT object from
+    `escape_area_name`, and deliberately so: D-606's `PAD_ESCAPE_<REF>` areas
+    license a BARREL and license nothing about width, and D-609 measured the
+    consequence -- a relief whose BARREL was ordinary and whose RUN was
+    0.200 mm was refused for six real `track_width` errors, because the only
+    width licence within reach was the `intersectsCourtyard` necking rule that
+    `FBV2_P2_ROUTING_PLAN.md` section 17 clause 2 forbids leaning on.  The two
+    names are separate so that a transaction that needs one cannot silently
+    inherit the other.
+    """
+    return ESCAPE_RUN_AREA_PREFIX + str(ref).replace('.', '_')
+
+
+_WIDTH_RULE_RE = re.compile(
+    r'\(rule\s+"([^"]*)"\s*\(constraint\s+track_width\s*\(min\s+'
+    r'([0-9.]+)mm\)\s*\)\s*\(condition\s+"([^"]*)"\)\s*\)', re.S)
+
+
+def width_licence(qb, net, ref):
+    """The narrowest TRACK this board licenses for THIS PAD's run, or None.
+
+    Accepts only a rule whose condition is exactly
+
+        A.NetName == '<net>' && A.enclosedByArea('PAD_ESCAPE_RUN_<REF>')
+
+    and only a `track_width (min ...)` constraint -- the same read
+    `area_licence` makes for a barrel, asked about the one geometry a barrel
+    licence says nothing about.  `enclosedByArea`, never `intersectsArea`:
+    KiCad evaluates membership per OBJECT, so a track that merely clipped the
+    area would inherit the relaxation along its whole length, and section 17
+    clause 2 names that shape by name.  Returns nm, or None when the board
+    carries no such rule -- which is a REFUSAL at the caller, never a default.
+    """
+    want = ("A.NetName == '%s' && A.enclosedByArea('%s')"
+            % (net, escape_run_area_name(ref)))
+    dru = Path(qb.b.GetFileName()).with_suffix('.kicad_dru')
+    if not dru.exists():
+        return None
+    got = None
+    for name, mm, cond in _WIDTH_RULE_RE.findall(
+            dru.read_text(encoding='utf-8')):
+        if ' '.join(cond.split()) != want:
+            continue
+        got = int(round(float(mm) * qr.MM))      # LAST matching rule wins
+    return got
+
+
+def laid_track_bbox(qb, mark, below=0):
+    """Bounding box in nm of the TRACKS laid since `mark`, caps included.
+
+    `below` keeps only tracks narrower than that width -- the sub-class-width
+    copper a width licence has to cover -- and each track is grown by its own
+    half-width, which is exactly how KiCad extends a segment's end cap and is
+    the whole reason section 17 clause 7 asks for an overhang at all.  Returns
+    None when the run laid no such track, so a caller can tell "nothing to
+    license" from "a box of zero size".
+    """
+    x0 = y0 = x1 = y1 = None
+    for t in qb.laid[mark[0]:]:
+        if t.GetClass() != 'PCB_TRACK':      # a via is a PCB_TRACK subclass
+            continue
+        w = int(t.GetWidth())
+        if below and w >= below:
+            continue
+        h = w / 2.0
+        a, b = t.GetStart(), t.GetEnd()
+        for (px, py) in ((int(a.x), int(a.y)), (int(b.x), int(b.y))):
+            lo_x, hi_x, lo_y, hi_y = px - h, px + h, py - h, py + h
+            x0 = lo_x if x0 is None else min(x0, lo_x)
+            y0 = lo_y if y0 is None else min(y0, lo_y)
+            x1 = hi_x if x1 is None else max(x1, hi_x)
+            y1 = hi_y if y1 is None else max(y1, hi_y)
+    if x0 is None:
+        return None
+    return (x0, y0, x1, y1)
+
+
 # -- pour geometry ---------------------------------------------------------- #
 def filled_islands(qb, net):
     """[(layer_name, index, SHAPE_POLY_SET, area_mm2)] for every filled island.
@@ -3455,10 +3559,66 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
 # sub-class-width copper needing the doctrine's 2.0 mm clearance-run cap or its
 # 6.0 mm narrow-width review trigger.  A relief that needed those would be a
 # different claim and would have to be measured as one.
+def _run_licence(qb, net, ref, width, mark, narrow_below, run_areas):
+    """Is the sub-class-width run just laid for `ref` LICENSED, and where?
+
+    Three independent questions, each a refusal of its own so the evidence
+    names which one failed:
+
+      NO_RUN_AREA_SPEC        the caller declared no rectangle for this pad,
+                              so there is nothing for the transaction to draw
+                              and nothing a reviewer approved;
+      NO_DRU_WIDTH_LICENCE    the `.kicad_dru` grants this net no track width
+                              inside `PAD_ESCAPE_RUN_<REF>`, or grants one no
+                              narrower than the run actually needs;
+      RUN_OUTSIDE_LICENCE_AREA
+                              the copper does not fit the declared rectangle.
+                              `enclosedByArea` is all-or-nothing per object,
+                              so a run that strays by a micron is judged at
+                              the class floor and the whole transaction is
+                              refused by real DRC three minutes later.  It is
+                              cheaper, and far clearer, to say so here.
+
+    Returns dict(run_area, run_licence_nm, run_bbox) on success, or a dict
+    carrying `reason`/`why`.
+    """
+    area = escape_run_area_name(ref)
+    rect = (run_areas or {}).get(ref)
+    if rect is None:
+        return dict(reason='NO_RUN_AREA_SPEC', area=area,
+                    why='no declared rule-area rectangle for %s; a width '
+                        'licence is authored before the router runs, never '
+                        'drawn around what it laid' % area)
+    lic = width_licence(qb, net, ref)
+    if lic is None or lic > width:
+        return dict(reason='NO_DRU_WIDTH_LICENCE', area=area,
+                    why='no .kicad_dru rule grants %s a %.3f mm track inside '
+                        '%s (found %s)'
+                        % (net, width / 1e6, area,
+                           'nothing' if lic is None
+                           else '%.3f mm' % (lic / 1e6)))
+    box = laid_track_bbox(qb, mark, below=narrow_below)
+    if box is None:
+        return dict(reason='NO_NARROW_COPPER', area=area,
+                    why='nothing narrower than %.3f mm was laid'
+                        % (narrow_below / 1e6))
+    rx0, ry0, rx1, ry1 = rect
+    if not (rx0 <= box[0] and ry0 <= box[1]
+            and box[2] <= rx1 and box[3] <= ry1):
+        return dict(reason='RUN_OUTSIDE_LICENCE_AREA', area=area,
+                    why='run copper %s mm is not enclosed by declared %s = %s mm'
+                        % ([round(v / 1e6, 4) for v in box], area,
+                           [round(v / 1e6, 4) for v in rect]))
+    return dict(run_area=area, run_licence_nm=lic,
+                run_bbox=[int(v) for v in box],
+                run_rect=[int(v) for v in rect])
+
+
 def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                   floors, G=100000, layers=None, neck=None, guard=None,
                   max_mm=8.0, escape_limit=12, licence=True, land_ok=None,
-                  pads=None):
+                  pads=None, bonds_per_island=1, narrow_below=0,
+                  run_areas=None):
     """Stitch each orphan island of a pour-owning net with a LICENSED barrel.
 
     `widths` is a ladder, widest first; an island served at one width is
@@ -3482,7 +3642,7 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
     body = max(islands, key=len)
     pending = [i for i in islands if i is not body]
     plain = _meets_floors(via_dia, via_drill, floors)
-    done, last = [], {}
+    done, last, unasked = [], {}, {}
     for rung, w in enumerate(widths):
         if not pending:
             break
@@ -3490,8 +3650,10 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                       G=G, layers=layers, neck=neck, guard=guard)
         still = []
         for island in pending:
-            hit = None
+            hits = []
             for pad in island:
+                if len(hits) >= max(1, bonds_per_island):
+                    break
                 ref = pad['ref']
                 # D-609.  `pads` NAMES the lands this transaction is spending
                 # its licence -- or its narrow rung -- on.  A relief is the
@@ -3501,6 +3663,24 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                 # means "every land", which is what every caller before this
                 # one asked for and gets byte-identically.
                 if pads is not None and ref not in pads:
+                    # A LAND THIS TRANSACTION DID NOT ASK ABOUT HAS NOT BEEN
+                    # MEASURED, AND MUST NOT BE REPORTED AS THOUGH IT HAD BEEN
+                    # -- D-610 addendum.  An island whose every pad is filtered
+                    # out here sets no `last` entry, so it used to fall through
+                    # to the `NO_ESCAPE` default at the bottom of this function
+                    # -- the same word `stitch_pad` returns when it has
+                    # actually looked and found nothing.  D-610's own gate
+                    # evidence carries eight `+3V3` lands that way (`U4.2`,
+                    # `U4.3`, `U4.5`, `U4.8`, `U4.12`, `R129.1`, `R39.1`,
+                    # `U5.2`): recorded as refusals, never tried, because
+                    # `--relief-pad` named only `U12.4`/`U12.5`.  A reader
+                    # pricing the next iteration off that file would have
+                    # written those five `U4` lands off unmeasured.
+                    #
+                    # `NOT_OFFERED` says which, and names the lands.  When
+                    # `pads` is None -- every caller before D-609 -- this
+                    # branch cannot be reached and the output is byte-identical.
+                    unasked.setdefault(id(island), set()).add(ref)
                     continue
                 lic = None if plain else (escape_licence(qb, net, ref)
                                           if licence else None)
@@ -3539,6 +3719,29 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                 # named `relief_lands_closed`.  A proposer that guessed here
                 # would be a second opinion for the gate to disagree with.
                 if r.get('ok'):
+                    # A NARROW RUN IS ITS OWN LICENCE QUESTION, AND IT IS
+                    # ANSWERED HERE OR THE COPPER DOES NOT EXIST.  D-609 laid
+                    # a 0.200 mm run under a P3V3 0.400 mm floor with no width
+                    # licence of any kind and collected six real `track_width`
+                    # errors; the two segments that passed did so by
+                    # `intersectsCourtyard`, the shape section 17 clause 2
+                    # forbids leaning on.  `narrow_below` is the class floor;
+                    # under it a run is laid ONLY where this board already
+                    # grants THIS NET THAT WIDTH inside the rule area named
+                    # for THIS PAD, AND the whole run fits inside the
+                    # rectangle that area is declared to be.  The declaration
+                    # comes from the caller's tracked spec, not from the run,
+                    # so the licence is a fixed grant authored and reviewed
+                    # BEFORE the router moved -- never a box drawn round
+                    # whatever the router happened to lay.
+                    run = None
+                    if narrow_below and w < narrow_below:
+                        run = _run_licence(qb, net, ref, w, m, narrow_below,
+                                           run_areas)
+                        if run.get('reason'):
+                            qb.revert(m)
+                            last[id(island)] = dict(pad=ref, **run)
+                            continue
                     hit = dict(pad=ref, island=[p['ref'] for p in island],
                                width=w, rung=rung, layer=r['layer'],
                                mm=r['mm'], via_xy=list(r['via_xy']),
@@ -3547,17 +3750,24 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                                needs_licence=(not plain), licence=lic,
                                area=(None if plain
                                      else escape_area_name(ref)))
-                    break
+                    if run is not None:
+                        hit.update(run)
+                    hits.append(hit)
+                    continue
                 qb.revert(m)
                 last[id(island)] = dict(reason=r.get('reason'), pad=ref,
                                         why=str(r.get('why'))[:160])
-            if hit is not None:
-                done.append(hit)
+            if hits:
+                done.extend(hits)
             else:
                 still.append(island)
         pending = still
     failures = [dict(island=[p['ref'] for p in i],
-                     **(last.get(id(i)) or dict(reason='NO_ESCAPE')))
+                     **(last.get(id(i))
+                        or (dict(reason='NOT_OFFERED',
+                                 not_offered=sorted(unasked[id(i)]))
+                            if id(i) in unasked
+                            else dict(reason='NO_ESCAPE'))))
                 for i in pending]
     return dict(ok=bool(done), net=net, stitched=len(done),
                 unstitched=len(failures), stitches=done,

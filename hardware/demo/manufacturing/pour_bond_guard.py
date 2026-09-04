@@ -38,6 +38,12 @@ is guarded when either clause holds:
                 net's own contract width.  That pad can never be re-bonded by
                 any router move on this geometry, whatever the island's size.
                 This is `J1.35`, on the 972.89 mm2 main `+3V3` island.
+                AND THE ANCHOR IT IS PROTECTED BACK TO NEED NOT BE A PAD
+                (D-610): a via ties the island to a reserved inner plane and
+                is as good an anchor as a re-stitchable pad, so an island
+                bonding ONE dead pad and ONE VIA is guarded.  `BQ25185_SYS`
+                island 3 -- 95.410 mm2, pad `U12.1` plus one via -- is that
+                shape, and the run that slotted it is what refused D-609.
 
 What is then protected is a TUBE: for each edge of a Euclidean MST over the
 island's anchors, the geodesic path between them THROUGH THE ISLAND'S OWN
@@ -221,8 +227,10 @@ def geodesic(edges, a, b, radius, grid, win_mm=2.0, grows=4):
         if nx * ny > 6000000:
             break
         cu = raster(edges, ox, oy, grid, nx, ny)
+        cores = {}
         for kk in range(k, 0, -1):
             core = erode(cu, kk)
+            cores[kk] = core
             free = core.copy()
             seeds = disc_cells(a[0], a[1], a[2], ox, oy, grid, nx, ny, cu)
             goals = disc_cells(b[0], b[1], b[2], ox, oy, grid, nx, ny, cu)
@@ -236,21 +244,58 @@ def geodesic(edges, a, b, radius, grid, win_mm=2.0, grows=4):
                 mm = sum(math.hypot(pts[t][0] - pts[t - 1][0],
                                     pts[t][1] - pts[t - 1][1])
                          for t in range(1, len(pts))) / 1e6
-                return dict(points=decimate(pts, grid * 4),
-                            radius=kk * grid, mm=round(mm, 3),
+                # THE TUBE'S WIDTH IS A PROPERTY OF THE POINT, NOT OF THE PATH
+                # -- D-610.  `kk` is the LARGEST erosion the whole path
+                # survives, so it is the width of the NARROWEST place on it.
+                # Publishing that one figure as the keepout everywhere
+                # under-protects every wider stretch, and this board paid for
+                # it: `BQ25185_SYS` island 3's tube is 0.200 to 0.350 mm wide
+                # where it leaves `U12.1`, and 0.025 mm at a pour finger
+                # TWELVE MILLIMETRES AWAY -- so the whole 15 mm tube was
+                # published at a 0.275 mm keepout, the `U12` `VOUT` relief
+                # planted a barrel 0.5315 mm from it, KiCad's refill ate the
+                # wide part and `U12.1` came away on a 0.473 mm2 island.
+                #
+                # Each point therefore carries the widest disc that FITS
+                # THERE, capped at the `--tube-radius` the caller asked for --
+                # so no keepout anywhere exceeds the one every tube on this
+                # board already uses, and the narrow places are unchanged.
+                # `radius` is still reported: it is the honest width of the
+                # bond as a whole and it is what a reviewer reads first.
+                rad = []
+                for (j, i) in p:
+                    r = kk
+                    for kk2 in range(k, kk, -1):
+                        if cores[kk2][j, i]:
+                            r = kk2
+                            break
+                    rad.append(r * grid)
+                dpts, drad = decimate(pts, grid * 4, rad)
+                return dict(points=dpts, point_radius=drad,
+                            radius=kk * grid,
+                            radius_max=max(drad), mm=round(mm, 3),
                             window_mm=round(m / 1e6, 3))
     return None
 
 
-def decimate(pts, step):
-    """Thin the polyline: the mask stamps a disc an order of magnitude wider."""
-    out = [pts[0]]
-    for p in pts[1:-1]:
+def decimate(pts, step, rad):
+    """Thin the polyline: the mask stamps a disc an order of magnitude wider.
+
+    A kept point inherits the SMALLEST radius among the points it stands in
+    for, so thinning can only ever under-state how wide the tube is there --
+    never over-state it.
+    """
+    out, orad, run = [pts[0]], [rad[0]], rad[0]
+    for p, r in zip(pts[1:-1], rad[1:-1]):
+        run = min(run, r)
         if math.hypot(p[0] - out[-1][0], p[1] - out[-1][1]) >= step:
             out.append(p)
+            orad.append(run)
+            run = r
     if len(pts) > 1:
         out.append(pts[-1])
-    return out
+        orad.append(min(run, rad[-1]))
+    return out, orad
 
 
 def mst_edges(nodes):
@@ -401,10 +446,29 @@ def build(board_path, area_max, radius, grid, escapes=True):
     for p in pours:
         for isl in p["islands"]:
             pads = isl["pads"]
-            if len(pads) < 2:
-                continue
             fatal = [q for q in pads if q["ref"] in dead]
-            small = isl["area_mm2"] <= area_max
+            # AN ANCHOR IS NOT ALWAYS A PAD, AND THE SKIP THAT ASSUMED IT WAS
+            # COST AN EDGE.  D-610.  This loop used to drop any island bonding
+            # fewer than TWO PADS before either clause was consulted.  That is
+            # right for SMALL_ISLAND, whose whole construction is an MST over
+            # the island's pads and which has nothing to draw with one.  It is
+            # WRONG for NO_ESCAPE, whose construction is already "back to the
+            # nearest anchor that CAN be re-bonded" and whose own comment
+            # names a VIA as such an anchor: a via ties the island to a
+            # reserved inner plane, and copper joining a dead pad to a via is
+            # exactly as fatal to cut as copper joining it to another pad.
+            #
+            # MEASURED, ON THIS BOARD.  `BQ25185_SYS` island 3 is 95.410 mm2
+            # and bonds ONE pad -- `U12.1`, which `no_escape_pads` reports
+            # dead -- plus ONE via.  It was skipped here, so nothing kept the
+            # `U12` `VOUT` bond's own run out of it; the run slotted the
+            # island, KiCad re-poured around the slot, and the `SW9.2`/`U12.1`
+            # group split.  That is the `BQ25185_SYS` 7 -> 8 regression that
+            # refused D-609 under clause 4, and the plane repair could not
+            # answer it: `U12.1` is `NO_LEGAL_ESCAPE` -- which is why it is in
+            # `dead` in the first place -- and `SW9.2` is D-604's pad that
+            # stitches at every rung and closes nothing.
+            small = isl["area_mm2"] <= area_max and len(pads) >= 2
             if not small and not fatal:
                 continue
             reason = "SMALL_ISLAND" if small else "NO_ESCAPE"
@@ -447,8 +511,11 @@ def build(board_path, area_max, radius, grid, escapes=True):
                     skipped.append(rec)
                     continue
                 rec.update(ok=True, mm=t["mm"], tube_radius=t["radius"],
+                           tube_radius_max=t["radius_max"],
                            window_mm=t["window_mm"],
                            keepout_radius=t["radius"] + ZONE_CLEARANCE,
+                           point_keepout=[r + ZONE_CLEARANCE
+                                          for r in t["point_radius"]],
                            points=t["points"])
                 guards.append(rec)
     return guards, skipped

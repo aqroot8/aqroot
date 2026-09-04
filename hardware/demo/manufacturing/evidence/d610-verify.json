@@ -1,0 +1,281 @@
+{
+  "added_object_nets": [
+    "+3V3"
+  ],
+  "added_track_layers": [
+    "B.Cu"
+  ],
+  "added_track_widths_nm": [
+    200000
+  ],
+  "added_tracks": 7,
+  "added_via_dia_drill_nm": [
+    [
+      350000,
+      200000
+    ]
+  ],
+  "added_vias": 1,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [],
+  "claimed_nets": [
+    "+3V3"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [
+    "PAD_ESCAPE_RUN_U12_4",
+    "PAD_ESCAPE_U12_4"
+  ],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 73
+  },
+  "drc_pre": null,
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 73
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 8,
+  "objects_removed": 0,
+  "pad_escape_neck": null,
+  "pad_escape_run": {
+    "areas": [
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          65200000,
+          98800000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          65100000,
+          98700000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          65100000,
+          98700000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          65925000,
+          98625000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          65925000,
+          98625000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          66350000,
+          98625000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          66350000,
+          98625000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          66600000,
+          98850000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          66725000,
+          99375000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          66600000,
+          99825000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          66600000,
+          98850000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          66725000,
+          99075000
+        ],
+        "width_nm": 200000
+      },
+      {
+        "area": "PAD_ESCAPE_RUN_U12_4",
+        "end": [
+          66725000,
+          99075000
+        ],
+        "layer": "B.Cu",
+        "licence_nm": 200000,
+        "net": "+3V3",
+        "start": [
+          66725000,
+          99375000
+        ],
+        "width_nm": 200000
+      }
+    ],
+    "licensed": 7,
+    "narrow_tracks": 7,
+    "strays": []
+  },
+  "pour_bridge": {
+    "areas": [
+      {
+        "area": "PAD_ESCAPE_U12_4",
+        "at": [
+          65200000,
+          98800000
+        ],
+        "dia_nm": 350000,
+        "drill_nm": 200000,
+        "net": "+3V3"
+      }
+    ],
+    "fine_vias": 1,
+    "licensed": 1,
+    "strays": []
+  },
+  "pre_board_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+  "promoted_board_sha256": "12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0",
+  "ref": "HEAD",
+  "removed_object_nets": [],
+  "removed_sample": [],
+  "rule_areas_added": [
+    [
+      "PAD_ESCAPE_RUN_U12_4",
+      [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      false,
+      false,
+      false,
+      false,
+      [
+        [
+          64850000,
+          98375000
+        ],
+        [
+          66975000,
+          98375000
+        ],
+        [
+          66975000,
+          100075000
+        ],
+        [
+          64850000,
+          100075000
+        ]
+      ]
+    ],
+    [
+      "PAD_ESCAPE_U12_4",
+      [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      false,
+      false,
+      false,
+      false,
+      [
+        [
+          64875000,
+          98475000
+        ],
+        [
+          65525000,
+          98475000
+        ],
+        [
+          65525000,
+          99125000
+        ],
+        [
+          64875000,
+          99125000
+        ]
+      ]
+    ]
+  ],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

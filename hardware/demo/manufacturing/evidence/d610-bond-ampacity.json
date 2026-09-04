@@ -1,0 +1,180 @@
+{
+ "authority": "w/d610/head.kicad_pcb",
+ "authority_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "barrels": [
+  {
+   "amps": 1.457,
+   "dia_mm": 0.35,
+   "drill_mm": 0.2,
+   "equiv_outer_track_mm": 0.508,
+   "net": "+3V3",
+   "wall_area_mm2": 0.017671,
+   "xy_mm": [
+    65.2,
+    98.8
+   ]
+  }
+ ],
+ "candidate": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "candidate_sha256": "12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0",
+ "copper_mm": 0.0348,
+ "dT_K": 10.0,
+ "method_selfcheck": [
+  {
+   "amps": 0.742,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.872,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 0.25
+  },
+  {
+   "amps": 0.995,
+   "dru_printed": 1.0,
+   "residual": -0.005,
+   "width_mm": 0.3
+  },
+  {
+   "amps": 1.113,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 0.35
+  },
+  {
+   "amps": 1.226,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 0.4
+  },
+  {
+   "amps": 1.441,
+   "dru_printed": 1.45,
+   "residual": -0.009,
+   "width_mm": 0.5
+  },
+  {
+   "amps": 1.645,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 0.6
+  },
+  {
+   "amps": 2.718,
+   "dru_printed": null,
+   "residual": null,
+   "width_mm": 1.2
+  }
+ ],
+ "narrow_mm": 2.7555,
+ "necks": [
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.1414,
+   "mohm": 0.35,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.8284,
+   "mohm": 2.052,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.425,
+   "mohm": 1.053,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.3363,
+   "mohm": 0.833,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.467,
+   "mohm": 1.157,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.2574,
+   "mohm": 0.638,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  },
+  {
+   "amps": 0.742,
+   "amps_dT20": 1.006,
+   "area_mm2": 0.00696,
+   "class_floor_mm": 0.4,
+   "external": true,
+   "layer": "B.Cu",
+   "mm": 0.3,
+   "mohm": 0.743,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "width_mm": 0.2
+  }
+ ],
+ "nets": {
+  "+3V3": {
+   "clause4_width_review": false,
+   "min_amps": 0.742,
+   "mohm": 6.826,
+   "neck_mm": 2.7556,
+   "net": "+3V3",
+   "widths": [
+    0.2
+   ]
+  }
+ },
+ "plating_mm": 0.025,
+ "schema": 1
+}

@@ -1,0 +1,194 @@
+{
+ "argv": "route_maze_batch.py +3V3 --propose <board> --neck --escape-relief --relief-via 350000:200000 --relief-extra-width 200000 --relief-pad U12.4 --relief-pad U12.5 --relief-bonds-per-island 2 --relief-run-area evidence/d610-relief-run-areas.json --guard evidence/d610-pour-bond-guard-next.json --body-landing",
+ "board": "w/d610/repro2/aqroot-Beta-v2.kicad_pcb (D-610 pre-promotion authority)",
+ "board_sha256": "0b3f8f3c33dfa261bae16245ff5e262d4d6909627ed3f05785b8bca36f11937a",
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "guarded_layers": {
+   "B": 1224
+  },
+  "layers": [
+   "F",
+   "B",
+   "I2",
+   "I3"
+  ],
+  "netclass": "P3V3",
+  "reserved_inner_planes": {
+   "I1": [
+    "GND"
+   ],
+   "I3": [
+    "+3V3"
+   ],
+   "I4": [
+    "GND"
+   ]
+  },
+  "via_dia": 800000,
+  "via_drill": 400000,
+  "width": 600000
+ },
+ "dru_sha256": "593f2a2f967a6f7f1d585e21e52c27ce0e0514031ff23a8013b2a990f09152b0",
+ "escape_relief": {
+  "bonds_per_island": 2,
+  "failures": [
+   {
+    "island": [
+     "R129.1"
+    ],
+    "not_offered": [
+     "R129.1"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "R39.1"
+    ],
+    "not_offered": [
+     "R39.1"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U4.12"
+    ],
+    "not_offered": [
+     "U4.12"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U4.2"
+    ],
+    "not_offered": [
+     "U4.2"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U4.3"
+    ],
+    "not_offered": [
+     "U4.3"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U4.5"
+    ],
+    "not_offered": [
+     "U4.5"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U4.8"
+    ],
+    "not_offered": [
+     "U4.8"
+    ],
+    "reason": "NOT_OFFERED"
+   },
+   {
+    "island": [
+     "U5.2"
+    ],
+    "not_offered": [
+     "U5.2"
+    ],
+    "reason": "NOT_OFFERED"
+   }
+  ],
+  "mm": 2.756,
+  "net": "+3V3",
+  "ok": true,
+  "pads_named": [
+   "U12.4",
+   "U12.5"
+  ],
+  "run_areas_declared": [
+   "U12.4"
+  ],
+  "stitched": 1,
+  "stitches": [
+   {
+    "area": "PAD_ESCAPE_U12_4",
+    "island": [
+     "U12.4",
+     "U12.5"
+    ],
+    "layer": "B",
+    "licence": {
+     "annular": 75000,
+     "area": "PAD_ESCAPE_U12_4",
+     "rules": [
+      "D-610 U12.4 pad-escape relief - annular ring, +3V3",
+      "D-610 U12.4 pad-escape relief - hole, +3V3",
+      "D-610 U12.4 pad-escape relief - via, +3V3"
+     ],
+     "via_dia": 350000,
+     "via_drill": 200000
+    },
+    "mm": 2.756,
+    "needs_licence": true,
+    "pad": "U12.4",
+    "run_area": "PAD_ESCAPE_RUN_U12_4",
+    "run_bbox": [
+     65000000,
+     98525000,
+     66825000,
+     99925000
+    ],
+    "run_licence_nm": 200000,
+    "run_rect": [
+     64850000,
+     98375000,
+     66975000,
+     100075000
+    ],
+    "rung": 2,
+    "via_dia": 350000,
+    "via_drill": 200000,
+    "via_xy": [
+     65.2,
+     98.8
+    ],
+    "width": 200000,
+    "xy": [
+     65200000,
+     98800000
+    ]
+   }
+  ],
+  "unstitched": 8,
+  "via_dia": 350000,
+  "via_drill": 200000,
+  "vias": 1,
+  "widths": [
+   600000,
+   400000,
+   200000
+  ],
+  "widths_offered": [
+   600000,
+   400000,
+   200000
+  ]
+ },
+ "guard_sha256": "5fb2345fd0190d23d399a086248a003329bfcf9a4531f70df044dec08213fe1c",
+ "guard_spec": "evidence/d610-pour-bond-guard-next.json",
+ "mode": "stitch+relief",
+ "pro_sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+ "run_area_sha256": "2fd405eea537f654e5fc61be7f5c074900c60f1db2c784a4c19b58345daa61ab",
+ "run_area_spec": "evidence/d610-relief-run-areas.json",
+ "schema": 1,
+ "what": "D-610 addendum: the promoting relief decision REPRODUCED from the pre-promotion board plus the promoted .kicad_dru, with the NOT_OFFERED label fix in maze3d.relief_stitch in force.  The stitch is identical to evidence/d610-vout-bond-gate.json; the eight islands that file recorded as NO_ESCAPE were never measured -- --relief-pad named only U12.4/U12.5 -- and now say so."
+}

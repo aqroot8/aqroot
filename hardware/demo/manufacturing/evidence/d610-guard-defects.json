@@ -1,0 +1,116 @@
+{
+ "board_sha256_measured_on": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+ "decision": "D-610",
+ "defects": [
+  {
+   "effect": {
+    "no_anchor_reported": [
+     {
+      "island": 13,
+      "layer": "F.Cu",
+      "net": "+3V3",
+      "pads": [
+       "U5.2"
+      ],
+      "reason": "NO_ANCHOR",
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+     },
+     {
+      "island": 50,
+      "layer": "B.Cu",
+      "net": "GND",
+      "pads": [
+       "U9.16"
+      ],
+      "reason": "NO_ANCHOR",
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+     }
+    ],
+    "shared_tubes_point_identical": true,
+    "tubes_added": [
+     "('/01_POWER_TREE/BQ25185_SYS', 'B.Cu', 3, ('U12.1', 'via'))"
+    ],
+    "tubes_after": 47,
+    "tubes_before": 46,
+    "tubes_lost": []
+   },
+   "measured": {
+    "area_mm2": 95.41,
+    "consequence": "unguarded; the U12 VOUT relief run slotted the island, KiCad re-poured around the slot and U12.1 came away on a 0.473 mm2 island of its own -- BQ25185_SYS 7 -> 8",
+    "dead_pads_on_net": [
+     "U11.1",
+     "U12.1",
+     "U12.10",
+     "U12.11",
+     "U13.3",
+     "U21.3"
+    ],
+    "island": "/01_POWER_TREE/BQ25185_SYS B.Cu island 3",
+    "pad_is_dead": true,
+    "pads": [
+     "U12.1"
+    ],
+    "vias": 1
+   },
+   "name": "ANCHOR_NEED_NOT_BE_A_PAD",
+   "was": "every island bonding fewer than TWO PADS was skipped before either clause was consulted",
+   "where": "pour_bond_guard.build",
+   "why_wrong": "the NO_ESCAPE clause protects a dead pad back to the nearest anchor that CAN be re-bonded, and its own comment names a VIA as such an anchor; copper joining a dead pad to a via is exactly as fatal to cut as copper joining it to another pad"
+  },
+  {
+   "effect": {
+    "cap": "no point exceeds tube_radius + zone_clearance = 0.375 mm, the figure every tube on this board already used",
+    "tubes_whose_keepout_grew": [
+     "('+3V3', 'F.Cu', 11, ('U5.8', 'C9.1'))",
+     "('+3V3', 'F.Cu', 19, ('J1.35', 'J1.40'))",
+     "('/01_POWER_TREE/BQ25185_SYS', 'B.Cu', 3, ('U12.1', 'via'))",
+     "('GND', 'B.Cu', 26, ('U2.12', 'U3.2'))",
+     "('GND', 'B.Cu', 29, ('C4.2', 'U3.12'))",
+     "('GND', 'B.Cu', 30, ('C23.1', 'R36.2'))",
+     "('GND', 'B.Cu', 45, ('C65.2', 'U21.4'))",
+     "('GND', 'B.Cu', 45, ('U21.4', 'C38.2'))"
+    ]
+   },
+   "measured": {
+    "global_radius_mm": 0.025,
+    "inscribed_radius_leaving_U12_1_mm": [
+     0.2,
+     0.35
+    ],
+    "length_mm": 15.197,
+    "pinch_distance_from_U12_1_mm": 3.354,
+    "pinch_located_at_mm": [
+     63.925,
+     98.475
+    ],
+    "published_keepout_now_mm": [
+     0.275,
+     0.375
+    ],
+    "published_keepout_was_mm": 0.275,
+    "tube": "/01_POWER_TREE/BQ25185_SYS B.Cu island 3, U12.1 -> via"
+   },
+   "name": "A_TUBE_HAS_A_WIDTH_PER_POINT",
+   "was": "the single erosion radius the WHOLE path survives was published as the keepout at every point of it",
+   "where": "pour_bond_guard.geodesic",
+   "why_wrong": "that figure is the width of the NARROWEST place on the path, so every wider stretch was under-protected"
+  },
+  {
+   "effect": "with the mask corrected, NO barrel of any rung of BRIDGE_LADDER lands inside the +3V3 body near U12 except the 0.35/0.20 mm fine-pitch process -- evidence/d610-vout-grid.json",
+   "measured": {
+    "barrel": "+3V3 0.65/0.40 relief barrel at (65.1, 98.9)",
+    "barrel_owes_mm": 0.6000000000000001,
+    "consequence": "the barrel's antipad ate the tube; KiCad's refill pruned what was left and U12.1 went open",
+    "distance_to_tube_mm": 0.5315,
+    "short_by_mm": 0.0685,
+    "track_mask_required_mm": 0.475
+   },
+   "name": "A_BARREL_IS_NOT_A_TRACK",
+   "was": "Field.via_ok was ANDed with the guard mask built from the TRACK width, over the layers this net may ROUTE on",
+   "where": "maze3d.Field.__init__ / _guard_masks",
+   "why_wrong": "a through barrel is copper on EVERY layer and is more than three times as wide as the track; it owes keepout + via_dia/2, not keepout + width/2"
+  }
+ ],
+ "schema": 1,
+ "why": "Two independent defects in the pour-bond guard, each measured, each the direct cause of the BQ25185_SYS clause-4 regression that refused D-609 and D-610's first two gate runs."
+}

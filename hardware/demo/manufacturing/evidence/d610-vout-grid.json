@@ -1,0 +1,739 @@
+{
+ "board": "w/d610/base/aqroot-Beta-v2.kicad_pcb",
+ "class_width": 600000,
+ "guard": "evidence/d610-pour-bond-guard-next.json",
+ "net": "+3V3",
+ "netclass": "P3V3",
+ "rows": [
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 400000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 350000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 300000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 250000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": "B",
+     "mm": 2.756,
+     "ok": true,
+     "reason": null,
+     "via_xy": [
+      65.2,
+      98.8
+     ]
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 200000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": true,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "width": 150000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 150000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 550000,
+   "via_drill": 250000,
+   "width": 150000
+  }
+ ],
+ "schema": 1
+}

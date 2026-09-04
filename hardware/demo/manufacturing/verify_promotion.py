@@ -177,6 +177,124 @@ def neck_proof(path, tracks, floor):
     return ok, detail
 
 
+def relief_run_proof(path, tracks, floor):
+    """Which added tracks are narrower than `floor`, and are they LICENSED?
+
+    The strict form of `neck_proof`, and the reason it exists is a
+    measurement.  `neck_proof` admits a narrow segment that lies wholly inside
+    a courtyard the `.kicad_dru` "Pad-escape necking" rule NAMES -- but that
+    rule is written with `intersectsCourtyard`, so what KiCad actually grants
+    is wider than what this file proves, and D-609 measured the gap: of eight
+    narrow tracks a relief run laid, ZERO were wholly inside a courtyard, two
+    merely intersected one, KiCad licensed exactly those two and flagged the
+    other six.  `FBV2_P2_ROUTING_PLAN.md` section 17 clause 2 names
+    `intersectsCourtyard` as the shape a relief must never lean on.
+
+    A `PAD_ESCAPE_RUN_<REF>` area plus a `.kicad_dru` `track_width` rule naming
+    that net inside it is the strict form, and it is proved here exactly as
+    `bridge_proof` proves a barrel:
+
+      * a rule area with the name the rule uses EXISTS on the promoted board;
+      * the track's WHOLE FOOTPRINT -- the stadium of its centreline grown by
+        half its width, including both end caps -- lies inside that area,
+        proved by polygon subtraction, because `enclosedByArea` is answered
+        against the copper and not against a centreline;
+      * the track's net is the net the rule names;
+      * the track is at least as wide as the minimum that rule states.
+
+    Each area is asked ON ITS OWN, never as a union, which is section 17
+    clause 3's own-area sufficiency: a neck may not pass by borrowing its
+    neighbour's licence.
+    """
+    narrow = [x for x in tracks if floor and x[7] < floor]
+    if not narrow:
+        return True, dict(narrow_tracks=0, licensed=0, areas=[])
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
+    import pcbnew
+    import maze3d as mz
+
+    board = pcbnew.LoadBoard(str(path))
+
+    class _Shim(object):                 # `dru_rules` reads only `qb.b`
+        pass
+    shim = _Shim()
+    shim.b = board
+    areas = {}
+    for z in board.Zones():
+        if z.GetIsRuleArea() and z.GetZoneName():
+            areas.setdefault(z.GetZoneName(), []).append(z)
+    licences = {}
+    for name, cons, cond in mz.dru_rules(shim):
+        m = re.fullmatch(r"A\.NetName == '([^']*)' && "
+                         r"A\.enclosedByArea\('([^']*)'\)",
+                         ' '.join(cond.split()))
+        if not m or 'track_width' not in cons:
+            continue
+        licences[(m.group(1), m.group(2))] = cons['track_width']
+
+    def stadium(x0, y0, x1, y1, w):
+        """The copper of one track: its centreline grown by half its width.
+
+        Two CIRCUMSCRIBED 64-gon caps and the rectangle between them, so the
+        shape CONTAINS the copper rather than being contained by it -- the
+        conservative direction for a legality claim, the same reading
+        `encloses` already documents for a barrel.
+        """
+        poly = pcbnew.SHAPE_POLY_SET()
+        n = 64
+        r = w / 2.0 / math.cos(math.pi / n)
+        for (cx, cy) in ((x0, y0), (x1, y1)):
+            poly.NewOutline()
+            for k in range(n):
+                a = 2.0 * math.pi * k / n
+                poly.Append(int(round(cx + r * math.cos(a))),
+                            int(round(cy + r * math.sin(a))))
+        L = math.hypot(x1 - x0, y1 - y0)
+        if L > 0:
+            ux, uy = -(y1 - y0) / L * r, (x1 - x0) / L * r
+            poly.NewOutline()
+            for (px, py) in ((x0 + ux, y0 + uy), (x1 + ux, y1 + uy),
+                             (x1 - ux, y1 - uy), (x0 - ux, y0 - uy)):
+                poly.Append(int(round(px)), int(round(py)))
+        try:
+            poly.Simplify()
+        except TypeError:
+            poly.Simplify(pcbnew.SHAPE_POLY_SET.PM_FAST)
+        return poly
+
+    def encloses(zone, shape):
+        left = pcbnew.SHAPE_POLY_SET(shape)
+        try:
+            left.BooleanSubtract(zone.Outline())
+        except TypeError:
+            left.BooleanSubtract(zone.Outline(),
+                                 pcbnew.SHAPE_POLY_SET.PM_FAST)
+        return left.OutlineCount() == 0
+
+    detail = dict(narrow_tracks=len(narrow), strays=[], areas=[])
+    for x in narrow:
+        _k, net, layer, x0, y0, x1, y1, w = x
+        shape = stadium(x0, y0, x1, y1, w)
+        hit = None
+        for (rnet, area), minw in sorted(licences.items()):
+            if rnet != net or area not in areas or w < minw:
+                continue
+            if any(encloses(z, shape) for z in areas[area]):
+                hit = (area, minw)
+                break
+        if hit is None:
+            detail["strays"].append(dict(net=net, layer=layer, width_nm=w,
+                                         start=[x0, y0], end=[x1, y1]))
+        else:
+            detail["areas"].append(dict(net=net, layer=layer, width_nm=w,
+                                        area=hit[0], licence_nm=hit[1],
+                                        start=[x0, y0], end=[x1, y1]))
+    detail["licensed"] = len(detail["areas"])
+    return not detail["strays"], detail
+
+
 def bridge_proof(path, vias, drill_floor, annular_floor):
     """Which added vias are below a floor, and are they DRU-LICENSED bridges?
 
@@ -222,7 +340,17 @@ def bridge_proof(path, vias, drill_floor, annular_floor):
         if z.GetIsRuleArea() and z.GetZoneName():
             areas.setdefault(z.GetZoneName(), []).append(z)
 
-    # net -> area -> {constraint: min}, from the rule text alone.
+    # net -> area -> {constraint: min}, from the rule text alone.  A rule area
+    # licenses a BARREL only when its rules STATE all three of the constraints
+    # a barrel owes.  D-610.  `cons.get(k, 0)` below reads a missing constraint
+    # as a zero floor, so an area whose rules say nothing about barrels would
+    # license every barrel inside it -- and D-610 built the first such area,
+    # `PAD_ESCAPE_RUN_<REF>`, which grants a TRACK WIDTH and nothing else.
+    # Measured: it sorts before `PAD_ESCAPE_<REF>` and licensed that
+    # promotion's 0.35/0.20 barrel on a rule that never mentions a barrel.
+    # Requiring all three is the same read `maze3d.area_licence` has always
+    # made, and it makes the two files agree about what a licence IS.
+    BARREL_CONS = ('via_diameter', 'hole_size', 'annular_width')
     licences = {}
     for name, cons, cond in mz.dru_rules(shim):
         m = re.fullmatch(r"A\.NetName == '([^']*)' && "
@@ -231,6 +359,8 @@ def bridge_proof(path, vias, drill_floor, annular_floor):
         if not m:
             continue
         licences.setdefault((m.group(1), m.group(2)), {}).update(cons)
+    licences = {k: v for k, v in licences.items()
+                if all(c in v for c in BARREL_CONS)}
 
     def encloses(zone, x, y, dia):
         """True when the whole barrel disc lies inside this rule area.
@@ -348,6 +478,14 @@ def main():
                          "legal, but only on these nets, and the board's "
                          "unconnected-item count is measured before and after "
                          "so a rip-up that stranded copper cannot pass")
+    ap.add_argument("--relief-run", action="store_true",
+                    help="admit an added track BELOW --track-width when it is "
+                         "a .kicad_dru-licensed pad-escape RUN: its whole "
+                         "copper inside a PAD_ESCAPE_RUN_<REF> rule area the "
+                         "rule names, on the net the rule names, at least as "
+                         "wide as the minimum that rule states.  The strict "
+                         "`enclosedByArea` form of --neck, which leans on a "
+                         "rule written with `intersectsCourtyard`")
     ap.add_argument("--rule-area", action="append", default=[],
                     help="name of a rule area the promotion claims to have "
                          "ADDED; repeatable, omit when none was added")
@@ -393,6 +531,8 @@ def main():
     widths = sorted({x[7] for x in tracks})
     neck_ok, neck_detail = (neck_proof(post, tracks, a.track_width)
                             if a.neck else (True, None))
+    run_ok, run_detail = (relief_run_proof(post, tracks, a.track_width)
+                          if a.relief_run else (True, None))
     bridge_ok, bridge_detail = (bridge_proof(post, vias, a.via_drill,
                                              a.annular)
                                 if a.bridge else (True, None))
@@ -409,7 +549,8 @@ def main():
         zone_inventory_as_claimed=(not zlost and zclaim == planes),
         track_width_floor_met=(not a.track_width
                                or all(w >= a.track_width for w in widths)
-                               or (a.neck and neck_ok)),
+                               or (a.neck and neck_ok)
+                               or (a.relief_run and run_ok)),
         via_drill_floor_met=(not a.via_drill
                              or all(d >= a.via_drill for _dia, d in vdims)
                              or (a.bridge and bridge_ok)),
@@ -442,7 +583,8 @@ def main():
         added_tracks=len(tracks), added_vias=len(vias),
         added_track_widths_nm=widths, added_track_layers=layers,
         added_via_dia_drill_nm=[list(v) for v in vdims],
-        pad_escape_neck=neck_detail, pour_bridge=bridge_detail,
+        pad_escape_neck=neck_detail, pad_escape_run=run_detail,
+        pour_bridge=bridge_detail,
         rule_areas_added=radded, rule_areas_removed=rlost,
         claimed_rule_areas=sorted(a.rule_area),
         zones_added=zadded, zones_removed=zlost,

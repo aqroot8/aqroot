@@ -1340,3 +1340,121 @@
 (rule "D-606 R111.2 pad-escape relief - hole, GND"
 	(constraint hole_size (min 0.20mm))
 	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R111_2')"))
+
+(rule "D-610 U12.4 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U12_4')"))
+
+(rule "D-610 U12.4 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U12_4')"))
+
+(rule "D-610 U12.4 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U12_4')"))
+
+
+# =====================================================================
+# 13. PAD-ESCAPE RELIEF - WIDTH  (D-610)
+#
+# THE SAME DOCTRINE, SPENT ON THE OTHER GEOMETRY FOR THE FIRST TIME.
+# Section 12 licenses a BARREL and says nothing about width, because
+# D-606 measured that the barrel was the whole wall for the seven lands
+# it opened.  D-609 measured a land where it is not: `U12` is the
+# `TPS63020` buck-boost, pins 4 and 5 are its `VOUT`, and until D-608
+# the 3.3 V rail had NO CONNECTION OF ANY KIND to its own regulator's
+# output.  D-609's width ladder, at the ordinary POWER barrel: at the
+# P3V3 0.400 mm floor neither pin has a legal escape, at 0.250 mm
+# neither reaches a barrel, and at 0.200 mm both do.  D-610 re-measured
+# it with the pour-bond guard corrected AND crossed it with the barrel
+# ladder -- `evidence/d610-vout-grid.json`, every rung of each against
+# both pins -- and the answer narrowed rather than moved: 0.200 mm of
+# run with a 0.35/0.20 mm barrel is the ONLY combination that reaches
+# the plane body, and it reaches it from `U12.4` alone.
+# THE WALL WAS THE RUN, AND IT STILL IS.
+#
+# WHY A RULE AREA AND NOT THE NECKING RULE.  Section 9's "Pad-escape
+# necking - width, fine-pitch power packages" already grants 0.200 mm
+# inside `U12`'s courtyard, and D-609 ran the bond on that licence
+# alone: of the eight tracks it laid, KiCad licensed the TWO that
+# intersect the courtyard and flagged the SIX that do not, and ZERO were
+# WHOLLY INSIDE one.  `FBV2_P2_ROUTING_PLAN.md` section 17 clause 2
+# names `intersectsCourtyard` as the shape a relief must never lean on,
+# for the reason that measurement demonstrates: KiCad evaluates area
+# membership per OBJECT, so a track that merely clips a relaxed area
+# would inherit the relaxation along its WHOLE length.  The rule below
+# is `enclosedByArea`, which is all-or-nothing per track, so a run that
+# strays outside its own rectangle by a micron is judged at the class
+# floor and the whole transaction is refused.
+#
+# THE RECTANGLE IS DECLARED BEFORE THE ROUTER MOVES.  A barrel is a
+# point and its area may be drawn around it; a RUN has an EXTENT, and an
+# area drawn around whatever run the router happened to lay would be a
+# licence whose size the router chooses.  The rectangle therefore lives
+# in a tracked spec -- `evidence/d610-relief-run-areas.json`, reviewed
+# and committed with this rule -- and `route_maze_batch.py
+# --relief-run-area` draws that rectangle and no other.  A run that does
+# not fit is refused by `maze3d._run_licence` before DRC ever sees it.
+#
+#   PAD_ESCAPE_RUN_U12_4   x 64.850 .. 66.975   y 98.375 .. 100.075 mm
+#
+# sized from the copper the bond actually lays -- 7 segments, 2.756 mm,
+# bbox 65.000/98.525 to 66.825/99.925 -- plus section 17 clause 7's
+# 0.150 mm end-cap overhang on every side, because KiCad extends a
+# track cap by width/2 past its endpoint and `enclosedByArea` fails
+# without the margin.
+#
+# CURRENT AND DUTY, MEASURED.  `U12.4`/`U12.5` are the `VOUT` pins of
+# the buck-boost that MAKES `+3V3`, so this neck carries the WHOLE rail
+# and it is the one place on this board where a relief is in the main
+# current path rather than off it.  IPC-2221B at this board's own copper
+# (1 oz outer, dT = 10 K; `audit_bond_ampacity.py` re-derives section
+# 5's own printed table to within 0.9 % before it rules on anything):
+#
+#     0.200 mm outer neck, 2.756 mm long   0.742 A at dT = 10 K
+#                                          1.006 A at dT = 20 K
+#     series resistance                    6.83 mOhm
+#                                          4.4 mV at the 0.64 A peak
+#                                          6.8 mV at the 1.0 A design figure
+#     0.35/0.20 mm barrel, plated wall     1.457 A -- NOT the bottleneck,
+#                                          0.0177 mm2 of copper against the
+#                                          neck's 0.0070 mm2
+#     P3V3 design current 1.0 A;  measured peak 0.64 A
+#
+# THE RULING, AND IT OVERTURNS ONE OF ITS OWN.  D-609 ruled the bond
+# "SOUND AT TWO PARALLEL NECKS, THIN AT ONE" and required the promoting
+# transaction to lay BOTH.  It could see two because the board it
+# measured on was silently letting a barrel sit inside the `BQ25185_SYS`
+# `U12.1` bond tube; with `pour_bond_guard.py` corrected (D-610) exactly
+# ONE neck exists, and `U12.5` answers `NO_BODY_VIA_SITE` at every rung
+# of the width ladder crossed with every rung of the barrel ladder --
+# thirty-six measured combinations, `evidence/d610-vout-grid.json`.
+# The premise of that ruling is gone, so the ruling is remade here:
+#
+#   ONE NECK IS PROMOTED, KNOWINGLY DERATED, BECAUSE THE ALTERNATIVE IS
+#   AN OPEN RAIL.  0.742 A clears the 0.64 A measured peak by 16 % and
+#   is 26 % under the 1.0 A design figure, which is a rail-WIDTH
+#   convention and not a measured load.  This board has taken that trade
+#   before, on the record: D-607 promoted a 0.150 mm `GND` bond at board
+#   setup's own minimum because "an open ground contact on the display
+#   connector is worse than a thin one".  A 3.3 V rail with no
+#   connection to its regulator is worse still -- nothing on the Demo
+#   runs.  Clause 4's 6.0 mm total-narrow-width REVIEW TRIGGER does not
+#   engage: 2.756 mm.
+#
+#   THE PRODUCTION FIX IS A PLACEMENT CHANGE AND IT IS NOT SMUGGLED IN
+#   HERE.  `L1` sits 0.41 mm off `U12`'s courtyard and boxes the `VOUT`
+#   row into a 1.4 mm corridor that must also carry `BQ25185_SYS`'s pour
+#   bond to `U12.1` and `V3V3_FB`.  Moving it changes a switching
+#   converter's own loop, which section 4 of this file treats as the
+#   highest-risk geometry on the board.  It is a Full Beta v2 item.
+#
+# Order: this block is LAST in the file, after section 12, so its width
+# rule wins over section 9's pad-escape necking and over section 5's
+# "P3V3 minimum width on the outer layers" -- which is the whole point
+# of the precedence tail in section 9, and is section 17 clause 8.
+# =====================================================================
+
+(rule "D-610 U12.4 pad-escape relief - run width, +3V3"
+	(constraint track_width (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U12_4')"))

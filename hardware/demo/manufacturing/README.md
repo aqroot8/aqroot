@@ -2,6 +2,149 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## The 3.3 V rail is bonded to its own regulator -- and two defects in the pour-bond guard (2026-09-04)
+
+D-608 discovered that `+3V3` had no connection of any kind to `U12`, the
+`TPS63020` that MAKES it: every part on the rail was fed by a plane with no
+source, and the Demo could not have worked.  D-609 proved the bond closes and
+was refused twice -- six real `track_width` errors, and a `BQ25185_SYS`
+regression.  Both refusals are now answered, and **the second one was not the
+run's fault**.
+
+    authority 78280a13... -> 12a69da7...
+    retained open edges   58 -> 57      improved +3V3      REGRESSED NONE
+    unconnected items     74 -> 73      attributable DRC   0
+    8 objects added (7 tracks + 1 via), ZERO removed, zero zones
+    2 rule areas, both licences AUTHORED BEFORE THE ROUTER RAN
+    narrow copper 2.756 mm -- ALL of it strictly LICENSED, none by courtyard
+    14/14 verify_promotion, P1-P4, N1-N3;  protected copper 15 nets / 393 IDENTICAL
+
+**THE FIRST WIDTH LICENCE THE ESCAPE-RELIEF DOCTRINE HAS EVER SPENT.**  Section
+12 of the `.kicad_dru` licenses a BARREL and says nothing about width.  D-609
+ran the `VOUT` bond on the board's `intersectsCourtyard` necking rule alone and
+measured what that is worth: of eight narrow tracks, KiCad licensed the **two**
+that intersect `U12`'s courtyard and flagged the **six** that do not, and
+**zero** were wholly inside one.  `FBV2_P2_ROUTING_PLAN.md` section 17 clause 2
+names that shape as the one a relief must never lean on.  New section 13 grants
+a track width inside `PAD_ESCAPE_RUN_U12_4` -- `enclosedByArea`, all-or-nothing
+per object -- and all seven tracks of the promoted run are licensed by their own
+pad's area, proved twice: `audit_narrow_copper.py` reports 7 LICENSED / 0 INSIDE
+/ 0 INTERSECTS / 0 OUTSIDE with `unlicensed_mm` 0, and new
+`verify_promotion.py --relief-run` grows each track's centreline into the
+stadium of its own copper and subtracts it from the area polygon, exactly as
+`--bridge` already does for a barrel.
+
+**THE RECTANGLE IS DECLARED, NOT DRAWN ROUND WHAT THE ROUTER LAID.**  A barrel
+is a point, so D-606 could size its area from it.  A RUN has an extent, and an
+area sized from the run would be a licence whose size the router chooses -- a
+blank cheque in the currency this board treats as most expensive.  The
+rectangle therefore lives in a tracked spec,
+`evidence/d610-relief-run-areas.json`, reviewed and committed WITH the rule, and
+`--relief-run-area` draws that rectangle and no other.  `maze3d._run_licence`
+refuses `NO_RUN_AREA_SPEC`, `NO_DRU_WIDTH_LICENCE` and
+`RUN_OUTSIDE_LICENCE_AREA` inside the proposer.
+
+**TWO DEFECTS IN THE POUR-BOND GUARD** (`evidence/d610-guard-defects.json`), and
+between them they are the whole of D-609's `BQ25185_SYS` regression:
+
+  1. **AN ANCHOR NEED NOT BE A PAD.**  `pour_bond_guard.build` dropped every
+     island bonding fewer than TWO PADS before either clause was consulted.
+     Right for `SMALL_ISLAND`, which builds an MST over the island's pads.
+     WRONG for `NO_ESCAPE`, whose own comment already names a VIA as an anchor.
+     `BQ25185_SYS` island 3 is **95.410 mm2 and bonds ONE pad -- `U12.1`, which
+     `no_escape_pads` reports dead -- plus ONE via**, so nothing kept the
+     `VOUT` run out of it.  All 46 previous tubes come back BYTE-IDENTICAL, one
+     is added, and two islands now report `NO_ANCHOR` instead of being skipped
+     in silence.
+  2. **A TUBE HAS A WIDTH PER POINT.**  `geodesic` published the single erosion
+     radius the WHOLE path survives as the keepout at every point of it -- which
+     is the width of the NARROWEST place.  That tube is 0.200 to 0.350 mm wide
+     where it leaves `U12.1` and **0.025 mm at a pour finger twelve millimetres
+     away**, so 15.197 mm of bond was published at a 0.275 mm keepout.  Each
+     point now carries the widest disc that fits THERE, capped at the spec's own
+     `--tube-radius`, so **no keepout anywhere exceeds the 0.375 mm every tube
+     on this board already used** and the narrow places are unchanged.  Eight
+     tubes across `+3V3`, `GND` and `BQ25185_SYS` were under-protected.
+  3. **AND A BARREL IS NOT A TRACK.**  `maze3d.Field` ANDed `via_ok` with the
+     guard mask built from the TRACK width, over the layers the net may ROUTE
+     on.  A through barrel is copper on every layer and three times as wide.
+     The relief planted a 0.65 mm barrel **0.5315 mm** from the tube -- clear of
+     the 0.475 mm the track mask asked, **0.0685 mm inside the 0.600 mm the
+     barrel owes** -- its antipad ate the tube, KiCad's refill pruned the
+     remainder, and `U12.1` came away on a 0.473 mm2 island of its own.
+
+**`--repair-planes` WAS CARRIED AND HAD NOTHING TO DO.**  D-609's fourth
+next-step was to re-stitch the `BQ25185_SYS` pour inside the same transaction.
+The flag is spent here and `plane_repair.candidates` comes back EMPTY: with the
+guard corrected, no pour-owning net regressed at all.  That is D-585's own
+stated preference -- "a bond that no router move can restore must not be broken
+in the first place" -- and it is the only outcome that could have worked, since
+`U12.1` is `NO_LEGAL_ESCAPE` (which is why `no_escape_pads` calls it dead) and
+`SW9.2` is D-604's pad that stitches at every rung and closes nothing.
+
+**THE ELECTRICAL RULING, REMADE BECAUSE ITS PREMISE IS GONE.**  D-609 ruled the
+bond "SOUND AT TWO PARALLEL NECKS, THIN AT ONE" and required the promoting
+transaction to lay both.  It could see two only because a barrel was being
+allowed to sit inside the `U12.1` bond tube.  With the guard corrected exactly
+ONE neck exists: `U12.5` answers `NO_BODY_VIA_SITE` at every rung of the width
+ladder crossed with every rung of the barrel ladder, and only the 0.35/0.20 mm
+fine-pitch process reaches the plane body at all
+(`evidence/d610-vout-grid.json`).  New `audit_bond_ampacity.py` re-derives
+`.kicad_dru` section 5's own printed table to within 0.9 % before it rules on
+anything, then measures the bond:
+
+    0.200 mm outer neck, 2.756 mm      0.742 A at dT = 10 K, 1.006 A at 20 K
+    series resistance                  6.83 mOhm -- 4.4 mV at the 0.64 A peak
+    0.35/0.20 mm barrel, plated wall   1.457 A -- NOT the bottleneck
+    P3V3 design current 1.0 A;  measured peak 0.64 A
+
+**One neck is promoted, knowingly derated.**  0.742 A clears the measured peak
+by 16 %, clause 4's 6.0 mm width review trigger does not engage at 2.756 mm, and
+the alternative is a rail with no source.  This board has taken the trade before
+and said so: D-607 promoted a 0.150 mm `GND` bond at board setup's own minimum
+because "an open ground contact on the display connector is worse than a thin
+one".
+
+**AND ONE MORE HOLE, FOUND BY THE NEW LICENCE.**
+`verify_promotion.bridge_proof` read a missing constraint as a ZERO floor, so a
+rule area whose rules say nothing about barrels licensed every barrel inside it.
+`PAD_ESCAPE_RUN_U12_4` is the first such area to exist and it licensed this
+promotion's barrel on a rule that never mentions one.  A licence must now STATE
+all three barrel constraints -- the read `maze3d.area_licence` has always made.
+
+**ADDENDUM -- A LAND THAT WAS NEVER ASKED IS NOT A LAND THAT REFUSED.**
+`relief_stitch`'s `pads=` filter (`--relief-pad`) skips lands the transaction
+did not name, and a skipped island set no `last` entry -- so it fell through to
+the `NO_ESCAPE` default, **the same word `stitch_pad` returns when it has
+actually looked and found nothing**.  The gate evidence above therefore carries
+eight `+3V3` lands -- `U4.2`, `U4.3`, `U4.5`, `U4.8`, `U4.12`, `R129.1`,
+`R39.1`, `U5.2` -- recorded as refusals that were **never tried**, because
+`--relief-pad` named only `U12.4`/`U12.5`.  A reader pricing the next iteration
+off that file would have written the whole `U4` family off unmeasured.  The
+label is now `NOT_OFFERED` and it names the lands.  When `pads` is None -- every
+caller before D-609 -- the branch cannot be reached and the output is
+byte-identical; **zero copper changes and the promoted board is untouched.**
+
+**AND THE PROMOTION IS REPRODUCIBLE, WHICH IS HOW THIS WAS PROVED**
+(`evidence/d610-relief-repro.json`).  Driving the proposer at the D-610
+pre-promotion authority `78280a13...` carrying the PROMOTED `.kicad_dru` -- the
+board, the rules and the `.kicad_pro` together, as D-607 requires -- returns the
+stitch object for object: `U12.4`, 0.200 mm, one 0.35/0.20 mm barrel at
+(65.2, 98.8), 2.756 mm, inside `PAD_ESCAPE_RUN_U12_4`, bbox identical to the
+gate's.  The same run returns the eight islands as `NOT_OFFERED`.
+
+**NEXT, AND IT IS A PLACEMENT QUESTION.**  `L1` sits 0.41 mm off `U12`'s
+courtyard and boxes the `VOUT` row into a 1.4 mm corridor that must also carry
+`BQ25185_SYS`'s pour bond to `U12.1` and `V3V3_FB`.  That corridor is why one
+neck is all the geometry admits.  Moving `L1` changes a switching converter's
+own loop -- the highest-risk geometry section 4 of the `.kicad_dru` governs --
+and is a Full Beta v2 item, not a Demo edit.  The next Demo routing iteration
+should take the `+3V3` `U4` BMI270 family or `GND`'s residual orphans -- but it
+must MEASURE them first.  Their `NO_ESCAPE` records were the mislabel above, so
+the size of that group is **not yet a board fact**; the first move is a read-only
+relief offer naming those eight lands, which is now the cheapest measurement on
+the board.
+
 ## The U12 VOUT bond is a WIDTH wall, not a pocket wall -- and the own-layer detour built, spent and priced (2026-09-04)
 
 D-608 left one named next task -- bond the `TPS63020`'s own `VOUT` island to
