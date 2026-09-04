@@ -1,0 +1,333 @@
+{
+  "beneficiaries": [
+    "/01_POWER_TREE/USB_D_CONN_N",
+    "/01_POWER_TREE/USB_D_CONN_P"
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "dangling_unevictable": [],
+  "evict_margin_mm": 3.0,
+  "evicted": [
+    "/01_POWER_TREE/USB_VBUS_RAW",
+    "/I2C_SDA_INT",
+    "/SD_CS_N",
+    "Net-(J3-CC1)",
+    "Net-(J3-CC2)"
+  ],
+  "nets": [
+    {
+      "edges": [
+        {
+          "direct_mm": 8.403,
+          "dst": [
+            "U10.1"
+          ],
+          "mm": 5.14,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.A7",
+            "J3.B7"
+          ]
+        }
+      ],
+      "evicted": false,
+      "islands_after_strip": 2,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "open_after": 0,
+      "open_now": 1,
+      "regresses": false,
+      "removed": 0
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 7.993,
+          "dst": [
+            "U10.3"
+          ],
+          "mm": 24.133,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.A6",
+            "J3.B6"
+          ]
+        }
+      ],
+      "evicted": false,
+      "islands_after_strip": 2,
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "open_after": 0,
+      "open_now": 1,
+      "regresses": false,
+      "removed": 0
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 23.445,
+          "dst": [
+            "U14.8"
+          ],
+          "mm": 25.37,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J1.45"
+          ]
+        },
+        {
+          "direct_mm": 31.849,
+          "dst": [
+            "R19.2"
+          ],
+          "mm": 30.903,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J1.45"
+          ]
+        },
+        {
+          "direct_mm": 15.671,
+          "dst": [
+            "TP4.1"
+          ],
+          "mm": 20.071,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "R19.2"
+          ]
+        },
+        {
+          "direct_mm": 19.622,
+          "dst": [
+            "U2.23"
+          ],
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src": [
+            "TP4.1"
+          ]
+        },
+        {
+          "direct_mm": 10.0,
+          "dst": [
+            "U3.23"
+          ],
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src": [
+            "U2.23"
+          ]
+        },
+        {
+          "direct_mm": 11.885,
+          "dst": [
+            "U4.14"
+          ],
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src": [
+            "U3.23"
+          ]
+        },
+        {
+          "direct_mm": 15.813,
+          "dst": [
+            "U16.6"
+          ],
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "src": [
+            "U4.14"
+          ]
+        },
+        {
+          "direct_mm": 24.753,
+          "dst": [
+            "U1.39"
+          ],
+          "mm": 63.7,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "R19.2"
+          ]
+        }
+      ],
+      "evicted": true,
+      "islands_after_strip": 9,
+      "net": "/I2C_SDA_INT",
+      "open_after": 4,
+      "open_now": 2,
+      "regresses": true,
+      "removed": 111
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 31.981,
+          "dst": [
+            "U1.25"
+          ],
+          "mm": 37.855,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J2.2"
+          ]
+        },
+        {
+          "direct_mm": 14.991,
+          "dst": [
+            "R25.2"
+          ],
+          "mm": 11.858,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "U1.25"
+          ]
+        }
+      ],
+      "evicted": true,
+      "islands_after_strip": 3,
+      "net": "/SD_CS_N",
+      "open_after": 0,
+      "open_now": 0,
+      "regresses": false,
+      "removed": 20
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 9.459,
+          "dst": [
+            "R31.1"
+          ],
+          "mm": 8.863,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.A5"
+          ]
+        }
+      ],
+      "evicted": true,
+      "islands_after_strip": 2,
+      "net": "Net-(J3-CC1)",
+      "open_after": 0,
+      "open_now": 0,
+      "regresses": false,
+      "removed": 6
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 7.655,
+          "dst": [
+            "R30.1"
+          ],
+          "mm": 4.796,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.B5"
+          ]
+        }
+      ],
+      "evicted": true,
+      "islands_after_strip": 2,
+      "net": "Net-(J3-CC2)",
+      "open_after": 0,
+      "open_now": 0,
+      "regresses": false,
+      "removed": 8
+    },
+    {
+      "edges": [
+        {
+          "direct_mm": 4.405,
+          "dst": [
+            "R35.1"
+          ],
+          "mm": 2.309,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "C20.1"
+          ]
+        },
+        {
+          "direct_mm": 8.372,
+          "dst": [
+            "J3.A9",
+            "J3.B4"
+          ],
+          "mm": 7.352,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "C20.1"
+          ]
+        },
+        {
+          "direct_mm": 4.8,
+          "dst": [
+            "J3.A4",
+            "J3.B9"
+          ],
+          "mm": 13.1,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.A9",
+            "J3.B4"
+          ]
+        },
+        {
+          "direct_mm": 8.03,
+          "dst": [
+            "U10.5"
+          ],
+          "mm": 7.126,
+          "ok": true,
+          "reason": null,
+          "src": [
+            "J3.A4",
+            "J3.B9"
+          ]
+        }
+      ],
+      "evicted": true,
+      "islands_after_strip": 5,
+      "net": "/01_POWER_TREE/USB_VBUS_RAW",
+      "open_after": 0,
+      "open_now": 0,
+      "regresses": false,
+      "removed": 22
+    }
+  ],
+  "note": "open_after is measured with emit=False on a board the real evictor stripped, so it is a LOWER BOUND on what the gate would leave open: REFUSE is reliable, OK is a licence to spend the gate run",
+  "optimistic_edge_gain": 0,
+  "regressing_nets": [
+    "/I2C_SDA_INT"
+  ],
+  "removed_by_net": {
+    "/01_POWER_TREE/USB_VBUS_RAW": 22,
+    "/I2C_SDA_INT": 111,
+    "/SD_CS_N": 20,
+    "Net-(J3-CC1)": 6,
+    "Net-(J3-CC2)": 8
+  },
+  "removed_count": 167,
+  "schema": 1,
+  "verdict": "REFUSE"
+}

@@ -13,6 +13,80 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-602 (CORRIDOR RESERVATION built; the USB connector corridor's
+  opener NAMED, priced and REFUSED; NO copper promoted):** D-599 and D-601 both
+  named "a corridor RESERVATION the router honours" as the capability that pays
+  twice. Both halves are built, a third instrument the work exposed as missing
+  is built with them, and together they turn the USB connector wall from "no
+  opener known" into a transaction that is named, costed and refused ON
+  EVIDENCE. Authoritative PCB UNCHANGED at `bfef0aa2...`, 73 retained open
+  edges, ratsnest 89; D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5
+  and `hardware/beta-v2/` untouched.
+  **THE RESERVATION BINDS, PROVED AT THE CELL.** New `reserve_corridor.py`
+  emits a guard spec in `pour_bond_guard.py`'s own shape in two modes --
+  PROSPECTIVE (Euclidean MST over the family's pad-cluster centroids: the lane
+  the link WANTS, which is what a rip-up needs so evicted nets rebuild AROUND
+  it) and `--from-copper` (the family's own routed tracks: reserve what you
+  WON, which cannot reserve the impossible) -- and `--merge` folds in the
+  pour-bond guard so one `--guard` file carries both.
+  `route_maze_batch.guard_for` now honours an `exempt` LIST, because a bond tube
+  belongs to ONE net but a lane belongs to a FAMILY; absent from a record, which
+  is every record `pour_bond_guard.py` has ever written, it is byte-identical.
+  On the 83-point `J3 -> U10` centreline at 0.550 mm keep-out the exempt pair
+  gets `guard={}` and **+0** new blocked `F.Cu` cells while `/I2C_SDA_INT`,
+  `/SD_CS_N` and `/I2S_LRCLK` lose **all 83** plus **214/287/336** more, the
+  spread being each net's own half-width. The SAME measurement prices the
+  prospective mode honestly: **66 of the 83 cells are already blocked for the
+  USB pair itself**, so a straight centreline is a claim about a lane the board
+  does not currently offer.
+  **QUESTION 3W -- THE DEAD END HAD A TRANSACTION BEHIND IT.** Question 3
+  (greedy SET) ran only where question 1 opened, and question 1's unit is copper
+  WHOLLY INSIDE the window -- so on a `CROSSING_COPPER_WALL` it was never
+  reached and 2W's failure was the end of the road. 3W offers the strongest
+  thing an `--evict-whole` could offer (every unprotected crossing candidate
+  gone) and, if that opens, PUTS EACH NET BACK, keeping it back whenever the
+  corridor survives: minimal w.r.t. single-net addition, re-proved on the real
+  `route_join`, `|pool| + 2` route_joins instead of O(n^2), independent of
+  `blocked_along`. First run flipped BOTH connector edges
+  `CROSSING_COPPER_WALL` -> `RIPUP_WHOLE_SET`:
+  `USB_D_CONN_N` = `{/I2C_SDA_INT, /SD_CS_N, Net-(J3-CC1)}` at 9.169 mm,
+  `USB_D_CONN_P` = `{/I2C_SDA_INT, /SD_CS_N, Net-(J3-CC2), USB_VBUS_RAW}` at
+  27.841 mm. A COUNTING BUG was found and fixed first because the caps decide
+  which candidates are tested: `crossing_nets` tallied `qb.shapes[L]` per layer
+  and a VIA is the same object on every layer, inflating `/I2C_SDA_INT` from its
+  real **111** routed objects to **256**.
+  **NEW `screen_evict_rebuild.py` ASKS THE HALF 2W AND 3W NEVER DO.** An opener
+  names only what goes AWAY; clause 4 also demands every evicted net come back
+  no worse. It applies the rip-up with `route_maze_batch.evict_copper` ITSELF on
+  a scratch copy and measures every MST edge with `emit=False`, so `open_after`
+  is a LOWER BOUND: **REFUSE is reliable, OK is only a licence to spend the gate
+  run.** Its first cut was wrong and the correction is the lesson -- it hid
+  obstacle shapes with `Without` while `maze3d.net_islands` reads KiCad's own
+  `BuildConnectivity`, so it never saw the strip.
+  **THE REFUSAL.** Both USB connector edges close (1 -> 0 each) and
+  `/I2C_SDA_INT` pays for them exactly: **2 -> 4 open edges**, optimistic
+  whole-board gain **+0**, verdict REFUSE. Capped so that net is excluded, the
+  ENTIRE remaining pool gone still returns `NO_PATH` on both edges -- it is
+  LOAD-BEARING. And its 111 objects over 9 pads and a 101 mm span are **legacy
+  copper the router can no longer reproduce**: four of its eight MST edges are
+  `NO_PATH` today.
+  **THEREFORE NO `--evict-whole` OF ANY SIZE CAN OPEN THE USB CONNECTOR
+  CORRIDOR** -- materially stronger than `CROSSING_COPPER_WALL`, which only said
+  no SINGLE net does. Also recorded: `USB_D_CONN_P`'s own 3W route is 27.841 mm
+  for a 7.993 mm direct leg, so the verdict was never a clean bill of health.
+  Evidence `d602-usb-conn-3w.json`, `d602-usb-conn-3w-no-i2c-sda.json`,
+  `d602-usb-evict-rebuild.json`, `d602-usb-conn-reserve.json`,
+  `d602-reserve-proof.json`.
+  **Next: the missing unit is a SEGMENT eviction** -- split a crossing track at
+  the reservation boundary, rip up only the portion inside, re-join the two
+  stubs around it. Every ingredient exists (`WithoutObjects` already holds an
+  arbitrary object subset out; clause 5 already licenses removal per object
+  SIGNATURE; the bounded repair pass already re-proposes inside an 8 mm window);
+  what is missing is the split and a re-join allowed to land on a STUB rather
+  than a pad. `reserve_corridor.py --from-copper` holds the lane afterwards.
+  The differential-PAIR proposer stays named and unbuilt behind it. D-601's
+  seven-pad bond payload and `--bond-via 500000:250000` remain a READY PAYLOAD.
+  No owner decision.
 - **Demo D-601 (bond-redundancy barrel ladder MEASURED; the free rung bonds 7
   more pads; NO copper promoted, clause 4 not weakened):** D-600 named a
   DRU-licensed fine barrel as the next lever and the measurement changes the

@@ -70,13 +70,33 @@ Four questions, in escalating cost, and the verdict is whichever answers first:
      most reduces the blocked cell count along the straight corridor -- until
      the corridor opens or the candidates run out.
 
-`RIPUP_SINGLE`, `RIPUP_WHOLE_SINGLE` and `RIPUP_SET` name a transaction.
-`CROSSING_COPPER_WALL` and `PLACEMENT_WALL` are both refusals; they differ in
-what would have to change next -- a whole-net reroute or a refloorplan for the
-first, placement or a layer contract for the second -- and reporting one as the
-other sends the next iteration down the wrong road.  A `CROSSING_COPPER_WALL`
-that survives 2W is a STRONGER refusal than one that was never asked: it says
-no SINGLE whole-net reroute opens the corridor either.
+  3W. WHOLE-NET MINIMAL SET -- asked only where 2W found no single opener, and
+     asked because until it existed `CROSSING_COPPER_WALL` was a DEAD END with
+     an executable transaction sitting behind it.  D-599 measured, by hand and
+     off to the side, that the `J3 -> U10` corridor DOES open once a SET of
+     whole nets goes -- and that measurement could not become a verdict because
+     question 3 accumulates over question 2's CONTAINED set and is never even
+     reached on a crossing wall.  3W closes that hole with the same unit 2W
+     uses, the whole net, and the same discipline `minimal_eviction` uses on
+     objects: start from "every unprotected crossing candidate gone", which is
+     the strongest offer an `--evict-whole` could ever make, and if that opens
+     the corridor PUT EACH NET BACK in turn, keeping it back whenever the
+     corridor survives.  What remains is minimal with respect to single-net
+     addition -- every net still in the set is one whose return closes the
+     corridor again -- and is re-proved open on the real `route_join` at the
+     end.  Cost is |candidates| + 2 route_joins, not question 3's O(n^2), and
+     nothing about the answer depends on `blocked_along`, whose ranking D-599
+     found tied at 182 cells throughout and therefore carrying no information.
+     PROTECTED nets are excluded from the pool by construction and REPORTED,
+     because a set that names one is not a transaction anybody may execute.
+
+`RIPUP_SINGLE`, `RIPUP_WHOLE_SINGLE`, `RIPUP_SET` and `RIPUP_WHOLE_SET` name a
+transaction.  `CROSSING_COPPER_WALL` and `PLACEMENT_WALL` are both refusals;
+they differ in what would have to change next -- a whole-net reroute or a
+refloorplan for the first, placement or a layer contract for the second -- and
+reporting one as the other sends the next iteration down the wrong road.  A
+`CROSSING_COPPER_WALL` that survives 2W AND 3W is the strongest refusal this
+screen can issue: no rip-up of any executable size opens the corridor.
 
 Nothing here promotes copper.  Its output is the input to a rip-up-and-reroute
 transaction, which is an ordinary gated `route_maze_batch.py` run: the ripped
@@ -158,11 +178,23 @@ def crossing_nets(qb, layers, box, mynet):
     out = {}
     for n in hit:
         rec = dict(track=0, via=0, layers=set())
+        # COUNT EACH OBJECT ONCE.  A track shape lives on the one layer it is
+        # drawn on, but a VIA is copper on every layer and `qb.shapes` lists
+        # the SAME object under each of them -- so a naive tally multiplies
+        # every barrel by the layer count.  On this board that inflated
+        # `/I2C_SDA_INT` from its real 111 routed objects to 256, and these
+        # tallies are not decoration: `--whole-cap` and `--whole-set-cap`
+        # decide from them which candidates are even tested.
+        seen = set()
         for L in qb.shapes:
             for s in qb.shapes[L]:
-                if s.net == n and s.tag in ROUTED:
-                    rec[s.tag] += 1
-                    rec["layers"].add(L)
+                if s.net != n or s.tag not in ROUTED:
+                    continue
+                rec["layers"].add(L)
+                if id(s) in seen:
+                    continue
+                seen.add(id(s))
+                rec[s.tag] += 1
         out[n] = rec
     return out
 
@@ -315,6 +347,43 @@ def minimal_eviction(qb, field, src, dst, objs, escape_limit, via_cost_mm):
     return [o for o in objs if id(o) in keep], final
 
 
+def minimal_whole_eviction(qb, field, src, dst, pool, escape_limit,
+                           via_cost_mm):
+    """The SMALLEST subset of WHOLE nets whose board-wide absence opens this.
+
+    `minimal_eviction` does this over OBJECTS, which is the unit `--evict`
+    licenses.  This does it over NETS, which is the unit `--evict-whole`
+    licenses, and that difference is the whole reason it exists: a crossing
+    track cannot be evicted piecewise, so on a `CROSSING_COPPER_WALL` the only
+    executable move is "this net goes away everywhere and is re-proposed", and
+    the question worth asking is which FEW nets that has to be.
+
+    Reverse-greedy delta debugging, identical in shape to `minimal_eviction`:
+    the caller has already proved that `pool` entirely absent opens the
+    corridor, so try to PUT EACH NET BACK and keep it back whenever the
+    corridor survives.  Returns `(keep, proof)` with the answer re-proved on
+    the real `route_join`, never on the ranking heuristic.
+
+    Order is `pool`'s order and the caller sorts it, so the answer is
+    deterministic -- reverse-greedy is minimal with respect to single-net
+    addition, not globally minimum, and a different order can land on a
+    different minimal set.
+    """
+    import maze3d as mz          # main() imports lazily; so does this helper
+    keep = list(pool)
+    for fn in pool:
+        trial = [x for x in keep if x != fn]
+        with Without(qb, field, trial, UNBOUNDED):
+            r = mz.route_join(qb, field, src, dst, escape_limit, via_cost_mm,
+                              emit=False)
+        if r.get("ok"):
+            keep = trial
+    with Without(qb, field, keep, UNBOUNDED):
+        proof = mz.route_join(qb, field, src, dst, escape_limit, via_cost_mm,
+                              emit=False)
+    return keep, proof
+
+
 def blocked_along(field, a, b, samples=400):
     """How many sample points on the straight line a->b sit on blocked cells.
 
@@ -363,6 +432,18 @@ def main():
     ap.add_argument("--whole-cap", type=int, default=60,
                     help="question 2W skips a candidate carrying more than "
                          "this many routed objects board-wide; 0 = no cap")
+    ap.add_argument("--no-whole-set", action="store_true",
+                    help="skip question 3W, the whole-net MINIMAL SET that "
+                         "names an --evict-whole transaction when no single "
+                         "net opens the corridor")
+    ap.add_argument("--whole-set-cap", type=int, default=300,
+                    help="question 3W leaves out of its pool any candidate "
+                         "carrying more than this many routed objects "
+                         "board-wide, and REPORTS it; 0 = no cap.  The cap is "
+                         "far looser than --whole-cap because 3W costs "
+                         "|pool| route_joins, not |pool| per net, but a plane "
+                         "net with four figures of copper is not an "
+                         "--evict-whole anybody would execute")
     ap.add_argument("--no-minimal", action="store_true",
                     help="skip the per-object minimal-eviction search that "
                          "runs when a single net's rip-up opens a corridor")
@@ -483,6 +564,51 @@ def main():
                     edge["whole_net_untested_over_cap"] = capped
                     if any(not w["protected"] for w in wholes):
                         edge["verdict"] = "RIPUP_WHOLE_SINGLE"
+                    elif not a.no_whole_set:
+                        # ---- 3W. whole-net MINIMAL SET --------------------- #
+                        # No single whole net opens it.  Before calling this a
+                        # wall, make the strongest offer an `--evict-whole`
+                        # could ever make -- every unprotected crossing
+                        # candidate gone at once -- and, if that opens, shrink
+                        # it back to a set every member of which is load
+                        # bearing.  A protected net can never be evicted, so it
+                        # is out of the pool and said so, not silently dropped.
+                        prot = sorted(k for k in cross if PROTECTED.search(k))
+                        pool = [k for k in sorted(cross)
+                                if not PROTECTED.search(k)
+                                and not (a.whole_set_cap
+                                         and cross[k]["track"] + cross[k]["via"]
+                                         > a.whole_set_cap)]
+                        heavy = [dict(net=k,
+                                      objects=(cross[k]["track"]
+                                               + cross[k]["via"]))
+                                 for k in sorted(cross)
+                                 if not PROTECTED.search(k)
+                                 and k not in pool]
+                        with Without(qb, field, pool, UNBOUNDED):
+                            allgone = mz.route_join(qb, field, src, dst,
+                                                    a.escape_limit,
+                                                    a.via_cost, emit=False)
+                        edge["whole_net_pool"] = dict(
+                            candidates=pool, protected_excluded=prot,
+                            over_cap_excluded=heavy,
+                            all_removed_ok=bool(allgone.get("ok")),
+                            all_removed_reason=allgone.get("reason"),
+                            all_removed_mm=round(allgone.get("mm", 0.0), 3))
+                        if allgone.get("ok"):
+                            keep, proof = minimal_whole_eviction(
+                                qb, field, src, dst, pool, a.escape_limit,
+                                a.via_cost)
+                            edge["whole_net_set_opener"] = dict(
+                                rip_up_nets=list(keep),
+                                objects=sum(cross[k]["track"] + cross[k]["via"]
+                                            for k in keep),
+                                per_net={k: cross[k]["track"] + cross[k]["via"]
+                                         for k in keep},
+                                mm=round(proof.get("mm", 0.0), 3),
+                                reproved_ok=bool(proof.get("ok")))
+                            if proof.get("ok") and keep:
+                                edge["verdict"] = "RIPUP_WHOLE_SET"
 
                 rec["edges"].append(edge)
                 print("  %-44s %s%s" % (

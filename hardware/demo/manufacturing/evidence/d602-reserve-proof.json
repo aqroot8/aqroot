@@ -1,0 +1,79 @@
+{
+ "schema": 1,
+ "spec": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d602-usb-conn-reserve.json",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "probes": [
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_N",
+   "netclass": "USB_D",
+   "layers": [
+    "F"
+   ],
+   "guarded_layers": {},
+   "centreline_points": 83,
+   "blocked_with_reservation": 66,
+   "blocked_without": 66,
+   "newly_blocked_F_cells": 0
+  },
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "netclass": "USB_D",
+   "layers": [
+    "F"
+   ],
+   "guarded_layers": {},
+   "centreline_points": 83,
+   "blocked_with_reservation": 66,
+   "blocked_without": 66,
+   "newly_blocked_F_cells": 0
+  },
+  {
+   "net": "/I2C_SDA_INT",
+   "netclass": "I2C",
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "guarded_layers": {
+    "F": 83
+   },
+   "centreline_points": 83,
+   "blocked_with_reservation": 83,
+   "blocked_without": 63,
+   "newly_blocked_F_cells": 287
+  },
+  {
+   "net": "/SD_CS_N",
+   "netclass": "Default",
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "guarded_layers": {
+    "F": 83
+   },
+   "centreline_points": 83,
+   "blocked_with_reservation": 83,
+   "blocked_without": 65,
+   "newly_blocked_F_cells": 214
+  },
+  {
+   "net": "/I2S_LRCLK",
+   "netclass": "I2S",
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "guarded_layers": {
+    "F": 83
+   },
+   "centreline_points": 83,
+   "blocked_with_reservation": 83,
+   "blocked_without": 55,
+   "newly_blocked_F_cells": 336
+  }
+ ]
+}

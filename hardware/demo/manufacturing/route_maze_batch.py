@@ -732,10 +732,19 @@ def guard_for(spec, net):
     copper, so its stitch and its residual joins may run straight down it.  A
     guard on the OTHER pour's layer still binds -- `GND` may not slot `+3V3`'s
     bond any more than a signal net may.
+
+    `exempt` GENERALISES that one-net rule to a FAMILY, and a corridor
+    reservation is why it has to.  A bond tube belongs to exactly one net, so
+    the record's own `net` field is the whole exemption; a lane reserved for a
+    differential pair belongs to several, and `USB_D_CONN_N` must be as free to
+    run down the USB corridor as `USB_D_CONN_P` is.  Absent from a record --
+    which is every record `pour_bond_guard.py` has ever written -- the list is
+    empty and this function is byte-identical to the one that had no such
+    concept.  `reserve_corridor.py` is the emitter that fills it in.
     """
     out = {}
     for g in spec.get("guards", ()):
-        if not g.get("ok") or g["net"] == net:
+        if not g.get("ok") or g["net"] == net or net in g.get("exempt", ()):
             continue
         out.setdefault(g["lkey"], []).extend(
             (p[0], p[1], g["keepout_radius"]) for p in g["points"])
