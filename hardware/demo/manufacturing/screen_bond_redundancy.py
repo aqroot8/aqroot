@@ -45,6 +45,18 @@ WHAT IS MEASURED, NOT ASSUMED
 whose cluster is ELECTRICALLY ORPHAN, and these islands are not orphan -- they
 are connected, through exactly one fragile neck.  That is the extension this
 screen sizes before anyone writes it.
+
+SUPERSEDED BY D-600, AND BY ITS OWN ARGUMENT.  The extension was never written,
+because writing it out exposed that the ISLAND is the wrong unit.  A foreign
+track does not remove an island, it SPLITS one: a barrel dropped somewhere
+inside lands on one side of the cut and every pad on the other side is orphaned
+exactly as before.  Redundancy that survives the cut has to hang off the PAD.
+`screen_bond_stitch.py` asks that question instead -- can `maze3d.stitch_pad`
+give this guarded pad its own escape, run and barrel -- and its answer is far
+smaller and actually actionable: 32 of 75 guarded pads, retiring 14 of 48 tubes,
+where this file's island count read 191532 sites for one island alone.  A large
+number that answers the wrong question is worse than a small one that answers
+the right one.  Kept as the negative result it is; do not size a batch from it.
 """
 
 import argparse

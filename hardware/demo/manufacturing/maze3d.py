@@ -2012,6 +2012,74 @@ def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
 
 
 # --------------------------------------------------------------------------- #
+# BOND REDUNDANCY -- STITCH A PAD THAT IS ALREADY CONNECTED
+# --------------------------------------------------------------------------- #
+# `stitch_net` exists to connect a pad that is NOT connected, and it skips every
+# pad that already touches its net's pour.  For two hundred islands of a fresh
+# pour that is exactly right.  D-599 measured the case where it is exactly
+# wrong.
+#
+# `pour_bond_guard.py` proves, for each small outer-pour island, the TUBE of
+# copper that is the ONLY thing joining the pads that island bonds.  Three
+# independent nets -- `/I2C_SCL_INT`, `/I2C_SDA_INT`, `BTN_DOWN_N` -- were each
+# put through the full gate with that guard OFF and all three returned the same
+# shape: the net closes one edge, `GND` opens one, `--repair-planes` names `GND`
+# as its candidate and CANNOT re-bond it, board unchanged, run refused.  The
+# guard was not costing those edges; it was correctly PREDICTING a refusal.
+#
+# The refusal has one root and it is not the router.  A pad whose only bond to
+# its net is pour copper is a SINGLE-POINT bond, and every route that wants to
+# cross the neck cuts it.  The pad does not need the neck: it is two layers away
+# from the same net's PLANE on an inner layer, and one barrel of its own puts it
+# there for good.  After that the pour may be cut anywhere at all and the pad is
+# still connected -- by a track and a via, which are objects a fabricator builds
+# and a re-pour cannot erode.
+#
+# So this primitive is `stitch_pad` aimed at a pad that is ALREADY connected,
+# and the only thing it adds is the right to ask.  There is no new geometry, no
+# new legality argument and no new proof: the escape, the run, the barrel and
+# `verify_laid` are the ones every promoted stitch on this board went through.
+# Each pad is its own transaction, so a pad with no legal barrel is reverted and
+# reported while the rest stand.
+#
+# WHY PER PAD AND NOT PER ISLAND.  A single barrel dropped inside the island
+# would bond the island, and an island is exactly what a foreign track SPLITS:
+# the barrel lands on one side of the cut and the pads on the other side are
+# orphaned just as before.  Redundancy that survives the cut has to be attached
+# to the PAD.  That is also why `bridge_islands` cannot be extended to do this
+# -- it answers an island question, and this is a pad question.
+def bond_pads(qb, net, field, refs, max_mm=8.0, escape_limit=12):
+    """Give each NAMED pad of a pour-served net its OWN stub-and-barrel bond.
+
+    `refs` are 'REF.NUM' strings.  Returns dict(ok, bonds, failures); on success
+    the copper is on `qb` and the caller's gate owns the verdict.
+    """
+    if not has_plane(qb, net):
+        return dict(ok=False, net=net, reason='NO_PLANE', bonds=[],
+                    failures=[])
+    want = list(dict.fromkeys(refs))
+    pads = {p['ref']: p for p in ir.physical_net_pads(qb, net)}
+    done, failed = [], []
+    for ref in want:
+        pad = pads.get(ref)
+        if pad is None:
+            failed.append(dict(ok=False, pad=ref, reason='NOT_ON_NET',
+                               why='%s carries no pad %s' % (net, ref)))
+            continue
+        m = qb.mark()
+        r = stitch_pad(qb, field, pad, max_mm=max_mm,
+                       escape_limit=escape_limit)
+        if r.get('ok'):
+            done.append(r)
+        else:
+            qb.revert(m)
+            failed.append(r)
+    return dict(ok=bool(done), net=net, requested=len(want),
+                bonded=len(done), bonds=done, failures=failed,
+                mm=round(sum(d['mm'] for d in done), 3), vias=len(done))
+
+
+# --------------------------------------------------------------------------- #
 # POUR BRIDGES -- ONE BARREL, NO TRACK, NO ESCAPE
 # --------------------------------------------------------------------------- #
 # `stitch_pad` asks a PAD to launch: an escape, a short run, a barrel.  That is

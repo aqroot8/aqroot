@@ -2,6 +2,106 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Bond redundancy: 32 guarded pads get a barrel of their own, and the guard shrinks (2026-09-04)
+
+D-599 put three independent nets through the full gate with the pour-bond guard
+OFF and all three returned the same shape: the net closes one edge, `GND` opens
+one, `--repair-planes` names `GND` as its candidate and cannot re-bond it, board
+unchanged, REFUSED.  The reading was that the guard was not costing those edges,
+it was correctly PREDICTING a refusal, and that the refusal had a root that was
+fixable.  This iteration fixes it.
+
+    whole-board retained open edges   74 -> 73
+    raw ratsnest                      90 -> 89
+    improved  /I2C_SCL_INT  6 -> 5               regressed  none
+    32 pads bonded (28 GND, 4 +3V3)   pour-bond guard 48 -> 34 tubes
+    134 objects added (97 tracks + 37 vias), ZERO removed, zero zones touched
+    authority b8bb6d98... -> bfef0aa2...
+
+**THE UNIT IS THE PAD, AND D-599's OWN SCREEN HAD THE WRONG ONE.**
+`screen_bond_redundancy.py` asked how many legal barrel sites lie inside a
+guarded ISLAND and answered in the thousands -- 191532 for `GND` `B` island 13
+alone.  Writing the emitter exposed that the number answers the wrong question.
+A foreign track does not remove an island, it SPLITS one: a barrel dropped
+somewhere inside lands on one side of the cut and every pad on the other side is
+orphaned exactly as before.  Redundancy that survives the cut has to hang off
+the PAD.  That is also why `bridge_islands` could not be extended to do this --
+it answers an island question -- and why the new primitive is `stitch_pad`, the
+one every promoted stitch on this board already went through, aimed at a pad
+that is ALREADY connected.  The only thing `maze3d.bond_pads` adds is the right
+to ask.  No new geometry, no new legality argument, no new proof.
+
+**THE HONEST NUMBER IS 32 OF 75, AND IT IS THE USEFUL ONE.**
+`screen_bond_stitch.py` offered every pad end of every live tube to the emitter
+on a scratch board.  32 bond; 43 do not, and they fall into the two classes
+`pour_bond_guard.py` already names.  `NO_LEGAL_ESCAPE`: `U9.6`/`U9.12`/`U9.26`
+inside the ST25R3916's 0.5 mm-pitch land pattern, `J1.7`/`J1.9`/`J1.35`/`J1.40`/
+`J1.42` in the display FPC row, `U5.7`, `U14.4`, `U11.4`.  `NO_VIA_SITE`: the
+famous fatal four `U3.12`, `R19.1`, `R26.1` and their neighbours, plus the whole
+of `GND` island 28 and the `U2`/`U3` expander pocket -- no legal 0.60 mm barrel
+within 8 mm of any escape.  One pad, `U14.1`, reached `UNPROVED_GEOMETRY`
+against `/01_POWER_TREE/BAT_PROTECTED_P` and was reverted on its own, which is
+the per-pad transaction working as designed.
+
+**A TUBE RETIRES ONLY WHEN BOTH ENDS BOND, AND THE SPANNING TREE IS WHY THAT IS
+SAFE.**  Dropping a tube whose far end still depends on the pour would strand
+that end.  Because the guard's tubes are a spanning tree over an island's pads,
+the both-ends rule leaves every still-dependent pad joined by GUARDED tubes to a
+component whose boundary pad is bonded -- so no pad loses its last protected
+path.  14 of 48 tubes retire under it: `+3V3` island 1, and `GND` islands 7, 17,
+23, 30 (both), 32, 34, 38 (both), 42 (both), 46, 49.
+
+**THE CONTROL RUN IS THE PROOF, AND IT IS THE INTERESTING NUMBER.**
+`evidence/d600-guard-off-control.json` is the IDENTICAL transaction -- same 32
+bonds, same three nets, `--partial --repair-planes` -- with the guard entirely
+OFF.  It returns D-599's exact shape: `/I2C_SCL_INT` +1, `GND` -1, repair cannot
+re-bond, **74 -> 74, REFUSED**.  With the REDUCED guard on, the router is pushed
+off the 34 tubes that are still load-bearing, finds a different path, and costs
+`GND` nothing: **74 -> 73, PROMOTED**.  So neither the bonds alone nor dropping
+the guard is what closes the edge.  **A pre-filter with its retired tubes
+removed is strictly better than no pre-filter** -- and that is a stronger
+statement about the guard than D-599 was able to make.
+
+**WHAT THE BOARD GAINS BESIDES ONE EDGE.**  Twenty-eight `GND` pads and four
+`+3V3` pads -- decoupling-capacitor returns, `U4`, `U12`, `U14`, `U18`, `U20`,
+`U21`, `U9.21`, `J5.23` -- now reach their plane through a track and a through
+barrel instead of through a neck of pour, which is a shorter return path, a
+thermal via each, and ordinary good practice whatever the router wanted.  Median
+`GND` bond is 1.18 mm of stub (`+3V3` 2.24 mm); the longest, `C38.2` at
+10.70 mm, is ADDITIONAL to a pour bond that still exists, so it cannot make
+anything worse.  All 32 requested bonds succeeded in the promoting run.
+
+**WHAT IT COSTS, MEASURED.**  `/I2C_SDA_INT` `U3.23 -> U4.14` routed guard-off
+at 43.13 mm on the UNBONDED board (D-599) and is `NO_PATH` guard-off on the
+bonded one: the bond copper took the lane.  That is not a loss -- D-599's gate
+refused that route anyway, for the `GND` regression -- but bond copper IS copper
+and the next iteration should expect it.  `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` is
+`NO_PATH` either way.
+
+**RE-PROVED INDEPENDENTLY, all 14 checks PASS** (`verify_promotion.py`): ZERO
+objects removed; 134 added (97 tracks + 37 vias) and every one on a claimed net;
+every track at or above 0.200 mm on `F`/`B`/`In2` (0.200 signal, 0.300 `GND`,
+0.600 `+3V3`); every barrel 0.60/0.30 or 0.80/0.40 mm, both above the drill and
+0.125 mm annular floors; zone and rule-area inventories unchanged with nothing
+added to either; KiCad's OWN unconnected-item count **90 -> 89**; real
+zone-refilled schematic-parity DRC at `--severity-all` exactly 199 / 5 / 1
+inherited with ZERO attributable and ZERO parity reports; fill-stable;
+D-269 / D-186 rule text live; `hardware/beta-v2/` untouched.
+`protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
+`pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
+regenerated 46-tube guard.
+
+Usage:
+
+    python3 screen_bond_stitch.py --guard evidence/d600-pour-bond-guard-next.json \
+        --bonded-from evidence/d600-bond-batch.json \
+        --emit-guard evidence/GUARD-bonded.json -o evidence/SCREEN.json
+
+    python3 route_maze_batch.py NET... --partial --repair-planes \
+        --guard evidence/GUARD-bonded.json \
+        --bond-pad REF.NUM [--bond-pad REF.NUM ...] \
+        --promote --work DIR --out evidence/RUN.json
+
 ## Rip-up-and-reroute: the NFC/SPI-B fanout, 2 edges promoted and an analog reference repaired (2026-09-04)
 
 `/NFC_CS_N` read `CROSSING_COPPER_WALL` on the last board -- a refusal, not a

@@ -13,6 +13,65 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-600 (BOND REDUNDANCY; 32 guarded pads get a barrel of their own, the
+  pour-bond guard shrinks 48 -> 34 tubes, 1 edge PROMOTED):** D-599 measured
+  three independent nets through the full gate with the guard OFF and all three
+  returned the same shape -- net +1, `GND` -1, repair cannot re-bond, REFUSED --
+  and named the root: a `GND` pad whose ONLY bond is pour copper is a
+  SINGLE-POINT bond. This fixes the root. Whole-board retained open edges
+  **74 -> 73**, ratsnest 90 -> 89, `/I2C_SCL_INT` 6 -> 5, ZERO nets regressed,
+  ZERO copper removed, zero zones/rule areas touched, 134 objects added.
+  Authority `b8bb6d98...` ->
+  `bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5`.
+  **THE UNIT IS THE PAD, AND D-599's OWN SCREEN HAD THE WRONG ONE.** A foreign
+  track does not REMOVE an island, it SPLITS one, so a barrel dropped inside it
+  lands on one side of the cut and the pads on the other side are orphaned
+  exactly as before -- `screen_bond_redundancy.py`'s 191532-site island answer
+  is the wrong question and is now marked SUPERSEDED in its own docstring.
+  New `maze3d.bond_pads` is `stitch_pad` aimed at a pad that is ALREADY
+  connected: same escape, same run, same barrel, same `verify_laid`, one
+  reverted transaction per pad, and `route_maze_batch.py --bond-pad REF.NUM`
+  admits it into a gated run as a lever on the PRIMARY proposal only.
+  **32 OF 75 GUARDED PADS BOND** (28 `GND`, 4 `+3V3`); the other 43 are the two
+  classes `pour_bond_guard.py` already names -- `NO_LEGAL_ESCAPE` in the
+  ST25R3916 and display-FPC land patterns, `NO_VIA_SITE` in the `U2`/`U3`
+  expander pocket and `GND` island 28. **A TUBE RETIRES ONLY WHEN BOTH ENDS
+  BOND**, and because the guard's tubes are a SPANNING TREE that rule leaves
+  every still-dependent pad joined by guarded tubes to a bonded boundary pad.
+  14 of 48 retire; `screen_bond_stitch.py --emit-guard` writes the reduced spec.
+  **THE CONTROL RUN IS THE PROOF.** The identical transaction with the guard
+  entirely OFF returns D-599's exact shape and is REFUSED at 74 -> 74; with the
+  REDUCED guard on it is 74 -> 73. **A pre-filter with its retired tubes removed
+  is strictly better than no pre-filter.**
+  `verify_promotion.py`: all 14 checks PASS -- zero removed, 134 added
+  (97 tracks + 37 vias) all on claimed nets, tracks 0.200/0.300/0.600 mm on
+  `F`/`B`/`In2`, barrels 0.60/0.30 and 0.80/0.40, zone and rule-area inventories
+  unchanged, KiCad's own unconnected count 90 -> 89, real zone-refilled
+  schematic-parity DRC exactly 199/5/1 with ZERO attributable and ZERO parity
+  errors, fill-stable, D-269/D-186 live, `hardware/beta-v2/` untouched.
+  `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
+  `pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
+  regenerated 46-tube guard.
+  **COST, MEASURED:** `/I2C_SDA_INT` routed guard-OFF at 43.13 mm on the
+  UNBONDED board and is `NO_PATH` guard-OFF on the bonded one -- bond copper IS
+  copper. Not a loss (that route was refused anyway) but the next iteration must
+  expect it.
+  Evidence `d600-bond-batch.json`, `d600-verify.json`,
+  `d600-protected-copper.json`, `d600-bond-stitch.json`,
+  `d600-pour-bond-guard-bonded.json`, `d600-guard-off-control.json`,
+  `d600-pour-bond-guard-next.json`, `d600-pour-bond-guard-next-bonded.json`,
+  `d600-bond-stitch-next.json`, `d600-guard-contract.json`,
+  `d600-neck-contract.json`.
+  **Next: the USB link is still the fabrication blocker** and its named
+  capabilities are unchanged -- (1) a corridor RESERVATION the router honours
+  (`maze3d.Field` already takes `guard=`; what is missing is a centreline
+  emitter and an `exempt` list on a guard record), then (2) a differential-PAIR
+  proposer. New third: the 34 tubes that did NOT retire are a CHARACTERISED
+  list with two distinct failure modes, and `NO_VIA_SITE` is a BARREL-SIZE
+  question `BRIDGE_LADDER` already answers for bridges and `bond_pads` does not
+  yet ask -- a DRU-licensed fine barrel is the cheapest remaining bond
+  redundancy. `/09_COMMUNITY_HEADER/EXT_SDA`, 3 edges, still unconsumed.
+  No owner decision.
 - **Demo D-599 (rip-up-and-reroute; NFC/SPI-B fanout, 2 edges PROMOTED, an
   analog reference repaired):** `/NFC_CS_N` read `CROSSING_COPPER_WALL` on the
   board D-598 promoted -- a refusal, not a plan -- and it stopped being one

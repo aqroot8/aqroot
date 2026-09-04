@@ -273,6 +273,24 @@ def rule_areas(path):
 REPAIR_JOIN_MAX_MM = 8.0
 
 # --------------------------------------------------------------------------- #
+# BOND REDUNDANCY -- A STITCH FOR A PAD THAT IS ALREADY CONNECTED
+# --------------------------------------------------------------------------- #
+# `--bond-pad REF.NUM` hands `maze3d.bond_pads` a pad whose only bond to its net
+# is POUR COPPER and asks for a second one: an escape, a short run and a through
+# barrel down to the same net's inner-layer plane.  See the doctrine block above
+# `maze3d.bond_pads` for why it is a pad question and not an island one.
+#
+# It is a lever on the PRIMARY proposal only.  The plane repair re-bonds what a
+# run severed and does it with the stitch; letting it also add redundancy to
+# pads this run never touched would be a second transaction wearing a repair's
+# name, exactly as it would for `--bridge`.
+#
+# The window is `stitch_pad`'s own 8 mm, for the same reason `REPAIR_JOIN_MAX_MM`
+# is: a bond is LOCAL, and a barrel eight millimetres from the pad it is meant
+# to hold has stopped being redundancy and started being a detour.
+BOND_MAX_MM = 8.0
+
+# --------------------------------------------------------------------------- #
 # EVICTION -- THE ONE PLACE THIS DRIVER MAY REMOVE COPPER
 # --------------------------------------------------------------------------- #
 # Every promotion from D-578 to D-583 only ADDED copper, and clause 5 said so in
@@ -724,10 +742,36 @@ def guard_for(spec, net):
     return out
 
 
+def pad_owner_nets(board, refs):
+    """{net: [pad ref, ...]} for the named pads, read from the board itself.
+
+    A bond stitch is asked for by PAD, because that is the object whose bond is
+    single-point.  Which net it belongs to is not the caller's to assert.
+    """
+    want = list(dict.fromkeys(refs))
+    owner = {}
+    for f in board.GetFootprints():
+        for p in f.Pads():
+            if not p.GetNumber():
+                continue
+            owner["%s.%s" % (f.GetReference(), p.GetNumber())] = p.GetNetname()
+    out, missing = {}, []
+    for r in want:
+        n = owner.get(r)
+        if n:
+            out.setdefault(n, []).append(r)
+        else:
+            missing.append(r)
+    if missing:
+        raise SystemExit("no such pad(s): %s" % ", ".join(missing))
+    return out
+
+
 def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_residual=False, join_max_mm=0.0, neck=False,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
-            split_islands=False, guard_spec=None, bridge=False):
+            split_islands=False, guard_spec=None, bridge=False,
+            bond_pads=(), bond_max_mm=BOND_MAX_MM):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -735,6 +779,9 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
 
     ref = pcbnew.LoadBoard(str(path))
     contracts = {n: net_contract(ref, n) for n in nets}
+    bond_by_net = pad_owner_nets(ref, bond_pads) if bond_pads else {}
+    for n in bond_by_net:
+        contracts.setdefault(n, net_contract(ref, n))
     reserved = reserved_inner_planes(ref)
     del ref
 
@@ -748,6 +795,33 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     # the board's rules were written to allow.  None => the router behaves
     # exactly as it did before this flag existed.
     neck_rule = mz.neck_rule(qb, neck_max_mm or mz.NECK_MAX_MM) if neck else None
+
+    # BOND STITCHES RUN BEFORE ANY SIGNAL COPPER, and that ordering is the
+    # whole point of the lever.  The tube a bond retires is copper the router
+    # is otherwise forbidden to cross; laying the bonds first means the routes
+    # proposed after them are proposed on a board where the pads they would
+    # strand are already held by a track and a barrel of their own.
+    bonds = []
+    for net in sorted(bond_by_net):
+        c = contracts[net]
+        if not c["known_class"]:
+            bonds.append(dict(net=net, ok=False, reason="UNKNOWN_NETCLASS",
+                              netclass=c["netclass"], bonds=[], failures=[]))
+            continue
+        t0 = time.time()
+        gb = guard_for(guard_spec, net) if guard_spec else None
+        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+                         c["via_dia"], c["via_drill"], G=grid,
+                         layers=c["layers"], guard=gb)
+        r = mz.bond_pads(qb, net, field, bond_by_net[net], max_mm=bond_max_mm)
+        r["seconds"] = round(time.time() - t0, 1)
+        r["contract"] = {k: c[k] for k in ("netclass", "width", "clr",
+                                           "via_dia", "via_drill", "layers")}
+        bonds.append(r)
+        print("  %-44s bond   %d/%d %.0fs"
+              % (net, r.get("bonded", 0), r.get("requested", 0),
+                 time.time() - t0), file=sys.stderr, flush=True)
+
     results = []
     for net in nets:
         c = contracts[net]
@@ -834,7 +908,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                           "guarded_layers")}
         results.append(r)
     qb.save(str(path))
-    print(json.dumps(dict(results=results), default=str))
+    print(json.dumps(dict(results=results, bonds=bonds), default=str))
 
 
 # --------------------------------------------------------------------------- #
@@ -966,7 +1040,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
          guard=None,
-         bridge=False):
+         bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1071,6 +1145,11 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # be a second transaction wearing a repair's name.
         if bridge and use_search_levers:
             cmd += ["--bridge"]
+        # THE BOND IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- same
+        # reading as `--bridge` directly above.
+        if bond_pads and use_search_levers:
+            cmd += ["--bond-max-mm", str(bond_max_mm)]
+            cmd += [x for r in bond_pads for x in ("--bond-pad", r)]
         # The repair is a STITCH and a BOUNDED LOCAL RE-BOND, and nothing else.
         # `--partial` is a search lever for the primary proposal; handing it to
         # the repair would let it lay whole-board tracks of its own, which is a
@@ -1112,9 +1191,11 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                     "--join-max-mm", str(repair_join_max_mm)]
         return json.loads(subprocess.run(
             cmd + list(target_nets), check=True, text=True,
-            capture_output=True).stdout)["results"]
+            capture_output=True).stdout)
 
-    routed = child(nets)
+    primary = child(nets)
+    routed = primary["results"]
+    bonded = primary.get("bonds", [])
 
     if plane_zone:
         # Every requested region, not just the first: `keep` was a scaffold for
@@ -1183,7 +1264,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                       retained_open_edges_before_repair=mid[
                           "connectivity"]["retained_open_edges"])
         if hurt:
-            repair["routed"] = child(hurt, use_search_levers=False)
+            repair["routed"] = child(hurt, use_search_levers=False)["results"]
             drc_json = work / "drc-repaired.json"
             done = full_drc(scratch, drc_json)
 
@@ -1255,8 +1336,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # could not fully re-bond is judged by clause 4 on the ledger, which is the
     # measurement that matters, not by whether the stitch primitive returned ok.
     repaired = [r for r in (repair or {}).get("routed", []) if r.get("ok")]
+    # A net this run BONDED lays copper too, so its successes join the
+    # promotion set for the same reason the repair's do -- otherwise clause 5
+    # would call a stitch this gate itself asked for "foreign".  A bond that
+    # failed is reverted inside `maze3d.bond_pads` and adds nothing, so a net
+    # whose every bond failed is NOT admitted here.
+    bond_nets = sorted({b["net"] for b in bonded if b.get("bonded")})
     ok_nets = sorted({r["net"] for r in routed if r.get("ok")}
-                     | {r["net"] for r in repaired})
+                     | {r["net"] for r in repaired} | set(bond_nets))
     failed = sorted(r["net"] for r in routed if not r.get("ok"))
     foreign = sorted(set(added_nets) - set(ok_nets))
 
@@ -1269,7 +1356,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # the plane -- which is exactly what a plane is for.
     changed = (bool(plane)
                or any(r.get("ok") and not r.get("already") for r in routed)
-               or any(not r.get("already") for r in repaired))
+               or any(not r.get("already") for r in repaired)
+               or bool(bond_nets))
     ok = (not attributable and inherited_ok and not regressed
           and not unlicensed and not foreign and edges_after < edges_before
           and zone_ok and changed and before == sha256_file(BOARD))
@@ -1294,6 +1382,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             nets_improved=closed, nets_regressed=regressed),
         plane=plane_zone,
         plane_repair=repair,
+        bonds=(dict(requested=list(bond_pads), max_mm=bond_max_mm,
+                    bonded=sum(b.get("bonded", 0) for b in bonded),
+                    nets=bond_nets, detail=bonded) if bond_pads else None),
         # PROVENANCE, not a clause.  The guard changes what the router is
         # allowed to take; the report has to say which spec was in force, or a
         # promotion cannot be reproduced from its own evidence.
@@ -1420,6 +1511,19 @@ def main():
                          "one below an ordinary via floor is emitted only "
                          "where the .kicad_dru licenses that net that geometry "
                          "inside the rule area named for that cluster")
+    ap.add_argument("--bond-pad", action="append", default=[],
+                    metavar="REF.NUM",
+                    help="give this pad its OWN escape, run and through barrel "
+                         "down to its net's inner-layer plane, even though the "
+                         "pour already connects it.  A pad whose only bond is "
+                         "pour copper is a SINGLE-POINT bond and every route "
+                         "that crosses the neck cuts it; a bonded pad survives "
+                         "the cut.  Repeatable; each pad is its own reverted "
+                         "transaction")
+    ap.add_argument("--bond-max-mm", type=float, default=BOND_MAX_MM,
+                    help="window in millimetres for ONE bond stitch; the "
+                         "default is the 8 mm locality window `stitch_pad` "
+                         "itself uses")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -1437,7 +1541,8 @@ def main():
         propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands,
-                load_guard(a.guard), a.bridge)
+                load_guard(a.guard), a.bridge,
+                tuple(a.bond_pad), a.bond_max_mm)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1473,7 +1578,8 @@ def main():
                  repair_join_max_mm=a.repair_join_max_mm,
                  evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
                  evict_whole=a.evict_whole,
-                 guard=a.guard, bridge=a.bridge)
+                 guard=a.guard, bridge=a.bridge,
+                 bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)
