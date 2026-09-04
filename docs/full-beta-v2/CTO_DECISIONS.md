@@ -6305,6 +6305,97 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-612 · 2026-09-04 · Demo THE BOARD NOW STATES ITS OWN POPULATION: sixteen DNP flags carried from the schematic, and the first fabrication blocker this project has CLOSED rather than characterized
+
+D-611 measured that the Demo board stated no population at all: sixteen
+references are DO NOT POPULATE in the schematic and **not one** carried the
+`dnp` attribute on the board. This closes it.
+
+    authority 12a69da7... -> c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103
+    16 lines changed, ALL of them `(attr smd)` -> `(attr smd dnp)`
+    0 objects added   0 removed   0 zones   0 rule areas   0 nets claimed
+    position-file rows with --exclude-dnp:  263 -> 247      16 parts, exactly
+    14/14 verify_promotion.py;  POP1-POP4;  P1-P4;  N1-N3
+    protected copper 15 nets / 393 objects IDENTICAL;  ledger 57 edges IDENTICAL
+
+**WHAT WAS WRONG.** `kicad-cli pcb export pos --exclude-dnp` reads the
+FOOTPRINT attribute. Every footprint said `(attr smd)`, so the flag had nothing
+to read and the exclusion did nothing: the position file was **263 rows with
+`--exclude-dnp` and 263 rows without it**. A factory handed that file solders
+`C21 C22 C34 C35 C81 C82 L2 R107 R112 R119 R123 R44 R45 R68 R93 U13` onto every
+Kickstarter Demo unit.
+
+**NOTHING THIS REPOSITORY OWNED COULD SEE IT.** KiCad's own
+`--schematic-parity` compares nets and footprint identity, not population, and
+reports CLEAN -- `verify_promotion.py`'s `schematic_parity_clean` has passed on
+every promotion ever gated, including the board that carried this defect. The
+router never looks either: `maze3d.net_islands` has no population model, which
+is the same hole that made D-611's `U13.3` join a phantom.
+
+**THE CONTRACT COMES FIRST, AND IT MEASURES THE CONSEQUENCE, NOT THE FLAG.**
+New `checks/population_contract.py`:
+
+    POP1  every schematic-DNP reference exists on the board AND carries `dnp`
+    POP2  no schematic-FITTED reference carries it -- the flag was not sprayed
+    POP3  the two sets are EQUAL: the board states the schematic exactly
+    POP4  the FABRICATION consequence, run end to end with the real tool --
+          `kicad-cli pcb export pos --exclude-dnp` omits exactly the DNP
+          references and drops NO fitted one
+
+POP1-POP3 are about a flag. **POP4 is about what a factory would build**, and
+it is the reason this check exists rather than a grep. Before: POP1/POP3/POP4
+FAIL, 16 missing, 263 = 263. After: all four PASS, 263 -> 247, `fitted_dropped`
+empty.
+
+**A TEXT EDIT, AND THE REASON IS THE AUTHORITY SHA.** `pcbnew.SaveBoard`
+rewrites the whole file, and this board's authority is a hash every gate
+compares; a one-token change buried in thousands of incidental reformatting
+diffs cannot be reviewed. "Update PCB from Schematic" is the tool that SHOULD
+have done this and it may move footprints, rebuild nets and re-annotate -- on a
+board whose copper is the accumulated output of six hundred gated decisions
+that is not a population fix, it is a new board. `apply_schematic_population.py`
+edits the `(attr ...)` token list of the named footprints and nothing else,
+prints every line it touches, has a dry-run default, and REFUSES if a named
+footprint carries no `(attr ...)` line to append to. **The whole diff is 16
+lines and every one of them reads `(attr smd)` -> `(attr smd dnp)`.**
+
+**CLAUSE 4'S CURRENCY IS OPEN EDGES, AND THIS TRANSACTION HAS NONE.** It adds
+no copper and closes no edge; the ledger is 57 open edges before and after,
+row for row. That is not an exception smuggled past the gate -- clause 4 governs
+copper transactions and exists so robustness copper cannot ride alone. **A
+population fix must carry its OWN measured improvement, and POP4 is it:** 16
+parts a factory would have wrongly placed are now excluded, proven by running
+the tool. Every retained contract was re-measured on the changed board rather
+than assumed: `verify_promotion.py` 14/14 with 0 objects added and 0 removed,
+DRC identical (199 / 5 / 1 inherited, ZERO attributable, unconnected 73
+unchanged), `P1-P4` on the 47-tube guard, `N1-N3`, `protected_copper.py` 15
+nets / 393 objects IDENTICAL, `audit_narrow_copper.py` 7 LICENSED /
+`unlicensed_mm` 0, `audit_bond_ampacity.py` 0.742 A / 2.7556 mm.
+`hardware/beta-v2/` untouched. D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`,
+RGB and XGPIO4/5 untouched.
+
+**ONE VISIBLE SIDE EFFECT, AND IT IS THE CORRECT ONE.** The board's own
+settings carry `(crossoutdnponfab yes)` and `(sketchdnponfab yes)`, so the
+sixteen now render crossed-out and sketched on `F.Fab` / `B.Fab`. Those are
+assembly-documentation layers, not manufactured copper; an assembler reading
+the fab drawing now sees what the schematic says.
+
+**NEXT: GENERATE THE DEMO FABRICATION PACKAGE FOR THE FIRST TIME AT THIS
+AUTHORITY AND REVIEW IT.** Gerbers, drills, BOM, CPL. It is the largest
+remaining block of unknowns in the `DEMO_READY_FOR_FAB` list, and D-611/D-612
+are the reason to expect more of exactly this kind: a defect invisible to every
+check the repository owns, found only by running the tool a factory runs.
+`checks/population_contract.py` joins the standing preflight. No owner decision
+is open.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d612-verify.json`, `d612-population-contract.json`,
+`d612-population-apply.json`, `d612-protected-copper.json`,
+`d612-pour-bond-contract.json`, `d612-neck-contract.json`, and D-611's
+`d611-population-contract-before.json` / `d611-population-trap.json` for the
+before state. Tracked tooling added: `checks/population_contract.py`,
+`apply_schematic_population.py`.
+
 # D-611 · 2026-09-04 · Demo THE RELIEF DOCTRINE IS SPENT: every orphan of every pour-owning net offered every move the board owns, and the answer is NO -- plus a PHANTOM edge, sixteen missing DNP flags, and one rule sentence corrected by a probe that had not finished
 
 D-610's addendum ruled that the next task was **a measurement, not a route**:

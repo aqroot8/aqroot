@@ -2,6 +2,51 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## The board now states its own population -- sixteen DNP flags carried from the schematic (2026-09-04)
+
+The first fabrication blocker this project has CLOSED rather than characterized.
+
+    authority 12a69da7... -> c8e421aa...
+    16 lines changed, ALL of them `(attr smd)` -> `(attr smd dnp)`
+    0 objects added   0 removed   0 zones   0 rule areas   0 nets claimed
+    position-file rows with --exclude-dnp:   263 -> 247      16 parts, exactly
+    14/14 verify_promotion;  POP1-POP4;  P1-P4;  N1-N3
+    protected copper 15 nets / 393 IDENTICAL;  ledger 57 edges IDENTICAL
+
+**WHAT WAS WRONG.**  `kicad-cli pcb export pos --exclude-dnp` reads the
+FOOTPRINT attribute.  Every footprint said `(attr smd)`, so the exclusion did
+nothing: **263 rows with the flag and 263 without**.  A factory handed that file
+solders `C21 C22 C34 C35 C81 C82 L2 R107 R112 R119 R123 R44 R45 R68 R93 U13`
+onto every Demo unit.  KiCad's own `--schematic-parity` compares nets and
+footprint identity, not population, and reports CLEAN -- so
+`verify_promotion.py` passed on every promotion ever gated, including the board
+that carried this.
+
+**THE CONTRACT MEASURES THE CONSEQUENCE, NOT THE FLAG**
+(`checks/population_contract.py`, now part of the standing preflight):
+
+    POP1  every schematic-DNP reference exists AND carries `dnp`
+    POP2  no schematic-FITTED reference carries it (not sprayed)
+    POP3  the two sets are EQUAL
+    POP4  kicad-cli pcb export pos --exclude-dnp omits exactly those
+          references and drops NO fitted one          <- the one that matters
+
+**A TEXT EDIT, BECAUSE THE AUTHORITY IS A SHA.**  `pcbnew.SaveBoard` rewrites
+the whole file; "Update PCB from Schematic" may move footprints and rebuild
+nets.  `apply_schematic_population.py` edits the `(attr ...)` token list of the
+named footprints and nothing else, is dry-run by default, prints every line it
+touches, and REFUSES if a named footprint has no `(attr ...)` line to append to.
+
+**CLAUSE 4'S CURRENCY IS OPEN EDGES AND THIS TRANSACTION HAS NONE.**  The
+ledger reads 57 open edges before and after, row for row.  Clause 4 governs
+COPPER transactions; a population fix must carry its own measured improvement,
+and POP4 is it.
+
+**NEXT: GENERATE THE DEMO FABRICATION PACKAGE FOR THE FIRST TIME AT THIS
+AUTHORITY AND REVIEW IT** -- Gerbers, drills, BOM, CPL.  D-611 and D-612 are the
+reason to expect more of exactly this kind: a defect invisible to every check
+this repository owns, found only by running the tool a factory runs.
+
 ## The relief doctrine is SPENT -- and the board does not carry its own DNP flags (2026-09-04)
 
 D-610's addendum ruled the next task was a MEASUREMENT, not a route.  This is

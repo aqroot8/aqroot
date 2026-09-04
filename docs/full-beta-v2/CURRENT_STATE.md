@@ -13,6 +13,54 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-612 (THE BOARD NOW STATES ITS OWN POPULATION -- sixteen DNP flags
+  carried from the schematic; the FIRST fabrication blocker this project has
+  CLOSED rather than characterized):** D-611 measured that the Demo board
+  stated no population at all. Authority `12a69da7...` ->
+  **`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103`**;
+  **16 lines changed, every one of them `(attr smd)` -> `(attr smd dnp)`**;
+  0 objects added, 0 removed, 0 zones, 0 rule areas, 0 nets claimed.
+  **WHAT WAS WRONG:** `kicad-cli pcb export pos --exclude-dnp` reads the
+  FOOTPRINT attribute and every footprint said `(attr smd)`, so the position
+  file was **263 rows with `--exclude-dnp` and 263 without**. A factory handed
+  it solders `C21 C22 C34 C35 C81 C82 L2 R107 R112 R119 R123 R44 R45 R68 R93
+  U13` onto every Demo unit. **Nothing this repository owned could see it** --
+  KiCad's `--schematic-parity` compares nets and footprint identity, not
+  population, and reported CLEAN on the affected board.
+  **THE CONTRACT MEASURES THE CONSEQUENCE, NOT THE FLAG.** New
+  `checks/population_contract.py`: POP1 every schematic-DNP reference carries
+  the attribute; POP2 no fitted reference does; POP3 the sets are EQUAL; **POP4
+  the FABRICATION consequence run end to end with the real tool** --
+  `--exclude-dnp` omits exactly the DNP references and drops NO fitted one.
+  Before: POP1/POP3/POP4 FAIL, 263 = 263. After: all four PASS, **263 -> 247**,
+  `fitted_dropped` empty.
+  **A TEXT EDIT, BECAUSE THE AUTHORITY IS A SHA.** `pcbnew.SaveBoard` rewrites
+  the whole file and would bury a one-token change in incidental reformatting;
+  "Update PCB from Schematic" may move footprints and rebuild nets, which on
+  this board is not a fix but a new board.
+  `apply_schematic_population.py` edits the `(attr ...)` token list of the
+  named footprints and nothing else, dry-run by default, and REFUSES if a named
+  footprint has no `(attr ...)` line.
+  **CLAUSE 4'S CURRENCY IS OPEN EDGES AND THIS TRANSACTION HAS NONE** -- the
+  ledger is 57 open edges before and after, row for row. Clause 4 governs
+  COPPER transactions; a population fix must carry its own measured
+  improvement, and POP4 is it. Every retained contract re-measured on the
+  changed board: `verify_promotion.py` **14/14** (0 added, 0 removed, DRC 199/5/1
+  inherited, ZERO attributable, unconnected 73 unchanged, parity 0), P1-P4 on
+  the 47-tube guard, N1-N3, `protected_copper.py` 15 nets / 393 objects
+  IDENTICAL, `audit_narrow_copper.py` 7 LICENSED / `unlicensed_mm` 0,
+  `audit_bond_ampacity.py` 0.742 A / 2.7556 mm. `hardware/beta-v2/`, D-269 /
+  D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB and XGPIO4/5 untouched.
+  **ONE VISIBLE SIDE EFFECT AND IT IS THE CORRECT ONE:** the board carries
+  `(crossoutdnponfab yes)`, so the sixteen now render crossed out on
+  `F.Fab`/`B.Fab` -- assembly documentation, not manufactured copper.
+  **NEXT: GENERATE THE DEMO FABRICATION PACKAGE FOR THE FIRST TIME AT THIS
+  AUTHORITY AND REVIEW IT** (Gerbers, drills, BOM, CPL). It is the largest
+  remaining block of unknowns in the `DEMO_READY_FOR_FAB` list, and D-611/D-612
+  are the reason to expect more of exactly this kind -- a defect invisible to
+  every check the repository owns, found only by running the tool a factory
+  runs. `checks/population_contract.py` joins the standing preflight. No owner
+  decision.
 - **Demo D-611 (THE RELIEF DOCTRINE IS SPENT -- every orphan of every
   pour-owning net offered every move the board owns, and the answer is NO;
   plus a PHANTOM edge, sixteen missing DNP flags, and one rule sentence

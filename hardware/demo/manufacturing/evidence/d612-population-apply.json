@@ -1,0 +1,127 @@
+{
+ "applied": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256_after": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+ "board_sha256_before": "12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0",
+ "dnp_absent_from_board": [],
+ "dnp_without_attr_line": [],
+ "flags_added": [
+  {
+   "line": 1107,
+   "now": "(attr smd dnp)",
+   "ref": "C82",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 5889,
+   "now": "(attr smd dnp)",
+   "ref": "R112",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 12029,
+   "now": "(attr smd dnp)",
+   "ref": "C81",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 17737,
+   "now": "(attr smd dnp)",
+   "ref": "R68",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 19704,
+   "now": "(attr smd dnp)",
+   "ref": "R123",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 20844,
+   "now": "(attr smd dnp)",
+   "ref": "C35",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 21477,
+   "now": "(attr smd dnp)",
+   "ref": "R107",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 22892,
+   "now": "(attr smd dnp)",
+   "ref": "C34",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 23292,
+   "now": "(attr smd dnp)",
+   "ref": "L2",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 25595,
+   "now": "(attr smd dnp)",
+   "ref": "R119",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 27597,
+   "now": "(attr smd dnp)",
+   "ref": "C21",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 30328,
+   "now": "(attr smd dnp)",
+   "ref": "R45",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 37694,
+   "now": "(attr smd dnp)",
+   "ref": "R93",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 38685,
+   "now": "(attr smd dnp)",
+   "ref": "R44",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 47305,
+   "now": "(attr smd dnp)",
+   "ref": "U13",
+   "was": "(attr smd)"
+  },
+  {
+   "line": 55906,
+   "now": "(attr smd dnp)",
+   "ref": "C22",
+   "was": "(attr smd)"
+  }
+ ],
+ "flags_removed": [],
+ "lines_changed": 16,
+ "schema": 1,
+ "schematic_dnp": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ]
+}
