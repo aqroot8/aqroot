@@ -6305,6 +6305,209 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-611 · 2026-09-04 · Demo THE RELIEF DOCTRINE IS SPENT: every orphan of every pour-owning net offered every move the board owns, and the answer is NO -- plus a PHANTOM edge, sixteen missing DNP flags, and one rule sentence corrected by a probe that had not finished
+
+D-610's addendum ruled that the next task was **a measurement, not a route**:
+`relief_stitch` had been recording lands it never asked about under the same
+word a MEASURED refusal uses, so "the `U4` BMI270 family, five lands, the
+largest remaining `NO_LEGAL_ESCAPE` group" was the shape of a command-line
+filter and not a board fact. This is that measurement. It is general, it is
+tracked, and its answer is unambiguous.
+
+**NO COPPER CHANGED.** The authoritative board is byte-identical at
+`12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0`. One
+`.kicad_dru` COMMENT is corrected (below) and the whole D-610 promotion was
+re-gated from `933a91e` against the corrected rule file: **14/14 PASS**,
+including real KiCad DRC with refill and schematic parity
+(`d611-verify-dru-correction.json`).
+
+## The instrument
+
+New tracked read-only screen `screen_orphan_moves.py`. It names no land, no net
+and no lever. It enumerates every ORPHAN ISLAND of every pour-owning net and
+offers each one, independently, both moves this board actually owns, at both
+ends of the whole ladder:
+
+    RELIEF      maze3d.stitch_pad     escape the pad, run, drop a barrel INTO
+                                      THE PLANE BODY.  Needs the pour to REACH
+                                      the land.
+    JOIN        maze3d.route_join     the whole-board all-layer maze against
+                                      the MAIN island's nearest pads, which
+                                      join_residual_islands drives.  Aims at
+                                      copper that is ALREADY CONNECTED, so a
+                                      pour that does not reach does not by
+                                      itself refuse it.
+
+    ORDINARY    netclass width + the 0.650/0.400 mm POWER-class barrel.
+                A move that opens HERE needs no licence at all.
+    PERMISSIVE  0.200 mm -- the necking rule's own minimum, the narrowest this
+                board grants ANYWHERE -- and the 0.350/0.200 mm D-257 barrel,
+                the smallest hole its process licenses.
+
+**THE BRACKET IS SOUND BECAUSE THE FIELD IS MONOTONE IN BOTH LEVERS.** `Field`
+blocks a cell when copper of the given width plus clearance does not fit and
+`via_ok` when the barrel does not; both relax as the number shrinks, and
+`body_landing` is derived from the same field, so the landing set only grows.
+Nothing coarser than ORDINARY and nothing finer than PERMISSIVE can be asked
+for, so **a move that refuses at PERMISSIVE refuses on the whole ladder**.
+D-610's 36-rung `U12.4` grid is the empirical check: it opened at exactly the
+PERMISSIVE corner and refused at all 34 others.
+
+## The answer: 21 islands, 84 measured answers, and no promotable move
+
+    +3V3                      8 orphan islands   relief 0/8   join 0/8 in bound
+    /01_POWER_TREE/BQ25185_SYS 9 orphan islands  relief 0/9   join 0/9 in bound
+    GND                       4 orphan islands   relief 0/4   join 0/4 in bound
+
+    screen_orphan_moves.py:
+    nets=3  orphan_islands=21  closable=0  out_of_bound=2  dnp_only=2
+
+**ZERO relief moves open anywhere, at either rung.** The doctrine that D-606
+instantiated and D-610 spent on a WIDTH has nothing left to buy on this board.
+
+**THREE JOINS OPEN, ALL AT THE PERMISSIVE RUNG, AND ALL THREE EXCEED THE
+DRIVER'S OWN ELECTRICAL BOUND** (`REPAIR_JOIN_MAX_MM` = 8.0 mm, which exists
+because a plane-served island reached by a long lateral haul has traded a bond
+for inductance and spent outer-layer capacity the unrouted signal nets still
+need):
+
+    +3V3        R129.1              9.815 mm   4 vias
+    BQ25185_SYS SW9.2,U12.1        10.749 mm   2 vias
+    BQ25185_SYS U13.3               8.340 mm   2 vias   <- and see below
+
+The screen reports every join against that bound and labels it `TOO_LONG`
+rather than `ok`, because a screen that published the raw verdict would hand a
+reader a promotion the driver would refuse -- the D-610-addendum mistake
+wearing the other hat.
+
+## The two refusal words, and what each one means
+
+`stitch_pad` distinguishes them and the distinction is the value of the screen:
+
+  * **`NO_LEGAL_ESCAPE`** -- the LAND cannot launch a track of that width at
+    all. A pocket wall; narrowing the run is the lever, and it works: of the
+    FOURTEEN lands that answered it at ORDINARY, **ten escape at 0.200 mm**.
+  * **`NO_BODY_VIA_SITE`** -- the land escapes, runs, and then there is
+    **nowhere in the plane BODY for the barrel to land**. A POUR-SHAPE wall.
+    **No licence can move it**, because no licence changes where copper is
+    poured.
+
+At the PERMISSIVE corner **17 of the 21 islands answer `NO_BODY_VIA_SITE`**
+and the other four still cannot launch at all.
+That is the true shape of the remaining pour residual: not a licence problem,
+not a width problem -- a question about where the pours are.
+
+## And one of the three joins is a PHANTOM
+
+`routing_ledger.py` -- the file the gate's clause 4 scores against -- counts a
+net's open edges over the pads of **SCHEMATIC-FITTED references only**. A land
+on a do-not-populate part has nothing soldered to it, so nothing is missing
+from the assembled Demo and the ledger never records the edge as open.
+**`maze3d.net_islands` has no population model at all** and islands every pad
+of the net.
+
+    /01_POWER_TREE/BQ25185_SYS   proposer 10 islands   ledger 8   PHANTOM 2
+
+The two extra are **`R68.1` and `U13.3`, both DNP** -- and `U13.3` is the
+single closest-to-bound join this measurement found anywhere, 8.340 mm against
+a bound of 8.0. Had it come in at 7.9 mm the transaction would have been
+proposed, searched, gated and **refused on clause 4 after being paid for**,
+because the board it "improved" was never scored as open there.
+`screen_orphan_moves.py` now labels every island `FITTED` / `MIXED` /
+`DNP_ONLY` from `routing_ledger.schematic_population()` -- the ledger's own
+authority, not a second one invented here. Teaching `net_islands` itself a
+population model is a FRAMEWORK task and is NOT smuggled into a
+characterization: it is a shared primitive whose byte-identity the regressions
+rest on.
+
+## THE BOARD DOES NOT CARRY THE SCHEMATIC'S DNP FLAGS -- A FABRICATION BLOCKER
+
+The same probe asked the other half of the question and the answer is worse
+(`d611-population-trap.json`):
+
+    schematic references marked DNP                        16
+    board footprints carrying the DNP attribute             0
+    missing:  C21 C22 C34 C35 C81 C82 L2 R107 R112 R119
+              R123 R44 R45 R68 R93 U13
+
+A CPL / assembly position file generated from this board **would place all
+sixteen**. `kicad-cli`'s `--exclude-dnp` reads the FOOTPRINT attribute, and
+these footprints say `(attr smd)`. **KiCad's own `--schematic-parity` check
+does not catch it** -- the gate reports `schematic_parity_clean: true` on this
+very board. It is invisible to every check this repository owns, and it is a
+real, attributable blocker against the `DEMO_READY_FOR_FAB` clause "required
+Demo BOM/CPL/Gerbers/drills are generated and checked".
+
+## The largest SIGNAL group refuses too, and the layers are HALF EMPTY
+
+`/I2C_SCL_INT` -- the internal I2C clock, **5 retained open edges, the largest
+open group on the board that is not a pour** -- was offered the ordinary maze
+in `--partial` mode, which closes any subset it can. **It closed none**
+(`d611-i2c-scl-refusal.json`): all eleven candidate MST pairs refuse, ten
+`NO_PATH` at the 0.200 mm I2C width and one `NO_LEGAL_ESCAPE_DST` on `U14.7`,
+which its own neighbours box in. The shortest is `U2.22` -> `U3.22` at a
+10.0 mm gap.
+
+And that is NOT capacity (`d611-layer-capacity.json`). The router's own field,
+measured cell by cell on the three layers a signal net may use:
+
+    /I2C_SCL_INT     F 55.2 % free     B 50.9 % free     In2 59.2 % free
+
+**The wall is LOCAL pad-pocket congestion, not a full board.** `U2.22` and
+`U16.3` each have exactly ONE legal escape. Every characterized wall in this
+repository has the same shape, and this measurement is the first time it has
+been stated against a measured global capacity figure.
+
+## The rule sentence that a probe had not finished writing
+
+`.kicad_dru` section 13 read "0.200 mm of run with a 0.35/0.20 mm barrel is the
+ONLY combination that reaches the plane body". **That is not what the grid
+says.** `probe_vout_grid.py` writes its output after every row, and it was
+STILL RUNNING when D-610 was written -- what the entry cited was a 33-of-36
+snapshot. Completed, the grid says **TWO of 36 combinations reach the body**,
+both at the 0.35/0.20 mm barrel and both from `U12.4` alone: 0.200 mm over
+2.756 mm, and **0.150 mm over 2.702 mm**. `U12.5` refuses in all 36.
+
+The promotion is unaffected and the reasoning is strengthened: 0.150 mm is the
+`.kicad_pro` `min_track_width` and is BELOW the 0.200 mm section 9 grants
+anywhere, so it is **not licensable without a grant this board has never made**.
+0.200 mm is both the WIDER rung and the only licensable one. The rule text now
+says so, `evidence/d610-vout-grid.json` is the complete 36-row file, and the
+whole promotion re-gates 14/14 against it.
+
+**THE GENERAL LESSON, AND IT IS THE THIRD OF ITS KIND IN TWO DECISIONS.** D-607
+found a board read without its `.kicad_pro`; D-610 found a land recorded as
+refusing that was never asked; D-611 found a rule quoting a probe that had not
+finished. All three are the same failure: **evidence read at a moment it was
+not yet true.** A probe that streams its output must be proved COMPLETE before
+it is cited.
+
+## Next
+
+**The next task is the sixteen DNP flags**, and it is the first genuine
+fabrication-package blocker this board has surfaced: bounded, mechanical,
+gateable, and it changes what every future BOM and CPL says. After it, generate
+the Demo fabrication package for the first time at this authority and review it
+-- that is the largest remaining block of unknowns in the `DEMO_READY_FOR_FAB`
+list.
+
+**The pour residual is CLOSED as a routing question.** All 19 ledger-counted
+open edges on `+3V3`, `BQ25185_SYS` and `GND` are measured refused by both
+moves within the board's own electrical bounds. Do not replay the relief or the
+residual join against them without a CHANGED BOARD. What would change it is a
+POUR SHAPE or a PLACEMENT, and both are decisions above ordinary routing: 17 of
+21 islands say `NO_BODY_VIA_SITE`, which is a statement about where copper is
+poured, not about where a track may go. No owner decision is open.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d611-orphan-moves.json` (the 84-answer matrix, from the tracked screen),
+`d611-population-trap.json`, `d611-open-edge-population.json`,
+`d611-layer-capacity.json`, `d611-i2c-scl-refusal.json`,
+`d611-verify-dru-correction.json`, and the now-COMPLETE
+`d610-vout-grid.json`. Tracked tooling added: `screen_orphan_moves.py`. The
+probes under the gitignored `hardware/demo/manufacturing/w/d611/` were one-shot
+and the tracked screen reproduces their answers; nothing depends on the files.
+
 # D-610 · 2026-09-04 · Demo THE 3.3 V RAIL IS BONDED TO ITS OWN REGULATOR: the width licence spent for the first time, and TWO defects in the pour-bond guard that had been silently mis-protecting the whole board
 
 D-608 found that `+3V3` had no connection of any kind to `U12`, the `TPS63020`
@@ -6487,13 +6690,14 @@ bounding box identical to the gate's. The same run returns all eight islands as
 instead returns `NO_DRU_LICENCE` on `U12.4` -- which is D-607's netclass trap
 restated, and the reason the three files travel together.
 
-**AND ONE CITED FILE WAS NOT THERE.** `.kicad_dru` section 13 and the entry
-above both cite `evidence/d610-vout-grid.json` -- the 33-row width x barrel grid
-that is the whole reason the rule reads "0.200 mm with a 0.35/0.20 mm barrel is
-the ONLY combination". It was written to the gitignored `w/d610/` tree and never
-copied. It is now committed, and it says exactly what was claimed of it: 33 rows
-against the pre-promotion authority `78280a13...`, `U12.4` opens in exactly ONE
-and refuses `NO_BODY_VIA_SITE` in the other 32, `U12.5` refuses in all 33.
+**AND ONE CITED FILE WAS NOT THERE, AND WHEN IT ARRIVED IT WAS NOT FINISHED.**
+`.kicad_dru` section 13 and the entry above both cite
+`evidence/d610-vout-grid.json` -- the width x barrel grid that is the whole
+reason the rule names one rung. It was written to the gitignored `w/d610/` tree
+and never copied, and the probe that writes it, which writes its output after
+every row, WAS STILL RUNNING. It is now complete and committed: all 36 rungs,
+against the pre-promotion authority `78280a13...`. See the D-611 entry --
+finishing it changed one sentence of the rule.
 
 **THE NEXT TASK IS THEREFORE A MEASUREMENT, NOT A ROUTE.** Offer the relief to
 those eight lands read-only and find out what they actually answer. It is the

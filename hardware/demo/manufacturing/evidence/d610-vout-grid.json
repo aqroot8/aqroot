@@ -733,6 +733,75 @@
    "via_dia": 550000,
    "via_drill": 250000,
    "width": 150000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 500000,
+   "via_drill": 250000,
+   "width": 150000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 450000,
+   "via_drill": 200000,
+   "width": 150000
+  },
+  {
+   "pads": {
+    "U12.4": {
+     "layer": "B",
+     "mm": 2.702,
+     "ok": true,
+     "reason": null,
+     "via_xy": [
+      65.2,
+      98.8
+     ]
+    },
+    "U12.5": {
+     "layer": null,
+     "mm": null,
+     "ok": false,
+     "reason": "NO_BODY_VIA_SITE",
+     "via_xy": null
+    }
+   },
+   "plain_barrel": false,
+   "via_dia": 350000,
+   "via_drill": 200000,
+   "width": 150000
   }
  ],
  "schema": 1

@@ -1,0 +1,102 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_dnp_attribute": [],
+ "board_sha256": "12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0",
+ "checks": {
+  "POP1": {
+   "absent_from_board": [],
+   "board_dnp_attribute": 0,
+   "missing_flag": [
+    "C21",
+    "C22",
+    "C34",
+    "C35",
+    "C81",
+    "C82",
+    "L2",
+    "R107",
+    "R112",
+    "R119",
+    "R123",
+    "R44",
+    "R45",
+    "R68",
+    "R93",
+    "U13"
+   ],
+   "ok": false,
+   "schematic_dnp": 16
+  },
+  "POP2": {
+   "ok": true,
+   "sprayed_onto_fitted": []
+  },
+  "POP3": {
+   "board_only": [],
+   "ok": false,
+   "schematic_only": [
+    "C21",
+    "C22",
+    "C34",
+    "C35",
+    "C81",
+    "C82",
+    "L2",
+    "R107",
+    "R112",
+    "R119",
+    "R123",
+    "R44",
+    "R45",
+    "R68",
+    "R93",
+    "U13"
+   ]
+  },
+  "POP4": {
+   "dnp_still_placed": [
+    "C21",
+    "C22",
+    "C34",
+    "C35",
+    "C81",
+    "C82",
+    "L2",
+    "R107",
+    "R112",
+    "R119",
+    "R123",
+    "R44",
+    "R45",
+    "R68",
+    "R93",
+    "U13"
+   ],
+   "fitted_dropped": [],
+   "ok": false,
+   "pos_rows_all": 263,
+   "pos_rows_excluding_dnp": 263
+  }
+ },
+ "schema": 1,
+ "schematic_dnp": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ],
+ "schematic_fitted": 294,
+ "verdict": "FAIL"
+}

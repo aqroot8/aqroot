@@ -1,0 +1,125 @@
+{
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "nets": {
+  "+3V3": {
+   "clr": 200000,
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "B",
+    "I2",
+    "I3"
+   ],
+   "netclass": "P3V3",
+   "per_layer": {
+    "B": {
+     "cells": 1157481,
+     "free": 504460,
+     "free_pct": 43.58
+    },
+    "F": {
+     "cells": 1157481,
+     "free": 556701,
+     "free_pct": 48.1
+    },
+    "I2": {
+     "cells": 1157481,
+     "free": 591424,
+     "free_pct": 51.1
+    },
+    "I3": {
+     "cells": 1157481,
+     "free": 755907,
+     "free_pct": 65.31
+    }
+   },
+   "routable": [
+    "B",
+    "F",
+    "I2",
+    "I3"
+   ],
+   "via_dia": 800000,
+   "via_drill": 400000,
+   "width": 600000
+  },
+  "/I2C_SCL_INT": {
+   "clr": 200000,
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "netclass": "I2C",
+   "per_layer": {
+    "B": {
+     "cells": 1157481,
+     "free": 588754,
+     "free_pct": 50.87
+    },
+    "F": {
+     "cells": 1157481,
+     "free": 638501,
+     "free_pct": 55.16
+    },
+    "I2": {
+     "cells": 1157481,
+     "free": 684986,
+     "free_pct": 59.18
+    }
+   },
+   "routable": [
+    "B",
+    "F",
+    "I2",
+    "I3"
+   ],
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 200000
+  },
+  "GND": {
+   "clr": 200000,
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "netclass": "GND",
+   "per_layer": {
+    "B": {
+     "cells": 1157481,
+     "free": 609665,
+     "free_pct": 52.67
+    },
+    "F": {
+     "cells": 1157481,
+     "free": 655661,
+     "free_pct": 56.65
+    },
+    "I2": {
+     "cells": 1157481,
+     "free": 685294,
+     "free_pct": 59.21
+    }
+   },
+   "routable": [
+    "B",
+    "F",
+    "I2",
+    "I3"
+   ],
+   "via_dia": 600000,
+   "via_drill": 300000,
+   "width": 300000
+  }
+ },
+ "reserved_inner_planes": {
+  "I1": "{'GND'}",
+  "I3": "{'+3V3'}",
+  "I4": "{'GND'}"
+ },
+ "schema": 1
+}

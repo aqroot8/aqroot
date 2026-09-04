@@ -1,0 +1,2036 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "12a69da7e0e55cc9249cc833ebcc542c1767d6b8cf19bbe7dd5bff2e5a6b05a0",
+ "closable": [],
+ "dnp_only_islands": [
+  {
+   "dnp_refs": [
+    "R68"
+   ],
+   "island": "R68.1",
+   "net": "/01_POWER_TREE/BQ25185_SYS"
+  },
+  {
+   "dnp_refs": [
+    "U13"
+   ],
+   "island": "U13.3",
+   "net": "/01_POWER_TREE/BQ25185_SYS"
+  }
+ ],
+ "guard": "evidence/d610-pour-bond-guard-bonded.json",
+ "join_max_mm": 8.0,
+ "near": 8,
+ "nets": {
+  "+3V3": {
+   "body": [
+    "C10.1",
+    "C12.2",
+    "C13.1",
+    "C14.1",
+    "C15.1",
+    "C16.1",
+    "C17.1",
+    "C18.1",
+    "C2.1",
+    "C29.1",
+    "C3.1",
+    "C30.1",
+    "C31.1",
+    "C32.1",
+    "C4.1",
+    "C43.1",
+    "C5.1",
+    "C56.1",
+    "C6.1",
+    "C62.1",
+    "C7.1",
+    "C8.1",
+    "C9.1",
+    "D13.1",
+    "J1.35",
+    "J1.40",
+    "J1.41",
+    "J1.42",
+    "J1.7",
+    "J1.8",
+    "J1.9",
+    "J2.4",
+    "L3.1",
+    "MK1.3",
+    "R1.2",
+    "R103.1",
+    "R106.1",
+    "R113.1",
+    "R119.1",
+    "R123.2",
+    "R127.1",
+    "R128.1",
+    "R19.1",
+    "R2.1",
+    "R20.1",
+    "R21.1",
+    "R24.2",
+    "R25.1",
+    "R26.1",
+    "R27.1",
+    "R28.1",
+    "R29.1",
+    "R3.2",
+    "R4.1",
+    "R41.1",
+    "R5.1",
+    "R6.1",
+    "R7.1",
+    "R8.1",
+    "R81.1",
+    "R9.1",
+    "U1.2",
+    "U12.4",
+    "U12.5",
+    "U17.5",
+    "U2.24",
+    "U20.2",
+    "U3.21",
+    "U3.24",
+    "U5.7",
+    "U5.8",
+    "U7.9",
+    "U8.9",
+    "U9.1"
+   ],
+   "class_width": 600000,
+   "clr": 200000,
+   "clr_pad": 200000,
+   "islands": {
+    "R129.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R103.1",
+        "R119.1",
+        "U20.2",
+        "U3.21"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.600 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "R129.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R103.1",
+        "R119.1",
+        "U20.2",
+        "U3.21"
+       ],
+       "layers": [
+        "B",
+        "I2",
+        "F",
+        "I3",
+        "B"
+       ],
+       "max_mm": 8.0,
+       "mm": 9.814607016877204,
+       "ok": true,
+       "reason": null,
+       "vias": 4,
+       "why": null,
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "R129.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "R39.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.600 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "R39.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "R39.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U4.12": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "U3.24: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U3.23 (x40), U3.22 (x18), TP33.1 (x4), U2.13 (x4)",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U4.12": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U4.12": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U4.2": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "U3.24: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U3.23 (x40), U3.22 (x18), TP33.1 (x4), U2.13 (x4)",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U4.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U4.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U4.3": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "U3.24: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U3.23 (x40), U3.22 (x18), TP33.1 (x4), U2.13 (x4)",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U4.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U4.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U4.5": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U4.5": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U4.5": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U4.8": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U4.8": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C4.1",
+        "C5.1",
+        "C6.1",
+        "C7.1",
+        "R119.1",
+        "U20.2",
+        "U3.21",
+        "U3.24"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U4.8": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U5.2": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C10.1",
+        "C62.1",
+        "C8.1",
+        "C9.1",
+        "D13.1",
+        "R106.1",
+        "U5.7",
+        "U5.8"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U5.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 600000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C10.1",
+        "C62.1",
+        "C8.1",
+        "C9.1",
+        "D13.1",
+        "R106.1",
+        "U5.7",
+        "U5.8"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U5.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    }
+   },
+   "netclass": "P3V3"
+  },
+  "/01_POWER_TREE/BQ25185_SYS": {
+   "body": [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   "class_width": 800000,
+   "clr": 250000,
+   "clr_pad": 200000,
+   "islands": {
+    "C26.2": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "C26.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "C26.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "C27.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "C27.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "C27.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "C28.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "C28.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "C28.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "L4.1,U21.3": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "L4.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "U21.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "L4.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "U21.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "R68.1": {
+     "dnp_refs": [
+      "R68"
+     ],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "R68.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "R68.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "DNP_ONLY"
+    },
+    "SW9.2,U12.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.800 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "SW9.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "U12.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": [
+        "B",
+        "F",
+        "B"
+       ],
+       "max_mm": 8.0,
+       "mm": 10.74928279128297,
+       "ok": true,
+       "reason": null,
+       "vias": 2,
+       "why": null,
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "SW9.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "U12.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U11.1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U11.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U11.1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U12.10,U12.11": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U12.10": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       },
+       "U12.11": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U12.10": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "U12.11": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U13.3": {
+     "dnp_refs": [
+      "U13"
+     ],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U13.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 800000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+       ],
+       "layers": [
+        "B",
+        "I2",
+        "B"
+       ],
+       "max_mm": 8.0,
+       "mm": 8.34043477512249,
+       "ok": true,
+       "reason": null,
+       "vias": 2,
+       "why": null,
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U13.3": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "DNP_ONLY"
+    }
+   },
+   "netclass": "SYS_MAIN"
+  },
+  "GND": {
+   "body": [
+    "C1.1",
+    "C10.2",
+    "C11.2",
+    "C12.1",
+    "C13.2",
+    "C14.2",
+    "C15.2",
+    "C16.2",
+    "C17.2",
+    "C18.2",
+    "C19.2",
+    "C2.2",
+    "C20.2",
+    "C21.2",
+    "C22.2",
+    "C23.1",
+    "C24.2",
+    "C25.2",
+    "C26.1",
+    "C27.2",
+    "C28.2",
+    "C29.2",
+    "C3.2",
+    "C30.2",
+    "C31.2",
+    "C32.2",
+    "C33.2",
+    "C34.1",
+    "C35.2",
+    "C36.2",
+    "C38.2",
+    "C39.2",
+    "C4.2",
+    "C43.2",
+    "C44.2",
+    "C45.2",
+    "C46.2",
+    "C47.2",
+    "C48.2",
+    "C49.2",
+    "C5.2",
+    "C50.2",
+    "C51.2",
+    "C52.2",
+    "C53.2",
+    "C54.2",
+    "C55.2",
+    "C56.2",
+    "C57.2",
+    "C58.2",
+    "C59.2",
+    "C6.2",
+    "C60.2",
+    "C61.2",
+    "C62.2",
+    "C63.2",
+    "C64.2",
+    "C65.2",
+    "C66.2",
+    "C67.2",
+    "C68.2",
+    "C69.2",
+    "C7.2",
+    "C70.2",
+    "C73.2",
+    "C74.2",
+    "C76.2",
+    "C78.2",
+    "C79.2",
+    "C8.2",
+    "C80.2",
+    "C81.2",
+    "C82.2",
+    "C9.2",
+    "D2.2",
+    "D4.2",
+    "D5.2",
+    "D9.2",
+    "J1.11",
+    "J1.12",
+    "J1.13",
+    "J1.14",
+    "J1.15",
+    "J1.16",
+    "J1.17",
+    "J1.18",
+    "J1.19",
+    "J1.20",
+    "J1.21",
+    "J1.22",
+    "J1.23",
+    "J1.24",
+    "J1.25",
+    "J1.26",
+    "J1.27",
+    "J1.28",
+    "J1.29",
+    "J1.30",
+    "J1.31",
+    "J1.32",
+    "J1.43",
+    "J1.48",
+    "J1.49",
+    "J1.50",
+    "J2.11",
+    "J2.6",
+    "J2.9",
+    "J2.9",
+    "J2.9",
+    "J2.9",
+    "J3.A1",
+    "J3.B12",
+    "J4.2",
+    "J5.19",
+    "J5.2",
+    "J5.23",
+    "J5.6",
+    "J8.1",
+    "MK1.1",
+    "MK1.2",
+    "Q1.2",
+    "Q4.2",
+    "Q8.2",
+    "Q9.2",
+    "R100.2",
+    "R101.2",
+    "R102.2",
+    "R105.2",
+    "R108.2",
+    "R110.2",
+    "R111.2",
+    "R118.2",
+    "R12.2",
+    "R120.2",
+    "R13.2",
+    "R131.2",
+    "R14.2",
+    "R15.2",
+    "R16.2",
+    "R17.2",
+    "R23.2",
+    "R30.2",
+    "R31.2",
+    "R32.2",
+    "R36.2",
+    "R37.2",
+    "R38.2",
+    "R40.2",
+    "R42.1",
+    "R43.2",
+    "R45.2",
+    "R69.2",
+    "R74.2",
+    "R78.2",
+    "R82.2",
+    "R83.2",
+    "R88.2",
+    "R90.2",
+    "R92.2",
+    "R97.2",
+    "R98.2",
+    "SW1.2",
+    "SW1.2",
+    "SW2.2",
+    "SW2.2",
+    "SW3.2",
+    "SW3.2",
+    "SW4.2",
+    "SW4.2",
+    "SW5.2",
+    "SW5.2",
+    "SW6.2",
+    "SW6.2",
+    "SW7.2",
+    "SW7.2",
+    "U1.1",
+    "U1.40",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U1.41",
+    "U10.2",
+    "U11.11",
+    "U11.4",
+    "U11.5",
+    "U12.15",
+    "U12.2",
+    "U13.4",
+    "U14.1",
+    "U14.4",
+    "U14.9",
+    "U16.4",
+    "U17.2",
+    "U18.4",
+    "U18.5",
+    "U19.4",
+    "U2.12",
+    "U2.2",
+    "U2.21",
+    "U2.3",
+    "U20.3",
+    "U21.4",
+    "U22.3",
+    "U3.12",
+    "U3.2",
+    "U3.3",
+    "U4.6",
+    "U4.7",
+    "U5.11",
+    "U5.15",
+    "U5.17",
+    "U5.3",
+    "U6.2",
+    "U7.1",
+    "U7.11",
+    "U7.12",
+    "U7.2",
+    "U7.20",
+    "U7.22",
+    "U7.3",
+    "U7.4",
+    "U7.5",
+    "U8.1",
+    "U8.10",
+    "U8.11",
+    "U8.12",
+    "U8.2",
+    "U8.20",
+    "U8.22",
+    "U8.3",
+    "U8.4",
+    "U8.5",
+    "U9.12",
+    "U9.20",
+    "U9.21",
+    "U9.26",
+    "U9.33",
+    "U9.6",
+    "Y1.2",
+    "Y1.4"
+   ],
+   "class_width": 300000,
+   "clr": 200000,
+   "clr_pad": 200000,
+   "islands": {
+    "C37.2": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C25.2",
+        "C39.2",
+        "C6.2",
+        "C63.2",
+        "R102.2",
+        "R17.2",
+        "R97.2",
+        "R98.2"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.300 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "C37.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 300000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C25.2",
+        "C39.2",
+        "C6.2",
+        "C63.2",
+        "R102.2",
+        "R17.2",
+        "R97.2",
+        "R98.2"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "C37.2": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "J3.A12,J3.B1": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C20.2",
+        "J3.A1",
+        "J3.B12",
+        "R30.2",
+        "R31.2",
+        "SW1.2",
+        "U10.2",
+        "U7.11"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.300 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "J3.A12": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "J3.B1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 300000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C20.2",
+        "J3.A1",
+        "J3.B12",
+        "R30.2",
+        "R31.2",
+        "SW1.2",
+        "U10.2",
+        "U7.11"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "J3.A12": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       },
+       "J3.B1": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "MK1.4": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C68.2",
+        "MK1.1",
+        "MK1.2",
+        "Q4.2",
+        "R105.2",
+        "R38.2",
+        "R69.2",
+        "SW3.2"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "MK1.4": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 300000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C68.2",
+        "MK1.1",
+        "MK1.2",
+        "Q4.2",
+        "R105.2",
+        "R38.2",
+        "R69.2",
+        "SW3.2"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "no legal escape on the source island",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "MK1.4": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    },
+    "U9.16": {
+     "dnp_refs": [],
+     "ordinary": {
+      "join": {
+       "dst_pads": [
+        "C17.2",
+        "C47.2",
+        "U9.12",
+        "U9.20",
+        "U9.21",
+        "U9.26",
+        "U9.33",
+        "U9.6"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "vias": null,
+       "why": "U9.26: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.27 (x42), U9.25 (x18), U9.22 (x6), U9.23 (x3)",
+       "within_bound": false
+      },
+      "plain_barrel": true,
+      "relief": {
+       "U9.16": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 650000,
+      "via_drill": 400000,
+      "width": 300000
+     },
+     "permissive": {
+      "join": {
+       "dst_pads": [
+        "C17.2",
+        "C47.2",
+        "U9.12",
+        "U9.20",
+        "U9.21",
+        "U9.26",
+        "U9.33",
+        "U9.6"
+       ],
+       "layers": null,
+       "max_mm": 8.0,
+       "mm": null,
+       "ok": false,
+       "reason": "NO_PATH",
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm between the islands",
+       "within_bound": false
+      },
+      "plain_barrel": false,
+      "relief": {
+       "U9.16": {
+        "layer": null,
+        "mm": null,
+        "ok": false,
+        "reason": "NO_BODY_VIA_SITE",
+        "via_xy": null
+       }
+      },
+      "relief_ok": [],
+      "via_dia": 350000,
+      "via_drill": 200000,
+      "width": 200000
+     },
+     "population": "FITTED"
+    }
+   },
+   "netclass": "GND"
+  }
+ },
+ "orphan_islands": 21,
+ "out_of_bound": [
+  {
+   "island": "R129.1",
+   "max_mm": 8.0,
+   "mm": 9.814607016877204,
+   "move": "join",
+   "net": "+3V3",
+   "rung": "permissive",
+   "vias": 4
+  },
+  {
+   "island": "SW9.2,U12.1",
+   "max_mm": 8.0,
+   "mm": 10.74928279128297,
+   "move": "join",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "rung": "permissive",
+   "vias": 2
+  }
+ ],
+ "rungs": {
+  "ordinary": {
+   "via": [
+    650000,
+    400000
+   ]
+  },
+  "permissive": {
+   "via": [
+    350000,
+    200000
+   ],
+   "width": 200000
+  }
+ },
+ "schema": 1,
+ "schematic_dnp": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ]
+}

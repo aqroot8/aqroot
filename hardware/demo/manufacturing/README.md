@@ -2,6 +2,91 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## The relief doctrine is SPENT -- and the board does not carry its own DNP flags (2026-09-04)
+
+D-610's addendum ruled the next task was a MEASUREMENT, not a route.  This is
+it, and the answer is unambiguous.  **No copper changed**; the authoritative
+board is byte-identical at `12a69da7...`.
+
+New tracked read-only screen **`screen_orphan_moves.py`**.  It names no land,
+no net and no lever: it enumerates every ORPHAN ISLAND of every pour-owning net
+and offers each one BOTH moves this board owns, at BOTH ends of the ladder.
+
+    RELIEF  maze3d.stitch_pad   a barrel INTO the plane body -- needs the pour
+                                to REACH the land
+    JOIN    maze3d.route_join   the whole-board maze at the MAIN island's pads,
+                                which join_residual_islands drives -- aims at
+                                copper that is ALREADY CONNECTED
+
+    ORDINARY    netclass width + 0.650/0.400 mm POWER barrel  (no licence)
+    PERMISSIVE  0.200 mm + 0.350/0.200 mm D-257 barrel        (the most this
+                board could EVER license)
+
+The bracket is sound because `Field` is MONOTONE in both levers, so a refusal
+at PERMISSIVE is a refusal on the whole ladder.
+
+    21 orphan islands   84 measured answers   0 promotable moves
+    relief   0 of 21 open at either rung
+    join     3 open at PERMISSIVE, ALL THREE over the driver's own 8.0 mm
+             REPAIR_JOIN_MAX_MM bound (9.815 / 10.749 / 8.340 mm)
+
+    nets=3  orphan_islands=21  closable=0  out_of_bound=2  dnp_only=2
+    (the third open join is the DNP phantom, classified out before the bound)
+
+**THE TWO REFUSAL WORDS MEAN DIFFERENT THINGS.**  `NO_LEGAL_ESCAPE` is a POCKET
+wall and narrowing IS the lever -- ten of the FOURTEEN lands that answered it at
+ORDINARY escape at 0.200 mm.  `NO_BODY_VIA_SITE` is a POUR-SHAPE wall: the land
+escapes, runs, and there is nowhere in the plane BODY for the barrel to land.
+**No licence can move it**, because no licence changes where copper is poured.
+**17 of the 21 islands answer `NO_BODY_VIA_SITE`** at the permissive corner;
+the other four still cannot launch at all.
+
+**ONE OF THE THREE JOINS IS A PHANTOM.**  `routing_ledger.py` -- the file the
+gate's clause 4 scores against -- counts open edges over SCHEMATIC-FITTED
+references only.  `maze3d.net_islands` has no population model and islands
+every pad.  `BQ25185_SYS` islands TEN ways for the proposer and EIGHT for the
+ledger; the two extra, `R68.1` and `U13.3`, are DNP -- and `U13.3` is the
+closest-to-bound join found anywhere (8.340 mm against 8.0).  At 7.9 mm it
+would have been proposed, searched, gated and REFUSED on clause 4 after being
+paid for.  The screen now labels every island `FITTED` / `MIXED` / `DNP_ONLY`
+from the ledger's own authority.
+
+**AND THE BOARD DOES NOT CARRY THE SCHEMATIC'S DNP FLAGS -- A FABRICATION
+BLOCKER** (`evidence/d611-population-trap.json`):
+
+    schematic references marked DNP                   16
+    board footprints carrying the DNP attribute        0
+
+A CPL generated from this board would place all sixteen; `kicad-cli
+--exclude-dnp` reads the FOOTPRINT attribute and these footprints say
+`(attr smd)`.  **KiCad's own `--schematic-parity` does not catch it** -- the
+gate reports `schematic_parity_clean: true` on this very board.
+
+**THE LARGEST SIGNAL GROUP REFUSES TOO, AND THE LAYERS ARE HALF EMPTY.**
+`/I2C_SCL_INT` (internal I2C clock, 5 open edges) offered the maze in
+`--partial` mode closed NONE of eleven MST pairs.  Measured global capacity on
+the three layers a signal may use: **F 55.2 % / B 50.9 % / In2 59.2 % FREE**.
+The wall is LOCAL pad-pocket congestion, not a full board.
+
+**ONE RULE SENTENCE CORRECTED.**  Section 13 of the `.kicad_dru` read "0.200 mm
+... is the ONLY combination that reaches the plane body".  `probe_vout_grid.py`
+streams its output after every row and it was STILL RUNNING when D-610 was
+written -- the cited file was a 33-of-36 snapshot.  Complete, the grid says
+**TWO of 36** reach the body, both at the fine barrel and both from `U12.4`:
+0.200 mm over 2.756 mm and 0.150 mm over 2.702 mm.  The promotion is unaffected
+and strengthened: 0.150 mm is the `.kicad_pro` `min_track_width`, BELOW the
+0.200 mm section 9 grants anywhere, so it is not licensable -- 0.200 mm is both
+the wider rung and the only licensable one.  The whole D-610 promotion re-gates
+**14/14** against the corrected rule file.
+
+**NEXT.**  The sixteen DNP flags -- the first genuine fabrication-package
+blocker, bounded and gateable -- then GENERATE the Demo fabrication package for
+the first time at this authority and review it.  **The pour residual is CLOSED
+as a routing question:** all 19 ledger-counted open edges on `+3V3`,
+`BQ25185_SYS` and `GND` are measured refused by both moves within this board's
+own electrical bounds.  Do not replay without a CHANGED BOARD -- a pour shape
+or a placement, both decisions above ordinary routing.
+
 ## The 3.3 V rail is bonded to its own regulator -- and two defects in the pour-bond guard (2026-09-04)
 
 D-608 discovered that `+3V3` had no connection of any kind to `U12`, the

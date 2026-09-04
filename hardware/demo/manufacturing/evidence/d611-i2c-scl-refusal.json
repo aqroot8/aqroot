@@ -1,0 +1,200 @@
+{
+ "argv": "route_maze_batch.py /I2C_SCL_INT --propose <board> --neck --partial --guard evidence/d610-pour-bond-guard-bonded.json",
+ "closed": 0,
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "guarded_layers": {
+   "B": 1224,
+   "F": 310
+  },
+  "layers": [
+   "F",
+   "B",
+   "I2"
+  ],
+  "netclass": "I2C",
+  "reserved_inner_planes": {
+   "I1": [
+    "GND"
+   ],
+   "I3": [
+    "+3V3"
+   ],
+   "I4": [
+    "GND"
+   ]
+  },
+  "via_dia": 600000,
+  "via_drill": 300000,
+  "width": 200000
+ },
+ "failures": [
+  {
+   "a": [
+    "U2.22"
+   ],
+   "b": [
+    "U3.22"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 10.0,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U3.22"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 10.784,
+   "reason": "NO_PATH",
+   "src_escapes": 37,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "TP5.1"
+   ],
+   "dst_escapes": 8,
+   "gap_mm": 13.286,
+   "reason": "NO_PATH",
+   "src_escapes": 38,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U16.3"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 15.585,
+   "reason": "NO_PATH",
+   "src_escapes": 37,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 20.538,
+   "reason": "NO_PATH",
+   "src_escapes": 37,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U14.7"
+   ],
+   "gap_mm": 24.137,
+   "pads": [
+    "U14.7"
+   ],
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "why": "U14.7: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U14.8 (x25), U14.6 (x13), track (x9), U14.5 (x9)"
+  },
+  {
+   "a": [
+    "U16.3"
+   ],
+   "b": [
+    "U3.22"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 25.993,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "U16.3"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 35.953,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 56.369,
+   "reason": "NO_PATH",
+   "src_escapes": 9,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U3.22"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 66.259,
+   "reason": "NO_PATH",
+   "src_escapes": 9,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U16.3"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 91.71,
+   "reason": "NO_PATH",
+   "src_escapes": 9,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  }
+ ],
+ "islands": 6,
+ "mode": "maze+partial",
+ "net": "/I2C_SCL_INT",
+ "reason": "NO_PATH",
+ "schema": 1,
+ "seconds": 14.7,
+ "what": "D-611: the largest SIGNAL-net open group on the board (5 retained open edges, the internal I2C clock) offered the ordinary maze in PARTIAL mode, which closes any subset it can.  It closed NONE: all eleven candidate MST pairs refuse, ten NO_PATH at the 0.200 mm I2C width on F/B/In2 and one NO_LEGAL_ESCAPE_DST on U14.7.  Read with evidence/d611-layer-capacity.json, which measures those three layers 55/51/59 % FREE: the wall is LOCAL pad-pocket congestion, not global capacity."
+}

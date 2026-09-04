@@ -1,0 +1,249 @@
+{
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_dnp_attr": [],
+ "disagreement": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ],
+ "dnp_only_edges": 0,
+ "fitted_open_edges": 57,
+ "nets": {
+  "+3V3": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 8,
+   "islands": 9,
+   "open_edges": 8
+  },
+  "/01_POWER_TREE/ACC_5V_LX": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/01_POWER_TREE/BQ25185_SYS": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 7,
+   "islands": 8,
+   "open_edges": 7
+  },
+  "/01_POWER_TREE/USB_D_CONN_N": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/01_POWER_TREE/USB_D_CONN_P": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/03_SPI_A_DISPLAY_SD/LED_K": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI1": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI2": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/09_COMMUNITY_HEADER/EXT_SDA": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 3,
+   "islands": 4,
+   "open_edges": 3
+  },
+  "/ACC_5V_BOOST_EN": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/ACC_PWR_EN": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/BQ25185_STAT1": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "/BQ25185_STAT2": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "/I2C_SCL_INT": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 5,
+   "islands": 6,
+   "open_edges": 5
+  },
+  "/I2C_SDA_INT": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "/I2S_LRCLK": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/NFC_IRQ": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/NFC_SUPPLY": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "/SPI_B_SCK": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/SX1262_DIO1": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/USB_D_MCU_N": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/USB_D_MCU_P": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 1,
+   "islands": 2,
+   "open_edges": 1
+  },
+  "/WAKE_INT_N": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 2,
+   "islands": 3,
+   "open_edges": 2
+  },
+  "GND": {
+   "dnp_only_edges": 0,
+   "dnp_only_islands": [],
+   "fitted_edges": 4,
+   "islands": 5,
+   "open_edges": 4
+  }
+ },
+ "retained_open_edges": 57,
+ "schema": 1,
+ "schematic_dnp": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ]
+}

@@ -1367,11 +1367,17 @@
 # P3V3 0.400 mm floor neither pin has a legal escape, at 0.250 mm
 # neither reaches a barrel, and at 0.200 mm both do.  D-610 re-measured
 # it with the pour-bond guard corrected AND crossed it with the barrel
-# ladder -- `evidence/d610-vout-grid.json`, every rung of each against
-# both pins -- and the answer narrowed rather than moved: 0.200 mm of
-# run with a 0.35/0.20 mm barrel is the ONLY combination that reaches
-# the plane body, and it reaches it from `U12.4` alone.
-# THE WALL WAS THE RUN, AND IT STILL IS.
+# ladder -- `evidence/d610-vout-grid.json`, all 36 rungs of the two
+# ladders against both pins -- and the answer narrowed rather than
+# moved.  TWO of the 36 reach the plane body, both at the 0.35/0.20 mm
+# fine barrel and both from `U12.4` alone: 0.200 mm of run over
+# 2.756 mm, and 0.150 mm over 2.702 mm.  `U12.5` refuses
+# `NO_BODY_VIA_SITE` in all 36.  0.150 mm is the `.kicad_pro`
+# `min_track_width` and is BELOW the 0.200 mm section 9 grants
+# anywhere, so it is not licensable without a grant this board has
+# never made -- 0.200 mm is both the WIDER rung and the only licensable
+# one, which is why it is what the rule below states and what was
+# promoted.  THE WALL WAS THE RUN, AND IT STILL IS.
 #
 # WHY A RULE AREA AND NOT THE NECKING RULE.  Section 9's "Pad-escape
 # necking - width, fine-pitch power packages" already grants 0.200 mm
