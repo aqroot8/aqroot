@@ -307,6 +307,15 @@ def rule_areas(path):
 # instead of a barrel.  Anything longer stops being a repair.
 REPAIR_JOIN_MAX_MM = 8.0
 
+# THE ORPHAN JOIN IS BOUNDED FOR THE SAME ELECTRICAL REASON THE RESIDUAL JOIN
+# IS, and more tightly.  D-608.  A residual join puts a pad ON the plane; an
+# orphan join only ties two pads that are BOTH still off it, so what it buys is
+# one open edge and what it spends is outer-layer capacity the unrouted signal
+# nets still need.  A short one is unarguable -- `U12.4` to `U12.5` is 0.500 mm
+# between two pins the TPS63020's datasheet requires connected anyway -- and a
+# long one is a lateral haul that should have been a barrel.
+JOIN_ORPHAN_MAX_MM = 4.0
+
 # --------------------------------------------------------------------------- #
 # BOND REDUNDANCY -- A STITCH FOR A PAD THAT IS ALREADY CONNECTED
 # --------------------------------------------------------------------------- #
@@ -1097,7 +1106,9 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             split_islands=False, guard_spec=None, bridge=False,
             bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
             join_islands=False, join_island_max_mm=0.0,
-            escape_relief=False, relief_via=None, detour_plan=None):
+            escape_relief=False, relief_via=None, detour_plan=None,
+            body_landing=False, join_orphans=False,
+            join_orphan_max_mm=JOIN_ORPHAN_MAX_MM):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1266,12 +1277,27 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                          layers=c["layers"], neck=neck_rule, guard=g)
         # A net that owns a filled pour is completed by dropping each island
         # onto that pour, not by a pad-to-pad MST across the signal layers.
+        # THE BARREL MUST LAND ON THE BODY, AND ONLY THE CALLER CAN SAY SO.
+        # D-608.  `stitch_pad` proves its via is LEGAL; nothing in it asks
+        # whether the copper under that via is the plane body, another orphan
+        # of the same net, or no copper at all.  Three gate runs on `SW9.2`
+        # (D-604) and one on `R129.1` (D-607) were spent finding that out
+        # afterwards.  `--body-landing` hands the stitch the mask of cells
+        # inside the body's own filled pour, so the site it takes is one the
+        # refill will bond.  Off by default: the mask is a CERTIFICATE, not a
+        # veto -- `C7.1`'s promoted barrel lay outside every filled `+3V3`
+        # island on the board it was proposed on and closed its edge anyway.
+        land_ok, land_info = None, None
+        if body_landing and mz.has_plane(qb, net):
+            land_ok, land_info = mz.body_landing(qb, net, field)
         if mz.has_plane(qb, net):
             r = mz.stitch_net(qb, net, width=c["width"],
                               clr_pad=c["clr_pad"],
                               clr_trk=c["clr"], via_dia=c["via_dia"],
                               via_drill=c["via_drill"], G=grid, field=field,
-                              split_islands=split_islands)
+                              split_islands=split_islands, land_ok=land_ok)
+            if land_info is not None:
+                r["body_landing"] = land_info
             r["mode"] = "stitch-split" if split_islands else "stitch"
             # The stitch is LOCAL by construction -- one escape and one barrel
             # inside an 8 mm window.  An island it reports as unreachable may
@@ -1300,6 +1326,20 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 r["island_join"] = ji
                 r["mode"] = r["mode"] + "+islands"
                 r["ok"] = bool(r.get("ok")) or bool(ji.get("joined"))
+            # THE ORPHAN JOIN RUNS AFTER EVERY MOVE THAT AIMS AT THE
+            # PLANE, AND THE ORDER IS THE ARGUMENT.  D-608.  A stitch, a
+            # bridge, a residual join and an island join all leave the pad ON
+            # the pour, which is what a plane-served pad actually wants; an
+            # orphan join leaves both pads off it and buys the edge only.  So
+            # it is offered exactly what none of them could plant, on a board
+            # that already carries their copper.
+            if join_orphans:
+                jo = mz.join_orphans(qb, net, field,
+                                     via_cost_mm=via_cost_mm,
+                                     max_mm=join_orphan_max_mm)
+                r["orphan_join"] = jo
+                r["mode"] = r["mode"] + "+orphans"
+                r["ok"] = bool(r.get("ok")) or bool(jo.get("joined"))
             # THE RELIEF RUNS LAST, AND THE ORDER IS AGAIN THE ARGUMENT.
             # D-606.  Every primitive above lays copper the board licenses
             # UNCONDITIONALLY; this one lays a barrel that exists only because
@@ -1320,7 +1360,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 rs = mz.relief_stitch(
                     qb, net, widths, c["clr_pad"], c["clr"], rv[0], rv[1],
                     via_floors(c["netclass"]), G=grid, layers=c["layers"],
-                    neck=neck_rule, guard=g)
+                    neck=neck_rule, guard=g, land_ok=land_ok)
                 r["escape_relief"] = rs
                 r["mode"] = r["mode"] + "+relief"
                 r["ok"] = bool(r.get("ok")) or bool(rs.get("stitched"))
@@ -1482,7 +1522,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
-         escape_relief=False, relief_via=None, detour_spec=None):
+         escape_relief=False, relief_via=None, detour_spec=None,
+         body_landing=False, join_orphans=False,
+         join_orphan_max_mm=JOIN_ORPHAN_MAX_MM):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1637,6 +1679,21 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # here the reading is stronger than for `--bridge`.  A repair that
         # could spend a DRU licence would be authoring board rules while
         # wearing a repair's name.
+        # THE BODY LANDING IS THE PRIMARY PROPOSAL'S LEVER, NOT THE
+        # REPAIR'S -- same reading as `--bridge`.  A plane repair re-bonds
+        # copper THIS run severed and is measured against the run's own
+        # before/after; narrowing where its barrel may land could leave a
+        # severed pad with no stitch at all rather than with a redundant one.
+        if body_landing and use_search_levers:
+            cmd += ["--body-landing"]
+        # THE ORPHAN JOIN IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S --
+        # same reading as `--bridge`.  A repair re-bonds copper THIS run
+        # severed; tying two islands that were already apart before the run is
+        # a second transaction wearing a repair's name.
+        if join_orphans and use_search_levers:
+            cmd += ["--join-orphans"]
+            if join_orphan_max_mm != JOIN_ORPHAN_MAX_MM:
+                cmd += ["--join-orphan-max-mm", str(join_orphan_max_mm)]
         if escape_relief and use_search_levers:
             cmd += ["--escape-relief"]
             if relief_via:
@@ -2116,6 +2173,22 @@ def main():
                     help="window in millimetres for ONE bond stitch; the "
                          "default is the 8 mm locality window `stitch_pad` "
                          "itself uses")
+    ap.add_argument("--join-orphans", action="store_true",
+                    help="D-608: offer every pair of ORPHAN islands of a "
+                         "pour-owning net the same route_join the plane-less "
+                         "nets use.  Every other move on this board aims an "
+                         "orphan at the plane BODY; merging two orphans closes "
+                         "an open edge just as well, and nothing could express "
+                         "it")
+    ap.add_argument("--join-orphan-max-mm", type=float,
+                    default=JOIN_ORPHAN_MAX_MM,
+                    help="electrical bound on ONE orphan join (default %.1f)"
+                         % JOIN_ORPHAN_MAX_MM)
+    ap.add_argument("--body-landing", action="store_true",
+                    help="a stitch barrel may land ONLY inside the net's own "
+                         "BODY pour (maze3d.body_landing).  A legal barrel is "
+                         "not yet a barrel that connects; this is the "
+                         "certificate that it will be")
     ap.add_argument("--escape-relief", action="store_true",
                     help="D-606: for a pour-owning net, offer every land the "
                          "unconditional primitives could not close a stitch "
@@ -2189,7 +2262,8 @@ def main():
                 a.join_islands, a.join_island_max_mm,
                 a.escape_relief, relief_via,
                 json.loads(a.detour_plan.read_text()) if a.detour_plan
-                else None)
+                else None,
+                a.body_landing, a.join_orphans, a.join_orphan_max_mm)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -2237,7 +2311,9 @@ def main():
                  bond_via=bond_via, join_islands=a.join_islands,
                  join_island_max_mm=a.join_island_max_mm,
                  escape_relief=a.escape_relief, relief_via=relief_via,
-                 detour_spec=a.detour_spec)
+                 detour_spec=a.detour_spec, body_landing=a.body_landing,
+                 join_orphans=a.join_orphans,
+                 join_orphan_max_mm=a.join_orphan_max_mm)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

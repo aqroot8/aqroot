@@ -1,0 +1,233 @@
+{
+  "board_sha256": "cfd10db1d6414fd15a56ec0786faf98b70b82f00a31fea885e32d62597c6b13e",
+  "calibration": "D-608's first gate run on `GND` `C37.2` is reproduced exactly: `/09_COMMUNITY_HEADER/TCA4307_READY` refused on the LAYER and `/I2C_SCL_INT` refused for NO_PATH, which is what the gate reported after removing both tracks, relaying neither, and collecting four `track_dangling` warnings for 59 -> 60.",
+  "decision": "D-608",
+  "lands": [
+    {
+      "cut_radius_mm": 0.8,
+      "land": [
+        "U12.5"
+      ],
+      "net": "+3V3",
+      "relay": {
+        "all_relaid": false,
+        "tracks": [
+          {
+            "layer": [
+              "I3"
+            ],
+            "max_mm": 32.1457,
+            "net": "/01_POWER_TREE/USB_VBUS_CHG",
+            "ok": false,
+            "reason": "UNDETOURABLE_LAYER",
+            "tracks": 1,
+            "was_mm": 27.1192,
+            "why": "layer I3 is not in this net's contract ['F', 'B', 'I2'] -- the track can be cut and can never be put back"
+          },
+          {
+            "a_mm": [
+              64.45,
+              101.9
+            ],
+            "b_mm": [
+              71.35,
+              94.85
+            ],
+            "layer": [
+              "I2"
+            ],
+            "max_mm": 14.8912,
+            "mm": 9.97029305839181,
+            "net": "/IR_RX_GPIO44",
+            "ok": true,
+            "reason": null,
+            "tracks": 1,
+            "vias": 0,
+            "was_mm": 9.8647,
+            "why": null
+          },
+          {
+            "a_mm": [
+              67.6,
+              99.5
+            ],
+            "b_mm": [
+              67.785,
+              96.6
+            ],
+            "layer": [
+              "B"
+            ],
+            "max_mm": 8.0031,
+            "mm": 3.2457387406609004,
+            "net": "Net-(L1-Pad2)",
+            "ok": true,
+            "reason": null,
+            "tracks": 2,
+            "vias": 0,
+            "was_mm": 2.9766,
+            "why": null
+          }
+        ]
+      },
+      "stitch": {
+        "layer": "B",
+        "mm": 1.136,
+        "pad": "U12.5",
+        "via_xy": [
+          66.9,
+          98.8
+        ]
+      },
+      "verdict": "SEGMENT_SET_OPENS"
+    },
+    {
+      "cut_radius_mm": 0.8,
+      "land": [
+        "C37.2"
+      ],
+      "net": "GND",
+      "relay": {
+        "all_relaid": false,
+        "tracks": [
+          {
+            "layer": [
+              "I3"
+            ],
+            "max_mm": 9.2146,
+            "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+            "ok": false,
+            "reason": "UNDETOURABLE_LAYER",
+            "tracks": 1,
+            "was_mm": 4.1881,
+            "why": "layer I3 is not in this net's contract ['F', 'B', 'I2'] -- the track can be cut and can never be put back"
+          },
+          {
+            "a_mm": [
+              58.6,
+              61.5
+            ],
+            "b_mm": [
+              59.9,
+              63.1
+            ],
+            "layer": [
+              "F"
+            ],
+            "max_mm": 7.0881,
+            "mm": null,
+            "net": "/I2C_SCL_INT",
+            "ok": false,
+            "reason": "NO_PATH",
+            "tracks": 1,
+            "vias": null,
+            "was_mm": 2.0616,
+            "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 7.088 mm budget"
+          }
+        ]
+      },
+      "stitch": {
+        "layer": "B",
+        "mm": 1.089,
+        "pad": "C37.2",
+        "via_xy": [
+          59.2,
+          62.4
+        ]
+      },
+      "verdict": "SEGMENT_SET_OPENS"
+    },
+    {
+      "cut_radius_mm": 8.0,
+      "land": [
+        "J3.A12",
+        "J3.B1"
+      ],
+      "net": "GND",
+      "relay": {
+        "all_relaid": false,
+        "tracks": [
+          {
+            "a_mm": [
+              35.5,
+              147.275
+            ],
+            "b_mm": [
+              40.975,
+              147.275
+            ],
+            "layer": [
+              "F"
+            ],
+            "max_mm": 55.7405,
+            "mm": null,
+            "net": "Net-(J3-CC2)",
+            "ok": false,
+            "reason": "NO_PATH",
+            "tracks": 1,
+            "vias": null,
+            "was_mm": 5.475,
+            "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 55.740 mm budget"
+          }
+        ]
+      },
+      "stitch": {
+        "layer": "F",
+        "mm": 2.938,
+        "pad": "J3.A12",
+        "via_xy": [
+          37.2,
+          146.1
+        ]
+      },
+      "verdict": "SEGMENT_OPENS"
+    },
+    {
+      "cut_radius_mm": 2.0,
+      "land": [
+        "U9.16"
+      ],
+      "net": "GND",
+      "relay": {
+        "all_relaid": false,
+        "tracks": [
+          {
+            "a_mm": [
+              36.075,
+              27.0
+            ],
+            "b_mm": [
+              37.95,
+              28.925
+            ],
+            "layer": [
+              "B"
+            ],
+            "max_mm": 15.2536,
+            "mm": null,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "ok": false,
+            "reason": "NO_PATH",
+            "tracks": 1,
+            "vias": null,
+            "was_mm": 2.6872,
+            "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 15.254 mm budget"
+          }
+        ]
+      },
+      "stitch": {
+        "layer": "B",
+        "mm": 1.727,
+        "pad": "U9.16",
+        "via_xy": [
+          37.3,
+          28.4
+        ]
+      },
+      "verdict": "SEGMENT_OPENS"
+    }
+  ],
+  "method": "read-only.  The tracks are held WHOLE out of the obstacle model the way `detour_apply` removes them, the reserved disc is built by `detour_guard`'s own shape on every copper layer, the layer test is `permitted_layers` and the corridor test is the promoter's own `maze3d.route_points` inside the applier's own `was + 2*pi*R` bound.  Every trial emitted in spec order and reverted.",
+  "question": "would every foreign track a segment-eviction land has to CUT actually go BACK, between its own two ends, once the barrel's site is reserved?",
+  "schema": 1
+}

@@ -1,0 +1,45 @@
+{
+  "detours": [
+    {
+      "a_mm": [
+        58.9,
+        61.8
+      ],
+      "b_mm": [
+        61.2,
+        65.3
+      ],
+      "layer": "In3.Cu",
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        58.6,
+        61.5
+      ],
+      "b_mm": [
+        59.9,
+        63.1
+      ],
+      "layer": "F.Cu",
+      "net": "/I2C_SCL_INT",
+      "width_mm": 0.2
+    }
+  ],
+  "note": "D-608: emitted from w/d608/segevict-body.json (screen_segment_evict.py --body-landing, board cfd10db1d6414fd1); ONE land, the GND C37.2 pour land, whose barrel is proved to land inside GND's own body pour",
+  "reserve": [
+    {
+      "exempt": [
+        "GND"
+      ],
+      "land": [
+        "C37.2"
+      ],
+      "r_mm": 0.8,
+      "x_mm": 59.2,
+      "y_mm": 62.4
+    }
+  ],
+  "schema": 1
+}

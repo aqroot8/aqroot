@@ -59143,6 +59143,14 @@
 		(uuid "27adc08a-8d9e-4d0b-a81e-a90f9d29f818")
 	)
 	(segment
+		(start 66.6 100)
+		(end 66.8 100)
+		(width 0.2)
+		(layer "B.Cu")
+		(net "+3V3")
+		(uuid "2986e40e-0d39-4cd2-a74c-99d0ea355ba2")
+	)
+	(segment
 		(start 57.6 57.475)
 		(end 57.8 57.2)
 		(width 0.4)
@@ -59461,6 +59469,14 @@
 		(layer "B.Cu")
 		(net "+3V3")
 		(uuid "cdf95fb8-5183-4a39-9072-73d9ad432df1")
+	)
+	(segment
+		(start 67.1 100)
+		(end 66.8 100)
+		(width 0.2)
+		(layer "B.Cu")
+		(net "+3V3")
+		(uuid "d0eb9c14-5aad-4299-8fb5-74c61b36c68c")
 	)
 	(segment
 		(start 59.8625 91.575)

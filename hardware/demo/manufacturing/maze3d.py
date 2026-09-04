@@ -1724,7 +1724,56 @@ def forbid_via(field, x, y):
                                             < need * need)
 
 
-def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
+def body_landing(qb, net, field, erode=0):
+    """Lattice cells that lie inside the BODY cluster's OWN filled copper.
+
+    D-608.  `stitch_pad` takes the first via-legal cell by distance and cannot
+    prefer one over another, so the barrel it plants may land on an orphan
+    piece of the net's pour, or on no copper of the net at all.  Both are legal
+    and neither CONNECTS: D-604 spent three gate runs on `SW9.2` at every rung
+    for 69 -> 69 each, and D-607 laid `R129.1`'s barrel and 0.547 mm of track
+    for 59 -> 59.  This mask is what a caller hands `stitch_pad` as `land_ok`
+    so the barrel it chooses is one that lands on the plane BODY.
+
+    A through barrel is copper on EVERY layer, so a site inside the body's
+    filled polygon on ANY copper layer serves -- including a reserved inner
+    plane this net may not route a track on, which is how every `GND` stitch on
+    this board reaches `In1`/`In4`.  The mask is therefore a union over the
+    whole stack, not over `field.layers`.
+
+    IT IS A CERTIFICATE, NOT A VETO, AND THE DIFFERENCE IS MEASURED.  The pour
+    this reads is the one filled BEFORE the barrel exists, and KiCad's refill
+    only ever GROWS a zone towards new copper of its own net -- so a site
+    inside the body today is inside it after the refill, while a site outside
+    it today may still be flooded to.  D-606's `C7.1` is exactly that case and
+    is recorded in `evidence/d608-body-landing-calibration.json`: its promoted
+    barrel at (60.3, 71.0) lay outside EVERY filled `+3V3` island on the board
+    it was proposed on and closed its edge anyway.  So `land_ok` narrows where
+    a stitch may land; a land that finds no body site is not thereby proved
+    unreachable, and today's unconstrained stitch stays available.
+
+    `erode` is offered and is NOT what this board uses: the same calibration
+    shows eroding by the barrel's own radius refuses `C5.1` and `U17.5`, both
+    of which are promoted copper that closed an edge.  A via whose ring pokes a
+    few microns past the pour edge is bonded by the refill, so the contract is
+    CENTRE-IN-COPPER.
+    """
+    cov_layer, _cov, size, body, labels, _isl, _own = \
+        cluster_coverage(qb, net, field)
+    mask = np.zeros((field.ny, field.nx), dtype=bool)
+    per = {}
+    for (r, L) in cov_layer:
+        if r != body:
+            continue
+        m = _erode(cov_layer[(r, L)], erode) if erode else cov_layer[(r, L)]
+        per[L] = int(m.sum())
+        mask |= m
+    return mask, dict(body=(labels.get(body) or [])[:8],
+                      body_pads=size.get(body), erode=erode,
+                      cells=per, total=int(mask.sum()))
+
+
+def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12, land_ok=None):
     """Drop ONE pad onto its net's plane: shortest escape + one through via.
 
     The wavefront runs in a WINDOW of `max_mm` around the escape, not over the
@@ -1732,6 +1781,11 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
     within a few millimetres of the pad the answer is `NO_VIA_SITE`, not a
     longer walk -- and a plane-served net has hundreds of these, so the window
     is what makes the primitive affordable at that count.
+
+    `land_ok` is an optional lattice mask the BARREL SITE must also satisfy --
+    `body_landing`'s answer, so the barrel lands on the plane body rather than
+    merely somewhere legal.  It narrows the landing test and nothing else, so a
+    call without it is byte-identical to every stitch this board has promoted.
 
     Returns dict(ok, ...).  On success the stub, the run and the barrel are on
     `qb`; the caller's `mark` reverts all of it.
@@ -1753,6 +1807,8 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
         j1 = min(field.ny, e['j'] + R + 3)
         free = ~field.blk[L][j0:j1, i0:i1]
         vok = field.via_ok[j0:j1, i0:i1]
+        if land_ok is not None:
+            vok = vok & land_ok[j0:j1, i0:i1]
         si, sj = e['i'] - i0, e['j'] - j0
         free[sj, si] = True
         if vok[sj, si]:
@@ -1803,6 +1859,11 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
         if best is None or cost < best[0]:
             best = (cost, e, [(a + i0, b + j0) for (a, b) in cells])
     if best is None:
+        if land_ok is not None:
+            return dict(ok=False, reason='NO_BODY_VIA_SITE', pad=pad['ref'],
+                        why='no legal %.2f mm barrel INSIDE THIS NET\'S OWN '
+                            'BODY POUR within %.1f mm of any escape'
+                            % (field.via_dia / 1e6, max_mm))
         return dict(ok=False, reason='NO_VIA_SITE', pad=pad['ref'],
                     why='no legal %.2f mm barrel within %.1f mm of any escape'
                         % (field.via_dia / 1e6, max_mm))
@@ -1930,9 +1991,94 @@ def join_residual_islands(qb, net, field, escape_limit=8, via_cost_mm=1.5,
                 vias=sum(d['vias'] for d in done))
 
 
+def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
+                 max_mm=0.0):
+    """Join a plane-served net's ORPHAN islands TO EACH OTHER.
+
+    D-608.  Every move this board owns aims an orphan at the plane BODY --
+    `stitch_pad` drops a barrel into the pour, `join_residual_islands` mazes to
+    `main`, `join_islands` jumps between pieces of pour, `bridge_islands` drops
+    a barrel through the stack.  Not one of them ever asks whether two ORPHANS
+    can reach EACH OTHER, and the net's open-edge count does not care which:
+    a net's islands are joined by an MST, so merging any two of them closes
+    exactly one edge.
+
+    THE CASE THAT NAMED IT IS THE WHOLE +3V3 RAIL.  `U12` is the `TPS63020`
+    buck-boost, and `U12.4` and `U12.5` are its two `VOUT` pins -- 0.240 mm
+    pads on 0.500 mm pitch, both open, both `NO_LEGAL_ESCAPE` toward the plane
+    at the P3V3 floor, and the nearest OTHER `+3V3` pad is `R127.1`, 9.3 mm
+    away.  They are 0.500 mm from one another, the run between them is legal at
+    the full 0.400 mm floor with zero vias, and the converter datasheet
+    requires both pins connected in any case.  Nothing but the absence of this
+    function stopped it being laid.
+
+    Same transaction discipline as `join_residual_islands`: each pair is
+    independent, a failure is reverted alone, and `max_mm` is the same
+    ELECTRICAL bound -- a lateral jumper between two orphans buys one edge and
+    spends outer-layer capacity, so a long one is refused as `TOO_LONG` and
+    reported rather than laid.  Greedy nearest-pair with union-find, so a
+    merged group is offered onward as one island.
+    """
+    islands = net_islands(qb, net)
+    if len(islands) < 3:
+        return dict(ok=False, net=net, joined=0, reason='NOTHING_TO_JOIN',
+                    joins=[], failures=[], mm=0.0, vias=0)
+    body = max(islands, key=len)
+    groups = {k: list(g) for k, g in
+              enumerate(i for i in islands if i is not body)}
+    parent = {k: k for k in groups}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    pairs = sorted(((_pad_gap(groups[a], groups[b]), a, b)
+                    for a in groups for b in groups if a < b),
+                   key=lambda t: (t[0], t[1], t[2]))
+    done, failed = [], []
+    for (gap, a, b) in pairs:
+        ra, rb = find(a), find(b)
+        if ra == rb:
+            continue
+        A, B = groups[ra], groups[rb]
+        if max_mm and gap > max_mm * qr.MM:
+            continue
+        m = qb.mark()
+        r = route_join(qb, field, A, nearest_pads(A, B, near),
+                       escape_limit=escape_limit, via_cost_mm=via_cost_mm)
+        r.pop('mark', None)
+        rec = dict(a=[p['ref'] for p in A][:8], b=[p['ref'] for p in B][:8],
+                   gap_mm=round(gap / 1e6, 3))
+        if not r.get('ok'):
+            qb.revert(m)
+            failed.append(dict(rec, **{k: v for k, v in r.items()
+                                       if k != 'ok'}))
+            continue
+        if max_mm and r.get('mm', 0.0) > max_mm:
+            qb.revert(m)
+            failed.append(dict(rec, reason='TOO_LONG', mm=round(r['mm'], 3),
+                               vias=r.get('vias'),
+                               why='%.3f mm of copper exceeds the %.1f mm '
+                                   'orphan-join bound' % (r['mm'], max_mm)))
+            continue
+        done.append(dict(rec, **{k: v for k, v in r.items() if k != 'ok'}))
+        # The join laid copper; the next pair must see it as an obstacle, and
+        # the two groups are now one island for every pair after this.
+        parent[ra] = rb
+        groups[rb] = A + B
+        field.rebuild_blk()
+    return dict(ok=bool(done), net=net, joined=len(done),
+                joins=done, failures=failed[:40],
+                mm=round(sum(d.get('mm', 0.0) for d in done), 3),
+                vias=sum(d.get('vias', 0) for d in done))
+
+
 def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
                via_dia=600000, via_drill=300000, G=100000, field=None,
-               max_mm=8.0, escape_limit=12, split_islands=False):
+               max_mm=8.0, escape_limit=12, split_islands=False,
+               land_ok=None):
     """Stitch every not-yet-planted island of a plane-served net to its plane.
 
     Unlike `route_net` this is NOT all-or-nothing: each island is an independent
@@ -1995,7 +2141,7 @@ def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
         for pad in island:
             m = qb.mark()
             r = stitch_pad(qb, field, pad, max_mm=max_mm,
-                           escape_limit=escape_limit)
+                           escape_limit=escape_limit, land_ok=land_ok)
             if r.get('ok'):
                 best = r
                 break
@@ -3299,7 +3445,7 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
 # different claim and would have to be measured as one.
 def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                   floors, G=100000, layers=None, neck=None, guard=None,
-                  max_mm=8.0, escape_limit=12, licence=True):
+                  max_mm=8.0, escape_limit=12, licence=True, land_ok=None):
     """Stitch each orphan island of a pour-owning net with a LICENSED barrel.
 
     `widths` is a ladder, widest first; an island served at one width is
@@ -3347,7 +3493,7 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                     continue
                 m = qb.mark()
                 r = stitch_pad(qb, field, pad, max_mm=max_mm,
-                               escape_limit=escape_limit)
+                               escape_limit=escape_limit, land_ok=land_ok)
                 # A BARREL THAT IS LEGAL IS NOT YET A BARREL THAT CONNECTS,
                 # AND THE PROPOSER CANNOT TELL.  `stitch_pad` proves the
                 # geometry of its via; it does not prove that the pour UNDER

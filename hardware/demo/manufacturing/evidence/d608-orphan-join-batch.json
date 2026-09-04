@@ -1,0 +1,665 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "cfd10db1d6414fd15a56ec0786faf98b70b82f00a31fea885e32d62597c6b13e",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 29,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 58,
+    "retained_open_edges_before": 59
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "failed_nets": [
+    "/01_POWER_TREE/BQ25185_SYS",
+    "GND"
+  ],
+  "guard": {
+    "sha256": "71fdd79d160d68ecaf7b9a685e0268907ecfeb02c2b27becffaaec0337bf7d0e",
+    "spec": "hardware/demo/manufacturing/evidence/d607-pour-bond-guard-next.json",
+    "tubes": 46
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "+3V3"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": true,
+  "requested_nets": [
+    "+3V3",
+    "GND",
+    "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "routed": [
+    {
+      "body_landing": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1",
+          "C15.1",
+          "C16.1",
+          "C17.1",
+          "C18.1"
+        ],
+        "body_pads": 72,
+        "cells": {
+          "F": 602169,
+          "I3": 857188
+        },
+        "erode": 0,
+        "total": 887227
+      },
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 1077
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "netclass": "P3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "failures": [
+        {
+          "island": [
+            "R129.1"
+          ],
+          "pad": "R129.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.4"
+          ],
+          "pad": "U12.4",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.5"
+          ],
+          "pad": "U12.5",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)"
+        },
+        {
+          "island": [
+            "U4.2"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.3"
+          ],
+          "pad": "U4.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+        },
+        {
+          "island": [
+            "U5.2"
+          ],
+          "pad": "U5.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x54), R15.2 (x11), R15.1 (x4), C10.2 (x3)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch-split+orphans",
+      "net": "+3V3",
+      "ok": true,
+      "orphan_join": {
+        "failures": [
+          {
+            "a": [
+              "U4.2"
+            ],
+            "b": [
+              "U4.3"
+            ],
+            "gap_mm": 0.5,
+            "pads": [
+              "U4.2"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+          },
+          {
+            "a": [
+              "U4.3"
+            ],
+            "b": [
+              "U4.5"
+            ],
+            "gap_mm": 0.937,
+            "pads": [
+              "U4.3"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.2"
+            ],
+            "b": [
+              "U4.5"
+            ],
+            "gap_mm": 1.338,
+            "pads": [
+              "U4.2"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.5"
+            ],
+            "b": [
+              "U4.8"
+            ],
+            "gap_mm": 1.67,
+            "pads": [
+              "U4.5"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.12"
+            ],
+            "b": [
+              "U4.2"
+            ],
+            "gap_mm": 1.79,
+            "pads": [
+              "U4.12"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), U20.3 (x2)"
+          },
+          {
+            "a": [
+              "U4.12"
+            ],
+            "b": [
+              "U4.8"
+            ],
+            "gap_mm": 1.79,
+            "pads": [
+              "U4.12"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.12"
+            ],
+            "b": [
+              "U4.3"
+            ],
+            "gap_mm": 2.029,
+            "pads": [
+              "U4.12"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+          },
+          {
+            "a": [
+              "U4.12"
+            ],
+            "b": [
+              "U4.5"
+            ],
+            "gap_mm": 2.081,
+            "pads": [
+              "U4.12"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.3"
+            ],
+            "b": [
+              "U4.8"
+            ],
+            "gap_mm": 2.378,
+            "pads": [
+              "U4.3"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+          },
+          {
+            "a": [
+              "U4.2"
+            ],
+            "b": [
+              "U4.8"
+            ],
+            "gap_mm": 2.531,
+            "pads": [
+              "U4.2"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+          }
+        ],
+        "joined": 1,
+        "joins": [
+          {
+            "a": [
+              "U12.4"
+            ],
+            "b": [
+              "U12.5"
+            ],
+            "from": "U12.4",
+            "gap_mm": 0.5,
+            "layers": [
+              "B"
+            ],
+            "mm": 0.5,
+            "necks": [
+              {
+                "layer": "B",
+                "outside_courtyard_mm": 0.0,
+                "pad": "U12.4",
+                "stub_mm": 0.2,
+                "width_mm": 0.2
+              },
+              {
+                "layer": "B",
+                "outside_courtyard_mm": 0.0,
+                "pad": "U12.5",
+                "stub_mm": 0.3,
+                "width_mm": 0.2
+              }
+            ],
+            "to": "U12.5",
+            "via_xy": [],
+            "vias": 0
+          }
+        ],
+        "mm": 0.5,
+        "net": "+3V3",
+        "ok": true,
+        "vias": 0
+      },
+      "seconds": 65.8,
+      "stitched": 0,
+      "unreachable": 10,
+      "via_xy": [],
+      "vias": 0
+    },
+    {
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 249,
+        "cells": {
+          "B": 650850,
+          "I1": 944453,
+          "I4": 977992
+        },
+        "erode": 0,
+        "total": 977992
+      },
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 32,
+          "F": 310
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "GND",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "failures": [
+        {
+          "island": [
+            "C37.2"
+          ],
+          "pad": "C37.2",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.60 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.60 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "U9.16"
+          ],
+          "pad": "U9.16",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch-split+orphans",
+      "net": "GND",
+      "ok": false,
+      "orphan_join": {
+        "failures": [],
+        "joined": 0,
+        "joins": [],
+        "mm": 0,
+        "net": "GND",
+        "ok": false,
+        "vias": 0
+      },
+      "seconds": 138.0,
+      "stitched": 0,
+      "unreachable": 4,
+      "via_xy": [],
+      "vias": 0
+    },
+    {
+      "body_landing": {
+        "body": [
+          "C24.1",
+          "C33.1",
+          "C64.1",
+          "L2.1"
+        ],
+        "body_pads": 4,
+        "cells": {
+          "B": 325
+        },
+        "erode": 0,
+        "total": 325
+      },
+      "contract": {
+        "clr": 250000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 1045,
+          "F": 310
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "SYS_MAIN",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "failures": [
+        {
+          "island": [
+            "C26.2"
+          ],
+          "pad": "C26.2",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C27.1"
+          ],
+          "pad": "C27.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C28.1"
+          ],
+          "pad": "C28.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "L4.1",
+            "U21.3"
+          ],
+          "pad": "L4.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R68.1"
+          ],
+          "pad": "R68.1",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "pad": "SW9.2",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U11.1"
+          ],
+          "pad": "U11.1",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C27.2 (x3)"
+        },
+        {
+          "island": [
+            "U12.10",
+            "U12.11"
+          ],
+          "pad": "U12.10",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)"
+        },
+        {
+          "island": [
+            "U13.3"
+          ],
+          "pad": "U13.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x37), U13.1 (x23), C34.1 (x8), L2.2 (x4)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch-split+orphans",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": false,
+      "orphan_join": {
+        "failures": [
+          {
+            "a": [
+              "SW9.2",
+              "U12.1"
+            ],
+            "b": [
+              "U12.10",
+              "U12.11"
+            ],
+            "gap_mm": 3.176,
+            "pads": [
+              "U12.11",
+              "U12.10"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_DST",
+            "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)"
+          },
+          {
+            "a": [
+              "C27.1"
+            ],
+            "b": [
+              "U11.1"
+            ],
+            "gap_mm": 3.602,
+            "pads": [
+              "U11.1"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_DST",
+            "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C27.2 (x3)"
+          }
+        ],
+        "joined": 0,
+        "joins": [],
+        "mm": 0,
+        "net": "/01_POWER_TREE/BQ25185_SYS",
+        "ok": false,
+        "vias": 0
+      },
+      "seconds": 3.7,
+      "stitched": 0,
+      "unreachable": 9,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "+3V3"
+  ],
+  "schema": 1
+}

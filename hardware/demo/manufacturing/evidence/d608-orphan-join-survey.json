@@ -1,0 +1,335 @@
+[
+ {
+  "ok": true,
+  "net": "+3V3",
+  "joined": 1,
+  "joins": [
+   {
+    "a": [
+     "U12.4"
+    ],
+    "b": [
+     "U12.5"
+    ],
+    "gap_mm": 0.5,
+    "mm": 0.5,
+    "vias": 0,
+    "via_xy": [],
+    "layers": [
+     "B"
+    ],
+    "necks": [
+     {
+      "pad": "U12.4",
+      "layer": "B",
+      "width_mm": 0.2,
+      "stub_mm": 0.2,
+      "outside_courtyard_mm": 0.0
+     },
+     {
+      "pad": "U12.5",
+      "layer": "B",
+      "width_mm": 0.2,
+      "stub_mm": 0.3,
+      "outside_courtyard_mm": 0.0
+     }
+    ],
+    "from": "U12.4",
+    "to": "U12.5"
+   }
+  ],
+  "failures": [
+   {
+    "a": [
+     "U4.2"
+    ],
+    "b": [
+     "U4.3"
+    ],
+    "gap_mm": 0.5,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)",
+    "pads": [
+     "U4.2"
+    ]
+   },
+   {
+    "a": [
+     "U4.3"
+    ],
+    "b": [
+     "U4.5"
+    ],
+    "gap_mm": 0.937,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)",
+    "pads": [
+     "U4.3"
+    ]
+   },
+   {
+    "a": [
+     "U4.2"
+    ],
+    "b": [
+     "U4.5"
+    ],
+    "gap_mm": 1.338,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)",
+    "pads": [
+     "U4.2"
+    ]
+   },
+   {
+    "a": [
+     "U4.5"
+    ],
+    "b": [
+     "U4.8"
+    ],
+    "gap_mm": 1.67,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+    "pads": [
+     "U4.5"
+    ]
+   },
+   {
+    "a": [
+     "U4.12"
+    ],
+    "b": [
+     "U4.2"
+    ],
+    "gap_mm": 1.79,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), U20.3 (x2)",
+    "pads": [
+     "U4.12"
+    ]
+   },
+   {
+    "a": [
+     "U4.12"
+    ],
+    "b": [
+     "U4.8"
+    ],
+    "gap_mm": 1.79,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+    "pads": [
+     "U4.12"
+    ]
+   },
+   {
+    "a": [
+     "U4.12"
+    ],
+    "b": [
+     "U4.3"
+    ],
+    "gap_mm": 2.029,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)",
+    "pads": [
+     "U4.12"
+    ]
+   },
+   {
+    "a": [
+     "U4.12"
+    ],
+    "b": [
+     "U4.5"
+    ],
+    "gap_mm": 2.081,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)",
+    "pads": [
+     "U4.12"
+    ]
+   },
+   {
+    "a": [
+     "U4.3"
+    ],
+    "b": [
+     "U4.8"
+    ],
+    "gap_mm": 2.378,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+    "pads": [
+     "U4.3"
+    ]
+   },
+   {
+    "a": [
+     "U4.2"
+    ],
+    "b": [
+     "U4.8"
+    ],
+    "gap_mm": 2.531,
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+    "pads": [
+     "U4.2"
+    ]
+   },
+   {
+    "a": [
+     "R39.1"
+    ],
+    "b": [
+     "U4.8"
+    ],
+    "gap_mm": 7.448,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+    "pads": [
+     "U4.8"
+    ]
+   },
+   {
+    "a": [
+     "R39.1"
+    ],
+    "b": [
+     "U4.5"
+    ],
+    "gap_mm": 7.603,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)",
+    "pads": [
+     "U4.5"
+    ]
+   }
+  ],
+  "mm": 0.5,
+  "vias": 0
+ },
+ {
+  "ok": false,
+  "net": "GND",
+  "joined": 0,
+  "joins": [],
+  "failures": [],
+  "mm": 0,
+  "vias": 0
+ },
+ {
+  "ok": false,
+  "net": "/01_POWER_TREE/BQ25185_SYS",
+  "joined": 0,
+  "joins": [],
+  "failures": [
+   {
+    "a": [
+     "SW9.2",
+     "U12.1"
+    ],
+    "b": [
+     "U12.10",
+     "U12.11"
+    ],
+    "gap_mm": 3.176,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)",
+    "pads": [
+     "U12.11",
+     "U12.10"
+    ]
+   },
+   {
+    "a": [
+     "C27.1"
+    ],
+    "b": [
+     "U11.1"
+    ],
+    "gap_mm": 3.602,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C27.2 (x3)",
+    "pads": [
+     "U11.1"
+    ]
+   },
+   {
+    "a": [
+     "C26.2"
+    ],
+    "b": [
+     "U12.10",
+     "U12.11"
+    ],
+    "gap_mm": 4.322,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)",
+    "pads": [
+     "U12.11",
+     "U12.10"
+    ]
+   },
+   {
+    "a": [
+     "C27.1"
+    ],
+    "b": [
+     "R68.1"
+    ],
+    "gap_mm": 4.574,
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.800 mm between the islands",
+    "src_escapes": 6,
+    "dst_escapes": 7
+   },
+   {
+    "a": [
+     "C26.2"
+    ],
+    "b": [
+     "SW9.2",
+     "U12.1"
+    ],
+    "gap_mm": 5.811,
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.800 mm between the islands",
+    "src_escapes": 8,
+    "dst_escapes": 10
+   },
+   {
+    "a": [
+     "C28.1"
+    ],
+    "b": [
+     "SW9.2",
+     "U12.1"
+    ],
+    "gap_mm": 7.518,
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.800 mm between the islands",
+    "src_escapes": 1,
+    "dst_escapes": 9
+   },
+   {
+    "a": [
+     "R68.1"
+    ],
+    "b": [
+     "U11.1"
+    ],
+    "gap_mm": 7.587,
+    "reason": "NO_LEGAL_ESCAPE_DST",
+    "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C36.2 (x3)",
+    "pads": [
+     "U11.1"
+    ]
+   }
+  ],
+  "mm": 0,
+  "vias": 0
+ }
+]

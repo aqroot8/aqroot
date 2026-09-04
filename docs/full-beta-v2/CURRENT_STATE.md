@@ -13,6 +13,102 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-608 (THE `+3V3` RAIL'S OWN REGULATOR OUTPUT WAS OPEN, and the move
+  that closed it did not exist -- two orphans of one net may reach EACH
+  OTHER):** `U12` is the `TPS63020` buck-boost, the part that MAKES `+3V3`, and
+  pins **4 and 5 are both `VOUT`**. KiCad's own connectivity reported each of
+  them connected to exactly one item: ITSELF. The rail had no connection of any
+  kind to its own regulator's output -- not one open edge among fifty-nine, but
+  the one without which the Demo has no 3.3 V and nothing on it runs. They are
+  0.240 x 0.600 mm lands on 0.500 mm pitch, so no track of any width passes
+  BETWEEN two of them at this net's 0.200 mm clearance, and the nearest OTHER
+  `+3V3` pad is `R127.1` 9.3 mm away -- so every previous run's
+  `NO_LEGAL_ESCAPE` / `NO_DRU_LICENCE` / `NO_VIA_SITE` was true.
+  **Nobody had asked whether the two pins could reach EACH OTHER.** Authority
+  `cfd10db1...` -> **`78280a13349f1b2f31dc53b34ae579a7c469bb19580bb0165c159f28bfeab823`**,
+  retained open edges **59 -> 58**, unconnected items 75 -> 74; improved `+3V3`,
+  regressed none; 2 objects added (2 tracks, ZERO vias), ZERO removed, zero
+  zones, zero rule areas, zero `.kicad_dru` change, zero new licence.
+  D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and
+  `hardware/beta-v2/` untouched; `protected_copper.py` 15 nets / 393 objects
+  IDENTICAL; `pour_bond_guard.py` re-derives 46 tubes.
+  **THE MOVE DID NOT EXIST AND THE REASON IS A SHARED ASSUMPTION.** Every plane
+  primitive this board owns aims an orphan at the plane BODY -- `stitch_pad`
+  drops a barrel into the pour, `join_residual_islands` mazes to `main`,
+  `join_islands` jumps between pieces of pour, `bridge_islands` drops a barrel
+  through the stack. None can express "these two ORPHANS can reach each other",
+  and the ledger does not care which: a net's islands are joined by an MST, so
+  merging ANY two closes exactly one edge. New `maze3d.join_orphans` +
+  `route_maze_batch.py --join-orphans` (`--join-orphan-max-mm`, default 4.0 mm):
+  greedy nearest-pair with union-find, the SAME `route_join`, the same per-pair
+  revert discipline as `join_residual_islands`, the same ELECTRICAL bound, and
+  it runs AFTER every move that aims at the plane because an orphan join leaves
+  BOTH pads off it.
+  **THE EDGE:** `U12.4` -> `U12.5`, 0.500 mm on `B.Cu`, two tracks, zero vias,
+  both 0.200 mm and both proved DRU-LICENSED pad-escape NECKS inside `U12`'s own
+  courtyard (2 narrow / 2 licensed / ZERO strays). **The lever was `--neck`:**
+  run 1 without it returned `NO LEGAL ESCAPE at >= 0.600 mm` and joined nothing.
+  **HONEST CAVEAT, NAMED:** the `VOUT` island is now ONE island and is still OFF
+  the plane; the transaction that eventually bonds it must not leave the whole
+  rail current crossing the 0.200 mm inter-pin neck. Today it carries nothing.
+  Family swept: `+3V3` has exactly this one joinable pair, the ten `U4` BMI270
+  pairs are `NO_LEGAL_ESCAPE_SRC`, `GND`'s four orphans exceed 8 mm in every
+  pair, `BQ25185_SYS` is `NO_LEGAL_ESCAPE_DST`/`NO_PATH` on all seven.
+  **D-607'S BODY PREDICATE IS BUILT AND CALIBRATED.** `maze3d.body_landing` +
+  `stitch_pad(land_ok=...)` + `--body-landing` on the gate and on
+  `screen_segment_evict.py`, calibrated against every barrel this board has
+  promoted through `stitch_pad`, each on the board it was PROPOSED on. **The
+  contract is CENTRE-IN-COPPER:** six of D-606's seven relief barrels sit at
+  0.0000 mm from their net's body copper and D-607's refused `R129.1` sits 4 mm
+  or more away; ERODING by the barrel's radius is WRONG and is not used -- it
+  refuses `C5.1` and `U17.5`, both promoted copper that closed an edge.
+  **The one exception is a COALITION, and it is measured:** `C7.1`'s barrel lay
+  **1.3524 mm from ANY filled `+3V3` island** and closed its edge anyway,
+  because an `In3` island of 7.876 mm2 holding EXACTLY TWO items -- `C7.1`'s
+  barrel and `C5.1`'s, same transaction -- was resurrected by them under
+  island-removal mode 0, and `C5.1`'s barrel lands inside the body's own `F.Cu`.
+  So the predicate is a CERTIFICATE, never a VETO. **It pays for itself:** six
+  of D-607's nine lands change answer and the WHOLE `BQ25185_SYS` residual --
+  eight cuttable lands, including the four D-607 named as next -- becomes
+  `NO_BODY_VIA_SITE`, because that net's body owns 3.25 mm2 of copper in total.
+  D-604's `SW9.2` (three gate runs at 69 -> 69) and D-607's `R129.1` (one at
+  59 -> 59) are both refused by name. `land_ok=None` is byte-identical, proved
+  by re-running the default path over all 23 open islands before and after.
+  **A CUT THAT OPENS A BARREL SITE IS HALF A TRANSACTION.** `GND` `C37.2` was
+  taken to a full gate run and REFUSED: both cut tracks came out and NEITHER
+  went back -- `TCA4307_READY` lies on `In3.Cu`, a plane RESERVED for `+3V3`, so
+  it can be cut and can NEVER be put back, and `/I2C_SCL_INT` found no corridor
+  inside its own bound -- four `track_dangling`, 59 -> 60, clause 4 REFUSED. New
+  `screen_segment_evict.py` RELAY PRICE answers that before a gate run in the
+  writer's own grammar (whole-track hold like `detour_apply`, `detour_guard`'s
+  disc on every layer, `permitted_layers`, `maze3d.route_points` inside
+  `was + 2*pi*R`), reproduces that run exactly, and refuses the other three
+  lands in two minutes: `U12.5` `UNDETOURABLE_LAYER`, `J3.A12` and `U9.16`
+  `NO_PATH`. **The wall is CENSUSED: 111 tracks / 969.6 mm of this board's
+  3054 / 8712.6 mm lie on a layer their own net may no longer route on, 29
+  (net, layer) pairs, EVERY ONE on `In3.Cu`** -- legacy signal copper routed
+  before the `+3V3` pour existed. Legal, DRC-clean, and undetourable by the
+  router's own layer POLICY, not by physics.
+  All 14 `verify_promotion.py` checks PASS; DRC 199/5/1 inherited, zero
+  attributable, zero parity, unconnected 75 -> 74, fill-stable.
+  Evidence `d608-orphan-join-batch.json`, `d608-orphan-join-survey.json`,
+  `d608-body-landing-calibration.json`, `d608-segment-evict-body.json`,
+  `d608-relay-price.json`, `d608-undetourable-copper.json`,
+  `d608-c37-refusal.json`, `d608-detour-spec.json`,
+  `d608-detour-plan-body.json`, `d608-verify.json`,
+  `d608-protected-copper.json`, `d608-pour-bond-guard-next.json`.
+  **Next: bond the `U12` `VOUT` island to the `+3V3` plane -- the single
+  highest-leverage fabrication blocker on this board.** Its bond is already
+  measured: `U12.5` reaches `+3V3` body copper at (66.9, 98.8), 1.136 mm of run,
+  behind a 0.80 mm disc over four foreign tracks, three of which relay today and
+  one of which -- `/01_POWER_TREE/USB_VBUS_CHG` on `In3.Cu` -- is
+  `UNDETOURABLE_LAYER`. The bounded lever is named: **let a detour re-lay a
+  track on the layer it ALREADY lawfully occupies**, since that is existing
+  copper moving a fraction of a millimetre on its own layer, not new copper on a
+  reserved plane. Its price is moving 27.119 mm of `USB_VBUS_CHG` charger-input
+  copper and deserves its own review. Behind it the `U4` BMI270 lands remain the
+  largest `NO_LEGAL_ESCAPE` family and are a pad-pitch question. No owner
+  decision.
 - **Demo D-607 (SEGMENT EVICTION BUILT AND SPENT; a crossing track is not
   evicted, it is DETOURED between its own two ends -- the GPIO expander's
   floating I2C address straps and a display-FPC ground grounded):** D-602,

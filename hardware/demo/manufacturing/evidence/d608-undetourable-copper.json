@@ -1,0 +1,193 @@
+{
+ "reserved": {
+  "I1": [
+   "GND"
+  ],
+  "I3": [
+   "+3V3"
+  ],
+  "I4": [
+   "GND"
+  ]
+ },
+ "total": {
+  "tracks": 3054,
+  "mm": 8712.62227239705
+ },
+ "undetourable": [
+  {
+   "net": "Net-(SW9-A)",
+   "layer": "I3",
+   "tracks": 3,
+   "mm": 110.0
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "layer": "I3",
+   "tracks": 9,
+   "mm": 105.6128314373625
+  },
+  {
+   "net": "/ACC_5V_SW",
+   "layer": "I3",
+   "tracks": 12,
+   "mm": 67.98639894416141
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+   "layer": "I3",
+   "tracks": 9,
+   "mm": 67.37834228468222
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+   "layer": "I3",
+   "tracks": 4,
+   "mm": 61.916366474883844
+  },
+  {
+   "net": "/CC1101_GDO0",
+   "layer": "I3",
+   "tracks": 6,
+   "mm": 61.15636393191699
+  },
+  {
+   "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+   "layer": "I3",
+   "tracks": 4,
+   "mm": 59.64224282725966
+  },
+  {
+   "net": "/DISP_BL_CTL",
+   "layer": "I3",
+   "tracks": 1,
+   "mm": 49.30096347942908
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+   "layer": "I3",
+   "tracks": 10,
+   "mm": 42.89792637932944
+  },
+  {
+   "net": "/ACC_POWER_FAULT_N",
+   "layer": "I3",
+   "tracks": 6,
+   "mm": 38.967458894024595
+  },
+  {
+   "net": "/CC1101_CS_N",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 38.05997500271614
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+   "layer": "I3",
+   "tracks": 3,
+   "mm": 32.97849769678853
+  },
+  {
+   "net": "/SX1262_RXEN",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 31.08272121730822
+  },
+  {
+   "net": "/02_MCU_CORE/BOOT_N",
+   "layer": "I3",
+   "tracks": 6,
+   "mm": 30.645102654235163
+  },
+  {
+   "net": "/01_POWER_TREE/V3V3_FB",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 28.04340885603167
+  },
+  {
+   "net": "/SPI_B_MISO",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 22.399290999053612
+  },
+  {
+   "net": "/01_POWER_TREE/ACC_5V_RAW",
+   "layer": "I3",
+   "tracks": 5,
+   "mm": 21.359364877420116
+  },
+  {
+   "net": "/ACC_3V3_SW",
+   "layer": "I3",
+   "tracks": 4,
+   "mm": 18.73698585280953
+  },
+  {
+   "net": "/SX1262_RST_N",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 14.354443554207734
+  },
+  {
+   "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+   "layer": "I3",
+   "tracks": 3,
+   "mm": 12.220654738951154
+  },
+  {
+   "net": "/I2S_SPK_DOUT",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 11.45512985522207
+  },
+  {
+   "net": "/I2S_BCLK",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 8.98456997407486
+  },
+  {
+   "net": "Net-(U1-EN)",
+   "layer": "I3",
+   "tracks": 1,
+   "mm": 7.624303246854758
+  },
+  {
+   "net": "/NFC_5V_EN",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 7.283597084684992
+  },
+  {
+   "net": "/01_POWER_TREE/VREC_VCC",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 4.8121320343559635
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "layer": "I3",
+   "tracks": 1,
+   "mm": 4.41021541423999
+  },
+  {
+   "net": "/01_POWER_TREE/ILIM_VSET",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 4.069238815542512
+  },
+  {
+   "net": "/01_POWER_TREE/VBUS_PRESENT",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 3.6420310216782976
+  },
+  {
+   "net": "/01_POWER_TREE/MAX17048_ALRT_N",
+   "layer": "I3",
+   "tracks": 2,
+   "mm": 2.585355339059327
+  }
+ ]
+}

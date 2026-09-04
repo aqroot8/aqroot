@@ -1,0 +1,343 @@
+{
+  "boards": {
+    "d605": {
+      "note": "D-605 promoted authority; the board D-606's relief run was proposed on",
+      "sha256": "3952597e7456ea5863ab24d8d7dc7ccf211f341579b18cf607931102ea87d346"
+    },
+    "head": {
+      "note": "D-607 promoted authority; the board D-607's R129.1 run was proposed on",
+      "sha256": "cfd10db1d6414fd15a56ec0786faf98b70b82f00a31fea885e32d62597c6b13e"
+    }
+  },
+  "cases": [
+    {
+      "board": "d605",
+      "body_pads": 68,
+      "calibrates": false,
+      "eroded": {},
+      "expect_in_body": true,
+      "in_body_eroded": false,
+      "in_body_raw": false,
+      "k": 3,
+      "nearest_body_copper_mm": 1.3524,
+      "net": "+3V3",
+      "pad": "C7.1",
+      "raw": {},
+      "under": [],
+      "xy": [
+        60.3,
+        71.0
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 68,
+      "calibrates": true,
+      "eroded": {
+        "I3": true
+      },
+      "expect_in_body": true,
+      "in_body_eroded": true,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": 0.0,
+      "net": "+3V3",
+      "pad": "R127.1",
+      "raw": {
+        "F": true,
+        "I3": true
+      },
+      "under": [
+        [
+          "F",
+          [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          true
+        ],
+        [
+          "I3",
+          [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        55.6,
+        113.5
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 68,
+      "calibrates": false,
+      "eroded": {},
+      "expect_in_body": true,
+      "in_body_eroded": false,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": 0.0,
+      "net": "+3V3",
+      "pad": "C5.1",
+      "raw": {
+        "F": true
+      },
+      "under": [
+        [
+          "F",
+          [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        61.3,
+        76.3
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 68,
+      "calibrates": false,
+      "eroded": {},
+      "expect_in_body": true,
+      "in_body_eroded": false,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": 0.0,
+      "net": "+3V3",
+      "pad": "U17.5",
+      "raw": {
+        "F": true,
+        "I3": true
+      },
+      "under": [
+        [
+          "F",
+          [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          true
+        ],
+        [
+          "I3",
+          [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        3.7,
+        123.2
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 243,
+      "calibrates": true,
+      "eroded": {
+        "I1": true,
+        "I4": true
+      },
+      "expect_in_body": true,
+      "in_body_eroded": true,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": null,
+      "net": "GND",
+      "pad": "R110.2",
+      "raw": {
+        "B": true,
+        "I1": true,
+        "I4": true
+      },
+      "under": [
+        [
+          "B",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ],
+        [
+          "I1",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ],
+        [
+          "I4",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        49.3,
+        117.0
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 243,
+      "calibrates": true,
+      "eroded": {
+        "B": true,
+        "I1": true,
+        "I4": true
+      },
+      "expect_in_body": true,
+      "in_body_eroded": true,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": null,
+      "net": "GND",
+      "pad": "R111.2",
+      "raw": {
+        "B": true,
+        "I1": true,
+        "I4": true
+      },
+      "under": [
+        [
+          "B",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ],
+        [
+          "I1",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ],
+        [
+          "I4",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        62.9,
+        114.2
+      ]
+    },
+    {
+      "board": "d605",
+      "body_pads": 243,
+      "calibrates": true,
+      "eroded": {
+        "I1": true,
+        "I4": true
+      },
+      "expect_in_body": true,
+      "in_body_eroded": true,
+      "in_body_raw": true,
+      "k": 3,
+      "nearest_body_copper_mm": 0.0,
+      "net": "GND",
+      "pad": "C1.1",
+      "raw": {
+        "I1": true,
+        "I4": true
+      },
+      "under": [
+        [
+          "I1",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ],
+        [
+          "I4",
+          [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          true
+        ]
+      ],
+      "xy": [
+        47.9,
+        116.9
+      ]
+    },
+    {
+      "board": "head",
+      "body_pads": 72,
+      "calibrates": true,
+      "eroded": {},
+      "expect_in_body": false,
+      "in_body_eroded": false,
+      "in_body_raw": false,
+      "k": 5,
+      "nearest_body_copper_mm": 4.0,
+      "net": "+3V3",
+      "pad": "R129.1",
+      "raw": {},
+      "under": [],
+      "xy": [
+        59.2,
+        55.8
+      ]
+    }
+  ],
+  "decision": "D-608",
+  "findings": [
+    "THE CENTRE-IN-COPPER CONTRACT IS THE CALIBRATED ONE.  Six of the seven promoted barrels sit at 0.0000 mm from their net's body copper -- their centres are INSIDE it -- and D-607's refused R129.1 barrel is 4 mm or more from any +3V3 body copper.  Eroding by the barrel's own radius is WRONG and is not used: it refuses C5.1 and U17.5, both promoted copper that closed an edge.  A via whose ring pokes microns past a pour edge is bonded by the refill.",
+    "THE ONE EXCEPTION IS NOT A FALSE POSITIVE, IT IS A COALITION.  C7.1's promoted barrel at (60.3, 71.0) lay 1.3524 mm from ANY filled +3V3 island on the board it was proposed on, and closed its edge anyway.  The mechanism is measured, not guessed: on the promoted board an In3 +3V3 island of 7.876 mm2 contains EXACTLY TWO items -- C7.1's barrel and C5.1's, both laid by the SAME D-606 transaction -- and every +3V3 zone on this board is filled with island-removal mode 0, ALWAYS REMOVE.  That island held no net item before the run, so every previous fill deleted it; two barrels landing in it resurrected it; and C5.1's barrel lands 0.0000 mm inside the body's own F.Cu copper.  C7.1 was bonded THROUGH C5.1, not by its own barrel.  +3V3 owns no B.Cu pour at all, so the 0.825 mm escape run cannot be the path.",
+    "SO THE PREDICATE IS A CERTIFICATE, NEVER A VETO.  Every barrel it admits lands in body copper that exists BEFORE the refill, and a refill only grows a zone towards new copper of its own net, so an admitted barrel bonds.  What it cannot see is a coalition: two barrels that bond only because they resurrect a deleted island together.  A land it refuses is not thereby proved unreachable.",
+    "IT WOULD HAVE SAVED FOUR GATE RUNS ALREADY.  D-604 spent three on SW9.2 at every rung for 69 -> 69 each and D-607 spent one on R129.1 for 59 -> 59; the predicate refuses both by name."
+  ],
+  "method": "read-only.  Every barrel this board has already promoted through maze3d.stitch_pad, re-tested on the board it was PROPOSED on -- the seven D-606 escape-relief stitches on D-605's promoted authority 3952597e..., and D-607's refused R129.1 barrel on the promoted cfd10db1... .  `raw` is the via CENTRE inside KiCad's own filled polygon for an island owned by the body cluster, on ANY copper layer; `eroded` additionally demands the barrel's own radius plus one lattice cell of margin.  `nearest_body_copper_mm` is a binary search on SHAPE_POLY_SET.Collide.",
+  "question": "does a site inside the BODY cluster's own filled pour predict that KiCad's refill will BOND a stitch barrel -- and is the prediction sound in both directions?",
+  "schema": 1
+}

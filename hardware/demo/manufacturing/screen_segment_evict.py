@@ -55,6 +55,20 @@ owes a jumper around the pocket before clause 4 would ever promote it.  That
 verdict is taken from KiCad's own `BuildConnectivity` on a SCRATCH COPY of the
 board, never from a lattice model, because connectivity is what clause 4 counts.
 
+D-608 ADDS `--body-landing`, AND WITHOUT IT THIS SCREEN LIES BY OMISSION.
+`stitch_pad` proves a barrel is LEGAL; it never asks whether the copper under
+that barrel is the plane BODY.  D-607 took this screen's `R129.1` answer to a
+full gate run: the cut was made, the detour was laid, the barrel was planted at
+0.65/0.40 mm exactly where this file said it would fit -- and the refilled
+ledger still showed `R129.1` as a component of its own, 59 -> 59, clause 4
+REFUSED.  With `--body-landing` the barrel must land inside a filled island the
+BODY cluster owns, which is a certificate that KiCad's refill will bond it.
+Nine of this board's remaining pour lands were re-asked that way and the answer
+moved for six of them: the whole `BQ25185_SYS` residual -- eight cuttable lands
+-- becomes `NO_BODY_VIA_SITE`, because that net's body owns 3.25 mm2 of copper
+in total and no barrel can reach it.  Those are gate runs nobody now has to
+spend.
+
 NOTHING IS WRITTEN.  The authoritative board is opened once, read, and its
 sha256 is re-checked at exit.  Every cut lives in the in-memory obstacle model
 and is restored; the connectivity price is measured on a copy in a temporary
@@ -181,7 +195,155 @@ class Cuts(object):
             self.field.via_ok &= ~m
 
 
-def try_island(qb, field, island, max_mm):
+class Held(Cuts):
+    """Hold WHOLE tracks out of the obstacle model, the way the applier does.
+
+    `Cuts` removes the PIECE of a track a disc covers, which is the question
+    "would a barrel fit".  The relay asks a different one: `detour_apply`
+    removes each named track ENTIRELY from the board before anything is put
+    back, so the board a relay is routed on has no copper of that track at all.
+    Same refresh, same restore; only the geometry of the removal differs.
+    """
+
+    def __init__(self, qb, field, items):
+        Cuts.__init__(self, qb, field, [])
+        self.items = list(items)            # (layer, seg)
+
+    def __enter__(self):
+        qb = self.qb
+        self.saved = {}
+        by_layer = {}
+        for (L, s) in self.items:
+            by_layer.setdefault(L, []).append(s)
+        for L, segs in by_layer.items():
+            self.saved[L] = qb.shapes[L]
+            drop = {id(x) for x in segs}
+            qb.shapes[L] = [x for x in qb.shapes[L] if id(x) not in drop]
+        self._refresh()
+        return self
+
+    def _refresh(self):
+        # The relay builds a `Field` of its OWN for every net it puts back, so
+        # this context owes only the obstacle cache.  `field` is therefore
+        # allowed to be None, which `Cuts` never permits.
+        self.qb._obs_cache = None
+        if self.field is not None:
+            Cuts._refresh(self)
+
+
+def chain_ends_mm(cuts):
+    """The two FREE ends of a same-net chain, in mm, or None if it is not one.
+
+    Mirrors `route_maze_batch.chain_ends`: an endpoint shared by two members is
+    an interior junction, and exactly two endpoints may be unshared.  A single
+    track is its own chain and its two ends are its own.
+    """
+    seen = {}
+    for c in cuts:
+        for pt in (tuple(c["a_mm"]), tuple(c["b_mm"])):
+            seen[pt] = seen.get(pt, 0) + 1
+    free = sorted(pt for pt, n in seen.items() if n == 1)
+    return free if len(free) == 2 else None
+
+
+def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
+                via_cost_mm=1.5):
+    """Would every track this land CUTS go back, between its own two ends?
+
+    D-608, and the run that paid for it.  This screen's job used to end at "a
+    barrel fits here once that track moves"; the transaction it authorises then
+    has to MOVE the track, and D-608's first gate run on `GND` `C37.2` proved
+    that half can fail on its own -- `/09_COMMUNITY_HEADER/TCA4307_READY` lies
+    on `In3.Cu`, a plane RESERVED for `+3V3`, so it can be cut and can never be
+    put back, and `/I2C_SCL_INT` found no corridor inside its own bound.  Both
+    tracks came out, neither went back, four `track_dangling` warnings, retained
+    open edges 59 -> 60, clause 4 REFUSED.  Nothing about that needed a gate run
+    to discover.
+
+    Every judgement here is the writer's own: `permitted_layers` for the layer,
+    `maze3d.route_points` for the corridor, `detour_guard`'s disc on EVERY layer
+    for the reservation, and `was + 2*pi*R` for the bound.  `emit=True` in spec
+    order and one revert at the end, because the applier lays each detour on a
+    board that already carries the previous one.
+    """
+    import qrouter as qr
+    import maze3d as mz
+    from route_maze_batch import net_contract, permitted_layers, guard_for
+
+    by_net = {}
+    for (L, seg, c) in cuts:
+        by_net.setdefault(c["net"], []).append((L, seg, c))
+    # The reserved disc, on every copper layer, exactly as `detour_guard`
+    # writes it -- a barrel is copper through the stack and a reservation that
+    # held only the outer two would let the relay tunnel under the site.
+    disc = dict(guards=[dict(ok=True, net=(exempt[0] if exempt else ""),
+                             exempt=list(exempt[1:]), lkey=lk,
+                             keepout_radius=int(radius),
+                             points=[[int(site[0]), int(site[1])]],
+                             tube="DETOUR_RESERVE_1")
+                        for lk in ("F", "I1", "I2", "I3", "I4", "B")])
+    out, ok_all = [], True
+    held = [(L, seg) for (L, seg, _c) in cuts]
+    with Held(qb, None, held) as _h:
+        m = qb.mark()
+        for net in sorted(by_net):
+            grp = by_net[net]
+            recs = [c for (_L, _s, c) in grp]
+            lkeys = {c["layer"] for c in recs}
+            widths = {c["width_mm"] for c in recs}
+            con = net_contract(qb.b, net)
+            layers = permitted_layers(qb.routable, con["layers"], reserved, net)
+            was = sum(c["mm"] for c in recs)
+            rec = dict(net=net, layer=sorted(lkeys), was_mm=round(was, 4),
+                       max_mm=round(was + 2.0 * math.pi * radius / 1e6, 4),
+                       tracks=len(recs))
+            if len(lkeys) != 1 or len(widths) != 1:
+                rec.update(ok=False, reason="NOT_A_CHAIN",
+                           why="a chain must be ONE layer and ONE width")
+                out.append(rec); ok_all = False
+                continue
+            lkey = sorted(lkeys)[0]
+            if lkey not in layers:
+                rec.update(ok=False, reason="UNDETOURABLE_LAYER",
+                           why="layer %s is not in this net's contract %s -- "
+                               "the track can be cut and can never be put back"
+                               % (lkey, list(layers)))
+                out.append(rec); ok_all = False
+                continue
+            ends = chain_ends_mm(recs)
+            if ends is None:
+                rec.update(ok=False, reason="NOT_A_CHAIN",
+                           why="the cut tracks of this net do not form a "
+                               "simple chain with exactly two free ends")
+                out.append(rec); ok_all = False
+                continue
+            g = guard_for(spec, net) if spec else {}
+            for lk, pts in guard_for(disc, net).items():
+                g.setdefault(lk, []).extend(pts)
+            width_nm = int(round(sorted(widths)[0] * 1e6))
+            # The previous detour's copper is on `qb.shapes` but not in the
+            # obstacle cache, and a relay that could not see it would be
+            # measuring a board the applier never routes on.
+            qb._obs_cache = None
+            field = mz.Field(qb, net, width_nm, con["clr_pad"], con["clr"],
+                             con["via_dia"], con["via_drill"], G=grid,
+                             layers=layers, guard=g)
+            a_nm = tuple(int(round(v * 1e6)) for v in ends[0])
+            b_nm = tuple(int(round(v * 1e6)) for v in ends[1])
+            r = mz.route_points(qb, field, a_nm, b_nm, lkey,
+                                via_cost_mm=via_cost_mm, emit=True,
+                                max_mm=rec["max_mm"])
+            rec.update(ok=bool(r.get("ok")), reason=r.get("reason"),
+                       why=str(r.get("why"))[:200] if r.get("why") else None,
+                       mm=r.get("mm"), vias=r.get("vias"),
+                       a_mm=list(ends[0]), b_mm=list(ends[1]))
+            ok_all = ok_all and bool(r.get("ok"))
+            out.append(rec)
+        qb.revert(m)
+    return dict(all_relaid=ok_all, tracks=out)
+
+
+def try_island(qb, field, island, max_mm, land_ok=None):
     """Does `stitch_pad` close this island?  Every trial laid, proved, reverted.
 
     `stitch_pad` narrows `Field.via_ok` through `forbid_via` when it succeeds,
@@ -194,7 +356,8 @@ def try_island(qb, field, island, max_mm):
     for pad in island:
         keep = field.via_ok.copy()
         m = qb.mark()
-        r = mz.stitch_pad(qb, field, pad, max_mm=max_mm, escape_limit=12)
+        r = mz.stitch_pad(qb, field, pad, max_mm=max_mm, escape_limit=12,
+                          land_ok=land_ok)
         qb.revert(m)
         field.via_ok = keep
         last = r
@@ -267,7 +430,7 @@ def window_cuts(chosen, island, max_mm):
     return [(L, s, p['x'], p['y'], R) for (L, s) in chosen for p in island]
 
 
-def shrink(qb, field, island, chosen, max_mm, site, ladder):
+def shrink(qb, field, island, chosen, max_mm, site, ladder, land_ok=None):
     """The SMALLEST single disc at `site` that still opens the land.
 
     Question 1's window cut is an upper bound, not a transaction: it would take
@@ -283,7 +446,7 @@ def shrink(qb, field, island, chosen, max_mm, site, ladder):
                    for (L, s) in chosen):
             continue
         with Cuts(qb, field, cuts):
-            r = try_island(qb, field, island, max_mm)
+            r = try_island(qb, field, island, max_mm, land_ok)
         if r and r.get("ok"):
             best = (R, r)
         else:
@@ -389,6 +552,16 @@ def main():
     ap.add_argument("--cap", type=int, default=14,
                     help="most candidate tracks per land (nearest first)")
     ap.add_argument("--guard", type=Path)
+    ap.add_argument("--body-landing", action="store_true",
+                    help="D-608: a barrel counts only if it lands INSIDE this "
+                         "net's own body pour.  Without it this screen "
+                         "reports sites that are legal and dead -- "
+                         "`R129.1` measured, routed, gated and refused")
+    ap.add_argument("--no-relay", action="store_true",
+                    help="skip the D-608 relay price -- would every track this "
+                         "land has to CUT actually go back between its own two "
+                         "ends?  A land that opens and cannot be relaid is a "
+                         "gate run this screen owes nobody")
     ap.add_argument("--no-price", action="store_true",
                     help="skip the KiCad connectivity price (lattice only)")
     ap.add_argument("--plan-out", type=Path,
@@ -443,6 +616,15 @@ def main():
                          layers=layers, neck=neck,
                          guard=guard_for(spec, net) if spec else None)
 
+        # D-608.  The body mask is taken ONCE, on the uncut board, and is
+        # valid under every cut this screen makes: a `Cuts` context touches
+        # only the in-memory obstacle model, and the real refill after a
+        # detour removes FOREIGN copper, which can only let this net's pour
+        # GROW.  A site inside the body today is inside it afterwards.
+        land_ok, land_info = None, None
+        if a.body_landing:
+            land_ok, land_info = mz.body_landing(qb, net, field)
+
         islands = mz.net_islands(qb, net)
         if len(islands) < 2:
             continue
@@ -453,7 +635,7 @@ def main():
                              needs_licence=bool(w < w_floor or clr < c["clr"]
                                                 or vd < v_floor
                                                 or vdr < d_floor)),
-                   lands=[])
+                   body_landing=land_info, lands=[])
         # The cut radius a barrel actually needs: its own copper radius plus the
         # clearance the CUT net owes routed copper.  The ladder walks down from
         # the window through that figure so the report names both the upper
@@ -466,13 +648,14 @@ def main():
         for island in islands:
             if island is body:
                 continue
-            base = try_island(qb, field, island, a.max_mm)
+            base = try_island(qb, field, island, a.max_mm, land_ok)
             refs = [p["ref"] for p in island]
             if base and base.get("ok"):
                 rec["lands"].append(dict(land=refs, verdict="ALREADY_OPEN",
                                          stitch_mm=base["mm"]))
                 continue
-            if base and base.get("reason") != "NO_VIA_SITE":
+            if base and base.get("reason") not in ("NO_VIA_SITE",
+                                                  "NO_BODY_VIA_SITE"):
                 rec["lands"].append(dict(land=refs, verdict="NOT_A_POCKET",
                                          reason=base.get("reason"),
                                          why=str(base.get("why"))[:160]))
@@ -489,7 +672,7 @@ def main():
                       file=sys.stderr, flush=True)
                 continue
             with Cuts(qb, field, window_cuts(chosen, island, a.max_mm)):
-                upper = try_island(qb, field, island, a.max_mm)
+                upper = try_island(qb, field, island, a.max_mm, land_ok)
             if not (upper and upper.get("ok")):
                 rec["lands"].append(dict(
                     land=refs, verdict="SEGMENT_WALL",
@@ -508,7 +691,7 @@ def main():
             single = None
             for (L, s) in chosen:
                 with Cuts(qb, field, window_cuts([(L, s)], island, a.max_mm)):
-                    r = try_island(qb, field, island, a.max_mm)
+                    r = try_island(qb, field, island, a.max_mm, land_ok)
                 if r and r.get("ok"):
                     single = (L, s, r)
                     break
@@ -524,11 +707,12 @@ def main():
                         continue
                     with Cuts(qb, field,
                               window_cuts(trial, island, a.max_mm)):
-                        r = try_island(qb, field, island, a.max_mm)
+                        r = try_island(qb, field, island, a.max_mm, land_ok)
                     if r and r.get("ok"):
                         keep = trial
                 with Cuts(qb, field, window_cuts(keep, island, a.max_mm)):
-                    final = try_island(qb, field, island, a.max_mm)
+                    final = try_island(qb, field, island, a.max_mm,
+                                       land_ok)
                 if not (final and final.get("ok")):
                     rec["lands"].append(dict(
                         land=refs, verdict="UNSTABLE",
@@ -536,7 +720,8 @@ def main():
                     continue
 
             site = final["via_xy_nm"]
-            sh = shrink(qb, field, island, keep, a.max_mm, site, ladder)
+            sh = shrink(qb, field, island, keep, a.max_mm, site, ladder,
+                        land_ok)
             if sh is None:
                 shape, radius, proof = "window", int(a.max_mm * qr.MM), final
                 applied = window_cuts(keep, island, a.max_mm)
@@ -547,7 +732,7 @@ def main():
             # The cut a transaction would actually execute, per track: the
             # pieces that SURVIVE every disc applied to it, and how much copper
             # goes.  A track cut by more than one disc is cut by all of them.
-            cuts = []
+            cuts, held = [], []
             for (L, s) in keep:
                 pieces = [s]
                 for (cl, cs, cx, cy, cr) in applied:
@@ -567,6 +752,7 @@ def main():
                 d["removed_mm"] = round((whole - left) / 1e6, 4)
                 d["whole_track"] = not pieces
                 cuts.append(d)
+                held.append((L, s, d))
             land = dict(land=refs,
                         verdict="SEGMENT_OPENS" if single is not None
                                 else "SEGMENT_SET_OPENS",
@@ -579,12 +765,21 @@ def main():
                                     via_xy=list(proof["via_xy"])))
             if not a.no_price:
                 land["price"] = connectivity_price(a.board, cuts, tmp)
+            if not a.no_relay:
+                land["relay"] = relay_price(
+                    qb, a.grid, reserved, held, site, radius, [net], spec)
             rec["lands"].append(land)
             print("  %-24s %-22s %s  cut %d track(s) r=%.2fmm  stitch %.3fmm %s"
                   % (net[:24], ",".join(refs)[:22], land["verdict"],
                      len(cuts), radius / 1e6, proof["mm"],
                      "FREE" if land.get("price", {}).get("free") else
-                     ("REJOIN" if "price" in land else "")),
+                     ("REJOIN" if "price" in land else ""))
+                     + ("" if a.no_relay else
+                        ("  RELAY-OK" if land["relay"]["all_relaid"]
+                         else "  RELAY-FAIL(%s)"
+                         % ",".join(sorted({t.get("reason") or "?"
+                                            for t in land["relay"]["tracks"]
+                                            if not t["ok"]})))),
                   file=sys.stderr, flush=True)
         out.append(rec)
 
@@ -627,6 +822,7 @@ def main():
         schema=1, board=str(a.board), board_sha256=board_sha,
         authoritative_unchanged=(board_sha == after),
         grid=a.grid, max_mm=a.max_mm, cap=a.cap, rung=a.rung,
+        body_landing=bool(a.body_landing),
         guard=str(a.guard) if a.guard else None,
         guard_sha256=(hashlib.sha256(a.guard.read_bytes()).hexdigest()
                       if a.guard else None),

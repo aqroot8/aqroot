@@ -1,0 +1,160 @@
+{
+  "detours": [
+    {
+      "a_mm": [
+        71.2,
+        75.6
+      ],
+      "b_mm": [
+        66.45,
+        102.3
+      ],
+      "layer": "In3.Cu",
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "width_mm": 0.5
+    },
+    {
+      "a_mm": [
+        64.45,
+        101.9
+      ],
+      "b_mm": [
+        71.35,
+        94.85
+      ],
+      "layer": "In2.Cu",
+      "net": "/IR_RX_GPIO44",
+      "width_mm": 0.2
+    },
+    {
+      "net": "Net-(L1-Pad2)",
+      "tracks": [
+        {
+          "a_mm": [
+            67.6,
+            99.5
+          ],
+          "b_mm": [
+            67.785,
+            99.315
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.4
+        },
+        {
+          "a_mm": [
+            67.785,
+            99.315
+          ],
+          "b_mm": [
+            67.785,
+            96.6
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.4
+        }
+      ]
+    },
+    {
+      "a_mm": [
+        58.9,
+        61.8
+      ],
+      "b_mm": [
+        61.2,
+        65.3
+      ],
+      "layer": "In3.Cu",
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        58.6,
+        61.5
+      ],
+      "b_mm": [
+        59.9,
+        63.1
+      ],
+      "layer": "F.Cu",
+      "net": "/I2C_SCL_INT",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        40.975,
+        147.275
+      ],
+      "b_mm": [
+        35.5,
+        147.275
+      ],
+      "layer": "F.Cu",
+      "net": "Net-(J3-CC2)",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        36.075,
+        27.0
+      ],
+      "b_mm": [
+        37.95,
+        28.925
+      ],
+      "layer": "B.Cu",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+    }
+  ],
+  "note": "emitted by screen_segment_evict.py --plan-out from board cfd10db1d6414fd1; each reserve disc is the radius the screen proved opens that land, each detour is a track it proved has to move",
+  "reserve": [
+    {
+      "exempt": [
+        "+3V3"
+      ],
+      "land": [
+        "U12.5"
+      ],
+      "r_mm": 0.8,
+      "x_mm": 66.9,
+      "y_mm": 98.8
+    },
+    {
+      "exempt": [
+        "GND"
+      ],
+      "land": [
+        "C37.2"
+      ],
+      "r_mm": 0.8,
+      "x_mm": 59.2,
+      "y_mm": 62.4
+    },
+    {
+      "exempt": [
+        "GND"
+      ],
+      "land": [
+        "J3.A12",
+        "J3.B1"
+      ],
+      "r_mm": 8.0,
+      "x_mm": 37.2,
+      "y_mm": 146.1
+    },
+    {
+      "exempt": [
+        "GND"
+      ],
+      "land": [
+        "U9.16"
+      ],
+      "r_mm": 2.0,
+      "x_mm": 37.3,
+      "y_mm": 28.4
+    }
+  ],
+  "schema": 1
+}

@@ -1,0 +1,314 @@
+{
+  "attributable_drc": [
+    {
+      "description": "Track has unconnected end",
+      "items": [
+        {
+          "description": "Track [/I2C_SCL_INT] on F.Cu, length 1.3153 mm",
+          "pos": {
+            "x": 59.9,
+            "y": 63.1
+          },
+          "uuid": "420bfe76-cbb7-4e51-8407-6ee063b15b9e"
+        }
+      ],
+      "severity": "warning",
+      "type": "track_dangling"
+    },
+    {
+      "description": "Track has unconnected end",
+      "items": [
+        {
+          "description": "Track [/I2C_SCL_INT] on F.Cu, length 0.8000 mm",
+          "pos": {
+            "x": 57.8,
+            "y": 61.5
+          },
+          "uuid": "f9d8752a-90ef-45e2-b161-5d8c46e06d4c"
+        }
+      ],
+      "severity": "warning",
+      "type": "track_dangling"
+    },
+    {
+      "description": "Track has unconnected end",
+      "items": [
+        {
+          "description": "Track [/09_COMMUNITY_HEADER/TCA4307_READY] on In3.Cu, length 2.2204 mm",
+          "pos": {
+            "x": 59.2,
+            "y": 59.6
+          },
+          "uuid": "2b3a2d75-f9a5-4993-ad61-ffbce5037eb7"
+        }
+      ],
+      "severity": "warning",
+      "type": "track_dangling"
+    },
+    {
+      "description": "Track has unconnected end",
+      "items": [
+        {
+          "description": "Track [/09_COMMUNITY_HEADER/TCA4307_READY] on In3.Cu, length 0.5657 mm",
+          "pos": {
+            "x": 61.2,
+            "y": 65.3
+          },
+          "uuid": "aec1ed2c-50ae-47f0-9c3e-a4ec199f2d0f"
+        }
+      ],
+      "severity": "warning",
+      "type": "track_dangling"
+    }
+  ],
+  "authoritative_board_sha256": "cfd10db1d6414fd15a56ec0786faf98b70b82f00a31fea885e32d62597c6b13e",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "451e339e283c14bcf53ed88ecb0f9c17646430cd6f1089ac8941a1ef46efd41d",
+  "connectivity": {
+    "nets_improved": [
+      "GND"
+    ],
+    "nets_regressed": [
+      "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "/I2C_SCL_INT"
+    ],
+    "open_retained_nets_after": 30,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 60,
+    "retained_open_edges_before": 59
+  },
+  "detour": {
+    "all_relaid": false,
+    "failed": [
+      {
+        "a_mm": [
+          58.9,
+          61.8
+        ],
+        "b_mm": [
+          61.2,
+          65.3
+        ],
+        "layer": "In3.Cu",
+        "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "reason": "NO_TERMINAL",
+        "why": "layer I3 is not in this net's contract"
+      },
+      {
+        "a_mm": [
+          58.6,
+          61.5
+        ],
+        "b_mm": [
+          59.9,
+          63.1
+        ],
+        "layer": "F.Cu",
+        "net": "/I2C_SCL_INT",
+        "reason": "NO_PATH",
+        "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 7.088 mm budget"
+      }
+    ],
+    "guard_spec": "w/d608/gate1/guard-with-detour.json",
+    "nets": [
+      "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "/I2C_SCL_INT"
+    ],
+    "relaid": [
+      {
+        "a_mm": [
+          58.9,
+          61.8
+        ],
+        "b_mm": [
+          61.2,
+          65.3
+        ],
+        "layer": "In3.Cu",
+        "max_mm": 9.2146,
+        "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "ok": false,
+        "reason": "NO_TERMINAL",
+        "seconds": 1.2,
+        "was_mm": 4.1881,
+        "why": "layer I3 is not in this net's contract",
+        "width_nm": 200000
+      },
+      {
+        "a_mm": [
+          58.6,
+          61.5
+        ],
+        "b_mm": [
+          59.9,
+          63.1
+        ],
+        "layer": "F.Cu",
+        "max_mm": 7.0881,
+        "net": "/I2C_SCL_INT",
+        "ok": false,
+        "reason": "NO_PATH",
+        "seconds": 1.5,
+        "was_mm": 2.0616,
+        "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 7.088 mm budget",
+        "width_nm": 200000
+      }
+    ],
+    "removed_count": 2,
+    "removed_mm": 6.2497,
+    "requested": "w/d608/spec-c37.json",
+    "reserve": [
+      {
+        "exempt": [
+          "GND"
+        ],
+        "land": [
+          "C37.2"
+        ],
+        "r_mm": 0.8,
+        "x_mm": 59.2,
+        "y_mm": 62.4
+      }
+    ]
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "71fdd79d160d68ecaf7b9a685e0268907ecfeb02c2b27becffaaec0337bf7d0e",
+    "spec": "hardware/demo/manufacturing/evidence/d607-pour-bond-guard-next.json",
+    "tubes": 46
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 2,
+    "removed_objects": [
+      "('T', '/09_COMMUNITY_HEADER/TCA4307_READY', 8, (58900000, 61800000), (61200000, 65300000), 200000)",
+      "('T', '/I2C_SCL_INT', 0, (58600000, 61500000), (59900000, 63100000), 200000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "GND"
+  ],
+  "routed": [
+    {
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 249,
+        "cells": {
+          "B": 650850,
+          "I1": 944453,
+          "I4": 977992
+        },
+        "erode": 0,
+        "total": 977992
+      },
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 32,
+          "F": 310
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "GND",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "failures": [
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_BODY_VIA_SITE",
+          "why": "no legal 0.60 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "U9.16"
+          ],
+          "pad": "U9.16",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+        }
+      ],
+      "mm": 0.925,
+      "mode": "stitch-split",
+      "net": "GND",
+      "ok": true,
+      "seconds": 134.8,
+      "stitched": 1,
+      "unreachable": 3,
+      "via_xy": [
+        [
+          59.3,
+          62.4
+        ]
+      ],
+      "vias": 1
+    }
+  ],
+  "routed_nets": [
+    "GND"
+  ],
+  "schema": 1
+}
