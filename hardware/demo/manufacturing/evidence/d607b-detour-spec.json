@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "note": "D-607 run 2 -- /03_SPI_A_DISPLAY_SD/LED_BOOST, the backlight boost OUTPUT rail (C44.1/D8.1/R70-R73.1, post-diode and post-cap, not the switching node), crosses the only pocket in which GND's J1.43 land can plant a barrel.  It is removed whole and laid again between its own two In2.Cu end coordinates, around the reserved site.  Site and radius from evidence/d607-segment-evict-floor.json.",
+  "reserve": [
+    {"x_mm": 25.6, "y_mm": 93.7, "r_mm": 0.8, "exempt": ["GND"]}
+  ],
+  "detours": [
+    {"net": "/03_SPI_A_DISPLAY_SD/LED_BOOST", "layer": "In2.Cu", "a_mm": [14.3, 105.0], "b_mm": [27.6, 92.1], "width_mm": 0.3}
+  ]
+}

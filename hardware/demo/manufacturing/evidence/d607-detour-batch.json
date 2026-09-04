@@ -1,0 +1,200 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "77ac2bde8716064e1f53bfd289c9234b97b9e802f7affb96754320549fb5f67a",
+  "connectivity": {
+    "nets_improved": [
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 29,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 60,
+    "retained_open_edges_before": 61
+  },
+  "detour": {
+    "all_relaid": true,
+    "failed": [],
+    "guard_spec": "w/d607/gateP/guard-with-detour.json",
+    "nets": [
+      "/TOUCH_RST_N"
+    ],
+    "relaid": [
+      {
+        "a_mm": [
+          53.6,
+          86.65
+        ],
+        "b_mm": [
+          53.6,
+          91.45
+        ],
+        "layer": "F.Cu",
+        "layers": [
+          "F"
+        ],
+        "max_mm": 9.8265,
+        "mm": 5.4820269320626185,
+        "net": "/TOUCH_RST_N",
+        "ok": true,
+        "seconds": 1.5,
+        "via_xy": [],
+        "vias": 0,
+        "was_mm": 4.8,
+        "width_nm": 200000
+      }
+    ],
+    "removed_count": 1,
+    "removed_mm": 4.8,
+    "requested": "hardware/demo/manufacturing/evidence/d607-detour-spec.json",
+    "reserve": [
+      {
+        "exempt": [
+          "GND"
+        ],
+        "r_mm": 0.8,
+        "x_mm": 54.0,
+        "y_mm": 90.4
+      }
+    ]
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "063b75e9c1c14574e1cd70e05ff3f3ec7c2481f8f11defd77432583ce552e264",
+    "spec": "hardware/demo/manufacturing/evidence/d606-pour-bond-guard-next.json",
+    "tubes": 46
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "/TOUCH_RST_N",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 1,
+    "removed_objects": [
+      "('T', '/TOUCH_RST_N', 0, (53600000, 86650000), (53600000, 91450000), 200000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "77ac2bde8716064e1f53bfd289c9234b97b9e802f7affb96754320549fb5f67a",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "GND"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 32,
+          "F": 310
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "GND",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "island": [
+            "C37.2"
+          ],
+          "pad": "C37.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "J1.43"
+          ],
+          "pad": "J1.43",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "U9.16"
+          ],
+          "pad": "U9.16",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+        }
+      ],
+      "mm": 0.768,
+      "mode": "stitch-split",
+      "net": "GND",
+      "ok": true,
+      "seconds": 2.2,
+      "stitched": 1,
+      "unreachable": 5,
+      "via_xy": [
+        [
+          54.0,
+          90.4
+        ]
+      ],
+      "vias": 1
+    }
+  ],
+  "routed_nets": [
+    "/TOUCH_RST_N",
+    "GND"
+  ],
+  "schema": 1
+}

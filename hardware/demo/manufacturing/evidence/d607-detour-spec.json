@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "note": "D-607 -- the first SEGMENT eviction on this board.  /TOUCH_RST_N crosses the only pocket in which GND's U2.2/U2.3 land can plant a barrel; it is removed whole and laid again between its own two end coordinates, around the reserved site, so nothing is stranded and its cluster count cannot move.  Site and radius from evidence/d607-segment-evict-floor.json.",
+  "reserve": [
+    {"x_mm": 54.0, "y_mm": 90.4, "r_mm": 0.8, "exempt": ["GND"]}
+  ],
+  "detours": [
+    {"net": "/TOUCH_RST_N", "layer": "F.Cu", "a_mm": [53.6, 86.65], "b_mm": [53.6, 91.45], "width_mm": 0.2}
+  ]
+}

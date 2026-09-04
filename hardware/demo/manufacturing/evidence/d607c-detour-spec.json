@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "note": "D-607 run 3 -- the first CHAIN detour.  /ACC_DETECT_N reaches the +3V3 R129.1 pocket as TWO collinear B.Cu segments meeting at (59.05, 56.80), and that junction lies inside the disc the barrel needs, so detouring either segment alone would have to terminate on a point the reservation forbids.  The pair is detoured as one run between its two free ends; the applier proves no via, pad or third track of the net meets the interior junction.  Site and radius from evidence/d607-segment-evict-floor.json.",
+  "reserve": [
+    {"x_mm": 59.2, "y_mm": 55.8, "r_mm": 1.2, "exempt": ["+3V3"]}
+  ],
+  "detours": [
+    {"net": "/ACC_DETECT_N", "tracks": [
+      {"layer": "B.Cu", "a_mm": [59.05, 57.735], "b_mm": [59.05, 56.8], "width_mm": 0.2},
+      {"layer": "B.Cu", "a_mm": [59.05, 56.8], "b_mm": [59.05, 52.4], "width_mm": 0.2}
+    ]}
+  ]
+}

@@ -43,6 +43,7 @@ candidate, and leaves the authoritative board untouched.
 import argparse
 import hashlib
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -636,6 +637,246 @@ def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
 
 
 # --------------------------------------------------------------------------- #
+# THE DETOUR -- THE SEGMENT EVICTION THIS BOARD HAS NAMED FOUR TIMES
+# --------------------------------------------------------------------------- #
+# D-602, D-603, D-605 and D-606 each ended by naming the same missing unit, and
+# four independent walls ask for it: the USB connector corridor, the `U9` west
+# channel, and the `GND` and `BQ25185_SYS` pour residuals are every one of them
+# a FOREIGN TRACK LYING ACROSS a pocket that would otherwise hold a barrel.
+# Neither existing eviction can take one -- `--evict` removes only copper
+# WHOLLY INSIDE a corridor window, `--evict-whole` removes a whole net
+# board-wide -- and D-602 proved no whole-net eviction of any size opens the
+# USB corridor at all.
+#
+# `screen_segment_evict.py` measured the family on the promoted D-606 board:
+# of the sixteen open pour lands that fail `stitch_pad` with `NO_VIA_SITE`,
+# CUTTING FOREIGN TRACK OPENS TEN, most of them with ONE track moved out of a
+# disc under a millimetre across.  The pocket is not full of pads.  It is full
+# of copper that has somewhere else to be.
+#
+# WHY A DETOUR AND NOT A SPLIT.  "Split the track at the pocket boundary and
+# rip up the piece inside" leaves two stubs with FREE ENDS, and on this board a
+# free end is not cosmetic: D-580's first `--evict` transaction routed,
+# regressed nothing, re-proposed its evicted net in full and was still REFUSED,
+# for three `track_dangling` warnings.  So the split owes a re-join, and the
+# re-join owes a terminal the lattice cannot express.  Removing the crossing
+# track WHOLE and laying it again BETWEEN ITS OWN TWO END COORDINATES is the
+# same transaction with the trap taken out: both endpoints keep their exact
+# coordinates, so everything that met that track still meets it, nothing is
+# stranded, no stub exists to re-join, and the cut net's cluster count cannot
+# move.  `maze3d.route_points` is the primitive and the doctrine above it in
+# `maze3d.py` is the argument.
+#
+# THE POCKET IS HELD BY THE GUARD THIS BOARD ALREADY OWNS.  A detour that
+# simply retraced its old path would free nothing, so the site is reserved as
+# an ordinary `Field` guard -- the same object `pour_bond_guard.py` writes and
+# `reserve_corridor.py` emits, with `exempt` naming the pour net the pocket is
+# being freed FOR.  No new keep-out concept, no rule area, no licence.
+#
+# THE TRANSACTION IS NAMED, NOT SEARCHED.  A spec file lists exactly which
+# tracks move and exactly which discs are reserved, the applier refuses
+# anything it cannot resolve to a single track, and clause 5 licenses the
+# removals by SIGNATURE exactly as it licenses an eviction's.  A detour that
+# will not route is a REFUSAL of the whole run, never a track left out.
+def load_detours(path):
+    """Read a detour spec, or {} when none was asked for."""
+    if not path:
+        return {}
+    doc = json.loads(Path(path).read_text())
+    if doc.get("schema") != 1:
+        raise SystemExit("--detour-spec: unknown schema %r" % doc.get("schema"))
+    return doc
+
+
+def detour_guard(spec):
+    """The reserved discs as a `pour_bond_guard.py` guard record per layer.
+
+    One record per copper layer per disc, because a barrel is copper on every
+    layer of the stack and a reservation that held only the outer two would let
+    the detour tunnel under the site it was moved to free.  `net` carries the
+    first exempt net so `guard_for`'s own one-net exemption does the work, and
+    the rest ride in `exempt`, which D-602 added for exactly this shape.
+    """
+    guards = []
+    for k, d in enumerate(spec.get("reserve", ())):
+        ex = list(d.get("exempt", ()))
+        for lkey in ("F", "I1", "I2", "I3", "I4", "B"):
+            guards.append(dict(
+                ok=True, net=(ex[0] if ex else ""), exempt=ex[1:],
+                lkey=lkey, keepout_radius=int(round(d["r_mm"] * 1e6)),
+                points=[[int(round(d["x_mm"] * 1e6)),
+                         int(round(d["y_mm"] * 1e6))]],
+                tube="DETOUR_RESERVE_%d" % (k + 1)))
+    return dict(guards=guards)
+
+
+def detour_apply(path, spec):
+    """Remove every named track IN PLACE and resolve it to exact coordinates.
+
+    Runs in a CHILD for the same reason `evict_copper` does -- removing tracks
+    from a loaded `BOARD` and saving it leaves this KiCad build's SWIG bindings
+    returning an untyped object from the next `LoadBoard`.
+
+    A detour names a track by (net, layer, both endpoints, width) in
+    millimetres.  Resolution must be EXACT and UNIQUE: a spec that matches no
+    track, or more than one, is a spec whose author was describing a board that
+    is not this one, and the run stops rather than guessing.  The endpoints the
+    report carries are the BOARD's own integer nanometres, never the spec's
+    rounded millimetres, because those coordinates are the whole contract -- a
+    micron of drift at either end strands whatever met it.
+    """
+    import pcbnew
+    import incremental_router as ir
+
+    board = pcbnew.LoadBoard(str(path))
+    lname = {}
+    for k, v in (("F", pcbnew.F_Cu), ("I1", pcbnew.In1_Cu), ("I2", pcbnew.In2_Cu),
+                 ("I3", pcbnew.In3_Cu), ("I4", pcbnew.In4_Cu),
+                 ("B", pcbnew.B_Cu)):
+        lname[board.GetLayerName(v)] = (k, v)
+
+    def key(pt):
+        return (round(pt.x / 1e6, 4), round(pt.y / 1e6, 4))
+
+    def resolve(net, layer, a_mm, b_mm, width_mm):
+        """The ONE track this description names, or a hard stop.
+
+        Resolution must be EXACT and UNIQUE: a description that matches no
+        track, or more than one, is a description of a board that is not this
+        one, and the run stops rather than guessing.
+        """
+        if layer not in lname:
+            raise SystemExit("--detour: no such copper layer %r" % layer)
+        lkey, lid = lname[layer]
+        want_pts = sorted([tuple(round(v, 4) for v in a_mm),
+                           tuple(round(v, 4) for v in b_mm)])
+        want_w = int(round(width_mm * 1e6))
+        hits = [t for t in board.GetTracks()
+                if t.GetClass() == "PCB_TRACK"
+                and t.GetNetname() == net and t.GetLayer() == lid
+                and t.GetWidth() == want_w
+                and sorted([key(t.GetStart()), key(t.GetEnd())]) == want_pts]
+        if len(hits) != 1:
+            raise SystemExit(
+                "--detour: %s on %s %s..%s at %.3f mm matches %d tracks, "
+                "not exactly one" % (net, layer, a_mm, b_mm, width_mm,
+                                     len(hits)))
+        return lkey, lid, hits[0]
+
+    # A CHAIN IS ONE TRACK THAT THE EDITOR HAPPENED TO SPLIT, AND THE BOARD SAYS
+    # SO OR IT IS NOT A CHAIN.  `/ACC_DETECT_N` reaches the `+3V3` `R129.1`
+    # pocket as two collinear `B.Cu` segments meeting at (59.05, 56.80), and
+    # that junction is INSIDE the disc the barrel needs -- so detouring either
+    # segment alone would have to terminate on a point the reservation forbids,
+    # and both refuse.  Detouring the PAIR, from one free end to the other, is
+    # the same move at the right granularity.
+    #
+    # What makes it safe is not that the segments look collinear; it is that
+    # NOTHING ELSE OF THAT NET MEETS THE INTERIOR JUNCTIONS.  A chain whose
+    # middle carries a barrel, a pad or a third branch is a TEE, and removing it
+    # would strand whatever hung off it -- so the interior is measured against
+    # every track, via and pad of the net on the board, and a chain that fails
+    # that test stops the run by name.  One layer and one width throughout, too:
+    # "lay it again as one run" cannot mean "and change its width halfway".
+    def chain_ends(net, items, lid):
+        deg = {}
+        for t in items:
+            for pt in (key(t.GetStart()), key(t.GetEnd())):
+                deg[pt] = deg.get(pt, 0) + 1
+        ends = sorted(p for p, n in deg.items() if n == 1)
+        inner = sorted(p for p, n in deg.items() if n != 1)
+        if len(ends) != 2 or any(deg[p] != 2 for p in inner):
+            raise SystemExit(
+                "--detour: the %d tracks named on %s do not form a simple "
+                "chain (%d free ends)" % (len(items), net, len(ends)))
+        # IDENTITY IS THE ITEM UUID, NEVER `id()`.  `items` and this walk come
+        # from separate `GetTracks()` passes and this KiCad build hands out a
+        # fresh SWIG proxy each time, so a Python identity set matches nothing
+        # and every chain would report itself as a tee -- which is exactly what
+        # the first run of this check did.  `evict_closure` learned the same
+        # lesson and says so in the same words.
+        mine = {uid(t) for t in items}
+        for pt in inner:
+            P = pcbnew.VECTOR2I(int(round(pt[0] * 1e6)),
+                                int(round(pt[1] * 1e6)))
+            for t in board.GetTracks():
+                if t.GetNetname() != net or uid(t) in mine:
+                    continue
+                if t.GetClass() == "PCB_VIA":
+                    if key(t.GetStart()) == pt:
+                        raise SystemExit(
+                            "--detour: a via of %s sits on the chain's "
+                            "interior junction at %s; that is a tee, not a "
+                            "chain" % (net, pt))
+                elif t.GetLayer() == lid and (key(t.GetStart()) == pt
+                                              or key(t.GetEnd()) == pt):
+                    raise SystemExit(
+                        "--detour: a third track of %s meets the chain's "
+                        "interior junction at %s; that is a tee, not a chain"
+                        % (net, pt))
+            for f in board.GetFootprints():
+                for pad in f.Pads():
+                    if pad.GetNetname() == net and pad.HitTest(P):
+                        raise SystemExit(
+                            "--detour: pad %s.%s of %s covers the chain's "
+                            "interior junction at %s; that is a tee, not a "
+                            "chain" % (f.GetReference(), pad.GetNumber(),
+                                       net, pt))
+        return ends
+
+    doomed, resolved = [], []
+    for d in spec.get("detours", ()):
+        parts = list(d.get("tracks") or [d])
+        got = [resolve(d["net"], q["layer"], q["a_mm"], q["b_mm"],
+                       q["width_mm"]) for q in parts]
+        if len({(g[0], g[2].GetWidth()) for g in got}) != 1:
+            raise SystemExit("--detour: a chain must be ONE layer and ONE "
+                             "width throughout (%s)" % d["net"])
+        lkey, lid = got[0][0], got[0][1]
+        items = [g[2] for g in got]
+        if len(items) == 1:
+            t = items[0]
+            a_nm = [int(t.GetStart().x), int(t.GetStart().y)]
+            b_nm = [int(t.GetEnd().x), int(t.GetEnd().y)]
+        else:
+            ends = chain_ends(d["net"], items, lid)
+            a_nm = [int(round(v * 1e6)) for v in ends[0]]
+            b_nm = [int(round(v * 1e6)) for v in ends[1]]
+        t = items[0]
+        doomed += items
+        was = sum(math.hypot(q.GetEnd().x - q.GetStart().x,
+                             q.GetEnd().y - q.GetStart().y)
+                  for q in items) / 1e6
+        # THE BOUND IS MEASURED OFF THE RESERVATION, NOT CHOSEN.  Walking the
+        # whole way round a reserved circle of radius R adds at most its
+        # circumference, so `was + 2*pi*R_max` is the longest a genuine detour
+        # of THIS track past THESE discs can be.  A route longer than that went
+        # somewhere else entirely -- measured on `/NFC_5V_EN`, 2.500 mm of
+        # track that came back 21.418 mm long -- and is a reroute wearing a
+        # detour's name.  A spec may state its own `max_mm` and own that
+        # judgement explicitly; it may not silently exceed this one.
+        rmax = max([r["r_mm"] for r in spec.get("reserve", ())] or [0.0])
+        resolved.append(dict(
+            net=d["net"], layer=parts[0]["layer"], lkey=lkey,
+            width_nm=int(t.GetWidth()), tracks=len(items),
+            a_nm=a_nm, b_nm=b_nm,
+            mm=round(was, 4),
+            max_mm=round(float(d.get("max_mm",
+                                     was + 2.0 * math.pi * rmax)), 4)))
+    sigs = []
+    for t in doomed:
+        sigs.append(ir._track_sig(t))
+        board.Remove(t)
+    pcbnew.SaveBoard(str(path), board)
+    return dict(detours=resolved,
+                reserve=list(spec.get("reserve", ())),
+                removed_signatures=sorted(str(s) for s in sigs),
+                removed_count=len(sigs),
+                removed_mm=round(sum(d["mm"] for d in resolved), 4),
+                nets=sorted({d["net"] for d in resolved}))
+
+
+# --------------------------------------------------------------------------- #
 # INNER PLANES ARE NOT SIGNAL LAYERS ANY MORE
 # --------------------------------------------------------------------------- #
 # `qrouter.ROUTABLE` calls the six-layer stack `F, B, In2, In3` -- In1 and In4
@@ -856,7 +1097,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             split_islands=False, guard_spec=None, bridge=False,
             bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
             join_islands=False, join_island_max_mm=0.0,
-            escape_relief=False, relief_via=None):
+            escape_relief=False, relief_via=None, detour_plan=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -867,6 +1108,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     bond_by_net = pad_owner_nets(ref, bond_pads) if bond_pads else {}
     for n in bond_by_net:
         contracts.setdefault(n, net_contract(ref, n))
+    for d in (detour_plan or {}).get("detours", ()):
+        contracts.setdefault(d["net"], net_contract(ref, d["net"]))
     reserved = reserved_inner_planes(ref)
     del ref
 
@@ -886,6 +1129,42 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     # is otherwise forbidden to cross; laying the bonds first means the routes
     # proposed after them are proposed on a board where the pads they would
     # strand are already held by a track and a barrel of their own.
+    # DETOURS RUN BEFORE ANYTHING ELSE, and the ordering is the whole point.
+    # The applier has already removed the crossing tracks from this scratch
+    # board, so the pocket is open right now and nothing else has been laid in
+    # it yet; putting each track back FIRST means every stitch and every join
+    # proposed afterwards is proposed on a board where the detoured copper is
+    # already in its new place, obstacle and all.  The reserved disc is in the
+    # guard spec, so the detour cannot retrace its own old path.
+    #
+    # A DETOUR OWES ITS OWN OLD WIDTH, not its netclass width.  The track being
+    # put back is accepted copper with a width some earlier transaction chose;
+    # re-laying it wider would be a silent second change riding on this one, and
+    # re-laying it narrower would quietly weaken a rail.
+    detours = []
+    for d in (detour_plan or {}).get("detours", ()):
+        net = d["net"]
+        c = contracts[net]
+        t0 = time.time()
+        g = guard_for(guard_spec, net) if guard_spec else None
+        field = mz.Field(qb, net, d["width_nm"], c["clr_pad"], c["clr"],
+                         c["via_dia"], c["via_drill"], G=grid,
+                         layers=c["layers"], guard=g)
+        r = mz.route_points(qb, field, tuple(d["a_nm"]), tuple(d["b_nm"]),
+                            d["lkey"], via_cost_mm=via_cost_mm,
+                            max_mm=d.get("max_mm", 0.0))
+        r = dict(r)
+        r.pop("mark", None)
+        r.update(net=net, layer=d["layer"], was_mm=d["mm"],
+                 max_mm=d.get("max_mm"), width_nm=d["width_nm"],
+                 a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
+                 b_mm=[round(v / 1e6, 4) for v in d["b_nm"]],
+                 seconds=round(time.time() - t0, 1))
+        detours.append(r)
+        print("  %-44s detour %s %.3f->%.3f mm %s"
+              % (net, "ok" if r.get("ok") else r.get("reason"), d["mm"],
+                 r.get("mm", 0.0), d["layer"]), file=sys.stderr, flush=True)
+
     bonds = []
     for net in sorted(bond_by_net):
         c = contracts[net]
@@ -1059,7 +1338,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                           "guarded_layers")}
         results.append(r)
     qb.save(str(path))
-    print(json.dumps(dict(results=results, bonds=bonds), default=str))
+    print(json.dumps(dict(results=results, bonds=bonds,
+                          detours=detours), default=str))
 
 
 # --------------------------------------------------------------------------- #
@@ -1193,7 +1473,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
-         escape_relief=False, relief_via=None):
+         escape_relief=False, relief_via=None, detour_spec=None):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1209,6 +1489,35 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # on -- see the doctrine above.  It runs FIRST, on the scratch copy, so the
     # proposal that follows sees the opened corridor and every later clause
     # measures the whole transaction rather than half of it.
+    # `--detour-spec`: move the named crossing tracks OUT of the pockets this
+    # run is trying to open, before anything is proposed.  It runs before the
+    # eviction for the same reason the eviction runs before the proposal --
+    # every later clause must measure the whole transaction rather than half of
+    # it -- and in its own child, because it mutates the board.
+    detour = None
+    detour_guard_file = None
+    if detour_spec:
+        plan = load_detours(detour_spec)
+        report = work / "detour.json"
+        subprocess.run(
+            [sys.executable, __file__, "--detour-apply", str(scratch),
+             "--detour-spec", str(detour_spec),
+             "--detour-report", str(report)],
+            check=True, text=True, capture_output=True)
+        detour = json.loads(report.read_text())
+        # THE RESERVED DISC AND THE POUR-BOND GUARD TRAVEL IN ONE FILE, because
+        # `--guard` takes one path and a run that carried only the newer of the
+        # two would silently retire the older.  `reserve_corridor.py --merge`
+        # is the same move for a corridor; this is it for a pocket.
+        merged = dict(load_guard(guard))
+        merged.setdefault("guards", [])
+        merged["guards"] = list(merged["guards"]) + \
+            detour_guard(plan)["guards"]
+        detour_guard_file = work / "guard-with-detour.json"
+        detour_guard_file.write_text(
+            json.dumps(merged, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8")
+
     eviction = None
     if evict:
         # The child reports through a FILE, not through stdout.  Removing
@@ -1284,8 +1593,16 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # The guard binds the REPAIR too.  A repair that re-bonded one pad by
         # slotting another pad's only bond would be trading one orphan for the
         # next, and clause 4 would refuse the run either way.
-        if guard:
+        if detour_guard_file is not None:
+            cmd += ["--guard", str(detour_guard_file)]
+        elif guard:
             cmd += ["--guard", str(guard)]
+        # THE DETOUR IS THE PRIMARY PROPOSAL'S BUSINESS, NOT THE REPAIR'S.  A
+        # repair re-bonds copper THIS run severed inside an 8 mm window; laying
+        # a track back between its own two ends is the transaction itself, and
+        # doing it twice would put the same copper down twice.
+        if detour is not None and use_search_levers:
+            cmd += ["--detour-plan", str(work / "detour.json")]
         if stitch_width:
             cmd += ["--stitch-width", str(stitch_width)]
         if stitch_via:
@@ -1368,6 +1685,16 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     primary = child(nets)
     routed = primary["results"]
     bonded = primary.get("bonds", [])
+    detoured = primary.get("detours", [])
+    # EVERY DETOUR MUST HAVE ROUTED.  The applier has already taken the track
+    # off the scratch board; a detour that did not go back is a hole in the cut
+    # net that no later clause is guaranteed to name, because the two ends may
+    # still be joined some other way and clause 4 would then see nothing.  One
+    # failure refuses the run.
+    detour_failed = [dict(net=d["net"], layer=d["layer"],
+                          a_mm=d["a_mm"], b_mm=d["b_mm"],
+                          reason=d.get("reason"), why=d.get("why"))
+                     for d in detoured if not d.get("ok")]
 
     if plane_zone:
         # Every requested region, not just the first: `keep` was a scaffold for
@@ -1508,7 +1835,12 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # before.  With it, a removal is legal only if this run's own eviction
     # step recorded that signature -- so a removal the transaction did not
     # authorise, or one the repair child made on its own, is still a refusal.
-    licensed = set((eviction or {}).get("removed_signatures", ()))
+    # Clause 5 is parameterised by the DETOUR in exactly the same shape it is
+    # parameterised by the eviction: a removal is legal only where this run's
+    # own applier recorded that signature.  Nothing is loosened -- without
+    # `--detour-spec` the set is empty and `removed` must still be empty.
+    licensed = (set((eviction or {}).get("removed_signatures", ()))
+                | set((detour or {}).get("removed_signatures", ())))
     removed = sorted(str(k) for k in (base_cu - cand_cu))
     unlicensed = sorted(set(removed) - licensed)
     added_nets = sorted({k[1] for k in (cand_cu - base_cu)})
@@ -1529,8 +1861,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # failed is reverted inside `maze3d.bond_pads` and adds nothing, so a net
     # whose every bond failed is NOT admitted here.
     bond_nets = sorted({b["net"] for b in bonded if b.get("bonded")})
+    # A DETOURED NET LAYS COPPER TOO, so its successes join the promotion set
+    # for the same reason the repair's and the bonds' do -- otherwise clause 5
+    # would call a track this gate itself asked for "foreign".  A detour that
+    # failed is reverted inside `maze3d.route_points` and adds nothing.
+    detour_nets = sorted({d["net"] for d in detoured if d.get("ok")})
     ok_nets = sorted({r["net"] for r in routed if r.get("ok")}
-                     | {r["net"] for r in repaired} | set(bond_nets))
+                     | {r["net"] for r in repaired} | set(bond_nets)
+                     | set(detour_nets))
     failed = sorted(r["net"] for r in routed if not r.get("ok"))
     foreign = sorted(set(added_nets) - set(ok_nets))
 
@@ -1570,7 +1908,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                                             via_xy=st["via_xy"]))
     ok = (not attributable and inherited_ok and not regressed
           and not unlicensed and not foreign and edges_after < edges_before
-          and zone_ok and changed and not relief_open
+          and zone_ok and changed and not relief_open and not detour_failed
           and before == sha256_file(BOARD))
 
     summary = dict(
@@ -1604,6 +1942,15 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                     tubes=len(load_guard(guard).get("guards", ())))
                if guard else None),
         eviction=eviction,
+        detour=(dict(requested=str(detour_spec),
+                     reserve=detour.get("reserve"),
+                     removed_count=detour.get("removed_count"),
+                     removed_mm=detour.get("removed_mm"),
+                     nets=detour.get("nets"),
+                     guard_spec=str(detour_guard_file),
+                     relaid=detoured, failed=detour_failed,
+                     all_relaid=(not detour_failed))
+                if detour else None),
         preservation=dict(removed_objects=removed,
                           unlicensed_removals=unlicensed,
                           licensed_removals=len(licensed),
@@ -1652,6 +1999,9 @@ def main():
     ap.add_argument("--propose", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--evict-apply", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--evict-report", type=Path, help=argparse.SUPPRESS)
+    ap.add_argument("--detour-apply", type=Path, help=argparse.SUPPRESS)
+    ap.add_argument("--detour-report", type=Path, help=argparse.SUPPRESS)
+    ap.add_argument("--detour-plan", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--grid", type=int, default=100000)
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
@@ -1785,6 +2135,16 @@ def main():
     ap.add_argument("--join-island-max-mm", type=float, default=0.0,
                     help="cap an island jumper's wavefront at this run length "
                          "(0 = maze3d's own WAVE_STEPS budget)")
+    ap.add_argument("--detour-spec", type=Path,
+                    help="D-607: SEGMENT eviction.  A JSON spec naming the "
+                         "crossing tracks to MOVE and the discs to RESERVE.  "
+                         "Each named track is removed whole and laid again "
+                         "between its own two end coordinates, around the "
+                         "reserved site, so nothing is stranded and the cut "
+                         "net's cluster count cannot move.  Clause 5 licenses "
+                         "the removals by signature and a detour that will not "
+                         "route refuses the whole run.  Screen it first with "
+                         "screen_segment_evict.py --plan-out")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -1818,7 +2178,9 @@ def main():
                 load_guard(a.guard), a.bridge,
                 tuple(a.bond_pad), a.bond_max_mm, bond_via,
                 a.join_islands, a.join_island_max_mm,
-                a.escape_relief, relief_via)
+                a.escape_relief, relief_via,
+                json.loads(a.detour_plan.read_text()) if a.detour_plan
+                else None)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1827,6 +2189,13 @@ def main():
         text = json.dumps(doc, indent=2, sort_keys=True, default=str)
         if a.evict_report:
             a.evict_report.write_text(text + "\n", encoding="utf-8")
+        print(text)
+        return 0
+    if a.detour_apply:
+        doc = detour_apply(a.detour_apply, load_detours(a.detour_spec))
+        text = json.dumps(doc, indent=2, sort_keys=True, default=str)
+        if a.detour_report:
+            a.detour_report.write_text(text + "\n", encoding="utf-8")
         print(text)
         return 0
     if not a.nets:
@@ -1858,7 +2227,8 @@ def main():
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
                  bond_via=bond_via, join_islands=a.join_islands,
                  join_island_max_mm=a.join_island_max_mm,
-                 escape_relief=a.escape_relief, relief_via=relief_via)
+                 escape_relief=a.escape_relief, relief_via=relief_via,
+                 detour_spec=a.detour_spec)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

@@ -2762,7 +2762,7 @@ def _cells(anchors, cap=0):
     return out
 
 
-def _emit_path(qb, field, path, net):
+def _emit_path(qb, field, path, net, head=None, tail=None):
     """Lay a descended path as tracks and barrels.  No escape at either end.
 
     Shares `route_join`'s geometry exactly -- per-layer runs, `QBoard.smooth`
@@ -2770,6 +2770,16 @@ def _emit_path(qb, field, path, net):
     hole-to-hole proof between this transaction's own barrels and the same
     `verify_laid` re-proof -- and differs from it in one respect only: the
     terminals are cells inside existing copper rather than pad escapes.
+
+    `head` / `tail` REPLACE the first and last vertex with an EXACT board
+    coordinate, which is what `route_points` needs and what a cell can never
+    express.  A lattice cell is a rounding of a place; the two ends of a track
+    a detour is putting back are the place itself, and landing a micron away
+    from either would strand whatever met it.  The substituted vertex is not
+    trusted: `verify_laid` re-proves the segment it creates against the same
+    obstacle set and clearance as every other segment, and a detour whose
+    connector cannot be proved is reverted whole.  Absent both arguments this
+    function is byte-identical to the one `join_islands` has always called.
     """
     runs = []
     for (k, i, j) in path:
@@ -2785,6 +2795,23 @@ def _emit_path(qb, field, path, net):
                 blk[j, i] = False
             cells = qb.smooth(blk, cells)
         polylines.append((k, qr.simplify(cells, field.ox, field.oy, field.G)))
+
+    if head is not None or tail is not None:
+        polylines = [(k, list(pts)) for k, pts in polylines]
+        if head is not None:
+            polylines[0][1][0] = (int(head[0]), int(head[1]))
+        if tail is not None:
+            polylines[-1][1][-1] = (int(tail[0]), int(tail[1]))
+        # A one-cell path collapses to a single vertex once both ends are
+        # substituted; the run it stands for is the straight segment between
+        # the two exact points, and dropping it would silently emit nothing.
+        if (len(polylines) == 1 and head is not None and tail is not None
+                and len(polylines[0][1]) < 2):
+            polylines[0] = (polylines[0][0], [(int(head[0]), int(head[1])),
+                                              (int(tail[0]), int(tail[1]))])
+        polylines = [(k, [p for n, p in enumerate(pts)
+                          if n == 0 or p != pts[n - 1]])
+                     for k, pts in polylines]
 
     sites = [pts[0] for _, pts in polylines[1:]]
     need = field.via_drill + HOLE_CLR
@@ -3091,6 +3118,143 @@ def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
                 mm=round(sum(d['mm'] for d in done), 3),
                 vias=sum(d['vias'] for d in done),
                 clusters=len(size), body=labels.get(body, [])[:4])
+
+
+# --------------------------------------------------------------------------- #
+# THE DETOUR -- A TRACK PUT BACK BETWEEN ITS OWN TWO ENDS
+# --------------------------------------------------------------------------- #
+# D-602, D-603, D-605 and D-606 each end at the same named-and-unbuilt move, and
+# four independent walls name it: the USB connector corridor, the `U9` west
+# channel, and the `GND` and `BQ25185_SYS` pour residuals are every one of them
+# a FOREIGN TRACK LYING ACROSS a pocket that would otherwise hold a barrel.  The
+# eviction contract cannot take one.  `--evict` removes copper WHOLLY INSIDE a
+# corridor window and `--evict-whole` removes a whole net board-wide; a track
+# that merely CROSSES the pocket is reachable by neither, and D-602 proved on
+# the USB pair that no whole-net eviction of ANY size opens that corridor.
+#
+# THE UNIT EVERY ONE OF THOSE WALLS ASKS FOR IS A SEGMENT, AND THE SEGMENT HAS
+# A TRAP IN IT.  "Split the track at the pocket boundary and rip up the piece
+# inside" leaves two stubs with FREE ENDS, and a free end is not a cosmetic
+# matter on this board: D-580's first `--evict` transaction routed, regressed
+# nothing, re-proposed its evicted net in full and was still REFUSED, for three
+# `track_dangling` warnings.  So a split owes a re-join, and the re-join owes a
+# terminal the lattice cannot express -- a stub end is an arbitrary coordinate,
+# not a cell.
+#
+# A DETOUR IS THE SPLIT AND THE RE-JOIN AS ONE TRANSACTION, AND IT IS STRICTLY
+# SAFER THAN EITHER HALF.  Remove the crossing track WHOLE and lay it again
+# between ITS OWN TWO END COORDINATES, around a reserved disc.  Then:
+#
+#   * NOTHING IS EVER STRANDED.  Both endpoints keep their exact coordinates,
+#     so every pad, barrel and T-junction that met that track still meets it,
+#     `_supported` is preserved by construction and no `track_dangling` can
+#     appear.  There are no stubs, so there is nothing to re-join afterwards.
+#   * CONNECTIVITY IS PRESERVED BY CONSTRUCTION, not by measurement.  The two
+#     points the old track joined are joined by the new one, so the cut net's
+#     cluster count cannot move and clause 4 cannot be paid in the cut net's
+#     own open edges.
+#   * THE POCKET IS HELD.  The disc is handed to the detour as an ORDINARY
+#     `Field` guard -- the same object `pour_bond_guard.py` writes and
+#     `reserve_corridor.py` emits -- so the detour cannot simply retrace its old
+#     path back through the site it was moved to free.
+#   * IT IS REVERSIBLE.  A detour that will not route is reverted whole and the
+#     original track is put back; nothing is promoted on a partial result.
+#
+# Nothing here is new in the legality argument.  `Field` for legality, `wave3d`
+# / `descend3d` for the corridor, `QBoard.smooth` + `qrouter.simplify` for the
+# geometry, `_emit_path` for the emission with the same hole-to-hole proof
+# between this transaction's own barrels, and `verify_laid` to re-prove every
+# object analytically.  What is new is one thing only: the TERMINAL is an exact
+# coordinate rather than a pad escape or a cell inside a pour.
+def point_terminals(field, x, y, layer, span=2):
+    """Lattice cells a run may reach `(x, y)` from, nearest first.
+
+    Free cells within `span` of the point, plus the point's OWN cell whether or
+    not the raster calls it free -- `wave3d` opens its own ends for exactly the
+    reason it opens a pad escape's cell, that the 0.75-cell guard band is a
+    rasterisation artefact and not a rule, and `verify_laid` is what decides
+    afterwards whether the connector this creates is legal.
+    """
+    if layer not in field.blk:
+        return []
+    ci, cj = field.cell(x, y)
+    out, seen = [], set()
+    for dj in range(-span, span + 1):
+        for di in range(-span, span + 1):
+            i, j = ci + di, cj + dj
+            if not field.inside(i, j) or (i, j) in seen:
+                continue
+            if di or dj:
+                if field.blk[layer][j, i]:
+                    continue
+            seen.add((i, j))
+            px, py = field.point(i, j)
+            out.append((math.hypot(px - x, py - y), i, j))
+    out.sort()
+    return [(layer, i, j) for (_, i, j) in out]
+
+
+def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
+                 max_mm=0.0):
+    """Lay a run of this Field's net between two EXACT board coordinates.
+
+    `a` and `b` are (x, y) in nm and both terminate on `layer`, because that is
+    where the track being put back met whatever it met.  Returns
+    dict(ok, mm, vias, ...); on success and `emit` the copper is on `qb` and the
+    caller's `mark` reverts it.
+
+    `emit=False` still lays the run, proves it and reverts it, so a screen and a
+    gate cannot disagree about whether a detour is legal.
+    """
+    net = field.net
+    seeds = point_terminals(field, b[0], b[1], layer, span)
+    goals = point_terminals(field, a[0], a[1], layer, span)
+    if not seeds or not goals:
+        return dict(ok=False, reason='NO_TERMINAL',
+                    why='layer %s is not in this net\'s contract' % layer)
+    vc = max(1, int(round(via_cost_mm * qr.MM / field.G)))
+    # A DETOUR IS A LOCAL MOVE AND THE BUDGET IS WHAT SAYS SO.  Without a bound
+    # the wavefront will happily find a way round the whole board -- measured:
+    # `/NFC_5V_EN`, 2.500 mm of track, came back at 21.418 mm -- and a track
+    # that has to cross the board to get past a 0.8 mm disc has not been
+    # detoured, it has been rerouted, which is a different transaction with a
+    # different review.  The caller sets the bound; `route_maze_batch` derives
+    # its default from the reserved disc itself.
+    budget = (WAVE_STEPS if not max_mm
+              else max(1, int(round(max_mm * qr.MM / field.G))))
+    dist, hit = wave3d(field, seeds, goals, vc, budget=budget)
+    if dist is None:
+        return dict(ok=False, reason='NO_SEED')
+    if hit is None:
+        return dict(ok=False, reason='NO_PATH',
+                    why='no all-layer corridor at %.3f mm between the two ends '
+                        'of this track once the site is reserved%s'
+                        % (field.width / 1e6,
+                           '' if not max_mm else
+                           ', inside the %.3f mm budget' % max_mm))
+    path = descend3d(field, dist, hit, vc)
+    if path is None:
+        return dict(ok=False, reason='NO_DESCENT')
+    if path[0][0] != layer or path[-1][0] != layer:
+        return dict(ok=False, reason='WRONG_TERMINAL_LAYER',
+                    why='a detour must arrive on %s at both ends' % layer)
+    m = qb.mark()
+    r = _emit_path(qb, field, path, net, head=a, tail=b)
+    if not r.get('ok'):
+        qb.revert(m)
+        return r
+    if max_mm and r['mm'] > max_mm:
+        qb.revert(r['mark'])
+        return dict(ok=False, reason='TOO_LONG', mm=r['mm'], max_mm=max_mm,
+                    why='the detour measures %.3f mm against a %.3f mm bound; '
+                        'this is a reroute, not a detour'
+                        % (r['mm'], max_mm))
+    if not emit:
+        qb.revert(r['mark'])
+        return dict(ok=True, dry=True, mm=r['mm'], vias=r['vias'],
+                    layers=r['layers'], via_xy=r['via_xy'])
+    return dict(ok=True, mm=r['mm'], vias=r['vias'], layers=r['layers'],
+                via_xy=r['via_xy'], mark=r['mark'])
 
 
 # --------------------------------------------------------------------------- #

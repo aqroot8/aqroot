@@ -1,0 +1,113 @@
+{
+  "added_object_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+    "/TOUCH_RST_N",
+    "GND"
+  ],
+  "added_track_layers": [
+    "B.Cu",
+    "F.Cu",
+    "In2.Cu"
+  ],
+  "added_track_widths_nm": [
+    150000,
+    200000,
+    300000
+  ],
+  "added_tracks": 13,
+  "added_via_dia_drill_nm": [
+    [
+      500000,
+      200000
+    ],
+    [
+      500000,
+      250000
+    ]
+  ],
+  "added_vias": 2,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+    "/TOUCH_RST_N"
+  ],
+  "claimed_nets": [
+    "GND",
+    "/TOUCH_RST_N",
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 75
+  },
+  "drc_pre": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 77
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 75
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 15,
+  "objects_removed": 2,
+  "pad_escape_neck": null,
+  "pour_bridge": null,
+  "pre_board_sha256": "4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d",
+  "promoted_board_sha256": "cfd10db1d6414fd15a56ec0786faf98b70b82f00a31fea885e32d62597c6b13e",
+  "ref": "HEAD",
+  "removed_object_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+    "/TOUCH_RST_N"
+  ],
+  "removed_sample": [
+    "('trk', '/03_SPI_A_DISPLAY_SD/LED_BOOST', 'In2.Cu', 14300000, 105000000, 27600000, 92100000, 300000)",
+    "('trk', '/TOUCH_RST_N', 'F.Cu', 53600000, 86650000, 53600000, 91450000, 200000)"
+  ],
+  "rule_areas_added": [],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

@@ -6305,6 +6305,199 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-607 · 2026-09-04 · Demo SEGMENT EVICTION BUILT AND SPENT: a crossing track is not evicted, it is DETOURED between its own two ends -- the GPIO expander's floating address straps and a display-FPC ground grounded
+
+D-602, D-603, D-605 and D-606 each ended by naming the same missing unit, and by
+D-606 it was the CRITICAL PATH rather than one candidate of four. Four
+independent walls ask for it -- the USB connector corridor, the `U9` west
+channel, and the `GND` and `BQ25185_SYS` pour residuals -- and every one of them
+is **a foreign track lying across a pocket that would otherwise hold a barrel**.
+Neither existing eviction can take one: `--evict` removes copper WHOLLY INSIDE a
+corridor window, `--evict-whole` removes a whole net board-wide, and D-602 proved
+that no whole-net eviction of ANY size opens the USB corridor at all.
+
+    retained open edges  61 -> 59        unconnected items 77 -> 75
+    improved  GND (6 -> 4)               regressed  none
+    15 objects added (13 tracks + 2 vias), 2 removed and both licensed
+    zero zones, zero rule areas, zero .kicad_dru change, zero new licence
+    authority 4cd1be8f... -> 77ac2bde... -> cfd10db1...
+
+## What was closed is defects, not counts
+
+**`U2.2` and `U2.3` are `A1` and `A2` on the `PCAL9535APW` -- the I2C ADDRESS
+STRAPS.** The schematic ties both to `GND` to place the expander at 0x20, and on
+the PCB neither had a ground connection. An expander whose address straps float
+does not answer at the address the firmware talks to, and `U2` is the expander
+behind the D-pad and the A/B buttons: a MUST-HAVE Demo feature that could not
+have worked. This is D-604's finding in a second place, found the same way --
+by asking what a `NO_VIA_SITE` land is actually waiting for.
+
+**`J1.43` is a `GND` contact on the `FH69-50S-0.5SH` display FPC connector**, and
+it had no return path. It is now bonded to the `In1`/`In4` ground planes by
+2.765 mm of copper and one 0.50/0.20 mm barrel.
+
+## The measurement came first, and it named the family
+
+New read-only `screen_segment_evict.py` asks the only question that decides
+whether the unit is worth building: **is the pocket full of cuttable copper, or
+is it full of pads?** Per open land it cuts foreign track in the in-memory
+obstacle model and re-offers the land to the promoter's OWN `maze3d.stitch_pad`
+through the promoter's own `Field`, in three escalating questions -- cut
+EVERYTHING inside the 8 mm stitch window (a `SEGMENT_WALL` here is a refusal no
+segment eviction of any size can overturn), then one track at a time, then a
+reverse-greedy minimal set -- and then SHRINKS the cut from the window down a
+radius ladder to the smallest disc at the barrel's own site that still opens it.
+Every cut is finally PRICED on KiCad's own `BuildConnectivity`, on a scratch
+copy, because connectivity is what clause 4 counts.
+
+On the promoted D-606 board (`d607-segment-evict-floor.json`): of the 25 open
+pour lands, **eleven open under a cut and eight of those under ONE track moved,
+most inside a disc 0.80 mm across.** Five are `SEGMENT_WALL` -- `+3V3` `R39.1`
+and `U12.4`, `SYS` `L4.1`/`U21.3`, `R68.1` and `U12.10`/`U12.11`, every one of
+them with 17 to 40 foreign BARRELS in its window, which is the one obstacle a
+split can never cut. Eight are `NOT_A_POCKET`: all five `U4` BMI270 lands, `U5.2`
+and `U11.1` fail on the ESCAPE, not the barrel, so they are a pad-pitch question
+and segment eviction is not their lever. **The pocket is not full of pads. It is
+full of copper that has somewhere else to be.**
+
+## A detour, not a split -- and the difference is a DRC refusal this board has already collected
+
+"Split the track at the pocket boundary and rip up the piece inside" leaves two
+stubs with FREE ENDS, and a free end is not cosmetic here: D-580's first
+`--evict` transaction routed, regressed nothing, re-proposed its evicted net in
+full and was still REFUSED, for three `track_dangling` warnings. So a split owes
+a re-join, and the re-join owes a terminal the lattice cannot express -- a stub
+end is an arbitrary coordinate, not a cell.
+
+**Removing the crossing track WHOLE and laying it again BETWEEN ITS OWN TWO END
+COORDINATES is the same transaction with the trap taken out.** Both endpoints
+keep their exact nanometres, so everything that met that track still meets it,
+`_supported` is preserved by construction, no stub exists to re-join, and the
+cut net's cluster count cannot move -- connectivity is preserved by
+CONSTRUCTION rather than by measurement. `maze3d.route_points` is the primitive:
+`Field` for legality, `wave3d`/`descend3d` for the corridor, `QBoard.smooth` +
+`qrouter.simplify` for the geometry, `_emit_path` with the same hole-to-hole
+proof, and `verify_laid` re-proving every emitted object analytically. Exactly
+one thing is new -- `_emit_path` gained optional `head`/`tail` arguments that
+REPLACE the first and last lattice vertex with an exact coordinate, and absent
+both it is byte-identical to the one `join_islands` has always called.
+
+**The pocket is held by the guard this board already owns.** A detour that
+retraced its old path would free nothing, so the site is reserved as an ordinary
+`Field` guard -- the same object `pour_bond_guard.py` writes and
+`reserve_corridor.py` emits, with D-602's `exempt` list naming the pour net the
+pocket is being freed FOR. No new keep-out concept, no rule area, no licence,
+no `.kicad_dru` change.
+
+**A DETOUR IS A LOCAL MOVE AND THE BOUND IS MEASURED, NOT CHOSEN.** Walking the
+whole way round a reserved circle of radius R adds at most its circumference, so
+the applier derives `was + 2*pi*R` and `route_points` refuses anything longer.
+The bound was written because the first unbounded run measured `/NFC_5V_EN` --
+2.500 mm of track -- coming back **21.418 mm** long. That is not a detour, it is
+a reroute, and it is a different transaction with a different review.
+
+## Three gate runs: two PROMOTED, one REFUSED on the board's own ledger
+
+**Run 1 -- `/TOUCH_RST_N`, `F.Cu`, 4.800 -> 5.482 mm, zero vias**, around a
+0.80 mm disc at (54.0, 90.4). `GND` `U2.2`/`U2.3` then stitch in 0.768 mm at
+0.200 mm into one 0.50/0.25 mm barrel. 61 -> 60.
+
+**Run 2 -- `/03_SPI_A_DISPLAY_SD/LED_BOOST`, `In2.Cu`, 18.528 -> 22.497 mm, zero
+vias**, around a 0.80 mm disc at (25.6, 93.7). This is the backlight boost
+OUTPUT rail (`C44.1`, `D8.1`, `R70`-`R73.1`, post-diode and post-cap), not the
+switching node, so ~4 mm of extra 0.30 mm inner-layer copper is a few
+milliohms and no loop-area question. `GND` `J1.43` then stitches in 2.765 mm.
+60 -> 59. **It is promoted at 0.150 mm, board setup's own `min_track_width`,
+because the land does not open at 0.200 mm** -- measured, at the same barrel --
+and an open ground contact on the display connector is worse than a thin one.
+
+**Run 3 -- the first CHAIN detour, and it is REFUSED.** `/ACC_DETECT_N` reaches
+the `+3V3` `R129.1` pocket as TWO collinear `B.Cu` segments meeting at
+(59.05, 56.80), and that junction is INSIDE the disc the barrel needs, so
+detouring either segment alone would have to terminate on a point the
+reservation forbids. A detour entry may therefore name a `tracks` CHAIN and be
+laid between the chain's two FREE ends -- **and what makes that safe is not that
+the segments look collinear but that the applier PROVES nothing else of that net
+meets the interior junctions**; a via, a pad or a third track there is a TEE and
+stops the run by name. The chain detour worked (5.335 -> 9.042 mm, 2 barrels,
+`B -> In2 -> B`) and `stitch_pad` planted a legal 0.65/0.40 mm barrel at
+(59.2, 55.8) -- and the refilled board's own ledger says `R129.1` is STILL a
+component of its own, 59 -> 59, so clause 4 refused the run and nothing was
+promoted. **A barrel that is legal is not yet a barrel that CONNECTS**, which is
+exactly what D-606 built clause 7 to say about a licensed stitch and is now
+observed on an unlicensed one. Evidence `d607-r129-refusal.json`.
+
+## The gate is parameterised, not weakened
+
+`--detour-spec` names the transaction; nothing is searched. The applier resolves
+each track EXACTLY and UNIQUELY -- a description matching no track, or more than
+one, stops the run rather than guessing -- and clause 5 licenses the removals by
+SIGNATURE in exactly the shape `--evict` is already licensed. Without
+`--detour-spec` the licensed set is empty and `removed` must still be empty. A
+new clause requires EVERY named detour to have gone back: the applier has
+already taken the track off the scratch board, so a detour that failed is a hole
+no later clause is guaranteed to name.
+
+One defect was found and fixed in the chain check itself, and it is a lesson
+this file has already recorded once: identity must be the item UUID, never
+`id()`, because this KiCad build hands out a fresh SWIG proxy per
+`GetTracks()` walk -- the first run reported a genuine chain as a tee.
+
+`screen_segment_evict.py --plan-out` writes the `--detour-spec` file directly
+from the measurement, chains and all, so the measurement and the transaction it
+authorises cannot drift apart. All 14 emitted entries round-trip through the
+applier against the pre-promotion board.
+
+## Proof
+
+All **14** `verify_promotion.py` checks PASS from the two board files alone
+(`d607-verify.json`): 2 objects removed and both on claimed evicted nets;
+15 added (13 tracks + 2 vias) and every one on a claimed net; tracks 0.150 /
+0.200 / 0.300 mm on `F.Cu`/`B.Cu`/`In2.Cu` only -- nothing on the reserved
+`In1`/`In3`/`In4` planes; vias 0.50/0.20 and 0.50/0.25 mm, both meeting the
+0.125 mm annular floor; zone and rule-area inventory unchanged; real
+zone-refilled schematic-parity KiCad DRC at `--severity-all` exactly 199
+`lib_footprint_issues` / 5 `hole_clearance` / 1 `solder_mask_bridge`
+INHERITED, ZERO attributable, ZERO parity errors; **unconnected items 77 -> 75**;
+fill-stable; D-269 / D-186 rule text live; `hardware/beta-v2/` untouched.
+`protected_copper.py` re-measures the 15 protected nets at **393 objects
+BYTE-IDENTICAL** -- `ACC_5V_SW_EN`, `ACC_3V3_SW*`, all three `FRONT_RGB_*_N`,
+XGPIO4/XGPIO5 and every `BAT_*` net. `pour_bond_contract.py` P1-P4 and
+`neck_contract.py` N1-N3 PASS on the regenerated 46-tube / 1387-point guard,
+and `screen_bond_stitch.py` re-derives the same 21 bondable pads and 8 retirable
+tubes it derived on D-606's board.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d607-segment-evict-floor.json`, `d607-detour-spec.json`,
+`d607-detour-batch.json`, `d607b-detour-spec.json`, `d607b-detour-batch.json`,
+`d607c-detour-spec.json`, `d607-r129-refusal.json`, `d607-verify.json`, `d607-protected-copper.json`,
+`d607-pour-bond-guard-next.json`, `d607-pour-bond-guard-bonded.json`,
+`d607-bond-stitch-next.json`, `d607-guard-contract.json`,
+`d607-neck-contract.json`, `d607-segment-evict-next.json`.
+
+## Next
+
+**Give `stitch_pad` a BODY predicate.** Run 3 is the whole argument: the segment
+eviction did its job, the barrel was legal where it landed, and the refill did
+not bond it, so the transaction bought nothing. `stitch_pad` takes the FIRST
+legal barrel site by distance and has no way to prefer one that sits over the
+plane BODY -- and it cannot learn it from connectivity, because the proposer does
+not refill zones, which is the same blindness D-605's antipad predictor had to
+model GEOMETRICALLY. The fix is the same shape: rank candidate sites by whether
+they lie inside KiCad's own filled polygon for the island that holds the net's
+body. That turns `R129.1` -- already proved reachable -- and plausibly several
+of the remaining `NO_VIA_SITE` lands from "opened but dead" into promotions.
+
+Behind it, in order: **nine lands still open under a cut on the
+promoted board** (`d607-segment-evict-next.json`), `R129.1` being the ninth and
+the one already measured-and-refused above.  The eight not yet attempted are
+(`GND` `C37.2`, `J3.A12`/`J3.B1`, `U9.16`; `SYS` `C26.2`, `C27.1`, `C28.1`,
+`U13.3`; `+3V3` `U12.5`), each with a NAMED reason it was not taken this time --
+three of them need a track whose BOTH ENDS sit on the reserved `In3` plane, which
+is a different move (it needs a barrel at each end, not a detour), `U9.16` would
+move an `NFC_RFO2` transmit arm and `U13.3`/`C27.1`/`J3.A12` measured
+`NO_PATH` inside their own detour bound. No owner decision is open.
+
 # D-606 · 2026-09-04 · Demo THE ESCAPE-RELIEF DOCTRINE, SPENT FOR THE FIRST TIME: seven pour lands opened by a licence the board has carried since FBV2-P2-000, and the dead-copper clause that had to exist before it could be
 
 Three pour-owning nets owned **30 of the board's 68 retained open edges** and every
