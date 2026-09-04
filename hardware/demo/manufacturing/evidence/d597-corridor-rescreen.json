@@ -1,0 +1,149 @@
+{
+  "board_sha256": "db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382",
+  "edges": [
+    {
+      "direct_mm": 4.943,
+      "dst": [
+        "U16.1"
+      ],
+      "net": "/ACC_PWR_EN",
+      "single_openers": [
+        {
+          "mm": 3.637,
+          "rip_up_net": "/ACC_3V3_SW",
+          "tracks": 11,
+          "vias": 6
+        },
+        {
+          "mm": 9.655,
+          "rip_up_net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+          "tracks": 6,
+          "vias": 0
+        },
+        {
+          "mm": 90.659,
+          "rip_up_net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "tracks": 5,
+          "vias": 3
+        }
+      ],
+      "src": [
+        "R17.1"
+      ],
+      "verdict": "RIPUP_SINGLE"
+    },
+    {
+      "direct_mm": 20.242,
+      "dst": [
+        "U3.20"
+      ],
+      "net": "/ACC_PWR_EN",
+      "single_openers": [
+        {
+          "mm": 26.052,
+          "rip_up_net": "/SX1262_RXEN",
+          "tracks": 1,
+          "vias": 3
+        },
+        {
+          "mm": 29.791,
+          "rip_up_net": "/ACC_POWER_FAULT_N",
+          "tracks": 8,
+          "vias": 12
+        }
+      ],
+      "src": [
+        "R17.1"
+      ],
+      "verdict": "RIPUP_SINGLE"
+    },
+    {
+      "direct_mm": 6.272,
+      "dst": [
+        "TP30.1",
+        "U3.16"
+      ],
+      "net": "/ACC_5V_BOOST_EN",
+      "single_openers": [
+        {
+          "mm": 6.205,
+          "rip_up_net": "/ACC_3V3_SW",
+          "tracks": 21,
+          "vias": 18
+        },
+        {
+          "mm": 7.074,
+          "rip_up_net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+          "tracks": 6,
+          "vias": 6
+        }
+      ],
+      "src": [
+        "R102.1"
+      ],
+      "verdict": "RIPUP_SINGLE"
+    },
+    {
+      "direct_mm": 24.473,
+      "dst": [
+        "U21.2"
+      ],
+      "net": "/ACC_5V_BOOST_EN",
+      "single_openers": [
+        {
+          "mm": 11.228,
+          "rip_up_net": "/ACC_DETECT_N",
+          "tracks": 14,
+          "vias": 3
+        },
+        {
+          "mm": 12.377,
+          "rip_up_net": "/01_POWER_TREE/ACC_5V_FB",
+          "tracks": 4,
+          "vias": 0
+        }
+      ],
+      "src": [
+        "TP30.1",
+        "U3.16"
+      ],
+      "verdict": "RIPUP_SINGLE"
+    },
+    {
+      "direct_mm": 98.569,
+      "dst": [
+        "U9.30"
+      ],
+      "net": "/SPI_B_SCK",
+      "single_openers": [
+        {
+          "mm": 126.037,
+          "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+          "tracks": 10,
+          "vias": 0
+        }
+      ],
+      "src": [
+        "U1.4",
+        "U7.18",
+        "U8.18"
+      ],
+      "verdict": "RIPUP_SINGLE"
+    },
+    {
+      "direct_mm": 87.425,
+      "dst": [
+        "U9.29"
+      ],
+      "net": "/NFC_CS_N",
+      "single_openers": null,
+      "src": [
+        "U1.17",
+        "R29.2"
+      ],
+      "verdict": "CROSSING_COPPER_WALL"
+    }
+  ],
+  "note": "READ-ONLY corridor-blocker RE-screen of the D-596 rip-up candidates on the board D-596 actually promoted (db5f997f), because the verdicts D-596 recorded were measured one board earlier on 2140f6a9.  --no-minimal: the per-object minimal-eviction search is not needed to name an opener.",
+  "schema": 1
+}

@@ -122,10 +122,16 @@ def main():
                          nets_compared=len(SAMPLE), diffs=diffs)
 
     # -- P2 ---------------------------------------------------------------- #
-    poly = {(p["net"], p["lkey"]): p for p in pours}
+    # Keyed by ZONE, not by (net, layer): one net may own several bounded
+    # pours on one layer, and their island numbering is per-zone.  A spec
+    # written before the guard carried `zone` still resolves, by (net, layer),
+    # because back then that key really was unique.
+    poly = {(p["net"], p["lkey"], p["zone"]): p for p in pours}
+    poly.update({(p["net"], p["lkey"]): p for p in pours})
     outside, badend = [], []
     for g in spec["guards"]:
-        p = poly.get((g["net"], g["lkey"]))
+        p = (poly.get((g["net"], g["lkey"], g["zone"])) if g.get("zone")
+             else poly.get((g["net"], g["lkey"])))
         isl = p["islands"][g["island"]] if p else None
         if isl is None:
             outside.append(dict(guard=g["ends"], why="NO_SUCH_ISLAND"))

@@ -34,6 +34,45 @@ BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 # only: a pour whose net owns no copper yet has no connection to survive mode 0.
 OUTLINE = ((0.5, 0.5), (71.5, 0.5), (71.5, 147.5), (0.5, 147.5))
 
+
+# A BOUNDED POUR IS A DIFFERENT INSTRUMENT FROM A PLANE.
+# ---------------------------------------------------------------------------
+# `OUTLINE` is the whole board, and that is the only shape a power PLANE should
+# ever have: `+3V3` owns `F`/`In3`, `GND` owns `B`/`In1`/`In4`, and each of those
+# five pours is the layer.  A fourth board-wide pour has nowhere to go.
+#
+# But a plane is not the only pour a power net can want.  `BQ25185_SYS` -- the
+# charger output rail -- has THIRTEEN retained lands in three widely separated
+# clusters and no pour at all, and eight of those lands sit on `B.Cu` inside a
+# 10 x 34 mm column of the east power block.  A pour bounded to THAT column is
+# ordinary power-supply practice: local copper for a rail that carries amps,
+# not a plane competing for a layer.  It bonds every same-net land it overlaps
+# through `connect_pads yes`, with no track, no barrel and no pad escape -- which
+# is the whole point on a net whose every open edge is `NO_LEGAL_ESCAPE_SRC`.
+#
+# KiCad needs no zone priority for this.  Two pours of DIFFERENT nets at the
+# same priority do not nest; each retreats from the other by its clearance.  So
+# a bounded `BQ25185_SYS` pour on `B.Cu` takes its column out of the `GND` pour
+# and gives it back at the boundary, and `GND`'s return path is unharmed because
+# `GND` also owns the whole of `In1` and `In4`.
+def bbox_outline(x0, y0, x1, y1):
+    """The rectangle (x0,y0)-(x1,y1) as a zone outline, corners clockwise."""
+    x0, x1 = sorted((float(x0), float(x1)))
+    y0, y1 = sorted((float(y0), float(y1)))
+    return ((x0, y0), (x1, y0), (x1, y1), (x0, y1))
+
+
+def parse_outline(spec):
+    """`x0,y0,x1,y1` (a rectangle) or `x,y x,y x,y ...` (a polygon)."""
+    if spec is None:
+        return OUTLINE
+    nums = [float(v) for v in spec.replace(",", " ").split()]
+    if len(nums) == 4:
+        return bbox_outline(*nums)
+    if len(nums) % 2 or len(nums) < 6:
+        raise ValueError("outline needs 4 numbers (bbox) or >=3 x,y pairs")
+    return tuple((nums[i], nums[i + 1]) for i in range(0, len(nums), 2))
+
 ZONE = """	(zone
 		(net "%(net)s")
 		(layer "%(layer)s")

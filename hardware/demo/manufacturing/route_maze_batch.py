@@ -50,7 +50,8 @@ import time
 import uuid
 from pathlib import Path
 
-from screen_inner_plane import insert_zone, zone_sexpr
+from screen_inner_plane import (OUTLINE, insert_zone, parse_outline,
+                                zone_sexpr)
 
 ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
@@ -958,7 +959,8 @@ def plane_nets(path):
 
 
 def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
-         plane=None, zone_clearance=0.25, stitch_width=0, stitch_via=None,
+         plane=None, plane_outline=None,
+         zone_clearance=0.25, stitch_width=0, stitch_via=None,
          join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
          partial=False, attempt_cap=0, repair_planes=False,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
@@ -1003,15 +1005,49 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # (a net that owns no copper yet has no connection for `remove` to spare),
     # and the mode is flipped back to `remove` after the stitch so the promoted
     # board carries no island that the stitch did not actually connect.
+    #
+    # A BOUNDED POUR IS THE SAME INSTRUMENT AIMED SMALLER.  `--plane-outline`
+    # restricts the pour to a region instead of the board.  It is not a
+    # weakening of `--plane`: a board-wide pour is the ONLY correct shape for a
+    # net that owns a layer, and the wrong shape for every net that does not,
+    # because at equal zone priority two different-net pours simply retreat from
+    # each other and a board-wide fourth pour would fight `+3V3` and `GND` over
+    # every square millimetre of `F` and `B`.  `BQ25185_SYS` is the case: a rail
+    # with thirteen lands in three clusters, eight of them inside one 12 x 36 mm
+    # column of the east power block.  Local copper there is ordinary
+    # power-supply practice and costs `GND` -- which also owns the whole of
+    # `In1` and `In4` -- nothing it needs.
+    #
+    # More than one region is the ORDINARY case, not an extension.  A rail's
+    # lands cluster where its parts are, and `BQ25185_SYS` has two such
+    # clusters -- the east power block around `U11`/`U12` and the boost pocket
+    # at `L4`/`U21`, 34 mm apart with the whole 5 V converter in between.  One
+    # pour per cluster is the same instrument twice; a single polygon spanning
+    # both would be a plane wearing a costume, and would take copper from `GND`
+    # across a corridor no `SYS` land is anywhere near.
     plane_zone = None
     if plane:
         if len(nets) != 1:
             raise SystemExit("--plane routes exactly one net")
-        plane_zone = dict(net=nets[0], layer=plane,
-                          name="%s %s PLANE" % (plane.split(".")[0], nets[0]),
-                          clearance=zone_clearance)
-        insert_zone(scratch, zone_sexpr(nets[0], plane, plane_zone["name"],
-                                        clearance=zone_clearance, islands=1))
+        specs = list(plane_outline or [None])
+        regions = []
+        for idx, spec in enumerate(specs):
+            outline = parse_outline(spec)
+            kind = "PLANE" if tuple(outline) == tuple(OUTLINE) else "POUR"
+            name = "%s %s %s" % (plane.split(".")[0], nets[0], kind)
+            if len(specs) > 1:
+                name += " %d" % (idx + 1)
+            insert_zone(scratch, zone_sexpr(
+                nets[0], plane, name, clearance=zone_clearance, islands=1,
+                outline=outline,
+                zuuid=str(uuid.uuid5(uuid.NAMESPACE_URL,
+                                     "aqroot-demo/%s/%s/%d"
+                                     % (nets[0], plane, idx)))))
+            regions.append(dict(name=name, kind=kind,
+                                outline=[list(pt) for pt in outline]))
+        plane_zone = dict(net=nets[0], layer=plane, clearance=zone_clearance,
+                          name=regions[0]["name"], kind=regions[0]["kind"],
+                          outline=regions[0]["outline"], regions=regions)
         plane_zone["first_fill_exit"] = fill_only(scratch, work / "fill.json")
 
     def child(target_nets, use_search_levers=True):
@@ -1081,14 +1117,20 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     routed = child(nets)
 
     if plane_zone:
+        # Every requested region, not just the first: `keep` was a scaffold for
+        # the FIRST fill of a pour whose net had no connection yet, and a region
+        # left on `keep` would ship islands this run never actually bonded.
         text = scratch.read_text(encoding="utf-8")
-        marker = '(name "%s")' % plane_zone["name"]
-        head, _, tail = text.partition(marker)
-        tail = tail.replace("(island_removal_mode 1)",
-                            "(island_removal_mode 0)", 1)
-        scratch.write_text(head + marker + tail, encoding="utf-8")
+        for region in plane_zone["regions"]:
+            marker = '(name "%s")' % region["name"]
+            head, sep, tail = text.partition(marker)
+            if not sep:
+                continue
+            text = head + marker + tail.replace(
+                "(island_removal_mode 1)", "(island_removal_mode 0)", 1)
+        scratch.write_text(text, encoding="utf-8")
         plane_zone["island_removal_restored"] = (
-            "(island_removal_mode 1)" not in (head + marker + tail))
+            "(island_removal_mode 1)" not in text)
 
     # A bridge barrel finer than the board's ordinary via floors is legal only
     # because a `.kicad_dru` rule says so INSIDE A NAMED RULE AREA, and the
@@ -1166,7 +1208,12 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     zone_before, zone_after = zones(BOARD), zones(scratch)
     zone_added = [z for z in zone_after if z not in zone_before]
     zone_lost = [z for z in zone_before if z not in zone_after]
-    zone_ok = (not zone_lost and len(zone_added) == (1 if plane else 0)
+    # One added pour per REQUESTED region, all on the requested net and layer.
+    # Counting them matters: a run that quietly poured a second region nobody
+    # asked for would otherwise pass clause 6 on the shape of the first.
+    zone_ok = (not zone_lost
+               and len(zone_added) == (len(plane_zone["regions"])
+                                       if plane else 0)
                and all(z[0] == nets[0] and z[1] == (plane,)
                        for z in zone_added))
 
@@ -1294,6 +1341,11 @@ def main():
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
                                     "this layer, then stitch its islands")
+    ap.add_argument("--plane-outline", action="append", default=None,
+                    help="bound the --plane pour to a region instead of the "
+                         "whole board: `x0,y0,x1,y1` for a rectangle or "
+                         "`x,y x,y x,y ...` for a polygon, in mm.  Repeatable "
+                         "-- one pour per cluster of the rail's lands")
     ap.add_argument("--zone-clearance", type=float, default=0.25)
     ap.add_argument("--stitch-width", type=int, default=0,
                     help="stub width in nm; clamped UP to the DRU class floor")
@@ -1410,7 +1462,8 @@ def main():
                      "leaves it to the 8 mm repair pass, which cannot rebuild "
                      "a whole net" % ", ".join(orphan))
 
-    extra = dict(plane=a.plane, zone_clearance=a.zone_clearance,
+    extra = dict(plane=a.plane, plane_outline=a.plane_outline,
+                 zone_clearance=a.zone_clearance,
                  stitch_width=a.stitch_width, stitch_via=via,
                  join_residual=a.join_residual, join_max_mm=a.join_max_mm,
                  neck=a.neck, neck_max_mm=a.neck_max_mm,

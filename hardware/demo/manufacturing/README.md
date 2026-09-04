@@ -2,6 +2,61 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Bounded pour: the charger SYS rail gets local copper, 3 edges promoted (2026-09-04)
+
+`/01_POWER_TREE/BQ25185_SYS` held **10 of the board's 81 open edges** and had
+been parked since D-576.  `+3V3` owns `F`/`In3` and `GND` owns `B`/`In1`/`In4`,
+and those five pours closed twelve edges each **by the fill alone** -- a pour
+bonds every same-net land it overlaps with no track, no barrel and no pad
+escape, which is exactly what a net whose every edge reads
+`NO_LEGAL_ESCAPE_SRC` needs.  `BQ25185_SYS` had no pour, and could not have a
+board-wide one: at equal zone priority two different-net pours retreat from each
+other, so a sixth plane would fight the other five over every square millimetre.
+
+So the pour is BOUNDED, and repeatable, one region per cluster of the rail's
+lands:
+
+    python3 route_maze_batch.py /01_POWER_TREE/BQ25185_SYS \
+        --plane B.Cu \
+        --plane-outline 58.5,72.0,71.0,108.5 \
+        --plane-outline 55.0,33.0,60.0,42.0 \
+        --partial --join-residual --repair-planes \
+        --guard evidence/d596-pour-bond-guard-next.json --promote \
+        --work DIR --out evidence/d597-sys-pour-batch.json
+
+    whole-board retained open edges   81 -> 78
+    raw ratsnest                      97 -> 94
+    BQ25185_SYS                       10 -> 7
+    regressed none    removed nothing    added 2 objects
+    authority db5f997f... -> d8715223...
+
+`--outline` on `screen_plane_only.py` asks the same question read-only, and it
+is the cheap move: seven cases (`d597-bounded-pour-screens.json`) showed the
+east pour filling in **seven islands** whether the window is 114.5 or
+126.3 mm2 and whether the zone clearance is 0.25 or the 0.200 mm floor -- so the
+walls between those islands are foreign copper, not fill margin.  It also
+refused two candidates before any gate ran: `/NFC_SUPPLY` at the `U9` corner and
+`/01_POWER_TREE/ACC_5V_LX` across the switch node both fill and close nothing.
+
+A pour that is not the whole board is named `POUR` and not `PLANE` on the board,
+so the zone inventory reads back as what it is.  Gate clause 6 counts added
+zones against REQUESTED regions, and `island_removal_mode` is restored on every
+region.
+
+**The pour exposed a real defect in the guard.**  `pour_bond_guard.py` keyed a
+pour by `(net, layer)`, which stopped being an identity the moment one net owned
+two pours on one layer: the first guard run put a tube on the south pour's
+island 0 and `pour_bond_contract.py` P2 read it against the east pour's island
+0, reporting all 28 points off copper.  P2 was right.  Both modules now carry
+the zone UUID; the contract keys by zone and falls back to `(net, layer)` for
+older specs.  P1-P4 pass on the regenerated 49-tube guard.
+
+The residual 7 edges are a **0.80 mm corridor** problem -- `SYS_MAIN` is a power
+rail and the width is not waived -- plus `U11.1`, pad-boxed against PROTECTED
+`BAT_PROTECTED_P` on a 0.4 mm pitch.  `--neck` was vacuous here for the second
+promotion running, even though `U11`/`U12`/`U13`/`U21` are four of the ten
+courtyards the necking rule names.
+
 ## Rip-up-and-reroute: 4 edges promoted, eviction made whole (2026-09-04)
 
 D-585's screen said the same thing about every open net on this board for two

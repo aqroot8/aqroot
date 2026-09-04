@@ -13,6 +13,71 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-597 (BOUNDED POUR; the charger SYS rail gets local copper, 3 edges
+  PROMOTED):** `/01_POWER_TREE/BQ25185_SYS` carried **10 of 81 open edges** --
+  the largest single-net tail on the board -- and had been PARKED since D-576
+  after 52 characterization cases at a materially older geometry. Whole-board
+  retained open edges **81 -> 78**, ratsnest 97 -> 94, `BQ25185_SYS` 10 -> 7,
+  ZERO nets regressed, ZERO copper removed, **two objects added in total**.
+  Authority `db5f997f...` ->
+  `d871522361c6887a28e391860964ef0dd063116512165603022fde8799b16077`.
+  **The observation:** `+3V3` owns `F`/`In3` and `GND` owns `B`/`In1`/`In4`, and
+  D-582/D-583 closed twelve edges each **by the fill alone** because
+  `connect_pads yes` bonds a pour to every same-net land it overlaps with no
+  track, no barrel and no pad escape -- which is precisely what a net whose every
+  open edge reads `NO_LEGAL_ESCAPE_SRC` needs. `BQ25185_SYS` is the charger
+  output rail and had no pour, and could not have a board-wide one: at equal zone
+  priority two different-net pours do not nest, they retreat from each other, so
+  a sixth plane would fight the other five everywhere.
+  **The capability — `--plane-outline`, REPEATABLE.** `zone_sexpr` already took
+  an `outline` and nothing exposed it; it is now exposed end to end
+  (`parse_outline` in `screen_inner_plane.py`, `--outline` on
+  `screen_plane_only.py`, `--plane-outline` on `route_maze_batch.py`) and takes
+  one region per cluster of a rail's lands, because a rail's lands cluster where
+  its parts are. A pour that is not the whole board is named `POUR`, not `PLANE`,
+  on the board itself. Clause 6 now counts added zones against REQUESTED regions
+  and `island_removal_mode` is restored on EVERY region.
+  **POURED:** `B.Cu` (thirteen of sixteen `SYS` lands are `B.Cu` lands, and `GND`
+  still owns all of `In1`/`In4` so the return path under the column is
+  untouched): `(58.5,72.0)-(71.0,108.5)` over the east power block
+  (`C24.1`/`C26.2`/`C27.1`/`C28.1`/`U11.1`/`U12.1`/`U12.10`/`U12.11`) and
+  `(55.0,33.0)-(60.0,42.0)` over the 5 V boost pocket (`L4.1`/`U21.3`). Screened
+  read-only first, seven cases: the east pour fills in **seven islands** whether
+  the window is 114.5 or 126.3 mm² and whether the zone clearance is 0.25 or the
+  0.200 mm floor — the measurement that says the walls between those islands are
+  FOREIGN COPPER, not fill margin. Two further bounded pours were REFUSED on
+  their merits and are recorded so they are not re-measured: `/NFC_SUPPLY` at the
+  `U9` corner and `/01_POWER_TREE/ACC_5V_LX` across the switch node both fill and
+  close nothing.
+  **A FRAMEWORK DEFECT THE POUR EXPOSED AND FIXED.** `pour_bond_guard.py` and its
+  contract keyed a pour by `(net, layer)`, an identity only while no net owned
+  two pours on one layer. The first guard run put a tube on the south pour's
+  island 0 and `pour_bond_contract.py` P2 read it back against the east pour's
+  island 0 — all 28 points off copper — and **P2 correctly FAILED**. Both modules
+  now carry the zone UUID; the contract keys by zone with a `(net, layer)`
+  fallback. P1-P4 PASS on the regenerated 49-tube guard.
+  **`verify_promotion.py`: all 14 checks PASS** — nothing removed, 2 objects added
+  (one 0.800 mm `F.Cu` track, one 0.80/0.40 barrel) plus the two claimed zones,
+  zone inventory exactly as claimed, KiCad's own unconnected count **97 -> 94**,
+  real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO attributable
+  and ZERO parity errors, fill-stable, D-269/D-186 live, `hardware/beta-v2/`
+  untouched. `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
+  **NOT SOLVED, stated exactly:** the residual 7 `SYS` edges are a **0.80 mm
+  corridor** problem (`SYS_MAIN` is the charger output rail; the width is NOT
+  waived) plus `U11.1`, pad-boxed between PROTECTED `BAT_PROTECTED_P` and
+  `U11.3` on a 0.4 mm pitch. `--neck` was **VACUOUS for the second promotion
+  running** (`pad_escape_neck: null`, byte-identical run) even though `U11`,
+  `U12`, `U13` and `U21` ARE four of the ten courtyards the necking rule names.
+  Evidence `d597-sys-pour-batch.json`, `d597-verify.json`,
+  `d597-bounded-pour-screens.json`, `d597-protected-copper.json`,
+  `d597-pour-bond-guard-next.json`, `d597-guard-contract.json`,
+  `d597-neck-contract.json`, `d597-corridor-rescreen.json`.
+  **Next:** the bounded pour is a general instrument — screen the remaining
+  plane-less power nets with it before routing them. For `BQ25185_SYS` itself the
+  honest answers in order of cost are a bounded `In2` `SYS` pour under the east
+  column (In2 carries only 18 tracks there, but it is the board's last free
+  signal inner layer) or an `--evict-whole` sweep of the copper slotting that
+  column. No owner decision.
 - **Demo D-596 (rip-up-and-reroute; 4 edges PROMOTED, eviction made whole):**
   D-595 mined out the pour-bridge seam and left two floorplan walls. This
   attacks the OTHER half of the tail instead -- the 32 edges on 17 functional

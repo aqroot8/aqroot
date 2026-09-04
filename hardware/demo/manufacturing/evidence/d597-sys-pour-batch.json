@@ -1,0 +1,361 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382",
+  "authoritative_unchanged": true,
+  "bridges": null,
+  "candidate_sha256": "d871522361c6887a28e391860964ef0dd063116512165603022fde8799b16077",
+  "connectivity": {
+    "nets_improved": [
+      "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 78,
+    "retained_open_edges_before": 81
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "a099a635fbe9c7635e5b95e0899f4c0694e73df3d12fedf21d684b25fef1acb7",
+    "spec": "evidence/d596-pour-bond-guard-next.json",
+    "tubes": 45
+  },
+  "inherited_within_baseline": true,
+  "plane": {
+    "clearance": 0.25,
+    "first_fill_exit": 0,
+    "island_removal_restored": true,
+    "kind": "POUR",
+    "layer": "B.Cu",
+    "name": "B /01_POWER_TREE/BQ25185_SYS POUR 1",
+    "net": "/01_POWER_TREE/BQ25185_SYS",
+    "outline": [
+      [
+        58.5,
+        72.0
+      ],
+      [
+        71.0,
+        72.0
+      ],
+      [
+        71.0,
+        108.5
+      ],
+      [
+        58.5,
+        108.5
+      ]
+    ],
+    "regions": [
+      {
+        "kind": "POUR",
+        "name": "B /01_POWER_TREE/BQ25185_SYS POUR 1",
+        "outline": [
+          [
+            58.5,
+            72.0
+          ],
+          [
+            71.0,
+            72.0
+          ],
+          [
+            71.0,
+            108.5
+          ],
+          [
+            58.5,
+            108.5
+          ]
+        ]
+      },
+      {
+        "kind": "POUR",
+        "name": "B /01_POWER_TREE/BQ25185_SYS POUR 2",
+        "outline": [
+          [
+            55.0,
+            33.0
+          ],
+          [
+            60.0,
+            33.0
+          ],
+          [
+            60.0,
+            42.0
+          ],
+          [
+            55.0,
+            42.0
+          ]
+        ]
+      }
+    ]
+  },
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 78
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [
+      [
+        "/01_POWER_TREE/BQ25185_SYS",
+        [
+          "B.Cu"
+        ],
+        "B /01_POWER_TREE/BQ25185_SYS POUR 1",
+        200000,
+        250000,
+        0,
+        [
+          [
+            58500000,
+            72000000
+          ],
+          [
+            71000000,
+            72000000
+          ],
+          [
+            71000000,
+            108500000
+          ],
+          [
+            58500000,
+            108500000
+          ]
+        ]
+      ],
+      [
+        "/01_POWER_TREE/BQ25185_SYS",
+        [
+          "B.Cu"
+        ],
+        "B /01_POWER_TREE/BQ25185_SYS POUR 2",
+        200000,
+        250000,
+        0,
+        [
+          [
+            55000000,
+            33000000
+          ],
+          [
+            60000000,
+            33000000
+          ],
+          [
+            60000000,
+            42000000
+          ],
+          [
+            55000000,
+            42000000
+          ]
+        ]
+      ]
+    ],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "d871522361c6887a28e391860964ef0dd063116512165603022fde8799b16077",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 250000,
+        "guarded_layers": {
+          "B": 801,
+          "F": 311
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "SYS_MAIN",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "failures": [
+        {
+          "island": [
+            "R68.1"
+          ],
+          "pad": "R68.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U13.3"
+          ],
+          "pad": "U13.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x37), U13.1 (x23), C34.1 (x8), L2.2 (x4)"
+        }
+      ],
+      "mm": 2.05,
+      "mode": "stitch+join",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": true,
+      "residual_join": {
+        "failures": [
+          {
+            "dst_escapes": 34,
+            "island": [
+              "C26.2"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 8,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          },
+          {
+            "island": [
+              "U13.3"
+            ],
+            "pads": [
+              "U13.3"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "no legal escape on the source island"
+          },
+          {
+            "dst_escapes": 36,
+            "island": [
+              "SW9.2",
+              "U12.1"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 9,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          },
+          {
+            "island": [
+              "U12.10",
+              "U12.11"
+            ],
+            "pads": [
+              "U12.10",
+              "U12.11"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "no legal escape on the source island"
+          },
+          {
+            "dst_escapes": 36,
+            "island": [
+              "C28.1"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 1,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          },
+          {
+            "dst_escapes": 34,
+            "island": [
+              "L4.1",
+              "U21.3"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 8,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          },
+          {
+            "island": [
+              "U11.1"
+            ],
+            "pads": [
+              "U11.1"
+            ],
+            "reason": "NO_LEGAL_ESCAPE_SRC",
+            "why": "no legal escape on the source island"
+          },
+          {
+            "dst_escapes": 36,
+            "island": [
+              "C27.1"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 6,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          },
+          {
+            "dst_escapes": 36,
+            "island": [
+              "R68.1"
+            ],
+            "reason": "NO_PATH",
+            "src_escapes": 7,
+            "why": "no all-layer corridor at 0.800 mm between the islands"
+          }
+        ],
+        "joined": 0,
+        "joins": [],
+        "mm": 0,
+        "net": "/01_POWER_TREE/BQ25185_SYS",
+        "ok": false,
+        "unreachable": 9,
+        "vias": 0
+      },
+      "seconds": 50.2,
+      "stitched": 1,
+      "unreachable": 2,
+      "via_xy": [
+        [
+          66.0,
+          86.5
+        ]
+      ],
+      "vias": 1
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "schema": 1
+}

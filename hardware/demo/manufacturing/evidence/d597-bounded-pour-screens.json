@@ -1,0 +1,312 @@
+{
+  "board_sha256": "db5f997fc6a92d071c17ad2803fec2dcfcc23567bafa7443e384b3f874d3d382",
+  "cases": [
+    {
+      "attributable_drc": 0,
+      "case": "east_c25",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 7,
+      "filled_area_mm2": 114.5,
+      "island_area_mm2": [
+        92.3,
+        7.2,
+        6.1,
+        5.5,
+        2.2,
+        0.7,
+        0.4
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 9,
+      "net_open_edges_before": 10,
+      "nets_regressed": [],
+      "outline": [
+        [
+          60.0,
+          73.0
+        ],
+        [
+          70.5,
+          73.0
+        ],
+        [
+          70.5,
+          107.5
+        ],
+        [
+          60.0,
+          107.5
+        ]
+      ],
+      "retained_open_edges_after": 80,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.25
+    },
+    {
+      "attributable_drc": 0,
+      "case": "east_c20",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 7,
+      "filled_area_mm2": 115.9,
+      "island_area_mm2": [
+        93.6,
+        7.3,
+        6.2,
+        5.5,
+        2.2,
+        0.7,
+        0.5
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 9,
+      "net_open_edges_before": 10,
+      "nets_regressed": [],
+      "outline": [
+        [
+          60.0,
+          73.0
+        ],
+        [
+          70.5,
+          73.0
+        ],
+        [
+          70.5,
+          107.5
+        ],
+        [
+          60.0,
+          107.5
+        ]
+      ],
+      "retained_open_edges_after": 80,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.2
+    },
+    {
+      "attributable_drc": 0,
+      "case": "east_wide_c25",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 7,
+      "filled_area_mm2": 124.5,
+      "island_area_mm2": [
+        99.9,
+        9.1,
+        6.6,
+        5.5,
+        2.2,
+        0.7,
+        0.4
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 9,
+      "net_open_edges_before": 10,
+      "nets_regressed": [],
+      "outline": [
+        [
+          58.5,
+          72.0
+        ],
+        [
+          71.0,
+          72.0
+        ],
+        [
+          71.0,
+          108.5
+        ],
+        [
+          58.5,
+          108.5
+        ]
+      ],
+      "retained_open_edges_after": 80,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.25
+    },
+    {
+      "attributable_drc": 0,
+      "case": "east_wide_c20",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 7,
+      "filled_area_mm2": 126.3,
+      "island_area_mm2": [
+        101.4,
+        9.3,
+        6.7,
+        5.5,
+        2.2,
+        0.7,
+        0.5
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 9,
+      "net_open_edges_before": 10,
+      "nets_regressed": [],
+      "outline": [
+        [
+          58.5,
+          72.0
+        ],
+        [
+          71.0,
+          72.0
+        ],
+        [
+          71.0,
+          108.5
+        ],
+        [
+          58.5,
+          108.5
+        ]
+      ],
+      "retained_open_edges_after": 80,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.2
+    },
+    {
+      "attributable_drc": 0,
+      "case": "south_c25",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 1,
+      "filled_area_mm2": 11.5,
+      "island_area_mm2": [
+        11.5
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 9,
+      "net_open_edges_before": 10,
+      "nets_regressed": [],
+      "outline": [
+        [
+          55.0,
+          33.0
+        ],
+        [
+          60.0,
+          33.0
+        ],
+        [
+          60.0,
+          42.0
+        ],
+        [
+          55.0,
+          42.0
+        ]
+      ],
+      "retained_open_edges_after": 80,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.25
+    },
+    {
+      "attributable_drc": 0,
+      "case": "nfc_supply_u9_c25",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 2,
+      "filled_area_mm2": 1.7,
+      "island_area_mm2": [
+        1.4,
+        0.3
+      ],
+      "layer": "B.Cu",
+      "net": "/NFC_SUPPLY",
+      "net_open_edges_after": 2,
+      "net_open_edges_before": 2,
+      "nets_regressed": [],
+      "outline": [
+        [
+          30.8,
+          26.8
+        ],
+        [
+          33.4,
+          26.8
+        ],
+        [
+          33.4,
+          29.2
+        ],
+        [
+          30.8,
+          29.2
+        ]
+      ],
+      "retained_open_edges_after": 81,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.25
+    },
+    {
+      "attributable_drc": 0,
+      "case": "acc_5v_lx_c25",
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 1,
+      "filled_area_mm2": 3.2,
+      "island_area_mm2": [
+        3.2
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "net_open_edges_after": 1,
+      "net_open_edges_before": 1,
+      "nets_regressed": [],
+      "outline": [
+        [
+          57.8,
+          34.0
+        ],
+        [
+          61.0,
+          34.0
+        ],
+        [
+          61.0,
+          41.0
+        ],
+        [
+          57.8,
+          41.0
+        ]
+      ],
+      "retained_open_edges_after": 81,
+      "retained_open_edges_before": 81,
+      "zone_clearance_mm": 0.25
+    }
+  ],
+  "note": "READ-ONLY bounded-pour screen, run on the pre-D-597 authoritative board db5f997f.  Each case inserts ONE zone for the named net on the named layer inside the named outline, refills with the real KiCad engine and recounts the fitted-pad ledger.  A pour that closes an edge does it through `connect_pads yes` with no track, no barrel and no pad escape -- which is why it reaches lands whose every open edge is NO_LEGAL_ESCAPE_SRC.  Nothing here writes the authoritative board.",
+  "schema": 1
+}

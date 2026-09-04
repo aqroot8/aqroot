@@ -300,8 +300,15 @@ def read_pours(board):
                 isl.append(dict(index=i, poly=poly,
                                 area_mm2=poly.Area() / 1e12,
                                 edges=np.array(E, dtype=np.float64)))
+            # A NET MAY OWN MORE THAN ONE POUR ON ONE LAYER.  A rail whose
+            # lands cluster in two places gets one bounded pour per cluster,
+            # so (net, layer) stopped being an identity the moment
+            # `--plane-outline` became repeatable.  Carry the zone through, or
+            # a guard tube on the second pour's island 0 is read back against
+            # the first pour's island 0 -- which is what happened.
             out.append(dict(net=z.GetNetname(), layer=lname,
-                            lkey=OUTER[lname], islands=isl))
+                            lkey=OUTER[lname], islands=isl,
+                            zone=z.m_Uuid.AsString(), zone_name=z.GetZoneName()))
     return out
 
 
@@ -415,7 +422,7 @@ def build(board_path, area_max, radius, grid, escapes=True):
                             for q in pads if q["ref"] not in dead]
                 if not anchors:
                     skipped.append(dict(net=p["net"], layer=p["layer"],
-                                        island=isl["index"],
+                                        zone=p["zone"], island=isl["index"],
                                         reason="NO_ANCHOR",
                                         pads=[q["ref"] for q in fatal]))
                     continue
@@ -429,6 +436,7 @@ def build(board_path, area_max, radius, grid, escapes=True):
             for (u, v) in pairs:
                 t = geodesic(isl["edges"], nodes[u], nodes[v], radius, grid)
                 rec = dict(net=p["net"], layer=p["layer"], lkey=p["lkey"],
+                           zone=p["zone"], zone_name=p["zone_name"],
                            island=isl["index"],
                            island_area_mm2=round(isl["area_mm2"], 3),
                            reason=reason, ends=[labels[u], labels[v]])

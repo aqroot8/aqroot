@@ -31,7 +31,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from screen_inner_plane import insert_zone, zone_sexpr, measure
+from screen_inner_plane import (OUTLINE, insert_zone, parse_outline,
+                                zone_sexpr, measure)
 
 ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
@@ -54,16 +55,21 @@ def ledger(board, out):
     return json.loads(Path(out).read_text())
 
 
-def screen(net, layer, work, clearance=0.25, islands=0):
+def screen(net, layer, work, clearance=0.25, islands=0, outline=OUTLINE):
     work = Path(work)
     work.mkdir(parents=True, exist_ok=True)
     for suffix in (".kicad_pcb", ".kicad_dru", ".kicad_pro"):
         (work / BOARD.name).with_suffix(suffix).write_bytes(
             BOARD.with_suffix(suffix).read_bytes())
     scratch = work / BOARD.name
-    name = "%s %s PLANE" % (layer.split(".")[0], net)
+    # A bounded pour is named POUR, not PLANE, and the name is not cosmetic:
+    # `verify_promotion.py` reads the zone inventory back off the promoted board
+    # and a reviewer must be able to tell a rail's local copper from a layer it
+    # owns without measuring the polygon.
+    kind = "PLANE" if tuple(outline) == tuple(OUTLINE) else "POUR"
+    name = "%s %s %s" % (layer.split(".")[0], net, kind)
     insert_zone(scratch, zone_sexpr(net, layer, name, clearance=clearance,
-                                    islands=islands))
+                                    islands=islands, outline=outline))
 
     drc_json = work / "drc.json"
     done = subprocess.run([
@@ -85,7 +91,7 @@ def screen(net, layer, work, clearance=0.25, islands=0):
     geom = measure(scratch, net, layer)
     return dict(
         net=net, layer=layer, zone_name=name, zone_clearance_mm=clearance,
-        island_removal_mode=islands,
+        island_removal_mode=islands, outline=list(outline),
         drc_exit=done.returncode, drc_types=counts,
         attributable_drc=attributable,
         inherited_within_baseline=all(counts.get(k, 0) <= n
@@ -112,15 +118,22 @@ def main():
     ap.add_argument("--clearance", type=float, default=0.25)
     ap.add_argument("--islands", type=int, default=0,
                     help="island_removal_mode for the new pour (0 = remove)")
+    ap.add_argument("--outline", default=None,
+                    help="bound the pour to a region instead of the whole "
+                         "board: `x0,y0,x1,y1` for a rectangle or "
+                         "`x,y x,y x,y ...` for a polygon, in mm.  A rail that "
+                         "wants local copper rather than a layer of its own")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
+    outline = parse_outline(a.outline)
     before = sha256(BOARD)
     cases = []
     for layer in a.layers.split(","):
         cell = Path(a.work) / ("%s_%s" % (a.net.strip("/+").replace("/", "_"),
                                           layer.replace(".", "_")))
-        c = screen(a.net, layer, cell, a.clearance, a.islands)
+        c = screen(a.net, layer, cell, a.clearance, a.islands,
+                   outline=outline)
         cases.append(c)
         print("  %-7s area %8.1f mm2  islands %3d  edges %d -> %d  "
               "attributable DRC %d"
@@ -128,7 +141,8 @@ def main():
                  c["retained_open_edges_before"],
                  c["retained_open_edges_after"], len(c["attributable_drc"])),
               file=sys.stderr, flush=True)
-    out = dict(schema=1, net=a.net, authoritative_board_sha256=before,
+    out = dict(schema=1, net=a.net, outline=list(outline),
+               authoritative_board_sha256=before,
                authoritative_unchanged=(before == sha256(BOARD)), cases=cases)
     text = json.dumps(out, indent=2, sort_keys=True, default=str)
     if a.out:
