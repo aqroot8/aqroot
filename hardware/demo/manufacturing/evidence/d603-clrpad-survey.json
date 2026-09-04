@@ -1,0 +1,548 @@
+{
+  "answer": "EXACTLY ONE verdict changes across all 28 open retained nets: /03_SPI_A_DISPLAY_SD/LED_A  J1.1 -> R71.2 reads NO_LEGAL_ESCAPE_SRC at 0.30 mm and routes at 0.20 mm.  The necking rule changes nothing anywhere: it is a WIDTH lever and every net measured here is already at its class width.",
+  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "method": "read-only; per net, four Fields on the authoritative board -- clr_pad as built vs 0.20 mm, each with and without the .kicad_dru necking rule -- and every island-MST edge offered to the real `maze3d.route_join` with emit=False",
+  "nets": [
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.25,
+      "clr_trk_mm": 0.25,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 9,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.8
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 1,
+      "joins_ok_pad_020": 1,
+      "joins_ok_pad_020_neck": 1,
+      "mst_edges": 5,
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 3,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "netclass": "I2C",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.3,
+      "clr_trk_mm": 0.3,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+      "netclass": "LED_BOOST",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.3
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/I2C_SDA_INT",
+      "netclass": "I2C",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 2,
+      "net": "/WAKE_INT_N",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.3,
+      "clr_trk_mm": 0.3,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "netclass": "SWITCH_NODE",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "netclass": "USB_D",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": true,
+      "clr_pad_as_built_mm": 0.3,
+      "clr_trk_mm": 0.3,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 1,
+      "joins_ok_pad_020_neck": 1,
+      "mst_edges": 1,
+      "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+      "netclass": "LED_BOOST",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_020": [],
+      "width_mm": 0.3
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "netclass": "NFC_RX",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "netclass": "NFC_RX",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 1,
+      "joins_ok_pad_020": 1,
+      "joins_ok_pad_020_neck": 1,
+      "mst_edges": 1,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "netclass": "Default",
+      "reasons_as_built": [],
+      "reasons_pad_020": [],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/ACC_5V_BOOST_EN",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/I2S_LRCLK",
+      "netclass": "I2S",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/NFC_IRQ",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/SPI_B_SCK",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_020": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/SX1262_DIO1",
+      "netclass": "Default",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": false,
+      "clr_pad_as_built_mm": 0.2,
+      "clr_trk_mm": 0.2,
+      "joins_ok_as_built": 0,
+      "joins_ok_pad_020": 0,
+      "joins_ok_pad_020_neck": 0,
+      "mst_edges": 1,
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D",
+      "reasons_as_built": [
+        "NO_PATH"
+      ],
+      "reasons_pad_020": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    }
+  ],
+  "nets_changed": 1,
+  "nets_measured": 28,
+  "question": "Every elevated `DRU_CLASS[clr]` figure comes from a section-8 \"routed clearance\" rule and every one of those rules carries `A.Type != 'Pad' && B.Type != 'Pad'`; the section header says so in words.  `net_contract` collapsed the two into one scalar and every caller passed it to `maze3d.Field` as BOTH clr_pad and clr_trk.  What does the board's own reading of its own rule buy?",
+  "schema": 1
+}

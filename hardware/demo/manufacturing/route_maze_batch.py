@@ -78,8 +78,27 @@ DRU_CLASS = {
     "Default":      dict(clr=200000, layers=None),
     "I2C":          dict(clr=200000, layers=None),
     "I2S":          dict(clr=200000, layers=None),
-    "NFC_RX":       dict(clr=200000, layers=None),
-    "NFC_OSC":      dict(clr=200000, layers=None),
+    # THE THREE NFC FAMILIES CARRY LAYER CONTRACTS AND THE TABLE DID NOT SAY SO,
+    # which is the USB_D lesson unlearned three more times.  `.kicad_dru`
+    # section 6 states them in its own words -- "NFC crystal nets stay on
+    # B.Cu", "NFC crystal nets are forbidden on In2", "NFC crystal nets carry
+    # no via", and the same three for the transmit arms -- and `layers=None`
+    # let the maze reach every pad on all four routable layers.  The first U9
+    # fanout batch measured the consequence rather than arguing it: with
+    # `NFC_VDD_A` and `NFC_VDD_D` both closed, the evicted `NFC_XOUT` came back
+    # with a 0.7211 mm and a 1.3416 mm track on In2 and TWO F-to-B barrels, and
+    # the authoritative gate refused the run on FOUR real `items_not_allowed`
+    # reports naming those two rules.
+    #
+    # The fix is the one D-596 already wrote down for `USB_D`: a SINGLE-layer
+    # contract makes the via inexpressible rather than merely forbidden -- the
+    # maze's via move has no second layer to land on -- so the In2 prohibition
+    # and the no-via rule stop being rules the proposer may break and become a
+    # shape it cannot draw.  `NFC_RX` is deliberately NOT single-layer: its
+    # rule disallows a TRACK on F.Cu and says nothing about vias or In2, so it
+    # keeps `B` and `In2` and the barrel it is allowed to have.
+    "NFC_RX":       dict(clr=200000, layers=("B", "I2")),
+    "NFC_OSC":      dict(clr=200000, layers=("B",)),
     "GND":          dict(clr=200000, layers=None),
     "SPK_OUT":      dict(width=250000, clr=200000, layers=("F", "B")),
     "LED_BOOST":    dict(clr=300000, layers=None),
@@ -91,7 +110,13 @@ DRU_CLASS = {
     "NFC_5V_PA":    dict(width=350000, clr=250000, drill=400000, layers=None),
     "P3V3":         dict(width=400000, clr=200000, drill=400000, layers=None),
     "BAT_MAIN":     dict(width=600000, clr=300000, drill=400000, layers=None),
-    "NFC_RF":       dict(clr=200000, layers=None),
+    # `clr` is 0.25 mm because section 8 says "NFC transmit arm routed
+    # clearance (min 0.25mm)" and the NFC_RF NETCLASS carries only 0.20 mm --
+    # the same gap the table already records for NFC_5V_PA, VBUS_CHG and the
+    # ACC rails.  The width floor is the DRU's 0.30 mm; the netclass is already
+    # 0.40 mm and `max()` keeps it, so the figure is stated for the record
+    # rather than to lower anything.
+    "NFC_RF":       dict(width=300000, clr=250000, layers=("B",)),
     # USB_D is the one class on this board whose layer set is a SINGLE layer,
     # and the first screen that actually routed it proved why.  Given `F, B`
     # the maze reached every USB pad -- all four nets routed, 126 -> 121 open
@@ -694,8 +719,47 @@ def sha256_file(path):
     return sha256_bytes(Path(path).read_bytes())
 
 
+# A CLEARANCE THIS BOARD OWES A PAD IS NOT THE ONE IT OWES A TRACK, AND THE
+# `.kicad_dru` SAYS SO IN WORDS.  Every elevated figure in `DRU_CLASS["clr"]`
+# comes from a section-8 "routed clearance" rule, and every one of those rules
+# carries `A.Type != 'Pad' && B.Type != 'Pad'`.  The section's own header states
+# the intent rather than leaving it to be inferred:
+#
+#     Elevated clearances below are ROUTING clearances: they are scoped so
+#     that vendor land patterns (J1 FH69 0.5 mm pitch, J3 USB-C, U11 WSON
+#     0.4 mm pitch, U12 VSON, U14 WLP) are judged against the 0.20 mm
+#     global figure they actually satisfy, not against a routing target.
+#
+# `net_contract` collapsed both into ONE scalar and every caller handed it to
+# `maze3d.Field` as BOTH `clr_pad` and `clr_trk`, so the proposer owed a PAD a
+# routing target the board judges at 0.20 mm.  That is not conservatism, it is
+# a different rule: a fine-pitch land pattern is exactly where the extra tenths
+# decide whether a pin can launch at all.  `maze3d` already models the
+# distinction correctly -- `dru_overlay` and `obs_clearance` raise a track's or
+# via's clearance by `CLASS_TRK_CLR` and skip that raise for a pad -- so the
+# elevated figure is still applied to routed copper with no caller change at
+# all, and the ONLY thing this split removes is the raise against pads.
+#
+# MEASURED, on `bfef0aa2...`, over every open retained net: it changes exactly
+# one verdict.  `/03_SPI_A_DISPLAY_SD/LED_A` `J1.1 -> R71.2` reads
+# `NO_LEGAL_ESCAPE_SRC` at 0.30 mm and routes at 0.20 mm -- the display
+# backlight anode leaving the J1 FH69 flex land pattern the header names.
+#
+# BAT_MAIN IS DELIBERATELY NOT SPLIT.  Its 0.30 mm rule is D-269, the retained
+# battery-safety clearance, and although that rule is written with the same
+# pad exclusion, nothing currently open is BAT_MAIN, so relaxing the proposer
+# there buys nothing and would make a safety ruling depend on reading its rule
+# text the same way twice.  The conservatism is named here rather than hidden.
+PAD_CLR_RETAINED = {"BAT_MAIN": 300000}
+
+
 def net_contract(board, net):
-    """The width / clearance / via / layer contract for ONE net."""
+    """The width / clearance / via / layer contract for ONE net.
+
+    `clr` is the clearance owed ROUTED copper -- a track or a via -- and
+    `clr_pad` the clearance owed a PAD.  See `PAD_CLR_RETAINED` above for why
+    they are two numbers and why exactly one class keeps them equal.
+    """
     info = board.FindNet(net)
     if info is None:
         raise SystemExit("net %r is not on the board" % net)
@@ -706,6 +770,7 @@ def net_contract(board, net):
         net=net, netclass=cls,
         width=max(nc.GetTrackWidth(), over.get("width", 0)),
         clr=max(nc.GetClearance(), over.get("clr", 0)),
+        clr_pad=max(nc.GetClearance(), PAD_CLR_RETAINED.get(cls, 0)),
         via_dia=nc.GetViaDiameter(), via_drill=nc.GetViaDrill(),
         layers=over.get("layers"),
         known_class=cls in DRU_CLASS,
@@ -836,14 +901,15 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                         DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
             c = dict(c, via_drill=drill,
                      via_dia=max(bond_via[0], drill + 2 * ANNULAR_MIN))
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
                          layers=c["layers"], guard=gb)
         r = mz.bond_pads(qb, net, field, bond_by_net[net], max_mm=bond_max_mm)
         r["via"] = [c["via_dia"], c["via_drill"]]
         r["seconds"] = round(time.time() - t0, 1)
         r["contract"] = {k: c[k] for k in ("netclass", "width", "clr",
-                                           "via_dia", "via_drill", "layers")}
+                                           "clr_pad", "via_dia", "via_drill",
+                                           "layers")}
         bonds.append(r)
         print("  %-44s bond   %d/%d %.0fs"
               % (net, r.get("bonded", 0), r.get("requested", 0),
@@ -886,15 +952,16 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         bridged = None
         if bridge and mz.has_plane(qb, net):
             bridged = mz.bridge_islands(
-                qb, net, c["width"], c["clr"], c["clr"], BRIDGE_LADDER,
+                qb, net, c["width"], c["clr_pad"], c["clr"], BRIDGE_LADDER,
                 via_floors(c["netclass"]), G=grid, layers=c["layers"], guard=g)
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
                          layers=c["layers"], neck=neck_rule, guard=g)
         # A net that owns a filled pour is completed by dropping each island
         # onto that pour, not by a pad-to-pad MST across the signal layers.
         if mz.has_plane(qb, net):
-            r = mz.stitch_net(qb, net, width=c["width"], clr_pad=c["clr"],
+            r = mz.stitch_net(qb, net, width=c["width"],
+                              clr_pad=c["clr_pad"],
                               clr_trk=c["clr"], via_dia=c["via_dia"],
                               via_drill=c["via_drill"], G=grid, field=field,
                               split_islands=split_islands)
@@ -914,7 +981,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 r["mode"] = "stitch+join"
                 r["ok"] = bool(r.get("ok")) or bool(j.get("joined"))
         else:
-            r = mz.route_net(qb, net, width=c["width"], clr_pad=c["clr"],
+            r = mz.route_net(qb, net, width=c["width"],
+                             clr_pad=c["clr_pad"],
                              clr_trk=c["clr"], via_dia=c["via_dia"],
                              via_drill=c["via_drill"], G=grid,
                              via_cost_mm=via_cost_mm, field=field,
@@ -930,8 +998,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             net, r["mode"], "ok" if r.get("ok") else r.get("reason", "FAIL"),
             time.time() - t0), file=sys.stderr, flush=True)
         r["contract"] = {k: c[k] for k in
-                         ("netclass", "width", "clr", "via_dia", "via_drill",
-                          "layers", "reserved_inner_planes",
+                         ("netclass", "width", "clr", "clr_pad", "via_dia",
+                          "via_drill", "layers", "reserved_inner_planes",
                           "guarded_layers")}
         results.append(r)
     qb.save(str(path))

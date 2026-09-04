@@ -95,7 +95,7 @@ def main():
         main = max(islands, key=len)
         pads = [p for g in islands if g is not main for p in g]
         t0 = time.time()
-        base = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        base = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                         c["via_dia"], c["via_drill"], G=a.grid,
                         layers=c["layers"])
         rows = []
@@ -109,7 +109,7 @@ def main():
         for w in widths:
             if w >= c["width"]:
                 continue
-            f = mz.Field(qb, net, w, c["clr"], c["clr"],
+            f = mz.Field(qb, net, w, c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=a.grid,
                          layers=c["layers"])
             for p, row in zip(pads, rows):

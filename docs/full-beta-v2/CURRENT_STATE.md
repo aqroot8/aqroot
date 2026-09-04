@@ -13,6 +13,73 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-603 (PAD-vs-TRACK clearance SPLIT; the display backlight anode
+  PROMOTED, D-601's seven-pad bond payload SPENT, three NFC layer contracts
+  repaired):** D-601 left a ready payload that clause 4 would not promote alone
+  and four partner routes that all declined. The fifth was found by fixing a
+  framework defect the `.kicad_dru` had already written down in words.
+  Authority `bfef0aa2...` -> **`0b991dc9...`**, retained open edges **73 -> 72**,
+  ratsnest 89 -> 88, open retained nets 30 -> 29; improved
+  `/03_SPI_A_DISPLAY_SD/LED_A`, regressed none; 26 objects added (17 tracks +
+  9 vias), ZERO removed, zero zones or rule areas touched. D-269/D-186,
+  `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and `hardware/beta-v2/` untouched;
+  `protected_copper.py` 15 nets / 393 objects BYTE-IDENTICAL.
+  **THE DEFECT.** Every elevated figure in `route_maze_batch.DRU_CLASS["clr"]`
+  comes from a section-8 "routed clearance" rule and every one of those rules
+  carries `A.Type != 'Pad' && B.Type != 'Pad'`; the section header says the
+  elevated figures are ROUTING clearances scoped so vendor land patterns (J1
+  FH69 0.5 mm pitch, J3 USB-C, U11 WSON, U12 VSON, U14 WLP) are judged at the
+  0.20 mm global figure. `net_contract` collapsed both into ONE scalar and every
+  caller handed it to `maze3d.Field` as BOTH `clr_pad` and `clr_trk`, so the
+  proposer owed a PAD a routing target the board judges at 0.20 mm -- a
+  DIFFERENT rule, not conservatism. `maze3d` already models the distinction, so
+  the elevated figure still applies to routed copper and only the raise against
+  pads is removed. `BAT_MAIN` is deliberately NOT split (D-269;
+  `PAD_CLR_RETAINED` names the conservatism).
+  **PRICED BEFORE SPENT, EXACTLY ONE VERDICT MOVES.** New read-only
+  `screen_pad_clearance.py` differs two Fields in `clr_pad` alone and offers
+  every island-MST edge to the real `maze3d.route_join` with `emit=False`:
+  across all 28 open retained nets, `/03_SPI_A_DISPLAY_SD/LED_A` `J1.1 ->
+  R71.2` reads `NO_LEGAL_ESCAPE_SRC` at 0.30 mm and ROUTES at 0.20 mm. The
+  necking rule changes nothing -- it is a WIDTH lever and every net is already
+  at its class width. Laid at 10.042 mm, `F -> B -> F`, 2 vias, ZERO
+  attributable DRC.
+  **THE SEVEN BONDS RODE WITH IT AND THE LADDER IS SPENT.** `C25.2`, `C36.2`,
+  `C5.2`, `R17.2`, `R37.2`, `R97.2`, `R98.2`, 7 of 7 at 0.50/0.25 mm, 9.952 mm
+  total, on the 29-tube guard. With both promoted transactions credited,
+  `screen_bond_stitch.py --bonded-from` reports **39 of 75 bonded and ZERO
+  remaining bondable** at the free rung; the 36 left are `NO_LEGAL_ESCAPE` /
+  `NO_VIA_SITE` and need D-601's licensed 0.45/0.20 mm barrel (4 pads, 3 tubes).
+  Working guard for the next run: `evidence/d603-pour-bond-guard-bonded.json`.
+  **THREE NFC LAYER CONTRACTS REPAIRED.** `DRU_CLASS` carried `layers=None` for
+  `NFC_OSC`, `NFC_RF` and `NFC_RX` while section 7 forbids `F.Cu`, `In2` and
+  vias for the crystal and the transmit arms by name; a real gate run refused a
+  batch on four `items_not_allowed` reports after the evicted `NFC_XOUT` came
+  back on `In2` with two barrels. Fixed by the `USB_D` recipe -- a SINGLE-layer
+  contract makes the via INEXPRESSIBLE rather than merely forbidden. `NFC_RX`
+  keeps `B`+`In2` because its rule disallows only a TRACK on `F.Cu`; `NFC_RF`
+  also gained section 8's 0.25 mm routed clearance.
+  **U9 WEST CHANNEL = a strict 1-for-1 trade** (characterization, no copper).
+  UFQFPN-32, 0.5 mm pitch, 0.175 mm inner channel, so every west pin launches
+  straight west into one lane. Supplies first: both close, both crystal nets one
+  join short, 73 -> 73. Crystal first: it rebuilds better than it was (`XIN`
+  7.237 mm, `XOUT` 4.947 mm, zero vias) and both supplies return to
+  `NO_LEGAL_ESCAPE_DST`, 73 -> 73. The single openers are **1.149 mm and
+  0.583 mm** of route -- SEGMENTS, not nets.
+  All 14 `verify_promotion.py` checks PASS; DRC 199/5/1 inherited, zero
+  attributable, zero parity, unconnected 89 -> 88, fill-stable; P1-P4 and N1-N3
+  PASS on the regenerated 46-tube guard.
+  Evidence `d603-clrpad-survey.json`, `d603-u9-west-channel.json`,
+  `d603-leda-bond-batch.json`, `d603-verify.json`,
+  `d603-protected-copper.json`, `d603-pour-bond-guard-next.json`,
+  `d603-guard-contract.json`, `d603-neck-contract.json`,
+  `d603-bond-stitch-next.json`, `d603-pour-bond-guard-bonded.json`.
+  **Next: SEGMENT eviction, now named by TWO independent walls.** D-602 named it
+  for the USB connector corridor; the U9 west channel names it again with
+  openers a millimetre long. Split a crossing track at a boundary, rip up only
+  the portion inside, re-join the two stubs around it, and hold the lane with
+  `reserve_corridor.py --from-copper`. The differential-PAIR proposer stays
+  named and unbuilt behind it. No owner decision.
 - **Demo D-602 (CORRIDOR RESERVATION built; the USB connector corridor's
   opener NAMED, priced and REFUSED; NO copper promoted):** D-599 and D-601 both
   named "a corridor RESERVATION the router honours" as the capability that pays

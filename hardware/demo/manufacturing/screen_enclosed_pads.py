@@ -119,7 +119,7 @@ def main():
     nets_out, enclosed_total, pads_total = [], 0, 0
     for net in open_nets:
         c = net_contract(qb.b, net)
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=100000,
                          layers=c["layers"], neck=nk)
         layers = field.layers

@@ -472,7 +472,7 @@ def main():
     for net in a.nets:
         c = net_contract(qb.b, net)
         layers = permitted_layers(qb.routable, c["layers"], reserved, net)
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=a.grid, layers=layers)
         islands = mz.net_islands(qb, net)
         rec = dict(net=net, netclass=c["netclass"], layers=list(layers),

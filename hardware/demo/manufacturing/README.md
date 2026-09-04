@@ -2,6 +2,124 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## A clearance the board owes a PAD is not the one it owes a TRACK; the display backlight anode PROMOTED, and the free bond rung spent (2026-09-04)
+
+D-601 left a READY PAYLOAD -- seven pads that bond at the board's own
+`min_via_diameter` and need no licence -- and a rule that would not bend for
+them: bond redundancy closes no edge by construction, and clause 4 requires the
+board to IMPROVE, so a robustness batch must ride with a route.  Four partners
+were offered and all four declined.  This iteration found the fifth by fixing a
+framework defect rather than by searching harder.
+
+    whole-board retained open edges   73 -> 72
+    raw ratsnest                      89 -> 88     open retained nets 30 -> 29
+    improved  /03_SPI_A_DISPLAY_SD/LED_A          regressed  none
+    7 more pads bonded (all GND)      39 of 75 bonded; free rung EXHAUSTED
+    26 objects added (17 tracks + 9 vias), ZERO removed, zero zones touched
+    authority bfef0aa2... -> 0b991dc9...
+
+**THE DEFECT, AND THE `.kicad_dru` STATES THE INTENT IN ITS OWN WORDS.**  Every
+elevated figure in `route_maze_batch.DRU_CLASS["clr"]` -- `LED_BOOST` and
+`SWITCH_NODE` at 0.30 mm, `SYS_MAIN` / `ACC_3V3` / `ACC_5V` / `VBUS_CHG` /
+`NFC_5V_PA` at 0.25 mm, `BAT_MAIN` at 0.30 mm -- comes from a section-8 "routed
+clearance" rule, and **every one of those rules carries
+`A.Type != 'Pad' && B.Type != 'Pad'`**.  The section's own header says why:
+
+    Elevated clearances below are ROUTING clearances: they are scoped so
+    that vendor land patterns (J1 FH69 0.5 mm pitch, J3 USB-C, U11 WSON
+    0.4 mm pitch, U12 VSON, U14 WLP) are judged against the 0.20 mm
+    global figure they actually satisfy, not against a routing target.
+
+`net_contract` collapsed both into ONE scalar and every caller handed it to
+`maze3d.Field` as BOTH `clr_pad` and `clr_trk`.  So the proposer owed a PAD a
+routing target the board judges at 0.20 mm.  That is not conservatism, it is a
+DIFFERENT RULE -- and a fine-pitch land pattern is exactly where the extra
+tenths decide whether a pin can launch at all.  `maze3d` already models the
+distinction correctly (`dru_overlay` and `obs_clearance` raise a track's or a
+via's clearance and skip that raise for a pad), so the elevated figure is STILL
+applied to routed copper and the only thing the split removes is the raise
+against pads.  `BAT_MAIN` is deliberately NOT split: its 0.30 mm figure is
+D-269, nothing currently open is `BAT_MAIN`, and a safety ruling should not
+depend on reading its rule text the same way twice.  `PAD_CLR_RETAINED` names
+that conservatism instead of hiding it.
+
+**PRICED BEFORE IT WAS SPENT, AND IT CHANGES EXACTLY ONE VERDICT.**  New
+read-only `screen_pad_clearance.py` builds two `maze3d.Field`s per open retained
+net that differ in `clr_pad` ALONE and offers every island-MST edge to the real
+`maze3d.route_join` with `emit=False`.  Across all 28 open retained nets on
+`bfef0aa2...` one verdict moves: `/03_SPI_A_DISPLAY_SD/LED_A` `J1.1 -> R71.2`
+reads `NO_LEGAL_ESCAPE_SRC` at 0.30 mm and ROUTES at 0.20 mm -- the display
+backlight anode leaving the J1 FH69 flex land pattern that the DRU header names
+by part number.  The necking rule changes nothing anywhere, because necking is a
+WIDTH lever and every net measured is already at its class width.  The route the
+gate then laid is 10.042 mm, `F -> B -> F`, 2 vias, and **KiCad's own DRC found
+zero attributable violations**, which is the empirical half of the argument: the
+board really does judge that pad at 0.20 mm.
+
+**THE SEVEN BONDS RODE WITH IT, AND THE LADDER IS NOW SPENT.**  `C25.2`,
+`C36.2`, `C5.2`, `R17.2`, `R37.2`, `R97.2`, `R98.2` -- 7 of 7 bonded at
+0.50/0.25 mm, 9.952 mm of stub in total, median 1.283 mm -- with the 29-tube
+guard `screen_bond_stitch.py --emit-guard` wrote for exactly this payload.  With
+both promoted transactions credited, `screen_bond_stitch.py --bonded-from` now
+reports **39 of 75 pads bonded and ZERO remaining bondable** at the free rung:
+the 36 that are left are `NO_LEGAL_ESCAPE` and `NO_VIA_SITE`, and D-601's ladder
+already measured what buys them -- a 0.45/0.20 mm barrel needing a rule-area
+licence, worth 4 pads and 3 tubes.  17 of 46 tubes retire; the working guard for
+the next run is `evidence/d603-pour-bond-guard-bonded.json`.
+
+**THREE NFC LAYER CONTRACTS WERE MISSING AND A REAL GATE RUN FOUND THEM.**
+`.kicad_dru` section 7 states them in words -- "NFC crystal nets stay on B.Cu",
+"NFC crystal nets are forbidden on In2", "NFC crystal nets carry no via", and
+the same three for the transmit arms -- and `DRU_CLASS` carried `layers=None`
+for `NFC_OSC`, `NFC_RF` and `NFC_RX`.  The first `U9` west-channel batch
+measured the consequence rather than arguing it: with both supplies closed the
+evicted `NFC_XOUT` came back with 0.7211 mm and 1.3416 mm of track on `In2.Cu`
+and TWO `F`-to-`B` barrels, and the gate refused the run on four real
+`items_not_allowed` reports naming those rules.  The fix is the recipe D-596
+already wrote down for `USB_D`: **a SINGLE-layer contract makes the via
+inexpressible rather than merely forbidden**, because the maze's via move has no
+second layer to land on.  `NFC_RX` is deliberately NOT single-layer -- its rule
+disallows a TRACK on `F.Cu` and says nothing about vias or `In2`, so it keeps
+`B` and `In2` and the barrel it is allowed to have.  `NFC_RF` also gained the
+0.25 mm routed clearance section 8 gives it and its netclass does not.
+
+**THE U9 WEST CHANNEL IS A 1-FOR-1 TRADE, MEASURED IN BOTH ORDERINGS.**  `U9` is
+a UFQFPN-32 at 0.5 mm pitch whose exposed pad leaves a **0.175 mm** inner
+channel, so no west pin escapes inward and every one must launch straight west
+into the same lane.  Supplies first: `NFC_VDD_A` and `NFC_VDD_D` both close and
+`NFC_XIN`/`NFC_XOUT` each come back one join short -- **73 -> 73**.  Crystal
+first: it rebuilds completely and BETTER than it was (`XIN` 7.237 mm, `XOUT`
+4.947 mm, zero vias) and both supplies return to `NO_LEGAL_ESCAPE_DST` --
+**73 -> 73**.  A read-only corridor screen on the supplies-first candidate
+closes the loop: `NFC_XIN`'s missing join is opened by ripping up `NFC_VDD_A`
+ALONE and `NFC_XOUT`'s by `NFC_VDD_D` alone, and the openers are **1.149 mm and
+0.583 mm** of route.  The conflict is mutual and TINY, which is why no ordering
+and no containment-bounded eviction changes the total.  **That names D-602's
+SEGMENT eviction as the unit this wall wants**: an `--evict-whole` cannot
+express "give up 1.1 mm of this track and rejoin around it".
+
+**RE-PROVED INDEPENDENTLY, all 14 checks PASS** (`verify_promotion.py`): ZERO
+objects removed; 26 added and every one on a claimed net; every track at
+0.300 mm; barrels 0.50/0.25 and 0.60/0.30 mm, both above the drill and 0.125 mm
+annular floors; zone and rule-area inventories unchanged; KiCad's OWN
+unconnected-item count **89 -> 88**; real zone-refilled schematic-parity DRC at
+`--severity-all` exactly 199 / 5 / 1 inherited with ZERO attributable and ZERO
+parity reports; fill-stable; D-269 / D-186 rule text live; `hardware/beta-v2/`
+untouched.  `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
+`pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
+regenerated 46-tube guard.
+
+Usage:
+
+    # which open edges does the PAD clearance decide, on the board as it stands?
+    python3 screen_pad_clearance.py --neck -o evidence/SCREEN.json
+
+    # what a promoted iteration of this shape looks like
+    python3 route_maze_batch.py NET --partial --repair-planes \
+        --guard evidence/d603-pour-bond-guard-bonded.json \
+        --bond-via 500000:250000 --bond-pad REF.NUM ... \
+        --promote --work DIR --out evidence/RUN.json
+
 ## Bond redundancy: 32 guarded pads get a barrel of their own, and the guard shrinks (2026-09-04)
 
 D-599 put three independent nets through the full gate with the pour-bond guard

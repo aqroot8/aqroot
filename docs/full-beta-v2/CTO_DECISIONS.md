@@ -6305,6 +6305,145 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-603 · 2026-09-04 · Demo pad-vs-track clearance split; the display backlight anode PROMOTED, D-601's seven-pad bond payload SPENT, three NFC layer contracts repaired
+
+D-601 left a READY PAYLOAD and a rule that would not bend for it. Seven pads
+bond at the board's own `min_via_diameter` and need no licence; bond redundancy
+closes no edge by construction; clause 4 requires the board to IMPROVE. Four
+partner routes were offered and all four declined. **The fifth was found by
+fixing a framework defect, not by searching harder** -- and the defect is one
+the `.kicad_dru` had already written down in words.
+
+    whole-board retained open edges   73 -> 72
+    raw ratsnest                      89 -> 88     open retained nets 30 -> 29
+    improved  /03_SPI_A_DISPLAY_SD/LED_A          regressed  none
+    7 more pads bonded (all GND)      39 of 75 bonded; free rung EXHAUSTED
+    26 objects added (17 tracks + 9 vias), ZERO removed, zero zones touched
+    authority bfef0aa2... -> 0b991dc9...
+
+D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and
+`hardware/beta-v2/` untouched. `protected_copper.py`: 15 nets / 393 objects
+BYTE-IDENTICAL.
+
+**THE DEFECT.** Every elevated figure in `route_maze_batch.DRU_CLASS["clr"]` --
+`LED_BOOST` and `SWITCH_NODE` at 0.30 mm, `SYS_MAIN` / `ACC_3V3` / `ACC_5V` /
+`VBUS_CHG` / `NFC_5V_PA` at 0.25 mm, `BAT_MAIN` at 0.30 mm -- comes from a
+section-8 "routed clearance" rule, and **every one of those rules carries
+`A.Type != 'Pad' && B.Type != 'Pad'`**. The section's own header states the
+intent rather than leaving it to be inferred: the elevated figures are ROUTING
+clearances, scoped so that vendor land patterns (J1 FH69 0.5 mm pitch, J3 USB-C,
+U11 WSON 0.4 mm pitch, U12 VSON, U14 WLP) are judged against the 0.20 mm global
+figure they actually satisfy. `net_contract` collapsed both into ONE scalar and
+every caller handed it to `maze3d.Field` as BOTH `clr_pad` and `clr_trk`, so the
+proposer owed a PAD a routing target the board judges at 0.20 mm. **That is not
+conservatism, it is a different rule** -- and a fine-pitch land pattern is
+exactly where the extra tenths decide whether a pin can launch at all.
+
+`maze3d` already modelled the distinction correctly (`dru_overlay` and
+`obs_clearance` raise a track's or a via's clearance and skip that raise for a
+pad), so the elevated figure is STILL applied to routed copper with no caller
+change, and the only thing the split removes is the raise against pads. Nine
+call sites were threaded through: `route_maze_batch.propose` (route, stitch,
+bridge, bond), `pour_bond_guard.no_escape_pads`, and the
+`screen_bond_redundancy` / `screen_bond_stitch` / `screen_corridor_blockers` /
+`screen_enclosed_pads` / `screen_evict_rebuild` / `screen_neck_escapes` /
+`screen_pour_bridges` screens. `BAT_MAIN` is deliberately NOT split -- its
+0.30 mm figure is D-269, nothing currently open is `BAT_MAIN`, and a safety
+ruling should not depend on reading its rule text the same way twice.
+`PAD_CLR_RETAINED` names that conservatism rather than hiding it.
+
+**PRICED BEFORE IT WAS SPENT, AND IT CHANGES EXACTLY ONE VERDICT.** New
+read-only `screen_pad_clearance.py` builds two `maze3d.Field`s per open retained
+net that differ in `clr_pad` ALONE and offers every island-MST edge to the real
+`maze3d.route_join` with `emit=False`. Across all 28 open retained nets on
+`bfef0aa2...` one verdict moves: `/03_SPI_A_DISPLAY_SD/LED_A` `J1.1 -> R71.2`
+reads `NO_LEGAL_ESCAPE_SRC` at 0.30 mm and ROUTES at 0.20 mm -- the display
+backlight anode leaving the J1 FH69 flex land pattern the DRU header names by
+part number. The `.kicad_dru` necking rule changes nothing anywhere: necking is
+a WIDTH lever and every net measured is already at its class width. The route
+the gate then laid is 10.042 mm, `F -> B -> F`, 2 vias, and **KiCad's own DRC
+found zero attributable violations**, which is the empirical half of the
+argument: the board really does judge that pad at 0.20 mm.
+
+**THE SEVEN BONDS RODE WITH IT AND THE LADDER IS NOW SPENT.** `C25.2`, `C36.2`,
+`C5.2`, `R17.2`, `R37.2`, `R97.2`, `R98.2` -- 7 of 7 bonded at 0.50/0.25 mm,
+9.952 mm of stub in total -- carried on the 29-tube guard
+`screen_bond_stitch.py --emit-guard` wrote for exactly this payload. With both
+promoted transactions credited via `--bonded-from`, the screen now reports
+**39 of 75 pads bonded and ZERO remaining bondable** at the free rung; the 36
+left are `NO_LEGAL_ESCAPE` and `NO_VIA_SITE`, and D-601's ladder already
+measured what buys them -- a 0.45/0.20 mm barrel needing a rule-area licence,
+worth 4 pads and 3 tubes. 17 of 46 tubes retire; the working guard for the next
+run is `evidence/d603-pour-bond-guard-bonded.json`.
+
+**THREE NFC LAYER CONTRACTS WERE MISSING AND A REAL GATE RUN FOUND THEM.**
+`.kicad_dru` section 7 states them in words -- "NFC crystal nets stay on B.Cu",
+"NFC crystal nets are forbidden on In2", "NFC crystal nets carry no via", and
+the same three for the transmit arms -- and `DRU_CLASS` carried `layers=None`
+for `NFC_OSC`, `NFC_RF` and `NFC_RX`. The first `U9` west-channel batch measured
+the consequence rather than arguing it: with both supplies closed the evicted
+`NFC_XOUT` came back with 0.7211 mm and 1.3416 mm of track on `In2.Cu` and TWO
+`F`-to-`B` barrels, and the authoritative gate refused the run on four real
+`items_not_allowed` reports naming those rules. The fix is the recipe D-596
+already wrote down for `USB_D`: **a SINGLE-layer contract makes the via
+inexpressible rather than merely forbidden**, because the maze's via move has no
+second layer to land on. `NFC_RX` is deliberately NOT single-layer -- its rule
+disallows a TRACK on `F.Cu` and says nothing about vias or `In2`, so it keeps
+`B` and `In2` and the barrel it is allowed to have. `NFC_RF` also gained the
+0.25 mm routed clearance section 8 gives it and its netclass (0.20 mm) does not.
+Re-run with the contracts in place: ZERO attributable DRC.
+
+**THE U9 WEST CHANNEL IS A STRICT 1-FOR-1 TRADE, MEASURED IN BOTH ORDERINGS ON
+THE REAL GATE.** `U9` is a UFQFPN-32 at 0.5 mm pitch whose 3.45 mm exposed pad
+leaves a **0.175 mm** inner channel, so no west pin escapes inward and every one
+must launch straight west into the same lane. Supplies first: `NFC_VDD_A` and
+`NFC_VDD_D` both close (+2) and `NFC_XIN`/`NFC_XOUT` each come back one join
+short (-2) -- **73 -> 73**. Crystal first: it rebuilds COMPLETELY and better
+than it was (`XIN` 7.237 mm, `XOUT` 4.947 mm, zero vias) and both supplies
+return to `NO_LEGAL_ESCAPE_DST` at `U9.3`/`U9.7` -- **73 -> 73**. A read-only
+corridor screen on the supplies-first candidate closes the loop: `NFC_XIN`'s
+missing join is opened by ripping up `NFC_VDD_A` ALONE and `NFC_XOUT`'s by
+`NFC_VDD_D` alone, and the openers are **1.149 mm and 0.583 mm** of route. The
+conflict is mutual and TINY, which is why no ordering and no
+containment-bounded eviction changes the total. **That names D-602's SEGMENT
+eviction as the unit this wall wants**: an `--evict-whole` cannot express "give
+up 1.1 mm of this track and rejoin around it". Characterization only -- no
+copper was promoted from this batch.
+
+**RE-PROVED INDEPENDENTLY, all 14 checks PASS** (`verify_promotion.py`): ZERO
+objects removed; 26 added and every one on a claimed net; every track at
+0.300 mm on `F`/`B`; barrels 0.50/0.25 and 0.60/0.30 mm, both above the drill
+and 0.125 mm annular floors; zone and rule-area inventories unchanged with
+nothing added to either; KiCad's OWN unconnected-item count **89 -> 88**; real
+zone-refilled schematic-parity DRC at `--severity-all` exactly 199 / 5 / 1
+inherited with ZERO attributable and ZERO parity reports; fill-stable; D-269 /
+D-186 rule text live; `hardware/beta-v2/` untouched. `pour_bond_contract.py`
+P1-P4 and `neck_contract.py` N1-N3 PASS on the regenerated 46-tube guard.
+
+**NEXT.** The pad-clearance lever is now MEASURED AND SPENT and the free bond
+rung is EXHAUSTED, so the next highest-leverage bounded unit is unchanged and
+now has a second independent wall naming it: **SEGMENT eviction** -- split a
+crossing track at a boundary, rip up only the portion inside, re-join the two
+stubs around it, with `reserve_corridor.py --from-copper` holding the lane
+afterwards. D-602 named it for the USB connector corridor; the U9 west channel
+names it again, with openers a millimetre long. Every ingredient exists
+(`WithoutObjects` holds an arbitrary object subset out, clause 5 licenses
+removal per object SIGNATURE, the bounded repair pass re-proposes inside an 8 mm
+window); what is missing is the split and a re-join allowed to land on a STUB
+rather than a pad. No owner decision is open.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d603-clrpad-survey.json` (`6b5b5857...`),
+`d603-u9-west-channel.json` (`127543b1...`),
+`d603-leda-bond-batch.json` (`35e12e79...`),
+`d603-verify.json` (`4b12c467...`),
+`d603-protected-copper.json` (`36841dee...`),
+`d603-pour-bond-guard-next.json` (`513dff20...`),
+`d603-guard-contract.json` (`a39c0a3c...`),
+`d603-neck-contract.json` (`72597e93...`),
+`d603-bond-stitch-next.json` (`4dde3074...`),
+`d603-pour-bond-guard-bonded.json` (`703845d1...`).
+
 # D-602 · 2026-09-04 · Demo corridor reservation built and the USB connector corridor's opener NAMED, priced and REFUSED -- `/I2C_SDA_INT` cannot rebuild itself
 
 D-599 named two capabilities and D-601 repeated the first as the one that pays

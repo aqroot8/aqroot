@@ -136,7 +136,7 @@ def main():
                         DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
             c["via_drill"] = drill
             c["via_dia"] = max(want_dia, drill + 2 * ANNULAR_MIN)
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=a.grid,
                          layers=layers, guard=guard_for(spec, net))
         r = mz.bond_pads(qb, net, field, want[net], max_mm=a.max_mm)

@@ -1,0 +1,464 @@
+{
+  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "finding": "A strict 1-for-1 trade, measured in BOTH orderings on the real authoritative gate.  Evict the crystal and route the supplies first: NFC_VDD_A and NFC_VDD_D both close (+2) and NFC_XIN and NFC_XOUT each come back one join short (-2), 73 -> 73.  Route the crystal first: it rebuilds COMPLETELY and better than it was (XIN 7.237 mm, XOUT 4.947 mm, zero vias) and both supplies return to NO_LEGAL_ESCAPE_DST at U9.3 / U9.7, 73 -> 73.  A read-only corridor screen on the supplies-first candidate board closes the loop: NFC_XIN's missing join is opened by ripping up NFC_VDD_A alone and NFC_XOUT's by NFC_VDD_D alone.  The conflict is mutual and it is TINY -- 1.149 mm and 0.583 mm of route -- which is why no ordering and no containment-bounded eviction changes the total.",
+  "framework_defect_found_and_fixed": "The first run of this batch closed both supplies and was REFUSED on FOUR real `items_not_allowed` reports: the rebuilt NFC_XOUT came back with 0.7211 mm and 1.3416 mm of track on In2.Cu and TWO F-to-B barrels.  `.kicad_dru` section 6 forbids both by name and `DRU_CLASS` carried `layers=None` for NFC_OSC, NFC_RF and NFC_RX.  Fixed by the USB_D recipe -- a single-layer contract makes the via inexpressible rather than merely illegal.  Re-run: ZERO attributable DRC.",
+  "geometry": {
+    "contenders": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_D  U9.3",
+      "/04_SPI_B_RADIOS_NFC/NFC_XOUT   U9.4",
+      "/04_SPI_B_RADIOS_NFC/NFC_XIN    U9.5",
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A  U9.7"
+    ],
+    "inner_channel_mm": 0.175,
+    "note": "the gap between the west pin row's inner edge (x=32.100) and the exposed pad (x=32.275) is 0.175 mm, so no pin escapes inward and no track passes between two 0.5 mm-pitch lands at 0.20 mm clearance; every west pin must launch straight west",
+    "package": "UFQFPN-32, 0.5 mm pitch, 0.75 x 0.30 mm side lands, 3.45 mm exposed pad at (34.0, 30.0), courtyard x 31.055..36.945 y 27.055..32.945, footprint on B.Cu"
+  },
+  "mutual_exclusion_screen": {
+    "board": "w/d603/u9b candidate (supplies routed, crystal one join short each)",
+    "edges": [
+      {
+        "direct_mm": 4.375,
+        "dst": [
+          "U9.5"
+        ],
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "single_openers": [
+          {
+            "mm": 1.149,
+            "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "tracks": 7,
+            "vias": 2
+          }
+        ],
+        "src": [
+          "C80.1",
+          "Y1.3"
+        ],
+        "verdict": "RIPUP_SINGLE"
+      },
+      {
+        "direct_mm": 3.723,
+        "dst": [
+          "U9.4",
+          "Y1.1"
+        ],
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "single_openers": [
+          {
+            "mm": 0.583,
+            "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+            "tracks": 9,
+            "vias": 3
+          },
+          {
+            "mm": 17.968,
+            "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "tracks": 7,
+            "vias": 2
+          }
+        ],
+        "src": [
+          "C79.1"
+        ],
+        "verdict": "RIPUP_SINGLE"
+      }
+    ]
+  },
+  "named_capability": "SEGMENT eviction (D-602's named next unit) or a simultaneous two-net allocator.  The openers are single SEGMENTS a millimetre long, not whole nets: an --evict-whole cannot express 'give up 1.1 mm of this track and rejoin around it', and that is exactly the transaction this wall wants.",
+  "runs": [
+    {
+      "attributable_drc": [
+        {
+          "description": "Items not allowed (rule 'NFC crystal nets carry no via')",
+          "items": [
+            "Via [/04_SPI_B_RADIOS_NFC/NFC_XOUT] on F.Cu - B.Cu"
+          ],
+          "type": "items_not_allowed"
+        },
+        {
+          "description": "Items not allowed (rule 'NFC crystal nets carry no via')",
+          "items": [
+            "Via [/04_SPI_B_RADIOS_NFC/NFC_XOUT] on F.Cu - B.Cu"
+          ],
+          "type": "items_not_allowed"
+        },
+        {
+          "description": "Items not allowed (rule 'NFC crystal nets are forbidden on In2')",
+          "items": [
+            "Track [/04_SPI_B_RADIOS_NFC/NFC_XOUT] on In2.Cu, length 0.7211 mm"
+          ],
+          "type": "items_not_allowed"
+        },
+        {
+          "description": "Items not allowed (rule 'NFC crystal nets are forbidden on In2')",
+          "items": [
+            "Track [/04_SPI_B_RADIOS_NFC/NFC_XOUT] on In2.Cu, length 1.3416 mm"
+          ],
+          "type": "items_not_allowed"
+        }
+      ],
+      "drc_types": {
+        "hole_clearance": 5,
+        "items_not_allowed": 4,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "evicted": {
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN": 11,
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT": 8
+      },
+      "failed_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+      ],
+      "improved": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+      ],
+      "promotion_candidate": false,
+      "regressed": [
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN"
+      ],
+      "results": [
+        {
+          "joins": [
+            {
+              "frm": "C48.1",
+              "layers": [
+                "B",
+                "F",
+                "B"
+              ],
+              "mm": 9.235,
+              "to": "U9.7",
+              "vias": 2
+            }
+          ],
+          "mm": 9.235,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 2
+        },
+        {
+          "joins": [
+            {
+              "frm": "C46.1",
+              "layers": [
+                "B",
+                "F",
+                "B"
+              ],
+              "mm": 6.582,
+              "to": "U9.3",
+              "vias": 2
+            }
+          ],
+          "mm": 6.582,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 2
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+          "ok": false,
+          "reason": "NO_PATH",
+          "remaining": null,
+          "vias": null
+        },
+        {
+          "joins": [
+            {
+              "frm": "C80.1",
+              "layers": [
+                "B"
+              ],
+              "mm": 2.267,
+              "to": "Y1.3",
+              "vias": 0
+            }
+          ],
+          "mm": 2.267,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+          "ok": true,
+          "reason": null,
+          "remaining": 1,
+          "vias": 0
+        },
+        {
+          "joins": [
+            {
+              "frm": "U9.4",
+              "layers": [
+                "B"
+              ],
+              "mm": 1.727,
+              "to": "Y1.1",
+              "vias": 0
+            },
+            {
+              "frm": "C79.1",
+              "layers": [
+                "B",
+                "I2",
+                "B"
+              ],
+              "mm": 3.658,
+              "to": "Y1.1",
+              "vias": 2
+            }
+          ],
+          "mm": 5.384,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 2
+        }
+      ],
+      "retained_open_edges": [
+        73,
+        72
+      ],
+      "run": "u9a.json"
+    },
+    {
+      "attributable_drc": [],
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "evicted": {
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN": 11,
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT": 8
+      },
+      "failed_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+      ],
+      "improved": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+      ],
+      "promotion_candidate": false,
+      "regressed": [
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT"
+      ],
+      "results": [
+        {
+          "joins": [
+            {
+              "frm": "C48.1",
+              "layers": [
+                "B",
+                "F",
+                "B"
+              ],
+              "mm": 9.235,
+              "to": "U9.7",
+              "vias": 2
+            }
+          ],
+          "mm": 9.235,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 2
+        },
+        {
+          "joins": [
+            {
+              "frm": "C46.1",
+              "layers": [
+                "B",
+                "F",
+                "B"
+              ],
+              "mm": 6.582,
+              "to": "U9.3",
+              "vias": 2
+            }
+          ],
+          "mm": 6.582,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 2
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+          "ok": false,
+          "reason": "NO_PATH",
+          "remaining": null,
+          "vias": null
+        },
+        {
+          "joins": [
+            {
+              "frm": "C80.1",
+              "layers": [
+                "B"
+              ],
+              "mm": 2.267,
+              "to": "Y1.3",
+              "vias": 0
+            }
+          ],
+          "mm": 2.267,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+          "ok": true,
+          "reason": null,
+          "remaining": 1,
+          "vias": 0
+        },
+        {
+          "joins": [
+            {
+              "frm": "U9.4",
+              "layers": [
+                "B"
+              ],
+              "mm": 1.727,
+              "to": "Y1.1",
+              "vias": 0
+            }
+          ],
+          "mm": 1.727,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+          "ok": true,
+          "reason": null,
+          "remaining": 1,
+          "vias": 0
+        }
+      ],
+      "retained_open_edges": [
+        73,
+        73
+      ],
+      "run": "u9b.json"
+    },
+    {
+      "attributable_drc": [],
+      "drc_types": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "evicted": {
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN": 11,
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT": 8
+      },
+      "failed_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+      ],
+      "improved": [],
+      "promotion_candidate": false,
+      "regressed": [],
+      "results": [
+        {
+          "joins": [
+            {
+              "frm": "C80.1",
+              "layers": [
+                "B"
+              ],
+              "mm": 2.267,
+              "to": "Y1.3",
+              "vias": 0
+            },
+            {
+              "frm": "U9.5",
+              "layers": [
+                "B"
+              ],
+              "mm": 4.971,
+              "to": "C80.1",
+              "vias": 0
+            }
+          ],
+          "mm": 7.237,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 0
+        },
+        {
+          "joins": [
+            {
+              "frm": "U9.4",
+              "layers": [
+                "B"
+              ],
+              "mm": 2.154,
+              "to": "Y1.1",
+              "vias": 0
+            },
+            {
+              "frm": "C79.1",
+              "layers": [
+                "B"
+              ],
+              "mm": 2.793,
+              "to": "Y1.1",
+              "vias": 0
+            }
+          ],
+          "mm": 4.947,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+          "ok": true,
+          "reason": null,
+          "remaining": 0,
+          "vias": 0
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "remaining": null,
+          "vias": null
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "remaining": null,
+          "vias": null
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+          "ok": false,
+          "reason": "NO_PATH",
+          "remaining": null,
+          "vias": null
+        }
+      ],
+      "retained_open_edges": [
+        73,
+        73
+      ],
+      "run": "u9c.json"
+    }
+  ],
+  "schema": 1,
+  "verdict": "PARKED -- capacity, not ordering; no copper promoted from this batch",
+  "wall": "U9 ST25R3916 WEST-EDGE ESCAPE CHANNEL -- TWO LANES, FOUR NETS"
+}

@@ -131,7 +131,8 @@ def main():
     for net in sorted({k[1] for k in tubes}):   # key is (zone, net, lkey, island)
         c = net_contract(qb.b, net)
         layers = permitted_layers(qb.routable, c["layers"], reserved, net)
-        field = mz.Field(qb, net, c["width"], c["clr"], c["clr"], dia, drill,
+        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
+                         dia, drill,
                          G=a.grid, layers=layers, guard=guard_for(spec, net))
         for (zone, n, lkey, isl), group in sorted(tubes.items()):
             if n != net:

@@ -52,3 +52,6 @@ hardware/beta-v2/checks/probe_002w_prefix.json
 /w/
 /w[0-9]*/
 /w-*/
+# ...and the same workspace when the driver is invoked FROM the
+# manufacturing directory, which is how the README's own commands read.
+hardware/demo/manufacturing/w/

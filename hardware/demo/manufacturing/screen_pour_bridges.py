@@ -87,7 +87,7 @@ def screen_net(qb, net, contract, ladder, grid, layers=None, guard=None):
     after the first rebuilds the via lattice alone.  That is the same shortcut
     `maze3d.bridge_islands` takes, for the same reason.
     """
-    field = mz.Field(qb, net, contract['width'], contract['clr'],
+    field = mz.Field(qb, net, contract['width'], contract['clr_pad'],
                      contract['clr'], ladder[0][0], ladder[0][1], G=grid,
                      layers=layers, guard=guard)
     if not mz.has_plane(qb, net):

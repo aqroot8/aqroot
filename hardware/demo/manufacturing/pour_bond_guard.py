@@ -369,7 +369,8 @@ def no_escape_pads(board_path, pour_nets):
         if not c["known_class"]:
             continue
         c["layers"] = rb.permitted_layers(qb.routable, c["layers"], reserved, n)
-        field = mz.Field(qb, n, c["width"], c["clr"], c["clr"], c["via_dia"],
+        field = mz.Field(qb, n, c["width"], c["clr_pad"], c["clr"],
+                         c["via_dia"],
                          c["via_drill"], G=100000, layers=c["layers"])
         for pad in qb.pads.values():
             if pad.get("net") != n:

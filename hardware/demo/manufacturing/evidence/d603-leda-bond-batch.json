@@ -1,0 +1,259 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "authoritative_unchanged": true,
+  "bonds": {
+    "bonded": 7,
+    "detail": [
+      {
+        "bonded": 7,
+        "bonds": [
+          {
+            "layer": "B",
+            "mm": 3.409,
+            "ok": true,
+            "pad": "C25.2",
+            "via_xy": [
+              66.6,
+              66.6
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.166,
+            "ok": true,
+            "pad": "C36.2",
+            "via_xy": [
+              63.4,
+              75.9
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 3.066,
+            "ok": true,
+            "pad": "C5.2",
+            "via_xy": [
+              62.1,
+              71.6
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.425,
+            "ok": true,
+            "pad": "R17.2",
+            "via_xy": [
+              55.9,
+              59.4
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.166,
+            "ok": true,
+            "pad": "R37.2",
+            "via_xy": [
+              64.5,
+              77.9
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 1.283,
+            "ok": true,
+            "pad": "R97.2",
+            "via_xy": [
+              53.0,
+              62.5
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 1.437,
+            "ok": true,
+            "pad": "R98.2",
+            "via_xy": [
+              56.4,
+              62.6
+            ]
+          }
+        ],
+        "contract": {
+          "clr": 200000,
+          "clr_pad": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "via_dia": 500000,
+          "via_drill": 250000,
+          "width": 300000
+        },
+        "failures": [],
+        "mm": 9.952,
+        "net": "GND",
+        "ok": true,
+        "requested": 7,
+        "seconds": 1.6,
+        "via": [
+          500000,
+          250000
+        ],
+        "vias": 7
+      }
+    ],
+    "max_mm": 8.0,
+    "nets": [
+      "GND"
+    ],
+    "requested": [
+      "C25.2",
+      "C36.2",
+      "C5.2",
+      "R17.2",
+      "R37.2",
+      "R97.2",
+      "R98.2"
+    ],
+    "via": [
+      500000,
+      250000
+    ]
+  },
+  "bridges": null,
+  "candidate_sha256": "0b991dc966a8a642a6e630a18eaa8f72c41d61a0d772b249def4a0be2a017ec3",
+  "connectivity": {
+    "nets_improved": [
+      "/03_SPI_A_DISPLAY_SD/LED_A"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 29,
+    "open_retained_nets_before": 30,
+    "retained_open_edges_after": 72,
+    "retained_open_edges_before": 73
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "567d8cc3aeead5f8c1ededa80776ad8ebf10de20763af377af52a26ae87212ca",
+    "spec": "evidence/d601-pour-bond-guard-bonded.json",
+    "tubes": 29
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 72
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/03_SPI_A_DISPLAY_SD/LED_A",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "0b991dc966a8a642a6e630a18eaa8f72c41d61a0d772b249def4a0be2a017ec3",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_A"
+  ],
+  "routed": [
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 300000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 600,
+          "F": 158
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "LED_BOOST",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "failures": [],
+      "islands": 2,
+      "joins": [
+        {
+          "from": "J1.1",
+          "layers": [
+            "F",
+            "B",
+            "F"
+          ],
+          "mm": 10.042328282438424,
+          "to": "R71.2",
+          "via_xy": [
+            [
+              44.0,
+              94.1
+            ],
+            [
+              39.2,
+              94.1
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 10.042,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 3.6,
+      "vias": 2
+    }
+  ],
+  "routed_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_A",
+    "GND"
+  ],
+  "schema": 1
+}
