@@ -2614,3 +2614,450 @@ def bridge_islands(qb, net, width, clr_pad, clr_trk, ladder, floors,
     return dict(ok=bool(done), net=net, bridged=len(done),
                 unbridged=len(failed), bridges=done, failures=failed[:40],
                 vias=len(done), ladder=[[d, k] for d, k in ladder])
+
+
+# --------------------------------------------------------------------------- #
+# POUR-ISLAND JOINS -- A JUMPER BETWEEN TWO PIECES OF THE SAME POUR
+# --------------------------------------------------------------------------- #
+# D-605.  `bridge_islands` is the ZERO-LENGTH case of a more general move, and
+# naming it that way is the whole content of this primitive.
+#
+# A bridge asks: is there one point inside cluster A's copper on one layer and
+# inside cluster B's copper on ANOTHER layer, at which a barrel is legal?  When
+# the two pieces of pour happen to lie over each other, one via joins them and
+# nothing else is needed.  When they do NOT -- and on this board they usually do
+# not, because a pour-owning net's islands are pieces of ONE layer's pour that a
+# foreign track has cut -- the bridge has no pair to offer and reports
+# `NO_BRIDGE`, even where the two pieces are seven tenths of a millimetre apart.
+#
+# The general move is a JUMPER: leave cluster A's copper, cross the cut, land on
+# cluster B's copper.  It may take a via up and a via back down, or it may stay
+# on one layer and go round the end of the cut.  A bridge is exactly the case
+# where that jumper has length zero.
+#
+# WHY `route_join` CANNOT DO THIS, AND IT IS NOT A TUNING QUESTION.
+# `route_join` seeds its wavefront from `pad_escapes` at BOTH ends, so both
+# terminals must be a PAD that can launch a full-width track.  That is the right
+# and only contract for a pad on bare laminate.  It is the wrong one for a pad
+# sitting on its own severed piece of pour: the copper is already there, the
+# island is a two-dimensional conductor, and a track that starts INSIDE it needs
+# no escape at all.  The escape search is precisely what fails on these -- a
+# fine-pitch power pad in a 0.30 mm field has no 0.60 mm launch in any
+# direction -- so `route_join` refuses `NO_LEGAL_ESCAPE_SRC` on a join whose
+# real difficulty is zero.  D-604 measured the same wall from the other side:
+# `+3V3` 0 of 15 and `GND` 0 of 9 orphan islands close at ANY rung of the
+# stitch ladder, because the stitch, too, insists a pad launch.
+#
+# THE ANCHOR CONTRACT, WHICH IS WHAT MAKES THE TERMINAL PROVABLE.
+# A track laid at a cell that merely lies inside the filled polygon is not
+# enough: KiCad moves a pour edge by microns on every refill, and the promoted
+# board is refilled.  So an endpoint must be an ANCHOR -- a cell at least
+# `width/2 + one lattice cell` INSIDE this cluster's own filled copper, found by
+# eroding KiCad's own filled polygon mask.  A track of that width centred on an
+# anchor lies WHOLLY within copper that is already there, so the connection is a
+# geometric fact and not a fill artefact.  A cluster with no anchor at any width
+# is reported `NO_ANCHOR` and nothing is laid.
+#
+# Everything else is the machinery every promoted join on this board went
+# through: `Field` for legality, `wave3d`/`descend3d` for the corridor,
+# `QBoard.smooth` + `qrouter.simplify` for the geometry, the same
+# hole-to-hole proof between this join's own barrels, and `verify_laid` to
+# re-prove every emitted object analytically.  A join that cannot be proved is
+# reverted whole.
+def _erode(mask, k):
+    """`mask` eroded by `k` steps of the full 8-neighbourhood.
+
+    The same erosion `_deepest` uses to find a bridge site with margin, run a
+    fixed number of times instead of to exhaustion.  Done on the mask's own
+    bounding box: a whole-board array is 400,000 cells and an island is a few
+    thousand of them.
+    """
+    if k <= 0 or not mask.any():
+        return mask
+    js, iss = np.nonzero(mask)
+    j0, j1 = int(js.min()), int(js.max())
+    i0, i1 = int(iss.min()), int(iss.max())
+    cur = mask[j0:j1 + 1, i0:i1 + 1]
+    for _ in range(k):
+        h, w = cur.shape
+        pad = np.zeros((h + 2, w + 2), dtype=bool)
+        pad[1:-1, 1:-1] = cur
+        nxt = cur.copy()
+        for dj in (0, 1, 2):
+            for di in (0, 1, 2):
+                nxt &= pad[dj:dj + h, di:di + w]
+        cur = nxt
+        if not cur.any():
+            break
+    out = np.zeros_like(mask)
+    out[j0:j1 + 1, i0:i1 + 1] = cur
+    return out
+
+
+def island_anchors(field, cov_layer, root, width):
+    """{layer: mask} of cells a `width` track may TERMINATE on for this cluster.
+
+    An anchor owes two independent things and both are checked here: the cell
+    must be legal for this net at this width (`~Field.blk`, which already
+    carries the .kicad_dru overlay and the pour-bond guard), and it must be far
+    enough inside this cluster's OWN filled copper that a track of that width
+    centred on it cannot leave the copper.
+    """
+    k = int(math.ceil((width / 2.0) / float(field.G))) + 1
+    out = {}
+    for (r, L) in cov_layer:
+        if r != root or L not in field.layers:
+            continue
+        m = _erode(cov_layer[(r, L)], k) & ~field.blk[L]
+        if m.any():
+            out[L] = m
+    return out
+
+
+def _cells(anchors, cap=0):
+    """`{layer: mask}` as a deterministic [(layer, i, j)] list.
+
+    With `cap`, the list is thinned by a fixed stride rather than truncated, so
+    a large island is still represented across its whole extent.  The stride is
+    a function of the mask alone, so two runs on the same board produce the
+    same list.
+    """
+    out = []
+    for L in sorted(anchors):
+        js, iss = np.nonzero(anchors[L])
+        out += [(L, int(i), int(j)) for i, j in zip(iss, js)]
+    if cap and len(out) > cap:
+        step = int(math.ceil(len(out) / float(cap)))
+        out = out[::step]
+    return out
+
+
+def _emit_path(qb, field, path, net):
+    """Lay a descended path as tracks and barrels.  No escape at either end.
+
+    Shares `route_join`'s geometry exactly -- per-layer runs, `QBoard.smooth`
+    against that layer's own blocked grid, `qrouter.simplify`, the same
+    hole-to-hole proof between this transaction's own barrels and the same
+    `verify_laid` re-proof -- and differs from it in one respect only: the
+    terminals are cells inside existing copper rather than pad escapes.
+    """
+    runs = []
+    for (k, i, j) in path:
+        if runs and runs[-1][0] == k:
+            runs[-1][1].append((i, j))
+        else:
+            runs.append((k, [(i, j)]))
+    polylines = []
+    for k, cells in runs:
+        if len(cells) > 1:
+            blk = field.blk[k].copy()
+            for (i, j) in (cells[0], cells[-1]):
+                blk[j, i] = False
+            cells = qb.smooth(blk, cells)
+        polylines.append((k, qr.simplify(cells, field.ox, field.oy, field.G)))
+
+    sites = [pts[0] for _, pts in polylines[1:]]
+    need = field.via_drill + HOLE_CLR
+    for a in range(len(sites)):
+        for b in range(a + 1, len(sites)):
+            gap = math.hypot(sites[a][0] - sites[b][0],
+                             sites[a][1] - sites[b][1])
+            if gap < need:
+                return dict(ok=False, reason='NO_VIA_SPACING',
+                            why='two barrels of this join are %.3f mm apart, '
+                                'below the %.3f mm hole-to-hole rule'
+                                % (gap / 1e6, need / 1e6))
+    if len(polylines) == 1 and len(polylines[0][1]) < 2:
+        return dict(ok=False, reason='NO_OP',
+                    why='the two clusters share a cell on one layer; there is '
+                        'nothing to lay')
+    m = qb.mark()
+    total, vias = 0.0, []
+    prev = None
+    for k, pts in polylines:
+        if prev is not None:
+            vx, vy = pts[0]
+            qb.via(net, vx, vy, field.via_dia, field.via_drill)
+            forbid_via(field, vx, vy)
+            vias.append((vx, vy))
+        for a, b in zip(pts, pts[1:]):
+            qb.track(net, k, a[0], a[1], b[0], b[1], field.width)
+            total += math.hypot(b[0] - a[0], b[1] - a[1])
+        prev = k
+    bad = verify_laid(qb, field, m)
+    if bad is not None:
+        qb.revert(m)
+        return dict(ok=False, reason='UNPROVED_GEOMETRY', detail=bad)
+    return dict(ok=True, mm=total / 1e6, vias=len(vias), mark=m,
+                via_xy=[(round(x / 1e6, 4), round(y / 1e6, 4))
+                        for x, y in vias],
+                layers=[k for k, _ in polylines])
+
+
+# THE BARRELS ARE SCISSORS, AND THE FIRST GATE RUN PROVED IT ON THE BOARD.
+# D-605's first whole-board run closed `+3V3` `C3.1/R2.1/R27.1` with an
+# `In3 -> F -> In3` jumper whose two 0.80 mm through barrels landed at
+# (64.0, 98.7) and (61.7, 99.1) -- 2.34 mm apart, across the waist of
+# `/01_POWER_TREE/BQ25185_SYS`'s 98 mm2 `B.Cu` pour island -- and that island
+# came apart into `SW9.2` and `U12.1`.  Whole-board edges 69 -> 69, one net
+# improved, one regressed, REFUSED by clause 4.
+#
+# A through barrel is a hole and an antipad on EVERY copper layer, so dropping
+# one inside a foreign pour is a slot through that pour, exactly as a foreign
+# TRACK on a plane layer is -- which is what `reserved_inner_planes` already
+# exists for.  A big plane survives it: every signal via on this board passes
+# through `In1` and `In4`.  A 98 mm2 island with a narrow waist does not.
+#
+# THE TEST HAS TO MODEL THE REFILL, AND THE OBVIOUS TEST DOES NOT.  The first
+# version of this check retook every foreign pour net's cluster count from
+# KiCad's own connectivity after laying the jumper, and it caught NOTHING: the
+# proposer does not refill zones, so the foreign pour on the in-memory board is
+# still the one that was filled before the barrel existed.  The damage is a FILL
+# consequence and is invisible to connectivity until `--refill-zones` runs, which
+# is precisely why the whole-board gate refills and recounts.
+#
+# So the predictor is GEOMETRIC and models exactly what the refill will do:
+# subtract each barrel's antipad -- its own radius plus the clearance that pour
+# is filled with -- from KiCad's own filled polygon, and ask whether that net's
+# lands, which the intact island held together, are still in ONE piece.  If they
+# are not, the jumper is reverted, the island is closed to this transaction's
+# barrels, and the search is retried.  The gate remains the authority; this
+# moves the refusal from a six-minute whole-board run into the search itself.
+def _foreign_pours(qb, net):
+    """Other nets that own a filled pour, in a deterministic order."""
+    return sorted({z.GetNetname() for z in qb.b.Zones()
+                   if not z.GetIsRuleArea() and z.IsFilled()
+                   and z.GetNetname() and z.GetNetname() != net})
+
+
+# THE ANTIPAD A REFILL ACTUALLY CUTS IS WIDER THAN THE CLEARANCE, AND THE TWO
+# D-605 GATE RUNS CALIBRATE IT EXACTLY.  KiCad's fill first holds the pour
+# `clearance` away from the barrel and then removes whatever neck is left that
+# is thinner than the zone's `min_thickness`, so along a neck a barrel deletes
+# copper out to `clearance + min_thickness`, not to `clearance`.  Measured on
+# `/01_POWER_TREE/BQ25185_SYS`'s 98.38 mm2 `B.Cu` island, whose zone is filled
+# at 0.25 mm clearance with 0.20 mm min thickness:
+#
+#   radius             run 1 (0.80 mm vias, gate REFUSED)  run 2 (0.65, PASSED)
+#   dia/2 + clr        intact                              intact
+#   dia/2 + clr + mt/2 intact                              intact
+#   dia/2 + clr + mt   SEVERED                             intact
+#
+# and the real refill split that island into 87.39 + 5.74 mm2 on run 1 and left
+# it whole at 95.41 mm2 on run 2.  So the last row is the model: it is the only
+# one that reproduces both verdicts, and being the widest of the three it is
+# also the conservative choice for a pre-filter.
+def _pour_geometry(qb, net):
+    """(clearance, min_thickness) the widest of `net`'s filled zones is poured
+    with, read off the zones rather than transcribed."""
+    clr = mt = 0
+    for z in qb.b.Zones():
+        if z.GetIsRuleArea() or z.GetNetname() != net or not z.IsFilled():
+            continue
+        try:
+            c = z.GetLocalClearance()
+        except Exception:
+            c = None
+        clr = max(clr, int(c) if c else 0)
+        mt = max(mt, int(z.GetMinThickness()))
+    return (clr or 250000), (mt or 200000)
+
+
+def _antipad_severs(qb, net, sites, via_dia):
+    """Which of `net`'s filled islands would a barrel at each site cut in two?
+
+    `sites` are (x, y) in nm.  For each island the barrels' antipads are
+    subtracted from KiCad's own filled polygon and the island's own lands are
+    re-located in what is left; an island whose lands end up in two or more
+    surviving pieces is SEVERED.  Returns [(layer, index, poly, area, why)].
+    """
+    import pcbnew
+    if not sites:
+        return []
+    clr, mt = _pour_geometry(qb, net)
+    r = via_dia / 2.0 + clr + mt
+    lands = [(m['x'], m['y']) for m in
+             (pour_clusters(qb, net)[1]).values()]
+    cut = []
+    for lname, idx, poly, area in filled_islands(qb, net):
+        hit = [(x, y) for (x, y) in sites
+               if poly.Contains(pcbnew.VECTOR2I(int(x), int(y)))
+               or poly.Collide(pcbnew.VECTOR2I(int(x), int(y)), int(r))]
+        if not hit:
+            continue
+        mine = [(x, y) for (x, y) in lands
+                if poly.Contains(pcbnew.VECTOR2I(int(x), int(y)))]
+        if len(mine) < 2:
+            continue
+        holes = pcbnew.SHAPE_POLY_SET()
+        for (x, y) in hit:
+            holes.AddOutline(pcbnew.SHAPE_LINE_CHAIN(
+                [pcbnew.VECTOR2I(int(x + r * math.cos(t * math.pi / 16)),
+                                 int(y + r * math.sin(t * math.pi / 16)))
+                 for t in range(32)], True))
+        rest = pcbnew.SHAPE_POLY_SET(poly)
+        rest.BooleanSubtract(holes)
+        where = set()
+        for (x, y) in mine:
+            for k in range(rest.OutlineCount()):
+                piece = pcbnew.SHAPE_POLY_SET()
+                piece.AddOutline(rest.Outline(k))
+                if piece.Contains(pcbnew.VECTOR2I(int(x), int(y))):
+                    where.add(k)
+                    break
+        if len(where) > 1:
+            cut.append((lname, idx, poly, area,
+                        '%d land(s) of %s on this %s island end in %d separate '
+                        'pieces once the %.2f mm antipad is subtracted'
+                        % (len(mine), net, lname, len(where), 2 * r / 1e6)))
+    return cut
+
+
+def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
+                 goal_cap=3000, tries=3):
+    """Join every orphan pour island of `net` to the rest of the net.
+
+    One transaction per orphan cluster: a jumper from a cell inside that
+    cluster's own filled copper to a cell inside another cluster's, with no pad
+    escape at either end.  Targets are tried BODY FIRST and then by size, which
+    is `_bridge_pairs`' own ordering and is deterministic.
+
+    Merging any two clusters closes exactly one open edge, so an orphan joined
+    to another orphan is worth the same as one joined to the body -- but the
+    body is preferred because a jumper to the plane body is the shorter claim
+    to review.  Returns dict(ok, joined, joins, failures).
+
+    `emit=False` still LAYS each jumper, proves it and reverts it, so a screen
+    and a gate cannot disagree about whether a join is legal or about whether it
+    severs a foreign pour; what `emit=False` changes is only that the copper does
+    not stay.  `tries` bounds the retry loop after a severance.
+    """
+    if not has_plane(qb, net):
+        return dict(ok=False, net=net, reason='NO_PLANE', joins=[],
+                    failures=[])
+    cov_layer, cov, size, body, labels, _islands, _owner = \
+        cluster_coverage(qb, net, field)
+    if body is None or len(size) < 2:
+        return dict(ok=True, net=net, joined=0, joins=[], failures=[],
+                    reason='NOTHING_TO_JOIN')
+    anchors = {r: island_anchors(field, cov_layer, r, field.width)
+               for r in size}
+    vc = max(1, int(round(via_cost_mm * qr.MM / field.G)))
+    budget = (WAVE_STEPS if not max_mm
+              else max(1, int(round(max_mm * qr.MM / field.G))))
+
+    # Union-find over cluster roots, so a cluster joined earlier in this run is
+    # a legal target for a later one and the anchor masks merge with it.
+    parent = {r: r for r in size}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    merged = {r: dict(anchors[r]) for r in size}
+    foreign = _foreign_pours(qb, net)
+    done, failed = [], []
+    for r in sorted(size, key=lambda k: (-size[k], str(labels[k]))):
+        if find(r) == find(body):
+            continue
+        mine = merged[find(r)]
+        if not mine:
+            failed.append(dict(cluster=labels[r], pads=size[r],
+                               reason='NO_ANCHOR',
+                               why='no cell of this cluster\'s filled copper '
+                                   'admits a %.3f mm track centred %.3f mm '
+                                   'inside it'
+                                   % (field.width / 1e6,
+                                      field.width / 2e6 + field.G / 1e6)))
+            continue
+        goals = _cells(mine, goal_cap)
+        laid, tgt, shut, last = None, None, [], None
+        for _try in range(max(1, tries)):
+            best = None
+            for cand in sorted(size, key=lambda t: (find(t) != find(body),
+                                                    -size.get(t, 0),
+                                                    str(labels.get(t, '')))):
+                if find(cand) == find(r):
+                    continue
+                seeds = _cells(merged[find(cand)])
+                if not seeds:
+                    continue
+                dist, hit = wave3d(field, seeds, goals, vc, budget=budget)
+                if dist is None or hit is None:
+                    continue
+                path = descend3d(field, dist, hit, vc)
+                if path is None:
+                    continue
+                best = (cand, path)
+                break
+            if best is None:
+                last = dict(reason='NO_PATH',
+                            why='no all-layer corridor at %.3f mm from this '
+                                'island to any other cluster of the net'
+                                % (field.width / 1e6))
+                break
+            cand, path = best
+            # THE PROOF IS THE SAME WHETHER OR NOT THE COPPER STAYS.  A dry run
+            # lays the jumper, proves it, and reverts it, so a screen and a gate
+            # cannot disagree about whether a join severs a foreign pour.
+            got = _emit_path(qb, field, path, net)
+            if not got.get('ok'):
+                last = dict(reason=got.get('reason'), why=got.get('why'),
+                            detail=got.get('detail'))
+                break
+            sites = [(round(x * 1e6), round(y * 1e6))
+                     for (x, y) in got['via_xy']]
+            broke = [(n,) + c for n in foreign
+                     for c in _antipad_severs(qb, n, sites, field.via_dia)]
+            if broke:
+                qb.revert(got['mark'])
+                closed = []
+                for (n, lname, _idx, poly, area, why) in broke:
+                    field.via_ok &= ~poly_mask(field, poly)
+                    closed.append(dict(net=n, layer=lname,
+                                       mm2=round(area, 2), why=why))
+                shut += closed
+                last = dict(reason='SEVERS_FOREIGN_POUR',
+                            severed=sorted({c['net'] for c in closed}),
+                            why='the jumper\'s %d barrel(s) would cut %d '
+                                'filled pour island(s) of %s in two once the '
+                                'antipad is subtracted; reverted and closed to '
+                                'this transaction\'s barrels'
+                                % (len(sites), len(closed),
+                                   ', '.join(sorted({c['net']
+                                                     for c in closed}))),
+                            closed=closed)
+                continue
+            laid, tgt = got, cand
+            break
+        if laid is None:
+            # A cluster that hit a severance and then ran out of corridor must
+            # not report only the LAST reason: the island the retry closed is
+            # the whole content of the finding.
+            failed.append(dict(cluster=labels[r], pads=size[r],
+                               tries=_try + 1, **(last or {}),
+                               **({'closed_foreign_islands': shut}
+                                  if shut else {})))
+            continue
+        rec = dict(cluster=labels[r], pads=size[r],
+                   to_cluster=labels.get(find(tgt), [])[:4],
+                   to_is_body=bool(find(tgt) == find(body)),
+                   mm=round(laid['mm'], 3), vias=laid['vias'],
+                   via_xy=laid['via_xy'], layers=laid['layers'])
+        if shut:
+            rec['closed_foreign_islands'] = shut
+        if not emit:
+            rec['dry'] = True
+            qb.revert(laid['mark'])
+        done.append(rec)
+        ra, rb = find(r), find(tgt)
+        parent[ra] = rb
+        for L, m in merged[ra].items():
+            merged[rb][L] = merged[rb][L] | m if L in merged[rb] else m
+    return dict(ok=bool(done), net=net, joined=len(done),
+                unjoined=len(failed), joins=done, failures=failed[:40],
+                mm=round(sum(d['mm'] for d in done), 3),
+                vias=sum(d['vias'] for d in done),
+                clusters=len(size), body=labels.get(body, [])[:4])

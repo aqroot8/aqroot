@@ -1,0 +1,353 @@
+{
+  "also_measured": "The same sweep priced the OTHER half of D-604's question. BQ25185_SYS's body island is 3.31 mm2 and its orphans lie 0.70, 1.71, 3.84, 9.78, 26.26 and 63.25 mm from it ON B.Cu -- gaps a jumper could cross if the corridor existed.  It does not: at the 0.500 mm SYS_MAIN minimum the .kicad_dru itself states, a wavefront started inside each of those islands reaches 54 to 574 cells and NEVER LEAVES B.Cu, because only ONE of the seven islands (SW9.2/U12.1) holds a single legal barrel site.  Six sealed pockets and one open island, measured, not inferred.",
+  "authoritative_unchanged": true,
+  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "45eda1396c0fe21262dae6c3780b311aa37a38dcdadb45a49798fbe72091ff43",
+  "bounded_pour": {
+    "attributable_drc": 0,
+    "fill_islands": 2,
+    "inherited_within_baseline": true,
+    "island_area_mm2": [
+      98.3,
+      68.2
+    ],
+    "island_removal_mode": 0,
+    "layer": "In2.Cu",
+    "nets_improved": [],
+    "nets_regressed": [],
+    "outline": [
+      [
+        56.0,
+        69.0
+      ],
+      [
+        71.5,
+        69.0
+      ],
+      [
+        71.5,
+        110.0
+      ],
+      [
+        56.0,
+        110.0
+      ]
+    ],
+    "retained_open_edges_after": 69,
+    "retained_open_edges_before": 69,
+    "zone_clearance_mm": 0.25
+  },
+  "bridges_unlocked_by_the_pour": {
+    "bridgeable": 1,
+    "detail": [
+      {
+        "best": null,
+        "cluster": [
+          "L4.1",
+          "U21.3"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 10.81
+          }
+        ],
+        "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+      },
+      {
+        "best": {
+          "from_layer": "B",
+          "licensed": true,
+          "sites": 92,
+          "to_is_body": true,
+          "to_layer": "I2",
+          "via_dia": 650000,
+          "via_drill": 400000,
+          "xy_mm": [
+            63.6,
+            95.5
+          ]
+        },
+        "cluster": [
+          "SW9.2",
+          "U12.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 98.38
+          },
+          {
+            "layer": "I2",
+            "mm2": 98.32
+          }
+        ],
+        "why": null
+      },
+      {
+        "best": null,
+        "cluster": [
+          "U12.10",
+          "U12.11"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 0.75
+          }
+        ],
+        "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "C26.2"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 6.55
+          }
+        ],
+        "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "C27.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 5.52
+          }
+        ],
+        "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "C28.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 2.18
+          }
+        ],
+        "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "R68.1"
+        ],
+        "islands": [],
+        "why": "cluster owns no filled pour island"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "U11.1"
+        ],
+        "islands": [],
+        "why": "cluster owns no filled pour island"
+      },
+      {
+        "best": null,
+        "cluster": [
+          "U13.3"
+        ],
+        "islands": [],
+        "why": "cluster owns no filled pour island"
+      }
+    ],
+    "needing_licence": 0,
+    "orphans": 9
+  },
+  "next_lever": "SEGMENT eviction, which D-602 and D-603 already named twice.  Every wall here is a foreign track lying across the pour; the unit that removes it is a split-and-rejoin of that ONE track, not a rip-up of its net.  The In2 pour is now priced and REFUSED and should not be re-measured.",
+  "orphan_to_body_gaps": {
+    "body": [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+    ],
+    "body_pads": 4,
+    "clusters": 10,
+    "net": "/01_POWER_TREE/BQ25185_SYS",
+    "orphans": [
+      {
+        "cluster": [
+          "L4.1",
+          "U21.3"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 10.81
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 2,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 63.251,
+            "layer": "B",
+            "mine_mm2": 10.81
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "SW9.2",
+          "U12.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 98.38
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 2,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 1.7105,
+            "layer": "B",
+            "mine_mm2": 98.38
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "U12.10",
+          "U12.11"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 0.75
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 2,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 3.837,
+            "layer": "B",
+            "mine_mm2": 0.75
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "C26.2"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 6.55
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 1,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 0.701,
+            "layer": "B",
+            "mine_mm2": 6.55
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "C27.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 5.52
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 1,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 26.2629,
+            "layer": "B",
+            "mine_mm2": 5.52
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "C28.1"
+        ],
+        "islands": [
+          {
+            "layer": "B",
+            "mm2": 2.18
+          }
+        ],
+        "pad_gaps": [],
+        "pads": 1,
+        "same_layer_gaps": [
+          {
+            "body_mm2": 3.31,
+            "gap_mm": 9.7788,
+            "layer": "B",
+            "mine_mm2": 2.18
+          }
+        ]
+      },
+      {
+        "cluster": [
+          "R68.1"
+        ],
+        "islands": [],
+        "pad_gaps": [],
+        "pads": 1,
+        "same_layer_gaps": []
+      },
+      {
+        "cluster": [
+          "U11.1"
+        ],
+        "islands": [],
+        "pad_gaps": [
+          {
+            "gap_mm": 24.4333,
+            "layer": "B",
+            "pad": "U11.1"
+          }
+        ],
+        "pads": 1,
+        "same_layer_gaps": []
+      },
+      {
+        "cluster": [
+          "U13.3"
+        ],
+        "islands": [],
+        "pad_gaps": [
+          {
+            "gap_mm": 80.5774,
+            "layer": "B",
+            "pad": "U13.3"
+          }
+        ],
+        "pads": 1,
+        "same_layer_gaps": []
+      }
+    ]
+  },
+  "question": "D-604 named a bounded In2.Cu pour as the lever that would give /01_POWER_TREE/BQ25185_SYS a BODY, and required the cost be measured before it was spent.  This is the measurement.",
+  "schema": 1,
+  "verdict": "REFUSED ON PRICE.  A bounded In2.Cu pour over the east power block FILLS legally -- 2 islands, ZERO attributable DRC -- and buys exactly ONE bridgeable orphan cluster (SW9.2/U12.1, 92 sites at the fully licensed 0.65/0.40 mm barrel).  Retained open edges 69 -> 69 from the pour alone.  The price is the WHOLE In2 layer: route_maze_batch.reserved_inner_planes reserves a LAYER to a net the moment any filled pour of that net appears on it, and In2 is in the palette of every net on this board.  One edge for a third of the remaining routing capacity is not a trade this board can make."
+}

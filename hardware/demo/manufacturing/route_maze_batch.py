@@ -846,7 +846,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_residual=False, join_max_mm=0.0, neck=False,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
             split_islands=False, guard_spec=None, bridge=False,
-            bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None):
+            bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
+            join_islands=False, join_island_max_mm=0.0):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -989,6 +990,19 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 r["residual_join"] = j
                 r["mode"] = "stitch+join"
                 r["ok"] = bool(r.get("ok")) or bool(j.get("joined"))
+            # ISLAND JOINS RUN LAST, AND THE ORDER IS THE ARGUMENT.  D-605.
+            # A bridge is one barrel and no track; a stitch is one escape, one
+            # short run and one barrel down to the net's own plane; a residual
+            # join is a pad-to-pad maze run.  All three are cheaper or more
+            # robust than a lateral jumper between two pieces of pour, so the
+            # jumper is offered only what they could not close, and it is
+            # offered on a board that already carries their copper.
+            if join_islands:
+                ji = mz.join_islands(qb, net, field, via_cost_mm=via_cost_mm,
+                                     max_mm=join_island_max_mm)
+                r["island_join"] = ji
+                r["mode"] = r["mode"] + "+islands"
+                r["ok"] = bool(r.get("ok")) or bool(ji.get("joined"))
         else:
             r = mz.route_net(qb, net, width=c["width"],
                              clr_pad=c["clr_pad"],
@@ -1145,7 +1159,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
-         bond_via=None):
+         bond_via=None, join_islands=False, join_island_max_mm=0.0):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1250,6 +1264,15 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # be a second transaction wearing a repair's name.
         if bridge and use_search_levers:
             cmd += ["--bridge"]
+        # THE ISLAND JOIN IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S --
+        # same reading as `--bridge` directly above.  A repair re-bonds copper
+        # THIS run severed, inside an 8 mm window, with the stitch; a lateral
+        # jumper across a pour cut somewhere else on the board is a second
+        # transaction wearing a repair's name.
+        if join_islands and use_search_levers:
+            cmd += ["--join-islands"]
+            if join_island_max_mm:
+                cmd += ["--join-island-max-mm", str(join_island_max_mm)]
         # THE BOND IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- same
         # reading as `--bridge` directly above.
         if bond_pads and use_search_levers:
@@ -1641,6 +1664,17 @@ def main():
                     help="window in millimetres for ONE bond stitch; the "
                          "default is the 8 mm locality window `stitch_pad` "
                          "itself uses")
+    ap.add_argument("--join-islands", action="store_true",
+                    help="D-605: after the bridge, the stitch and the residual "
+                         "join, offer every still-orphan POUR ISLAND a JUMPER "
+                         "to another cluster of the same net -- a track that "
+                         "starts and ends INSIDE existing filled copper, with "
+                         "no pad escape at either end.  A bridge is the "
+                         "zero-length case of this move; screen it first with "
+                         "screen_island_join.py")
+    ap.add_argument("--join-island-max-mm", type=float, default=0.0,
+                    help="cap an island jumper's wavefront at this run length "
+                         "(0 = maze3d's own WAVE_STEPS budget)")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -1669,7 +1703,8 @@ def main():
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands,
                 load_guard(a.guard), a.bridge,
-                tuple(a.bond_pad), a.bond_max_mm, bond_via)
+                tuple(a.bond_pad), a.bond_max_mm, bond_via,
+                a.join_islands, a.join_island_max_mm)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1707,7 +1742,8 @@ def main():
                  evict_whole=a.evict_whole,
                  guard=a.guard, bridge=a.bridge,
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
-                 bond_via=bond_via)
+                 bond_via=bond_via, join_islands=a.join_islands,
+                 join_island_max_mm=a.join_island_max_mm)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

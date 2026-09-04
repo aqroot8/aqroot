@@ -1,0 +1,799 @@
+{
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "45eda1396c0fe21262dae6c3780b311aa37a38dcdadb45a49798fbe72091ff43",
+  "grid": 100000,
+  "guard": "evidence/d604-pour-bond-guard-next.json",
+  "guard_sha256": "6a58435b8bb71402ad7bcca16968eff8b7d819cd215fba903a0021b221d2fcbe",
+  "max_mm": 0.0,
+  "method": "read-only; maze3d.join_islands with emit=False, the same Field, .kicad_dru overlay and pour-bond guard a gated run builds",
+  "nets": [
+    {
+      "guarded_layers": {
+        "B": 1077
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "I3"
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "rungs": [
+        {
+          "body": [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          "clusters": 16,
+          "contract": {
+            "via_dia": 800000,
+            "via_drill": 400000,
+            "width": 600000
+          },
+          "failures": [
+            {
+              "closed_foreign_islands": [
+                {
+                  "layer": "B",
+                  "mm2": 98.38,
+                  "net": "/01_POWER_TREE/BQ25185_SYS",
+                  "why": "3 land(s) of /01_POWER_TREE/BQ25185_SYS on this B island end in 2 separate pieces once the 1.70 mm antipad is subtracted"
+                }
+              ],
+              "cluster": [
+                "C3.1",
+                "R2.1",
+                "R27.1"
+              ],
+              "pads": 3,
+              "reason": "NO_PATH",
+              "tries": 2,
+              "why": "no all-layer corridor at 0.600 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C5.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "C7.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "R127.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "R129.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.600 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "R39.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U12.4"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U12.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U17.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.12"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.3"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.8"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            },
+            {
+              "cluster": [
+                "U5.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "+3V3",
+          "ok": false,
+          "rung": "netclass contract",
+          "seconds": 70.8,
+          "unjoined": 15,
+          "vias": 0
+        },
+        {
+          "body": [
+            "C10.1",
+            "C12.2",
+            "C13.1",
+            "C14.1"
+          ],
+          "clusters": 16,
+          "contract": {
+            "via_dia": 650000,
+            "via_drill": 400000,
+            "width": 400000
+          },
+          "failures": [
+            {
+              "cluster": [
+                "C5.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "C7.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "R127.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "R129.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.400 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "R39.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U12.4"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U12.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U17.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.12"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.3"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.5"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U4.8"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            },
+            {
+              "cluster": [
+                "U5.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+            }
+          ],
+          "joined": 1,
+          "joins": [
+            {
+              "cluster": [
+                "C3.1",
+                "R2.1",
+                "R27.1"
+              ],
+              "dry": true,
+              "layers": [
+                "I3",
+                "B",
+                "F"
+              ],
+              "mm": 2.162,
+              "pads": 3,
+              "to_cluster": [
+                "C10.1",
+                "C12.2",
+                "C13.1",
+                "C14.1"
+              ],
+              "to_is_body": true,
+              "via_xy": [
+                [
+                  64.3,
+                  98.0
+                ],
+                [
+                  63.8,
+                  96.0
+                ]
+              ],
+              "vias": 2
+            }
+          ],
+          "mm": 2.162,
+          "net": "+3V3",
+          "ok": true,
+          "rung": "kicad_dru / board floor",
+          "seconds": 73.1,
+          "unjoined": 14,
+          "vias": 2
+        }
+      ]
+    },
+    {
+      "guarded_layers": {
+        "B": 32,
+        "F": 310
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "GND",
+      "netclass": "GND",
+      "rungs": [
+        {
+          "body": [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          "clusters": 10,
+          "contract": {
+            "via_dia": 600000,
+            "via_drill": 300000,
+            "width": 300000
+          },
+          "failures": [
+            {
+              "cluster": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "pads": 2,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "U2.2",
+                "U2.3"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.300 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C1.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "C37.2"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.300 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "J1.43"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "MK1.4"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "R110.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "R111.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            },
+            {
+              "cluster": [
+                "U9.16"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "GND",
+          "ok": false,
+          "rung": "netclass contract",
+          "seconds": 133.9,
+          "unjoined": 9,
+          "vias": 0
+        },
+        {
+          "body": [
+            "C10.2",
+            "C11.2",
+            "C12.1",
+            "C13.2"
+          ],
+          "clusters": 10,
+          "contract": {
+            "via_dia": 500000,
+            "via_drill": 200000,
+            "width": 150000
+          },
+          "failures": [
+            {
+              "cluster": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "pads": 2,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "U2.2",
+                "U2.3"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.150 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C1.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "C37.2"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.150 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "J1.43"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "MK1.4"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "R110.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "R111.2"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            },
+            {
+              "cluster": [
+                "U9.16"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.150 mm track centred 0.175 mm inside it"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "GND",
+          "ok": false,
+          "rung": "kicad_dru / board floor",
+          "seconds": 131.9,
+          "unjoined": 9,
+          "vias": 0
+        }
+      ]
+    },
+    {
+      "guarded_layers": {
+        "B": 1045,
+        "F": 310
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "rungs": [
+        {
+          "body": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "clusters": 10,
+          "contract": {
+            "via_dia": 800000,
+            "via_drill": 400000,
+            "width": 800000
+          },
+          "failures": [
+            {
+              "cluster": [
+                "L4.1",
+                "U21.3"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "U12.10",
+                "U12.11"
+              ],
+              "pads": 2,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+            },
+            {
+              "cluster": [
+                "C26.2"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C27.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C28.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "R68.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+            },
+            {
+              "cluster": [
+                "U11.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+            },
+            {
+              "cluster": [
+                "U13.3"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": false,
+          "rung": "netclass contract",
+          "seconds": 7.1,
+          "unjoined": 9,
+          "vias": 0
+        },
+        {
+          "body": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "clusters": 10,
+          "contract": {
+            "via_dia": 650000,
+            "via_drill": 400000,
+            "width": 500000
+          },
+          "failures": [
+            {
+              "cluster": [
+                "L4.1",
+                "U21.3"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "pads": 2,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "U12.10",
+                "U12.11"
+              ],
+              "pads": 2,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.350 mm inside it"
+            },
+            {
+              "cluster": [
+                "C26.2"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C27.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "C28.1"
+              ],
+              "pads": 1,
+              "reason": "NO_PATH",
+              "tries": 1,
+              "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+            },
+            {
+              "cluster": [
+                "R68.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.350 mm inside it"
+            },
+            {
+              "cluster": [
+                "U11.1"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.350 mm inside it"
+            },
+            {
+              "cluster": [
+                "U13.3"
+              ],
+              "pads": 1,
+              "reason": "NO_ANCHOR",
+              "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.350 mm inside it"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": false,
+          "rung": "kicad_dru / board floor",
+          "seconds": 7.2,
+          "unjoined": 9,
+          "vias": 0
+        }
+      ]
+    }
+  ],
+  "schema": 1
+}

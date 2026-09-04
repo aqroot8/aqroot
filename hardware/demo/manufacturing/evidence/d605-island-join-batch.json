@@ -1,0 +1,374 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "45eda1396c0fe21262dae6c3780b311aa37a38dcdadb45a49798fbe72091ff43",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "3952597e7456ea5863ab24d8d7dc7ccf211f341579b18cf607931102ea87d346",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 29,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 68,
+    "retained_open_edges_before": 69
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "6a58435b8bb71402ad7bcca16968eff8b7d819cd215fba903a0021b221d2fcbe",
+    "spec": "evidence/d604-pour-bond-guard-next.json",
+    "tubes": 46
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 68
+  },
+  "preservation": {
+    "added_object_nets": [
+      "+3V3"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "3952597e7456ea5863ab24d8d7dc7ccf211f341579b18cf607931102ea87d346",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "+3V3"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 1077
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "netclass": "P3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 400000
+      },
+      "failures": [
+        {
+          "island": [
+            "C5.1"
+          ],
+          "pad": "C5.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C7.1"
+          ],
+          "pad": "C7.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R127.1"
+          ],
+          "pad": "R127.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.4"
+          ],
+          "pad": "U12.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)"
+        },
+        {
+          "island": [
+            "U12.5"
+          ],
+          "pad": "U12.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)"
+        },
+        {
+          "island": [
+            "U17.5"
+          ],
+          "pad": "U17.5",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)"
+        },
+        {
+          "island": [
+            "U4.2"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.3"
+          ],
+          "pad": "U4.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x54), C6.2 (x7), U4.1 (x6), R119.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+        }
+      ],
+      "island_join": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1"
+        ],
+        "clusters": 16,
+        "failures": [
+          {
+            "cluster": [
+              "C5.1"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "C7.1"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "R127.1"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "R129.1"
+            ],
+            "pads": 1,
+            "reason": "NO_PATH",
+            "tries": 1,
+            "why": "no all-layer corridor at 0.400 mm from this island to any other cluster of the net"
+          },
+          {
+            "cluster": [
+              "R39.1"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U12.4"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U12.5"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U17.5"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U4.12"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U4.2"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U4.3"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U4.5"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U4.8"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          },
+          {
+            "cluster": [
+              "U5.2"
+            ],
+            "pads": 1,
+            "reason": "NO_ANCHOR",
+            "why": "no cell of this cluster's filled copper admits a 0.400 mm track centred 0.300 mm inside it"
+          }
+        ],
+        "joined": 1,
+        "joins": [
+          {
+            "cluster": [
+              "C3.1",
+              "R2.1",
+              "R27.1"
+            ],
+            "layers": [
+              "I3",
+              "B",
+              "F"
+            ],
+            "mm": 2.162,
+            "pads": 3,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "via_xy": [
+              [
+                64.3,
+                98.0
+              ],
+              [
+                63.8,
+                96.0
+              ]
+            ],
+            "vias": 2
+          }
+        ],
+        "mm": 2.162,
+        "net": "+3V3",
+        "ok": true,
+        "unjoined": 14,
+        "vias": 2
+      },
+      "mm": 0,
+      "mode": "stitch+islands",
+      "net": "+3V3",
+      "ok": true,
+      "seconds": 72.7,
+      "stitched": 0,
+      "unreachable": 12,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "+3V3"
+  ],
+  "schema": 1
+}

@@ -1,0 +1,131 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "3952597e7456ea5863ab24d8d7dc7ccf211f341579b18cf607931102ea87d346",
+ "checks": {
+  "N1": {
+   "courtyards_found": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "dru_min_nm": 200000,
+   "dru_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "ok": true,
+   "router_min_nm": 200000,
+   "router_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ]
+  },
+  "N2": {
+   "base_rev": "c5f983f",
+   "moved": [],
+   "ok": true,
+   "pads_compared": 75
+  },
+  "N3": {
+   "neck_max_mm": 1.5,
+   "offered": [
+    {
+     "full_width_escapes": 0,
+     "in_courtyard": true,
+     "net": "+3V3",
+     "pad": "U12.4",
+     "stubs": [
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.2,
+       "width_mm": 0.2
+      }
+     ]
+    },
+    {
+     "full_width_escapes": 0,
+     "in_courtyard": true,
+     "net": "+3V3",
+     "pad": "U12.5",
+     "stubs": [
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.3,
+       "width_mm": 0.2
+      }
+     ]
+    },
+    {
+     "full_width_escapes": 0,
+     "in_courtyard": true,
+     "net": "+3V3",
+     "pad": "U17.5",
+     "stubs": [
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.079,
+       "width_mm": 0.2
+      },
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.075,
+       "width_mm": 0.2
+      }
+     ]
+    },
+    {
+     "full_width_escapes": 0,
+     "in_courtyard": true,
+     "net": "/NFC_SUPPLY",
+     "pad": "U9.8",
+     "stubs": [
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.32,
+       "width_mm": 0.2
+      },
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 1.128,
+       "width_mm": 0.2
+      }
+     ]
+    }
+   ],
+   "ok": true,
+   "pads_offered_a_neck": 4,
+   "violations": []
+  }
+ },
+ "schema": 1
+}

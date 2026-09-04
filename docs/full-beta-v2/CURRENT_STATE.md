@@ -13,6 +13,89 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-605 (A BRIDGE IS A JUMPER OF LENGTH ZERO; the general move built
+  and PROMOTED, the `In2` pour for `BQ25185_SYS` priced and REFUSED, the
+  antipad calibrated against two gate runs):** the three pour-owning nets own
+  **31 of 69** retained open edges and every existing primitive refuses them
+  for the same reason -- it asks a PAD to launch. `stitch_pad` (so also
+  `stitch_net` and `--join-residual`) needs a full-width escape and D-604 swept
+  every legal rung for 0 of 15 on `+3V3` and 0 of 9 on `GND`;
+  `bridge_islands` needs cluster A's copper over cluster B's on a DIFFERENT
+  layer, and two pieces of the SAME layer's pour never overlap. Both are
+  special cases of one move: a pour island is a two-dimensional conductor, so a
+  track that STARTS INSIDE IT needs no escape at all -- leave A's copper, cross
+  the cut, land on B's -- and **a bridge is that jumper with length zero**.
+  New `maze3d.join_islands` + `route_maze_batch.py --join-islands` +
+  read-only `screen_island_join.py`; nothing new in the legality argument
+  (`Field`, `wave3d`/`descend3d`, `QBoard.smooth`, the same hole-to-hole proof,
+  `verify_laid`). Authority `45eda139...` -> **`3952597e...`**, retained open
+  edges **69 -> 68**, ratsnest 85 -> 84, `+3V3` 15 -> 14; improved `+3V3`,
+  regressed none; 4 objects added (2 tracks + 2 vias), ZERO removed, zero zones
+  or rule areas touched. D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB,
+  XGPIO4/5 and `hardware/beta-v2/` untouched; `protected_copper.py` 15 nets /
+  393 objects BYTE-IDENTICAL.
+  **THE ANCHOR CONTRACT MAKES THE TERMINAL PROVABLE.** A cell merely inside the
+  filled polygon is not enough -- KiCad moves a pour edge by microns on every
+  refill and the promoted board is refilled -- so a terminal must sit at least
+  `width/2 + one lattice cell` inside KiCad's own filled polygon, found by
+  eroding the mask. A cluster with no such cell is `NO_ANCHOR`.
+  **THE EDGE:** `+3V3` `C3.1`/`R2.1`/`R27.1` -> pour BODY, 2.162 mm,
+  `In3 -> B -> F`, two 0.65/0.40 mm barrels at (64.3, 98.0) and (63.8, 96.0),
+  the far terminal a barrel landing inside the body's own `F.Cu` copper. D-604
+  had recorded this exact cluster as `NO_VIA_SITE`, "no legal 0.80 mm barrel
+  within 8.0 mm of ANY escape". No licence, no rule change, no width
+  relaxation: 0.40 mm and 0.65/0.40 are the DRU's own `P3V3` outer floor and
+  POWER drill.
+  **THE BARRELS ARE SCISSORS, PROVED ON THE BOARD.** At the netclass contract
+  the same join takes two 0.80 mm barrels 2.34 mm apart across the waist of
+  `BQ25185_SYS`'s 98.38 mm2 `B.Cu` island, and the refill split it into
+  87.39 + 5.74 -- `SW9.2` from `U12.1`, 69 -> 69, REFUSED by clause 4. **The
+  obvious pre-filter does not work:** retaking foreign cluster counts from
+  connectivity catches NOTHING, because the proposer does not refill zones, so
+  the pour it reads is the one filled before the barrel existed. That version
+  was removed rather than kept as a comforting no-op. The predictor is
+  GEOMETRIC -- subtract each barrel's antipad from KiCad's filled polygon, ask
+  whether that net's lands are still in ONE piece -- and the two gate runs
+  CALIBRATE its radius: `dia/2 + clr` and `dia/2 + clr + minthk/2` both call
+  run 1 intact; only **`dia/2 + clr + minthk`** reproduces BOTH verdicts
+  (SEVERED / intact), which is what KiCad's fill actually does -- hold the
+  clearance, then delete any neck thinner than `min_thickness`. Screen and gate
+  now agree exactly and the refusal costs 70 s instead of six minutes.
+  **THE `In2` POUR IS PRICED AND REFUSED and must not be re-measured.** A
+  bounded `In2.Cu` pour over the east power block fills legally (2 islands,
+  zero attributable DRC) and buys exactly ONE bridgeable orphan, 69 -> 69 from
+  the pour alone; the price is the WHOLE `In2` layer, because
+  `reserved_inner_planes` reserves a LAYER as soon as any filled pour of a net
+  appears on it. One edge for a third of the remaining routing capacity is not
+  a trade this board can make. The SYS pockets are measured: body island
+  3.31 mm2, orphans 0.70/1.71/3.84/9.78/26.26/63.25 mm away on `B.Cu`, and at
+  the 0.500 mm `SYS_MAIN` minimum a wavefront from each reaches 54-574 cells
+  and NEVER leaves `B.Cu` -- only one of seven islands holds a legal barrel
+  site. Narrowing `SYS_MAIN` was not attempted: 0.50 mm is a 1.0 A current rule
+  with a named 2.19 A `U21` exception, not a routing default.
+  All 14 `verify_promotion.py` checks PASS; DRC 199/5/1 inherited, zero
+  attributable, zero parity, unconnected 85 -> 84, fill-stable; P1-P4 and N1-N3
+  PASS on the regenerated 46-tube guard; `screen_bond_stitch.py` re-derives the
+  same 29-tube working guard (39 of 75 bonded, 0 of 36 bondable -- D-603's free
+  rung still exhausted).
+  Evidence `d605-island-join-batch.json`, `d605-verify.json`,
+  `d605-protected-copper.json`, `d605-island-join-survey.json`,
+  `d605-island-join-next.json`, `d605-sys-in2-pour-cost.json`,
+  `d605-pour-bond-guard-next.json`, `d605-pour-bond-guard-bonded.json`,
+  `d605-bond-stitch-next.json`, `d605-bond-stitch-bonded.json`,
+  `d605-guard-contract.json`, `d605-neck-contract.json`.
+  **THE LEVER IS EXHAUSTED AND THAT IS BANKED:** re-run on the promoted board,
+  all 32 remaining orphan clusters across all three pour nets return 0 at BOTH
+  rungs. Not a wall to re-characterize.
+  **Next: SEGMENT eviction, now named by FOUR independent walls** -- the USB
+  connector corridor (D-602), the `U9` west channel (D-603), and now both the
+  `GND` and `BQ25185_SYS` pour residuals, every one of which is a foreign track
+  lying across copper that would otherwise be one piece. Split a crossing track
+  at a boundary, rip up only the portion inside, re-join the two stubs around
+  it, hold the lane with `reserve_corridor.py --from-copper`. `join_islands`
+  has just built the half that was missing -- a re-join whose terminal is a
+  cell inside existing copper rather than a pad escape, with an anchor contract
+  that proves it. No owner decision.
 - **Demo D-604 (THE ESD GROUND RETURN; three TPD4E1B06 Community-Port
   protection arrays had an OPEN ground pin, and the netclass width was the
   only thing stopping them):** `GND` and `+3V3` own **27 of 72** retained open
