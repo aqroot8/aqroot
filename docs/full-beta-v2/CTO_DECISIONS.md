@@ -6305,6 +6305,64 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-601 · 2026-09-04 · Demo bond-redundancy barrel ladder measured; the free rung bonds 7 more pads, and clause 4 correctly refuses to promote them alone
+
+D-600 named "a DRU-licensed fine barrel is the cheapest remaining bond
+redundancy" as the next lever. It is measured here, and the measurement changes
+the recommendation: **the licence is not needed, and below the board floor the
+ladder is FLAT.**
+
+`screen_bond_stitch.py --via` re-offers the 43 pads D-600 could not bond, at
+each rung, on the promoted board `bfef0aa2...`:
+
+    0.60/0.30 mm  netclass GND via            32 of 75 bonded   12 of 46 tubes
+    0.50/0.25 mm  BOARD min_via_diameter      +7  = 39          17 of 46 tubes
+    0.45/0.20 mm  needs a rule-area licence   +4  = 43          20 of 46 tubes
+    0.35/0.20 mm  the finest licensed process EXACTLY THE SAME ELEVEN
+
+So 0.50/0.25 mm -- which needs no licence at all, meets the 0.125 mm annular
+floor exactly and is above `min_through_hole_diameter` -- adds `C25.2`, `C36.2`,
+`C5.2`, `R17.2`, `R37.2`, `R97.2`, `R98.2` and takes retirable tubes 12 -> 17;
+`GND` islands 33 and 35 retire whole. Licensing a finer barrel buys three more
+tubes (`C23.1`, `C7.2`, `R40.2`, `U2.12`) and going below 0.45 mm buys nothing.
+**Take the free rung; do not license a fine barrel for bond redundancy without a
+named net that needs one of those three tubes.**
+
+`route_maze_batch.py --bond-via DIA:DRILL` implements the free rung and REFUSES
+a request under `min_via_diameter` by name, because `maze3d.bond_pads` has no
+rule-area licence machinery and the gate's clause 6 would refuse the run --
+`screen_bond_stitch.py --via` is where a sub-floor barrel gets measured.
+
+**THE SEVEN BONDS ARE NOT PROMOTABLE TODAY, FOR THE RIGHT REASON, AND CLAUSE 4
+WAS NOT WEAKENED.** They lay cleanly -- 7 of 7, zero regressions, zero
+attributable DRC -- but bond redundancy CLOSES NO EDGE by construction: the pads
+it serves are already connected. Clause 4 requires the board to IMPROVE, so a
+pure-robustness batch must ride with a route that closes one, exactly as D-600's
+32 rode with `/I2C_SCL_INT`. Four nets were offered as that partner and all four
+declined: `/I2C_SDA_INT`, `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` and
+`/09_COMMUNITY_HEADER/EXT_SDA` are `NO_PATH` with the 29-tube guard, and
+`/I2C_SCL_INT` does not close a second edge (73 -> 73, nothing regressed,
+199/5/1 inherited DRC). **That is itself the finding: those three walls are NOT
+the pour-bond guard, they are corridor capacity** -- the same diagnosis the USB
+link carries, and further evidence that the guard is not what is holding this
+board.
+
+The authoritative PCB is unchanged at
+`bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5`, 73 open
+retained edges. D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/XGPIO5,
+accepted copper and `hardware/beta-v2/` are untouched.
+
+**READY PAYLOAD, not a parked wall.** The seven pads, the 0.50/0.25 mm barrel
+and `d601-pour-bond-guard-bonded.json` (29 tubes) are a measured, executable
+batch. Attach them to the FIRST future run that closes an edge anywhere on the
+board and they promote with it at no extra risk and no extra search.
+
+Evidence `d601-bond-stitch-fine.json` (`5ffe2ce1...`),
+`d601-bond-stitch-fine-licensed.json` (`03d20aea...`),
+`d601-pour-bond-guard-bonded.json` (`567d8cc3...`),
+`d601-fine-bond-refused.json` (`0062562b...`),
+`d601-fine-bond-characterization.json` (`52f31339...`). No owner decision.
+
 # D-600 · 2026-09-04 · Demo BOND REDUNDANCY; 32 guarded pads get a barrel of their own, the pour-bond guard shrinks 48 -> 34 tubes, 1 edge PROMOTED
 
 D-599 put three independent nets through the full gate with the pour-bond

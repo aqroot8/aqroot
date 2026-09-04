@@ -1,0 +1,66 @@
+{
+  "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "bond_pads": [
+    "C25.2",
+    "C36.2",
+    "C5.2",
+    "R17.2",
+    "R37.2",
+    "R97.2",
+    "R98.2"
+  ],
+  "bond_via_nm": [
+    500000,
+    250000
+  ],
+  "finding": "THE BARREL LADDER IS FLAT BELOW THE BOARD FLOOR, AND THE FREE RUNG IS WHERE THE VALUE IS.  At the GND netclass via (0.60/0.30 mm) 32 of 75 guarded pads bond.  At 0.50/0.25 mm -- exactly this board's min_via_diameter, needing NO rule-area licence -- 7 MORE bond and retirable tubes go 12 -> 17 of 46.  At 0.45/0.20 mm, 4 more (C23.1, C7.2, R40.2, U2.12) for 20 of 46, and at 0.35/0.20 mm -- the finest process this board licenses by name -- EXACTLY THE SAME ELEVEN.  So a licence buys three tubes and nothing below 0.45 mm buys anything at all.\n\nAND THE SEVEN FREE BONDS ARE NOT PROMOTABLE TODAY, FOR THE RIGHT REASON.  They lay cleanly -- 7 of 7, zero regressions, zero attributable DRC -- but bond redundancy CLOSES NO EDGE by construction: the pads it serves were already connected.  Gate clause 4 requires the board to IMPROVE, so a pure-robustness batch has to ride along with a route that closes one, exactly as D-600's 32 rode with /I2C_SCL_INT.  Four nets were offered as that partner and all four declined: /I2C_SDA_INT, BTN_DOWN_N and EXT_SDA are NO_PATH even with five more tubes retired, and /I2C_SCL_INT does not close a second edge.  Those three walls are therefore NOT the pour-bond guard -- they are corridor capacity, which is the same diagnosis the USB link carries.  Clause 4 was NOT weakened to admit this batch and must not be: a run that does not improve the board is not a promotion.\n\nREADY PAYLOAD.  The seven pads, the 0.50/0.25 mm barrel and d601-pour-bond-guard-bonded.json (29 tubes) are a measured, executable batch.  Attach them to the FIRST future run that closes an edge anywhere on the board and they promote with it at no extra risk.",
+  "guard": "evidence/d601-pour-bond-guard-bonded.json",
+  "schema": 1,
+  "trials": [
+    {
+      "attributable_drc": 0,
+      "bonded": 7,
+      "nets": [
+        "/I2C_SDA_INT",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/09_COMMUNITY_HEADER/EXT_SDA"
+      ],
+      "reasons": {
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": "NO_PATH",
+        "/09_COMMUNITY_HEADER/EXT_SDA": "NO_PATH",
+        "/I2C_SDA_INT": "NO_PATH"
+      },
+      "regressed": [],
+      "report": "evidence/d601-fine-bond-refused.json",
+      "retained_open_edges": [
+        73,
+        73
+      ],
+      "routed": [],
+      "verdict": "REFUSED: board did not improve"
+    },
+    {
+      "attributable_drc": 0,
+      "bonded": 7,
+      "drc_counts": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "nets": [
+        "/I2C_SCL_INT"
+      ],
+      "reasons": {
+        "/I2C_SCL_INT": "no second edge closed"
+      },
+      "regressed": [],
+      "retained_open_edges": [
+        73,
+        73
+      ],
+      "routed": [],
+      "verdict": "REFUSED: board did not improve (--promote raised \"refuse promotion: gate failed\", so no run report was written; the numbers here are read from the run work tree /tmp/d601b ledger-before.json / ledger-mid.json / drc.json)"
+    }
+  ]
+}

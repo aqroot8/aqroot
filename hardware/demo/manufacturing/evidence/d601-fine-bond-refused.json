@@ -1,0 +1,461 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "bfef0aa263eab31e616b606576da9b3afdd3cb5e18a5b8a570a724f3e32ac6a5",
+  "authoritative_unchanged": true,
+  "bonds": {
+    "bonded": 7,
+    "detail": [
+      {
+        "bonded": 7,
+        "bonds": [
+          {
+            "layer": "B",
+            "mm": 3.409,
+            "ok": true,
+            "pad": "C25.2",
+            "via_xy": [
+              66.6,
+              66.6
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.166,
+            "ok": true,
+            "pad": "C36.2",
+            "via_xy": [
+              63.4,
+              75.9
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 3.066,
+            "ok": true,
+            "pad": "C5.2",
+            "via_xy": [
+              62.1,
+              71.6
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.425,
+            "ok": true,
+            "pad": "R17.2",
+            "via_xy": [
+              55.9,
+              59.4
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.166,
+            "ok": true,
+            "pad": "R37.2",
+            "via_xy": [
+              64.5,
+              77.9
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 1.283,
+            "ok": true,
+            "pad": "R97.2",
+            "via_xy": [
+              53.0,
+              62.5
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 1.437,
+            "ok": true,
+            "pad": "R98.2",
+            "via_xy": [
+              56.4,
+              62.6
+            ]
+          }
+        ],
+        "contract": {
+          "clr": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "via_dia": 500000,
+          "via_drill": 250000,
+          "width": 300000
+        },
+        "failures": [],
+        "mm": 9.952,
+        "net": "GND",
+        "ok": true,
+        "requested": 7,
+        "seconds": 1.6,
+        "via": [
+          500000,
+          250000
+        ],
+        "vias": 7
+      }
+    ],
+    "max_mm": 8.0,
+    "nets": [
+      "GND"
+    ],
+    "requested": [
+      "C25.2",
+      "C36.2",
+      "C5.2",
+      "R17.2",
+      "R37.2",
+      "R97.2",
+      "R98.2"
+    ],
+    "via": [
+      500000,
+      250000
+    ]
+  },
+  "bridges": null,
+  "candidate_sha256": "0a9073cbb0baf91f04559fcd4c29584a51cfb12d3036a6803166ed7d0dd92fc5",
+  "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 30,
+    "open_retained_nets_before": 30,
+    "retained_open_edges_after": 73,
+    "retained_open_edges_before": 73
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": null,
+  "failed_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/I2C_SDA_INT"
+  ],
+  "guard": {
+    "sha256": "567d8cc3aeead5f8c1ededa80776ad8ebf10de20763af377af52a26ae87212ca",
+    "spec": "evidence/d601-pour-bond-guard-bonded.json",
+    "tubes": 29
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 73
+  },
+  "preservation": {
+    "added_object_nets": [
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "/I2C_SDA_INT",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+  ],
+  "routed": [
+    {
+      "closed": 0,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 600,
+          "F": 158
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "I2C",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "a": [
+            "TP4.1",
+            "U1.39",
+            "J1.45",
+            "R19.2",
+            "U14.8",
+            "U16.6",
+            "U3.23"
+          ],
+          "b": [
+            "U2.23"
+          ],
+          "dst_escapes": 1,
+          "gap_mm": 10.0,
+          "reason": "NO_PATH",
+          "src_escapes": 71,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "TP4.1",
+            "U1.39",
+            "J1.45",
+            "R19.2",
+            "U14.8",
+            "U16.6",
+            "U3.23"
+          ],
+          "b": [
+            "U4.14"
+          ],
+          "dst_escapes": 10,
+          "gap_mm": 11.885,
+          "reason": "NO_PATH",
+          "src_escapes": 73,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "U2.23"
+          ],
+          "b": [
+            "U4.14"
+          ],
+          "dst_escapes": 10,
+          "gap_mm": 21.674,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "islands": 3,
+      "joins": [],
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 2.7
+    },
+    {
+      "closed": 0,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 600,
+          "F": 158
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "a": [
+            "SW3.1",
+            "R5.2",
+            "SW3.1"
+          ],
+          "b": [
+            "U2.14"
+          ],
+          "dst_escapes": 9,
+          "gap_mm": 8.099,
+          "reason": "NO_PATH",
+          "src_escapes": 36,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "islands": 2,
+      "joins": [],
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 3.7
+    },
+    {
+      "closed": 0,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 600,
+          "F": 158
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "I2C",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "a": [
+            "D2.4"
+          ],
+          "b": [
+            "R48.2"
+          ],
+          "dst_escapes": 11,
+          "gap_mm": 8.568,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "D2.4"
+          ],
+          "b": [
+            "TP45.1",
+            "J5.4"
+          ],
+          "dst_escapes": 38,
+          "gap_mm": 9.545,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "TP45.1",
+            "J5.4"
+          ],
+          "b": [
+            "R48.2"
+          ],
+          "dst_escapes": 11,
+          "gap_mm": 17.334,
+          "reason": "NO_PATH",
+          "src_escapes": 38,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "J8.3"
+          ],
+          "b": [
+            "R48.2"
+          ],
+          "dst_escapes": 11,
+          "gap_mm": 42.355,
+          "reason": "NO_PATH",
+          "src_escapes": 9,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "D2.4"
+          ],
+          "b": [
+            "J8.3"
+          ],
+          "dst_escapes": 9,
+          "gap_mm": 50.822,
+          "reason": "NO_PATH",
+          "src_escapes": 1,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "TP45.1",
+            "J5.4"
+          ],
+          "b": [
+            "J8.3"
+          ],
+          "dst_escapes": 9,
+          "gap_mm": 58.282,
+          "reason": "NO_PATH",
+          "src_escapes": 38,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "islands": 4,
+      "joins": [],
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 22.8
+    }
+  ],
+  "routed_nets": [
+    "GND"
+  ],
+  "schema": 1
+}

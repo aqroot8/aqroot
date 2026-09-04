@@ -69,6 +69,16 @@ def main():
     ap.add_argument("--guard", type=Path, required=True)
     ap.add_argument("--grid", type=int, default=100000)
     ap.add_argument("--max-mm", type=float, default=8.0)
+    ap.add_argument("--via", default=None, metavar="DIA:DRILL",
+                    help="nm barrel to ask for instead of the netclass via.  "
+                         "It is clamped UP to the .kicad_dru class drill floor "
+                         "and to a 0.125 mm annular ring, exactly as "
+                         "route_maze_batch --stitch-via is, so this can never "
+                         "propose a via KiCad's own hole_size / annular_width "
+                         "checks would refuse -- but it CAN propose one below "
+                         "the board min_via_diameter, which needs a rule-area "
+                         "licence and is therefore a SCREEN result, not a "
+                         "promotable one, until that licence exists")
     ap.add_argument("--net", action="append", default=[],
                     help="restrict to these pour nets")
     ap.add_argument("--bonded-from", type=Path, action="append", default=[],
@@ -88,7 +98,8 @@ def main():
     import incremental_router as ir
     import maze3d as mz
     from route_maze_batch import (net_contract, permitted_layers,
-                                  reserved_inner_planes, guard_for)
+                                  reserved_inner_planes, guard_for,
+                                  DRU_CLASS, ANNULAR_MIN)
 
     board_sha = hashlib.sha256(a.board.read_bytes()).hexdigest()
     spec = json.loads(a.guard.read_text())
@@ -119,6 +130,12 @@ def main():
             nets.append(dict(net=net, ok=False, reason="UNKNOWN_NETCLASS"))
             continue
         layers = permitted_layers(qb.routable, c["layers"], reserved, net)
+        if a.via:
+            want_dia, want_drill = (int(v) for v in a.via.split(":"))
+            drill = max(want_drill,
+                        DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
+            c["via_drill"] = drill
+            c["via_dia"] = max(want_dia, drill + 2 * ANNULAR_MIN)
         field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
                          c["via_dia"], c["via_drill"], G=a.grid,
                          layers=layers, guard=guard_for(spec, net))
@@ -149,7 +166,7 @@ def main():
         schema=1, board=str(a.board), board_sha256=board_sha,
         guard=str(a.guard),
         guard_sha256=hashlib.sha256(a.guard.read_bytes()).hexdigest(),
-        grid=a.grid, max_mm=a.max_mm,
+        grid=a.grid, max_mm=a.max_mm, via=a.via,
         summary=dict(
             pads_requested=sum(len(v) for v in want.values()),
             pads_bondable=sum(len(v) for v in bondable.values()),

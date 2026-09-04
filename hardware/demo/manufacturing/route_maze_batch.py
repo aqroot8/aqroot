@@ -771,7 +771,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_residual=False, join_max_mm=0.0, neck=False,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
             split_islands=False, guard_spec=None, bridge=False,
-            bond_pads=(), bond_max_mm=BOND_MAX_MM):
+            bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -810,10 +810,28 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             continue
         t0 = time.time()
         gb = guard_for(guard_spec, net) if guard_spec else None
+        # A BOND BARREL OWES THE FLOORS, NOT THE NETCLASS.  The netclass via is
+        # sized for a rail trunk; what a bond needs is the smallest barrel the
+        # BOARD licenses, because the pads that cannot be bonded at the
+        # netclass via fail with `NO_VIA_SITE` and a site is a function of
+        # diameter.  The request is clamped UP to the `.kicad_dru` class drill
+        # floor and to the 0.125 mm annular ring, exactly as `--stitch-via` is,
+        # so it can never ask for a via KiCad's own `hole_size` /
+        # `annular_width` checks would refuse.  It is NOT clamped up to
+        # `min_via_diameter`: a barrel under that floor is legal only inside a
+        # rule area the `.kicad_dru` names, `bond_pads` has no licence
+        # machinery, and the gate's clause 6 would refuse the run -- so asking
+        # for one is a screen, not a promotion.
+        if bond_via:
+            drill = max(bond_via[1],
+                        DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
+            c = dict(c, via_drill=drill,
+                     via_dia=max(bond_via[0], drill + 2 * ANNULAR_MIN))
         field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
                          layers=c["layers"], guard=gb)
         r = mz.bond_pads(qb, net, field, bond_by_net[net], max_mm=bond_max_mm)
+        r["via"] = [c["via_dia"], c["via_drill"]]
         r["seconds"] = round(time.time() - t0, 1)
         r["contract"] = {k: c[k] for k in ("netclass", "width", "clr",
                                            "via_dia", "via_drill", "layers")}
@@ -1040,7 +1058,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
          guard=None,
-         bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM):
+         bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
+         bond_via=None):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1149,6 +1168,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # reading as `--bridge` directly above.
         if bond_pads and use_search_levers:
             cmd += ["--bond-max-mm", str(bond_max_mm)]
+            if bond_via:
+                cmd += ["--bond-via", "%d:%d" % bond_via]
             cmd += [x for r in bond_pads for x in ("--bond-pad", r)]
         # The repair is a STITCH and a BOUNDED LOCAL RE-BOND, and nothing else.
         # `--partial` is a search lever for the primary proposal; handing it to
@@ -1383,6 +1404,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         plane=plane_zone,
         plane_repair=repair,
         bonds=(dict(requested=list(bond_pads), max_mm=bond_max_mm,
+                    via=(list(bond_via) if bond_via else None),
                     bonded=sum(b.get("bonded", 0) for b in bonded),
                     nets=bond_nets, detail=bonded) if bond_pads else None),
         # PROVENANCE, not a clause.  The guard changes what the router is
@@ -1520,6 +1542,14 @@ def main():
                          "that crosses the neck cuts it; a bonded pad survives "
                          "the cut.  Repeatable; each pad is its own reverted "
                          "transaction")
+    ap.add_argument("--bond-via", default=None, metavar="DIA:DRILL",
+                    help="nm barrel for bond stitches instead of the netclass "
+                         "via; clamped UP to the DRU class drill floor and the "
+                         "0.125 mm annular ring.  A bond fails with "
+                         "NO_VIA_SITE as a function of DIAMETER, so the "
+                         "smallest barrel the board licenses outright "
+                         "(500000:250000) reaches pads the netclass via "
+                         "cannot")
     ap.add_argument("--bond-max-mm", type=float, default=BOND_MAX_MM,
                     help="window in millimetres for ONE bond stitch; the "
                          "default is the 8 mm locality window `stitch_pad` "
@@ -1537,12 +1567,22 @@ def main():
     via = None
     if a.stitch_via:
         via = tuple(int(v) for v in a.stitch_via.split(":"))
+    bond_via = None
+    if a.bond_via:
+        bond_via = tuple(int(v) for v in a.bond_via.split(":"))
+        if bond_via[0] < BOARD_VIA_DIA_MIN:
+            ap.error("--bond-via %d nm is under the board min_via_diameter "
+                     "(%d nm); a barrel that fine is legal only inside a "
+                     ".kicad_dru rule area and bond_pads has no licence "
+                     "machinery, so the gate would refuse the run.  Screen it "
+                     "with screen_bond_stitch.py --via instead"
+                     % (bond_via[0], BOARD_VIA_DIA_MIN))
     if a.propose:
         propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands,
                 load_guard(a.guard), a.bridge,
-                tuple(a.bond_pad), a.bond_max_mm)
+                tuple(a.bond_pad), a.bond_max_mm, bond_via)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1579,7 +1619,8 @@ def main():
                  evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
                  evict_whole=a.evict_whole,
                  guard=a.guard, bridge=a.bridge,
-                 bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm)
+                 bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
+                 bond_via=bond_via)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

@@ -91,6 +91,28 @@ D-269 / D-186 rule text live; `hardware/beta-v2/` untouched.
 `pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
 regenerated 46-tube guard.
 
+**THE BARREL LADDER, MEASURED IMMEDIATELY AFTER (D-601), AND THE FREE RUNG IS
+WHERE THE VALUE IS.**  `NO_VIA_SITE` is a function of DIAMETER, so the 43
+unbonded pads were re-offered at each rung:
+
+    0.60/0.30 mm  netclass GND via            32 of 75 bonded   12 of 46 tubes
+    0.50/0.25 mm  BOARD min_via_diameter      +7  = 39          17 of 46 tubes
+    0.45/0.20 mm  needs a rule-area licence   +4  = 43          20 of 46 tubes
+    0.35/0.20 mm  the finest licensed process EXACTLY THE SAME ELEVEN
+
+0.50/0.25 mm needs NO licence, meets the 0.125 mm annular floor exactly, and
+retires `GND` islands 33 and 35 whole.  A licence buys three more tubes; nothing
+below 0.45 mm buys anything.  **The seven free bonds are not promotable on their
+own** -- bond redundancy CLOSES NO EDGE by construction and clause 4 requires
+the board to improve, so they must ride with a route that closes one, as these
+32 rode with `/I2C_SCL_INT`.  Four partners were offered and all four declined
+(`/I2C_SDA_INT`, `BTN_DOWN_N`, `/09_COMMUNITY_HEADER/EXT_SDA` `NO_PATH` at the
+29-tube guard; `/I2C_SCL_INT` no second edge), which is itself the finding:
+**those walls are corridor capacity, not the pour-bond guard.**  Clause 4 was
+NOT weakened to admit the batch.  The seven pads, `--bond-via 500000:250000` and
+`evidence/d601-pour-bond-guard-bonded.json` are a READY PAYLOAD for the first
+future run that closes an edge anywhere on the board.
+
 Usage:
 
     python3 screen_bond_stitch.py --guard evidence/d600-pour-bond-guard-next.json \
@@ -99,8 +121,12 @@ Usage:
 
     python3 route_maze_batch.py NET... --partial --repair-planes \
         --guard evidence/GUARD-bonded.json \
+        --bond-via 500000:250000 \
         --bond-pad REF.NUM [--bond-pad REF.NUM ...] \
         --promote --work DIR --out evidence/RUN.json
+
+    # price a sub-floor barrel, which --bond-via refuses by name:
+    python3 screen_bond_stitch.py --guard ... --via 450000:200000 -o OUT.json
 
 ## Rip-up-and-reroute: the NFC/SPI-B fanout, 2 edges promoted and an analog reference repaired (2026-09-04)
 

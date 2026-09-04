@@ -13,6 +13,47 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-601 (bond-redundancy barrel ladder MEASURED; the free rung bonds 7
+  more pads; NO copper promoted, clause 4 not weakened):** D-600 named a
+  DRU-licensed fine barrel as the next lever and the measurement changes the
+  recommendation -- **the licence is not needed and the ladder is FLAT below the
+  board floor.** Re-offering D-600's 43 unbonded pads at each rung on
+  `bfef0aa2...`: netclass 0.60/0.30 = 32 of 75 pads and 12 of 46 tubes;
+  **0.50/0.25 (the board `min_via_diameter`, NO licence) = +7 pads and 17 of 46
+  tubes** (`C25.2`, `C36.2`, `C5.2`, `R17.2`, `R37.2`, `R97.2`, `R98.2`; `GND`
+  islands 33 and 35 retire whole); 0.45/0.20 (licence needed) = +4 more and 20
+  of 46; 0.35/0.20, the finest process this board licenses by name, = EXACTLY
+  THE SAME ELEVEN. So a licence buys three tubes and nothing under 0.45 mm buys
+  anything. `route_maze_batch.py --bond-via` implements the free rung and
+  REFUSES a sub-floor request by name; `screen_bond_stitch.py --via` is where a
+  sub-floor barrel gets measured.
+  **THE SEVEN BONDS ARE NOT PROMOTABLE TODAY AND CLAUSE 4 WAS NOT WEAKENED.**
+  They lay cleanly (7 of 7, zero regressions, zero attributable DRC) but bond
+  redundancy CLOSES NO EDGE by construction, and clause 4 requires the board to
+  improve -- so a robustness batch must ride with a route that closes one, as
+  D-600's 32 rode with `/I2C_SCL_INT`. Four partners were offered and all four
+  declined: `/I2C_SDA_INT`, `BTN_DOWN_N` and `/09_COMMUNITY_HEADER/EXT_SDA` are
+  `NO_PATH` under the 29-tube guard and `/I2C_SCL_INT` closes no second edge
+  (73 -> 73, nothing regressed, 199/5/1 inherited). **That is the finding:
+  those three walls are NOT the pour-bond guard, they are corridor capacity** --
+  the same diagnosis the USB link carries.
+  Authoritative PCB UNCHANGED at `bfef0aa2...`, 73 open retained edges;
+  D-269/D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and
+  `hardware/beta-v2/` untouched.
+  Evidence `d601-bond-stitch-fine.json`,
+  `d601-bond-stitch-fine-licensed.json`, `d601-pour-bond-guard-bonded.json`,
+  `d601-fine-bond-refused.json`, `d601-fine-bond-characterization.json`.
+  **READY PAYLOAD, not a parked wall:** the seven pads, `--bond-via
+  500000:250000` and `d601-pour-bond-guard-bonded.json` (29 tubes) are an
+  executable batch -- attach them to the FIRST future run that closes an edge
+  anywhere on the board and they promote with it at no extra risk.
+  **Next: CORRIDOR CAPACITY is now the single named blocker for BOTH the USB
+  link and the last internal I2C/button/EXT_SDA edges**, so the capability that
+  pays twice is the one D-599 named first -- a corridor RESERVATION the router
+  honours (`maze3d.Field` already takes `guard=`; what is missing is a
+  centreline emitter and an `exempt` list on a guard record), followed by a
+  differential-PAIR proposer for `USB_D` and `NFC_RFI1`/`NFC_RFI2`.
+  No owner decision.
 - **Demo D-600 (BOND REDUNDANCY; 32 guarded pads get a barrel of their own, the
   pour-bond guard shrinks 48 -> 34 tubes, 1 edge PROMOTED):** D-599 measured
   three independent nets through the full gate with the guard OFF and all three
