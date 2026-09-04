@@ -1,0 +1,107 @@
+{
+  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "45eda1396c0fe21262dae6c3780b311aa37a38dcdadb45a49798fbe72091ff43",
+  "finding": "SW9.2 STITCHES AT EVERY RUNG AND CLOSES NOTHING, and that is the diagnosis, not a puzzle.  `maze3d.stitch_pad` proves a barrel is LEGAL where it lands; it does not prove the pour under it is the BODY.  BQ25185_SYS owns TWO B.Cu zones and NOTHING else -- 1 filled island in one and 7 in the other -- so `stitch_net`'s contract, 'drop the island onto its net's plane', has no single plane to name and a legal barrel can land on any of eight.  GND has In1 and In4, +3V3 has In3 (D-580); BQ25185_SYS has neither, and 9 of the board's 69 retained open edges are its.  `--bridge` cannot help either: it joins clusters whose filled copper on ONE layer lies over another cluster's on ANOTHER, and this pour lives on a single layer.",
+  "measured": {
+    "inner_planes_owned": [],
+    "open_retained_edges": 9,
+    "orphan_islands": 9,
+    "other_pour_nets": {
+      "+3V3": [
+        "In3.Cu"
+      ],
+      "GND": [
+        "In1.Cu",
+        "In4.Cu"
+      ]
+    },
+    "zones": [
+      {
+        "filled_islands": 1,
+        "layer": "B.Cu",
+        "name": "B /01_POWER_TREE/BQ25185_SYS POUR 2"
+      },
+      {
+        "filled_islands": 7,
+        "layer": "B.Cu",
+        "name": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+      }
+    ]
+  },
+  "next_lever": "A BOUNDED In2.Cu pour for BQ25185_SYS, or a proposer that names WHICH pour island a stitch barrel must land in.  In2.Cu is the only routable inner layer carrying no pour, so a pour there would make every one of the eight islands one barrel from a single body -- but `reserved_inner_planes` reserves a LAYER as soon as any pour appears on it, and In2 is in the maze's palette for every net on the board, so the cost must be measured (objects currently on In2) before it is spent.  `--plane-outline` already bounds a pour to a region, which is the shape that would let this be paid for locally rather than board-wide.",
+  "runs": [
+    {
+      "attributable_drc": 0,
+      "contract": {
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "nets_improved": [],
+      "nets_regressed": [],
+      "promotion_candidate": false,
+      "residual_failure_reasons": [],
+      "residual_joined": null,
+      "retained_open_edges_after": 69,
+      "retained_open_edges_before": 69,
+      "run": "stitch only, netclass contract",
+      "stitch_failure_reasons": [
+        "NO_LEGAL_ESCAPE",
+        "NO_VIA_SITE"
+      ],
+      "stitched": 1
+    },
+    {
+      "attributable_drc": 0,
+      "contract": {
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "nets_improved": [],
+      "nets_regressed": [],
+      "promotion_candidate": false,
+      "residual_failure_reasons": [
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH"
+      ],
+      "residual_joined": 0,
+      "retained_open_edges_after": 69,
+      "retained_open_edges_before": 69,
+      "run": "stitch + residual join at 25 mm, netclass contract",
+      "stitch_failure_reasons": [
+        "NO_LEGAL_ESCAPE",
+        "NO_VIA_SITE"
+      ],
+      "stitched": 1
+    },
+    {
+      "attributable_drc": 0,
+      "contract": {
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 500000
+      },
+      "nets_improved": [],
+      "nets_regressed": [],
+      "promotion_candidate": false,
+      "residual_failure_reasons": [
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH"
+      ],
+      "residual_joined": 0,
+      "retained_open_edges_after": 69,
+      "retained_open_edges_before": 69,
+      "run": "stitch + residual join at 25 mm, .kicad_dru 0.50 mm / 0.65-0.40 floor",
+      "stitch_failure_reasons": [
+        "NO_LEGAL_ESCAPE",
+        "NO_VIA_SITE"
+      ],
+      "stitched": 1
+    }
+  ],
+  "schema": 1,
+  "verdict": "CHARACTERIZATION -- no copper promoted from these three runs; authoritative board byte-identical across all three",
+  "wall": "BQ25185_SYS -- THE ONE POUR-OWNING NET ON THIS BOARD WITH NO INNER PLANE",
+  "width_is_not_the_wall": "Every residual join is NO_PATH at the 0.800 mm netclass width AND at the 0.500 mm figure the .kicad_dru itself states as the SYS_MAIN minimum ('SYS_MAIN minimum width (min 0.50mm) (opt 0.80mm)'), with the barrel at the POWER-class floor 0.65/0.40.  A 1.6x width reduction the board has already ratified changes ZERO verdicts, so this wall is corridor capacity, not contract."
+}

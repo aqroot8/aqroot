@@ -186,6 +186,7 @@ BRIDGE_LADDER = ((650000, 400000),      # POWER class floor -- no exception
 # readable next to the code that enforces it.
 BOARD_VIA_DIA_MIN = 500000              # min_via_diameter
 BOARD_HOLE_MIN = 200000                 # min_through_hole_diameter
+BOARD_TRACK_MIN = 150000                # min_track_width
 
 # How far a licence area extends BEYOND the barrel it licenses.  KiCad answers
 # `enclosedByArea` against the item's copper, not its centre, so the area has to
@@ -928,8 +929,16 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # for a cross-board rail run.  The override can only ever RAISE the
         # floor: it is clamped to the DRU minimum for the class and the real
         # `track_width` DRC check re-proves every emitted segment regardless.
+        #
+        # D-604: THE BOARD FLOOR IS PART OF THAT CLAMP AND WAS MISSING.  Several
+        # classes -- `GND` among them, and it is the one this lever pays on --
+        # carry NO `.kicad_dru` `track_width` rule at all, so the class floor is
+        # zero and the clamp above admitted any width the caller asked for,
+        # including one under board setup's own `min_track_width`.  `--bond-via`
+        # already refuses a sub-floor barrel by name; a sub-floor TRACK is
+        # refused here for the same reason and in the same shape.
         if stitch_width:
-            c["width"] = max(stitch_width,
+            c["width"] = max(stitch_width, BOARD_TRACK_MIN,
                              DRU_CLASS.get(c["netclass"], {}).get("width", 0))
         # Same discipline for the barrel.  The netclass via is sized for a rail
         # trunk; a stitch barrel owes only the .kicad_dru floors -- the
@@ -1538,7 +1547,8 @@ def main():
                          "-- one pour per cluster of the rail's lands")
     ap.add_argument("--zone-clearance", type=float, default=0.25)
     ap.add_argument("--stitch-width", type=int, default=0,
-                    help="stub width in nm; clamped UP to the DRU class floor")
+                    help="stub width in nm; clamped UP to the DRU class "
+                         "floor and to board setup's min_track_width")
     ap.add_argument("--join-residual", action="store_true",
                     help="for a plane-served net, maze-join the islands the "
                          "local stitch reported as unreachable")

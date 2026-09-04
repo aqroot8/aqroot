@@ -2,6 +2,129 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## The ESD ground return: three TPD4E1B06 arrays had an OPEN ground pin, and the netclass width was the only thing stopping them (2026-09-04)
+
+`GND` and `+3V3` between them owned **27 of the board's 72 retained open
+edges** -- islands their own pour never reached, the largest remaining family by
+a factor of three, and every one of them one `maze3d.stitch_pad` away from
+closing: an escape, a short run, one through barrel down to the net's own plane.
+So the question was never which net to route next.  It was what CONTRACT the
+stitch was being denied at.
+
+    whole-board retained open edges   72 -> 69
+    raw ratsnest                      88 -> 85     open retained nets 29 -> 29
+    improved  GND (12 -> 9 open edges)             regressed  none
+    11 objects added (8 tracks + 3 vias), ZERO removed, zero zones or rule areas
+    authority 0b991dc9... -> 45eda139...
+
+**WHAT THE THREE EDGES ARE.**  `D2`, `D4` and `D5` are TPD4E1B06DRLR ESD
+protection arrays in SOT-563, and they protect the **Community Port** --
+`XGPIO4_HDR`, `XGPIO5_HDR`, `NATIVE_A_HDR`, `NATIVE_B_HDR`, `EXT_SDA`,
+`EXT_SCL`, `WAKE_ATTN_N_HDR`, `ACC_DETECT_N_HDR`.  All three had an
+**UNCONNECTED GND pin**.  A TVS array whose ground is open clamps nothing; it is
+a line on a BOM and no protection at all, on the one connector a Kickstarter
+demo hands to a stranger.  That is a functional defect on a user-facing
+MUST-HAVE, not a ledger entry.
+
+**THE NETCLASS WIDTH IS A DEFAULT.  THE `.kicad_dru` FLOOR IS THE RULE.**  The
+DRU imposes **no `track_width` rule on `GND` at all**, so the board's own floor
+for a `GND` track is board setup's 0.15 mm `min_track_width` -- and a SOT-563
+land is 0.350 mm wide on 0.5 mm pitch, so a 0.30 mm launch off it does not
+physically exist.  All three pads reported `NO_LEGAL_ESCAPE` for that reason and
+no other.  The ladder was measured on the promoter's own `stitch_pad`, every
+trial reverted:
+
+    w = 0.30 / 0.28 / 0.25 mm ->  0 of 12 islands, at either barrel
+    w = 0.23 mm, 0.60/0.30    ->  2      w = 0.20 mm, 0.60/0.30 -> 2
+    w = 0.23 mm, 0.50/0.25    ->  3      w = 0.20 mm, 0.50/0.25 -> 3
+
+Both levers are needed for the third pad.  **0.20 mm is chosen over the wider
+0.23 mm on INDUCTANCE, not on count**: it lays 0.79 / 0.97 / 2.55 mm against
+1.19 / 1.75 / 2.80 mm, and for an ESD return LENGTH is the figure of merit --
+TI's own TPD4E1B06 layout guidance is "minimize the length of the ground trace,
+use a via directly to the ground plane".  0.20 mm of 1 oz copper carries an 8 kV
+IEC 61000-4-2 contact discharge with two orders of magnitude of fusing margin.
+Laid **0.200 mm on `F.Cu` into 0.50/0.25 mm barrels onto the `In1`/`In4` `GND`
+planes** -- the DRU's own pad-escape necking figure (a rule that already names
+the SOT-563 parts `U13` and `U21`) and `min_via_diameter` with exactly the
+0.125 mm annular ring, D-601's proven FREE rung.  No licence; `--stitch-width` /
+`--stitch-via` already existed and already clamp UP to every DRU floor.
+
+**ONE LATENT DEFECT IN THAT CLAMP, FOUND AND FIXED.**  `--stitch-width` clamped
+to `DRU_CLASS[class]["width"]` and nothing else, and for `GND` that floor is
+ZERO because the DRU states no width rule for the class -- so the flag would
+have accepted a request under board setup's own `min_track_width`.
+`--bond-via` already refuses a sub-floor barrel by name; a sub-floor TRACK is
+now clamped for the same reason and in the same shape (`BOARD_TRACK_MIN`,
+transcribed from `aqroot-Beta-v2.kicad_pro` beside `BOARD_VIA_DIA_MIN` and
+`BOARD_HOLE_MIN`).  The promoted run asked for 0.200 mm and is unaffected.
+
+**THE FAMILY IS NOW SWEPT AND BANKED.**  New read-only
+`screen_plane_orphans.py` offers every orphan island of every pour-owning net to
+`stitch_pad` at each rung from the netclass contract down to the floors the DRU
+and board setup state, clamping exactly as `route_maze_batch.propose` clamps so
+it can never propose copper the board would refuse.  On the promoted board:
+
+  * `GND` -- **0 of the 9 remaining at EVERY rung down to 0.15 mm /
+    0.50-0.20 mm.**  Instrumented directly, those escapes reach free regions of
+    19 to 344 lattice cells and **not one via-legal cell among them**: sealed
+    pockets, measured rather than inferred.  `--join-residual` at a 15 mm bound
+    adds nothing -- all 9 are `NO_PATH` or `NO_LEGAL_ESCAPE_SRC` even at
+    0.20 mm.
+  * `+3V3` -- **0 of 15 at every LEGAL rung.**  Its floors are not `GND`'s: the
+    DRU states 0.40 mm on the outer layers for `P3V3` and "POWER-class vias use
+    the 0.40 mm drill", so 0.65/0.40 mm is the finest legal barrel.  A
+    0.50/0.25 mm barrel WOULD open `C3.1`, `R127.1`, `U12.4`, `U12.5` and
+    `U17.5` and is ILLEGAL on this class -- recorded as the size of the prize
+    behind a licence, not as a route.
+
+**AND THE SWEEP NAMED THE NEXT WALL BY ITS ROOT.**
+`/01_POWER_TREE/BQ25185_SYS` carries 9 open edges and its `SW9.2` island
+stitches at EVERY rung -- and closes nothing, in three separate full gate runs,
+69 -> 69 each time.  **`stitch_pad` proves a barrel is LEGAL where it lands, not
+that the pour under it is the BODY.**  This net owns two `B.Cu` zones and
+nothing else, 1 filled island in one and 7 in the other, so `stitch_net`'s
+contract -- "drop the island onto its net's plane" -- has no single plane to
+name.  `GND` has `In1` and `In4`; `+3V3` has `In3` (D-580); **`BQ25185_SYS` is
+the one pour-owning net on this board with no inner plane at all**, and
+`--bridge` cannot help because it joins clusters across LAYERS and this pour has
+one.  Width is not the wall either: every residual join is `NO_PATH` at the
+0.800 mm netclass width AND at the 0.500 mm figure the DRU itself states as the
+`SYS_MAIN` minimum, barrel at the POWER floor -- a 1.6x reduction the board has
+already ratified, and it changes zero verdicts.
+
+**RE-PROVED INDEPENDENTLY, all 14 checks PASS** (`verify_promotion.py`): ZERO
+objects removed; 11 added (8 tracks + 3 vias) and every one on `GND`; every
+track 0.200 mm on `F.Cu`; every barrel 0.50/0.25 mm, above the drill and
+0.125 mm annular floors; zone and rule-area inventories unchanged; KiCad's OWN
+unconnected-item count **88 -> 85**; real zone-refilled schematic-parity DRC at
+`--severity-all` exactly 199 / 5 / 1 inherited with ZERO attributable and ZERO
+parity reports; fill-stable; D-269 / D-186 rule text live; `hardware/beta-v2/`
+untouched.  `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
+`pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
+regenerated 46-tube guard; `screen_bond_stitch.py` re-derives the same 29-tube
+working guard and confirms D-603's free rung still exhausted (0 of 36 bondable).
+
+Usage:
+
+    python3 screen_plane_orphans.py [NET ...] --guard GUARD.json -o OUT.json
+    python3 route_maze_batch.py GND --split-islands \
+        --stitch-width 200000 --stitch-via 500000:250000 \
+        --guard GUARD.json --repair-planes --work DIR --out DIR/run.json [--promote]
+
+Next: **give `BQ25185_SYS` a body.**  Its 9 edges are one problem, not nine, and
+the problem is a single-layer pour broken into eight islands.  The bounded form
+is a `--plane-outline` `In2.Cu` pour over the island cluster -- `In2` is the only
+routable inner layer carrying no pour -- but the cost must be measured before it
+is spent: **In2 carries 268 tracks / 2268 mm across 60 nets**, and
+`reserved_inner_planes` reserves a LAYER as soon as any pour appears on it, so a
+naive whole-layer pour would take a third of the board's routing capacity.  The
+cheaper, strictly local alternative is a proposer that names WHICH pour island a
+stitch barrel must land in.  SEGMENT eviction (D-602/D-603) stays named and
+unbuilt behind both.
+
+Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
+
 ## A clearance the board owes a PAD is not the one it owes a TRACK; the display backlight anode PROMOTED, and the free bond rung spent (2026-09-04)
 
 D-601 left a READY PAYLOAD -- seven pads that bond at the board's own
