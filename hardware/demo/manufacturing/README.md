@@ -2,6 +2,50 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## Accessory-power control: both switched-rail enables improved, 2 edges promoted (2026-09-04)
+
+The Demo scope requires software-controlled switched 3.3 V AND 5 V accessory
+power on the Community Port, and both control nets were open.  Both are now one
+edge better and neither cost another net anything.
+
+    whole-board retained open edges   78 -> 76
+    raw ratsnest                      94 -> 92
+    ACC_PWR_EN 2 -> 1                 ACC_5V_BOOST_EN 2 -> 1
+    regressed none    authority d8715223... -> 83b6a140...
+
+`screen_corridor_blockers.py` was RE-run on the board D-596 actually promoted
+(`d597-corridor-rescreen.json`) before any of its verdicts were believed, because
+D-596 measured them one board earlier.  They held, with one instructive change:
+`/NFC_CS_N` moved from `RIPUP_SINGLE` to `CROSSING_COPPER_WALL`, because the
+opener it named is the net D-596 evicted whole and rebuilt.  **A rip-up verdict
+is a property of a board, not of a net.**
+
+The batch that evicts every opener the screen names is not the best batch.  Four
+orderings were measured:
+
+    evict EXT_SCL_BUF ACC_POWER_FAULT_N TCA4307_READY ACC_5V_FB
+        ACC_5V_BOOST_EN 2 -> 0 (!), ACC_PWR_EN 2 -> 1, and REFUSED:
+        three openers could not rebuild, board 78 -> 79
+    evict EXT_SCL_BUF alone       ACC_PWR_EN      2 -> 1   78 -> 77  promotable
+    evict ACC_5V_FB alone         ACC_5V_BOOST_EN 2 -> 1   78 -> 77  promotable
+    evict TCA4307_READY alone     opener ends at 1                   REFUSED
+    both promotable evictions     78 -> 76                           PROMOTED
+
+`ACC_POWER_FAULT_N` bought nothing -- `ACC_PWR_EN`'s `R17.1` -> `U3.20` edge
+still returns `NO_PATH` with it gone -- so one of the four openers the screen
+named was simply wrong.  A fifth ordering that added `/I2C_SCL_INT` also reached
+76 and improved a third net, and was refused because `EXT_SCL_BUF` is the opener
+for BOTH `ACC_PWR_EN` -> `U16.1` and `I2C_SCL_INT` -> `U16.3` and the `U16`
+approach fits one of them.  Same shape as the community-header I2C pair: **a
+greedy per-net maze cannot allocate a shared corridor.**
+
+`verify_promotion.py --evicted` re-proves it from the two board files: 28
+removed on the two evicted nets, 67 added (58 tracks + 9 vias) on claimed nets,
+all 0.200 mm on `F`/`B`/`In2` with 0.60/0.30 barrels, KiCad's own unconnected
+count 94 -> 92, DRC exactly 199/5/1 with zero attributable and zero parity
+errors.  `protected_copper.py` byte-identical: `/ACC_3V3_SW` and `/ACC_5V_SW_EN`
+were named as openers and were never candidates.
+
 ## Bounded pour: the charger SYS rail gets local copper, 3 edges promoted (2026-09-04)
 
 `/01_POWER_TREE/BQ25185_SYS` held **10 of the board's 81 open edges** and had

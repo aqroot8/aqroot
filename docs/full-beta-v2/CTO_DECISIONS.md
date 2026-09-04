@@ -6305,6 +6305,90 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-598 · 2026-09-04 · Demo accessory-power control; both switched-rail enables improved, 2 edges PROMOTED
+
+The Demo scope requires **software-controlled switched 3.3 V and 5 V accessory
+power** on the Community Port. Both of its control nets were open. Both are now
+one edge better and neither cost another net anything. Whole-board retained open
+edges **78 -> 76**, raw ratsnest 94 -> 92, `/ACC_PWR_EN` 2 -> 1,
+`/ACC_5V_BOOST_EN` 2 -> 1, **ZERO nets regressed**, zero zones touched.
+Authority `d8715223...` ->
+`83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04`.
+
+## The screen was RE-run before it was believed
+
+D-596 named these openers, but it measured them on `2140f6a9` -- one board
+before the one it promoted. `screen_corridor_blockers.py` was therefore re-run
+on `db5f997f` with `--no-minimal` (`d597-corridor-rescreen.json`) and the
+verdicts held, with one change worth recording: `/NFC_CS_N` has moved from
+`RIPUP_SINGLE` to `CROSSING_COPPER_WALL`, because the opener it named
+(`/SPI_A_MOSI`) is exactly the net D-596 evicted whole and rebuilt. **A rip-up
+verdict is a property of a board, not of a net.**
+
+## What the batch actually costs, measured in four orderings
+
+The screen names two openers per edge and the largest offering is not the best
+one. The six-net batch that evicted every named opener -- `EXT_SCL_BUF`,
+`ACC_POWER_FAULT_N`, `TCA4307_READY`, `ACC_5V_FB` -- **closed
+`/ACC_5V_BOOST_EN` COMPLETELY (2 -> 0)** and took `/ACC_PWR_EN` to 1, a gain of
+three; and it was REFUSED, because `ACC_5V_FB` (+1), `TCA4307_READY` (+2) and
+`ACC_POWER_FAULT_N` (+1) could not rebuild once the beneficiaries had taken
+their lanes. Clause 4 forbids a regression however favourable the total, and
+the total here was negative anyway (78 -> 79).
+
+Narrowing found the ceiling in three more runs:
+
+  * evict `EXT_SCL_BUF` alone, request it back: `/ACC_PWR_EN` 2 -> 1, opener
+    rebuilt in full, **78 -> 77, promotable**;
+  * evict `ACC_5V_FB` alone: `/ACC_5V_BOOST_EN` 2 -> 1, opener rebuilt,
+    **78 -> 77, promotable**;
+  * evict `TCA4307_READY` alone: `/ACC_5V_BOOST_EN` 2 -> 1 but the opener ends
+    at 1, **REFUSED**;
+  * both promotable evictions together: **78 -> 76**, both beneficiaries
+    improved, both openers whole. That is the batch.
+
+`/ACC_POWER_FAULT_N` bought NOTHING: `/ACC_PWR_EN`'s second edge
+(`R17.1` -> `U3.20`) still returned `NO_PATH` with it gone, so its removal was
+pure cost. **AN OPENER THE SCREEN NAMES IS A HYPOTHESIS, AND ONE OF THESE FOUR
+WAS SIMPLY WRONG.**
+
+A fifth ordering added `/I2C_SCL_INT` to the promotable pair. It reached the
+same **76** and improved a third net (`/I2C_SCL_INT` 6 -> 5) -- and was refused,
+because `EXT_SCL_BUF` then finished at 1. `EXT_SCL_BUF` is the opener for BOTH
+`/ACC_PWR_EN` `R17.1` -> `U16.1` AND `/I2C_SCL_INT` `U4.13` -> `U16.3`, and the
+`U16` approach fits exactly one of them. This is the same shape D-596 recorded
+for the community-header I2C pair: **a greedy per-net maze cannot allocate a
+shared corridor, and the remedy is a paired-net allocator, not another
+ordering.**
+
+## Verification
+
+`verify_promotion.py --evicted` re-proves the rip-up from the two board files
+alone: **28 objects removed**, all on the two evicted nets; **67 added**
+(58 tracks + 9 vias), all on claimed nets, every track 0.200 mm on
+`F`/`B`/`In2` only, every barrel 0.60/0.30; zone and
+rule-area inventories unchanged; KiCad's OWN unconnected count measured on both
+boards, **94 -> 92**; real zone-refilled schematic-parity DRC exactly 199/5/1
+with ZERO attributable and ZERO parity errors; fill-stable; D-269/D-186 live;
+`hardware/beta-v2/` untouched. `protected_copper.py`: 15 nets / 393 objects
+BYTE-IDENTICAL -- `/ACC_3V3_SW` and `/ACC_5V_SW_EN` were named as openers by
+the screen and were never candidates. `pour_bond_contract.py` P1-P4 and
+`neck_contract.py` N1-N3 PASS on the regenerated 49-tube guard.
+
+## Next
+
+`/ACC_5V_BOOST_EN`'s remaining edge and `/ACC_PWR_EN`'s remaining edge are both
+behind an opener that cannot rebuild, so they are now **shared-corridor** cases
+and not rip-up cases. The named capability they need is the PAIRED-NET corridor
+allocator D-596 already asked for, and the `U16` approach and the `D2`/`J8`
+community-header I2C haul are its first two customers. No owner decision.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d597-acc-evict-batch.json`, `d597-acc-verify.json`,
+`d597-corridor-rescreen.json`, `d598-protected-copper.json`,
+`d598-pour-bond-guard-next.json`, `d598-guard-contract.json`,
+`d598-neck-contract.json`, `d598-pour-damage-next.json`.
+
 # D-597 · 2026-09-04 · Demo BOUNDED POUR; the charger SYS rail gets local copper, 3 edges PROMOTED
 
 `/01_POWER_TREE/BQ25185_SYS` carried **10 of the board's 81 open edges** -- the

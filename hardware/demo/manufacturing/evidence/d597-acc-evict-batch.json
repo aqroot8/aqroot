@@ -1,0 +1,544 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "d871522361c6887a28e391860964ef0dd063116512165603022fde8799b16077",
+  "authoritative_unchanged": true,
+  "bridges": null,
+  "candidate_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "connectivity": {
+    "nets_improved": [
+      "/ACC_5V_BOOST_EN",
+      "/ACC_PWR_EN"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 76,
+    "retained_open_edges_before": 78
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": {
+    "closure_count": 0,
+    "corridor_layers": [
+      "B",
+      "F",
+      "I2"
+    ],
+    "corridors": {
+      "/01_POWER_TREE/ACC_5V_FB": {
+        "area_mm2": 170.683,
+        "box_mm": [
+          54.087,
+          30.0,
+          66.825,
+          43.4
+        ]
+      },
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+        "area_mm2": 445.07,
+        "box_mm": [
+          47.325,
+          28.839,
+          61.279,
+          60.735
+        ]
+      },
+      "/ACC_5V_BOOST_EN": {
+        "area_mm2": 527.221,
+        "box_mm": [
+          54.087,
+          36.9,
+          66.5,
+          79.375
+        ]
+      },
+      "/ACC_PWR_EN": {
+        "area_mm2": 345.516,
+        "box_mm": [
+          51.05,
+          52.725,
+          62.862,
+          81.975
+        ]
+      }
+    },
+    "dangling_unevictable": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ACC_5V_FB",
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "margin_mm": 3.0,
+    "removed_by_net": {
+      "/01_POWER_TREE/ACC_5V_FB": 13,
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF": 17
+    },
+    "removed_count": 30,
+    "removed_signatures": [
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (55700000, 39800000), (56300000, 40400000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (55700000, 39800000), (56800000, 38500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56100000, 36400000), (56800000, 37800000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56100000, 36400000), (57000000, 33700000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56300000, 40400000), (57087500, 40400000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56800000, 37800000), (56800000, 38500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (57000000, 33700000), (57675000, 33000000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (57675000, 33000000), (58400000, 32300000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (58400000, 32300000), (60300000, 29900000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (60300000, 29900000), (62700000, 30200000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (62700000, 30200000), (64200000, 32200000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (63800000, 32600000), (63825000, 33500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (63800000, 32600000), (64200000, 32200000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (49600000, 46100000), (55400000, 36500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (49600000, 46100000), (56300000, 52800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (57400000, 31800000), (57800000, 31800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (57400000, 31800000), (58278652, 31838726), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (50325000, 57735000), (51000000, 57000000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51000000, 57000000), (51500000, 56500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51500000, 55500000), (51500000, 56500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51500000, 55500000), (51800000, 55000000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51800000, 55000000), (55900000, 55100000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55300000, 54500000), (55900000, 55100000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55300000, 54500000), (56300000, 52800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55900000, 55100000), (57137500, 55075000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55900000, 55100000), (57137500, 55075000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 8, (55400000, 36500000), (57800000, 31800000), 200000)",
+      "('V', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', (55400000, 36500000), 600000, 300000)",
+      "('V', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', (56300000, 52800000), 600000, 300000)",
+      "('V', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', (57800000, 31800000), 600000, 300000)"
+    ],
+    "whole_net": true
+  },
+  "failed_nets": [],
+  "guard": {
+    "sha256": "74ec112f570a7616b7075458c019329c6a2c263374131609373d8609cdcfab92",
+    "spec": "evidence/d597-pour-bond-guard-next.json",
+    "tubes": 49
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ACC_5V_FB",
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 76
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/ACC_5V_FB",
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "/ACC_5V_BOOST_EN",
+      "/ACC_PWR_EN"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 29,
+    "removed_objects": [
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (55700000, 39800000), (56300000, 40400000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (55700000, 39800000), (56800000, 38500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56100000, 36400000), (56800000, 37800000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56100000, 36400000), (57000000, 33700000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56300000, 40400000), (57087500, 40400000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (56800000, 37800000), (56800000, 38500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (57000000, 33700000), (57675000, 33000000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (57675000, 33000000), (58400000, 32300000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (58400000, 32300000), (60300000, 29900000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (60300000, 29900000), (62700000, 30200000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (62700000, 30200000), (64200000, 32200000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (63800000, 32600000), (63825000, 33500000), 200000)",
+      "('T', '/01_POWER_TREE/ACC_5V_FB', 2, (63800000, 32600000), (64200000, 32200000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (49600000, 46100000), (55400000, 36500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (49600000, 46100000), (56300000, 52800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (57400000, 31800000), (57800000, 31800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 0, (57400000, 31800000), (58278652, 31838726), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (50325000, 57735000), (51000000, 57000000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51000000, 57000000), (51500000, 56500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51500000, 55500000), (51500000, 56500000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51500000, 55500000), (51800000, 55000000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (51800000, 55000000), (55900000, 55100000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55300000, 54500000), (55900000, 55100000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55300000, 54500000), (56300000, 52800000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 2, (55900000, 55100000), (57137500, 55075000), 200000)",
+      "('T', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', 8, (55400000, 36500000), (57800000, 31800000), 200000)",
+      "('V', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', (55400000, 36500000), 600000, 300000)",
+      "('V', '/09_COMMUNITY_HEADER/EXT_SCL_BUF', (56300000, 52800000), 600000, 300000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/ACC_PWR_EN",
+    "/ACC_5V_BOOST_EN",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/01_POWER_TREE/ACC_5V_FB"
+  ],
+  "routed": [
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 859,
+          "F": 311
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "a": [
+            "U16.1",
+            "R17.1"
+          ],
+          "b": [
+            "U3.20"
+          ],
+          "dst_escapes": 7,
+          "gap_mm": 20.242,
+          "reason": "NO_PATH",
+          "src_escapes": 15,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "U16.1",
+            "R17.1"
+          ],
+          "b": [
+            "U3.20"
+          ],
+          "dst_escapes": 7,
+          "gap_mm": 23.409,
+          "reason": "NO_PATH",
+          "src_escapes": 15,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "R17.1",
+          "layers": [
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 11.265676533882601,
+          "to": "U16.1",
+          "via_xy": [
+            [
+              53.9,
+              59.5
+            ],
+            [
+              51.5,
+              54.9
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 11.266,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/ACC_PWR_EN",
+      "ok": true,
+      "remaining": 1,
+      "seconds": 3.4,
+      "vias": 2
+    },
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 859,
+          "F": 311
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [
+        {
+          "a": [
+            "R102.1"
+          ],
+          "b": [
+            "TP30.1",
+            "U3.16"
+          ],
+          "dst_escapes": 18,
+          "gap_mm": 6.815,
+          "reason": "NO_PATH",
+          "src_escapes": 12,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        },
+        {
+          "a": [
+            "R102.1"
+          ],
+          "b": [
+            "U21.2",
+            "TP30.1",
+            "U3.16"
+          ],
+          "dst_escapes": 27,
+          "gap_mm": 18.207,
+          "reason": "NO_PATH",
+          "src_escapes": 11,
+          "why": "no all-layer corridor at 0.200 mm between the islands"
+        }
+      ],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "TP30.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 14.595494715272789,
+          "to": "U21.2",
+          "via_xy": [
+            [
+              58.4,
+              43.0
+            ],
+            [
+              56.5,
+              41.1
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 14.595,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/ACC_5V_BOOST_EN",
+      "ok": true,
+      "remaining": 1,
+      "seconds": 23.6,
+      "vias": 2
+    },
+    {
+      "closed": 2,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 859,
+          "F": 311
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "I2C",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "R50.2",
+          "layers": [
+            "B"
+          ],
+          "mm": 12.893683993178689,
+          "to": "U16.2",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "R47.1",
+          "layers": [
+            "F",
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 27.939166918806613,
+          "to": "U16.2",
+          "via_xy": [
+            [
+              57.8,
+              31.8
+            ],
+            [
+              55.7,
+              40.3
+            ],
+            [
+              56.4,
+              52.8
+            ]
+          ],
+          "vias": 3
+        }
+      ],
+      "mm": 40.833,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 5.9,
+      "vias": 3
+    },
+    {
+      "closed": 2,
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 859,
+          "F": 311
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "R100.1",
+          "layers": [
+            "B"
+          ],
+          "mm": 10.498411542739522,
+          "to": "R99.2",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "R100.1",
+          "layers": [
+            "B",
+            "F",
+            "I2",
+            "B"
+          ],
+          "mm": 26.145793095451026,
+          "to": "U21.1",
+          "via_xy": [
+            [
+              56.1,
+              36.9
+            ],
+            [
+              58.4,
+              44.1
+            ],
+            [
+              56.8,
+              45.3
+            ]
+          ],
+          "vias": 3
+        }
+      ],
+      "mm": 36.644,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ACC_5V_FB",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 5.0,
+      "vias": 3
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/ACC_5V_FB",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_PWR_EN"
+  ],
+  "schema": 1
+}

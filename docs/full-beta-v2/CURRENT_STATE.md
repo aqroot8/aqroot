@@ -13,6 +13,54 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-598 (accessory-power control; both switched-rail enables improved,
+  2 edges PROMOTED):** the Demo scope REQUIRES software-controlled switched
+  3.3 V **and** 5 V accessory power on the Community Port, and both of its
+  control nets were open. Whole-board retained open edges **78 -> 76**, ratsnest
+  94 -> 92, `/ACC_PWR_EN` 2 -> 1, `/ACC_5V_BOOST_EN` 2 -> 1, ZERO nets regressed,
+  zero zones touched. Authority `d8715223...` ->
+  `83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04`.
+  **The screen was RE-RUN before it was believed.** D-596 named these openers but
+  measured them on `2140f6a9`, one board before the one it promoted;
+  `screen_corridor_blockers.py` was re-run on `db5f997f` and the verdicts held
+  with one instructive change — `/NFC_CS_N` moved `RIPUP_SINGLE` ->
+  `CROSSING_COPPER_WALL`, because the opener it named (`/SPI_A_MOSI`) is exactly
+  the net D-596 evicted whole and rebuilt. **A RIP-UP VERDICT IS A PROPERTY OF A
+  BOARD, NOT OF A NET.**
+  **The largest offering is not the best one, measured in five orderings.**
+  Evicting every named opener (`EXT_SCL_BUF`, `ACC_POWER_FAULT_N`,
+  `TCA4307_READY`, `ACC_5V_FB`) closed `/ACC_5V_BOOST_EN` **completely (2 -> 0)**
+  and took `/ACC_PWR_EN` to 1 — and was REFUSED, because three openers could not
+  rebuild once the beneficiaries took their lanes (board 78 -> 79). Narrowing:
+  `EXT_SCL_BUF` alone -> `/ACC_PWR_EN` 2 -> 1, opener whole, 78 -> 77;
+  `ACC_5V_FB` alone -> `/ACC_5V_BOOST_EN` 2 -> 1, opener whole, 78 -> 77;
+  `TCA4307_READY` alone -> REFUSED (opener ends at 1); **both together ->
+  78 -> 76, PROMOTED.** `/ACC_POWER_FAULT_N` bought NOTHING (`R17.1` -> `U3.20`
+  still `NO_PATH` with it gone) — **an opener the screen names is a hypothesis,
+  and one of these four was simply wrong.** A fifth ordering adding
+  `/I2C_SCL_INT` also reached 76 and improved a third net, and was refused
+  because `EXT_SCL_BUF` opens BOTH `/ACC_PWR_EN` `R17.1` -> `U16.1` AND
+  `/I2C_SCL_INT` `U4.13` -> `U16.3` and the `U16` approach fits exactly one —
+  the same shape D-596 recorded for the community-header I2C pair.
+  **`verify_promotion.py --evicted`: all 14 checks PASS** — 28 objects removed,
+  all on the two evicted nets; 67 added (58 tracks + 9 vias), all on claimed
+  nets, every track 0.200 mm on `F`/`B`/`In2`, every barrel 0.60/0.30; zone and
+  rule-area inventories unchanged; KiCad's own unconnected count **94 -> 92**;
+  real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO attributable
+  and ZERO parity errors; fill-stable; D-269/D-186 live; `hardware/beta-v2/`
+  untouched. `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL —
+  `/ACC_3V3_SW` and `/ACC_5V_SW_EN` were NAMED as openers by the screen and were
+  never candidates. `pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3
+  PASS on the regenerated 51-tube guard.
+  Evidence `d597-acc-evict-batch.json`, `d597-acc-verify.json`,
+  `d597-corridor-rescreen.json`, `d598-protected-copper.json`,
+  `d598-pour-bond-guard-next.json`, `d598-guard-contract.json`,
+  `d598-neck-contract.json`, `d598-pour-damage-next.json`.
+  **Next:** the remaining `/ACC_PWR_EN` and `/ACC_5V_BOOST_EN` edges are now
+  SHARED-CORRIDOR cases, not rip-up cases — their openers cannot rebuild. The
+  named capability is the **PAIRED-NET corridor allocator** D-596 already asked
+  for, whose first two customers are the `U16` approach and the `D2`/`J8`
+  community-header I2C haul. No owner decision.
 - **Demo D-597 (BOUNDED POUR; the charger SYS rail gets local copper, 3 edges
   PROMOTED):** `/01_POWER_TREE/BQ25185_SYS` carried **10 of 81 open edges** --
   the largest single-net tail on the board -- and had been PARKED since D-576
