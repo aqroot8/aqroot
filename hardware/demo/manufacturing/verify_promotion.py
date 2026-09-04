@@ -14,7 +14,12 @@ driver's scratch tree, its ledger or its evidence JSON:
     narrower, is a DRU-LICENSED pad-escape neck: at least the necking minimum
     AND lying wholly inside one of the courtyards the `.kicad_dru` rule names,
     proved with the same `maze3d.Neck` the router was confined by;
-  * every added via meets the drill and annular-ring floors it asserts;
+  * every added via meets the drill and annular-ring floors it asserts -- or,
+    with `--bridge`, is a DRU-LICENSED POUR BRIDGE: a barrel whose whole
+    footprint lies inside a rule area the `.kicad_dru` names for its net, and
+    which meets every minimum that rule states;
+  * the rule-area inventory changed by exactly the licence areas the caller
+    asserts, none was lost, and every added one forbids nothing;
   * the zone inventory changed by exactly the pours the caller asserts, and no
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
@@ -30,6 +35,8 @@ it inspects are copies in a temporary directory.
 import argparse
 import hashlib
 import json
+import math
+import re
 import shutil
 import subprocess
 import tempfile
@@ -166,6 +173,128 @@ def neck_proof(path, tracks, floor):
     return ok, detail
 
 
+def bridge_proof(path, vias, drill_floor, annular_floor):
+    """Which added vias are below a floor, and are they DRU-LICENSED bridges?
+
+    A pour bridge is one through barrel dropped inside a pad's own severed
+    piece of pour, where no ordinary barrel fits.  Three of them on this board
+    are finer than an ordinary floor, and each is legal for exactly one reason:
+    the `.kicad_dru` grants THAT NET THAT GEOMETRY inside a rule area named for
+    THAT CLUSTER.  Lowering the asserted floor to match would say nothing at
+    all -- it would admit a 0.20 mm drill anywhere on the board -- so a fine
+    barrel is admitted here only on the board's own terms, and proved:
+
+      * a rule area with the name the rule uses EXISTS on the promoted board;
+      * the barrel's WHOLE FOOTPRINT, not merely its centre, lies inside that
+        area, proved by a polygon subtraction rather than by point sampling,
+        because `enclosedByArea` is answered against the copper;
+      * the via's net is the net the rule names;
+      * the via meets every minimum that rule states -- diameter, drill and
+        annular ring alike.
+
+    Any via that is below a floor and fails any of those is a STRAY and fails
+    the check.  With no fine via at all this is vacuously true and reports so,
+    which is what every prior promotion reports.
+    """
+    fine = [v for v in vias
+            if (drill_floor and v[5] < drill_floor)
+            or ((v[4] - v[5]) / 2 < annular_floor)]
+    if not fine:
+        return True, dict(fine_vias=0, licensed=0, areas=[])
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
+    import pcbnew
+    import maze3d as mz
+
+    board = pcbnew.LoadBoard(str(path))
+
+    class _Shim(object):                 # `dru_rules` reads only `qb.b`
+        pass
+    shim = _Shim()
+    shim.b = board
+    areas = {}
+    for z in board.Zones():
+        if z.GetIsRuleArea() and z.GetZoneName():
+            areas.setdefault(z.GetZoneName(), []).append(z)
+
+    # net -> area -> {constraint: min}, from the rule text alone.
+    licences = {}
+    for name, cons, cond in mz.dru_rules(shim):
+        m = re.fullmatch(r"A\.NetName == '([^']*)' && "
+                         r"A\.enclosedByArea\('([^']*)'\)",
+                         ' '.join(cond.split()))
+        if not m:
+            continue
+        licences.setdefault((m.group(1), m.group(2)), {}).update(cons)
+
+    def encloses(zone, x, y, dia):
+        """True when the whole barrel disc lies inside this rule area.
+
+        The 64-gon is CIRCUMSCRIBED -- its radius is scaled by 1/cos(pi/n) --
+        so it contains the disc rather than being contained by it.  An
+        inscribed polygon would be a proof about a shape slightly smaller than
+        the copper, which is the wrong direction for a legality claim.
+        """
+        disc = pcbnew.SHAPE_POLY_SET()
+        disc.NewOutline()
+        n = 64
+        r = dia / 2.0 / math.cos(math.pi / n)
+        for k in range(n):
+            a = 2.0 * math.pi * k / n
+            disc.Append(int(round(x + r * math.cos(a))),
+                        int(round(y + r * math.sin(a))))
+        left = pcbnew.SHAPE_POLY_SET(disc)
+        try:
+            left.BooleanSubtract(zone.Outline())
+        except TypeError:                # older SWIG wants a fast-mode enum
+            left.BooleanSubtract(zone.Outline(),
+                                 pcbnew.SHAPE_POLY_SET.PM_FAST)
+        return left.OutlineCount() == 0
+
+    detail = dict(fine_vias=len(fine), strays=[], areas=[])
+    for v in fine:
+        _k, net, x, y, dia, drill = v
+        hit = None
+        for (rnet, area), cons in sorted(licences.items()):
+            if rnet != net or area not in areas:
+                continue
+            if not any(encloses(z, x, y, dia) for z in areas[area]):
+                continue
+            if (dia >= cons.get('via_diameter', 0)
+                    and drill >= cons.get('hole_size', 0)
+                    and (dia - drill) / 2 >= cons.get('annular_width', 0)):
+                hit = area
+                break
+        if hit is None:
+            detail["strays"].append(dict(net=net, at=[x, y], dia_nm=dia,
+                                         drill_nm=drill))
+        else:
+            detail["areas"].append(dict(net=net, area=hit, at=[x, y],
+                                        dia_nm=dia, drill_nm=drill))
+    detail["licensed"] = len(detail["areas"])
+    return not detail["strays"], detail
+
+
+def rule_area_sigs(path):
+    """Every rule area's name, layers, keep-out flags and outline."""
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    out = []
+    for z in board.Zones():
+        if not z.GetIsRuleArea():
+            continue
+        o = z.Outline().Outline(0)
+        out.append((z.GetZoneName(),
+                    tuple(board.GetLayerName(l) for l in z.GetLayerSet().Seq()),
+                    bool(z.GetDoNotAllowTracks()), bool(z.GetDoNotAllowVias()),
+                    bool(z.GetDoNotAllowPads()),
+                    bool(z.GetDoNotAllowZoneFills()),
+                    tuple((o.CPoint(i).x, o.CPoint(i).y)
+                          for i in range(o.PointCount()))))
+    return sorted(out)
+
+
 def stage(rev, work):
     """A project-faithful copy of the board at `rev` (or of the worktree)."""
     cell = Path(work)
@@ -203,6 +332,15 @@ def main():
                     help="nm floor every added via drill must meet")
     ap.add_argument("--annular", type=int, default=125000,
                     help="nm floor every added via's annular ring must meet")
+    ap.add_argument("--bridge", action="store_true",
+                    help="admit an added via BELOW --via-drill or --annular "
+                         "when it is a .kicad_dru-licensed POUR BRIDGE: its "
+                         "whole footprint inside a rule area the rule names, "
+                         "on the net the rule names, meeting every minimum "
+                         "that rule states")
+    ap.add_argument("--rule-area", action="append", default=[],
+                    help="name of a rule area the promotion claims to have "
+                         "ADDED; repeatable, omit when none was added")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
@@ -218,6 +356,10 @@ def main():
     added_nets = sorted({x[1] for x in added})
     tracks = [x for x in added if x[0] == "trk"]
     vias = [x for x in added if x[0] == "via"]
+
+    rpre, rpost = rule_area_sigs(pre), rule_area_sigs(post)
+    radded = [z for z in rpost if z not in rpre]
+    rlost = [z for z in rpre if z not in rpost]
 
     zpre, zpost = zone_sigs(pre), zone_sigs(post)
     zadded = [z for z in zpost if z not in zpre]
@@ -235,6 +377,9 @@ def main():
     widths = sorted({x[7] for x in tracks})
     neck_ok, neck_detail = (neck_proof(post, tracks, a.track_width)
                             if a.neck else (True, None))
+    bridge_ok, bridge_detail = (bridge_proof(post, vias, a.via_drill,
+                                             a.annular)
+                                if a.bridge else (True, None))
     layers = sorted({x[2] for x in tracks})
     vdims = sorted({(x[4], x[5]) for x in vias})
 
@@ -246,8 +391,15 @@ def main():
                                or all(w >= a.track_width for w in widths)
                                or (a.neck and neck_ok)),
         via_drill_floor_met=(not a.via_drill
-                             or all(d >= a.via_drill for _dia, d in vdims)),
-        annular_floor_met=all((dia - d) / 2 >= a.annular for dia, d in vdims),
+                             or all(d >= a.via_drill for _dia, d in vdims)
+                             or (a.bridge and bridge_ok)),
+        annular_floor_met=(all((dia - d) / 2 >= a.annular for dia, d in vdims)
+                           or (a.bridge and bridge_ok)),
+        rule_areas_as_claimed=(not rlost
+                               and sorted(z[0] for z in radded)
+                               == sorted(a.rule_area)
+                               and all(len(z[1]) == 6 and not any(z[2:6])
+                                       for z in radded)),
         drc_zero_attributable=not first["attributable"],
         drc_inherited_within_baseline=all(
             first["counts"].get(k, 0) <= n for k, n in INHERITED.items()),
@@ -268,7 +420,9 @@ def main():
         added_tracks=len(tracks), added_vias=len(vias),
         added_track_widths_nm=widths, added_track_layers=layers,
         added_via_dia_drill_nm=[list(v) for v in vdims],
-        pad_escape_neck=neck_detail,
+        pad_escape_neck=neck_detail, pour_bridge=bridge_detail,
+        rule_areas_added=radded, rule_areas_removed=rlost,
+        claimed_rule_areas=sorted(a.rule_area),
         zones_added=zadded, zones_removed=zlost,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",

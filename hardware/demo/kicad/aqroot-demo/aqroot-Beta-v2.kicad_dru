@@ -1051,3 +1051,105 @@
 (rule "D-257 VREC_VCC C60.1->R84.2 escape - fine-pitch escape hole, D-257"
 	(constraint hole_size (min 0.20mm) (opt 0.20mm))
 	(condition "A.NetName == '/01_POWER_TREE/VREC_VCC' && A.enclosedByArea('FINE_ESC_12')"))
+
+
+# =====================================================================
+# 11. POUR BRIDGES - D-595
+#
+# A pad stranded on its own SEVERED piece of an outer pour already has
+# copper; what it lacks is a barrel down to the same net's copper on
+# another layer.  `maze3d.bridge_islands` drops exactly one through via
+# inside the overlap - no escape stub, no track - and the barrel it
+# takes is the COARSEST that fits, so most of these need no exception
+# at all: `+3V3` `U1.2`, the ESP32-S3 module rail pin, takes the full
+# POWER-class 0.65 / 0.40 mm barrel and is not named here.
+#
+# The three clusters below have no legal ordinary barrel anywhere in
+# their own copper.  Each was measured over its whole island on the
+# 0.10 mm lattice at five geometries, and each rule states the LARGEST
+# that fits, not the smallest the fab can make:
+#
+#   POUR_BRIDGE_R19_1   +3V3  0.60 / 0.30 mm, 0.150 mm ring   3 sites
+#   POUR_BRIDGE_C63_2   GND   0.45 / 0.20 mm, 0.125 mm ring   2 sites
+#   POUR_BRIDGE_U11_11  GND   0.35 / 0.20 mm, 0.075 mm ring   6 sites
+#
+# Only `POUR_BRIDGE_U11_11` actually needs the fine-pitch process; the other
+# two are ordinary barrels that need an exception for ONE reason each -
+# R19_1's 0.30 mm drill against section 8's POWER-class 0.40 mm minimum, and
+# C63_2's 0.45 mm diameter against the board-setup `min_via_diameter` of
+# 0.50 mm.  Each rule states the geometry actually laid, not a floor the
+# fabricator might read as an invitation.
+#
+# NO NEW FAB CAPABILITY.  0.20 mm drill with a 0.075 mm annular ring is
+# the plated through-via process this file already licenses by name in
+# six places (D-257 escape vias, D-266 Kelvin reservations, D-531 USB-C
+# VBUS POFV), and JLCPCB's verified 4-layer floor is 0.15 mm drill with
+# a ~0.1275 mm ring.  What is new is only WHERE it is used.
+#
+# EACH EXCEPTION IS SCOPED TO ONE NET AND ONE PAD-SIZED RULE AREA, drawn
+# by the promoting transaction around the barrel it actually laid and
+# audited by that transaction's clause 6.  Nothing else on the board
+# moves: these areas permit tracks, vias, pads, pours and footprints, so
+# they are labels and not keep-outs.
+#
+# CURRENT, MEASURED:
+#   R19.1 / R26.1 are the tops of a 2.2k and a 10k pull-up - about
+#     1.5 mA and 0.33 mA at 3.3 V.  A 0.30 mm barrel is three orders of
+#     magnitude oversized for it.
+#   C63.2 is the ground return of a 1 uF X7R decoupling capacitor in the
+#     power tree.  DC return only; the charger is LINEAR, so there is no
+#     switching current in this bond.
+#   U11.4 / U11.5 / U11.11 are the BQ25185 charger's ~CE strap, GND pin
+#     and exposed pad, today bonded to each other by a 5.03 mm2 B.Cu
+#     island and to the ground planes by NOTHING - the charger has no
+#     ground reference at all.  One 0.20 mm plated barrel carries the
+#     charge-current return with margin (approx 0.0177 mm2 of copper,
+#     approx 1.6 mOhm, approx 1.6 mV at the BQ25185's 1 A part maximum)
+#     and adds a thermal path from the exposed pad to In1/In4 that does
+#     not exist today, so it is a strict improvement on every axis.
+#     It is nevertheless the ONLY bond, where an exposed pad would
+#     normally carry a via array, and it is recorded as an open DFM item
+#     in `docs/full-beta-v2/CURRENT_STATE.md`: a wider U11 ground bond
+#     needs a local B.Cu refloorplan, not a finer drill.
+#
+# Order: this block is the LAST in the file, so it wins over section 8's
+# `Via annular ring floor` and `POWER-class vias use the 0.40 mm drill`
+# and over the board-setup `min_via_diameter` - which is the whole point
+# of the precedence tail in section 9.
+# =====================================================================
+
+(rule "D-595 +3V3 R19.1/R26.1 pour bridge - barrel diameter"
+	(constraint via_diameter (min 0.60mm) (opt 0.60mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('POUR_BRIDGE_R19_1')"))
+
+(rule "D-595 +3V3 R19.1/R26.1 pour bridge - annular ring"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('POUR_BRIDGE_R19_1')"))
+
+(rule "D-595 +3V3 R19.1/R26.1 pour bridge - drill"
+	(constraint hole_size (min 0.30mm) (opt 0.30mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('POUR_BRIDGE_R19_1')"))
+
+(rule "D-595 GND C63.2 pour bridge - barrel diameter"
+	(constraint via_diameter (min 0.45mm) (opt 0.45mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_C63_2')"))
+
+(rule "D-595 GND C63.2 pour bridge - annular ring"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_C63_2')"))
+
+(rule "D-595 GND C63.2 pour bridge - drill"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_C63_2')"))
+
+(rule "D-595 GND U11 charger ground pour bridge - barrel diameter"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U11_11')"))
+
+(rule "D-595 GND U11 charger ground pour bridge - annular ring"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U11_11')"))
+
+(rule "D-595 GND U11 charger ground pour bridge - drill"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U11_11')"))

@@ -2009,3 +2009,540 @@ def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
                 unreachable=len(failed), failures=failed[:40],
                 mm=round(sum(d['mm'] for d in done), 3), vias=len(done),
                 via_xy=[d['via_xy'] for d in done])
+
+
+# --------------------------------------------------------------------------- #
+# POUR BRIDGES -- ONE BARREL, NO TRACK, NO ESCAPE
+# --------------------------------------------------------------------------- #
+# `stitch_pad` asks a PAD to launch: an escape, a short run, a barrel.  That is
+# the only way off a pad sitting on BARE laminate, and it is the wrong primitive
+# for a pad sitting on its own SEVERED PIECE OF POUR.  There the copper is
+# already there.  An island is a two-dimensional conductor, so a barrel dropped
+# anywhere inside it bonds every pad on it -- with no escape, no stub and no
+# track -- and the escape search `stitch_pad` insists on is precisely what fails
+# on a fine-pitch power pad in a 0.30 mm field.
+#
+# D-594 measured the second half of that sentence and it is the reason this
+# primitive exists rather than a flag on the old one.  `stitch_pad` plants the
+# NEAREST legal barrel and has no notion of what its barrel LANDS ON: on `U1.2`
+# it took a site that merged the cluster with the cluster's OWN In3 island and
+# closed no edge at all, while the screen had already named a site 1.5 mm away
+# where the same cluster's `F` copper lies over the pour BODY.  A landing rule
+# is not a search heuristic here, it is the whole content of the move.
+#
+# So `bridge_islands` asks exactly one question per orphan cluster:
+#
+#     is there a point inside THIS cluster's filled copper on one layer and
+#     inside ANOTHER cluster's filled copper on a DIFFERENT layer, at which a
+#     through barrel is legal?
+#
+# and lays one via there.  Nothing else.  The geometry is read from KiCad's own
+# filled polygon set, legality is `Field.via_ok` -- the same lattice every
+# promoted barrel on this board was chosen from -- and the emitted via is
+# re-proved by `verify_laid` like any other object.
+#
+# THE FINE-PITCH LICENCE IS READ FROM THE BOARD, NEVER ASSUMED.  Most of these
+# clusters have no legal site at the POWER-class 0.65/0.40 mm stitch barrel and
+# do have one at 0.35/0.20 mm, which this board's `.kicad_dru` already licenses
+# by name in six places (D-257 / D-266 / D-531) over the same plated
+# through-hole process.  `bridge_licence` will only return a geometry that the
+# board's own rule text grants TO THIS NET inside a rule area named for THIS
+# cluster, so the router cannot invent a drill the fabricator was never told
+# about, and a bridge whose licence is missing is refused and reported.
+
+BRIDGE_AREA_PREFIX = "POUR_BRIDGE_"
+
+_RULE_RE = re.compile(
+    r'\(rule\s+"([^"]*)"\s*((?:\(constraint[^()]*(?:\([^()]*\)[^()]*)*\)\s*)+)'
+    r'\(condition\s+"([^"]*)"\)\s*\)', re.S)
+_CONSTRAINT_RE = re.compile(
+    r'\(constraint\s+(\w+)\s*\(min\s+([0-9.]+)mm\)')
+
+
+def bridge_area_name(label):
+    """The rule-area name that licenses THIS cluster's bridge barrel.
+
+    Derived from the cluster's own first pad -- `R19.1` -> `POUR_BRIDGE_R19_1`
+    -- so the name is a property of the CLUSTER and not of the site.  That is
+    what lets the `.kicad_dru` rule be authored, reviewed and committed BEFORE
+    the router picks a coordinate, and it is what makes the licence checkable:
+    the area the transaction draws must be the area the rule names.
+    """
+    return BRIDGE_AREA_PREFIX + str(label).replace('.', '_')
+
+
+def dru_rules(qb):
+    """Every `.kicad_dru` rule as (name, {constraint: min_nm}, condition)."""
+    dru = Path(qb.b.GetFileName()).with_suffix('.kicad_dru')
+    if not dru.exists():
+        return []
+    out = []
+    for name, body, cond in _RULE_RE.findall(dru.read_text(encoding='utf-8')):
+        got = {}
+        for c, mm in _CONSTRAINT_RE.findall(body):
+            got[c] = int(round(float(mm) * qr.MM))
+        out.append((name, got, cond))
+    return out
+
+
+def bridge_licence(qb, net, label):
+    """The barrel this board LICENSES for this cluster's bridge, or None.
+
+    Accepts only a rule whose condition is exactly
+
+        A.NetName == '<net>' && A.enclosedByArea('<POUR_BRIDGE_...>')
+
+    for THIS net and THIS cluster's area, and only the three constraints a
+    barrel owes: `via_diameter`, `annular_width` and `hole_size`.  A rule with
+    any other term is ignored rather than guessed at, so broadening the rule
+    text can never silently broaden the router.  Returns
+    dict(area, via_dia, via_drill, annular, rules) built from the rule MINIMA,
+    which is the smallest barrel the board admits there -- the request itself
+    is clamped up to it by the caller.
+    """
+    area = bridge_area_name(label)
+    want = "A.NetName == '%s' && A.enclosedByArea('%s')" % (net, area)
+    got, names = {}, []
+    for name, cons, cond in dru_rules(qb):
+        if ' '.join(cond.split()) != want:
+            continue
+        for k in ('via_diameter', 'annular_width', 'hole_size'):
+            if k in cons:
+                got[k] = cons[k]
+                names.append(name)
+    if len(got) != 3:
+        return None
+    return dict(area=area, via_dia=got['via_diameter'],
+                via_drill=got['hole_size'], annular=got['annular_width'],
+                rules=sorted(set(names)))
+
+
+# -- pour geometry ---------------------------------------------------------- #
+def filled_islands(qb, net):
+    """[(layer_name, index, SHAPE_POLY_SET, area_mm2)] for every filled island.
+
+    KiCad's own filled polygon set, one entry per (layer, outline), holes
+    carried on the outline they belong to.  This is the copper a fabricator
+    gets, not a re-derivation of it.
+    """
+    import pcbnew
+    out = []
+    for z in qb.b.Zones():
+        if z.GetIsRuleArea() or z.GetNetname() != net or not z.IsFilled():
+            continue
+        for lname, lid in qr.LNAME.items():
+            if not z.IsOnLayer(lid):
+                continue
+            shape = z.GetFilledPolysList(lid)
+            for i in range(shape.OutlineCount()):
+                poly = pcbnew.SHAPE_POLY_SET()
+                poly.AddOutline(shape.Outline(i))
+                for h in range(shape.HoleCount(i)):
+                    poly.AddHole(shape.Hole(i, h), 0)
+                out.append((lname, len(out), poly,
+                            abs(shape.Outline(i).Area()) / 1e12))
+    return out
+
+
+def pour_clusters(qb, net):
+    """Union-find over this net's pads AND VIAS, using KiCad connectivity.
+
+    Vias are in because a cluster's copper often reaches an inner layer only
+    through one: `+3V3`'s `C3.1/R2.1/R27.1` owns an `F` island and an `In3`
+    island, and only the barrel between them says so.  Returns
+    (roots, items) with `items[key] = dict(kind, x, y, layers)`.
+    """
+    qb.b.BuildConnectivity()
+    conn = qb.b.GetConnectivity()
+    items, handles = {}, {}
+    for f in qb.b.GetFootprints():
+        for p in f.Pads():
+            if p.GetNetname() != net or not p.GetNumber():
+                continue
+            pos = p.GetPosition()
+            key = ('P', f.GetReference() + '.' + p.GetNumber(), pos.x, pos.y)
+            items[key] = dict(kind='pad', x=pos.x, y=pos.y,
+                              layers=tuple(L for L, lid in qr.LNAME.items()
+                                           if p.IsOnLayer(lid)))
+            handles[key] = p
+    for t in qb.b.GetTracks():
+        if t.GetClass() != 'PCB_VIA' or t.GetNetname() != net:
+            continue
+        pos = t.GetPosition()
+        key = ('V', '', pos.x, pos.y)
+        items[key] = dict(kind='via', x=pos.x, y=pos.y,
+                          layers=tuple(L for L, lid in qr.LNAME.items()
+                                       if t.IsOnLayer(lid)))
+        handles[key] = t
+
+    parent = {k: k for k in items}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    bykey = {}
+    for key, h in handles.items():
+        bykey.setdefault((h.GetPosition().x, h.GetPosition().y), []).append(key)
+    for key, h in handles.items():
+        for it in conn.GetConnectedItems(h):
+            if it.GetClass() not in ('PAD', 'PCB_VIA'):
+                continue
+            pos = it.GetPosition()
+            for other in bykey.get((pos.x, pos.y), ()):
+                ra, rb = find(key), find(other)
+                if ra != rb:
+                    parent[ra] = rb
+    return {k: find(k) for k in items}, items
+
+
+def island_owner(islands, roots, items):
+    """island index -> cluster root, by containment of a pad or via of it."""
+    import pcbnew
+    owner = {}
+    for lname, idx, poly, _a in islands:
+        found = None
+        for key, meta in items.items():
+            if lname not in meta['layers'] and meta['kind'] == 'pad':
+                continue
+            if poly.Contains(pcbnew.VECTOR2I(meta['x'], meta['y'])):
+                found = roots[key]
+                break
+        owner[idx] = found
+    return owner
+
+
+def poly_rings(poly):
+    """Every closed ring of a SHAPE_POLY_SET as (xs, ys), holes included.
+
+    Under the even-odd rule a point inside outline-and-hole is crossed twice
+    and falls out, which is exactly the containment `SHAPE_POLY_SET.Contains`
+    reports -- so the raster and the board agree about where the copper is
+    without a second code path.
+    """
+    out = []
+    for k in range(poly.OutlineCount()):
+        chains = [poly.Outline(k)] + [poly.Hole(k, h)
+                                      for h in range(poly.HoleCount(k))]
+        for ch in chains:
+            n = ch.PointCount()
+            if n < 3:
+                continue
+            xs = np.empty(n, dtype=float)
+            ys = np.empty(n, dtype=float)
+            for t in range(n):
+                p = ch.CPoint(t)
+                xs[t], ys[t] = float(p.x), float(p.y)
+            out.append((xs, ys))
+    return out
+
+
+def poly_mask(field, poly):
+    """Lattice cells whose centre lies inside `poly`.
+
+    The same even-odd crossing test `Neck.mask` uses on courtyards, restricted
+    to the polygon's bounding box.  A per-cell `SHAPE_POLY_SET.Contains` is the
+    obvious implementation and is unusable: the largest `+3V3` island alone
+    covers ~400,000 lattice cells.
+    """
+    mask = np.zeros((field.ny, field.nx), dtype=bool)
+    bb = poly.BBox()
+    i0 = max(0, int((bb.GetLeft() - field.ox) // field.G))
+    i1 = min(field.nx - 1, int((bb.GetRight() - field.ox) // field.G) + 1)
+    j0 = max(0, int((bb.GetTop() - field.oy) // field.G))
+    j1 = min(field.ny - 1, int((bb.GetBottom() - field.oy) // field.G) + 1)
+    if i1 < i0 or j1 < j0:
+        return mask
+    X, Y = np.meshgrid(field.ox + np.arange(i0, i1 + 1) * float(field.G),
+                       field.oy + np.arange(j0, j1 + 1) * float(field.G))
+    hit = np.zeros(X.shape, dtype=bool)
+    for xs, ys in poly_rings(poly):
+        x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+        for a in range(len(xs)):
+            xa, ya, xb, yb = xs[a], ys[a], x2[a], y2[a]
+            if ya == yb:
+                continue
+            span = (ya > Y) != (yb > Y)
+            if not span.any():
+                continue
+            xint = xa + (Y - ya) * (xb - xa) / (yb - ya)
+            hit ^= span & (X < xint)
+    mask[j0:j1 + 1, i0:i1 + 1] = hit
+    return mask
+
+
+def _deepest(mask):
+    """The cell of `mask` furthest from its boundary, ties broken by (j, i).
+
+    A bridge site is chosen for MARGIN, not for scan order.  The barrel has to
+    survive KiCad's refill, which moves a pour edge by microns, and a site one
+    cell inside the overlap is the one that will not.  Erosion by the full
+    8-neighbourhood, on the mask's own bounding box, costs a handful of passes
+    over a few thousand cells and makes the choice both robust and
+    deterministic: the last non-empty erosion is the deepest core, and the
+    first cell of it in row-major order is the site.
+    """
+    js, iss = np.nonzero(mask)
+    j0, j1 = int(js.min()), int(js.max())
+    i0, i1 = int(iss.min()), int(iss.max())
+    cur = mask[j0:j1 + 1, i0:i1 + 1]
+    while True:
+        h, w = cur.shape
+        pad = np.zeros((h + 2, w + 2), dtype=bool)
+        pad[1:-1, 1:-1] = cur
+        nxt = cur.copy()
+        for dj in (0, 1, 2):
+            for di in (0, 1, 2):
+                nxt &= pad[dj:dj + h, di:di + w]
+        if not nxt.any():
+            break
+        cur = nxt
+    cj, ci = np.nonzero(cur)
+    return int(ci[0]) + i0, int(cj[0]) + j0
+
+
+def cluster_coverage(qb, net, field):
+    """Per-cluster pour coverage of the lattice.
+
+    Returns (cov_layer, cov, size, body, label) where `cov_layer[(root, L)]` is
+    the mask of cells inside that cluster's filled copper on layer `L`.
+    """
+    islands = filled_islands(qb, net)
+    roots, items = pour_clusters(qb, net)
+    owner = island_owner(islands, roots, items)
+    size = {}
+    for key, r in roots.items():
+        if items[key]['kind'] == 'pad':
+            size[r] = size.get(r, 0) + 1
+    body = max(size, key=lambda r: size[r]) if size else None
+    cov, cov_layer = {}, {}
+    for lname, idx, poly, _area in islands:
+        r = owner[idx]
+        if r is None:
+            continue
+        m = poly_mask(field, poly)
+        key = (r, lname)
+        if key in cov_layer:
+            cov_layer[key] |= m
+        else:
+            cov_layer[key] = m
+        if r in cov:
+            cov[r] |= m
+        else:
+            cov[r] = m.copy()
+
+    def label(r):
+        return sorted(k[1] for k in roots if roots[k] == r
+                      and items[k]['kind'] == 'pad')
+
+    return cov_layer, cov, size, body, {r: label(r) for r in size}, islands, owner
+
+
+def _bridge_pairs(cov_layer, cov, size, body, labels):
+    """Per orphan cluster, the ordered (target, from_layer, to_layer) overlaps.
+
+    Everything here is independent of the BARREL: an overlap of two clusters'
+    filled copper on two different layers is a property of the pour, so it is
+    computed once and every rung of the ladder is then a single AND against
+    that rung's via lattice.  Clusters are ordered body-first (a bridge to the
+    plane body closes an edge outright), then by size, then by name, so the
+    choice is deterministic and does not depend on dict iteration order.
+    """
+    out = []
+    for r in sorted(size, key=lambda k: (-size[k], str(labels[k]))):
+        if r == body:
+            continue
+        mine = cov.get(r)
+        if mine is None or not mine.any():
+            out.append((r, []))
+            continue
+        pairs = []
+        for tgt in sorted(cov, key=lambda t: (t != body, -size.get(t, 0),
+                                              str(labels.get(t, '')))):
+            if tgt == r:
+                continue
+            for cl in sorted(L for (cr, L) in cov_layer if cr == r):
+                for tl in sorted(L for (tr, L) in cov_layer if tr == tgt):
+                    if tl == cl:
+                        continue      # a barrel does work only ACROSS layers
+                    m = cov_layer[(r, cl)] & cov_layer[(tgt, tl)]
+                    if m.any():
+                        pairs.append((tgt, cl, tl, m))
+        out.append((r, pairs))
+    return out
+
+
+def _bridge_hit(pairs, via_ok, field, labels, body):
+    """The first (target, layer, layer) overlap this via lattice admits."""
+    for tgt, cl, tl, m in pairs:
+        cand = m & via_ok
+        if not cand.any():
+            continue
+        i, j = _deepest(cand)
+        x, y = field.point(i, j)
+        return dict(from_layer=cl, to_layer=tl, sites=int(cand.sum()),
+                    xy=[x, y], xy_mm=[round(x / 1e6, 4), round(y / 1e6, 4)],
+                    to_cluster=labels.get(tgt, [])[:4],
+                    to_is_body=bool(tgt == body))
+    return None
+
+
+def bridge_sites(qb, net, field):
+    """Every orphan cluster of `net`, with the ONE barrel site that joins it.
+
+    Read-only and deterministic: the screen reports exactly what the emitter
+    would lay at this geometry, because both go through `_bridge_pairs` and
+    `_bridge_hit`.
+    """
+    cov_layer, cov, size, body, labels, islands, owner = \
+        cluster_coverage(qb, net, field)
+    out = []
+    for r, pairs in _bridge_pairs(cov_layer, cov, size, body, labels):
+        entry = dict(cluster=labels[r], pads=size[r], site=None,
+                     islands=[dict(layer=l, mm2=round(a, 2))
+                              for l, i, _p, a in islands if owner[i] == r])
+        if not pairs:
+            entry['why'] = (
+                'cluster owns no filled pour island'
+                if r not in cov or not cov[r].any() else
+                "this island overlaps no other cluster's copper on "
+                "another layer")
+            out.append(entry)
+            continue
+        entry['site'] = _bridge_hit(pairs, field.via_ok, field, labels, body)
+        if entry['site'] is None:
+            entry['why'] = ('no legal %.2f mm barrel inside this island over '
+                            'any other cluster' % (field.via_dia / 1e6))
+        out.append(entry)
+    return out
+
+
+def _meets_floors(dia, drill, floors):
+    """True when this barrel needs no `.kicad_dru` exception at all."""
+    return (dia >= floors['dia'] and drill >= floors['drill']
+            and (dia - drill) / 2.0 >= floors['annular'])
+
+
+def _barrel_licensed(dia, drill, floors, lic):
+    """Is this barrel legal on the board's ORDINARY floors, or DRU-licensed?
+
+    A barrel at or above every ordinary floor -- the board setup's
+    `min_via_diameter` and `min_through_hole_diameter`, the unconditional
+    `.kicad_dru` `Via annular ring floor`, and the POWER-class `hole_size`
+    minimum where the net's class is named by it -- needs no exception and gets
+    none: it is the same barrel every stitch on this board already lays.
+    `floors` is handed in by the caller, which owns the transcription of those
+    rules, so this can never disagree with the driver's own contract table.
+
+    Only a barrel BELOW a floor needs the rule text, and then it must satisfy
+    EVERY minimum that rule states -- diameter, drill and annular ring alike.
+    """
+    if _meets_floors(dia, drill, floors):
+        return True
+    if lic is None:
+        return False
+    return (dia >= lic['via_dia'] and drill >= lic['via_drill']
+            and (dia - drill) / 2.0 >= lic['annular'])
+
+
+def bridge_islands(qb, net, width, clr_pad, clr_trk, ladder, floors,
+                   G=100000, layers=None, guard=None, licence=True):
+    """Lay ONE barrel per bridgeable orphan cluster.  No track, no escape.
+
+    `ladder` is [(via_dia, via_drill), ...] COARSEST FIRST, and each cluster
+    takes the coarsest rung that has a legal site.  That ordering is the whole
+    electrical content of the primitive: `U1.2` is the ESP32-S3 module's +3V3
+    pin and must not be bonded by the finest barrel merely because the finest
+    barrel fits everywhere.  A cluster served by an early rung is retired, so a
+    later rung is only ever asked about the clusters still open.
+
+    Each bridge is an independent transaction, like a stitch island: one that
+    cannot be licensed or cannot be proved is reverted on its own and reported,
+    and the others stand.  With `licence=True` -- the only mode a promotion may
+    use -- a barrel below an ordinary floor is emitted only where the
+    `.kicad_dru` grants THIS net THAT geometry inside the rule area named for
+    THIS cluster, so the router cannot invent a drill the fabricator was never
+    told about.
+    """
+    if not has_plane(qb, net):
+        return dict(ok=False, net=net, reason='NO_PLANE')
+    # The lattice, and therefore the coverage masks, do not depend on the
+    # barrel; only `via_ok` does.  So the expensive rasterisation of KiCad's
+    # filled polygon set happens ONCE and every rung is one AND against it.
+    base = Field(qb, net, width, clr_pad, clr_trk, ladder[0][0], ladder[0][1],
+                 G=G, layers=layers, guard=guard)
+    cov_layer, cov, size, body, labels, islands, owner = \
+        cluster_coverage(qb, net, base)
+    pending = _bridge_pairs(cov_layer, cov, size, body, labels)
+    done, failed, laid_xy = [], [], []
+    for rung, (dia, drill) in enumerate(ladder):
+        if not pending:
+            break
+        if rung:
+            base.via_dia, base.via_drill = dia, drill
+            base.via_ok = base._via_grid()
+            for m in base._guard.values():
+                base.via_ok &= ~m
+            for (x, y) in laid_xy:
+                forbid_via(base, x, y)
+        still = []
+        for r, pairs in pending:
+            label = labels[r][0] if labels[r] else None
+            hit = _bridge_hit(pairs, base.via_ok, base, labels,
+                              body) if pairs else None
+            if hit is None:
+                still.append((r, pairs))
+                continue
+            plain = _meets_floors(dia, drill, floors)
+            lic = None if plain else (bridge_licence(qb, net, label)
+                                      if licence else None)
+            if licence and not _barrel_licensed(dia, drill, floors, lic):
+                failed.append(dict(cluster=labels[r], reason='NO_DRU_LICENCE',
+                                   via_dia=dia, via_drill=drill,
+                                   xy_mm=hit['xy_mm'],
+                                   why='no .kicad_dru rule grants %s a '
+                                       '%.2f/%.2f mm barrel inside %s'
+                                       % (net, dia / 1e6, drill / 1e6,
+                                          bridge_area_name(label))))
+                continue
+            x, y = hit['xy']
+            m = qb.mark()
+            qb.via(net, x, y, dia, drill)
+            forbid_via(base, x, y)
+            bad = verify_laid(qb, base, m)
+            if bad is not None:
+                qb.revert(m)
+                failed.append(dict(cluster=labels[r],
+                                   reason='UNPROVED_GEOMETRY',
+                                   why='%s at %s vs %s'
+                                       % (bad.get('kind'), bad.get('at'),
+                                          bad.get('against', bad.get('why'))),
+                                   detail=bad))
+                continue
+            laid_xy.append((x, y))
+            done.append(dict(cluster=labels[r], pads=size[r],
+                             area=(None if plain
+                                   else bridge_area_name(label)),
+                             needs_licence=(not plain), licence=lic,
+                             via_dia=dia, via_drill=drill, rung=rung,
+                             xy=[x, y], xy_mm=hit['xy_mm'],
+                             from_layer=hit['from_layer'],
+                             to_layer=hit['to_layer'],
+                             to_cluster=hit['to_cluster'],
+                             to_is_body=hit['to_is_body'],
+                             sites=hit['sites'],
+                             islands=[dict(layer=l, mm2=round(a, 2))
+                                      for l, i, _p, a in islands
+                                      if owner[i] == r]))
+        pending = still
+    for r, pairs in pending:
+        failed.append(dict(cluster=labels[r], reason='NO_BRIDGE',
+                           why=('cluster owns no filled pour island'
+                                if not pairs else
+                                'no legal barrel on this ladder inside this '
+                                'island over any other cluster')))
+    return dict(ok=bool(done), net=net, bridged=len(done),
+                unbridged=len(failed), bridges=done, failures=failed[:40],
+                vias=len(done), ladder=[[d, k] for d, k in ladder])

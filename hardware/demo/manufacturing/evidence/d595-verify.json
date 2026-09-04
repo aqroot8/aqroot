@@ -1,0 +1,229 @@
+{
+  "added_object_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "added_track_layers": [],
+  "added_track_widths_nm": [],
+  "added_tracks": 0,
+  "added_via_dia_drill_nm": [
+    [
+      350000,
+      200000
+    ],
+    [
+      450000,
+      200000
+    ],
+    [
+      600000,
+      300000
+    ],
+    [
+      650000,
+      400000
+    ]
+  ],
+  "added_vias": 4,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_clean": true,
+    "track_width_floor_met": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [
+    "POUR_BRIDGE_C63_2",
+    "POUR_BRIDGE_R19_1",
+    "POUR_BRIDGE_U11_11"
+  ],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 101
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity_errors": 0,
+    "unconnected_items": 101
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 4,
+  "objects_removed": 0,
+  "pad_escape_neck": null,
+  "pour_bridge": {
+    "areas": [
+      {
+        "area": "POUR_BRIDGE_R19_1",
+        "at": [
+          41100000,
+          125400000
+        ],
+        "dia_nm": 600000,
+        "drill_nm": 300000,
+        "net": "+3V3"
+      },
+      {
+        "area": "POUR_BRIDGE_C63_2",
+        "at": [
+          53900000,
+          56600000
+        ],
+        "dia_nm": 450000,
+        "drill_nm": 200000,
+        "net": "GND"
+      },
+      {
+        "area": "POUR_BRIDGE_U11_11",
+        "at": [
+          67300000,
+          77700000
+        ],
+        "dia_nm": 350000,
+        "drill_nm": 200000,
+        "net": "GND"
+      }
+    ],
+    "fine_vias": 3,
+    "licensed": 3,
+    "strays": []
+  },
+  "pre_board_sha256": "4627ed9cec35eff63da926e75b4989ad8c558c621334af974381e16f15e9eb45",
+  "promoted_board_sha256": "2140f6a9f4cf29653e0490451d10e4ccd1a3dee5061a00bb828029d60d3f3da6",
+  "ref": "HEAD",
+  "removed_sample": [],
+  "rule_areas_added": [
+    [
+      "POUR_BRIDGE_C63_2",
+      [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      false,
+      false,
+      false,
+      false,
+      [
+        [
+          53525000,
+          56225000
+        ],
+        [
+          54275000,
+          56225000
+        ],
+        [
+          54275000,
+          56975000
+        ],
+        [
+          53525000,
+          56975000
+        ]
+      ]
+    ],
+    [
+      "POUR_BRIDGE_R19_1",
+      [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      false,
+      false,
+      false,
+      false,
+      [
+        [
+          40650000,
+          124950000
+        ],
+        [
+          41550000,
+          124950000
+        ],
+        [
+          41550000,
+          125850000
+        ],
+        [
+          40650000,
+          125850000
+        ]
+      ]
+    ],
+    [
+      "POUR_BRIDGE_U11_11",
+      [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      false,
+      false,
+      false,
+      false,
+      [
+        [
+          66975000,
+          77375000
+        ],
+        [
+          67625000,
+          77375000
+        ],
+        [
+          67625000,
+          78025000
+        ],
+        [
+          66975000,
+          78025000
+        ]
+      ]
+    ]
+  ],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

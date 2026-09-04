@@ -13,6 +13,79 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-595 (pour bridges; 4 edges PROMOTED with FOUR barrels and no
+  track):** D-594 named the pour residual and left a specific batch rather than
+  a search. This is that batch, and it is the first promotion here that adds
+  **no copper except vias**: four through barrels, zero tracks, zero escapes,
+  zero zones touched. Whole-board retained open edges **89 -> 85**, ratsnest
+  105 -> 101, `+3V3` 17 -> 15, `GND` 14 -> 12, ZERO nets regressed; the plane
+  repair had nothing to do and the stitch laid nothing at all. Authority
+  `4627ed9c...` ->
+  `2140f6a9f4cf29653e0490451d10e4ccd1a3dee5061a00bb828029d60d3f3da6`.
+  New `maze3d.bridge_islands` asks the question `stitch_pad` cannot: for each
+  electrically ORPHAN cluster of a pour-owning net, is there a point inside
+  THIS cluster's filled copper on one layer and inside ANOTHER cluster's on a
+  DIFFERENT layer at which a through barrel is legal?  One via there, nothing
+  else.  Clusters from KiCad connectivity, island ownership from
+  `SHAPE_POLY_SET.Contains` on KiCad's own filled polygons, legality from the
+  same `Field.via_ok` every promoted barrel came from, and the site is the
+  DEEPEST cell of the overlap by 8-neighbourhood erosion -- chosen for margin
+  against the refill, not scan order.  That landing rule is D-594's own `U1.2`
+  lesson made structural.  **The barrel is chosen COARSEST-FIRST and the
+  ordering is electrical:** `+3V3` `U1.2`, the ESP32-S3 rail pin, takes the
+  full POWER-class 0.65/0.40 mm with 1688 sites and NO rule exception;
+  `+3V3` `R19.1`/`R26.1` (2.2k + 10k pull-up tops) 0.60/0.30 (2 sites);
+  `GND` `C63.2` (1 uF decoupling return) 0.45/0.20 (2); `GND`
+  `U11.4`/`5`/`11` 0.35/0.20 (6).  The fine geometry is READ FROM THE BOARD:
+  `bridge_licence` accepts only a `.kicad_dru` rule whose condition is exactly
+  `A.NetName == '<net>' && A.enclosedByArea('POUR_BRIDGE_<cluster>')` stating
+  all three barrel minima, so the area name is a property of the CLUSTER and
+  the nine new rules were authored and reviewed BEFORE the router picked a
+  coordinate; a barrel below a floor with no rule is refused and reported.
+  0.20 mm drill / 0.075 mm ring is the process this file already licenses by
+  name six times (D-257/D-266/D-531) -- no new fab capability, a new place.
+  The licence area is drawn by the transaction, centred on the barrel and
+  sized FROM it, and gate clause 6 now audits RULE AREAS as well as pours:
+  every added area must be one this run's emitter asked for, on all six copper
+  layers, forbidding nothing.  `verify_promotion.py --bridge` re-proves it
+  independently -- whole barrel footprint inside the named area by polygon
+  subtraction, right net, every stated minimum met: 3 fine vias, 3 licensed,
+  0 strays.  All 13 checks PASS: 0 removed, 4 added all on claimed nets, ZERO
+  tracks, real zone-refilled schematic-parity DRC exactly 199/5/1 with ZERO
+  attributable and ZERO parity errors, fill-stable, D-269/D-186 live,
+  `hardware/beta-v2/` untouched.  New reusable `protected_copper.py` measures
+  accepted copper directly instead of by implication: all 393 objects on the
+  15 protected nets byte-identical to D-594; J5.9-12/15-18 approved NC intact.
+  `pour_bond_contract.py` P1 still finds `Field.blk`/`via_ok` bit-for-bit
+  `maze3d.py` at `919ebe4`, P2/P3/P4 pass on the regenerated 45-tube guard,
+  `neck_contract.py` all pass.
+  **OPEN DFM ITEM:** `U11.4`/`5`/`11` are the BQ25185's `~CE` strap, GND pin
+  and EXPOSED PAD, bonded to each other by a 5.03 mm2 `B.Cu` island and, until
+  now, to the ground planes by NOTHING -- the charger had no ground reference.
+  One 0.20 mm plated barrel carries the return with margin (~0.0177 mm2,
+  ~1.6 mOhm, ~1.6 mV at the part's 1 A maximum) and adds an exposed-pad thermal
+  path to In1/In4 that did not exist, so it is a strict improvement -- but it
+  is the ONLY bond where an EP would normally carry a via array, and only six
+  legal cells exist in that island at ANY ladder geometry.  A wider U11 ground
+  bond needs a LOCAL `B.Cu` REFLOORPLAN, not a finer drill.  ICHG itself is
+  still UNRESOLVED in `DEVICE_SPEC.md`.
+  Evidence `d595-pour-bridge-batch.json`, `d595-verify.json`,
+  `d595-protected-copper.json`, `d595-pour-bond-guard.json`,
+  `d595-pour-bond-guard-next.json`, `d595-guard-contract.json`,
+  `d595-neck-contract.json`, `d595-pour-bridges-next.json`.
+  **Next:** the screen re-run on the promoted board reports **ZERO bridgeable
+  clusters** on either pour -- the bridge seam is mined out in one transaction.
+  27 orphan clusters remain and neither class is a search wall: **18 own no
+  filled pour island at all** (`U4` x5, `U12.4/5`, `D2`/`D4`/`D5`, `J1.43`,
+  `MK1.4`, `J3.A12/B1`, `R110.2`/`R111.2`, `C1.1`, `C5.1`, `C7.1`, `R39.1`,
+  `R127.1`, `U17.5`) and **6 own one with no legal barrel anywhere inside it
+  down to 0.35/0.20 mm** (`C3.1/R2.1/R27.1`, `R129.1`, `U5.2`, `U2.2/U2.3`,
+  `C37.2`, `U9.16`).  Both are FLOORPLAN walls.  The next bounded task is the
+  one the U11 item names: a LOCAL POUR REFLOORPLAN that opens barrel sites --
+  measure, per orphan island, what single piece of foreign copper or what pour
+  parameter (thermal relief, min_thickness, a local zone-clearance island)
+  stands between it and a legal barrel -- rather than another barrel search.
+  No owner decision.
 - **Demo D-594 (pour residual opened and MEASURED; 2 edges PROMOTED, the
   barrel wall named):** D-585 named the pour residual -- 33 of 91 retained open
   edges, `+3V3` 19 and `GND` 14 -- as the largest block and the next task.

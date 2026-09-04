@@ -1,0 +1,976 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "4627ed9cec35eff63da926e75b4989ad8c558c621334af974381e16f15e9eb45",
+  "authoritative_unchanged": true,
+  "bridges": {
+    "ladder": [
+      [
+        650000,
+        400000
+      ],
+      [
+        600000,
+        300000
+      ],
+      [
+        550000,
+        250000
+      ],
+      [
+        500000,
+        250000
+      ],
+      [
+        450000,
+        200000
+      ],
+      [
+        350000,
+        200000
+      ]
+    ],
+    "licensed_areas": [
+      {
+        "cluster": [
+          "R19.1",
+          "R26.1"
+        ],
+        "licence": {
+          "annular": 125000,
+          "area": "POUR_BRIDGE_R19_1",
+          "rules": [
+            "D-595 +3V3 R19.1/R26.1 pour bridge - annular ring",
+            "D-595 +3V3 R19.1/R26.1 pour bridge - barrel diameter",
+            "D-595 +3V3 R19.1/R26.1 pour bridge - drill"
+          ],
+          "via_dia": 600000,
+          "via_drill": 300000
+        },
+        "name": "POUR_BRIDGE_R19_1",
+        "net": "+3V3",
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "xy": [
+          41100000,
+          125400000
+        ]
+      },
+      {
+        "cluster": [
+          "C63.2"
+        ],
+        "licence": {
+          "annular": 125000,
+          "area": "POUR_BRIDGE_C63_2",
+          "rules": [
+            "D-595 GND C63.2 pour bridge - annular ring",
+            "D-595 GND C63.2 pour bridge - barrel diameter",
+            "D-595 GND C63.2 pour bridge - drill"
+          ],
+          "via_dia": 450000,
+          "via_drill": 200000
+        },
+        "name": "POUR_BRIDGE_C63_2",
+        "net": "GND",
+        "via_dia": 450000,
+        "via_drill": 200000,
+        "xy": [
+          53900000,
+          56600000
+        ]
+      },
+      {
+        "cluster": [
+          "U11.11",
+          "U11.4",
+          "U11.5"
+        ],
+        "licence": {
+          "annular": 75000,
+          "area": "POUR_BRIDGE_U11_11",
+          "rules": [
+            "D-595 GND U11 charger ground pour bridge - annular ring",
+            "D-595 GND U11 charger ground pour bridge - barrel diameter",
+            "D-595 GND U11 charger ground pour bridge - drill"
+          ],
+          "via_dia": 350000,
+          "via_drill": 200000
+        },
+        "name": "POUR_BRIDGE_U11_11",
+        "net": "GND",
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "xy": [
+          67300000,
+          77700000
+        ]
+      }
+    ],
+    "requested": true
+  },
+  "candidate_sha256": "2140f6a9f4cf29653e0490451d10e4ccd1a3dee5061a00bb828029d60d3f3da6",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3",
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 32,
+    "open_retained_nets_before": 32,
+    "retained_open_edges_after": 85,
+    "retained_open_edges_before": 89
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "2dc7ecd2f50e1615cf8017c94f771bafcb599c31ae5c9012e18ecaa1f6a57abd",
+    "spec": "evidence/d595-pour-bond-guard.json",
+    "tubes": 45
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 85
+  },
+  "preservation": {
+    "added_object_nets": [
+      "+3V3",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [
+      [
+        "POUR_BRIDGE_C63_2",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            53525000,
+            56225000
+          ],
+          [
+            54275000,
+            56225000
+          ],
+          [
+            54275000,
+            56975000
+          ],
+          [
+            53525000,
+            56975000
+          ]
+        ]
+      ],
+      [
+        "POUR_BRIDGE_R19_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            40650000,
+            124950000
+          ],
+          [
+            41550000,
+            124950000
+          ],
+          [
+            41550000,
+            125850000
+          ],
+          [
+            40650000,
+            125850000
+          ]
+        ]
+      ],
+      [
+        "POUR_BRIDGE_U11_11",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            66975000,
+            77375000
+          ],
+          [
+            67625000,
+            77375000
+          ],
+          [
+            67625000,
+            78025000
+          ],
+          [
+            66975000,
+            78025000
+          ]
+        ]
+      ]
+    ],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "2140f6a9f4cf29653e0490451d10e4ccd1a3dee5061a00bb828029d60d3f3da6",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "routed": [
+    {
+      "bridge": {
+        "bridged": 2,
+        "bridges": [
+          {
+            "area": null,
+            "cluster": [
+              "U1.2"
+            ],
+            "from_layer": "F",
+            "islands": [
+              {
+                "layer": "F",
+                "mm2": 71.48
+              },
+              {
+                "layer": "I3",
+                "mm2": 27.32
+              }
+            ],
+            "licence": null,
+            "needs_licence": false,
+            "pads": 1,
+            "rung": 0,
+            "sites": 1688,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "to_layer": "I3",
+            "via_dia": 650000,
+            "via_drill": 400000,
+            "xy": [
+              62100000,
+              129300000
+            ],
+            "xy_mm": [
+              62.1,
+              129.3
+            ]
+          },
+          {
+            "area": "POUR_BRIDGE_R19_1",
+            "cluster": [
+              "R19.1",
+              "R26.1"
+            ],
+            "from_layer": "F",
+            "islands": [
+              {
+                "layer": "F",
+                "mm2": 20.53
+              }
+            ],
+            "licence": {
+              "annular": 125000,
+              "area": "POUR_BRIDGE_R19_1",
+              "rules": [
+                "D-595 +3V3 R19.1/R26.1 pour bridge - annular ring",
+                "D-595 +3V3 R19.1/R26.1 pour bridge - barrel diameter",
+                "D-595 +3V3 R19.1/R26.1 pour bridge - drill"
+              ],
+              "via_dia": 600000,
+              "via_drill": 300000
+            },
+            "needs_licence": true,
+            "pads": 2,
+            "rung": 1,
+            "sites": 2,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "to_layer": "I3",
+            "via_dia": 600000,
+            "via_drill": 300000,
+            "xy": [
+              41100000,
+              125400000
+            ],
+            "xy_mm": [
+              41.1,
+              125.4
+            ]
+          }
+        ],
+        "failures": [
+          {
+            "cluster": [
+              "C3.1",
+              "R2.1",
+              "R27.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          },
+          {
+            "cluster": [
+              "C5.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "C7.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "R127.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "R129.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          },
+          {
+            "cluster": [
+              "R39.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U12.4"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U12.5"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U17.5"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U4.12"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U4.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U4.3"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U4.5"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U4.8"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U5.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          }
+        ],
+        "ladder": [
+          [
+            650000,
+            400000
+          ],
+          [
+            600000,
+            300000
+          ],
+          [
+            550000,
+            250000
+          ],
+          [
+            500000,
+            250000
+          ],
+          [
+            450000,
+            200000
+          ],
+          [
+            350000,
+            200000
+          ]
+        ],
+        "net": "+3V3",
+        "ok": true,
+        "unbridged": 15,
+        "vias": 2
+      },
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "B": 801
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "netclass": "P3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "failures": [
+        {
+          "island": [
+            "C5.1"
+          ],
+          "pad": "C5.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C7.1"
+          ],
+          "pad": "C7.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R127.1"
+          ],
+          "pad": "R127.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.4"
+          ],
+          "pad": "U12.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.4: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.3 (x45), U12.2 (x17), U12.1 (x8), C24.2 (x2)"
+        },
+        {
+          "island": [
+            "U12.5"
+          ],
+          "pad": "U12.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.6 (x44), U12.3 (x18), U12.1 (x6), U12.2 (x2)"
+        },
+        {
+          "island": [
+            "U17.5"
+          ],
+          "pad": "U17.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U17.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x21), D8.1 (x15), U17.4 (x12), board_edge (x10)"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)"
+        },
+        {
+          "island": [
+            "U4.2"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.3"
+          ],
+          "pad": "U4.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+        }
+      ],
+      "mm": 0,
+      "mode": "bridge+stitch",
+      "net": "+3V3",
+      "ok": true,
+      "seconds": 65.8,
+      "stitched": 0,
+      "unreachable": 12,
+      "via_xy": [],
+      "vias": 0
+    },
+    {
+      "bridge": {
+        "bridged": 2,
+        "bridges": [
+          {
+            "area": "POUR_BRIDGE_C63_2",
+            "cluster": [
+              "C63.2"
+            ],
+            "from_layer": "B",
+            "islands": [
+              {
+                "layer": "B",
+                "mm2": 8.42
+              }
+            ],
+            "licence": {
+              "annular": 125000,
+              "area": "POUR_BRIDGE_C63_2",
+              "rules": [
+                "D-595 GND C63.2 pour bridge - annular ring",
+                "D-595 GND C63.2 pour bridge - barrel diameter",
+                "D-595 GND C63.2 pour bridge - drill"
+              ],
+              "via_dia": 450000,
+              "via_drill": 200000
+            },
+            "needs_licence": true,
+            "pads": 1,
+            "rung": 4,
+            "sites": 2,
+            "to_cluster": [
+              "C10.2",
+              "C11.2",
+              "C12.1",
+              "C13.2"
+            ],
+            "to_is_body": true,
+            "to_layer": "I1",
+            "via_dia": 450000,
+            "via_drill": 200000,
+            "xy": [
+              53900000,
+              56600000
+            ],
+            "xy_mm": [
+              53.9,
+              56.6
+            ]
+          },
+          {
+            "area": "POUR_BRIDGE_U11_11",
+            "cluster": [
+              "U11.11",
+              "U11.4",
+              "U11.5"
+            ],
+            "from_layer": "B",
+            "islands": [
+              {
+                "layer": "B",
+                "mm2": 5.03
+              }
+            ],
+            "licence": {
+              "annular": 75000,
+              "area": "POUR_BRIDGE_U11_11",
+              "rules": [
+                "D-595 GND U11 charger ground pour bridge - annular ring",
+                "D-595 GND U11 charger ground pour bridge - barrel diameter",
+                "D-595 GND U11 charger ground pour bridge - drill"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "needs_licence": true,
+            "pads": 3,
+            "rung": 5,
+            "sites": 6,
+            "to_cluster": [
+              "C10.2",
+              "C11.2",
+              "C12.1",
+              "C13.2"
+            ],
+            "to_is_body": true,
+            "to_layer": "I1",
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "xy": [
+              67300000,
+              77700000
+            ],
+            "xy_mm": [
+              67.3,
+              77.7
+            ]
+          }
+        ],
+        "failures": [
+          {
+            "cluster": [
+              "J3.A12",
+              "J3.B1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U2.2",
+              "U2.3"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          },
+          {
+            "cluster": [
+              "C1.1"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "C37.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          },
+          {
+            "cluster": [
+              "D2.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "D4.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "D5.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "J1.43"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "MK1.4"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "R110.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "R111.2"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "cluster owns no filled pour island"
+          },
+          {
+            "cluster": [
+              "U9.16"
+            ],
+            "reason": "NO_BRIDGE",
+            "why": "no legal barrel on this ladder inside this island over any other cluster"
+          }
+        ],
+        "ladder": [
+          [
+            650000,
+            400000
+          ],
+          [
+            600000,
+            300000
+          ],
+          [
+            550000,
+            250000
+          ],
+          [
+            500000,
+            250000
+          ],
+          [
+            450000,
+            200000
+          ],
+          [
+            350000,
+            200000
+          ]
+        ],
+        "net": "GND",
+        "ok": true,
+        "unbridged": 12,
+        "vias": 2
+      },
+      "contract": {
+        "clr": 200000,
+        "guarded_layers": {
+          "F": 312
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "GND",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "failures": [
+        {
+          "island": [
+            "C1.1"
+          ],
+          "pad": "C1.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "D2.2"
+          ],
+          "pad": "D2.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D2.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D2.1 (x66), D4.1 (x2), D5.3 (x2), D5.1 (x2)"
+        },
+        {
+          "island": [
+            "D4.2"
+          ],
+          "pad": "D4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D4.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D4.1 (x72)"
+        },
+        {
+          "island": [
+            "D5.2"
+          ],
+          "pad": "D5.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "D5.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by D5.1 (x72)"
+        },
+        {
+          "island": [
+            "J1.43"
+          ],
+          "pad": "J1.43",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "J1.43: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.44 (x45), J1.41 (x18), TP36.1 (x3), J1.40 (x1)"
+        },
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "R110.2"
+          ],
+          "pad": "R110.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R111.2"
+          ],
+          "pad": "R111.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        }
+      ],
+      "mm": 0,
+      "mode": "bridge+stitch",
+      "net": "GND",
+      "ok": true,
+      "seconds": 131.9,
+      "stitched": 0,
+      "unreachable": 9,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "schema": 1
+}

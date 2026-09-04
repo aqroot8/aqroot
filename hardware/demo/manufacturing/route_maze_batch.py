@@ -31,7 +31,10 @@ unless every gate below passes on a scratch copy.
        transaction no worse off than it started;
     6. with `--plane`, the candidate's zone inventory differs from the
        authority's by exactly ONE added zone, on the requested net and layer,
-       and no existing zone's net, layer, outline or fill parameters changed.
+       and no existing zone's net, layer, outline or fill parameters changed;
+       and RULE AREAS are audited alongside pours -- none may be lost, and every
+       added one must be a licence area this run's own `--bridge` emitter asked
+       for, on all six copper layers, forbidding nothing.
 
 Failing any gate the run is characterization: it prints its evidence, writes no
 candidate, and leaves the authoritative board untouched.
@@ -44,6 +47,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from pathlib import Path
 
 from screen_inner_plane import insert_zone, zone_sexpr
@@ -125,6 +129,140 @@ DRU_CLASS = {
 
 # `(rule "Via annular ring floor") (constraint annular_width (min 0.125mm))`.
 ANNULAR_MIN = 125000
+
+# --------------------------------------------------------------------------- #
+# POUR BRIDGES -- ONE BARREL, NO TRACK, NO ESCAPE
+# --------------------------------------------------------------------------- #
+# The pours' own residual is the largest single block of open edges on this
+# board, and D-594 measured why the stitch cannot close it: `stitch_pad` asks a
+# PAD to launch, and these pads have no legal launch at any width the board
+# licenses.  They do not need one.  A pad stranded on its own severed piece of
+# pour already HAS copper; what it lacks is a barrel down to the same net's
+# copper on another layer.  `maze3d.bridge_islands` is exactly that primitive
+# and this is the lever that admits it into a gated transaction.
+#
+# THE BARREL IS CHOSEN COARSEST-FIRST, and that ordering is electrical, not
+# cosmetic.  `+3V3` `U1.2` is the ESP32-S3 module's rail pin and takes the full
+# POWER-class 0.65/0.40 mm barrel because one fits; a 2.2k I2C pull-up top does
+# not need one and could not have one.  A barrel below an ordinary floor is
+# emitted ONLY where the `.kicad_dru` grants that net that geometry inside the
+# rule area named for that cluster -- the same plated 0.20 mm process this
+# board already licenses by name six times (D-257 / D-266 / D-531).
+BRIDGE_LADDER = ((650000, 400000),      # POWER class floor -- no exception
+                 (600000, 300000),      # GND netclass via  -- no exception
+                 (550000, 250000),      # THERMAL class     -- no exception
+                 (500000, 250000),      # board min_via_diameter
+                 (450000, 200000),      # 0.20 mm drill, ordinary 0.125 ring
+                 (350000, 200000))      # the licensed fine-pitch process
+
+# `aqroot-Beta-v2.kicad_pro`, board.design_settings.rules.  Transcribed here
+# for the same reason `DRU_CLASS` is: a floor the driver enforces must be
+# readable next to the code that enforces it.
+BOARD_VIA_DIA_MIN = 500000              # min_via_diameter
+BOARD_HOLE_MIN = 200000                 # min_through_hole_diameter
+
+# How far a licence area extends BEYOND the barrel it licenses.  KiCad answers
+# `enclosedByArea` against the item's copper, not its centre, so the area has to
+# contain the whole annulus -- the first run of this lever drew a fixed 0.5 mm
+# square, the emitter chose a 0.60 mm barrel for `R19.1`, the area did not
+# enclose it and the POWER-class 0.40 mm drill rule correctly won.  The area is
+# therefore sized FROM the barrel.  0.15 mm of margin is comfortably more than
+# the rounding and comfortably less than the 0.25 mm hole-to-hole minimum, so
+# no second via can ever be enclosed by another via's licence.
+BRIDGE_AREA_MARGIN_MM = 0.15
+
+RULE_AREA = """
+	(zone
+		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu" "In3.Cu" "In4.Cu")
+		(uuid "%(uuid)s")
+		(name "%(name)s")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				%(pts)s
+			)
+		)
+	)
+"""
+
+
+def via_floors(netclass):
+    """The ordinary via floors a barrel on this class must meet unaided.
+
+    Board setup gives `min_via_diameter` and `min_through_hole_diameter`; the
+    `.kicad_dru` gives the unconditional annular ring floor and, for the seven
+    POWER classes, the 0.40 mm `hole_size` minimum -- which is exactly the
+    `drill` column of `DRU_CLASS`.  Nothing new is decided here; this is the
+    same table the contract already reads, asked a different question.
+    """
+    return dict(dia=BOARD_VIA_DIA_MIN,
+                drill=max(BOARD_HOLE_MIN,
+                          DRU_CLASS.get(netclass, {}).get("drill", 0)),
+                annular=ANNULAR_MIN)
+
+
+def bridge_area_sexpr(name, x_nm, y_nm, via_dia_nm,
+                      margin_mm=BRIDGE_AREA_MARGIN_MM):
+    """A square, all-permitted rule area centred on a bridge barrel.
+
+    Every keep-out flag is `allowed`, so this area forbids nothing and the
+    router does not even see it (`qrouter.QBoard` rasterises a rule area only
+    when it disallows tracks).  Its ONLY job is to be the region a `.kicad_dru`
+    `enclosedByArea` condition names -- the same device D-257, D-266 and D-531
+    already use to scope a fine-pitch via exception to one pad.
+    """
+    x, y = x_nm / 1e6, y_nm / 1e6
+    h = via_dia_nm / 2e6 + margin_mm
+    pts = [(x - h, y - h), (x + h, y - h), (x + h, y + h), (x - h, y + h)]
+    return RULE_AREA % dict(
+        name=name,
+        uuid=str(uuid.uuid5(uuid.NAMESPACE_URL, "aqroot-demo/rule-area/" + name)),
+        pts=" ".join("(xy %g %g)" % q for q in pts))
+
+
+def rule_areas(path):
+    """A comparable signature for every RULE AREA on a board.
+
+    Clause 6 audits pours; without this it would not audit these, and a
+    transaction could quietly draw a region that licenses a geometry nobody
+    reviewed.  A rule area is not copper, so it is a separate signature and a
+    separate claim -- not a hole in the copper one.
+    """
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    out = []
+    for z in board.Zones():
+        if not z.GetIsRuleArea():
+            continue
+        o = z.Outline().Outline(0)
+        out.append((z.GetZoneName(),
+                    tuple(board.GetLayerName(l) for l in z.GetLayerSet().Seq()),
+                    bool(z.GetDoNotAllowTracks()), bool(z.GetDoNotAllowVias()),
+                    bool(z.GetDoNotAllowPads()), bool(z.GetDoNotAllowZoneFills()),
+                    tuple((o.CPoint(i).x, o.CPoint(i).y)
+                          for i in range(o.PointCount()))))
+    return sorted(out)
+
 
 # The plane repair's residual-join bound, in millimetres.  It is not a taste
 # figure: `maze3d.stitch_pad` and `maze3d.join_residual_islands` both work in an
@@ -414,7 +552,7 @@ def guard_for(spec, net):
 def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_residual=False, join_max_mm=0.0, neck=False,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
-            split_islands=False, guard_spec=None):
+            split_islands=False, guard_spec=None, bridge=False):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -464,6 +602,16 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         t0 = time.time()
         g = guard_for(guard_spec, net) if guard_spec else None
         c["guarded_layers"] = {k: len(v) for k, v in (g or {}).items()}
+        # BRIDGES RUN FIRST, and before the routing `Field` is built.  A barrel
+        # straight down into the same net's copper on another layer is the
+        # cheapest move available -- no escape, no track -- so it takes
+        # priority over the stitch, and the stitch's lattice is then built with
+        # those barrels already on the board rather than blind to them.
+        bridged = None
+        if bridge and mz.has_plane(qb, net):
+            bridged = mz.bridge_islands(
+                qb, net, c["width"], c["clr"], c["clr"], BRIDGE_LADDER,
+                via_floors(c["netclass"]), G=grid, layers=c["layers"], guard=g)
         field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
                          layers=c["layers"], neck=neck_rule, guard=g)
@@ -497,6 +645,10 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                              partial=partial, attempt_cap=attempt_cap,
                              join_max_mm=join_max_mm)
             r["mode"] = "maze+partial" if partial else "maze"
+        if bridged is not None:
+            r["bridge"] = bridged
+            r["mode"] = "bridge+" + r["mode"]
+            r["ok"] = bool(r.get("ok")) or bool(bridged.get("bridged"))
         r["seconds"] = round(time.time() - t0, 1)
         print("  %-44s %-6s %s %.0fs" % (
             net, r["mode"], "ok" if r.get("ok") else r.get("reason", "FAIL"),
@@ -636,7 +788,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
          partial=False, attempt_cap=0, repair_planes=False,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
-         evict=(), evict_margin_mm=EVICT_MARGIN_MM, guard=None):
+         evict=(), evict_margin_mm=EVICT_MARGIN_MM, guard=None,
+         bridge=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -700,6 +853,12 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--stitch-via", "%d:%d" % stitch_via]
         if neck:
             cmd += ["--neck", "--neck-max-mm", str(neck_max_mm)]
+        # The bridge is the primary proposal's lever, not the repair's.  A
+        # repair re-bonds copper THIS run severed and does it with the stitch;
+        # letting it also drop fine barrels into pours it never touched would
+        # be a second transaction wearing a repair's name.
+        if bridge and use_search_levers:
+            cmd += ["--bridge"]
         # The repair is a STITCH and a BOUNDED LOCAL RE-BOND, and nothing else.
         # `--partial` is a search lever for the primary proposal; handing it to
         # the repair would let it lay whole-board tracks of its own, which is a
@@ -754,6 +913,25 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         scratch.write_text(head + marker + tail, encoding="utf-8")
         plane_zone["island_removal_restored"] = (
             "(island_removal_mode 1)" not in (head + marker + tail))
+
+    # A bridge barrel finer than the board's ordinary via floors is legal only
+    # because a `.kicad_dru` rule says so INSIDE A NAMED RULE AREA, and the
+    # emitter has already refused any barrel whose rule is missing.  Drawing
+    # that area is this transaction's job: the rule text names the cluster, the
+    # area is centred on the barrel the run actually laid, and clause 6 below
+    # audits every rule area on the board so this can never be a back door.
+    bridge_areas = []
+    for r in routed:
+        for b in (r.get("bridge") or {}).get("bridges", ()):
+            if b.get("area"):
+                bridge_areas.append(dict(name=b["area"], net=r["net"],
+                                         cluster=b["cluster"], xy=b["xy"],
+                                         via_dia=b["via_dia"],
+                                         via_drill=b["via_drill"],
+                                         licence=b.get("licence")))
+    for a in bridge_areas:
+        insert_zone(scratch, bridge_area_sexpr(a["name"], a["xy"][0],
+                                               a["xy"][1], a["via_dia"]))
 
     drc_json = work / "drc.json"
     done = full_drc(scratch, drc_json)
@@ -815,6 +993,23 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     zone_ok = (not zone_lost and len(zone_added) == (1 if plane else 0)
                and all(z[0] == nets[0] and z[1] == (plane,)
                        for z in zone_added))
+
+    # Clause 6 audits POURS.  A rule area is not a pour and `zones()` skips it,
+    # so without this it would not be audited at all -- and a rule area is
+    # exactly the object that can license a geometry nobody reviewed.  Every
+    # added rule area must be one this run's own bridge emitter asked for, on
+    # all six copper layers, and must FORBID NOTHING: an area that disallowed
+    # tracks would be a keep-out, which is a routing decision and not a
+    # licence.  None may be lost.
+    ra_before, ra_after = rule_areas(BOARD), rule_areas(scratch)
+    ra_added = [z for z in ra_after if z not in ra_before]
+    ra_lost = [z for z in ra_before if z not in ra_after]
+    want_areas = {a["name"] for a in bridge_areas}
+    rule_area_ok = (not ra_lost
+                    and len(ra_added) == len(bridge_areas)
+                    and all(z[0] in want_areas and len(z[1]) == 6
+                            and not any(z[2:6]) for z in ra_added))
+    zone_ok = zone_ok and rule_area_ok
 
     base_cu, cand_cu = copper(BOARD), copper(scratch)
     # Clause 5 is unweakened, it is PARAMETERISED.  Without `--evict` the
@@ -890,7 +1085,13 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                           foreign_added_nets=foreign,
                           reverted_failures_clean=(not foreign),
                           zones_added=zone_added, zones_removed=zone_lost,
+                          rule_areas_added=ra_added,
+                          rule_areas_removed=ra_lost,
+                          rule_area_inventory_ok=rule_area_ok,
                           zone_inventory_ok=zone_ok),
+        bridges=dict(requested=bool(bridge), licensed_areas=bridge_areas,
+                     ladder=[list(v) for v in BRIDGE_LADDER]) if bridge
+        else None,
         candidate_sha256=sha256_file(scratch),
         promotion_candidate=ok,
     )
@@ -972,6 +1173,15 @@ def main():
     ap.add_argument("--stitch-via", default=None,
                     help="DIA:DRILL in nm for stitch barrels; clamped UP to "
                          "the DRU hole-size and annular-ring floors")
+    ap.add_argument("--bridge", action="store_true",
+                    help="for a pour-owning net, join each ORPHAN cluster to "
+                         "the plane body with ONE through barrel where its own "
+                         "filled copper on one layer lies over another "
+                         "cluster's on another -- no escape, no track.  The "
+                         "barrel is the coarsest rung of BRIDGE_LADDER that fits; "
+                         "one below an ordinary via floor is emitted only "
+                         "where the .kicad_dru licenses that net that geometry "
+                         "inside the rule area named for that cluster")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -989,7 +1199,7 @@ def main():
         propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands,
-                load_guard(a.guard))
+                load_guard(a.guard), a.bridge)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1014,7 +1224,7 @@ def main():
                  split_islands=a.split_islands,
                  repair_join_max_mm=a.repair_join_max_mm,
                  evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
-                 guard=a.guard)
+                 guard=a.guard, bridge=a.bridge)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)
