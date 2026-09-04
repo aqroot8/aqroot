@@ -1,0 +1,495 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233",
+  "grid": 100000,
+  "guard": "evidence/d599-pour-bond-guard-next.json",
+  "guard_sha256": "6e09f96148f6fa71cd9f9a0198ebf07eed4c9903d3528ddd6e840105d7901c23",
+  "islands": [
+    {
+      "ends": [
+        "C2.1",
+        "R3.2"
+      ],
+      "first_site_mm": [
+        55.6,
+        147.1
+      ],
+      "island": 1,
+      "island_area_mm2": 32.321,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": true,
+      "sites": 913,
+      "tubes": 1,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "R19.1",
+        "R26.1"
+      ],
+      "first_site_mm": null,
+      "island": 8,
+      "island_area_mm2": 20.623,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "J1.7",
+        "J1.8",
+        "J1.9"
+      ],
+      "first_site_mm": [
+        12.5,
+        118.3
+      ],
+      "island": 9,
+      "island_area_mm2": 288.066,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": true,
+      "sites": 5984,
+      "tubes": 2,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "C3.1",
+        "R2.1",
+        "R27.1"
+      ],
+      "first_site_mm": null,
+      "island": 10,
+      "island_area_mm2": 11.317,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 2,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "C9.1",
+        "U5.7",
+        "U5.8"
+      ],
+      "first_site_mm": [
+        33.2,
+        111.7
+      ],
+      "island": 11,
+      "island_area_mm2": 56.698,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": true,
+      "sites": 961,
+      "tubes": 2,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "J1.35",
+        "J1.40",
+        "J1.41",
+        "J1.42"
+      ],
+      "first_site_mm": [
+        25.0,
+        92.9
+      ],
+      "island": 18,
+      "island_area_mm2": 30.852,
+      "layer": "F",
+      "net": "+3V3",
+      "redundant_bond_available": true,
+      "sites": 422,
+      "tubes": 3,
+      "zone": "8c612136-d173-58bf-87cf-c0b97bedd2e0"
+    },
+    {
+      "ends": [
+        "L4.1",
+        "U21.3"
+      ],
+      "first_site_mm": null,
+      "island": 0,
+      "island_area_mm2": 10.813,
+      "layer": "B",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "4ad6fd49-a7ee-5f03-a8e4-f021f24e1091"
+    },
+    {
+      "ends": [
+        "U12.10",
+        "U12.11"
+      ],
+      "first_site_mm": null,
+      "island": 2,
+      "island_area_mm2": 0.749,
+      "layer": "B",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "da11f1b0-6501-5c41-b2b6-d6199a789ea9"
+    },
+    {
+      "ends": [
+        "C26.1",
+        "R131.2"
+      ],
+      "first_site_mm": [
+        52.2,
+        112.8
+      ],
+      "island": 7,
+      "island_area_mm2": 59.388,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 4,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U9.12",
+        "U9.21",
+        "U9.26",
+        "U9.6",
+        "via"
+      ],
+      "first_site_mm": [
+        0.9,
+        0.9
+      ],
+      "island": 13,
+      "island_area_mm2": 3313.367,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 191532,
+      "tubes": 3,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U12.15",
+        "U12.2"
+      ],
+      "first_site_mm": null,
+      "island": 17,
+      "island_area_mm2": 6.516,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U2.2",
+        "U2.3"
+      ],
+      "first_site_mm": null,
+      "island": 22,
+      "island_area_mm2": 3.029,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C68.2",
+        "R105.2",
+        "U14.1",
+        "U14.4",
+        "U14.9"
+      ],
+      "first_site_mm": [
+        0.9,
+        83.7
+      ],
+      "island": 23,
+      "island_area_mm2": 15.798,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 346,
+      "tubes": 4,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U2.12",
+        "U3.2",
+        "U3.3"
+      ],
+      "first_site_mm": null,
+      "island": 24,
+      "island_area_mm2": 11.241,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C4.2",
+        "U3.12"
+      ],
+      "first_site_mm": [
+        51.6,
+        78.8
+      ],
+      "island": 27,
+      "island_area_mm2": 10.282,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 56,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C23.1",
+        "C36.2",
+        "C5.2",
+        "C7.2",
+        "R36.2",
+        "R37.2",
+        "R40.2"
+      ],
+      "first_site_mm": null,
+      "island": 28,
+      "island_area_mm2": 23.798,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 6,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U11.11",
+        "U11.4",
+        "U11.5"
+      ],
+      "first_site_mm": null,
+      "island": 29,
+      "island_area_mm2": 2.307,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "R118.2",
+        "U4.6",
+        "U4.7"
+      ],
+      "first_site_mm": [
+        52.9,
+        70.3
+      ],
+      "island": 30,
+      "island_area_mm2": 17.726,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 129,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C6.2",
+        "U20.3"
+      ],
+      "first_site_mm": [
+        53.1,
+        65.7
+      ],
+      "island": 32,
+      "island_area_mm2": 12.626,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 102,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C25.2",
+        "J5.23"
+      ],
+      "first_site_mm": null,
+      "island": 33,
+      "island_area_mm2": 19.341,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": false,
+      "sites": 0,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "U18.4",
+        "U18.5"
+      ],
+      "first_site_mm": [
+        10.5,
+        67.3
+      ],
+      "island": 34,
+      "island_area_mm2": 5.248,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 17,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "R17.2",
+        "R97.2",
+        "R98.2"
+      ],
+      "first_site_mm": [
+        59.5,
+        64.5
+      ],
+      "island": 35,
+      "island_area_mm2": 22.24,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 2,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C39.2",
+        "R102.2"
+      ],
+      "first_site_mm": [
+        61.8,
+        57.6
+      ],
+      "island": 37,
+      "island_area_mm2": 10.937,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 3,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C22.2",
+        "C57.2",
+        "R78.2"
+      ],
+      "first_site_mm": [
+        4.8,
+        60.8
+      ],
+      "island": 38,
+      "island_area_mm2": 22.256,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 176,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C38.2",
+        "C65.2",
+        "U21.4"
+      ],
+      "first_site_mm": [
+        61.3,
+        41.3
+      ],
+      "island": 42,
+      "island_area_mm2": 44.27,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 217,
+      "tubes": 2,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C73.2",
+        "C76.2"
+      ],
+      "first_site_mm": [
+        43.2,
+        23.8
+      ],
+      "island": 46,
+      "island_area_mm2": 27.817,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 1448,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    },
+    {
+      "ends": [
+        "C61.2",
+        "R88.2"
+      ],
+      "first_site_mm": [
+        9.9,
+        23.1
+      ],
+      "island": 49,
+      "island_area_mm2": 10.392,
+      "layer": "B",
+      "net": "GND",
+      "redundant_bond_available": true,
+      "sites": 64,
+      "tubes": 1,
+      "zone": "38685722-44ee-566f-b52b-89a56220a9e0"
+    }
+  ],
+  "schema": 1,
+  "summary": {
+    "islands": 27,
+    "tubes_retirable": 30,
+    "with_a_legal_site": 17
+  },
+  "via_dia_nm": 600000,
+  "via_drill_nm": 300000
+}

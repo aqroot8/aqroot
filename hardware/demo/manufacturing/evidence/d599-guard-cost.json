@@ -17,7 +17,7 @@
         "net": "/I2C_SDA_INT"
       }
     ],
-    "edges_blocked": 2,
+    "edges_blocked_by_the_prefilter": 2,
     "nets_affected": [
       "/I2C_SCL_INT",
       "/I2C_SDA_INT"
@@ -31,6 +31,21 @@
       "/NFC_SUPPLY",
       "/01_POWER_TREE/BQ25185_SYS"
     ]
+  },
+  "gate_adjudication": {
+    "/I2C_SCL_INT": {
+      "board": "74 -> 74, one net improved and one regressed",
+      "collateral": "GND regressed 12 -> 13: the route SEVERED a pour bond",
+      "net_edges": "6 -> 5",
+      "repair_planes": "ran, GND was its candidate, and could NOT re-bond it",
+      "routed": "U3.22 -> U4.13, 49.113 mm, 5 vias, layers B/F/In2/F/In2/B",
+      "verdict": "REFUSED by clause 4.  THE GUARD WAS RIGHT: its keep-out was protecting a bond this route really does cut and the repair really cannot restore."
+    },
+    "/I2C_SDA_INT": {
+      "verdict": "failed to route in that run; re-gated alone"
+    },
+    "conclusion": "A guard tube is a PREDICTION of a gate refusal, and on the one case tested end to end the prediction was CORRECT.  The correct reading of this file is therefore NOT 'the guard costs two edges' -- it is 'the guard hides two proposals, and at least one of them the gate refuses anyway'.  The pre-filter is still worth challenging per-net, because it is cheap to and the gate remains the authority, but the default assumption should be that it is right.",
+    "note": "THE PRE-FILTER'S TWO 'COSTS' WERE PUT THROUGH THE REAL GATE, and the first one is not a cost at all.  `route_maze_batch.py /I2C_SCL_INT /I2C_SDA_INT --partial --repair-planes` WITHOUT `--guard`."
   },
   "guard": "evidence/d599-pour-bond-guard-next.json",
   "guard_tubes": 48,

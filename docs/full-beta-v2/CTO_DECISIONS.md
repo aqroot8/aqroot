@@ -6447,6 +6447,70 @@ Community Port SDA is a Demo scope requirement. Re-screen before believing it:
 a rip-up verdict is a property of a board, not of a net. No owner decision is
 open.
 
+
+**ADDENDUM (same session, after the D-599 promotion) -- THE GUARD WAS
+CHALLENGED, MEASURED AND VINDICATED, AND IT NAMED A BIGGER FIX.**
+Every promotion since D-585 has carried the pour-bond guard and nothing had ever
+measured what it costs. Nine open retained nets were offered every MST edge
+TWICE on the promoted board -- `Field(guard=...)` OFF and ON, 311 guarded `F.Cu`
+cells and 1168 guarded `B.Cu` cells. Seven are identical either way; two are
+not: `/I2C_SCL_INT` `U3.22 -> U4.13` (OK 46.00 mm OFF, `NO_PATH` ON) and
+`/I2C_SDA_INT` `U3.23 -> U4.14` (OK 43.13 mm OFF, `NO_PATH` ON). The guard is a
+PRE-FILTER and not the authority -- clause 4 measures whole-board open edges
+after the real refill AND after the `--repair-planes` stitch -- so both were put
+through the FULL gate WITHOUT it, and so was
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N`, which the corridor screen reads `OPEN` at
+baseline while the guarded re-offer screen reported `NO_PATH`.
+
+**ALL THREE RETURNED THE IDENTICAL SHAPE and all three were REFUSED:** the net
+improves by one, `GND` regresses by one, `--repair-planes` names `GND` as its
+candidate and cannot re-bond it, board `74 -> 74`, zero attributable DRC.
+`/I2C_SCL_INT` routed `U3.22 -> U4.13` in 49.113 mm with 5 vias to do it.
+**THE GUARD WAS RIGHT** -- its keep-out was protecting a bond those routes really
+do cut and the repair really cannot restore.
+
+**THE CONVERGENCE IS THE FINDING, AND IT IS BIGGER THAN THE GUARD.** The `GND`
+`B.Cu` bond field in this region is SINGLE-POINT everywhere: every route that
+wants to cross it cuts the one neck holding an island on. The guard is not the
+wall, it is a correct PREDICTION of the wall, and the wall is fixable at its
+root. A `GND` island stranded on `B.Cu` behind a 0.15 mm neck is two layers away
+from a `GND` PLANE on `In1` and another on `In4`; ONE through barrel inside that
+island bonds it to both, the neck stops being the only bond, the tube stops
+being critical, and the board gains a shorter return path and a thermal via it
+did not have -- good practice whatever the router wanted.
+
+**NEW READ-ONLY `screen_bond_redundancy.py` SIZES THAT BATCH EXACTLY.** For every
+island a guard tube serves it counts the LEGAL sites inside the island's own
+filled copper for a through via on its own net, using the emitter's own
+`Field.via_ok`, keyed by ZONE UUID (D-597's lesson: a net may own two pours on
+one layer and island indices restart in each) and honouring the guard so it
+never proposes a barrel that would slot the bond it is repairing. **27 guarded
+islands; 17 have a legal 0.60/0.30 mm site; those 17 cover 30 of the 48 tubes.**
+`GND` `B` island 13 has 191532 sites, `+3V3` `F` island 9 has 5984 for its two
+tubes, island 11 has 961, island 1 has 913, island 18 has 422. Ten islands have
+NONE -- `+3V3` 8 and 10, both `BQ25185_SYS` islands, and `GND` 17, 22, 24, 28,
+29, 33 -- and those 18 tubes stay critical. `maze3d.bridge_islands` will not do
+this today: it offers a barrel only to a cluster that is electrically ORPHAN,
+and these islands are not orphan, they are connected through one fragile neck.
+That extension is the named next capability, and it is the cheapest safe copper
+left on this board: barrels only, on `GND`/`+3V3`/`SYS`, no signal net touched.
+
+Also this session: `screen_corridor_blockers.py` hashed the board at WRITE time,
+so a long run can attribute verdicts to a board they were never measured on --
+`d599-corridor-rescreen-a.json` was stamped `b8bb6d98` for verdicts measured on
+`83b6a140`. It now hashes at LOAD time and reports `board_changed_during_run`;
+the stale stamp is corrected by hand with the consequences spelled out.
+`--whole-cap` candidates are now REPORTED in `whole_net_untested_over_cap`
+rather than silently skipped. `/SX1262_DIO1` and
+`/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` have now defeated TWO screening attempts on
+wall-clock (80 minutes in D-596, 120 here) -- question 3's greedy SET
+accumulation rebuilds the whole lattice once per candidate per step, so screen
+them ALONE with `--max-set` bounded low. `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`'s
+only named opener is `FRONT_RGB_R_N`, which is PROTECTED: that edge is a WALL,
+not a candidate. Additional evidence `d599-guard-cost.json`,
+`d599-bond-redundancy.json`, `d599-corridor-rescreen-b.json`.
+
+
 # D-598 · 2026-09-04 · Demo accessory-power control; both switched-rail enables improved, 2 edges PROMOTED
 
 The Demo scope requires **software-controlled switched 3.3 V and 5 V accessory

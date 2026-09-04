@@ -1,0 +1,26 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_changed_during_run": true,
+  "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "board_sha256_at_stop": "b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233",
+  "completed": false,
+  "completed_verdicts": [
+    {
+      "edge": "R29.2 -> U9.29",
+      "net": "/NFC_CS_N",
+      "opener": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+      "significance": "the FIRST verdict question 2W ever produced; it was CROSSING_COPPER_WALL before",
+      "status": "CONSUMED by D-599, which evicted that opener whole and closed this edge",
+      "verdict": "RIPUP_WHOLE_SINGLE"
+    }
+  ],
+  "cost_lesson": "/SX1262_DIO1 and /04_SPI_B_RADIOS_NFC/NFC_VDD_RF have now defeated TWO screening attempts on wall-clock -- D-596 recorded them UNSCREENED after 80 minutes and this run did not reach them in 120.  Question 3's greedy SET accumulation is the cost: it rebuilds the whole lattice once per candidate per step.  Screen them ALONE and with `--max-set` bounded low, or with question 3 skipped, before spending another multi-hour run on a batch.",
+  "note": "READ-ONLY corridor screen with QUESTION 2W over /NFC_CS_N, /SX1262_DIO1, /04_SPI_B_RADIOS_NFC/NFC_VDD_RF and /08_BUTTONS_EXPANDERS/BTN_LEFT_N, LOADED against the pre-D-599 board 83b6a140.  STOPPED after roughly two hours with one net complete; `screen_corridor_blockers.py` writes its report only at the end, so this file is a hand-written record of what the run had established rather than its output.  D-596 stopped a fifth process the same way for the same reason and recorded the same shape.",
+  "prior_evidence": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N was named RIPUP_SINGLE by D-596 with opener /08_BUTTONS_EXPANDERS/FRONT_RGB_R_N, which is PROTECTED copper -- so that edge is a WALL, not a candidate, unless a different opener is found.",
+  "schema": 1,
+  "still_unscreened": [
+    "/SX1262_DIO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N"
+  ]
+}

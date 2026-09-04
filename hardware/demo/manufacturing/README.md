@@ -86,13 +86,78 @@ ESP32-S3 GPIO drive strength on this bus.  An electrically long connected branch
 is strictly better than the open net it replaces, and NFC is a Demo MUST-HAVE.
 
 **TWO NEGATIVE RESULTS BANKED so they are not re-measured.**
-`evidence/d599-pour-fill-parameter-screen.json`: the 27 plane-orphan edges
-(`+3V3` 15, `GND` 12) are NOT a fill artefact.  The pours already connect pads
-SOLIDLY -- in this KiCad build `ZONE_CONNECTION_FULL == 2` and every pour
-carries `padconn 2`, so thermal relief is not why any pad here is orphan -- and
-dropping the zone clearance from 0.250 to the 0.200 mm DRU floor grew the fill
-by 634.346 mm2 and closed ZERO edges, which is why it was REFUSED: it spends
-pour-to-signal margin on all six layers for a measured nothing.
+`evidence/d599-pour-fill-parameter-screen.json`: the plane-orphan edges
+(`+3V3` 15, `GND` 12) are NOT a fill artefact, and the WHOLE fill-parameter
+family was measured so it is never measured again.  The pours already connect
+pads SOLIDLY -- `(connect_pads yes ...)` in the board file, and in this KiCad
+build `ZONE_CONNECTION_FULL == 2` with every pour carrying `padconn 2`, so
+**thermal relief is not why any pad on this board is orphan**.  Clearance
+0.250 -> 0.200 mm (the DRU floor) ALONE: +634.346 mm2 of fill, ZERO edges.
+Min-thickness 0.200 -> 0.150 mm ALONE: ZERO.  0.200 -> 0.127 mm (JLCPCB's
+standard-process minimum trace) ALONE: ZERO.  Only 0.127 mm min-thickness
+TOGETHER with 0.200 mm clearance moves anything -- **ONE** `GND` land, 74 -> 73.
+**REFUSED**: one edge of 74 does not justify taking the whole board's pour
+geometry to the process floor on six layers at once, surrendering 0.05 mm of
+pour-to-signal margin everywhere and admitting 0.127 mm fill slivers wherever
+the filler wants one.
+
+**THE POUR-BOND GUARD WAS MEASURED AND THEN VINDICATED**
+(`evidence/d599-guard-cost.json`).  Every promotion since D-585 has carried the
+guard and nothing had ever measured what it costs.  Nine open retained nets were
+offered every MST edge TWICE on the same board -- `Field(guard=...)` OFF and ON,
+311 guarded `F.Cu` cells and 1168 guarded `B.Cu` cells.  Seven are identical
+either way; two are not: `/I2C_SCL_INT` `U3.22 -> U4.13` (OK 46.00 mm OFF,
+`NO_PATH` ON) and `/I2C_SDA_INT` `U3.23 -> U4.14` (OK 43.13 mm OFF, `NO_PATH`
+ON).  The guard is a PRE-FILTER and not the authority -- clause 4 measures
+whole-board open edges after the real refill AND after the `--repair-planes`
+stitch -- so both were put through the FULL gate WITHOUT it.  **The first is not
+a cost at all.**  `/I2C_SCL_INT` routed `U3.22 -> U4.13` in 49.113 mm with 5
+vias and closed its edge (6 -> 5) -- and SEVERED a `GND` pour bond, `GND`
+12 -> 13, which `--repair-planes` took as its candidate and could NOT re-bond.
+Board 74 -> 74, one net improved and one regressed: **REFUSED by clause 4.  The
+guard was RIGHT** -- its keep-out was protecting a bond that route really does
+cut and the repair really cannot restore.  `/I2C_SDA_INT` and
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N` were each re-gated ALONE, guard off, and
+returned **the identical shape**: net improves by one, `GND` regresses by one,
+`--repair-planes` names `GND` as its candidate and cannot re-bond it, board
+74 -> 74, REFUSED.  Three independent nets, three identical outcomes, zero
+attributable DRC in all three.
+
+**THAT CONVERGENCE IS THE REAL FINDING, AND IT IS BIGGER THAN THE GUARD.**  The
+`GND` `B.Cu` bond field in this region is SINGLE-POINT everywhere: every route
+that wants to cross it cuts the one neck holding an island on, and no barrel the
+8 mm repair window can reach puts it back.  The guard is not the wall -- it is a
+correct PREDICTION of the wall.  So the honest reading is not "the guard costs
+edges"; it is "the guard hides proposals the gate refuses anyway, for a reason
+that is fixable at its root".
+
+**THE ROOT IS FIXABLE, AND THE INSTRUMENT NOW EXISTS.**  A `GND` island stranded
+on `B.Cu` behind a 0.15 mm neck is two layers away from a `GND` PLANE on `In1`
+and another on `In4`.  ONE through barrel dropped inside that island bonds it to
+both: the neck stops being the only bond, the tube stops being critical, the
+corridor it was freezing opens -- and the board gains a shorter return path and a
+thermal via it did not have, which is good practice whatever the router wanted.
+New read-only `screen_bond_redundancy.py` sizes that batch: for every island a
+guard tube serves, how many LEGAL sites exist inside the island's own filled
+copper for a through via on its own net -- using the emitter's own
+`Field.via_ok`, keyed by ZONE UUID (D-597's lesson: a net may own two pours on
+one layer and the island indices restart in each), and honouring the guard so it
+never proposes a barrel that would slot the bond it is repairing.  The `+3V3`
+rows are decisive: `F` island 9 has **5984** legal 0.60 mm sites for its two
+tubes, island 11 has 961, island 1 has 913, island 18 has 422, while islands 8
+and 10 and both `BQ25185_SYS` islands have none.  `maze3d.bridge_islands` will
+NOT do this today: it offers a barrel only to a cluster that is electrically
+ORPHAN, and these islands are not orphan -- they are connected, through exactly
+one fragile neck.  Evidence `evidence/d599-bond-redundancy.json`.
+
+**A PROVENANCE BUG WAS FOUND AND FIXED RATHER THAN ANNOTATED.**
+`screen_corridor_blockers.py` hashed the board at WRITE time, and a run of this
+length can have a promotion land underneath it -- `d599-corridor-rescreen-a.json`
+was stamped `b8bb6d98` for verdicts measured on `83b6a140`.  It now hashes at
+LOAD time and reports `board_changed_during_run`; the stale stamp is corrected by
+hand in that file with the consequences spelled out.  `--whole-cap` candidates
+are now REPORTED in `whole_net_untested_over_cap` rather than silently skipped.
+
 `evidence/d599-usb-corridor-measurement.json`: see below.
 
 **THE USB LINK IS THE NEXT FABRICATION BLOCKER AND IT IS GETTING WORSE.**
