@@ -16,7 +16,10 @@ unless every gate below passes on a scratch copy.
        outside the three inherited classes, and the inherited class counts do
        not grow;
     4. the fitted-pad routing ledger shows the whole board's retained open
-       edges strictly DECREASE and no other net regress;
+       edges strictly DECREASE and no other net regress -- measured after the
+       optional `--repair-planes` stitch and its own second refill and DRC, so
+       a pour a signal track split is given the barrel that re-bonds it before
+       the verdict, and is still a refusal if that barrel does not exist;
     5. every pre-existing track/via signature still exists, and every ADDED
        object is on a net that SUCCEEDED -- copper is added, never moved or
        removed, and every failed net's revert is proven rather than assumed;
@@ -84,6 +87,67 @@ DRU_CLASS = {
 # `(rule "Via annular ring floor") (constraint annular_width (min 0.125mm))`.
 ANNULAR_MIN = 125000
 
+# --------------------------------------------------------------------------- #
+# INNER PLANES ARE NOT SIGNAL LAYERS ANY MORE
+# --------------------------------------------------------------------------- #
+# `qrouter.ROUTABLE` calls the six-layer stack `F, B, In2, In3` -- In1 and In4
+# are the solid GND references and were never routable.  That was the truth of
+# this board until D-580 poured `+3V3` on `In3.Cu`.  It is not the truth now.
+#
+# The first `--partial` run measured the consequence rather than arguing it: a
+# nine-island `/I2C_SCL_INT` proposal closed five edges and took FOUR of its
+# five joins across `In3`, and the gate refused the whole run because `+3V3`
+# REGRESSED -- foreign copper on a plane layer is a SLOT through that plane,
+# and a slot long enough separates pads the pour used to bond.  D-580 predicted
+# exactly this refusal in writing; this is it happening.
+#
+# The connectivity regression is only the visible half.  A track laid through a
+# power plane also breaks the return path of every signal that crosses the slot
+# and lengthens the PDN loop the plane exists to shorten, and neither of those
+# shows up in a ledger at all.  So a layer that carries an INNER pour is
+# reserved to the net that owns it, and the maze routes foreign nets on the
+# three layers this board actually has left: `F`, `B` and `In2`.
+#
+# OUTER pours are deliberately NOT reserved.  The `+3V3` pour on `F.Cu` and the
+# `GND` pour on `B.Cu` are fill-in copper on layers whose job is signal routing
+# -- they flow around whatever is routed and were poured knowing it.  Reserving
+# them would leave this board one signal layer, which is not a rule, it is a
+# shutdown.  The no-net-regressed gate clause still governs them, so an outer
+# pour that a run actually severs is still refused, and refused on the same
+# evidence that produced this rule.
+INNER = {"In1.Cu": "I1", "In2.Cu": "I2", "In3.Cu": "I3", "In4.Cu": "I4"}
+
+
+def reserved_inner_planes(board):
+    """Short names of the inner layers a filled pour owns, mapped to its nets.
+
+    Read from the BOARD, not transcribed: pour one more inner plane tomorrow
+    and the router reserves it on the next run with no edit here.
+    """
+    out = {}
+    for z in board.Zones():
+        if z.GetIsRuleArea() or not z.IsFilled():
+            continue
+        for layer in z.GetLayerSet().Seq():
+            name = board.GetLayerName(layer)
+            if name in INNER:
+                out.setdefault(INNER[name], set()).add(z.GetNetname())
+    return out
+
+
+def permitted_layers(routable, contract_layers, reserved, net):
+    """The layers this net may lay copper on, after plane reservation.
+
+    A net that OWNS a plane still routes on it -- its own copper is not a slot
+    through the plane, it is more of the same plane -- so the reservation is
+    per (layer, net) and never a blanket layer ban.
+    """
+    allowed = tuple(contract_layers or routable)
+    keep = tuple(L for L in allowed
+                 if net in reserved.get(L, ()) or L not in reserved)
+    return keep or allowed
+
+
 # Nets excluded from generic maze routing.  Each is a documented physics or
 # governance constraint the maze proposer does not model, NOT a difficulty
 # judgement: it must keep being routed by its own purpose-built harness.
@@ -124,7 +188,10 @@ def net_contract(board, net):
 # --------------------------------------------------------------------------- #
 # child: propose copper on a scratch board
 # --------------------------------------------------------------------------- #
-def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None):
+def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
+            join_residual=False, join_max_mm=0.0, neck=False,
+            neck_max_mm=0.0, partial=False, attempt_cap=0,
+            split_islands=False):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -132,10 +199,19 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None):
 
     ref = pcbnew.LoadBoard(str(path))
     contracts = {n: net_contract(ref, n) for n in nets}
+    reserved = reserved_inner_planes(ref)
     del ref
 
     qb = qr.QBoard(str(path))
     ir.inject_existing_via_obstacles(qb)
+    for n, c in contracts.items():
+        c["layers"] = permitted_layers(qb.routable, c["layers"], reserved, n)
+        c["reserved_inner_planes"] = {k: sorted(v) for k, v in reserved.items()}
+    # The pad-escape necking allowance is read from the board's own .kicad_dru,
+    # so the router cannot permit a neck the DRC would refuse, nor refuse one
+    # the board's rules were written to allow.  None => the router behaves
+    # exactly as it did before this flag existed.
+    neck_rule = mz.neck_rule(qb, neck_max_mm or mz.NECK_MAX_MM) if neck else None
     results = []
     for net in nets:
         c = contracts[net]
@@ -165,26 +241,44 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None):
         t0 = time.time()
         field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
-                         layers=c["layers"])
+                         layers=c["layers"], neck=neck_rule)
         # A net that owns a filled pour is completed by dropping each island
         # onto that pour, not by a pad-to-pad MST across the signal layers.
         if mz.has_plane(qb, net):
             r = mz.stitch_net(qb, net, width=c["width"], clr_pad=c["clr"],
                               clr_trk=c["clr"], via_dia=c["via_dia"],
-                              via_drill=c["via_drill"], G=grid, field=field)
-            r["mode"] = "stitch"
+                              via_drill=c["via_drill"], G=grid, field=field,
+                              split_islands=split_islands)
+            r["mode"] = "stitch-split" if split_islands else "stitch"
+            # The stitch is LOCAL by construction -- one escape and one barrel
+            # inside an 8 mm window.  An island it reports as unreachable may
+            # still be a short ordinary run from copper that IS on the plane, so
+            # the residual pass hands exactly those islands to the same
+            # whole-board maze the plane-less nets use.  It runs AFTER the
+            # stitch, never instead of it: a barrel straight down into the pour
+            # is always the cheaper answer and keeps its priority.
+            if join_residual:
+                j = mz.join_residual_islands(qb, net, field,
+                                             via_cost_mm=via_cost_mm,
+                                             max_mm=join_max_mm)
+                r["residual_join"] = j
+                r["mode"] = "stitch+join"
+                r["ok"] = bool(r.get("ok")) or bool(j.get("joined"))
         else:
             r = mz.route_net(qb, net, width=c["width"], clr_pad=c["clr"],
                              clr_trk=c["clr"], via_dia=c["via_dia"],
                              via_drill=c["via_drill"], G=grid,
-                             via_cost_mm=via_cost_mm, field=field)
-            r["mode"] = "maze"
+                             via_cost_mm=via_cost_mm, field=field,
+                             partial=partial, attempt_cap=attempt_cap,
+                             join_max_mm=join_max_mm)
+            r["mode"] = "maze+partial" if partial else "maze"
         r["seconds"] = round(time.time() - t0, 1)
         print("  %-44s %-6s %s %.0fs" % (
             net, r["mode"], "ok" if r.get("ok") else r.get("reason", "FAIL"),
             time.time() - t0), file=sys.stderr, flush=True)
         r["contract"] = {k: c[k] for k in
-                         ("netclass", "width", "clr", "via_dia", "via_drill")}
+                         ("netclass", "width", "clr", "via_dia", "via_drill",
+                          "layers", "reserved_inner_planes")}
         results.append(r)
     qb.save(str(path))
     print(json.dumps(dict(results=results), default=str))
@@ -235,8 +329,87 @@ def fill_only(scratch, out):
     ], text=True, capture_output=True).returncode
 
 
+def full_drc(scratch, out):
+    """The authoritative DRC step: refill the zones, save, report everything.
+
+    Extracted so the gate can run it AGAIN after a plane repair.  Refilling is
+    the whole point: the pours the proposal perturbed are re-poured by the real
+    KiCad engine, so what the ledger measures afterwards is the copper a
+    fabricator would actually get, not the copper the router imagined.
+    """
+    return subprocess.run([
+        "kicad-cli", "pcb", "drc", "--refill-zones", "--save-board",
+        "--format", "json", "--units", "mm", "--severity-all",
+        "--schematic-parity", "-o", str(out), str(scratch),
+    ], text=True, capture_output=True)
+
+
+def plane_nets(path):
+    """Nets that own at least one filled, non-rule-area pour on this board."""
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    return sorted({z.GetNetname() for z in board.Zones()
+                   if not z.GetIsRuleArea() and z.IsFilled()
+                   and z.GetNetname()})
+
+
+# --------------------------------------------------------------------------- #
+# A POUR THAT A TRACK SPLIT IS NOT A REGRESSION.  IT IS AN UNFINISHED STITCH.
+# --------------------------------------------------------------------------- #
+# Gate clause 4 refuses any run in which ANY net's open-edge count grows, and it
+# is right to: copper that disconnects something is not progress.  But on THIS
+# board that clause had started refusing runs for a reason that is not a
+# disconnection at all.
+#
+# After D-582 and D-583 the two outer layers carry pours -- `+3V3` on `F.Cu`,
+# `GND` on `B.Cu` -- and those pours bond dozens of pads with no track and no
+# via.  A foreign signal track laid across such a layer is a SLOT through the
+# pour: KiCad re-pours around it, the pour splits into two islands, and every
+# pad that was bonded across the cut goes open.  So a `--partial` run on
+# `/I2C_SCL_INT` closed FIVE real edges, lost one to `+3V3` and one to `GND`,
+# came out four edges AHEAD on the whole board -- and was refused.
+#
+# Refusing it is the wrong answer twice over.  It throws away five routed
+# connections to avoid two that a via can restore, and it makes the outer pours
+# behave like reserved planes, which D-581's rule text explicitly declined to do
+# because it would leave this board one signal layer.
+#
+# The right answer is the one the board has been using since D-579: a pad that
+# sits on its own pour island does not need a better search, it needs a BARREL
+# down to the same net's copper on another layer.  `maze3d.stitch_net` is
+# exactly that primitive, and after the refill the split is visible to it as an
+# ordinary orphaned island -- indistinguishable from the two hundred a fresh
+# pour leaves.
+#
+# So `--repair-planes` closes the loop inside ONE gate transaction:
+#
+#     propose signal copper -> real refill -> measure -> if a POUR-OWNING net
+#     regressed, stitch exactly those nets on the refilled board -> real refill
+#     again -> measure again, and judge the run on THAT.
+#
+# Three things keep this a repair and not a loophole.
+#
+#   * ONLY POUR-OWNING NETS ARE REPAIRED, and only ones that actually
+#     regressed.  A plane-less net that a run disconnects is still a hard
+#     refusal; there is no via that fixes it and no pretending otherwise.
+#   * THE REPAIR IS ORDINARY GATED COPPER.  It goes through the same
+#     `propose` child, the same DRU contract, the same analytic proofs, and it
+#     is re-proved by a SECOND full `--severity-all --schematic-parity` DRC on
+#     the refilled board.  Nothing is measured on a board that was not filled.
+#   * THE VERDICT IS UNCHANGED AND UNWEAKENED.  Clause 4 still demands that no
+#     net regress and that the whole board improve -- it is simply asked AFTER
+#     the repair rather than in the middle of it.  A split the stitch cannot
+#     close is still a regression and the run is still refused.
+#
+# `--repair-planes` is OFF by default, so every existing harness and every
+# accepted result reproduces byte-identically without it.
+
+
 def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
-         plane=None, zone_clearance=0.25, stitch_width=0, stitch_via=None):
+         plane=None, zone_clearance=0.25, stitch_width=0, stitch_via=None,
+         join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
+         partial=False, attempt_cap=0, repair_planes=False,
+         split_islands=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -264,15 +437,43 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                                         clearance=zone_clearance, islands=1))
         plane_zone["first_fill_exit"] = fill_only(scratch, work / "fill.json")
 
-    proposal = [sys.executable, __file__, "--propose", str(scratch),
-                "--grid", str(grid), "--via-cost", str(via_cost_mm)]
-    if stitch_width:
-        proposal += ["--stitch-width", str(stitch_width)]
-    if stitch_via:
-        proposal += ["--stitch-via", "%d:%d" % stitch_via]
-    routed = json.loads(subprocess.run(
-        proposal + list(nets), check=True, text=True,
-        capture_output=True).stdout)["results"]
+    def child(target_nets, use_search_levers=True):
+        """Run the proposer on the scratch board for these nets."""
+        cmd = [sys.executable, __file__, "--propose", str(scratch),
+               "--grid", str(grid), "--via-cost", str(via_cost_mm)]
+        if stitch_width:
+            cmd += ["--stitch-width", str(stitch_width)]
+        if stitch_via:
+            cmd += ["--stitch-via", "%d:%d" % stitch_via]
+        if neck:
+            cmd += ["--neck", "--neck-max-mm", str(neck_max_mm)]
+        # The repair is a STITCH and nothing else.  `--join-residual` and
+        # `--partial` are search levers for the primary proposal; handing them
+        # to the repair would let it lay whole-board tracks of its own, which is
+        # a second routing run wearing a repair's name.
+        #
+        # `--split-islands` is ALWAYS the repair's question -- an island that
+        # sits on its own severed piece of pour is exactly what the repair must
+        # re-bond, and the default predicate hides it -- and is the CALLER's
+        # choice for the primary proposal.  An earlier cut bound this to an
+        # `else` on `if neck`, so the flag followed the necking lever instead of
+        # the run: a `--neck` repair silently lost the predicate it exists for,
+        # and every non-neck primary silently gained it.  Both halves are now
+        # said explicitly.
+        if split_islands or not use_search_levers:
+            cmd += ["--split-islands"]
+        if use_search_levers:
+            if join_residual:
+                cmd += ["--join-residual"]
+            if partial:
+                cmd += ["--partial", "--attempt-cap", str(attempt_cap)]
+            if join_residual or partial:
+                cmd += ["--join-max-mm", str(join_max_mm)]
+        return json.loads(subprocess.run(
+            cmd + list(target_nets), check=True, text=True,
+            capture_output=True).stdout)["results"]
+
+    routed = child(nets)
 
     if plane_zone:
         text = scratch.read_text(encoding="utf-8")
@@ -285,11 +486,30 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             "(island_removal_mode 1)" not in (head + marker + tail))
 
     drc_json = work / "drc.json"
-    done = subprocess.run([
-        "kicad-cli", "pcb", "drc", "--refill-zones", "--save-board",
-        "--format", "json", "--units", "mm", "--severity-all",
-        "--schematic-parity", "-o", str(drc_json), str(scratch),
-    ], text=True, capture_output=True)
+    done = full_drc(scratch, drc_json)
+
+    # ------------------------------------------------------------------ #
+    # PLANE REPAIR -- see the doctrine above `gate`.
+    # ------------------------------------------------------------------ #
+    repair = None
+    if repair_planes:
+        mid = ledger(scratch, work / "ledger-mid.json")
+        was = {r["net"]: r["open_edges"] for r in base_ledger["nets"]}
+        now = {r["net"]: r["open_edges"] for r in mid["nets"]}
+        owners = set(plane_nets(scratch))
+        hurt = sorted(n for n, v in now.items()
+                      if v > was.get(n, v) and n in owners)
+        repair = dict(candidates=hurt,
+                      pour_owning_nets=sorted(owners),
+                      regressed_before_repair=sorted(
+                          n for n, v in now.items() if v > was.get(n, v)),
+                      retained_open_edges_before_repair=mid[
+                          "connectivity"]["retained_open_edges"])
+        if hurt:
+            repair["routed"] = child(hurt, use_search_levers=False)
+            drc_json = work / "drc-repaired.json"
+            done = full_drc(scratch, drc_json)
+
     report = json.loads(drc_json.read_text())
     counts = {}
     for v in report.get("violations", []):
@@ -323,7 +543,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # that succeeded.  Requiring every added object to be on a SUCCEEDED net is
     # strictly stronger than the old "requested net" test -- it proves the
     # revert of each failed net actually happened, rather than assuming it.
-    ok_nets = sorted(r["net"] for r in routed if r.get("ok"))
+    # The repair lays copper too, so its successes join the promotion set --
+    # otherwise clause 5 would call a stitch this gate itself asked for
+    # "foreign".  Its FAILURES are not added to `failed`: a plane net the repair
+    # could not fully re-bond is judged by clause 4 on the ledger, which is the
+    # measurement that matters, not by whether the stitch primitive returned ok.
+    repaired = [r for r in (repair or {}).get("routed", []) if r.get("ok")]
+    ok_nets = sorted({r["net"] for r in routed if r.get("ok")}
+                     | {r["net"] for r in repaired})
     failed = sorted(r["net"] for r in routed if not r.get("ok"))
     foreign = sorted(set(added_nets) - set(ok_nets))
 
@@ -335,7 +562,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # Requiring a stitch as well would refuse a promotion whose whole value is
     # the plane -- which is exactly what a plane is for.
     changed = (bool(plane)
-               or any(r.get("ok") and not r.get("already") for r in routed))
+               or any(r.get("ok") and not r.get("already") for r in routed)
+               or any(not r.get("already") for r in repaired))
     ok = (not attributable and inherited_ok and not regressed and not removed
           and not foreign and edges_after < edges_before and zone_ok
           and changed and before == sha256_file(BOARD))
@@ -359,6 +587,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             open_retained_nets_after=after_ledger["connectivity"]["open_retained_nets"],
             nets_improved=closed, nets_regressed=regressed),
         plane=plane_zone,
+        plane_repair=repair,
         preservation=dict(removed_objects=removed, added_object_nets=added_nets,
                           foreign_added_nets=foreign,
                           reverted_failures_clean=(not foreign),
@@ -391,6 +620,39 @@ def main():
     ap.add_argument("--zone-clearance", type=float, default=0.25)
     ap.add_argument("--stitch-width", type=int, default=0,
                     help="stub width in nm; clamped UP to the DRU class floor")
+    ap.add_argument("--join-residual", action="store_true",
+                    help="for a plane-served net, maze-join the islands the "
+                         "local stitch reported as unreachable")
+    ap.add_argument("--join-max-mm", type=float, default=0.0,
+                    help="revert and report ANY single join longer than this "
+                         "many millimetres of copper -- residual-island joins "
+                         "and --partial joins alike; 0 disables the bound")
+    ap.add_argument("--neck", action="store_true",
+                    help="allow a pad with NO full-width escape to launch at "
+                         "the .kicad_dru pad-escape necking minimum, for the "
+                         "fine-pitch courtyards that rule names, bounded by "
+                         "--neck-max-mm")
+    ap.add_argument("--neck-max-mm", type=float, default=0.0,
+                    help="bound on ONE necked stub in millimetres "
+                         "(0 = the module default)")
+    ap.add_argument("--partial", action="store_true",
+                    help="complete each plane-less net BEST-EFFORT: union-find "
+                         "Kruskal over every island pair, per-pair transaction, "
+                         "instead of one all-or-nothing MST")
+    ap.add_argument("--attempt-cap", type=int, default=0,
+                    help="bound on join attempts per net under --partial "
+                         "(0 = unbounded; the dead-terminal prune already "
+                         "keeps the complete graph affordable)")
+    ap.add_argument("--split-islands", action="store_true",
+                    help="for a pour-owning net, also offer the stitch the "
+                         "islands whose pads already touch a zone -- the shape "
+                         "a SEVERED pour leaves; the plane repair always uses "
+                         "this and needs no flag")
+    ap.add_argument("--repair-planes", action="store_true",
+                    help="after the refill, stitch any POUR-OWNING net whose "
+                         "open edges grew, then refill and re-measure; a "
+                         "signal track that slots a pour is repaired by a "
+                         "barrel rather than refusing the whole run")
     ap.add_argument("--stitch-via", default=None,
                     help="DIA:DRILL in nm for stitch barrels; clamped UP to "
                          "the DRU hole-size and annular-ring floors")
@@ -404,7 +666,9 @@ def main():
     if a.stitch_via:
         via = tuple(int(v) for v in a.stitch_via.split(":"))
     if a.propose:
-        propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via)
+        propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
+                a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
+                a.partial, a.attempt_cap, a.split_islands)
         return 0
     if not a.nets:
         ap.error("name at least one net")
@@ -413,7 +677,12 @@ def main():
         ap.error("excluded from generic maze routing: %s" % ", ".join(bad))
 
     extra = dict(plane=a.plane, zone_clearance=a.zone_clearance,
-                 stitch_width=a.stitch_width, stitch_via=via)
+                 stitch_width=a.stitch_width, stitch_via=via,
+                 join_residual=a.join_residual, join_max_mm=a.join_max_mm,
+                 neck=a.neck, neck_max_mm=a.neck_max_mm,
+                 partial=a.partial, attempt_cap=a.attempt_cap,
+                 repair_planes=a.repair_planes,
+                 split_islands=a.split_islands)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

@@ -49,5 +49,6 @@ hardware/beta-v2/checks/probe_002w_prefix.json
 # in a `--work` directory so they can refill, DRC and diff without touching the
 # authority.  They are regenerated on every run and must never be committed;
 # the evidence of record is hardware/demo/manufacturing/evidence/.
+/w/
 /w[0-9]*/
 /w-*/

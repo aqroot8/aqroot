@@ -67,6 +67,7 @@ CONTRACTS PRESERVED
     the authority for legality.  This module is a *proposer*.
 """
 
+import re
 import math
 import sys
 from pathlib import Path
@@ -82,6 +83,214 @@ import incremental_router as ir  # noqa: E402
 # `QBoard.grid`.  0.25 mm is the figure `incremental_router._clears_existing_vias`
 # already applies to accepted barrels; using the same number keeps one answer.
 HOLE_CLR = 250000
+
+# ---------------------------------------------------------------------------
+# PAD-ESCAPE NECKING -- the board's own rule, finally used
+# ---------------------------------------------------------------------------
+# `maze3d` routes ONE width per net, board-wide, taken from the netclass and
+# raised by the `.kicad_dru` class floor.  `pad_escapes` therefore asks
+# `QBoard.escape` for a stub that is never narrower than the trunk
+# (`trunk_w == rule_min == field.width`), and `_pocket_escapes` rasterises its
+# local window at that same width.  On a fine-pitch power package that is the
+# wrong question: `BQ25185_SYS` is an 0.80 mm rail whose pads on `U12`, `U13`
+# and `U21` are 0.30 mm wide on 0.50 mm pitch, so NO 0.80 mm stub leaves them
+# in any direction and the router reports the pad enclosed.
+#
+# The project `.kicad_dru` already anticipated exactly this and carries, as the
+# LAST matching `track_width` rule for those nets:
+#
+#     (rule "Pad-escape necking - width, fine-pitch power packages"
+#         (constraint track_width (min 0.20mm))
+#         (condition "A.intersectsCourtyard('U11') || ... || A.intersectsCourtyard('U9')"))
+#
+# The rule is read from the board's own `.kicad_dru` here rather than
+# transcribed, so the router and the DRC cannot drift apart about which
+# packages may neck and how far.
+#
+# THREE THINGS KEEP THIS A FANOUT AND NOT A WAIVER.
+#
+#   * LAST RESORT.  A necked candidate is offered for a (pad, layer) ONLY when
+#     the full-width escape set for that pad and layer is EMPTY.  Every pad
+#     that escapes today escapes the same way at the same width, so the lever
+#     cannot perturb an accepted route; with `neck=None` the module is
+#     byte-identical.
+#   * CONFINED, THEN BOUNDED.  KiCad evaluates `A.intersectsCourtyard` per TRACK
+#     OBJECT, and a smoothed escape is several of them.  A stub that leaves the
+#     courtyard therefore stops being licensed at the segment that leaves: the
+#     first whole-board run measured a 1.262 mm neck out of `U9.10` with
+#     0.764 mm outside `U9` and the real DRC returned three `track_width`
+#     errors against the P3V3 0.40 mm outer floor, one per stray segment.  So
+#     the escape raster is MASKED to the named courtyards and any polyline that
+#     still strays is refused -- containment is the condition under which the
+#     board's own rule applies, not a stylistic preference.  A LENGTH bound
+#     rides on top: a necked stub may be at most `Neck.max_nm` long (1.5 mm by
+#     default), which is what stops a large courtyard such as `U9`'s from
+#     becoming a corridor.  The strayed length is still measured and reported
+#     with every escape; it is now always 0.0, and a number that must be zero
+#     is worth printing.
+#   * PROVED AT ITS OWN WIDTH.  `_stub_legal` before emission and `verify_laid`
+#     after it both measure the ACTUAL width of the segment, so a necked stub is
+#     re-proved against the full routed clearance for 0.20 mm copper and the
+#     trunk is still re-proved for 0.80 mm copper.  Nothing is exempted.
+#
+# The trunk itself never necks.  `_pocket_escapes` terminates only on a cell the
+# WHOLE-BOARD FULL-WIDTH lattice already calls free, so the wavefront leaves the
+# neck endpoint at the contract width.  Electrically that is the textbook
+# fine-pitch fanout: a sub-millimetre neck bonded at both ends to wide copper,
+# ~2.5 mOhm/mm at 1 oz, whose IR drop and self-heating at the BQ25185's 1 A
+# ceiling are negligible against the pad it starts in -- which is itself only
+# 0.30 mm wide and carries the same current whatever the trace does.
+NECK_MAX_MM = 1.5               # default bound on ONE necked stub
+
+
+class Neck(object):
+    """The board's pad-escape necking allowance, read from its `.kicad_dru`.
+
+    CONFINEMENT IS NOT OPTIONAL, AND THE BOARD SAID SO IN DRC.
+
+    The first cut of this class treated courtyard containment as a MEASUREMENT
+    reported beside the escape, on the reading that `A.intersectsCourtyard`
+    matches any track that touches the courtyard at all.  A whole-board run
+    then produced a 1.262 mm necked stub out of `U9.10` of which 0.764 mm lay
+    outside `U9`, and the real KiCad DRC returned THREE `track_width` errors
+    against "P3V3 minimum width on the outer layers" -- one per 0.25 mm
+    segment at (32.05, 26.8) on B.Cu.
+
+    The reason is that KiCad evaluates a rule per TRACK OBJECT, not per
+    polyline: a smoothed escape is several segments, and a segment that lies
+    wholly outside every named courtyard does not intersect one, so the
+    necking rule stops matching and the next-strongest `track_width` rule --
+    the netclass floor -- wins.  Containment is therefore the condition under
+    which the board's own rule licences the neck, and this class enforces it:
+    the local escape raster is MASKED to the named courtyards, and any
+    polyline that still strays is refused.  The measurement is kept and
+    reported, now always 0.0, because a number that must be zero is worth
+    printing.
+
+    Membership is one vectorised even-odd test over the courtyard outlines,
+    used for BOTH the raster mask and the polyline measurement, so the search
+    and the proof cannot disagree about where a courtyard is.  Its boundary
+    counts as OUTSIDE, which is the conservative direction: KiCad matches a
+    track whose copper merely touches the courtyard, so a centreline held
+    strictly inside is a subset of what the rule allows.
+    """
+
+    def __init__(self, min_w, refs, polys, max_nm):
+        self.min_w, self.refs, self.max_nm = min_w, tuple(refs), max_nm
+        self.polys = polys
+        self.outlines = []          # (xs, ys, bbox) per closed outline
+        for poly in polys.values():
+            for k in range(poly.OutlineCount()):
+                ch = poly.Outline(k)
+                n = ch.PointCount()
+                if n < 3:
+                    continue
+                xs = np.empty(n, dtype=float)
+                ys = np.empty(n, dtype=float)
+                for t in range(n):
+                    p = ch.CPoint(t)
+                    xs[t], ys[t] = float(p.x), float(p.y)
+                self.outlines.append(
+                    (xs, ys, (xs.min(), ys.min(), xs.max(), ys.max())))
+
+    def width_for(self, pad):
+        """The narrowest width this pad may launch at, or None if it may not."""
+        return self.min_w if self.contains(pad['x'], pad['y']) else None
+
+    def contains(self, x, y):
+        return bool(self.mask(np.array([[float(x)]]),
+                              np.array([[float(y)]]))[0, 0])
+
+    def mask(self, X, Y):
+        """Which of these points lie strictly inside a named courtyard."""
+        X = np.asarray(X, dtype=float)
+        Y = np.asarray(Y, dtype=float)
+        res = np.zeros(X.shape, dtype=bool)
+        for xs, ys, (bx0, by0, bx1, by1) in self.outlines:
+            if (X.max() < bx0 or X.min() > bx1 or
+                    Y.max() < by0 or Y.min() > by1):
+                continue
+            hit = np.zeros(X.shape, dtype=bool)
+            x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+            for a in range(len(xs)):
+                xa, ya, xb, yb = xs[a], ys[a], x2[a], y2[a]
+                if ya == yb:
+                    continue
+                span = (ya > Y) != (yb > Y)
+                if not span.any():
+                    continue
+                xint = xa + (Y - ya) * (xb - xa) / (yb - ya)
+                hit ^= span & (X < xint)
+            res |= hit
+        return res
+
+    def outside(self, pts, step=25000):
+        """Length of this polyline, in nm, that lies OUTSIDE every named courtyard.
+
+        Sampled at 0.025 mm, a quarter of the finest lattice the escape search
+        uses, so a segment cannot leave and re-enter between two samples at any
+        scale a courtyard is drawn at.  The raster mask already keeps the
+        wavefront inside; this catches the one thing a per-cell mask cannot --
+        a straight segment between two inside cells that bulges out across a
+        re-entrant courtyard edge -- and it is a GATE, not a note: a polyline
+        that strays at all is refused.
+        """
+        total = 0.0
+        for a, b in zip(pts, pts[1:]):
+            d = math.hypot(b[0] - a[0], b[1] - a[1])
+            if d == 0:
+                continue
+            n = max(1, int(math.ceil(d / step)))
+            t = (np.arange(n) + 0.5) / float(n)
+            xs = a[0] + (b[0] - a[0]) * t
+            ys = a[1] + (b[1] - a[1]) * t
+            total += float(np.count_nonzero(~self.mask(xs, ys))) * d / n
+        return total
+
+
+_NECK_RE = re.compile(
+    r'\(rule\s+"([^"]*)"\s*\(constraint\s+track_width\s*\(min\s+'
+    r'([0-9.]+)mm\)\s*\)\s*\(condition\s+"([^"]*)"\)\s*\)', re.S)
+
+
+def neck_rule(qb, max_mm=NECK_MAX_MM):
+    """Read the pad-escape necking allowance out of the board's `.kicad_dru`.
+
+    Accepts ONLY a `track_width (min ...)` rule whose condition is a pure
+    disjunction of `A.intersectsCourtyard('REF')` terms -- the shape of the
+    pad-escape rule and of nothing else in this file.  A rule with any other
+    term (a net, a class, a B-side clause) is ignored rather than guessed at, so
+    a future edit that broadens the condition cannot silently broaden the
+    router.  Returns None when the board carries no such rule.
+    """
+    dru = Path(qb.b.GetFileName()).with_suffix('.kicad_dru')
+    if not dru.exists():
+        return None
+    text = dru.read_text(encoding='utf-8')
+    best = None
+    for name, mm, cond in _NECK_RE.findall(text):
+        terms = [t.strip() for t in cond.split('||')]
+        refs = []
+        for t in terms:
+            m = re.fullmatch(r"A\.intersectsCourtyard\('([^']+)'\)", t)
+            if m is None:
+                refs = None
+                break
+            refs.append(m.group(1))
+        if refs:
+            best = (name, int(round(float(mm) * qr.MM)), refs)   # LAST wins
+    if best is None:
+        return None
+    _, min_w, refs = best
+    polys = {}
+    for f in qb.b.GetFootprints():
+        ref = f.GetReference()
+        if ref in refs:
+            polys[ref] = f.GetCourtyard(f.GetLayer())
+    if not polys:
+        return None
+    return Neck(min_w, refs, polys, int(round(max_mm * qr.MM)))
+
 
 # ---------------------------------------------------------------------------
 # DRU CLEARANCES A SINGLE PER-NET SCALAR CANNOT EXPRESS
@@ -228,8 +437,12 @@ class Field(object):
     """
 
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
-                 G=100000, layers=None, margin_mm=2.0):
+                 G=100000, layers=None, margin_mm=2.0, neck=None):
         self.qb, self.net, self.G = qb, net, G
+        # OFF unless the caller hands in a `Neck`.  Nothing below reads it
+        # except `pad_escapes`, and only for a pad that has NO full-width
+        # escape at all, so a `Field` built without one is byte-identical.
+        self.neck = neck
         self.width, self.clr_pad, self.clr_trk = width, clr_pad, clr_trk
         self.via_dia, self.via_drill = via_dia, via_drill
         self.layers = tuple(layers or qb.routable)
@@ -546,12 +759,24 @@ def _pad_core(pad, X, Y, half):
     return (ax <= ihx) & (ay <= ihy) & (depth >= half)
 
 
-def _pocket_escapes(qb, field, pad, layer, prefer, limit):
+def _pocket_escapes(qb, field, pad, layer, prefer, limit, width=None,
+                    confine=None):
     """Walk one terminal out of its pocket on a local, finer lattice.
 
     Returns launch points that are FREE on the whole-board lattice, each with
     the `path` (an nm polyline starting at the pad centre) that reaches it.
+
+    `width` is the width the STUB is drawn at and defaults to the trunk width.
+    Passing a narrower one is the pad-escape neck: only the local raster, the
+    obstacle clearances, the pad core and the analytic stub proof move to that
+    width -- the GOAL TEST does not, so a launch point is still only accepted
+    where the whole-board FULL-WIDTH lattice is free and the trunk therefore
+    leaves the neck at the contract width.  `confine`, when given, is a `Neck`
+    whose named courtyards every point of the emitted stub must lie inside; it
+    masks the raster AND gates the emitted polyline, because the board's rule
+    only licences the neck where the copper is.
     """
+    w = field.width if width is None else width
     G, sub = field.G, ESCAPE_SUB
     g = max(1, G // sub)
     if g * sub != G:
@@ -565,10 +790,10 @@ def _pocket_escapes(qb, field, pad, layer, prefer, limit):
     ox, oy = field.ox + i0 * G, field.oy + j0 * G
     x1, y1 = field.ox + i1 * G, field.oy + j1 * G
     nx, ny = (i1 - i0) * sub + 1, (j1 - j0) * sub + 1
-    blk = (qb.grid(layer, field.net, field.width, field.clr_pad, field.clr_trk,
+    blk = (qb.grid(layer, field.net, w, field.clr_pad, field.clr_trk,
                    ox, oy, x1, y1, g)
            | dru_overlay(qb, field.net, field.mycls, field.cls, layer,
-                         field.width, field.clr_pad, field.clr_trk,
+                         w, field.clr_pad, field.clr_trk,
                          ox, oy, g, nx, ny))
     if blk.shape != (ny, nx):
         return []
@@ -578,19 +803,26 @@ def _pocket_escapes(qb, field, pad, layer, prefer, limit):
     # final proof cannot disagree.
     obs = []
     for s in qb.obstacles(layer, field.net):
-        req = obs_clearance(qb, field, s, field.width)
+        req = obs_clearance(qb, field, s, w)
         bx0, by0, bx1, by1 = s.bbox(req)
         if bx1 < ox or bx0 > x1 or by1 < oy or by0 > y1:
             continue
         obs.append((s, req))
     X, Y = np.meshgrid((ox + np.arange(nx) * g).astype(float),
                        (oy + np.arange(ny) * g).astype(float))
-    core = _pad_core(pad, X, Y, field.width / 2.0)
+    core = _pad_core(pad, X, Y, w / 2.0)
     si, sj = int(round((pad['x'] - ox) / g)), int(round((pad['y'] - oy) / g))
     if not (0 <= si < nx and 0 <= sj < ny):
         return []
     core[sj, si] = True             # the centre always anchors the connection
     free = (~blk) | core
+    if confine is not None:
+        # The necking rule matches only copper that meets a named courtyard, so
+        # the wavefront is not merely SCORED for staying inside one -- it is
+        # confined to it.  The pad's own core still anchors the stub: it is the
+        # footprint's land and lies inside its own courtyard by construction,
+        # and excluding it would leave the search with nowhere to start.
+        free &= confine.mask(X, Y) | core
 
     # goal cells: whole-board lattice cells this window contains that the
     # GLOBAL grid already calls free -- the seed the trunk wavefront wants.
@@ -650,18 +882,34 @@ def _pocket_escapes(qb, field, pad, layer, prefer, limit):
         # the pad and KiCad's connectivity engine joins it there.  Do NOT
         # prepend the pad centre: that adds a segment which buys no
         # connectivity and must still clear every foreign pad in the pin field.
-        if not _stub_legal(qb, field, layer, pts, pad, obs):
+        if not _stub_legal(qb, field, layer, pts, pad, obs, w):
             continue
         ln = sum(math.hypot(q[0] - t[0], q[1] - t[1])
                  for t, q in zip(pts, pts[1:]))
+        rec = dict(x=x, y=y, w=w, ln=ln, path=pts)
+        if confine is not None:
+            # A necked stub is only as legal as the rule it leans on.  Bound it
+            # in length -- the hits are already shortest-first, so this refuses
+            # exactly the long ones -- and REFUSE it outright if any part of the
+            # continuous polyline lies outside the courtyard that licences it,
+            # which the per-cell mask alone cannot rule out across a re-entrant
+            # edge.  This is the check whose absence cost D-584 three real
+            # `track_width` DRC errors.
+            if ln > confine.max_nm:
+                continue
+            strayed = confine.outside(pts)
+            if strayed > 0:
+                continue
+            rec['neck'] = True
+            rec['neck_outside_mm'] = round(strayed / 1e6, 4)
         taken.append((x, y))
-        out.append(dict(x=x, y=y, w=field.width, ln=ln, path=pts))
+        out.append(rec)
         if len(out) >= limit:
             break
     return out
 
 
-def _stub_legal(qb, field, layer, pts, pad, obs):
+def _stub_legal(qb, field, layer, pts, pad, obs, width=None):
     """Re-prove an emitted pocket polyline ANALYTICALLY, segment by segment.
 
     The wavefront proved LATTICE CELLS clear; this proves the CONTINUOUS
@@ -672,7 +920,7 @@ def _stub_legal(qb, field, layer, pts, pad, obs):
     Rejecting here rather than at emission time is what lets `_pocket_escapes`
     fall through to its next candidate instead of losing the terminal.
     """
-    half = field.width / 2.0
+    half = (field.width if width is None else width) / 2.0
     for a, b in zip(pts, pts[1:]):
         if a == b:
             continue
@@ -756,6 +1004,16 @@ def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
                 if (c['x'], c['y']) not in seen:
                     seen.add((c['x'], c['y']))
                     cands.append(c)
+        # PAD-ESCAPE NECKING, LAST RESORT ONLY.  A pad that already launches
+        # at the contract width launches exactly as it did before; the neck is
+        # offered only for a (pad, layer) whose full-width set is EMPTY, which
+        # is the case the `.kicad_dru` rule was written for and the only case
+        # in which this can change an outcome.
+        if not cands and field.neck is not None:
+            wn = field.neck.width_for(pad)
+            if wn is not None and wn < field.width:
+                cands = _pocket_escapes(qb, field, pad, L, prefer, limit,
+                                        width=wn, confine=field.neck)
         for c in cands:
             i, j = field.cell(c['x'], c['y'])
             if not field.inside(i, j):
@@ -764,6 +1022,9 @@ def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
                      ln=c['ln'], pad=pad, i=i, j=j)
             if c.get('path'):
                 e['path'] = c['path']
+            if c.get('neck'):
+                e['neck'] = True
+                e['neck_outside_mm'] = c['neck_outside_mm']
             out.append(e)
     return out
 
@@ -1054,9 +1315,17 @@ def route_join(qb, field, src_pads, dst_pads, escape_limit=8, via_cost_mm=1.5,
     if bad is not None:
         qb.revert(m)
         return dict(ok=False, reason='UNPROVED_GEOMETRY', detail=bad)
+    # A necked terminal is the one thing about this join a reviewer must see
+    # without opening the board, so it is reported rather than left implicit.
+    necks = [dict(pad=e['pad']['ref'], layer=e['layer'],
+                  width_mm=round(e['w'] / 1e6, 3),
+                  stub_mm=round(e['ln'] / 1e6, 3),
+                  outside_courtyard_mm=e.get('neck_outside_mm'))
+             for e in (start, finish) if e.get('neck')]
     return dict(ok=True, mm=total / 1e6, vias=len(vias),
                 via_xy=[(round(x / 1e6, 4), round(y / 1e6, 4)) for x, y in vias],
                 layers=[k for k, _ in polylines],
+                **({'necks': necks} if necks else {}),
                 **{'from': start['pad']['ref'], 'to': finish['pad']['ref']},
                 mark=m)
 
@@ -1138,13 +1407,173 @@ def island_mst(islands):
     return out
 
 
+# --------------------------------------------------------------------------- #
+# BEST-EFFORT COMPLETION -- the atomic net is not the only honest unit
+# --------------------------------------------------------------------------- #
+# `route_net` is ATOMIC: one MST edge it cannot corridor reverts every edge of
+# that net.  That is the right discipline for a net being routed for the FIRST
+# time under its own purpose-built harness, where a half-routed rail is a
+# half-designed rail and the reviewer must see the whole proposal or none of it.
+#
+# It is the wrong discipline for THIS board.  After D-583 the remaining 126
+# retained open edges sit on 32 nets, and the D-581 whole-board batch measured
+# exactly what atomicity costs: 24 of its 25 nets returned `NO_PATH` or
+# `NO_LEGAL_ESCAPE_*` and therefore contributed ZERO copper -- including
+# `/I2C_SCL_INT`, a NINE-island bus whose whole proposal was discarded because
+# ONE terminal has no legal escape.  Eight edges were thrown away to refuse one.
+#
+# A partially routed net is not a broken net.  It is the ordinary mid-route
+# state of every real board: the closed edges are real copper that the same
+# analytic proofs, the same DRC and the same ledger accept, and the open ones
+# remain exactly the ratsnest lines they already were.  Nothing regresses, and
+# the pads that CAN be joined stop waiting on the pad that cannot.
+#
+# So the partial mode is not "atomic, relaxed".  It is a different and stronger
+# search:
+#
+#   * KRUSKAL, NOT PRIM.  Atomic mode walks ONE spanning tree and dies on its
+#     first bad edge.  Partial mode walks EVERY island pair in increasing
+#     pad-gap order under a union-find, so an island whose MST partner is
+#     unreachable is still offered every other island on the board.  A net only
+#     stops improving when no pair is left, not when one pair fails.
+#   * MERGED ENDPOINTS.  After a join succeeds the two islands are ONE island,
+#     and the next attempt is handed the union of their pads -- so a component
+#     that has grown offers more launch sites than either half did, which is
+#     the whole reason to prefer nearest-first.
+#   * DEAD-TERMINAL PRUNING.  `NO_LEGAL_ESCAPE_SRC/DST` is a property of the
+#     COMPONENT, not of the pair: it means no pad in that component can leave
+#     its own pocket at the contract width on any permitted layer.  Laying more
+#     copper can only ever remove escapes, never create them, so once a
+#     component reports it the component is retired and every remaining pair
+#     that touches it is skipped unattempted.  That is what keeps a complete
+#     graph affordable, and it is a proof, not a heuristic.
+#   * PER-PAIR TRANSACTION.  Each attempt takes its own `qb.mark()`; a failure
+#     reverts exactly that attempt.  The board the next attempt searches is the
+#     board the previous SUCCESSES left, never one a failure dirtied.
+#
+# `partial=False` is the default and leaves `route_net` byte-identical, so
+# every accepted route and every existing harness is untouched by this lever.
+
+
+def _partial_join(qb, net, field, islands, escape_limit, via_cost_mm,
+                  attempt_cap=0, max_mm=0.0):
+    """Join as many of this net's islands as the board actually allows.
+
+    Returns `(joins, failures, components_remaining)`.  Emitted copper stays on
+    `qb`; the caller owns no rollback, because every failed attempt has already
+    reverted itself.
+
+    A CORRIDOR THAT EXISTS IS NOT AUTOMATICALLY A CORRIDOR WORTH TAKING.
+
+    Kruskal offers every island pair, so when the nearest partner is walled off
+    the search keeps widening until SOMETHING connects -- and on this board it
+    finds things.  The first whole-board `--partial` run on
+    `/01_POWER_TREE/BQ25185_SYS` closed two edges by spending 74.4 mm of copper
+    and six barrels, of which ONE join was a 52.6 mm five-layer-change detour
+    from `C24.1` to `C33.1`.  That is a legal route and a bad one: `SYS` is the
+    charger's 1 A output rail, and 52 mm of 0.80 mm outer copper is roughly
+    30 mOhm and some tens of nH in series with the node every downstream
+    regulator references, laid across the width of a board whose outer layers
+    the unrouted signal nets still need.  The atomic MST never had to say this
+    because it only ever offered the SHORTEST spanning edges; Kruskal-to-
+    exhaustion does, so the bound belongs here.
+
+    `max_mm` is therefore a per-join ELECTRICAL bound, measured on the copper
+    actually laid.  A join that exceeds it is reverted and reported as
+    `TOO_LONG` -- reported, so the refusal is visible and the pair can be
+    reconsidered deliberately, and NOT retired as dead, because the pair failed
+    on length rather than on reachability and a different partner may still be
+    close.  `max_mm=0` disables the bound and reproduces the unbounded search
+    exactly.
+    """
+    n = len(islands)
+    parent = list(range(n))
+    members = {i: list(islands[i]) for i in range(n)}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    pairs = sorted(((_pad_gap(islands[a], islands[b]), a, b)
+                    for a in range(n) for b in range(a + 1, n)),
+                   key=lambda t: (t[0], t[1], t[2]))
+    joins, failures, dead = [], [], set()
+    comps, attempts = n, 0
+    for _gap, a, b in pairs:
+        if comps == 1:
+            break
+        ra, rb = find(a), find(b)
+        if ra == rb:
+            continue
+        if ra in dead or rb in dead:
+            continue
+        if attempt_cap and attempts >= attempt_cap:
+            failures.append(dict(reason='ATTEMPT_CAP',
+                                 why='stopped after %d join attempts on this '
+                                     'net' % attempts))
+            break
+        attempts += 1
+        m = qb.mark()
+        r = route_join(qb, field, members[ra], members[rb],
+                       escape_limit=escape_limit, via_cost_mm=via_cost_mm)
+        r.pop('mark', None)
+        if not r.get('ok'):
+            qb.revert(m)
+            reason = r.get('reason')
+            # A component that cannot leave its own pockets is retired, not
+            # retried: escapes are computed against FOREIGN copper only, and
+            # this run adds copper, so the set of legal escapes is monotonically
+            # non-increasing.  Re-offering it a different partner cannot change
+            # the answer and would cost one whole-board wavefront to re-learn.
+            if reason == 'NO_LEGAL_ESCAPE_SRC':
+                dead.add(ra)
+            elif reason == 'NO_LEGAL_ESCAPE_DST':
+                dead.add(rb)
+            failures.append(dict(
+                a=[p['ref'] for p in members[ra]][:8],
+                b=[p['ref'] for p in members[rb]][:8],
+                gap_mm=round(_gap / 1e6, 3),
+                **{k: v for k, v in r.items() if k != 'ok'}))
+            continue
+        if max_mm and r.get('mm', 0.0) > max_mm:
+            qb.revert(m)
+            failures.append(dict(
+                a=[p['ref'] for p in members[ra]][:8],
+                b=[p['ref'] for p in members[rb]][:8],
+                gap_mm=round(_gap / 1e6, 3), reason='TOO_LONG',
+                mm=round(r['mm'], 3), vias=r.get('vias'),
+                layers=r.get('layers'),
+                why='%.3f mm of copper exceeds the %.1f mm per-join bound'
+                    % (r['mm'], max_mm)))
+            continue
+        parent[ra] = rb
+        members[rb] = members[rb] + members[ra]
+        members.pop(ra, None)
+        comps -= 1
+        joins.append({k: v for k, v in r.items() if k != 'ok'})
+        # The join laid copper; the next attempt must search the board that
+        # copper made, both as obstacle and as new same-net launch surface.
+        field.rebuild_blk()
+    return joins, failures, comps
+
+
 def route_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
               via_dia=600000, via_drill=300000, G=100000, via_cost_mm=1.5,
-              escape_limit=8, field=None):
+              escape_limit=8, field=None, partial=False, attempt_cap=0,
+              join_max_mm=0.0):
     """Complete ONE net: island MST, then a whole-board all-layer join per edge.
 
-    Atomic: any failed edge reverts every edge of this net, so the scratch board
-    never carries a half-routed net into the gate.
+    Atomic by default: any failed edge reverts every edge of this net, so the
+    scratch board never carries a half-routed net into the gate.
+
+    With `partial=True` the net is instead completed BEST-EFFORT by
+    `_partial_join` -- a union-find Kruskal over every island pair, each pair in
+    its own transaction, with components that cannot escape their own pockets
+    retired rather than retried.  The net is reported `ok` only when it actually
+    laid copper, so a net that closes nothing still adds nothing and the gate's
+    "every added object is on a net that succeeded" clause is unweakened.
     """
     mark = qb.mark()
     if field is None:
@@ -1152,6 +1581,21 @@ def route_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
     islands = net_islands(qb, net)
     if len(islands) < 2:
         return dict(ok=True, net=net, joins=[], already=True, mm=0.0, vias=0)
+    if partial:
+        joins, failures, comps = _partial_join(
+            qb, net, field, islands, escape_limit, via_cost_mm, attempt_cap,
+            max_mm=join_max_mm)
+        if not joins:
+            qb.revert(mark)
+            return dict(ok=False, net=net, joins=[], failures=failures[:40],
+                        islands=len(islands), closed=0, mode_partial=True,
+                        reason=(failures[0].get('reason') if failures
+                                else 'NO_PAIR'))
+        return dict(ok=True, net=net, joins=joins, islands=len(islands),
+                    closed=len(joins), remaining=comps - 1,
+                    failures=failures[:40], mode_partial=True,
+                    mm=round(sum(j['mm'] for j in joins), 3),
+                    vias=sum(j['vias'] for j in joins))
     joins = []
     for (a, b) in island_mst(islands):
         r = route_join(qb, field, islands[a], islands[b],
@@ -1341,15 +1785,135 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
                 via_xy=(round(vx / 1e6, 4), round(vy / 1e6, 4)))
 
 
+def _pad_gap(a, b):
+    """Closest pad-to-pad distance between two islands."""
+    return min(math.hypot(p['x'] - q['x'], p['y'] - q['y'])
+               for p in a for q in b)
+
+
+def nearest_pads(island, other, limit):
+    """The `limit` pads of `other` closest to `island`.
+
+    `route_join` opens EVERY legal escape of EVERY pad it is given, so handing
+    it the whole 228-pad ground island would spend most of its time enumerating
+    launches on the far side of the board.  The wavefront searches from the
+    destination side, so a handful of the nearest pads is both the cheap and the
+    correct seed set: a corridor that cannot reach any of them is not going to
+    be found by adding a ninth one 60 mm further away.
+    """
+    ranked = sorted(other,
+                    key=lambda q: min(math.hypot(p['x'] - q['x'],
+                                                 p['y'] - q['y'])
+                                      for p in island))
+    return ranked[:max(1, limit)]
+
+
+def join_residual_islands(qb, net, field, escape_limit=8, via_cost_mm=1.5,
+                          near=8, max_mm=0.0):
+    """Maze-join the islands of a plane-served net that the stitch could not plant.
+
+    `stitch_pad` is deliberately LOCAL: one escape and one through via inside an
+    8 mm window.  That is the right primitive for the two hundred islands a
+    fresh pour leaves, and it is the wrong one for the handful it cannot serve
+    -- a pad with no legal barrel in its window (`NO_VIA_SITE`) may still be two
+    millimetres of ordinary track from a pad that is already on the plane, and
+    the stitch has no way to express that.  This is that fallback: the SAME
+    whole-board all-layer `route_join` the plane-less nets use, aimed at the
+    net's own connected copper.
+
+    It keeps `stitch_net`'s transaction discipline rather than `route_net`'s.
+    `route_net` is atomic because a half-routed net is a broken net; here the
+    net is already served by its pour, so every island is independent and one
+    island that cannot reach the copper says nothing about the next.  A failed
+    island is reverted on its own and reported.
+
+    `max_mm` bounds the copper ONE island may spend, and it is an ELECTRICAL
+    bound, not a tidiness one.  A plane-served island is already served by the
+    pour everywhere else; what it is missing is a LOW-IMPEDANCE bond.  A
+    decoupling capacitor's ground reached by a forty-millimetre detour is worse
+    engineering than the same pad reached by a via, because the detour adds
+    inductance exactly where the part exists to remove it -- and it spends
+    outer-layer capacity the unrouted signal nets still need.  A join longer
+    than the bound is therefore reverted and reported as `TOO_LONG`, with its
+    length, so the refusal is visible rather than silent.  `max_mm=0` disables
+    the bound.
+    """
+    islands = net_islands(qb, net)
+    if len(islands) < 2:
+        return dict(ok=True, net=net, joined=0, already=True, failures=[],
+                    mm=0.0, vias=0)
+    main = max(islands, key=len)
+    # Nearest-first: the cheapest joins also disturb the lattice least, so the
+    # ones after them see a board no more congested than it had to become.
+    rest = sorted((g for g in islands if g is not main),
+                  key=lambda g: _pad_gap(g, main))
+    done, failed = [], []
+    for island in rest:
+        dst = nearest_pads(island, main, near)
+        m = qb.mark()
+        r = route_join(qb, field, island, dst, escape_limit=escape_limit,
+                       via_cost_mm=via_cost_mm)
+        r.pop('mark', None)
+        if not r.get('ok'):
+            qb.revert(m)
+            failed.append(dict(island=[p['ref'] for p in island],
+                               **{k: v for k, v in r.items() if k != 'ok'}))
+            continue
+        if max_mm and r.get('mm', 0.0) > max_mm:
+            qb.revert(m)
+            failed.append(dict(island=[p['ref'] for p in island],
+                               reason='TOO_LONG', mm=round(r['mm'], 3),
+                               vias=r.get('vias'), layers=r.get('layers'),
+                               why='%.3f mm of copper exceeds the %.1f mm '
+                                   'residual-join bound' % (r['mm'], max_mm)))
+            continue
+        done.append(dict(island=[p['ref'] for p in island],
+                         **{k: v for k, v in r.items() if k != 'ok'}))
+        # The join laid copper; the next island must see it, both as an obstacle
+        # and as the reason its own corridor may now be narrower.
+        field.rebuild_blk()
+    return dict(ok=bool(done), net=net, joined=len(done),
+                unreachable=len(failed), joins=done, failures=failed[:40],
+                mm=round(sum(d['mm'] for d in done), 3),
+                vias=sum(d['vias'] for d in done))
+
+
 def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
                via_dia=600000, via_drill=300000, G=100000, field=None,
-               max_mm=8.0, escape_limit=12):
+               max_mm=8.0, escape_limit=12, split_islands=False):
     """Stitch every not-yet-planted island of a plane-served net to its plane.
 
     Unlike `route_net` this is NOT all-or-nothing: each island is an independent
     transaction, because one island that cannot reach the pour says nothing
     about the other two hundred that can.  A failed island is reverted on its
     own and reported; the successful ones stay.
+
+    "TOUCHES A POUR" AND "IS CONNECTED" STOPPED BEING THE SAME QUESTION.
+
+    The default predicate skips any island holding a pad that touches a zone or
+    a via, and for the job this function was written for -- planting the two
+    hundred islands a FRESH pour leaves -- that is exactly right: copper that
+    touches the new pour is served by it, and stitching it again buys a barrel
+    and nothing else.
+
+    It stops being right the moment a foreign signal track SPLITS an existing
+    pour.  KiCad re-pours around the track, the pour becomes two islands, and
+    the pads stranded on the far one still touch a zone -- their own, smaller
+    one -- so the default predicate skips precisely the pads that just went
+    open.  The first `--repair-planes` run measured this exactly: `GND` lost an
+    edge to an `/I2C_SCL_INT` track, the repair ran, and it reported the same
+    nine pre-existing hard-wall islands D-583 already knew about and never
+    looked at the split at all.
+
+    `split_islands=True` therefore replaces the predicate with the question the
+    repair actually asks: `net_islands` is KiCad's own connectivity, so the
+    net's LARGEST component is its plane body and every other component is
+    disconnected from it whatever copper it happens to sit on.  The body is
+    skipped -- stitching it to itself is the redundant barrel the default
+    predicate existed to prevent -- and every other island is offered the pour.
+
+    The default is unchanged and the flag is opt-in, so D-579's, D-582's and
+    D-583's stitches reproduce object for object.
     """
     if not has_plane(qb, net):
         return dict(ok=False, net=net, reason='NO_PLANE')
@@ -1367,8 +1931,13 @@ def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
                 planted.add((f.GetReference() + '.' + p.GetNumber(),
                              pos.x, pos.y))
     done, failed = [], []
-    for island in net_islands(qb, net):
-        if any((p['ref'], p['x'], p['y']) in planted for p in island):
+    islands = net_islands(qb, net)
+    body = max(islands, key=len) if islands else None
+    for island in islands:
+        if split_islands:
+            if island is body:
+                continue
+        elif any((p['ref'], p['x'], p['y']) in planted for p in island):
             continue
         best = None
         for pad in island:
