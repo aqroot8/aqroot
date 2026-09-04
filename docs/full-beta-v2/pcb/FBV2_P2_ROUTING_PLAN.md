@@ -730,6 +730,16 @@ discovers a pad that cannot be escaped at its class width or clearance:
    rule; moving them earlier silently disables them. The existing precedence tail comment in the
    file is load-bearing and was verified empirically on Beta-DM.
 
+> **First instantiation — AQROOT Demo, D-606 (2026-09-04).** The doctrine above is unchanged and
+> still un-instantiated on the *production* board. It was spent for the first time on the **Demo**
+> PCB, where seven pour lands were opened by seven per-pad `PAD_ESCAPE_<REF>_<PIN>` areas licensing
+> the 0.35/0.20 mm barrel only — no width and no clearance relief, so caps 4 and 5 never engaged.
+> Two lessons transfer: (a) separate the levers when measuring, because the barrel and the width
+> answer different questions and only one of them was the wall; (b) a licensed barrel that is
+> **legal** is not yet one that **connects** — whether a stitch closed its land is answerable only
+> after KiCad's refill, so it is a gate clause on the refilled candidate's ledger and never a
+> check inside the proposer. See `CTO_DECISIONS.md` D-606.
+
 ---
 
 ## 18. Opportunity and simplification scan

@@ -1,0 +1,64 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d",
+ "checks": {
+  "P1": {
+   "base_rev": "d044aac",
+   "diffs": [],
+   "nets_compared": 8,
+   "ok": true
+  },
+  "P2": {
+   "misplaced_ends": [],
+   "off_copper": [],
+   "ok": true,
+   "points": 1387,
+   "tubes": 46
+  },
+  "P3": {
+   "cells_outside_keepout": [],
+   "guarded_layers": {
+    "B": 1077,
+    "F": 310
+   },
+   "ok": true,
+   "probe_net": "/I2C_SDA_INT",
+   "tube_cells_not_blocked": []
+  },
+  "P4": {
+   "detail": {
+    "+3V3": {
+     "foreign_tubes": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "/01_POWER_TREE/BQ25185_SYS": {
+     "foreign_tubes": [
+      "+3V3",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "GND": {
+     "foreign_tubes": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS"
+     ],
+     "own_tubes_seen": 0
+    }
+   },
+   "ok": true,
+   "pour_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "GND"
+   ]
+  }
+ },
+ "guard": "evidence/d606-pour-bond-guard-next.json",
+ "guard_sha256": "063b75e9c1c14574e1cd70e05ff3f3ec7c2481f8f11defd77432583ce552e264",
+ "schema": 1
+}

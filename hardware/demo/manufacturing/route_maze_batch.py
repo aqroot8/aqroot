@@ -198,6 +198,14 @@ BOARD_TRACK_MIN = 150000                # min_track_width
 # no second via can ever be enclosed by another via's licence.
 BRIDGE_AREA_MARGIN_MM = 0.15
 
+# D-606.  The barrel a PAD-ESCAPE RELIEF area licenses, in nm.  It is not a new
+# figure: 0.35 mm diameter on a 0.20 mm hole with a 0.075 mm ring is the
+# fine-pitch plated process this board's own `.kicad_dru` already licenses by
+# name for D-257 escape vias, D-266 Kelvin reservations, D-531 USB-C VBUS POFV
+# and D-595's `POUR_BRIDGE_U11_11`.  What a relief area changes is only WHERE
+# it may be used, and only for the one net the rule names.
+RELIEF_VIA = (350000, 200000)
+
 RULE_AREA = """
 	(zone
 		(layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu" "In3.Cu" "In4.Cu")
@@ -847,7 +855,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
             split_islands=False, guard_spec=None, bridge=False,
             bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
-            join_islands=False, join_island_max_mm=0.0):
+            join_islands=False, join_island_max_mm=0.0,
+            escape_relief=False, relief_via=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1003,6 +1012,30 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                 r["island_join"] = ji
                 r["mode"] = r["mode"] + "+islands"
                 r["ok"] = bool(r.get("ok")) or bool(ji.get("joined"))
+            # THE RELIEF RUNS LAST, AND THE ORDER IS AGAIN THE ARGUMENT.
+            # D-606.  Every primitive above lays copper the board licenses
+            # UNCONDITIONALLY; this one lays a barrel that exists only because
+            # a `.kicad_dru` rule names one net inside one pad-sized area.  A
+            # licence is the most expensive thing a transaction can spend, so
+            # it is offered only the lands nothing unconditional could close,
+            # on a board that already carries their copper.
+            if escape_relief:
+                rv = relief_via or RELIEF_VIA
+                # The netclass width FIRST and the floor only if it fails: a
+                # relieved bond must never be quietly thinner than an
+                # unrelieved one.  `min` keeps the ladder strictly descending
+                # where a class floor is already at or above its netclass.
+                w_floor = max(BOARD_TRACK_MIN,
+                              DRU_CLASS.get(c["netclass"], {}).get("width", 0))
+                widths = tuple(sorted({c["width"], min(c["width"], w_floor)},
+                                      reverse=True))
+                rs = mz.relief_stitch(
+                    qb, net, widths, c["clr_pad"], c["clr"], rv[0], rv[1],
+                    via_floors(c["netclass"]), G=grid, layers=c["layers"],
+                    neck=neck_rule, guard=g)
+                r["escape_relief"] = rs
+                r["mode"] = r["mode"] + "+relief"
+                r["ok"] = bool(r.get("ok")) or bool(rs.get("stitched"))
         else:
             r = mz.route_net(qb, net, width=c["width"],
                              clr_pad=c["clr_pad"],
@@ -1159,7 +1192,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
-         bond_via=None, join_islands=False, join_island_max_mm=0.0):
+         bond_via=None, join_islands=False, join_island_max_mm=0.0,
+         escape_relief=False, relief_via=None):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -1273,6 +1307,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--join-islands"]
             if join_island_max_mm:
                 cmd += ["--join-island-max-mm", str(join_island_max_mm)]
+        # THE RELIEF IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- and
+        # here the reading is stronger than for `--bridge`.  A repair that
+        # could spend a DRU licence would be authoring board rules while
+        # wearing a repair's name.
+        if escape_relief and use_search_levers:
+            cmd += ["--escape-relief"]
+            if relief_via:
+                cmd += ["--relief-via", "%d:%d" % relief_via]
         # THE BOND IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- same
         # reading as `--bridge` directly above.
         if bond_pads and use_search_levers:
@@ -1353,8 +1395,23 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     for r in routed:
         for b in (r.get("bridge") or {}).get("bridges", ()):
             if b.get("area"):
-                bridge_areas.append(dict(name=b["area"], net=r["net"],
+                bridge_areas.append(dict(kind="pour-bridge", name=b["area"],
+                                         net=r["net"],
                                          cluster=b["cluster"], xy=b["xy"],
+                                         via_dia=b["via_dia"],
+                                         via_drill=b["via_drill"],
+                                         licence=b.get("licence")))
+        # D-606.  A pad-escape relief area is the SAME object as a pour-bridge
+        # area -- a pad-sized region that forbids nothing and exists only to be
+        # the region an `enclosedByArea` condition names -- so it is drawn by
+        # the same code and audited by the same clause 6.  Keeping two lists
+        # would have meant two audits, and the second one is the one that gets
+        # forgotten.
+        for b in (r.get("escape_relief") or {}).get("stitches", ()):
+            if b.get("area"):
+                bridge_areas.append(dict(kind="pad-escape", name=b["area"],
+                                         net=r["net"],
+                                         cluster=b["island"], xy=b["xy"],
                                          via_dia=b["via_dia"],
                                          via_drill=b["via_drill"],
                                          licence=b.get("licence")))
@@ -1488,9 +1545,33 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                or any(r.get("ok") and not r.get("already") for r in routed)
                or any(not r.get("already") for r in repaired)
                or bool(bond_nets))
+    # CLAUSE 7 -- A LICENCE MAY NOT BE SPENT ON COPPER THAT CONNECTS NOTHING.
+    # D-606.  `--escape-relief` is the only lever on this board that lays a
+    # barrel the ordinary floors forbid, and it pays for it with a permanent
+    # `.kicad_dru` rule and a permanent rule area.  `maze3d.stitch_pad` proves
+    # that barrel is LEGAL where it lands; nothing in the proposer proves the
+    # pour under it is the plane BODY, and nothing in the proposer CAN -- the
+    # pour it reads was filled before the barrel existed.  So the claim is
+    # settled here, on the refilled candidate's own ledger, which is the same
+    # evidence clause 4 uses: every land a relief stitch served must no longer
+    # be a component of its own.  A stitch that leaves its land open is dead
+    # copper behind a live licence, and one is enough to refuse the run --
+    # remove that pad's rule and run again, which is what the finding is for.
+    relief_open = []
+    if escape_relief:
+        after_groups = {frozenset(x.split("@")[0] for x in grp)
+                        for row in after_ledger["nets"] for grp in row["groups"]}
+        for r in routed:
+            for st in (r.get("escape_relief") or {}).get("stitches", ()):
+                if frozenset(st["island"]) in after_groups:
+                    relief_open.append(dict(net=r["net"], pad=st["pad"],
+                                            island=st["island"],
+                                            area=st.get("area"),
+                                            via_xy=st["via_xy"]))
     ok = (not attributable and inherited_ok and not regressed
           and not unlicensed and not foreign and edges_after < edges_before
-          and zone_ok and changed and before == sha256_file(BOARD))
+          and zone_ok and changed and not relief_open
+          and before == sha256_file(BOARD))
 
     summary = dict(
         schema=1,
@@ -1534,6 +1615,18 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                           rule_areas_removed=ra_lost,
                           rule_area_inventory_ok=rule_area_ok,
                           zone_inventory_ok=zone_ok),
+        escape_relief=dict(
+            requested=bool(escape_relief),
+            via=list(relief_via or RELIEF_VIA),
+            lands_still_open=relief_open,
+            lands_closed_ok=(not relief_open),
+            stitched=sum(len((r.get("escape_relief") or {}).get("stitches", ()))
+                         for r in routed),
+            nets=[dict(net=r["net"], **{k: v for k, v in
+                                        (r.get("escape_relief") or {}).items()
+                                        if k != "net"})
+                  for r in routed if r.get("escape_relief")]) if escape_relief
+        else None,
         bridges=dict(requested=bool(bridge), licensed_areas=bridge_areas,
                      ladder=[list(v) for v in BRIDGE_LADDER]) if bridge
         else None,
@@ -1664,6 +1757,23 @@ def main():
                     help="window in millimetres for ONE bond stitch; the "
                          "default is the 8 mm locality window `stitch_pad` "
                          "itself uses")
+    ap.add_argument("--escape-relief", action="store_true",
+                    help="D-606: for a pour-owning net, offer every land the "
+                         "unconditional primitives could not close a stitch "
+                         "whose BARREL is licensed by a `.kicad_dru` rule "
+                         "naming that net inside the pad-sized rule area "
+                         "PAD_ESCAPE_<REF>_<PIN>.  Only the barrel is "
+                         "relieved: the escape and the run are laid at the "
+                         "netclass width, or at the class/board floor only if "
+                         "the netclass width fails.  The rule must exist "
+                         "BEFORE the run; the transaction draws the area "
+                         "around the barrel it actually laid and clause 6 "
+                         "audits it.  Screen it first with "
+                         "screen_pad_escape_relief.py")
+    ap.add_argument("--relief-via", default=None,
+                    help="DIA:DRILL in nm for --escape-relief barrels "
+                         "(default 350000:200000, the fine-pitch process this "
+                         "board already licenses by name)")
     ap.add_argument("--join-islands", action="store_true",
                     help="D-605: after the bridge, the stitch and the residual "
                          "join, offer every still-orphan POUR ISLAND a JUMPER "
@@ -1688,6 +1798,9 @@ def main():
     via = None
     if a.stitch_via:
         via = tuple(int(v) for v in a.stitch_via.split(":"))
+    relief_via = None
+    if a.relief_via:
+        relief_via = tuple(int(v) for v in a.relief_via.split(":"))
     bond_via = None
     if a.bond_via:
         bond_via = tuple(int(v) for v in a.bond_via.split(":"))
@@ -1704,7 +1817,8 @@ def main():
                 a.partial, a.attempt_cap, a.split_islands,
                 load_guard(a.guard), a.bridge,
                 tuple(a.bond_pad), a.bond_max_mm, bond_via,
-                a.join_islands, a.join_island_max_mm)
+                a.join_islands, a.join_island_max_mm,
+                a.escape_relief, relief_via)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -1743,7 +1857,8 @@ def main():
                  guard=a.guard, bridge=a.bridge,
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
                  bond_via=bond_via, join_islands=a.join_islands,
-                 join_island_max_mm=a.join_island_max_mm)
+                 join_island_max_mm=a.join_island_max_mm,
+                 escape_relief=a.escape_relief, relief_via=relief_via)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

@@ -1,0 +1,1331 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "3952597e7456ea5863ab24d8d7dc7ccf211f341579b18cf607931102ea87d346",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3",
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 29,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 61,
+    "retained_open_edges_before": 68
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": {
+    "lands_closed_ok": true,
+    "lands_still_open": [],
+    "nets": [
+      {
+        "failures": [
+          {
+            "island": [
+              "R129.1"
+            ],
+            "pad": "R129.1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_R129_1"
+          },
+          {
+            "island": [
+              "R39.1"
+            ],
+            "pad": "R39.1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_R39_1"
+          },
+          {
+            "island": [
+              "U12.4"
+            ],
+            "pad": "U12.4",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U12_4"
+          },
+          {
+            "island": [
+              "U12.5"
+            ],
+            "pad": "U12.5",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U12_5"
+          },
+          {
+            "island": [
+              "U4.12"
+            ],
+            "pad": "U4.12",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_12"
+          },
+          {
+            "island": [
+              "U4.2"
+            ],
+            "pad": "U4.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_2"
+          },
+          {
+            "island": [
+              "U4.3"
+            ],
+            "pad": "U4.3",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_3"
+          },
+          {
+            "island": [
+              "U4.5"
+            ],
+            "pad": "U4.5",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_5"
+          },
+          {
+            "island": [
+              "U4.8"
+            ],
+            "pad": "U4.8",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_8"
+          },
+          {
+            "island": [
+              "U5.2"
+            ],
+            "pad": "U5.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U5_2"
+          }
+        ],
+        "mm": 10.35,
+        "net": "+3V3",
+        "ok": true,
+        "stitched": 4,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_C7_1",
+            "island": [
+              "C7.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C7_1",
+              "rules": [
+                "D-606 C7.1 pad-escape relief - annular ring, +3V3",
+                "D-606 C7.1 pad-escape relief - hole, +3V3",
+                "D-606 C7.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.825,
+            "needs_licence": true,
+            "pad": "C7.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              60.3,
+              71.0
+            ],
+            "width": 600000,
+            "xy": [
+              60300000,
+              71000000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_R127_1",
+            "island": [
+              "R127.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R127_1",
+              "rules": [
+                "D-606 R127.1 pad-escape relief - annular ring, +3V3",
+                "D-606 R127.1 pad-escape relief - hole, +3V3",
+                "D-606 R127.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 7.991,
+            "needs_licence": true,
+            "pad": "R127.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              55.6,
+              113.5
+            ],
+            "width": 600000,
+            "xy": [
+              55600000,
+              113500000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_C5_1",
+            "island": [
+              "C5.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C5_1",
+              "rules": [
+                "D-606 C5.1 pad-escape relief - annular ring, +3V3",
+                "D-606 C5.1 pad-escape relief - hole, +3V3",
+                "D-606 C5.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.45,
+            "needs_licence": true,
+            "pad": "C5.1",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              61.3,
+              76.3
+            ],
+            "width": 400000,
+            "xy": [
+              61300000,
+              76300000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_U17_5",
+            "island": [
+              "U17.5"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_U17_5",
+              "rules": [
+                "D-606 U17.5 pad-escape relief - annular ring, +3V3",
+                "D-606 U17.5 pad-escape relief - hole, +3V3",
+                "D-606 U17.5 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.084,
+            "needs_licence": true,
+            "pad": "U17.5",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              3.7,
+              123.2
+            ],
+            "width": 400000,
+            "xy": [
+              3700000,
+              123200000
+            ]
+          }
+        ],
+        "unstitched": 10,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 4,
+        "widths": [
+          600000,
+          400000
+        ]
+      },
+      {
+        "failures": [
+          {
+            "island": [
+              "C37.2"
+            ],
+            "pad": "C37.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_C37_2"
+          },
+          {
+            "island": [
+              "J1.43"
+            ],
+            "pad": "J1.43",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_J1_43"
+          },
+          {
+            "island": [
+              "J3.A12",
+              "J3.B1"
+            ],
+            "pad": "J3.B1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_J3_B1"
+          },
+          {
+            "island": [
+              "MK1.4"
+            ],
+            "pad": "MK1.4",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_MK1_4"
+          },
+          {
+            "island": [
+              "U2.2",
+              "U2.3"
+            ],
+            "pad": "U2.3",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_U2_3"
+          },
+          {
+            "island": [
+              "U9.16"
+            ],
+            "pad": "U9.16",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_U9_16"
+          }
+        ],
+        "mm": 6.314,
+        "net": "GND",
+        "ok": true,
+        "stitched": 3,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_R110_2",
+            "island": [
+              "R110.2"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R110_2",
+              "rules": [
+                "D-606 R110.2 pad-escape relief - annular ring, GND",
+                "D-606 R110.2 pad-escape relief - hole, GND",
+                "D-606 R110.2 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.103,
+            "needs_licence": true,
+            "pad": "R110.2",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              49.3,
+              117.0
+            ],
+            "width": 300000,
+            "xy": [
+              49300000,
+              117000000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_R111_2",
+            "island": [
+              "R111.2"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R111_2",
+              "rules": [
+                "D-606 R111.2 pad-escape relief - annular ring, GND",
+                "D-606 R111.2 pad-escape relief - hole, GND",
+                "D-606 R111.2 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.347,
+            "needs_licence": true,
+            "pad": "R111.2",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              62.9,
+              114.2
+            ],
+            "width": 300000,
+            "xy": [
+              62900000,
+              114200000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_C1_1",
+            "island": [
+              "C1.1"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C1_1",
+              "rules": [
+                "D-606 C1.1 pad-escape relief - annular ring, GND",
+                "D-606 C1.1 pad-escape relief - hole, GND",
+                "D-606 C1.1 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 3.864,
+            "needs_licence": true,
+            "pad": "C1.1",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              47.9,
+              116.9
+            ],
+            "width": 150000,
+            "xy": [
+              47900000,
+              116900000
+            ]
+          }
+        ],
+        "unstitched": 6,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 3,
+        "widths": [
+          300000,
+          150000
+        ]
+      }
+    ],
+    "requested": true,
+    "stitched": 7,
+    "via": [
+      350000,
+      200000
+    ]
+  },
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "8220db4b756689e9961f106af439e6070bad629bd538556d7a7cdd7327a6167c",
+    "spec": "evidence/d605-pour-bond-guard-next.json",
+    "tubes": 46
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "+3V3",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [
+      [
+        "PAD_ESCAPE_C1_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            47575000,
+            116575000
+          ],
+          [
+            48225000,
+            116575000
+          ],
+          [
+            48225000,
+            117225000
+          ],
+          [
+            47575000,
+            117225000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_C5_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            60975000,
+            75975000
+          ],
+          [
+            61625000,
+            75975000
+          ],
+          [
+            61625000,
+            76625000
+          ],
+          [
+            60975000,
+            76625000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_C7_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            59975000,
+            70675000
+          ],
+          [
+            60625000,
+            70675000
+          ],
+          [
+            60625000,
+            71325000
+          ],
+          [
+            59975000,
+            71325000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_R110_2",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            48975000,
+            116675000
+          ],
+          [
+            49625000,
+            116675000
+          ],
+          [
+            49625000,
+            117325000
+          ],
+          [
+            48975000,
+            117325000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_R111_2",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            62575000,
+            113875000
+          ],
+          [
+            63225000,
+            113875000
+          ],
+          [
+            63225000,
+            114525000
+          ],
+          [
+            62575000,
+            114525000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_R127_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            55275000,
+            113175000
+          ],
+          [
+            55925000,
+            113175000
+          ],
+          [
+            55925000,
+            113825000
+          ],
+          [
+            55275000,
+            113825000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_U17_5",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            3375000,
+            122875000
+          ],
+          [
+            4025000,
+            122875000
+          ],
+          [
+            4025000,
+            123525000
+          ],
+          [
+            3375000,
+            123525000
+          ]
+        ]
+      ]
+    ],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 1077
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "netclass": "P3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "escape_relief": {
+        "failures": [
+          {
+            "island": [
+              "R129.1"
+            ],
+            "pad": "R129.1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_R129_1"
+          },
+          {
+            "island": [
+              "R39.1"
+            ],
+            "pad": "R39.1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_R39_1"
+          },
+          {
+            "island": [
+              "U12.4"
+            ],
+            "pad": "U12.4",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U12_4"
+          },
+          {
+            "island": [
+              "U12.5"
+            ],
+            "pad": "U12.5",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U12_5"
+          },
+          {
+            "island": [
+              "U4.12"
+            ],
+            "pad": "U4.12",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_12"
+          },
+          {
+            "island": [
+              "U4.2"
+            ],
+            "pad": "U4.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_2"
+          },
+          {
+            "island": [
+              "U4.3"
+            ],
+            "pad": "U4.3",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_3"
+          },
+          {
+            "island": [
+              "U4.5"
+            ],
+            "pad": "U4.5",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_5"
+          },
+          {
+            "island": [
+              "U4.8"
+            ],
+            "pad": "U4.8",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U4_8"
+          },
+          {
+            "island": [
+              "U5.2"
+            ],
+            "pad": "U5.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel inside PAD_ESCAPE_U5_2"
+          }
+        ],
+        "mm": 10.35,
+        "net": "+3V3",
+        "ok": true,
+        "stitched": 4,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_C7_1",
+            "island": [
+              "C7.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C7_1",
+              "rules": [
+                "D-606 C7.1 pad-escape relief - annular ring, +3V3",
+                "D-606 C7.1 pad-escape relief - hole, +3V3",
+                "D-606 C7.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.825,
+            "needs_licence": true,
+            "pad": "C7.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              60.3,
+              71.0
+            ],
+            "width": 600000,
+            "xy": [
+              60300000,
+              71000000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_R127_1",
+            "island": [
+              "R127.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R127_1",
+              "rules": [
+                "D-606 R127.1 pad-escape relief - annular ring, +3V3",
+                "D-606 R127.1 pad-escape relief - hole, +3V3",
+                "D-606 R127.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 7.991,
+            "needs_licence": true,
+            "pad": "R127.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              55.6,
+              113.5
+            ],
+            "width": 600000,
+            "xy": [
+              55600000,
+              113500000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_C5_1",
+            "island": [
+              "C5.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C5_1",
+              "rules": [
+                "D-606 C5.1 pad-escape relief - annular ring, +3V3",
+                "D-606 C5.1 pad-escape relief - hole, +3V3",
+                "D-606 C5.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.45,
+            "needs_licence": true,
+            "pad": "C5.1",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              61.3,
+              76.3
+            ],
+            "width": 400000,
+            "xy": [
+              61300000,
+              76300000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_U17_5",
+            "island": [
+              "U17.5"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_U17_5",
+              "rules": [
+                "D-606 U17.5 pad-escape relief - annular ring, +3V3",
+                "D-606 U17.5 pad-escape relief - hole, +3V3",
+                "D-606 U17.5 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.084,
+            "needs_licence": true,
+            "pad": "U17.5",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              3.7,
+              123.2
+            ],
+            "width": 400000,
+            "xy": [
+              3700000,
+              123200000
+            ]
+          }
+        ],
+        "unstitched": 10,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 4,
+        "widths": [
+          600000,
+          400000
+        ]
+      },
+      "failures": [
+        {
+          "island": [
+            "C5.1"
+          ],
+          "pad": "C5.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C7.1"
+          ],
+          "pad": "C7.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R127.1"
+          ],
+          "pad": "R127.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U12.4"
+          ],
+          "pad": "U12.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.4: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.3 (x45), U12.2 (x17), U12.1 (x8), C24.2 (x2)"
+        },
+        {
+          "island": [
+            "U12.5"
+          ],
+          "pad": "U12.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.6 (x44), U12.3 (x18), U12.1 (x6), U12.2 (x2)"
+        },
+        {
+          "island": [
+            "U17.5"
+          ],
+          "pad": "U17.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U17.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x21), D8.1 (x15), U17.4 (x12), board_edge (x10)"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)"
+        },
+        {
+          "island": [
+            "U4.2"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.3"
+          ],
+          "pad": "U4.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch+relief",
+      "net": "+3V3",
+      "ok": true,
+      "seconds": 5.5,
+      "stitched": 0,
+      "unreachable": 12,
+      "via_xy": [],
+      "vias": 0
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {
+          "B": 32,
+          "F": 310
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "GND",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "escape_relief": {
+        "failures": [
+          {
+            "island": [
+              "C37.2"
+            ],
+            "pad": "C37.2",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_C37_2"
+          },
+          {
+            "island": [
+              "J1.43"
+            ],
+            "pad": "J1.43",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_J1_43"
+          },
+          {
+            "island": [
+              "J3.A12",
+              "J3.B1"
+            ],
+            "pad": "J3.B1",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_J3_B1"
+          },
+          {
+            "island": [
+              "MK1.4"
+            ],
+            "pad": "MK1.4",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_MK1_4"
+          },
+          {
+            "island": [
+              "U2.2",
+              "U2.3"
+            ],
+            "pad": "U2.3",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_U2_3"
+          },
+          {
+            "island": [
+              "U9.16"
+            ],
+            "pad": "U9.16",
+            "reason": "NO_DRU_LICENCE",
+            "why": "no .kicad_dru rule grants GND a 0.35/0.20 mm barrel inside PAD_ESCAPE_U9_16"
+          }
+        ],
+        "mm": 6.314,
+        "net": "GND",
+        "ok": true,
+        "stitched": 3,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_R110_2",
+            "island": [
+              "R110.2"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R110_2",
+              "rules": [
+                "D-606 R110.2 pad-escape relief - annular ring, GND",
+                "D-606 R110.2 pad-escape relief - hole, GND",
+                "D-606 R110.2 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.103,
+            "needs_licence": true,
+            "pad": "R110.2",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              49.3,
+              117.0
+            ],
+            "width": 300000,
+            "xy": [
+              49300000,
+              117000000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_R111_2",
+            "island": [
+              "R111.2"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R111_2",
+              "rules": [
+                "D-606 R111.2 pad-escape relief - annular ring, GND",
+                "D-606 R111.2 pad-escape relief - hole, GND",
+                "D-606 R111.2 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 1.347,
+            "needs_licence": true,
+            "pad": "R111.2",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              62.9,
+              114.2
+            ],
+            "width": 300000,
+            "xy": [
+              62900000,
+              114200000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_C1_1",
+            "island": [
+              "C1.1"
+            ],
+            "layer": "F",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_C1_1",
+              "rules": [
+                "D-606 C1.1 pad-escape relief - annular ring, GND",
+                "D-606 C1.1 pad-escape relief - hole, GND",
+                "D-606 C1.1 pad-escape relief - via, GND"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 3.864,
+            "needs_licence": true,
+            "pad": "C1.1",
+            "rung": 1,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              47.9,
+              116.9
+            ],
+            "width": 150000,
+            "xy": [
+              47900000,
+              116900000
+            ]
+          }
+        ],
+        "unstitched": 6,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 3,
+        "widths": [
+          300000,
+          150000
+        ]
+      },
+      "failures": [
+        {
+          "island": [
+            "C1.1"
+          ],
+          "pad": "C1.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "J1.43"
+          ],
+          "pad": "J1.43",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "J1.43: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.44 (x45), J1.41 (x18), TP36.1 (x3), J1.40 (x1)"
+        },
+        {
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+        },
+        {
+          "island": [
+            "R110.2"
+          ],
+          "pad": "R110.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R111.2"
+          ],
+          "pad": "R111.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch+relief",
+      "net": "GND",
+      "ok": true,
+      "seconds": 4.9,
+      "stitched": 0,
+      "unreachable": 6,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "schema": 1
+}

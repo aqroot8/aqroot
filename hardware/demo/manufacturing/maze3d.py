@@ -1833,7 +1833,8 @@ def stitch_pad(qb, field, pad, max_mm=8.0, escape_limit=12):
                                             bad.get('against', bad.get('why'))),
                     detail=bad)
     return dict(ok=True, pad=pad['ref'], layer=L, mm=round(total / 1e6, 3),
-                via_xy=(round(vx / 1e6, 4), round(vy / 1e6, 4)))
+                via_xy=(round(vx / 1e6, 4), round(vy / 1e6, 4)),
+                via_xy_nm=(int(vx), int(vy)))
 
 
 def _pad_gap(a, b):
@@ -2153,22 +2154,25 @@ def dru_rules(qb):
     return out
 
 
-def bridge_licence(qb, net, label):
-    """The barrel this board LICENSES for this cluster's bridge, or None.
+def area_licence(qb, net, area):
+    """The barrel this board LICENSES for `net` inside rule area `area`, or None.
 
     Accepts only a rule whose condition is exactly
 
-        A.NetName == '<net>' && A.enclosedByArea('<POUR_BRIDGE_...>')
+        A.NetName == '<net>' && A.enclosedByArea('<area>')
 
-    for THIS net and THIS cluster's area, and only the three constraints a
-    barrel owes: `via_diameter`, `annular_width` and `hole_size`.  A rule with
-    any other term is ignored rather than guessed at, so broadening the rule
-    text can never silently broaden the router.  Returns
-    dict(area, via_dia, via_drill, annular, rules) built from the rule MINIMA,
-    which is the smallest barrel the board admits there -- the request itself
-    is clamped up to it by the caller.
+    and only the three constraints a barrel owes: `via_diameter`,
+    `annular_width` and `hole_size`.  A rule with any other term is ignored
+    rather than guessed at, so broadening the rule text can never silently
+    broaden the router.  Returns dict(area, via_dia, via_drill, annular, rules)
+    built from the rule MINIMA, which is the smallest barrel the board admits
+    there -- the request itself is clamped up to it by the caller.
+
+    D-606 made this a function of the AREA NAME rather than of the bridge, so
+    the pour bridge and the pad-escape relief read one implementation.  The
+    two callers differ only in which name they ask about, which is the whole
+    difference between the two moves.
     """
-    area = bridge_area_name(label)
     want = "A.NetName == '%s' && A.enclosedByArea('%s')" % (net, area)
     got, names = {}, []
     for name, cons, cond in dru_rules(qb):
@@ -2183,6 +2187,32 @@ def bridge_licence(qb, net, label):
     return dict(area=area, via_dia=got['via_diameter'],
                 via_drill=got['hole_size'], annular=got['annular_width'],
                 rules=sorted(set(names)))
+
+
+def bridge_licence(qb, net, label):
+    """The barrel this board licenses for THIS cluster's bridge, or None."""
+    return area_licence(qb, net, bridge_area_name(label))
+
+
+ESCAPE_AREA_PREFIX = "PAD_ESCAPE_"
+
+
+def escape_area_name(ref):
+    """The rule-area name that licenses THIS PAD's escape barrel.
+
+    `C5.1` -> `PAD_ESCAPE_C5_1`.  Derived from the pad, exactly as
+    `bridge_area_name` is derived from the cluster, and for the same reason:
+    the name is a property of the object the doctrine names -- one rule area
+    per pad -- so the `.kicad_dru` rule can be authored, reviewed and
+    committed BEFORE the router picks a coordinate, and the area the
+    transaction draws must be the area the rule already names.
+    """
+    return ESCAPE_AREA_PREFIX + str(ref).replace('.', '_')
+
+
+def escape_licence(qb, net, ref):
+    """The barrel this board licenses for THIS PAD's escape, or None."""
+    return area_licence(qb, net, escape_area_name(ref))
 
 
 # -- pour geometry ---------------------------------------------------------- #
@@ -3061,3 +3091,144 @@ def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
                 mm=round(sum(d['mm'] for d in done), 3),
                 vias=sum(d['vias'] for d in done),
                 clusters=len(size), body=labels.get(body, [])[:4])
+
+
+# --------------------------------------------------------------------------- #
+# PAD-ESCAPE RELIEF -- THE DOCTRINE THE BOARD HAS CARRIED AND NEVER SPENT
+# --------------------------------------------------------------------------- #
+# D-606.  After `stitch_pad`, `join_residual_islands`, `bridge_islands` and
+# `join_islands`, the three pour-owning nets still owned 30 of the board's 68
+# retained open edges, and the refusals had collapsed into ONE refusal:
+#
+#   * `stitch_pad` asks the PAD to launch, and D-604 swept every rung the
+#     netclass and the `.kicad_dru` floors allow for 0 of 15 on `+3V3` and
+#     0 of 9 on `GND`;
+#   * `join_islands` asks a cell of the cluster's OWN FILLED POUR to be the
+#     terminal, and D-605 re-ran it on the promoted board for 0 of 32 --
+#     because 23 of those clusters own no filled pour copper at all.  A bare
+#     land is not a two-dimensional conductor.
+#
+# The land is not the problem and neither is the run.  `screen_pad_escape_relief.py`
+# measured the two levers separately and the answer was unambiguous: eight of
+# those lands escape at the FULL width the board already allows them, and are
+# refused for ONE reason each -- no legal BARREL fits in the pocket the escape
+# reaches.  Not a corridor, not a width, not a pour: a via.
+#
+# `FBV2_P2_ROUTING_PLAN.md` section 17 has carried the answer as CTO standing
+# law since FBV2-P2-000 and recorded it as NOT YET INSTANTIATED: one rule area
+# per pad, named for that pad, `enclosedByArea()` never `intersectsArea()`,
+# created only when a MEASURED need appears.  D-595 already built every piece
+# of the machine for the POUR BRIDGE -- `area_licence` reads the rule, the
+# transaction draws the area around the barrel it actually laid, gate clause 6
+# audits every added area and `verify_promotion.py --bridge` re-proves each
+# fine barrel by polygon subtraction.  This primitive spends that machine on
+# the ESCAPE, which is the case the doctrine was written for in the first
+# place.
+#
+# WHAT IS AND IS NOT RELIEVED, AND THE DISTINCTION IS THE WHOLE POINT.
+# Only the BARREL is licensed.  The escape stub and the run are laid at the
+# widest width in `widths` that opens the land -- the netclass width first and
+# the board/DRU floor only if the netclass width fails -- so a relieved bond is
+# never quietly thinner than an unrelieved one, and no track here is
+# sub-class-width copper needing the doctrine's 2.0 mm clearance-run cap or its
+# 6.0 mm narrow-width review trigger.  A relief that needed those would be a
+# different claim and would have to be measured as one.
+def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
+                  floors, G=100000, layers=None, neck=None, guard=None,
+                  max_mm=8.0, escape_limit=12, licence=True):
+    """Stitch each orphan island of a pour-owning net with a LICENSED barrel.
+
+    `widths` is a ladder, widest first; an island served at one width is
+    retired, so a later, narrower rung is only asked about what is still open
+    and the transaction always takes the most copper the board will give.
+
+    A barrel that already meets every ordinary floor needs no rule and gets
+    none -- it is the same barrel `stitch_pad` lays today.  A barrel BELOW a
+    floor is laid only where the `.kicad_dru` grants THIS NET THAT GEOMETRY
+    inside the rule area named for THIS PAD; anything else is `NO_DRU_LICENCE`
+    and is reported, never laid.  Returns dict(ok, stitched, stitches,
+    failures) where each stitch names the area the transaction must draw.
+    """
+    if not has_plane(qb, net):
+        return dict(ok=False, net=net, reason='NO_PLANE', stitches=[],
+                    failures=[])
+    islands = net_islands(qb, net)
+    if len(islands) < 2:
+        return dict(ok=True, net=net, stitched=0, stitches=[], failures=[],
+                    reason='NOTHING_TO_STITCH')
+    body = max(islands, key=len)
+    pending = [i for i in islands if i is not body]
+    plain = _meets_floors(via_dia, via_drill, floors)
+    done, last = [], {}
+    for rung, w in enumerate(widths):
+        if not pending:
+            break
+        field = Field(qb, net, w, clr_pad, clr_trk, via_dia, via_drill,
+                      G=G, layers=layers, neck=neck, guard=guard)
+        still = []
+        for island in pending:
+            hit = None
+            for pad in island:
+                ref = pad['ref']
+                lic = None if plain else (escape_licence(qb, net, ref)
+                                          if licence else None)
+                if licence and not _barrel_licensed(via_dia, via_drill,
+                                                    floors, lic):
+                    last[id(island)] = dict(
+                        reason='NO_DRU_LICENCE', pad=ref,
+                        why='no .kicad_dru rule grants %s a %.2f/%.2f mm '
+                            'barrel inside %s'
+                            % (net, via_dia / 1e6, via_drill / 1e6,
+                               escape_area_name(ref)))
+                    continue
+                m = qb.mark()
+                r = stitch_pad(qb, field, pad, max_mm=max_mm,
+                               escape_limit=escape_limit)
+                # A BARREL THAT IS LEGAL IS NOT YET A BARREL THAT CONNECTS,
+                # AND THE PROPOSER CANNOT TELL.  `stitch_pad` proves the
+                # geometry of its via; it does not prove that the pour UNDER
+                # that via is the plane BODY rather than another orphan piece
+                # of the same net.  D-604 measured that on `BQ25185_SYS` --
+                # `SW9.2` stitched at every rung and closed nothing, three
+                # full gate runs, 69 -> 69 each -- and D-606's first run
+                # repeated it on `+3V3`: `R129.1` laid a via and 0.547 mm of
+                # track for zero edges.
+                #
+                # THE OBVIOUS CHECK HERE IS WRONG, AND IT WAS MEASURED WRONG.
+                # Retaking `net_islands` after each stitch reads connectivity
+                # against the pour as it was filled BEFORE the barrel existed,
+                # and KiCad's refill floods a zone up to a new via of its own
+                # net.  Run 2 of D-606 carried exactly that check and it
+                # rejected `C7.1`, which run 1 had proved CLOSES post-refill --
+                # a false negative that costs an edge, on the same reading
+                # D-605 recorded for foreign pour damage.  The question is
+                # answerable only after the refill, so it is answered by the
+                # gate, on the refilled candidate's own ledger, in the clause
+                # named `relief_lands_closed`.  A proposer that guessed here
+                # would be a second opinion for the gate to disagree with.
+                if r.get('ok'):
+                    hit = dict(pad=ref, island=[p['ref'] for p in island],
+                               width=w, rung=rung, layer=r['layer'],
+                               mm=r['mm'], via_xy=list(r['via_xy']),
+                               xy=list(r['via_xy_nm']),
+                               via_dia=via_dia, via_drill=via_drill,
+                               needs_licence=(not plain), licence=lic,
+                               area=(None if plain
+                                     else escape_area_name(ref)))
+                    break
+                qb.revert(m)
+                last[id(island)] = dict(reason=r.get('reason'), pad=ref,
+                                        why=str(r.get('why'))[:160])
+            if hit is not None:
+                done.append(hit)
+            else:
+                still.append(island)
+        pending = still
+    failures = [dict(island=[p['ref'] for p in i],
+                     **(last.get(id(i)) or dict(reason='NO_ESCAPE')))
+                for i in pending]
+    return dict(ok=bool(done), net=net, stitched=len(done),
+                unstitched=len(failures), stitches=done,
+                failures=failures[:40],
+                mm=round(sum(d['mm'] for d in done), 3), vias=len(done),
+                widths=list(widths), via_dia=via_dia, via_drill=via_drill)

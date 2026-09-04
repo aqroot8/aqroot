@@ -2,6 +2,133 @@
 
 Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
 
+## The escape-relief doctrine, spent for the first time: seven pour lands opened, and the dead-copper clause that had to exist first (2026-09-04)
+
+The three pour-owning nets owned **30 of 68** retained open edges and every
+primitive on this board refused them.  D-604 offered `maze3d.stitch_pad` every
+rung of width and barrel the netclass and the `.kicad_dru` FLOORS allow --
+**0 of 15 on `+3V3`, 0 of 9 on `GND`**.  D-605 offered `maze3d.join_islands`
+the same family on the promoted board -- **0 of 32**, because 23 of those
+clusters own no filled pour copper at all.  Both refusals were real; neither
+named the lever, because both were measuring the wrong thing.
+
+    whole-board retained open edges   68 -> 61
+    raw ratsnest                      84 -> 77     open retained nets 29 -> 29
+    improved  +3V3 (14 -> 10), GND (9 -> 6)        regressed  none
+    23 objects added (16 tracks + 7 vias), ZERO removed, zero zones
+    7 rule areas added and audited; 21 new .kicad_dru rules
+    authority 3952597e... -> 4cd1be8f...
+
+**THE LEVER WAS NEVER THE WIDTH OR THE RUN.  IT WAS THE BARREL.**  New
+read-only `screen_pad_escape_relief.py` offers every orphan land of every
+pour-owning net to the promoter's own `stitch_pad`, through the promoter's own
+`Field`, at four rungs that move ONE lever each -- so a land that opens says
+which licence it needs.  Rung 0 is exactly D-604's contract and reproduces
+D-604's verdict before the screen claims anything new:
+
+    rung                                       +3V3     GND      SYS
+    0  .kicad_dru floor -- D-604's control      0/14     0/9      1/9
+    1  relief WIDTH only     0.20 mm            3/14     0/9      2/9
+    2  relief BARREL only    0.35/0.20 mm       5/14     3/9      1/9
+    3  both                                     7/14     3/9      3/9
+    4  relief barrel at the NETCLASS width      2/14     2/9      1/9
+
+Rung 2 is the whole finding: eight lands escape at the FULL width this board
+already allows them -- no narrow copper, no reduced clearance -- and are refused
+for one reason each, that no legal barrel fits in the pocket the escape reaches.
+Rung 4 then prices the width honestly, so the emitter takes the WIDEST width
+that opens each land rather than one figure for all.
+
+**THE DOCTRINE WAS ALREADY STANDING LAW AND HAD NEVER BEEN SPENT.**
+`docs/full-beta-v2/pcb/FBV2_P2_ROUTING_PLAN.md` section 17 has carried the E6
+escape-relief doctrine since FBV2-P2-000 and records it in its own title as
+"NOT yet instantiated": ONE RULE AREA PER PAD, named for that pad,
+`enclosedByArea()` never `intersectsArea()`, created only when a MEASURED need
+appears -- never a generic relaxation and never a netclass change.  Two of the
+seventeen Beta-DM pockets retired by R4 were `E6_U4_5` and `E6_U4_12`.
+
+**NOTHING NEW WAS INVENTED, IN THE RULES OR IN THE CODE.**  0.35 mm on a
+0.20 mm hole with a 0.075 mm ring is the plated process the rule file already
+licenses by name for D-257, D-266, D-531 and D-595's `POUR_BRIDGE_U11_11`,
+against JLCPCB's verified 0.15 mm / approx 0.1275 mm floor -- **no new fab
+capability, a new place**.  D-595 had already built the machine, so
+`bridge_licence` was factored into `maze3d.area_licence(qb, net, AREA)`, new
+`maze3d.relief_stitch` + `route_maze_batch.py --escape-relief` spend it on the
+ESCAPE, and gate clause 6 and `verify_promotion.py --bridge` audit it unchanged.
+
+**WHAT WAS CLOSED IS DEFECTS, NOT COUNTS:**
+
+    U17.5   +3V3  0.400 mm  TPS61169 backlight-boost VIN -- the display
+                            backlight controller had NO supply-pin connection
+                            at all (the LED path +3V3 -> L3 -> BL_SW was already
+                            bonded, so pin 5 carries only the part's own current)
+    R111.2  GND   0.300 mm  ground end of the 10 k GPIO45_VDDSPI_STRAP pull-down
+                            -- an UNDEFINED ESP32-S3 VDD_SPI strap at reset
+    C1.1    GND   0.150 mm  return of the 1 uF on Net-(U1-EN), the module's EN
+                            reset RC, with one terminal on nothing
+    R110.2  GND   0.300 mm  ground end of the 10 k BMI270_INT1_STRAP pull-down
+    C5.1    +3V3  0.400 mm  100 nF decoupling that decoupled nothing
+    C7.1    +3V3  0.600 mm  100 nF decoupling that decoupled nothing
+    R127.1  +3V3  0.600 mm  top of the 10 k BQ25185_STAT1 pull-up
+
+Four of the seven ran at their full netclass width; only `C1.1` at board setup's
+own 0.15 mm `min_track_width`, and it is the sole object on the board at that
+width, carrying a 10 ms RC's transient return through 12.6 mOhm.
+
+**A BARREL THAT IS LEGAL IS NOT YET A BARREL THAT CONNECTS, AND THE PROPOSER
+CANNOT TELL.**  `stitch_pad` proves the geometry of its via; nothing in it
+proves the pour UNDER that via is the plane BODY rather than another orphan
+piece of the same net.  D-604 had measured this on `BQ25185_SYS` (`SW9.2`
+stitched at every rung and closed nothing, three gate runs, 69 -> 69 each) and
+run 1 here repeated it on `+3V3`: eight stitches, seven edges, with `R129.1`
+laying a via and 0.547 mm of track for ZERO behind a permanent licence.
+
+The obvious fix is wrong, and it was measured wrong.  Run 2 carried the check
+in the proposer -- retake `net_islands` after each stitch, revert any land still
+open.  It correctly rejected `R129.1` and **also rejected `C7.1`, which run 1
+had proved closes**: the proposer reads the pour as filled BEFORE the barrel
+existed, and KiCad's refill floods a zone up to a new via of its own net, so a
+pre-refill answer is a guess in both directions.  Run 2 was rolled back.
+
+So the question is answered where it is answerable.  **New gate clause 7,
+`relief_lands_closed`:** on the refilled candidate's own ledger -- the same
+evidence clause 4 uses -- every land a relief stitch served must no longer be a
+component of its own, and one that is refuses the whole run.  `R129.1`'s three
+rules were deleted and the rule file records why, so nobody re-authors them.
+Run 3: seven stitches, seven edges.
+
+**PROOF.**  All 14 `verify_promotion.py` checks PASS from the two board files
+alone -- 23 objects added, 0 removed, widths 0.150 / 0.300 / 0.400 / 0.600 mm,
+every via 0.35/0.20 and every one of the seven proved DRU-licensed by polygon
+subtraction against the area its own rule names, on the net its own rule names.
+Real KiCad DRC 199/5/1 inherited, zero attributable, zero parity, unconnected
+84 -> 77, fill-stable.  Clause 5 nothing removed; clause 6 rule-area inventory
+exactly the seven the emitter asked for, six copper layers each, forbidding
+nothing.  `protected_copper.py` 15 nets / 393 objects BYTE-IDENTICAL.
+P1-P4 and N1-N3 PASS on the regenerated 46-tube guard.
+
+**BANKED, RE-MEASURED ON THE PROMOTED BOARD** (`d606-relief-next.json`):
+`GND` is EXHAUSTED at every rung, 0 of 6 -- five survivors are `NO_VIA_SITE`
+(no legal 0.35 mm barrel anywhere within 8 mm of any escape) and `MK1.4` has no
+legal escape at 0.150 mm at all.  `+3V3` has two lands left behind a licence,
+`U12.4` and `U12.5`, needing a WIDTH relief whose runs measure 2.65 / 3.08 mm --
+OVER section 17's 2.0 mm HARD cap on reduced-clearance run length, so the
+doctrine refuses them as measured.  `U4` is NOT a licence question: four of the
+BMI270's five open lands are `NO_VIA_SITE` even at 0.20 mm with the finest
+barrel.
+
+**NEXT: SEGMENT eviction, now the critical path.**  Sixteen of the twenty-five
+remaining pour lands are `NO_VIA_SITE` -- not "the barrel is too coarse" but
+"there is no site", at the finest geometry this board licenses anywhere -- and
+that includes **`U4`, the BMI270 IMU, a MUST-HAVE Demo feature whose five
+`+3V3` supply and strap lands are ALL open with no barrel site within 8 mm of
+any of them**.  Split a crossing track at a pocket boundary, rip up only the
+portion inside, re-join the two stubs around it, hold the lane with
+`reserve_corridor.py --from-copper`.  `join_islands` built the re-join whose
+terminal is a cell inside existing copper; `relief_stitch` and clause 7 have now
+built the half that proves a re-bond actually bonded.  Only the SPLIT is
+missing.
+
 ## A bridge is a jumper of length zero; the general move PROMOTED, and the In2 pour for BQ25185_SYS priced and REFUSED (2026-09-04)
 
 D-604 left two named levers and this iteration spends one, refuses the other on

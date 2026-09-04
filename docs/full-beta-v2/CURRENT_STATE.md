@@ -13,6 +13,90 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-606 (THE ESCAPE-RELIEF DOCTRINE, SPENT FOR THE FIRST TIME; seven
+  pour lands opened by a licence this board has carried since FBV2-P2-000, and
+  the dead-copper clause that had to exist before it could be):** the three
+  pour-owning nets owned **30 of 68** retained open edges and every primitive
+  refused them. D-604 swept `stitch_pad` over every rung the netclass and the
+  `.kicad_dru` FLOORS allow -- 0 of 15 on `+3V3`, 0 of 9 on `GND`; D-605 swept
+  `join_islands` on the promoted board -- 0 of 32, because 23 of those clusters
+  own no filled pour copper at all. Both refusals were real and neither named
+  the lever. New read-only `screen_pad_escape_relief.py` moved ONE lever per
+  rung and found it: **eight lands escape at the full width this board already
+  allows them and are refused for one reason each -- no legal BARREL fits in
+  the pocket the escape reaches.** Authority `3952597e...` ->
+  **`4cd1be8fccb05bc160f364cf94d5bf07188fae0f802218a04df9d72fbf81860d`**,
+  retained open edges **68 -> 61**, ratsnest 84 -> 77, `+3V3` 14 -> 10,
+  `GND` 9 -> 6; improved both, regressed none; 23 objects added (16 tracks +
+  7 vias), ZERO removed, zero zones. D-269/D-186, `ACC_5V_SW_EN`,
+  `ACC_3V3_SW`, RGB, XGPIO4/5 and `hardware/beta-v2/` untouched;
+  `protected_copper.py` 15 nets / 393 objects BYTE-IDENTICAL.
+  **THE DOCTRINE WAS ALREADY STANDING LAW AND HAD NEVER BEEN SPENT.**
+  `pcb/FBV2_P2_ROUTING_PLAN.md` section 17 has carried the E6 escape-relief
+  doctrine since FBV2-P2-000 and records it in its own title as "NOT yet
+  instantiated": ONE RULE AREA PER PAD, named for that pad, `enclosedByArea()`
+  never `intersectsArea()`, created only when a MEASURED need appears. Nothing
+  new was invented in the rules or the code: 0.35 mm on a 0.20 mm hole with a
+  0.075 mm ring is the process this file already licenses by name for D-257,
+  D-266, D-531 and D-595's `POUR_BRIDGE_U11_11`, and D-595 had already built
+  the machine -- so `bridge_licence` was factored into
+  `maze3d.area_licence(qb, net, AREA)`, `maze3d.relief_stitch` +
+  `route_maze_batch.py --escape-relief` spend it on the ESCAPE, and gate
+  clause 6 and `verify_promotion.py --bridge` audit it unchanged. **No new fab
+  capability; a new place.** New `.kicad_dru` section 12, 21 rules over 7
+  pad-sized areas, last in the precedence tail.
+  **WHAT WAS CLOSED IS DEFECTS, NOT COUNTS:** `U17.5` the TPS61169
+  backlight-boost VIN (the display backlight controller had NO supply-pin
+  connection; the LED power path `+3V3` -> `L3` -> `BL_SW` was already bonded);
+  `R111.2` the ground end of the `GPIO45_VDDSPI_STRAP` pull-down (an undefined
+  ESP32-S3 `VDD_SPI` strap at reset); `C1.1` the `Net-(U1-EN)` reset RC's
+  return; `R110.2` the `BMI270_INT1_STRAP` pull-down; `C5.1`/`C7.1` decoupling
+  capacitors that decoupled nothing; `R127.1` the `BQ25185_STAT1` pull-up.
+  Four of seven ran at their full netclass width; only `C1.1` at board setup's
+  own 0.15 mm floor and it is the sole object on the board at that width.
+  **A BARREL THAT IS LEGAL IS NOT YET A BARREL THAT CONNECTS, AND THE PROPOSER
+  CANNOT TELL.** Run 1 promoted eight stitches for seven edges -- `R129.1` laid
+  a via and 0.547 mm of track for ZERO, behind a permanent licence. Run 2's
+  in-proposer check correctly rejected `R129.1` and ALSO rejected `C7.1`, which
+  run 1 had proved closes: the proposer reads the pour as filled BEFORE the
+  barrel existed and KiCad's refill floods a zone up to a new via of its own
+  net, so a pre-refill answer is a guess in both directions. Run 2 was rolled
+  back. **New gate clause 7 `relief_lands_closed`** answers it on the refilled
+  candidate's own ledger -- every land a relief stitch served must no longer be
+  a component of its own, and one that is refuses the whole run. `R129.1`'s
+  three rules were deleted and the rule file records why. Run 3: seven
+  stitches, seven edges.
+  All 14 `verify_promotion.py` checks PASS (every via 0.35/0.20 proved
+  DRU-licensed by polygon subtraction against the area its own rule names);
+  DRC 199/5/1 inherited, zero attributable, zero parity, unconnected 84 -> 77,
+  fill-stable; P1-P4 and N1-N3 PASS on the regenerated 46-tube guard.
+  Evidence `d606-relief-batch.json`, `d606-verify.json`,
+  `d606-protected-copper.json`, `d606-relief-survey.json`,
+  `d606-relief-next.json`, `d606-pour-bond-guard-next.json`,
+  `d606-pour-bond-guard-bonded.json`, `d606-bond-stitch-next.json`,
+  `d606-bond-stitch-bonded.json`, `d606-guard-contract.json`,
+  `d606-neck-contract.json`.
+  **BANKED, RE-MEASURED ON THE PROMOTED BOARD:** `GND` is EXHAUSTED at every
+  rung, 0 of 6 -- five survivors are `NO_VIA_SITE` (no legal 0.35 mm barrel
+  anywhere within 8 mm of any escape) and `MK1.4` has no legal escape at
+  0.150 mm at all. `+3V3` has two lands left behind a licence, `U12.4` and
+  `U12.5`, and they need a WIDTH relief whose runs measure 2.65 / 3.08 mm --
+  OVER section 17's 2.0 mm HARD cap on reduced-clearance run length, so the
+  doctrine refuses them as measured. `U4` is NOT a licence question: four of
+  the BMI270's five open lands are `NO_VIA_SITE` even at 0.20 mm with the
+  finest barrel.
+  **Next: SEGMENT eviction, now the CRITICAL PATH rather than one of four
+  candidates.** Sixteen of the twenty-five remaining pour lands are
+  `NO_VIA_SITE` -- not "the barrel is too coarse" but "there is no site", at
+  the finest geometry this board licenses anywhere -- and that includes **`U4`,
+  the BMI270 IMU, a MUST-HAVE Demo feature whose five `+3V3` supply and strap
+  lands are ALL open with no barrel site within 8 mm of any of them.** Split a
+  crossing track at a pocket boundary, rip up only the portion inside, re-join
+  the two stubs around it, hold the lane with `reserve_corridor.py
+  --from-copper`. `join_islands` built the re-join whose terminal is a cell
+  inside existing copper; `relief_stitch` and clause 7 have now built the half
+  that proves a re-bond actually bonded. Only the SPLIT is missing. No owner
+  decision.
 - **Demo D-605 (A BRIDGE IS A JUMPER OF LENGTH ZERO; the general move built
   and PROMOTED, the `In2` pour for `BQ25185_SYS` priced and REFUSED, the
   antipad calibrated against two gate runs):** the three pour-owning nets own

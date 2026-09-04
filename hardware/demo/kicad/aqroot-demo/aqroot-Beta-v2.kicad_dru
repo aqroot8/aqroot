@@ -1153,3 +1153,190 @@
 (rule "D-595 GND U11 charger ground pour bridge - drill"
 	(constraint hole_size (min 0.20mm) (opt 0.20mm))
 	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U11_11')"))
+
+
+# =====================================================================
+# 12. PAD-ESCAPE RELIEF - D-606
+#
+# THE ESCAPE-RELIEF DOCTRINE, INSTANTIATED FOR THE FIRST TIME ON THIS
+# BOARD.  `pcb/FBV2_P2_ROUTING_PLAN.md` section 17 has carried it since
+# FBV2-P2-000 and recorded it as "NOT yet instantiated": when routing
+# discovers a pad that cannot be escaped at its class geometry, the
+# answer is ONE RULE AREA PER PAD, named for that pad, created only when
+# a MEASURED need appears - never a generic relaxation and never a
+# netclass change.  R4 in the retirement register above retired the
+# seventeen Beta-DM E6 pockets because their MEASUREMENTS belonged to a
+# 74 x 155 mm board; the doctrine was explicitly not retired with them.
+#
+# THE NEED IS MEASURED, AND IT IS THE LAST FAMILY LEFT.  `GND`, `+3V3`
+# and `/01_POWER_TREE/BQ25185_SYS` own 30 of the board's 68 retained
+# open edges.  D-604 offered every one of them `maze3d.stitch_pad` at
+# every rung the netclass and the floors in this file allow - 0 of 15 on
+# `+3V3`, 0 of 9 on `GND`.  D-605 offered them `maze3d.join_islands` on
+# the promoted board - 0 of 32, because 23 of those clusters own no
+# filled pour copper at all.  `screen_pad_escape_relief.py` then
+# separated the two levers and the answer was unambiguous: EIGHT of
+# those lands escape at the full width this file already allows them and
+# are refused for ONE reason each - no legal BARREL fits in the pocket
+# the escape reaches.
+#
+# ONLY THE BARREL IS RELIEVED.  Every escape and every run below is laid
+# at the netclass width, or at the class/board floor this file already
+# states, whichever is the widest that opens the land.  No track here is
+# sub-class-width copper, so section 17's 2.0 mm reduced-clearance cap
+# and its 6.0 mm narrow-width review trigger do not engage - and a
+# relief that needed them would be a different claim needing its own
+# measurement.
+#
+# NO NEW FAB CAPABILITY.  0.35 mm diameter on a 0.20 mm hole with a
+# 0.075 mm annular ring is the plated through-via process this file
+# already licenses by name for D-257 escape vias, D-266 Kelvin
+# reservations, D-531 USB-C VBUS POFV and D-595's POUR_BRIDGE_U11_11,
+# against JLCPCB's verified 4-layer floor of 0.15 mm drill with an
+# approx 0.1275 mm ring.  What is new is only WHERE it is used, and for
+# `+3V3` also that the POWER-class 0.40 mm `hole_size` minimum is
+# relieved - which is why the duty of every relieved pad is stated
+# below rather than assumed.
+#
+# EACH AREA IS DRAWN BY THE PROMOTING TRANSACTION around the barrel it
+# actually laid and sized from it, is on all six copper layers, and
+# FORBIDS NOTHING - tracks, vias, pads, pours and footprints are all
+# permitted, so these are labels and not keep-outs.  Gate clause 6
+# audits every rule area the run adds and `verify_promotion.py --bridge`
+# re-proves each fine barrel independently: the area exists, the WHOLE
+# barrel footprint lies inside it by polygon subtraction, the via's net
+# is the net the rule names, and the barrel meets every minimum the rule
+# states.
+#
+# CURRENT AND DUTY, MEASURED PER PAD:
+#
+#   C5.1     +3V3  100 nF X7R decoupling capacitor, +3V3 terminal.  Its GND terminal is
+#     on the plane; this one is on NOTHING, so the capacitor decouples
+#     nothing today.  Transient current only.
+#
+#   C7.1     +3V3  100 nF X7R decoupling capacitor beside U4 (BMI270), +3V3 terminal.
+#     Same condition and same duty as C5.1.
+#
+#   R127.1   +3V3  top of the 10 k pull-up on /BQ25185_STAT1, the charger status flag.
+#     0.33 mA at 3.3 V.
+#
+#
+#   R129.1 IS NOT HERE, AND THE REASON IS A MEASUREMENT.  It was in the
+#   first D-606 gate run and it laid a legal 0.35/0.20 mm barrel that
+#   closed NO EDGE: the copper under the only site its escape could
+#   reach is not the plane body but another orphan piece of `+3V3`.
+#   That is D-604's `SW9.2` finding in a second place.  `relief_stitch`
+#   now retakes KiCad's own connectivity after every stitch and reverts
+#   any land that is still open, so the pad is refused by the router and
+#   carries no rule here.  A licence is not spent on copper that
+#   connects nothing.
+#
+#   U17.5    +3V3  TPS61169 backlight-boost VIN -- the CONTROLLER supply pin, not the
+#     LED power path.  The power path is +3V3 -> L3 (4.7 uH) -> BL_SW
+#     and L3.1 is already on the plane; pin 5 carries the part's own
+#     quiescent and gate-drive current, a few milliamps.  Today the
+#     backlight controller has NO supply pin connection at all.
+#
+#   C1.1     GND   ground return of the 1 uF on Net-(U1-EN), the ESP32-S3 module's EN
+#     reset RC.  Open today, so the module has no reset capacitor.
+#     Transient current only.
+#
+#   R110.2   GND   ground end of the 10 k /BMI270_INT1_STRAP pull-down.  0.33 mA.
+#
+#   R111.2   GND   ground end of the 10 k /02_MCU_CORE/GPIO45_VDDSPI_STRAP pull-down.
+#     This strap selects the ESP32-S3's VDD_SPI voltage at reset; with
+#     the pull-down open the strap is undefined.  0.33 mA.
+#
+#
+# Order: this block is LAST in the file, after section 11, so it wins
+# over section 8's `Via annular ring floor` and `POWER-class vias use
+# the 0.40 mm drill` and over board setup's `min_via_diameter` - which
+# is the whole point of the precedence tail in section 9.
+# =====================================================================
+
+(rule "D-606 C5.1 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C5_1')"))
+
+(rule "D-606 C5.1 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C5_1')"))
+
+(rule "D-606 C5.1 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C5_1')"))
+
+(rule "D-606 C7.1 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C7_1')"))
+
+(rule "D-606 C7.1 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C7_1')"))
+
+(rule "D-606 C7.1 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_C7_1')"))
+
+(rule "D-606 R127.1 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_R127_1')"))
+
+(rule "D-606 R127.1 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_R127_1')"))
+
+(rule "D-606 R127.1 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_R127_1')"))
+
+
+
+
+(rule "D-606 U17.5 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U17_5')"))
+
+(rule "D-606 U17.5 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U17_5')"))
+
+(rule "D-606 U17.5 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U17_5')"))
+
+(rule "D-606 C1.1 pad-escape relief - via, GND"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_C1_1')"))
+
+(rule "D-606 C1.1 pad-escape relief - annular ring, GND"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_C1_1')"))
+
+(rule "D-606 C1.1 pad-escape relief - hole, GND"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_C1_1')"))
+
+(rule "D-606 R110.2 pad-escape relief - via, GND"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R110_2')"))
+
+(rule "D-606 R110.2 pad-escape relief - annular ring, GND"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R110_2')"))
+
+(rule "D-606 R110.2 pad-escape relief - hole, GND"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R110_2')"))
+
+(rule "D-606 R111.2 pad-escape relief - via, GND"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R111_2')"))
+
+(rule "D-606 R111.2 pad-escape relief - annular ring, GND"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R111_2')"))
+
+(rule "D-606 R111.2 pad-escape relief - hole, GND"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('PAD_ESCAPE_R111_2')"))
