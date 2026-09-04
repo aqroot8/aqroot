@@ -375,6 +375,14 @@ def main():
     from route_maze_batch import (net_contract, permitted_layers,
                                   reserved_inner_planes)
 
+    # HASH THE BOARD AT LOAD TIME, NOT AT WRITE TIME.  This screen runs for
+    # tens of minutes and a promotion in another process can land underneath
+    # it; stamping the file as it is when the report is written would attribute
+    # verdicts to a board they were never measured on, which is precisely the
+    # error "a rip-up verdict is a property of a board, not of a net" exists to
+    # prevent.  Every verdict below belongs to THIS bytes-object.
+    board_sha = __import__("hashlib").sha256(a.board.read_bytes()).hexdigest()
+
     qb = qr.QBoard(str(a.board))
     ir.inject_existing_via_obstacles(qb)
     reserved = reserved_inner_planes(qb.b)
@@ -549,9 +557,11 @@ def main():
     for r in out_nets:
         for e in r["edges"]:
             verdicts[e["verdict"]] = verdicts.get(e["verdict"], 0) + 1
+    now_sha = __import__("hashlib").sha256(a.board.read_bytes()).hexdigest()
     doc = dict(schema=1, board=str(a.board),
-               board_sha256=__import__("hashlib").sha256(
-                   a.board.read_bytes()).hexdigest(),
+               board_sha256=board_sha,
+               board_changed_during_run=(now_sha != board_sha),
+               board_sha256_at_write=now_sha,
                grid=a.grid, summary=dict(verdicts=verdicts), nets=out_nets)
     text = json.dumps(doc, indent=2, sort_keys=True, default=str)
     if a.out:

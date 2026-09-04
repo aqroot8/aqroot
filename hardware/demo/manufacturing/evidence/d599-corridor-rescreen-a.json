@@ -1,0 +1,2959 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_changed_during_run": true,
+  "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
+  "board_sha256_at_write": "b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233",
+  "grid": 100000,
+  "nets": [
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 92.496,
+            "nets_removed": 130,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 1,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 28
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 74,
+              "vias": 144
+            },
+            "/01_POWER_TREE/ACC_3V3_ILIM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/ACC_5V_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 9
+            },
+            "/01_POWER_TREE/ACC_5V_ILIM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 7,
+              "vias": 0
+            },
+            "/01_POWER_TREE/ACC_5V_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 15
+            },
+            "/01_POWER_TREE/BAT_CONNECTOR_P": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 7,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_MID": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 12,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_PROTECTED_P": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 35,
+              "vias": 24
+            },
+            "/01_POWER_TREE/BAT_PROT_SHDN_CTL": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 50,
+              "vias": 21
+            },
+            "/01_POWER_TREE/BAT_SENSE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 20,
+              "vias": 6
+            },
+            "/01_POWER_TREE/BQ25185_SYS": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 34,
+              "vias": 24
+            },
+            "/01_POWER_TREE/LTC4368_FAULT_N": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 29,
+              "vias": 0
+            },
+            "/01_POWER_TREE/LTC_GATE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 37,
+              "vias": 12
+            },
+            "/01_POWER_TREE/LTC_GATE_RC": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/LTC_OV": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            },
+            "/01_POWER_TREE/LTC_SHDN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 6
+            },
+            "/01_POWER_TREE/LTC_UV": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/01_POWER_TREE/MAX17048_ALRT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/01_POWER_TREE/Q2_CS": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/01_POWER_TREE/Q3_CS": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 6
+            },
+            "/01_POWER_TREE/USB_VBUS_CHG": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 12
+            },
+            "/01_POWER_TREE/USB_VBUS_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/01_POWER_TREE/V3V3_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/01_POWER_TREE/VBRIDGE_TOP": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/VBUS_PRESENT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 6
+            },
+            "/01_POWER_TREE/VREC_VCC": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/01_POWER_TREE/VREF_TOP": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/02_MCU_CORE/BOOT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 9
+            },
+            "/02_MCU_CORE/DISP_BL_CTL_STRAP": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 15
+            },
+            "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 6
+            },
+            "/02_MCU_CORE/UART0_TXD_DBG": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/BL_SW": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/DISP_SDO": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_A": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 6
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_BOOST": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 12
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_K": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 6
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_AGDC": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 10,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 16,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_EMCB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 13,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFO2": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RXB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 10,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XIN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XOUT": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 6
+            },
+            "/05_I2C_DEVICES/BMI270_SDO_ADDR": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/06_AUDIO/SPK_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/06_AUDIO/SPK_N_CONN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/06_AUDIO/SPK_P": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 6
+            },
+            "/06_AUDIO/SPK_P_CONN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/07_IR/IR_GATE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_A_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 30,
+              "vias": 27
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_B_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 19,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 3
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 15
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_UP_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 3
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 18,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 21
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 9
+            },
+            "/09_COMMUNITY_HEADER/EXT_SDA_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_A_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_B_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/TCA4307_READY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 12
+            },
+            "/09_COMMUNITY_HEADER/WAKE_GATE_S": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 9
+            },
+            "/09_COMMUNITY_HEADER/XGPIO5_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/ACC_3V3_EN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 18,
+              "vias": 0
+            },
+            "/ACC_3V3_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 47,
+              "vias": 33
+            },
+            "/ACC_5V_BOOST_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 17,
+              "vias": 12
+            },
+            "/ACC_5V_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 6
+            },
+            "/ACC_5V_SW_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 12
+            },
+            "/ACC_DETECT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 22,
+              "vias": 3
+            },
+            "/ACC_POWER_FAULT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 18
+            },
+            "/ACC_PWR_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            },
+            "/AMP_SD_MODE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 19,
+              "vias": 3
+            },
+            "/BMI270_INT1_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 18,
+              "vias": 0
+            },
+            "/BQ25185_STAT2": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 3
+            },
+            "/CC1101_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 12
+            },
+            "/CC1101_GDO0": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/DISP_BL_CTL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/DISP_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 6
+            },
+            "/DISP_DC": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "/DISP_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 3
+            },
+            "/I2C_SCL_INT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 30,
+              "vias": 30
+            },
+            "/I2C_SDA_INT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 59,
+              "vias": 69
+            },
+            "/I2S_BCLK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 18
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 9
+            },
+            "/I2S_MIC_DIN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 15
+            },
+            "/I2S_SPK_DOUT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 9
+            },
+            "/IR_RX_GPIO44": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/IR_TX_GPIO16": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 13,
+              "vias": 0
+            },
+            "/NATIVE_A": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NATIVE_B": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/NFC_5V_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "/NFC_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 9
+            },
+            "/NFC_SUPPLY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 24,
+              "vias": 15
+            },
+            "/SD_CARD_DETECT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 24,
+              "vias": 3
+            },
+            "/SD_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 12,
+              "vias": 0
+            },
+            "/SPI_A_MISO": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/SPI_A_MOSI": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 12
+            },
+            "/SPI_A_SCK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 12
+            },
+            "/SPI_B_MISO": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 15
+            },
+            "/SPI_B_MOSI": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 22,
+              "vias": 18
+            },
+            "/SX1262_BUSY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/SX1262_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 15
+            },
+            "/SX1262_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 15
+            },
+            "/SX1262_RXEN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 18
+            },
+            "/TOUCH_INT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 3
+            },
+            "/TOUCH_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 17,
+              "vias": 3
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 15
+            },
+            "/XGPIO4": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/XGPIO5": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 209,
+              "vias": 417
+            },
+            "Net-(D13-BK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 3
+            },
+            "Net-(D13-GK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 3
+            },
+            "Net-(D13-RK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 3
+            },
+            "Net-(SW9-A)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "Net-(U1-EN)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 9
+            },
+            "Net-(U11-TS_MR)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "Net-(U12-PG)": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 14,
+              "vias": 0
+            },
+            "Net-(U12-PS_SYNC)": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 26,
+              "vias": 0
+            }
+          },
+          "direct_mm": 98.569,
+          "dst": [
+            "U9.30"
+          ],
+          "single_openers": [
+            {
+              "mm": 126.037,
+              "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+              "tracks": 10,
+              "vias": 0
+            }
+          ],
+          "src": [
+            "U1.4",
+            "U7.18",
+            "U8.18"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/SPI_B_SCK",
+      "netclass": "Default",
+      "width_mm": 0.2
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 90.451,
+            "nets_removed": 134,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 1,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 28
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 70,
+              "vias": 135
+            },
+            "/01_POWER_TREE/ACC_3V3_ILIM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/ACC_5V_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 9
+            },
+            "/01_POWER_TREE/ACC_5V_ILIM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 7,
+              "vias": 0
+            },
+            "/01_POWER_TREE/ACC_5V_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 9
+            },
+            "/01_POWER_TREE/BAT_CONNECTOR_P": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 7,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_MID": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 12,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_PROTECTED_P": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 35,
+              "vias": 24
+            },
+            "/01_POWER_TREE/BAT_PROT_SHDN_CTL": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/01_POWER_TREE/BAT_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 50,
+              "vias": 21
+            },
+            "/01_POWER_TREE/BAT_SENSE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 20,
+              "vias": 6
+            },
+            "/01_POWER_TREE/BQ25185_SYS": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 31,
+              "vias": 21
+            },
+            "/01_POWER_TREE/LTC4368_FAULT_N": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 29,
+              "vias": 0
+            },
+            "/01_POWER_TREE/LTC_GATE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 37,
+              "vias": 12
+            },
+            "/01_POWER_TREE/LTC_GATE_RC": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/LTC_OV": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            },
+            "/01_POWER_TREE/LTC_SHDN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 6
+            },
+            "/01_POWER_TREE/LTC_UV": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/01_POWER_TREE/MAX17048_ALRT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/01_POWER_TREE/Q2_CS": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/01_POWER_TREE/Q3_CS": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 6
+            },
+            "/01_POWER_TREE/USB_D_ESD_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_D_ESD_P": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/01_POWER_TREE/USB_VBUS_CHG": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 12
+            },
+            "/01_POWER_TREE/USB_VBUS_RAW": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/01_POWER_TREE/V3V3_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/01_POWER_TREE/VBRIDGE_TOP": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/01_POWER_TREE/VBUS_PRESENT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 6
+            },
+            "/01_POWER_TREE/VREC_VCC": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/01_POWER_TREE/VREF_TOP": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/02_MCU_CORE/BOOT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 15
+            },
+            "/02_MCU_CORE/DISP_BL_CTL_STRAP": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 13,
+              "vias": 15
+            },
+            "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 6
+            },
+            "/02_MCU_CORE/UART0_TXD_DBG": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/BL_SW": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/DISP_SDO": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_A": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 6
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_BOOST": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 12
+            },
+            "/03_SPI_A_DISPLAY_SD/LED_K": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 6
+            },
+            "/04_SPI_B_RADIOS_NFC/DIO2_TXEN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_AGDC": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 10,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 16,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_EMCB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 13,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFO2": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RXB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 10,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XIN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XOUT": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 6
+            },
+            "/05_I2C_DEVICES/BMI270_SDO_ADDR": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/06_AUDIO/SPK_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/06_AUDIO/SPK_N_CONN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/06_AUDIO/SPK_P": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 6
+            },
+            "/06_AUDIO/SPK_P_CONN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/07_IR/IR_GATE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_A_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 30,
+              "vias": 27
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_B_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 19,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 3
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 15
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/BTN_UP_N": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 6
+            },
+            "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 18,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 9,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 13,
+              "vias": 18
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 9
+            },
+            "/09_COMMUNITY_HEADER/EXT_SDA_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_A_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_B_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/TCA4307_READY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 9
+            },
+            "/09_COMMUNITY_HEADER/WAKE_GATE_S": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 9
+            },
+            "/09_COMMUNITY_HEADER/XGPIO5_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/ACC_3V3_EN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 11,
+              "vias": 0
+            },
+            "/ACC_3V3_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 36,
+              "vias": 27
+            },
+            "/ACC_5V_BOOST_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 17,
+              "vias": 9
+            },
+            "/ACC_5V_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/ACC_5V_SW_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 12
+            },
+            "/ACC_DETECT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 22,
+              "vias": 3
+            },
+            "/ACC_POWER_FAULT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 12
+            },
+            "/ACC_PWR_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            },
+            "/AMP_SD_MODE": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 19,
+              "vias": 3
+            },
+            "/BMI270_INT1_STRAP": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 18,
+              "vias": 0
+            },
+            "/BQ25185_STAT2": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 3
+            },
+            "/CC1101_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 12
+            },
+            "/CC1101_GDO0": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/DISP_BL_CTL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/DISP_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 6
+            },
+            "/DISP_DC": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "/DISP_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 3
+            },
+            "/I2C_SCL_INT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 26,
+              "vias": 27
+            },
+            "/I2C_SDA_INT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 51,
+              "vias": 63
+            },
+            "/I2S_BCLK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 18
+            },
+            "/I2S_LRCLK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 12,
+              "vias": 9
+            },
+            "/I2S_MIC_DIN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 9
+            },
+            "/I2S_SPK_DOUT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 9
+            },
+            "/IR_RX_GPIO44": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/IR_TX_GPIO16": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 13,
+              "vias": 0
+            },
+            "/NATIVE_A": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NATIVE_B": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/NFC_5V_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/NFC_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 9
+            },
+            "/NFC_SUPPLY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 24,
+              "vias": 15
+            },
+            "/SD_CARD_DETECT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 24,
+              "vias": 3
+            },
+            "/SD_CS_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 12,
+              "vias": 0
+            },
+            "/SPI_A_MISO": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/SPI_A_MOSI": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 23,
+              "vias": 12
+            },
+            "/SPI_A_SCK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 12
+            },
+            "/SPI_B_MISO": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 15
+            },
+            "/SPI_B_SCK": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 15
+            },
+            "/SX1262_BUSY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/SX1262_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 15
+            },
+            "/SX1262_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 18
+            },
+            "/SX1262_RXEN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 18
+            },
+            "/TOUCH_INT_N": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/TOUCH_RST_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 17,
+              "vias": 3
+            },
+            "/WAKE_INT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 15
+            },
+            "/XGPIO4": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/XGPIO5": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 195,
+              "vias": 399
+            },
+            "Net-(D13-BK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 3
+            },
+            "Net-(D13-GK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 3
+            },
+            "Net-(D13-RK)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 3
+            },
+            "Net-(J3-SHIELD)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "Net-(SW9-A)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "Net-(U1-EN)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 7,
+              "vias": 12
+            },
+            "Net-(U11-TS_MR)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "Net-(U12-PG)": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 13,
+              "vias": 0
+            },
+            "Net-(U12-PS_SYNC)": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 26,
+              "vias": 0
+            }
+          },
+          "direct_mm": 99.409,
+          "dst": [
+            "U9.31"
+          ],
+          "single_openers": [
+            {
+              "mm": 126.47,
+              "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+              "tracks": 10,
+              "vias": 0
+            }
+          ],
+          "src": [
+            "U1.5",
+            "U7.17",
+            "U8.17"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/SPI_B_MOSI",
+      "netclass": "Default",
+      "width_mm": 0.2
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 8.351,
+            "nets_removed": 13,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 11,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 1
+          },
+          "corridor_nets": {
+            "/01_POWER_TREE/ACC_5V_FB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/01_POWER_TREE/ACC_5V_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 12
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/EXT_SDA_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_A_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_B_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 2,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/XGPIO4_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/XGPIO5_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/ACC_5V_BOOST_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/ACC_5V_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            }
+          },
+          "direct_mm": 8.568,
+          "dst": [
+            "R48.2"
+          ],
+          "single_openers": [
+            {
+              "mm": 10.44,
+              "rip_up_net": "/09_COMMUNITY_HEADER/EXT_SCL",
+              "tracks": 10,
+              "vias": 12
+            }
+          ],
+          "src": [
+            "D2.4"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        },
+        {
+          "all_removed": {
+            "mm": 6.984,
+            "nets_removed": 12,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 38,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 1
+          },
+          "corridor_nets": {
+            "/01_POWER_TREE/BQ25185_SYS": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 6,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_A_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_B_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/WAKE_GATE_S": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/XGPIO4_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/ACC_5V_BOOST_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/NFC_5V_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 3
+            },
+            "/XGPIO4": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 6
+            }
+          },
+          "direct_mm": 8.28,
+          "dst": [
+            "TP45.1",
+            "J5.4"
+          ],
+          "single_openers": [
+            {
+              "mm": 6.984,
+              "rip_up_net": "/09_COMMUNITY_HEADER/EXT_SCL",
+              "tracks": 5,
+              "vias": 3
+            },
+            {
+              "mm": 10.479,
+              "rip_up_net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+              "tracks": 8,
+              "vias": 0
+            }
+          ],
+          "src": [
+            "D2.4"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        },
+        {
+          "all_removed": {
+            "mm": 43.15,
+            "nets_removed": 30,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 9,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 11
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/01_POWER_TREE/ACC_5V_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 3
+            },
+            "/01_POWER_TREE/ACC_5V_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/01_POWER_TREE/BAT_PROTECTED_P": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 35,
+              "vias": 12
+            },
+            "/01_POWER_TREE/ISET": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/01_POWER_TREE/V3V3_FB": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 6
+            },
+            "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 8,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 12
+            },
+            "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/EXT_SDA_BUF": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_A_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/NATIVE_B_HDR": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/TCA4307_READY": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/WAKE_GATE_S": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 3
+            },
+            "/09_COMMUNITY_HEADER/XGPIO4_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/09_COMMUNITY_HEADER/XGPIO5_HDR": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/ACC_3V3_EN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 11,
+              "vias": 0
+            },
+            "/ACC_3V3_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 26,
+              "vias": 15
+            },
+            "/ACC_5V_BOOST_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 16,
+              "vias": 9
+            },
+            "/ACC_5V_SW": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 12
+            },
+            "/ACC_5V_SW_EN": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 4,
+              "vias": 0
+            },
+            "/ACC_DETECT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 13,
+              "vias": 3
+            },
+            "/ACC_POWER_FAULT_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 3
+            },
+            "/I2C_SDA_INT": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 10,
+              "vias": 6
+            },
+            "/NFC_5V_EN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 11,
+              "vias": 6
+            },
+            "/SX1262_RXEN": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 3
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 45,
+              "vias": 51
+            },
+            "Net-(U11-TS_MR)": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 8,
+              "vias": 6
+            }
+          },
+          "direct_mm": 42.355,
+          "dst": [
+            "J8.3"
+          ],
+          "single_openers": [
+            {
+              "mm": 87.192,
+              "rip_up_net": "/ACC_5V_SW",
+              "tracks": 5,
+              "vias": 12
+            },
+            {
+              "mm": 116.097,
+              "rip_up_net": "/01_POWER_TREE/ACC_5V_RAW",
+              "tracks": 6,
+              "vias": 6
+            }
+          ],
+          "src": [
+            "R48.2"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        }
+      ],
+      "islands": 4,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "netclass": "I2C",
+      "width_mm": 0.2
+    },
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "baseline": {
+            "dst_escapes": null,
+            "mm": 45.08,
+            "ok": true,
+            "reason": null,
+            "src_escapes": null
+          },
+          "direct_mm": 38.33,
+          "dst": [
+            "U2.14"
+          ],
+          "src": [
+            "SW3.1",
+            "R5.2",
+            "SW3.1"
+          ],
+          "verdict": "OPEN"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "netclass": "Default",
+      "width_mm": 0.2
+    }
+  ],
+  "note": "READ-ONLY corridor screen, QUESTION 2W ENABLED, of four open retained nets.  PROVENANCE, STATED EXACTLY: this run LOADED the pre-D-599 board 83b6a140 and was still running when D-599 promoted b8bb6d98 underneath it, so the original report stamped the file as it stood at WRITE time -- the wrong board.  The three fields above are corrected by hand here and `screen_corridor_blockers.py` now hashes the board at LOAD time and reports `board_changed_during_run`, so this cannot recur.  EVERY VERDICT BELOW BELONGS TO 83b6a140.  Consequences: the /SPI_B_SCK and /SPI_B_MOSI RIPUP_SINGLE verdicts naming /04_SPI_B_RADIOS_NFC/NFC_AGDC are CONSUMED -- D-599 evicted and rebuilt that net and closed /SPI_B_MOSI.  The /09_COMMUNITY_HEADER/EXT_SDA verdicts were RE-CONFIRMED independently on the promoted board b8bb6d98 (all three edges open with /09_COMMUNITY_HEADER/EXT_SCL evicted whole: 10.16 / 6.98 / 79.62 mm, and EXT_SCL itself rebuilds from bare pads in four joins of 4.53 / 9.58 / 7.93 / 69.56 mm).  BTN_DOWN_N reads OPEN -- it needs no rip-up at all; see the guard finding in d599-guard-cost.json.",
+  "schema": 1,
+  "summary": {
+    "verdicts": {
+      "OPEN": 1,
+      "RIPUP_SINGLE": 5
+    }
+  }
+}

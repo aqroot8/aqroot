@@ -1,7 +1,7 @@
 {
   "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
   "board_sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04",
-  "conclusion": "The 27 plane-orphan edges are NOT reachable by any fill parameter.  The pads are boxed in by foreign copper, exactly as D-595 measured barrel-site by barrel-site.  The next instrument for this block is an EVICTION screen aimed at barrel SITES -- whose copper stands on the orphan cluster's own island -- not another fill experiment.",
+  "conclusion": "The plane residual is NOT reachable by any fill parameter worth spending.  Pad connection is already SOLID (`(connect_pads yes ...)` in the board file, `ZONE_CONNECTION_FULL == 2` in this KiCad build) -- thermal relief is not why any pad here is orphan.  Clearance 0.250 -> 0.200 mm alone: +634.346 mm2 of fill, ZERO edges.  Min-thickness 0.200 -> 0.150 or 0.127 mm alone: ZERO edges.  Both together at the process floor: ONE edge, REFUSED on cost.  The pads are boxed in by foreign copper exactly as D-595 measured barrel-site by barrel-site.  The next instrument for this 26-edge block is an EVICTION screen aimed at barrel SITES -- whose copper stands inside the orphan cluster's own island -- not another fill experiment.  DO NOT RE-MEASURE THE FILL FAMILY.",
   "control": {
     "fill_area_mm2": 40903.385,
     "gnd_open_edges": 12,
@@ -11,7 +11,7 @@
     "retained_open_edges": 76,
     "sha256": "83b6a14054af00ff28764d2a06cb422d900515cbc02312ad7b6588ec916c6c04"
   },
-  "note": "READ-ONLY zone-FILL-PARAMETER screen of the pour residual -- the 27 plane-orphan open edges (+3V3 15, GND 12) that D-595 left as a floorplan wall.  Before any refloorplan is attempted the CHEAPEST hypothesis had to be eliminated: that the orphans are an artefact of how the pours are FILLED rather than of where the copper is.  Three variants were built from the authoritative board, refilled by the real KiCad engine (`kicad-cli pcb drc --refill-zones --save-board`) and measured with `routing_ledger.py`.  ZERO edges closed by any of them.  The residual is geometry, not fill policy.",
+  "note": "READ-ONLY zone-FILL-PARAMETER screen of the pour residual -- the 27 plane-orphan open edges (+3V3 15, GND 12) that D-595 left as a floorplan wall.  Before any refloorplan is attempted the CHEAPEST hypothesis had to be eliminated: that the orphans are an artefact of how the pours are FILLED rather than of where the copper is.  Three variants were built from the authoritative board, refilled by the real KiCad engine (`kicad-cli pcb drc --refill-zones --save-board`) and measured with `routing_ledger.py`.  ZERO edges closed by any of them.  The residual is geometry, not fill policy.  SECOND PASS, on the D-599 promoted board b8bb6d98 (74 open edges): the zone MIN-THICKNESS floor was added to the family, because a fill neck thinner than `min_thickness` is DELETED by KiCad and that is a different mechanism from clearance.  It does not change the verdict.",
   "schema": 1,
   "variants": [
     {
@@ -40,6 +40,28 @@
       "result": "identical to clr200 (solid is vacuous)",
       "retained_open_edges": 76,
       "tag": "both"
+    },
+    {
+      "board": "b8bb6d98 (post D-599)",
+      "change": "SetMinThickness(0.150 mm) on all 7 non-rule-area zones (from 0.200)",
+      "result": "ZERO edges closed (74 -> 74)",
+      "retained_open_edges": 74,
+      "tag": "minth150"
+    },
+    {
+      "board": "b8bb6d98 (post D-599)",
+      "change": "SetMinThickness(0.127 mm) -- the JLCPCB standard-process minimum trace",
+      "result": "ZERO edges closed (74 -> 74)",
+      "retained_open_edges": 74,
+      "tag": "minth127"
+    },
+    {
+      "board": "b8bb6d98 (post D-599)",
+      "change": "SetMinThickness(0.127 mm) AND SetLocalClearance(0.200 mm) together",
+      "result": "ONE edge closed (74 -> 73): GND 12 -> 11 open edges, 13 -> 12 copper islands; ratsnest 90 -> 89",
+      "retained_open_edges": 73,
+      "tag": "minth127_clr200",
+      "verdict": "REFUSED.  One edge of 74 does not justify taking the WHOLE board's pour geometry to the process floor on all six layers at once -- 0.05 mm of pour-to-signal margin surrendered everywhere, plus fill necks as thin as 0.127 mm wherever the filler wants one, which is JLCPCB's standard-process minimum and a known etch/yield concern for zone slivers.  Neither relaxation earns anything ALONE; only the pair moves a single GND land."
     }
   ]
 }

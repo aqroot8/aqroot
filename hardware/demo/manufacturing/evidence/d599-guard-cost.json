@@ -1,0 +1,60 @@
+{
+  "also_found": "`/08_BUTTONS_EXPANDERS/BTN_DOWN_N` reads verdict OPEN on this board in the corridor screen -- its single MST edge routes at BASELINE with no rip-up at all -- while `screen_pour_damage.py --guard` reported NO_COPPER/NO_PATH for it. Screen it guard-OFF as well.",
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "b8bb6d9873a3c8040e6a9f40f0fa812a6775421f177006c4e5f3ba348fb25233",
+  "cost": {
+    "detail": [
+      {
+        "edge": "U3.22 -> U4.13",
+        "guard_off": "OK 46.00 mm",
+        "guard_on": "NO_PATH",
+        "net": "/I2C_SCL_INT"
+      },
+      {
+        "edge": "U3.23 -> U4.14",
+        "guard_off": "OK 43.13 mm",
+        "guard_on": "NO_PATH",
+        "net": "/I2C_SDA_INT"
+      }
+    ],
+    "edges_blocked": 2,
+    "nets_affected": [
+      "/I2C_SCL_INT",
+      "/I2C_SDA_INT"
+    ],
+    "unaffected": [
+      "/09_COMMUNITY_HEADER/EXT_SDA",
+      "/WAKE_INT_N",
+      "/BQ25185_STAT1",
+      "/BQ25185_STAT2",
+      "/03_SPI_A_DISPLAY_SD/LED_K",
+      "/NFC_SUPPLY",
+      "/01_POWER_TREE/BQ25185_SYS"
+    ]
+  },
+  "guard": "evidence/d599-pour-bond-guard-next.json",
+  "guard_tubes": 48,
+  "interpretation": "THE GUARD IS A PRE-FILTER, NOT THE AUTHORITY.  It exists so the proposer does not waste a transaction on copper the gate would refuse for severing a pour bond.  But clause 4 of `route_maze_batch.py` already measures whole-board retained open edges after the real refill AND after the `--repair-planes` stitch, so a route that slots a pour is either re-bonded by a barrel or REFUSED on the numbers.  Dropping the pre-filter for a named net therefore weakens nothing: it only lets the gate judge a proposal the pre-filter would have hidden.  It does NOT follow that the guard should be dropped in general -- it is cheap and it is right about 7 of these 9 nets -- only that a net it blocks deserves a guarded-OFF run through the FULL gate with `--repair-planes` before being called a wall.",
+  "measured_lines": [
+    "  /I2C_SCL_INT                       guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_PATH', 'OK46.0', 'NO_PATH']",
+    "  /I2C_SCL_INT                       guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_PATH', 'NO_PATH', 'NO_PATH']",
+    "  /I2C_SDA_INT                       guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'OK43.1']",
+    "  /I2C_SDA_INT                       guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_PATH']",
+    "  /09_COMMUNITY_HEADER/EXT_SDA       guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_PATH', 'NO_PATH']",
+    "  /09_COMMUNITY_HEADER/EXT_SDA       guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_PATH', 'NO_PATH']",
+    "  /WAKE_INT_N                        guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_PATH']",
+    "  /WAKE_INT_N                        guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_PATH']",
+    "  /BQ25185_STAT1                     guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /BQ25185_STAT1                     guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /BQ25185_STAT2                     guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_LEGAL_ESC']",
+    "  /BQ25185_STAT2                     guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_PATH', 'NO_LEGAL_ESC']",
+    "  /03_SPI_A_DISPLAY_SD/LED_K         guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /03_SPI_A_DISPLAY_SD/LED_K         guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /NFC_SUPPLY                        guard OFF guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /NFC_SUPPLY                        guard ON  guarded_layers={'F': 311, 'B': 1168} ['NO_LEGAL_ESC', 'NO_LEGAL_ESC']",
+    "  /01_POWER_TREE/BQ25185_SYS         guard OFF guarded_layers={'F': 311, 'B': 1136} ['NO_PATH', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_LEGAL_ESC']",
+    "  /01_POWER_TREE/BQ25185_SYS         guard ON  guarded_layers={'F': 311, 'B': 1136} ['NO_PATH', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_LEGAL_ESC', 'NO_LEGAL_ESC', 'NO_PATH', 'NO_LEGAL_ESC']"
+  ],
+  "note": "READ-ONLY A/B of the POUR-BOND GUARD's routing cost.  The guard exists to keep every net OTHER than a tube's own out of the copper that is the only bond between a pour pad and its island, and every promotion since D-585 has carried it.  Nothing had ever measured what it COSTS.  Each of the nine open retained nets below was offered every MST edge twice on the same board, at its own contract, with `maze3d.Field(guard=...)` OFF and ON -- 311 guarded F.Cu cells and 1168 guarded B.Cu cells.  The answer is small and exact.",
+  "schema": 1
+}
