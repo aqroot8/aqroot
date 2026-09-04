@@ -6420,6 +6420,27 @@ inherited with ZERO attributable and ZERO parity reports; fill-stable; D-269 /
 D-186 rule text live; `hardware/beta-v2/` untouched. `pour_bond_contract.py`
 P1-P4 and `neck_contract.py` N1-N3 PASS on the regenerated 46-tube guard.
 
+**THE LEVER WAS THEN RETIRED ON A MEASUREMENT, NOT ON A FEELING.** Re-run on
+the promoted board `0b991dc9...`, `screen_pad_clearance.py` reports **0 of 29**
+open retained nets changing verdict. It did surface one candidate --
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N`, whose single open edge routes when it is
+offered the board unguarded -- and three gate runs priced it. With the 29-tube
+guard it is `NO_PATH`: **its only corridor runs through a still-load-bearing
+pour-bond neck.** Guard OFF it routes at **47.361 mm and 5 vias for an 8.099 mm
+gap**, closes its edge, and severs a `GND` pour bond the repair cannot restore
+-- **72 -> 72, REFUSED**, D-599's exact shape. The 13 pads the repair is offered
+are the same `NO_VIA_SITE` / `NO_LEGAL_ESCAPE` set `pour_bond_guard.py` already
+names; a 0.50/0.25 mm stitch barrel (D-603's own free rung, plumbed through
+`--stitch-via` and confirmed live in the repair contract) changes none of them;
+and the cross-check that closes the loop is that **none of the 13 is among the
+four pads D-601's licensed 0.45/0.20 mm rung would buy** (`C23.1`, `C7.2`,
+`R40.2`, `U2.12`; empty overlap). So the licence does not open this wall either.
+It is corridor capacity, not barrel diameter -- the same diagnosis D-601 reached
+for the three walls it offered as partners. The authoritative board is
+byte-identical across all three runs. Evidence
+`d603-clrpad-survey-next.json` (`9223f068...`),
+`d603-btn-down-refusal.json` (`9c801ea9...`).
+
 **NEXT.** The pad-clearance lever is now MEASURED AND SPENT and the free bond
 rung is EXHAUSTED, so the next highest-leverage bounded unit is unchanged and
 now has a second independent wall naming it: **SEGMENT eviction** -- split a

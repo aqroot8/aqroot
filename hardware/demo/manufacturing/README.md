@@ -109,6 +109,26 @@ untouched.  `protected_copper.py`: 15 nets / 393 objects BYTE-IDENTICAL.
 `pour_bond_contract.py` P1-P4 and `neck_contract.py` N1-N3 PASS on the
 regenerated 46-tube guard.
 
+**THE LEVER IS NOW MEASURED AND SPENT, AND THE RE-RUN FOUND THE NEXT
+CANDIDATE AND REFUSED IT.**  Re-run on the promoted board, `0 of 29` open
+retained nets change verdict: the pad-clearance split has paid everything it
+will pay, which is exactly the number a lever should be retired on.  The re-run
+did surface one net whose single open edge routes ALONE --
+`/08_BUTTONS_EXPANDERS/BTN_DOWN_N`, offered unguarded -- and three gate runs
+priced it.  With the 29-tube guard it is `NO_PATH`: **its only corridor runs
+through a still-load-bearing pour-bond neck.**  Guard OFF it routes at
+**47.361 mm and 5 vias for an 8.099 mm gap**, closes its edge, and severs a
+`GND` bond the repair cannot restore -- **72 -> 72, REFUSED**, D-599's exact
+shape.  The 13 pads the repair is offered are the same `NO_VIA_SITE` /
+`NO_LEGAL_ESCAPE` set `pour_bond_guard.py` already names, a 0.50/0.25 mm stitch
+barrel changes none of them, and the cross-check that closes the loop is that
+**none of the 13 is among the four pads D-601's licensed 0.45/0.20 mm rung would
+buy**.  So the licence does not open this wall either: it is corridor capacity,
+not barrel diameter -- the same diagnosis D-601 reached for the three walls it
+offered as partners.  Evidence `d603-clrpad-survey-next.json`,
+`d603-btn-down-refusal.json`; the authoritative board is byte-identical across
+all three runs.
+
 Usage:
 
     # which open edges does the PAD clearance decide, on the board as it stands?

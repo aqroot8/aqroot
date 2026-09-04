@@ -1,0 +1,647 @@
+{
+  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "0b991dc966a8a642a6e630a18eaa8f72c41d61a0d772b249def4a0be2a017ec3",
+  "method": "read-only; per net two maze3d.Field objects differing in clr_pad ALONE, every island-MST edge offered to the real maze3d.route_join with emit=False",
+  "neck_measured": true,
+  "nets": [
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 15,
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 1,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 12,
+      "net": "GND",
+      "netclass": "GND",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.3
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.25,
+      "mst_edges": 9,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.8
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 5,
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "ok_collapsed": 1,
+      "ok_pad_split": 1,
+      "ok_pad_split_neck": 1,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 3,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "netclass": "I2C",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.3,
+      "mst_edges": 2,
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+      "netclass": "LED_BOOST",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_SRC",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.3
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 2,
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 2,
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 2,
+      "net": "/I2C_SDA_INT",
+      "netclass": "I2C",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 2,
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST",
+        "NO_LEGAL_ESCAPE_SRC"
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 2,
+      "net": "/WAKE_INT_N",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH",
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.3,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "netclass": "SWITCH_NODE",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "netclass": "USB_D",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "netclass": "NFC_RX",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "netclass": "NFC_RX",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "netclass": "Default",
+      "ok_collapsed": 1,
+      "ok_pad_split": 1,
+      "ok_pad_split_neck": 1,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [],
+      "reasons_pad_split": [],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/ACC_5V_BOOST_EN",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/I2S_LRCLK",
+      "netclass": "I2S",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/NFC_IRQ",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/SPI_B_SCK",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "reasons_pad_split": [
+        "NO_LEGAL_ESCAPE_DST"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/SX1262_DIO1",
+      "netclass": "Default",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    },
+    {
+      "changed": false,
+      "clr_trk_mm": 0.2,
+      "mst_edges": 1,
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D",
+      "ok_collapsed": 0,
+      "ok_pad_split": 0,
+      "ok_pad_split_neck": 0,
+      "opened_edges": [],
+      "pad_clr_mm": 0.2,
+      "reasons_collapsed": [
+        "NO_PATH"
+      ],
+      "reasons_pad_split": [
+        "NO_PATH"
+      ],
+      "width_mm": 0.25
+    }
+  ],
+  "nets_changed": 0,
+  "nets_measured": 29,
+  "question": "which open retained edges does the PAD clearance decide, read at the .kicad_dru's own pad figure instead of the elevated ROUTING figure the same rule scopes away from pads",
+  "schema": 1
+}

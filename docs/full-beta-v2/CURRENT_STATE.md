@@ -74,6 +74,20 @@
   `d603-protected-copper.json`, `d603-pour-bond-guard-next.json`,
   `d603-guard-contract.json`, `d603-neck-contract.json`,
   `d603-bond-stitch-next.json`, `d603-pour-bond-guard-bonded.json`.
+  **LEVER RETIRED, AND THE RE-RUN'S CANDIDATE REFUSED.** Re-run on the
+  promoted board: **0 of 29** open retained nets change verdict, so the
+  pad-clearance split has paid everything it will pay. It did surface
+  `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` -- one open edge, routable unguarded --
+  and three gate runs priced it: with the 29-tube guard `NO_PATH` (its only
+  corridor runs through a still-load-bearing pour-bond neck); guard OFF it
+  routes at 47.361 mm and 5 vias for an 8.099 mm gap, closes its edge and
+  severs a `GND` bond the repair cannot restore, **72 -> 72 REFUSED**, D-599's
+  exact shape; a 0.50/0.25 mm stitch barrel changes none of the 13 offered
+  pads; and **none of those 13 is among the four pads D-601's licensed
+  0.45/0.20 mm rung would buy**, so the licence does not open it either.
+  Corridor capacity, not barrel diameter. Authoritative board byte-identical
+  across all three runs. Evidence `d603-clrpad-survey-next.json`,
+  `d603-btn-down-refusal.json`.
   **Next: SEGMENT eviction, now named by TWO independent walls.** D-602 named it
   for the USB connector corridor; the U9 west channel names it again with
   openers a millimetre long. Split a crossing track at a boundary, rip up only
