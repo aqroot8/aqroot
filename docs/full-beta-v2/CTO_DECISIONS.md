@@ -6158,3 +6158,149 @@ neck that bonds a pad whose only bond is the pour, so the slot is never cut in
 the first place. That is a router-side obstacle, it is measurable by the screen
 that found the problem, and it does not need any of the four pads to become
 stitchable. No owner decision is open.
+
+# D-585 · 2026-09-04 · Demo pour-bond protection; 5 nets PROMOTED, the pour-damage class RETIRED
+
+D-584 handed this board a precise wall: ZERO nets `PROMOTABLE`, six nets that
+route cleanly and are refused for exactly FOUR pads -- `+3V3` `J1.35`, `R19.1`,
+`R26.1` and `GND` `U3.12` -- each bonded ONLY by an outer pour, none able to
+take a barrel or an escape at any permitted geometry, so the repair could never
+lift the refusal. D-585 answers that with PREVENTION rather than repair, and
+the answer generalises: after it, the pour-damage refusal does not occur again
+anywhere on this board.
+
+Whole-board retained open edges **101 -> 91**, five nets improved, ZERO nets
+regressed, ZERO copper removed, ZERO zones touched, ZERO attributable DRC, and
+the plane repair had NOTHING to do -- `regressed_before_repair` is empty, which
+is the guard's whole claim measured on the authoritative board.
+
+## The question the guard answers
+
+    WHICH COPPER, IF A FOREIGN TRACK TOOK IT, WOULD ORPHAN A PAD FOR GOOD?
+
+`pour_bond_guard.py` (new, read-only) reads island membership rather than
+modelling it -- each outline of a zone's filled polygon set IS one connected
+island -- and guards an island under either of two clauses. `SMALL_ISLAND`: at
+most `--area-max` 64 mm2 and bonding two or more pads, a LOCAL bond with no
+redundancy. `NO_ESCAPE`: any pad, on any island however large, for which
+`maze3d.pad_escapes` -- the same primitive the repair launches from -- returns
+nothing at the net's own contract width, so no router move could ever re-bond
+it. Between them the two clauses name all four of D-584's fatal pads: `R19.1` +
+`R26.1` are `+3V3` `F.Cu` island 6 (21.07 mm2, `SMALL_ISLAND`), `U3.12` is
+`GND` `B.Cu` island 18 (10.29 mm2, with `C4.2`), and `J1.35` is `NO_ESCAPE` on
+the 972.89 mm2 main `+3V3` island -- a 0.30 mm finger in a 0.5 mm-pitch FPC row.
+
+What is protected is a TUBE, not a bounding box: for each edge of a Euclidean
+MST over an island's anchors, the geodesic path between them THROUGH THE
+ISLAND'S OWN COPPER, on a 25 um lattice eroded first so the path only runs
+where a tube of radius 0.125 mm fits. The keep-out a router owes it is
+`tube radius + zone clearance` = 0.375 mm; the router adds its own half-width
+and the same 0.75-cell guard band `QBoard.grid` widens every other obstacle by,
+because those depend on the net being routed and not on the bond. On the D-584
+authority board that is 43 tubes, 105.969 mm, 1068 points: `+3V3` `F.Cu` 10
+(6 `NO_ESCAPE`, 4 `SMALL_ISLAND`), `GND` `B.Cu` 33 (3 / 30).
+
+## The guard is OFF by default and SOUND when on
+
+A lever that narrows what the router may propose has to be pinned at both ends,
+so `checks/pour_bond_contract.py` (new) measures four claims and all four PASS:
+
+  **P1 OFF IS BYTE-IDENTICAL.** With `guard=None`, `Field.blk` on every layer
+  and `Field.via_ok` are bit-for-bit what `maze3d.py` at `919ebe4` produced,
+  for all 8 sample nets at their own contracts. No accepted route can move
+  because the lever exists.
+
+  **P2 A TUBE IS REAL COPPER.** All 1068 points of all 43 tubes lie inside the
+  filled pour of the net and layer they claim, and every end lies on the pad or
+  via it names. Nothing is forbidden for copper that is not there.
+
+  **P3 ON BLOCKS THE TUBE, AND ONLY AROUND IT.** For a foreign net every tube
+  cell is blocked in `blk` AND removed from the via lattice -- a through via is
+  copper on every layer, so a barrel inside a tube slots it exactly as a track
+  would -- and no cell further than `keepout + width/2 + one lattice cell` from
+  a tube differs from the unguarded lattice.
+
+  **P4 A POUR IS EXEMPT FROM ITS OWN TUBES.** `GND` sees zero `GND` tubes and
+  every `+3V3` tube, and vice versa: the tube IS that net's own copper and its
+  stitch must run down it, but slotting the OTHER pour is equally fatal
+  whoever does it.
+
+The guard also binds the plane REPAIR, not just the proposal -- a repair that
+re-bonded one pad by slotting another pad's only bond would trade one orphan
+for the next -- and the gate report carries the spec path, its SHA-256 and its
+tube count, because a promotion that cannot be reproduced from its own evidence
+is not evidence.
+
+## The promotion
+
+The guarded screen predicted all six of D-584's refused nets `PROMOTABLE`. The
+full gate was then run on all six as ONE transaction, `--partial
+--repair-planes --guard`. Five promoted -- `/I2C_SDA_INT` (8 -> 2, 249.529 mm,
+29 vias), `/I2C_SCL_INT` (8 -> 7 in batch context), `/09_COMMUNITY_HEADER/
+EXT_SDA` (4 -> 3), `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` (3 -> 2, 7.962 mm and no
+via at all) and `/ACC_5V_BOOST_EN` (3 -> 2). `/NFC_CS_N` returned `NO_PATH`
+once the other five had taken the corridor and its revert was clean: every one
+of the 168 added objects is on one of the five nets that SUCCEEDED. Raw board
+ratsnest 117 -> 107.
+
+`verify_promotion.py` re-derived the result from the two board files alone and
+all TWELVE checks PASS: 0 objects removed; 168 added (130 tracks + 38 vias) and
+every one on a claimed net; every track 0.200 mm, on `F.Cu`/`B.Cu`/`In2.Cu`
+ONLY -- nothing on the reserved `In1`/`In4`/`In3` planes; every via
+0.600/0.300 mm, meeting the drill and 0.125 mm annular floors; zone inventory
+unchanged; real zone-refilled schematic-parity KiCad DRC at `--severity-all`
+exactly 199 `lib_footprint_issues` / 5 `hole_clearance` / 1
+`solder_mask_bridge` inherited, with ZERO attributable and ZERO parity errors;
+fill-stable; D-269 / D-186 rule text live; `hardware/beta-v2/` untouched.
+
+Accepted copper is preserved by PROOF, not by sampling: `nothing_removed` and
+`added_only_on_claimed_nets` together mean every object on every unclaimed net
+is unchanged. Re-measured anyway -- the 405 copper objects on `ACC_5V_SW_EN`,
+all three `FRONT_RGB_*_N`, XGPIO4 / XGPIO5, `ACC_3V3_SW` and every `BAT_*` net
+are identical in position, layer, width and net to D-584. J5.9-12 / J5.15-18
+remain the approved Demo NC contacts.
+
+Authority `d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755`
+-> `b2b787a334d83b16e680485e520fcaba131d6cb83c9a91bac165da494923c0d5`.
+
+## Next, and it is measured on three levers, not guessed
+
+The guard was REGENERATED on the promoted board -- it is self-maintaining, and
+it grew, 43 tubes -> 45 (110.349 mm), because the five new slots created two
+more fragile bonds. The screen was then re-run against it TWICE, with and
+without `--neck` at 1.5 mm, and both runs report the SAME verdict for all 28
+remaining plane-less nets: **`NO_COPPER`, 28 of 28**. Not one `POUR_DAMAGE` --
+that refusal class is retired, the guard converted it from a refusal into a
+routing constraint and the router now reports an honest `NO_PATH` where it used
+to orphan pads. Not one `PROMOTABLE` either: the maze + `--partial` + `--neck`
+seam is definitively mined out at 91 retained open edges.
+
+The 91 decompose cleanly, and the largest block is no longer a signal net:
+
+  * **33 edges are the POURS' OWN residual** -- `+3V3` 19 and `GND` 14, pads
+    and islands their stitch never planted. This is the stitch / residual-join
+    family, not the maze family, and it is now protected by the very guard this
+    decision adds. It is the largest single block on the board and the next
+    bounded task.
+  * **21 edges over 9 nets are `NO_LEGAL_ESCAPE`** (`_SRC` or `_DST`) -- the
+    pad cannot launch AT ALL at its contract width, `--neck` included.
+    `BQ25185_SYS` alone is 10 of them. This is a FANOUT / floorplan wall, not a
+    search wall.
+  * **35 edges over 19 nets are `NO_PATH`** -- corridor capacity, the
+    characterized USB and west-corridor walls among them.
+
+So the next highest-leverage bounded task is the pour residual: 33 of 91 edges,
+one already-proven primitive, and the guard makes it safe to run. No owner
+decision is open.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d585-pour-bond-guard.json` (`355b8ef2...`),
+`d585-guard-contract.json` (`ad75d022...`),
+`d585-pour-damage-guarded.json` (`559ec95f...`),
+`d585-guarded-batch6.json` (`ff3dafc9...`),
+`d585-verify.json` (`4af96870...`),
+`d585-protected-copper.json` (`9f018da4...`),
+`d585-pour-bond-guard-next.json` (`8013dfa1...`),
+`d585-pour-damage-next.json` (`d66672c3...`),
+`d585-pour-damage-neck.json` (`c0d293a8...`),
+`d585-neck-contract-rerun.json` (`a3f58da0...`).

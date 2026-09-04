@@ -384,10 +384,37 @@ def net_contract(board, net):
 # --------------------------------------------------------------------------- #
 # child: propose copper on a scratch board
 # --------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------- #
+# pour-bond guard
+# --------------------------------------------------------------------------- #
+def load_guard(path):
+    """Read a `pour_bond_guard.py` spec, or {} when no guard was asked for."""
+    if not path:
+        return {}
+    return json.loads(Path(path).read_text())
+
+
+def guard_for(spec, net):
+    """{layer: [(x, y, keepout_nm), ...]} this net must keep clear.
+
+    A pour's OWN net is exempt from its OWN tubes: the tube is that net's
+    copper, so its stitch and its residual joins may run straight down it.  A
+    guard on the OTHER pour's layer still binds -- `GND` may not slot `+3V3`'s
+    bond any more than a signal net may.
+    """
+    out = {}
+    for g in spec.get("guards", ()):
+        if not g.get("ok") or g["net"] == net:
+            continue
+        out.setdefault(g["lkey"], []).extend(
+            (p[0], p[1], g["keepout_radius"]) for p in g["points"])
+    return out
+
+
 def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_residual=False, join_max_mm=0.0, neck=False,
             neck_max_mm=0.0, partial=False, attempt_cap=0,
-            split_islands=False):
+            split_islands=False, guard_spec=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -435,9 +462,11 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             c["via_drill"] = drill
             c["via_dia"] = max(stitch_via[0], drill + 2 * ANNULAR_MIN)
         t0 = time.time()
+        g = guard_for(guard_spec, net) if guard_spec else None
+        c["guarded_layers"] = {k: len(v) for k, v in (g or {}).items()}
         field = mz.Field(qb, net, c["width"], c["clr"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
-                         layers=c["layers"], neck=neck_rule)
+                         layers=c["layers"], neck=neck_rule, guard=g)
         # A net that owns a filled pour is completed by dropping each island
         # onto that pour, not by a pad-to-pad MST across the signal layers.
         if mz.has_plane(qb, net):
@@ -474,7 +503,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             time.time() - t0), file=sys.stderr, flush=True)
         r["contract"] = {k: c[k] for k in
                          ("netclass", "width", "clr", "via_dia", "via_drill",
-                          "layers", "reserved_inner_planes")}
+                          "layers", "reserved_inner_planes",
+                          "guarded_layers")}
         results.append(r)
     qb.save(str(path))
     print(json.dumps(dict(results=results), default=str))
@@ -606,7 +636,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          join_residual=False, join_max_mm=0.0, neck=False, neck_max_mm=0.0,
          partial=False, attempt_cap=0, repair_planes=False,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
-         evict=(), evict_margin_mm=EVICT_MARGIN_MM):
+         evict=(), evict_margin_mm=EVICT_MARGIN_MM, guard=None):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -659,6 +689,11 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         """Run the proposer on the scratch board for these nets."""
         cmd = [sys.executable, __file__, "--propose", str(scratch),
                "--grid", str(grid), "--via-cost", str(via_cost_mm)]
+        # The guard binds the REPAIR too.  A repair that re-bonded one pad by
+        # slotting another pad's only bond would be trading one orphan for the
+        # next, and clause 4 would refuse the run either way.
+        if guard:
+            cmd += ["--guard", str(guard)]
         if stitch_width:
             cmd += ["--stitch-width", str(stitch_width)]
         if stitch_via:
@@ -841,6 +876,12 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             nets_improved=closed, nets_regressed=regressed),
         plane=plane_zone,
         plane_repair=repair,
+        # PROVENANCE, not a clause.  The guard changes what the router is
+        # allowed to take; the report has to say which spec was in force, or a
+        # promotion cannot be reproduced from its own evidence.
+        guard=(dict(spec=str(guard), sha256=sha256_file(Path(guard)),
+                    tubes=len(load_guard(guard).get("guards", ())))
+               if guard else None),
         eviction=eviction,
         preservation=dict(removed_objects=removed,
                           unlicensed_removals=unlicensed,
@@ -931,6 +972,10 @@ def main():
     ap.add_argument("--stitch-via", default=None,
                     help="DIA:DRILL in nm for stitch barrels; clamped UP to "
                          "the DRU hole-size and annular-ring floors")
+    ap.add_argument("--guard", type=Path,
+                    help="a pour_bond_guard.py spec: keep every net OTHER than "
+                         "a tube's own out of the copper that is the only "
+                         "bond between a pour pad and its island")
     ap.add_argument("--work", default=None)
     ap.add_argument("--candidate", type=Path)
     ap.add_argument("--promote", action="store_true")
@@ -943,7 +988,8 @@ def main():
     if a.propose:
         propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
-                a.partial, a.attempt_cap, a.split_islands)
+                a.partial, a.attempt_cap, a.split_islands,
+                load_guard(a.guard))
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -967,7 +1013,8 @@ def main():
                  repair_planes=a.repair_planes,
                  split_islands=a.split_islands,
                  repair_join_max_mm=a.repair_join_max_mm,
-                 evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm)
+                 evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
+                 guard=a.guard)
     if a.work:
         summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)

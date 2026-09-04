@@ -1,0 +1,28 @@
+{
+ "byte_identical": true,
+ "objects_after": 405,
+ "objects_before": 405,
+ "only_in_after": [],
+ "only_in_before": [],
+ "pre_board_sha256": "d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755",
+ "promoted_board_sha256": "b2b787a334d83b16e680485e520fcaba131d6cb83c9a91bac165da494923c0d5",
+ "protected_nets": [
+  "/01_POWER_TREE/BAT_CONNECTOR_P",
+  "/01_POWER_TREE/BAT_MID",
+  "/01_POWER_TREE/BAT_PROTECTED_P",
+  "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+  "/01_POWER_TREE/BAT_RAW",
+  "/01_POWER_TREE/BAT_SENSE",
+  "/01_POWER_TREE/REC_BAT_LOW",
+  "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+  "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+  "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+  "/09_COMMUNITY_HEADER/XGPIO4_HDR",
+  "/09_COMMUNITY_HEADER/XGPIO5_HDR",
+  "/ACC_3V3_SW",
+  "/ACC_5V_SW_EN",
+  "/XGPIO4",
+  "/XGPIO5"
+ ],
+ "schema": 1
+}

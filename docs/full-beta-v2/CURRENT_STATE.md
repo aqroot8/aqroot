@@ -13,6 +13,66 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-585 (pour-bond protection; 5 nets PROMOTED, the pour-damage refusal
+  class RETIRED):** D-584 left six nets that routed cleanly and were refused for
+  exactly FOUR pads -- `+3V3` `J1.35`/`R19.1`/`R26.1`, `GND` `U3.12` -- each
+  bonded ONLY by an outer pour and none able to take a barrel or an escape at
+  any permitted geometry, so no repair could ever lift the refusal. D-585
+  answers by PREVENTION. New read-only `pour_bond_guard.py` asks which copper,
+  if a foreign track took it, would orphan a pad for good: island membership is
+  READ from KiCad's filled polygon set, an island is guarded when it is at most
+  64 mm2 and bonds two or more pads (`SMALL_ISLAND`) or when any pad on it has
+  no `maze3d.pad_escapes` result at all (`NO_ESCAPE`), and what is protected is
+  a TUBE -- the geodesic path between anchors THROUGH THE ISLAND'S OWN COPPER
+  on a 25 um lattice eroded so only a 0.125 mm-radius tube survives. Those two
+  clauses name all four fatal pads. The keep-out is `tube + zone clearance` =
+  0.375 mm; the router adds its own half-width and the usual 0.75-cell band.
+  43 tubes / 105.969 mm / 1068 points on the D-584 board. The lever is OFF by
+  default and pinned at both ends by new `checks/pour_bond_contract.py`, all
+  four claims PASS: **P1** with `guard=None` every `Field.blk` layer and
+  `via_ok` are bit-for-bit `maze3d.py` at `919ebe4`; **P2** all 1068 tube points
+  lie inside the pour they claim and every end on the pad it names; **P3** a
+  foreign net has every tube cell blocked AND removed from the via lattice (a
+  through via slots a tube exactly as a track does) and nothing beyond
+  `keepout + width/2 + one cell` changes; **P4** a pour is exempt from its OWN
+  tubes and still bound by the other pour's. The guard binds the plane REPAIR
+  too, and the gate report carries the spec path, SHA-256 and tube count.
+  All six refused nets were then driven through the FULL gate as ONE
+  transaction: five PROMOTED (`/I2C_SDA_INT` 8 -> 2 at 249.529 mm / 29 vias,
+  `/I2C_SCL_INT`, `EXT_SDA`, `BTN_DOWN_N` at 7.962 mm and no via, and
+  `/ACC_5V_BOOST_EN`), `/NFC_CS_N` returned `NO_PATH` once the other five had
+  taken the corridor and its revert was clean. Whole-board retained open edges
+  **101 -> 91**, ratsnest 117 -> 107, ZERO nets regressed, and the plane repair
+  had NOTHING to do -- which is the guard's claim measured on the authoritative
+  board. Re-proved independently by `verify_promotion.py`, all 12 checks PASS:
+  0 removed, 168 added (130 tracks + 38 vias) all on claimed nets, every track
+  0.200 mm on `F`/`B`/`In2` ONLY (nothing on the reserved `In1`/`In4`/`In3`
+  planes), every via 0.600/0.300, zone inventory unchanged, real zone-refilled
+  schematic-parity DRC exactly 199/5/1 with ZERO attributable and ZERO parity
+  errors, fill-stable, D-269/D-186 live, `hardware/beta-v2/` untouched. Accepted
+  copper is preserved by proof (`nothing_removed` + `added_only_on_claimed_nets`
+  leave every unclaimed net unchanged) and re-measured anyway: the 405 objects
+  on `ACC_5V_SW_EN`, all three `FRONT_RGB_*_N`, XGPIO4/5, `ACC_3V3_SW` and every
+  `BAT_*` net are identical to D-584; J5.9-12/15-18 remain approved NC.
+  Authority `d831b4f4...` -> `b2b787a334d83b16e680485e520fcaba131d6cb83c9a91bac165da494923c0d5`.
+  Evidence `d585-pour-bond-guard.json`, `d585-guard-contract.json`,
+  `d585-pour-damage-guarded.json`, `d585-guarded-batch6.json`,
+  `d585-verify.json`, `d585-protected-copper.json`,
+  `d585-pour-bond-guard-next.json`, `d585-pour-damage-next.json`,
+  `d585-pour-damage-neck.json`, `d585-neck-contract-rerun.json`.
+  **Next:** the guard was regenerated on the promoted board (self-maintaining:
+  43 -> 45 tubes, the five new slots created two more fragile bonds) and the
+  screen re-run against it twice, with and without `--neck` at 1.5 mm. Both
+  report the SAME verdict for all 28 remaining plane-less nets: `NO_COPPER`,
+  28 of 28. Not one `POUR_DAMAGE` -- that class is retired -- and not one
+  `PROMOTABLE`: the maze + `--partial` + `--neck` seam is mined out at 91 edges.
+  The 91 decompose as **33 = the pours' own residual** (`+3V3` 19, `GND` 14 --
+  the stitch / residual-join family, now protected by this very guard, and the
+  largest single block on the board), **21 over 9 nets `NO_LEGAL_ESCAPE`** (the
+  pad cannot launch at all, `--neck` included; `BQ25185_SYS` alone is 10 -- a
+  fanout/floorplan wall, not a search wall) and **35 over 19 nets `NO_PATH`**
+  (corridor capacity, including the characterized USB and west-corridor walls).
+  The next bounded task is the pour residual. No owner decision.
 - **Demo D-584 (16-net best-effort batch PROMOTED; pour-damage screen):** the
   largest promotion since D-579 and the first selected by MEASURING what the
   gate would refuse. After D-582/D-583 poured BOTH outer layers, any signal

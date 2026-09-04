@@ -437,12 +437,19 @@ class Field(object):
     """
 
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
-                 G=100000, layers=None, margin_mm=2.0, neck=None):
+                 G=100000, layers=None, margin_mm=2.0, neck=None, guard=None):
         self.qb, self.net, self.G = qb, net, G
         # OFF unless the caller hands in a `Neck`.  Nothing below reads it
         # except `pad_escapes`, and only for a pad that has NO full-width
         # escape at all, so a `Field` built without one is byte-identical.
         self.neck = neck
+        # POUR-BOND GUARD.  `guard` is {layer: [(x, y, keepout_nm), ...]} --
+        # the tubes `pour_bond_guard.py` proved are the ONLY copper joining a
+        # pad to its pour, on a layer this net may route on.  OFF unless the
+        # caller hands one in, and a `Field` built without one is
+        # byte-identical: `_guard_masks` returns {} and every consumer below
+        # is keyed on membership, never on a False array.
+        self.guard = guard or {}
         self.width, self.clr_pad, self.clr_trk = width, clr_pad, clr_trk
         self.via_dia, self.via_drill = via_dia, via_drill
         self.layers = tuple(layers or qb.routable)
@@ -460,8 +467,47 @@ class Field(object):
         self.cls = net_classes(qb)
         self.mycls = self.cls.get(net, 'Default')
         self.blk = {}
+        self._guard = self._guard_masks()
         self.rebuild_blk()
         self.via_ok = self._via_grid()
+        # A through via is copper on EVERY layer, so a barrel dropped anywhere
+        # inside a guarded tube slots that tube exactly as a track would.  The
+        # guard is therefore ANDed out of the via lattice once, here: `via_ok`
+        # is built once and only ever narrowed afterwards (`forbid_via`), so
+        # one application holds for the life of the Field.
+        for m in self._guard.values():
+            self.via_ok &= ~m
+
+    # -- pour-bond guard ---------------------------------------------------- #
+    def _guard_masks(self):
+        """Cells this net may not take because a bond tube runs through them.
+
+        The tube itself owes `keepout` -- its own half-width plus the zone
+        clearance the pour is filled with -- and THIS net adds its own copper
+        half-width and one lattice cell, the same guard band `QBoard.grid`
+        widens every other obstacle by, so a straight run `QBoard.smooth`
+        accepts between two clear cells cannot graze the tube either.
+        """
+        out = {}
+        for L, pts in self.guard.items():
+            if L not in self.layers or not pts:
+                continue
+            m = np.zeros((self.ny, self.nx), dtype=bool)
+            for (x, y, keepout) in pts:
+                R = keepout + self.width / 2.0 + self.G
+                i0 = max(0, int(math.floor((x - R - self.ox) / self.G)))
+                i1 = min(self.nx - 1, int(math.ceil((x + R - self.ox) / self.G)))
+                j0 = max(0, int(math.floor((y - R - self.oy) / self.G)))
+                j1 = min(self.ny - 1, int(math.ceil((y + R - self.oy) / self.G)))
+                if i1 < i0 or j1 < j0:
+                    continue
+                X, Y = np.meshgrid(
+                    (self.ox + np.arange(i0, i1 + 1) * self.G).astype(float),
+                    (self.oy + np.arange(j0, j1 + 1) * self.G).astype(float))
+                m[j0:j1 + 1, i0:i1 + 1] |= ((X - x) ** 2 + (Y - y) ** 2) < R * R
+            if m.any():
+                out[L] = m
+        return out
 
     # -- blocked grids ------------------------------------------------------ #
     def rebuild_blk(self):
@@ -477,6 +523,11 @@ class Field(object):
                                         self.clr_trk, self.ox, self.oy,
                                         self.x1, self.y1, self.G)
                            | self.dru_overlay(L, self.width))
+            # The guard is re-applied on every rebuild, because `route_net`
+            # rebuilds between MST edges and a bond that survived the first
+            # edge must survive the second one too.
+            if L in self._guard:
+                self.blk[L] |= self._guard[L]
 
     def dru_overlay(self, layer, width):
         """This Field's view of `dru_overlay` -- see the module function."""

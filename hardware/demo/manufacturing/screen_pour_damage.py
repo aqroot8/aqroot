@@ -126,6 +126,8 @@ def trial(net, args, tmproot):
         cmd += ["--join-max-mm", str(args.join_max_mm)]
     if args.neck:
         cmd += ["--neck", "--neck-max-mm", str(args.neck_max_mm)]
+    if args.guard:
+        cmd += ["--guard", str(args.guard)]
     proc = subprocess.run(cmd + [net], text=True, capture_output=True)
     if proc.returncode != 0:
         return dict(net=net, verdict="PROPOSER_ERROR",
@@ -184,6 +186,10 @@ def main():
     ap.add_argument("--join-max-mm", type=float, default=0.0)
     ap.add_argument("--neck", action="store_true")
     ap.add_argument("--neck-max-mm", type=float, default=0.0)
+    ap.add_argument("--guard", type=Path,
+                    help="a pour_bond_guard.py spec; the screen then measures "
+                         "what a net costs the pours WITH the bond tubes held "
+                         "clear, which is the question the gate will ask")
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
@@ -210,6 +216,8 @@ def main():
         verdicts[r["verdict"]] = verdicts.get(r["verdict"], 0) + 1
     doc = dict(schema=1, board=str(BOARD), board_sha256=sha256_file(BOARD),
                grid=a.grid, partial=bool(a.partial), neck=bool(a.neck),
+               guard=str(a.guard) if a.guard else None,
+               guard_sha256=sha256_file(a.guard) if a.guard else None,
                base_open_edges=sum(a.base.values()),
                pour_owning_nets=sorted(a.pour_nets),
                summary=dict(verdicts=verdicts), nets=out)

@@ -1,0 +1,142 @@
+{
+  "base_open_edges": 101,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "d831b4f410cb92d8280549d1a772ab5d7ac9a2e57ca250fcc88b8099707ba755",
+  "grid": 100000,
+  "guard": "evidence/d585-pour-bond-guard.json",
+  "guard_sha256": "355b8ef2a41ca3eb86c07f949d66612446544ebe85bc216a7d5a6a9c0da13248",
+  "neck": false,
+  "nets": [
+    {
+      "board_delta": -2,
+      "board_edges_after": 99,
+      "board_edges_before": 101,
+      "improved": [
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+      ],
+      "mm": 86.879,
+      "mode": "maze+partial",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "net_edges_after": 1,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 5
+    },
+    {
+      "board_delta": -2,
+      "board_edges_after": 99,
+      "board_edges_before": 101,
+      "improved": [
+        "/09_COMMUNITY_HEADER/EXT_SDA"
+      ],
+      "mm": 95.012,
+      "mode": "maze+partial",
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "net_edges_after": 2,
+      "net_edges_before": 4,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 3
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 100,
+      "board_edges_before": 101,
+      "improved": [
+        "/ACC_5V_BOOST_EN"
+      ],
+      "mm": 100.314,
+      "mode": "maze+partial",
+      "net": "/ACC_5V_BOOST_EN",
+      "net_edges_after": 2,
+      "net_edges_before": 3,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 5
+    },
+    {
+      "board_delta": -4,
+      "board_edges_after": 97,
+      "board_edges_before": 101,
+      "improved": [
+        "/I2C_SCL_INT"
+      ],
+      "mm": 186.228,
+      "mode": "maze+partial",
+      "net": "/I2C_SCL_INT",
+      "net_edges_after": 4,
+      "net_edges_before": 8,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 18
+    },
+    {
+      "board_delta": -6,
+      "board_edges_after": 95,
+      "board_edges_before": 101,
+      "improved": [
+        "/I2C_SDA_INT"
+      ],
+      "mm": 249.529,
+      "mode": "maze+partial",
+      "net": "/I2C_SDA_INT",
+      "net_edges_after": 2,
+      "net_edges_before": 8,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 29
+    },
+    {
+      "board_delta": -1,
+      "board_edges_after": 100,
+      "board_edges_before": 101,
+      "improved": [
+        "/NFC_CS_N"
+      ],
+      "mm": 105.127,
+      "mode": "maze+partial",
+      "net": "/NFC_CS_N",
+      "net_edges_after": 1,
+      "net_edges_before": 2,
+      "orphaned_pads": {},
+      "reason": null,
+      "refill_rc": 0,
+      "regressed": [],
+      "routed": true,
+      "verdict": "PROMOTABLE",
+      "vias": 12
+    }
+  ],
+  "partial": true,
+  "pour_owning_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "schema": 1,
+  "summary": {
+    "verdicts": {
+      "PROMOTABLE": 6
+    }
+  }
+}
