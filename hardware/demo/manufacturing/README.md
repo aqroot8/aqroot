@@ -4,9 +4,63 @@ Status: **BLOCKED** at board CONNECTIVITY.  Every fabrication CONTRACT on this
 board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
 population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out
 stackup (`KO1-KO5`), pour bonds (`P1-P4`), necks (`N1-N3`), placement
-(`PL1-PL7`) and protected copper -- and the residual is **55 retained open
-edges across 27 nets**.  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair,
-are parked on rulings rather than routes (D-618, D-620).
+(`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`, D-621) and protected copper --
+and the residual is **53 retained open edges across 25 nets**.  Two of them,
+`USB_D_CONN_P` and the `USB_D_MCU` pair, are parked on rulings rather than
+routes (D-618, D-620).
+
+## RUN THIS SECOND: is the transaction about to move an RF arm? (D-621)
+
+    python3 checks/rf_symmetry_contract.py --ref HEAD \
+        [--arm-mismatch-budget-mm 0.3] -o OUT.json
+
+`.kicad_dru` section 7 says differential symmetry is *"NOT ENCODABLE, AND
+THEREFORE A PLACEMENT PRECONDITION"* -- PM-3, open since FBV2-P2-000 -- and
+until D-621 **nothing on this board could see it change**.  KiCad has no length
+rule on `NFC_RFO1`/`NFC_RFO2`/`NFC_RFI1`/`NFC_RFI2`, `verify_promotion.py`
+counts objects, the ledger counts edges.  D-621 measured what that allowed: with
+`C17` left in the receive channel, the only relay of the `NFC_RFO2` dogleg that
+frees that channel is **9.470 mm against 2.887 mm -- +6.583 mm on the arm that
+is already the longer one -- and every gate would have passed it silently.**
+
+    RF1  both transmit arms are B.Cu-only and carry zero barrels
+    RF2  |len(RFO1) - len(RFO2)| grew by no more than a DECLARED budget
+         (default 0.000 mm: spending any of it puts the number in the record)
+    RF3  the receive pair is topologically symmetric -- same barrel count,
+         same layer set.  A half that dives to an inner layer while its twin
+         does not is a mismatch no length figure reports
+    RF4  the receive pair's mismatch is no worse than the one the PLACEMENT
+         itself imposes: |direct(U9.22->R116.2) - direct(U9.23->R117.2)|,
+         which is 0.7085 mm and needs no tuning
+    RF5  non-vacuity: +1.000 mm on the LONGER arm must break RF2
+
+## RUN THIS BEFORE BUILDING A TRANSACTION: is the lever vacuous? (D-621)
+
+    python3 screen_absent_object.py SCRATCH.kicad_pcb --drop-ref C17 \
+        --drop-track '+3V3:38.2,30.5:38.5,30.9' --drop-via '+3V3:38.5,30.9' \
+        --report OUT.json
+    python3 route_maze_batch.py --propose SCRATCH.kicad_pcb ... NET [NET ...]
+
+The cheapest question about a lever is the one that can kill it: *if the thing
+in the way simply were not there, would anything open?*  Pointed at D-620's
+named `C17` transaction it answered **VACUOUS** in one run -- with `C17` and
+both its escapes gone, all three open `U9` receive-side edges still refuse --
+before a line of the two escape relays, the via-in-pad bound or the `+0.675 mm`
+`PL5` ceiling was built.  It refuses to open the authoritative board by resolved
+path, and a removal description that matches nothing is a `FAIL`, because a spec
+that misses is a spec about a different board.
+
+**`--propose` WRITES its proposals to the board it is given.**  A scratch is good
+for exactly one run; rebuild it for every rung of a ladder or the second
+measurement is taken on the first one's copper -- D-621 read four contaminated
+`NO_PATH`s before noticing.
+
+Because this exists, `route_maze_batch.EXCLUDE` is **empty**.  It held the
+receive pair out of gated routing on the note *"NFC receive arms:
+length/symmetry"* -- abstention standing in for a measurement, the same
+substitution the USB pair's exclusion made until D-596 replaced it with a
+contract.  The promoted pair reads **12.9252 / 12.4919 mm, four barrels each,
+`B.Cu` + `In2.Cu` each: a 0.4333 mm mismatch inside a 0.7085 mm bound.**
 
 ## RUN THIS FIRST: the zero-margin land (2026-09-05, D-620)
 
@@ -31,7 +85,8 @@ Deterministic; non-vacuous to ONE MICRON (grow `U9.14` by 1 um per side and
 arithmetic -- and deliberately not the routed copper around the land, so
 `CLEAR` means "this package can launch this width", not "this net routes today".
 
-**The board-wide reading, 109 lands over the 25 open non-pour retained nets:**
+**The board-wide reading (D-620, 109 lands over what were then 25 open non-pour
+retained nets):**
 
     CLEAR         103   path problems, not package problems
     EXACT           2   U11.9 /BQ25185_STAT1, U11.3 /BQ25185_STAT2 @ 0.200 mm
@@ -39,6 +94,11 @@ arithmetic -- and deliberately not the routed copper around the land, so
                         U9.10  NFC_SUPPLY   P3V3        0.600 vs        0.300
                         U12.10 BQ25185_SYS  SYS_MAIN    0.800 vs        0.600
                         U12.11 BQ25185_SYS  SYS_MAIN    0.800 vs        0.600
+
+Re-read on the D-621 board over the 89 lands of the open non-pour retained nets
+excluding `BQ25185_SYS`: **85 CLEAR, the same 2 EXACT, 2 UNLAUNCHABLE
+(`U9.10`, `U21.5`)** -- the four `NFC_RFI` lands have left the list because they
+are routed.
 
 `+3V3`'s eight stranded lands read **four EXACT** (`U4.2`/`U4.3`/`U4.5`/`U4.12`,
 the BMI270 LGA at 0.600 mm), three CLEAR, one UNLAUNCHABLE (`U5.2`).  So the two
@@ -52,7 +112,14 @@ biggest open families on this board are one mechanism, and it is not congestion.
                               0.200 + 0.250 + 0.250 = 0.700 mm, spent exactly
 
 All three remaining `U9` edges are `DETOURABLE` with `NFC_RFO2` irreducible
-every time.  Its 3-track cut is `NOT_A_CHAIN`; its SEVEN tracks are one chain
+every time.  **D-621 CORRECTION: the 3-track cut IS a chain.**  D-620 recorded
+it as `NOT_A_CHAIN`; offered to `detour_apply` it resolves in one line --
+`37.025,29.875 -> 37.200,30.900 -> 37.725,31.425 -> L6.1`, two free ends, no tee
+at either interior junction, one layer and one width -- and NEITHER end is an
+`EXACT`-margin land, so the LATTICE relays it.  That is the relay D-621
+promoted, and it is why `NFC_RFI1` and `NFC_RFI2` are routed today.  What
+remains true, and is §1's own consequence, is the sentence after it: its SEVEN
+tracks are one chain
 `U9.15 -> L6.1` and the maze relays `NO_PATH` at 0.100, 0.050 AND 0.025 mm --
 which §1 says it must.  `route_maze_batch.py` therefore gained an
 **exact-geometry relay**: a detour record may name an allowlisted

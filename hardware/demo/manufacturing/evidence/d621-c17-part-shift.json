@@ -1,0 +1,101 @@
+{
+  "applied": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "courtyard_overlaps_new": [],
+  "courtyard_overlaps_now": [],
+  "courtyard_overlaps_was": [],
+  "dx_nm": -7050000,
+  "dy_nm": 8850000,
+  "endpoints_on_pads": 2,
+  "endpoints_stranded": [
+    [
+      "+3V3",
+      38.2,
+      30.5
+    ],
+    [
+      "GND",
+      39.525,
+      30.25
+    ]
+  ],
+  "pad_boxes_now_mm": {
+    "1": [
+      [
+        30.475,
+        38.625,
+        31.375,
+        39.575
+      ]
+    ],
+    "2": [
+      [
+        32.025,
+        38.625,
+        32.925,
+        39.575
+      ]
+    ]
+  },
+  "pad_boxes_was_mm": {
+    "1": [
+      [
+        37.525,
+        29.775,
+        38.425,
+        30.725
+      ]
+    ],
+    "2": [
+      [
+        39.075,
+        29.775,
+        39.975,
+        30.725
+      ]
+    ]
+  },
+  "pads": 2,
+  "position_now_mm": [
+    31.7,
+    39.1
+  ],
+  "position_was_mm": [
+    38.75,
+    30.25
+  ],
+  "ref": "C17",
+  "release_named_vias": [
+    [
+      "+3V3",
+      38.5,
+      30.9
+    ]
+  ],
+  "release_nets": [
+    "+3V3",
+    "GND"
+  ],
+  "release_refusals": [],
+  "release_requested": true,
+  "release_retained_barrels": [
+    {
+      "at_mm": [
+        40.5,
+        30.2
+      ],
+      "net": "GND",
+      "why": "pour-backed stitch barrel; not floating"
+    }
+  ],
+  "released_count": 3,
+  "released_objects": [
+    "('trk', '+3V3', 'B.Cu', 38200000, 30500000, 38500000, 30900000, 400000)",
+    "('trk', 'GND', 'B.Cu', 39525000, 30250000, 40500000, 30200000, 300000)",
+    "('via', '+3V3', 38500000, 30900000, 700000, 400000)"
+  ],
+  "schema": 2,
+  "verdict": "PASS",
+  "via_in_pad_allowed": false,
+  "vias_in_moved_pads": []
+}

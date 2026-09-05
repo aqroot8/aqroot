@@ -1,0 +1,379 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "b5147bc0dbd1d6a0ab763cb5fc0905446a1bcea37806b94673e3594ebee3f8d4",
+  "authoritative_unchanged": true,
+  "bonds": {
+    "bonded": 2,
+    "detail": [
+      {
+        "bonded": 1,
+        "bonds": [
+          {
+            "layer": "B",
+            "mm": 1.1,
+            "ok": true,
+            "pad": "C17.1",
+            "via_xy": [
+              30.9,
+              40.2
+            ],
+            "via_xy_nm": [
+              30900000,
+              40200000
+            ]
+          }
+        ],
+        "contract": {
+          "clr": 200000,
+          "clr_pad": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2",
+            "I3"
+          ],
+          "netclass": "P3V3",
+          "via_dia": 800000,
+          "via_drill": 400000,
+          "width": 600000
+        },
+        "failures": [],
+        "mm": 1.1,
+        "net": "+3V3",
+        "ok": true,
+        "requested": 1,
+        "seconds": 2.4,
+        "via": [
+          800000,
+          400000
+        ],
+        "vias": 1
+      },
+      {
+        "bonded": 1,
+        "bonds": [
+          {
+            "layer": "B",
+            "mm": 0.925,
+            "ok": true,
+            "pad": "C17.2",
+            "via_xy": [
+              33.4,
+              39.1
+            ],
+            "via_xy_nm": [
+              33400000,
+              39100000
+            ]
+          }
+        ],
+        "contract": {
+          "clr": 200000,
+          "clr_pad": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "width": 300000
+        },
+        "failures": [],
+        "mm": 0.925,
+        "net": "GND",
+        "ok": true,
+        "requested": 1,
+        "seconds": 1.9,
+        "via": [
+          600000,
+          300000
+        ],
+        "vias": 1
+      }
+    ],
+    "max_mm": 8.0,
+    "nets": [
+      "+3V3",
+      "GND"
+    ],
+    "requested": [
+      "C17.1",
+      "C17.2"
+    ],
+    "via": null
+  },
+  "bridges": null,
+  "candidate_sha256": "a82c907a100e33620e4ae591b227c7e1e11d542492e187d78ec5a7bcb723f863",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI2"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 25,
+    "open_retained_nets_before": 27,
+    "retained_open_edges_after": 53,
+    "retained_open_edges_before": 56
+  },
+  "detour": {
+    "all_relaid": true,
+    "failed": [],
+    "guard_spec": "w/d621promote/guard-with-detour.json",
+    "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+    ],
+    "own_layer_requested": false,
+    "own_layer_spent": [],
+    "relaid": [
+      {
+        "a_mm": [
+          37.025,
+          29.875
+        ],
+        "b_mm": [
+          38.5125,
+          32.2
+        ],
+        "exact_relay": null,
+        "layer": "B.Cu",
+        "layers": [
+          "B"
+        ],
+        "layers_allowed": [
+          "B"
+        ],
+        "lkey": "B",
+        "max_mm": 3.5,
+        "mm": 3.157563440876476,
+        "mm_by_layer": {
+          "B": 3.1576
+        },
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "ok": true,
+        "own_layer": false,
+        "seconds": 3.0,
+        "via_xy": [],
+        "vias": 0,
+        "was_mm": 2.8872,
+        "width_nm": 300000
+      }
+    ],
+    "removed_count": 3,
+    "removed_mm": 2.8872,
+    "requested": "w/d621-dogleg.json",
+    "reserve": [
+      {
+        "exempt": [
+          "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+          "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+          "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        ],
+        "r_mm": 0.55,
+        "x_mm": 37.15,
+        "y_mm": 30.75
+      },
+      {
+        "exempt": [
+          "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+          "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+          "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        ],
+        "r_mm": 0.55,
+        "x_mm": 37.15,
+        "y_mm": 31.3
+      }
+    ]
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [],
+  "guard": null,
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "+3V3",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 3,
+    "removed_objects": [
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37025000, 29875000), (37200000, 30900000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37200000, 30900000), (37725000, 31425000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37725000, 31425000), (38512500, 32200000), 300000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "a82c907a100e33620e4ae591b227c7e1e11d542492e187d78ec5a7bcb723f863",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI2"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "B",
+          "I2"
+        ],
+        "netclass": "NFC_RX",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R116.2",
+          "layers": [
+            "B",
+            "I2",
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 12.925180411621788,
+          "ok": true,
+          "to": "U9.22",
+          "via_xy": [
+            [
+              46.25,
+              25.7
+            ],
+            [
+              43.15,
+              28.85
+            ],
+            [
+              38.65,
+              29.2
+            ],
+            [
+              37.1,
+              30.75
+            ]
+          ],
+          "vias": 4
+        }
+      ],
+      "mm": 12.925,
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": true,
+      "seconds": 10.6,
+      "vias": 4
+    },
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "B",
+          "I2"
+        ],
+        "netclass": "NFC_RX",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R117.2",
+          "layers": [
+            "B",
+            "I2",
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 12.491921262389285,
+          "ok": true,
+          "to": "U9.23",
+          "via_xy": [
+            [
+              46.35,
+              33.7
+            ],
+            [
+              43.95,
+              31.2
+            ],
+            [
+              40.85,
+              31.1
+            ],
+            [
+              37.5,
+              31.95
+            ]
+          ],
+          "vias": 4
+        }
+      ],
+      "mm": 12.492,
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": true,
+      "seconds": 10.3,
+      "vias": 4
+    }
+  ],
+  "routed_nets": [
+    "+3V3",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "GND"
+  ],
+  "schema": 1
+}

@@ -1,0 +1,92 @@
+{
+  "checks": {
+    "RF1_transmit_arms_b_cu_only_no_barrel": true,
+    "RF2_arm_mismatch_within_budget": true,
+    "RF3_receive_pair_topologically_symmetric": true,
+    "RF4_receive_mismatch_within_placement_bound": true,
+    "RF5_screen_is_not_vacuous": true
+  },
+  "detail": {
+    "arm_a": {
+      "layers": [
+        "B.Cu"
+      ],
+      "mm": 6.0744,
+      "tracks": 5,
+      "vias": 0
+    },
+    "arm_a_was": {
+      "layers": [
+        "B.Cu"
+      ],
+      "mm": 6.0744,
+      "tracks": 5,
+      "vias": 0
+    },
+    "arm_b": {
+      "layers": [
+        "B.Cu"
+      ],
+      "mm": 8.9446,
+      "tracks": 7,
+      "vias": 0
+    },
+    "arm_b_was": {
+      "layers": [
+        "B.Cu"
+      ],
+      "mm": 8.6743,
+      "tracks": 7,
+      "vias": 0
+    },
+    "arm_mismatch_budget_mm": 0.3,
+    "arm_mismatch_growth_mm": 0.2703,
+    "arm_mismatch_mm_now": 2.8702,
+    "arm_mismatch_mm_was": 2.5999,
+    "arm_violations": [],
+    "rf5_probe_arm": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "rf5_probe_arm_mismatch_mm": 3.8702,
+    "rx_a": {
+      "layers": [
+        "B.Cu",
+        "In2.Cu"
+      ],
+      "mm": 12.9252,
+      "tracks": 6,
+      "vias": 4
+    },
+    "rx_a_was": {
+      "layers": [],
+      "mm": 0.0,
+      "tracks": 0,
+      "vias": 0
+    },
+    "rx_b": {
+      "layers": [
+        "B.Cu",
+        "In2.Cu"
+      ],
+      "mm": 12.4919,
+      "tracks": 9,
+      "vias": 4
+    },
+    "rx_b_was": {
+      "layers": [],
+      "mm": 0.0,
+      "tracks": 0,
+      "vias": 0
+    },
+    "rx_mismatch_mm_now": 0.4333,
+    "rx_mismatch_mm_was": 0.0,
+    "rx_placement_direct_mm": {
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1": 11.7866,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI2": 11.0781
+    },
+    "rx_placement_mismatch_bound_mm": 0.7085,
+    "rx_routed": true,
+    "rx_topology_violation": null
+  },
+  "ref": "HEAD",
+  "schema": 1,
+  "verdict": "PASS"
+}

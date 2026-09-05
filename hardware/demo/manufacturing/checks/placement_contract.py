@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the PLACEMENT contract (PL1-PL6).
+"""AQROOT Demo -- the PLACEMENT contract (PL1-PL9).
 
 Every gate this project owns judges COPPER.  `verify_promotion.py` reads
 `BOARD.GetTracks()`; `protected_copper.py` reads the same objects on the
@@ -42,8 +42,35 @@ MICRONS.  So this file is the invariant that makes moving a part reviewable:
          moved, so a placement transaction knows up front that it must ride
          with a re-route of whatever it landed on.
 
+D-621 ADDED PL8 AND PL9, because the board needed a move PL5 refuses on
+principle.  `C17` -- the 100 nF `+3V3` decoupler wedged between `L5` and `L6`
+inside the `ST25R3916` front end, and the only object in the `U9` receive
+channel -- had to travel 10.9 mm, and no 0.900 mm land keeps its escape
+endpoint across 10.9 mm.  D-620 had already priced the alternative: an east
+shift dies at `+0.675 mm` on that same endpoint.  So the move became
+EXPRESSIBLE instead of forbidden -- `apply_part_shift.py --release` removes the
+stranded escape WHOLE, by measured closure, and reports every removal by the
+signature `verify_promotion.py --evicted` licenses -- and these are the two
+clauses that keep it reviewable:
+
+    PL8  A RELEASED PAD WAS RE-CONNECTED.  A release is only half a
+         transaction: the pad is left with no escape on purpose, and the run
+         that spends it owes the pad a new one.  For every `--release REF.PIN`
+         this clause requires (a) that no object on the POST board still ends
+         at the released coordinate -- so the copper was REMOVED, not left
+         dangling in space -- and (b) that at least one POST track endpoint
+         lies inside that pad.  PL5 stops treating a released endpoint as
+         stranded, and only for the pads named here.
+    PL9  NO BARREL ENDED UP UNDER A MOVED LAND.  D-620 measured that a `C17`
+         east shift past `+0.225 mm` swallows the `GND` stitch barrel at
+         `40.500, 30.200` into `C17.2`'s land.  A plated hole under a solder
+         land is an assembly defect that no clearance rule reports, because the
+         barrel and the pad are the same net; this clause reports it by name.
+
     python3 hardware/demo/manufacturing/checks/placement_contract.py \
         --ref HEAD --move Y1:-300000:0 [-o REPORT.json]
+    python3 hardware/demo/manufacturing/checks/placement_contract.py \
+        --ref HEAD --move C17:-7050000:8850000 --release C17.1 --release C17.2
 """
 
 import argparse
@@ -74,7 +101,7 @@ def read(path):
     """Footprint pose + land pattern + pad boxes, and every track endpoint."""
     import pcbnew
     board = pcbnew.LoadBoard(str(path))
-    fps, boxes = {}, {}
+    fps, boxes, bynum = {}, {}, {}
     for f in board.GetFootprints():
         ref = f.GetReference()
         pos = f.GetPosition()
@@ -94,13 +121,20 @@ def read(path):
             (p.GetBoundingBox().GetLeft(), p.GetBoundingBox().GetTop(),
              p.GetBoundingBox().GetRight(), p.GetBoundingBox().GetBottom())
             for p in f.Pads())
-    ends = []
+        for p in f.Pads():
+            bb = p.GetBoundingBox()
+            bynum.setdefault("%s.%s" % (ref, p.GetNumber()), []).append(
+                (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()))
+    ends, via_pts = [], []
     for t in board.GetTracks():
         pts = ([t.GetStart()] if t.GetClass() == "PCB_VIA"
                else [t.GetStart(), t.GetEnd()])
         for p in pts:
             ends.append((t.GetNetname(), p.x, p.y))
-    return fps, boxes, sorted(set(ends))
+        if t.GetClass() == "PCB_VIA":
+            via_pts.append((t.GetNetname(), t.GetStart().x, t.GetStart().y,
+                            t.GetWidth()))
+    return (fps, boxes, sorted(set(ends)), bynum, sorted(set(via_pts)))
 
 
 def inside(box, x, y):
@@ -152,10 +186,13 @@ def overlaps(fps):
     return out
 
 
-def judge(pre, post, claimed):
-    """claimed: {ref: (dx_nm, dy_nm)}.  Returns (checks, detail)."""
-    fpre, bpre, epre = pre
-    fpost, bpost, _ = post
+def judge(pre, post, claimed, released=()):
+    """claimed: {ref: (dx_nm, dy_nm)}; released: ("REF.PIN", ...).
+
+    Returns (checks, detail).
+    """
+    fpre, bpre, epre, npre, _vpre = pre
+    fpost, bpost, epost, npost, vpost = post
 
     pl1 = sorted(fpre) == sorted(fpost)
 
@@ -179,16 +216,47 @@ def judge(pre, post, claimed):
 
     new_overlap = sorted(overlaps(fpost) - overlaps(fpre))
 
-    stranded = []
+    # PL5, and PL8's half of it.  An endpoint that left a moved pad is
+    # STRANDED unless that pad was declared RELEASED and the object carrying
+    # the endpoint is gone from the board entirely -- removed, not dangling.
+    post_pts = {(x, y) for _n, x, y in epost}
+    stranded, releases = [], []
     for ref in sorted(claimed):
         if ref not in bpre or ref not in bpost:
             continue
         was = [e for e in epre if any(inside(box, e[1], e[2])
                                       for box in bpre[ref])]
         for net, x, y in was:
-            if not any(inside(box, x, y) for box in bpost[ref]):
-                stranded.append(dict(ref=ref, net=net,
-                                     at_mm=[x / 1e6, y / 1e6]))
+            if any(inside(box, x, y) for box in bpost[ref]):
+                continue
+            pad = next((r for r in released
+                        if any(inside(b, x, y) for b in npre.get(r, []))), None)
+            if pad is not None and (x, y) not in post_pts:
+                releases.append(dict(pad=pad, net=net,
+                                     at_mm=[x / 1e6, y / 1e6],
+                                     removed_from_board=True))
+                continue
+            stranded.append(dict(ref=ref, net=net, at_mm=[x / 1e6, y / 1e6],
+                                 declared_release=pad is not None,
+                                 still_on_board=(x, y) in post_pts))
+
+    # PL8: every released pad has a NEW escape endpoint inside it.
+    reconnected, orphan_pads = [], []
+    for pad in sorted(set(released)):
+        boxes = npost.get(pad, [])
+        hits = [e for e in epost
+                if any(inside(b, e[1], e[2]) for b in boxes)]
+        (reconnected if hits else orphan_pads).append(
+            dict(pad=pad, post_endpoints=len(hits)))
+
+    # PL9: no barrel under a moved land.
+    swallowed = []
+    for ref in sorted(claimed):
+        for net, x, y, dia in vpost:
+            if any(inside(box, x, y) for box in bpost.get(ref, [])):
+                swallowed.append(dict(ref=ref, net=net,
+                                      at_mm=[x / 1e6, y / 1e6],
+                                      dia_mm=dia / 1e6))
 
     checks = dict(
         PL1_reference_set_unchanged=pl1,
@@ -196,6 +264,8 @@ def judge(pre, post, claimed):
         PL3_land_patterns_travelled_whole=not pl3,
         PL4_no_new_courtyard_overlap=not new_overlap,
         PL5_nothing_stranded=not stranded,
+        PL8_released_pads_reconnected=not orphan_pads,
+        PL9_no_via_under_a_moved_land=not swallowed,
     )
     detail = dict(
         claimed={k: list(v) for k, v in sorted(claimed.items())},
@@ -211,6 +281,11 @@ def judge(pre, post, claimed):
                  if any(inside(box, e[1], e[2]) for box in bpre.get(ref, []))])
             for ref in claimed),
         endpoints_stranded=stranded,
+        released_claimed=sorted(set(released)),
+        endpoints_released=releases,
+        released_pads_reconnected=reconnected,
+        released_pads_orphaned=orphan_pads,
+        vias_under_moved_lands=swallowed,
     )
     return checks, detail
 
@@ -235,6 +310,13 @@ def main():
     ap.add_argument("--move", action="append", default=[], metavar="REF:DX:DY",
                     help="a reference this promotion claims to have MOVED, and "
                          "the exact delta in nanometres.  Repeatable")
+    ap.add_argument("--release", action="append", default=[],
+                    metavar="REF.PIN",
+                    help="a land whose escape this promotion claims to have "
+                         "RELEASED (apply_part_shift.py --release).  PL5 stops "
+                         "calling its endpoint stranded, and PL8 requires the "
+                         "copper to be GONE from the board and the land to "
+                         "have a NEW escape.  Repeatable")
     ap.add_argument("--decoy", default=None,
                     help="reference PL6 perturbs; default is the first "
                          "footprint that is not claimed")
@@ -252,7 +334,7 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="aqroot-demo-placement-"))
     pre_path, post_path = stage(a.ref, tmp / "pre"), stage(None, tmp / "post")
     pre, post = read(pre_path), read(post_path)
-    checks, detail = judge(pre, post, claimed)
+    checks, detail = judge(pre, post, claimed, tuple(a.release))
 
     decoy = a.decoy or next(r for r in sorted(pre[0]) if r not in claimed)
     probe = tmp / "pl6" / BOARD.name
@@ -260,7 +342,7 @@ def main():
     probe.write_bytes(post_path.read_bytes())
     subprocess.run([sys.executable, "-c", PERTURB, str(probe), decoy],
                    check=True, capture_output=True)
-    pchecks, _ = judge(pre, read(probe), claimed)
+    pchecks, _ = judge(pre, read(probe), claimed, tuple(a.release))
     checks["PL6_screen_is_not_vacuous"] = not pchecks["PL2_only_claimed_parts_moved"]
     detail["pl6_decoy"] = decoy
 
@@ -269,7 +351,7 @@ def main():
     detail["clearance_nm"] = a.clearance_nm
     detail["foreign_copper_hits"] = hits
 
-    doc = dict(schema=1, ref=a.ref, checks=checks, detail=detail,
+    doc = dict(schema=2, ref=a.ref, checks=checks, detail=detail,
                verdict="PASS" if all(checks.values()) else "FAIL")
     text = json.dumps(doc, indent=2, sort_keys=True)
     if a.out:

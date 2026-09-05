@@ -1155,10 +1155,29 @@ def detour_layers(permitted, lkey, own_layer):
 # and does NOT need a via".  What the pair DOES need -- stay on F.Cu, keep the
 # uncoupled budget -- is expressed to the router as the `USB_D` single-layer
 # contract above and re-proved by KiCad afterwards.
-EXCLUDE = {
-    "/04_SPI_B_RADIOS_NFC/NFC_RFI1",    # NFC receive arms: length/symmetry
-    "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
-}
+#
+# THE NFC RECEIVE PAIR WAS HERE AND IS NOT ANY MORE, for exactly the reason the
+# USB pair left: the note read "NFC receive arms: length/symmetry", and that is
+# a real constraint with NO enforcer -- `.kicad_dru` section 7 says only "NFC
+# receive path stays on B.Cu" and has no length or symmetry rule at all, so the
+# exclusion was ABSTENTION STANDING IN FOR A MEASUREMENT.  D-621 built the
+# measurement instead: `checks/rf_symmetry_contract.py` RF1-RF5 reads the
+# copper on all four front-end nets and judges the transmit arms' A/B mismatch
+# against a DECLARED budget and the receive pair's against the bound the
+# PLACEMENT itself imposes (|direct(U9.22->R116.2) - direct(U9.23->R117.2)| =
+# 0.7085 mm), plus topological symmetry -- same barrel count, same layer set.
+# A constraint a contract enforces does not need a second enforcement by
+# abstention, and the first gated run under it measured the pair at 12.925 /
+# 12.492 mm, 4 barrels each, `B/I2/B/I2/B` each: a 0.433 mm mismatch inside a
+# 0.709 mm placement bound.  Also measured, and the reason the contract had to
+# exist first: the relay this run needed would have cost the TRANSMIT arm
+# +6.583 mm had `C17` stayed in the receive channel, and nothing on this board
+# could have reported it.
+#
+# The set is empty on purpose rather than deleted: the mechanism is the right
+# one for a net whose physics genuinely has no enforcer, and the day one appears
+# it belongs here with its reason written down.
+EXCLUDE = set()
 
 
 def sha256_bytes(data):

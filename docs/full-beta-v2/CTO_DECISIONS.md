@@ -6305,6 +6305,167 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-621 · 2026-09-05 · Demo THE C17 LEVER WAS VACUOUS AND THE REAL ONE WAS THREE TRACKS AWAY: a decoupler evicted from the NFC front end, the first RECEIVE copper this board has ever carried, and the contract that had to exist before it could
+
+D-620 named this task — *"a transaction that moves `C17` east must relay BOTH its escapes …
+Price it before taking it"* — and the price came back **VACUOUS**, which is the most useful
+answer a screen can give.
+
+## 1. RUNG ONE: C17 ALONE OPENS NOTHING
+
+`C17` and both of its escapes were removed from a throwaway copy and the three open `U9`
+receive-side edges were re-proposed. All three still refuse:
+
+    NFC_RFI1    NO_LEGAL_ESCAPE_DST      NFC_RFI2    NO_PATH      NFC_VDD_RF  NO_PATH
+
+So the east-shift transaction D-620 costed — two escape relays, a via-in-pad bound, a
+`+0.675 mm` `PL5` ceiling — would have bought **nothing at all**. Remove `NFC_RFO2`'s whole
+arm as well and all three route (rung two), which confirms D-620's diagnosis exactly:
+`NFC_RFO2` is the sole binding blocker and `C17` is not even a secondary contributor.
+
+## 2. RUNG THREE: THE 3-TRACK CUT IS A CHAIN, AND D-620 SAID IT WAS NOT
+
+D-620 recorded *"the 3-track cut is `NOT_A_CHAIN` and cannot be relaid"*. Offered to
+`detour_apply` it resolves in one line: `NFC_RFI1`'s minimal cut — `37.025,29.875 →
+37.200,30.900 → 37.725,31.425 → L6.1` — has exactly **two free ends**, no tee at either
+interior junction, one layer and one width throughout. It is a chain, and both its ends are
+ordinary track ends in open copper rather than the `EXACT`-margin `U9.15` land, **so the
+LATTICE can relay it where D-620 proved no lattice can ever relay the whole arm.**
+
+It relays, and `NFC_RFI1` closes — the first time any `U9` receive edge has routed with this
+board's own copper otherwise intact. **And it is a bad trade with `C17` in place**: the only
+path available then is **9.470 mm against 2.887 mm**, `+6.583 mm` on `NFC_RFO2`, which
+`.kicad_dru` section 7 records as ALREADY the longer of the two transmit arms. `NFC_RFI2`
+still refuses. Nothing on this board would have reported that cost.
+
+## 3. RUNG FOUR: WITH C17 GONE THE SAME RELAY COSTS 0.270 mm, AND BOTH RECEIVE NETS CLOSE
+
+At a 50 µm lattice, with `C17` out of the pocket, the identical detour measures **3.1576 mm
+against 2.8872 mm — `+0.2703 mm`, twenty-four times cheaper than rung three** — and
+`NFC_RFI1` AND `NFC_RFI2` both route, four barrels each, `B.Cu` + `In2.Cu` each. The relaid
+dogleg leaves `37.025,29.875` east to `37.700,30.150` and then runs the diagonal to `L6.1`
+through the space `C17` used to occupy.
+
+## 4. WHY C17 LEAVES, STATED HONESTLY
+
+`C17` is a 100 nF `+3V3` rail bypass on sheet 04 (YAGEO `CC0603KRX7R9BB104`, LCSC `C14663`).
+Its nearest `+3V3` consumer is `U9.1` at **7.184 mm**; the nearest legal site is **7.350 mm**.
+**The move does not improve decoupling — it is 0.166 mm worse** — and both figures are poor
+for a 100 nF, which is why the `F.Cu`/`In3.Cu` `+3V3` planes and `U9.1`'s own barrel at
+`31.200, 32.000` carry that job. The justification is what `C17` was sitting *in*: at
+`38.750, 30.250` it was the **only object in the `U9` receive escape channel**, on the
+symmetry axis of a Q≈21 13.56 MHz differential front end, between `L5` and `L6` and 0.55 mm
+west of the NFC antenna copper. A digital rail decoupler does not belong there.
+
+A copper-aware scan of **12 198 legal sites** — every one clear of every other footprint
+bounding box, of foreign-net copper by 0.200 mm, and of the pocket this transaction opens —
+ranked `31.700, 39.100` nearest to `U9.1`. **Nothing closer than the current position
+exists**, and that is stated rather than glossed.
+
+## 5. TWO UNITS THE BOARD DID NOT HAVE
+
+**`apply_part_shift.py --release`.** D-619's applier refuses a move that takes a track
+endpoint off its pad, and that clause is right for 0.300 mm and useless for 10.9 mm. The
+removal is now EXPRESSIBLE: the copper carrying a stranded endpoint is removed whole, its
+closure is measured, and every removal is reported by the signature `verify_promotion.py
+--evicted` licenses. It refuses on three measured conditions, all exercised —
+`RELEASE_NET_NOT_DECLARED` (a net `--release-net` did not name), `NAMED_VIA_STILL_SERVED`,
+`NAMED_VIA_NOT_FOUND` — and **a barrel is not swept up with an escape**: `+3V3` and `GND` own
+pours, so a stitch at a released escape's far end is held by filled copper and is RETAINED,
+which is exactly what happened to the `GND` barrel at `40.500, 30.200`. The `+3V3` barrel at
+`38.500, 30.900` had to go because the relaid dogleg passes through it, so it was named, one
+at a time, with `--release-via`. **Via-in-pad is a measurement now**: D-620's `+0.225 mm`
+`C17` bound is encoded, and any move whose destination swallows a barrel into a moved land
+refuses.
+
+**`checks/rf_symmetry_contract.py` (RF1–RF5).** `.kicad_dru` section 7 states in its own
+words that differential symmetry is *"NOT ENCODABLE, AND THEREFORE A PLACEMENT PRECONDITION"*
+— PM-3, open since FBV2-P2-000 — and **nothing on this board could see it change.** KiCad has
+no length rule on these nets; `verify_promotion.py` counts objects; the ledger counts edges.
+Rung three is the proof that mattered: a `+6.583 mm` transmit arm would have passed every
+gate silently. RF1 states the arms are `B.Cu`-only with zero barrels; RF2 judges the arms'
+A/B mismatch against a **declared budget** so the cost lands in the record instead of
+vanishing; RF3 requires the receive pair to be topologically symmetric — same barrel count,
+same layer set; RF4 bounds the receive pair's mismatch by the one the PLACEMENT itself
+imposes; RF5 lengthens the longer arm by exactly 1.000 mm and requires RF2 to break.
+
+**And `route_maze_batch.EXCLUDE` is now empty.** It held `NFC_RFI1`/`NFC_RFI2` out of gated
+routing with the note *"NFC receive arms: length/symmetry"* — **abstention standing in for a
+measurement**, the same substitution the USB pair's exclusion made until a real contract
+replaced it. A constraint a contract enforces does not need a second enforcement by
+abstention. The set is kept, empty, because the mechanism is right for a net whose physics
+genuinely has no enforcer.
+
+## 6. WHAT WAS PROMOTED
+
+`C17` `38.750,30.250 → 31.700,39.100` (`dx −7.050`, `dy +8.850` mm); **3 objects released**
+(`+3V3` escape track and barrel, `GND` escape track), the `GND` stitch barrel RETAINED;
+`NFC_RFO2`'s dogleg relaid **2.8872 → 3.1576 mm, zero barrels**; `C17.1` re-bonded at the
+`P3V3` contract — 1.100 mm of 0.600 mm copper and a 0.800/0.400 mm barrel at `30.900,40.200`,
+heavier than the 0.400 mm stub and 0.700/0.400 barrel it replaces; `C17.2` re-bonded 0.925 mm
+to a barrel at `33.400,39.100`; **`NFC_RFI1` 12.9252 mm and `NFC_RFI2` 12.4919 mm, four
+barrels each, `B.Cu` + `In2.Cu` each.**
+
+Authority `ecc5e0e2…` → **`a82c907a100e33620e4ae591b227c7e1e11d542492e187d78ec5a7bcb723f863`**.
+Ledger **55 → 53 open edges / 27 → 25 open retained nets**, ratsnest **71 → 69**, improved
+three (`+3V3`, `NFC_RFI1`, `NFC_RFI2`), regressed none.
+
+`verify_promotion.py` **14/14** (30 added on five claimed nets, 6 removed and all licensed,
+every added track ≥ 0.200 mm, every barrel ≥ 0.300 mm drill / 0.125 mm ring, unconnected not
+increased, DRC 5 `hole_clearance` / 1 `solder_mask_bridge` inherited with **ZERO
+attributable**, parity within baseline, fill-stable). `checks/placement_contract.py`
+**PL1–PL9** — PL8 confirms both released lands are gone from the board *and* re-escaped (1
+and 2 new endpoints), PL9 confirms no barrel ended up under a moved land.
+`checks/rf_symmetry_contract.py` **RF1–RF5**: arm A `6.0744` unchanged, arm B `8.6743 →
+8.9446`, **mismatch `2.5999 → 2.8702`, growth `0.2703` against a declared `0.300 mm`
+budget**; receive pair mismatch **`0.4333 mm` inside the `0.7085 mm` bound the placement
+itself imposes**, 4 barrels and `B.Cu`+`In2.Cu` on both halves. `protected_copper.py` **15
+nets / 393 objects IDENTICAL**. `land_parity_contract.py` **LAND1–LAND6, 311 footprints / 49
+identities, zero mismatches**. `keepout_stackup_contract.py` **KO1–KO5**.
+`population_contract.py` **POP1–POP4**. `neck_contract.py` **N1–N3**.
+`pour_bond_contract.py` **P1–P4** (47 tubes / 1536 points, zero off copper, zero misplaced
+ends; two `GND` islands renumbered by ordinal only, which is precisely what D-619's
+geometric resolution was built to see through). `fab_package_contract.py` **FAB1–FAB8** on a
+regenerated 28-artifact package.
+
+`hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and the eight
+approved Demo NC contacts are untouched. No `.kicad_dru`, `.kicad_pro`, zone or rule-area
+change.
+
+## 7. NEXT
+
+**`NFC_VDD_RF` IS THE LAST EDGE OF THIS FRONT END AND ITS MECHANISM IS NOW ISOLATED.**
+`U9.14` still reads `NO_LEGAL_ESCAPE_DST`, and the blocker is no longer the dogleg — it is
+`NFC_RFO2`'s NORTH chain, `U9.15 → 35.250,26.800 → 36.075,27.000 → 37.950,28.925`, whose
+free end IS the `EXACT`-margin `U9.15` land. The lattice cannot relay that chain, by §1 of
+D-620; the exact-geometry primitive can, and D-620 already built and allowlisted it. So the
+question is narrow and well posed: **does an exact-geometry route from `U9.15` to
+`37.950,28.925` exist that leaves `U9.14`'s north escape band open** — a band bounded by
+`NFC_RFO1`'s `y = 26.225` run above and the north pad row below? D-620 priced the removal
+half: with `NFC_RFO2` gone, `NFC_VDD_RF` closes at 8.698 mm.
+
+`NFC_VDD_A` is the cheaper second and is NOT parked: D-619 measured it one `Y1` shift from
+routable and refused it only on `pour_bond_contract` P2 — a 4.4 mm `B.Cu` wall that cut a
+12.461 mm² `GND` fragment off the main island. It needs a path that does not wall off the
+`C45` pocket: `--join-max-mm`, or a lane reserved down the east side.
+
+`screen_land_escape_margin.py` on the promoted board, over the 89 lands of the open non-pour
+retained nets: **85 CLEAR, 2 EXACT (`U11.9`/`U11.3`), 2 UNLAUNCHABLE (`U9.10` `NFC_SUPPLY`
+0.600 vs 0.300, `U21.5` `ACC_5V_LX` 0.600 vs 0.250)** — the four `NFC_RFI` lands have left
+the list. It stays in the standing preflight. No owner decision is OPEN; D-618's `J3`
+question remains RECORDED, and PM-3 remains an open PLACEMENT finding — now with a contract
+watching it.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d621-c17-lever-ladder.json`, `d621-c17-part-shift.json`,
+`d621-rfo2-dogleg-detour-spec.json`, `d621-gate-promoted.json`,
+`d621-verify-promotion.json`, `d621-placement-contract.json`,
+`d621-rf-symmetry-contract.json`, `d621-protected-copper.json`,
+`d621-land-parity-contract.json`, `d621-keepout-stackup-contract.json`,
+`d621-population-contract.json`, `d621-neck-contract.json`,
+`d621-pour-bond-contract.json`, `d621-fab-package-contract.json`,
+`d621-routing-ledger.json`, `d621-open-net-land-margins.json`.
+
 # D-620 · 2026-09-05 · Demo THE ZERO-MARGIN LAND: eight decisions of `NO_LEGAL_ESCAPE` were one number nobody had measured, the `U9` north row is full to the micron, and the USB MCU pair is a segment wall
 
 D-619 named this task — *"`NFC_RFO2` … it cannot relay (`B.Cu` only), but nothing has yet

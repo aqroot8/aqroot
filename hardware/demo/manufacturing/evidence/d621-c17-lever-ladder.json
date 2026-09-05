@@ -1,0 +1,392 @@
+{
+ "base_board_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+ "decision": "D-621",
+ "question": "D-620 named this task: PRICE THE C17 EAST TRANSACTION before taking it.  Every screen below runs on a throwaway copy of the authoritative board ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d, which is byte-identical before and after each of them.",
+ "rungs": [
+  {
+   "finding": "VACUOUS.  All three U9 receive-side edges still refuse -- NFC_RFI1 NO_LEGAL_ESCAPE_DST, NFC_RFI2 NO_PATH, NFC_VDD_RF NO_PATH.  The C17 lever ALONE opens nothing, and D-620's named next task is answered NO.",
+   "grid_nm": 100000,
+   "label": "C17 AND ITS TWO ESCAPES GONE, NOTHING ELSE TOUCHED",
+   "result": {
+    "nets": [
+     {
+      "layers": null,
+      "mm": 0.0,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "via_xy": null
+     },
+     {
+      "layers": null,
+      "mm": 0.0,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": false,
+      "reason": "NO_PATH",
+      "via_xy": null
+     },
+     {
+      "layers": null,
+      "mm": 0.0,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "via_xy": null
+     }
+    ]
+   },
+   "rung": 1
+  },
+  {
+   "finding": "All three route.  NFC_RFO2 is the sole binding blocker, confirming D-620, and C17 is not even a secondary contributor on its own.",
+   "grid_nm": 100000,
+   "label": "C17 AND THE WHOLE 7-TRACK NFC_RFO2 ARM GONE",
+   "result": {
+    "nets": [
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.716,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.4,
+        25.7
+       ],
+       [
+        43.2,
+        28.9
+       ]
+      ]
+     },
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.084,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.5,
+        33.7
+       ],
+       [
+        44.0,
+        31.2
+       ]
+      ]
+     },
+     {
+      "layers": [
+       "B",
+       "F",
+       "B"
+      ],
+      "mm": 8.6981,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        37.5,
+        25.7
+       ],
+       [
+        36.7,
+        27.1
+       ]
+      ]
+     }
+    ]
+   },
+   "rung": 2
+  },
+  {
+   "finding": "NEW: the 3-track cut IS a simple chain -- free ends at 37.025,29.875 and L6.1 -- so the LATTICE can relay it where D-620 proved it cannot relay the whole arm from the EXACT-margin U9.15 land.  It relays, and NFC_RFI1 closes for the first time.  But the only path available with C17 in the pocket is 9.470 mm against 2.887 mm: +6.583 mm on transmit arm B, which .kicad_dru section 7 records as ALREADY the longer arm (PM-3).  NFC_RFI2 still refuses.",
+   "grid_nm": 100000,
+   "label": "C17 PRESENT; the NFC_RFO2 SE DOGLEG offered as a 3-track DETOUR CHAIN",
+   "result": {
+    "nets": [
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 13.3846,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.4,
+        25.7
+       ],
+       [
+        43.2,
+        28.9
+       ],
+       [
+        40.9,
+        28.6
+       ],
+       [
+        37.3,
+        31.2
+       ]
+      ]
+     },
+     {
+      "layers": null,
+      "mm": 0.0,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "via_xy": null
+     },
+     {
+      "layers": null,
+      "mm": 0.0,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "via_xy": null
+     }
+    ],
+    "rfo2_detour": {
+     "max_mm": 14.0,
+     "mm": 9.4695,
+     "ok": true,
+     "reason": null,
+     "vias": 0,
+     "was_mm": 2.8872
+    }
+   },
+   "rung": 3
+  },
+  {
+   "finding": "THE TRANSACTION.  The relay costs 3.158 mm against 2.887 mm -- +0.270 mm on arm B, 24x cheaper than rung 3 -- and BOTH receive nets close, each with 4 barrels and each on B.Cu + In2.Cu.",
+   "grid_nm": 50000,
+   "label": "C17 GONE; the same 3-track dogleg detour, grid 50 um",
+   "result": {
+    "nets": [
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.9252,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.25,
+        25.7
+       ],
+       [
+        43.15,
+        28.85
+       ],
+       [
+        38.65,
+        29.2
+       ],
+       [
+        37.1,
+        30.75
+       ]
+      ]
+     },
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.4919,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.35,
+        33.7
+       ],
+       [
+        43.95,
+        31.2
+       ],
+       [
+        40.85,
+        31.1
+       ],
+       [
+        37.5,
+        31.95
+       ]
+      ]
+     }
+    ],
+    "rfo2_detour": {
+     "max_mm": 3.5,
+     "mm": 3.1576,
+     "ok": true,
+     "reason": null,
+     "vias": 0,
+     "was_mm": 2.8872
+    }
+   },
+   "rung": 4
+  },
+  {
+   "finding": "Five for five, which is what took it to the authoritative gate.",
+   "grid_nm": 50000,
+   "label": "the whole transaction on a scratch: C17 moved out, escapes released, dogleg relaid, both escapes re-bonded, both receive nets routed",
+   "result": {
+    "bonds": [
+     {
+      "bonded": 1,
+      "detail": [
+       {
+        "layer": "B",
+        "mm": 1.1,
+        "ok": true,
+        "pad": "C17.1",
+        "via_xy": [
+         30.9,
+         40.2
+        ],
+        "via_xy_nm": [
+         30900000,
+         40200000
+        ]
+       }
+      ],
+      "net": "+3V3",
+      "requested": 1
+     },
+     {
+      "bonded": 1,
+      "detail": [
+       {
+        "layer": "B",
+        "mm": 0.925,
+        "ok": true,
+        "pad": "C17.2",
+        "via_xy": [
+         33.4,
+         39.1
+        ],
+        "via_xy_nm": [
+         33400000,
+         39100000
+        ]
+       }
+      ],
+      "net": "GND",
+      "requested": 1
+     }
+    ],
+    "nets": [
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.9252,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.25,
+        25.7
+       ],
+       [
+        43.15,
+        28.85
+       ],
+       [
+        38.65,
+        29.2
+       ],
+       [
+        37.1,
+        30.75
+       ]
+      ]
+     },
+     {
+      "layers": [
+       "B",
+       "I2",
+       "B",
+       "I2",
+       "B"
+      ],
+      "mm": 12.4919,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": true,
+      "reason": null,
+      "via_xy": [
+       [
+        46.35,
+        33.7
+       ],
+       [
+        43.95,
+        31.2
+       ],
+       [
+        40.85,
+        31.1
+       ],
+       [
+        37.5,
+        31.95
+       ]
+      ]
+     }
+    ],
+    "rfo2_detour": {
+     "max_mm": 3.5,
+     "mm": 3.1576,
+     "ok": true,
+     "reason": null,
+     "vias": 0,
+     "was_mm": 2.8872
+    }
+   },
+   "rung": 5
+  }
+ ],
+ "schema": 1,
+ "why_c17_leaves": {
+  "distance_to_that_pin_mm_after": 7.35,
+  "distance_to_that_pin_mm_before": 7.184,
+  "nearest_3v3_consumer": "U9.1 at 31.725,31.750",
+  "note": "The move is NOT justified by decoupling distance: it is 0.166 mm WORSE, and both figures are poor for a 100 nF -- the F.Cu/In3.Cu +3V3 planes and U9.1's own barrel at 31.200,32.000 carry that job.  It is justified by what C17 was sitting IN.  At 38.750,30.250 it was the only object in the U9 receive escape channel, on the symmetry axis of a Q~21 13.56 MHz differential front end, between L5 and L6 and 1.6 mm inside the west edge of the NFC antenna copper (x 39.30..54.60).  A digital rail decoupler does not belong there, and moving it buys two receive edges.",
+  "role": "100 nF +3V3 rail bypass on sheet 04 (SPI_B / RADIOS / NFC), YAGEO CC0603KRX7R9BB104, LCSC C14663",
+  "site_search": "A copper-aware scan of 12198 legal 3.010 x 1.510 mm sites -- every one clear of every other footprint bounding box AND of foreign-net copper by 0.200 mm AND of the pocket this transaction opens -- ranked 31.700,39.100 nearest to U9.1 at 7.350 mm.  Nothing closer than the current position exists."
+ }
+}
