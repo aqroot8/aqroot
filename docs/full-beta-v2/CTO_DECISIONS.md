@@ -6305,6 +6305,116 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-617 · 2026-09-05 · Demo THE ANTENNA KEEP-OUT IS CLOSED, AND IT WAS NEVER ONE KEEP-OUT: five rule areas that protected four of six layers, 335.555 mm² of copper In4.Cu should never have had, and two nets re-laid by the router under a rule authored before it ran
+
+D-616 measured `U1`'s footprint-embedded ESP32-S3-WROOM-1 ANTENNA KEEP-OUT naming
+four copper layers where its own master names `*.Cu`, declared it an **OPEN
+FABRICATION BLOCKER**, and refused to close it without a route in hand. This is that
+route — and the first thing it found is that **the defect was never one keep-out.**
+
+**FIVE, NOT ONE, AND THE REASON NOBODY COULD SEE IT.**  `pcbnew.BOARD.Zones()` does
+not return a footprint's zones and a footprint's does not return the board's.  D-616's
+screen read footprint zones, so it could only ever have found `U1`'s.  Asking BOTH
+scopes finds every keep-out on this board clamped to the same four layers: `U1`'s
+embedded antenna area, a **BOARD-LEVEL DUPLICATE of the same antenna region with its
+own uuid**, both **M2 mounting-boss** retention keep-outs and **`MK1`'s acoustic
+port**.  KiCad clamps `*.Cu` to the stackup that exists WHEN AN AREA IS DRAWN and never
+re-expands it; `In3.Cu` and `In4.Cu` were added afterwards.  DRC honours a rule area
+exactly as written, so there was no violation to report on any of the five.
+`screen_footprint_keepouts.py` now asks both scopes and judges a board-level area
+against the board's own stackup, because a keep-out is a statement about PHYSICS — an
+antenna volume, a moulded boss, an acoustic port — and physics does not stop at layer
+two.  It reported **5 DEFECT / 49 COVERED** before and **54 of 54 COVERED** after.
+
+**THE LICENCE IS AUTHORED BEFORE THE ROUTER RUNS.**  New
+`apply_antenna_keepout.py` widens all five to `*.Cu` — the string the WROOM master
+itself writes, so a future stackup change cannot clamp them again — **on the scratch
+board, before anything reads it**.  `qrouter.QBoard.addko` honours a rule area exactly
+as authored, per layer, so the keep-outs stand up as OBSTACLES on `In3`/`In4` and the
+router is bound by the very rule this run buys.  A route proposed against the old rule
+and blessed by the new one would be a route nothing ever checked.  Each edit NAMES the
+exact string it overwrites (D-615's discipline) and the result is re-read through
+`pcbnew` against a **superset** post-condition: every ENABLED copper layer claimed.
+
+**THE COPPER THAT WAS STANDING IN THEM.**  Six track segments across three named
+chains, every one resolved to exactly one track by `route_maze_batch.detour_apply` and
+put back **by the router, between its own two end coordinates**:
+
+| chain | was | now | vias | note |
+|---|---:|---:|---:|---|
+| `/01_POWER_TREE/USB_VBUS_CHG` (3 seg, antenna) | 52.013 mm | **49.505 mm** | 0 | stays `In3.Cu` at its own 0.500 mm |
+| `/01_POWER_TREE/USB_VBUS_CHG` (2 seg, BOSS1) | 12.657 mm | 13.259 mm | 0 | the 9.334 mm segment crossing the boss's `In3.Cu` face |
+| `Net-(SW9-A)` (3 seg, antenna) | 110.000 mm | **69.955 mm** | 4 | `In3.Cu` footprint **110.000 → 50.999 mm** |
+
+**TWO LICENCES, BOTH NARROWER THAN THEY LOOK.**  D-609's own-layer allowance is
+widened to `permitted + own` and PRICED: clause K6 refuses a detour that leaves more
+copper on a reserved plane it does not own than it took off — the slot may move and
+shrink, never grow.  And a chain whose BOTH ENDS are through vias of its own net may
+terminate on any layer those barrels span, because a barrel is copper on every layer
+and the connection point is layer-agnostic; clause K5 proves the barrel is there and
+spans the layer, on the AUTHORITATIVE board, or refuses.  `Net-(SW9-A)`'s ends are
+`(66.350,103.650)` and `(19.900,120.800)`, both `F.Cu`-`B.Cu` vias, and it comes off
+`In3.Cu` onto `In2.Cu`.  Terminating it on `B.Cu` instead was measured and REJECTED:
+both barrels then served one layer and KiCad reported two `via_dangling`.
+
+**A DETOUR OWES A BOUND, AND THE DEFAULT BOUND IS ITSELF.**  Two of the three come
+away SHORTER than the copper they replace and are held to that.  The third cannot —
+`BOSS1_KEEPOUT`'s `In3.Cu` face is a NEW obstacle whose south-east corner sits
+1.131 mm off the line it used to take — so the plan STATES `max_mm` 13.500 and owns
+that judgement in writing.  A `max_mm` is also the wavefront budget, and that conflation
+produced a **false `NO_PATH`**: the same chain that refused at a 62 mm bound routes at
+**49.505 mm** when the budget is opened.  Bound the length, not the search.
+
+**THE PROOF THE REPAIR IS REAL AND NOT A REDRAWN RECTANGLE.**  `In1.Cu` and `In4.Cu`
+are the two solid `GND` reference planes; neither is routable and neither carries a
+track, so once every keep-out claims both they are **identical by construction**.
+Before: **9468.745 vs 9804.300 mm², a 335.555 mm² difference.**  After: both
+**9464.963 mm²**, to the nanometre.  That difference *was* the copper the four clamped
+keep-outs let `In4.Cu` keep.  New `checks/keepout_stackup_contract.py` states it as
+KO5, a standing measurement — a keep-out that loses a layer again shows up as two
+reference planes that stopped matching.  KO1 every keep-out claims the stackup, KO2
+none holds pour/track/via on any layer, KO3 KiCad reports zero `items_not_allowed`,
+KO4 the screen sees BOTH scopes and a synthetic one-layer narrowing is caught.
+**KO1–KO5 read FAIL/FAIL/PASS/PASS/FAIL on the pre-board and PASS on all five after**
+(`evidence/d617-keepout-contract-before.json`, `d617-keepout-contract.json`).
+
+**AND THE PLANE GOT BETTER, NOT WORSE.**  The carve takes 330.000 + 20.250 + 20.250 +
+4.000 mm² of region out of two planes, and the `+3V3` `In3.Cu` pour still comes away
+with **FEWER islands: 8 → 6** — removing a 110 mm signal trunk from a plane layer
+merges more copper than the keep-out carves.  `GND` `In4.Cu` stays ONE island.
+Ledger **57 → 57 retained open edges, zero nets closed, ZERO regressed**; KiCad's own
+unconnected count **73 → 73**; parity **247 → 247 warnings, 0 errors**.  The first
+attempt DID strand one land — `+3V3` `R20.1`, bonded to the plane through the via at
+`(43.100,131.400)` — when the BOSS1 crossing was folded into one long chain; splitting
+it into a SEPARATE, LOCAL chain leaves that pocket where it is.  A detour is a local
+move and this is what the granularity is for.
+
+**`lib_footprint_mismatch` 1 → 0, AND IT IS NO LONGER INHERITED.**  Following D-616's
+treatment of `lib_footprint_issues`, the class is REMOVED from
+`verify_promotion.INHERITED`: if it returns, a board footprint has drifted from the
+library it was ruled against and that must fail loudly.  `land_citations.json`'s
+`declared_master_divergences` is now EMPTY and LAND4 enforces that — it requires the
+reported mismatches to equal the declared set, so leaving a stale declaration would
+break the gate.  `verify_promotion.rule_area_sigs` was corrected to audit BOTH scopes,
+which before D-617 meant board-level only — **the largest rule area on this board had
+never once been compared by the independent gate** — and gained
+`--rule-area-widened`, a named licence for an area whose copper layer set GREW and
+which changed in no other way.
+
+Authority `449977eac20b7644...` → **`cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be`**;
+8 objects removed, 32 added, all on the two named nets.  Gate
+`apply_antenna_keepout.py` **K1–K9, 18 of 18 PASS**; `verify_promotion.py`
+**14/14 PASS** (DRC 5/1 with **ZERO attributable**, fill-stable, `beta_v2_untouched`);
+`fab_package_contract.py` **FAB1–FAB8 PASS** on a regenerated 28-artifact package;
+`land_parity_contract.py` **LAND1–LAND6 PASS, 311/311 MATCH**;
+`population_contract.py` POP1–POP4; `pour_bond_contract.py` P1–P4;
+`neck_contract.py` N1–N3; `protected_copper.py` **15 nets / 393 objects IDENTICAL**.
+`hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB and XGPIO4/5
+untouched.  Evidence: `evidence/d617-antenna-keepout.json`, `d617-verify.json`,
+`d617-keepout-contract{,-before}.json`, `d617-keepouts-after.json`,
+`d617-{fab-package,land-parity,population,pour-bond,neck,protected-copper}.json`;
+plan `antenna_keepout_plan.json`.  No owner decision.
+
 # D-616 · 2026-09-05 · Demo THE LAND PATTERNS ARE PROVEN FOR THE FIRST TIME, AND THE Wi-Fi ANTENNA HAS A PLANE UNDER IT: 199 warnings that were never a board defect, 311 lands compared to the nanometre, and a keep-out that protects four of six layers
 
 D-615 named this task: *"the 199 `lib_footprint_issues` and 48

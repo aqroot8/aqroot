@@ -1,0 +1,260 @@
+{
+  "added_object_nets": [
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "Net-(SW9-A)"
+  ],
+  "added_track_layers": [
+    "F.Cu",
+    "In2.Cu",
+    "In3.Cu"
+  ],
+  "added_track_widths_nm": [
+    200000,
+    500000
+  ],
+  "added_tracks": 28,
+  "added_via_dia_drill_nm": [
+    [
+      600000,
+      300000
+    ]
+  ],
+  "added_vias": 4,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "Net-(SW9-A)"
+  ],
+  "claimed_nets": [
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "Net-(SW9-A)"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "claimed_widened_rule_areas": [
+    "BOSS1_KEEPOUT",
+    "BOSS2_KEEPOUT",
+    "MIC_ACOUSTIC_KEEPOUT",
+    "U1",
+    "WROOM ANTENNA KEEPOUT"
+  ],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 73
+  },
+  "drc_pre": {
+    "attributable": [
+      {
+        "description": "Footprint 'ESP32-S3-WROOM-1' does not match copy in library 'RF_Module'",
+        "items": [
+          {
+            "description": "Footprint U1",
+            "pos": {
+              "x": 57.75,
+              "y": 128.0
+            },
+            "uuid": "19894db0-91b9-461b-a4ae-52ba6f9164f7"
+          }
+        ],
+        "severity": "warning",
+        "type": "lib_footprint_mismatch"
+      }
+    ],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_mismatch": 1,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 73
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 73
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 32,
+  "objects_removed": 8,
+  "pad_escape_neck": null,
+  "pad_escape_run": null,
+  "pour_bridge": null,
+  "pre_board_sha256": "449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00",
+  "promoted_board_sha256": "cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be",
+  "ref": "HEAD",
+  "removed_object_nets": [
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "Net-(SW9-A)"
+  ],
+  "removed_sample": [
+    "('trk', '/01_POWER_TREE/USB_VBUS_CHG', 'In3.Cu', 39150000, 132750000, 36800000, 135100000, 500000)",
+    "('trk', '/01_POWER_TREE/USB_VBUS_CHG', 'In3.Cu', 45750000, 139350000, 39150000, 132750000, 500000)",
+    "('trk', '/01_POWER_TREE/USB_VBUS_CHG', 'In3.Cu', 56800000, 112500000, 64700000, 120450000, 500000)",
+    "('trk', '/01_POWER_TREE/USB_VBUS_CHG', 'In3.Cu', 64700000, 120450000, 45750000, 139350000, 500000)",
+    "('trk', '/01_POWER_TREE/USB_VBUS_CHG', 'In3.Cu', 66450000, 102300000, 56800000, 112500000, 500000)",
+    "('trk', 'Net-(SW9-A)', 'In3.Cu', 19900000, 144000000, 19900000, 120800000, 200000)",
+    "('trk', 'Net-(SW9-A)', 'In3.Cu', 66350000, 103650000, 66350000, 144000000, 200000)",
+    "('trk', 'Net-(SW9-A)', 'In3.Cu', 66350000, 144000000, 19900000, 144000000, 200000)"
+  ],
+  "rule_areas_added": [],
+  "rule_areas_otherwise_changed": [],
+  "rule_areas_removed": [],
+  "rule_areas_widened": [
+    [
+      "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+      "MIC_ACOUSTIC_KEEPOUT",
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ]
+    ],
+    [
+      "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+      "BOSS2_KEEPOUT",
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ]
+    ],
+    [
+      "a9e8798c-5894-4c5d-a481-adfe1483040b",
+      "BOSS1_KEEPOUT",
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ]
+    ],
+    [
+      "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+      "WROOM ANTENNA KEEPOUT",
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ]
+    ],
+    [
+      "ff26f816-3e65-4c6f-a14d-ccb2bba34bed",
+      "U1",
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ]
+    ]
+  ],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

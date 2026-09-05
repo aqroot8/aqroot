@@ -68,6 +68,26 @@ the board does not say what the plan claimed:
 `--perturb REF` is the negative control: it grows one pad by a micron and the
 run is only trustworthy if that reference then reports MISMATCH.
 
+**THE KEEP-OUT STACKUP CHAIN (D-617).**  `screen_footprint_keepouts.py` asks its
+question of EVERY keep-out on the board — footprint-embedded AND board-level —
+because `pcbnew.BOARD.Zones()` returns only the board's and a footprint's returns
+only its own, and this board carried FIVE rule areas clamped to four of its six
+copper layers.  `checks/keepout_stackup_contract.py` gates the answer, and
+`apply_antenna_keepout.py` is the only writer of a rule area's layer set — it
+authors the widened rule on the scratch board BEFORE the router runs, so the
+router is bound by the rule the run is buying:
+
+    python3 hardware/demo/manufacturing/checks/keepout_stackup_contract.py \
+        [--board B.kicad_pcb] -o REPORT.json
+    python3 hardware/demo/manufacturing/apply_antenna_keepout.py \
+        --plan antenna_keepout_plan.json [--candidate OUT] [--promote]
+
+KO5 is the clause that makes the repair falsifiable rather than cosmetic: `In1.Cu`
+and `In4.Cu` are the two solid `GND` reference planes and carry no tracks, so once
+every keep-out claims both layers the two fills are identical BY CONSTRUCTION —
+**9464.962995 mm² each.**  A keep-out that loses a layer again shows up as two
+reference planes that stopped matching.
+
 And one screen asks the `C26` question of every sourced line at once, against
 the distributor's own package field:
 

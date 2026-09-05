@@ -1,0 +1,721 @@
+{
+ "authoritative_board_sha256": "449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00",
+ "candidate_sha256": "cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be",
+ "chain_ends": [
+  {
+   "end": "a",
+   "end_layer": "In3.Cu",
+   "needed": false,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "was_layer": "In3.Cu",
+   "why": "no change of layer",
+   "xy": [
+    45.75,
+    139.35
+   ]
+  },
+  {
+   "end": "b",
+   "end_layer": "In3.Cu",
+   "needed": false,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "was_layer": "In3.Cu",
+   "why": "no change of layer",
+   "xy": [
+    66.45,
+    102.3
+   ]
+  },
+  {
+   "end": "a",
+   "end_layer": "In3.Cu",
+   "needed": false,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "was_layer": "In3.Cu",
+   "why": "no change of layer",
+   "xy": [
+    36.8,
+    135.1
+   ]
+  },
+  {
+   "end": "b",
+   "end_layer": "In3.Cu",
+   "needed": false,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "was_layer": "In3.Cu",
+   "why": "no change of layer",
+   "xy": [
+    45.75,
+    139.35
+   ]
+  },
+  {
+   "end": "a",
+   "end_layer": "In2.Cu",
+   "needed": true,
+   "net": "Net-(SW9-A)",
+   "ok": true,
+   "via": true,
+   "via_layers": [
+    "F.Cu",
+    "B.Cu"
+   ],
+   "was_layer": "In3.Cu",
+   "xy": [
+    19.9,
+    120.8
+   ]
+  },
+  {
+   "end": "b",
+   "end_layer": "In2.Cu",
+   "needed": true,
+   "net": "Net-(SW9-A)",
+   "ok": true,
+   "via": true,
+   "via_layers": [
+    "F.Cu",
+    "B.Cu"
+   ],
+   "was_layer": "In3.Cu",
+   "xy": [
+    66.35,
+    103.65
+   ]
+  }
+ ],
+ "clauses": {
+  "K1_authority_unchanged": true,
+  "K2_every_licence_covers_stackup": true,
+  "K2_no_enabled_layer_left_out": true,
+  "K2_only_named_rule_areas_changed": true,
+  "K3_every_chain_relaid": true,
+  "K4_additions_claimed": true,
+  "K4_removals_licensed": true,
+  "K5_end_layer_is_a_barrel": true,
+  "K6_no_foreign_plane_growth": true,
+  "K6_within_length_bound": true,
+  "K7_drc_zero_attributable": true,
+  "K7_inherited_within_baseline": true,
+  "K7_keepout_clean": true,
+  "K8_keepout_mismatch_fell": true,
+  "K9_no_net_regressed": true,
+  "K9_open_edges_not_worse": true,
+  "K9_parity_not_worse": true,
+  "K9_unconnected_not_worse": true
+ },
+ "connectivity": {
+  "nets_improved": [],
+  "nets_regressed": [],
+  "retained_open_edges": [
+   57,
+   57
+  ]
+ },
+ "detour": {
+  "chains": [
+   {
+    "a_nm": [
+     45750000,
+     139350000
+    ],
+    "b_nm": [
+     66450000,
+     102300000
+    ],
+    "layer": "In3.Cu",
+    "lkey": "I3",
+    "max_mm": 1000000000.0,
+    "mm": 52.0132,
+    "net": "/01_POWER_TREE/USB_VBUS_CHG",
+    "tracks": 3,
+    "width_nm": 500000
+   },
+   {
+    "a_nm": [
+     36800000,
+     135100000
+    ],
+    "b_nm": [
+     45750000,
+     139350000
+    ],
+    "layer": "In3.Cu",
+    "lkey": "I3",
+    "max_mm": 13.5,
+    "mm": 12.6572,
+    "net": "/01_POWER_TREE/USB_VBUS_CHG",
+    "tracks": 2,
+    "width_nm": 500000
+   },
+   {
+    "a_nm": [
+     19900000,
+     120800000
+    ],
+    "b_nm": [
+     66350000,
+     103650000
+    ],
+    "layer": "In3.Cu",
+    "lkey": "I3",
+    "max_mm": 1000000000.0,
+    "mm": 110.0,
+    "net": "Net-(SW9-A)",
+    "tracks": 3,
+    "width_nm": 200000
+   }
+  ],
+  "nets": [
+   "/01_POWER_TREE/USB_VBUS_CHG",
+   "Net-(SW9-A)"
+  ],
+  "removed_count": 8,
+  "removed_mm": 174.6704
+ },
+ "drc": {
+  "attributable": [],
+  "base_types": {
+   "hole_clearance": 5,
+   "lib_footprint_mismatch": 1,
+   "solder_mask_bridge": 1
+  },
+  "exit": 0,
+  "schematic_parity": [
+   247,
+   247
+  ],
+  "types": {
+   "hole_clearance": 5,
+   "solder_mask_bridge": 1
+  },
+  "unconnected": [
+   73,
+   73
+  ]
+ },
+ "length": [
+  {
+   "bound_mm": 52.0132,
+   "mm": 49.5054,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "vias": 0,
+   "was_mm": 52.0132
+  },
+  {
+   "bound_mm": 13.5,
+   "mm": 13.259,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "vias": 0,
+   "was_mm": 12.6572
+  },
+  {
+   "bound_mm": 110.0,
+   "mm": 69.9546,
+   "net": "Net-(SW9-A)",
+   "ok": true,
+   "vias": 4,
+   "was_mm": 110.0
+  }
+ ],
+ "licences": [
+  {
+   "board_copper": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "covers_whole_stackup": true,
+   "keepout": {
+    "footprints": true,
+    "pads": true,
+    "tracks": true,
+    "vias": true,
+    "zone_fills": true
+   },
+   "keepout_ok": true,
+   "layers_after": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "name": "",
+   "name_ok": true,
+   "ok": true,
+   "owner": "U1",
+   "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed"
+  },
+  {
+   "board_copper": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "covers_whole_stackup": true,
+   "keepout": {
+    "footprints": false,
+    "pads": true,
+    "tracks": true,
+    "vias": true,
+    "zone_fills": true
+   },
+   "keepout_ok": true,
+   "layers_after": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "name": "WROOM ANTENNA KEEPOUT",
+   "name_ok": true,
+   "ok": true,
+   "owner": null,
+   "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41"
+  },
+  {
+   "board_copper": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "covers_whole_stackup": true,
+   "keepout": {
+    "footprints": false,
+    "pads": false,
+    "tracks": true,
+    "vias": true,
+    "zone_fills": true
+   },
+   "keepout_ok": true,
+   "layers_after": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "name": "BOSS1_KEEPOUT",
+   "name_ok": true,
+   "ok": true,
+   "owner": null,
+   "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b"
+  },
+  {
+   "board_copper": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "covers_whole_stackup": true,
+   "keepout": {
+    "footprints": false,
+    "pads": false,
+    "tracks": true,
+    "vias": true,
+    "zone_fills": true
+   },
+   "keepout_ok": true,
+   "layers_after": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "name": "BOSS2_KEEPOUT",
+   "name_ok": true,
+   "ok": true,
+   "owner": null,
+   "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c"
+  },
+  {
+   "board_copper": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "covers_whole_stackup": true,
+   "keepout": {
+    "footprints": false,
+    "pads": false,
+    "tracks": true,
+    "vias": true,
+    "zone_fills": true
+   },
+   "keepout_ok": true,
+   "layers_after": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "name": "MIC_ACOUSTIC_KEEPOUT",
+   "name_ok": true,
+   "ok": true,
+   "owner": null,
+   "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4"
+  }
+ ],
+ "plan": "antenna_keepout_plan.json",
+ "plan_sha256": "99b277b3dd59015ef8ff7a24f8281d36025f2908671fc8eba188e6c0bf6cf84a",
+ "pour_zone_inventory_unchanged": true,
+ "pours": {
+  "+3V3|F.Cu": {
+   "area_mm2": [
+    6050.806,
+    6042.577
+   ],
+   "islands": [
+    29,
+    30
+   ]
+  },
+  "+3V3|In3.Cu": {
+   "area_mm2": [
+    8624.545,
+    8255.577
+   ],
+   "islands": [
+    8,
+    6
+   ]
+  },
+  "GND|B.Cu": {
+   "area_mm2": [
+    6532.893,
+    6530.954
+   ],
+   "islands": [
+    55,
+    55
+   ]
+  },
+  "GND|In1.Cu": {
+   "area_mm2": [
+    9468.745,
+    9464.963
+   ],
+   "islands": [
+    1,
+    1
+   ]
+  },
+  "GND|In4.Cu": {
+   "area_mm2": [
+    9804.3,
+    9464.963
+   ],
+   "islands": [
+    1,
+    1
+   ]
+  }
+ },
+ "preservation": {
+  "added_object_nets": [
+   "/01_POWER_TREE/USB_VBUS_CHG",
+   "Net-(SW9-A)"
+  ],
+  "claimed_nets": [
+   "/01_POWER_TREE/USB_VBUS_CHG",
+   "Net-(SW9-A)"
+  ],
+  "foreign_added_nets": [],
+  "licensed_removals": 8,
+  "removed_objects": [
+   "('T', '/01_POWER_TREE/USB_VBUS_CHG', 8, (36800000, 135100000), (39150000, 132750000), 500000)",
+   "('T', '/01_POWER_TREE/USB_VBUS_CHG', 8, (39150000, 132750000), (45750000, 139350000), 500000)",
+   "('T', '/01_POWER_TREE/USB_VBUS_CHG', 8, (45750000, 139350000), (64700000, 120450000), 500000)",
+   "('T', '/01_POWER_TREE/USB_VBUS_CHG', 8, (56800000, 112500000), (64700000, 120450000), 500000)",
+   "('T', '/01_POWER_TREE/USB_VBUS_CHG', 8, (56800000, 112500000), (66450000, 102300000), 500000)",
+   "('T', 'Net-(SW9-A)', 8, (19900000, 120800000), (19900000, 144000000), 200000)",
+   "('T', 'Net-(SW9-A)', 8, (19900000, 144000000), (66350000, 144000000), 200000)",
+   "('T', 'Net-(SW9-A)', 8, (66350000, 103650000), (66350000, 144000000), 200000)"
+  ],
+  "unlicensed_removals": []
+ },
+ "promotion_candidate": true,
+ "protected_layers": {
+  "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "4787178d-1b61-404c-b8b3-ad83a8bd2f5c": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "a9e8798c-5894-4c5d-a481-adfe1483040b": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "ff26f816-3e65-4c6f-a14d-ccb2bba34bed": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ]
+ },
+ "reserved_plane_price": [
+  {
+   "bound_mm": 52.0132,
+   "laid_mm": 49.5054,
+   "layer": "In3.Cu",
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "removed_mm": 52.0132
+  },
+  {
+   "bound_mm": 13.5,
+   "laid_mm": 13.259,
+   "layer": "In3.Cu",
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "ok": true,
+   "removed_mm": 12.6572
+  },
+  {
+   "bound_mm": 110.0,
+   "laid_mm": 50.9991,
+   "layer": "In3.Cu",
+   "net": "Net-(SW9-A)",
+   "ok": true,
+   "removed_mm": 110.0
+  }
+ ],
+ "routed": [
+  {
+   "a_mm": [
+    45.75,
+    139.35
+   ],
+   "b_mm": [
+    66.45,
+    102.3
+   ],
+   "end_layer": "I3",
+   "layers": [
+    "I3"
+   ],
+   "layers_allowed": [
+    "I3"
+   ],
+   "lkey": "I3",
+   "mm": 49.5054,
+   "mm_by_layer": {
+    "I3": 49.5054
+   },
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "netclass": "VBUS_CHG",
+   "ok": true,
+   "permitted": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "reserved_planes": {
+    "I1": [
+     "GND"
+    ],
+    "I3": [
+     "+3V3"
+    ],
+    "I4": [
+     "GND"
+    ]
+   },
+   "seconds": 2.4,
+   "via_xy": [],
+   "vias": 0,
+   "was_mm": 52.0132,
+   "width_nm": 500000
+  },
+  {
+   "a_mm": [
+    36.8,
+    135.1
+   ],
+   "b_mm": [
+    45.75,
+    139.35
+   ],
+   "end_layer": "I3",
+   "layers": [
+    "I3"
+   ],
+   "layers_allowed": [
+    "I3"
+   ],
+   "lkey": "I3",
+   "mm": 13.259,
+   "mm_by_layer": {
+    "I3": 13.259
+   },
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "netclass": "VBUS_CHG",
+   "ok": true,
+   "permitted": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "reserved_planes": {
+    "I1": [
+     "GND"
+    ],
+    "I3": [
+     "+3V3"
+    ],
+    "I4": [
+     "GND"
+    ]
+   },
+   "seconds": 1.6,
+   "via_xy": [],
+   "vias": 0,
+   "was_mm": 12.6572,
+   "width_nm": 500000
+  },
+  {
+   "a_mm": [
+    19.9,
+    120.8
+   ],
+   "b_mm": [
+    66.35,
+    103.65
+   ],
+   "end_layer": "I2",
+   "layers": [
+    "I2",
+    "I3",
+    "F",
+    "I3",
+    "I2"
+   ],
+   "layers_allowed": [
+    "F",
+    "B",
+    "I2",
+    "I3"
+   ],
+   "lkey": "I3",
+   "mm": 69.9546,
+   "mm_by_layer": {
+    "F": 8.7023,
+    "I2": 10.2531,
+    "I3": 50.9991
+   },
+   "net": "Net-(SW9-A)",
+   "netclass": "Default",
+   "ok": true,
+   "permitted": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "reserved_planes": {
+    "I1": [
+     "GND"
+    ],
+    "I3": [
+     "+3V3"
+    ],
+    "I4": [
+     "GND"
+    ]
+   },
+   "seconds": 9.6,
+   "via_xy": [
+    [
+     22.0,
+     118.5
+    ],
+    [
+     61.1,
+     94.3
+    ],
+    [
+     69.8,
+     94.5
+    ],
+    [
+     69.8,
+     98.1
+    ]
+   ],
+   "vias": 4,
+   "was_mm": 110.0,
+   "width_nm": 200000
+  }
+ ],
+ "rule_areas_added": [],
+ "rule_areas_changed": [
+  "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+  "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+  "a9e8798c-5894-4c5d-a481-adfe1483040b",
+  "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+  "ff26f816-3e65-4c6f-a14d-ccb2bba34bed"
+ ],
+ "rule_areas_changed_wrongly": [],
+ "rule_areas_lost": [],
+ "schema": 1,
+ "unprotected_layers": {
+  "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4": [],
+  "4787178d-1b61-404c-b8b3-ad83a8bd2f5c": [],
+  "a9e8798c-5894-4c5d-a481-adfe1483040b": [],
+  "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41": [],
+  "ff26f816-3e65-4c6f-a14d-ccb2bba34bed": []
+ }
+}

@@ -13,6 +13,77 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-617 (THE ANTENNA KEEP-OUT IS CLOSED, AND IT WAS NEVER ONE
+  KEEP-OUT):** D-616 named this task -- *"CLOSE THE ANTENNA KEEP-OUT, the
+  largest remaining `DEMO_READY_FOR_FAB` blocker and the only one touching a
+  required radio"* -- and refused to extend the rule area without a route in
+  hand.  This is that route.  **THE DEFECT WAS NEVER ONE KEEP-OUT.**
+  `pcbnew.BOARD.Zones()` does not return a footprint's zones and a footprint's
+  does not return the board's, so D-616's screen could only ever have found
+  `U1`'s.  Asking BOTH scopes finds **FIVE** keep-outs clamped to the same four
+  layers: `U1`'s embedded ESP32-S3-WROOM-1 antenna area, a **BOARD-LEVEL
+  DUPLICATE of the same region with its own uuid**, both **M2 mounting-boss**
+  retention keep-outs and **`MK1`'s acoustic port**.  KiCad clamps `*.Cu` to the
+  stackup that exists when an area is DRAWN and never re-expands it; DRC honours
+  it exactly as written, so none of the five was ever a violation.  All five now
+  write `*.Cu` -- the string the WROOM master itself writes -- and
+  `screen_footprint_keepouts.py`, which now asks both scopes, reads
+  **5 DEFECT / 49 COVERED -> 54 of 54 COVERED**.
+  **THE LICENCE IS AUTHORED BEFORE THE ROUTER RUNS.**  New
+  `apply_antenna_keepout.py` widens the five on the scratch board FIRST, so
+  `qrouter.QBoard.addko` raises them as OBSTACLES on `In3`/`In4` and the router
+  is bound by the very rule the run buys.  Six segments across three named
+  chains were then put back **by the router, between their own two ends**:
+  `USB_VBUS_CHG` **52.013 -> 49.505 mm** (antenna) and **12.657 -> 13.259 mm**
+  (BOSS1), both `In3.Cu`, zero barrels; `Net-(SW9-A)` **110.000 -> 69.955 mm**
+  with 4 vias, its `In3.Cu` footprint **110.000 -> 50.999 mm**.  Two licences,
+  both priced: D-609's own-layer allowance widened to `permitted + own` with
+  clause K6 refusing any GROWTH of a foreign plane's slot, and a chain whose
+  BOTH ENDS are through vias may terminate on any layer those barrels span
+  (K5) -- ending `Net-(SW9-A)` on `B.Cu` instead was measured and REJECTED, two
+  `via_dangling`.
+  **THE PROOF THE REPAIR IS REAL.**  `In1.Cu` and `In4.Cu` are the two solid
+  `GND` reference planes and carry no tracks, so once every keep-out claims both
+  they are identical BY CONSTRUCTION.  Before: **9468.745 vs 9804.300 mm2, a
+  335.555 mm2 difference.**  After: both **9464.963 mm2**, to the nanometre --
+  that difference *was* the copper the four clamped keep-outs let `In4.Cu` keep.
+  New `checks/keepout_stackup_contract.py` states it as **KO5**; KO1-KO5 read
+  FAIL/FAIL/PASS/PASS/FAIL on the pre-board and **PASS on all five** after.
+  And the plane got BETTER: `+3V3` `In3.Cu` islands **8 -> 6**, `GND` `In4.Cu`
+  still ONE.  Ledger **57 -> 57 open edges, ZERO regressed**, ratsnest
+  **73 -> 73**, parity **247 -> 247 / 0 errors**.  (The first attempt stranded
+  `+3V3` `R20.1`; splitting the BOSS1 crossing into a SEPARATE LOCAL chain
+  leaves its pocket alone.  And a `max_mm` is ALSO the wavefront budget: the
+  same chain that refused `NO_PATH` at 62 mm routes at 49.505 mm when the budget
+  is opened.  Bound the length, not the search.)
+  **`lib_footprint_mismatch` 1 -> 0 and REMOVED from
+  `verify_promotion.INHERITED`** -- if it returns it must fail loudly;
+  `land_citations.json`'s `declared_master_divergences` is now EMPTY and LAND4
+  enforces that.  `verify_promotion.rule_area_sigs` corrected to audit BOTH
+  scopes (before D-617 the largest rule area on this board had never been
+  compared by the independent gate) and given `--rule-area-widened`.
+  Authority `449977ea...` ->
+  **`cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be`**;
+  8 objects removed, 32 added, all on the two named nets.
+  `apply_antenna_keepout.py` **K1-K9 18/18**, `verify_promotion.py` **14/14**
+  (ZERO attributable, fill-stable), `fab_package_contract.py` **FAB1-FAB8** on a
+  REGENERATED 28-artifact package, `land_parity_contract.py` **LAND1-LAND6,
+  311/311 MATCH**, `population_contract.py` POP1-POP4, `pour_bond_contract.py`
+  P1-P4, `neck_contract.py` N1-N3, `protected_copper.py` **15 nets / 393 objects
+  IDENTICAL**.  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`,
+  `ACC_3V3_SW`, RGB and XGPIO4/5 untouched.
+  **STILL OPEN:** `J8`'s master-to-drawing link (JST `eSH.pdf` not re-read; the
+  land to confirm is recorded to the micron in ledger section 6.2).
+  **NEXT: THE 57 RETAINED OPEN EDGES.**  With every fabrication CONTRACT on this
+  board now passing -- package, BOM, population, lands, keep-outs, pours, necks,
+  protected copper -- the only thing between here and `DEMO_READY_FOR_FAB` is
+  connectivity: 57 open edges across 29 retained nets, of which the cheapest
+  named single-edge candidates are `/01_POWER_TREE/USB_D_CONN_N` / `_P`
+  (`J3.A7/B7` and `J3.A6/B6` to `U10.1` / `U10.3`, ~4.6 mm each on `F.Cu`),
+  `/USB_D_MCU_N` / `_P` (`R33.2`/`R34.2` to `U1.13`/`U1.14`) and
+  `/01_POWER_TREE/ACC_5V_LX` (`L4.2` to `U21.5`, 1.65 mm, SWITCH_NODE class).
+  `checks/keepout_stackup_contract.py` joins the standing preflight.  No owner
+  decision.
 - **Demo D-616 (THE LAND PATTERNS ARE PROVEN FOR THE FIRST TIME, AND THE Wi-Fi
   ANTENNA HAS A PLANE UNDER IT):** D-615 named this task -- *"247 unproven
   claims that each LAND matches its part's datasheet drawing"* -- and the first

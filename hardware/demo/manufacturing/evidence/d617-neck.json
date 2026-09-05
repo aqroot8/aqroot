@@ -1,0 +1,83 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be",
+ "checks": {
+  "N1": {
+   "courtyards_found": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "dru_min_nm": 200000,
+   "dru_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "ok": true,
+   "router_min_nm": 200000,
+   "router_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ]
+  },
+  "N2": {
+   "base_rev": "c5f983f",
+   "moved": [],
+   "ok": true,
+   "pads_compared": 63
+  },
+  "N3": {
+   "neck_max_mm": 1.5,
+   "offered": [
+    {
+     "full_width_escapes": 0,
+     "in_courtyard": true,
+     "net": "/NFC_SUPPLY",
+     "pad": "U9.8",
+     "stubs": [
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 0.32,
+       "width_mm": 0.2
+      },
+      {
+       "layer": "B",
+       "outside_courtyard_mm": 0.0,
+       "stub_mm": 1.128,
+       "width_mm": 0.2
+      }
+     ]
+    }
+   ],
+   "ok": true,
+   "pads_offered_a_neck": 1,
+   "violations": []
+  }
+ },
+ "schema": 1
+}

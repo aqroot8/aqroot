@@ -22,8 +22,12 @@ driver's scratch tree, its ledger or its evidence JSON:
     with `--bridge`, is a DRU-LICENSED POUR BRIDGE: a barrel whose whole
     footprint lies inside a rule area the `.kicad_dru` names for its net, and
     which meets every minimum that rule states;
-  * the rule-area inventory changed by exactly the licence areas the caller
-    asserts, none was lost, and every added one forbids nothing;
+  * the rule-area inventory -- BOARD-LEVEL AND FOOTPRINT-EMBEDDED, which
+    before D-617 meant board-level only, so the largest rule area on this board
+    was never audited here at all -- changed by exactly the licence areas the
+    caller asserts, none was lost, every added one forbids nothing, and every
+    area whose COPPER LAYER SET GREW is named by `--rule-area-widened` and
+    changed in no other way;
   * the zone inventory changed by exactly the pours the caller asserts, and no
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
@@ -71,13 +75,13 @@ SUFFIXES = (".kicad_pcb", ".kicad_dru", ".kicad_pro")
 # deliberately NOT listed here any more: if it ever returns, the libraries have
 # stopped resolving and every land check in this repository has gone vacuous
 # again, which must fail loudly rather than pass quietly.
-# `lib_footprint_mismatch` is 1: U1's footprint-embedded ESP32-S3-WROOM-1
-# ANTENNA KEEP-OUT names four copper layers where its master names the whole
-# stackup.  62 of 62 pads are identical; the keep-out is an OPEN fabrication
-# blocker tracked in `land_citations.json` and FOOTPRINT_VERIFICATION_LEDGER
-# section 6.2, not something a routing promotion introduced.
-INHERITED = {"hole_clearance": 5, "solder_mask_bridge": 1,
-             "lib_footprint_mismatch": 1}
+# `lib_footprint_mismatch` was 1 and is now ZERO -- D-617 gave `U1`'s
+# footprint-embedded ESP32-S3-WROOM-1 ANTENNA KEEP-OUT the `*.Cu` its own
+# master writes, and moved the copper that was standing on `In3.Cu` inside it.
+# It is deliberately NOT listed here any more, for the same reason
+# `lib_footprint_issues` is not: if it returns, a board footprint has drifted
+# from the library it was ruled against and that must fail loudly.
+INHERITED = {"hole_clearance": 5, "solder_mask_bridge": 1}
 
 # D-613: `--schematic-parity` was never actually ASKED.  `stage()` copied the
 # board, the rules and the project into a temporary directory and left the nine
@@ -472,22 +476,40 @@ def bridge_proof(path, vias, drill_floor, annular_floor):
 
 
 def rule_area_sigs(path):
-    """Every rule area's name, layers, keep-out flags and outline."""
+    """uuid -> every rule area's owner, name, layers, flags and outline.
+
+    BOTH SCOPES, and that is a D-617 correction, not a refactor.
+    `pcbnew.BOARD.Zones()` does not return a footprint's zones and a
+    footprint's does not return the board's, so this gate had been auditing
+    board-level rule areas ONLY -- and the single largest rule area on this
+    board, `U1`'s ESP32-S3-WROOM-1 antenna keep-out, lives inside a footprint
+    and was never once compared here.  Keyed by UUID because two areas on this
+    board share a NAME, and the copper layer set is intersected with the
+    board's own enabled stack because `(layers "*.Cu")` reads back as all
+    THIRTY-TWO copper layers KiCad can name, of which this board has six.
+    """
     import pcbnew
     board = pcbnew.LoadBoard(str(path))
-    out = []
-    for z in board.Zones():
+    enabled = [board.GetLayerName(l)
+               for l in board.GetEnabledLayers().CuStack()]
+    subjects = [(None, z) for z in board.Zones()]
+    subjects += [(f.GetReference(), z) for f in board.GetFootprints()
+                 for z in f.Zones()]
+    out = {}
+    for owner, z in subjects:
         if not z.GetIsRuleArea():
             continue
         o = z.Outline().Outline(0)
-        out.append((z.GetZoneName(),
-                    tuple(board.GetLayerName(l) for l in z.GetLayerSet().Seq()),
-                    bool(z.GetDoNotAllowTracks()), bool(z.GetDoNotAllowVias()),
-                    bool(z.GetDoNotAllowPads()),
-                    bool(z.GetDoNotAllowZoneFills()),
-                    tuple((o.CPoint(i).x, o.CPoint(i).y)
-                          for i in range(o.PointCount()))))
-    return sorted(out)
+        have = {board.GetLayerName(l) for l in z.GetLayerSet().Seq()}
+        out[str(z.m_Uuid.AsString())] = (
+            owner, z.GetZoneName(),
+            tuple(L for L in enabled if L in have),
+            bool(z.GetDoNotAllowTracks()), bool(z.GetDoNotAllowVias()),
+            bool(z.GetDoNotAllowPads()),
+            bool(z.GetDoNotAllowZoneFills()),
+            tuple((o.CPoint(i).x, o.CPoint(i).y)
+                  for i in range(o.PointCount())))
+    return out
 
 
 def resolved_fp_lib_table():
@@ -580,6 +602,12 @@ def main():
     ap.add_argument("--rule-area", action="append", default=[],
                     help="name of a rule area the promotion claims to have "
                          "ADDED; repeatable, omit when none was added")
+    ap.add_argument("--rule-area-widened", action="append", default=[],
+                    metavar="NAME",
+                    help="name -- or, for a footprint-embedded area with no "
+                         "name, the OWNER's reference -- of a rule area whose "
+                         "copper LAYER SET the promotion claims to have GROWN "
+                         "and changed in no other way.  D-617.  Repeatable")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
@@ -597,8 +625,24 @@ def main():
     vias = [x for x in added if x[0] == "via"]
 
     rpre, rpost = rule_area_sigs(pre), rule_area_sigs(post)
-    radded = [z for z in rpost if z not in rpre]
-    rlost = [z for z in rpre if z not in rpost]
+    radded = [rpost[u] for u in sorted(set(rpost) - set(rpre))]
+    rlost = [rpre[u] for u in sorted(set(rpre) - set(rpost))]
+    # A WIDENED rule area is neither an addition nor a loss.  D-617: five
+    # keep-outs on this board named four of six copper layers because KiCad
+    # clamped `*.Cu` to the stackup that existed when each was drawn, and
+    # repairing that is a change to ONE field -- the copper layer set, and only
+    # ever upward.  A promotion must NAME each one; anything else about a rule
+    # area that moved is a change nobody reviewed.
+    rwidened, rmoved = [], []
+    for u in sorted(set(rpre) & set(rpost)):
+        was, now = rpre[u], rpost[u]
+        if was == now:
+            continue
+        rest_same = (was[:2] == now[:2] and was[3:] == now[3:])
+        if rest_same and set(was[2]) < set(now[2]):
+            rwidened.append((u, was[1] or was[0], list(was[2]), list(now[2])))
+        else:
+            rmoved.append((u, was[1] or was[0]))
 
     zpre, zpost = zone_sigs(pre), zone_sigs(post)
     zadded = [z for z in zpost if z not in zpre]
@@ -647,10 +691,12 @@ def main():
                              or (a.bridge and bridge_ok)),
         annular_floor_met=(all((dia - d) / 2 >= a.annular for dia, d in vdims)
                            or (a.bridge and bridge_ok)),
-        rule_areas_as_claimed=(not rlost
-                               and sorted(z[0] for z in radded)
+        rule_areas_as_claimed=(not rlost and not rmoved
+                               and sorted(str(z[1]) for z in rwidened)
+                               == sorted(a.rule_area_widened)
+                               and sorted(z[1] for z in radded)
                                == sorted(a.rule_area)
-                               and all(len(z[1]) == 6 and not any(z[2:6])
+                               and all(len(z[2]) == 6 and not any(z[3:7])
                                        for z in radded)),
         drc_zero_attributable=not first["attributable"],
         drc_inherited_within_baseline=all(
@@ -682,7 +728,10 @@ def main():
         pad_escape_neck=neck_detail, pad_escape_run=run_detail,
         pour_bridge=bridge_detail,
         rule_areas_added=radded, rule_areas_removed=rlost,
+        rule_areas_widened=rwidened,
+        rule_areas_otherwise_changed=rmoved,
         claimed_rule_areas=sorted(a.rule_area),
+        claimed_widened_rule_areas=sorted(a.rule_area_widened),
         zones_added=zadded, zones_removed=zlost,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",

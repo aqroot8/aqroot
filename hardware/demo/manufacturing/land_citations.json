@@ -1,18 +1,9 @@
 {
   "schema": 1,
-  "decision": "D-616",
+  "decision": "D-617",
   "purpose": "The SECOND link of the land chain.  screen_land_parity.py proves the BOARD's footprint equals its LIBRARY MASTER, to the nanometre.  That is worth nothing on its own -- it only says the board agrees with a file.  This index says which drawing that file was ruled against, and where the ruling is written down.  Together the two links are: board land == library master == manufacturer/IPC drawing.",
   "ledger": "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
-  "declared_master_divergences": {
-    "U1": {
-      "identity": "RF_Module:ESP32-S3-WROOM-1",
-      "kicad_reports": "lib_footprint_mismatch",
-      "lands_identical": true,
-      "what_differs": "the footprint-embedded ANTENNA KEEP-OUT rule area's copper-layer set: the master names all 32, the board's copy names F.Cu / B.Cu / In1.Cu / In2.Cu -- KiCad clamped it to the stackup the board had when U1 was placed and never re-expanded it when In3.Cu and In4.Cu were added",
-      "62_of_62_pads": "identical to the nanometre (LAND2)",
-      "status": "OPEN FABRICATION BLOCKER, measured at D-616: In3.Cu carries 273.697 mm2 of +3V3 plane and 4 track segments (Net-(SW9-A), USB_VBUS_CHG) and In4.Cu 304.259 mm2 of GND pour inside the 330 mm2 on-board keep-out. Evidence evidence/d616-footprint-keepouts.json; instrument screen_footprint_keepouts.py. It is NOT closed by declaring it here -- this entry exists so LAND4 names the divergence instead of ignoring it."
-    }
-  },
+  "declared_master_divergences": {},
   "tiers": {
     "1": "manufacturer drawing read, document number and dimensions recorded",
     "2A": "vendor-specific stock footprint, drawing read at B-03 closure (FBV2-S2-002)",
@@ -220,6 +211,15 @@
     "TestPoint:TestPoint_Pad_D1.0mm": {
       "tier": "3",
       "drawing": "1.0 mm round test pad, not a purchased part"
+    }
+  },
+  "closed_master_divergences": {
+    "U1": {
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "was": "lib_footprint_mismatch -- the footprint-embedded ANTENNA KEEP-OUT rule area's copper-layer set: the master writes `*.Cu`, the board's copy named F.Cu / B.Cu / In1.Cu / In2.Cu because KiCad clamped the shorthand to the stackup the board had when U1 was placed and never re-expanded it when In3.Cu and In4.Cu were added.  62 of 62 pads were always identical.",
+      "closed": "D-617.  The board's copy now writes `*.Cu`, the string the master itself writes, so it cannot be clamped again by a future stackup change.  KiCad reports ZERO lib_footprint_mismatch and `lib_footprint_mismatch` has been removed from verify_promotion.INHERITED -- if it returns it must fail loudly.",
+      "cost": "Two nets were re-laid by the router under the widened rule: /01_POWER_TREE/USB_VBUS_CHG (two chains, 52.013 -> 49.505 mm and 12.657 -> 13.259 mm, still In3.Cu, no barrel) and Net-(SW9-A) (110.000 -> 69.955 mm, 4 vias, In3.Cu footprint 110.000 -> 50.999 mm).  Ledger 57 -> 57 open edges, ratsnest 73 -> 73, parity 247 -> 247.",
+      "evidence": "evidence/d617-antenna-keepout.json, evidence/d617-keepout-contract.json; contract checks/keepout_stackup_contract.py KO1-KO5"
     }
   }
 }

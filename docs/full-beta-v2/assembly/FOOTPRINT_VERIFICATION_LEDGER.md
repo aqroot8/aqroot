@@ -275,7 +275,7 @@ file** — so deleting a row below breaks the gate.
 
 Census by tier over all 311 board footprints: **tier 1 = 19, tier 2A = 15, tier 2 OPEN = 1, tier 3 = 276.**
 
-### 6.2 The one OPEN land, and the one DECLARED divergence
+### 6.2 The one OPEN land, and the divergence that is now CLOSED
 
 **`Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` (`J8`, Qwiic /
 STEMMA QT) is OPEN.**  It entered the design at D-238, after §1–§3 were written, and no
@@ -286,29 +286,42 @@ to confirm is **4 signal pads 0.60 × 1.55 mm on 1.00 mm pitch, pin 1 → pin 4 
 3.875 mm from the signal row**.  Board-to-master parity for `J8` is PROVEN; only the
 master-to-drawing link is open.
 
-**`U1` is a DECLARED master divergence, and it is an OPEN FABRICATION BLOCKER of a
-different kind.**  KiCad still reports `lib_footprint_mismatch` on `U1` after the
-description fix, and the reason is not the land — **62 of 62 pads are identical to the
-nanometre**.  It is the footprint's own **ESP32-S3-WROOM-1 ANTENNA KEEP-OUT rule
-area**.  The master applies it to every copper layer; the board's copy names
-**`F.Cu` / `B.Cu` / `In1.Cu` / `In2.Cu` only** — KiCad clamped `*.Cu` to the stackup the
-board had when `U1` was placed and never re-expanded it when `In3.Cu` and `In4.Cu`
-were added.  DRC honours the rule area exactly as written, so **there is no violation
-to report**.  Measured (`evidence/d616-footprint-keepouts.json`), inside the
-**330 mm² on-board part** of the keep-out:
+**`U1`'s DECLARED master divergence is CLOSED (D-617), and closing it found four
+more of the same defect.**  KiCad reported `lib_footprint_mismatch` on `U1` after
+D-616's description fix and the reason was never the land — **62 of 62 pads are
+identical to the nanometre**.  It was the footprint's own **ESP32-S3-WROOM-1 ANTENNA
+KEEP-OUT rule area**.  The master writes `*.Cu`; the board's copy named
+**`F.Cu` / `B.Cu` / `In1.Cu` / `In2.Cu` only** — KiCad clamps that shorthand to the
+stackup that exists WHEN THE AREA IS DRAWN and never re-expands it, and `In3.Cu` /
+`In4.Cu` were added to this board afterwards.  DRC honours a rule area exactly as
+written, so **there was no violation to report and no way to notice except to ask.**
 
-| layer | protected | pour inside the keep-out | tracks |
-|---|---|---:|---:|
-| `F.Cu` | yes | 0.000 mm² | 0 |
-| `In1.Cu` | yes | 0.000 mm² | 0 |
-| `In2.Cu` | yes | 0.000 mm² | 0 |
-| `In3.Cu` | **NO** | **273.697 mm² (+3V3 plane)** | **4** (`Net-(SW9-A)`, `USB_VBUS_CHG`) |
-| `In4.Cu` | **NO** | **304.259 mm² (GND pour)** | 0 |
-| `B.Cu` | yes | 0.000 mm² | 0 |
+**The same clamp held FIVE keep-outs, not one.**  `pcbnew.BOARD.Zones()` does not
+return a footprint's zones and a footprint's does not return the board's, so D-616's
+screen — which read footprint zones — could only ever have found `U1`'s.  Asking both
+scopes finds:
 
-The four protected layers are clean and the two unprotected ones are 83 % and 92 %
-full.  That is the proof the keep-out works and that these two layers were simply
-never inside it.  Wi-Fi and BLE are Demo-required retained features, so this is a
-fabrication blocker, not a cosmetic one.  It is **not** closed by being written down
-here; `screen_footprint_keepouts.py` is the instrument and it reports `DEFECT`.
+| keep-out | scope | on board | `In3.Cu` held | `In4.Cu` held |
+|---|---|---:|---:|---:|
+| ESP32-S3-WROOM-1 antenna (`U1`) | footprint | 330.000 mm² | 273.697 mm² `+3V3` + **5 tracks** | 304.259 mm² `GND` |
+| `WROOM ANTENNA KEEPOUT` | board (duplicate region, own uuid) | 330.000 mm² | — | — |
+| `BOSS1_KEEPOUT` (M2 retention) | board | 20.250 mm² | 8.983 mm² `+3V3` + **1 track** | 14.561 mm² `GND` |
+| `BOSS2_KEEPOUT` (M2 retention) | board | 20.250 mm² | 14.508 mm² `+3V3` | 14.508 mm² `GND` |
+| `MIC_ACOUSTIC_KEEPOUT` (`MK1` port) | board | 4.000 mm² | 2.105 mm² `+3V3` | 2.105 mm² `GND` |
+
+All five now write `*.Cu` — the string the WROOM master itself writes — so a future
+stackup change cannot clamp them again.  Six of six copper layers are claimed by every
+one, and every region is empty of pour, tracks and vias on all six.
+
+**THE PROOF THAT THE REPAIR IS REAL, AND NOT A REDRAWN RECTANGLE.**  `In1.Cu` and
+`In4.Cu` are this board's two solid `GND` reference planes: neither is routable and
+neither carries a single track, so once every keep-out claims both of them the two
+fills are **identical by construction**.  Before D-617 they differed by
+**335.555 mm²** (9468.745 vs 9804.300); after it both read **9464.963 mm²**, to the
+nanometre.  That difference *was* the copper the four clamped keep-outs let `In4.Cu`
+keep.  `checks/keepout_stackup_contract.py` KO5 states this identity as a standing
+measurement, so a keep-out that loses a layer again shows up as two reference planes
+that stopped matching.  KO1–KO4 gate the rest; `screen_footprint_keepouts.py` reports
+**54 of 54 rule areas COVERED**, and `verify_promotion.INHERITED` no longer carries
+`lib_footprint_mismatch` at all — if it returns, it must fail loudly.
 

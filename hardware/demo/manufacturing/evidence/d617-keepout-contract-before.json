@@ -1,0 +1,203 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_copper_layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+  ],
+  "checks": {
+    "KO1_every_keepout_claims_the_stackup": false,
+    "KO2_no_keepout_holds_copper": false,
+    "KO3_kicad_reports_no_items_not_allowed": true,
+    "KO4_screen_is_not_vacuous": true,
+    "KO5_gnd_reference_planes_are_the_same_copper": false
+  },
+  "control": {
+    "caught": true,
+    "layer": "B.Cu",
+    "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4"
+  },
+  "drc_counts": {
+    "hole_clearance": 5,
+    "lib_footprint_mismatch": 1,
+    "solder_mask_bridge": 1
+  },
+  "forbidding_copper": 5,
+  "holding_copper": [
+    {
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "layer": "In3.Cu",
+      "nets": [
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "Net-(SW9-A)"
+      ],
+      "pour_mm2": 273.697,
+      "tracks": 4,
+      "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed",
+      "vias": 0
+    },
+    {
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "layer": "In4.Cu",
+      "nets": [],
+      "pour_mm2": 304.259,
+      "tracks": 0,
+      "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed",
+      "vias": 0
+    },
+    {
+      "identity": "MIC_ACOUSTIC_KEEPOUT",
+      "layer": "In3.Cu",
+      "nets": [],
+      "pour_mm2": 2.105,
+      "tracks": 0,
+      "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+      "vias": 0
+    },
+    {
+      "identity": "MIC_ACOUSTIC_KEEPOUT",
+      "layer": "In4.Cu",
+      "nets": [],
+      "pour_mm2": 2.105,
+      "tracks": 0,
+      "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+      "vias": 0
+    },
+    {
+      "identity": "BOSS2_KEEPOUT",
+      "layer": "In3.Cu",
+      "nets": [],
+      "pour_mm2": 14.508,
+      "tracks": 0,
+      "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+      "vias": 0
+    },
+    {
+      "identity": "BOSS2_KEEPOUT",
+      "layer": "In4.Cu",
+      "nets": [],
+      "pour_mm2": 14.508,
+      "tracks": 0,
+      "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+      "vias": 0
+    },
+    {
+      "identity": "BOSS1_KEEPOUT",
+      "layer": "In3.Cu",
+      "nets": [],
+      "pour_mm2": 8.983,
+      "tracks": 0,
+      "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b",
+      "vias": 0
+    },
+    {
+      "identity": "BOSS1_KEEPOUT",
+      "layer": "In4.Cu",
+      "nets": [],
+      "pour_mm2": 14.561,
+      "tracks": 0,
+      "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b",
+      "vias": 0
+    },
+    {
+      "identity": "WROOM ANTENNA KEEPOUT",
+      "layer": "In3.Cu",
+      "nets": [
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "Net-(SW9-A)"
+      ],
+      "pour_mm2": 273.697,
+      "tracks": 4,
+      "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+      "vias": 0
+    },
+    {
+      "identity": "WROOM ANTENNA KEEPOUT",
+      "layer": "In4.Cu",
+      "nets": [],
+      "pour_mm2": 304.259,
+      "tracks": 0,
+      "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+      "vias": 0
+    }
+  ],
+  "items_not_allowed": [],
+  "ok": false,
+  "reference_planes": {
+    "In1.Cu": {
+      "area_mm2": 9468.744586,
+      "net": [
+        "GND"
+      ],
+      "tracks": 0
+    },
+    "In4.Cu": {
+      "area_mm2": 9804.299646,
+      "net": [
+        "GND"
+      ],
+      "tracks": 0
+    }
+  },
+  "rule_areas": 54,
+  "schema": 1,
+  "scopes": [
+    "board",
+    "footprint"
+  ],
+  "under_declared": [
+    {
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "ref": "U1",
+      "scope": "footprint",
+      "unprotected": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed"
+    },
+    {
+      "identity": "MIC_ACOUSTIC_KEEPOUT",
+      "ref": null,
+      "scope": "board",
+      "unprotected": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4"
+    },
+    {
+      "identity": "BOSS2_KEEPOUT",
+      "ref": null,
+      "scope": "board",
+      "unprotected": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c"
+    },
+    {
+      "identity": "BOSS1_KEEPOUT",
+      "ref": null,
+      "scope": "board",
+      "unprotected": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b"
+    },
+    {
+      "identity": "WROOM ANTENNA KEEPOUT",
+      "ref": null,
+      "scope": "board",
+      "unprotected": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41"
+    }
+  ]
+}

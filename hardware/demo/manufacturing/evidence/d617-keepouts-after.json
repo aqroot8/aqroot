@@ -1,0 +1,4322 @@
+{
+  "areas": [
+    {
+      "area_on_board_mm2": 330.0,
+      "area_total_mm2": 1008.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "keepout": {
+        "copperpour": true,
+        "footprints": true,
+        "pads": true,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 32,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": "U1",
+      "rule_area": true,
+      "scope": "footprint",
+      "unprotected_board_layers": [],
+      "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 11.93,
+      "area_total_mm2": 11.93,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.007,
+          "protected": true,
+          "tracks": 6,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 2.429,
+          "protected": true,
+          "tracks": 6,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 10.5,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P",
+            "/I2C_SCL_INT"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 5.209,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 10.5,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "02101dba-8d9f-43c0-8d9c-4c55966d66c4",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_15",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "09c9330b-ca44-4b96-a42d-fea71dab1b1b",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_U17_5",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.4,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.023,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.4,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.023,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "0e35f673-a117-55ae-8912-e22b501fb264",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 1.261,
+      "area_total_mm2": 1.261,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_RAW_TAP_U18",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 6,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 1.258,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 1.258,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 1.258,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 1.258,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "18deb21c-d8dd-493f-88f8-3d216980c8e1",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 2.657,
+      "area_total_mm2": 2.657,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_PROT_TAP_U18",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 7,
+          "vias": 3
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 1.227,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 1.454,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 3
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 1.454,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "1a35c9dd-663d-462f-9c16-2bd81e0385fb",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 12.453,
+      "area_total_mm2": 12.453,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_7",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC4368_FAULT_N",
+            "/01_POWER_TREE/LTC_SHDN"
+          ],
+          "pour_mm2": 3.296,
+          "protected": true,
+          "tracks": 8,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P",
+            "/01_POWER_TREE/LTC_SHDN"
+          ],
+          "pour_mm2": 7.688,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_SHDN"
+          ],
+          "pour_mm2": 11.591,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_SHDN"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_SHDN",
+            "/01_POWER_TREE/VBUS_PRESENT"
+          ],
+          "pour_mm2": 10.898,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_SHDN"
+          ],
+          "pour_mm2": 11.591,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "1b835902-bf7f-4f3d-b5d2-d15434cc5c15",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.502,
+      "area_total_mm2": 3.502,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_0",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 7,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 3.254,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 3.254,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 3.254,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 3.254,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "2be859e0-e293-4190-ab62-b06664b29969",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 21.912,
+      "area_total_mm2": 21.912,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_RAW_DIVIDER_TAP_0",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW",
+            "/01_POWER_TREE/BAT_SENSE",
+            "/01_POWER_TREE/LTC_GATE",
+            "/01_POWER_TREE/Q2_CS"
+          ],
+          "pour_mm2": 2.974,
+          "protected": true,
+          "tracks": 20,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 17.706,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 19.492,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 4,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 18.877,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 19.492,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "319fcf6f-c690-44fd-8b56-cb009b60997c",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 4.0,
+      "area_total_mm2": 4.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "MIC_ACOUSTIC_KEEPOUT",
+      "keepout": {
+        "copperpour": true,
+        "footprints": false,
+        "pads": false,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.35,
+      "area_total_mm2": 3.35,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_12",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL",
+            "/01_POWER_TREE/VBRIDGE_TOP",
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 0.329,
+          "protected": true,
+          "tracks": 6,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 2.511,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 2.511,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 0.665,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 2.511,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "377b0f14-a96e-4ec6-aa5f-ac60c52ed944",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_3",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "38a1a45b-d95f-4ee0-9233-e369b9d8b4b2",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.81,
+      "area_total_mm2": 0.81,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "POUR_BRIDGE_R19_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.007,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.719,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.03,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.81,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.03,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "3abc7775-93a0-5b42-93bc-4ed33c74a0d7",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_6",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "3e886d71-4ccd-424d-88e4-0d64e3563171",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_6",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "409e2cda-043e-457e-ac45-e955e37d0d27",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 6.991,
+      "area_total_mm2": 6.991,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_PROT_TAP_U14",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 13,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 5.524,
+          "protected": true,
+          "tracks": 3,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 6.558,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 6.558,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 6.558,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "42e94a6b-4040-470e-bfe4-ec6f4a471f97",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 2.586,
+      "area_total_mm2": 2.586,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_11",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 0.45,
+          "protected": true,
+          "tracks": 3,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 1.53,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 1.772,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 1.772,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 1.772,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "42fa0ee5-d3b1-4712-b602-53cb6acead45",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.769,
+      "area_total_mm2": 3.769,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_4",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 5,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.774,
+          "protected": true,
+          "tracks": 3,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.901,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.901,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.901,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "451a78a5-ad6e-4225-ad65-99755ced1210",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_13",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "458eb847-d653-4bb0-8b58-9b22d6b85426",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 20.25,
+      "area_total_mm2": 20.25,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BOSS2_KEEPOUT",
+      "keepout": {
+        "copperpour": true,
+        "footprints": false,
+        "pads": false,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "47ea83bb-afab-4ff7-8ab9-c98783969755",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 18.444,
+      "area_total_mm2": 18.444,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_RAW_DIVIDER_TAP_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.001,
+          "protected": true,
+          "tracks": 18,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 16.572,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 17.46,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 17.46,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 17.46,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "58fb977a-ca08-4ae7-be64-a50f54fd1966",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_R111_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.004,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "5a1a51f6-fa62-556b-aded-93a8d4fdcae8",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "POUR_BRIDGE_U11_11",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.013,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "61690974-806c-5f93-9be8-b6b0ee2b9952",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.303,
+      "area_total_mm2": 3.303,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_8",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL"
+          ],
+          "pour_mm2": 1.113,
+          "protected": true,
+          "tracks": 3,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL",
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 1.793,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL"
+          ],
+          "pour_mm2": 2.433,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL"
+          ],
+          "pour_mm2": 2.417,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/N_POL"
+          ],
+          "pour_mm2": 2.433,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "6e48e955-ecf9-40d0-85f3-59ac2fb34c95",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_R127_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.389,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.002,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.002,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "6f34a990-4dd5-5656-8bf4-1b86dd57d6e2",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 38.867,
+      "area_total_mm2": 38.867,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_RAW_DIVIDER_TAP_3",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW",
+            "/01_POWER_TREE/BAT_SENSE",
+            "/01_POWER_TREE/N_BATDIV",
+            "/01_POWER_TREE/VBRIDGE_TOP",
+            "/01_POWER_TREE/VREC_VCC"
+          ],
+          "pour_mm2": 19.769,
+          "protected": true,
+          "tracks": 16,
+          "vias": 3
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 35.078,
+          "protected": true,
+          "tracks": 2,
+          "vias": 3
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 35.868,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 3
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 35.267,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 35.868,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "722eb86b-09bf-4382-92cf-953991c2fb12",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_5",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "780fd397-4a0c-4d78-ae58-01e9b677a658",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_9",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "7ddacdd4-b190-44b7-bca8-5a539ff1f9d3",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_U12_4",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.001,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.003,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.003,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "82cd8473-f227-51b0-a8ca-dc69b9cfc6ef",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 22.069,
+      "area_total_mm2": 22.069,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_RAW_DIVIDER_TAP_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.001,
+          "protected": true,
+          "tracks": 25,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 22.015,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 22.064,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 22.064,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 22.064,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "85bd2c4a-d5a2-46b3-921e-e3eedd2b5b61",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 6.626,
+      "area_total_mm2": 6.626,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_PROT_ESCAPE_U11",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_PROTECTED_P"
+          ],
+          "pour_mm2": 0.028,
+          "protected": true,
+          "tracks": 24,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [
+            "/ACC_5V_SW_EN"
+          ],
+          "pour_mm2": 2.822,
+          "protected": true,
+          "tracks": 4,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 6.248,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [
+            "/NFC_5V_EN"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 6.248,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "897cecc7-bde7-4058-8b74-ff6638b6c417",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 2.441,
+      "area_total_mm2": 2.441,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_0",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE",
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 0.216,
+          "protected": true,
+          "tracks": 5,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 1.656,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 1.656,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 1.656,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/Q3_CS"
+          ],
+          "pour_mm2": 1.656,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "8b25b767-28c7-4d46-8003-c8b737c7c20d",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 2.868,
+      "area_total_mm2": 2.868,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_3",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 4,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.502,
+          "protected": true,
+          "tracks": 2,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.052,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.052,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC_GATE"
+          ],
+          "pour_mm2": 2.052,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "8e6ff55b-d833-4239-84aa-5de88b85ee7d",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_R110_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.38,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 4,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "8f3ba113-6302-5c0d-b143-620a02212f57",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_C5_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.4,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.005,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.318,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.005,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "931cf2fc-3bb6-5c80-b14f-0ea852f979dc",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_8",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "9568dd26-895d-48af-8c10-67af25126e8f",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 5.827,
+      "area_total_mm2": 5.827,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_10",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW",
+            "/01_POWER_TREE/N_BATDIV",
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 0.886,
+          "protected": true,
+          "tracks": 11,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 4.204,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 4.902,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 3,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 4.902,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_HO"
+          ],
+          "pour_mm2": 4.902,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "97cb9746-7a98-468c-8359-cb702d10ff82",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.25,
+      "area_total_mm2": 0.25,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "USB_VBUS_J3_A4_POFV",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "9afa46c3-f253-4a7a-acf6-ef7e29a40680",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_7",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "9b068c0f-e6ba-4f74-8ce6-904bfdd74f71",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 20.25,
+      "area_total_mm2": 20.25,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BOSS1_KEEPOUT",
+      "keepout": {
+        "copperpour": true,
+        "footprints": false,
+        "pads": false,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 330.0,
+      "area_total_mm2": 1008.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "WROOM ANTENNA KEEPOUT",
+      "keepout": {
+        "copperpour": true,
+        "footprints": false,
+        "pads": true,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_14",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "b533cd51-e7a8-4f29-8080-f9e29c30392f",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_C7_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.005,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.355,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3"
+          ],
+          "pour_mm2": 0.005,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "cdf4f6ec-ca1f-5b73-9e32-5540bbb9b8b7",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 4.26,
+      "area_total_mm2": 4.26,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_9",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/LTC4368_FAULT_N",
+            "/01_POWER_TREE/N_BATDIV",
+            "/01_POWER_TREE/N_POL",
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 0.352,
+          "protected": true,
+          "tracks": 8,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REC_BAT_LOW",
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 5,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 3.382,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 3.382,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/REF_POL"
+          ],
+          "pour_mm2": 3.382,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "d56f5d2a-dd8b-4dc8-9572-265d0299fa8c",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "FINE_ESC_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "d633576d-1adb-492b-9db9-61cbad80abd0",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_4",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "d70ed59c-88a5-48d1-9cfc-d5d8447df0a3",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.612,
+      "area_total_mm2": 3.612,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_RUN_U12_4",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB",
+            "GND"
+          ],
+          "pour_mm2": 0.618,
+          "protected": true,
+          "tracks": 13,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB"
+          ],
+          "pour_mm2": 2.633,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB"
+          ],
+          "pour_mm2": 2.241,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB"
+          ],
+          "pour_mm2": 1.74,
+          "protected": true,
+          "tracks": 1,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "+3V3",
+            "/01_POWER_TREE/V3V3_FB"
+          ],
+          "pour_mm2": 2.241,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "db5c31da-59a9-5475-93a6-99906641d034",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 3.957,
+      "area_total_mm2": 3.957,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW",
+            "/01_POWER_TREE/LTC4368_FAULT_N"
+          ],
+          "pour_mm2": 0.06,
+          "protected": true,
+          "tracks": 7,
+          "vias": 3
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.223,
+          "protected": true,
+          "tracks": 3,
+          "vias": 3
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 1.521,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 1.521,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_RAW"
+          ],
+          "pour_mm2": 1.521,
+          "protected": true,
+          "tracks": 0,
+          "vias": 3
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "dfeeabe6-4a93-46ad-9c91-0cf5577db68a",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.25,
+      "area_total_mm2": 0.25,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "USB_VBUS_J3_A9_POFV",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 2,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_RAW"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "e004f61f-c4fa-465e-abff-95a1be334924",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.562,
+      "area_total_mm2": 0.562,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "POUR_BRIDGE_C63_2",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.527,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.533,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.533,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "eaa84da6-4409-580f-8927-0ab8578c086f",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.422,
+      "area_total_mm2": 0.422,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "PAD_ESCAPE_C1_1",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.363,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "F.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 1
+        },
+        "In1.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In2.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In3.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        },
+        "In4.Cu": {
+          "nets": [
+            "GND"
+          ],
+          "pour_mm2": 0.422,
+          "protected": true,
+          "tracks": 0,
+          "vias": 1
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "efeb6aea-81ac-5508-9d3d-82233e438e9e",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 2.671,
+      "area_total_mm2": 2.671,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_SENSE_KELVIN",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 3,
+          "vias": 2
+        },
+        "F.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 1.49,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In1.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 1.774,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In2.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 1,
+          "vias": 2
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 1.767,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        },
+        "In4.Cu": {
+          "nets": [
+            "/01_POWER_TREE/BAT_SENSE"
+          ],
+          "pour_mm2": 1.774,
+          "protected": true,
+          "tracks": 0,
+          "vias": 2
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "f4434a2e-12a9-4432-83e3-a122b65bac4a",
+      "verdict": "COVERED"
+    },
+    {
+      "area_on_board_mm2": 0.0,
+      "area_total_mm2": 0.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "identity": "BAT_STUB_5",
+      "keepout": {
+        "copperpour": false,
+        "footprints": false,
+        "pads": false,
+        "tracks": false,
+        "vias": false
+      },
+      "master_copper_layer_count": 0,
+      "offending_layers": [],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": null,
+      "rule_area": true,
+      "scope": "board",
+      "unprotected_board_layers": [],
+      "uuid": "fd02e046-ec3e-4b20-b68a-434d458162be",
+      "verdict": "COVERED"
+    }
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_copper_layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+  ],
+  "board_rule_areas": 53,
+  "footprint_rule_areas": 1,
+  "kicad_share": "/usr/share/kicad",
+  "rule_areas": 54,
+  "schema": 1,
+  "verdicts": {
+    "COVERED": 54
+  }
+}

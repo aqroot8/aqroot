@@ -1,0 +1,221 @@
+{
+ "schema": 1,
+ "decision": "D-617",
+ "why": "D-616 measured U1's ESP32-S3-WROOM-1 ANTENNA KEEP-OUT naming four copper layers where its own master names *.Cu, declared it an OPEN FABRICATION BLOCKER, and refused to close it without a route in hand.  This is that route -- and the same clamp turns out to hold FOUR MORE keep-outs this board owns at board level, which no check here had ever looked at.",
+ "grid": 100000,
+ "via_cost_mm": 1.5,
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "why": "Three In3.Cu segments of the charge-input rail between the through via at (66.450,102.300) and the junction at (45.750,139.350).  All three cross the ANTENNA region: the first clips its north-west corner between y=104.000 and y=104.36, and the dogleg apex at (64.700,120.450) sits 0.200 mm inside the west boundary.  VBUS_CHG class, so it stays on In3.Cu at its own 0.500 mm width with no barrel.",
+   "layers": [
+    "I3"
+   ],
+   "own_layer": true,
+   "end_layer": "I3",
+   "tracks": [
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      66.45,
+      102.3
+     ],
+     "b_mm": [
+      56.8,
+      112.5
+     ],
+     "width_mm": 0.5
+    },
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      56.8,
+      112.5
+     ],
+     "b_mm": [
+      64.7,
+      120.45
+     ],
+     "width_mm": 0.5
+    },
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      64.7,
+      120.45
+     ],
+     "b_mm": [
+      45.75,
+      139.35
+     ],
+     "width_mm": 0.5
+    }
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "layers": [
+    "I3"
+   ],
+   "own_layer": true,
+   "end_layer": "I3",
+   "why": "A SECOND, SEPARATE chain of the same net, and it exists because BOSS1_KEEPOUT was clamped to four layers too: the 9.334 mm segment (45.750,139.350)-(39.150,132.750) crosses that mounting boss's In3.Cu face diagonally, which nothing on this board had ever been able to ask.  Detoured LOCALLY, to the through via at (36.800,135.100), so the +3V3 In3.Cu pocket that bonds R20.1 through the via at (43.100,131.400) is left where it is.",
+   "tracks": [
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      45.75,
+      139.35
+     ],
+     "b_mm": [
+      39.15,
+      132.75
+     ],
+     "width_mm": 0.5
+    },
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      39.15,
+      132.75
+     ],
+     "b_mm": [
+      36.8,
+      135.1
+     ],
+     "width_mm": 0.5
+    }
+   ],
+   "max_mm": 13.5,
+   "max_mm_why": "12.657 mm of copper that must now walk round a 4.500 mm square keep-out whose south-east corner (43.250,133.750) sits 1.131 mm off the straight line it used to take.  13.500 mm is 0.843 mm of headroom over the original, 6.7 %, and is stated here rather than assumed: the other two chains come away SHORTER than the copper they replace and are held to that."
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "why": "A 110.000 mm signal trunk on the +3V3 In3.Cu plane, 40.350 mm of it lying WHOLLY inside the antenna region at x=66.350.  Both chain ends are F.Cu-B.Cu through vias of this net -- (66.350,103.650) and (19.900,120.800) -- so the run may terminate on any layer those barrels span; it is given In2.Cu.  Its own In3.Cu slot is priced by clause K6 and must SHRINK.",
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "own_layer": true,
+   "end_layer": "I2",
+   "tracks": [
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      66.35,
+      103.65
+     ],
+     "b_mm": [
+      66.35,
+      144.0
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      66.35,
+      144.0
+     ],
+     "b_mm": [
+      19.9,
+      144.0
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "In3.Cu",
+     "a_mm": [
+      19.9,
+      144.0
+     ],
+     "b_mm": [
+      19.9,
+      120.8
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ],
+ "licences": [
+  {
+   "ref": "U1",
+   "uuid": "ff26f816-3e65-4c6f-a14d-ccb2bba34bed",
+   "expect_area_name": "",
+   "occurrences": 1,
+   "old": "(layers \"F.Cu\" \"B.Cu\" \"In1.Cu\" \"In2.Cu\")\n\t\t\t(uuid \"ff26f816-3e65-4c6f-a14d-ccb2bba34bed\")",
+   "new": "(layers \"*.Cu\")\n\t\t\t(uuid \"ff26f816-3e65-4c6f-a14d-ccb2bba34bed\")",
+   "expect_keepout": {
+    "tracks": true,
+    "vias": true,
+    "pads": true,
+    "zone_fills": true,
+    "footprints": true
+   },
+   "why": "U1's FOOTPRINT-EMBEDDED ESP32-S3-WROOM-1 antenna keep-out.  Its MASTER writes `*.Cu`; the board's copy named four layers, which is the whole of KiCad's `lib_footprint_mismatch` on this board (62 of 62 pads are identical).  330 mm2 of the region is on-board and In3.Cu/In4.Cu held 273.697 / 304.259 mm2 of pour and five track segments.",
+   "expect_owner": "U1"
+  },
+  {
+   "uuid": "b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41",
+   "expect_area_name": "WROOM ANTENNA KEEPOUT",
+   "occurrences": 1,
+   "old": "(layers \"F.Cu\" \"B.Cu\" \"In1.Cu\" \"In2.Cu\")\n\t\t(uuid \"b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41\")",
+   "new": "(layers \"*.Cu\")\n\t\t(uuid \"b0a11c0f-4d2e-4a77-9f31-6c5e2d3a8f41\")",
+   "expect_keepout": {
+    "tracks": true,
+    "vias": true,
+    "pads": true,
+    "zone_fills": true,
+    "footprints": false
+   },
+   "why": "The BOARD-LEVEL DUPLICATE of the same antenna region, same outline, its own uuid, `footprints allowed`.  `pcbnew.BOARD.Zones()` does not return a footprint's zones and a footprint's does not return the board's, which is why D-616's screen -- which reads footprint zones -- never saw this one, and why nothing else on this board saw U1's."
+  },
+  {
+   "uuid": "a9e8798c-5894-4c5d-a481-adfe1483040b",
+   "expect_area_name": "BOSS1_KEEPOUT",
+   "occurrences": 1,
+   "old": "(layers \"F.Cu\" \"B.Cu\" \"In1.Cu\" \"In2.Cu\")\n\t\t(uuid \"a9e8798c-5894-4c5d-a481-adfe1483040b\")",
+   "new": "(layers \"*.Cu\")\n\t\t(uuid \"a9e8798c-5894-4c5d-a481-adfe1483040b\")",
+   "expect_keepout": {
+    "tracks": true,
+    "vias": true,
+    "pads": false,
+    "zone_fills": true,
+    "footprints": false
+   },
+   "why": "M2 mounting-boss retention point, 4.5 mm keep-out (38.75,133.75)-(43.25,138.25).  20.250 mm2 on board; In3.Cu held 8.983 mm2 of +3V3 plane and In4.Cu 14.561 mm2 of GND pour under a moulded boss, with NO tracks and NO vias -- a free carve."
+  },
+  {
+   "uuid": "4787178d-1b61-404c-b8b3-ad83a8bd2f5c",
+   "expect_area_name": "BOSS2_KEEPOUT",
+   "occurrences": 1,
+   "old": "(layers \"F.Cu\" \"B.Cu\" \"In1.Cu\" \"In2.Cu\")\n\t\t(uuid \"4787178d-1b61-404c-b8b3-ad83a8bd2f5c\")",
+   "new": "(layers \"*.Cu\")\n\t\t(uuid \"4787178d-1b61-404c-b8b3-ad83a8bd2f5c\")",
+   "expect_keepout": {
+    "tracks": true,
+    "vias": true,
+    "pads": false,
+    "zone_fills": true,
+    "footprints": false
+   },
+   "why": "The second M2 mounting boss, (57.75,0.75)-(62.25,5.25).  20.250 mm2 on board; In3.Cu 14.508 mm2 and In4.Cu 14.508 mm2 of pour, no tracks, no vias."
+  },
+  {
+   "uuid": "34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4",
+   "expect_area_name": "MIC_ACOUSTIC_KEEPOUT",
+   "occurrences": 1,
+   "old": "(layers \"F.Cu\" \"B.Cu\" \"In1.Cu\" \"In2.Cu\")\n\t\t(uuid \"34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4\")",
+   "new": "(layers \"*.Cu\")\n\t\t(uuid \"34e6d4c7-38f6-4481-a6dd-f3104d8cb1d4\")",
+   "expect_keepout": {
+    "tracks": true,
+    "vias": true,
+    "pads": false,
+    "zone_fills": true,
+    "footprints": false
+   },
+   "why": "MK1's acoustic port, (3.0,96.0)-(5.0,98.0).  4.000 mm2; In3.Cu and In4.Cu held 2.105 mm2 of pour each, no tracks, no vias."
+  }
+ ]
+}
