@@ -9,6 +9,55 @@ D-621) and protected copper -- and the residual is **52 retained open edges
 across 24 nets**.  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
 parked on rulings rather than routes (D-618, D-620).
 
+## WHAT THE LADDER SAID ABOUT EVERY OPEN EDGE (D-624)
+
+    python3 route_maze_batch.py NET --grid ladder --work DIR --out OUT   # per net
+
+`evidence/d623-ladder-screen-open-edges.json` -- every standing single-edge
+candidate, one net per run, no `--promote`, board byte-identical throughout:
+
+    net                auto      outcome
+    ACC_5V_LX          0.100 mm  NO_LATTICE_AT_ANY_PITCH
+    NFC_VDD_RF         0.0667    ESCAPE_WALL_INVARIANT
+    BTN_DOWN_N         0.100     POUR_WALL        <- routes at ALL FIVE pitches
+    BTN_LEFT_N         0.100     CORRIDOR_WALL
+    ACC_5V_BOOST_EN    0.0333    CORRIDOR_WALL
+    I2S_LRCLK          0.100     ESCAPE UNLOCKED BY PITCH -> CORRIDOR
+    SPI_B_SCK          0.0667    ESCAPE UNLOCKED BY PITCH -> CORRIDOR
+    SX1262_DIO1        0.100     CORRIDOR_WALL
+
+**EVERY ladder ended on the 0.020 mm rung marked `over_budget`.**  Not one of
+these nets is proved impossible; each is refused down to 0.025 mm and BOUNDED
+there.
+
+**`BTN_DOWN_N` ROUTES AND THE POUR REFUSES IT** -- at all five pitches, 41.610
+to 49.307 mm, closing its own edge every time, and clause 8 refuses every one:
+`PP3` **STRANDED**, `U3.12` alone on a 4.664 mm2 `GND` fragment with **ZERO
+barrels**, cut off a 10.282 mm2 island.  `routing_ledger.py` reports the same
+injury by its own road (`GND` REGRESSED, edges flat at 51).  The route is in
+hand; what it needs is a BOND for one pad, not a search.
+
+**REFINEMENT MOVES THE WALL, IT DOES NOT ONLY LOWER IT.**  `I2S_LRCLK` refuses
+`NO_LEGAL_ESCAPE_DST` at 0.100 and 0.0667 mm and `NO_PATH` at 0.050 mm and
+below; `SPI_B_SCK` the same across 0.0667 -> 0.050 mm.  An escape refusal is
+NOT lattice-independent -- and on both nets the `lattice` block read `CLEAR`
+and `too_coarse false` at the very pitch where the escape still failed, so
+D-620's margin screen is **necessary and not sufficient in the ESCAPE direction
+too**.  A margin says a guard band FITS; it does not say the cells are FREE.
+
+**`too_coarse` AND `no_lattice_at_any_pitch` ARE DIFFERENT CLAIMS.**  D-624
+found `lattice_advice()` reporting `ACC_5V_LX` as `binding_pad L4.2` beside
+`required_lattice_mm 2.8933` and `UNLAUNCHABLE` -- `binding_pad` was written in
+two places, last write winning, and **the land with no pitch was `U21.5`**,
+which is exactly the `NO_LEGAL_ESCAPE_DST` destination the router refused on.
+`binding_pad` is now set only where a requirement was; `unlaunchable_lands`
+names the lands that have none.  `resolve_grid()`'s answer is unchanged.
+
+**KNOWN NUANCE:** on a `PP3`-`STRANDED` fragment `PP4` also reports failure,
+because a fragment already `STRANDED` with its barrels in cannot FLIP when they
+are stripped.  `PP3` is the operative refusal; that `PP4` is not "the knife
+failed".
+
 ## RUN THIS BEFORE THE ROUTER: the LADDER, not a pitch (D-623)
 
     python3 route_maze_batch.py NET [NET ...] --grid ladder      # route

@@ -1,0 +1,750 @@
+{
+ "board_sha256": "2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911",
+ "caveat": "EVERY net's ladder ended on the 0.020 mm rung marked `over_budget` (115.6 M cells > 80 M).  NOT ONE of these nets is proved impossible; each is refused down to 0.025 mm and BOUNDED there.  The `lattice` block per net is a RE-READ with the coherent binding_pad/required pairing this decision fixed, not the incoherent one the runs themselves recorded.",
+ "cell_budget": 80000000,
+ "findings": [
+  "BTN_DOWN_N IS THE ONLY NET THAT ROUTES -- at ALL FIVE pitches, 41.610 to 49.307 mm -- and clause 8 refuses every one of them: PP3 STRANDED, `U3.12` alone on a 4.664 mm2 GND fragment with ZERO barrels.  The routing_ledger independently reports GND REGRESSED and the edge count flat at 51.  This is a POUR wall, not a routing wall, and it is the most actionable net on the board.",
+  "REFINEMENT MOVES THE WALL, IT DOES NOT ONLY LOWER IT.  `I2S_LRCLK` refuses NO_LEGAL_ESCAPE_DST at 0.100 and 0.0667 mm and NO_PATH at 0.050 mm and below; `SPI_B_SCK` does the same across 0.0667 -> 0.050 mm.  A finer lattice DID unlock the pad escape, and the wall then became the corridor.  An escape refusal is NOT lattice-independent.",
+  "AND D-620's MARGIN SCREEN IS NECESSARY-AND-NOT-SUFFICIENT IN THE ESCAPE DIRECTION TOO.  On both of those nets the lattice block read CLEAR and `too_coarse false` at the very pitch where the escape still failed.  The margin says a guard band FITS; it does not say the cells are FREE.",
+  "`ACC_5V_LX` has a land with NO LATTICE AT ANY PITCH -- `U21.5`, best margin <= 0 -- and that land is exactly the NO_LEGAL_ESCAPE_DST destination the router refused on at all five rungs.  A ladder cannot answer it; a placement change, a land licence or `route_local_two_pad` can.",
+  "`NFC_VDD_RF` refuses NO_LEGAL_ESCAPE_DST invariantly across 0.0667 -> 0.025 mm, consistent with D-621's isolation of its blocker to `NFC_RFO2`'s north chain: copper, not pitch.",
+  "`ACC_5V_BOOST_EN`, `BTN_LEFT_N` and `SX1262_DIO1` are NO_PATH at every in-budget rung.  `ACC_5V_BOOST_EN`'s own `auto` is already 0.0333 mm, so it reaches the budget in TWO rungs."
+ ],
+ "nets": [
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 100000,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "L4.2",
+    "no_lattice_at_any_pitch": true,
+    "required_lattice_mm": 2.8933,
+    "too_coarse": false,
+    "unlaunchable_lands": [
+     "U21.5"
+    ],
+    "verdict": "UNLAUNCHABLE"
+   },
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.0,
+     "vias": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.5,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 21.3,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 23.4,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 26.1,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "NO_LATTICE_AT_ANY_PITCH"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 66700,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U9.14",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0667,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.1,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.9,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 23.0,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 25.4,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "ESCAPE_WALL_INVARIANT"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 100000,
+   "connectivity": {
+    "nets_improved": [
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 22,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U2.14",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.2,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+   "pour_partition_failed": [
+    "PP2",
+    "PP3",
+    "PP4"
+   ],
+   "pour_partition_fragments": [
+    {
+     "area_mm2": 4.664,
+     "barrels": 0,
+     "barrels_into_reserved_planes": 0,
+     "detail": [],
+     "layer": "B.Cu",
+     "net": "GND",
+     "pads": [
+      "U3.12"
+     ],
+     "post_island": 32,
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "verdict": "STRANDED"
+    }
+   ],
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "mm": 49.307,
+     "pour_partition_failed": [
+      "PP2",
+      "PP3",
+      "PP4"
+     ],
+     "ran": true,
+     "reason": "ROUTED",
+     "seconds": 24.7,
+     "vias": 5
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": 45.787,
+     "pour_partition_failed": [
+      "PP2",
+      "PP3",
+      "PP4"
+     ],
+     "ran": true,
+     "reason": "ROUTED",
+     "seconds": 36.8,
+     "vias": 5
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": 41.61,
+     "pour_partition_failed": [
+      "PP2",
+      "PP3",
+      "PP4"
+     ],
+     "ran": true,
+     "reason": "ROUTED",
+     "seconds": 60.7,
+     "vias": 6
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": 41.909,
+     "pour_partition_failed": [
+      "PP2",
+      "PP3",
+      "PP4"
+     ],
+     "ran": true,
+     "reason": "ROUTED",
+     "seconds": 164.9,
+     "vias": 6
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": 41.907,
+     "pour_partition_failed": [
+      "PP2",
+      "PP3",
+      "PP4"
+     ],
+     "ran": true,
+     "reason": "ROUTED",
+     "seconds": 387.4,
+     "vias": 6
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "POUR_WALL"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 100000,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U2.15",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.2,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 31.6,
+     "vias": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 67.0,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 136.9,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 449.5,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 1172.7,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "CORRIDOR_WALL"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 33300,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U21.2",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0333,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/ACC_5V_BOOST_EN",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 404.1,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 1035.7,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "CORRIDOR_WALL"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 100000,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U5.14",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.1,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/I2S_LRCLK",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 19.4,
+     "vias": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.1,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 20.8,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 23.3,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 26.5,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "ESCAPE_UNLOCKED_BY_PITCH_THEN_CORRIDOR_WALL"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 66700,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U9.30",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0667,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/SPI_B_SCK",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "seconds": 20.6,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 21.6,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 24.2,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 28.7,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "ESCAPE_UNLOCKED_BY_PITCH_THEN_CORRIDOR_WALL"
+  },
+  {
+   "accepted_grid_nm": [],
+   "coarsest_admissible_nm": 100000,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+   },
+   "lattice": {
+    "binding_pad": "U2.20",
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.2,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "net": "/SX1262_DIO1",
+   "pour_partition_failed": [],
+   "pour_partition_fragments": [],
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 38.7,
+     "vias": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 92.3,
+     "vias": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 211.9,
+     "vias": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 756.7,
+     "vias": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "mm": null,
+     "pour_partition_failed": [],
+     "ran": true,
+     "reason": "NO_PATH",
+     "seconds": 1538.9,
+     "vias": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "mm": null,
+     "pour_partition_failed": null,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET",
+     "seconds": null,
+     "vias": null
+    }
+   ],
+   "verdict": "CORRIDOR_WALL"
+  }
+ ],
+ "schema": 1,
+ "verdict_legend": {
+  "CORRIDOR_WALL": "NO_PATH at every in-budget rung.  No route exists at <= 0.025 mm; bounded there, not proved impossible.",
+  "ESCAPE_UNLOCKED_BY_PITCH_THEN_CORRIDOR_WALL": "the escape refusal gave way to a finer lattice and the wall became NO_PATH.  Refinement moved the wall.",
+  "ESCAPE_WALL_INVARIANT": "NO_LEGAL_ESCAPE_* at EVERY in-budget rung.  The blocker is copper around the land, not the pitch.",
+  "NO_LATTICE_AT_ANY_PITCH": "a requested land's best escape margin is <= 0, so no pitch launches it.  A ladder cannot answer this net.",
+  "POUR_WALL": "a route IS found, and the pour-partition contract refuses it.  The wall is the copper the route would sever, not the search."
+ },
+ "what": "D-623 -- `--grid ladder` pointed at EVERY standing single-edge candidate on the promoted board, one net per run, no --promote.  This is the screen the ladder was built to make cheap: it separates a WALL from an UNASKED QUESTION for each net at a bounded cost."
+}

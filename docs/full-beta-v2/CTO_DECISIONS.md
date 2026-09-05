@@ -1,5 +1,86 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-624 · 2026-09-05 · Demo — the ladder pointed at EVERY open edge: one net ROUTES and the pour refuses it, and a report that named the wrong land
+
+D-623 built `--grid ladder` and ended by naming the screen it makes cheap. This
+is that screen, run over every standing single-edge candidate on the promoted
+board `2b1260eb…`, one net per run, no `--promote`:
+`evidence/d623-ladder-screen-open-edges.json`. **No copper changed. The
+authoritative board is byte-identical throughout.**
+
+    net                auto      rungs run   outcome
+    ACC_5V_LX          0.100 mm    5        NO_LATTICE_AT_ANY_PITCH
+    NFC_VDD_RF         0.0667      4        ESCAPE_WALL_INVARIANT
+    BTN_DOWN_N         0.100       5        POUR_WALL  ← routes at all five
+    BTN_LEFT_N         0.100       5        CORRIDOR_WALL
+    ACC_5V_BOOST_EN    0.0333      2        CORRIDOR_WALL
+    I2S_LRCLK          0.100       5        ESCAPE_UNLOCKED_BY_PITCH → CORRIDOR
+    SPI_B_SCK          0.0667      4        ESCAPE_UNLOCKED_BY_PITCH → CORRIDOR
+    SX1262_DIO1        0.100       5        CORRIDOR_WALL
+
+**EVERY ladder ended on the 0.020 mm rung marked `over_budget`.** Not one of
+these nets is proved impossible; each is refused down to 0.025 mm and BOUNDED
+there. Saying so is the point of reporting the rung rather than omitting it.
+
+**`BTN_DOWN_N` IS THE ONLY NET THAT ROUTES — AND THE POUR REFUSES IT.** It
+routes at ALL FIVE pitches, 41.610 to 49.307 mm, closing its own edge every
+time. Clause 8 refuses every one: **PP3 STRANDED — `U3.12` alone on a 4.664 mm²
+`GND` fragment with ZERO barrels**, cut off a 10.282 mm² island. That is the
+D-584 orphan, the exact failure the pour exists to prevent, and it is a hard
+refusal rather than a priced one. `routing_ledger.py` reports the same injury
+by its own road — `GND` REGRESSED, edge count flat at 51 — so two independent
+instruments agree. **This is a POUR wall, not a routing wall**, which makes it
+the most actionable net on the board: the route is in hand and what it needs is
+a bond for one pad, not a search.
+
+**REFINEMENT MOVES THE WALL; IT DOES NOT ONLY LOWER IT.** `I2S_LRCLK` refuses
+`NO_LEGAL_ESCAPE_DST` at 0.100 and 0.0667 mm and `NO_PATH` at 0.050 mm and
+below; `SPI_B_SCK` does the same across 0.0667 → 0.050 mm. A finer lattice DID
+unlock the pad escape and the wall then became the corridor. **An escape
+refusal is not lattice-independent**, which is the assumption a reader would
+otherwise make, and it is why the ladder climbs past the first refusal.
+
+**AND D-620's MARGIN SCREEN IS NECESSARY-AND-NOT-SUFFICIENT IN THE ESCAPE
+DIRECTION TOO.** On both of those nets the `lattice` block read `CLEAR` and
+`too_coarse false` at the very pitch where the escape still failed. The margin
+says a guard band FITS. It does not say the cells are FREE.
+
+**A REPORT THAT NAMED THE WRONG LAND.** `ACC_5V_LX` came back
+`binding_pad L4.2`, `required_lattice_mm 2.8933`, `verdict UNLAUNCHABLE`,
+`too_coarse false` — three coherent fields and one incoherent reading, because
+`lattice_advice()` set `binding_pad` in two places: once for a land with no
+lattice at any pitch, once for the tightest land that HAS one, last write
+winning. **The land with no pitch was `U21.5`, not `L4.2`** — and `U21.5` is
+exactly the `NO_LEGAL_ESCAPE_DST` destination the router refused on at all five
+rungs. The report and the refusal contradicted each other and the report read
+like reassurance. `binding_pad` is now set ONLY where a requirement was, so the
+pair always describes ONE land; lands with no pitch are NAMED in a new
+`unlaunchable_lands`, and `no_lattice_at_any_pitch` / `any_unlaunchable` state
+the stronger claim `too_coarse` cannot: not "refine and ask again" but "there
+is nothing to refine to." **`resolve_grid()`'s answer is unchanged** — verified
+on `ACC_5V_LX` (0.100 mm) and `NFC_IRQ` (0.0667 mm) — this is a reporting
+repair, not a behaviour change.
+
+**A KNOWN REPORTING NUANCE, RECORDED RATHER THAN PAPERED OVER.** On
+`BTN_DOWN_N` the contract reports `PP4` failing alongside `PP3`. PP4's knife is
+"every `BONDED` verdict must flip to `STRANDED` when its barrels are stripped",
+and a fragment that is ALREADY `STRANDED` with its barrels in place cannot
+flip, so `all(flips)` is false. No decision turns on it — `PP3` is the
+operative refusal and names the injury — but a reader should not take that
+`PP4` as "the knife failed". Making PP4 skip fragments PP3 has already
+condemned is a bounded follow-up.
+
+**NEXT, IN ORDER OF LEVERAGE.** (1) `BTN_DOWN_N`: price a bond for `U3.12` on
+the fragment its own route creates — `--bond-pad` / `--stitch-via` exist and
+`pour_bond_contract.py` already judges bonds — and if it bonds, the net closes.
+(2) The three `CORRIDOR_WALL` nets are budget-bounded at 0.025 mm, not proved:
+raising `--grid-cells` past 115.6 M reaches 0.020 mm for one net at a time.
+(3) `ACC_5V_LX` needs `U21.5` given an escape at all — placement, a land
+licence, or `route_local_two_pad` — and no ladder will answer it. `ACC_PWR_EN`
+(D-623) and `NFC_VDD_RF` remain measured walls. No owner decision is OPEN;
+D-618's `J3` question remains RECORDED, and PM-3 remains an open PLACEMENT
+finding.
+
 # D-623 · 2026-09-05 · Demo NFC_IRQ closed at a RANKED lattice — the ladder, and the pour clause the independent auditor never had
 
 D-622 ended by naming a framework task and not taking it: *"a `--grid` LADDER

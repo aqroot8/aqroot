@@ -1719,12 +1719,22 @@ def lattice_advice(board_path, nets, grid_nm):
         need = best["max_lattice_mm"]
         e = per_net.setdefault(row["net"], dict(binding_pad=None,
                                                 required_lattice_mm=None,
+                                                unlaunchable_lands=[],
                                                 verdict="CLEAR", lands=0))
         e["lands"] += 1
         if row["verdict"] != "CLEAR":
+            # A LAND WITH NO LATTICE AT ANY PITCH DOES NOT GET TO BORROW A
+            # NUMBER FROM ONE THAT HAS ONE.  D-623's ladder screen caught the
+            # old shape lying by adjacency: `/01_POWER_TREE/ACC_5V_LX` reported
+            # `binding_pad L4.2` -- the UNLAUNCHABLE land -- beside
+            # `required_lattice_mm 2.8933`, which was read off a DIFFERENT and
+            # perfectly clear land, and `too_coarse false`.  Three coherent
+            # fields, one incoherent reading, and the reading is REASSURANCE
+            # next to a verdict that means NEVER.  `binding_pad` is now set
+            # ONLY where a requirement was, so the pair always describes one
+            # land; the lands that have no pitch are NAMED instead.
             e["verdict"] = row["verdict"]
-            if e["required_lattice_mm"] is None:
-                e["binding_pad"] = row["pad"]
+            e["unlaunchable_lands"].append(row["pad"])
             continue
         if need is not None and (e["required_lattice_mm"] is None
                                  or need < e["required_lattice_mm"]):
@@ -1734,10 +1744,19 @@ def lattice_advice(board_path, nets, grid_nm):
         need = e["required_lattice_mm"]
         e["grid_mm"] = round(grid_nm / 1e6, 6)
         e["too_coarse"] = bool(need is not None and grid_nm > need * 1e6)
+        # TOO_COARSE AND NO_LATTICE_AT_ANY_PITCH ARE DIFFERENT CLAIMS, and the
+        # second is the stronger one.  `too_coarse` says "refine and ask
+        # again"; this says "there is nothing to refine to" -- the answer is a
+        # placement change, a land licence or `route_local_two_pad`, and
+        # climbing a ladder against it is provably wasted search.  D-623 spent
+        # five rungs on `ACC_5V_LX` learning that by hand.
+        e["no_lattice_at_any_pitch"] = bool(e["unlaunchable_lands"])
         if e["too_coarse"] and (worst is None or need < worst):
             worst = need
     return dict(schema=1, grid_nm=grid_nm, nets=per_net,
                 any_too_coarse=any(e["too_coarse"] for e in per_net.values()),
+                any_unlaunchable=any(e["no_lattice_at_any_pitch"]
+                                     for e in per_net.values()),
                 tightest_required_mm=worst)
 
 

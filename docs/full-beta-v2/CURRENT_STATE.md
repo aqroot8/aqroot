@@ -13,6 +13,58 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-624 (THE LADDER POINTED AT EVERY OPEN EDGE -- ONE NET *ROUTES* AND
+  THE POUR REFUSES IT):**  D-623 built `--grid ladder` and named the screen it
+  makes cheap; this is that screen, over every standing single-edge candidate
+  on `2b1260eb...`, one net per run, no `--promote`
+  (`evidence/d623-ladder-screen-open-edges.json`).  **No copper changed and the
+  authoritative board is byte-identical throughout.**  `ACC_5V_LX`
+  NO_LATTICE_AT_ANY_PITCH; `NFC_VDD_RF` ESCAPE_WALL_INVARIANT; **`BTN_DOWN_N`
+  POUR_WALL**; `BTN_LEFT_N` / `ACC_5V_BOOST_EN` / `SX1262_DIO1` CORRIDOR_WALL;
+  `I2S_LRCLK` and `SPI_B_SCK` ESCAPE UNLOCKED BY PITCH, then corridor.
+  **EVERY ladder ended on the 0.020 mm rung marked `over_budget`** -- not one
+  net is proved impossible, each is refused down to 0.025 mm and BOUNDED there.
+  **`BTN_DOWN_N` IS THE ONLY NET THAT ROUTES, AND THE POUR REFUSES IT.**  It
+  routes at ALL FIVE pitches, 41.610 - 49.307 mm, closing its own edge every
+  time, and clause 8 refuses every one: **PP3 STRANDED, `U3.12` alone on a
+  4.664 mm2 `GND` fragment with ZERO barrels**, cut off a 10.282 mm2 island.
+  `routing_ledger.py` reports the same injury by its own road -- `GND`
+  REGRESSED, edges flat at 51 -- so two independent instruments agree.  The
+  route is in hand; what it needs is a BOND for one pad, not a search.
+  **REFINEMENT MOVES THE WALL, IT DOES NOT ONLY LOWER IT.**  `I2S_LRCLK`
+  refuses `NO_LEGAL_ESCAPE_DST` at 0.100/0.0667 mm and `NO_PATH` at 0.050 mm
+  and below; `SPI_B_SCK` the same across 0.0667 -> 0.050 mm.  An escape
+  refusal is NOT lattice-independent.  **And D-620's margin screen is
+  NECESSARY-AND-NOT-SUFFICIENT in the ESCAPE direction too:** on both nets the
+  lattice block read `CLEAR` / `too_coarse false` at the very pitch where the
+  escape still failed.  A margin says a guard band FITS, not that the cells are
+  FREE.
+  **A REPORT THAT NAMED THE WRONG LAND, AND IS FIXED.**  `ACC_5V_LX` read
+  `binding_pad L4.2` beside `required_lattice_mm 2.8933`, `UNLAUNCHABLE`,
+  `too_coarse false`, because `lattice_advice()` wrote `binding_pad` in two
+  places, last write winning.  **The land with no pitch is `U21.5`, not
+  `L4.2`** -- and `U21.5` is exactly the `NO_LEGAL_ESCAPE_DST` destination the
+  router refused on.  `binding_pad` is now set ONLY where a requirement was,
+  new `unlaunchable_lands` NAMES the lands that have none, and
+  `no_lattice_at_any_pitch` / `any_unlaunchable` state the claim `too_coarse`
+  cannot.  `resolve_grid()`'s answer is UNCHANGED (verified on `ACC_5V_LX`
+  0.100 mm and `NFC_IRQ` 0.0667 mm): a reporting repair, not a behaviour
+  change.
+  **KNOWN NUANCE, RECORDED:** on a PP3-`STRANDED` fragment `PP4` also reports
+  failure, because a fragment already `STRANDED` with its barrels in cannot
+  FLIP when they are stripped.  No decision turns on it -- `PP3` is the
+  operative refusal -- but that `PP4` must not be read as "the knife failed".
+  Making PP4 skip fragments PP3 has condemned is a bounded follow-up.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BTN_DOWN_N`** -- price a bond for
+  `U3.12` on the fragment its own route creates (`--bond-pad` / `--stitch-via`
+  exist and `pour_bond_contract.py` already judges bonds); if it bonds, the net
+  closes.  (2) the three CORRIDOR_WALL nets are budget-bounded at 0.025 mm, not
+  proved -- raising `--grid-cells` past 115.6 M reaches 0.020 mm, one net at a
+  time.  (3) `ACC_5V_LX` needs `U21.5` given an escape at all -- placement, a
+  land licence, or `route_local_two_pad` -- and no ladder will answer it.
+  `ACC_PWR_EN` (D-623) and `NFC_VDD_RF` remain MEASURED walls.  No owner
+  decision is OPEN; D-618's `J3` question remains RECORDED, and PM-3 remains an
+  open PLACEMENT finding.
 - **Demo D-623 (`NFC_IRQ` IS CLOSED AT A *RANKED* LATTICE, AND THE POUR JUDGE
   NOW RIDES IN BOTH GATES):**  D-622 named a framework task and did not take
   it -- *"a `--grid` LADDER bounded by a cell-count budget, rather than the
