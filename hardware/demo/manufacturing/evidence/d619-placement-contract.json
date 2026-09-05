@@ -1,0 +1,35 @@
+{
+  "checks": {
+    "PL1_reference_set_unchanged": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true
+  },
+  "detail": {
+    "claimed": {
+      "Y1": [
+        -300000,
+        0
+      ]
+    },
+    "claimed_moves_wrong": [],
+    "clearance_nm": 200000,
+    "courtyard_overlaps_new": [],
+    "endpoints_checked": 5,
+    "endpoints_stranded": [],
+    "footprints_post": 311,
+    "footprints_pre": 311,
+    "foreign_copper_hits": [],
+    "land_patterns_changed": [],
+    "pl6_decoy": "BOSS1",
+    "references_added": [],
+    "references_removed": [],
+    "unclaimed_footprints_moved": []
+  },
+  "ref": "HEAD",
+  "schema": 1,
+  "verdict": "PASS"
+}

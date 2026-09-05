@@ -13,6 +13,116 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-619 (THE `U9` WALL WAS NEVER FIVE WALLS AND IT WAS NEVER A
+  CORRIDOR):** D-618 named this task -- *"the four `U9` NFC supply and
+  receiver-input edges ... now have an instrument they never had"* -- and the
+  instrument answered with ONE verdict instead of four.
+  `screen_corridor_detour.py` on every open `U9` NFC edge returns
+  **`DETOURABLE` + `UNRELAYABLE`, five times out of five**: every corridor
+  OPENS when its crossing tracks are cut, and not one blocker can walk around.
+  The blocker is the same KIND of thing every time -- `NFC_XIN`, `NFC_XOUT` and
+  `NFC_RFO2` all report `layers_allowed = ['B']`, because `.kicad_dru` section
+  7, authored by D-596/D-603 to make a via **inexpressible rather than merely
+  forbidden**, gives `NFC_OSC` and `NFC_RF` one layer and no barrel.  **A net
+  with one layer and no barrel has nothing to detour ONTO.**  D-603 measured
+  the symptom -- *"a strict 1-for-1 trade, in both orderings, on the real
+  gate"* -- and named segment eviction as the missing unit; the unit was built
+  (D-607), generalised to corridors (D-618) and pointed here, and it reports
+  that the trade is 1-for-1 because a single-layer contract bought for RF
+  integrity is the thing paying.  `NFC_RFO2` alone owns THREE of the five.
+  **WHEN THE BLOCKER CANNOT MOVE, THE WALL MUST.**
+  **FIFTY MICRONS.**  `U9` is a UFQFPN-32 at 0.5 mm pitch whose 3.45 mm exposed
+  pad leaves a 0.175 mm inner channel, so `U9.7` has exactly one direction:
+  west.  The band it must turn in runs from `Y1.4`'s east edge **30.400** to
+  the `U9` pad row's west edge **31.350**, so at 0.200 mm clearance a 0.200 mm
+  track's centre may lie in **[30.700, 31.050]** -- **0.350 mm** where two
+  tracks need their centres **0.400 mm** apart.  `U9.3` is the same arithmetic
+  mirrored about `Y1.1`.  Necking cannot pay it (two clearances alone want
+  0.400 mm in a 0.350 mm gap, so the widest track that fits is NEGATIVE) and
+  no barrel can (the widest via clearing `U9.6`/`U9.8` is 0.300 mm, annular
+  0.075 against a 0.125 mm floor).  `Y1` is an INTERNAL 27.12 MHz crystal with
+  no enclosure feature, so unlike D-618's `J3` this is a **routine PCB decision,
+  not a mechanical interface change**.  It moved **0.300 mm west** and the board
+  file changed by **exactly one line**, `(at 28.6 30 180)` -> `(at 28.3 30 180)`.
+  0.300 mm is also the LARGEST safe move: at 0.500 mm the `GND` stitch barrel at
+  `30.000, 29.500` leaves `Y1.4`'s land, and the new applier refuses it on that
+  measurement rather than on judgement.
+  **TWO NEW UNITS, AND THE CLAUSE THAT WAS MISSING.**  `apply_part_shift.py`
+  translates ONE footprint by an exact (dx, dy) in nanometres and REFUSES the
+  move if any track endpoint would leave the pad it serves or any courtyard
+  would newly overlap.  `checks/placement_contract.py` is the invariant the gate
+  did not have: `verify_promotion.py` reads `GetTracks()`, `protected_copper.py`
+  reads the same objects, `land_parity_contract.py` compares each land to its
+  master -- and **none of them can see a footprint move**, because a move
+  changes no track, no via, no zone and no rule area.  PL1-PL7 all PASS.
+  **PL7 exists because PL1-PL6 were not enough and this decision proved it**:
+  shifting `Y1` west puts `Y1.4`'s `GND` land on top of three existing
+  `NFC_XIN` tracks -- two dead SHORTS and a **0.0389 mm** clearance -- and
+  PL1-PL6 all passed, because every endpoint was still on its own pad and no
+  courtyard overlapped.  Real DRC caught it; PL7 is the bar SAYING SO, reading
+  **0 hits before the move, 3 after the move alone, 0 after the promoted
+  transaction**.
+  **WHAT WAS REFUSED.**  With `Y1` moved, crystal-first BREAKS D-603's 1-for-1
+  for the first time: `NFC_VDD_A` closes, **56 -> 55 open edges, nothing
+  regressed, ZERO attributable DRC**, and both crystal arms come back SHORTER
+  (`XIN` 8.537 -> 7.284, `XOUT` 5.422 -> 4.964 mm, zero barrels).  Nine
+  orderings were priced.  **It was refused anyway**, by `pour_bond_contract.py`
+  P2: `NFC_VDD_A`'s 17.633 mm route runs a 4.4 mm `B.Cu` wall up the west side
+  of `U9` and **CUTS the `B.Cu` `GND` pour** -- islands **55 -> 56**, a
+  **12.461 mm2** fragment carrying `C45.2`/`C51.2`/`C53.2` split off the main
+  island (2892.380 -> 2875.142 mm2, 46 -> 43 pads, 49 -> 46 vias).  KiCad
+  reports no unconnected item because that fragment keeps three of its own
+  barrels down to `In1`/`In4`, which is exactly why a connectivity count could
+  not have caught it.  `pour_bond_guard.py` could not have prevented it either:
+  it reserves narrow bonds it can FIND, and before the cut there was no neck
+  there to find.  **P2 ITSELF WAS REPAIRED**, because it resolved a tube's
+  island by ORDINAL and one new island renumbered every ordinal above it --
+  **thirty-three dead tubes reported for one real injury**.  It now resolves the
+  island by GEOMETRY, an equally strong claim that does not depend on a list
+  index.
+  **WHAT WAS PROMOTED: `Y1` west 0.300 mm + `NFC_XIN` re-laid + `NFC_XOUT`
+  segment-detoured + `NFC_VDD_D` routed.**  `NFC_XIN` re-laid whole at
+  **7.284 mm, `B.Cu` only, ZERO barrels** (this is what clears the three shorts
+  the move created); `NFC_XOUT`'s two crossing tracks put back between their own
+  two ends around the reserved lane at **1.7000 -> 1.2748 mm, zero barrels --
+  SHORTER than they were**; **`NFC_VDD_D` CLOSED, `C45.1`/`C46.1` -> `U9.3`,
+  5.429 mm, 2 barrels** against a 1.577 mm direct leg.  The lane `--guard` and
+  the pour-bond guard were merged into ONE 50-record spec and the router
+  honoured both: a lane says where a route may not GO, a bond tube says which
+  pour copper it may not EAT.
+  Authority `ad708a52...` ->
+  **`ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d`**.
+  `verify_promotion.py` **14/14** (21 added on three claimed nets, 13 removed
+  and all licensed, every track 0.200 mm on `B`/`F`, barrels 0.60/0.30 mm,
+  unconnected **72 -> 71**, DRC 5 `hole_clearance` / 1 `solder_mask_bridge`
+  inherited with **ZERO attributable**, parity **247 / 0 errors**, fill-stable),
+  `placement_contract.py` **PL1-PL7**, `protected_copper.py` **15 nets / 393
+  objects IDENTICAL**, `land_parity_contract.py` **LAND1-LAND6, 311/311**,
+  `keepout_stackup_contract.py` **KO1-KO5**, `population_contract.py`
+  **POP1-POP4**, `neck_contract.py` **N1-N3**, `fab_package_contract.py`
+  **FAB1-FAB8** on a regenerated 28-artifact package, `pour_bond_contract.py`
+  **P1-P4** (default re-derived on the promoted board exactly as D-610 itself
+  re-derived it -- 47 tubes, 1536 points, zero off copper -- with the stale
+  D-610 reading RETAINED so the swap is auditable: it names one tube,
+  `U9.6 -> via`, 5 of 224 points, and **the bond did not move** -- `U9.6` is on
+  the same `B.Cu` `GND` island 15, 46 pads and 49 vias, 2892.380 -> 2890.833
+  mm2, 55 islands before and after).  Ledger **56 -> 55 open edges / 28 -> 27
+  nets**, ratsnest **72 -> 71**, improved one, regressed none.
+  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB,
+  XGPIO4/5 and the eight approved Demo NC contacts untouched.
+  **NEXT: `NFC_RFO2` -- ONE NET, THREE EDGES, and now the highest-leverage
+  single object on this board.**  It is the irreducible blocker of
+  `NFC_VDD_RF`, `NFC_RFI1` AND `NFC_RFI2`, and its own route is a zigzag that
+  runs north-east to `37.950, 28.925`, doubles back south-west to
+  `37.025, 29.875` and only then turns for `L6.1`, boxing in `U9.22`/`U9.23` on
+  the way.  It cannot RELAY (`B.Cu` only), but nothing has yet asked whether it
+  can be RE-LAID from scratch the way `NFC_XIN` just was -- the same move this
+  decision promoted, on the net that pays three times over.  `NFC_VDD_A` is NOT
+  parked: it is one `Y1` shift away from routable and needs only a path that
+  does not wall off the `C45` pocket (`--join-max-mm`, or a lane reserved down
+  the east side).  `apply_part_shift.py` and `checks/placement_contract.py` join
+  the standing preflight.  No owner decision is OPEN; D-618's `J3` question
+  remains RECORDED.
 - **Demo D-618 (USB-C DATA IS HALF REAL COPPER, AND THE OTHER HALF IS A
   0.395 mm BAND THE CONNECTOR'S OWN GROUND PIN ALREADY OWNS):** D-617 named
   this task -- *"the only thing between here and `DEMO_READY_FOR_FAB` is

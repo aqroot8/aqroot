@@ -4916,3 +4916,37 @@ has four components and cannot be promoted. Authority remains byte-identical
 at `64e5ae37...`, with zero attributable DRC delta. Park this unchanged U11
 waypoint family until surrounding geometry materially changes and continue on
 an independent retained-net transaction.
+
+## MOVING A PART, and the invariant that makes it reviewable (D-619, 2026-09-05)
+
+All five open `U9` NFC edges measure `DETOURABLE` + `UNRELAYABLE`: every
+corridor OPENS when its crossing tracks are cut, and the irreducible blocker is
+in every case a `.kicad_dru` SINGLE-LAYER net (`NFC_XIN`, `NFC_XOUT`,
+`NFC_RFO2`, all `layers_allowed = ['B']`).  A net with one layer and no barrel
+has nothing to detour onto.  When the blocker cannot move, the wall must --
+`U9.7`'s escape band is `[30.700, 31.050]`, **0.350 mm where two 0.200 mm
+tracks need 0.400 mm**, short by FIFTY MICRONS.
+
+    python3 apply_part_shift.py --ref Y1 --dx-nm -300000 [--apply] --report R.json
+    python3 checks/placement_contract.py --ref HEAD --move Y1:-300000:0 -o R.json
+
+`apply_part_shift.py` translates ONE footprint by an exact (dx, dy) in
+nanometres and REFUSES the move if any track endpoint would leave the pad it
+serves or any courtyard would newly overlap -- which is what caps the `Y1` shift
+at 0.300 mm, because at 0.500 mm the `GND` stitch barrel at `30.000, 29.500`
+leaves `Y1.4`'s land.  `checks/placement_contract.py` is the gate clause that
+did not exist: every other check on this board judges COPPER, and a footprint
+move changes no track, no via, no zone and no rule area.  PL7 is there because
+PL1-PL6 were not enough -- the `Y1` shift alone drops `Y1.4`'s `GND` land onto
+three `NFC_XIN` tracks (two shorts, one 0.0389 mm clearance) and PL1-PL6 all
+pass.  **A placement transaction must ride with a re-route of whatever it
+landed on.**
+
+Two further lessons are in the code, not just the record.  `pour_bond_contract.py`
+P2 resolved a tube's island by ORDINAL, so one split island renumbered every
+ordinal above it and it reported **33 dead tubes for one real injury**; it now
+resolves by GEOMETRY.  And the pour-bond guard and a corridor lane `--guard`
+merge into ONE spec -- a lane says where a route may not GO, a bond tube says
+which pour copper it may not EAT -- which is how `NFC_VDD_D` was closed without
+repeating the refused `NFC_VDD_A` run that cut the `B.Cu` `GND` pour 55 -> 56
+islands.

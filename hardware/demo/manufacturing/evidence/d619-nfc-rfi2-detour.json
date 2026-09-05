@@ -1,0 +1,186 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+ "family": [
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI2"
+ ],
+ "grid": 100000,
+ "lane": {
+  "keepout_nm": 300000,
+  "label": "USB_CORRIDOR",
+  "mm": 12.1019,
+  "points": 128
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 10.343,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": 1,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 9
+     },
+     "crossing_by_net": {
+      "+3V3": 1,
+      "/01_POWER_TREE/ACC_5V_ILIM": 2,
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": 4,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCB": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXB": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 2,
+      "/07_IR/IR_GATE": 1,
+      "/NFC_CS_N": 3,
+      "/NFC_SUPPLY": 1,
+      "GND": 12
+     },
+     "crossing_tracks": 83,
+     "direct_mm": 11.078,
+     "dst": [
+      "U9.23"
+     ],
+     "irreducible_nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+     ],
+     "lane": {
+      "mm": 12.102,
+      "ok": true,
+      "segments": 9,
+      "vias": 4
+     },
+     "minimal": {
+      "mm": 10.399,
+      "objects": [
+       {
+        "a_mm": [
+         37.2,
+         30.9
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 0.7425,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         38.5125,
+         32.2
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 1.1049,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 2
+     },
+     "protected": [],
+     "src": [
+      "R117.2"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      33.275,
+      28.25,
+      49.925,
+      37.3
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "B",
+    "I2"
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+   "netclass": "NFC_RX",
+   "width_mm": 0.2
+  }
+ ],
+ "relay": {
+  "all_relaid": false,
+  "chains": [
+   {
+    "a_mm": [
+     37.2,
+     30.9
+    ],
+    "b_mm": [
+     38.5125,
+     32.2
+    ],
+    "geometric_max_mm": 29.8211,
+    "layer": [
+     "B"
+    ],
+    "layers_allowed": [
+     "B"
+    ],
+    "max_mm": 29.8211,
+    "mm": null,
+    "mm_by_layer": null,
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "objects": [
+     {
+      "a_mm": [
+       37.2,
+       30.9
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 0.7425,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       38.5125,
+       32.2
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 1.1049,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 5.5422,
+    "reason": "NO_PATH",
+    "tracks": 2,
+    "vias": null,
+    "was_mm": 1.8474,
+    "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 29.821 mm budget"
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "UNRELAYABLE"
+}

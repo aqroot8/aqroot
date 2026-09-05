@@ -1,0 +1,40 @@
+{
+ "moved_alone_hits": [
+  {
+   "at_mm": [
+    27.5,
+    29.15
+   ],
+   "layer": "B.Cu",
+   "other": "track",
+   "other_net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+   "pad_net": "GND",
+   "ref": "Y1.4"
+  },
+  {
+   "at_mm": [
+    28.975,
+    28.225
+   ],
+   "layer": "B.Cu",
+   "other": "track",
+   "other_net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+   "pad_net": "GND",
+   "ref": "Y1.4"
+  },
+  {
+   "at_mm": [
+    28.65,
+    28.55
+   ],
+   "layer": "B.Cu",
+   "other": "track",
+   "other_net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+   "pad_net": "GND",
+   "ref": "Y1.4"
+  }
+ ],
+ "note": "PL7 non-vacuity: the Y1 shift ALONE, before NFC_XIN is re-laid",
+ "pre_hits": 0,
+ "schema": 1
+}

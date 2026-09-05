@@ -1,0 +1,91 @@
+{
+  "applied": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "courtyard_overlaps_new": [],
+  "courtyard_overlaps_now": [],
+  "courtyard_overlaps_was": [],
+  "dx_nm": -300000,
+  "dy_nm": 0,
+  "endpoints_on_pads": 5,
+  "endpoints_stranded": [],
+  "pad_boxes_now_mm": {
+    "1": [
+      [
+        28.7,
+        30.25,
+        30.1,
+        31.45
+      ]
+    ],
+    "2": [
+      [
+        26.5,
+        30.25,
+        27.9,
+        31.45
+      ]
+    ],
+    "3": [
+      [
+        26.5,
+        28.55,
+        27.9,
+        29.75
+      ]
+    ],
+    "4": [
+      [
+        28.7,
+        28.55,
+        30.1,
+        29.75
+      ]
+    ]
+  },
+  "pad_boxes_was_mm": {
+    "1": [
+      [
+        29.0,
+        30.25,
+        30.4,
+        31.45
+      ]
+    ],
+    "2": [
+      [
+        26.8,
+        30.25,
+        28.2,
+        31.45
+      ]
+    ],
+    "3": [
+      [
+        26.8,
+        28.55,
+        28.2,
+        29.75
+      ]
+    ],
+    "4": [
+      [
+        29.0,
+        28.55,
+        30.4,
+        29.75
+      ]
+    ]
+  },
+  "pads": 4,
+  "position_now_mm": [
+    28.3,
+    30.0
+  ],
+  "position_was_mm": [
+    28.6,
+    30.0
+  ],
+  "ref": "Y1",
+  "schema": 1,
+  "verdict": "PASS"
+}

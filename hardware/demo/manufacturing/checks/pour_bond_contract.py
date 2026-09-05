@@ -83,8 +83,16 @@ def main():
     # is a true statement about a stale artifact and a false alarm about the
     # guard in force, which is the thing this file exists to police.  Pass
     # `--guard` explicitly to audit any other spec.
+    # D-619 re-derived it again for the same reason: a 0.300 mm `Y1` shift
+    # swept `Y1.1` west and its zone clearance trimmed 5 of the 224 sampled
+    # points of the `U9.6 -> via` tube.  The BOND did not move -- `U9.6` is on
+    # the same B.Cu `GND` island 15, 46 pads and 49 vias, 2892.380 ->
+    # 2890.833 mm2, 55 islands before and after -- only the stale centreline
+    # did.  Both readings are kept: `d619-pour-bond-contract-d610guard.json`
+    # is the stale spec stating its one true complaint, this default is the
+    # spec in force.
     ap.add_argument("--guard", type=Path,
-                    default=MANU / "evidence/d610-pour-bond-guard-bonded.json")
+                    default=MANU / "evidence/d619-pour-bond-guard-bonded.json")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 
@@ -135,21 +143,44 @@ def main():
     # because back then that key really was unique.
     poly = {(p["net"], p["lkey"], p["zone"]): p for p in pours}
     poly.update({(p["net"], p["lkey"]): p for p in pours})
-    outside, badend = [], []
+    outside, badend, renumbered = [], [], []
     for g in spec["guards"]:
         p = (poly.get((g["net"], g["lkey"], g["zone"])) if g.get("zone")
              else poly.get((g["net"], g["lkey"])))
-        isl = p["islands"][g["island"]] if p else None
+        # RESOLVE THE ISLAND BY GEOMETRY, NOT BY ORDINAL.  D-619: `islands` is
+        # an ordered list, so the moment a route splits one pour island in two
+        # every ordinal above the split shifts by one and this clause reports
+        # every tube after it as destroyed.  On the D-619 candidate that read
+        # THIRTY-THREE dead tubes for ONE real injury -- a gate that cries wolf
+        # 33:1 is a gate nobody reads.  The claim P2 actually wants to make is
+        # "this tube is one continuous piece of its net's copper on its layer",
+        # which is exactly as strong and does not depend on a list index: take
+        # the island that holds the tube's own first point, and if the spec's
+        # ordinal named a different one, SAY SO rather than fail on it.
+        isl, found = None, None
+        if p:
+            first = pcbnew.VECTOR2I(int(g["points"][0][0]),
+                                    int(g["points"][0][1]))
+            for i, cand in enumerate(p["islands"]):
+                if cand["poly"].Contains(first, -1, 0):
+                    isl, found = cand, i
+                    break
+            if isl is None and g["island"] < len(p["islands"]):
+                isl, found = p["islands"][g["island"]], g["island"]
         if isl is None:
             outside.append(dict(guard=g["ends"], why="NO_SUCH_ISLAND"))
             continue
+        if found != g["island"]:
+            renumbered.append(dict(net=g["net"], layer=g["lkey"],
+                                   ends=g["ends"], was=g["island"], now=found))
         off = 0
         for (x, y) in g["points"]:
             if not isl["poly"].Contains(pcbnew.VECTOR2I(int(x), int(y)), -1, 0):
                 off += 1
         if off:
             outside.append(dict(net=g["net"], layer=g["lkey"],
-                                island=g["island"], ends=g["ends"],
+                                island=found, spec_island=g["island"],
+                                ends=g["ends"],
                                 points_off_copper=off,
                                 points=len(g["points"])))
         known = {q["ref"]: (q["x"], q["y"], q["r"]) for q in isl["pads"]}
@@ -165,7 +196,8 @@ def main():
     results["P2"] = dict(ok=not outside and not badend,
                          tubes=len(spec["guards"]),
                          points=sum(len(g["points"]) for g in spec["guards"]),
-                         off_copper=outside, misplaced_ends=badend)
+                         off_copper=outside, misplaced_ends=badend,
+                         islands_renumbered=renumbered)
 
     # -- P3 / P4 ------------------------------------------------------------ #
     probe = "/I2C_SDA_INT"

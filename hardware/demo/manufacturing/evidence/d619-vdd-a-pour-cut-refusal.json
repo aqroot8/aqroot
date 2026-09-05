@@ -1,0 +1,55 @@
+{
+ "candidate": {
+  "attributable_drc": 0,
+  "kicad_unconnected": [
+   72,
+   71
+  ],
+  "nets_improved": [
+   "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+  ],
+  "nets_regressed": [],
+  "open_edges": [
+   56,
+   55
+  ],
+  "report": "evidence/d619-nfc-vdd-a-refused-run.json",
+  "vdd_a_route_mm": 17.633,
+  "vdd_a_vias": 2
+ },
+ "note": "D-619 REFUSED ALTERNATIVE.  With Y1 shifted 0.300 mm west, requesting NFC_XOUT/NFC_XIN/NFC_VDD_A/NFC_VDD_D with XIN+XOUT evicted whole closes NFC_VDD_A (56 -> 55 open edges, nothing regressed, ZERO attributable DRC) -- and pays for it by CUTTING the B.Cu GND pour.  Refused on clause 'do not weaken the board safety bar', and the smaller local VDD_D transaction promoted instead.",
+ "promoted_instead": "NFC_VDD_D via Y1 shift + NFC_XIN re-lay + NFC_XOUT segment detour",
+ "schema": 1,
+ "why_refused": {
+  "b_cu_gnd_islands": [
+   55,
+   56
+  ],
+  "cause": "NFC_VDD_A's 4.4 mm B.Cu wall up the west side of U9 (x=31.000 y 26.100->28.400 and x=31.200 y 23.800->25.900) severs the pour between the C45 pocket and the main island",
+  "fragment": {
+   "area_mm2": 12.461,
+   "note": "the GND terminals of the NFC decoupling caps north-west of U9; still connected to In1/In4 through its own three barrels, so KiCad reports no unconnected item -- but its B.Cu return path to the main island is gone",
+   "pads": [
+    "C45.2",
+    "C51.2",
+    "C53.2"
+   ],
+   "vias": 3
+  },
+  "guard_cannot_express": "pour_bond_guard.py protects NARROW BONDS it can find; before this cut there was no neck there to find, so no tube guarded it.  A guard that reserves EXISTING necks cannot forbid CREATING one",
+  "main_island": {
+   "area_mm2": [
+    2892.38,
+    2875.142
+   ],
+   "pads": [
+    46,
+    43
+   ],
+   "vias": [
+    49,
+    46
+   ]
+  }
+ }
+}

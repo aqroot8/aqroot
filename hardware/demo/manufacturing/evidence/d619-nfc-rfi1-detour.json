@@ -1,0 +1,217 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+ "family": [
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI1"
+ ],
+ "grid": 100000,
+ "lane": {
+  "keepout_nm": 300000,
+  "label": "USB_CORRIDOR",
+  "mm": 14.9038,
+  "points": 155
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 10.706,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "src_escapes": null
+     },
+     "crossing_by_net": {
+      "+3V3": 1,
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC": 9,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": 11,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCA": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCB": 6,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO1": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 7,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXA": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXB": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+      "/07_IR/IR_GATE": 1,
+      "/NFC_CS_N": 3,
+      "GND": 16
+     },
+     "crossing_tracks": 115,
+     "direct_mm": 11.787,
+     "dst": [
+      "U9.22"
+     ],
+     "irreducible_nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+     ],
+     "lane": {
+      "mm": 14.904,
+      "ok": true,
+      "segments": 10,
+      "vias": 4
+     },
+     "minimal": {
+      "mm": 12.561,
+      "objects": [
+       {
+        "a_mm": [
+         37.025,
+         29.875
+        ],
+        "b_mm": [
+         37.2,
+         30.9
+        ],
+        "lkey": "B",
+        "mm": 1.0398,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         37.2,
+         30.9
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 0.7425,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         38.5125,
+         32.2
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 1.1049,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 3
+     },
+     "protected": [],
+     "src": [
+      "R116.2"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      33.275,
+      22.7,
+      49.925,
+      33.75
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "B",
+    "I2"
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+   "netclass": "NFC_RX",
+   "width_mm": 0.2
+  }
+ ],
+ "relay": {
+  "all_relaid": false,
+  "chains": [
+   {
+    "a_mm": [
+     37.025,
+     29.875
+    ],
+    "b_mm": [
+     38.5125,
+     32.2
+    ],
+    "geometric_max_mm": 36.4647,
+    "layer": [
+     "B"
+    ],
+    "layers_allowed": [
+     "B"
+    ],
+    "max_mm": 36.4647,
+    "mm": null,
+    "mm_by_layer": null,
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "objects": [
+     {
+      "a_mm": [
+       37.025,
+       29.875
+      ],
+      "b_mm": [
+       37.2,
+       30.9
+      ],
+      "lkey": "B",
+      "mm": 1.0398,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       37.2,
+       30.9
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 0.7425,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       38.5125,
+       32.2
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 1.1049,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 8.6616,
+    "reason": "NO_PATH",
+    "tracks": 3,
+    "vias": null,
+    "was_mm": 2.8872,
+    "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 36.465 mm budget"
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "UNRELAYABLE"
+}
