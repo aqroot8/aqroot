@@ -1,5 +1,276 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-630 · 2026-09-05 · Demo — "UNLAUNCHABLE" is THREE walls wearing one name, the escape width ladder had exactly ONE rung, and EXT_SDA's second edge is CLOSED
+
+D-629 named the next task — the census-then-ladder recipe on `/BQ25185_STAT1`,
+`/NFC_SUPPLY` and `EXT_SDA`'s remaining edges, *"6 edges, all with never-asked
+pairs"*. This is that recipe, one edge it closed, three walls it measured, one
+report that had been naming the wrong land since D-619, and the classification
+that tells the board's twenty-six blocked lands apart.
+
+## `/09_COMMUNITY_HEADER/EXT_SDA` — PROMOTED, `J5.4 → R48.2`
+
+`/09_COMMUNITY_HEADER/EXT_SDA` — the community-header I²C data line, whose
+first edge D-626 closed and whose remaining two D-629 listed as live — closes
+its SECOND edge. Under the 47-tube D-619 guard with `--partial`, the guarded
+ladder refused at 0.100 / 0.0667 / 0.050 / 0.0333 mm and **closed at 0.025 mm /
+73,969,284 cells**:
+
+    J5.4 -> R48.2   23.9933 mm   2 through barrels 0.600/0.300
+                    F.Cu -> In2.Cu -> F.Cu, barrels at (65.575, 18.875)
+                    and (60.200, 33.525), every track 0.200 mm `I2C`
+
+Four coarser pitches refuse it and the fifth routes it: the ladder is why this
+edge is closed and nothing else is.
+
+Authority `8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82`
+→ **`38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269`**,
+**retained open edges 47 → 46**, connected retained 152, open retained nets 21,
+ratsnest **63 → 62**. **16 objects added — 14 tracks (F.Cu / In2.Cu, every one
+0.200 mm) and 2 barrels (0.600/0.300) — ZERO removed**, zero zones, zero rule
+areas, zero `.kicad_dru` change, zero placement change.
+
+`verify_promotion.py --ref HEAD` re-derives the promotion from the two board
+files alone: **15 of 15 checks PASS**, plus all four live DRU contracts
+including `D-186_bat_main_class` and `D-269_bat_main_routed_clearance`. Real
+KiCad DRC **zero attributable**, inherited only (`hole_clearance` 5,
+`solder_mask_bridge` 1), fill-stable, schematic parity within baseline,
+`unconnected_items` 63 → 62. Every standing contract re-run on the promoted
+board and PASS — `pour_partition`, `pour_bond` (47-tube guard), `neck`,
+`placement`, `population`, `land_parity`, `keepout_stackup`, `rf_symmetry` — and
+`protected_copper` reads **identical** with `/ACC_5V_SW_EN`'s 23 objects,
+`/ACC_3V3_SW`'s 79, the three `FRONT_RGB_*_N` nets and `XGPIO4`/`XGPIO5`
+untouched. The fab package was re-exported from the promoted board and
+`fab_package_contract` reads **FAB1–FAB8 PASS** on 28 artifacts.
+
+**THE PROMOTED COPPER WAS RE-DERIVED UNDER THE CODE IN THE TREE, NOT UNDER THE
+CODE THAT FOUND IT.** The ladder that found the route ran while `maze3d.py` was
+being edited, so the winning rung was re-run alone at `--grid 25000 --promote`
+after every change below had landed. It produced the same 23.9933 mm and the
+same two barrels.`
+
+## THE LADDERS, GUARD ON, `--partial`
+
+47-tube D-619 guard, `--grid ladder --grid-gb 3.5 --grid-seconds 3600`, six or
+seven rungs each, every one on the D-628 authority `8b337e3c…` with
+`authoritative_unchanged: true`:
+
+    net                  class        trunk    rungs run   finest        outcome
+    /09_.../EXT_SDA      I2C          0.200    5           0.025 mm      CLOSED - see above
+    /NFC_SUPPLY          P3V3         0.600    6           0.020 mm      both pairs NO_LEGAL_ESCAPE
+    /NFC_SUPPLY --neck   P3V3         0.600    6           0.020 mm      escape LIFTED, corridor refuses
+    /BQ25185_STAT1       Default      0.200    6           0.020 mm      MEASURED WALL, both edges
+    /ACC_5V_LX --neck    SWITCH_NODE  0.600    6           0.020 mm      NO_LEGAL_ESCAPE_DST every rung
+
+`/BQ25185_STAT1` is now a **MEASURED WALL on both of its edges**: `U11.9`
+refuses the escape at all six rungs down to 0.020 mm / 115,565,604 cells, and
+the never-asked D-626 census pair `{R127.2,TP6.1} ↔ {U2.9}` refuses `NO_PATH`
+at 18.517 mm at the same lattice.
+
+**AND `--neck` MOVED A WALL FROM ONE CLASS TO ANOTHER**, which this board had
+never recorded. `/NFC_SUPPLY`'s second pair —
+`{R107.2,R106.2,TP32.1,C55.1,C19.1} ↔ {U9.8}`, 12.375 mm — refuses
+`NO_LEGAL_ESCAPE_DST` without `--neck` and **`NO_PATH` with it**. The 0.200 mm
+neck section 9 of the `.kicad_dru` already licenses inside `U9`'s courtyard
+lifted `U9.8`'s escape, and the wall became the corridor. It had never been
+asked on this net.
+
+## THE REPORT NAMED THE WRONG LAND, AND THE CENSUS CARRIED IT FORWARD
+
+One record from that run, verbatim, before the repair:
+
+    reason  NO_LEGAL_ESCAPE_SRC
+    a       ["U9.10"]      pads ["U9.10"]
+    why     "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45) …"
+
+Three fields name the source land; the human-readable sentence names the OTHER
+island's. `QBoard.escape_why` is ONE attribute on the shared `QBoard`,
+overwritten by every failing `escape()` call; `maze3d.route_join` probes BOTH
+sides before testing either and the DESTINATION loop runs LAST, so a source
+refusal has been printing the destination's sentence. **The arithmetic settles
+which was right**: `screen_land_escape_margin` puts `U9.10` at **−0.150 mm** and
+`U9.8` at **+0.250 mm** on the same 0.600 mm contract, and the two are NOT
+interchangeable — with `--neck` ON `U9.8`'s refusal lifts and `U9.10`'s does
+not. Naming the wrong one hid the only land on this net a licence would have to
+be written for, and the D-626 census carried that sentence forward unchanged.
+
+Repaired, the same pair now reads
+
+    pads ["U9.10"]   why "U9.10: NO LEGAL ESCAPE at >= 0.600 mm;
+                          blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)"
+
+— a different land AND a different blocker inventory. This is the same fault
+D-624 fixed in `lattice_advice` (`binding_pad`, last write winning) and D-626
+fixed in the census (`a`/`b` read off a join carrying `from`/`to`): a report
+that looks complete and names the wrong thing. Each side's messages are now
+collected WHILE that side is probed, and `why_lands` lists them all.
+
+**IT CHANGES NO SEARCH AND NO DECISION, MEASURED** (`lever_off_regression` in
+`evidence/d630-escape-walls.json`): `/BQ25185_STAT1`, same guard, same budgets,
+before and after the edit — **candidate `sha256` identical, connectivity
+identical, DRC classes identical, rung cell counts identical, rung reasons
+identical, failure reasons and `pads` identical**. The only change is the
+sentence, and there it RECOVERS a diagnostic the old code discarded: `U11.9`'s
+refusal went from the generic fallback *"no legal escape on the source island"*
+to *"blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), **track (x6)**"* — the
+first evidence that `U11.9` is blocked by ROUTED COPPER as well as by its own
+land pattern.
+
+## THE CLASSIFICATION: `screen_escape_class.py`
+
+D-626's `no_lattice_at_any_pitch` reads ONE number — the margin — collapses
+`margin < 0` and `margin == 0` into one predicate, and hands both to prose
+naming three instruments without ever saying which. `screen_land_escape_margin`
+has published a SECOND number since D-620 — the WIDEST track the land can
+physically launch — and reading the two together separates four classes, each
+with its own instrument. New tracked read-only screen, over every open net's
+428 lands (`evidence/d630-escape-class.json`):
+
+    verdict            n    instrument
+    CLEAR            402    not a land wall at all; a router refusal here is
+                            ROUTED COPPER — eviction, corridor or placement
+    LATTICE_EXACT     16    margin == 0.  DRC-legal, and rasterisable at NO
+                            pitch: maze3d's 0.75-cell guard band strictly
+                            exceeds the room at every lattice.
+                            `route_local_two_pad` is the ONLY instrument.
+    WIDTH_NECKABLE     4    inside a courtyard the board's own .kicad_dru names
+    WIDTH_UNLICENSED   6    launchable below contract, no necking licence
+
+**`LATTICE_EXACT` is the finding that saves the most search.** It holds `U11.9`
+and `U11.3` — D-626 took `BQ25185_STAT1` seven rungs to 0.0125 mm / 295.8 M
+cells against a land whose margin is exactly zero, and D-630 six more — and it
+holds `U12.4`, `U12.5`, `J1.7`, `J1.9`, `J1.40`, `J1.42`, `U4.2`, `U4.3`,
+`U4.5`, `U4.12`, `J1.43`, `U9.6`, `U9.12`, `U9.26`. **Sixteen lands, most of
+them on the two largest open nets on the board, that no ladder at any pitch can
+ever propose.**
+
+## AND EVERY WIDTH VERDICT IS PRICED IN AMPERES
+
+Reusing `audit_bond_ampacity.ampacity` and
+`pour_partition_contract.published_rail_currents` UNCHANGED — the same
+arithmetic and the same section-5 table `PP2` charges a bond against, at
+dT = 10 K on this board's 1 oz outer copper:
+
+    land    net             class        widest   priced    published  verdict
+    U3.21   +3V3            P3V3         0.500    1.441 A   1.000 A    ADMITTED
+    U5.2    +3V3            P3V3         0.350    1.113 A   1.000 A    ADMITTED
+    J1.35   +3V3            P3V3         0.300    0.995 A   1.000 A    under by 0.5 %
+    U9.10   /NFC_SUPPLY     P3V3         0.300    0.742 A*  1.000 A    under (as D-610's U12.4)
+    U12.10  /BQ25185_SYS    SYS_MAIN     0.600    0.742 A*  2.190 A    under
+    U12.11  /BQ25185_SYS    SYS_MAIN     0.600    0.742 A*  2.190 A    under
+    U21.5   /ACC_5V_LX      SWITCH_NODE  0.250    0.742 A*  —          UNPRICED CLASS
+    D2.2 D4.2 D5.2  GND     GND          0.250    0.872 A   —          GND still unpriced
+
+    * priced at the 0.200 mm the courtyard licenses, not at the widest.
+
+**`/01_POWER_TREE/ACC_5V_LX` stops being a routing question.** `U21.5` is the
+`U21` accessory-boost switch node; `SWITCH_NODE` carries no row in section 5,
+and the figure the DRU does publish for that inductor is `SYS_MAIN`'s **2.19 A
+peak (D-185)**. Its widest legal escape is 0.250 mm — **0.872 A**. Six rungs
+with `--neck` ON, 0.100 → 0.020 mm, refuse it every time. It is a **PLACEMENT**
+finding with a number attached, and no licence should be written for it.
+
+Ten controls drive the same `classify()` and `price()` the verdict does: a
+positive margin is never a wall, a zero margin is never a neck, a land under
+`min_track_width` is always a true wall, a neckable width outside a named
+courtyard is UNLICENSED, one micron under the licensed neck is UNLICENSED, the
+bar admits at equality and refuses one rounding quantum below, and an unpriced
+class is refused. A control that misbehaves fails the screen.
+
+## THE LEVER: `--escape-floor`, AND WHY THE ESCAPE LADDER HAD ONE RUNG
+
+`QBoard.escape` takes a TRUNK width and a RULE MINIMUM as two arguments, walks a
+descending width ladder between them, keeps the widest rung that fits, and
+refuses any launch point where the TRUNK width is not also legal
+(`trunk cannot start here`). **`maze3d.pad_escapes` has always passed
+`field.width` for BOTH**, which collapses that ladder to a single rung — so a
+land that cannot launch its netclass width has been reported `NO LEGAL ESCAPE`
+without the router ever asking for a width the board itself publishes as legal.
+
+`.kicad_dru` section 5 states a `min` and an `opt` for every power class; the
+`.kicad_pcb` netclass carries the `opt`; `net_contract` takes `max()` of the
+two. **All ten priced classes are launched at their `opt` while the board's DRC
+enforces the `min`** — parsed from the rule text and compared against
+`route_maze_batch.DRU_CLASS`, **ten for ten exact**:
+
+    ACC_3V3 0.35/0.50   ACC_5V 0.40/0.60      BAT_MAIN 0.60/1.00
+    NFC_5V_PA 0.35/0.60 NFC_RF 0.30/0.40      P3V3 0.40/0.60
+    SPK_OUT 0.25/0.30   SWITCH_NODE 0.40/0.60 SYS_MAIN 0.50/0.80
+    VBUS_CHG 0.35/0.50
+
+`DRU_CLASS` has carried a `width_cap` for exactly ONE class, `NFC_RF`, with the
+reason written out at length — *"the netclass asks for 0.400 mm — the DRU's
+`opt` — so `max()` made this class UNLAUNCHABLE FROM THE PART IT SERVES"*. That
+was one class's version of a board-wide fact.
+
+**`--escape-floor` hands the escape ladder the class's PUBLISHED minimum.** The
+trunk is unchanged and `QBoard.escape` still refuses any launch point where the
+trunk width is not legal, so it widens what a package may LAUNCH and nothing
+else. A class the `.kicad_dru` does not price does not move — the floor is never
+board setup's `min_track_width` — so no signal class and no return path is
+touched, and it can never propose copper the board's own DRC would refuse.
+
+**IT IS A PROVEN NO-OP WHERE IT MUST BE AND IT DEMONSTRABLY FIRES WHERE IT
+SHOULD** (`evidence/d630-escape-walls.json`):
+
+  * `/BQ25185_STAT1` (class `Default`, which the DRU does not price) with the
+    flag OFF and ON: **the two candidate boards carry the same `sha256` and the
+    two reports are identical but for their own workdir paths.**
+  * `+3V3`: `U4.2` refuses `NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1
+    (x57) …` → **`>= 0.400 mm; blocked by U4.1 (x297) …`**
+  * `/01_POWER_TREE/BQ25185_SYS`: `U13.3` refuses at `>= 0.800 mm; U13.2 (x37)`
+    → **`>= 0.500 mm; U13.2 (x283)`**
+
+Blocker counts rise 4–6× because the ladder now HAS rungs. **The wall is still
+real at the published floor on both nets** — `U4` is a 0.4 mm-pitch part and
+cannot launch 0.400 mm either — so the lever closed no edge today. It is
+recorded as a measured capability with a proven safety envelope, not as a
+result, and `screen_escape_class.py` is the screen that says in advance which
+lands it can reach.
+
+## AND THE POUR BLOCK'S FIRST REFUSAL IS THE BARREL, NOT THE ESCAPE
+
+Both pour-owning nets given EVERY standing primitive at once — `--escape-floor
+--bridge --split-islands --join-orphans --body-landing --stitch-via
+500000:250000`, guard ON — refuse first with
+
+    NO_BODY_VIA_SITE: no legal 0.65 mm barrel INSIDE THIS NET'S OWN BODY POUR
+                      within 8.0 mm of any escape
+
+on **six of `/01_POWER_TREE/BQ25185_SYS`'s islands and two of `+3V3`'s**.
+`pour_partition` PASSES and DRC is zero-attributable on both. The 19
+pour-served open edges are therefore bounded by a **BARREL SITE inside an
+8.0 mm LOCALITY WINDOW** — and that window is a convention `stitch_pad` chose,
+not a figure this board publishes anywhere.
+
+## NEXT, IN ORDER OF LEVERAGE
+
+1. **The 8.0 mm stitch window is the pour block's binding constraint, and it is
+   the only one of the three that is a CONVENTION rather than a rule or a
+   geometry.** Widening it — or handing what the stitch could not reach to the
+   residual join, which is already built — is worth up to **19 edges**, the
+   largest single block on the board, and is a bounded change to a locality
+   bound rather than a search or a licence.
+2. **`route_local_two_pad` on the 16 `LATTICE_EXACT` lands.** It is the only
+   instrument that can express them and it has never been aimed at this list.
+   `U11.9` and `U11.3` are the cheapest two — but note the repaired diagnostic:
+   `U11.9` also reports `track (x6)`, so exact geometry is necessary there and
+   may not be sufficient.
+3. **`/NFC_SUPPLY` needs a `PAD_ESCAPE_RUN_U9_10` rectangle** on the D-610
+   shape — `enclosedByArea`, declared BEFORE the router moves, priced at
+   0.742 A against a 1.0 A rail exactly as `U12.4` was and ruled the same way.
+   `--neck` alone cannot reach it: the neck is confined to the courtyard while
+   the goal test stays at the trunk width, and inside a UFQFPN-32 courtyard
+   those two conditions are jointly unsatisfiable.
+4. `/BQ25185_STAT1` is a MEASURED WALL on both edges. `/01_POWER_TREE/ACC_5V_LX`
+   is a PLACEMENT finding priced at 0.872 A against 2.19 A.
+
+**The `GND` return-path pricing question remains the one OPEN modelling gap in
+`PP2`**, and it is now visible in a second place: `D2.2`, `D4.2` and `D5.2` are
+`WIDTH_UNLICENSED` at 0.250 mm and cannot be priced at all. No owner decision is
+OPEN; D-618's `J3` question remains RECORDED and PM-3 remains an open PLACEMENT
+finding.
+
 # D-629 · 2026-09-05 · Demo — I2C_SCL_INT, the LARGEST open net on the board, is a MEASURED CORRIDOR WALL: 15 pairs asked, 15 NO_PATH, every one with legal escapes at both ends
 
 CHARACTERIZATION ONLY, no copper change; the authoritative board is the D-628

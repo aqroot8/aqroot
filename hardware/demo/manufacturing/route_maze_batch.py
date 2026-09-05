@@ -1334,7 +1334,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             body_landing=False, join_orphans=False,
             join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
             detour_own_layer=False, relief_extra_width=0,
-            relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None):
+            relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
+            escape_floor=False):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1510,9 +1511,26 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             bridged = mz.bridge_islands(
                 qb, net, c["width"], c["clr_pad"], c["clr"], BRIDGE_LADDER,
                 via_floors(c["netclass"]), G=grid, layers=c["layers"], guard=g)
+        # ESCAPE FLOOR -- D-630.  `net_contract` takes `max()` of the netclass
+        # width (which carries `.kicad_dru` section 5's `opt`) and `DRU_CLASS`
+        # (which carries its `min`), so the router routes at the OPTIMUM and
+        # then treats it as the width a LAND must launch.  On this board that
+        # made three lands on the two largest open nets unlaunchable from the
+        # parts they serve, and it is the same defect `DRU_CLASS`'s `NFC_RF`
+        # `width_cap` was written for.  `--escape-floor` hands the escape
+        # ladder the class's PUBLISHED minimum as its rule minimum; the trunk
+        # is unchanged, and `QBoard.escape` already refuses any launch point
+        # where the trunk width is not also legal.  A class the `.kicad_dru`
+        # does not price does not move -- the floor is never board setup's
+        # `min_track_width` -- so this can never propose copper the DRC would
+        # refuse, and no signal class and no return path is touched.
+        floor = DRU_CLASS.get(c["netclass"], {}).get("width") if escape_floor \
+            else None
+        c["escape_floor"] = min(c["width"], floor or c["width"])
         field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
-                         layers=c["layers"], neck=neck_rule, guard=g)
+                         layers=c["layers"], neck=neck_rule, guard=g,
+                         escape_floor=floor)
         # A net that owns a filled pour is completed by dropping each island
         # onto that pour, not by a pad-to-pad MST across the signal layers.
         # THE BARREL MUST LAND ON THE BODY, AND ONLY THE CALLER CAN SAY SO.
@@ -1662,10 +1680,15 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         print("  %-44s %-6s %s %.0fs" % (
             net, r["mode"], "ok" if r.get("ok") else r.get("reason", "FAIL"),
             time.time() - t0), file=sys.stderr, flush=True)
+        # `escape_floor` is in the contract because it is a WIDTH the run was
+        # allowed to lay: a report that prints the trunk width and omits the
+        # floor a land launched at describes a different run from the one that
+        # happened.  It equals the trunk width whenever the lever is off.
         r["contract"] = {k: c[k] for k in
                          ("netclass", "width", "clr", "clr_pad", "via_dia",
                           "via_drill", "layers", "reserved_inner_planes",
                           "guarded_layers")}
+        r["contract"]["escape_floor"] = c.get("escape_floor", c["width"])
         results.append(r)
     qb.save(str(path))
     print(json.dumps(dict(results=results, bonds=bonds,
@@ -2113,7 +2136,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
          detour_own_layer=False, relief_extra_width=0,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
-         promote_soft=False):
+         promote_soft=False, escape_floor=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -2251,6 +2274,13 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--stitch-via", "%d:%d" % stitch_via]
         if neck:
             cmd += ["--neck", "--neck-max-mm", str(neck_max_mm)]
+        # THE ESCAPE FLOOR IS NOT A SEARCH LEVER -- it is part of the WIDTH
+        # CONTRACT the run is judged under, so unlike `--bridge` it is handed
+        # to the repair pass too.  A repair that re-lays a net this run cut
+        # must launch its lands at the same widths the primary proposal was
+        # allowed to.
+        if escape_floor:
+            cmd += ["--escape-floor"]
         # The bridge is the primary proposal's lever, not the repair's.  A
         # repair re-bonds copper THIS run severed and does it with the stitch;
         # letting it also drop fine barrels into pours it never touched would
@@ -2906,6 +2936,18 @@ def main():
                     help="revert and report ANY single join longer than this "
                          "many millimetres of copper -- residual-island joins "
                          "and --partial joins alike; 0 disables the bound")
+    ap.add_argument("--escape-floor", action="store_true",
+                    help="let a LAND launch at the width `.kicad_dru` section "
+                         "5 publishes as its class's MINIMUM, instead of at "
+                         "the `opt` figure the .kicad_pcb netclass carries and "
+                         "`net_contract` then treats as a floor.  The TRUNK "
+                         "width is unchanged and `QBoard.escape` still refuses "
+                         "any launch point where the trunk width is not legal, "
+                         "so this widens what a package may LAUNCH and nothing "
+                         "else.  A class the DRU does not price does not move "
+                         "-- the floor is never board setup's min_track_width "
+                         "-- so no signal class and no return path is touched. "
+                         "Screen it first with screen_escape_class.py (D-630)")
     ap.add_argument("--neck", action="store_true",
                     help="allow a pad with NO full-width escape to launch at "
                          "the .kicad_dru pad-escape necking minimum, for the "
@@ -3142,7 +3184,7 @@ def main():
                 a.body_landing, a.join_orphans, a.join_orphan_max_mm,
                 a.detour_own_layer, a.relief_extra_width,
                 tuple(a.relief_pad), a.relief_bonds_per_island,
-                load_run_areas(a.relief_run_area))
+                load_run_areas(a.relief_run_area), a.escape_floor)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -3197,7 +3239,8 @@ def main():
                  relief_bonds_per_island=a.relief_bonds_per_island,
                  relief_run_area=a.relief_run_area,
                  join_orphans=a.join_orphans,
-                 join_orphan_max_mm=a.join_orphan_max_mm)
+                 join_orphan_max_mm=a.join_orphan_max_mm,
+                 escape_floor=a.escape_floor)
     spec = str(a.grid).strip().lower()
     ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
     # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`

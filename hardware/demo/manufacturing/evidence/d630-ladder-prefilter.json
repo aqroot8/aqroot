@@ -1,0 +1,467 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "excluded_edges": 10,
+ "ladderable_edges": 37,
+ "ladderable_nets": 20,
+ "nets": [
+  {
+   "dead_islands": [
+    [
+     "U21.5"
+    ]
+   ],
+   "excluded_edges": 1,
+   "islands": 2,
+   "ladderable_edges": 0,
+   "needs_partial": false,
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 1,
+   "pads": 2,
+   "required_lattice_mm": 2.8933,
+   "sheet": "01_POWER_TREE",
+   "span_mm": 4.02,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U21.5"
+   ],
+   "verdict": "UNLAUNCHABLE",
+   "why": "1 of 1 edges sit behind island(s) with no legal escape at ANY pitch (U21.5); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 3,
+   "required_lattice_mm": 0.0333,
+   "sheet": "01_POWER_TREE",
+   "span_mm": 8.465,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 4,
+   "required_lattice_mm": 0.0667,
+   "sheet": "04_SPI_B_RADIOS_NFC",
+   "span_mm": 18.713,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/USB_D_MCU_N",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 2,
+   "required_lattice_mm": 0.66,
+   "sheet": "GLOBAL",
+   "span_mm": 21.858,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/ACC_PWR_EN",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 3,
+   "required_lattice_mm": 0.2,
+   "sheet": "GLOBAL",
+   "span_mm": 23.966,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/USB_D_MCU_P",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 2,
+   "required_lattice_mm": 1.356,
+   "sheet": "GLOBAL",
+   "span_mm": 24.281,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/ACC_5V_BOOST_EN",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 4,
+   "required_lattice_mm": 0.0333,
+   "sheet": "GLOBAL",
+   "span_mm": 37.034,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/I2S_LRCLK",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 3,
+   "required_lattice_mm": 0.1,
+   "sheet": "GLOBAL",
+   "span_mm": 62.333,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 4,
+   "required_lattice_mm": 0.2,
+   "sheet": "08_BUTTONS_EXPANDERS",
+   "span_mm": 63.436,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/SX1262_DIO1",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 2,
+   "required_lattice_mm": 0.2,
+   "sheet": "GLOBAL",
+   "span_mm": 78.249,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 2,
+   "ladderable_edges": 1,
+   "needs_partial": false,
+   "net": "/SPI_B_SCK",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 1,
+   "pads": 4,
+   "required_lattice_mm": 0.0667,
+   "sheet": "GLOBAL",
+   "span_mm": 118.306,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 1 edges"
+  },
+  {
+   "dead_islands": [
+    [
+     "U11.3"
+    ]
+   ],
+   "excluded_edges": 1,
+   "islands": 3,
+   "ladderable_edges": 1,
+   "needs_partial": true,
+   "net": "/BQ25185_STAT2",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 2,
+   "pads": 4,
+   "required_lattice_mm": 0.2,
+   "sheet": "GLOBAL",
+   "span_mm": 31.83,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U11.3"
+   ],
+   "verdict": "EXACT",
+   "why": "1 of 2 edges sit behind island(s) with no legal escape at ANY pitch (U11.3); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  },
+  {
+   "dead_islands": [
+    [
+     "U11.9"
+    ]
+   ],
+   "excluded_edges": 1,
+   "islands": 3,
+   "ladderable_edges": 1,
+   "needs_partial": true,
+   "net": "/BQ25185_STAT1",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 2,
+   "pads": 4,
+   "required_lattice_mm": 0.2,
+   "sheet": "GLOBAL",
+   "span_mm": 33.657,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U11.9"
+   ],
+   "verdict": "EXACT",
+   "why": "1 of 2 edges sit behind island(s) with no legal escape at ANY pitch (U11.9); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 3,
+   "ladderable_edges": 2,
+   "needs_partial": false,
+   "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 2,
+   "pads": 5,
+   "required_lattice_mm": 0.4,
+   "sheet": "09_COMMUNITY_HEADER",
+   "span_mm": 60.113,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 2 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 3,
+   "ladderable_edges": 2,
+   "needs_partial": false,
+   "net": "/WAKE_INT_N",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 2,
+   "pads": 5,
+   "required_lattice_mm": 0.6,
+   "sheet": "GLOBAL",
+   "span_mm": 66.101,
+   "too_coarse": false,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 2 edges"
+  },
+  {
+   "dead_islands": [
+    [
+     "U9.10"
+    ]
+   ],
+   "excluded_edges": 1,
+   "islands": 3,
+   "ladderable_edges": 1,
+   "needs_partial": true,
+   "net": "/NFC_SUPPLY",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 2,
+   "pads": 6,
+   "required_lattice_mm": 0.3333,
+   "sheet": "GLOBAL",
+   "span_mm": 100.842,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U9.10"
+   ],
+   "verdict": "UNLAUNCHABLE",
+   "why": "1 of 2 edges sit behind island(s) with no legal escape at ANY pitch (U9.10); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 3,
+   "ladderable_edges": 2,
+   "needs_partial": false,
+   "net": "/I2C_SDA_INT",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 2,
+   "pads": 9,
+   "required_lattice_mm": 0.0667,
+   "sheet": "GLOBAL",
+   "span_mm": 101.002,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 2 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 5,
+   "ladderable_edges": 4,
+   "needs_partial": false,
+   "net": "GND",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 4,
+   "pads": 246,
+   "required_lattice_mm": 0.0333,
+   "sheet": "GLOBAL",
+   "span_mm": 159.668,
+   "too_coarse": true,
+   "unlaunchable_lands": [
+    "D2.2",
+    "D4.2",
+    "D5.2",
+    "J1.43",
+    "U9.12",
+    "U9.26",
+    "U9.6"
+   ],
+   "verdict": "EXACT",
+   "why": "every island has a launchable land; refinement can reach all 4 edges"
+  },
+  {
+   "dead_islands": [],
+   "excluded_edges": 0,
+   "islands": 6,
+   "ladderable_edges": 5,
+   "needs_partial": false,
+   "net": "/I2C_SCL_INT",
+   "no_lattice_at_any_pitch": false,
+   "open_edges": 5,
+   "pads": 9,
+   "required_lattice_mm": 0.0667,
+   "sheet": "GLOBAL",
+   "span_mm": 107.927,
+   "too_coarse": true,
+   "unlaunchable_lands": [],
+   "verdict": "CLEAR",
+   "why": "every island has a launchable land; refinement can reach all 5 edges"
+  },
+  {
+   "dead_islands": [
+    [
+     "U12.10",
+     "U12.11"
+    ]
+   ],
+   "excluded_edges": 1,
+   "islands": 8,
+   "ladderable_edges": 6,
+   "needs_partial": true,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 7,
+   "pads": 13,
+   "required_lattice_mm": 0.2667,
+   "sheet": "01_POWER_TREE",
+   "span_mm": 105.109,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U12.10",
+    "U12.11"
+   ],
+   "verdict": "UNLAUNCHABLE",
+   "why": "1 of 7 edges sit behind island(s) with no legal escape at ANY pitch (U12.10, U12.11); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  },
+  {
+   "dead_islands": [
+    [
+     "U4.12"
+    ],
+    [
+     "U4.2"
+    ],
+    [
+     "U4.3"
+    ],
+    [
+     "U4.5"
+    ],
+    [
+     "U5.2"
+    ]
+   ],
+   "excluded_edges": 5,
+   "islands": 9,
+   "ladderable_edges": 3,
+   "needs_partial": true,
+   "net": "+3V3",
+   "no_lattice_at_any_pitch": true,
+   "open_edges": 8,
+   "pads": 80,
+   "required_lattice_mm": 0.2,
+   "sheet": "GLOBAL",
+   "span_mm": 157.685,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "J1.35",
+    "J1.40",
+    "J1.42",
+    "J1.7",
+    "J1.9",
+    "U12.4",
+    "U12.5",
+    "U3.21",
+    "U4.12",
+    "U4.2",
+    "U4.3",
+    "U4.5",
+    "U5.2"
+   ],
+   "verdict": "UNLAUNCHABLE",
+   "why": "5 of 8 edges sit behind island(s) with no legal escape at ANY pitch (J1.35, J1.40, J1.42, J1.7, J1.9, U12.4, U12.5, U3.21, U4.12, U4.2, U4.3, U4.5, U5.2); a finer lattice cannot manufacture width -- land licence / placement / route_local_two_pad"
+  }
+ ],
+ "nets_needing_partial": [
+  "/BQ25185_STAT2",
+  "/BQ25185_STAT1",
+  "/NFC_SUPPLY",
+  "/01_POWER_TREE/BQ25185_SYS",
+  "+3V3"
+ ],
+ "open_edges": 47,
+ "open_nets": 21,
+ "schema": 1,
+ "what": "D-626 -- the ladder's work-list, read-only, counted in EDGES.  `lattice_advice`'s `no_lattice_at_any_pitch` separates an escape refusal a finer pitch CAN lift from one it provably cannot; D-626 tested the invariant side to 0.0125 mm / 295.8 M cells on /BQ25185_STAT1.  Exclusion is per ISLAND, because a net may hold one island nothing can launch and others that are ordinary."
+}

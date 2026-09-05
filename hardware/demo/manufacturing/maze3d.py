@@ -437,7 +437,8 @@ class Field(object):
     """
 
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
-                 G=100000, layers=None, margin_mm=2.0, neck=None, guard=None):
+                 G=100000, layers=None, margin_mm=2.0, neck=None, guard=None,
+                 escape_floor=None):
         self.qb, self.net, self.G = qb, net, G
         # OFF unless the caller hands in a `Neck`.  Nothing below reads it
         # except `pad_escapes`, and only for a pad that has NO full-width
@@ -451,6 +452,35 @@ class Field(object):
         # is keyed on membership, never on a False array.
         self.guard = guard or {}
         self.width, self.clr_pad, self.clr_trk = width, clr_pad, clr_trk
+        # ESCAPE FLOOR -- D-630.  `QBoard.escape` takes a TRUNK width and a
+        # RULE MINIMUM as two arguments and walks a descending width ladder
+        # between them, keeping the WIDEST rung that fits and refusing any
+        # launch point where the TRUNK width is not also legal
+        # (`trunk cannot start here`).  This file has always passed
+        # `field.width` for BOTH, which collapses that ladder to a single rung
+        # -- so a land that cannot launch its netclass width has been reported
+        # `NO LEGAL ESCAPE` without the router ever asking for a width the
+        # board itself publishes as legal.
+        #
+        # `.kicad_dru` section 5 states a `min` and an `opt` for every power
+        # class; the `.kicad_pcb` netclass carries the `opt`, and
+        # `net_contract` takes `max()` of the two, so the router routes at the
+        # OPTIMUM and treats it as a floor.  `DRU_CLASS` already records the
+        # real `min` for every class that has one, and `route_maze_batch.py`
+        # has carried a `width_cap` for `NFC_RF` since the first `U9` fanout
+        # for exactly this reason, written out at length: "the netclass asks
+        # for 0.400 mm -- the DRU's `opt` -- so `max()` made this class
+        # UNLAUNCHABLE FROM THE PART IT SERVES".  That is one class's version
+        # of a board-wide fact.
+        #
+        # OFF unless the caller hands one in, and a `Field` built without one
+        # is byte-identical: the floor defaults to the trunk width, which is
+        # the pair of arguments this file has always passed.  A caller may
+        # only ever descend to a width the `.kicad_dru` PUBLISHES for that
+        # class -- never to board setup's `min_track_width` -- so the lever
+        # cannot propose copper KiCad's own DRC would refuse, and a class the
+        # DRU does not price (`GND` and every signal class) does not move.
+        self.escape_floor = min(width, escape_floor or width)
         self.via_dia, self.via_drill = via_dia, via_drill
         self.layers = tuple(layers or qb.routable)
         # Origin matches the one every qrouter caller uses for `escape`, so an
@@ -1067,9 +1097,9 @@ def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
         prefer = None
         if toward is not None:
             prefer = (toward[0] - pad['x'], toward[1] - pad['y'])
-        cands = list(qb.escape(pad, L, field.width, field.width, field.clr_pad,
-                               field.clr_trk, field.G, field.ox, field.oy,
-                               prefer=prefer)[:limit])
+        cands = list(qb.escape(pad, L, field.width, field.escape_floor,
+                               field.clr_pad, field.clr_trk, field.G,
+                               field.ox, field.oy, prefer=prefer)[:limit])
         seen = set((c['x'], c['y']) for c in cands)
         if pocket:
             for c in _pocket_escapes(qb, field, pad, L, prefer, limit):
@@ -1286,19 +1316,51 @@ def route_join(qb, field, src_pads, dst_pads, escape_limit=8, via_cost_mm=1.5,
     sx = sum(p['x'] for p in src_pads) / float(len(src_pads))
     sy = sum(p['y'] for p in src_pads) / float(len(src_pads))
 
-    src = []
+    # A REFUSAL MUST NAME A LAND ON THE ISLAND IT REFUSED -- D-630.
+    # `QBoard.escape_why` is ONE attribute on the shared `QBoard`, overwritten
+    # by every failing `escape()` call.  Both sides are probed before either is
+    # tested, and the DESTINATION loop runs LAST, so a `NO_LEGAL_ESCAPE_SRC`
+    # used to be reported with the sentence the DESTINATION pads left behind.
+    # On `/NFC_SUPPLY` that printed `reason NO_LEGAL_ESCAPE_SRC`, `a [U9.10]`,
+    # `pads [U9.10]` and `why "U9.8: NO LEGAL ESCAPE ..."` in one record --
+    # three fields naming the source land and the human-readable one naming the
+    # other island's -- and the D-626 census inherited it, so four decisions
+    # recorded this net's wall against the wrong pad.  The arithmetic settles
+    # which was right: `screen_land_escape_margin` puts `U9.10` at -0.150 mm
+    # and `U9.8` at +0.250 mm on the same 0.600 mm contract.
+    #
+    # This is the same fault D-624 fixed in `lattice_advice` (`binding_pad`,
+    # last write winning) and D-626 fixed in the census (`a`/`b` read off a
+    # join that carries `from`/`to`): a report that looks complete and names
+    # the wrong thing.  Each side's messages are now collected WHILE that side
+    # is probed, so the sentence and the `pads` list cannot disagree.  This
+    # changes no search and no decision -- only which land the report names.
+    # The reset before each pad matters: `pad_escapes` may skip `QBoard.escape`
+    # entirely -- a pad that is not on this face, or a layer this net may not
+    # route on -- and would then be credited with the PREVIOUS pad's sentence.
+    src, src_why = [], []
     for p in src_pads:
-        src += pad_escapes(qb, field, p, (cx, cy), escape_limit)
-    dst = []
+        qb.escape_why = []
+        got = pad_escapes(qb, field, p, (cx, cy), escape_limit)
+        if not got and qb.escape_why:
+            src_why.append(qb.escape_why[0])
+        src += got
+    dst, dst_why = [], []
     for p in dst_pads:
-        dst += pad_escapes(qb, field, p, (sx, sy), escape_limit)
+        qb.escape_why = []
+        got = pad_escapes(qb, field, p, (sx, sy), escape_limit)
+        if not got and qb.escape_why:
+            dst_why.append(qb.escape_why[0])
+        dst += got
     if not src:
         return dict(ok=False, reason='NO_LEGAL_ESCAPE_SRC',
-                    why=(qb.escape_why or ['no legal escape on the source island'])[0],
+                    why=(src_why or ['no legal escape on the source island'])[0],
+                    why_lands=src_why,
                     pads=[p['ref'] for p in src_pads])
     if not dst:
         return dict(ok=False, reason='NO_LEGAL_ESCAPE_DST',
-                    why=(qb.escape_why or ['no legal escape on the target island'])[0],
+                    why=(dst_why or ['no legal escape on the target island'])[0],
+                    why_lands=dst_why,
                     pads=[p['ref'] for p in dst_pads])
 
     vc = max(1, int(round(via_cost_mm * qr.MM / field.G)))

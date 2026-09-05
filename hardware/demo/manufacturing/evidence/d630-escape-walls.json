@@ -1,0 +1,1363 @@
+{
+ "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+ "escape_class": {
+  "blocked": [
+   {
+    "best_margin_mm": -0.125,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U5.2",
+    "price": {
+     "admitted": true,
+     "amps": 1.113,
+     "required_amps": 1.0,
+     "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT",
+     "width_mm": 0.35
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.35
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "J1.7",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "J1.9",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": -0.15,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "J1.35",
+    "price": {
+     "admitted": false,
+     "amps": 0.995,
+     "required_amps": 1.0,
+     "why": "BOND_UNDER_PRICED",
+     "width_mm": 0.3
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "J1.40",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "J1.42",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U12.4",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U12.5",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U4.2",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U4.3",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U4.5",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U4.12",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": -0.05,
+    "contract_mm": 0.6,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pad": "U3.21",
+    "price": {
+     "admitted": true,
+     "amps": 1.441,
+     "required_amps": 1.0,
+     "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT",
+     "width_mm": 0.5
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.5
+   },
+   {
+    "best_margin_mm": -0.1,
+    "contract_mm": 0.8,
+    "net": "/01_POWER_TREE/BQ25185_SYS",
+    "netclass": "SYS_MAIN",
+    "pad": "U12.10",
+    "price": {
+     "admitted": false,
+     "amps": 0.742,
+     "required_amps": 2.19,
+     "why": "BOND_UNDER_PRICED",
+     "width_mm": 0.2
+    },
+    "verdict": "WIDTH_NECKABLE",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": -0.1,
+    "contract_mm": 0.8,
+    "net": "/01_POWER_TREE/BQ25185_SYS",
+    "netclass": "SYS_MAIN",
+    "pad": "U12.11",
+    "price": {
+     "admitted": false,
+     "amps": 0.742,
+     "required_amps": 2.19,
+     "why": "BOND_UNDER_PRICED",
+     "width_mm": 0.2
+    },
+    "verdict": "WIDTH_NECKABLE",
+    "widest_mm": 0.6
+   },
+   {
+    "best_margin_mm": -0.025,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "D4.2",
+    "price": {
+     "admitted": false,
+     "amps": 0.872,
+     "required_amps": null,
+     "why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "width_mm": 0.25
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.25
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "J1.43",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": -0.025,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "D5.2",
+    "price": {
+     "admitted": false,
+     "amps": 0.872,
+     "required_amps": null,
+     "why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "width_mm": 0.25
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.25
+   },
+   {
+    "best_margin_mm": -0.025,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "D2.2",
+    "price": {
+     "admitted": false,
+     "amps": 0.872,
+     "required_amps": null,
+     "why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "width_mm": 0.25
+    },
+    "verdict": "WIDTH_UNLICENSED",
+    "widest_mm": 0.25
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "U9.6",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "U9.12",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.3,
+    "net": "GND",
+    "netclass": "GND",
+    "pad": "U9.26",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.2,
+    "net": "/BQ25185_STAT1",
+    "netclass": "Default",
+    "pad": "U11.9",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.2
+   },
+   {
+    "best_margin_mm": 0.0,
+    "contract_mm": 0.2,
+    "net": "/BQ25185_STAT2",
+    "netclass": "Default",
+    "pad": "U11.3",
+    "price": null,
+    "verdict": "LATTICE_EXACT",
+    "widest_mm": 0.2
+   },
+   {
+    "best_margin_mm": -0.15,
+    "contract_mm": 0.6,
+    "net": "/NFC_SUPPLY",
+    "netclass": "P3V3",
+    "pad": "U9.10",
+    "price": {
+     "admitted": false,
+     "amps": 0.742,
+     "required_amps": 1.0,
+     "why": "BOND_UNDER_PRICED",
+     "width_mm": 0.2
+    },
+    "verdict": "WIDTH_NECKABLE",
+    "widest_mm": 0.3
+   },
+   {
+    "best_margin_mm": -0.175,
+    "contract_mm": 0.6,
+    "net": "/01_POWER_TREE/ACC_5V_LX",
+    "netclass": "SWITCH_NODE",
+    "pad": "U21.5",
+    "price": {
+     "admitted": false,
+     "amps": 0.742,
+     "required_amps": null,
+     "why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "width_mm": 0.2
+    },
+    "verdict": "WIDTH_NECKABLE",
+    "widest_mm": 0.25
+   }
+  ],
+  "board_min_track_mm": 0.15,
+  "controls_ok": true,
+  "escape_floor_controls_ok": true,
+  "land_verdicts": {
+   "CLEAR": 402,
+   "LATTICE_EXACT": 16,
+   "WIDTH_NECKABLE": 4,
+   "WIDTH_UNLICENSED": 6
+  },
+  "licensed_neck_mm": 0.2,
+  "opt_vs_min": [
+   {
+    "netclass": "ACC_3V3",
+    "rule_min_mm": 0.35,
+    "rule_opt_mm": 0.5,
+    "table_mm": 0.35
+   },
+   {
+    "netclass": "ACC_5V",
+    "rule_min_mm": 0.4,
+    "rule_opt_mm": 0.6,
+    "table_mm": 0.4
+   },
+   {
+    "netclass": "BAT_MAIN",
+    "rule_min_mm": 0.6,
+    "rule_opt_mm": 1.0,
+    "table_mm": 0.6
+   },
+   {
+    "netclass": "NFC_5V_PA",
+    "rule_min_mm": 0.35,
+    "rule_opt_mm": 0.6,
+    "table_mm": 0.35
+   },
+   {
+    "netclass": "NFC_RF",
+    "rule_min_mm": 0.3,
+    "rule_opt_mm": 0.4,
+    "table_mm": 0.3
+   },
+   {
+    "netclass": "P3V3",
+    "rule_min_mm": 0.4,
+    "rule_opt_mm": 0.6,
+    "table_mm": 0.4
+   },
+   {
+    "netclass": "SPK_OUT",
+    "rule_min_mm": 0.25,
+    "rule_opt_mm": 0.3,
+    "table_mm": 0.25
+   },
+   {
+    "netclass": "SWITCH_NODE",
+    "rule_min_mm": 0.4,
+    "rule_opt_mm": 0.6,
+    "table_mm": 0.4
+   },
+   {
+    "netclass": "SYS_MAIN",
+    "rule_min_mm": 0.5,
+    "rule_opt_mm": 0.8,
+    "table_mm": 0.5
+   },
+   {
+    "netclass": "VBUS_CHG",
+    "rule_min_mm": 0.35,
+    "rule_opt_mm": 0.5,
+    "table_mm": 0.35
+   }
+  ],
+  "report": "evidence/d630-escape-class.json"
+ },
+ "escape_floor_ab": {
+  "+3V3": {
+   "candidate_identical": true,
+   "candidate_sha256_off": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256_on": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "edges_off": 47,
+   "edges_on": 47,
+   "failures_off": [
+    {
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), TP27.1 (x2)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+    }
+   ],
+   "failures_on": [
+    {
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.11 (x140), U4.9 (x47), U4.13 (x39), U4.1 (x34)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x297), C6.2 (x31), R119.2 (x16), TP27.1 (x10)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x219), U4.1 (x74), C6.2 (x38), R119.2 (x15)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x181), U4.6 (x82), U4.1 (x31), C6.2 (x27)"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x217), U4.7 (x43), U4.6 (x42), U4.1 (x20)"
+    }
+   ],
+   "netclass": "P3V3",
+   "off_report": "evidence/d630-p3v3-escape-floor-off.json",
+   "on_report": "evidence/d630-p3v3-escape-floor-on.json",
+   "trunk_width_nm": 600000
+  },
+  "/01_POWER_TREE/BQ25185_SYS": {
+   "candidate_identical": true,
+   "candidate_sha256_off": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256_on": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "edges_off": 47,
+   "edges_on": 47,
+   "failures_off": [
+    {
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x37), U13.1 (x23), C34.1 (x8), L2.2 (x4)"
+    }
+   ],
+   "failures_on": [
+    {
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U13.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U13.2 (x283), U13.1 (x167), L2.2 (x28), C34.1 (x26)"
+    }
+   ],
+   "netclass": "SYS_MAIN",
+   "off_report": "evidence/d630-bq25185-sys-escape-floor-off.json",
+   "on_report": "evidence/d630-bq25185-sys-escape-floor-on.json",
+   "trunk_width_nm": 800000
+  },
+  "BQ25185_STAT1_unpriced_class_is_a_noop": {
+   "candidate_identical": true,
+   "candidate_sha256_off": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256_on": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "edges_off": 47,
+   "edges_on": 47,
+   "failures_off": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "no legal escape on the source island"
+    },
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "failures_on": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "no legal escape on the source island"
+    },
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "netclass": "Default",
+   "off_report": "evidence/d630-escape-floor-off-control.json",
+   "on_report": "evidence/d630-escape-floor-on-control.json",
+   "trunk_width_nm": 200000
+  }
+ },
+ "escape_why_misattribution": {
+  "after": {
+   "a": [
+    "U9.10"
+   ],
+   "b": [
+    "U9.8"
+   ],
+   "gap_mm": 1.152,
+   "pads": [
+    "U9.10"
+   ],
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+   "why_lands": [
+    "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)"
+   ]
+  },
+  "arithmetic_that_settles_it": {
+   "U9.10_best_margin_mm": -0.15,
+   "U9.8_best_margin_mm": 0.25,
+   "source": "screen_land_escape_margin.py, same 0.600 mm P3V3 contract"
+  },
+  "before": {
+   "a": [
+    "U9.10"
+   ],
+   "pads": [
+    "U9.10"
+   ],
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "report": "the D-626 census and every ladder before this one",
+   "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)"
+  },
+  "net": "/NFC_SUPPLY",
+  "what": "The report named the wrong land, and four decisions inherited it."
+ },
+ "guard": {
+  "sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+  "spec": "evidence/d619-pour-bond-guard-bonded.json",
+  "tubes": 47
+ },
+ "ladders": {
+  "acc_5v_lx_neck": {
+   "authoritative_unchanged": true,
+   "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "closed": 0,
+   "escape_floor_nm": 600000,
+   "failures": [
+    {
+     "gap_mm": 4.02,
+     "pads": [
+      "U21.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)",
+     "why_lands": [
+      "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)"
+     ]
+    }
+   ],
+   "islands": 2,
+   "joins": [],
+   "netclass": "SWITCH_NODE",
+   "report": "evidence/d630-acc-5v-lx-guarded-ladder-neck.json",
+   "retained_open_edges_after": 47,
+   "retained_open_edges_before": 47,
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 30.2,
+     "why": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 30.7,
+     "why": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "predicted_ratio": 0.78,
+     "predicted_seconds": 41.0,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 32.0,
+     "why": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "predicted_ratio": 0.66,
+     "predicted_seconds": 48.0,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 31.6,
+     "why": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "predicted_ratio": 0.9,
+     "predicted_seconds": 42.1,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 37.7,
+     "why": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "predicted_ratio": 0.76,
+     "predicted_seconds": 47.1,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/01_POWER_TREE/ACC_5V_LX": "NO_LEGAL_ESCAPE_DST"
+     },
+     "seconds": 35.7,
+     "why": null
+    },
+    {
+     "cells": 295804164,
+     "grid_mm": 0.0125,
+     "predicted_ratio": null,
+     "predicted_seconds": 57.1,
+     "promotion_candidate": null,
+     "ran": false,
+     "reason": {},
+     "seconds": null,
+     "why": "OVER_MEMORY_BUDGET 7.77 GiB > 3.50 GiB (--grid-gb; raise --grid-gb to run it)"
+    }
+   ],
+   "trunk_width_nm": 600000
+  },
+  "bq25185_stat1": {
+   "authoritative_unchanged": true,
+   "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "closed": 0,
+   "escape_floor_nm": 200000,
+   "failures": [
+    {
+     "gap_mm": 16.613,
+     "pads": [
+      "U11.9"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+     "why_lands": [
+      "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)"
+     ]
+    },
+    {
+     "gap_mm": 18.517,
+     "pads": null,
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands",
+     "why_lands": null
+    }
+   ],
+   "islands": 3,
+   "joins": [],
+   "netclass": "Default",
+   "report": "evidence/d630-bq25185-stat1-guarded-ladder.json",
+   "retained_open_edges_after": 47,
+   "retained_open_edges_before": 47,
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 22.4,
+     "why": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 29.0,
+     "why": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "predicted_ratio": 0.84,
+     "predicted_seconds": 38.7,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 32.6,
+     "why": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "predicted_ratio": 0.89,
+     "predicted_seconds": 48.9,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 43.6,
+     "why": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "predicted_ratio": 1.01,
+     "predicted_seconds": 58.1,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 58.9,
+     "why": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "predicted_ratio": 1.01,
+     "predicted_seconds": 74.4,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/BQ25185_STAT1": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 74.8,
+     "why": null
+    },
+    {
+     "cells": 295804164,
+     "grid_mm": 0.0125,
+     "predicted_ratio": null,
+     "predicted_seconds": 123.7,
+     "promotion_candidate": null,
+     "ran": false,
+     "reason": {},
+     "seconds": null,
+     "why": "OVER_MEMORY_BUDGET 7.77 GiB > 3.50 GiB (--grid-gb; raise --grid-gb to run it)"
+    }
+   ],
+   "trunk_width_nm": 200000
+  },
+  "ext_sda": {
+   "authoritative_unchanged": true,
+   "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256": "c62e8ad4cdf9e9ab3d4731546715ab0c8e010bd7efdded9019cc425e11b9f4e4",
+   "closed": 1,
+   "escape_floor_nm": null,
+   "failures": [
+    {
+     "gap_mm": 42.355,
+     "pads": null,
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands",
+     "why_lands": null
+    },
+    {
+     "gap_mm": 50.822,
+     "pads": null,
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands",
+     "why_lands": null
+    }
+   ],
+   "islands": 3,
+   "joins": [
+    {
+     "a": "J5.4",
+     "b": "R48.2",
+     "layers": [
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 23.9933,
+     "vias": 2
+    }
+   ],
+   "netclass": "I2C",
+   "report": "evidence/d630-ext-sda-guarded-ladder.json",
+   "retained_open_edges_after": 46,
+   "retained_open_edges_before": 47,
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/09_COMMUNITY_HEADER/EXT_SDA": "NO_PATH"
+     },
+     "seconds": 33.6,
+     "why": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/09_COMMUNITY_HEADER/EXT_SDA": "NO_PATH"
+     },
+     "seconds": 44.1,
+     "why": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "predicted_ratio": 1.13,
+     "predicted_seconds": 58.8,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/09_COMMUNITY_HEADER/EXT_SDA": "NO_PATH"
+     },
+     "seconds": 66.3,
+     "why": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "predicted_ratio": 1.58,
+     "predicted_seconds": 117.7,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/09_COMMUNITY_HEADER/EXT_SDA": "NO_PATH"
+     },
+     "seconds": 186.0,
+     "why": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "predicted_ratio": 5.13,
+     "predicted_seconds": 385.3,
+     "promotion_candidate": true,
+     "ran": true,
+     "reason": {
+      "/09_COMMUNITY_HEADER/EXT_SDA": null
+     },
+     "seconds": 1975.2,
+     "why": null
+    }
+   ],
+   "trunk_width_nm": 200000
+  },
+  "nfc_supply": {
+   "authoritative_unchanged": true,
+   "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "closed": 0,
+   "escape_floor_nm": null,
+   "failures": [
+    {
+     "gap_mm": 1.152,
+     "pads": [
+      "U9.10"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+     "why_lands": null
+    },
+    {
+     "gap_mm": 12.375,
+     "pads": [
+      "U9.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+     "why_lands": null
+    }
+   ],
+   "islands": 3,
+   "joins": [],
+   "netclass": "P3V3",
+   "report": "evidence/d630-nfc-supply-guarded-ladder.json",
+   "retained_open_edges_after": 47,
+   "retained_open_edges_before": 47,
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 28.0,
+     "why": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 29.0,
+     "why": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "predicted_ratio": 0.79,
+     "predicted_seconds": 38.7,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 30.7,
+     "why": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "predicted_ratio": 0.66,
+     "predicted_seconds": 46.1,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 30.3,
+     "why": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "predicted_ratio": 0.87,
+     "predicted_seconds": 40.4,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 35.3,
+     "why": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "predicted_ratio": 0.89,
+     "predicted_seconds": 44.1,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 39.2,
+     "why": null
+    },
+    {
+     "cells": 295804164,
+     "grid_mm": 0.0125,
+     "predicted_ratio": null,
+     "predicted_seconds": 62.7,
+     "promotion_candidate": null,
+     "ran": false,
+     "reason": {},
+     "seconds": null,
+     "why": "OVER_MEMORY_BUDGET 7.77 GiB > 3.50 GiB (--grid-gb; raise --grid-gb to run it)"
+    }
+   ],
+   "trunk_width_nm": 600000
+  },
+  "nfc_supply_neck": {
+   "authoritative_unchanged": true,
+   "base_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "candidate_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+   "closed": 0,
+   "escape_floor_nm": 600000,
+   "failures": [
+    {
+     "gap_mm": 1.152,
+     "pads": [
+      "U9.10"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+     "why_lands": [
+      "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)"
+     ]
+    },
+    {
+     "gap_mm": 12.375,
+     "pads": null,
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.600 mm between the islands",
+     "why_lands": null
+    }
+   ],
+   "islands": 3,
+   "joins": [],
+   "netclass": "P3V3",
+   "report": "evidence/d630-nfc-supply-guarded-ladder-neck.json",
+   "retained_open_edges_after": 47,
+   "retained_open_edges_before": 47,
+   "rungs": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 30.3,
+     "why": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "predicted_ratio": null,
+     "predicted_seconds": null,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 30.5,
+     "why": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "predicted_ratio": 0.82,
+     "predicted_seconds": 40.7,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 33.3,
+     "why": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "predicted_ratio": 0.77,
+     "predicted_seconds": 50.0,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 38.4,
+     "why": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "predicted_ratio": 0.9,
+     "predicted_seconds": 51.2,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 46.1,
+     "why": null
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "predicted_ratio": 0.98,
+     "predicted_seconds": 57.6,
+     "promotion_candidate": false,
+     "ran": true,
+     "reason": {
+      "/NFC_SUPPLY": "NO_LEGAL_ESCAPE_SRC"
+     },
+     "seconds": 56.2,
+     "why": null
+    },
+    {
+     "cells": 295804164,
+     "grid_mm": 0.0125,
+     "predicted_ratio": null,
+     "predicted_seconds": 89.9,
+     "promotion_candidate": null,
+     "ran": false,
+     "reason": {},
+     "seconds": null,
+     "why": "OVER_MEMORY_BUDGET 7.77 GiB > 3.50 GiB (--grid-gb; raise --grid-gb to run it)"
+    }
+   ],
+   "trunk_width_nm": 600000
+  }
+ },
+ "lever_off_regression": {
+  "candidate_sha256_identical": true,
+  "connectivity_identical": true,
+  "drc_types_identical": true,
+  "failure_pads_identical": true,
+  "failure_reasons_identical": true,
+  "post_report": "evidence/d630-bq25185-stat1-guarded-ladder.json",
+  "pre_report": "evidence/d630-bq25185-stat1-pre-edit.json",
+  "rung_cells_identical": true,
+  "rung_reasons_identical": true,
+  "what": "THE LEVER OFF, BEFORE AND AFTER THE EDIT.  Same net, same guard, same budgets.  Everything that decides is identical; the ONLY change is the sentence, which recovers a diagnostic the old code discarded.",
+  "why_after": [
+   "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+   "no all-layer corridor at 0.200 mm between the islands"
+  ],
+  "why_before": [
+   "no legal escape on the source island",
+   "no all-layer corridor at 0.200 mm between the islands"
+  ]
+ },
+ "pour_block": {
+  "first_refusals": {
+   "+3V3": [
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE"
+   ],
+   "/01_POWER_TREE/BQ25185_SYS": [
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_BODY_VIA_SITE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE",
+    "NO_LEGAL_ESCAPE"
+   ]
+  },
+  "pour_partition_ok": {
+   "+3V3": true,
+   "/01_POWER_TREE/BQ25185_SYS": true
+  },
+  "reports": [
+   "evidence/d630-p3v3-all-primitives.json",
+   "evidence/d630-bq25185-sys-all-primitives.json"
+  ],
+  "what": "Both pour nets given EVERY standing primitive at once -- --escape-floor --bridge --split-islands --join-orphans --body-landing --stitch-via 500000:250000, guard ON.  Their FIRST refusal is the BARREL, not the escape, and the bound it fails is an 8.0 mm LOCALITY WINDOW `stitch_pad` chose rather than a rule this board publishes."
+ },
+ "promotion": {
+  "attributable_drc": [],
+  "connectivity": {
+   "nets_improved": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "nets_regressed": [],
+   "open_retained_nets_after": 21,
+   "open_retained_nets_before": 21,
+   "retained_open_edges_after": 46,
+   "retained_open_edges_before": 47
+  },
+  "drc_types": {
+   "hole_clearance": 5,
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  },
+  "grid_nm": 25000,
+  "join": {
+   "from": "J5.4",
+   "layers": [
+    "F",
+    "I2",
+    "F"
+   ],
+   "mm": 23.993338480580253,
+   "to": "R48.2",
+   "via_xy": [
+    [
+     65.575,
+     18.875
+    ],
+    [
+     60.2,
+     33.525
+    ]
+   ],
+   "vias": 2
+  },
+  "ladder_report": "evidence/d630-ext-sda-guarded-ladder.json",
+  "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+  "objects_added": 16,
+  "objects_removed": 0,
+  "pre_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+  "preservation": {
+   "added_object_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "foreign_added_nets": [],
+   "licensed_removals": 0,
+   "removed_objects": [],
+   "reverted_failures_clean": true,
+   "rule_area_inventory_ok": true,
+   "rule_areas_added": [],
+   "rule_areas_removed": [],
+   "unlicensed_removals": [],
+   "zone_inventory_ok": true,
+   "zones_added": [],
+   "zones_removed": []
+  },
+  "promoted_board_sha256": "38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269",
+  "report": "evidence/d630-ext-sda-promote.json",
+  "routing_ledger": {
+   "connected_retained_nets": 152,
+   "open_retained_nets": 21,
+   "raw_board_ratsnest": 62,
+   "retained_multi_pad_nets": 173,
+   "retained_open_edges": 46
+  },
+  "standing_contracts": {
+   "fab-package-contract": "PASS",
+   "keepout_stackup-contract": true,
+   "land_parity-contract": "PASS",
+   "neck-contract": true,
+   "placement-contract": "PASS",
+   "population-contract": "PASS",
+   "pour_bond-contract": true,
+   "pour_partition-contract": true,
+   "protected-copper": true,
+   "rf_symmetry-contract": "PASS"
+  },
+  "still_open": [
+   {
+    "gap_mm": 42.355,
+    "reason": "NO_PATH"
+   },
+   {
+    "gap_mm": 50.822,
+    "reason": "NO_PATH"
+   }
+  ],
+  "verify_promotion": {
+   "added_track_layers": [
+    "F.Cu",
+    "In2.Cu"
+   ],
+   "added_track_widths_nm": [
+    200000
+   ],
+   "added_tracks": 14,
+   "added_via_dia_drill_nm": [
+    [
+     600000,
+     300000
+    ]
+   ],
+   "added_vias": 2,
+   "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "pour_partition_intact": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+   },
+   "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+   },
+   "report": "evidence/d630-verify-promotion.json"
+  },
+  "what": "The guarded ladder refused at 0.100 / 0.0667 / 0.050 / 0.0333 mm and CLOSED at 0.025 mm.  The winning rung was then re-run ALONE with --promote after every code change in this decision had landed, so the promoted copper was produced by the code in the tree and not by the code that found it; it reproduced the same length and the same two barrels."
+ },
+ "schema": 1,
+ "what": "D-630 -- \"UNLAUNCHABLE\" is THREE walls wearing one name, the escape width ladder had exactly ONE rung, and EXT_SDA's second edge is CLOSED.  A promotion, a classification screen, a router lever with a proven no-op envelope, and a report that named the wrong land."
+}
