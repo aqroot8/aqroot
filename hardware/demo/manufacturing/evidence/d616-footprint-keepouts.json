@@ -1,0 +1,95 @@
+{
+  "areas": [
+    {
+      "area_on_board_mm2": 330.0,
+      "area_total_mm2": 1008.0,
+      "board_copper_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "keepout": {
+        "copperpour": true,
+        "footprints": true,
+        "pads": true,
+        "tracks": true,
+        "vias": true
+      },
+      "master_copper_layer_count": 32,
+      "offending_layers": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "per_layer": {
+        "B.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "F.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In1.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In2.Cu": {
+          "nets": [],
+          "pour_mm2": 0.0,
+          "protected": true,
+          "tracks": 0,
+          "vias": 0
+        },
+        "In3.Cu": {
+          "nets": [
+            "/01_POWER_TREE/USB_VBUS_CHG",
+            "Net-(SW9-A)"
+          ],
+          "pour_mm2": 273.697,
+          "protected": false,
+          "tracks": 4,
+          "vias": 0
+        },
+        "In4.Cu": {
+          "nets": [],
+          "pour_mm2": 304.259,
+          "protected": false,
+          "tracks": 0,
+          "vias": 0
+        }
+      },
+      "ref": "U1",
+      "rule_area": true,
+      "unprotected_board_layers": [
+        "In3.Cu",
+        "In4.Cu"
+      ],
+      "verdict": "DEFECT"
+    }
+  ],
+  "board_copper_layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+  ],
+  "footprint_rule_areas": 1,
+  "kicad_share": "/usr/share/kicad",
+  "schema": 1,
+  "verdicts": {
+    "DEFECT": 1
+  }
+}

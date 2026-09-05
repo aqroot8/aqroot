@@ -6305,6 +6305,138 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-616 · 2026-09-05 · Demo THE LAND PATTERNS ARE PROVEN FOR THE FIRST TIME, AND THE Wi-Fi ANTENNA HAS A PLANE UNDER IT: 199 warnings that were never a board defect, 311 lands compared to the nanometre, and a keep-out that protects four of six layers
+
+D-615 named this task: *"the 199 `lib_footprint_issues` and 48
+`footprint_symbol_mismatch` parity warnings, i.e. 247 unproven claims that each
+LAND matches its part's datasheet drawing."*  It is done, and the first thing
+measured was that **the 199 were never a property of this board at all.**
+
+**THE 199 WERE A CHECK THAT COULD NOT RUN.**  Every one reads *"the current
+configuration does not include the footprint library 'Resistor_SMD'"*.  KiCad's
+stock libraries ARE installed here, under `/usr/share/kicad/footprints`, 155 of
+them -- but the global `fp-lib-table` is written on the first GUI launch and
+nothing in this repository has ever launched a GUI.  So the project resolved
+exactly ONE nickname, its own `AQROOT_Beta`, and **KiCad never once opened the
+master of a land on this board.**  Register the table KiCad itself ships and the
+199 go to **ZERO** -- and a class that had never appeared before appears:
+`lib_footprint_mismatch`.  **Fifth instance in five decisions of one failure**
+(D-607 a board without its `.kicad_pro`, D-610 a land never asked, D-611 an
+unfinished probe, D-613 a check whose subject was not in the room, D-616 a check
+whose reference data was not installed).
+
+**THE CHAIN HAS TWO LINKS AND BOTH ARE NOW MEASURED.**  The ledger
+(`assembly/FOOTPRINT_VERIFICATION_LEDGER.md`) rules the LIBRARY against a
+manufacturer drawing; nothing ever checked that the board's own embedded copy
+still equals that library.  New tracked read-only `screen_land_parity.py`
+compares every pad in the footprint's own un-rotated frame -- position, size,
+shape and corner ratios, drill and drill shape, pad type, layer set, rotation,
+offset, die length, every local mask/paste/clearance override -- **to the
+nanometre**, mirroring a bottom-side part back into its master's frame.  New
+`checks/land_parity_contract.py` gates LAND1-LAND6 and **all six PASS**:
+**311 of 311 footprints MATCH, zero mismatch, zero without a resolvable
+master**, and LAND3 proves the comparison is not vacuous by growing one `R75`
+pad by **one micron** and requiring that it be caught.  LAND5/LAND6 close the
+second link: `land_citations.json` must cover EXACTLY the board's 49 distinct
+identities -- no missing row, no dead row -- and every identity must be written
+into the ledger, so deleting a ledger row breaks the gate.  Census over the 311:
+**tier 1 = 19, tier 2A = 15, tier 2 OPEN = 1, tier 3 = 276.**
+
+**THREE BOARD DEFECTS HAD TO BE CORRECTED TO GET THERE, NONE OF THEM COPPER.**
+`J5` (the 1x24 community port) and `J8` (Qwiic / STEMMA QT) carried a **BARE
+footprint name and no library at all**, so those two lands had **no master to be
+compared against** -- and both are Demo-required retained features.  Both now
+name the library their own schematic symbol already named, and both are
+pad-identical to it (24 and 6 pads).  `MK1`'s Ø1.05 mm NPTH acoustic port read
+`(layers "F&B.Cu" "*.Mask")` in the PROJECT library against `"*.Cu"` on the
+board; the **board** is right -- hole-to-copper clearance must be enforced on
+the inner layers of a 6-layer board -- so the *master* was corrected, not the
+board.  `U1`'s description had drifted from `RF_Module`'s master.  Written by
+new `apply_footprint_identity.py`, which follows D-615's doctrine: every edit
+NAMES the exact string it overwrites and how many times it may occur, and the
+result is re-read through `pcbnew` and checked against what the edit CLAIMED it
+would produce -- a plan that hits the right text in the wrong place still fails
+and rolls back.
+
+**AND THE FINDING THE WHOLE EXERCISE EXISTS FOR.**  `U1` still reports
+`lib_footprint_mismatch` after the description fix, and it is not the land --
+**62 of 62 pads are identical to the nanometre.**  It is the footprint's own
+**ESP32-S3-WROOM-1 ANTENNA KEEP-OUT** rule area, which forbids tracks, vias,
+pads, copper pour AND footprints.  The master applies it to every copper layer.
+**The board's copy names `F.Cu` / `B.Cu` / `In1.Cu` / `In2.Cu` only** -- KiCad
+clamped `*.Cu` to the stackup the board had when `U1` was placed and never
+re-expanded it when `In3.Cu` and `In4.Cu` were added.  DRC honours the rule area
+exactly as written, so **there is no violation to report and no way to notice
+except to ask**.  Measured inside the **330 mm² on-board part** of the keep-out
+(`evidence/d616-footprint-keepouts.json`, new read-only
+`screen_footprint_keepouts.py`): `F.Cu`, `In1.Cu`, `In2.Cu` and `B.Cu` are
+**0.000 mm², zero tracks** -- the four protected layers, clean, which is the
+proof the keep-out works -- while **`In3.Cu` carries 273.697 mm² of +3V3 plane
+and 4 track segments (`Net-(SW9-A)`, `USB_VBUS_CHG`)** and **`In4.Cu` carries
+304.259 mm² of GND pour**: **83 % and 92 % full**.  Wi-Fi and BLE are
+Demo-required retained features.  This is an **OPEN FABRICATION BLOCKER**, is
+DECLARED in `land_citations.json` so LAND4 names it instead of suppressing the
+class, and is written up in ledger §6.2.
+
+**THE GATE ITSELF WAS REPAIRED, NOT RELAXED.**  `verify_promotion.stage()` now
+writes the project's `fp-lib-table` PLUS the table KiCad ships, so
+`lib_footprint_mismatch` is a live class in the promotion gate rather than an
+unaskable one.  `lib_footprint_issues` is **deliberately removed from
+`INHERITED`**: if it ever returns, the libraries have stopped resolving and
+every land check here has gone vacuous again, and that must fail loudly.
+`INHERITED_PARITY` was **TIGHTENED**, `footprint_symbol_mismatch` **48 -> 46**,
+because `J5`/`J8` closed.
+
+**EVERY RETAINED CONTRACT RE-MEASURED.**  Authority
+`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103` ->
+**`449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00`**;
+**3 lines changed, all identity, zero copper**.  `verify_promotion.py` **14/14**
+(0 added, 0 removed, DRC 5 `hole_clearance` / 1 `solder_mask_bridge` / 1 declared
+`lib_footprint_mismatch`, **ZERO attributable**, unconnected **73 unchanged**,
+parity **249 -> 247 warnings / 0 errors**, fill-stable).  `fab_package_contract.py`
+**FAB1-FAB8 PASS**, and **all 28 fabrication artifacts are normalised-sha
+IDENTICAL to D-615's** -- Gerbers, both Excellon files, drill report and maps,
+both position files, both assembly PDFs, both BOM views -- which is the direct
+proof that nothing reaching the fabricator moved.  `population_contract.py`
+POP1-POP4, `pour_bond_contract.py` P1-P4, `neck_contract.py` N1-N3,
+`protected_copper.py` **15 nets / 393 objects IDENTICAL**, `routing_ledger.py`
+**57 open edges**.  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`,
+`ACC_3V3_SW`, RGB and XGPIO4/5 untouched.
+
+**THE OTHER OPEN LAND, WRITTEN DOWN RATHER THAN ASSUMED.**
+`Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` (`J8`) entered
+at D-238, after the ledger's §1-§3 were written, and no row ever ruled it.  Its
+KiCad master cites JST's `eSH.pdf`; that drawing was **not re-read**, so by this
+ledger's own standard it is Tier 2 and marked **OPEN**, with the exact land a
+reviewer must confirm recorded: 4 signal pads **0.60 × 1.55 mm on 1.00 mm
+pitch**, pin 1 → pin 4 span **3.00 mm**, two mounting-peg lands **1.20 × 1.80 mm
+at ±2.80 mm**, **3.875 mm** from the signal row.  Board-to-master parity for
+`J8` is PROVEN; only master-to-drawing is open.
+
+**NEXT: CLOSE THE ANTENNA KEEP-OUT.**  It is the largest remaining
+`DEMO_READY_FOR_FAB` blocker and the only one that touches a required radio.
+The transaction is: extend `U1`'s rule area to `In3.Cu` and `In4.Cu` (one line),
+which on refill carves ~274 mm² out of the In3 `+3V3` plane and ~304 mm² out of
+the In4 `GND` pour, and re-route the two nets that cross it on In3 --
+`Net-(SW9-A)` (a 40 mm north-south In3 trunk at x = 66.35) and
+`/01_POWER_TREE/USB_VBUS_CHG` (a dogleg through (64.7, 120.45)).  Both are
+accepted promoted copper on power nets, so this is a rip-up-and-replace under
+`--evicted` with clause 4 in force, and the plane carve must be proved not to
+island either pour.  Do NOT extend the rule area without that route in hand.
+`checks/land_parity_contract.py` joins the standing preflight.  No owner
+decision.
+
+Evidence: `d616-identity-plan.json` (`9549e7f1...`),
+`d616-identity-apply.json` (`dc1ff6ea...`),
+`d616-land-parity.json` (`65b5a163...`),
+`d616-footprint-keepouts.json` (`0db5334e...`),
+`d616-verify.json` (`1571556c...`),
+`d616-fab-package-contract.json` (`a69caf89...`),
+`d616-population.json` (`ecebeef2...`),
+`d616-pourbond.json` (`436d9cd9...`),
+`d616-neck.json` (`63820607...`),
+`d616-protected-copper.json` (`36841dee...`).
+
 # D-615 · 2026-09-05 · Demo THE BOM IS 100 % ORDERABLE AND THE SAFETY PART WAS ORDERED IN THE WRONG PACKAGE: 61 identities ruled against a live distributor record, and a screen that asks the C26 question of every line at once
 
 D-614 named this task and named the reason it could not do it: **D-096 binds** --

@@ -1,13 +1,22 @@
 # AQROOT Demo — Fabrication Package
 
-Status: **GENERATED AND REVIEWED — ALL EIGHT CONTRACT CLAIMS PASS (D-615).**
-`FAB7` was the standing blocker and it is closed: the BOM is **100.0 % orderable,
-247 of 247 fitted references**, and `needs_a_sourcing_decision` is **zero lines**.
-The package is not yet declared RELEASABLE, and the reason is now a different
-one: **no contract here proves that a land pattern matches its part's datasheet
-drawing** — 199 `lib_footprint_issues` and 48 `footprint_symbol_mismatch` parity
-warnings are 247 unproven claims of exactly that kind, and D-615's `U18` finding
-is the proof the class is real.
+Status: **GENERATED AND REVIEWED — FAB1–FAB8 AND LAND1–LAND6 ALL PASS (D-616).**
+`FAB7` closed at D-615 (BOM **100.0 % orderable, 247 of 247**).  The land
+question closed at D-616: `checks/land_parity_contract.py` proves **311 of 311
+board footprints are pad-identical to their library masters, to the nanometre**,
+and that every one of the 49 distinct identities is ruled against a drawing in
+`assembly/FOOTPRINT_VERIFICATION_LEDGER.md`.  The 199 `lib_footprint_issues`
+turned out never to have been a board defect — KiCad's stock libraries were
+installed but never registered, so **no land on this board had ever been
+compared to its master**; registering the table KiCad ships takes them to zero.
+
+**The package is still NOT RELEASABLE, and the reason is now a specific,
+measured one: the ESP32-S3-WROOM-1 antenna keep-out protects four of the six
+copper layers.**  `In3.Cu` carries 273.697 mm² of `+3V3` plane and 4 track
+segments and `In4.Cu` 304.259 mm² of `GND` pour inside it.  Ledger §6.2,
+instrument `screen_footprint_keepouts.py`, evidence
+`evidence/d616-footprint-keepouts.json`.  One land is also still open on its
+*drawing* link only: `J8`'s JST `eSH.pdf` was not re-read.
 
 The package lives in `hardware/demo/fab/`.  It is not hand-assembled: it is
 produced in one command by `hardware/demo/manufacturing/export_fab_package.py`
@@ -42,6 +51,23 @@ and are not instance properties: the cached library symbol inside a sheet and
 the project's own `.kicad_sym`.  Leaving those stale is how a corrected instance
 gets silently un-corrected by *Update Symbols from Library*.
 
+The LAND CHAIN is proved by three tracked tools.  `screen_land_parity.py` is the
+board-to-master link, `checks/land_parity_contract.py` gates LAND1–LAND6 against
+`land_citations.json` and the ledger, and `apply_footprint_identity.py` is the
+only writer of a footprint's library nickname or description — it NAMES the
+string it overwrites and re-reads the result through `pcbnew`, rolling back if
+the board does not say what the plan claimed:
+
+    python3 hardware/demo/manufacturing/screen_land_parity.py -o REPORT.json \
+        [--worklist RESIDUAL.csv] [--perturb REF]
+    python3 hardware/demo/manufacturing/checks/land_parity_contract.py -o REPORT.json
+    python3 hardware/demo/manufacturing/screen_footprint_keepouts.py -o REPORT.json
+    python3 hardware/demo/manufacturing/apply_footprint_identity.py \
+        --plan PLAN.json [--apply]
+
+`--perturb REF` is the negative control: it grows one pad by a micron and the
+run is only trustworthy if that reference then reports MISMATCH.
+
 And one screen asks the `C26` question of every sourced line at once, against
 the distributor's own package field:
 
@@ -56,7 +82,7 @@ TRUE because it was never asked.
 ## Authority
 
     board      hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb
-    sha256     c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103
+    sha256     449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00
     generator  kicad-cli 10.0.5
     release    MANIFEST.json carries the board, rule and project sha256, a
                sha256 for EVERY ONE OF THE TEN schematic sheets, and a sha256

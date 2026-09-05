@@ -28,7 +28,14 @@ driver's scratch tree, its ledger or its evidence JSON:
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
     DRC on the promoted board reports only the inherited classes, with ZERO
-    attributable violations;
+    attributable violations -- and it is run with the footprint libraries
+    ACTUALLY RESOLVED, which before D-616 they never were: KiCad's stock
+    libraries are installed on this machine but no global `fp-lib-table` was
+    ever written, so 199 footprints reported "the current configuration does
+    not include the footprint library ..." and KiCad never once opened the
+    master of a land on this board.  `stage()` now writes the project's table
+    PLUS the table KiCad itself ships, so `lib_footprint_mismatch` is a live
+    class here instead of an unaskable one;
   * schematic parity is ACTUALLY ASKED -- the whole `.kicad_sch` hierarchy is
     staged beside the board, which it was not before D-613 -- and reports no
     error-severity entry and no warning class or count beyond the recorded
@@ -50,15 +57,27 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 SUFFIXES = (".kicad_pcb", ".kicad_dru", ".kicad_pro")
 
-# The three report classes this board has carried since long before the maze
-# router existed; they are inherited, not attributable to any promotion.
-INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
-             "solder_mask_bridge": 1}
+# The report classes this board carries that no promotion is answerable for.
+# `lib_footprint_issues` was 199 and is now ZERO -- it was never a property of
+# the board at all, only of an unconfigured library table (D-616), and it is
+# deliberately NOT listed here any more: if it ever returns, the libraries have
+# stopped resolving and every land check in this repository has gone vacuous
+# again, which must fail loudly rather than pass quietly.
+# `lib_footprint_mismatch` is 1: U1's footprint-embedded ESP32-S3-WROOM-1
+# ANTENNA KEEP-OUT names four copper layers where its master names the whole
+# stackup.  62 of 62 pads are identical; the keep-out is an OPEN fabrication
+# blocker tracked in `land_citations.json` and FOOTPRINT_VERIFICATION_LEDGER
+# section 6.2, not something a routing promotion introduced.
+INHERITED = {"hole_clearance": 5, "solder_mask_bridge": 1,
+             "lib_footprint_mismatch": 1}
 
 # D-613: `--schematic-parity` was never actually ASKED.  `stage()` copied the
 # board, the rules and the project into a temporary directory and left the nine
@@ -71,8 +90,13 @@ INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
 # fabrication package review found independently), and BOSS1/BOSS2, which are
 # board-only mounting bosses with no symbol.  This is the baseline that must not
 # GROW; the check is no longer "clean", it is "within baseline and error-free".
+# D-616 TIGHTENED the second number.  `J5` and `J8` carried a BARE footprint
+# name and no library at all on the board, so KiCad reported a nickname
+# mismatch against symbols that DID name a library -- and, worse, those two
+# lands had no master to be compared against at all.  Both now name their
+# library, both are pad-identical to it, and the baseline drops 48 -> 46.
 INHERITED_PARITY = {"footprint_symbol_field_mismatch": 199,
-                    "footprint_symbol_mismatch": 48,
+                    "footprint_symbol_mismatch": 46,
                     "extra_footprint": 2}
 
 # Retained contracts that must still be LIVE RULE TEXT, not merely believed.
@@ -466,8 +490,29 @@ def rule_area_sigs(path):
     return sorted(out)
 
 
+def resolved_fp_lib_table():
+    """The project's own nicknames PLUS the stock table KiCad itself ships.
+
+    Without this the staged cell resolves ONE library and KiCad cannot open the
+    master of any other land -- the D-616 vacuity.  The rows are not invented
+    here: they come from `template/fp-lib-table` in the KiCad installation.
+    """
+    import screen_land_parity as S
+    libs, _proj, _share = S.resolve_libraries()
+    rows = "\n".join(
+        '  (lib (name "%s")(type "KiCad")(uri "%s")(options "")(descr ""))'
+        % (nick, path) for nick, path in sorted(libs.items()))
+    return "(fp_lib_table\n  (version 7)\n%s\n)\n" % rows
+
+
 def stage(rev, work):
-    """A project-faithful copy of the board at `rev` (or of the worktree)."""
+    """A project-faithful copy of the board at `rev` (or of the worktree).
+
+    The footprint libraries and the symbol table are staged from the WORKTREE
+    even when the board comes from `rev`: they decide only whether KiCad can
+    OPEN a master, and the pre-cell's DRC is consulted for its unconnected
+    count alone.
+    """
     cell = Path(work)
     cell.mkdir(parents=True, exist_ok=True)
     sources = [BOARD.with_suffix(s) for s in SUFFIXES]
@@ -484,6 +529,11 @@ def stage(rev, work):
                 ["git", "-C", str(ROOT), "show", "%s:%s" % (rev, rel)],
                 capture_output=True, check=True).stdout
             target.write_bytes(blob)
+    shutil.copytree(BOARD.parent / "libraries", cell / "libraries",
+                    dirs_exist_ok=True)
+    shutil.copyfile(BOARD.parent / "sym-lib-table", cell / "sym-lib-table")
+    (cell / "fp-lib-table").write_text(resolved_fp_lib_table(),
+                                       encoding="utf-8")
     return cell / BOARD.name
 
 

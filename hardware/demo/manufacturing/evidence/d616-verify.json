@@ -1,0 +1,93 @@
+{
+  "added_object_nets": [],
+  "added_track_layers": [],
+  "added_track_widths_nm": [],
+  "added_tracks": 0,
+  "added_via_dia_drill_nm": [],
+  "added_vias": 0,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [],
+  "claimed_nets": [],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_mismatch": 1,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 73
+  },
+  "drc_pre": null,
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "lib_footprint_mismatch": 1,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 73
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 0,
+  "objects_removed": 0,
+  "pad_escape_neck": null,
+  "pad_escape_run": null,
+  "pour_bridge": null,
+  "pre_board_sha256": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+  "promoted_board_sha256": "449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00",
+  "ref": "HEAD",
+  "removed_object_nets": [],
+  "removed_sample": [],
+  "rule_areas_added": [],
+  "rule_areas_removed": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

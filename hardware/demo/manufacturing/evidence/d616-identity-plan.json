@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "decision": "D-616",
+  "why": "A land can only be proved against a master the board NAMES, and a description that drifted from its master is indistinguishable, to KiCad's lib_footprint_mismatch, from a PAD that drifted. No copper, no pad, no net, no BOM line and no fabrication artifact changes.",
+  "edits": [
+    {
+      "ref": "J5",
+      "old": "\t(footprint \"Samtec_SSQ-124-02-G-S-RA\"",
+      "new": "\t(footprint \"AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA\"",
+      "occurrences": 1,
+      "expect_fpid": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+      "expect_pads": 24,
+      "reason": "board footprint carried a BARE name and no library, so the community-port land had no master; the schematic symbol already says AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA and the 24 pads are pad-identical to it"
+    },
+    {
+      "ref": "J8",
+      "old": "\t(footprint \"JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal\"",
+      "new": "\t(footprint \"Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal\"",
+      "occurrences": 1,
+      "expect_fpid": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+      "expect_pads": 6,
+      "reason": "same defect on the Qwiic/STEMMA QT connector; the schematic symbol already says Connector_JST:... and the 6 pads are pad-identical to that master"
+    },
+    {
+      "ref": "U1",
+      "old": "\t\t(descr \"RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD\")",
+      "new": "\t\t(descr \"2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf\")",
+      "occurrences": 1,
+      "expect_descr": "2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf",
+      "expect_pads": 62,
+      "reason": "the ONLY divergence between the board's ESP32-S3-WROOM-1 and RF_Module's master is this description string -- 62 of 62 pads are identical to the nanometre -- and it is the whole of KiCad's single lib_footprint_mismatch"
+    }
+  ]
+}

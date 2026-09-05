@@ -1,0 +1,55 @@
+{
+  "applied": [
+    {
+      "occurrences": 1,
+      "reason": "board footprint carried a BARE name and no library, so the community-port land had no master; the schematic symbol already says AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA and the 24 pads are pad-identical to it",
+      "ref": "J5"
+    },
+    {
+      "occurrences": 1,
+      "reason": "same defect on the Qwiic/STEMMA QT connector; the schematic symbol already says Connector_JST:... and the 6 pads are pad-identical to that master",
+      "ref": "J8"
+    },
+    {
+      "occurrences": 1,
+      "reason": "the ONLY divergence between the board's ESP32-S3-WROOM-1 and RF_Module's master is this description string -- 62 of 62 pads are identical to the nanometre -- and it is the whole of KiCad's single lib_footprint_mismatch",
+      "ref": "U1"
+    }
+  ],
+  "bytes_after": 5507247,
+  "bytes_before": 5507177,
+  "plan": "hardware/demo/manufacturing/evidence/d616-identity-plan.json",
+  "post_conditions": [
+    {
+      "descr": "Samtec SSQ-124-02-G-S-RA expansion header: 1 x 24 = 24 contacts, .100 in / 2.54 mm pitch, FEMALE .025 in square-post socket strip, RIGHT-ANGLE (horizontal) entry, through-hole, gold. ADOPTED AT FBV2-EXP-002 (D-237), superseding the Samtec BCS-112-S-D-HE 2 x 12. Configuration per the Samtec SSW/SSQ through-hole datasheet, verified 2026-08-24: SSQ = square tail; 124 = 24 positions per row (the series offers 01 thru 50); 02 = standard-insertion-force lead style, which for a single-row right-angle part sets B = 2.54 mm socket-axis height above the PCB; G = 20 uin gold on contact; S = SINGLE ROW; RA = right angle, which the datasheet lists as available with the -S row option. BODY LENGTH = positions x 2.54 + 0.51 = 61.47 mm; pin 1 to pin 24 span = 23 x 2.54 = 58.42 mm; insulator overhangs the end contact by 1.525 mm at each end - THAT OVERHANG IS WHY TWO 1x12 BODIES CANNOT BE BUTTED INTO A CONTINUOUS 24-POSITION GRID (they would sit 3.050 mm apart against a 2.540 mm pitch). Mates .025 in (0.635 mm) SQUARE POST - the ordinary male header / Dupont standard. 6.3 A per pin with 2 pins powered, 465 VAC / 655 VDC, -55 to +125 C with gold, insertion depth 3.68 to 6.35 mm, 100 mating cycles at 10 uin Au. Hole pattern \u00d81.02 mm on 2.54 mm, taken from the Sullins 1-row right-angle recommended PCB layout (drawing 10493, xPxCxx1LGBN-RC) which dimensions the same interface: \u00d8.040 in [1.02] hole, .100 in [2.54] pitch, tail .024 x .016 in [0.60 x 0.40], tail 3.15 mm below board, body 8.50 mm tall, and 6.53 mm from the tail row to the mating face - THE 6.53 mm IS THE DIMENSION THE WHOLE RIGHT-WALL FIT TURNS ON. LOCAL FRAME: pads run along +X with pin 1 at -29.21; the MATING FACE POINTS ALONG -Y. On the AQROOT board it is placed at rotation 270 so the pins run down the right wall with pin 1 at the top and the mating face pointing at the enclosure recess. THE ENCLOSURE SUPPLIES SHIFT PROTECTION (D-240): a closed-end recess 62.5 mm long against a 60.96 mm male body leaves 1.54 mm of play - 60 percent of one pitch - so a one-position lateral shift is physically impossible. There is no electrical key contact and no proprietary shroud.",
+      "fpid": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+      "fpid_ok": true,
+      "ok": true,
+      "pads": 24,
+      "pads_ok": true,
+      "ref": "J5"
+    },
+    {
+      "descr": "JST SH series connector, SM04B-SRSS-TB (http://www.jst-mfg.com/product/pdf/eng/eSH.pdf)",
+      "fpid": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+      "fpid_ok": true,
+      "ok": true,
+      "pads": 6,
+      "pads_ok": true,
+      "ref": "J8"
+    },
+    {
+      "descr": "2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf",
+      "descr_ok": true,
+      "fpid": "RF_Module:ESP32-S3-WROOM-1",
+      "ok": true,
+      "pads": 62,
+      "pads_ok": true,
+      "ref": "U1"
+    }
+  ],
+  "refused": [],
+  "schema": 1,
+  "verdict": "APPLIED",
+  "wrote": true
+}

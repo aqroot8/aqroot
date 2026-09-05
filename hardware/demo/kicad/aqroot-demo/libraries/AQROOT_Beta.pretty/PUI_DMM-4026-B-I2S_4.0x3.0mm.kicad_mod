@@ -293,7 +293,7 @@
 		(at 0 1)
 		(size 1.05 1.05)
 		(drill 1.05)
-		(layers "F&B.Cu" "*.Mask")
+		(layers "*.Cu" "*.Mask")
 		(solder_mask_margin 0.05)
 		(uuid "fb060001-d100-4d10-9d10-000000000109")
 	)

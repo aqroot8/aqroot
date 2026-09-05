@@ -644,7 +644,7 @@
 			)
 		)
 	)
-	(footprint "Samtec_SSQ-124-02-G-S-RA"
+	(footprint "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA"
 		(layer "F.Cu")
 		(uuid "07331f5e-bef3-4e32-ab02-14002f3b8026")
 		(at 65.9 39.21 -90)
@@ -2682,7 +2682,7 @@
 		(layer "F.Cu")
 		(uuid "19894db0-91b9-461b-a4ae-52ba6f9164f7")
 		(at 57.75 128 -90)
-		(descr "RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD")
+		(descr "2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf")
 		(tags "2.4 GHz Wi-Fi and Bluetooth module")
 		(property "Reference" "U1"
 			(at -10.5 11.4 0)
@@ -7787,7 +7787,7 @@
 			)
 		)
 	)
-	(footprint "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+	(footprint "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "51cdab80-c64d-4a36-933d-acaca6d5a157")
 		(at 68.4 76.4 90)

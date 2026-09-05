@@ -1,0 +1,225 @@
+{
+  "schema": 1,
+  "decision": "D-616",
+  "purpose": "The SECOND link of the land chain.  screen_land_parity.py proves the BOARD's footprint equals its LIBRARY MASTER, to the nanometre.  That is worth nothing on its own -- it only says the board agrees with a file.  This index says which drawing that file was ruled against, and where the ruling is written down.  Together the two links are: board land == library master == manufacturer/IPC drawing.",
+  "ledger": "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
+  "declared_master_divergences": {
+    "U1": {
+      "identity": "RF_Module:ESP32-S3-WROOM-1",
+      "kicad_reports": "lib_footprint_mismatch",
+      "lands_identical": true,
+      "what_differs": "the footprint-embedded ANTENNA KEEP-OUT rule area's copper-layer set: the master names all 32, the board's copy names F.Cu / B.Cu / In1.Cu / In2.Cu -- KiCad clamped it to the stackup the board had when U1 was placed and never re-expanded it when In3.Cu and In4.Cu were added",
+      "62_of_62_pads": "identical to the nanometre (LAND2)",
+      "status": "OPEN FABRICATION BLOCKER, measured at D-616: In3.Cu carries 273.697 mm2 of +3V3 plane and 4 track segments (Net-(SW9-A), USB_VBUS_CHG) and In4.Cu 304.259 mm2 of GND pour inside the 330 mm2 on-board keep-out. Evidence evidence/d616-footprint-keepouts.json; instrument screen_footprint_keepouts.py. It is NOT closed by declaring it here -- this entry exists so LAND4 names the divergence instead of ignoring it."
+    }
+  },
+  "tiers": {
+    "1": "manufacturer drawing read, document number and dimensions recorded",
+    "2A": "vendor-specific stock footprint, drawing read at B-03 closure (FBV2-S2-002)",
+    "2_OPEN": "vendor-specific stock footprint, drawing NOT re-read -- an OPEN item, not a pass",
+    "3": "generic JEDEC / IPC package, correct by package identity"
+  },
+  "identities": {
+    "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270": {
+      "tier": "1",
+      "drawing": "BST-BMI270-DS000-08 rev 1.6 s8.3 landing pattern"
+    },
+    "AQROOT_Beta:Coilcraft_XFL4020": {
+      "tier": "1",
+      "drawing": "Coilcraft doc 745-3 rev 03/10/26 Recommended Land Pattern"
+    },
+    "AQROOT_Beta:Ebyte_E07-400M10S": {
+      "tier": "1",
+      "drawing": "Ebyte E07-400M10S user manual ch. 3"
+    },
+    "AQROOT_Beta:Ebyte_E22-900M22S": {
+      "tier": "1",
+      "drawing": "Ebyte manufacturer drawing, archived"
+    },
+    "AQROOT_Beta:Hirose_FH69-50S-0.5SH": {
+      "tier": "1",
+      "drawing": "Hirose en_FH69_CAT Jun. 2025 Recommended PCB Layout / ELC-399242-00-00"
+    },
+    "AQROOT_Beta:MAX17048_T822": {
+      "tier": "1",
+      "drawing": "Maxim land pattern DOC 90-0065 REV. E"
+    },
+    "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm": {
+      "tier": "1",
+      "drawing": "MEIHUA LPDS-0001719 Rev.2 2018-09-25 recommended solder pad panel"
+    },
+    "AQROOT_Beta:Molex_5025700893": {
+      "tier": "1",
+      "drawing": "Molex SD-502570-001 Rev A"
+    },
+    "AQROOT_Beta:MountingBoss_M2_NPTH": {
+      "tier": "1",
+      "drawing": "AQROOT mechanical retention point, FBV2-P1: 2.2 mm NPTH for M2, 4.0 mm moulded-boss OD, 4.5 mm keep-out carried by a named board rule area",
+      "ruled": "D-616"
+    },
+    "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm": {
+      "tier": "1",
+      "drawing": "PUI Audio DMM-4026-B-I2S-R Rev A 5/26/2021 land pattern page; acoustic port B-63"
+    },
+    "AQROOT_Beta:ST25R3916_AQET": {
+      "tier": "1",
+      "drawing": "ST UFQFPN32 5x5x0.55 recommended PCB land pattern"
+    },
+    "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA": {
+      "tier": "1",
+      "drawing": "Samtec SSW/SSQ through-hole datasheet (configuration) + Sullins drawing 10493 xPxCxx1LGBN-RC recommended PCB layout (hole pattern 1.02 mm on 2.54 mm)",
+      "ruled": "D-616",
+      "supersedes": "AQROOT_Beta:Samtec_BCS-112-S-D-HE at D-237/FBV2-EXP-002"
+    },
+    "AQROOT_Beta:TI_TPS63020_DSJ": {
+      "tier": "1",
+      "drawing": "TI 4210895-2/E 02/16 land pattern + 4208549-3/G 04/15 thermal pad"
+    },
+    "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm": {
+      "tier": "1",
+      "drawing": "Vishay doc 82491 rev 2.1, drawing 6.550-5263.01-4 issue 12"
+    },
+    "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010": {
+      "tier": "1",
+      "drawing": "Wurth 74438357010 rev 003.001 (2024-02-27) Recommended Land Pattern"
+    },
+    "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm": {
+      "tier": "1",
+      "drawing": "TI EXAMPLE BOARD LAYOUT DLH0010A, drawing 4226298/A 10/2020"
+    },
+    "Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN": {
+      "tier": "2A",
+      "drawing": "C&K JS series drawing"
+    },
+    "Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92": {
+      "tier": "2A",
+      "drawing": "C&K PTS645 SMT G-Type recommended layout"
+    },
+    "Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical": {
+      "tier": "2A",
+      "drawing": "JST ACH series drawing"
+    },
+    "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical": {
+      "tier": "2A",
+      "drawing": "JST PH series drawing"
+    },
+    "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal": {
+      "tier": "2A",
+      "drawing": "GCT USB4105 series drawing"
+    },
+    "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm": {
+      "tier": "2A",
+      "drawing": "Yajingxin TXM27.12M0004322DBBDO00T Suggested Layout"
+    },
+    "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm": {
+      "tier": "2A",
+      "drawing": "Maxim 21-0136 outline + 90-0032 Rev E land pattern (s2B)"
+    },
+    "RF_Module:ESP32-S3-WROOM-1": {
+      "tier": "2A",
+      "drawing": "Espressif ESP32-S3-WROOM-1 datasheet v1.8 Figure 11-1"
+    },
+    "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal": {
+      "tier": "2_OPEN",
+      "drawing": "JST eSH.pdf, cited by the KiCad master's own descr, NOT re-read here",
+      "must_confirm": "4 signal lands 0.60 x 1.55 at 1.00 mm pitch, pin1-pin4 span 3.00 mm; 2 mounting-peg lands 1.20 x 1.80 at +/-2.80 mm (5.60 mm span), 3.875 mm from the signal row",
+      "ruled": "D-616"
+    },
+    "Capacitor_SMD:C_0402_1005Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76; lands 0.56 x 0.62 at +/-0.48 mm"
+    },
+    "Capacitor_SMD:C_0603_1608Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76"
+    },
+    "Capacitor_SMD:C_0805_2012Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76"
+    },
+    "Capacitor_SMD:C_1206_3216Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 1.80 at +/-1.475 mm"
+    },
+    "Capacitor_SMD:C_1210_3225Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 2.70 at +/-1.475 mm"
+    },
+    "Diode_SMD:D_SOD-123": {
+      "tier": "3",
+      "drawing": "JEDEC SOD-123"
+    },
+    "Diode_SMD:D_SOD-323": {
+      "tier": "3",
+      "drawing": "JEDEC SOD-323"
+    },
+    "Fuse:Fuse_1206_3216Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal 1206 chip land"
+    },
+    "Inductor_SMD:L_0603_1608Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal 0603 chip land; part Murata LQW18AN39NG80D (B-70)"
+    },
+    "LED_THT:LED_D5.0mm": {
+      "tier": "3",
+      "drawing": "generic 5 mm THT LED, 2.54 mm lead pitch"
+    },
+    "Package_SO:MSOP-10_3x3mm_P0.5mm": {
+      "tier": "3",
+      "drawing": "JEDEC MO-187 MSOP-10; the package D-099 locked for U18 and D-615 re-ordered the part into"
+    },
+    "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm": {
+      "tier": "3",
+      "drawing": "JEDEC MS-012 SOIC-8"
+    },
+    "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm": {
+      "tier": "3",
+      "drawing": "JEDEC MO-153 / NXP SOT355-1"
+    },
+    "Package_SO:VSSOP-8_3x3mm_P0.65mm": {
+      "tier": "3",
+      "drawing": "JEDEC MO-187 VSSOP-8"
+    },
+    "Package_TO_SOT_SMD:SOT-23": {
+      "tier": "3",
+      "drawing": "JEDEC TO-236 SOT-23"
+    },
+    "Package_TO_SOT_SMD:SOT-23-6": {
+      "tier": "3",
+      "drawing": "JEDEC SOT-23-6 / TI DDC SOT-23-THIN"
+    },
+    "Package_TO_SOT_SMD:SOT-23-8": {
+      "tier": "3",
+      "drawing": "JEDEC SOT-23-8"
+    },
+    "Package_TO_SOT_SMD:SOT-353_SC-70-5": {
+      "tier": "3",
+      "drawing": "JEDEC SC-70-5 / SOT-353"
+    },
+    "Package_TO_SOT_SMD:SOT-563": {
+      "tier": "3",
+      "drawing": "SOT-563 1.6 x 1.2 mm"
+    },
+    "Resistor_SMD:R_0603_1608Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.72"
+    },
+    "Resistor_SMD:R_0805_2012Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.025 x 1.40 at +/-0.9125 mm"
+    },
+    "Resistor_SMD:R_1206_3216Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.125 x 1.75 at +/-1.4625 mm"
+    },
+    "Resistor_SMD:R_2512_6332Metric": {
+      "tier": "3",
+      "drawing": "IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.225 x 3.35 at +/-2.9625 mm"
+    },
+    "TestPoint:TestPoint_Pad_D1.0mm": {
+      "tier": "3",
+      "drawing": "1.0 mm round test pad, not a purchased part"
+    }
+  }
+}

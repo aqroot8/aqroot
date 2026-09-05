@@ -177,3 +177,138 @@ Re-read from the netlist at FBV2-S2-001:
 | `J5` community | all 24 contacts against D-084 | **PASS** (verified at FBV2-S1-009) |
 | `D13` RGB | 1 A, 2 BK, 3 GK, 4 RK — **not** the `Device:LED_ARGB` order | **PASS** |
 | `U18` LTC4368-1 | 1 VIN, 2 UV, 3 OV, 4/5 GND, 6 SHDN, 7 FAULT, 8 VOUT, 9 SENSE, 10 GATE | **PASS** |
+
+---
+
+## 6. AQROOT Demo — THE LAND CHAIN, board to drawing (D-616)
+
+**Status: NORMATIVE for AQROOT Demo.** Sections 1–5 rule the LIBRARY against a
+manufacturer drawing.  Nothing ever checked that the **board's own embedded copy** of
+a footprint still equals the library that was ruled — and on this machine KiCad
+*could not have*: its stock footprint libraries are installed under
+`/usr/share/kicad/footprints` but **no global `fp-lib-table` was ever written**, so the
+project resolved exactly one nickname (`AQROOT_Beta`) and every other footprint
+reported `lib_footprint_issues` — *"the current configuration does not include the
+footprint library 'Resistor_SMD'"*.  **That is what the 199 inherited DRC warnings
+were.**  Not noise: 199 lands whose master was never opened.
+
+The chain has two links and both are now measured:
+
+| link | who proves it | how |
+|---|---|---|
+| board footprint **==** library master | `screen_land_parity.py`, gated by `checks/land_parity_contract.py` LAND1–LAND4 | every pad compared in the footprint's own un-rotated frame — position, size, shape and corner ratios, drill and drill shape, pad type, layer set, rotation, offset, die length, every local mask/paste/clearance override — **to the nanometre**, with a bottom-side part mirrored back into its master's frame |
+| library master **==** manufacturer / IPC drawing | this ledger, indexed by `land_citations.json`, gated by LAND5–LAND6 | §1–§3 above and §6.1 below |
+
+At D-616 the first link reads **311 of 311 footprints MATCH, zero mismatches, zero
+without a resolvable master**, and the comparison is proved non-vacuous by a negative
+control (`R75`, one pad grown by 1 µm, detected).  Three board defects had to be
+corrected to get there, none of them copper:
+
+- **`J5` and `J8` carried a BARE footprint name and no library at all**, so the
+  community port and the Qwiic/STEMMA QT connector had **no master to be compared
+  against**.  Both now name their library and both are pad-identical to it.
+- **`MK1`'s Ø1.05 mm NPTH acoustic port** read `(layers "F&B.Cu" "*.Mask")` in the
+  project library against `"*.Cu"` on the board.  The **board** is right — hole-to-copper
+  clearance must be enforced on the inner layers of a 6-layer board — so the *master*
+  was corrected to match, not the other way round.
+- **`U1`'s description** had drifted from `RF_Module`'s master and was the whole of
+  KiCad's single `lib_footprint_mismatch`.  Corrected to the master's string.
+
+### 6.1 Every footprint identity on the Demo board, and where its land is ruled
+
+`land_citations.json` is the machine-readable index; this table is its normative text.
+**LAND5 refuses an identity that is on the board and not here, and a row here that is
+not on the board.  LAND6 refuses a row whose identity string is missing from this
+file** — so deleting a row below breaks the gate.
+
+| identity | refs | tier | drawing |
+|---|---:|---|---|
+| `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` | 1 | 1 | BST-BMI270-DS000-08 rev 1.6 s8.3 landing pattern |
+| `AQROOT_Beta:Coilcraft_XFL4020` | 2 | 1 | Coilcraft doc 745-3 rev 03/10/26 Recommended Land Pattern |
+| `AQROOT_Beta:Ebyte_E07-400M10S` | 1 | 1 | Ebyte E07-400M10S user manual ch. 3 |
+| `AQROOT_Beta:Ebyte_E22-900M22S` | 1 | 1 | Ebyte manufacturer drawing, archived |
+| `AQROOT_Beta:Hirose_FH69-50S-0.5SH` | 1 | 1 | Hirose en_FH69_CAT Jun. 2025 Recommended PCB Layout / ELC-399242-00-00 |
+| `AQROOT_Beta:MAX17048_T822` | 1 | 1 | Maxim land pattern DOC 90-0065 REV. E |
+| `AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm` | 1 | 1 | MEIHUA LPDS-0001719 Rev.2 2018-09-25 recommended solder pad panel |
+| `AQROOT_Beta:Molex_5025700893` | 1 | 1 | Molex SD-502570-001 Rev A |
+| `AQROOT_Beta:MountingBoss_M2_NPTH` | 2 | 1 | AQROOT mechanical retention point, FBV2-P1: 2.2 mm NPTH for M2, 4.0 mm moulded-boss OD, 4.5 mm keep-out carried by a named board rule area |
+| `AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm` | 1 | 1 | PUI Audio DMM-4026-B-I2S-R Rev A 5/26/2021 land pattern page; acoustic port B-63 |
+| `AQROOT_Beta:ST25R3916_AQET` | 1 | 1 | ST UFQFPN32 5x5x0.55 recommended PCB land pattern |
+| `AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA` | 1 | 1 | Samtec SSW/SSQ through-hole datasheet (configuration) + Sullins drawing 10493 xPxCxx1LGBN-RC recommended PCB layout (hole pattern 1.02 mm on 2.54 mm) |
+| `AQROOT_Beta:TI_TPS63020_DSJ` | 1 | 1 | TI 4210895-2/E 02/16 land pattern + 4208549-3/G 04/15 thermal pad |
+| `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` | 1 | 1 | Vishay doc 82491 rev 2.1, drawing 6.550-5263.01-4 issue 12 |
+| `AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010` | 2 | 1 | Wurth 74438357010 rev 003.001 (2024-02-27) Recommended Land Pattern |
+| `Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm` | 1 | 1 | TI EXAMPLE BOARD LAYOUT DLH0010A, drawing 4226298/A 10/2020 |
+| `Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN` | 1 | 2A | C&K JS series drawing |
+| `Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92` | 7 | 2A | C&K PTS645 SMT G-Type recommended layout |
+| `Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical` | 1 | 2A | JST ACH series drawing |
+| `Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical` | 2 | 2A | JST PH series drawing |
+| `Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal` | 1 | 2A | GCT USB4105 series drawing |
+| `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | 1 | 2A | Yajingxin TXM27.12M0004322DBBDO00T Suggested Layout |
+| `Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` | 1 | 2A | Maxim 21-0136 outline + 90-0032 Rev E land pattern (s2B) |
+| `RF_Module:ESP32-S3-WROOM-1` | 1 | 2A | Espressif ESP32-S3-WROOM-1 datasheet v1.8 Figure 11-1 |
+| `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` | 1 | **2 — OPEN** | JST eSH.pdf, cited by the KiCad master's own descr, NOT re-read here  **OPEN — must confirm:** 4 signal lands 0.60 x 1.55 at 1.00 mm pitch, pin1-pin4 span 3.00 mm; 2 mounting-peg lands 1.20 x 1.80 at +/-2.80 mm (5.60 mm span), 3.875 mm from the signal row |
+| `Capacitor_SMD:C_0402_1005Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 0.56 x 0.62 at +/-0.48 mm |
+| `Capacitor_SMD:C_0603_1608Metric` | 53 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
+| `Capacitor_SMD:C_0805_2012Metric` | 17 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
+| `Capacitor_SMD:C_1206_3216Metric` | 6 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 1.80 at +/-1.475 mm |
+| `Capacitor_SMD:C_1210_3225Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 2.70 at +/-1.475 mm |
+| `Diode_SMD:D_SOD-123` | 1 | 3 | JEDEC SOD-123 |
+| `Diode_SMD:D_SOD-323` | 4 | 3 | JEDEC SOD-323 |
+| `Fuse:Fuse_1206_3216Metric` | 1 | 3 | IPC-7351 nominal 1206 chip land |
+| `Inductor_SMD:L_0603_1608Metric` | 2 | 3 | IPC-7351 nominal 0603 chip land; part Murata LQW18AN39NG80D (B-70) |
+| `LED_THT:LED_D5.0mm` | 1 | 3 | generic 5 mm THT LED, 2.54 mm lead pitch |
+| `Package_SO:MSOP-10_3x3mm_P0.5mm` | 1 | 3 | JEDEC MO-187 MSOP-10; the package D-099 locked for U18 and D-615 re-ordered the part into |
+| `Package_SO:SOIC-8_3.9x4.9mm_P1.27mm` | 2 | 3 | JEDEC MS-012 SOIC-8 |
+| `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm` | 2 | 3 | JEDEC MO-153 / NXP SOT355-1 |
+| `Package_SO:VSSOP-8_3x3mm_P0.65mm` | 1 | 3 | JEDEC MO-187 VSSOP-8 |
+| `Package_TO_SOT_SMD:SOT-23` | 8 | 3 | JEDEC TO-236 SOT-23 |
+| `Package_TO_SOT_SMD:SOT-23-6` | 3 | 3 | JEDEC SOT-23-6 / TI DDC SOT-23-THIN |
+| `Package_TO_SOT_SMD:SOT-23-8` | 1 | 3 | JEDEC SOT-23-8 |
+| `Package_TO_SOT_SMD:SOT-353_SC-70-5` | 1 | 3 | JEDEC SC-70-5 / SOT-353 |
+| `Package_TO_SOT_SMD:SOT-563` | 5 | 3 | SOT-563 1.6 x 1.2 mm |
+| `Resistor_SMD:R_0603_1608Metric` | 114 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72 |
+| `Resistor_SMD:R_0805_2012Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.025 x 1.40 at +/-0.9125 mm |
+| `Resistor_SMD:R_1206_3216Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.125 x 1.75 at +/-1.4625 mm |
+| `Resistor_SMD:R_2512_6332Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.225 x 3.35 at +/-2.9625 mm |
+| `TestPoint:TestPoint_Pad_D1.0mm` | 46 | 3 | 1.0 mm round test pad, not a purchased part |
+
+Census by tier over all 311 board footprints: **tier 1 = 19, tier 2A = 15, tier 2 OPEN = 1, tier 3 = 276.**
+
+### 6.2 The one OPEN land, and the one DECLARED divergence
+
+**`Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` (`J8`, Qwiic /
+STEMMA QT) is OPEN.**  It entered the design at D-238, after §1–§3 were written, and no
+row here ever ruled it.  Its KiCad master cites JST's own `eSH.pdf`; that drawing was
+**not re-read**, so by this ledger's own standard it is Tier 2, not a pass.  The land
+to confirm is **4 signal pads 0.60 × 1.55 mm on 1.00 mm pitch, pin 1 → pin 4 span
+3.00 mm, and two mounting-peg lands 1.20 × 1.80 mm at ±2.80 mm (5.60 mm span),
+3.875 mm from the signal row**.  Board-to-master parity for `J8` is PROVEN; only the
+master-to-drawing link is open.
+
+**`U1` is a DECLARED master divergence, and it is an OPEN FABRICATION BLOCKER of a
+different kind.**  KiCad still reports `lib_footprint_mismatch` on `U1` after the
+description fix, and the reason is not the land — **62 of 62 pads are identical to the
+nanometre**.  It is the footprint's own **ESP32-S3-WROOM-1 ANTENNA KEEP-OUT rule
+area**.  The master applies it to every copper layer; the board's copy names
+**`F.Cu` / `B.Cu` / `In1.Cu` / `In2.Cu` only** — KiCad clamped `*.Cu` to the stackup the
+board had when `U1` was placed and never re-expanded it when `In3.Cu` and `In4.Cu`
+were added.  DRC honours the rule area exactly as written, so **there is no violation
+to report**.  Measured (`evidence/d616-footprint-keepouts.json`), inside the
+**330 mm² on-board part** of the keep-out:
+
+| layer | protected | pour inside the keep-out | tracks |
+|---|---|---:|---:|
+| `F.Cu` | yes | 0.000 mm² | 0 |
+| `In1.Cu` | yes | 0.000 mm² | 0 |
+| `In2.Cu` | yes | 0.000 mm² | 0 |
+| `In3.Cu` | **NO** | **273.697 mm² (+3V3 plane)** | **4** (`Net-(SW9-A)`, `USB_VBUS_CHG`) |
+| `In4.Cu` | **NO** | **304.259 mm² (GND pour)** | 0 |
+| `B.Cu` | yes | 0.000 mm² | 0 |
+
+The four protected layers are clean and the two unprotected ones are 83 % and 92 %
+full.  That is the proof the keep-out works and that these two layers were simply
+never inside it.  Wi-Fi and BLE are Demo-required retained features, so this is a
+fabrication blocker, not a cosmetic one.  It is **not** closed by being written down
+here; `screen_footprint_keepouts.py` is the instrument and it reports `DEFECT`.
+

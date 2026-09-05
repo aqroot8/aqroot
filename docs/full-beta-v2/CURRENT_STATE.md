@@ -13,6 +13,87 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-616 (THE LAND PATTERNS ARE PROVEN FOR THE FIRST TIME, AND THE Wi-Fi
+  ANTENNA HAS A PLANE UNDER IT):** D-615 named this task -- *"247 unproven
+  claims that each LAND matches its part's datasheet drawing"* -- and the first
+  thing measured was that **the 199 `lib_footprint_issues` were never a property
+  of this board at all.**  Every one reads *"the current configuration does not
+  include the footprint library 'Resistor_SMD'"*.  KiCad's 155 stock libraries
+  ARE installed here; the global `fp-lib-table` is written on the first GUI
+  launch and **nothing in this repository has ever launched a GUI**, so the
+  project resolved ONE nickname and **KiCad never once opened the master of a
+  land on this board**.  Register the table KiCad itself ships and 199 -> **0**,
+  and a class that had never appeared appears: `lib_footprint_mismatch`.
+  **Fifth instance in five decisions of one failure** (D-607, D-610, D-611,
+  D-613, and now a check whose reference data was not installed).
+  **THE CHAIN HAS TWO LINKS AND BOTH ARE NOW MEASURED.**  The ledger rules the
+  LIBRARY against a drawing; nothing ever checked the board's own embedded copy
+  against that library.  New `screen_land_parity.py` compares every pad in the
+  footprint's own un-rotated frame -- position, size, shape and corner ratios,
+  drill and drill shape, pad type, layer set, rotation, offset, die length and
+  every local mask/paste override -- **to the nanometre**, mirroring bottom-side
+  parts back into the master's frame.  New `checks/land_parity_contract.py`
+  gates **LAND1-LAND6, all six PASS: 311 of 311 footprints MATCH**, and LAND3
+  proves the check is not vacuous by growing one `R75` pad by **one micron** and
+  requiring it be caught.  LAND5/LAND6 bind the second link -- the index must
+  cover EXACTLY the 49 distinct identities and every one must be written into
+  the ledger, so deleting a ledger row breaks the gate.  Census: **tier 1 = 19,
+  2A = 15, 2 OPEN = 1, 3 = 276.**
+  **THREE BOARD DEFECTS, NONE OF THEM COPPER.**  `J5` (community port) and `J8`
+  (Qwiic) carried a **BARE footprint name and no library**, so those two lands
+  had **no master to be compared against**; both now name the library their own
+  symbol already named and both are pad-identical to it.  `MK1`'s Ø1.05 mm NPTH
+  acoustic port read `F&B.Cu` in the PROJECT library against `*.Cu` on the
+  board -- the **board** is right on a 6-layer stackup, so the *master* was
+  corrected.  `U1`'s description had drifted.  Written by new
+  `apply_footprint_identity.py`, which NAMES the string it overwrites and then
+  re-reads the result through `pcbnew` against what it claimed -- a plan that
+  hits the right text in the wrong place fails and rolls back.
+  **THE FINDING.**  `U1` still reports `lib_footprint_mismatch`, and it is not
+  the land -- **62 of 62 pads identical**.  It is the footprint's own
+  **ESP32-S3-WROOM-1 ANTENNA KEEP-OUT** (no tracks, vias, pads, pour or
+  footprints).  The master applies it to every copper layer; **the board's copy
+  names `F.Cu` / `B.Cu` / `In1.Cu` / `In2.Cu` only** -- KiCad clamped `*.Cu` to
+  the stackup `U1` was placed on and never re-expanded it when `In3.Cu`/`In4.Cu`
+  were added.  DRC honours the area as written, so **there is no violation and
+  no way to notice except to ask**.  Inside the **330 mm² on-board** part:
+  `F.Cu`/`In1`/`In2`/`B.Cu` are **0.000 mm², zero tracks** -- the four protected
+  layers, clean, which is the proof the keep-out works -- while **`In3.Cu` holds
+  273.697 mm² of +3V3 plane and 4 track segments (`Net-(SW9-A)`,
+  `USB_VBUS_CHG`)** and **`In4.Cu` 304.259 mm² of GND pour: 83 % and 92 %
+  full.**  Wi-Fi and BLE are Demo-required.  **OPEN FABRICATION BLOCKER**,
+  DECLARED in `land_citations.json` so LAND4 names it rather than suppressing
+  the class; instrument `screen_footprint_keepouts.py`, ledger §6.2.
+  **THE GATE WAS REPAIRED, NOT RELAXED.**  `verify_promotion.stage()` writes the
+  project table PLUS KiCad's own, so `lib_footprint_mismatch` is live in the
+  promotion gate; `lib_footprint_issues` is **deliberately removed from
+  `INHERITED`** -- if it returns, the libraries stopped resolving and every land
+  check went vacuous, which must fail loudly.  `INHERITED_PARITY` **TIGHTENED**,
+  `footprint_symbol_mismatch` **48 -> 46**.
+  Authority `c8e421aa...` ->
+  **`449977eac20b7644474a9f01da811d4618bb8c5e6a0fa4222ffa70aba2e69f00`**;
+  **3 lines changed, all identity, zero copper**.  `verify_promotion.py`
+  **14/14** (0 added, 0 removed, DRC 5/1/1 with **ZERO attributable**,
+  unconnected **73 unchanged**, parity **249 -> 247 warnings / 0 errors**,
+  fill-stable), `fab_package_contract.py` **FAB1-FAB8 PASS** with **all 28
+  artifacts normalised-sha IDENTICAL to D-615's**, `population_contract.py`
+  POP1-POP4, `pour_bond_contract.py` P1-P4, `neck_contract.py` N1-N3,
+  `protected_copper.py` **15 nets / 393 objects IDENTICAL**, ledger **57 open
+  edges**.  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`,
+  RGB and XGPIO4/5 untouched.
+  **STILL OPEN:** `J8`'s master-to-drawing link (JST `eSH.pdf` not re-read;
+  the land to confirm is recorded to the micron in ledger §6.2).
+  **NEXT: CLOSE THE ANTENNA KEEP-OUT** -- the largest remaining
+  `DEMO_READY_FOR_FAB` blocker and the only one touching a required radio.
+  Extend `U1`'s rule area to `In3.Cu`/`In4.Cu` (one line), which on refill
+  carves ~274 mm² out of the In3 `+3V3` plane and ~304 mm² out of the In4 `GND`
+  pour, and re-route the two In3 nets that cross it -- `Net-(SW9-A)` (a 40 mm
+  north-south trunk at x = 66.35) and `/01_POWER_TREE/USB_VBUS_CHG` (a dogleg
+  through (64.7, 120.45)).  Both are accepted promoted power copper, so it is a
+  rip-up-and-replace under `--evicted` with clause 4 in force, and the carve
+  must be proved not to island either pour.  **Do not extend the rule area
+  without that route in hand.**  `checks/land_parity_contract.py` joins the
+  standing preflight.  No owner decision.
 - **Demo D-615 (THE BOM IS 100 % ORDERABLE AND THE SAFETY PART WAS ORDERED IN
   THE WRONG PACKAGE):** D-614 named this task and named what stopped it --
   **D-096 binds**, and that session had no distributor record to read.  This one
