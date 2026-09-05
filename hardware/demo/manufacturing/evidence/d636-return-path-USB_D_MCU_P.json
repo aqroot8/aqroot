@@ -1,0 +1,402 @@
+{
+ "authoritative_unchanged": true,
+ "barrels": [
+  [
+   60.2,
+   138.1,
+   0.55
+  ],
+  [
+   50.8,
+   122.4,
+   0.55
+  ]
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "clauses": [
+  {
+   "anchors": 268,
+   "anchors_off_body": 0,
+   "area_after_mm2": 9412.834,
+   "area_before_mm2": 9429.543,
+   "area_lost_mm2": 16.709,
+   "clause": "RP1",
+   "name": "PLANE SURVIVES",
+   "off_body": [],
+   "ok": true,
+   "outlines_after": 1,
+   "outlines_before": 1,
+   "void_half_width_nm": 375000,
+   "zone_clearance_nm": 250000
+  },
+  {
+   "clause": "RP2",
+   "crossing_nets": [
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/02_MCU_CORE/BOOT_N",
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "/I2C_SCL_INT"
+   ],
+   "crossings": 5,
+   "detail": [
+    {
+     "a": [
+      45.75,
+      139.35
+     ],
+     "arc_mm": 20.6783,
+     "b": [
+      55.2,
+      129.9
+     ],
+     "chord_mm": 0.75,
+     "detour_mm": 19.9283,
+     "entry": [
+      54.0555,
+      131.0445
+     ],
+     "exit": [
+      54.5859,
+      130.5141
+     ],
+     "layer": "In3.Cu",
+     "mm": 13.3643,
+     "net": "/01_POWER_TREE/USB_VBUS_CHG",
+     "netclass": "VBUS_CHG",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.5
+    },
+    {
+     "a": [
+      46.525,
+      132.25
+     ],
+     "arc_mm": 16.2536,
+     "b": [
+      60.175,
+      118.625
+     ],
+     "chord_mm": 0.75,
+     "detour_mm": 15.5036,
+     "entry": [
+      50.9126,
+      127.8704
+     ],
+     "exit": [
+      51.4434,
+      127.3406
+     ],
+     "layer": "In3.Cu",
+     "mm": 19.2863,
+     "net": "/02_MCU_CORE/BOOT_N",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      58.6,
+      135.0
+     ],
+     "arc_mm": 22.648,
+     "b": [
+      46.5,
+      122.8
+     ],
+     "chord_mm": 15.8409,
+     "detour_mm": 6.8071,
+     "entry": [
+      59.3329,
+      135.739
+     ],
+     "exit": [
+      48.1779,
+      124.4918
+     ],
+     "layer": "B.Cu",
+     "mm": 17.1828,
+     "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      60.2,
+      140.4
+     ],
+     "arc_mm": 7.2185,
+     "b": [
+      58.6,
+      135.0
+     ],
+     "chord_mm": 2.8261,
+     "detour_mm": 4.3924,
+     "entry": [
+      59.2202,
+      137.0932
+     ],
+     "exit": [
+      58.4174,
+      134.3836
+     ],
+     "layer": "B.Cu",
+     "mm": 5.6321,
+     "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      47.7,
+      122.1
+     ],
+     "arc_mm": 5.6879,
+     "b": [
+      54.7,
+      129.1
+     ],
+     "chord_mm": 0.75,
+     "detour_mm": 4.9379,
+     "entry": [
+      49.1348,
+      123.5348
+     ],
+     "exit": [
+      49.6652,
+      124.0652
+     ],
+     "layer": "B.Cu",
+     "mm": 9.8995,
+     "net": "/I2C_SCL_INT",
+     "netclass": "I2C",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    }
+   ],
+   "graze_detail": [],
+   "grazes": 0,
+   "grazing_nets": [],
+   "name": "REFERENCE INVENTORY",
+   "ok": true,
+   "plane": "In4.Cu",
+   "references": [
+    "In3.Cu",
+    "B.Cu"
+   ]
+  },
+  {
+   "citations": {
+    "LED_BOOST": "LED_BOOST routed clearance - backlight string runs above 20 V",
+    "NFC_OSC": "NFC crystal nets stay on B.Cu",
+    "NFC_RF": "NFC transmit arm minimum width - equal both arms",
+    "NFC_RX": "NFC receive path stays on B.Cu",
+    "SPK_OUT": "SPK_OUT is outer-layer only - Class-D edges do not belong on In2",
+    "SWITCH_NODE": "SWITCH_NODE: low impedance, minimum width 0.40 mm",
+    "USB_D": "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
+   },
+   "citations_missing_from_dru": [],
+   "classes_absent_from_board": [],
+   "clause": "RP3",
+   "name": "CLASS REFUSAL",
+   "ok": true,
+   "reference_critical_classes": [
+    "LED_BOOST",
+    "NFC_OSC",
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+   ],
+   "refused": []
+  },
+  {
+   "budget_mm": 7.146,
+   "clause": "RP4",
+   "edge_ns": 1.0,
+   "epsilon_r": 4.4,
+   "fraction": 20.0,
+   "name": "DETOUR BUDGET",
+   "ok": false,
+   "over_budget": [
+    {
+     "detour_mm": 15.5036,
+     "layer": "In3.Cu",
+     "net": "/02_MCU_CORE/BOOT_N"
+    },
+    {
+     "detour_mm": 19.9283,
+     "layer": "In3.Cu",
+     "net": "/01_POWER_TREE/USB_VBUS_CHG"
+    }
+   ],
+   "rise_length_mm": 142.92,
+   "velocity_mm_per_ns": 142.92,
+   "worst_admitted_detour_mm": 19.9283
+  },
+  {
+   "clause": "RP5",
+   "flank_ladder_mm": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8,
+    1.2,
+    1.6,
+    2.0
+   ],
+   "flanks": [
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 60.1213,
+       "y": 137.1351
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 59.4287,
+       "y": 137.5149
+      }
+     ],
+     "seg": 0,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 56.2557,
+       "y": 132.1721
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 55.6943,
+       "y": 132.7279
+      }
+     ],
+     "seg": 1,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 49.2793,
+       "y": 124.4793
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 48.7207,
+       "y": 123.9207
+      }
+     ],
+     "seg": 2,
+     "state": "BONDED"
+    }
+   ],
+   "flanks_split": 0,
+   "haul_netclass": "USB_D",
+   "haul_reference_critical": true,
+   "name": "THE HAUL'S OWN RETURN",
+   "ok": false,
+   "states": {
+    "BONDED": 3,
+    "NO_FLANK": 0,
+    "ONE_SIDED": 0,
+    "SPLIT": 0
+   }
+  },
+  {
+   "barrels": [
+    {
+     "dia_mm": 0.55,
+     "nearest_gnd_via": [
+      63.0,
+      135.5
+     ],
+     "nearest_gnd_via_mm": 3.821,
+     "within_budget": true,
+     "x": 60.2,
+     "y": 138.1
+    },
+    {
+     "dia_mm": 0.55,
+     "nearest_gnd_via": [
+      49.3,
+      117.0
+     ],
+     "nearest_gnd_via_mm": 5.6045,
+     "within_budget": true,
+     "x": 50.8,
+     "y": 122.4
+    }
+   ],
+   "budget_mm": 7.146,
+   "clause": "RP6",
+   "ends_reference": [
+    "In1.Cu"
+   ],
+   "name": "RETURN TRANSFER AT THE BARRELS",
+   "ok": true,
+   "outer_layers": [
+    "F.Cu"
+   ],
+   "transfer_needed": true
+  }
+ ],
+ "haul": "evidence/d636-plane-haul-USB_D_MCU_P.json",
+ "haul_netclass": "USB_D",
+ "haul_width_nm": 250000,
+ "layer": "In4",
+ "method": "read-only.  The layers a plane references are the copper layers adjacent to it in the board's own stack-up; the void is the haul stroked at the ZONE's own clearance plus an anti-pad at every barrel; a CROSS is a centreline that cuts the haul, and its detour is the shorter void-boundary arc between entry and exit minus the chord.  epsilon_r is read from the board stack-up; the edge rate is stated by the caller and never defaulted",
+ "plane_net": "GND",
+ "plane_references": [
+  "In3.Cu",
+  "B.Cu"
+ ],
+ "question": "what does a signal SLOT on a reserved GND plane cost the RETURN PATH of every trace that references that plane",
+ "schema": 1,
+ "segments": [
+  [
+   60.2,
+   138.1,
+   58.5,
+   135.0
+  ],
+  [
+   58.5,
+   135.0,
+   48.4,
+   124.8
+  ],
+  [
+   48.4,
+   124.8,
+   50.8,
+   122.4
+  ]
+ ],
+ "verdict": "FAIL"
+}

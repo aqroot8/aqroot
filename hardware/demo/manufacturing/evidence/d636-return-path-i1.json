@@ -1,0 +1,678 @@
+{
+ "authoritative_unchanged": true,
+ "barrels": [
+  [
+   60.2,
+   138.0,
+   0.6
+  ],
+  [
+   52.0,
+   145.8,
+   0.6
+  ]
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "clauses": [
+  {
+   "anchors": 268,
+   "anchors_off_body": 0,
+   "area_after_mm2": 9420.641,
+   "area_before_mm2": 9429.543,
+   "area_lost_mm2": 8.902,
+   "clause": "RP1",
+   "name": "PLANE SURVIVES",
+   "off_body": [],
+   "ok": true,
+   "outlines_after": 1,
+   "outlines_before": 1,
+   "void_half_width_nm": 350000,
+   "zone_clearance_nm": 250000
+  },
+  {
+   "clause": "RP2",
+   "crossing_nets": [
+    "/01_POWER_TREE/USB_D_ESD_N",
+    "/01_POWER_TREE/USB_D_ESD_P",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/I2C_SDA_INT",
+    "/NATIVE_A",
+    "/SD_CS_N",
+    "/WAKE_INT_N"
+   ],
+   "crossings": 9,
+   "detail": [
+    {
+     "a": [
+      54.275,
+      140.125
+     ],
+     "arc_mm": 13.2651,
+     "b": [
+      56.8,
+      142.65
+     ],
+     "chord_mm": 0.7616,
+     "detour_mm": 12.5036,
+     "entry": [
+      55.8593,
+      141.7093
+     ],
+     "exit": [
+      56.3978,
+      142.2478
+     ],
+     "layer": "F.Cu",
+     "mm": 3.5709,
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "netclass": "USB_D",
+     "reference_critical": true,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      57.075,
+      144.3
+     ],
+     "arc_mm": 8.4413,
+     "b": [
+      54.525,
+      144.3
+     ],
+     "chord_mm": 1.1205,
+     "detour_mm": 7.3208,
+     "entry": [
+      55.3353,
+      144.3
+     ],
+     "exit": [
+      54.2147,
+      144.3
+     ],
+     "layer": "F.Cu",
+     "mm": 2.55,
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "netclass": "USB_D",
+     "reference_critical": true,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      54.95,
+      144.75
+     ],
+     "arc_mm": 7.0434,
+     "b": [
+      53.6,
+      144.725
+     ],
+     "chord_mm": 1.0954,
+     "detour_mm": 5.948,
+     "entry": [
+      54.7768,
+      144.7468
+     ],
+     "exit": [
+      53.6816,
+      144.7265
+     ],
+     "layer": "F.Cu",
+     "mm": 1.3502,
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "netclass": "USB_D",
+     "reference_critical": true,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      57.875,
+      140.0
+     ],
+     "arc_mm": 8.659,
+     "b": [
+      57.375,
+      141.2
+     ],
+     "chord_mm": 1.7313,
+     "detour_mm": 6.9278,
+     "entry": [
+      58.064,
+      139.5465
+     ],
+     "exit": [
+      57.3981,
+      141.1446
+     ],
+     "layer": "F.Cu",
+     "mm": 1.3,
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "netclass": "USB_D",
+     "reference_critical": true,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      57.7,
+      140.2
+     ],
+     "arc_mm": 8.634,
+     "b": [
+      59.4,
+      146.0
+     ],
+     "chord_mm": 0.787,
+     "detour_mm": 7.847,
+     "entry": [
+      57.6294,
+      139.9593
+     ],
+     "exit": [
+      57.8508,
+      140.7145
+     ],
+     "layer": "In2.Cu",
+     "mm": 6.044,
+     "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      53.1,
+      144.4
+     ],
+     "arc_mm": 5.4079,
+     "b": [
+      54.2,
+      146.3
+     ],
+     "chord_mm": 0.7079,
+     "detour_mm": 4.7,
+     "entry": [
+      53.4133,
+      144.9411
+     ],
+     "exit": [
+      53.768,
+      145.5538
+     ],
+     "layer": "In2.Cu",
+     "mm": 2.1954,
+     "net": "/I2C_SDA_INT",
+     "netclass": "I2C",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      59.025,
+      138.475
+     ],
+     "arc_mm": 4.2503,
+     "b": [
+      59.5,
+      139.025
+     ],
+     "chord_mm": 0.7008,
+     "detour_mm": 3.5495,
+     "entry": [
+      59.1002,
+      138.5621
+     ],
+     "exit": [
+      59.5582,
+      139.0924
+     ],
+     "layer": "F.Cu",
+     "mm": 0.7267,
+     "net": "/NATIVE_A",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      54.25,
+      141.1
+     ],
+     "arc_mm": 12.4231,
+     "b": [
+      55.95,
+      142.8
+     ],
+     "chord_mm": 0.7616,
+     "detour_mm": 11.6615,
+     "entry": [
+      55.5736,
+      142.4236
+     ],
+     "exit": [
+      56.1121,
+      142.9621
+     ],
+     "layer": "F.Cu",
+     "mm": 2.4042,
+     "net": "/SD_CS_N",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      53.3397,
+      145.6393
+     ],
+     "arc_mm": 4.4932,
+     "b": [
+      52.6,
+      144.9
+     ],
+     "chord_mm": 0.7043,
+     "detour_mm": 3.7888,
+     "entry": [
+      53.4826,
+      145.7822
+     ],
+     "exit": [
+      52.9844,
+      145.2842
+     ],
+     "layer": "F.Cu",
+     "mm": 1.0458,
+     "net": "/WAKE_INT_N",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    }
+   ],
+   "graze_detail": [
+    {
+     "a": [
+      54.525,
+      144.3
+     ],
+     "b": [
+      53.675,
+      143.45
+     ],
+     "layer": "F.Cu",
+     "mm": 1.2021,
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "netclass": "USB_D",
+     "verdict": "GRAZE",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      58.5745,
+      139.28
+     ],
+     "b": [
+      57.875,
+      140.0
+     ],
+     "layer": "F.Cu",
+     "mm": 1.0038,
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "netclass": "USB_D",
+     "verdict": "GRAZE",
+     "width_mm": 0.23
+    },
+    {
+     "a": [
+      56.8,
+      131.2
+     ],
+     "b": [
+      57.7,
+      140.2
+     ],
+     "layer": "In2.Cu",
+     "mm": 9.0449,
+     "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+     "netclass": "Default",
+     "verdict": "GRAZE",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      59.5,
+      139.025
+     ],
+     "b": [
+      59.475,
+      143.425
+     ],
+     "layer": "F.Cu",
+     "mm": 4.4001,
+     "net": "/NATIVE_A",
+     "netclass": "Default",
+     "verdict": "GRAZE",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      56.6258,
+      143.4777
+     ],
+     "b": [
+      55.95,
+      142.8
+     ],
+     "layer": "F.Cu",
+     "mm": 0.9571,
+     "net": "/SD_CS_N",
+     "netclass": "Default",
+     "verdict": "GRAZE",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      56.6245,
+      141.1966
+     ],
+     "b": [
+      56.6,
+      140.25
+     ],
+     "layer": "F.Cu",
+     "mm": 0.9469,
+     "net": "Net-(U1-EN)",
+     "netclass": "Default",
+     "verdict": "GRAZE",
+     "width_mm": 0.2
+    }
+   ],
+   "grazes": 6,
+   "grazing_nets": [
+    "/01_POWER_TREE/USB_D_ESD_N",
+    "/01_POWER_TREE/USB_D_ESD_P",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/NATIVE_A",
+    "/SD_CS_N",
+    "Net-(U1-EN)"
+   ],
+   "name": "REFERENCE INVENTORY",
+   "ok": true,
+   "plane": "In1.Cu",
+   "references": [
+    "F.Cu",
+    "In2.Cu"
+   ]
+  },
+  {
+   "citations": {
+    "LED_BOOST": "LED_BOOST routed clearance - backlight string runs above 20 V",
+    "NFC_OSC": "NFC crystal nets stay on B.Cu",
+    "NFC_RF": "NFC transmit arm minimum width - equal both arms",
+    "NFC_RX": "NFC receive path stays on B.Cu",
+    "SPK_OUT": "SPK_OUT is outer-layer only - Class-D edges do not belong on In2",
+    "SWITCH_NODE": "SWITCH_NODE: low impedance, minimum width 0.40 mm",
+    "USB_D": "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
+   },
+   "citations_missing_from_dru": [],
+   "classes_absent_from_board": [],
+   "clause": "RP3",
+   "name": "CLASS REFUSAL",
+   "ok": false,
+   "reference_critical_classes": [
+    "LED_BOOST",
+    "NFC_OSC",
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+   ],
+   "refused": [
+    {
+     "detour_mm": 6.9278,
+     "layer": "F.Cu",
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "netclass": "USB_D",
+     "why": "impedance-controlled differential pair whose reference plane the rule NAMES"
+    },
+    {
+     "detour_mm": 5.948,
+     "layer": "F.Cu",
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "netclass": "USB_D",
+     "why": "impedance-controlled differential pair whose reference plane the rule NAMES"
+    },
+    {
+     "detour_mm": 12.5036,
+     "layer": "F.Cu",
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "netclass": "USB_D",
+     "why": "impedance-controlled differential pair whose reference plane the rule NAMES"
+    },
+    {
+     "detour_mm": 7.3208,
+     "layer": "F.Cu",
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "netclass": "USB_D",
+     "why": "impedance-controlled differential pair whose reference plane the rule NAMES"
+    }
+   ]
+  },
+  {
+   "budget_mm": 7.146,
+   "clause": "RP4",
+   "edge_ns": 1.0,
+   "epsilon_r": 4.4,
+   "fraction": 20.0,
+   "name": "DETOUR BUDGET",
+   "ok": false,
+   "over_budget": [
+    {
+     "detour_mm": 7.847,
+     "layer": "In2.Cu",
+     "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR"
+    },
+    {
+     "detour_mm": 11.6615,
+     "layer": "F.Cu",
+     "net": "/SD_CS_N"
+    }
+   ],
+   "rise_length_mm": 142.92,
+   "velocity_mm_per_ns": 142.92,
+   "worst_admitted_detour_mm": 11.6615
+  },
+  {
+   "clause": "RP5",
+   "flank_ladder_mm": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8,
+    1.2,
+    1.6,
+    2.0
+   ],
+   "flanks": [
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 58.9452,
+       "y": 138.6818
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 59.4548,
+       "y": 139.2182
+      }
+     ],
+     "seg": 0,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 55.6565,
+       "y": 142.1626
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 56.3435,
+       "y": 142.4374
+      }
+     ],
+     "seg": 1,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 54.5439,
+       "y": 144.0111
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 55.0061,
+       "y": 144.5889
+      }
+     ],
+     "seg": 2,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 1.2,
+       "outline": 0,
+       "x": 52.675,
+       "y": 144.25
+      },
+      {
+       "at_mm": 1.2,
+       "outline": 0,
+       "x": 52.675,
+       "y": 147.35
+      }
+     ],
+     "seg": 3,
+     "state": "BONDED"
+    }
+   ],
+   "flanks_split": 0,
+   "haul_netclass": "I2C",
+   "haul_reference_critical": false,
+   "name": "THE HAUL'S OWN RETURN",
+   "ok": true,
+   "states": {
+    "BONDED": 4,
+    "NO_FLANK": 0,
+    "ONE_SIDED": 0,
+    "SPLIT": 0
+   }
+  },
+  {
+   "barrels": [
+    {
+     "dia_mm": 0.6,
+     "nearest_gnd_via": [
+      63.0,
+      135.5
+     ],
+     "nearest_gnd_via_mm": 3.7537,
+     "within_budget": true,
+     "x": 60.2,
+     "y": 138.0
+    },
+    {
+     "dia_mm": 0.6,
+     "nearest_gnd_via": [
+      49.5,
+      147.1
+     ],
+     "nearest_gnd_via_mm": 2.8178,
+     "within_budget": true,
+     "x": 52.0,
+     "y": 145.8
+    }
+   ],
+   "budget_mm": 7.146,
+   "clause": "RP6",
+   "ends_reference": [
+    "In1.Cu"
+   ],
+   "name": "RETURN TRANSFER AT THE BARRELS",
+   "ok": true,
+   "outer_layers": [
+    "F.Cu"
+   ],
+   "transfer_needed": false
+  }
+ ],
+ "haul": "evidence/d636-plane-haul-i1.json",
+ "haul_netclass": "I2C",
+ "haul_width_nm": 200000,
+ "layer": "In1",
+ "method": "read-only.  The layers a plane references are the copper layers adjacent to it in the board's own stack-up; the void is the haul stroked at the ZONE's own clearance plus an anti-pad at every barrel; a CROSS is a centreline that cuts the haul, and its detour is the shorter void-boundary arc between entry and exit minus the chord.  epsilon_r is read from the board stack-up; the edge rate is stated by the caller and never defaulted",
+ "plane_net": "GND",
+ "plane_references": [
+  "F.Cu",
+  "In2.Cu"
+ ],
+ "question": "what does a signal SLOT on a reserved GND plane cost the RETURN PATH of every trace that references that plane",
+ "schema": 1,
+ "segments": [
+  [
+   60.2,
+   138.0,
+   56.2,
+   141.8
+  ],
+  [
+   56.2,
+   141.8,
+   55.4,
+   143.8
+  ],
+  [
+   55.4,
+   143.8,
+   52.9,
+   145.8
+  ],
+  [
+   52.9,
+   145.8,
+   52.0,
+   145.8
+  ]
+ ],
+ "verdict": "FAIL"
+}

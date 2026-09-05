@@ -1,0 +1,315 @@
+{
+ "a": "U1.38",
+ "authoritative_unchanged": true,
+ "b": "TP5.1",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "method": "three independent levers, every trial read-only and reverted: (1) five --far sets at two grids, (2) the RP-framework's own --return-keepout, which projects the referencing layers' copper onto the plane so the search is FOR a crossing-free path, and (3) --plane-block, which forbids the plane east of the crossing so the slot must START past it.  A lever that closes at a lower RP price would refute the finding; none does",
+ "net": "/I2C_SCL_INT",
+ "question": "is the /I2S_LRCLK return-path crossing that RP4 refuses a property of the ROUTER'S CHOICE of path, or of the BOARD",
+ "schema": 1,
+ "trials": [
+  {
+   "barrels": 2,
+   "far": "F,B,I2,I1,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I1",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.4917,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I2,I1,I4",
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "I1",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.7661,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.4917,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I2,I4",
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.7661,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.4917,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I4",
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.7661,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,I2,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.4917,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,I2,I4",
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.7661,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.4917,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,I4",
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "far-set x grid",
+   "mm": 14.7661,
+   "ok": true,
+   "reason": null
+  },
+  {
+   "barrels": 4,
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "B",
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "return keep-out: the two crossing nets",
+   "mm": 32.1211,
+   "ok": true,
+   "priced": {
+    "crossings": 7,
+    "rp1": false,
+    "verdict": "FAIL",
+    "worst_detour_mm": 15.7636
+   },
+   "projected": 18,
+   "reason": null
+  },
+  {
+   "barrels": 2,
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": [
+    "F",
+    "I4",
+    "F"
+   ],
+   "lever": "return keep-out: /I2S_LRCLK only",
+   "mm": 29.4474,
+   "ok": true,
+   "priced": {
+    "crossings": 8,
+    "rp1": false,
+    "verdict": "FAIL",
+    "worst_detour_mm": 23.287
+   },
+   "projected": 12,
+   "reason": null
+  },
+  {
+   "barrels": null,
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "return keep-out: ALL foreign copper of B.Cu+In3.Cu",
+   "mm": null,
+   "ok": false,
+   "projected": 1830,
+   "reason": "NO_PATH"
+  },
+  {
+   "barrels": null,
+   "block": [
+    {
+     "box": [
+      57.0,
+      120.0,
+      75.0,
+      160.0
+     ],
+     "layer": "I4"
+    }
+   ],
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "plane block: In4 east of x",
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH"
+  },
+  {
+   "barrels": null,
+   "block": [
+    {
+     "box": [
+      57.5,
+      120.0,
+      75.0,
+      160.0
+     ],
+     "layer": "I4"
+    }
+   ],
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "plane block: In4 east of x",
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH"
+  },
+  {
+   "barrels": null,
+   "block": [
+    {
+     "box": [
+      58.0,
+      120.0,
+      75.0,
+      160.0
+     ],
+     "layer": "I4"
+    }
+   ],
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "plane block: In4 east of x",
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH"
+  },
+  {
+   "barrels": null,
+   "block": [
+    {
+     "box": [
+      58.5,
+      120.0,
+      75.0,
+      160.0
+     ],
+     "layer": "I4"
+    }
+   ],
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "plane block: In4 east of x",
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH"
+  },
+  {
+   "barrels": null,
+   "block": [
+    {
+     "box": [
+      59.0,
+      120.0,
+      75.0,
+      160.0
+     ],
+     "layer": "I4"
+    }
+   ],
+   "far": "F,B,I2,I4",
+   "grid_nm": 100000,
+   "layers": null,
+   "lever": "plane block: In4 east of x",
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH"
+  }
+ ],
+ "trunk_width_nm": 200000,
+ "verdict": "FORCED.  The far-set and grid family is ONE path family and every member crosses /I2C_SCL_INT's forced neighbour at the same place.  The return keep-out CLOSES and is strictly WORSE -- it doubles the copper, SEVERS the plane (RP1 FAIL) and trades one crossing for seven or eight, up to 23.287 mm.  The plane block returns NO_PATH at every rung from x=59.0 down to x=57.0, which says the barrel at (60.2, 138.0) is the ONLY door out of U1.38 into the plane.  The 7.670 mm detour is irreducible for this pair"
+}

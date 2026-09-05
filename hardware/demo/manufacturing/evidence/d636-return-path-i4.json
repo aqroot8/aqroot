@@ -1,0 +1,361 @@
+{
+ "authoritative_unchanged": true,
+ "barrels": [
+  [
+   60.2,
+   138.0,
+   0.6
+  ],
+  [
+   52.0,
+   145.8,
+   0.6
+  ]
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "clauses": [
+  {
+   "anchors": 268,
+   "anchors_off_body": 0,
+   "area_after_mm2": 9420.641,
+   "area_before_mm2": 9429.543,
+   "area_lost_mm2": 8.902,
+   "clause": "RP1",
+   "name": "PLANE SURVIVES",
+   "off_body": [],
+   "ok": true,
+   "outlines_after": 1,
+   "outlines_before": 1,
+   "void_half_width_nm": 350000,
+   "zone_clearance_nm": 250000
+  },
+  {
+   "clause": "RP2",
+   "crossing_nets": [
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "/I2S_LRCLK"
+   ],
+   "crossings": 3,
+   "detail": [
+    {
+     "a": [
+      60.2,
+      140.4
+     ],
+     "arc_mm": 3.3789,
+     "b": [
+      58.6,
+      135.0
+     ],
+     "chord_mm": 0.7858,
+     "detour_mm": 2.5931,
+     "entry": [
+      59.7567,
+      138.9039
+     ],
+     "exit": [
+      59.5335,
+      138.1504
+     ],
+     "layer": "B.Cu",
+     "mm": 5.6321,
+     "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+     "netclass": "Default",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      52.6,
+      146.6
+     ],
+     "arc_mm": 4.1473,
+     "b": [
+      58.1,
+      141.1
+     ],
+     "chord_mm": 4.0579,
+     "detour_mm": 0.0895,
+     "entry": [
+      53.1589,
+      146.0411
+     ],
+     "exit": [
+      56.0283,
+      143.1717
+     ],
+     "layer": "B.Cu",
+     "mm": 7.7782,
+     "net": "/I2S_LRCLK",
+     "netclass": "I2S",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    },
+    {
+     "a": [
+      58.1,
+      141.1
+     ],
+     "arc_mm": 8.4381,
+     "b": [
+      57.3,
+      138.8
+     ],
+     "chord_mm": 0.7684,
+     "detour_mm": 7.6698,
+     "entry": [
+      57.9373,
+      140.6323
+     ],
+     "exit": [
+      57.6849,
+      139.9066
+     ],
+     "layer": "B.Cu",
+     "mm": 2.4352,
+     "net": "/I2S_LRCLK",
+     "netclass": "I2S",
+     "reference_critical": false,
+     "ring": 0,
+     "verdict": "CROSS",
+     "width_mm": 0.2
+    }
+   ],
+   "graze_detail": [],
+   "grazes": 0,
+   "grazing_nets": [],
+   "name": "REFERENCE INVENTORY",
+   "ok": true,
+   "plane": "In4.Cu",
+   "references": [
+    "In3.Cu",
+    "B.Cu"
+   ]
+  },
+  {
+   "citations": {
+    "LED_BOOST": "LED_BOOST routed clearance - backlight string runs above 20 V",
+    "NFC_OSC": "NFC crystal nets stay on B.Cu",
+    "NFC_RF": "NFC transmit arm minimum width - equal both arms",
+    "NFC_RX": "NFC receive path stays on B.Cu",
+    "SPK_OUT": "SPK_OUT is outer-layer only - Class-D edges do not belong on In2",
+    "SWITCH_NODE": "SWITCH_NODE: low impedance, minimum width 0.40 mm",
+    "USB_D": "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"
+   },
+   "citations_missing_from_dru": [],
+   "classes_absent_from_board": [],
+   "clause": "RP3",
+   "name": "CLASS REFUSAL",
+   "ok": true,
+   "reference_critical_classes": [
+    "LED_BOOST",
+    "NFC_OSC",
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+   ],
+   "refused": []
+  },
+  {
+   "budget_mm": 7.146,
+   "clause": "RP4",
+   "edge_ns": 1.0,
+   "epsilon_r": 4.4,
+   "fraction": 20.0,
+   "name": "DETOUR BUDGET",
+   "ok": false,
+   "over_budget": [
+    {
+     "detour_mm": 7.6698,
+     "layer": "B.Cu",
+     "net": "/I2S_LRCLK"
+    }
+   ],
+   "rise_length_mm": 142.92,
+   "velocity_mm_per_ns": 142.92,
+   "worst_admitted_detour_mm": 7.6698
+  },
+  {
+   "clause": "RP5",
+   "flank_ladder_mm": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8,
+    1.2,
+    1.6,
+    2.0
+   ],
+   "flanks": [
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 58.9452,
+       "y": 138.6818
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 59.4548,
+       "y": 139.2182
+      }
+     ],
+     "seg": 0,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 55.6565,
+       "y": 142.1626
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 56.3435,
+       "y": 142.4374
+      }
+     ],
+     "seg": 1,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 54.5439,
+       "y": 144.0111
+      },
+      {
+       "at_mm": 0.02,
+       "outline": 0,
+       "x": 55.0061,
+       "y": 144.5889
+      }
+     ],
+     "seg": 2,
+     "state": "BONDED"
+    },
+    {
+     "flanks": [
+      {
+       "at_mm": 1.2,
+       "outline": 0,
+       "x": 52.675,
+       "y": 144.25
+      },
+      {
+       "at_mm": 1.2,
+       "outline": 0,
+       "x": 52.675,
+       "y": 147.35
+      }
+     ],
+     "seg": 3,
+     "state": "BONDED"
+    }
+   ],
+   "flanks_split": 0,
+   "haul_netclass": "I2C",
+   "haul_reference_critical": false,
+   "name": "THE HAUL'S OWN RETURN",
+   "ok": true,
+   "states": {
+    "BONDED": 4,
+    "NO_FLANK": 0,
+    "ONE_SIDED": 0,
+    "SPLIT": 0
+   }
+  },
+  {
+   "barrels": [
+    {
+     "dia_mm": 0.6,
+     "nearest_gnd_via": [
+      63.0,
+      135.5
+     ],
+     "nearest_gnd_via_mm": 3.7537,
+     "within_budget": true,
+     "x": 60.2,
+     "y": 138.0
+    },
+    {
+     "dia_mm": 0.6,
+     "nearest_gnd_via": [
+      49.5,
+      147.1
+     ],
+     "nearest_gnd_via_mm": 2.8178,
+     "within_budget": true,
+     "x": 52.0,
+     "y": 145.8
+    }
+   ],
+   "budget_mm": 7.146,
+   "clause": "RP6",
+   "ends_reference": [
+    "In1.Cu"
+   ],
+   "name": "RETURN TRANSFER AT THE BARRELS",
+   "ok": true,
+   "outer_layers": [
+    "F.Cu"
+   ],
+   "transfer_needed": true
+  }
+ ],
+ "haul": "evidence/d636-plane-haul-i4.json",
+ "haul_netclass": "I2C",
+ "haul_width_nm": 200000,
+ "layer": "In4",
+ "method": "read-only.  The layers a plane references are the copper layers adjacent to it in the board's own stack-up; the void is the haul stroked at the ZONE's own clearance plus an anti-pad at every barrel; a CROSS is a centreline that cuts the haul, and its detour is the shorter void-boundary arc between entry and exit minus the chord.  epsilon_r is read from the board stack-up; the edge rate is stated by the caller and never defaulted",
+ "plane_net": "GND",
+ "plane_references": [
+  "In3.Cu",
+  "B.Cu"
+ ],
+ "question": "what does a signal SLOT on a reserved GND plane cost the RETURN PATH of every trace that references that plane",
+ "schema": 1,
+ "segments": [
+  [
+   60.2,
+   138.0,
+   56.2,
+   141.8
+  ],
+  [
+   56.2,
+   141.8,
+   55.4,
+   143.8
+  ],
+  [
+   55.4,
+   143.8,
+   52.9,
+   145.8
+  ],
+  [
+   52.9,
+   145.8,
+   52.0,
+   145.8
+  ]
+ ],
+ "verdict": "FAIL"
+}

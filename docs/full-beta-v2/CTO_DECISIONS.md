@@ -1,5 +1,221 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-636 · 2026-09-05 · Demo — the GND RETURN PATH is PRICED: PP2's one open modelling gap is CLOSED, "the choice of plane is FREE" is REFUTED (In1 costs the USB HS pair its own DRU-NAMED reference plane), and the whole plane licence reduces to ONE irreducible number — 7.670 mm on /I2S_LRCLK
+
+    authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial and reports
+      `authoritative_unchanged: true`.
+    NO EXISTING FILE CHANGED.  `git diff --numstat` over the whole worktree is
+      EMPTY: two new tracked instruments and their evidence, add-only, not one
+      line of any promoting instrument touched.  The ten standing contracts
+      were re-run and compared field by field anyway --
+      `evidence/d636-contract-regression.json`, **10/10 ran, 10/10 IDENTICAL**.
+
+D-635 closed with a ranked list whose first item was unambiguous: *"PRICE THE
+`GND` RETURN PATH ... `PP2` is the clause and `screen_plane_slot.py` already
+produces the geometry it would price.  The `GND` return-path price is now the
+ONLY thing between a measured closure at full trunk width and copper."*
+
+**It is priced.  The clause exists, it is mechanical, and it refuses all three
+of the closures D-635 found — each by a DIFFERENT clause, and one of them by
+the board's own authored rule rather than by a judgement call.**
+
+## 1. The gap, and why it had stayed open since D-628
+
+`PP2` prices a POUR severance in amperes.  It has never been able to price a
+PLANE severance, and the reason is structural: a reference plane is not
+carrying the current that matters.  It is carrying somebody ELSE's return
+current, and the cost of cutting it is paid by traces the cut never touches.
+D-628 recorded it as *"the one OPEN modelling gap in `PP2`"*; D-632, D-633,
+D-634 and D-635 each carried it forward unclosed.
+
+**New tracked `checks/plane_return_path.py`, RP1..RP6.**  Every term is
+measured off the board:
+
+  * WHICH traces pay -- the ones whose nearest reference is this plane, i.e.
+    the copper layers adjacent to it in `GetEnabledLayers().CuStack()`.  Never
+    transcribed: `.kicad_dru` section 2b states the intent (*"L2 (In1)
+    references the F.Cu side, L5 (In4) references the B.Cu side"*) and the
+    board states the fact.
+  * WHICH of them pay -- the ones that CROSS.  A trace running alongside a
+    slot, or ending beside it, keeps a continuous return.
+  * HOW MUCH -- exactly.  The return follows the void's own boundary, so the
+    detour is the shorter boundary ARC between where the trace enters the void
+    and where it leaves, MINUS the chord it wanted.  Both are computed on the
+    real void outline.
+
+`RP1` plane survives, `RP2` reference inventory, `RP3` class refusal, `RP4`
+detour budget, `RP5` the haul's own return, `RP6` return transfer at the
+barrels.
+
+**RP3 IS A POINTER INTO THE RULES, NEVER A SECOND COPY OF THEM.**  Each of the
+seven reference-critical netclasses cites a live `.kicad_dru` rule BY ITS EXACT
+NAME, and the clause FAILS if the cited rule is not present in the `.kicad_dru`
+beside the board -- so retiring or renaming a rule breaks this check loudly
+instead of silently widening it.  Both integrity checks are clean on the
+current board: `citations_missing_from_dru: []`, `classes_absent_from_board:
+[]`.
+
+**RP4 REFUSES TO INVENT A NUMBER, WHICH IS THE D-633 LL-C DOCTRINE APPLIED
+AGAIN.**  The budget is `rise_length / 20` where
+`rise_length = edge_ns * c / sqrt(epsilon_r)`.  `epsilon_r` is read from the
+BOARD's own stack-up -- **4.4, giving 142.920 mm/ns** -- and the WORST value is
+taken, because the slowest propagation gives the shortest rise length and the
+tightest budget.  `--edge-ns` has **NO DEFAULT and the clause refuses to run
+without it**: this repository does not publish the edge rate of any net, and
+D-633's LL-C already ruled that inventing an unpublished electrical figure is
+not something a clause may do.  Stating it on the command line puts it in the
+artifact, where it can be argued with.  Every run below is at
+**`--edge-ns 1.0`, a deliberately conservative floor for a 3.3 V CMOS GPIO,
+giving a 142.920 mm rise length and a 7.146 mm budget.**
+
+## 2. "THE CHOICE OF PLANE IS FREE" — REFUTED
+
+D-635 published that offering only `In4.Cu` closes the same three pairs at the
+same widths as `In1.Cu` and concluded *"the choice of plane is FREE"*.  It is
+free to the ROUTER.  It is decisively **not** free to the board, and the two
+hauls are the SAME COPPER cutting two completely different sets of return
+paths.
+
+New tracked `screen_plane_haul.py` reproduces D-635's closure and publishes
+the EXACT geometry -- every segment, layer, width and barrel, dumped from
+`qb.laid` before the revert -- which `screen_offcentre_hop.py` computes and
+throws away.  `/I2C_SCL_INT` `U1.38 <-> TP5.1` closes at the full 0.200 mm
+netclass trunk on **`F -> In1 -> F`** and on **`F -> In4 -> F`**, both
+14.4917 mm, both 2 barrels, both at (60.2, 138.0) and (52.0, 145.8)
+(`evidence/d636-plane-haul-{i1,i4}.json`).
+
+Priced (`evidence/d636-return-path-{i1,i4}.json`), the same copper on the two
+planes costs:
+
+    In1.Cu   references F.Cu + In2.Cu   9 CROSS, 6 GRAZE   RP3 FAIL
+    In4.Cu   references In3.Cu + B.Cu   3 CROSS, 0 GRAZE   RP3 PASS
+
+**`In1.Cu` IS REFUSED BY THE BOARD'S OWN RULE.**  Four of its nine crossings
+are the USB high-speed pair -- `/01_POWER_TREE/USB_D_ESD_N` twice at 12.504 mm
+and 7.321 mm of return detour, `/01_POWER_TREE/USB_D_ESD_P` twice at 5.948 mm
+and 6.928 mm -- and the rule RP3 cites is named
+**"USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"**.  The board
+already NAMES `In1` as that pair's reference plane.  A slot in `In1` under it
+is refused by the design's authored intent, not by an opinion formed today.
+`/SD_CS_N` is over budget besides, at 11.662 mm.
+
+`In4.Cu` crosses **nothing reference-critical at all**: `RP3 PASS`,
+`refused: 0`.  Its three crossings are `/02_MCU_CORE/DISP_BL_CTL_STRAP` at
+2.593 mm, `/I2S_LRCLK` at 0.090 mm (a near-tangential crossing beside a slot
+end, which is what a free crossing looks like) and `/I2S_LRCLK` again at
+**7.670 mm** -- against the 7.146 mm budget.
+
+**Both planes pass RP1 identically**: outlines 1 -> 1, 8.902 mm2 lost, **268
+anchors, 0 off the main body** -- and note that this is the REAL path at the
+ZONE's own 0.250 mm clearance with both barrel anti-pads included, where
+D-635's `screen_plane_slot.py` measured the worst-case STRAIGHT cut at the
+0.200 mm netclass clearance.  The stronger question gives the same answer.
+
+**RP6 IS THE TERM THAT MAKES THEM DIFFERENT PRICES FOR IDENTICAL COPPER.**  The
+haul's outer ends are on `F.Cu`, which references `In1`.  A haul ON `In1` never
+changes reference domain -- `transfer_needed: false`, nothing to charge.  A
+haul on `In4` does, and the only thing that carries the return across is a
+`GND` through barrel near the signal barrel: the nearest are **3.754 mm and
+2.818 mm** away.  Both are inside the budget so RP6 passes, but the cost is
+real, it is now measured, and the cheap mitigation -- a `GND` stitch barrel at
+each signal barrel -- is named here so a future promoting transaction carries
+it.
+
+## 3. The 7.670 mm crossing is FORCED BY THE BOARD, not chosen by the router
+
+Three independent levers, eighteen read-only trials, every one reverted
+(`evidence/d636-plane-haul-levers.json`):
+
+  1. **FIVE `--far` SETS AT TWO GRIDS.**  `F,B,I2,I4` / `F,I2,I4` / `F,B,I4` /
+     `F,I4` / `F,B,I2,I1,I4`, at 100 um and 50 um.  All ten close; all ten are
+     ONE path family (14.4917 mm at 100 um, 14.7661 mm at 50 um, 2 barrels
+     every time) and every member crosses `/I2S_LRCLK` at the same place for
+     the same 7.67-7.79 mm.
+  2. **THE FRAMEWORK'S OWN `--return-keepout`** -- new to
+     `screen_plane_haul.py`, and the natural next question the price itself
+     asks: project the referencing layers' copper onto the plane as obstacles,
+     via the same add-only idiom
+     `incremental_router.inject_existing_via_obstacles` uses for barrels, so
+     the search is FOR a crossing-free path.  Projecting all 1830 segments of
+     `B.Cu + In3.Cu` gives `NO_PATH`.  Projecting only `/I2S_LRCLK` (12
+     segments) CLOSES -- and is **strictly worse**: 29.4474 mm instead of
+     14.4917, **`RP1` SEVERS**, and one crossing becomes EIGHT, including
+     `Net-(J3-SHIELD)` at 19.773 mm and `/I2S_BCLK` at **23.287 mm**.
+     Protecting the two crossing nets together is worse again.
+  3. **`--plane-block`** -- forbid `In4` east of the crossing so the slot must
+     START past it, which is the cheap answer wherever a crossing is forced,
+     because the detour is twice the distance to the nearest slot END.
+     `NO_PATH` at **every rung from x = 59.0 down to x = 57.0**.  The barrel at
+     (60.2, 138.0) is the ONLY door out of `U1.38` into the plane.
+
+**So the licence for this edge costs exactly one number, and the number cannot
+be reduced by routing.**
+
+## 4. The other two closures D-635 found are refused by a different clause
+
+`/USB_D_MCU_N` `R33.2 <-> U1.13` and `/USB_D_MCU_P` `R34.2 <-> U1.14` both
+close on `F -> In4 -> F` at 0.250 mm (`evidence/d636-plane-haul-USB_D_MCU_*.json`).
+Both are refused by **RP5**: the HAUL'S OWN class is reference-critical, and a
+USB high-speed pair routed inside a slot in a reference plane is the fault the
+whole clause exists to name.  **RP4 refuses them anyway**, at 19.622 mm and
+19.928 mm of induced detour on other traces.  RP5 was not a dead clause written
+for symmetry; it fires on the first pair it was ever shown.
+
+## 5. Verdict, and the ONE datum that decides the remaining edge
+
+    /I2C_SCL_INT  U1.38<->TP5.1  on In1.Cu   REFUSED  RP3 -- the USB HS pair
+                                                      crosses its own
+                                                      DRU-named reference
+                                                      plane four times
+    /I2C_SCL_INT  U1.38<->TP5.1  on In4.Cu   PENDING  RP1/RP2/RP3/RP5/RP6 PASS.
+                                                      RP4 alone, by 0.524 mm on
+                                                      ONE crossing, at a
+                                                      1.0 ns stated edge floor
+    /USB_D_MCU_N  R33.2<->U1.13   either      REFUSED  RP5 (and RP4)
+    /USB_D_MCU_P  R34.2<->U1.14   either      REFUSED  RP5 (and RP4)
+
+The `In4` edge is not a routing wall.  It is a **DATA** gap of exactly one
+figure: the output edge rate of the driver on `/I2S_LRCLK`.  At the 1.0 ns
+floor stated here the budget is 7.146 mm and the measured detour is 7.670 mm --
+a 7.3% overrun inside a deliberately conservative assumption.  Any published
+vendor edge rate at or above 1.08 ns admits the edge outright.  **That figure
+is NOT invented here**, for the same reason D-633's LL-C declined to invent the
+BMI270's performance-mode current: the repository does not carry it, and a
+clause may not manufacture the datum that decides it.
+
+**NEXT, IN ORDER OF LEVERAGE.**
+
+ 1. **READ THE EDGE RATE OFF THE PARTS AND RECORD IT.**  `/I2S_LRCLK`'s driver
+    and receiver are named in the schematic and their datasheets are ordinary
+    vendor documents; `docs/full-beta-v2/assembly/SOURCING_LEDGER.md` already
+    carries the identities D-614/D-615 ruled orderable.  A per-part
+    `edge_ns` column is a small, bounded, machine-readable addition that RP4
+    reads instead of a command-line argument -- and it retires the ONLY thing
+    between this board and its first plane haul.  It is worth more than one
+    edge: RP4 is the clause every future plane licence will be decided by.
+ 2. **CARRY THE `GND` STITCH BARRELS.**  If the `In4` edge is admitted, the
+    promoting transaction owes a `GND` through barrel beside each signal
+    barrel: RP6 measures 3.754 mm and 2.818 mm today, which passes, and a
+    stitch at each barrel makes it nil and improves `GND` besides.
+ 3. **AIM RP2/RP4 AT THE BOARD, NOT AT ONE HAUL.**  The clause takes any
+    `--seg` list, so the same instrument can now ask *"where on `In4.Cu` could
+    a slot be cut for free?"* -- a map of the plane's crossing-free corridors,
+    which is the thing that would tell the next iteration WHICH open edge to
+    aim a plane haul at instead of re-asking the one D-635 happened to find.
+ 4. **THE 82 PAIRS THAT DID NOT MOVE ARE STILL A PLACEMENT PROBLEM** (PM-3),
+    carried unchanged from D-635 item 2, and the **barrel-search corrections
+    still belong in the promoting instruments**, carried unchanged from D-634
+    item 2.
+
+The `GND` return-path pricing question is **CLOSED as a modelling gap** and
+reopened as a data task.  No owner decision is OPEN; D-618's `J3` question
+remains RECORDED and PM-3 remains an open PLACEMENT finding.
+
+
 # D-635 · 2026-09-05 · Demo — the VIA FIELD is NOT the wall (deleting all 790 barrels moves In2.Cu's largest piece 52.5% → 56.1%), and the board's LARGEST CONNECTED ROUTING SURFACE is a GND PLANE — 8635.9 mm2 in ONE piece, which closes /I2C_SCL_INT at the FULL netclass trunk
 
     authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2

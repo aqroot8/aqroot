@@ -1,0 +1,235 @@
+{
+ "a": "R33.2",
+ "authoritative_unchanged": true,
+ "b": "U1.13",
+ "barrels": [
+  {
+   "dia_nm": 550000,
+   "drill_nm": 250000,
+   "x_mm": 56.0,
+   "x_nm": 56000000,
+   "y_mm": 139.0,
+   "y_nm": 139000000
+  },
+  {
+   "dia_nm": 550000,
+   "drill_nm": 250000,
+   "x_mm": 50.8,
+   "x_nm": 50800000,
+   "y_mm": 122.4,
+   "y_nm": 122400000
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "dru_floor_nm": 150000,
+ "far": [
+  "F",
+  "B",
+  "I2",
+  "I4"
+ ],
+ "gap_mm": 21.858,
+ "grid_nm": 100000,
+ "launches": [
+  {
+   "a_xy": [
+    56.6284,
+    139.2326
+   ],
+   "b_xy": [
+    55.8,
+    139.2
+   ],
+   "base_dir": true,
+   "centre": true,
+   "layer": "F",
+   "mm": 0.829,
+   "necked": false,
+   "offcentre_mm": 0.0,
+   "pad": "R33.2",
+   "trunk_width": 250000,
+   "width": 250000
+  },
+  {
+   "a_xy": [
+    47.77,
+    119.25
+   ],
+   "b_xy": [
+    47.8,
+    120.5
+   ],
+   "base_dir": true,
+   "centre": true,
+   "layer": "F",
+   "mm": 1.2504,
+   "necked": false,
+   "offcentre_mm": 0.0,
+   "pad": "U1.13",
+   "trunk_width": 250000,
+   "width": 250000
+  }
+ ],
+ "layers": [
+  "F",
+  "I4",
+  "F"
+ ],
+ "licensed_unconditionally": true,
+ "method": "read-only; one pad pair, one trunk width, one --far set; every object the trial laid is dumped from qb.laid before qb.revert removes it, and the board's sha256 is re-read afterwards.  A closure here is a LICENCE QUESTION and never copper: the plane is reserved to GND by .kicad_dru sections 2a/2b and no rule area names a corridor in it",
+ "mm": 26.5411,
+ "mm_by_layer": {
+  "F": 4.0893,
+  "I4": 20.3725
+ },
+ "net": "/USB_D_MCU_N",
+ "netclass": "USB_D",
+ "ok": true,
+ "plane_blocks": [],
+ "question": "what EXACT copper does maze3d.offcentre_route lay for this pad pair when a reserved inner plane is offered as a haul layer",
+ "reason": null,
+ "return_keepout": null,
+ "schema": 1,
+ "seconds": 2.91,
+ "stub_mm": 2.0794,
+ "terminals": [
+  "F",
+  "F"
+ ],
+ "tracks": [
+  {
+   "layer": "F.Cu",
+   "mm": 0.829,
+   "width_nm": 250000,
+   "x0_mm": 56.628351,
+   "x0_nm": 56628351,
+   "x1_mm": 55.8,
+   "x1_nm": 55800000,
+   "y0_mm": 139.232566,
+   "y0_nm": 139232566,
+   "y1_mm": 139.2,
+   "y1_nm": 139200000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 1.2504,
+   "width_nm": 250000,
+   "x0_mm": 47.77,
+   "x0_nm": 47770000,
+   "x1_mm": 47.8,
+   "x1_nm": 47800000,
+   "y0_mm": 119.25,
+   "y0_nm": 119250000,
+   "y1_mm": 120.5,
+   "y1_nm": 120500000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 0.2828,
+   "width_nm": 250000,
+   "x0_mm": 55.8,
+   "x0_nm": 55800000,
+   "x1_mm": 56.0,
+   "x1_nm": 56000000,
+   "y0_mm": 139.2,
+   "y0_nm": 139200000,
+   "y1_mm": 139.0,
+   "y1_nm": 139000000
+  },
+  {
+   "layer": "In4.Cu",
+   "mm": 4.2059,
+   "width_nm": 250000,
+   "x0_mm": 56.0,
+   "x0_nm": 56000000,
+   "x1_mm": 57.3,
+   "x1_nm": 57300000,
+   "y0_mm": 139.0,
+   "y0_nm": 139000000,
+   "y1_mm": 135.0,
+   "y1_nm": 135000000
+  },
+  {
+   "layer": "In4.Cu",
+   "mm": 13.6209,
+   "width_nm": 250000,
+   "x0_mm": 57.3,
+   "x0_nm": 57300000,
+   "x1_mm": 49.0,
+   "x1_nm": 49000000,
+   "y0_mm": 135.0,
+   "y0_nm": 135000000,
+   "y1_mm": 124.2,
+   "y1_nm": 124200000
+  },
+  {
+   "layer": "In4.Cu",
+   "mm": 2.5456,
+   "width_nm": 250000,
+   "x0_mm": 49.0,
+   "x0_nm": 49000000,
+   "x1_mm": 50.8,
+   "x1_nm": 50800000,
+   "y0_mm": 124.2,
+   "y0_nm": 124200000,
+   "y1_mm": 122.4,
+   "y1_nm": 122400000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 1.8385,
+   "width_nm": 250000,
+   "x0_mm": 50.8,
+   "x0_nm": 50800000,
+   "x1_mm": 49.5,
+   "x1_nm": 49500000,
+   "y0_mm": 122.4,
+   "y0_nm": 122400000,
+   "y1_mm": 121.1,
+   "y1_nm": 121100000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 0.4123,
+   "width_nm": 250000,
+   "x0_mm": 49.5,
+   "x0_nm": 49500000,
+   "x1_mm": 49.1,
+   "x1_nm": 49100000,
+   "y0_mm": 121.1,
+   "y0_nm": 121100000,
+   "y1_mm": 121.2,
+   "y1_nm": 121200000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 0.7071,
+   "width_nm": 250000,
+   "x0_mm": 49.1,
+   "x0_nm": 49100000,
+   "x1_mm": 48.4,
+   "x1_nm": 48400000,
+   "y0_mm": 121.2,
+   "y0_nm": 121200000,
+   "y1_mm": 121.1,
+   "y1_nm": 121100000
+  },
+  {
+   "layer": "F.Cu",
+   "mm": 0.8485,
+   "width_nm": 250000,
+   "x0_mm": 48.4,
+   "x0_nm": 48400000,
+   "x1_mm": 47.8,
+   "x1_nm": 47800000,
+   "y0_mm": 121.1,
+   "y0_nm": 121100000,
+   "y1_mm": 120.5,
+   "y1_nm": 120500000
+  }
+ ],
+ "trunk_width_nm": 250000,
+ "vias_count": 2,
+ "why": null
+}
