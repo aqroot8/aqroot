@@ -1,0 +1,151 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+ "lands": [
+  {
+   "net": "GND",
+   "num": "A1",
+   "x_mm": 46.2,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_RAW",
+   "num": "A4",
+   "x_mm": 45.4,
+   "y_mm": 146.38
+  },
+  {
+   "net": "Net-(J3-CC1)",
+   "num": "A5",
+   "x_mm": 44.25,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "num": "A6",
+   "x_mm": 43.25,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_N",
+   "num": "A7",
+   "x_mm": 42.75,
+   "y_mm": 146.38
+  },
+  {
+   "net": "unconnected-(J3-SBU1-PadA8)",
+   "num": "A8",
+   "x_mm": 41.75,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_RAW",
+   "num": "A9",
+   "x_mm": 40.6,
+   "y_mm": 146.38
+  },
+  {
+   "net": "GND",
+   "num": "A12",
+   "x_mm": 39.8,
+   "y_mm": 146.38
+  },
+  {
+   "net": "GND",
+   "num": "B1",
+   "x_mm": 39.8,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_RAW",
+   "num": "B4",
+   "x_mm": 40.6,
+   "y_mm": 146.38
+  },
+  {
+   "net": "Net-(J3-CC2)",
+   "num": "B5",
+   "x_mm": 41.25,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "num": "B6",
+   "x_mm": 42.25,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_D_CONN_N",
+   "num": "B7",
+   "x_mm": 43.75,
+   "y_mm": 146.38
+  },
+  {
+   "net": "unconnected-(J3-SBU2-PadB8)",
+   "num": "B8",
+   "x_mm": 44.75,
+   "y_mm": 146.38
+  },
+  {
+   "net": "/01_POWER_TREE/USB_VBUS_RAW",
+   "num": "B9",
+   "x_mm": 45.4,
+   "y_mm": 146.38
+  },
+  {
+   "net": "GND",
+   "num": "B12",
+   "x_mm": 46.2,
+   "y_mm": 146.38
+  }
+ ],
+ "north_pinch": {
+  "board_min_track_width_mm": 0.15,
+  "fits_at_board_minimum": true,
+  "fits_at_gnd_width": false,
+  "gap_mm": 0.605,
+  "gnd_netclass_width_mm": 0.3,
+  "hole_clearance_mm": 0.25,
+  "min_width_margin_mm": 0.005,
+  "peg": {
+   "dia_mm": 0.65,
+   "east_edge_mm": 46.215,
+   "npth": true,
+   "num": "",
+   "x_mm": 45.89,
+   "y_mm": 145.305
+  },
+  "shield_land": {
+   "h_mm": 2.1,
+   "south_edge_mm": 146.855,
+   "w_mm": 1.0,
+   "west_edge_mm": 46.82,
+   "x_mm": 47.32,
+   "y_mm": 145.805
+  },
+  "short_by_at_gnd_width_mm": 0.145,
+  "widest_track_at_hole_clearance_mm": 0.155,
+  "widest_track_at_netclass_clearance_mm": 0.205
+ },
+ "rule": {
+  "copper_edge_clearance_mm": 0.5,
+  "default_clearance_mm": 0.2,
+  "default_via_diameter_mm": 0.6
+ },
+ "schema": 1,
+ "south_band": {
+  "board_edge_mm": 148.05,
+  "holds_tracks_at_0_25mm": 1,
+  "land_row_bottom_mm": 146.955,
+  "note": "one 0.250 mm track and no more: two would need 0.250+0.200+0.250 = 0.700 mm",
+  "usable_hi_mm": 147.55,
+  "usable_lo_mm": 147.155,
+  "width_mm": 0.395
+ },
+ "south_barrel": {
+  "centre_max_y_mm": 147.25,
+  "centre_min_y_mm": 147.355,
+  "fits": false,
+  "via_dia_mm": 0.6
+ }
+}

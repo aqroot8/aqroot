@@ -1,0 +1,76 @@
+{
+ "detours": [
+  {
+   "max_mm": 35.3341,
+   "net": "/I2C_SDA_INT",
+   "tracks": [
+    {
+     "a_mm": [
+      39.2,
+      138.8
+     ],
+     "b_mm": [
+      45.2,
+      144.7
+     ],
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ],
+   "why": "crosses the reserved USB_CORRIDOR lane; relaid 8.4149 -> 12.0863 mm, 2 via(s), inside the 35.3341 mm bound"
+  },
+  {
+   "max_mm": 39.0696,
+   "net": "/SD_CS_N",
+   "tracks": [
+    {
+     "a_mm": [
+      44.15,
+      136.15
+     ],
+     "b_mm": [
+      49.1,
+      141.1
+     ],
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      49.1,
+      141.1
+     ],
+     "b_mm": [
+      54.25,
+      141.1
+     ],
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ],
+   "why": "crosses the reserved USB_CORRIDOR lane; relaid 12.1504 -> 13.2110 mm, 0 via(s), inside the 39.0696 mm bound"
+  },
+  {
+   "max_mm": 28.2273,
+   "net": "Net-(J3-CC1)",
+   "tracks": [
+    {
+     "a_mm": [
+      44.25,
+      145.35
+     ],
+     "b_mm": [
+      43.325,
+      144.425
+     ],
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ],
+   "why": "crosses the reserved USB_CORRIDOR lane; relaid 1.3081 -> 2.3595 mm, 2 via(s), inside the 28.2273 mm bound"
+  }
+ ],
+ "note": "corridor segment eviction: the crossing tracks the /01_POWER_TREE/USB_D_CONN_N corridor needs moved, each laid again between its own two ends around the lane screen_corridor_detour.py measured.  Written straight from the measurement so the two cannot drift apart.",
+ "reserve": [],
+ "schema": 1
+}

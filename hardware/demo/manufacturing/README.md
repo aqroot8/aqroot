@@ -1,9 +1,110 @@
 # AQROOT Demo manufacturing preflight
 
-Status: **BLOCKED** at BOM sourcing; the fabrication package is generated and
-reviewed but is NOT releasable.  The BOM is **75.3 % orderable** and the
-residual is 26 lines needing a purchasing decision plus 8 lines whose value is
-not yet final.
+Status: **BLOCKED** at board CONNECTIVITY.  Every fabrication CONTRACT on this
+board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
+population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out
+stackup (`KO1-KO5`), pour bonds (`P1-P4`), necks (`N1-N3`) and protected copper
+-- and the residual is **56 retained open edges across 28 nets**.  One of them,
+`USB_D_CONN_P`, is parked on a MECHANICAL ruling rather than a route (D-618).
+
+## USB-C data is half real copper, and the other half is a 0.395 mm band (2026-09-05, D-618)
+
+    authority cd680964...  ->  ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1
+    retained open edges     57 -> 56      open retained nets   29 -> 28
+    ratsnest                73 -> 72      unconnected items    73 -> 72
+    26 objects added, 4 removed and ALL FOUR LICENSED, zero zones, zero rule
+    areas, zero .kicad_dru change
+    14/14 verify_promotion;  FAB1-FAB8;  LAND1-LAND6;  KO1-KO5;  POP1-POP4;
+    P1-P4;  N1-N3;  protected copper 15 nets / 393 objects IDENTICAL
+
+D-583, D-599 and D-602 each refused the `J3 -> U10` USB connector corridor and
+each ended by naming the same missing unit: **the SEGMENT.**  `--evict` takes
+copper wholly inside a window and `--evict-whole` takes a whole net board-wide;
+a track that merely CROSSES is reachable by neither, and D-602 proved no
+whole-net eviction of ANY size opens this corridor because `/I2C_SDA_INT` is
+load-bearing and cannot rebuild itself.  D-607 built the detour and D-607/D-617
+spent it on POUR LANDS, where the reserved site is a DISC around a barrel.
+
+**`screen_corridor_detour.py` is the same question for a LANE** -- read-only,
+five questions, and the last two are the ones that make the answer worth a gate
+run:
+
+    1   SEGMENT UPPER BOUND   every crossing TRACK out (tracks only: a via has
+                              no two ends, a pad is where a part is soldered)
+    2   MINIMAL               reverse-greedy, re-proved on the real route_join
+    2b  IRREDUCIBLE           per cut net, hold out every crossing track EXCEPT
+                              that net's -- a refusal reads "no cut set of ANY
+                              size that spares this net opens this corridor"
+    3   THE LANE              route the edge for real with the cut held out and
+                              sample the reservation off the path the router
+                              WON.  D-602: 66 of the 83 cells on the straight
+                              J3 -> U10 centreline were already blocked FOR THE
+                              USB PAIR ITSELF, so a straight lane is a fiction
+    4   THE RELAY             put every cut chain back between its own two ends
+                              with the lane in force, in spec order, on a board
+                              carrying the previous detour -- D-608's half
+
+    python3 screen_corridor_detour.py NET [NET ...] \
+        --plan-out PLAN.json --guard-out LANE.json -o SURVEY.json
+    python3 route_maze_batch.py NET [NET ...] \
+        --detour-spec PLAN.json --guard LANE.json --promote
+
+`--plan-out` / `--guard-out` write the transaction straight from the
+measurement.  Re-derived from the PRE-promotion board with the finished
+instrument, both files come back BYTE-IDENTICAL (`ef4a3ea8...`, `30d95325...`).
+
+**SEARCH AT THE GEOMETRY, JUDGE AT THE RATIO, AND THEY ARE NOT THE SAME LEVER.**
+A lane is not a disc, so the ceiling is `was + 2*(lane_mm + 2*pi*R)`; beside it
+`--max-detour-ratio` (3x) refuses what D-607 called a reroute wearing a detour's
+name.  D-617 measured that `max_mm` is ALSO the wavefront budget and a via
+spends `via_cost_mm` of it before buying distance, so using the ratio as the
+budget reports NO_PATH for routes that exist -- `Net-(J3-CC1)` relays in
+**2.359 mm with two barrels** and refuses inside its own 3.924 mm ratio bound.
+A rejected relay is also reverted before the next chain is measured: `/SD_CS_N`
+reads 13.211 mm / 0 vias without the refused `/I2S_LRCLK` reroute in the way and
+16.012 mm / 2 vias with it.
+
+**PROMOTED.**  `USB_D_CONN_N`, `J3.A7`/`B7` -> `U10.1`: **11.323 mm of 0.250 mm
+`F.Cu`, ZERO vias, ZERO `In2` pierce** -- `.kicad_dru` section 6 in its own
+words -- 1.35x an 8.403 mm direct leg against a 25 mm `diff_pair_uncoupled`
+budget.  Three chains moved between their own two ends:
+
+    /I2C_SDA_INT    8.4149 -> 12.0863 mm   2 barrels   F 5.591 + In2 6.496
+    /SD_CS_N       12.1504 -> 13.2110 mm   0 barrels   F 13.211
+    Net-(J3-CC1)    1.3081 ->  2.3320 mm   2 barrels   F 0.552 + B 1.780
+
+**THE OTHER HALF IS ONE NET.**  `USB_D_CONN_P`: 48 crossing tracks / 11 nets,
+all cut and it opens in 6.275 mm -- not a placement wall.  Minimal cut is FOUR
+tracks, `/I2S_LRCLK` once and `J3.A1`/`B12`'s ground escape three times, and
+question 2b makes it final: **IRREDUCIBLE `GND`.**  The escape will not relay
+either.  `evidence/d618-j3-south-band.json`, every figure off the board:
+
+    SOUTH BAND    146.955 + 0.200  ..  148.050 - 0.500   =  0.395 mm
+                  ONE 0.250 mm track; two need 0.700 mm
+    NORTH PINCH   J3's own NPTH peg east edge      46.215
+                  J3's own SH shield land west     46.820      gap 0.605 mm
+                  the peg owes hole_clearance 0.250 mm, so the widest track
+                  that fits is 0.155 mm.  GND is 0.300 mm: SHORT BY 0.145 mm
+                  (board minimum 0.150 mm fits by 5 um -- not a position this
+                  project will take, and no licence for it is written)
+    SOUTH BARREL  a 0.600 mm via needs centre y >= 147.355 and the edge
+                  clearance caps it at y <= 147.250.  NONE fits.
+
+`J3.A1`/`B12` is an `F.Cu`-only SMD land in a `+3V3` pour; its only path to
+ground is a track east to a barrel; the only route east is that band; and the
+D+ short needs the same band to leave the connector.  **They are competing for
+one track's width.**
+
+**PARKED AS A MECHANICAL QUESTION.**  The band needs 0.750 mm and has 0.395 mm;
+moving `J3` north by >= **0.355 mm** delivers it and leaves the pinch alone.
+`J3` sits on the bottom edge against the enclosure's continuous edge-capture
+rail, so that is a mechanical interface change and an owner decision -- recorded
+with its exact number, not raised and not taken.
+
+**NEXT: the four `U9` NFC edges** (`NFC_VDD_D`, `NFC_VDD_A`, `NFC_VDD_RF`,
+`NFC_RFI1`/`RFI2`, one open edge each at 10.5-18.7 mm).  NFC is Demo-required
+and D-607 named the `U9` west channel as one of the four walls the segment unit
+was built for; it now has the instrument.
 
 ## The BOM is 100 % orderable, and the safety part was ordered in the wrong package (2026-09-05, D-615)
 

@@ -6305,6 +6305,187 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-618 · 2026-09-05 · Demo USB-C DATA IS HALF REAL COPPER, AND THE OTHER HALF IS A 0.395 mm BAND THE CONNECTOR'S OWN GROUND PIN ALREADY OWNS: the corridor detour built, spent, and the J3 wall reduced to one irreducible net
+
+D-617 named this task — *"the only thing between here and `DEMO_READY_FOR_FAB` is
+connectivity: 57 open edges across 29 retained nets, of which the cheapest named
+single-edge candidates are `/01_POWER_TREE/USB_D_CONN_N` / `_P`"* — and three earlier
+decisions had already refused them. D-583 measured the minimal containment-bounded
+eviction and found it to be `J3.A1`/`B12`'s own ground escape. D-602 proved that **no
+`--evict-whole` transaction of any size opens the corridor**, because `/I2C_SDA_INT` is
+load-bearing and cannot rebuild itself. Every one of those refusals ended by naming the
+same missing unit: **the SEGMENT** — a track that merely CROSSES a corridor is reachable
+by neither eviction, and the honest move is to lay it again BETWEEN ITS OWN TWO ENDS.
+
+D-607 built that unit and D-607/D-617 spent it — on POUR LANDS, where the reserved site
+is a DISC around a barrel and `screen_segment_evict.py` screens it. **A corridor is the
+same question with a different reservation, and nothing here could ask it.** This is
+that instrument, and half the USB-C connector link is now real copper because of it.
+
+Authority `cd680964...` → **`ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1`**;
+retained open edges **57 → 56**, open retained nets **29 → 28**, ratsnest **73 → 72**,
+unconnected items **73 → 72**; **26 objects added, 4 removed and every one licensed**,
+zero zones, zero rule areas, **zero `.kicad_dru` change and no new licence of any kind**.
+
+## 1. `screen_corridor_detour.py` — the corridor's own segment question
+
+Read-only. Four questions in escalating cost, plus one that had never been asked here:
+
+  1. **SEGMENT UPPER BOUND.** Hold every crossing TRACK out — tracks only, never a via
+     and never a pad, because those are not what a detour moves. Still `NO_PATH` ⇒
+     `SEGMENT_WALL`, and no detour transaction of any size opens the corridor.
+  2. **MINIMAL.** Reverse-greedy delta debugging over the crossing tracks, re-proved on
+     the real `route_join`. Every track still in the set is one whose return closes the
+     corridor again.
+  2b. **IRREDUCIBLE.** A minimal set is minimal with respect to single-object addition
+     and no more; it says nothing about whether some OTHER set of a different shape would
+     spare a net this one names. For each net in the cut, hold out every crossing track
+     EXCEPT that net's. Still `NO_PATH` ⇒ **no cut set of ANY size that spares that net
+     opens this corridor**, which is the statement a placement argument actually needs.
+  3. **THE LANE.** With the minimal set held out, ROUTE the edge for real and KEEP the
+     copper, exactly as the applier will, and sample the reservation off the path the
+     router actually won. D-602 built `reserve_corridor.py --from-copper` on the
+     principle *reserve what you won* and measured why the alternative is a fiction: **66
+     of the 83 cells on the straight `J3 → U10` centreline were already blocked for the
+     USB pair itself.** A lane that does not exist yet has exactly one honest geometry —
+     the one a router hands you when the wall is out of the way.
+  4. **THE RELAY.** Group the cut tracks into same-net CHAINS and put each one back
+     between its own two free ends with the lane in force, in spec order, on a board
+     already carrying the previous detour — `route_maze_batch.py`'s own `detour_layers`,
+     `guard_for` and `maze3d.route_points`, so the screen and the applier cannot
+     disagree. D-608 paid for this half: a land that opens and cannot be relaid is a gate
+     run that ends in `track_dangling` and a clause-4 regression.
+
+**THE BOUND IS MEASURED, AND THE SEARCH IS NOT THE BOUND.** D-607 bounds a pocket detour
+by `was + 2πR`, the circumference of the disc it walks around. A lane is not a disc: the
+longest a genuine detour past one can be is down one side, round an end and back, so the
+geometric ceiling is `was + 2*(lane_mm + 2πR)`. Beside it sits an ENGINEERING bound —
+`--max-detour-ratio`, default 3× — because D-607 measured `/NFC_5V_EN` coming back 8.6×
+longer and called it a reroute wearing a detour's name. **The two are not the same
+number and must not be the same lever:** D-617 measured that `max_mm` is ALSO the
+wavefront budget, and a via costs `via_cost_mm` of that budget before it buys any
+distance. Search at the geometry, judge at the ratio — bound the length, not the search.
+Measured here: `Net-(J3-CC1)` relays in **2.359 mm with two barrels** and reports
+`NO_PATH` inside its own 3.924 mm ratio bound. And a REJECTED relay leaves no copper
+behind: `/SD_CS_N` reads **13.211 mm / 0 vias** without the refused `/I2S_LRCLK` reroute
+in the way and **16.012 mm / 2 vias** with it.
+
+## 2. `USB_D_CONN_N` — promoted, and it meets section 6 in section 6's own words
+
+    J3.A7/B7 -> U10.1     11.323 mm of 0.250 mm F.Cu, ZERO vias, ZERO In2 pierce
+
+`.kicad_dru` section 6 is headed *"USB 2.0 — FULL SPEED, ON F.Cu OVER In1, NO VIAS, NO
+THEATRE"*, and this route is that sentence: one layer, no barrel, **11.323 mm against an
+8.403 mm direct leg (1.35×)** and nowhere near the 25 mm `diff_pair_uncoupled` budget.
+Recorded because D-602 recorded the alternative: `USB_D_CONN_P`'s own 3W route was
+**27.841 mm for a 7.993 mm direct leg**, and had that transaction not been refused on
+`/I2C_SDA_INT` it would have had to be judged against that budget too.
+
+Three chains moved, each between its own two ends, none of them evicted:
+
+    /I2C_SDA_INT    8.4149 -> 12.0863 mm   2 barrels   F 5.591 + In2 6.496
+    /SD_CS_N       12.1504 -> 13.2110 mm   0 barrels   F 13.211
+    Net-(J3-CC1)    1.3081 ->  2.3320 mm   2 barrels   F 0.552 + B 1.780
+
+21.873 mm of accepted copper taken off the board and put back, both endpoints keeping
+their exact nanometres, so everything that met each track still meets it. The corridor's
+IRREDUCIBLE nets were `/I2C_SDA_INT` and `Net-(J3-CC1)` — `/SD_CS_N` is in the minimal
+set but not in every one — and **both irreducible nets relaid**.
+
+**THE PLAN IS THE MEASUREMENT.** `--plan-out` and `--guard-out` write the
+`--detour-spec` and the lane `--guard` straight from the run that measured them.
+Re-derived afterwards from the PRE-promotion board with the finished instrument, both
+files come back **BYTE-IDENTICAL** (`ef4a3ea8...`, `30d95325...`).
+
+## 3. `USB_D_CONN_P` — the wall is now ONE NET, and it is the connector's own ground pin
+
+Measured on the promoted board: **48 crossing tracks across 11 nets; all of them cut and
+the corridor opens in 6.275 mm**, so this is not a placement wall and not a search
+failure. The minimal cut is **four tracks — `/I2S_LRCLK` once and `J3.A1`/`B12`'s ground
+escape three times** — and question 2b makes it final:
+
+    IRREDUCIBLE: GND
+
+Every crossing track on the board except `GND`'s held out, and `USB_D_CONN_P` is still
+`NO_PATH`. **No cut set of any size that spares that ground escape opens this corridor.**
+And the escape will not go back: relaid between its own two ends with the lane reserved,
+`NO_PATH` at 0.300 mm.
+
+**WHY, TO THE MICRON** (`evidence/d618-j3-south-band.json`, every figure read off the
+board and its own design rules):
+
+    SOUTH BAND   land row bottom 146.955 + 0.200 clearance   ->  147.155
+                 board edge 148.050 - 0.500 edge clearance   ->  147.550
+                 0.395 mm.  ONE 0.250 mm track; two need 0.700 mm.
+
+    NORTH PINCH  J3's own NPTH mounting peg, east edge       46.215
+                 J3's own SH shield land, west edge          46.820
+                 gap 0.605 mm -- and the peg owes hole_clearance 0.250 mm,
+                 not the netclass 0.200 mm, so the widest track that fits is
+                 0.155 mm.  GND's netclass width is 0.300 mm: short by 0.145 mm.
+                 The board's own minimum track width is 0.150 mm -- 5 um of margin.
+
+    SOUTH BARREL a 0.600 mm via owes the shield land 146.855 + 0.200 + 0.300
+                 -> centre y >= 147.355, and the 0.500 mm edge clearance caps
+                 it at y <= 147.250.  NO barrel fits in the band at all.
+
+That is the whole wall in three numbers. `J3.A1`/`B12` is an `F.Cu`-only SMD land in a
+`+3V3` pour, so its only path to ground is a track east to a barrel; the only route east
+is the 0.395 mm south band; and the D+ short needs the same band to leave the connector.
+**They are not competing for a corridor — they are competing for one track's width.**
+
+## 4. What this does NOT license
+
+The 5 µm figure is stated because it converts *impossible* into *a judgement*, not
+because it is a board anybody should build. A 0.150 mm neck between an unplated Ø0.65 mm
+peg and a shield land, at 5 µm of margin, on the ground return of the USB connector, is
+not a DFM position this project will take, and no `.kicad_dru` licence for it is written
+here.
+
+## 5. Proof
+
+`verify_promotion.py` re-derived the promotion from the two board files alone: **14 of 14
+PASS**. 4 objects removed and all four licensed on the three claimed evicted nets; 26
+added and every one on a claimed net; widths {0.20, 0.25} mm on `F.Cu`/`B.Cu`/`In2.Cu`,
+vias {0.60/0.30} meeting the drill and 0.125 mm annular floors; zone and rule-area
+inventories unchanged; real zone-refilled schematic-parity KiCad DRC at `--severity-all`
+**5 `hole_clearance` / 1 `solder_mask_bridge` inherited with ZERO attributable**, parity
+**247 warnings / 0 errors**, unconnected **73 → 72**, fill-stable; D-269 / D-186 rule text
+live; `hardware/beta-v2/` untouched.
+
+`protected_copper.py` **15 nets / 393 objects BYTE-IDENTICAL**. `fab_package_contract.py`
+**FAB1–FAB8 PASS** on a REGENERATED 28-artifact package (the `P 0.300` drill census moves
+570 → 574, which is exactly the four new barrels). `land_parity_contract.py`
+**LAND1–LAND6, 311/311 MATCH**. `keepout_stackup_contract.py` **KO1–KO5**.
+`population_contract.py` **POP1–POP4**. `pour_bond_contract.py` **P1–P4**.
+`neck_contract.py` **N1–N3**. `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and the eight
+approved Demo NC contacts are untouched.
+
+## 6. Next
+
+**`USB_D_CONN_P` IS PARKED AS A MECHANICAL QUESTION, NOT A ROUTING ONE**, and that is a
+change of kind: for the first time the refusal names a dimension rather than a search.
+The band needs 0.250 + 0.200 + 0.300 = **0.750 mm** and has **0.395 mm**; moving `J3`
+north by **≥ 0.355 mm** delivers it and changes nothing else about the pinch, because the
+peg and the shield land travel with the connector. `J3` sits on the bottom edge against
+the enclosure's **continuous edge-capture rail** (`MECHANICAL_INTERFACE_SPEC.md`), and
+`FBV2_P1_COORDINATES.csv` pins it at `43.000, 5.300` — so moving it is a **mechanical
+interface change and therefore an OWNER DECISION** under `CODEX_AUTONOMY_POLICY.md`. It
+is recorded here with the exact number it needs; it is not taken.
+
+Independent work remains and is where the next iteration goes: **the four `U9` NFC supply
+and receiver-input edges** (`NFC_VDD_D`, `NFC_VDD_A`, `NFC_VDD_RF`, `NFC_RFI1/2`, one edge
+each, 10.5–18.7 mm) now have an instrument they never had — `screen_corridor_detour.py`
+asks the `U9` west channel the same question, and D-607 named that channel as one of the
+four walls the segment unit was built for.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d618-corridor-detour-n.json`, `d618-corridor-detour-p.json`, `d618-detour-spec.json`,
+`d618-usb-lane-guard.json`, `d618-j3-south-band.json`, `d618-usb-conn-n-batch.json`,
+`d618-verify.json`, `d618-protected-copper.json`, `d618-fab-package.json`,
+`d618-land-parity.json`, `d618-keepout.json`, `d618-population.json`,
+`d618-pour-bond.json`, `d618-neck.json`.
+
 # D-617 · 2026-09-05 · Demo THE ANTENNA KEEP-OUT IS CLOSED, AND IT WAS NEVER ONE KEEP-OUT: five rule areas that protected four of six layers, 335.555 mm² of copper In4.Cu should never have had, and two nets re-laid by the router under a rule authored before it ran
 
 D-616 measured `U1`'s footprint-embedded ESP32-S3-WROOM-1 ANTENNA KEEP-OUT naming

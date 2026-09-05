@@ -1,0 +1,273 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+ "family": [
+  "/01_POWER_TREE/USB_D_CONN_P"
+ ],
+ "grid": 100000,
+ "lane": {
+  "keepout_nm": 325000,
+  "label": "USB_CORRIDOR",
+  "mm": 9.6473,
+  "points": 99
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 6.275,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": 11,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 6
+     },
+     "crossing_by_net": {
+      "/01_POWER_TREE/USB_D_CONN_N": 17,
+      "/01_POWER_TREE/USB_D_ESD_N": 1,
+      "/01_POWER_TREE/USB_D_ESD_P": 3,
+      "/01_POWER_TREE/USB_VBUS_RAW": 2,
+      "/I2C_SDA_INT": 2,
+      "/I2S_LRCLK": 4,
+      "/WAKE_INT_N": 2,
+      "GND": 8,
+      "Net-(J3-CC1)": 4,
+      "Net-(J3-CC2)": 4,
+      "Net-(J3-SHIELD)": 1
+     },
+     "crossing_tracks": 48,
+     "direct_mm": 7.993,
+     "dst": [
+      "U10.3"
+     ],
+     "irreducible_nets": [
+      "GND"
+     ],
+     "lane": {
+      "mm": 9.647,
+      "ok": true,
+      "segments": 7,
+      "vias": 0
+     },
+     "minimal": {
+      "mm": 4.477,
+      "objects": [
+       {
+        "a_mm": [
+         48.2,
+         145.1
+        ],
+        "b_mm": [
+         51.2,
+         147.3
+        ],
+        "lkey": "F",
+        "mm": 3.7202,
+        "net": "/I2S_LRCLK",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         46.35,
+         146.8
+        ],
+        "b_mm": [
+         47.05,
+         147.225
+        ],
+        "lkey": "F",
+        "mm": 0.8189,
+        "net": "GND",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         47.05,
+         147.225
+        ],
+        "b_mm": [
+         47.525,
+         147.225
+        ],
+        "lkey": "F",
+        "mm": 0.475,
+        "net": "GND",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         47.525,
+         147.225
+        ],
+        "b_mm": [
+         49.5,
+         147.2
+        ],
+        "lkey": "F",
+        "mm": 1.9752,
+        "net": "GND",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 4
+     },
+     "protected": [],
+     "src": [
+      "J3.A6",
+      "J3.B6"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      39.25,
+      140.65,
+      53.263,
+      149.38
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F"
+   ],
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "netclass": "USB_D",
+   "width_mm": 0.25
+  }
+ ],
+ "relay": {
+  "all_relaid": false,
+  "chains": [
+   {
+    "a_mm": [
+     48.2,
+     145.1
+    ],
+    "b_mm": [
+     51.2,
+     147.3
+    ],
+    "geometric_max_mm": 27.0989,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 27.0989,
+    "mm": null,
+    "mm_by_layer": null,
+    "net": "/I2S_LRCLK",
+    "objects": [
+     {
+      "a_mm": [
+       48.2,
+       145.1
+      ],
+      "b_mm": [
+       51.2,
+       147.3
+      ],
+      "lkey": "F",
+      "mm": 3.7202,
+      "net": "/I2S_LRCLK",
+      "width_mm": 0.2
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 11.1606,
+    "reason": "NO_PATH",
+    "tracks": 1,
+    "vias": null,
+    "was_mm": 3.7202,
+    "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 27.099 mm budget"
+   },
+   {
+    "a_mm": [
+     46.35,
+     146.8
+    ],
+    "b_mm": [
+     49.5,
+     147.2
+    ],
+    "geometric_max_mm": 26.6478,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 26.6478,
+    "mm": null,
+    "mm_by_layer": null,
+    "net": "GND",
+    "objects": [
+     {
+      "a_mm": [
+       46.35,
+       146.8
+      ],
+      "b_mm": [
+       47.05,
+       147.225
+      ],
+      "lkey": "F",
+      "mm": 0.8189,
+      "net": "GND",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       47.05,
+       147.225
+      ],
+      "b_mm": [
+       47.525,
+       147.225
+      ],
+      "lkey": "F",
+      "mm": 0.475,
+      "net": "GND",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       47.525,
+       147.225
+      ],
+      "b_mm": [
+       49.5,
+       147.2
+      ],
+      "lkey": "F",
+      "mm": 1.9752,
+      "net": "GND",
+      "width_mm": 0.3
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 9.8073,
+    "reason": "NO_PATH",
+    "tracks": 3,
+    "vias": null,
+    "was_mm": 3.2691,
+    "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 26.648 mm budget"
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "UNRELAYABLE"
+}

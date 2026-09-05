@@ -1,0 +1,260 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+  "connectivity": {
+    "nets_improved": [
+      "/01_POWER_TREE/USB_D_CONN_N"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 28,
+    "open_retained_nets_before": 29,
+    "retained_open_edges_after": 56,
+    "retained_open_edges_before": 57
+  },
+  "detour": {
+    "all_relaid": true,
+    "failed": [],
+    "guard_spec": "hardware/demo/manufacturing/w/d618p/guard-with-detour.json",
+    "nets": [
+      "/I2C_SDA_INT",
+      "/SD_CS_N",
+      "Net-(J3-CC1)"
+    ],
+    "own_layer_requested": false,
+    "own_layer_spent": [],
+    "relaid": [
+      {
+        "a_mm": [
+          39.2,
+          138.8
+        ],
+        "b_mm": [
+          45.2,
+          144.7
+        ],
+        "layer": "F.Cu",
+        "layers": [
+          "F",
+          "I2",
+          "F"
+        ],
+        "layers_allowed": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "lkey": "F",
+        "max_mm": 35.3341,
+        "mm": 12.086345385385822,
+        "mm_by_layer": {
+          "F": 5.5908,
+          "I2": 6.4956
+        },
+        "net": "/I2C_SDA_INT",
+        "ok": true,
+        "own_layer": false,
+        "seconds": 2.3,
+        "via_xy": [
+          [
+            42.8,
+            142.1
+          ],
+          [
+            45.7,
+            144.2
+          ]
+        ],
+        "vias": 2,
+        "was_mm": 8.4149,
+        "width_nm": 200000
+      },
+      {
+        "a_mm": [
+          44.15,
+          136.15
+        ],
+        "b_mm": [
+          54.25,
+          141.1
+        ],
+        "layer": "F.Cu",
+        "layers": [
+          "F"
+        ],
+        "layers_allowed": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "lkey": "F",
+        "max_mm": 39.0696,
+        "mm": 13.210987673602453,
+        "mm_by_layer": {
+          "F": 13.211
+        },
+        "net": "/SD_CS_N",
+        "ok": true,
+        "own_layer": false,
+        "seconds": 2.3,
+        "via_xy": [],
+        "vias": 0,
+        "was_mm": 12.1504,
+        "width_nm": 200000
+      },
+      {
+        "a_mm": [
+          44.25,
+          145.35
+        ],
+        "b_mm": [
+          43.325,
+          144.425
+        ],
+        "layer": "F.Cu",
+        "layers": [
+          "F",
+          "B",
+          "F"
+        ],
+        "layers_allowed": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "lkey": "F",
+        "max_mm": 28.2273,
+        "mm": 2.3320446611369237,
+        "mm_by_layer": {
+          "B": 1.7804,
+          "F": 0.5516
+        },
+        "net": "Net-(J3-CC1)",
+        "ok": true,
+        "own_layer": false,
+        "seconds": 1.7,
+        "via_xy": [
+          [
+            44.3,
+            145.3
+          ],
+          [
+            42.9,
+            144.2
+          ]
+        ],
+        "vias": 2,
+        "was_mm": 1.3081,
+        "width_nm": 200000
+      }
+    ],
+    "removed_count": 4,
+    "removed_mm": 21.8734,
+    "requested": "hardware/demo/manufacturing/w/d618-detour-spec.json",
+    "reserve": []
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "failed_nets": [],
+  "guard": {
+    "sha256": "30d95325808ac28fe647051a7592f23f791f707cb0b24b6f5b91c5f271620285",
+    "spec": "hardware/demo/manufacturing/w/d618-usb-lane-guard.json",
+    "tubes": 1
+  },
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/USB_D_CONN_N",
+      "/I2C_SDA_INT",
+      "/SD_CS_N",
+      "Net-(J3-CC1)"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 4,
+    "removed_objects": [
+      "('T', '/I2C_SDA_INT', 0, (39200000, 138800000), (45200000, 144700000), 200000)",
+      "('T', '/SD_CS_N', 0, (44150000, 136150000), (49100000, 141100000), 200000)",
+      "('T', '/SD_CS_N', 0, (49100000, 141100000), (54250000, 141100000), 200000)",
+      "('T', 'Net-(J3-CC1)', 0, (43325000, 144425000), (44250000, 145350000), 200000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "ad708a5248c9e6b6edbf77dbcc2effe19b46f9d09a70243230cc11024ea924e1",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F"
+        ],
+        "netclass": "USB_D",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 550000,
+        "via_drill": 250000,
+        "width": 250000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "J3.A7",
+          "layers": [
+            "F"
+          ],
+          "mm": 11.322688375656647,
+          "ok": true,
+          "to": "U10.1",
+          "via_xy": [],
+          "vias": 0
+        }
+      ],
+      "mm": 11.323,
+      "mode": "maze",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "ok": true,
+      "seconds": 1.6,
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N",
+    "/I2C_SDA_INT",
+    "/SD_CS_N",
+    "Net-(J3-CC1)"
+  ],
+  "schema": 1
+}

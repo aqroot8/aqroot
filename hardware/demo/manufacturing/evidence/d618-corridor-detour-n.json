@@ -1,0 +1,318 @@
+{
+ "board": "/tmp/preboard/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "cd68096436a10e9d930b354f7d6ad615a2ff5838430a252253d29137ca7bb3be",
+ "family": [
+  "/01_POWER_TREE/USB_D_CONN_N"
+ ],
+ "grid": 100000,
+ "guard_out": "/tmp/preboard/guard.json",
+ "lane": {
+  "keepout_nm": 325000,
+  "label": "USB_CORRIDOR",
+  "mm": 11.4176,
+  "points": 120
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 6.483,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": 9,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 10
+     },
+     "crossing_by_net": {
+      "/01_POWER_TREE/USB_D_CONN_P": 8,
+      "/01_POWER_TREE/USB_D_ESD_N": 1,
+      "/01_POWER_TREE/USB_D_ESD_P": 3,
+      "/01_POWER_TREE/USB_VBUS_RAW": 2,
+      "/I2C_SDA_INT": 1,
+      "/I2S_LRCLK": 4,
+      "/SD_CS_N": 2,
+      "/WAKE_INT_N": 2,
+      "GND": 9,
+      "Net-(J3-CC1)": 3,
+      "Net-(J3-CC2)": 4,
+      "Net-(J3-SHIELD)": 2
+     },
+     "crossing_tracks": 41,
+     "direct_mm": 8.403,
+     "dst": [
+      "U10.1"
+     ],
+     "irreducible_nets": [
+      "/I2C_SDA_INT",
+      "Net-(J3-CC1)"
+     ],
+     "lane": {
+      "mm": 11.418,
+      "ok": true,
+      "segments": 9,
+      "vias": 0
+     },
+     "minimal": {
+      "mm": 8.624,
+      "objects": [
+       {
+        "a_mm": [
+         39.2,
+         138.8
+        ],
+        "b_mm": [
+         45.2,
+         144.7
+        ],
+        "lkey": "F",
+        "mm": 8.4149,
+        "net": "/I2C_SDA_INT",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         44.15,
+         136.15
+        ],
+        "b_mm": [
+         49.1,
+         141.1
+        ],
+        "lkey": "F",
+        "mm": 7.0004,
+        "net": "/SD_CS_N",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         49.1,
+         141.1
+        ],
+        "b_mm": [
+         54.25,
+         141.1
+        ],
+        "lkey": "F",
+        "mm": 5.15,
+        "net": "/SD_CS_N",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         44.25,
+         145.35
+        ],
+        "b_mm": [
+         43.325,
+         144.425
+        ],
+        "lkey": "F",
+        "mm": 1.3081,
+        "net": "Net-(J3-CC1)",
+        "width_mm": 0.2
+       }
+      ],
+      "ok": true,
+      "tracks": 4
+     },
+     "protected": [],
+     "src": [
+      "J3.A7",
+      "J3.B7"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      39.75,
+      138.75,
+      53.263,
+      149.38
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F"
+   ],
+   "net": "/01_POWER_TREE/USB_D_CONN_N",
+   "netclass": "USB_D",
+   "width_mm": 0.25
+  }
+ ],
+ "plan_out": "/tmp/preboard/plan.json",
+ "relay": {
+  "all_relaid": true,
+  "chains": [
+   {
+    "a_mm": [
+     39.2,
+     138.8
+    ],
+    "b_mm": [
+     45.2,
+     144.7
+    ],
+    "geometric_max_mm": 35.3341,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 35.3341,
+    "mm": 12.086345385385822,
+    "mm_by_layer": {
+     "F": 5.5908,
+     "I2": 6.4956
+    },
+    "net": "/I2C_SDA_INT",
+    "objects": [
+     {
+      "a_mm": [
+       39.2,
+       138.8
+      ],
+      "b_mm": [
+       45.2,
+       144.7
+      ],
+      "lkey": "F",
+      "mm": 8.4149,
+      "net": "/I2C_SDA_INT",
+      "width_mm": 0.2
+     }
+    ],
+    "ok": true,
+    "own_layer": false,
+    "ratio_max_mm": 25.2447,
+    "reason": null,
+    "tracks": 1,
+    "vias": 2,
+    "was_mm": 8.4149,
+    "why": null
+   },
+   {
+    "a_mm": [
+     44.15,
+     136.15
+    ],
+    "b_mm": [
+     54.25,
+     141.1
+    ],
+    "geometric_max_mm": 39.0696,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 39.0696,
+    "mm": 13.210987673602453,
+    "mm_by_layer": {
+     "F": 13.211
+    },
+    "net": "/SD_CS_N",
+    "objects": [
+     {
+      "a_mm": [
+       44.15,
+       136.15
+      ],
+      "b_mm": [
+       49.1,
+       141.1
+      ],
+      "lkey": "F",
+      "mm": 7.0004,
+      "net": "/SD_CS_N",
+      "width_mm": 0.2
+     },
+     {
+      "a_mm": [
+       49.1,
+       141.1
+      ],
+      "b_mm": [
+       54.25,
+       141.1
+      ],
+      "lkey": "F",
+      "mm": 5.15,
+      "net": "/SD_CS_N",
+      "width_mm": 0.2
+     }
+    ],
+    "ok": true,
+    "own_layer": false,
+    "ratio_max_mm": 36.4512,
+    "reason": null,
+    "tracks": 2,
+    "vias": 0,
+    "was_mm": 12.1504,
+    "why": null
+   },
+   {
+    "a_mm": [
+     43.325,
+     144.425
+    ],
+    "b_mm": [
+     44.25,
+     145.35
+    ],
+    "geometric_max_mm": 28.2273,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 28.2273,
+    "mm": 2.359463537958728,
+    "mm_by_layer": {
+     "B": 1.7205,
+     "F": 0.639
+    },
+    "net": "Net-(J3-CC1)",
+    "objects": [
+     {
+      "a_mm": [
+       44.25,
+       145.35
+      ],
+      "b_mm": [
+       43.325,
+       144.425
+      ],
+      "lkey": "F",
+      "mm": 1.3081,
+      "net": "Net-(J3-CC1)",
+      "width_mm": 0.2
+     }
+    ],
+    "ok": true,
+    "own_layer": false,
+    "ratio_max_mm": 3.9243,
+    "reason": null,
+    "tracks": 1,
+    "vias": 2,
+    "was_mm": 1.3081,
+    "why": null
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "DETOURABLE"
+}
