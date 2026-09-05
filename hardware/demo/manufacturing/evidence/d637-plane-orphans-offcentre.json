@@ -1,0 +1,662 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+  "grid": 100000,
+  "guard": null,
+  "guard_sha256": null,
+  "max_mm": 8.0,
+  "method": "read-only; maze3d.stitch_pad through maze3d.Field at each rung, every trial reverted, widths and barrels clamped UP to the same DRU floors route_maze_batch.propose clamps to",
+  "nets": [
+    {
+      "body_pads": 75,
+      "contract": {
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "dru_floor": {
+        "drill": 400000,
+        "via_dia": 650000,
+        "width": 400000
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "I3"
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "orphan_islands": 6,
+      "rungs": [
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 800000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "R129.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R39.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.2",
+                "U4.3"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+            },
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+            },
+            {
+              "island": [
+                "U4.8"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x54), R15.2 (x11), R15.1 (x4), C10.2 (x3)"
+            }
+          ],
+          "width": 600000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 650000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "R129.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R39.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.2",
+                "U4.3"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)"
+            },
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+            },
+            {
+              "island": [
+                "U4.8"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x54), R15.2 (x11), R15.1 (x4), C10.2 (x3)"
+            }
+          ],
+          "width": 600000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 800000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "R129.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R39.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.2",
+                "U4.3"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+            },
+            {
+              "island": [
+                "U4.8"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+            }
+          ],
+          "width": 400000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 650000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "R129.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R39.1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.2",
+                "U4.3"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+            },
+            {
+              "island": [
+                "U4.8"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+            }
+          ],
+          "width": 400000
+        }
+      ]
+    },
+    {
+      "body_pads": 249,
+      "contract": {
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "dru_floor": {
+        "drill": 200000,
+        "via_dia": 500000,
+        "width": 150000
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "GND",
+      "netclass": "GND",
+      "orphan_islands": 4,
+      "rungs": [
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+            }
+          ],
+          "width": 300000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 500000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+            }
+          ],
+          "width": 300000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.250 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 250000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 500000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.250 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 250000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.230 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 230000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 500000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.230 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 230000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 200000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 500000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 200000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 600000,
+          "via_drill": 300000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.150 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 150000
+        },
+        {
+          "islands": [],
+          "legal": true,
+          "opened": 0,
+          "via_dia": 500000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "C37.2"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "MK1.4"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "MK1.4: NO LEGAL ESCAPE at >= 0.150 mm; blocked by MK1. (x67), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U9.16"
+              ],
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "width": 150000
+        }
+      ]
+    }
+  ],
+  "question": "for every island a pour-served net's own pour never reached, which RUN WIDTH and which BARREL -- swept from the netclass contract down to the floors the .kicad_dru and board setup state -- lets maze3d.stitch_pad close it",
+  "schema": 1
+}

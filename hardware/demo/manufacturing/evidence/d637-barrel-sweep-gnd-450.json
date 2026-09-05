@@ -1,0 +1,195 @@
+{
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+  "fine": 25000,
+  "grid": 100000,
+  "guard": null,
+  "limit": 6,
+  "max_mm": 8.0,
+  "method": {
+    "A": "maze3d.stitch_pad(field, pad, max_mm) -- unchanged",
+    "B": "maze3d.offcentre_stitch(ctx, pad, far, width, toward, polys)",
+    "body": "maze3d.in_body on KiCad's own filled polygons, centre-in-copper, D-608's contract"
+  },
+  "nets": [
+    {
+      "body_pads": 249,
+      "body_pour": {
+        "area_mm2_by_layer": {
+          "B": 6443.237,
+          "I1": 9429.543,
+          "I4": 9429.543
+        },
+        "body_islands": 58,
+        "body_roots": 1,
+        "filled_islands": 60
+      },
+      "contract": {
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "dru_floor": {
+        "drill": 200000,
+        "via_dia": 500000,
+        "width": 150000
+      },
+      "far_offered": [
+        "I1",
+        "I4",
+        "B"
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "GND",
+      "netclass": "GND",
+      "orphan_islands": 4,
+      "rungs": [
+        {
+          "islands": [
+            {
+              "A": {
+                "ok": false,
+                "pad": "C37.2",
+                "reason": "NO_VIA_SITE",
+                "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+              },
+              "B_body": {
+                "offered": null,
+                "ok": false,
+                "pad": "C37.2",
+                "reason": "NO_VIA_SITE",
+                "why": "C37.2: no barrel of 0.50/0.45 reachable on B from any of 5 launches that clears every layer of the stack"
+              },
+              "B_free": {
+                "offered": null,
+                "ok": false,
+                "pad": "C37.2",
+                "reason": "NO_VIA_SITE",
+                "why": "C37.2: no barrel of 0.50/0.45 reachable on B from any of 5 launches that clears every layer of the stack"
+              },
+              "body_gap_mm": {
+                "C37.2:B": 1.767,
+                "C37.2:I1": 0.0,
+                "C37.2:I4": 0.0
+              },
+              "island": [
+                "C37.2"
+              ]
+            },
+            {
+              "A": {
+                "ok": false,
+                "pad": "J3.A12",
+                "reason": "NO_VIA_SITE",
+                "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+              },
+              "B_body": {
+                "offered": null,
+                "ok": false,
+                "pad": "J3.A12",
+                "reason": "NO_VIA_SITE",
+                "why": "J3.A12: no barrel of 0.50/0.45 reachable on F from any of 3 launches that clears every layer of the stack"
+              },
+              "B_free": {
+                "offered": null,
+                "ok": false,
+                "pad": "J3.A12",
+                "reason": "NO_VIA_SITE",
+                "why": "J3.A12: no barrel of 0.50/0.45 reachable on F from any of 3 launches that clears every layer of the stack"
+              },
+              "body_gap_mm": {
+                "J3.A12:B": 0.7872,
+                "J3.A12:I1": 0.0,
+                "J3.A12:I4": 0.0,
+                "J3.B1:B": 0.7872,
+                "J3.B1:I1": 0.0,
+                "J3.B1:I4": 0.0
+              },
+              "island": [
+                "J3.A12",
+                "J3.B1"
+              ]
+            },
+            {
+              "A": {
+                "ok": false,
+                "pad": "MK1.4",
+                "reason": "NO_LEGAL_ESCAPE",
+                "why": "MK1.4: NO LEGAL ESCAPE at >= 0.150 mm; blocked by MK1. (x67), board_edge (x5)"
+              },
+              "B_body": {
+                "offered": null,
+                "ok": false,
+                "pad": "MK1.4",
+                "reason": "NO_LEGAL_ESCAPE",
+                "why": "MK1.4: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by MK1. (x15527), landing still on the land (x684), board_edge (x517)"
+              },
+              "B_free": {
+                "offered": null,
+                "ok": false,
+                "pad": "MK1.4",
+                "reason": "NO_LEGAL_ESCAPE",
+                "why": "MK1.4: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by MK1. (x15527), landing still on the land (x684), board_edge (x517)"
+              },
+              "body_gap_mm": {
+                "MK1.4:B": 1.0,
+                "MK1.4:I1": 1.0,
+                "MK1.4:I4": 1.0
+              },
+              "island": [
+                "MK1.4"
+              ]
+            },
+            {
+              "A": {
+                "ok": false,
+                "pad": "U9.16",
+                "reason": "NO_VIA_SITE",
+                "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+              },
+              "B_body": {
+                "offered": null,
+                "ok": false,
+                "pad": "U9.16",
+                "reason": "NO_VIA_SITE",
+                "why": "U9.16: no barrel of 0.50/0.45 reachable on B from any of 1 launches that clears every layer of the stack"
+              },
+              "B_free": {
+                "offered": null,
+                "ok": false,
+                "pad": "U9.16",
+                "reason": "NO_VIA_SITE",
+                "why": "U9.16: no barrel of 0.50/0.45 reachable on B from any of 1 launches that clears every layer of the stack"
+              },
+              "body_gap_mm": {
+                "U9.16:B": 0.4892,
+                "U9.16:I1": 0.0,
+                "U9.16:I4": 0.0
+              },
+              "island": [
+                "U9.16"
+              ]
+            }
+          ],
+          "licensed": false,
+          "opened_A": 0,
+          "opened_B_body": 0,
+          "opened_B_free": 0,
+          "via_dia": 450000,
+          "via_drill": 200000,
+          "width": 150000
+        }
+      ]
+    }
+  ],
+  "question": "does D-634's barrel search -- the hop's exact launch and QBoard.via_sites' fine-grid reachability, cleared on every layer of the stack -- open a plane orphan that maze3d.stitch_pad's lattice wavefront refuses",
+  "schema": 1,
+  "site_options": 24,
+  "sites_limit": 96,
+  "span": 8000000
+}

@@ -13,6 +13,93 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-637 (THE PLANE-ORPHAN FAMILY IS *CLOSED BY MEASUREMENT* -- D-634's
+  BARREL CORRECTION, BUILT INTO A STITCH AND AIMED AT ALL TEN ISLANDS OVER 438
+  TRIALS, OPENS *ZERO* -- AND SIX OF THE TEN ALREADY SIT AT **0.000 mm** OVER
+  THEIR OWN NET'S PLANE):**  D-634 closed with *"PUT THE BARREL CORRECTIONS
+  INTO THE INSTRUMENTS THAT PROMOTE"*; D-635 and D-636 carried it unchanged.
+  It is done, and **the barrel search was never the wall.**
+  **NO COPPER MOVED.**  Authority `5715bf5c...` **unchanged**, retained open
+  edges **44**, open retained nets 21, connected retained 152, raw ratsnest 60.
+  **ADD-ONLY**: `git diff --numstat` over the whole worktree is `230 0
+  maze3d.py` -- **230 insertions, ZERO deletions** -- plus one new tracked
+  screen and its evidence; `authoritative_unchanged: true` on all NINE
+  artifacts; the ten standing contracts **10/10 ran, 10/10 IDENTICAL**
+  (`evidence/d637-contract-regression.json`, baseline `d632`).
+  **THE FAMILY IS THE LARGEST LEFT**: of 44 retained open edges **TEN belong to
+  the two pour-owning nets** (`+3V3` 6, `GND` 4) -- 23% of everything open --
+  and each should cost one escape and one barrel into a plane the net owns.
+  **THE OFF-CENTRE LAUNCH IS NOT THE WALL**: the D-633 lever `pad_escapes`
+  already carries, A/B'd over `screen_plane_orphans.py`, moves **2 of 64 cells**
+  (`{U4.2,U4.3}` `NO_LEGAL_ESCAPE` -> `NO_VIA_SITE`) and opens **zero**.
+  **`NO_VIA_SITE` IS A MISNAMED REFUSAL** -- `stitch_pad` finds its barrel by a
+  wavefront on the FIELD LATTICE, so it reports a POCKET as a barrel.  New
+  add-only `maze3d.offcentre_stitch` / `cluster_body_polys` / `in_body` ask the
+  same question with D-634's answer: launch by `_hop_launch` (centre escape
+  FIRST, then off-centre, exact and never a lattice), barrel by `_hop_sites`
+  over `QBoard.via_sites` (fine-grid REACHABILITY, then every layer of the
+  stack and every drilled hole), walk by `connect_role`, and the barrel
+  required to land in the net's own BODY POUR on KiCad's own filled polygons.
+  New tracked `screen_plane_stitch.py` runs `stitch_pad` and the new primitive
+  on the same board, same `Field`, same rung.  **TWO CORRECTIONS THE
+  MEASUREMENT FORCED**: the body test is LAYER-EXACT when there is no barrel
+  (the first run reported `C37.2` closed with a `B.Cu` stub landing inside the
+  body's `In1.Cu` polygon and no `B.Cu` copper at all), and CLAUSE 7 lives
+  inside the primitive (the same run counted two bare stubs, 1.015 and
+  0.214 mm, joining a pad to open board).
+  **THE RESULT IS ZERO OVER 438 ISLAND-ARM TRIALS** -- widths from each
+  netclass contract down through the `.kicad_dru` floor to 0.150 and 0.100 mm
+  (under the board's own `min_track_width`, flagged `licensed: false`); a
+  ceiling search at a **16 mm** window, 512 sites, 96 options and 12 launches;
+  and the **barrel geometry swept BELOW the board's own floor** to 0.45/0.20,
+  0.40/0.15 and **0.35/0.10 mm**.  `opened_B_body` across every artifact is
+  **1**, and that one is `U9.16` at a 0.100 mm track.  **Arm A and arm B agree
+  at every fabricable rung.**  The one thing `stitch_pad` does that the new
+  primitive refuses is a POSITIVE CONTROL FOR D-608: at 0.200 mm it CLOSES
+  `R129.1` with a barrel at (58.100, 58.000) that lands in NO `+3V3` body
+  copper on any layer -- D-607's promoted-and-dead stitch, reproduced by two
+  instruments side by side on one land.
+  **WHY IT IS ZERO IS NOT WHAT ANY EARLIER DECISION ASSUMED.**  New
+  `body_gap_mm`: `U4.2 U4.3 U4.5 U4.8` are **0.000 mm** from `In3`,
+  `C37.2 J3.A12/B1 U9.16` **0.000 mm** from BOTH `In1` and `In4`, `U5.2`
+  0.055 mm, `MK1.4` 1.000 mm on every layer (its own keep-out ring), `R39.1`
+  1.682 mm and `R129.1` 4.525 mm.  **Six of ten are already ON their plane and
+  there is nothing to haul**; the refusal is that no barrel a board can drill
+  fits beside the land.  `screen_segment_evict.py` then partitions all ten
+  exhaustively: **5 `NOT_A_POCKET`** (the escape is refused by the land's own
+  package neighbours -- `U4.4` x54, `U4.6` x41, `U4.9` x44, `U5.1` x56, and
+  `MK1.4` by `MK1.` ITSELF x67 plus board_edge x5), **1 `SEGMENT_WALL`**
+  (`R129.1`: cut all 20 foreign tracks in the pocket, still
+  `NO_BODY_VIA_SITE`), and **4 `SEGMENT_OPENS` but RELAY-FAIL** -- `R39.1`,
+  `C37.2`, `J3.A12/B1` and `U9.16` each open on a NAMED cut, every cut
+  regresses its net 1 -> 2 clusters, and every relay returns `NO_PATH`;
+  `/ACC_DETECT_N` is D-323's promoted copper and `NFC_RFO2` is an NFC RF
+  output.
+  **AND NO LICENCE HELPS.**  `leaf_land_contract` (controls PASS 16/16) admits
+  exactly THREE islands -- `R129.1` (100k), `R39.1` (1M) and `{U4.2,U4.3}`
+  (BMI270 `ASDx`/`ASCx`, bidirectional) -- and all three are in the zero column
+  anyway; `U4.5`/`U4.8` are `power_in`, `U5.2` `UNBOUNDED_PASSIVE`, and the one
+  closure found anywhere is refused twice, by `min_track_width` and by LL4
+  because `U9.16` is the ST25R3916's `GND_DR_16` SUPPLY PORT.
+  **SO THE FAMILY IS CLOSED AS A ROUTING QUESTION AND THE REMAINDER IS ONE
+  NAMED CLAUSE**: four of these ten, and `/I2C_SDA_INT` before them
+  (`screen_evict_rebuild`: stripped whole it rebuilds 2 open edges to **4**),
+  fail because **the cut is put back ALONE**.  This board has reached a
+  RIP-UP-AND-RERELAY frontier and no instrument here can take that
+  transaction.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **BUILD THE SIMULTANEOUS
+  RIP-UP-AND-RELAY** -- re-propose the cut net WITH the opened pocket and the
+  new stitch in ONE search; `--detour-spec` applies the cut and `--evict` runs
+  before the proposal already, and `screen_segment_evict.py --plan-out` emits
+  the spec; it is the first thing in five decisions whose closure would be
+  COPPER.  (2) **RECORD `U4.5`, `U4.8`, `{U4.2,U4.3}`, `U5.2` and `MK1.4` AS A
+  PLACEMENT FINDING** -- own-package-neighbour walls no router reaches.
+  (3) **`R129.1`'s PLANE IS GENUINELY ABSENT** (4.525 mm to `In3`), so its
+  question is where `In3` stops -- a POUR question.  (4) **D-636's ITEMS ARE
+  CARRIED UNCHANGED**: the `/I2S_LRCLK` edge rate is still a DATA task and
+  still the only thing between `/I2C_SCL_INT` and the first plane haul.
+  No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3
+  remains an open PLACEMENT finding, now with four named lands beside it.
 - **Demo D-636 (THE `GND` RETURN PATH IS *PRICED* -- `PP2`'s ONE OPEN
   MODELLING GAP IS CLOSED, "THE CHOICE OF PLANE IS FREE" IS *REFUTED*, AND THE
   WHOLE PLANE LICENCE REDUCES TO ONE IRREDUCIBLE NUMBER):**  D-635 ranked

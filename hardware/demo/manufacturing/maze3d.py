@@ -5202,3 +5202,233 @@ def relief_stitch(qb, net, widths, clr_pad, clr_trk, via_dia, via_drill,
                 failures=failures[:40],
                 mm=round(sum(d['mm'] for d in done), 3), vias=len(done),
                 widths=list(widths), via_dia=via_dia, via_drill=via_drill)
+
+
+# --------------------------------------------------------------------------- #
+# THE PLANE STITCH, BUILT ON THE HOP INSTEAD OF ON THE LATTICE          D-637
+# --------------------------------------------------------------------------- #
+# D-634 closed with "PUT THE BARREL CORRECTIONS INTO THE INSTRUMENTS THAT
+# PROMOTE", D-635 and D-636 each carried it forward unchanged, and this is the
+# instrument it names first.  `stitch_pad` is the primitive every pour-owning
+# net's orphan islands are closed by, and it searches its barrel the older way:
+#
+#   * its launch is `pad_escapes`, whose off-centre source is offered ONLY when
+#     the ordinary set is EMPTY and only under `AQROOT_OFFCENTRE_LAUNCH`; and
+#   * its barrel is found by a WAVEFRONT ON THE FIELD LATTICE, `~field.blk[L]`,
+#     inside a window of `max_mm` cells around the escape.
+#
+# The second is the one that matters, and the refusal it produces is MISNAMED.
+# `NO_VIA_SITE` reads as a statement about barrels; it is a statement about a
+# POCKET.  A land whose escape sits in a lattice pocket cannot walk to any
+# via-legal cell inside the window, so the stitch reports that no barrel exists
+# when what is true is that the coarse lattice cannot leave the pad -- which is
+# exactly D-633's LATTICE_EXACT finding in a second place, and exactly what
+# D-634 built `_hop_sites` and `QBoard.via_sites` to answer instead.
+#
+# So this is `stitch_pad`'s question asked with D-634's answer:
+#
+#   * the LAUNCH is `_hop_launch` -- the centre-anchored `QBoard.escape` FIRST
+#     and in its own order, then `offcentre_escapes`, both exact and neither a
+#     lattice;
+#   * the BARREL is `_hop_sites` over `QBoard.via_sites`, which floods the near
+#     layer at TRACK width from the launch on the FINE grid and is therefore a
+#     reachability answer, then clears every layer of the stack and every
+#     drilled hole through `_via_free_everywhere`;
+#   * the WALK from the launch to that site is `qrouter.connect_role` between
+#     two ANCHORS, the same instrument the hop uses.
+#
+# AND THE BARREL IS REQUIRED TO LAND IN THE NET'S OWN BODY POUR.  That is
+# `body_landing`'s contract -- CENTRE-IN-COPPER, a certificate and not a veto,
+# with `land_ok=None` still available -- but computed EXACTLY, on KiCad's own
+# filled polygons through `filled_islands`, instead of on a rasterised mask.
+# D-608's calibration is why the erode is not offered here either.
+#
+# NOTHING ABOVE IS EDITED.  `stitch_pad`, `stitch_net`, `relief_stitch` and
+# every instrument that calls them are untouched, so every accepted run on this
+# board reproduces byte for byte and this primitive is reachable only from code
+# written for it.
+# --------------------------------------------------------------------------- #
+def cluster_body_polys(qb, net, body_island):
+    """KiCad's own filled polygons that belong to `body_island`'s cluster.
+
+    `body_island` is one of `net_islands`' pad groups -- the BODY, the group a
+    stitch is trying to reach.  `pour_clusters` unions this net's pads AND
+    vias by KiCad connectivity and `island_owner` attributes each filled
+    outline to one of those clusters by containment, so what comes back is the
+    copper a barrel may land in and be bonded to by the refill, layer by layer.
+
+    Returns (polys, meta) with `polys` a list of (layer_name, SHAPE_POLY_SET,
+    area_mm2).  An empty list means the body owns no filled copper at all,
+    which is a real answer and not an error: a caller must then stitch without
+    the certificate or not at all.
+    """
+    islands = filled_islands(qb, net)
+    if not islands:
+        return [], dict(filled_islands=0, body_roots=0)
+    roots, items = pour_clusters(qb, net)
+    owner = island_owner(islands, roots, items)
+    want = set()
+    for p in body_island:
+        for key, meta in items.items():
+            if meta['kind'] != 'pad' or key[1] != p['ref']:
+                continue
+            if abs(meta['x'] - p['x']) < 1000 and abs(meta['y'] - p['y']) < 1000:
+                want.add(roots[key])
+    out = [(lname, poly, a) for (lname, idx, poly, a) in islands
+           if owner.get(idx) in want]
+    per = {}
+    for (lname, _poly, a) in out:
+        per[lname] = round(per.get(lname, 0.0) + a, 3)
+    return out, dict(filled_islands=len(islands), body_roots=len(want),
+                     body_islands=len(out), area_mm2_by_layer=per)
+
+
+def in_body(polys, x, y, layer=None):
+    """Is (x, y) inside the body's own filled copper?  Returns the layer, or None.
+
+    `layer=None` asks ANY layer, which is the right question for a THROUGH
+    barrel: it is copper on every layer of the stack, so one containment
+    suffices -- and that is how every `GND` stitch on this board reaches `In1`
+    or `In4`, layers the net may not route a track on.
+
+    `layer=NAME` asks that layer ALONE, and it is the right question when
+    there is NO barrel.  A stub that merely ENDS on the plane the body pours
+    on carries copper on its own layer and nowhere else, so a containment on
+    some other layer bonds nothing.  Getting this wrong is not a near miss:
+    the first run of `screen_plane_stitch.py` reported `C37.2` closed with a
+    `B.Cu` stub whose landing was inside the body's `In1.Cu` polygon and
+    inside no `B.Cu` copper at all.
+    """
+    import pcbnew
+    pt = pcbnew.VECTOR2I(int(x), int(y))
+    for (lname, poly, _a) in polys:
+        if layer is not None and lname != layer:
+            continue
+        if poly.Contains(pt):
+            return lname
+    return None
+
+
+def offcentre_stitch(qb, ctx, pad, far, width, toward, polys=None,
+                     stub_widths=None, G=50000, fine=25000, memo=None,
+                     limit=6, via_ladder=None, via_dia=600000,
+                     via_drill=300000, span=8000000, sites_limit=96,
+                     site_options=24, reach_mm=OFFCENTRE_REACH_MM,
+                     anchor_fracs=OFFCENTRE_ANCHOR_FRACS,
+                     dir_step_deg=OFFCENTRE_DIR_STEP_DEG):
+    """Drop ONE orphan land onto its net's own plane: launch, walk, barrel.
+
+    `far` is the plane layer the barrel is aimed at -- a name or an ordered
+    list, first that closes wins.  `toward` is any point the launch should
+    prefer (the nearest body pad); it reorders candidates and decides nothing.
+    `polys` is `cluster_body_polys`' answer; when given, a barrel site is
+    accepted ONLY where `in_body` names a layer, and when None the stitch is
+    unconstrained exactly as `stitch_pad` without `land_ok` is.
+
+    On success the stub, the walk and the barrel are on `qb` and the CALLER's
+    own mark reverts them; on failure this reverts everything it laid.
+    """
+    ladder = tuple(via_ladder or ((int(via_dia), int(via_drill)),))
+    if isinstance(far, (list, tuple)):
+        best, tried = None, []
+        for L in far:
+            r = offcentre_stitch(qb, ctx, pad, L, width, toward, polys=polys,
+                                 stub_widths=stub_widths, G=G, fine=fine,
+                                 memo=memo, limit=limit, via_ladder=ladder,
+                                 span=span, sites_limit=sites_limit,
+                                 site_options=site_options, reach_mm=reach_mm,
+                                 anchor_fracs=anchor_fracs,
+                                 dir_step_deg=dir_step_deg)
+            tried.append(dict(far=L, reason=r.get('reason'),
+                              why=str(r.get('why'))[:200]))
+            if r.get('ok'):
+                return dict(r, far_tried=tried)
+            if best is None or (best.get('reason') in ('NO_NEAR_WALK', None)
+                                and r.get('reason') not in ('NO_NEAR_WALK',
+                                                            None)):
+                best = r
+        return dict(best or dict(ok=False, reason='NO_LAYER',
+                                 why='no far layer offered'), far_tried=tried)
+
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    nl, opts, bad = _hop_options(qb, ctx, pad, toward, far, None, width,
+                                 stub_widths, ladder, G, ox, oy, memo, limit,
+                                 span, sites_limit, site_options, reach_mm,
+                                 anchor_fracs, dir_step_deg)
+    if bad is not None:
+        return dict(ok=False, pad=pad['ref'], far=far, **bad)
+
+    offered = len(opts)
+    # CLAUSE 7 INSIDE THE PRIMITIVE.  An option with NO barrel is a bare stub
+    # on `nl`, and it CONNECTS NOTHING unless its landing is inside the body's
+    # own filled copper ON THAT LAYER.  Unconstrained (`polys is None`) there
+    # is nothing to land in, so such an option is not a stitch at all and is
+    # dropped here rather than reported as a closure: the first run of
+    # `screen_plane_stitch.py` counted two of them, `C37.2` and `U9.16`, and
+    # both were 1.0 mm and 0.2 mm of copper joining a pad to open board.
+    if polys is None:
+        opts = [o for o in opts if o['site'] is not None]
+        if not opts:
+            return dict(ok=False, pad=pad['ref'], far=far, offered=offered,
+                        reason='NO_BARREL_NEEDED_NO_BARREL_FOUND',
+                        why='%s: its land is already on %s, so an '
+                            'unconstrained stitch has nothing to land in'
+                            % (pad['ref'], far))
+    if polys is not None:
+        # `at` and NOT `site`, because a land ALREADY on the plane the body
+        # pours on takes no barrel at all -- `_hop_options` reports
+        # `site=None` and `at` is then the stub's own landing.  A stub that
+        # lands inside the body's filled copper is bonded by the refill
+        # exactly as a barrel in it is, so that case is a real closure and is
+        # reported with `via_dia: null` rather than skipped.
+        kept = []
+        for o in opts:
+            hit = in_body(polys, o['at'][0], o['at'][1],
+                          layer=(None if o['site'] is not None else nl))
+            if hit is not None:
+                kept.append(dict(o, body_layer=hit))
+        if not kept:
+            return dict(ok=False, pad=pad['ref'], far=far,
+                        reason='NO_BODY_VIA_SITE', offered=offered,
+                        why='%s: none of %d reachable barrels on %s lands '
+                            'INSIDE this net\'s own body pour'
+                            % (pad['ref'], offered, nl))
+        opts = kept
+
+    fail = None
+    for opt in opts:
+        m = qb.mark()
+        good, wmm, why = _hop_lay(qb, ctx, pad, nl, far, opt, width, G, fine)
+        if not good:
+            qb.revert(m)
+            fail = dict(ok=False, pad=pad['ref'], far=far,
+                        reason='NO_NEAR_WALK', offered=offered, why=why)
+            continue
+        why = verify_laid(qb, ctx, m)
+        if why is not None:
+            qb.revert(m)
+            fail = dict(ok=False, pad=pad['ref'], far=far, offered=offered,
+                        reason='UNPROVED_GEOMETRY',
+                        why='%s at %s vs %s' % (why.get('kind'), why.get('at'),
+                                                why.get('against',
+                                                        why.get('why'))))
+            continue
+        c = opt['cand']
+        vx, vy = opt['at']
+        return dict(ok=True, pad=pad['ref'], layer=nl, far=far,
+                    barrel=bool(opt['site'] is not None),
+                    offered=offered,
+                    body_layer=opt.get('body_layer'),
+                    centre=bool(c.get('centre')),
+                    offcentre_mm=c['offcentre_mm'], base_dir=c['base_dir'],
+                    stub_mm=round(c['ln'] / 1e6, 4), walk_mm=round(wmm, 4),
+                    mm=round(c['ln'] / 1e6 + wmm, 4),
+                    width=int(width), stub_width=int(opt['sw']),
+                    via_dia=opt['dia'], via_drill=opt['drill'],
+                    via_xy=(round(vx / 1e6, 4), round(vy / 1e6, 4)),
+                    via_xy_nm=(int(vx), int(vy)),
+                    a_xy=(round(c['ax'] / 1e6, 4), round(c['ay'] / 1e6, 4)),
+                    b_xy=(round(c['x'] / 1e6, 4), round(c['y'] / 1e6, 4)))
+    return fail or dict(ok=False, pad=pad['ref'], far=far, offered=offered,
+                        reason='NO_VIA_SITE',
+                        why='%s: no barrel reachable on %s' % (pad['ref'], nl))

@@ -1,5 +1,236 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-637 · 2026-09-05 · Demo — the PLANE-ORPHAN family is CLOSED BY MEASUREMENT: D-634's barrel correction, built into a stitch and aimed at all TEN islands over 438 trials, opens ZERO — and SIX OF THE TEN ALREADY SIT AT **0.000 mm** OVER THEIR OWN NET'S PLANE
+
+    authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial: `authoritative_unchanged: true`
+      on all NINE artifacts.
+    ADD-ONLY.  `git diff --numstat` over the whole worktree is
+      `230 0 hardware/demo/manufacturing/maze3d.py` -- **230 insertions, ZERO
+      deletions**, not one existing line changed, every new entry point
+      reachable only from code written this iteration -- plus one new tracked
+      screen and its evidence.  The ten standing contracts were re-run and
+      compared field by field anyway: **10/10 ran, 10/10 IDENTICAL**
+      (`evidence/d637-contract-regression.json`, baseline `d632`).
+    LEDGER RE-MEASURED, UNMOVED.  retained open edges **44**, open retained
+      nets 21, connected retained 152, raw ratsnest 60.
+
+D-634 closed with *"PUT THE BARREL CORRECTIONS INTO THE INSTRUMENTS THAT
+PROMOTE -- `relief_stitch`, `stitch_pad` and `bridge_islands` search barrels
+the older way"*.  D-635 and D-636 each carried it forward unchanged, three
+decisions running.  **It is done, and the answer is that the barrel search was
+never the wall.**  What the measurement found instead retires the whole family
+as a routing question and hands the board a single, different, named lever.
+
+## 1. The family, and why it is the right one to close
+
+`routing_ledger.py` on the current board: of **44 retained open edges, TEN
+belong to the two pour-owning nets** -- `+3V3` 6 and `GND` 4 -- which is
+**23 % of everything still open**, the largest coherent family left, and the
+one whose closure is in principle the cheapest object this board can lay: one
+escape and one through barrel into a plane the net already owns.
+
+    +3V3   R129.1 · R39.1 · {U4.2,U4.3} · U4.5 · U4.8 · U5.2
+    GND    C37.2 · {J3.A12,J3.B1} · MK1.4 · U9.16
+
+**THE CONTROL** (`evidence/d637-plane-orphans-control.json`).
+`screen_plane_orphans.py` unchanged, both nets, every rung from the netclass
+contract down to the `.kicad_dru` and board floors: **ZERO opened at every
+rung**, with exactly two refusals -- `NO_LEGAL_ESCAPE` and `NO_VIA_SITE`.
+
+**THE OFF-CENTRE LAUNCH IS NOT THE WALL** (`...-plane-orphans-offcentre.json`).
+The identical sweep under `AQROOT_OFFCENTRE_LAUNCH=1`, which is the D-633
+lever `pad_escapes` already carries.  **64 A/B cells, TWO differ, ZERO open**:
+`{U4.2,U4.3}` at 0.400 mm moves `NO_LEGAL_ESCAPE` -> `NO_VIA_SITE` on both
+barrel rungs and nothing else moves at all.  D-633 predicted exactly that
+reclassification and this is it, measured on the promoting instrument.
+
+## 2. `NO_VIA_SITE` IS A MISNAMED REFUSAL, AND NAMING IT RIGHT IS THE FIX
+
+`stitch_pad` finds its barrel with a WAVEFRONT ON THE FIELD LATTICE,
+`~field.blk[L]`, inside a window of `max_mm` cells around the escape.  So its
+`NO_VIA_SITE` reads as a statement about barrels and is a statement about a
+POCKET -- D-633's `LATTICE_EXACT` finding in a second place, and precisely
+what D-634 built `_hop_sites` over `QBoard.via_sites` to answer instead.
+
+**NEW `maze3d.offcentre_stitch`, `cluster_body_polys`, `in_body` (add-only).**
+`stitch_pad`'s question asked with D-634's answer: the LAUNCH is `_hop_launch`
+(the centre-anchored `QBoard.escape` FIRST and in its own order, then
+`offcentre_escapes` -- exact, never a lattice); the BARREL is `_hop_sites`,
+which floods the near layer at TRACK width from the launch on the FINE grid
+and is therefore a REACHABILITY answer, then clears **every layer of the
+stack** and every drilled hole through `_via_free_everywhere`; the WALK is
+`qrouter.connect_role` between two anchors.  And the barrel must land in the
+net's own BODY POUR -- D-608's centre-in-copper contract, computed EXACTLY on
+KiCad's own filled polygons instead of on a rasterised mask.
+
+**TWO CORRECTIONS THE MEASUREMENT FORCED, BOTH INSIDE THE NEW PRIMITIVE.**
+
+  * **THE BODY TEST IS LAYER-EXACT WHEN THERE IS NO BARREL.**  A land already
+    on the layer its body pours on takes no barrel, and its stub then carries
+    copper on ONE layer only -- so a containment on some other layer bonds
+    nothing.  The first run of `screen_plane_stitch.py` reported `C37.2`
+    CLOSED with a `B.Cu` stub whose landing lay inside the body's **`In1.Cu`**
+    polygon and inside no `B.Cu` copper at all.  Not a near miss; a false
+    closure, caught by writing the test down.
+  * **CLAUSE 7 INSIDE THE PRIMITIVE.**  An unconstrained option with no barrel
+    is a bare stub that CONNECTS NOTHING, and the same first run counted two
+    of them -- `C37.2` at 1.015 mm and `U9.16` at 0.214 mm of copper joining a
+    pad to open board.  They are dropped where they are generated rather than
+    reported as closures.
+
+**NEW TRACKED `screen_plane_stitch.py`** runs arm A (`stitch_pad`, unchanged,
+invoked exactly as `screen_plane_orphans.py` invokes it) and arm B
+(`offcentre_stitch`, with and without the body certificate) **on the same
+board, the same `Field` and the same rung**, every trial reverted.
+
+## 3. THE RESULT: ZERO, OVER 438 ISLAND-ARM TRIALS
+
+Nine artifacts, 29 rungs, three arms per island
+(`evidence/d637-plane-stitch-{3v3,gnd}.json`, `...-3v3-ceiling.json`,
+`...-barrel-sweep-{3v3,gnd}-{450,400,350}.json`):
+
+  * **WIDTH** -- from each netclass contract down to the `.kicad_dru` floor and
+    on below it to 0.150 mm and 0.100 mm, the latter UNDER the board's own
+    `min_track_width`.  Every sub-floor rung is flagged `licensed: false`.
+  * **THE CEILING SEARCH** -- a **16 mm** barrel window, **512** candidate
+    sites, **96** site options and **12** launches per land, against the 8 mm /
+    96 / 24 / 6 the ordinary run uses.
+  * **THE BARREL GEOMETRY, SWEPT BELOW THE BOARD'S OWN FLOOR** -- 0.45/0.20,
+    0.40/0.15 and **0.35/0.10 mm**, a geometry no standard process offers,
+    against the board's `min_via_diameter` 0.50 and
+    `min_through_hole_diameter` 0.20.
+
+**ACROSS ALL OF IT, `opened_B_body` IS 1.**  That one is `U9.16` at a
+**0.100 mm track** -- one third under the board's own minimum -- and it is
+refused a second time, independently, by §5 below.  At every fabricable rung
+the answer is **ZERO, and arm A and arm B agree**.  The barrel search was not
+the wall.  D-634 item 2 is CLOSED with a measured verdict rather than carried a
+fourth time.
+
+**THE ONE THING ARM A DOES THAT ARM B REFUSES, AND IT IS A POSITIVE CONTROL
+FOR D-608.**  At 0.200 mm with a 0.50 mm barrel, `stitch_pad` CLOSES `R129.1`
+-- 1.117 mm of copper and a barrel at (58.100, 58.000) -- and `in_body` says
+that barrel lands in NO `+3V3` body copper on any layer.  That is D-607's
+promoted-and-dead stitch reproduced exactly, by two instruments side by side on
+one land, for the first time.
+
+## 4. WHY IT IS ZERO — AND IT IS NOT WHAT ANY EARLIER DECISION ASSUMED
+
+New per-island `body_gap_mm`, KiCad's own filled polygons, distance from each
+orphan land to its net's BODY copper on every layer:
+
+    U4.2 U4.3 U4.5 U4.8     In3  0.000 mm      (and F 0.000)
+    C37.2 J3.A12/B1 U9.16   In1  0.000 mm  In4 0.000 mm
+    U5.2                    In3  0.055 mm
+    MK1.4                   every layer 1.000 mm   (its own keep-out ring)
+    R39.1                   In3  1.682 mm
+    R129.1                  In3  4.525 mm
+
+**SIX OF THE TEN ISLANDS SIT AT 0.000 mm OVER THEIR OWN NET'S PLANE, AND A
+SEVENTH AT 0.055 mm.**  The plane is not far away and there is nothing to haul.
+The stitch needs ONE THROUGH BARREL and the entire refusal is that **there is
+no room beside the land for any barrel a board can drill** -- 0.35 mm included.
+
+`screen_segment_evict.py` (`evidence/d637-segment-evict.json`, `--body-landing
+--relay-own-layer --cap 20`) then partitions the ten exhaustively:
+
+    NOT_A_POCKET     5   the ESCAPE is refused and there is no track to cut
+                         U4.2/U4.3 (U4.4 x54), U4.5 (U4.6 x41), U4.8 (U4.9 x44),
+                         U5.2 (U5.1 x56), MK1.4 (its OWN footprint x67 +
+                         board_edge x5)
+    SEGMENT_WALL     1   R129.1 -- cut ALL 20 foreign tracks in the pocket and
+                         it is STILL NO_BODY_VIA_SITE
+    SEGMENT_OPENS    4   a named cut opens the barrel -- and EVERY ONE
+      but RELAY-FAIL     REGRESSES the cut net 1 -> 2 clusters and CANNOT BE
+                         PUT BACK
+
+The four that open and cannot be relaid, with the cut priced:
+
+    R39.1        cut 2 whole `Net-(U11-TS_MR)` tracks (B)      relay NO_PATH
+    C37.2        cut `/ACC_DETECT_N` 5.451 mm (B) AND
+                 `Net-(U11-TS_MR)` 9.527 mm (F)                relay NO_PATH
+    J3.A12/B1    cut `Net-(J3-CC2)` 5.475 mm (F)               relay NO_PATH
+    U9.16        cut ONE track at r = 2.00 mm, stitch 1.727 mm,
+                 REJOIN -- the track is
+                 `/04_SPI_B_RADIOS_NFC/NFC_RFO2`               relay NO_PATH
+
+`/ACC_DETECT_N` is D-323's promoted copper and `NFC_RFO2` is an NFC RF output.
+
+## 5. THE THREE LANDS A LICENCE COULD EVEN BE WRITTEN FOR, AND WHY IT WOULD NOT HELP
+
+`checks/leaf_land_contract.py` on both nets (`evidence/d637-leaf-lands.json`,
+controls **PASS 16/16**, coverage PASS) admits **THREE** of the ten islands for
+a narrow escape and refuses seven:
+
+    R129.1      SIGNAL_LEAF   100k    <= 0.055 mA   ADMITTED
+    R39.1       SIGNAL_LEAF   1M      <= 0.005 mA   ADMITTED
+    U4.2/U4.3   SIGNAL_LEAF   BMI270 ASDx/ASCx, bidirectional   ADMITTED
+    U4.5 U4.8   RAIL          BMI270 VDDIO_5 / VDD_8, power_in
+    U5.2        RAIL          UNBOUNDED_PASSIVE (MAX98357A GAIN_SLOT)
+    C37.2 J3.*  RAIL          UNBOUNDED_PASSIVE
+    MK1.4 U9.16 RAIL          power_in supply ports
+
+**All three admitted lands are in the ZERO column of §3 anyway** -- R129.1 is
+the `SEGMENT_WALL`, R39.1 opens only on a cut that cannot be relaid, and
+`{U4.2,U4.3}` is `NOT_A_POCKET` at 0.400 mm and `NO_VIA_SITE` below it at
+every barrel down to 0.35 mm.  **So no escape-relief licence this board could
+lawfully write closes a single one of these ten edges.**  And the one closure
+found anywhere in the campaign, `U9.16` at 0.100 mm, is refused twice over:
+by the board's own `min_track_width`, and by LL4, because `U9.16` is the
+ST25R3916's `GND_DR_16` **SUPPLY PORT**.
+
+## 6. Verdict
+
+The plane-orphan family -- 10 islands, 23 % of the board's remaining open
+edges -- is **CLOSED as a routing question**.  It is not launches (D-633's
+lever moves two cells and opens nothing), not barrels (D-634's search agrees
+with the lattice at every geometry down to 0.35/0.10 mm), not widths, not
+layers and not planes (six of ten are already ON their plane at 0.000 mm).
+**Five refuse at the LAND, one refuses with its whole pocket cut, and the
+remaining four are held by copper the router can no longer put back.**
+
+That last clause is the finding that generalises, and it is the SECOND
+independent measurement of it on this board: `screen_evict_rebuild.py` already
+recorded `/I2C_SDA_INT` stripped whole rebuilding from 2 open edges to **4**.
+**This board has reached a rip-up-and-reroute frontier -- the remaining edges
+open only by evicting copper that cannot be re-proposed at today's
+congestion -- and no instrument here can take that transaction, because
+eviction and re-proposal are separate steps and clause 4 correctly refuses a
+net that ends worse.**
+
+**NEXT, IN ORDER OF LEVERAGE.**
+
+ 1. **THE SIMULTANEOUS RIP-UP-AND-RELAY IS THE ONE MISSING TRANSACTION.**  Four
+    of these ten lands, and `/I2C_SDA_INT` before them, fail on the SAME
+    clause: a cut that opens the pocket cannot be put back BECAUSE THE CUT IS
+    PUT BACK ALONE.  `route_maze_batch.py --detour-spec` already applies a cut
+    and `--evict` already runs before the proposal; what does not exist is a
+    relay that is re-proposed WITH the opened pocket and the new stitch in one
+    search.  It is bounded, it is the first thing on this board in five
+    decisions whose closure would be COPPER, and `screen_segment_evict.py`
+    already emits the `--detour-spec` the transaction would take
+    (`--plan-out`).
+ 2. **FIVE OF THE TEN ARE A PLACEMENT FINDING AND SHOULD BE RECORDED AS ONE.**
+    `U4.5`, `U4.8`, `{U4.2,U4.3}`, `U5.2` and `MK1.4` are refused by their OWN
+    PACKAGE NEIGHBOURS and their own footprint -- `MK1.4` by `MK1.` itself 67
+    times and the board edge 5 more.  No router, width, barrel or layer
+    reaches them; only moving a part or changing a footprint does.
+ 3. **`R129.1` IS THE ONE LAND WHOSE PLANE IS GENUINELY ABSENT.**  4.525 mm to
+    the nearest `+3V3` body copper on `In3` and 5.223 mm on `F` -- it is
+    outside the pour, not sealed from it -- so its question is where `In3`
+    stops, which is a POUR question and not a stitch question.
+ 4. **THE D-636 ITEMS ARE CARRIED UNCHANGED**: the `/I2S_LRCLK` edge rate is
+    still a DATA task and still the only thing between `/I2C_SCL_INT` and the
+    board's first plane haul; the `GND` stitch barrels still ride with it;
+    RP2/RP4 can still be aimed at the board.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED and PM-3
+remains an open PLACEMENT finding, now with four named lands beside it.
+
 # D-636 · 2026-09-05 · Demo — the GND RETURN PATH is PRICED: PP2's one open modelling gap is CLOSED, "the choice of plane is FREE" is REFUTED (In1 costs the USB HS pair its own DRU-NAMED reference plane), and the whole plane licence reduces to ONE irreducible number — 7.670 mm on /I2S_LRCLK
 
     authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
