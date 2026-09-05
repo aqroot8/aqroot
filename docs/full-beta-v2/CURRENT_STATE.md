@@ -13,6 +13,105 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-632 (THE RAIL BAR WAS BEING CHARGED TO LANDS THAT CARRY *NO
+  CURRENT*, AND THE INSTRUMENT `LATTICE_EXACT` NAMED *REFUSES THE LIST IT WAS
+  NAMED FOR*):**  D-631 left four next tasks; this is the third and the fourth.
+  **PROMOTED -- `+3V3` `U4.12`, the BMI270's `CSB` pin, which had NO CONNECTION
+  OF ANY KIND.**  0.743 mm of `B.Cu` at **0.200 mm** in two segments plus one
+  **0.35/0.20 mm** through barrel at **(57.225, 70.525)**, inside `U4`'s own
+  land-free LGA-14 interior, 0.225 mm clear of `U4.10` and 0.275 mm of `U4.13`
+  against a 0.200 mm `P3V3` clearance.  Two rule areas: `PAD_ESCAPE_U4_12`
+  (barrel, drawn by the transaction) and `PAD_ESCAPE_RUN_U4_12` (width,
+  **DECLARED in `evidence/d632-relief-run-areas.json` before the router
+  moved** -- x 56.3375..57.525, y 70.250..70.775 mm, the narrow bbox
+  56.4875/70.400 -> 57.375/70.625 plus section 17 clause 7's 0.150 mm end-cap
+  overhang).  **THE FIRST WIDTH LICENCE ON THIS BOARD THAT IS NOT A DERATING**:
+  D-610's `U12.4` neck carries the whole 3.3 V rail and had to be ruled
+  *"KNOWINGLY DERATED"*; `CSB` is a mode-select INPUT strapped to the rail on
+  the vendor's own instruction and carries nothing.
+  Authority `c4fee018...` ->
+  **`5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2`**,
+  **retained open edges 45 -> 44**, `+3V3` 7 -> 6 and its islands 8 -> 7,
+  connected retained 152, open retained nets 21, unconnected items 61 -> 60.
+  **3 objects added (2 tracks + 1 barrel), ZERO removed**, zero zones, zero
+  placement change.  `verify_promotion.py --ref HEAD --nets +3V3 --track-width
+  400000 --relief-run --bridge` **15/15 PASS** plus all four live DRU contracts
+  including `D-186_bat_main_class` and `D-269_bat_main_routed_clearance`; DRC
+  **zero attributable**, inherited only and identical on the second pass; every
+  standing contract PASS (`pour_partition` PP1-PP4, `pour_bond` 47-tube,
+  `neck`, `placement`, `population`, `land_parity`, `keepout_stackup` KO1-KO5,
+  `rf_symmetry`); `protected_copper` **identical** (15 nets / 393 objects, zero
+  differences); fab package re-exported (28 files) and `fab_package_contract`
+  **FAB1-FAB8 PASS**.
+  **THE CLAUSE THAT SAYS SO -- new tracked `checks/leaf_land_contract.py`,
+  LL1-LL6.**  D-628's `PP2` charges every `+3V3` conductor the whole eighty-pad
+  rail's 1.0 A.  KiCad's own exported netlist already publishes the
+  discriminator: the `pintype` of every node.  `power_in`/`power_out` is a
+  SUPPLY PORT; `input`/`output`/`bidirectional`/`tri_state` is a SIGNAL pin; a
+  `passive` terminal of a TWO-terminal part with a published resistance >= 1 k
+  is BOUNDED (priced at 5.5 V, above every rail this board carries); anything
+  else `passive` -- a 0 R link, an L, a C, a switch, a header -- is UNBOUNDED
+  and REFUSED.  An island with no supply port on it is not fed through the
+  copper that reaches it, so the rail current does not bind that copper (LL3);
+  otherwise the rail bar stands UNCHANGED (LL4).  **16/16 controls PASS**, all
+  four classes exist board-wide (95 / 228 / 158 / 483), and over the three
+  pour-owning nets it **ADMITS FOUR islands and REFUSES SEVENTEEN**:
+  `{U4.2,U4.3}` (ASDx/ASCx), `{U4.12}` (CSB), `{R129.1}` (100 k, <= 55 uA),
+  `{R39.1}` (1 M) -- and refuses `{U4.5}` `VDDIO`, `{U4.8}` `VDD`, `{U5.2}`, and
+  **every island of `GND` and of `/01_POWER_TREE/BQ25185_SYS`.**
+  **IT REFUSED THE CHEAPEST BUY ON THE BOARD.**  A fresh
+  `screen_pad_escape_relief.py` sweep of all three pour nets at 0.025 mm under
+  the 47-tube guard (`evidence/d632-escape-relief-screen-g25.json`) opens
+  **eight** lands at the 0.200 mm + fine-barrel rung -- and `GND` `U9.16` at
+  the FULL netclass width with the barrel alone, the cheapest licence the
+  doctrine can spend.  The netlist names it `GND_DR_16`, `power_in`: the
+  **ST25R3916's driver ground**, the NFC transmit return.  `GND` return-path
+  pricing is the one OPEN modelling gap in `PP2` and the clause declined to
+  close it by accident.  Six of the eight are refused; the two `+3V3` straps
+  remain.
+  **`route_local_two_pad` AIMED AT THE `LATTICE_EXACT` LIST FOR THE FIRST TIME
+  -- new tracked `screen_lattice_exact_route.py`** (`evidence/d632-lattice-exact-route.json`,
+  `...-plainnets.json`, read-only, every trial reverted).  35 island pairs over
+  five nets, each over a descending ladder from the netclass width to the
+  board's 0.150 mm `min_track_width` in 0.050 mm steps.  **ONE closes**: `+3V3`
+  `U4.3 <-> U4.5`, 0.937 mm gap, at **0.250 mm** and 3.4376 mm of copper --
+  below the 0.400 mm class floor, and `U4.5` is `VDDIO`, so **LL4 refuses the
+  one edge the ladder found**.  **SEVEN LANDS ARE MEASURED ESCAPE WALLS AT
+  EVERY RUNG DOWN TO 0.150 mm**: `U11.9`, `U11.3`, `U9.8`, `U9.10`, `U21.5`,
+  `U4.8`, `U5.2`, every one blocked by its own package neighbours' LANDS.
+  **AND THAT REFUTES THE INSTRUMENT THE CLASS NAMED.**  D-630 ruled
+  `LATTICE_EXACT` *"rasterisable at NO pitch ... `route_local_two_pad` is the
+  ONLY instrument"*.  It is the only one, and on `U11.9`/`U11.3` **it refuses
+  too**, at the board's own minimum width.  The reason is a modelling choice
+  nobody had read: **`QBoard.escape` is CENTRE-ANCHORED** -- a STRAIGHT segment
+  from the pad's own CENTRE, in one of eight directions fixed by the pad's
+  orientation, at least `extent + clearance + width/2 + 0.150 mm` long.  On a
+  0.500 mm-pitch package with populated neighbours no such ray is legal at ANY
+  width this board can fabricate, which is why the refusal does not move with
+  width.  `screen_land_escape_margin` measures the widest track that may SIT ON
+  a land; `QBoard.escape` asks whether a ray through the CENTRE may LEAVE it,
+  and this is the first measurement that separates them -- `U9.10` HAS a
+  0.300 mm legal escape and `U21.5` a 0.250 mm one, both priced in amperes at
+  D-630, and NEITHER is reachable through the centre.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **AN OFF-CENTRE LAUNCH** -- the primitive
+  the measurement names.  D-631's `pad_bridge` is its zero-length case (a track
+  between two lands, both endpoints inside the lands, no escape at all); the
+  general case picks the launch point anywhere on the land's own copper and
+  leaves from there.  It is worth, at minimum, the edges held by those seven
+  lands, and it is the only thing that can reach `U11.9`/`U11.3`.  (2) **LL-C:
+  a `power_in` LEAF pin priced at the DEVICE's own published supply current**
+  rather than at the rail's.  `U4.5` (`VDDIO`) and `U4.8` (`VDD`) are the
+  concrete instance -- the schematic's own audited note records the whole
+  BMI270 at 4 uA + 3 uA in accel low-power mode and 3.5 uA in suspend -- and
+  `U4.3 <-> U4.5` already CLOSES at 0.250 mm, so the clause is worth two more
+  edges the moment there is a published per-device figure to read.  (3) The
+  `BQ25185_SYS` reliefs the screen opens (`L4.1`, `R68.1`, `SW9.2`, `U12.10`,
+  `U13.3`) are all `SUPPLY_PORT` or `UNBOUNDED_PASSIVE` and stay refused until
+  (2) exists; `/01_POWER_TREE/BQ25185_SYS` remains a PLACEMENT finding.
+  **The `GND` return-path pricing question remains the one OPEN modelling gap
+  in `PP2`**, and `U9.16` is now a second named instance of it.  No owner
+  decision is OPEN; D-618's `J3` question remains RECORDED and PM-3 remains an
+  open PLACEMENT finding.
 - **Demo D-631 (THE 8.0 mm STITCH WINDOW WAS *NOT* THE POUR BLOCK'S WALL, AND
   THE EDGE THAT CLOSED NEEDED *NO ESCAPE AT ALL*):**  D-630 ranked the 8.0 mm
   window first -- *"the only one of the three bounded by a CONVENTION … worth up

@@ -1,0 +1,36 @@
+{
+ "schema": 1,
+ "decision": "D-632",
+ "net": "+3V3",
+ "units": "mm",
+ "why": "The rectangle of every PAD_ESCAPE_RUN_<REF> width-licence rule area, DECLARED before the router runs.  Same shape and same reason as evidence/d610-relief-run-areas.json: a barrel is a point and its area may be drawn around it, a RUN has an extent, so an area drawn around whatever the router laid would be a licence whose size the router chooses.",
+ "areas": {
+  "U4.12": [
+   56.3375,
+   70.25,
+   57.525,
+   70.775
+  ]
+ },
+ "derivation": {
+  "U4.12": {
+   "measured_on_board_sha256": "c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc",
+   "guard": "evidence/d619-pour-bond-guard-bonded.json",
+   "grid_nm": 25000,
+   "run_width_nm": 200000,
+   "barrel_nm": [
+    350000,
+    200000
+   ],
+   "narrow_copper_bbox_mm": [
+    56.4875,
+    70.4,
+    57.375,
+    70.625
+   ],
+   "end_cap_overhang_mm": 0.15,
+   "clause": "FBV2_P2_ROUTING_PLAN.md section 17 clause 7",
+   "probe": "route_maze_batch.py --escape-relief --relief-pad U4.12 --relief-extra-width 200000, evidence/d632-relief-g25-licensed.json"
+  }
+ }
+}

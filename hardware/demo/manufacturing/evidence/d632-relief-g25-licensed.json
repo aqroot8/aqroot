@@ -1,0 +1,822 @@
+{
+  "attributable_drc": [
+    {
+      "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+      "items": [
+        {
+          "description": "Track [+3V3] on B.Cu, length 0.0559 mm",
+          "pos": {
+            "x": 57.275,
+            "y": 70.5
+          },
+          "uuid": "e6629be8-0b49-4555-9e87-654210fde9e1"
+        }
+      ],
+      "severity": "error",
+      "type": "track_width"
+    },
+    {
+      "description": "Track width (rule 'P3V3 minimum width on the outer layers' min width 0.4000 mm; actual 0.2000 mm)",
+      "items": [
+        {
+          "description": "Track [+3V3] on B.Cu, length 0.6875 mm",
+          "pos": {
+            "x": 56.5875,
+            "y": 70.5
+          },
+          "uuid": "ec9e740e-ccc1-4f68-b05e-2f2085377879"
+        }
+      ],
+      "severity": "error",
+      "type": "track_width"
+    }
+  ],
+  "authoritative_board_sha256": "c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "3118e03248a8d582325eda978e94f3f5ae91d6339448475aca723a85034990c9",
+  "connectivity": {
+    "nets_improved": [
+      "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 44,
+    "retained_open_edges_before": 45
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_width": 2
+  },
+  "escape_relief": {
+    "bonds_per_island": 1,
+    "extra_width": 200000,
+    "lands_closed_ok": false,
+    "lands_still_open": [
+      {
+        "area": "PAD_ESCAPE_R129_1",
+        "island": [
+          "R129.1"
+        ],
+        "net": "+3V3",
+        "pad": "R129.1",
+        "via_xy": [
+          57.925,
+          57.975
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "bonds_per_island": 1,
+        "failures": [
+          {
+            "island": [
+              "R39.1"
+            ],
+            "not_offered": [
+              "R39.1"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.2",
+              "U4.3"
+            ],
+            "not_offered": [
+              "U4.2",
+              "U4.3"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.5"
+            ],
+            "not_offered": [
+              "U4.5"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.8"
+            ],
+            "not_offered": [
+              "U4.8"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U5.2"
+            ],
+            "not_offered": [
+              "U5.2"
+            ],
+            "reason": "NOT_OFFERED"
+          }
+        ],
+        "mm": 1.511,
+        "net": "+3V3",
+        "ok": true,
+        "pads_named": [
+          "R129.1",
+          "U4.12"
+        ],
+        "run_areas_declared": [],
+        "stitched": 2,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_R129_1",
+            "island": [
+              "R129.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R129_1",
+              "rules": [
+                "D-632 R129.1 pad-escape relief - annular ring, +3V3",
+                "D-632 R129.1 pad-escape relief - hole, +3V3",
+                "D-632 R129.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.768,
+            "needs_licence": true,
+            "pad": "R129.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              57.925,
+              57.975
+            ],
+            "width": 600000,
+            "xy": [
+              57925000,
+              57975000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_U4_12",
+            "island": [
+              "U4.12"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_U4_12",
+              "rules": [
+                "D-632 U4.12 pad-escape relief - annular ring, +3V3",
+                "D-632 U4.12 pad-escape relief - hole, +3V3",
+                "D-632 U4.12 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.743,
+            "needs_licence": true,
+            "pad": "U4.12",
+            "rung": 2,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              57.225,
+              70.525
+            ],
+            "width": 200000,
+            "xy": [
+              57225000,
+              70525000
+            ]
+          }
+        ],
+        "unstitched": 5,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 2,
+        "widths": [
+          600000,
+          400000,
+          200000
+        ],
+        "widths_offered": [
+          600000,
+          400000,
+          200000
+        ]
+      }
+    ],
+    "pads": [
+      "U4.12",
+      "R129.1"
+    ],
+    "requested": true,
+    "run_area_spec": null,
+    "run_areas_drawn": [],
+    "stitched": 2,
+    "via": [
+      350000,
+      200000
+    ]
+  },
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [],
+  "guard": {
+    "sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+    "spec": "evidence/d619-pour-bond-guard-bonded.json",
+    "tubes": 47
+  },
+  "inherited_within_baseline": true,
+  "lattice": {
+    "any_too_coarse": false,
+    "any_unlaunchable": true,
+    "grid_nm": 25000,
+    "nets": {
+      "+3V3": {
+        "binding_pad": "MK1.3",
+        "grid_mm": 0.025,
+        "lands": 82,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 0.2,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U5.2",
+          "J1.7",
+          "J1.9",
+          "J1.35",
+          "J1.40",
+          "J1.42",
+          "U12.4",
+          "U12.5",
+          "U4.2",
+          "U4.3",
+          "U4.5",
+          "U4.12",
+          "U3.21"
+        ],
+        "verdict": "UNLAUNCHABLE"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "pad_bridges": null,
+  "plane": null,
+  "plane_repair": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 20
+      },
+      "PP2": {
+        "admitted": [],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            31,
+            31
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            7,
+            7
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            58,
+            58
+          ]
+        },
+        "ok": true,
+        "priced": [],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "6ed1ac5da532cd2c6d145e650f011d23f2fb522bd244893e9c486b36fa3aad8b",
+          "source": "/tmp/aqroot-demo-maze-vjzt_yrx/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "splits": []
+      },
+      "PP3": {
+        "fragments": [],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C12.2",
+              "R123.2",
+              "R21.1",
+              "R24.2"
+            ],
+            "post_island": 26,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C16.2",
+              "C17.2",
+              "C18.2",
+              "C19.2",
+              "C27.2",
+              "C28.2"
+            ],
+            "post_island": 16,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "report": "/tmp/aqroot-demo-maze-vjzt_yrx/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "+3V3"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [
+      [
+        "PAD_ESCAPE_R129_1",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            57600000,
+            57650000
+          ],
+          [
+            58250000,
+            57650000
+          ],
+          [
+            58250000,
+            58300000
+          ],
+          [
+            57600000,
+            58300000
+          ]
+        ]
+      ],
+      [
+        "PAD_ESCAPE_U4_12",
+        [
+          "F.Cu",
+          "B.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu"
+        ],
+        false,
+        false,
+        false,
+        false,
+        [
+          [
+            56900000,
+            70200000
+          ],
+          [
+            57550000,
+            70200000
+          ],
+          [
+            57550000,
+            70850000
+          ],
+          [
+            56900000,
+            70850000
+          ]
+        ]
+      ]
+    ],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "+3V3"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 600000,
+        "guarded_layers": {
+          "B": 1226
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "netclass": "P3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "escape_relief": {
+        "bonds_per_island": 1,
+        "failures": [
+          {
+            "island": [
+              "R39.1"
+            ],
+            "not_offered": [
+              "R39.1"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.2",
+              "U4.3"
+            ],
+            "not_offered": [
+              "U4.2",
+              "U4.3"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.5"
+            ],
+            "not_offered": [
+              "U4.5"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U4.8"
+            ],
+            "not_offered": [
+              "U4.8"
+            ],
+            "reason": "NOT_OFFERED"
+          },
+          {
+            "island": [
+              "U5.2"
+            ],
+            "not_offered": [
+              "U5.2"
+            ],
+            "reason": "NOT_OFFERED"
+          }
+        ],
+        "mm": 1.511,
+        "net": "+3V3",
+        "ok": true,
+        "pads_named": [
+          "R129.1",
+          "U4.12"
+        ],
+        "run_areas_declared": [],
+        "stitched": 2,
+        "stitches": [
+          {
+            "area": "PAD_ESCAPE_R129_1",
+            "island": [
+              "R129.1"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_R129_1",
+              "rules": [
+                "D-632 R129.1 pad-escape relief - annular ring, +3V3",
+                "D-632 R129.1 pad-escape relief - hole, +3V3",
+                "D-632 R129.1 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.768,
+            "needs_licence": true,
+            "pad": "R129.1",
+            "rung": 0,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              57.925,
+              57.975
+            ],
+            "width": 600000,
+            "xy": [
+              57925000,
+              57975000
+            ]
+          },
+          {
+            "area": "PAD_ESCAPE_U4_12",
+            "island": [
+              "U4.12"
+            ],
+            "layer": "B",
+            "licence": {
+              "annular": 75000,
+              "area": "PAD_ESCAPE_U4_12",
+              "rules": [
+                "D-632 U4.12 pad-escape relief - annular ring, +3V3",
+                "D-632 U4.12 pad-escape relief - hole, +3V3",
+                "D-632 U4.12 pad-escape relief - via, +3V3"
+              ],
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "mm": 0.743,
+            "needs_licence": true,
+            "pad": "U4.12",
+            "rung": 2,
+            "via_dia": 350000,
+            "via_drill": 200000,
+            "via_xy": [
+              57.225,
+              70.525
+            ],
+            "width": 200000,
+            "xy": [
+              57225000,
+              70525000
+            ]
+          }
+        ],
+        "unstitched": 5,
+        "via_dia": 350000,
+        "via_drill": 200000,
+        "vias": 2,
+        "widths": [
+          600000,
+          400000,
+          200000
+        ],
+        "widths_offered": [
+          600000,
+          400000,
+          200000
+        ]
+      },
+      "failures": [
+        {
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U4.12"
+          ],
+          "pad": "U4.12",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)"
+        },
+        {
+          "island": [
+            "U4.2",
+            "U4.3"
+          ],
+          "pad": "U4.2",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x58), C6.2 (x7), R119.2 (x3), TP27.1 (x2)"
+        },
+        {
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+        },
+        {
+          "island": [
+            "U4.8"
+          ],
+          "pad": "U4.8",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+        }
+      ],
+      "mm": 0,
+      "mode": "stitch+relief",
+      "net": "+3V3",
+      "ok": true,
+      "seconds": 31.4,
+      "stitched": 0,
+      "unreachable": 5,
+      "via_xy": [],
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "+3V3"
+  ],
+  "schema": 1
+}

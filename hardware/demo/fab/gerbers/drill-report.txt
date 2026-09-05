@@ -1,5 +1,5 @@
 Drill report for aqroot-Beta-v2.kicad_pcb
-Created on 2026-09-05T17:44:43
+Created on 2026-09-05T18:42:45
 
 Copper Layer Stackup:
     =============================================================
@@ -14,7 +14,7 @@ Copper Layer Stackup:
 Drill file 'aqroot-Beta-v2-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.200mm  0.0079"  (35 holes))
+    T1  0.200mm  0.0079"  (36 holes))
     T2  0.200mm  0.0079"  (12 holes))
     T3  0.250mm  0.0098"  (11 holes))
     T4  0.300mm  0.0118"  (609 holes))
@@ -25,7 +25,7 @@ Drill file 'aqroot-Beta-v2-PTH.drl' contains
     T9  1.020mm  0.0402"  (24 holes))
     T10  1.100mm  0.0433"  (3 holes))
 
-    Total plated holes count 838
+    Total plated holes count 839
 
 
 Drill file 'aqroot-Beta-v2-NPTH.drl' contains

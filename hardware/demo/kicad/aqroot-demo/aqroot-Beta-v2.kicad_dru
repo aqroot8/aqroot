@@ -1353,6 +1353,71 @@
 	(constraint hole_size (min 0.20mm))
 	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U12_4')"))
 
+# ---------------------------------------------------------------------
+# 12b. D-632 ADDENDUM -- THE FIRST LAND ADMITTED BECAUSE THE SCHEMATIC
+# SAYS IT CARRIES NO CURRENT.
+#
+# Every land licensed above was ruled on in PROSE, in the "CURRENT AND
+# DUTY, MEASURED PER PAD" list at the head of section 12: "0.33 mA at
+# 3.3 V", "transient current only", "the part's own quiescent and
+# gate-drive current".  That reading is right and it has never been
+# mechanical, so D-628's `PP2` ampacity clause -- which charges every
+# `+3V3` conductor the whole eighty-pad rail's 1.0 A -- has had nothing
+# to weigh it against and has refused every relief since D-610.
+#
+# `checks/leaf_land_contract.py` makes that reading MECHANICAL, from a
+# field KiCad already exports: the `pintype` of every node.  Clauses
+# LL1-LL4: an island whose every land is a device SIGNAL pin or a
+# two-terminal part with a published resistance >= 1 kOhm has NO SUPPLY
+# PORT on it, so no device draws its supply through the copper that
+# reaches it and the rail current does not bind that copper.  One
+# `power_in`, one `power_out`, one 0 R link, one inductor, one
+# capacitor, one switch contact and the clause REFUSES.  Run over this
+# whole board it admits FOUR islands and refuses every other, including
+# every island of `GND` and of `/01_POWER_TREE/BQ25185_SYS`.
+#
+#   U4.12    +3V3  BMI270 `CSB`.  KiCad's netlist declares this pin
+#     `input`.  This board's own schematic note quotes the vendor
+#     verbatim -- "pin 12 CSB hard-wired to VDDIO, which Bosch
+#     explicitly recommends for I2C" -- so it is a MODE-SELECT INPUT
+#     strapped to the rail, not a supply port.  Its current is the
+#     pin's leakage; the datasheet note records the whole part at
+#     4 uA plus 3 uA in accel low-power mode and 3.5 uA in suspend,
+#     and those microamps arrive through `VDD` and `VDDIO`, not here.
+#     TODAY `CSB` HAS NO CONNECTION OF ANY KIND, so the IMU's
+#     interface mode is undefined at power-up.  A 0.35/0.20 mm barrel
+#     is not a derating on this land; there is nothing to derate.
+#
+# The rules below are the same three constraints, the same
+# `enclosedByArea` shape and the same D-257 `FINE_ESC_*` geometry as
+# every rule in section 12.  Nothing is broadened.
+# ---------------------------------------------------------------------
+
+(rule "D-632 U4.12 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_12')"))
+
+(rule "D-632 U4.12 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_12')"))
+
+(rule "D-632 U4.12 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_12')"))
+
+#   R129.1 IS STILL NOT HERE, AND THE MEASUREMENT WAS REPEATED.  The
+#   note above records D-606's finding.  D-632 offered `R129.1` the
+#   same relief again on today's board, with a licence authored, at
+#   0.100 mm and at 0.025 mm: it stitched 0.547 mm and then 0.768 mm
+#   with a legal 0.35/0.20 mm barrel both times, and `relief_stitch`'s
+#   connectivity retake REVERTED it both times because the land is
+#   still open afterwards -- the same refusal, to the same 0.547 mm
+#   figure, twenty-six decisions later.  `leaf_land_contract.py` admits
+#   the land (a 100 k pull-up top, at most 55 uA); the ROUTER refuses
+#   it, and a licence is not spent on copper that connects nothing.
+#   Evidence: `evidence/d632-relief-g100-no-body-landing.json`,
+#   `evidence/d632-relief-g25-licensed.json`.
+
 
 # =====================================================================
 # 13. PAD-ESCAPE RELIEF - WIDTH  (D-610)
@@ -1464,3 +1529,47 @@
 (rule "D-610 U12.4 pad-escape relief - run width, +3V3"
 	(constraint track_width (min 0.20mm))
 	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U12_4')"))
+
+# ---------------------------------------------------------------------
+# 13b. D-632 ADDENDUM -- THE SECOND WIDTH LICENCE, AND THE FIRST ONE
+# THAT IS NOT A DERATING.
+#
+# Section 13 above had to rule `U12.4` "ONE NECK, KNOWINGLY DERATED,
+# BECAUSE THE ALTERNATIVE IS AN OPEN RAIL": that neck is the `TPS63020`
+# `VOUT` and the whole 3.3 V rail passes through it, so 0.200 mm at
+# 0.742 A against a 1.0 A design figure was a trade taken with the
+# arithmetic on the table.
+#
+# `U4.12` IS NOT THAT, AND THE SCHEMATIC IS WHAT SAYS SO.  KiCad's own
+# netlist declares `U4` pin 12 `input`, `pinfunction` `CSB_12`; the
+# schematic note quotes Bosch verbatim -- "pin 12 CSB hard-wired to
+# VDDIO, which Bosch explicitly recommends for I2C".  It is a
+# MODE-SELECT INPUT strapped to the rail.  No device draws its supply
+# through this copper, so there is no rail current to derate and the
+# figure that binds is the ordinary signal one this board applies to
+# every signal net it routes.  `checks/leaf_land_contract.py` states
+# that as clauses LL1-LL4 and decides it from the netlist field rather
+# than from this comment; run over the whole board it admits FOUR
+# islands and refuses seventeen, `GND` `U9.16` among them.
+#
+# THE WIDTH IS STILL THE BOARD'S OWN.  0.200 mm is the minimum section
+# 9's "Pad-escape necking - width, fine-pitch power packages" already
+# grants inside the ten courtyards it names.  `U4` is NOT one of them
+# and this rule does not add it: `enclosedByArea` is all-or-nothing per
+# track, so a run that leaves its own declared rectangle by a micron is
+# judged at the P3V3 class floor and the whole transaction is refused.
+#
+#   PAD_ESCAPE_RUN_U4_12   x 56.337 .. 57.525   y 70.250 .. 70.775 mm
+#
+# sized from the copper the run actually lays -- narrow bbox
+# 56.4875/70.4000 to 57.3750/70.6250 -- plus section 17 clause 7's 0.150 mm end-cap
+# overhang on every side, and declared in
+# `evidence/d632-relief-run-areas.json` BEFORE the router moved.
+#
+# Order: after section 13, so it wins over section 5's "P3V3 minimum
+# width on the outer layers" exactly as the rule above it does.
+# ---------------------------------------------------------------------
+
+(rule "D-632 U4.12 pad-escape relief - run width, +3V3"
+	(constraint track_width (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U4_12')"))

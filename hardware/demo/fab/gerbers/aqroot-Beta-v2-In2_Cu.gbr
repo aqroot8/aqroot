@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.5-10.0.5~ubuntu24.04.1*%
-%TF.CreationDate,2026-09-05T17:44:42+00:00*%
+%TF.CreationDate,2026-09-05T18:42:44+00:00*%
 %TF.ProjectId,aqroot-Beta-v2,6171726f-6f74-42d4-9265-74612d76322e,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Copper,L3,Inr*%
 %TF.FilePolarity,Positive*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-05 17:44:42*
+G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-05 18:42:44*
 %MOMM*%
 %LPD*%
 G01*
@@ -319,6 +319,8 @@ X57900000Y-57400000D03*
 X47100000Y-87200000D03*
 D23*
 X61900000Y-119700000D03*
+D24*
+X57225000Y-70525000D03*
 D22*
 X15600000Y-131200000D03*
 X32600000Y-141500000D03*

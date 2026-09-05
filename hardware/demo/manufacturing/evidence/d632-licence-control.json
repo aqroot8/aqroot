@@ -1,0 +1,27 @@
+{
+ "live": {
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "escape_licence": {
+   "annular": 75000,
+   "area": "PAD_ESCAPE_U4_12",
+   "rules": [
+    "D-632 U4.12 pad-escape relief - annular ring, +3V3",
+    "D-632 U4.12 pad-escape relief - hole, +3V3",
+    "D-632 U4.12 pad-escape relief - via, +3V3"
+   ],
+   "via_dia": 350000,
+   "via_drill": 200000
+  },
+  "escape_licence_R129_1": null,
+  "width_licence": 200000
+ },
+ "load_bearing": true,
+ "question": "does the D-632 .kicad_dru block decide the licence, measured by removing it and asking again",
+ "schema": 1,
+ "without_the_d632_block": {
+  "board": "/tmp/aqroot-d632-lic-p1q350hx/aqroot-Beta-v2.kicad_pcb",
+  "escape_licence": null,
+  "escape_licence_R129_1": null,
+  "width_licence": null
+ }
+}

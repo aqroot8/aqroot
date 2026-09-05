@@ -1,0 +1,1075 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED; zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "TP6.1",
+     "b": "U11.9",
+     "closed_at": null,
+     "gap_mm": 17.3785,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)"
+    },
+    {
+     "a": "R127.2",
+     "b": "U11.9",
+     "closed_at": null,
+     "gap_mm": 30.0621,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)"
+    },
+    {
+     "a": "TP6.1",
+     "b": "U2.9",
+     "closed_at": null,
+     "gap_mm": 18.517,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.75,
+       "why": "no legal corridor at 0.200 mm from TP6.1 to U2.9 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.97,
+       "why": "no legal corridor at 0.150 mm from TP6.1 to U2.9 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from TP6.1 to U2.9 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "R127.2",
+     "b": "U2.9",
+     "closed_at": null,
+     "gap_mm": 23.1683,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 12.03,
+       "why": "no legal corridor at 0.200 mm from R127.2 to U2.9 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 11.31,
+       "why": "no legal corridor at 0.150 mm from R127.2 to U2.9 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from R127.2 to U2.9 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "U11.9",
+     "b": "U2.9",
+     "closed_at": null,
+     "gap_mm": 16.6131,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.9",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)"
+    }
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "TP7.1",
+     "b": "U11.3",
+     "closed_at": null,
+     "gap_mm": 21.0193,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R36.1 (x4)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)"
+    },
+    {
+     "a": "R128.2",
+     "b": "U11.3",
+     "closed_at": null,
+     "gap_mm": 31.8297,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)"
+    },
+    {
+     "a": "TP7.1",
+     "b": "U2.10",
+     "closed_at": null,
+     "gap_mm": 15.407,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.12,
+       "why": "no legal corridor at 0.200 mm from TP7.1 to U2.10 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.34,
+       "why": "no legal corridor at 0.150 mm from TP7.1 to U2.10 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from TP7.1 to U2.10 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "R128.2",
+     "b": "U2.10",
+     "closed_at": null,
+     "gap_mm": 19.4632,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 13.04,
+       "why": "no legal corridor at 0.200 mm from R128.2 to U2.10 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 12.91,
+       "why": "no legal corridor at 0.150 mm from R128.2 to U2.10 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from R128.2 to U2.10 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "U11.3",
+     "b": "U2.10",
+     "closed_at": null,
+     "gap_mm": 14.6005,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U11.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), C27.1 (x4)",
+       "width": 150000
+      }
+     ],
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), C27.1 (x4)"
+    }
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 3,
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "pairs": [
+    {
+     "a": "C55.1",
+     "b": "U9.10",
+     "closed_at": null,
+     "gap_mm": 11.2359,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.11 (x27), U9.9 (x18), U9.33 (x7), U9.6 (x6)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x7), U9.6 (x5)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "width": 150000
+      }
+     ],
+     "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)"
+    },
+    {
+     "a": "C19.1",
+     "b": "U9.10",
+     "closed_at": null,
+     "gap_mm": 14.5835,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.11 (x27), U9.9 (x18), U9.33 (x7), U9.6 (x6)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x7), U9.6 (x5)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)",
+       "width": 150000
+      }
+     ],
+     "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)"
+    },
+    {
+     "a": "C55.1",
+     "b": "U9.8",
+     "closed_at": null,
+     "gap_mm": 12.3747,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.9 (x18), U9.7 (x18), track (x12), C80.2 (x4)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.9 (x18), U9.7 (x18), track (x12), C80.2 (x4)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.9 (x18), U9.7 (x18), track (x16), C80.2 (x4)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by track (x20), U9.7 (x19), U9.9 (x18), via (x4)",
+       "width": 150000
+      }
+     ],
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by track (x20), U9.7 (x19), U9.9 (x18), via (x4)"
+    },
+    {
+     "a": "C19.1",
+     "b": "U9.8",
+     "closed_at": null,
+     "gap_mm": 14.8822,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.7 (x18), U9.9 (x18), track (x12), C80.2 (x4)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.7 (x18), U9.9 (x18), track (x12), Y1.4 (x4)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.7 (x18), U9.9 (x18), track (x16), C80.2 (x4)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.8",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.07,
+       "why": "U9.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by track (x20), U9.7 (x19), U9.9 (x18), via (x4)",
+       "width": 150000
+      }
+     ],
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by track (x20), U9.7 (x19), U9.9 (x18), via (x4)"
+    },
+    {
+     "a": "U9.10",
+     "b": "U9.8",
+     "closed_at": null,
+     "gap_mm": 1.1516,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.01,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.11 (x27), U9.9 (x18), U9.33 (x7), U9.6 (x6)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x7), U9.6 (x5)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U9.10",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.02,
+       "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)",
+       "width": 150000
+      }
+     ],
+     "why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), U9.6 (x5)"
+    }
+   ],
+   "widths": [
+    600000,
+    550000,
+    500000,
+    450000,
+    400000,
+    350000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 2,
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "pairs": [
+    {
+     "a": "L4.2",
+     "b": "U21.5",
+     "closed_at": null,
+     "gap_mm": 4.0203,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)",
+       "width": 600000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x14), L4.1 (x11)",
+       "width": 550000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x14), L4.1 (x11)",
+       "width": 500000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U21.4 (x22), C65.1 (x18), U21.1 (x14), L4.1 (x9)",
+       "width": 450000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.04,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U21.4 (x24), C65.1 (x18), U21.1 (x13), L4.1 (x7)",
+       "width": 400000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U21.4 (x25), C65.1 (x17), U21.1 (x12), U21.3 (x8)",
+       "width": 350000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U21.4 (x27), C65.1 (x17), U21.1 (x11), U21.3 (x7)",
+       "width": 300000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U21.4 (x19), C65.1 (x16), U21.6 (x14), U21.2 (x9)",
+       "width": 250000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U21.4 (x23), C65.1 (x16), U21.6 (x16), U21.2 (x9)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U21.5",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U21.5: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U21.4 (x27), C65.1 (x16), U21.6 (x16), U21.2 (x9)",
+       "width": 150000
+      }
+     ],
+     "why": "U21.5: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U21.4 (x27), C65.1 (x16), U21.6 (x16), U21.2 (x9)"
+    }
+   ],
+   "widths": [
+    600000,
+    550000,
+    500000,
+    450000,
+    400000,
+    350000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "at what WIDTH does each open island pair of this net close, asked with qrouter.connect_role's EXACT escapes -- the only instrument D-630's LATTICE_EXACT class admits",
+ "schema": 1
+}

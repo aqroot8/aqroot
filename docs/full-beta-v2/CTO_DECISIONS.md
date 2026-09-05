@@ -1,5 +1,231 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-632 · 2026-09-05 · Demo — the rail bar was being charged to lands that carry NO CURRENT, and the instrument `LATTICE_EXACT` named REFUSES THE LIST IT WAS NAMED FOR
+
+    authority  c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    retained open edges  45 -> 44      +3V3 improved, NOTHING regressed
+    +3V3   open edges 7 -> 6           islands 8 -> 7
+    open retained nets   21 -> 21      connected retained 152
+    unconnected items    61 -> 60
+    3 objects added (2 tracks 0.200 mm B.Cu + 1 via 0.35/0.20 mm), ZERO removed
+    zero zones, zero placement change; 2 rule areas added, both licences
+      authored BEFORE the router ran
+    attributable DRC 0; inherited only and IDENTICAL on the second pass
+    verify_promotion.py 15/15 PASS + all four live DRU contracts including
+      D-186_bat_main_class and D-269_bat_main_routed_clearance
+    pour_partition PP1-PP4, pour_bond (47-tube), neck, placement, population,
+      land_parity, keepout_stackup KO1-KO5, rf_symmetry -- ALL PASS
+    leaf_land_contract.py 16/16 controls PASS, 4 islands admitted / 17 refused
+    protected_copper IDENTICAL -- 15 nets / 393 objects, zero differences
+    fab package re-exported (28 files) and FAB1-FAB8 PASS
+
+`D-269`/`D-186`, `ACC_5V_SW_EN`, `ACC_3V3_SW`, the three `FRONT_RGB_*_N`,
+`XGPIO4`/`XGPIO5` and `hardware/beta-v2/` are untouched.
+
+D-631 left four next tasks. This is the third and the fourth, and answering
+them turned the third into a CONTRACT and the fourth into a REFUTATION.
+
+## 1. The LEAF-LAND clause — `checks/leaf_land_contract.py`, LL1–LL6
+
+D-628's `PP2` ampacity clause charges **every** `+3V3` conductor the whole
+eighty-pad rail's published **1.0 A**. That is right for a rail and it is why
+nothing has moved on the escape-relief front since D-610: `U12.4` had to be
+ruled *"ONE NECK, KNOWINGLY DERATED, BECAUSE THE ALTERNATIVE IS AN OPEN RAIL"*,
+and every land measured since has been priced against the same figure.
+
+`U4.12` is the BMI270's `CSB` pin. This board's own schematic note quotes the
+vendor verbatim — *"pin 12 CSB hard-wired to VDDIO, which Bosch explicitly
+recommends for I2C"* — and KiCad's own exported netlist declares the pin
+`input`, `pinfunction` `CSB_12`. **Charging that land 1.0 A is not
+conservatism, it is a category error**, and it has been silently refusing the
+only instrument that can reach the land.
+
+The discriminator is published, structured and already in this repository: the
+`pintype` KiCad writes for every node, straight from the symbol the schematic
+instantiates. The clause reads that field and nothing else.
+
+    LL1  SUPPLY_PORT        pintype power_in / power_out
+         SIGNAL_PIN         input / output / bidirectional / tri_state / ...
+         BOUNDED_PASSIVE    passive, TWO terminals, published value >= 1 kOhm
+         UNBOUNDED_PASSIVE  any other passive -- 0 R link, L, C, switch, header
+    LL2  SIGNAL LEAF  = at least one land, and EVERY land SIGNAL or BOUNDED
+    LL3  a conductor serving a SIGNAL LEAF is NOT a rail conductor: the
+         published rail current does not bind it, the board's own
+         min_track_width and the `.kicad_dru` do
+    LL4  otherwise the rail bar stands, UNCHANGED -- the clause only ever
+         removes a charge that was never owed
+    LL5  the bound is priced at 5.5 V, above BAT_MAIN's 4.35 V ceiling and USB
+         VBUS's 5.25 V, so V/R is an upper bound on ANY net of this board.  The
+         bound is CORROBORATION; the VERDICT is structural
+    LL6  sixteen CONTROLS drive the same `classify_land` the verdict does and
+         run on EVERY board
+
+**IT CANNOT BE VACUOUS AND IT REFUSES HARD.** 16/16 controls PASS and every
+class exists board-wide (95 `SUPPLY_PORT`, 228 `SIGNAL_PIN`, 158
+`BOUNDED_PASSIVE`, 483 `UNBOUNDED_PASSIVE`). Over the three pour-owning nets it
+admits **FOUR** islands and refuses **SEVENTEEN**:
+
+    ADMITTED   +3V3  {U4.2,U4.3}  ASDx/ASCx, bidirectional, unused 2nd i/f
+               +3V3  {U4.12}      CSB, input, I2C mode select
+               +3V3  {R129.1}     100 k ACC_DETECT_N pull-up top, <= 55 uA
+               +3V3  {R39.1}      1 M, <= 5.5 uA
+    REFUSED    every island of GND and of /01_POWER_TREE/BQ25185_SYS, and
+               +3V3 {U4.5} VDDIO, {U4.8} VDD, {U5.2} MAX98357A GAIN slot
+
+## 2. The escape-relief doctrine, re-measured — and the clause spends it
+
+`screen_pad_escape_relief.py` over all three pour nets at 0.025 mm under the
+47-tube D-619 guard (`evidence/d632-escape-relief-screen-g25.json`). Rung 3 —
+0.200 mm run plus the D-257 `FINE_ESC_*` 0.35/0.20 mm barrel — opens **eight**
+lands: `+3V3` `R129.1` and `U4.12`; `BQ25185_SYS` `L4.1`, `R68.1`, `SW9.2`,
+`U12.10`, `U13.3`; `GND` `U9.16` — the last of those at the **full netclass
+width with the barrel alone**, which is the cheapest licence this doctrine can
+spend and would have looked like the obvious buy.
+
+**The LEAF-LAND clause refuses six of the eight**, `U9.16` first: the netlist
+names it `GND_DR_16`, `power_in` — the ST25R3916's **driver ground**, the NFC
+transmit return. `GND` return-path pricing is the one OPEN modelling gap in
+`PP2`, and this is the clause declining to close it by accident.
+
+## 3. `route_local_two_pad` aimed at the `LATTICE_EXACT` list — and it REFUSES
+
+New tracked `screen_lattice_exact_route.py`: every open island pair of a net,
+each over a descending ladder from the netclass width to the board's 0.150 mm
+`min_track_width` in 0.050 mm steps, through `qrouter.connect_role` — whose
+escape is EXACT GEOMETRY and only whose corridor is rasterised. Read-only;
+every trial laid on a scratch `QBoard` and reverted.
+
+    +3V3               19 pairs   1 closed   12 NO_PATH   6 NO_LEGAL_ESCAPE
+    /BQ25185_STAT1      5 pairs   0 closed    2 NO_PATH   3 NO_LEGAL_ESCAPE
+    /BQ25185_STAT2      5 pairs   0 closed    2 NO_PATH   3 NO_LEGAL_ESCAPE
+    /NFC_SUPPLY         5 pairs   0 closed    0 NO_PATH   5 NO_LEGAL_ESCAPE
+    /01_POWER_TREE/ACC_5V_LX
+                        1 pair    0 closed    0 NO_PATH   1 NO_LEGAL_ESCAPE
+
+**ONE closes**: `+3V3` `U4.3 <-> U4.5`, a 0.937 mm gap, at **0.250 mm** and
+3.4376 mm of copper — below the 0.400 mm P3V3 floor. `U4.5` is `VDDIO`,
+`power_in`, so **LL4 refuses it and the rail bar stands**: the clause declines
+the one edge the ladder found, on the same reading that admits the two beside
+it.
+
+**SEVEN LANDS ARE MEASURED ESCAPE WALLS AT EVERY RUNG DOWN TO 0.150 mm** —
+`U11.9`, `U11.3`, `U9.8`, `U9.10`, `U21.5`, `U4.8`, `U5.2` — blocked, in every
+case, by their own package neighbours' LANDS.
+
+## 4. And that REFUTES the instrument `LATTICE_EXACT` named
+
+D-630 ruled the class *"DRC-legal and rasterisable at NO pitch … `route_local_two_pad`
+is the ONLY instrument"* and D-631 recorded that it had never been aimed at the
+list. It has now, and **for `U11.9` and `U11.3` it refuses too — at 0.150 mm,
+the board's own minimum, just as it refuses at 0.200 mm.**
+
+The reason is a modelling choice nobody had read. **`QBoard.escape` is
+CENTRE-ANCHORED.** It tests a STRAIGHT SEGMENT from the pad's own **centre**,
+in one of eight directions fixed by the pad's orientation, of length at least
+`extent + clearance + width/2 + 0.150 mm`, against real obstacle shapes. On a
+0.500 mm-pitch package with populated neighbours **no such ray is legal at any
+width this board can fabricate**, which is exactly why the refusal does not
+move with width. `screen_land_escape_margin` measures the widest track that may
+**SIT ON** the land; `QBoard.escape` asks whether a ray through the **CENTRE**
+may **LEAVE** it. Those are different questions and this is the first
+measurement that separates them: `U9.10` HAS a 0.300 mm legal escape width and
+`U21.5` a 0.250 mm one — D-630 priced both in amperes — and **neither is
+reachable through the pad centre.**
+
+**THE NEXT PRIMITIVE IS NAMED BY THE MEASUREMENT: AN OFF-CENTRE LAUNCH.**
+D-631's `pad_bridge` is its zero-length case — a track between two lands with
+both endpoints inside the lands and no escape at all. The general case picks
+the launch point anywhere on the land's own copper and leaves from there. It is
+worth, at minimum, the edges held by those seven lands.
+
+## 5. `--body-landing` is a CERTIFICATE, not a VETO — and `R129.1` refuses again
+
+With `--body-landing` ON both `+3V3` reliefs answer `NO_BODY_VIA_SITE`
+(`evidence/d632-relief-g100-body-landing.json`); the primitive's own docstring
+says that verdict does not prove a land unreachable. With it OFF at 0.100 mm
+(`evidence/d632-relief-g100-no-body-landing.json`) `R129.1` stitches **0.547 mm
+and one licensed 0.35/0.20 mm barrel at (58.100, 58.000)** — and
+`relief_stitch`'s connectivity retake **reverts it**, because the land is still
+open. That reproduces, on today's board and to the same 0.547 mm figure, the
+refusal `.kicad_dru` section 12's own comment records from D-606. `U4.12`
+answers `NO_VIA_SITE` at 0.100 mm and has a site at 0.050 and 0.025 mm, so the
+barrel under `U4`'s body is a FINE-LATTICE find and the pitch is load-bearing.
+
+## 6. `+3V3` `U4.12` — PROMOTED. 0.743 mm at 0.200 mm and one 0.35/0.20 mm barrel
+
+    +3V3  U4.12  B.Cu   (56.5875, 70.500) -> (57.275, 70.500)  0.6875 mm  0.200 mm
+                        (57.275,  70.500) -> (57.225, 70.525)  0.0559 mm  0.200 mm
+                 barrel 0.35 / 0.20 mm at (57.225, 70.525), through, rung 2
+                 areas  PAD_ESCAPE_U4_12  (barrel, drawn by the transaction)
+                        PAD_ESCAPE_RUN_U4_12  x 56.3375 .. 57.525
+                                              y 70.2500 .. 70.775 mm
+                                              DECLARED before the router moved
+
+**The BMI270's I2C mode-select pin had NO CONNECTION OF ANY KIND.** With `CSB`
+floating the part's interface mode is undefined at power-up; Bosch's own
+instruction is to hard-wire it to `VDDIO`. It is now strapped to the rail.
+
+The barrel sits **under `U4`'s own body**, in the land-free interior of the
+LGA-14 — 0.225 mm clear of `U4.10`'s land and 0.275 mm from `U4.13`'s, both
+above the 0.200 mm `P3V3` clearance, and KiCad agrees. `AQROOT_DEMO_FABRICATION_PACKAGE.md`
+already specifies **vias tented front and back**, so the feature is a tented
+0.35 mm pad under an unmetallised package underside and is a documented
+assembly detail, not a new process.
+
+**THE PITCH IS LOAD-BEARING AND SO IS THE LICENCE.** At 0.100 mm the same land
+answers `NO_VIA_SITE`; the barrel site under the body exists only at 0.050 and
+0.025 mm. And `evidence/d632-licence-control.json` removes the D-632
+`.kicad_dru` block from a scratch sidecar beside the same board and asks
+`maze3d.escape_licence` / `width_licence` again: **both are `None` without it
+and both resolve with it**, so the rules are load-bearing rather than
+decorative.
+
+**R129.1 WAS OFFERED THE SAME RELIEF AND REFUSED, TWICE, ON THE MEASUREMENT.**
+It carries no rule and no copper. `.kicad_dru` section 12b records why.
+
+## 7. Next, in order of leverage
+
+1. **AN OFF-CENTRE LAUNCH** — the primitive §4 names. `pad_bridge` is its
+   zero-length case; the general case picks the launch point anywhere on the
+   land's own copper. It is the only thing that can reach `U11.9`/`U11.3` and
+   it is worth, at minimum, the edges held by the seven measured escape walls.
+2. **LL-C: a `power_in` LEAF pin priced at the DEVICE's own published supply
+   current** rather than at the rail's. `U4.5` (`VDDIO`) and `U4.8` (`VDD`) are
+   the instance; `U4.3 <-> U4.5` already CLOSES at 0.250 mm, so the clause is
+   worth two more edges the moment there is a published per-device figure to
+   read. The BMI270's figures are already transcribed and audited in this
+   board's own schematic note (4 uA + 3 uA accel low-power, 3.5 uA suspend);
+   what is missing is a machine-readable place to put them.
+3. The `BQ25185_SYS` reliefs the screen opens (`L4.1`, `R68.1`, `SW9.2`,
+   `U12.10`, `U13.3`) are all `SUPPLY_PORT` or `UNBOUNDED_PASSIVE` and stay
+   refused until (2) exists. `/01_POWER_TREE/BQ25185_SYS` remains a PLACEMENT
+   finding with numbers (D-631).
+
+**The `GND` return-path pricing question remains the one OPEN modelling gap in
+`PP2`**, and `U9.16` — the ST25R3916's driver ground, opened by the relief
+screen at the full netclass width and refused by LL4 — is now a second named
+instance of it. No owner decision is OPEN; D-618's `J3` question remains
+RECORDED and PM-3 remains an open PLACEMENT finding.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d632-relief-promote.json`, `d632-relief-gate.json`, `d632-relief-g25-licensed.json`,
+`d632-relief-g100-body-landing.json`, `d632-relief-g100-no-body-landing.json`,
+`d632-relief-run-areas.json`, `d632-licence-control.json`,
+`d632-escape-relief-screen-g25.json`, `d632-lattice-exact-route.json`,
+`d632-lattice-exact-route-plainnets.json`, `d632-leaf-land-contract.json`,
+`d632-leaf-land-contract-pre.json`, `d632-verify-promotion.json`,
+`d632-pour_partition-contract.json`, `d632-pour_bond-contract.json`,
+`d632-neck-contract.json`, `d632-placement-contract.json`,
+`d632-population-contract.json`, `d632-land_parity-contract.json`,
+`d632-keepout_stackup-contract.json`, `d632-rf_symmetry-contract.json`,
+`d632-protected-copper.json`, `d632-routing-ledger.json`,
+`d632-fab_package-contract.json`.
+Tracked tooling added: `checks/leaf_land_contract.py`,
+`screen_lattice_exact_route.py`. The probes under the gitignored
+`hardware/demo/manufacturing/w/d632/` were one-shot.
+
+
 # D-631 · 2026-09-05 · Demo — the 8.0 mm stitch window was NOT the pour block's wall, and the edge that closed needed NO ESCAPE AT ALL
 
 D-630 named the next task and ranked it first: *"the 8.0 mm stitch window is the
