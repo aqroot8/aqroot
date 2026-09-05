@@ -1,0 +1,82 @@
+{
+ "candidate": "w/d627b/led-k/aqroot-Beta-v2.kicad_pcb",
+ "dT_K": 10.0,
+ "decision_not_taken": "PP2 IS NOT RELAXED IN THIS ITERATION AND LED_K IS NOT PROMOTED.  D-625's own reasoning binds: resolving the doctrine in the same breath as promoting the copper it would admit is the move the clause exists to prevent.  The resolution this evidence points at is NOT 'defer PP2 to PP3' either -- PP3's BONDED is a TOPOLOGICAL verdict and would admit a fragment bonded by one hair-thin barrel.  It is: PP2 may admit a split whose fragment PP3 calls BONDED *and* whose barrels are priced above the load its pads carry, by the arithmetic above, with a non-vacuity control that refuses an under-priced bond.",
+ "finding": "The fragment's four pre-existing 0.400 mm-drill barrels land in the 8055.907 mm2 In3.Cu +3V3 PLANE and carry 2.311 A EACH, 9.244 A in parallel, against a WHOLE-RAIL design current of 1.0 A. The bond that replaces the severed F.Cu neck is ~9x the rail's entire design current and ~9x the 0.995 A that one 0.300 mm outer track carries.  It is not merely connected; it is the stronger conductor.",
+ "fragment_bond_amps_parallel": 9.244,
+ "fragment_bond_barrels": [
+  {
+   "amps_dT10": 2.311,
+   "dia_mm": 0.7,
+   "drill_mm": 0.4,
+   "net": "+3V3",
+   "wall_mm2": 0.03338,
+   "xy": [
+    49.4,
+    89.9
+   ]
+  },
+  {
+   "amps_dT10": 2.311,
+   "dia_mm": 0.7,
+   "drill_mm": 0.4,
+   "net": "+3V3",
+   "wall_mm2": 0.03338,
+   "xy": [
+    49.4,
+    91.0
+   ]
+  },
+  {
+   "amps_dT10": 2.311,
+   "dia_mm": 0.8,
+   "drill_mm": 0.4,
+   "net": "+3V3",
+   "wall_mm2": 0.03338,
+   "xy": [
+    41.3,
+    95.9
+   ]
+  },
+  {
+   "amps_dT10": 2.311,
+   "dia_mm": 0.7,
+   "drill_mm": 0.4,
+   "net": "+3V3",
+   "wall_mm2": 0.03338,
+   "xy": [
+    41.4,
+    97.2
+   ]
+  }
+ ],
+ "headroom_vs_whole_rail": 9.24,
+ "method_selfcheck": {
+  "computed_amps": 0.995,
+  "dru_printed_amps": 1.0,
+  "note": "the .kicad_dru section-5 table prints 0.300 mm = 1.0 A, derived independently; a method that cannot re-derive the board's own published figure has no business ruling on a bond",
+  "width_mm": 0.3
+ },
+ "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+ "rail_basis": "FBV2_P2_NETCLASS_LEDGER.csv class C (+3V3 HIGH CURRENT, P3V3) and .kicad_dru section 5: 1.0 A design / 0.64 A measured peak for the WHOLE rail; the fragment carries 3 of the rail's 80 pads, so its share is a strict subset",
+ "rail_design_current_A": 1.0,
+ "rail_measured_peak_A": 0.64,
+ "reference_one_0p300mm_outer_track_A": 0.995,
+ "route": "J1.2 -> J1.3 0.608 mm / 0 vias AND J1.3 -> R69.1 53.739 mm / 3 vias at 0.020 mm under the 47-tube D-619 guard; retained open edges 49 -> 47, nothing regressed, DRC zero attributable",
+ "schema": 1,
+ "severed_pour": {
+  "body_part_mm2": 177.955,
+  "fragment_mm2": 79.292,
+  "fragment_pads": [
+   "J1.7",
+   "J1.8",
+   "J1.9"
+  ],
+  "layer": "F.Cu",
+  "net": "+3V3",
+  "pp3_verdict": "BONDED",
+  "pp4_flips": true,
+  "pre_area_mm2": 281.527
+ },
+ "what": "D-627 -- PP2 AND PP3 DISAGREE ON A ROUTE THAT CLOSES TWO EDGES, AND THIS IS THE NUMBER THAT DECIDES IT.  D-625 RECORDED the tension between pour_partition_contract.py's prose (\"does not forbid severance; it forbids severance that STRANDS, and it makes every other severance state its price\") and PP2 as coded (`ok = not splits`, an unconditional refusal of ANY split).  On BTN_DOWN_N it was moot because PP3 read STRANDED.  On /03_SPI_A_DISPLAY_SD/LED_K it is NOT moot: PP3 reads BONDED, PP4's knife flips, and PP2 alone refuses.  What PP3 does NOT do is price the bond in the unit a reviewer asks about -- AMPERES -- so this file asks it with audit_bond_ampacity.py's own IPC-2221B arithmetic, the arithmetic that reproduces this board's published .kicad_dru table."
+}

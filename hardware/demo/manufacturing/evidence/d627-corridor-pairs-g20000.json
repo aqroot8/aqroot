@@ -1,0 +1,171 @@
+{
+ "cells": 115565604,
+ "grid_nm": 20000,
+ "guard": "evidence/d619-pour-bond-guard-bonded.json (47 tubes)",
+ "mode": "--partial: one transaction PER PAIR, so a net's second and third pairs are asked even after its first refuses",
+ "nets": {
+  "/03_SPI_A_DISPLAY_SD/LED_K": {
+   "closed": 2,
+   "edges_after": 47,
+   "edges_before": 49,
+   "pairs": [
+    {
+     "a": "J1.2",
+     "b": "J1.3",
+     "closed": true,
+     "mm": 0.608,
+     "vias": 0
+    },
+    {
+     "a": "J1.3",
+     "b": "R69.1",
+     "closed": true,
+     "mm": 53.739,
+     "vias": 3
+    }
+   ],
+   "pour_partition_failed": [
+    "PP2"
+   ],
+   "promotion_candidate": false,
+   "seconds": 1091.0
+  },
+  "/BQ25185_STAT2": {
+   "closed": 0,
+   "edges_after": 49,
+   "edges_before": 49,
+   "pairs": [
+    {
+     "a": [
+      "U11.3"
+     ],
+     "b": [
+      "U2.10"
+     ],
+     "closed": false,
+     "gap_mm": 14.6,
+     "reason": "NO_LEGAL_ESCAPE_SRC"
+    },
+    {
+     "a": [
+      "R128.2",
+      "TP7.1"
+     ],
+     "b": [
+      "U2.10"
+     ],
+     "closed": false,
+     "gap_mm": 15.407,
+     "reason": "NO_PATH"
+    }
+   ],
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "seconds": 60.3
+  },
+  "/I2C_SDA_INT": {
+   "closed": 0,
+   "edges_after": 49,
+   "edges_before": 49,
+   "pairs": [
+    {
+     "a": [
+      "TP4.1",
+      "U1.39",
+      "J1.45",
+      "R19.2",
+      "U14.8",
+      "U16.6",
+      "U3.23"
+     ],
+     "b": [
+      "U2.23"
+     ],
+     "closed": false,
+     "gap_mm": 10.0,
+     "reason": "NO_PATH"
+    },
+    {
+     "a": [
+      "TP4.1",
+      "U1.39",
+      "J1.45",
+      "R19.2",
+      "U14.8",
+      "U16.6",
+      "U3.23"
+     ],
+     "b": [
+      "U4.14"
+     ],
+     "closed": false,
+     "gap_mm": 11.885,
+     "reason": "NO_PATH"
+    },
+    {
+     "a": [
+      "U2.23"
+     ],
+     "b": [
+      "U4.14"
+     ],
+     "closed": false,
+     "gap_mm": 21.674,
+     "reason": "NO_PATH"
+    }
+   ],
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "seconds": 142.0
+  },
+  "/WAKE_INT_N": {
+   "closed": 0,
+   "edges_after": 49,
+   "edges_before": 49,
+   "pairs": [
+    {
+     "a": [
+      "U2.1"
+     ],
+     "b": [
+      "U3.1"
+     ],
+     "closed": false,
+     "gap_mm": 10.0,
+     "reason": "NO_PATH"
+    },
+    {
+     "a": [
+      "R3.1",
+      "U1.23",
+      "Q10.3"
+     ],
+     "b": [
+      "U2.1"
+     ],
+     "closed": false,
+     "gap_mm": 25.258,
+     "reason": "NO_PATH"
+    },
+    {
+     "a": [
+      "R3.1",
+      "U1.23",
+      "Q10.3"
+     ],
+     "b": [
+      "U3.1"
+     ],
+     "closed": false,
+     "gap_mm": 34.942,
+     "reason": "NO_PATH"
+    }
+   ],
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "seconds": 90.2
+  }
+ },
+ "schema": 1,
+ "what": "D-627 -- the never-asked CORRIDOR pairs, taken to the 0.020 mm rung.  D-626's census found 22 island pairs the all-or-nothing MST had never attempted; EXT_SDA's closed at 0.0333 mm.  These are the other four nets, each --partial --grid ladder with the guard ON down to 0.025 mm and then directly at 0.020 mm.  Three are now MEASURED walls; the fourth ROUTES and only PP2 refuses it."
+}

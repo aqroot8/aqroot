@@ -13,6 +13,71 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-627 (THE D-626 RECIPE, APPLIED -- THREE WALLS *MEASURED* AT
+  0.020 mm AND ONE ROUTE THAT CLOSES *TWO* EDGES WITH ONLY `PP2` REFUSING
+  IT):**  CHARACTERIZATION, no copper change; the authoritative board is
+  byte-identical to committed D-626 (`35129d6c...`) throughout.  D-626 named
+  the recipe -- `--partial --grid ladder` with the 47-tube D-619 guard ON,
+  aimed at the census's never-asked CORRIDOR pairs -- and this is that recipe
+  on the other four nets holding them
+  (`evidence/d627-corridor-pairs-g20000.json`).
+  **THREE ARE NOW MEASURED WALLS**, laddered guard-ON to 0.025 mm then run
+  directly at 0.020 mm / 115,565,604 cells: `/I2C_SDA_INT` 3 pairs all
+  `NO_PATH` (10.0 / 11.885 / 21.674 mm, 142.0 s); `/WAKE_INT_N` 3 pairs all
+  `NO_PATH` (10.0 / 25.258 / 34.942 mm, 90.2 s); `/BQ25185_STAT2` `U11.3`
+  `NO_LEGAL_ESCAPE_SRC` plus the never-asked `{R128.2,TP7.1} <-> {U2.10}`
+  `NO_PATH` at 15.407 mm (60.3 s).  `WAKE_INT_N` had been PARKED since D-517
+  after a 64-case enumeration and `BQ25185_STAT2`'s second pair had never been
+  attempted at all; both now have a NUMBER instead of a parking note.  Three
+  more out-of-sample predictor scores: 1.08 / 0.98 / 0.62, all within 2x.
+  **AND THE FOURTH ROUTES.**  `/03_SPI_A_DISPLAY_SD/LED_K` -- PARKED at D-467
+  as a *"current-width wall"* and D-468 as a *"connector breakout wall"*, both
+  bounded years before the ladder existed -- closes **BOTH** open edges at
+  0.020 mm at its own `LED_BOOST` **0.300 mm** class width: `J1.2 -> J1.3`
+  **0.608 mm / 0 vias** (refused `NO_LEGAL_ESCAPE_SRC` at every coarser pitch,
+  on a 0.5 mm gap) and `J1.3 -> R69.1` **53.739 mm / 3 vias**.  Retained open
+  edges **49 -> 47**, nothing regressed, DRC zero attributable, preservation
+  clean, PP1/PP3/PP4 PASS.  **`PP2` ALONE REFUSES IT.**
+  **PP2 AND PP3 NOW DISAGREE ON REAL COPPER.**  D-625 RECORDED the tension --
+  the prose forbids only severance that STRANDS while `PP2` is coded
+  `ok = not splits` -- and on `BTN_DOWN_N` it was moot because `PP3` read
+  `STRANDED`.  Here it is not.  The route splits the `+3V3` `F.Cu` 281.527 mm2
+  island into a 177.955 mm2 body and a **79.292 mm2 fragment carrying `J1.7` /
+  `J1.8` / `J1.9`**, the display FPC supply pins; `PP3` reads **`BONDED`** on
+  four through barrels all landing in the 8055.907 mm2 `In3.Cu` `+3V3` PLANE,
+  and `PP4`'s knife flips it `BONDED` -> `STRANDED` when they are stripped.
+  **SO THE BOND IS PRICED IN AMPERES, WHICH `PP3` NEVER DID**
+  (`evidence/d627-led-k-pp2-vs-pp3-bond-priced.json`).
+  `audit_bond_ampacity.py`'s IPC-2221B arithmetic -- self-checked first against
+  this board's own `.kicad_dru` section-5 table, reproducing its printed
+  "0.300 mm carries 1.0 A" as **0.995 A** -- puts each 0.400 mm-drill barrel at
+  **2.311 A** at dT = 10 K, **9.244 A in parallel**, against the `+3V3` rail's
+  own documented **1.0 A design / 0.64 A measured peak for the WHOLE rail**,
+  of which this fragment carries three pads out of eighty.  **The bond that
+  replaces the severed neck is ~9x the entire rail's design current and ~9x
+  what one 0.300 mm outer track carries.  It is not merely connected; it is the
+  stronger conductor.**
+  **AND `PP2` IS STILL NOT RELAXED AND `LED_K` IS NOT PROMOTED.**  D-625's own
+  reasoning binds: resolving the doctrine in the same breath as promoting the
+  copper it would admit is the move the clause exists to prevent.  Nor is
+  "defer `PP2` to `PP3`" the answer -- **`PP3`'s `BONDED` is a TOPOLOGICAL
+  verdict** and would admit a fragment bonded by one hair-thin barrel as
+  readily as by four fat ones.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **the `PP2` ampacity clause** -- `PP2`
+  may admit a split whose fragment `PP3` calls `BONDED` **and** whose barrels
+  are priced above the load its pads carry, with a non-vacuity control that
+  requires an under-priced bond to be REFUSED; then re-run `LED_K` under it.
+  It is worth **2 edges** on a display supply the product needs, and it is a
+  CONTRACT change rather than a search, which makes it the highest-leverage
+  single change on this board.  (2) `I2C_SCL_INT` -- 5 edges, 14 never-asked
+  pairs, the most on the board -- is bounded by the D-626 TIME budget rather
+  than by a wall; run it with `--grid-seconds 4000 --grid-gb 3.5`.  (3)
+  `ACC_5V_LX` still needs `U21.5` given an escape at all -- placement, a land
+  licence or `route_local_two_pad`.  MEASURED walls now also include
+  `I2C_SDA_INT`, `WAKE_INT_N` and `BQ25185_STAT2` at 0.020 mm.  No owner
+  decision is OPEN (the `PP2` clause is a routing/DFM contract call, which
+  `CODEX_AUTONOMY_POLICY` assigns to the CTO); D-618's `J3` question remains
+  RECORDED and PM-3 remains an open PLACEMENT finding.
 - **Demo D-626 (`EXT_SDA` IS CLOSED BY A PAIR THE MST NEVER *ASKED*, AND THE
   LADDER'S BUDGET WAS A *TIME* BOUND WEARING A MEMORY BOUND'S UNITS):**  D-625
   named the lever -- re-run the ladder screen with the 47-tube guard ON -- and

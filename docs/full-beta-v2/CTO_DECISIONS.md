@@ -1,5 +1,82 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-627 · 2026-09-05 · Demo — the D-626 recipe, applied: three walls MEASURED at 0.020 mm and one route that closes TWO edges with only PP2 refusing it
+
+D-626 closed `EXT_SDA` on a pair the all-or-nothing MST had never asked, and
+named the recipe: `--partial --grid ladder` with the 47-tube D-619 guard ON,
+aimed at the census's never-asked CORRIDOR pairs. **This is that recipe on the
+other four nets holding them.** No copper changed; the authoritative board is
+byte-identical to committed D-626 (`35129d6c…`) throughout.
+
+**THREE ARE NOW MEASURED WALLS.** Each was laddered guard-ON to 0.025 mm and
+then run directly at 0.020 mm / 115,565,604 cells
+(`evidence/d627-corridor-pairs-g20000.json`):
+
+    /I2C_SDA_INT      3 pairs, all NO_PATH (10.0 / 11.885 / 21.674 mm)   142.0 s
+    /WAKE_INT_N       3 pairs, all NO_PATH (10.0 / 25.258 / 34.942 mm)    90.2 s
+    /BQ25185_STAT2    U11.3 NO_LEGAL_ESCAPE_SRC + the never-asked
+                      {R128.2,TP7.1} ↔ {U2.10} NO_PATH at 15.407 mm       60.3 s
+
+`WAKE_INT_N` had been PARKED since D-517 after a 64-case exhaustive
+enumeration, and `BQ25185_STAT2`'s second pair had never been attempted at all;
+both now have a number instead of a parking note. The D-626 predictor scored
+three more out-of-sample rungs on them — 131 → 142.0, 91.7 → 90.2, 97.1 →
+60.3 s, ratios 1.08 / 0.98 / 0.62, every one within 2×.
+
+**AND THE FOURTH ROUTES.** `/03_SPI_A_DISPLAY_SD/LED_K` — PARKED at D-467 as a
+*"current-width wall"* and at D-468 as a *"connector breakout wall"*, both
+bounded years before the ladder existed — closes **BOTH** of its open edges at
+0.020 mm, at its own LED_BOOST 0.300 mm class width:
+
+    J1.2 → J1.3     0.608 mm,  0 vias   ← NO_LEGAL_ESCAPE_SRC at every
+                                          coarser pitch, on a 0.5 mm gap
+    J1.3 → R69.1   53.739 mm,  3 vias
+
+Retained open edges **49 → 47**, nothing regressed, DRC zero attributable,
+preservation clean, PP1 / PP3 / PP4 all PASS. **`PP2` alone refuses it**, and
+that is the whole finding.
+
+**PP2 AND PP3 NOW DISAGREE ON REAL COPPER.** D-625 RECORDED the tension —
+`pour_partition_contract.py`'s prose says it *"does not forbid severance. It
+forbids severance that STRANDS, and it makes every other severance state its
+price"*, while `PP2` is coded `ok = not splits`, an unconditional refusal of ANY
+split. On `BTN_DOWN_N` it was moot: `PP3` read `STRANDED`, so the relaxed
+reading refused too. **Here it is not moot.** The route crosses the `+3V3`
+`F.Cu` pour and splits its 281.527 mm² island into a 177.955 mm² body and a
+79.292 mm² fragment carrying `J1.7` / `J1.8` / `J1.9`, the display FPC supply
+pins. `PP3` reads **`BONDED`** — the fragment holds **four through barrels,
+every one landing in the 8055.907 mm² `In3.Cu` `+3V3` PLANE** — and `PP4`'s
+knife flips it `BONDED` → `STRANDED` when the barrels are stripped, so the
+probe is real.
+
+**SO THE BOND IS PRICED IN AMPERES, WHICH IS WHAT `PP3` NEVER DID**
+(`evidence/d627-led-k-pp2-vs-pp3-bond-priced.json`). `audit_bond_ampacity.py`'s
+IPC-2221B arithmetic — self-checked first against this board's own published
+`.kicad_dru` section-5 table, reproducing its printed *"0.300 mm carries
+1.0 A"* as **0.995 A** — puts each of those four 0.400 mm-drill barrels at
+**2.311 A** at ΔT = 10 K, **9.244 A in parallel**. The `+3V3` rail's own
+documented figure is **1.0 A design / 0.64 A measured peak for the WHOLE
+rail**, and this fragment carries three of that rail's eighty pads. **The bond
+that replaces the severed neck is roughly nine times the entire rail's design
+current, and roughly nine times the 0.995 A one 0.300 mm outer track carries.
+It is not merely connected; it is the stronger conductor.**
+
+**AND PP2 IS STILL NOT RELAXED, AND LED_K IS NOT PROMOTED.** D-625's own
+reasoning binds: resolving the doctrine in the same breath as promoting the
+copper it would admit is exactly the move the clause exists to prevent. Nor is
+the answer "defer `PP2` to `PP3`" — **`PP3`'s `BONDED` is a TOPOLOGICAL
+verdict** and would admit a fragment bonded by one hair-thin barrel just as
+readily as by four fat ones. The resolution this evidence points at is
+narrower and is the next task: **`PP2` may admit a split whose fragment `PP3`
+calls `BONDED` *and* whose barrels are priced above the load its pads carry, by
+the arithmetic above, with a non-vacuity control that requires an under-priced
+bond to be REFUSED.** Until that clause exists and can refuse, `PP2` stays as
+it is and the board stays as it is.
+
+**WHAT THIS COSTS TO LEAVE UNDONE: two edges, on a display supply the product
+needs.** That makes it the highest-leverage single change on the board, and it
+is a contract change rather than a search.
+
 # D-626 · 2026-09-05 · Demo — EXT_SDA is CLOSED by a pair the MST never asked, and the ladder's budget was a TIME bound wearing a memory bound's units
 
 D-625 ended by naming the next lever: *"re-run the D-624 ladder screen over the
