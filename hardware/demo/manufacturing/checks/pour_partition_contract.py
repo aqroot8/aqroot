@@ -51,6 +51,12 @@ The claim is then a claim about the partition and not about a count:
 
   PP4  NON-VACUITY.  Deleting the fragment's barrels must turn every `BONDED`
        verdict into `STRANDED`.  A clause that cannot fail is not a clause.
+       A fragment PP3 has already condemned is SKIPPED and named
+       (`condemned_fragments_skipped`, D-625): it is `STRANDED` with its
+       barrels in and `STRANDED` without them, so it cannot flip, and counting
+       that as a failed knife reads as "PP4 broke" when the operative refusal
+       is PP3.  When that leaves nothing to probe, the whole-pour probe below
+       runs instead, so PP4 is still proved and can still fail.
 
 WHY `BONDED` IS NOT A FAILURE, STATED HONESTLY.  D-619 treated any severance
 as an injury.  D-622 measured the two sides of that trade for the first time
@@ -276,10 +282,29 @@ def compare(pre_path, post_path):
 
     # -- PP4 ---------------------------------------------------------------- #
     # The knife: take every barrel away from each fragment and the verdict
-    # must flip.  With no fragment at all the clause is exercised on the pour
+    # must flip.  With nothing PROBEABLE -- no fragment at all, or every
+    # fragment already condemned by PP3 -- the clause is exercised on the pour
     # the transaction DID touch, so it can still fail loudly.
-    probes = []
+    probes, condemned = [], []
     for f in fragments:
+        # D-624 NAMED THIS AND D-625 TAKES IT.  PP4's knife is "every `BONDED`
+        # verdict must FLIP to `STRANDED` when its barrels are stripped", and a
+        # fragment PP3 has ALREADY condemned has nothing to flip: it is
+        # `STRANDED` with its barrels in place and `STRANDED` without them, so
+        # `all(flips)` goes false and the report reads `PP4 FAIL` beside
+        # `PP3 FAIL` as though the knife itself had broken.  It had not.  The
+        # fragment is skipped and NAMED here, PP3 keeps the operative refusal,
+        # and -- because a run whose every fragment is condemned would
+        # otherwise leave `probes` empty -- the whole-pour probe below still
+        # runs and PP4 is still proved on this board.  Nothing is admitted that
+        # PP3 refuses.
+        if f["verdict"] != "BONDED":
+            condemned.append(dict(pour=f["pour"], post_island=f["post_island"],
+                                  pads=f["pads"], verdict=f["verdict"],
+                                  why="PP3 has already condemned this "
+                                      "fragment; a STRANDED fragment cannot "
+                                      "FLIP when its barrels are stripped"))
+            continue
         key = f["pour"]
         j = f["post_island"]
         frag = post[key]["islands"][j]
@@ -290,8 +315,9 @@ def compare(pre_path, post_path):
                            without_barrels=cut["verdict"],
                            flips=(f["verdict"] == "BONDED"
                                   and cut["verdict"] == "STRANDED")))
-    if not fragments:
-        # NO FRAGMENT IS THE GOOD OUTCOME AND IT MUST STILL BE PROVED.  Take
+    if not probes:
+        # NOTHING TO PROBE IS THE GOOD OUTCOME AND IT MUST STILL BE PROVED.
+        # Take
         # the largest pad-bearing island of every pour, strip its barrels and
         # require the pricing to report STRANDED, so the machinery that would
         # judge a fragment is exercised on this board even when there is none.
@@ -321,7 +347,8 @@ def compare(pre_path, post_path):
                                    flips=(cut["verdict"] == "STRANDED")))
                 break
     res["PP4"] = dict(ok=bool(probes) and all(p["flips"] for p in probes),
-                      probes=probes)
+                      probes=probes,
+                      condemned_fragments_skipped=condemned)
     return res
 
 

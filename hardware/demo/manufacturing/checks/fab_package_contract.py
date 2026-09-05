@@ -28,7 +28,14 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
                      graphics.
   FAB4  DRILL        the PTH + NPTH hole multiset EQUALS the board's own
                      (`pcbnew` vias + pad drills), matched on plating,
-                     position, diameter and slot end-points.
+                     position, diameter and slot end-points.  The pairing is a
+                     BIJECTION within one micron, not a sorted zip: the file
+                     quantises to three decimals and quantisation may REVERSE
+                     the order of two holes it collapses onto one coordinate
+                     (D-625).  What the quantisation costs is reported --
+                     `max_residual_nm` and a full residual histogram -- and the
+                     matcher proves it can refuse by displacing one shipped
+                     hole past the tolerance in a control.
   FAB5  CPL          `pos-fitted` rows are exactly the fitted, placeable board
                      references -- no DNP part survives, no fitted part is
                      dropped -- and every row's X/Y/side matches `pcbnew`.
@@ -285,6 +292,58 @@ def fab3(pkg, board):
                 empty_layer_files=empty)
 
 
+def pair_within_tolerance(bs, fs, tol=None):
+    """A BIJECTION, not an ordering.  Returns (pairs, unmatched_board,
+    unmatched_file).
+
+    D-625.  The old code sorted both sides and zipped them, which is a correct
+    pairing only while the quantisation the Excellon file applies PRESERVES
+    SORT ORDER.  It does not have to.  The board holds two `0.300 mm` barrels
+    at `x = 64.100000` and `x = 64.100500 mm`; the file, written in millimetres
+    to three decimals, prints BOTH as `X64.1`, and their `y` order is the
+    reverse of the board's.  Sorted and zipped, each is paired with the OTHER
+    and the report claims a 2.178 mm displacement that does not exist.
+
+    The claim FAB4 has always MADE is a claim about existence -- "every hole in
+    the board is in the file, at the same coordinate, to the micron" -- so it
+    is asked here as existence: is there a perfect matching in the bipartite
+    graph whose edges are the pairs within `tol`?  Kuhn's augmenting path over
+    a `tol`-bucketed neighbour index answers it exactly.  Candidate lists are
+    near-singleton at a one-micron tolerance, so this is linear in practice and
+    NEVER order-dependent.
+    """
+    tol = TOL_NM if tol is None else tol
+    bucket = defaultdict(list)
+    for j, (fx, fy) in enumerate(fs):
+        bucket[(fx // tol, fy // tol)].append(j)
+    cand = []
+    for bx, by in bs:
+        near = []
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                near += bucket.get((bx // tol + dx, by // tol + dy), [])
+        cand.append(sorted(j for j in near
+                           if abs(bx - fs[j][0]) <= tol
+                           and abs(by - fs[j][1]) <= tol))
+
+    owner = [-1] * len(fs)
+
+    def augment(i, seen):
+        for j in cand[i]:
+            if j in seen:
+                continue
+            seen.add(j)
+            if owner[j] == -1 or augment(owner[j], seen):
+                owner[j] = i
+                return True
+        return False
+
+    unmatched_b = [i for i in range(len(bs)) if not augment(i, set())]
+    pairs = [(i, j) for j, i in enumerate(owner) if i != -1]
+    unmatched_f = [j for j, i in enumerate(owner) if i == -1]
+    return pairs, unmatched_b, unmatched_f
+
+
 def fab4(pkg, board):
     gerbers = pkg / "gerbers"
     pth = next(gerbers.glob("*-PTH.drl"), None)
@@ -296,11 +355,16 @@ def fab4(pkg, board):
         shipped += read_excellon(npth, "N")
     want = board["holes"]
 
-    # Group both sides by (plating, diameter, slot span) and pair the groups
-    # positionally.  The Excellon file is written in millimetres to three
+    # Group both sides by (plating, diameter, slot span), then MATCH each group
+    # within one micron.  The Excellon file is written in millimetres to three
     # decimals, so a hole the board holds at 17.298200 mm is printed 17.298;
-    # the claim is therefore equality TO THE MICRON, the resolution the file
-    # itself has, not to the nanometre the board is stored at.
+    # the claim is equality TO THE MICRON, the resolution the file itself has,
+    # not to the nanometre the board is stored at.  What that quantisation
+    # COSTS is now published rather than implied: `residual_histogram_nm` is
+    # every matched pair's Chebyshev distance and `max_residual_nm` its worst.
+    # On this board 819 holes are exact and the rest are sub-micron -- a
+    # standing property of a 33.3 um router lattice printed on a 1 um grid, not
+    # something any one route introduced.
     def group(counter):
         out = defaultdict(list)
         for (plated, x, y, dmin, dmax), n in counter.items():
@@ -308,18 +372,47 @@ def fab4(pkg, board):
         return {k: sorted(v) for k, v in out.items()}
 
     gb, gf = group(want), group(shipped)
-    count_mismatch, displaced = [], []
-    for key in sorted(set(gb) | set(gf)):
-        bs, fs = gb.get(key, []), gf.get(key, [])
-        if len(bs) != len(fs):
-            count_mismatch.append(dict(tool=key, board=len(bs), file=len(fs)))
-            continue
-        for (bx, by), (fx, fy) in zip(bs, fs):
-            if abs(bx - fx) > TOL_NM or abs(by - fy) > TOL_NM:
-                displaced.append(dict(tool=key, board=(bx, by), file=(fx, fy)))
+
+    def survey(gb, gf):
+        count_mismatch, unmatched, residuals = [], [], Counter()
+        for key in sorted(set(gb) | set(gf)):
+            bs, fs = gb.get(key, []), gf.get(key, [])
+            if len(bs) != len(fs):
+                count_mismatch.append(dict(tool=key, board=len(bs),
+                                           file=len(fs)))
+                continue
+            pairs, ub, uf = pair_within_tolerance(bs, fs)
+            for i, j in pairs:
+                residuals[max(abs(bs[i][0] - fs[j][0]),
+                              abs(bs[i][1] - fs[j][1]))] += 1
+            for i in ub:
+                unmatched.append(dict(tool=key, side="board", at=bs[i]))
+            for j in uf:
+                unmatched.append(dict(tool=key, side="file", at=fs[j]))
+        return count_mismatch, unmatched, residuals
+
+    count_mismatch, unmatched, residuals = survey(gb, gf)
+
+    # NON-VACUITY.  A matcher that pairs everything is worth nothing unless it
+    # can REFUSE.  Displace one shipped hole by one nanometre past the
+    # tolerance and require the survey to report it -- on BOTH sides, since a
+    # hole that moved leaves a board hole unmatched and a file hole unmatched.
+    control = dict(ran=False)
+    ctl_key = next((k for k in sorted(gf) if gf[k]), None)
+    if ctl_key is not None:
+        moved = dict(gf)
+        x, y = gf[ctl_key][0]
+        moved[ctl_key] = sorted([(x, y + TOL_NM + 1)] + gf[ctl_key][1:])
+        c_mismatch, c_unmatched, _ = survey(gb, moved)
+        control = dict(ran=True, tool=list(ctl_key), moved_by_nm=TOL_NM + 1,
+                       displaced_hole=[x, y],
+                       count_mismatch=c_mismatch,
+                       unmatched=len(c_unmatched),
+                       fires=bool(c_unmatched) and not c_mismatch)
 
     diameters = sorted({k[3] for k in shipped})
-    return dict(ok=(bool(shipped) and not count_mismatch and not displaced
+    return dict(ok=(bool(shipped) and not count_mismatch and not unmatched
+                    and control.get("fires") is True
                     and sum(want.values()) == sum(shipped.values())),
                 board_holes=sum(want.values()),
                 shipped_holes=sum(shipped.values()),
@@ -329,7 +422,12 @@ def fab4(pkg, board):
                 tools=len(gf),
                 min_drill_mm=min(diameters) / 1e6 if diameters else None,
                 tool_count_mismatch=count_mismatch,
-                displaced_holes=displaced[:20],
+                unmatched_holes=unmatched[:20],
+                max_residual_nm=max(residuals) if residuals else None,
+                residual_histogram_nm={str(k): v
+                                       for k, v in sorted(residuals.items())},
+                tolerance_nm=TOL_NM,
+                control=control,
                 tool_census={"%s %.3f%s" % (k[0], k[1] / 1e6,
                                             "" if k[1] == k[2]
                                             else "x%.3f" % (k[2] / 1e6)): len(v)

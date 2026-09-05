@@ -1,0 +1,300 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "c7bf291bceca1aae65a43cad4db6a07da9da32663e040d8e0bcc790dfb0911e6",
+  "connectivity": {
+    "nets_improved": [
+      "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+    ],
+    "nets_regressed": [
+      "GND"
+    ],
+    "open_retained_nets_after": 22,
+    "open_retained_nets_before": 23,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 51
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [],
+  "guard": null,
+  "inherited_within_baseline": true,
+  "lattice": {
+    "any_too_coarse": false,
+    "any_unlaunchable": false,
+    "grid_nm": 50000,
+    "nets": {
+      "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": {
+        "binding_pad": "U2.14",
+        "grid_mm": 0.05,
+        "lands": 4,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.2,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "plane": null,
+  "plane_repair": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 20
+      },
+      "PP2": {
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            30,
+            32
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            7,
+            7
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            57,
+            58
+          ]
+        },
+        "ok": false,
+        "splits": [
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 4.787,
+                "body": true,
+                "pads": [
+                  "C4.2"
+                ],
+                "post_island": 30
+              },
+              {
+                "area_mm2": 4.768,
+                "body": false,
+                "pads": [
+                  "U3.12"
+                ],
+                "post_island": 32
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 10.282,
+            "pre_island": 30,
+            "pre_pads": 2
+          }
+        ]
+      },
+      "PP3": {
+        "fragments": [
+          {
+            "area_mm2": 4.768,
+            "barrels": 0,
+            "barrels_into_reserved_planes": 0,
+            "detail": [],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "U3.12"
+            ],
+            "post_island": 32,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "verdict": "STRANDED"
+          }
+        ],
+        "ok": false,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "ok": false,
+        "probes": [
+          {
+            "flips": false,
+            "pads": [
+              "U3.12"
+            ],
+            "post_island": 32,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "STRANDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [
+      "PP2",
+      "PP3",
+      "PP4"
+    ],
+    "ok": false,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "report": "w/d625/unguarded/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": false,
+      "PP3": false,
+      "PP4": false
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R5.2",
+          "layers": [
+            "B",
+            "I2",
+            "F",
+            "B",
+            "I2",
+            "F",
+            "B"
+          ],
+          "mm": 41.6095055681705,
+          "ok": true,
+          "to": "U2.14",
+          "via_xy": [
+            [
+              51.25,
+              87.65
+            ],
+            [
+              51.35,
+              83.95
+            ],
+            [
+              49.2,
+              81.95
+            ],
+            [
+              51.7,
+              74.15
+            ],
+            [
+              52.9,
+              76.7
+            ],
+            [
+              61.15,
+              85.45
+            ]
+          ],
+          "vias": 6
+        }
+      ],
+      "mm": 41.61,
+      "mode": "maze",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": true,
+      "seconds": 49.4,
+      "vias": 6
+    }
+  ],
+  "routed_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N"
+  ],
+  "schema": 1
+}

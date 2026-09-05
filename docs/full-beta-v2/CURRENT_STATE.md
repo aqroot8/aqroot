@@ -13,6 +13,96 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-625 (`BTN_DOWN_N` IS CLOSED BY THE *GUARD*, AT A PITCH NOBODY HAD
+  ASKED -- AND D-624'S BOND WAS *EMPTY*):**  D-624 called `BTN_DOWN_N` the most
+  actionable net on the board and named the lever: *"price a bond for `U3.12`
+  on the fragment its own route creates."*  **There is no bond to price.**
+  **THE ROUTE THAT ROUTES IS THE ONE THAT MUST NOT BE TAKEN.**  Unguarded,
+  `BTN_DOWN_N` closes its edge in 41.610 mm / 6 barrels at 0.050 mm and cuts
+  `GND` `B.Cu` island 30 -- 10.282 mm2, pads `C4.2` and `U3.12`, **two through
+  barrels, BOTH on the `C4.2` side** -- in half; `PP2` names the split, `PP3`
+  prices it `STRANDED`, the ledger reports `GND` REGRESSED with edges flat
+  at 51.
+  **`stitch_pad` SAID `NO_VIA_SITE` AND THE ISLAND HELD 1071 SITES.**  Every
+  bond screen this project has run used `grid: 100000` and asked ONE question --
+  can this pad LAUNCH?  The new read-only `screen_bond_ladder.py` asks it over
+  the D-623 cell-budgeted ladder AND asks `maze3d`'s other question beside it:
+  a pad on its own piece of POUR does not need to launch, because the island is
+  already a conductor.  Fifteen (pitch x barrel) cells on `/GND` `U3.12`:
+  `stitch_pad` returns `NO_VIA_SITE` in **all fifteen -- INVARIANT across a 4x
+  pitch range** -- while the same pad's own island holds 5 sites at 0.100 mm /
+  0.60-0.30 rising to **1071** at 0.025 mm / 0.45-0.20, every one landing in
+  BOTH the 9441.745 mm2 `In1.Cu` and `In4.Cu` `GND` reference planes.  The
+  pocket was never barren; the PRIMITIVE was wrong.  **AND
+  `sites_in_fragment` IS 0 IN EVERY CELL** -- the cut puts every legal barrel of
+  that island on the OTHER pad's side, so D-624's lever is not hard, it is
+  EMPTY.  The 0.020 mm rung is in the report marked `over_budget`.
+  **SO DO NOT CUT.**  `pour_bond_guard.py` has held a tube over that exact
+  copper since D-585 (`C4.2` <-> `U3.12`, `B.Cu`, 5.513 mm, island 29,
+  10.282 mm2) and D-600 / D-601 / D-603 each offered `BTN_DOWN_N` the guard, got
+  `NO_PATH`, and read it as corridor capacity.  **That was a 0.100 mm
+  sentence.**  Guard AND ladder together: `NO_PATH` at 0.100 / 0.0667 /
+  0.050 mm, and at **0.0333 mm it ROUTES and the whole gate accepts it, clause
+  8 included**.  **A REFUSAL UNDER A RESERVATION IS A REFUSAL AT A PITCH** --
+  every future guard-on refusal on this board is a LADDER question before it is
+  a wall.
+  **PROMOTED.**  `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` `R5.2 -> U2.14`,
+  **69.301 mm on `B.Cu` + `In2.Cu` with 6 through barrels 0.600/0.300**, all
+  track 0.200 mm Default, authority
+  `2b1260eb...` -> `74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769`,
+  **retained open edges 51 -> 50, open retained nets 23 -> 22**, ratsnest
+  67 -> 66.  29 objects added (23 tracks + 6 barrels), **ZERO removed**, zero
+  zones, zero rule areas, zero `.kicad_dru` change, zero placement change.
+  15/15 `verify_promotion.py` including the D-623 `pour_partition_intact`
+  check; PP1-PP4; P1-P4 on the 47-tube D-619 guard; DRC 5 `hole_clearance` /
+  1 `solder_mask_bridge` inherited with **ZERO attributable**.
+  **THE POUR BOND, PRICED.**  69.301 mm against 41.610 mm -- **+27.691 mm and
+  the SAME six barrels** to leave `U3.12` on its island; the first time this
+  board has priced a pour-bond tube against the route it forbids.  It costs the
+  net nothing electrically: `R5` is a 10 k pull-up into a PCAL9535A input, so
+  ~7 pF of extra trace is ~70 ns of edge on a mechanical button.
+  **D-624's PP4 FOLLOW-UP IS TAKEN**: a fragment `PP3` has already condemned is
+  now SKIPPED and NAMED in `condemned_fragments_skipped`, and when that leaves
+  nothing to probe the whole-pour probe runs instead, so PP4 is still proved
+  and can still fail.  The severing candidate now reads `PP1 PASS / PP2 FAIL /
+  PP3 FAIL / PP4 PASS` where it read `PP4 FAIL`.  **PP2 vs PP3 doctrine tension
+  RECORDED, not resolved**: the prose forbids severance that STRANDS while
+  `PP2` is coded as an unconditional refusal of any split.  Moot on this net --
+  `PP3` reads `STRANDED`, so the relaxed reading refuses the unguarded route
+  too.
+  **AND THE FAB PACKAGE REFUSED THE PROMOTION -- ON A PAIRING, NOT ON THE
+  BOARD.**  `FAB4 DRILL` came back `FAIL` with two `0.300 mm` holes
+  **"displaced by 2.178 mm"**, which is why this promotion sat uncommitted.
+  It is not a displacement: the Excellon file is metric/decimal to THREE
+  places, so `BTN_DOWN_N`'s barrel at `x = 64.100500 mm` prints `X64.1` --
+  character for character what the pre-existing `64.100000 mm` hole prints --
+  and their `y` order on the board is the REVERSE of their order in the file.
+  FAB4 sorted both sides and ZIPPED them, so each was paired with the OTHER
+  (`evidence/d625-fab4-drill-pairing.json`).  **The claim was TRUE the whole
+  time and is now asked AS the claim**: `pair_within_tolerance()` asks for a
+  perfect MATCHING within one micron (Kuhn's augmenting path over a
+  one-micron bucket index, never order-dependent) -- **838/838 on the promoted
+  board, 832/832 on D-624's**.  What the export costs is now PUBLISHED:
+  `max_residual_nm` and a full `residual_histogram_nm` -- **819 holes exact, 19
+  sub-micron, worst 500 nm, and 13 of those 19 PREDATE D-625** and rode through
+  every `FAB4 PASS` ever recorded here.  A sub-micron residual is a standing
+  property of a 33.3 um router lattice printed on a 1 um grid, bounded by HALF
+  the file's own quantum and ~1/50 of a fabricator's drill registration
+  tolerance; **nothing on the board is corrected because nothing on the board
+  is wrong.**  And the matcher proves it can REFUSE: a `control` displaces one
+  shipped hole by `TOL_NM + 1` and requires the survey to report it unmatched
+  on BOTH sides, folded into `FAB4`'s own `ok`.  `FAB1-FAB8` PASS on
+  `74fb57b5...`.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) re-run the D-624 ladder screen over the
+  remaining open-edge nets **with the 47-tube guard ON**, since D-625 proved a
+  guard-on refusal is pitch-dependent and the whole screen was run guard-off;
+  (2) the three CORRIDOR_WALL nets (`BTN_LEFT_N`, `ACC_5V_BOOST_EN`,
+  `SX1262_DIO1`) are budget-bounded at 0.025 mm, not proved -- raising
+  `--grid-cells` past 115.6 M reaches 0.020 mm one net at a time; (3)
+  `ACC_5V_LX` needs `U21.5` given an escape at all -- placement, a land licence
+  or `route_local_two_pad` -- and no ladder will answer it.  `ACC_PWR_EN` and
+  `NFC_VDD_RF` remain MEASURED walls.  No owner decision is OPEN; D-618's `J3`
+  question remains RECORDED and PM-3 remains an open PLACEMENT finding.
 - **Demo D-624 (THE LADDER POINTED AT EVERY OPEN EDGE -- ONE NET *ROUTES* AND
   THE POUR REFUSES IT):**  D-623 built `--grid ladder` and named the screen it
   makes cheap; this is that screen, over every standing single-edge candidate

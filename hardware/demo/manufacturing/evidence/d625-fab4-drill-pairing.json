@@ -1,0 +1,108 @@
+{
+ "boards": {
+  "d624_authoritative": {
+   "bijection_unmatched": [],
+   "board_sha256": "2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911",
+   "holes": 832,
+   "holes_exact": 819,
+   "holes_sub_micron": 13,
+   "legacy_sorted_zip_displaced": [],
+   "max_residual_nm": 500,
+   "residual_histogram_nm": {
+    "0": 819,
+    "1": 1,
+    "100": 1,
+    "200": 1,
+    "300": 4,
+    "363": 1,
+    "400": 4,
+    "500": 1
+   }
+  },
+  "d625_promoted": {
+   "bijection_unmatched": [],
+   "board_sha256": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+   "holes": 838,
+   "holes_exact": 819,
+   "holes_sub_micron": 19,
+   "legacy_sorted_zip_displaced": [
+    {
+     "board": [
+      64100000,
+      111400000
+     ],
+     "claimed_delta_nm": [
+      0,
+      2178000
+     ],
+     "file": [
+      64100000,
+      109222000
+     ],
+     "tool": [
+      "P",
+      300000,
+      300000
+     ]
+    },
+    {
+     "board": [
+      64100500,
+      109222000
+     ],
+     "claimed_delta_nm": [
+      500,
+      2178000
+     ],
+     "file": [
+      64100000,
+      111400000
+     ],
+     "tool": [
+      "P",
+      300000,
+      300000
+     ]
+    }
+   ],
+   "max_residual_nm": 500,
+   "residual_histogram_nm": {
+    "0": 819,
+    "1": 1,
+    "100": 2,
+    "200": 1,
+    "300": 6,
+    "363": 1,
+    "400": 5,
+    "500": 3
+   }
+  }
+ },
+ "colliding_pair": {
+  "board": [
+   [
+    64100000,
+    111400000
+   ],
+   [
+    64100500,
+    109222000
+   ]
+  ],
+  "new_in_d625": [
+   64100500,
+   109222000
+  ],
+  "note": "the second is a BTN_DOWN_N barrel; the first predates it",
+  "printed": [
+   "X64.1Y-111.4",
+   "X64.1Y-109.222"
+  ],
+  "tool": "P 0.300"
+ },
+ "finding": "The claim is TRUE.  A perfect bijection within one micron exists for every tool group on both boards.  The old pairing sorted both sides and zipped them, which is valid only while quantisation PRESERVES sort order -- and the D-625 via at x=64.100500 mm is the first hole on this board whose printed X (`X64.1`) collides with another hole's while their Y order is reversed.  Zipped, the two were paired with each other and the report claimed a 2.178 mm displacement that does not exist.",
+ "question": "FAB4 claims every board hole is in the Excellon file AT THE SAME COORDINATE TO THE MICRON.  Is that claim TRUE of the D-625 board, and was the FAIL a property of the board or of the pairing?",
+ "schema": 1,
+ "sub_micron_residual_is_not_new": "13 holes on the D-624 board already sat off the file's 1 um grid, max 500 nm, and FAB4 PASSED -- the sorted zip happened to agree.  D-625's six barrels take that to 19.  The residual is a standing property of a 33.3 um router lattice printed to three decimals, bounded by half the file's own quantum, and 1/50 of a fabricator's drill registration tolerance.  Nothing is corrected on the board because nothing on the board is wrong.",
+ "tolerance_nm": 1000
+}
