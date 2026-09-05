@@ -1,0 +1,580 @@
+{
+  "added_object_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_K"
+  ],
+  "added_track_layers": [
+    "B.Cu",
+    "F.Cu",
+    "In2.Cu"
+  ],
+  "added_track_widths_nm": [
+    300000
+  ],
+  "added_tracks": 15,
+  "added_via_dia_drill_nm": [
+    [
+      600000,
+      300000
+    ]
+  ],
+  "added_vias": 3,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "pour_partition_intact": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_evicted_nets": [],
+  "claimed_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_K"
+  ],
+  "claimed_planes": [],
+  "claimed_rule_areas": [],
+  "claimed_widened_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 63
+  },
+  "drc_pre": null,
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {
+      "hole_clearance": 5,
+      "solder_mask_bridge": 1
+    },
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 46
+      },
+      "errors": [],
+      "severities": {
+        "warning": 247
+      },
+      "total": 247
+    },
+    "unconnected_items": 63
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 18,
+  "objects_removed": 0,
+  "pad_escape_neck": null,
+  "pad_escape_run": null,
+  "pour_bridge": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 20
+      },
+      "PP2": {
+        "admitted": [
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0"
+        ],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            30,
+            31
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            7,
+            7
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            58,
+            58
+          ]
+        },
+        "ok": true,
+        "priced": [
+          {
+            "admit": true,
+            "body": {
+              "area_mm2": 177.955,
+              "pads": [
+                "C13.1",
+                "C15.1",
+                "C56.1",
+                "D13.1"
+              ],
+              "post_island": 9
+            },
+            "fragments": [
+              {
+                "admit": true,
+                "area_mm2": 79.292,
+                "margin_x": 1.441,
+                "pads": [
+                  "J1.7",
+                  "J1.8",
+                  "J1.9"
+                ],
+                "post_island": 19,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 2.311,
+                      "drill_mm": 0.4,
+                      "wall_mm2": 0.033379,
+                      "xy_mm": [
+                        49.4,
+                        89.9
+                      ]
+                    },
+                    {
+                      "amps": 2.311,
+                      "drill_mm": 0.4,
+                      "wall_mm2": 0.033379,
+                      "xy_mm": [
+                        49.4,
+                        91.0
+                      ]
+                    },
+                    {
+                      "amps": 2.311,
+                      "drill_mm": 0.4,
+                      "wall_mm2": 0.033379,
+                      "xy_mm": [
+                        41.3,
+                        95.9
+                      ]
+                    },
+                    {
+                      "amps": 2.311,
+                      "drill_mm": 0.4,
+                      "wall_mm2": 0.033379,
+                      "xy_mm": [
+                        41.4,
+                        97.2
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 4,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 9.244,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 1.441,
+                      "mm": 10.554,
+                      "mohm": 10.457,
+                      "pad": "J1.7",
+                      "width_mm": 0.5
+                    },
+                    {
+                      "amps": 5.282,
+                      "mm": 0.0,
+                      "mohm": 0.0,
+                      "pad": "J1.8",
+                      "width_mm": 3.0
+                    },
+                    {
+                      "amps": 1.441,
+                      "mm": 10.823,
+                      "mohm": 10.723,
+                      "pad": "J1.9",
+                      "width_mm": 0.5
+                    }
+                  ],
+                  "internal_min_amps": 1.441,
+                  "internal_min_width_mm": 0.5,
+                  "priced_amps": 1.441,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 1.0,
+                "severed_neck": {
+                  "amps": 2.636,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "C56.1",
+                      "frag_pad": "J1.7",
+                      "mm": 24.384,
+                      "width_mm": 0.5
+                    },
+                    {
+                      "body_pad": "C15.1",
+                      "frag_pad": "J1.7",
+                      "mm": 19.527,
+                      "width_mm": 0.5
+                    },
+                    {
+                      "body_pad": "C56.1",
+                      "frag_pad": "J1.8",
+                      "mm": 24.767,
+                      "width_mm": 0.8
+                    },
+                    {
+                      "body_pad": "C15.1",
+                      "frag_pad": "J1.8",
+                      "mm": 19.767,
+                      "width_mm": 1.15
+                    },
+                    {
+                      "body_pad": "C56.1",
+                      "frag_pad": "J1.9",
+                      "mm": 24.13,
+                      "width_mm": 0.5
+                    },
+                    {
+                      "body_pad": "C15.1",
+                      "frag_pad": "J1.9",
+                      "mm": 19.198,
+                      "width_mm": 0.5
+                    }
+                  ],
+                  "width_mm": 1.15
+                },
+                "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+              }
+            ],
+            "layer": "F.Cu",
+            "net": "+3V3",
+            "netclass": "P3V3",
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "pre_area_mm2": 281.527,
+            "pre_island": 9,
+            "published_amps": 1.0,
+            "published_figures": [
+              0.64,
+              1.0
+            ]
+          }
+        ],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "f5a570fcc2bb54700e68c0c705dc131f0ca69a66e3a10820ead7f7864459c9fa",
+          "source": "/tmp/aqroot-demo-verify-gcnmjw2q/post/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "splits": [
+          {
+            "layer": "F.Cu",
+            "net": "+3V3",
+            "parts": [
+              {
+                "area_mm2": 177.955,
+                "body": true,
+                "pads": [
+                  "C13.1",
+                  "C15.1",
+                  "C56.1",
+                  "D13.1"
+                ],
+                "post_island": 9
+              },
+              {
+                "area_mm2": 79.292,
+                "body": false,
+                "pads": [
+                  "J1.7",
+                  "J1.8",
+                  "J1.9"
+                ],
+                "post_island": 19
+              }
+            ],
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "pre_area_mm2": 281.527,
+            "pre_island": 9,
+            "pre_pads": 7
+          }
+        ]
+      },
+      "PP3": {
+        "fragments": [
+          {
+            "area_mm2": 79.292,
+            "barrels": 4,
+            "barrels_into_reserved_planes": 4,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 8055.907,
+                    "layer": "In3.Cu",
+                    "zone": "In3 +3V3 PLANE"
+                  }
+                ],
+                "xy_mm": [
+                  49.4,
+                  89.9
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 8055.907,
+                    "layer": "In3.Cu",
+                    "zone": "In3 +3V3 PLANE"
+                  }
+                ],
+                "xy_mm": [
+                  49.4,
+                  91.0
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 8055.907,
+                    "layer": "In3.Cu",
+                    "zone": "In3 +3V3 PLANE"
+                  }
+                ],
+                "xy_mm": [
+                  41.3,
+                  95.9
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 8055.907,
+                    "layer": "In3.Cu",
+                    "zone": "In3 +3V3 PLANE"
+                  }
+                ],
+                "xy_mm": [
+                  41.4,
+                  97.2
+                ]
+              }
+            ],
+            "layer": "F.Cu",
+            "net": "+3V3",
+            "pads": [
+              "J1.7",
+              "J1.8",
+              "J1.9"
+            ],
+            "post_island": 19,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "verdict": "BONDED"
+          }
+        ],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "J1.7",
+              "J1.8",
+              "J1.9"
+            ],
+            "post_island": 19,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "post_board": "/tmp/aqroot-demo-verify-gcnmjw2q/post/aqroot-Beta-v2.kicad_pcb",
+    "pre_board": "/tmp/aqroot-demo-verify-gcnmjw2q/pre/aqroot-Beta-v2.kicad_pcb",
+    "ran": true,
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "pre_board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
+  "promoted_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+  "ref": "HEAD",
+  "removed_object_nets": [],
+  "removed_sample": [],
+  "rule_areas_added": [],
+  "rule_areas_otherwise_changed": [],
+  "rule_areas_removed": [],
+  "rule_areas_widened": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_removed": []
+}

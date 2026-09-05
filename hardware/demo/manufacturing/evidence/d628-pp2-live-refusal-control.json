@@ -1,0 +1,27 @@
+{
+ "as_published": {
+  "admit": true,
+  "pp2_ok": true,
+  "priced_amps": 1.441,
+  "published_P3V3_amps": 1.0,
+  "required_amps": 1.0,
+  "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+ },
+ "board": "w/d628/live-control/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ba59d8564d740383ad8f3de358b0edf16d5f4a0c9d13a75a553091c30764e365",
+ "copper_identical": true,
+ "finding": "THE PRICE DOES NOT MOVE AND THE VERDICT DOES.  1.441 A both times -- it is a measurement of the copper -- and the clause flips ADMIT -> REFUSED (BOND_UNDER_PRICED) purely because the board's own published figure moved.  The bar is where the `.kicad_dru` says it is, and no route can talk it down.",
+ "method": "the SAME candidate board, byte-identical copper, with ONE character changed in a SCRATCH copy of its `.kicad_dru`: section 5's P3V3 row reads 2.0 A design instead of 1.0 A.  Nothing else differs.  The authoritative `.kicad_dru` is untouched.",
+ "same_copper_as": "w/d627b/led-k/aqroot-Beta-v2.kicad_pcb",
+ "same_copper_sha256": "ba59d8564d740383ad8f3de358b0edf16d5f4a0c9d13a75a553091c30764e365",
+ "schema": 1,
+ "what": "D-628 -- THE PP2 AMPACITY CLAUSE REFUSES REAL COPPER, not only a synthetic argument.  The seven `decision_controls` prove the comparison behaves; this proves the LIVE path does -- that the bar is genuinely read from the `.kicad_dru` beside the board under judgement and genuinely compared against a price measured off that board's own geometry.",
+ "with_the_bar_moved": {
+  "admit": false,
+  "pp2_ok": false,
+  "priced_amps": 1.441,
+  "published_P3V3_amps": 2.0,
+  "required_amps": 2.0,
+  "why": "BOND_UNDER_PRICED"
+ }
+}

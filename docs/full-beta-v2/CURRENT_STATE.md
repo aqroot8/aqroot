@@ -13,6 +13,88 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-628 (THE `PP2` AMPACITY CLAUSE, AND `LED_K` *PROMOTED* UNDER IT --
+  the bond D-627 called 9.244 A is 1.441 A END TO END):**  D-627 named the one
+  task and called it the highest-leverage single change on the board.  It is
+  done, in **TWO COMMITS ON PURPOSE** -- D-625's reasoning binds, so the clause
+  was committed ALONE (`2f95630`) promoting nothing, and `LED_K` was then judged
+  by a contract already standing.
+  **THE CLAUSE.**  `PP2` admits a split when every fragment it creates is
+  `BONDED` by `PP3` **AND** the conductor replacing the severed copper carries
+  at least the design current this board publishes for that pour's net in
+  `.kicad_dru` section 5.  Three things load-bearing: (a) **the bond is the
+  whole series chain, not the barrels** -- plane, barrel, and THE FRAGMENT'S OWN
+  COPPER out to each pad; priced end to end D-627's 9.244 A is **1.441 A**
+  (`bottleneck` = `FRAGMENT_COPPER`, the `J1` pocket narrows to **0.500 mm** on
+  the 10.554 mm run to `J1.7` and the 10.823 mm run to `J1.9`); (b) **the bar is
+  PARSED from the `.kicad_dru` beside the board under judgement**, taking the
+  STRICTEST figure in the class's own rows (`BAT_MAIN` 3.125 A fault trip and
+  `SYS_MAIN` 2.19 A inductor peak included, both of which that table excludes
+  from its WIDTH floors), and it charges a three-pad fragment the WHOLE
+  eighty-pad `+3V3` rail's **1.0 A**; (c) **a net the table does not price is
+  REFUSED**, so **no `GND` split is admissible at all** and `PP2` is unchanged
+  on `GND`.  Pricing a return-path fragment is left **OPEN**, not guessed.
+  **IT CANNOT BE VACUOUS AND IT STILL REFUSES**
+  (`evidence/d628-pp2-ampacity-clause.json`).  Seven controls drive the same
+  `decide()` the verdict does and run on EVERY board, split or not: KiCad's own
+  0.200 mm `min_thickness` sliver (0.742 A) and one 0.300 mm class track
+  (0.995 A) REFUSED against a 1.0 A rail; the four-barrel bond (9.244 A)
+  ADMITTED; the same bond REFUSED when `PP3` reads `STRANDED`, REFUSED when the
+  net carries no published current; the bar located exactly where it claims --
+  admitted at equality, refused one part per million below.  A control that
+  misbehaves FAILS `PP2`.  D-625's unguarded `BTN_DOWN_N` severance is refused
+  twice over.  **AND THE LIVE PATH REFUSES REAL COPPER**
+  (`evidence/d628-pp2-live-refusal-control.json`): the same candidate board,
+  copper **byte-identical** (`ba59d856...`), with ONE character changed in a
+  SCRATCH `.kicad_dru` (section 5's `P3V3` row 1.0 A -> 2.0 A).  **The price does
+  not move and the verdict does** -- 1.441 A both times, ADMIT -> REFUSED
+  (`BOND_UNDER_PRICED`).  Four out-of-sample `LED_K` candidate boards at 0.050 /
+  0.0333 / 0.025 / 0.020 mm sever the same pour into 120.900 / 79.416 / 119.313
+  / 79.292 mm2 fragments and **every one prices at 1.441 A**: the binding term is
+  a property of the POUR, not of the route.  What the cut REMOVED is measured
+  and published, never charged: 1.150 mm, 2.636 A, by `pour_bond_guard.geodesic`
+  reused unchanged.
+  **AND THEN `LED_K` WAS PROMOTED** (`evidence/d628-led-k-promote.json`).
+  `/03_SPI_A_DISPLAY_SD/LED_K`, the display backlight cathode return -- PARKED at
+  D-467 as a *"current-width wall"* and D-468 as a *"connector breakout wall"* --
+  closes **BOTH** open edges at 0.020 mm under the 47-tube D-619 guard with
+  `--partial`, 1031.6 s, at its own `LED_BOOST` **0.300 mm** class width:
+  `J1.2 -> J1.3` **0.6079 mm / 0 vias** on `F.Cu` (refused `NO_LEGAL_ESCAPE_SRC`
+  at every coarser pitch, on a 0.5 mm gap) and `J1.3 -> R69.1` **53.7387 mm /
+  3 vias** on `F`/`B`/`In2`.  `PP2` reads **ADMITTED** on its one split --
+  `+3V3` `F.Cu` 281.527 mm2 -> 177.955 mm2 body + **79.292 mm2 fragment carrying
+  `J1.7`/`J1.8`/`J1.9`**, the display FPC supply pins -- `pp3_verdict` `BONDED`,
+  `priced_amps` **1.441** vs `required_amps` **1.000**, `margin_x` **1.441**,
+  `why` = `BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT`.  Authority
+  `35129d6c...` ->
+  **`8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82`**,
+  **retained open edges 49 -> 47**, open retained nets 22 -> 21, connected
+  retained 151 -> 152, ratsnest 65 -> 63.  **18 objects added -- 15 tracks
+  (`F.Cu`/`B.Cu`/`In2.Cu`, every one 0.300 mm) and 3 barrels (0.600/0.300 mm) --
+  ZERO removed**, zero zones, zero rule areas, zero `.kicad_dru` change, zero
+  placement change.  `verify_promotion.py --ref HEAD` re-derives the promotion
+  from the two board files alone: **all 14 checks PASS plus all four live DRU
+  contracts including `D-186_bat_main_class` and
+  `D-269_bat_main_routed_clearance`**; real KiCad DRC **zero attributable**,
+  inherited only (`hole_clearance` 5, `solder_mask_bridge` 1,
+  `lib_footprint_issues` 199), fill-stable, parity within baseline.  Every
+  standing contract re-run and PASS on the promoted board -- `pour_partition`,
+  `pour_bond` (47-tube guard), `neck`, `placement`, `population`, `land_parity`,
+  `keepout_stackup`, `rf_symmetry`, `protected_copper` -- and the fab package
+  re-exported from the promoted board with `fab_package_contract` **PASS**.
+  **THIS IS THE FIRST POUR SEVERANCE THIS BOARD HAS EVER ACCEPTED, AND IT WAS
+  ACCEPTED BECAUSE IT WAS PRICED, NOT BECAUSE THE DOCTRINE WAS RELAXED.**
+  **NEXT, IN ORDER OF LEVERAGE:** (1) `/I2C_SCL_INT` -- **5 open edges, the most
+  on the board**, 14 never-asked D-626 census pairs, bounded by the D-626 TIME
+  budget rather than by a wall (`--partial --grid ladder --grid-gb 3.5
+  --grid-seconds 4000`).  (2) `/BQ25185_STAT1` and `/NFC_SUPPLY` -- 2 edges each,
+  never run through the census at a fine pitch.  (3) `ACC_5V_LX` still needs
+  `U21.5` given an escape at all -- placement, a land licence or
+  `route_local_two_pad`.  MEASURED walls include `I2C_SDA_INT`, `WAKE_INT_N` and
+  `BQ25185_STAT2` at 0.020 mm (D-627).  **The `GND` return-path pricing question
+  is the one OPEN modelling gap in `PP2`** and is recorded, not guessed.  No
+  owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3 remains
+  an open PLACEMENT finding.
 - **Demo D-627 (THE D-626 RECIPE, APPLIED -- THREE WALLS *MEASURED* AT
   0.020 mm AND ONE ROUTE THAT CLOSES *TWO* EDGES WITH ONLY `PP2` REFUSING
   IT):**  CHARACTERIZATION, no copper change; the authoritative board is

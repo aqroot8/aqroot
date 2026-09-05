@@ -1,5 +1,163 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-628 · 2026-09-05 · Demo — the PP2 AMPACITY CLAUSE, and LED_K PROMOTED under it: the bond D-627 called 9.244 A is 1.441 A end to end
+
+D-627 left exactly one task and called it the highest-leverage single change on
+the board: *"`PP2` may admit a split whose fragment `PP3` calls `BONDED` **and**
+whose barrels are priced above the load its pads carry, with a non-vacuity
+control that requires an under-priced bond to be REFUSED; then re-run `LED_K`
+under it."* This is that clause **and** that re-run, and it is **TWO COMMITS ON
+PURPOSE.** D-625's reasoning binds: a doctrine resolved in the same breath as
+the copper it admits is the move the clause exists to prevent. So the clause was
+committed ALONE (`2f95630`) — with its controls, an invariance check, a live
+refusal control and four out-of-sample candidate boards, promoting nothing — and
+`LED_K` was then judged by a contract that was already standing.
+
+## The clause
+
+    PP2 admits a split when every fragment it creates is BONDED by PP3 AND the
+    conductor replacing the severed copper carries at least the design current
+    this board publishes for that pour's net in `.kicad_dru` section 5.
+
+Three things in it are load-bearing.
+
+**THE BOND IS THE WHOLE SERIES CHAIN, NOT THE BARRELS.** Current reaching a
+severed pad goes down the inner plane, up a barrel, and then **through the
+fragment's own copper** to the pad. `PP3`'s `BONDED` is a TOPOLOGICAL verdict
+and D-627's price was a barrel count in amperes; both stop one link short.
+Priced end to end, at the bottleneck, **D-627's 9.244 A bond is 1.441 A** — the
+`J1` pocket's own copper narrows to **0.500 mm** on the 10.554 mm run out to
+`J1.7` and the 10.823 mm run out to `J1.9`, and 0.500 mm of 1 oz outer copper
+carries 1.441 A at ΔT = 10 K. **The barrels were never the bottleneck**
+(`price.bottleneck` reads `FRAGMENT_COPPER`). The honest margin on the `LED_K`
+fragment is **1.441×**, not 9.2×.
+
+**THE BAR IS THE BOARD'S OWN PUBLISHED RAIL CURRENT.** `.kicad_dru` section 5 —
+*"POWER RAILS — WIDTH FLOORS FROM IPC-2221B AT THE REAL COPPER"* — carries a
+per-netclass design-current table at the same ΔT and the same copper, written
+long before this clause and used to derive every width floor the board is
+fabricated to. It is PARSED from the `.kicad_dru` beside the board under
+judgement rather than transcribed, so the figure a reviewer can edit and the
+figure a bond is charged against are the same figure, and the STRICTEST figure
+in each class's rows is taken — `BAT_MAIN`'s 3.125 A fault trip and `SYS_MAIN`'s
+2.19 A inductor peak included, both of which that table excludes from its WIDTH
+floors. A width floor may be sized on a design current; a bond replacing copper
+a rail already relies on is charged the largest number anyone has published.
+The bar is a second deliberate over-charge: it bills a three-pad fragment for
+the WHOLE eighty-pad `+3V3` rail's **1.0 A**, because apportioning a rail across
+its pads would be a model and the whole-rail figure is a measurement the board
+ships.
+
+**A NET THE TABLE DOES NOT PRICE IS REFUSED, WHICH IS WHERE `GND` LANDS.** A
+return plane has no published design current, so **no `GND` split is admissible
+by this clause at all** and `PP2` behaves on `GND` exactly as it did before.
+D-625's unguarded `BTN_DOWN_N` severance is refused twice over — `PP3` reads
+`STRANDED` and the net carries no price. Pricing a return-path fragment is not a
+rail-table question and is left OPEN rather than guessed at.
+
+## It cannot be vacuous, and it still refuses
+
+Seven controls drive the same `decide()` the verdict does, on this board's own
+figures, and they run on **every** board — split or not, so the clause is proved
+able to refuse on a run that has nothing to admit. KiCad's own 0.200 mm zone
+`min_thickness` sliver (0.742 A) and one 0.300 mm class track (0.995 A) are
+REFUSED against a 1.0 A rail; the four-barrel bond (9.244 A) is ADMITTED; the
+same bond is REFUSED when the verdict is `STRANDED`; REFUSED when the net has no
+published current; and the bar is located exactly where it claims — admitted at
+equality, refused one part per million below it. A control that misbehaves FAILS
+`PP2` (`evidence/d628-pp2-ampacity-clause.json`).
+
+**AND THE LIVE PATH REFUSES REAL COPPER, NOT ONLY A SYNTHETIC ARGUMENT**
+(`evidence/d628-pp2-live-refusal-control.json`). The seven controls prove the
+comparison behaves; this proves the path does. The same candidate board, copper
+**byte-identical** (`ba59d856…`), judged twice with ONE character changed in a
+SCRATCH copy of its `.kicad_dru` — section 5's `P3V3` row reading 2.0 A design
+instead of 1.0 A. **The price does not move and the verdict does:** 1.441 A both
+times, because it is a measurement of the copper, and the clause flips ADMIT →
+REFUSED (`BOND_UNDER_PRICED`) purely because the board's own published figure
+moved. The bar is where the `.kicad_dru` says it is, and no route can talk it
+down. The authoritative `.kicad_dru` was untouched.
+
+**AND IT IS INVARIANT WHERE IT SHOULD BE.** On the pre-promotion authoritative
+board `PP1`/`PP3`/`PP4` came back byte-identical to the committed D-626 evidence
+and `PP2`'s splits and island counts were identical; the pricing geometry loads
+lazily, so a split-free run pays nothing and the 2.3 s check stays 2.3 s.
+
+**FOUR OUT-OF-SAMPLE BOARDS, ONE PRICE.** The `LED_K` candidates at 0.050 /
+0.0333 / 0.025 / 0.020 mm sever the same pour into fragments of 120.900 /
+79.416 / 119.313 / 79.292 mm² — four different routes — and **every one prices
+at 1.441 A**, because the binding term is a property of the POUR and not of the
+route. The clause cannot be flattered by a router.
+
+**WHAT WAS CUT IS MEASURED TOO, AND PUBLISHED RATHER THAN CHARGED.** The
+narrowest place on the widest PRE path from the fragment's pads to the body's is
+the cross-section the route removed: **1.150 mm, 2.636 A**, by
+`pour_bond_guard.geodesic` reused unchanged — no new geometry primitive. It is
+not the bar, because a geodesic that reaches its own search window UNDER-states
+it, and a bar no search can under-state is the published rail current.
+
+## And then LED_K was routed and PROMOTED
+
+`/03_SPI_A_DISPLAY_SD/LED_K` — the display backlight LED cathode return —
+PARKED at D-467 as a *"current-width wall"* and at D-468 as a *"connector
+breakout wall"*, both bounded before the ladder existed, and refused by `PP2`
+alone at D-627. Re-run at 0.020 mm under the 47-tube D-619 guard with
+`--partial`, 1031.6 s, at its own `LED_BOOST` **0.300 mm** class width, it
+closes **BOTH** open edges (`evidence/d628-led-k-promote.json`):
+
+    J1.2 → J1.3     0.6079 mm,  0 vias, F.Cu      ← NO_LEGAL_ESCAPE_SRC at
+                                                    every coarser pitch, on a
+                                                    0.5 mm gap
+    J1.3 → R69.1   53.7387 mm,  3 vias, F/B/In2   ← vias at (25.6,104.1),
+                                                    (21.4,104.58), (3.3,106.66)
+
+`PP2` now reads **ADMITTED** on the one split it finds — `+3V3` `F.Cu`,
+281.527 mm² → 177.955 mm² body + **79.292 mm² fragment carrying `J1.7`/`J1.8`/
+`J1.9`**, the display FPC supply pins — with `pp3_verdict` `BONDED`,
+`priced_amps` **1.441** against `required_amps` **1.000**, `margin_x` **1.441**,
+`why` = `BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT`. PP1/PP2/PP3/PP4
+all PASS.
+
+    AUTHORITY  35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b
+            →  8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82
+
+    retained open edges   49 → 47      open retained nets    22 → 21
+    connected retained   151 → 152     board ratsnest        65 → 63
+
+**18 objects added — 15 tracks (F.Cu/B.Cu/In2.Cu, every one 0.300 mm) and 3
+barrels (0.600/0.300 mm) — ZERO removed**, zero zones, zero rule areas, zero
+`.kicad_dru` change, zero placement change.
+
+`verify_promotion.py --ref HEAD` re-derives the whole promotion from the two
+board files alone and passes all fourteen checks plus all four live DRU
+contracts, **`D-186_bat_main_class` and `D-269_bat_main_routed_clearance`
+included** (`evidence/d628-verify-promotion.json`). Real KiCad
+`--refill-zones --severity-all --schematic-parity` DRC: **zero attributable**,
+inherited classes only (`hole_clearance` 5, `solder_mask_bridge` 1,
+`lib_footprint_issues` 199), fill-stable on a second refill, schematic parity
+within baseline, unconnected items 65 → 63. Every standing contract re-run and
+PASS on the promoted board: `pour_partition`, `pour_bond` (47-tube guard),
+`neck`, `placement`, `population`, `land_parity`, `keepout_stackup`,
+`rf_symmetry`, `protected_copper`, and the regenerated fab package
+(`fab_package_contract` verdict **PASS**; Gerbers, drills, BOM, CPL and
+`MANIFEST.json` re-exported from the promoted board).
+
+**WHAT THIS BOUGHT: two edges on a display supply the product needs**, and the
+first pour severance this board has ever accepted — accepted because it was
+PRICED, not because the doctrine was relaxed. `PP2` still refuses every split it
+refused before.
+
+**NEXT, IN ORDER OF LEVERAGE.** (1) `/I2C_SCL_INT` — **5 open edges, the most on
+the board**, 14 never-asked pairs from the D-626 census, bounded by the D-626
+TIME budget rather than by a wall; the `--partial --grid ladder --grid-gb 3.5
+--grid-seconds 4000` run is the one already in flight. (2) `/BQ25185_STAT1` and
+`/NFC_SUPPLY` — 2 edges each and never put through the D-626 partial-pair census
+at a fine pitch. (3) `ACC_5V_LX` still needs `U21.5` given an escape at all —
+placement, a land licence or `route_local_two_pad`. **The `GND` return-path
+pricing question is now the one OPEN modelling gap in `PP2`** and is recorded,
+not guessed. No owner decision is OPEN; D-618's `J3` question remains RECORDED
+and PM-3 remains an open PLACEMENT finding.
+
 # D-627 · 2026-09-05 · Demo — the D-626 recipe, applied: three walls MEASURED at 0.020 mm and one route that closes TWO edges with only PP2 refusing it
 
 D-626 closed `EXT_SDA` on a pair the all-or-nothing MST had never asked, and
