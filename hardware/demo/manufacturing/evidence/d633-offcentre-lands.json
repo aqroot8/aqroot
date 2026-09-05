@@ -1,0 +1,7157 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 7,
+   "lands": [
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C56.1",
+     "rungs": [
+      {
+       "a_xy": [
+        36.6049,
+        108.9678
+       ],
+       "b_xy": [
+        37.075,
+        108.975
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C3.1",
+     "rungs": [
+      {
+       "a_xy": [
+        55.1465,
+        116.1145
+       ],
+       "b_xy": [
+        55.675,
+        116.125
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.5,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R113.1",
+     "rungs": [
+      {
+       "a_xy": [
+        23.775,
+        136.8
+       ],
+       "b_xy": [
+        24.2,
+        136.8
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R3.2",
+     "rungs": [
+      {
+       "a_xy": [
+        54.9897,
+        145.6393
+       ],
+       "b_xy": [
+        55.425,
+        145.65
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "U1.2",
+     "rungs": [
+      {
+       "a_xy": [
+        61.74,
+        119.25
+       ],
+       "b_xy": [
+        61.75,
+        118.475
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.75,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.05,
+       "support_mm": 0.75,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 500000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R1.2",
+     "rungs": [
+      {
+       "a_xy": [
+        58.2745,
+        141.1966
+       ],
+       "b_xy": [
+        58.7,
+        141.2
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "R1.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x17), R108.1 (x10), R1.1 (x9), R34.1 (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.4,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R1.2: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x18), R108.1 (x10), R1.1 (x9), R34.1 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R26.1",
+     "rungs": [
+      {
+       "a_xy": [
+        41.1957,
+        124.1231
+       ],
+       "b_xy": [
+        41.625,
+        124.125
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C8.1",
+     "rungs": [
+      {
+       "a_xy": [
+        29.1708,
+        119.4422
+       ],
+       "b_xy": [
+        29.65,
+        119.45
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C15.1",
+     "rungs": [
+      {
+       "a_xy": [
+        25.8371,
+        105.7708
+       ],
+       "b_xy": [
+        26.35,
+        105.775
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.5,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C10.1",
+     "rungs": [
+      {
+       "a_xy": [
+        30.2028,
+        112.4032
+       ],
+       "b_xy": [
+        30.725,
+        112.4
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.5,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 550000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 550000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R28.1",
+     "rungs": [
+      {
+       "a_xy": [
+        53.1866,
+        111.6212
+       ],
+       "b_xy": [
+        53.175,
+        112.125
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "R28.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x30), R28.2 (x9), TP4.1 (x8), R109.2 (x7)",
+       "escape_formula": false,
+       "exit_mm": 0.475,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.475,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      }
+     ]
+    },
+    {
+     "best_centre": 350000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 350000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R2.1",
+     "rungs": [
+      {
+       "a_xy": [
+        55.4198,
+        113.6789
+       ],
+       "b_xy": [
+        55.425,
+        114.175
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "R2.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x33), R2.2 (x9), R28.2 (x6), C3.2 (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.475,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.475,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R2.1: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x26), R2.2 (x9), via (x7), R28.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R2.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x29), R2.2 (x9), via (x7), R28.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R2.1: NO LEGAL ESCAPE at >= 0.450 mm; blocked by track (x30), R2.2 (x9), via (x7), R28.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R2.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by track (x30), R2.2 (x9), via (x7), R28.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 350000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R29.1",
+     "rungs": [
+      {
+       "a_xy": [
+        48.1792,
+        113.656
+       ],
+       "b_xy": [
+        48.6,
+        113.65
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "D13.1",
+     "rungs": [
+      {
+       "a_xy": [
+        31.06,
+        107.675
+       ],
+       "b_xy": [
+        31.675,
+        107.675
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.6,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.6,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 350000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "F": 350000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 550000
+     },
+     "pad": "U5.7",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.7: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.6 (x36), U5.5 (x14), C8.2 (x13), U5.3 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.7: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.6 (x11108), U5.5 (x2045), C8.2 (x1193), U5.4 (x393)",
+       "reach_mm": null,
+       "seconds": 0.47,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        31.3562,
+        117.4375
+       ],
+       "b_xy": [
+        31.4,
+        117.45
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U5.7: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U5.6 (x36), U5.5 (x19), C8.2 (x9), U5.3 (x3)",
+       "escape_formula": false,
+       "exit_mm": 0.0188,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1062,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.18,
+       "support_mm": 0.125,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.7: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U5.6 (x36), U5.5 (x20), C8.2 (x8), U5.3 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.7: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U5.6 (x37), U5.5 (x20), C8.2 (x7), U5.3 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.7: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.6 (x37), U5.5 (x21), C8.2 (x7), U5.3 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 350000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "U5.8",
+     "rungs": [
+      {
+       "a_xy": [
+        31.75,
+        117.4375
+       ],
+       "b_xy": [
+        31.9,
+        117.45
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.125,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.125,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R20.1",
+     "rungs": [
+      {
+       "a_xy": [
+        40.1844,
+        132.7447
+       ],
+       "b_xy": [
+        40.6,
+        132.75
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C9.1",
+     "rungs": [
+      {
+       "a_xy": [
+        34.425,
+        116.0
+       ],
+       "b_xy": [
+        34.9,
+        116.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "F": 300000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 550000
+     },
+     "pad": "J1.7",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.600 mm; blocked by J1.6 (x44), J1.5 (x19), J1.1 (x4), J1.4 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.7: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.6 (x11838), J1.5 (x2076), J1.4 (x766), J1.1 (x448)",
+       "reach_mm": null,
+       "seconds": 0.48,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        41.7825,
+        96.0
+       ],
+       "b_xy": [
+        41.775,
+        96.725
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.550 mm; blocked by J1.6 (x44), J1.5 (x19), J1.1 (x4), J1.4 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.615,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1275,
+       "offcentre_why": null,
+       "reach_mm": 0.1,
+       "seconds": 0.14,
+       "support_mm": 0.615,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.500 mm; blocked by J1.6 (x44), J1.5 (x20), J1.1 (x3), J1.4 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.450 mm; blocked by J1.6 (x44), J1.5 (x20), J1.1 (x3), J1.4 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.400 mm; blocked by J1.6 (x44), J1.5 (x20), J1.1 (x3), J1.4 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.7: NO LEGAL ESCAPE at >= 0.350 mm; blocked by J1.6 (x44), J1.5 (x20), J1.1 (x3), J1.4 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "J1.8",
+     "rungs": [
+      {
+       "a_xy": [
+        41.41,
+        96.0
+       ],
+       "b_xy": [
+        41.575,
+        96.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.15,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.15,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "F": 300000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 550000
+     },
+     "pad": "J1.9",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by J1.10 (x62), J1.6 (x2), J1.5 (x2), J1.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.9: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.10 (x13860), J1.6 (x766), J1.5 (x428), J1.1 (x182)",
+       "reach_mm": null,
+       "seconds": 0.47,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        41.0375,
+        96.0
+       ],
+       "b_xy": [
+        41.075,
+        96.0
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.550 mm; blocked by J1.10 (x62), J1.6 (x2), J1.5 (x2), J1.1 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.0225,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1275,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.15,
+       "support_mm": 0.15,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.500 mm; blocked by J1.10 (x63), J1.6 (x2), J1.1 (x2), R71.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.450 mm; blocked by J1.10 (x63), J1.6 (x2), J1.1 (x2), R71.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.400 mm; blocked by J1.10 (x63), J1.6 (x2), J1.1 (x2), R71.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.9: NO LEGAL ESCAPE at >= 0.350 mm; blocked by J1.10 (x63), J1.6 (x2), J1.1 (x2), R71.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": 250000,
+     "best_offcentre": 250000,
+     "centre_width": {
+      "F": 250000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 250000
+     },
+     "pad": "J1.35",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.600 mm; blocked by J1.34 (x45), J1.33 (x19), J1.32 (x2), J1.31 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x11578), J1.33 (x2076), J1.32 (x766), J1.31 (x428)",
+       "reach_mm": null,
+       "seconds": 0.6,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.550 mm; blocked by J1.34 (x45), J1.33 (x19), J1.32 (x2), J1.31 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x12150), J1.33 (x2150), J1.32 (x929), J1.31 (x410)",
+       "reach_mm": null,
+       "seconds": 0.63,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.500 mm; blocked by J1.34 (x45), J1.33 (x20), J1.32 (x2), J1.31 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x11105), J1.33 (x1787), J1.32 (x899), J1.36 (x808)",
+       "reach_mm": null,
+       "seconds": 0.59,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.450 mm; blocked by J1.34 (x45), J1.33 (x20), J1.32 (x2), J1.31 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x10769), J1.33 (x2064), J1.36 (x1932), J1.32 (x859)",
+       "reach_mm": null,
+       "seconds": 0.63,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.400 mm; blocked by J1.34 (x45), J1.33 (x20), J1.32 (x2), J1.31 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x10992), J1.33 (x1950), J1.36 (x1933), J1.32 (x777)",
+       "reach_mm": null,
+       "seconds": 0.61,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.350 mm; blocked by J1.34 (x45), J1.33 (x20), J1.32 (x2), J1.31 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x9574), J1.36 (x3443), J1.33 (x1930), J1.32 (x759)",
+       "reach_mm": null,
+       "seconds": 0.61,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.35: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.36 (x45), J1.33 (x21), J1.32 (x1), J1.31 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.35: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.34 (x7820), J1.36 (x5396), J1.33 (x1923), J1.32 (x640)",
+       "reach_mm": null,
+       "seconds": 0.63,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": [
+        27.91,
+        96.0
+       ],
+       "b_xy": [
+        27.9,
+        95.325
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.615,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.05,
+       "seconds": 0.64,
+       "support_mm": 0.615,
+       "width": 250000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "F": 300000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 550000
+     },
+     "pad": "J1.40",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.600 mm; blocked by J1.39 (x41), J1.38 (x19), TP36.1 (x4), J1.37 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.40: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.39 (x11497), J1.38 (x2032), J1.37 (x766), J1.36 (x560)",
+       "reach_mm": null,
+       "seconds": 0.58,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        25.2825,
+        96.0
+       ],
+       "b_xy": [
+        25.275,
+        96.725
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.550 mm; blocked by J1.39 (x41), J1.38 (x19), TP36.1 (x4), J1.37 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.615,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1275,
+       "offcentre_why": null,
+       "reach_mm": 0.1,
+       "seconds": 0.16,
+       "support_mm": 0.615,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.500 mm; blocked by J1.39 (x41), J1.38 (x20), TP36.1 (x4), J1.37 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.450 mm; blocked by J1.39 (x41), J1.38 (x20), TP36.1 (x4), J1.37 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.400 mm; blocked by J1.39 (x41), J1.38 (x20), TP36.1 (x4), J1.37 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.40: NO LEGAL ESCAPE at >= 0.350 mm; blocked by J1.39 (x42), J1.38 (x20), TP36.1 (x3), J1.37 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "J1.41",
+     "rungs": [
+      {
+       "a_xy": [
+        24.91,
+        96.0
+       ],
+       "b_xy": [
+        25.075,
+        96.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.15,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.15,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "F": 300000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 550000
+     },
+     "pad": "J1.42",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.600 mm; blocked by J1.43 (x62), J1.39 (x2), J1.38 (x2), J1.36 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "J1.42: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by J1.43 (x13671), J1.39 (x766), J1.38 (x428), TP36.1 (x299)",
+       "reach_mm": null,
+       "seconds": 0.52,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        24.5375,
+        96.0
+       ],
+       "b_xy": [
+        24.575,
+        96.0
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.550 mm; blocked by J1.43 (x64), J1.39 (x2), J1.38 (x2), J1.36 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.0225,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1275,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.16,
+       "support_mm": 0.15,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.500 mm; blocked by J1.43 (x65), J1.39 (x2), J1.38 (x1), J1.37 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.450 mm; blocked by J1.43 (x65), J1.39 (x2), J1.38 (x1), J1.37 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.400 mm; blocked by J1.43 (x65), J1.39 (x2), J1.38 (x1), J1.37 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "J1.42: NO LEGAL ESCAPE at >= 0.350 mm; blocked by J1.43 (x65), J1.39 (x2), J1.38 (x1), J1.37 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R27.1",
+     "rungs": [
+      {
+       "a_xy": [
+        56.7742,
+        111.2007
+       ],
+       "b_xy": [
+        57.2,
+        111.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R24.2",
+     "rungs": [
+      {
+       "a_xy": [
+        48.1996,
+        6.167
+       ],
+       "b_xy": [
+        48.725,
+        6.175
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5125,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.5125,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R19.1",
+     "rungs": [
+      {
+       "a_xy": [
+        40.9969,
+        120.996
+       ],
+       "b_xy": [
+        41.425,
+        121.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 400000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 400000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R25.1",
+     "rungs": [
+      {
+       "a_xy": [
+        54.9758,
+        143.4777
+       ],
+       "b_xy": [
+        55.4,
+        143.475
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "R25.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x30), R25.2 (x6), R3.1 (x6), U10.4 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.4,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R25.1: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x31), R25.2 (x6), R3.1 (x6), U10.4 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R25.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x31), R25.2 (x6), R3.1 (x6), U10.4 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "R25.1: NO LEGAL ESCAPE at >= 0.450 mm; blocked by track (x33), R25.2 (x6), R3.1 (x5), U10.6 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 400000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "J2.4",
+     "rungs": [
+      {
+       "a_xy": [
+        15.494,
+        132.462
+       ],
+       "b_xy": [
+        15.5,
+        133.225
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.75,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.75,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C13.1",
+     "rungs": [
+      {
+       "a_xy": [
+        26.3519,
+        107.9843
+       ],
+       "b_xy": [
+        26.825,
+        107.975
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C12.2",
+     "rungs": [
+      {
+       "a_xy": [
+        44.225,
+        2.25
+       ],
+       "b_xy": [
+        44.825,
+        2.25
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.575,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.575,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R21.1",
+     "rungs": [
+      {
+       "a_xy": [
+        60.1001,
+        8.8321
+       ],
+       "b_xy": [
+        60.525,
+        8.825
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 500000
+     },
+     "gained": true,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C2.1",
+     "rungs": [
+      {
+       "a_xy": [
+        62.1091,
+        139.5066
+       ],
+       "b_xy": [
+        62.575,
+        139.5
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "C2.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x23), C2.2 (x9), U1.39 (x6), R34.2 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.45,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C2.1: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x23), C2.2 (x9), U1.39 (x6), R34.2 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "C14.1",
+     "rungs": [
+      {
+       "a_xy": [
+        40.8947,
+        105.647
+       ],
+       "b_xy": [
+        41.375,
+        105.65
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.06,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "F": 600000
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": 600000
+     },
+     "pad": "R123.2",
+     "rungs": [
+      {
+       "a_xy": [
+        51.7635,
+        10.865
+       ],
+       "b_xy": [
+        52.3,
+        10.875
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5125,
+       "layer": "F",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.5125,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 250000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 250000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C18.1",
+     "rungs": [
+      {
+       "a_xy": [
+        22.7934,
+        29.3412
+       ],
+       "b_xy": [
+        22.8,
+        29.675
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": false,
+       "exit_mm": 0.31,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.14,
+       "support_mm": 0.31,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.450 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.350 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "C18.1: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x45), C18.2 (x27)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.07,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.06,
+       "support_mm": null,
+       "width": 250000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 500000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "MK1.3",
+     "rungs": [
+      {
+       "a_xy": [
+        2.775,
+        98.23
+       ],
+       "b_xy": [
+        2.475,
+        98.225
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "MK1.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by MK1.2 (x44), board_edge (x10), MK1.1 (x9), MK1. (x9)",
+       "escape_formula": false,
+       "exit_mm": 0.15,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1581,
+       "offcentre_why": null,
+       "reach_mm": 0.15,
+       "seconds": 0.39,
+       "support_mm": 0.3,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "MK1.3: NO LEGAL ESCAPE at >= 0.550 mm; blocked by MK1.2 (x44), board_edge (x10), MK1.1 (x9), MK1. (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.0,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 500000,
+     "centre_width": {
+      "B": 300000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 500000
+     },
+     "pad": "U9.1",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.2 (x72)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.1: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.2 (x15616), landing still on the land (x128)",
+       "reach_mm": null,
+       "seconds": 0.32,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.2 (x72)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.1: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.2 (x16383), U9.32 (x160), landing still on the land (x128), U9.31 (x27)",
+       "reach_mm": null,
+       "seconds": 0.34,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": [
+        31.6313,
+        31.855
+       ],
+       "b_xy": [
+        31.625,
+        31.925
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.2 (x72)",
+       "escape_formula": false,
+       "exit_mm": 0.045,
+       "layer": "B",
+       "n": 7,
+       "offcentre": true,
+       "offcentre_mm": 0.1408,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.37,
+       "support_mm": 0.15,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.2 (x72)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.2 (x72)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.1: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.2 (x72)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C6.1",
+     "rungs": [
+      {
+       "a_xy": [
+        57.2669,
+        67.1867
+       ],
+       "b_xy": [
+        57.75,
+        67.175
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.14,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "L3.1",
+     "rungs": [
+      {
+       "a_xy": [
+        1.815,
+        118.9
+       ],
+       "b_xy": [
+        2.325,
+        118.9
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.49,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.49,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R119.1",
+     "rungs": [
+      {
+       "a_xy": [
+        52.2521,
+        68.4996
+       ],
+       "b_xy": [
+        52.675,
+        68.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R106.1",
+     "rungs": [
+      {
+       "a_xy": [
+        22.54,
+        120.335
+       ],
+       "b_xy": [
+        22.975,
+        120.325
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R5.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.2978,
+        86.7922
+       ],
+       "b_xy": [
+        50.725,
+        86.8
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.12,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C32.1",
+     "rungs": [
+      {
+       "a_xy": [
+        23.84,
+        122.605
+       ],
+       "b_xy": [
+        24.45,
+        122.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.575,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.575,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 500000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U2.24",
+     "rungs": [
+      {
+       "a_xy": [
+        59.8625,
+        91.625
+       ],
+       "b_xy": [
+        60.7,
+        91.625
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U2.24: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U2.23 (x44), U2.22 (x21), U2.21 (x2), U2.1 (x1)",
+       "escape_formula": false,
+       "exit_mm": 0.7375,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.05,
+       "offcentre_why": null,
+       "reach_mm": 0.1,
+       "seconds": 0.1,
+       "support_mm": 0.7375,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U2.24: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U2.23 (x44), U2.22 (x21), U2.21 (x2), U2.1 (x1)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C17.1",
+     "rungs": [
+      {
+       "a_xy": [
+        30.925,
+        39.1
+       ],
+       "b_xy": [
+        31.4,
+        39.1
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C29.1",
+     "rungs": [
+      {
+       "a_xy": [
+        8.87,
+        122.605
+       ],
+       "b_xy": [
+        9.475,
+        122.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.575,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.575,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C62.1",
+     "rungs": [
+      {
+       "a_xy": [
+        29.29,
+        120.335
+       ],
+       "b_xy": [
+        29.3,
+        120.825
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.475,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.475,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C31.1",
+     "rungs": [
+      {
+       "a_xy": [
+        18.85,
+        122.605
+       ],
+       "b_xy": [
+        19.45,
+        122.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.575,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.575,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R127.1",
+     "rungs": [
+      {
+       "a_xy": [
+        61.425,
+        107.75
+       ],
+       "b_xy": [
+        61.85,
+        107.75
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 550000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 550000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U7.9",
+     "rungs": [
+      {
+       "a_xy": [
+        34.0,
+        141.46
+       ],
+       "b_xy": [
+        33.075,
+        141.45
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U7.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U7.10 (x26), U7.8 (x21), track (x13), J3.SH (x4)",
+       "escape_formula": false,
+       "exit_mm": 0.9,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.12,
+       "support_mm": 0.9,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 550000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R6.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.2978,
+        89.2078
+       ],
+       "b_xy": [
+        50.3,
+        89.7
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.475,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.11,
+       "support_mm": 0.475,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 550000
+     },
+     "pad": "U12.4",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.3 (x44), U12.2 (x17), U12.1 (x8), C24.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U12.4: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.3 (x12884), U12.2 (x1456), U12.1 (x1274), C24.2 (x91)",
+       "reach_mm": null,
+       "seconds": 0.41,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        66.702,
+        100.0
+       ],
+       "b_xy": [
+        66.75,
+        100.0
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U12.3 (x45), U12.2 (x18), U12.1 (x7), C24.2 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.018,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.102,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.25,
+       "support_mm": 0.12,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.3 (x61), U12.1 (x7), U12.2 (x2), C24.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U12.3 (x16), U12.15 (x14), U12.6 (x9), via (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U12.3 (x16), U12.15 (x14), U12.6 (x9), via (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.4: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U12.3 (x16), U12.15 (x14), U12.6 (x9), via (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 400000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 400000
+     },
+     "pad": "U12.5",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.6 (x44), U12.3 (x18), U12.1 (x6), U12.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U12.5: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.6 (x12816), U12.3 (x1472), U12.1 (x656), U12.2 (x613)",
+       "reach_mm": null,
+       "seconds": 0.42,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U12.6 (x44), U12.3 (x19), U12.1 (x5), U12.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U12.5: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.6 (x13504), U12.3 (x1621), U12.2 (x669), U12.1 (x611)",
+       "reach_mm": null,
+       "seconds": 0.44,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U12.5: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.6 (x12439), U12.3 (x1364), U12.2 (x613), U12.1 (x601)",
+       "reach_mm": null,
+       "seconds": 0.44,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U12.5: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.6 (x12511), U12.3 (x1581), track (x694), U12.1 (x583)",
+       "reach_mm": null,
+       "seconds": 0.49,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": [
+        66.998,
+        100.0
+       ],
+       "b_xy": [
+        66.95,
+        100.025
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U12.6 (x61), U12.1 (x5), U12.3 (x2), U12.2 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.0255,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.102,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.29,
+       "support_mm": 0.2473,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U12.6 (x26), U12.15 (x11), track (x8), L1.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U12.6 (x26), U12.15 (x11), track (x7), L1.2 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U12.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U12.6 (x26), U12.15 (x12), track (x8), U12.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R103.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.7,
+        55.885
+       ],
+       "b_xy": [
+        51.125,
+        55.875
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.11,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C5.1",
+     "rungs": [
+      {
+       "a_xy": [
+        61.95,
+        75.925
+       ],
+       "b_xy": [
+        61.95,
+        76.4
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C7.1",
+     "rungs": [
+      {
+       "a_xy": [
+        60.425,
+        70.0
+       ],
+       "b_xy": [
+        60.425,
+        70.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.475,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.18,
+       "support_mm": 0.475,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R8.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.3856,
+        84.831
+       ],
+       "b_xy": [
+        50.8,
+        84.825
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.11,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R41.1",
+     "rungs": [
+      {
+       "a_xy": [
+        12.49,
+        120.335
+       ],
+       "b_xy": [
+        12.925,
+        120.325
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R81.1",
+     "rungs": [
+      {
+       "a_xy": [
+        4.175,
+        73.0
+       ],
+       "b_xy": [
+        3.775,
+        73.4
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5287,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.11,
+       "support_mm": 0.5359,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 500000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U20.2",
+     "rungs": [
+      {
+       "a_xy": [
+        53.3875,
+        64.75
+       ],
+       "b_xy": [
+        54.075,
+        64.75
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U20.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U20.1 (x26), U20.3 (x24), U20.5 (x9), track (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.6625,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.12,
+       "support_mm": 0.6625,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U20.2: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U20.1 (x26), U20.3 (x24), U20.5 (x9), track (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C16.1",
+     "rungs": [
+      {
+       "a_xy": [
+        24.9789,
+        38.9118
+       ],
+       "b_xy": [
+        25.45,
+        38.9
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R9.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.3856,
+        91.169
+       ],
+       "b_xy": [
+        50.8,
+        91.175
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U8.9",
+     "rungs": [
+      {
+       "a_xy": [
+        17.0,
+        141.46
+       ],
+       "b_xy": [
+        17.925,
+        141.45
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.9,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.9,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R4.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.425,
+        83.0
+       ],
+       "b_xy": [
+        50.825,
+        83.4
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5287,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.5359,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 250000,
+     "best_offcentre": 350000,
+     "centre_width": {
+      "B": 250000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 350000
+     },
+     "pad": "U4.12",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.11 (x34), U4.9 (x11), U4.1 (x7), U4.6 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.12: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.11 (x8516), U4.10 (x2141), U4.9 (x1248), U4.1 (x895)",
+       "reach_mm": null,
+       "seconds": 0.69,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U4.11 (x35), U4.9 (x11), U4.1 (x7), U4.6 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.12: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.11 (x8251), U4.13 (x2012), U4.10 (x2001), U4.9 (x1259)",
+       "reach_mm": null,
+       "seconds": 0.72,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U4.11 (x35), U4.9 (x10), U4.1 (x7), U4.6 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.12: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.11 (x6820), U4.13 (x3075), U4.10 (x1690), U4.9 (x1090)",
+       "reach_mm": null,
+       "seconds": 0.67,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U4.13 (x20), U4.11 (x18), U4.9 (x8), U4.1 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.12: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.11 (x6303), U4.13 (x4763), U4.10 (x1646), U4.9 (x1145)",
+       "reach_mm": null,
+       "seconds": 0.73,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.12: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.11 (x5950), U4.13 (x5337), U4.10 (x1522), U4.9 (x1075)",
+       "reach_mm": null,
+       "seconds": 0.69,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": [
+        56.5875,
+        70.5
+       ],
+       "b_xy": [
+        56.975,
+        70.5
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U4.13 (x18), U4.11 (x18), U4.9 (x7), U4.1 (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.2375,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.15,
+       "seconds": 0.75,
+       "support_mm": 0.2375,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.12: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U4.11 (x18), U4.13 (x13), U4.9 (x7), U4.1 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 250000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C43.1",
+     "rungs": [
+      {
+       "a_xy": [
+        1.495,
+        110.655
+       ],
+       "b_xy": [
+        2.025,
+        110.65
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.07,
+       "support_mm": 0.5,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R128.1",
+     "rungs": [
+      {
+       "a_xy": [
+        47.4688,
+        104.53
+       ],
+       "b_xy": [
+        47.9,
+        104.525
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.14,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R7.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.425,
+        81.0
+       ],
+       "b_xy": [
+        50.85,
+        81.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.13,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C4.1",
+     "rungs": [
+      {
+       "a_xy": [
+        50.3478,
+        79.2078
+       ],
+       "b_xy": [
+        50.825,
+        79.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.11,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C30.1",
+     "rungs": [
+      {
+       "a_xy": [
+        13.86,
+        122.605
+       ],
+       "b_xy": [
+        14.45,
+        122.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.575,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.575,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 450000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 450000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U17.5",
+     "rungs": [
+      {
+       "a_xy": [
+        3.0375,
+        123.1625
+       ],
+       "b_xy": [
+        3.575,
+        123.15
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U17.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x21), U17.4 (x14), D8.1 (x13), board_edge (x10)",
+       "escape_formula": false,
+       "exit_mm": 0.5125,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0875,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.16,
+       "support_mm": 0.5125,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U17.5: NO LEGAL ESCAPE at >= 0.550 mm; blocked by track (x23), U17.4 (x16), board_edge (x10), D8.1 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.05,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U17.5: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x29), board_edge (x10), D8.1 (x9), U17.4 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.06,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.06,
+       "support_mm": null,
+       "width": 450000
+      }
+     ]
+    },
+    {
+     "best_centre": 450000,
+     "best_offcentre": 500000,
+     "centre_width": {
+      "B": 450000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 500000
+     },
+     "pad": "U3.21",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U3.21: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U3.20 (x35), U3.19 (x18), TP33.1 (x8), U3.18 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U3.21: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U3.20 (x8498), U3.22 (x2994), U3.19 (x1562), TP33.1 (x949)",
+       "reach_mm": null,
+       "seconds": 1.06,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U3.21: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U3.20 (x35), U3.19 (x18), TP33.1 (x8), U3.18 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U3.21: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U3.20 (x9097), U3.22 (x3194), U3.19 (x1742), TP33.1 (x1007)",
+       "reach_mm": null,
+       "seconds": 1.1,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": [
+        59.8625,
+        79.625
+       ],
+       "b_xy": [
+        59.075,
+        79.625
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U3.21: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U3.22 (x26), U3.19 (x18), track (x9), TP33.1 (x8)",
+       "escape_formula": false,
+       "exit_mm": 0.7375,
+       "layer": "B",
+       "n": 5,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.05,
+       "seconds": 1.11,
+       "support_mm": 0.7375,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 450000
+      }
+     ]
+    },
+    {
+     "best_centre": 500000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 500000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "U3.24",
+     "rungs": [
+      {
+       "a_xy": [
+        59.8625,
+        81.625
+       ],
+       "b_xy": [
+        60.025,
+        81.8
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U3.24: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U3.23 (x40), U3.22 (x18), U2.13 (x4), TP33.1 (x4)",
+       "escape_formula": false,
+       "exit_mm": 0.2121,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.05,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.23,
+       "support_mm": 0.6215,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U3.24: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U3.23 (x40), U3.22 (x18), U2.13 (x4), TP33.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.06,
+       "support_mm": null,
+       "width": 500000
+      }
+     ]
+    },
+    {
+     "best_centre": 550000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 550000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R129.1",
+     "rungs": [
+      {
+       "a_xy": [
+        57.4,
+        57.735
+       ],
+       "b_xy": [
+        57.825,
+        57.725
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "R129.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by track (x21), U16.1 (x8), R46.2 (x7), R129.2 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.4,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 550000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R39.1",
+     "rungs": [
+      {
+       "a_xy": [
+        65.675,
+        71.75
+       ],
+       "b_xy": [
+        65.25,
+        71.75
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.15,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 250000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "B": 250000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 550000
+     },
+     "pad": "U4.2",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x58), C6.2 (x7), R119.2 (x3), TP27.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.2: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.1 (x14206), C6.2 (x759), R119.2 (x250), R118.2 (x162)",
+       "reach_mm": null,
+       "seconds": 0.59,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        57.3563,
+        68.8375
+       ],
+       "b_xy": [
+        57.4,
+        68.8
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U4.1 (x59), C6.2 (x6), R119.2 (x3), TP27.1 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.0265,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1062,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.39,
+       "support_mm": 0.2563,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U4.1 (x32), track (x11), U4.4 (x9), U4.6 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U4.1 (x23), track (x12), U4.4 (x9), U4.6 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 250000
+      }
+     ]
+    },
+    {
+     "best_centre": 350000,
+     "best_offcentre": 550000,
+     "centre_width": {
+      "B": 350000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 550000
+     },
+     "pad": "U4.3",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.3: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x11356), U4.1 (x2421), C6.2 (x1167), R119.2 (x239)",
+       "reach_mm": null,
+       "seconds": 0.61,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": [
+        57.6437,
+        68.8375
+       ],
+       "b_xy": [
+        57.6,
+        68.875
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U4.3: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U4.4 (x35), U4.1 (x23), C6.2 (x8), R119.2 (x3)",
+       "escape_formula": false,
+       "exit_mm": 0.0265,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.1062,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.39,
+       "support_mm": 0.2563,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U4.4 (x45), U4.1 (x14), C6.2 (x7), R119.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.3: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U4.4 (x53), C6.2 (x7), U4.1 (x6), R119.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x54), U4.1 (x7), C6.2 (x7), TP27.1 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 350000
+      }
+     ]
+    },
+    {
+     "best_centre": 300000,
+     "best_offcentre": 300000,
+     "centre_width": {
+      "B": 300000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 300000
+     },
+     "pad": "U4.5",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x12344), U4.6 (x1056), U4.1 (x825), C6.2 (x807)",
+       "reach_mm": null,
+       "seconds": 0.66,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U4.4 (x48), U4.1 (x10), C6.2 (x6), TP26.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x11714), U4.6 (x2733), U4.1 (x836), C6.2 (x736)",
+       "reach_mm": null,
+       "seconds": 0.7,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U4.4 (x53), U4.1 (x7), C6.2 (x5), C7.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x9459), U4.6 (x4153), U4.1 (x741), C6.2 (x689)",
+       "reach_mm": null,
+       "seconds": 0.66,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x8616), U4.6 (x6140), C6.2 (x663), U4.1 (x622)",
+       "reach_mm": null,
+       "seconds": 0.72,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.4 (x8008), U4.6 (x6714), C6.2 (x624), U4.1 (x577)",
+       "reach_mm": null,
+       "seconds": 0.71,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.5: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U4.6 (x33), U4.4 (x19), C6.2 (x5), U4.13 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.5: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.6 (x7674), U4.4 (x6488), C6.2 (x599), U4.1 (x556)",
+       "reach_mm": null,
+       "seconds": 0.77,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": [
+        58.4125,
+        69.5
+       ],
+       "b_xy": [
+        59.05,
+        69.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.2375,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.4,
+       "seconds": 0.71,
+       "support_mm": 0.2375,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U4.8",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.7 (x6879), U4.9 (x5905), U4.6 (x1540), U4.4 (x330)",
+       "reach_mm": null,
+       "seconds": 0.68,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U4.9 (x43), U4.6 (x11), U4.7 (x6), U4.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7884), U4.7 (x5648), U4.6 (x1729), U4.1 (x318)",
+       "reach_mm": null,
+       "seconds": 0.71,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U4.9 (x43), U4.7 (x10), U4.6 (x7), U4.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7288), U4.7 (x5213), U4.6 (x1490), track (x402)",
+       "reach_mm": null,
+       "seconds": 0.67,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7439), U4.7 (x5431), U4.6 (x1593), track (x919)",
+       "reach_mm": null,
+       "seconds": 0.71,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7813), U4.7 (x4227), track (x1769), U4.6 (x1505)",
+       "reach_mm": null,
+       "seconds": 0.72,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U4.9 (x27), U4.7 (x14), track (x12), R40.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7407), U4.7 (x4060), track (x2391), U4.6 (x1461)",
+       "reach_mm": null,
+       "seconds": 0.74,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x21), U4.9 (x18), U4.7 (x14), R40.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x7519), U4.7 (x3305), track (x3133), U4.6 (x1382)",
+       "reach_mm": null,
+       "seconds": 0.74,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U4.9 (x24), track (x21), U4.7 (x11), U4.6 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U4.8: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U4.9 (x6753), track (x4249), U4.7 (x2964), U4.6 (x1326)",
+       "reach_mm": null,
+       "seconds": 0.73,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": [
+        58.2188,
+        71.1625
+       ],
+       "b_xy": [
+        58.225,
+        71.425
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U4.9 (x27), track (x21), U4.7 (x10), R40.1 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.2375,
+       "layer": "B",
+       "n": 3,
+       "offcentre": true,
+       "offcentre_mm": 0.0312,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.73,
+       "support_mm": 0.2375,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U4.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U4.9 (x27), track (x21), U4.7 (x10), R40.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": null,
+     "centre_width": {
+      "F": null
+     },
+     "gained": false,
+     "layers": [
+      "F"
+     ],
+     "offcentre_width": {
+      "F": null
+     },
+     "pad": "U5.2",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x53), R15.2 (x12), R15.1 (x4), C10.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x13909), R15.2 (x1010), R15.1 (x311), C8.2 (x231)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U5.1 (x55), R15.2 (x11), R15.1 (x3), C10.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x14730), R15.2 (x1043), R15.1 (x273), C10.2 (x219)",
+       "reach_mm": null,
+       "seconds": 0.42,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U5.1 (x55), R15.2 (x11), R15.1 (x3), C10.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x13268), R15.2 (x1001), U5.3 (x772), R15.1 (x247)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x13247), U5.3 (x1860), R15.2 (x943), R15.1 (x246)",
+       "reach_mm": null,
+       "seconds": 0.41,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x11880), U5.3 (x3318), R15.2 (x885), R15.1 (x246)",
+       "reach_mm": null,
+       "seconds": 0.41,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U5.3 (x27), U5.1 (x18), R15.2 (x10), U5.17 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x9995), U5.3 (x5036), R15.2 (x831), R15.1 (x246)",
+       "reach_mm": null,
+       "seconds": 0.44,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U5.3 (x27), U5.1 (x19), R15.2 (x9), U5.17 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x9908), U5.3 (x5125), R15.2 (x787), R15.1 (x246)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U5.3 (x27), U5.1 (x20), R15.2 (x8), U5.17 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x8373), U5.3 (x6097), R15.2 (x741), track (x442)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.3 (x27), U5.1 (x20), R15.2 (x8), U5.17 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.1 (x6732), U5.3 (x6118), track (x839), R15.2 (x692)",
+       "reach_mm": null,
+       "seconds": 0.39,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U5.2: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U5.3 (x27), U5.1 (x25), U5.17 (x5), U5.11 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "F",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U5.2: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U5.3 (x6613), U5.1 (x6443), track (x1271), U5.17 (x822)",
+       "reach_mm": null,
+       "seconds": 0.44,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pairs": [],
+   "widths": [
+    600000,
+    550000,
+    500000,
+    450000,
+    400000,
+    350000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 3,
+   "lands": [
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R107.2",
+     "rungs": [
+      {
+       "a_xy": [
+        27.54,
+        120.335
+       ],
+       "b_xy": [
+        27.975,
+        120.325
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "R106.2",
+     "rungs": [
+      {
+       "a_xy": [
+        24.19,
+        120.335
+       ],
+       "b_xy": [
+        24.625,
+        120.325
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.4,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "TP32.1",
+     "rungs": [
+      {
+       "a_xy": [
+        35.25,
+        48.25
+       ],
+       "b_xy": [
+        35.775,
+        48.25
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.14,
+       "support_mm": 0.5,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C55.1",
+     "rungs": [
+      {
+       "a_xy": [
+        41.825,
+        21.1
+       ],
+       "b_xy": [
+        42.3,
+        21.1
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.45,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.12,
+       "support_mm": 0.45,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "C19.1",
+     "rungs": [
+      {
+       "a_xy": [
+        42.12,
+        38.9
+       ],
+       "b_xy": [
+        42.125,
+        39.225
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.31,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.31,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": 250000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 250000
+     },
+     "pad": "U9.10",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13830), U9.7 (x804), U9.6 (x364), U9.5 (x254)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.9 (x63), U9.5 (x5), U9.7 (x2), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x14495), U9.7 (x852), U9.6 (x435), U9.5 (x247)",
+       "reach_mm": null,
+       "seconds": 0.42,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13107), U9.11 (x816), U9.7 (x717), U9.6 (x416)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x12925), U9.11 (x1959), U9.7 (x792), U9.6 (x407)",
+       "reach_mm": null,
+       "seconds": 0.43,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13011), U9.11 (x1959), U9.7 (x744), U9.6 (x388)",
+       "reach_mm": null,
+       "seconds": 0.41,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x11502), U9.11 (x3571), U9.7 (x697), U9.6 (x347)",
+       "reach_mm": null,
+       "seconds": 0.41,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.11 (x27), U9.9 (x18), U9.33 (x7), U9.6 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x9526), U9.11 (x5333), U9.7 (x646), U9.6 (x323)",
+       "reach_mm": null,
+       "seconds": 0.48,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": [
+        32.75,
+        27.725
+       ],
+       "b_xy": [
+        32.75,
+        27.325
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x7), U9.6 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 4,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.47,
+       "support_mm": 0.375,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": 450000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 450000
+     },
+     "pad": "U9.8",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.8: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.7 (x12192), U9.6 (x1992), U9.5 (x622), U9.4 (x350)",
+       "reach_mm": null,
+       "seconds": 0.49,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.8: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.7 (x12856), U9.6 (x1970), U9.5 (x831), U9.4 (x266)",
+       "reach_mm": null,
+       "seconds": 0.52,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.8: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.7 (x11817), U9.6 (x1571), U9.5 (x739), U9.9 (x704)",
+       "reach_mm": null,
+       "seconds": 0.51,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": [
+        31.6313,
+        28.175
+       ],
+       "b_xy": [
+        31.525,
+        28.075
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": false,
+       "exit_mm": 0.1061,
+       "layer": "B",
+       "n": 3,
+       "offcentre": true,
+       "offcentre_mm": 0.1201,
+       "offcentre_why": null,
+       "reach_mm": 0.05,
+       "seconds": 0.61,
+       "support_mm": 0.3402,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U9.7 (x45), U9.6 (x20), U9.1 (x3), U9.5 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.9 (x18), U9.7 (x18), track (x12), C80.2 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.9 (x18), U9.7 (x18), track (x12), Y1.4 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.9 (x18), U9.7 (x18), track (x16), C80.2 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.8: NO LEGAL ESCAPE at >= 0.150 mm; blocked by track (x20), U9.7 (x19), U9.9 (x18), via (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.04,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "pairs": [],
+   "widths": [
+    600000,
+    550000,
+    500000,
+    450000,
+    400000,
+    350000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "lands": [
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "R127.2",
+     "rungs": [
+      {
+       "a_xy": [
+        63.075,
+        107.75
+       ],
+       "b_xy": [
+        63.5,
+        107.75
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.4,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "TP6.1",
+     "rungs": [
+      {
+       "a_xy": [
+        70.25,
+        95.5
+       ],
+       "b_xy": [
+        70.625,
+        95.875
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.5,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": 150000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 150000
+     },
+     "pad": "U11.9",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x6285), U11.10 (x3827), U11.7 (x1218), U11.6 (x969)",
+       "reach_mm": null,
+       "seconds": 0.58,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": [
+        68.7875,
+        78.2
+       ],
+       "b_xy": [
+        69.0,
+        78.2
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.1875,
+       "layer": "B",
+       "n": 7,
+       "offcentre": true,
+       "offcentre_mm": 0.1875,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.68,
+       "support_mm": 0.375,
+       "width": 150000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U2.9",
+     "rungs": [
+      {
+       "a_xy": [
+        54.1375,
+        86.375
+       ],
+       "b_xy": [
+        54.9,
+        86.375
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.7375,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.7375,
+       "width": 200000
+      }
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "lands": [
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "R128.2",
+     "rungs": [
+      {
+       "a_xy": [
+        49.1188,
+        104.53
+       ],
+       "b_xy": [
+        49.55,
+        104.525
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.4,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.1,
+       "support_mm": 0.4,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "TP7.1",
+     "rungs": [
+      {
+       "a_xy": [
+        62.75,
+        98.5
+       ],
+       "b_xy": [
+        63.275,
+        98.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.5,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.5,
+       "width": 200000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": null,
+     "centre_width": {
+      "B": null
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": null
+     },
+     "pad": "U11.3",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x6554), U11.4 (x3909), U11.1 (x2485), R37.2 (x700)",
+       "reach_mm": null,
+       "seconds": 0.53,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5762), U11.4 (x5149), U11.1 (x2623), R37.2 (x594)",
+       "reach_mm": null,
+       "seconds": 0.57,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    },
+    {
+     "best_centre": 200000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 200000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U2.10",
+     "rungs": [
+      {
+       "a_xy": [
+        54.1375,
+        85.725
+       ],
+       "b_xy": [
+        54.9,
+        85.725
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.7375,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.7375,
+       "width": 200000
+      }
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": 600000,
+     "best_offcentre": 600000,
+     "centre_width": {
+      "B": 600000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 600000
+     },
+     "pad": "L4.2",
+     "rungs": [
+      {
+       "a_xy": [
+        60.085,
+        36.2
+       ],
+       "b_xy": [
+        60.6,
+        36.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.49,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.08,
+       "support_mm": 0.49,
+       "width": 600000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": null,
+     "centre_width": {
+      "B": null
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": null
+     },
+     "pad": "U21.5",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x9607), C65.1 (x2935), U21.1 (x1578), L4.1 (x864)",
+       "reach_mm": null,
+       "seconds": 0.68,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.550 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x14), L4.1 (x11)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.550 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x9862), C65.1 (x2801), U21.1 (x1540), L4.1 (x798)",
+       "reach_mm": null,
+       "seconds": 0.68,
+       "support_mm": null,
+       "width": 550000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x14), L4.1 (x11)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x9931), C65.1 (x2713), U21.1 (x1464), L4.1 (x737)",
+       "reach_mm": null,
+       "seconds": 0.68,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.450 mm; blocked by U21.4 (x22), C65.1 (x18), U21.1 (x14), L4.1 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.450 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x9740), C65.1 (x2614), U21.1 (x1354), L4.1 (x716)",
+       "reach_mm": null,
+       "seconds": 0.66,
+       "support_mm": null,
+       "width": 450000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U21.4 (x24), C65.1 (x18), U21.1 (x13), L4.1 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x8862), C65.1 (x2292), U21.6 (x1164), U21.1 (x1113)",
+       "reach_mm": null,
+       "seconds": 0.64,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U21.4 (x25), C65.1 (x17), U21.1 (x12), U21.3 (x8)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x9560), C65.1 (x2383), U21.6 (x1270), U21.1 (x1196)",
+       "reach_mm": null,
+       "seconds": 0.67,
+       "support_mm": null,
+       "width": 350000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U21.4 (x27), C65.1 (x17), U21.1 (x11), U21.3 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x8268), U21.6 (x2159), C65.1 (x2112), U21.1 (x1023)",
+       "reach_mm": null,
+       "seconds": 0.61,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U21.4 (x19), C65.1 (x16), U21.6 (x14), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x7682), U21.6 (x3508), C65.1 (x2137), U21.1 (x985)",
+       "reach_mm": null,
+       "seconds": 0.67,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U21.4 (x23), C65.1 (x16), U21.6 (x16), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x7777), U21.6 (x3607), C65.1 (x2051), U21.1 (x917)",
+       "reach_mm": null,
+       "seconds": 0.65,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U21.4 (x27), C65.1 (x16), U21.6 (x16), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x6885), U21.6 (x4421), C65.1 (x1934), U21.2 (x815)",
+       "reach_mm": null,
+       "seconds": 0.66,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "pairs": [],
+   "widths": [
+    600000,
+    550000,
+    500000,
+    450000,
+    400000,
+    350000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

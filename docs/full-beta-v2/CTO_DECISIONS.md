@@ -1,5 +1,282 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-633 · 2026-09-05 · Demo — the OFF-CENTRE LAUNCH exists, it opens TWENTY-NINE lands, and it proves `LATTICE_EXACT` is a property of the POCKET and not of the pad CENTRE
+
+    authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial and reports
+      `authoritative_unchanged: true`.
+    retained open edges  44 (unchanged)   open retained nets 21
+    FRAMEWORK + CHARACTERISATION.  D-632 named an OFF-CENTRE LAUNCH as the
+      next primitive "in order of leverage" and said it was worth, at minimum,
+      the edges held by seven measured escape walls.  It is worth more than
+      that on the LANDS and, on this board, nothing yet on the EDGES -- and the
+      reason it is worth nothing yet is the finding.
+
+`D-269`/`D-186`, `ACC_5V_SW_EN`, `ACC_3V3_SW`, the three `FRONT_RGB_*_N`,
+`XGPIO4`/`XGPIO5` and `hardware/beta-v2/` are untouched.
+
+## 1. The primitive — `maze3d.offcentre_escapes`
+
+A launch point does not have to be the pad's CENTRE.  It has to be ON THE
+PAD'S OWN COPPER -- that is the only thing KiCad's connectivity asks -- and the
+segment that leaves from it has to be legal.  D-631's `pad_bridge` is the
+ZERO-LENGTH case (a track between two lands, both endpoints inside the lands,
+no escape at all); this is the general case.
+
+Proved by `maze3d.verify_laid`, THE PROMOTER'S OWN instrument: exact analytic
+clearance against real obstacle shapes and the `.kicad_dru` overlay, never a
+lattice, because the whole reason the primitive exists is that D-630's
+`LATTICE_EXACT` class is the class no lattice can express.  The cheap
+directional screen ahead of it uses the SAME `obs_clearance` number
+`verify_laid` re-proves against, so screen and proof cannot disagree about
+which rule applies.
+
+**THREE FREEDOMS, AND EVERY ANSWER SAYS WHICH ONE PAID.**
+
+    (a) THE ANCHOR      any point inside the land, tested by `_on_pad`
+    (b) THE DIRECTION   `QBoard.escape`'s EIGHT rays first, then the 15-degree
+                        steps between them -- so a land that launches today
+                        launches identically and the extra rays only ADD
+    (c) THE LENGTH      and this one was invisible
+
+**(c) IS THE ONE NOBODY HAD READ, AND IT PAID TWELVE OF TWENTY-NINE TIMES.**
+`QBoard.escape` fixes the stub at `reach + clearance + width/2 + slack`, the
+shortest slack 0.15 mm, and every one of the four terms is wrong or unowed off
+the pad's own axes.
+
+  * `reach` is `RR.extent` -- the **SUPPORT function**, the distance to the
+    supporting LINE, not the distance the ray travels to the boundary.  Off an
+    axis those differ.  Measured from each land's own CENTRE on a 45-degree
+    ray: `U4.2` and `U4.5` (0.475 x 0.250 mm, sharp) support 0.2563 vs exit
+    0.1768, **0.0795 mm of overshoot**; `U12.4` (0.240 x 0.600 mm, r 0.120)
+    0.2473 vs 0.1697, **0.0776 mm**; `U9.8` (0.750 x 0.300 mm) 0.3402 vs
+    0.2121, **0.1280 mm**; `U11.9` (0.750 x 0.200 mm) 0.3152 vs 0.1414,
+    **0.1737 mm**.
+  * `clearance + width/2` is spent clearing the pad the stub is **LEAVING**,
+    which is its own net and owes itself nothing.  At the P3V3 0.400 mm floor
+    that is another **0.400 mm** charged to nobody.
+  * and `slack` never goes below 0.15 mm, so the shortest legal stub
+    `QBoard.escape` can even PROPOSE from a 0.475 mm land is over half a
+    millimetre longer than the one this primitive lays.
+
+The ladder here starts **0.025 mm past the land's own boundary** and still
+CONTAINS `QBoard.escape`'s nine slacks at its own offset, so the primitive is a
+strict superset in anchor, in direction AND in length: a land that launches
+today launches here, at the same point, at the same width.
+
+**A SHARP RECTANGLE HAS NO SIGNED DISTANCE, AND THAT IS A REAL TRAP.**
+`RR.dist` with `r == 0` is `hypot(max(lx-hx,0), max(ly-hy,0))`, which is ZERO
+everywhere INSIDE the land as well as on its edge.  Bisecting a ray exit
+against it reports every sharp-cornered pad as already-left-behind, and this
+board is full of them.  `maze3d._on_pad` is the containment test written out in
+the pad's own rotated frame, exact for rect, roundrect, oval and circle alike.
+
+Also new: `maze3d.EscapeCtx` (the five fields `verify_laid` and
+`obs_clearance` actually read, so an exact proof needs no rasterised `Field`
+and any `Field` is already a valid `EscapeCtx`); `maze3d.offcentre_connect`
+(closes a pad pair, asking the CENTRE-anchored escape FIRST at each end and
+spending the off-centre stub only where it refuses, then handing that end to
+`qrouter.connect_role` as an ANCHOR -- a case `connect_role` has always had);
+and `maze3d._state_key`, a memo key naming the copper state `revert` itself
+rewinds to, so a refusal -- the most expensive answer there is -- is measured
+once per board state and never re-served against different copper.
+
+## 2. The measurement — 99 lands, 29 opened, 3 sealed
+
+`screen_offcentre_launch.py` (new, tracked, read-only), every land of the five
+nets D-632's `LATTICE_EXACT` sweep covered, each over a descending ladder from
+the netclass width to the board's 0.150 mm `min_track_width`.  BOTH ladders are
+walked to the end: stopping at the first rung either answers would conflate
+them, and a land where the centre-anchored escape also answers at that width
+has gained nothing.
+
+    99 lands   67 centre-only, unchanged   29 GAINED   3 SEALED
+
+**FOUR LANDS THAT LAUNCHED AT NO WIDTH NOW LAUNCH.**  Exactly four of D-632's
+seven measured escape walls:
+
+    U9.8    /NFC_SUPPLY      0.450 mm   ABOVE the P3V3 0.400 mm class floor
+    U9.10   /NFC_SUPPLY      0.250 mm
+    U4.8    +3V3             0.200 mm
+    U11.9   /BQ25185_STAT1   0.150 mm
+
+`U9.8` is the one that matters: **0.450 mm is ordinary rail copper**, above its
+own class floor, needing no width licence of any kind.
+
+**AND TWENTY-FIVE MORE LANDS GAIN WIDTH, INCLUDING A DOCUMENTED WALL.**
+
+    U12.4  +3V3   0.200 -> 0.550 mm      U4.2   +3V3   0.250 -> 0.550 mm
+    U12.5  +3V3   0.200 -> 0.400 mm      U4.3   +3V3   0.350 -> 0.550 mm
+    C18.1  +3V3   0.250 -> 0.600 mm      R2.1   +3V3   0.350 -> 0.600 mm
+    J1.7/9/40/42  0.300 -> 0.550 mm      U9.1   +3V3   0.300 -> 0.500 mm
+
+`U12` is the `TPS63020` buck-boost and pins 4 and 5 are its `VOUT`.  D-609
+measured *"at the P3V3 0.400 mm floor neither pin has a legal escape"*; D-610
+promoted `U12.4` at 0.200 mm under a `PAD_ESCAPE_RUN_U12_4` width licence and
+had to rule it **"ONE NECK, KNOWINGLY DERATED, BECAUSE THE ALTERNATIVE IS AN
+OPEN RAIL"**, and `.kicad_dru` section 13 records the verdict as *"THE WALL WAS
+THE RUN, AND IT STILL IS."*  **It was not the run.  It was the launch
+formula.**  `U12.4` launches at **0.550 mm** off centre and `U12.5` at exactly
+the **0.400 mm** class floor D-609 measured as refusing -- 2.75x and 2x the
+promoted width, both above the floor, both needing NO licence.
+
+**THREE LANDS ARE STILL SEALED, AND FAR HARDER THAN BEFORE.**  `U5.2`,
+`U11.3`, `U21.5` refuse across **41 anchors x 24 directions x 17 lengths --
+16,728 candidate segments at every width rung** -- every one blocked by its own
+package neighbours' LANDS.
+
+## 3. The wall moved from the LAND to the CORRIDOR
+
+`screen_offcentre_launch.py --pairs-only`, the same island pairs D-632 asked,
+through `offcentre_connect`.  Every pair D-632 reported as `NO_LEGAL_ESCAPE`
+now reports something else:
+
+    16 pairs over the four plain nets   12 NO_LEGAL_ESCAPE -> 4
+    /BQ25185_STAT1   3 -> 0.  All five pairs are now corridor refusals.
+    /NFC_SUPPLY      5 -> 0.  Three NO_PATH and TWO CLOSURES.
+    /BQ25185_STAT2   3 remain, all `U11.3`, still sealed.
+    ACC_5V_LX        1 remains, `U21.5`, still sealed.
+    +3V3            24 pairs   20 NO_PATH   2 NO_LEGAL_ESCAPE (`U5.2`)
+                               2 CLOSURES, both at the FULL 0.600 mm contract
+
+That is a DIFFERENT FINDING WITH A DIFFERENT INSTRUMENT: a land licence for the
+first, eviction or placement or a via for the second.  And neither closure is
+spendable: `C55.1 <-> U9.8` (12.375 mm) and `C19.1 <-> U9.8` (14.882 mm) close
+only with the **TRUNK** at 0.200 mm -- the whole haul derated to half the P3V3
+floor, not a bounded neck.  `offcentre_connect`'s stub ladder was asked for a
+neck bounded at the class floor and the corridor refused at every trunk rung
+above 0.200 mm, so the narrow copper is the HAUL and not the launch.
+`qrouter.connect_role` is FLAT: one layer, no via.  The corridor it cannot find
+is not the corridor the board does not have.
+
+**AND THE ONE EDGE D-632 FOUND JUST GOT FOUR TIMES CHEAPER.**  D-632's single
+closure was `U4.3 <-> U4.5` *"at 0.250 mm and 3.4376 mm of copper"* -- a
+0.937 mm gap whose whole run had to be derated to 0.250 mm, well below the
+0.400 mm P3V3 floor, which is why `LL4` refused it.  The same edge now closes
+with the **TRUNK AT 0.600 mm, the full contract width**, and the sub-floor
+copper confined to the two stubs: `U4.3` launches at **0.550 mm over 0.058 mm**
+-- above the class floor, so not a licence at all -- and only `U4.5` is narrow,
+**0.250 mm over 1.073 mm**.  `U4.2 <-> U4.5` closes on the same terms.  `U4.5`
+is `VDDIO`, `power_in`, so `LL4` still refuses; but what LL-C would have to buy
+has gone from a 3.438 mm derated run to a **single 1.073 mm stub**, and the
+other end of the edge needs nothing at all.
+
+## 4. AND THE LATTICE CANNOT RECEIVE WHAT THE PRIMITIVE OPENS
+
+`maze3d.pad_escapes` was taught the off-centre source as the LAST RESORT OF
+ALL -- consulted only for a `(pad, layer)` whose ordinary candidate set is
+EMPTY -- behind `Field.offcentre`, env-gated `AQROOT_OFFCENTRE_LAUNCH` because
+`route_maze_batch` re-invokes itself as a subprocess and an environment gate
+crosses that boundary with no new flag on either side.  Unset reproduces every
+run this board has ever made.
+
+**THE NO-OP CONTROL** (`screen_offcentre_launch.py --noop-control`) runs
+`pad_escapes` twice per land with the flag off and on and requires the off
+answer to be a PREFIX of the on answer and the two to differ ONLY where the off
+answer is empty.  **99 lands: 96 byte-identical, 3 opened, 0 violations,
+PASS.**  And the three it opens -- `MK1.3`, `U2.24`, `U3.24` -- are all on the
+`+3V3` **BODY** island, already connected.  **Not one orphan land gains a
+lattice-admissible launch at its contract width.**
+
+The reason is exact, and it sharpens D-630 rather than contradicting it.  A
+lattice-driven instrument needs its launch to be a cell the WHOLE-BOARD lattice
+calls free.  The off-centre launch point lies in the SAME sub-guard-band pocket
+the land does.  The free-cell test was pushed INSIDE the length ladder -- so
+the search walks OUT of the pocket instead of stopping at the first blocked
+landing, which is the difference between filtering an answer and asking a
+better question -- and it still refuses.  **`LATTICE_EXACT` IS NOT A PROPERTY
+OF THE PAD CENTRE.  IT IS A PROPERTY OF THE POCKET.**  The off-centre launch
+pays for EXACT instruments only: `connect_role`, whose escape is exact and only
+whose corridor is rasterised, and `pad_bridge`, which has no escape at all.
+
+## 5. A/B on the instrument that actually promotes
+
+`screen_pad_escape_relief.py --offcentre-launch` (new lever), all three
+pour-owning nets, 0.025 mm, under the 47-tube D-619 guard, five rungs each --
+run WITH and WITHOUT and diffed, both arms on identical code.  Fifteen rungs:
+**thirteen IDENTICAL, land for land, millimetre for millimetre.**  The two that
+differ are both `+3V3` `{U4.2, U4.3}` -- the one `+3V3` orphan
+`leaf_land_contract.py` ADMITS -- and both are the same reclassification:
+
+    NO_LEGAL_ESCAPE  "U4.3: at >= 0.400 mm; blocked by U4.4 (x54) ..."
+      ->  NO_VIA_SITE  "no legal 0.65 / 0.35 mm barrel within 8.0 mm of any escape"
+
+**Nothing opened, and one wall was correctly renamed** -- on the relief
+instrument too, the land stopped being the wall.  `R129.1` opens at exactly the
+0.571 / 0.975 / 0.768 mm it opened at in D-632, and `BQ25185_SYS` and `GND` are
+untouched at every rung.
+
+## 6. The regression this iteration owes
+
+`maze3d.py` is read by every promoting instrument on this board, so a change to
+it is a change to all of them even when it lays no copper.  All TEN standing
+contracts were re-run at D-633 HEAD and compared **FIELD BY FIELD** with the
+artifacts D-632 committed, on a board whose `sha256` did not move: `neck`,
+`placement`, `population`, `land_parity`, `keepout_stackup`, `rf_symmetry`,
+`pour_partition`, `pour_bond`, `leaf_land` (16/16 controls, the same
+95 / 228 / 158 / 483 class counts) and `protected_copper` (15 nets /
+393 objects, zero differences) are **ALL PASS and ALL IDENTICAL**
+(`evidence/d633-contract-regression.json`).  The only field that
+differs anywhere is `pour_bond`'s `guard`, which records the guard path as
+typed on the command line and is compared by basename.
+
+## 7. Next, in order of leverage
+
+1. **AN EXACT CORRIDOR, WITH A VIA.**  The wall is now the corridor at every
+   land the primitive opened, and every corridor instrument on this board is a
+   lattice.  `connect_role` rasterises only the corridor but is FLAT;
+   `connect_hop` adds a barrel but escapes from the pad CENTRE and cannot be
+   given an anchor.  The primitive named by THIS measurement is an OFF-CENTRE
+   HOP: the exact stub, a barrel at the first via site the STUB can reach, and
+   the haul on a far layer.  `U9.8` launches at 0.450 mm and `U4.2`/`U4.3` at
+   0.550 mm, both above the P3V3 0.400 mm floor, so up to three edges are
+   within reach of it with **no width licence at all**.
+2. **`{U4.2, U4.3}`'s BARREL.**  It is the ONE `+3V3` orphan `LL` admits, and
+   it cannot reach the body by copper: `evidence/d633-offcentre-body-reach.json`
+   asks `U4.12` -- the land D-632 promoted, now ON the body and the closest body
+   land in `U4`'s own package, 1.790 mm away -- over the whole ladder, and the
+   corridor refuses.  On the relief instrument its wall is now `NO_VIA_SITE` at
+   0.025 mm, which is the pitch at which `U4.12`'s OWN barrel was found 1.7 mm
+   away in the same LGA-14 interior.  Ask whether that interior holds a SECOND
+   barrel that clears `U4.12`'s hole-to-hole floor; a closure is spendable the
+   moment the geometry exists.
+3. **RE-CUT `U12.4`.**  The board carries a licensed, knowingly-derated
+   0.200 mm neck on the 3.3 V rail's own regulator output that a 0.550 mm
+   off-centre launch does not need.  It closes no edge, so under the standing
+   promotion gate it must ride with one -- `U12.5` at the 0.400 mm floor is the
+   natural companion.  `.kicad_dru` section 13's "THE WALL WAS THE RUN, AND IT
+   STILL IS" should be amended when, and only when, the copper is re-cut.
+4. **LL-C**, and it is now the CHEAPEST of the four.  A `power_in` LEAF pin
+   priced at the DEVICE's own supply current rather than the rail's.  The
+   structural half of the clause needs no ampere figure at all: **a conductor
+   whose island holds lands of ONE device only carries that device's own supply
+   current and never the rail's, because the rail has no other side of it to
+   reach** -- the same shape as `LL3`, whose verdict is structural and whose
+   bound is corroboration.  The corroborating figure is the missing piece: this
+   board's own `.kicad_dru` section 12b already quotes the BMI270 at 4 uA plus
+   3 uA in accel low-power mode and 3.5 uA in suspend, but there is still no
+   MACHINE-READABLE place to read a per-device supply current, and inventing a
+   performance-mode figure is not something a clause may do.  The prize is now
+   measured: **one 1.073 mm stub at 0.250 mm buys a `+3V3` open edge**, 44 -> 43.
+
+The `GND` return-path pricing question remains the one OPEN modelling gap in
+`PP2`.  No owner decision is OPEN; D-618's `J3` question remains RECORDED and
+PM-3 remains an open PLACEMENT finding.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d633-offcentre-lands.json`, `d633-offcentre-pairs-plainnets.json`,
+`d633-offcentre-pairs-3v3.json`, `d633-offcentre-noop-control.json`,
+`d633-offcentre-body-reach.json`, `d633-relief-g25-control.json`,
+`d633-relief-g25-offcentre.json`, `d633-contract-regression.json`.
+Tracked tooling added: `screen_offcentre_launch.py`.  Tracked tooling changed:
+`maze3d.py` (the primitive, `EscapeCtx`, `_on_pad`, `_pad_exit`,
+`offcentre_connect`, `_state_key`, `Field.offcentre`, the `pad_escapes`
+last-resort source), `screen_pad_escape_relief.py` (`--offcentre-launch`).
+
+
 # D-632 · 2026-09-05 · Demo — the rail bar was being charged to lands that carry NO CURRENT, and the instrument `LATTICE_EXACT` named REFUSES THE LIST IT WAS NAMED FOR
 
     authority  c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc

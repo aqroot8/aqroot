@@ -67,6 +67,8 @@ CONTRACTS PRESERVED
     the authority for legality.  This module is a *proposer*.
 """
 
+import collections
+import os
 import re
 import math
 import sys
@@ -496,6 +498,18 @@ class Field(object):
         self.ny = int((self.y1 - self.oy) // G) + 1
         self.cls = net_classes(qb)
         self.mycls = self.cls.get(net, 'Default')
+        # D-633.  OFF by default and therefore a proven no-op: `pad_escapes`
+        # consults the off-centre source ONLY for a (pad, layer) whose ordinary
+        # candidate set is EMPTY, and only when this is set.  A land that
+        # launches today launches identically, on every instrument.
+        #
+        # ENV-GATED, like `AQROOT_D280` in `qrouter`, because
+        # `route_maze_batch` re-invokes ITSELF as a subprocess: an environment
+        # gate crosses that boundary with no new flag on either side, and a
+        # caller that wants the lever for one field only still just assigns
+        # `field.offcentre = True`.  Unset reproduces every run this board has
+        # ever made, byte for byte.
+        self.offcentre = bool(os.environ.get('AQROOT_OFFCENTRE_LAUNCH'))
         self.blk = {}
         self._guard = self._guard_masks()
         self.rebuild_blk()
@@ -1116,6 +1130,31 @@ def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
             if wn is not None and wn < field.width:
                 cands = _pocket_escapes(qb, field, pad, L, prefer, limit,
                                         width=wn, confine=field.neck)
+        # THE OFF-CENTRE LAUNCH, LAST RESORT OF ALL.  D-632 measured seven
+        # lands that no ray through the pad CENTRE can leave at any width this
+        # board can fabricate, and D-633 measured that four of them leave
+        # happily from a point 0.04-0.19 mm off it.  Both sources above are
+        # centre-anchored: `QBoard.escape` casts its ray from the centre, and
+        # `_pocket_escapes` seeds its wavefront on the pad CORE, the cells at
+        # least half a track width inside the land -- which on a 0.50 mm-pitch
+        # package at the contract width is empty, and that emptiness is
+        # exactly D-630's `LATTICE_EXACT` class.  This source is EXACT: it
+        # consults no lattice, and every candidate it returns has been proved
+        # by `verify_laid` before it is offered.  Offered only where the sets
+        # above are empty, so it can only ADD launches, never move one.
+        if not cands and getattr(field, 'offcentre', False):
+            def _lattice_free(x, y, _L=L):
+                # The launch has to be a cell the WHOLE-BOARD lattice already
+                # calls free, because that lattice is what the trunk wavefront
+                # walks; an exact proof of the stub says nothing about whether
+                # the trunk can move off its end.  Handed to the search, NOT
+                # applied to its answer -- see `offcentre_escapes.goal_ok`.
+                i_, j_ = field.cell(x, y)
+                return field.inside(i_, j_) and not field.blk[_L][j_, i_]
+            cands = offcentre_escapes(qb, field, pad, L, field.width,
+                                      field.G, field.ox, field.oy,
+                                      prefer=prefer, limit=limit,
+                                      goal_ok=_lattice_free)
         for c in cands:
             i, j = field.cell(c['x'], c['y'])
             if not field.inside(i, j):
@@ -1127,6 +1166,10 @@ def pad_escapes(qb, field, pad, toward, limit=8, pocket=True):
             if c.get('neck'):
                 e['neck'] = True
                 e['neck_outside_mm'] = c['neck_outside_mm']
+            if c.get('offcentre_mm') is not None:
+                e['offcentre'] = True
+                e['offcentre_mm'] = c['offcentre_mm']
+                e['base_dir'] = c['base_dir']
             out.append(e)
     return out
 
@@ -2255,6 +2298,464 @@ def bridge_net_pads(qb, net, field, widths, max_mm=3.0,
                 declined_n=len(declined), asked=len(done) + len(failed),
                 max_mm=max_mm,
                 mm=round(sum(d['mm'] for d in done), 4), vias=0)
+
+
+# --------------------------------------------------------------------------- #
+# the OFF-CENTRE LAUNCH                                            (D-633)
+# --------------------------------------------------------------------------- #
+# D-632 measured SEVEN lands that refuse an escape at EVERY width down to the
+# board's own 0.150 mm `min_track_width` -- `U11.9`, `U11.3`, `U9.8`, `U9.10`,
+# `U21.5`, `U4.8`, `U5.2` -- and then found the reason, which is not a width at
+# all: `QBoard.escape` is CENTRE-ANCHORED.  It casts a STRAIGHT segment from
+# the pad's OWN CENTRE, in one of EIGHT directions fixed by the pad's
+# orientation.  On a 0.500 mm-pitch package with populated neighbours no such
+# ray is legal at any width this board can fabricate, which is exactly why the
+# refusal does not move with width.
+#
+# THE PRIMITIVE THE MEASUREMENT NAMES.  A launch point does not have to be the
+# pad's centre.  It has to be ON THE PAD'S OWN COPPER -- that is the only thing
+# KiCad's connectivity asks -- and the segment that leaves from it has to be
+# legal.  `pad_bridge` (D-631) is the ZERO-LENGTH case of this: a track between
+# two lands, both endpoints inside the lands, no escape at all.  The general
+# case picks the launch anywhere on the land and leaves from there.
+#
+# TWO FREEDOMS, AND THE EVIDENCE SAYS WHICH ONE PAID.
+#
+#   (a) THE ANCHOR.  Any point inside the land's INSCRIBED DIAMOND, tested
+#       exactly as `pad_bridge` tests its endpoints -- |lx|/hx + |ly|/hy <= 1
+#       in the pad's own rotated frame, which is inside a rect, an oval, a
+#       roundrect and a circle alike, so the containment test is conservative
+#       for every shape this board carries.
+#   (b) THE DIRECTION.  Eight rays is a modelling choice, not a rule.  The
+#       ladder walks the SAME eight first, then the 15-degree steps between
+#       them, so a land that launches under `QBoard.escape` launches here
+#       identically and the extra directions can only ADD answers.
+#
+# Every candidate is ordered CENTRE-FIRST and BASE-DIRECTION-FIRST, so the
+# degenerate case reproduces `QBoard.escape` exactly, and each answer carries
+# `offcentre_mm` and `base_dir` -- so a closure that needed neither freedom is
+# distinguishable from one that needed one, and from one that needed both.
+#
+# THE PROOF IS `verify_laid`, THE PROMOTER'S OWN.  Exact analytic clearance
+# against real obstacle shapes and the `.kicad_dru` overlay, never a lattice --
+# the whole reason the primitive exists is that D-630's `LATTICE_EXACT` class
+# is the class no lattice can express, so nothing here may consult one.  The
+# cheap directional screen ahead of it uses the SAME `obs_clearance` number
+# `verify_laid` will re-prove against, so the screen and the proof cannot
+# disagree about WHICH rule applies.
+#
+# WHAT IT DOES NOT DO.  It lays no via, it never narrows below the width the
+# caller hands it, and it decides no licence: a launch below a net's class
+# floor is copper this board does not permit anywhere until `.kicad_dru` says
+# so and `leaf_land_contract.py` says the rail current does not bind it.
+
+OFFCENTRE_ANCHOR_FRACS = (0.0, 0.25, -0.25, 0.5, -0.5, 0.7, -0.7, 0.85, -0.85)
+
+# HOW FAR PAST ITS OWN BOUNDARY THE STUB MAY STOP, in mm.  `QBoard.escape` has
+# no such ladder: its length is FIXED at `reach + clearance + width/2 + slack`
+# with the shortest slack 0.15 mm, and `reach` is the SUPPORT function.  Two
+# separate charges in that formula are owed to nobody -- the clearance and the
+# half-width are spent clearing the pad the stub is LEAVING, which is its own
+# net and owes itself nothing.  What actually decides a landing is whether the
+# copper is legal there (`verify_laid`) and whether the trunk can start there
+# (`point_free`), and both are tested at every rung.
+OFFCENTRE_REACH_MM = (0.025, 0.05, 0.10, 0.15, 0.25, 0.40, 0.60, 1.00)
+
+# ...and `QBoard.escape`'s OWN nine, offered on top of the ladder above at the
+# offset its formula adds, so the length set here strictly CONTAINS the length
+# set the centre-anchored escape walks.  A land that launches today launches
+# here, at the same point, whatever the ladder above does.
+QBOARD_SLACKS_MM = (0.15, 0.30, 0.50, 0.80, 1.20, 1.80, 2.50, 3.20, 4.00)
+
+OFFCENTRE_DIR_STEP_DEG = 15
+
+
+class EscapeCtx(object):
+    """The minimum a clearance proof needs to know about one net.
+
+    `verify_laid` and `obs_clearance` read exactly five things off the object
+    they are handed -- `net`, `clr_pad`, `clr_trk`, `cls`, `mycls` -- and
+    nothing else.  A `Field` supplies them alongside a rasterised board it took
+    seconds to build; the off-centre launch needs the five and NEVER the
+    raster, so it is handed these and the two instruments stay the same
+    instruments.  Duck-typed on purpose: any `Field` is already a valid
+    `EscapeCtx`.
+    """
+
+    def __init__(self, qb, net, clr_pad, clr_trk, cls=None):
+        self.net = net
+        self.clr_pad, self.clr_trk = clr_pad, clr_trk
+        self.cls = net_classes(qb) if cls is None else cls
+        self.mycls = self.cls.get(net, 'Default')
+
+
+def _on_pad(pad, x, y):
+    """Is the absolute point (x, y) on this land's copper?  Exact.
+
+    `RR.dist` is NOT a signed distance for a SHARP rectangle -- with `r == 0`
+    it is `hypot(max(lx-hx,0), max(ly-hy,0))`, which is ZERO everywhere inside
+    the land as well as on its edge.  Bisecting a ray exit against it therefore
+    reports every sharp-cornered pad as already-left-behind, and this board is
+    full of them: `U4`'s LGA lands are 0.475 x 0.250 mm with `r == 0`.  This is
+    the containment test written out, in the pad's own rotated frame, and it is
+    exact for rect, roundrect, oval and circle alike -- KiCad's oval is the
+    stadium `r == min(hx, hy)`.
+    """
+    dx, dy = x - pad['x'], y - pad['y']
+    a = math.radians(float(pad.get('ang') or 0.0))
+    c, s_ = math.cos(a), math.sin(a)
+    lx = abs(dx * c + dy * s_)
+    ly = abs(-dx * s_ + dy * c)
+    hx, hy = float(pad['hx']), float(pad['hy'])
+    r = float(pad.get('r') or 0.0)
+    if lx > hx or ly > hy:
+        return False
+    ihx, ihy = max(hx - r, 0.0), max(hy - r, 0.0)
+    if lx <= ihx or ly <= ihy:
+        return True
+    return math.hypot(lx - ihx, ly - ihy) <= r
+
+
+def _pad_exit(pad, ax, ay, ux, uy, hi=None):
+    """Distance from (ax,ay) along (ux,uy) to the pad's own outer boundary.
+
+    Bisection on `_on_pad`, which is the exact containment test.  With the
+    anchor at the pad CENTRE and (ux,uy) an axis of the pad this returns
+    `shape.extent(ux, uy)`, so the length ladder below starts where
+    `QBoard.escape`'s starts.  OFF an axis it does NOT: `RR.extent` is the
+    SUPPORT function -- the distance to the supporting line -- and on a
+    0.475 x 0.250 mm land at 45 degrees that overshoots the true ray exit by
+    0.16-0.27 mm.  That is the third freedom this primitive spends, and it is
+    the one `_pocket_escapes`' own preamble predicted in prose: "the stub is
+    FORCED PAST the first obstacle it could legally stop short of".
+    """
+    if hi is None:
+        hi = 2.0 * (pad['hx'] + pad['hy'] + pad['r']) + 1000.0
+    if not _on_pad(pad, ax, ay):
+        return 0.0
+    lo = 0.0
+    for _ in range(48):
+        mid = (lo + hi) / 2.0
+        if _on_pad(pad, ax + ux * mid, ay + uy * mid):
+            lo = mid
+        else:
+            hi = mid
+    return hi
+
+
+def _offcentre_anchors(pad, fracs=OFFCENTRE_ANCHOR_FRACS):
+    """Launch anchors inside the land, CENTRE FIRST, then outward.
+
+    Offsets are fractions of the pad's own half-extents in its own rotated
+    frame, kept only where the inscribed-diamond test `pad_bridge` uses admits
+    them, and returned in board nm as (dx, dy) with their distance from the
+    centre so a caller can report which freedom it spent.
+    """
+    hx, hy = float(pad.get('hx') or 0.0), float(pad.get('hy') or 0.0)
+    if hx <= 0 or hy <= 0:
+        return [(0.0, 0.0, 0.0)]
+    ang = math.radians(float(pad.get('ang') or 0.0))
+    c, s = math.cos(ang), math.sin(ang)
+    out, seen = [], set()
+    for fu in fracs:
+        for fv in fracs:
+            if abs(fu) + abs(fv) > 1.0 + 1e-9:
+                continue
+            u, v = fu * hx, fv * hy
+            dx, dy = u * c - v * s, u * s + v * c
+            key = (int(round(dx)), int(round(dy)))
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append((dx, dy, math.hypot(dx, dy)))
+    out.sort(key=lambda t: (round(t[2]), t[0], t[1]))
+    return out
+
+
+def _offcentre_dirs(pad, prefer=None, step_deg=OFFCENTRE_DIR_STEP_DEG):
+    """Ray directions, `QBoard.escape`'s EIGHT first, then the steps between.
+
+    Each entry is (ux, uy, base) where `base` says whether the direction is one
+    of the eight the centre-anchored escape already walks.  `prefer` reorders
+    WITHIN each group only, so the base eight are never displaced by a better
+    aimed 15-degree ray -- a land that launches today keeps launching the way
+    it does today.
+    """
+    a = math.radians(float(pad.get('ang') or 0.0))
+    base, extra, seen = [], [], set()
+    for k in range(0, 360, 45):
+        t = a + math.radians(k)
+        base.append((math.cos(t), math.sin(t), True))
+        seen.add(k % 360)
+    for k in range(0, 360, max(1, int(step_deg))):
+        if k % 360 in seen:
+            continue
+        t = a + math.radians(k)
+        extra.append((math.cos(t), math.sin(t), False))
+    if prefer is not None:
+        n = math.hypot(prefer[0], prefer[1])
+        if n > 0:
+            px, py = prefer[0] / n, prefer[1] / n
+            key = lambda d: -(d[0] * px + d[1] * py)
+            base.sort(key=key)
+            extra.sort(key=key)
+    return base + extra
+
+
+def offcentre_escapes(qb, ctx, pad, layer, width, G, ox, oy, prefer=None,
+                      trunk_w=None, limit=8, reach_mm=OFFCENTRE_REACH_MM,
+                      anchor_fracs=OFFCENTRE_ANCHOR_FRACS,
+                      dir_step_deg=OFFCENTRE_DIR_STEP_DEG, prove=True,
+                      goal_ok=None):
+    """Legal launch points for ONE terminal, anchored anywhere on its land.
+
+    Returns a list of dicts shaped like `QBoard.escape`'s, plus `path` (the
+    two-point polyline `emit_escape` already knows how to lay), `ax`/`ay` (the
+    anchor, INSIDE the land), `offcentre_mm` and `base_dir`.  Empty list and a
+    filled `.why` on the returned marker when nothing legal exists.
+
+    `width` is the width of the STUB and is never lowered here.  `trunk_w`
+    defaults to `width` and is the width the LANDING point must be able to
+    hold, so a stub can never hand the trunk a start it cannot use.
+
+    `goal_ok(x, y)`, when given, is an ADDITIONAL test the landing must pass,
+    and it is applied INSIDE the length ladder rather than by the caller
+    afterwards.  That distinction is the whole reason it exists: the ladder
+    stops at the FIRST legal length per (anchor, direction), so a caller that
+    filters the answer discards the direction entirely instead of asking it for
+    a longer stub.  A lattice-driven caller passes its own free-cell test here
+    -- a launch point has to be somewhere the wavefront can actually stand --
+    and the search then walks OUT of the pocket instead of stopping inside it.
+    """
+    out = []
+    if not pad.get(layer):
+        return out
+    tw = width if trunk_w is None else trunk_w
+    half = width / 2.0
+    reach_max = (2.0 * (pad['hx'] + pad['hy'])
+                 + (max(reach_mm) + max(QBOARD_SLACKS_MM)) * qr.MM + width
+                 + 2 * max(ctx.clr_pad, ctx.clr_trk) + qr.MM)
+    # Every obstacle that could possibly touch any candidate, with the number
+    # `verify_laid` will re-prove against, computed ONCE.
+    obs = []
+    for s in qb.obstacles(layer, ctx.net):
+        need = obs_clearance(qb, ctx, s, width)
+        bx0, by0, bx1, by1 = s.bbox(need)
+        if (pad['x'] - reach_max > bx1 or pad['x'] + reach_max < bx0 or
+                pad['y'] - reach_max > by1 or pad['y'] + reach_max < by0):
+            continue
+        obs.append((s, need))
+    anchors = _offcentre_anchors(pad, anchor_fracs)
+    dirs = _offcentre_dirs(pad, prefer, dir_step_deg)
+    blockers = collections.Counter()
+    taken = set()
+    for (dx, dy, off) in anchors:
+        ax, ay = pad['x'] + dx, pad['y'] + dy
+        for (ux, uy, is_base) in dirs:
+            exit_t = _pad_exit(pad, ax, ay, ux, uy)
+            esc_off = max(ctx.clr_pad, ctx.clr_trk) + half
+            lens = sorted(set(
+                [int(round(exit_t + r * qr.MM)) for r in reach_mm] +
+                [int(round(exit_t + esc_off + r * qr.MM))
+                 for r in QBOARD_SLACKS_MM]))
+            for ln in lens:
+                lx = int(round((ax + ux * ln - ox) / G)) * G + ox
+                ly = int(round((ay + uy * ln - oy) / G)) * G + oy
+                if (lx, ly) in taken:
+                    continue
+                if (lx < qb.ex0 + qr.EDGE_CLR + half or
+                        lx > qb.ex1 - qr.EDGE_CLR - half or
+                        ly < qb.ey0 + qr.EDGE_CLR + half or
+                        ly > qb.ey1 - qr.EDGE_CLR - half):
+                    blockers['board_edge'] += 1
+                    continue
+                if _on_pad(pad, lx, ly):
+                    # A landing still ON the land is not an escape at all:
+                    # the trunk would start inside the pocket and `point_free`
+                    # cannot say so, because a pad's own net is never one of
+                    # its obstacles.  Tested with `_on_pad`, the exact
+                    # containment predicate, and NOT with the inscribed diamond
+                    # `_inside_pad` uses -- that test is deliberately
+                    # conservative for CONTAINMENT and would be optimistic
+                    # here.
+                    blockers['landing still on the land'] += 1
+                    continue
+                bad = None
+                for (s, need) in obs:
+                    bx0, by0, bx1, by1 = s.bbox(need)
+                    if (min(ax, lx) > bx1 or max(ax, lx) < bx0 or
+                            min(ay, ly) > by1 or max(ay, ly) < by0):
+                        continue
+                    if qr.seg_shape_dist(ax, ay, lx, ly, s) < need:
+                        bad = s
+                        break
+                if bad is not None:
+                    blockers[bad.tag or (bad.net or 'keep-out')] += 1
+                    continue
+                if not qb.point_free(layer, ctx.net, lx, ly, tw,
+                                     ctx.clr_pad, ctx.clr_trk, G):
+                    blockers['trunk cannot start here'] += 1
+                    continue
+                if goal_ok is not None and not goal_ok(lx, ly):
+                    blockers['landing is not a free lattice cell'] += 1
+                    continue
+                if prove:
+                    m = qb.mark()
+                    qb.track(ctx.net, layer, int(round(ax)), int(round(ay)),
+                             lx, ly, int(width))
+                    why = verify_laid(qb, ctx, m)
+                    qb.revert(m)
+                    if why is not None:
+                        blockers['UNPROVED_GEOMETRY %s'
+                                 % (why.get('tag') or why.get('kind'))] += 1
+                        continue
+                taken.add((lx, ly))
+                out.append(dict(
+                    x=lx, y=ly, w=int(width),
+                    ln=math.hypot(lx - ax, ly - ay),
+                    dir=(ux, uy), necked=(width < tw),
+                    ax=int(round(ax)), ay=int(round(ay)),
+                    offcentre_mm=round(off / 1e6, 4), base_dir=bool(is_base),
+                    reach_mm=round((ln - exit_t) / 1e6, 4),
+                    exit_mm=round(exit_t / 1e6, 4),
+                    support_mm=round(pad['shape'].extent(ux, uy) / 1e6, 4),
+                    escape_formula=bool(ln >= exit_t + esc_off
+                                        + QBOARD_SLACKS_MM[0] * qr.MM - 1),
+                    path=[(int(round(ax)), int(round(ay))), (lx, ly)]))
+                break
+            if len(out) >= limit:
+                break
+        if len(out) >= limit:
+            break
+    if not out:
+        offcentre_escapes.why = (
+            '%s: NO OFF-CENTRE LAUNCH at %.3f mm from any of %d anchors x %d '
+            'directions x %d lengths; blocked by %s'
+            % (pad['ref'], width / 1e6, len(anchors), len(dirs),
+               len(reach_mm) + len(QBOARD_SLACKS_MM),
+               ', '.join('%s (x%d)' % kv for kv in blockers.most_common(4))))
+    else:
+        offcentre_escapes.why = None
+    return out
+
+
+offcentre_escapes.why = None
+
+
+def _state_key(qb):
+    """A hashable name for the copper `qb` is carrying right now.
+
+    `QBoard.mark` is already the exact answer -- it is what `revert` rewinds to
+    -- but it carries a dict and is therefore unhashable.  This is that value,
+    ordered, so a search result may be cached against the board state it was
+    measured on and can never be served against a different one.
+    """
+    n, sh, nh = qb.mark()
+    return (n, tuple(sorted(sh.items())), nh)
+
+
+def offcentre_connect(qb, ctx, pa, pb, layer, width, stub_widths=None,
+                      G=50000, fine=25000, memo=None,
+                      limit=8, reach_mm=OFFCENTRE_REACH_MM,
+                      anchor_fracs=OFFCENTRE_ANCHOR_FRACS,
+                      dir_step_deg=OFFCENTRE_DIR_STEP_DEG):
+    """Close ONE pad pair whose ends may need an OFF-CENTRE launch.
+
+    The centre-anchored escape is asked FIRST, per end, and where it answers
+    the end is handed to `qrouter.connect_role` untouched -- so a pair that
+    closes today closes today, by the same route, and this primitive can only
+    ADD closures.  Where it refuses, the off-centre stub is laid HERE and the
+    end is handed to `connect_role` as an ANCHOR: a junction on copper this net
+    already owns, which is a case `connect_role` has always had and which lays
+    no second stub of its own.
+
+    `stub_widths` is a DESCENDING ladder for the off-centre stub alone and
+    defaults to `(width,)`, in which case the stub is ordinary copper at the
+    trunk width and this routine licenses nothing.  Where it is narrower, the
+    NARROW WIDTH IS SPENT ONLY ON THE STUB: the landing point is still required
+    to hold `width`, so the trunk leaves the pocket at the contract width and
+    the sub-class copper is bounded by the stub's own length.  That is the
+    shape a `PAD_ESCAPE_RUN_<REF>` licence is written against, and it is the
+    difference between necking a pad and derating a twelve-millimetre haul.
+
+    On success every object is on `qb` and the caller's own `mark` reverts the
+    whole transaction; on failure this function reverts what it laid.  Returns
+    the `connect_role` dict plus `launches`, one record per end that needed the
+    new freedom, so the evidence names WHICH land needed it and by how much.
+    """
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    m0 = qb.mark()
+    ends, launches, stub_mm = [], [], 0.0
+    for p, other in ((pa, pb), (pb, pa)):
+        if p.get('anchor'):
+            ends.append(p)
+            continue
+        prefer = (other['x'] - p['x'], other['y'] - p['y'])
+        e = qb.escape(p, layer, width, width, ctx.clr_pad, ctx.clr_trk,
+                      G, ox, oy, prefer=prefer)
+        if e:
+            ends.append(p)                       # connect_role owns this end
+            continue
+        # THE SAME QUESTION IS ASKED MANY TIMES.  A trunk ladder times a stub
+        # ladder times two ends asks one land the SAME question at the SAME
+        # width on the SAME copper dozens of times, and a REFUSAL is the most
+        # expensive answer there is -- it is the only one that walks every
+        # anchor, every direction and every slack.  The cache is keyed on the
+        # board state `revert` itself rewinds to, so an answer can never be
+        # served against copper it was not measured on.
+        oc, sw, why = [], int(width), None
+        for sw in (stub_widths or (int(width),)):
+            key = (p['ref'], layer, int(sw), int(width),
+                   (round(prefer[0] / 1000.0), round(prefer[1] / 1000.0)),
+                   _state_key(qb))
+            if memo is not None and key in memo:
+                oc, why = memo[key]
+            else:
+                oc = offcentre_escapes(qb, ctx, p, layer, sw, G, ox, oy,
+                                       prefer=prefer, trunk_w=width,
+                                       limit=limit, reach_mm=reach_mm,
+                                       anchor_fracs=anchor_fracs,
+                                       dir_step_deg=dir_step_deg)
+                why = offcentre_escapes.why
+                if memo is not None:
+                    memo[key] = (oc, why)
+            if oc:
+                break
+        if not oc:
+            qb.revert(m0)
+            return dict(ok=False, reason='NO_LEGAL_ESCAPE', pad=p['ref'],
+                        why=why, launches=launches)
+        c = oc[0]
+        qb.track(ctx.net, layer, c['ax'], c['ay'], c['x'], c['y'], int(sw))
+        stub_mm += c['ln'] / 1e6
+        launches.append(dict(pad=p['ref'], layer=layer, width=int(sw),
+                             trunk_width=int(width),
+                             necked=bool(sw < width),
+                             offcentre_mm=c['offcentre_mm'],
+                             base_dir=c['base_dir'],
+                             mm=round(c['ln'] / 1e6, 4),
+                             a_xy=(round(c['ax'] / 1e6, 4),
+                                   round(c['ay'] / 1e6, 4)),
+                             b_xy=(round(c['x'] / 1e6, 4),
+                                   round(c['y'] / 1e6, 4))))
+        ends.append(dict(ref=p['ref'], net=p['net'], x=c['x'], y=c['y'],
+                         F=p.get('F'), B=p.get('B'), anchor=True,
+                         shape=p['shape'], hx=p['hx'], hy=p['hy'],
+                         r=p['r'], ang=p['ang']))
+    r = qr.connect_role(qb, ctx.net, ends[0], ends[1], layer, width,
+                        ctx.clr_pad, ctx.clr_trk, G=G, fine=fine)
+    if not r.get('ok'):
+        qb.revert(m0)
+        return dict(r, launches=launches)
+    bad = verify_laid(qb, ctx, m0)
+    if bad is not None:
+        qb.revert(m0)
+        return dict(ok=False, reason='UNPROVED_GEOMETRY', launches=launches,
+                    why='%s at %s vs %s' % (bad.get('kind'), bad.get('at'),
+                                            bad.get('against',
+                                                    bad.get('why'))))
+    return dict(r, launches=launches, stub_mm=round(stub_mm, 4),
+                mm=round(r.get('mm', 0.0) + stub_mm, 4))
 
 
 def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,

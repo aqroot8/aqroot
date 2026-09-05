@@ -99,6 +99,8 @@ def main():
     ap.add_argument("--grid", type=int, default=100000)
     ap.add_argument("--max-mm", type=float, default=8.0)
     ap.add_argument("--guard", type=Path)
+    ap.add_argument("--offcentre-launch", action="store_true",
+                    help="D-633.  Offer the OFF-CENTRE LAUNCH as the last-resort escape source for any (pad, layer) whose ordinary candidate set is empty.  Off by default, so the run without it is the run this screen has always made")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 
@@ -174,6 +176,7 @@ def main():
             field = mz.Field(qb, net, w, c["clr_pad"], clr, vd, vdr,
                              G=a.grid, layers=layers, neck=neck,
                              guard=guard_for(spec, net) if spec else None)
+            field.offcentre = bool(a.offcentre_launch)
             opened, walls = [], []
             for island in orphans:
                 hit, last = None, None
@@ -213,7 +216,7 @@ def main():
     doc = dict(
         schema=1, board=str(a.board), board_sha256=board_sha,
         authoritative_unchanged=(board_sha == after),
-        grid=a.grid, max_mm=a.max_mm,
+        grid=a.grid, max_mm=a.max_mm, offcentre_launch=bool(a.offcentre_launch),
         guard=str(a.guard) if a.guard else None,
         guard_sha256=(hashlib.sha256(a.guard.read_bytes()).hexdigest()
                       if a.guard else None),
