@@ -1,0 +1,200 @@
+{
+ "base": [
+  "evidence/d634-hop-pairs-A.json",
+  "evidence/d634-hop-pairs-B.json",
+  "evidence/d634-hop-pairs-C.json",
+  "evidence/d634-hop-pairs-D.json"
+ ],
+ "base_nets": [
+  "+3V3",
+  "/01_POWER_TREE/ACC_5V_LX",
+  "/01_POWER_TREE/BQ25185_SYS",
+  "/01_POWER_TREE/USB_D_CONN_P",
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+  "/09_COMMUNITY_HEADER/EXT_SDA",
+  "/ACC_5V_BOOST_EN",
+  "/ACC_PWR_EN",
+  "/BQ25185_STAT1",
+  "/BQ25185_STAT2",
+  "/I2C_SCL_INT",
+  "/I2C_SDA_INT",
+  "/I2S_LRCLK",
+  "/NFC_SUPPLY",
+  "/SPI_B_SCK",
+  "/SX1262_DIO1",
+  "/USB_D_MCU_N",
+  "/USB_D_MCU_P",
+  "/WAKE_INT_N",
+  "GND"
+ ],
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "changed": [
+  {
+   "a": "U1.38",
+   "b": "TP5.1",
+   "base": {
+    "closed_at": null,
+    "dru_floor": 150000,
+    "far": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "gap_mm": 13.286,
+    "layers": null,
+    "netclass": "I2C",
+    "reason": "NO_PATH",
+    "vias": null,
+    "width_licensed": false
+   },
+   "gap_mm": 13.286,
+   "klass": "GAINED",
+   "net": "/I2C_SCL_INT",
+   "test": {
+    "closed_at": 200000,
+    "dru_floor": 150000,
+    "far": [
+     "F",
+     "B",
+     "I2",
+     "I1",
+     "I4"
+    ],
+    "gap_mm": 13.286,
+    "layers": [
+     "F",
+     "I1",
+     "F"
+    ],
+    "netclass": "I2C",
+    "reason": null,
+    "vias": 2,
+    "width_licensed": true
+   }
+  },
+  {
+   "a": "R33.2",
+   "b": "U1.13",
+   "base": {
+    "closed_at": null,
+    "dru_floor": 150000,
+    "far": [
+     "F"
+    ],
+    "gap_mm": 21.858,
+    "layers": null,
+    "netclass": "USB_D",
+    "reason": "NO_PATH",
+    "vias": null,
+    "width_licensed": false
+   },
+   "gap_mm": 21.858,
+   "klass": "GAINED",
+   "net": "/USB_D_MCU_N",
+   "test": {
+    "closed_at": 250000,
+    "dru_floor": 150000,
+    "far": [
+     "F",
+     "B",
+     "I2",
+     "I1",
+     "I4"
+    ],
+    "gap_mm": 21.858,
+    "layers": [
+     "F",
+     "I1",
+     "F"
+    ],
+    "netclass": "USB_D",
+    "reason": null,
+    "vias": 2,
+    "width_licensed": true
+   }
+  },
+  {
+   "a": "R34.2",
+   "b": "U1.14",
+   "base": {
+    "closed_at": null,
+    "dru_floor": 150000,
+    "far": [
+     "F"
+    ],
+    "gap_mm": 24.2809,
+    "layers": null,
+    "netclass": "USB_D",
+    "reason": "NO_PATH",
+    "vias": null,
+    "width_licensed": false
+   },
+   "gap_mm": 24.2809,
+   "klass": "GAINED",
+   "net": "/USB_D_MCU_P",
+   "test": {
+    "closed_at": 250000,
+    "dru_floor": 150000,
+    "far": [
+     "F",
+     "B",
+     "I2",
+     "I1",
+     "I4"
+    ],
+    "gap_mm": 24.2809,
+    "layers": [
+     "F",
+     "I1",
+     "F"
+    ],
+    "netclass": "USB_D",
+    "reason": null,
+    "vias": 2,
+    "width_licensed": true
+   }
+  }
+ ],
+ "counts": {
+  "BASE_ONLY": 0,
+  "GAINED": 3,
+  "LOST": 0,
+  "MOVED": 0,
+  "SAME": 82,
+  "TEST_ONLY": 0
+ },
+ "label": "both GND planes (In1.Cu, In4.Cu) offered as haul layers to offcentre_route",
+ "method": "both arms flattened to (net, land, land) -> verdict; both must record authoritative_unchanged and the same board sha256, which is refused rather than assumed.  SAME is counted and not listed: it is the control",
+ "question": "which island pairs changed verdict between two pair sweeps run on the SAME board",
+ "schema": 1,
+ "test": [
+  "evidence/d635-plane-pairs-A.json",
+  "evidence/d635-plane-pairs-B.json",
+  "evidence/d635-plane-pairs-C.json",
+  "evidence/d635-plane-pairs-D.json"
+ ],
+ "test_nets": [
+  "+3V3",
+  "/01_POWER_TREE/ACC_5V_LX",
+  "/01_POWER_TREE/BQ25185_SYS",
+  "/01_POWER_TREE/USB_D_CONN_P",
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+  "/09_COMMUNITY_HEADER/EXT_SDA",
+  "/ACC_5V_BOOST_EN",
+  "/ACC_PWR_EN",
+  "/BQ25185_STAT1",
+  "/BQ25185_STAT2",
+  "/I2C_SCL_INT",
+  "/I2C_SDA_INT",
+  "/I2S_LRCLK",
+  "/NFC_SUPPLY",
+  "/SPI_B_SCK",
+  "/SX1262_DIO1",
+  "/USB_D_MCU_N",
+  "/USB_D_MCU_P",
+  "/WAKE_INT_N",
+  "GND"
+ ]
+}

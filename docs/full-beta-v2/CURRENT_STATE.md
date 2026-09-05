@@ -13,6 +13,105 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-635 (THE VIA FIELD IS *NOT* THE WALL -- DELETING ALL 790 BARRELS
+  MOVES `In2.Cu`'s LARGEST PIECE 52.5% -> 56.1% -- AND THE BOARD'S LARGEST
+  CONNECTED ROUTING SURFACE IS A *GND PLANE*, 8635.9 mm2 IN ONE PIECE, WHICH
+  CLOSES `/I2C_SCL_INT` AT THE FULL NETCLASS TRUNK):**  D-634 ranked "AUDIT THE
+  VIA FIELD" first and said *"nothing else on this board moves this number"*.
+  It was audited.  **The via field is not the wall, and the number that matters
+  is on a different layer.**
+  **NO COPPER MOVED.**  Authority `5715bf5c...` **unchanged**, retained open
+  edges **44**, open retained nets 21, connected retained 152.  Zero tracks,
+  zero vias, zero zones, zero rule areas, zero `.kicad_dru` change, zero
+  placement change.  **NO EXISTING FILE CHANGED** -- three new tracked files,
+  add-only, not one line of any promoting instrument touched; the standing
+  contracts were re-run anyway and are **10/10 IDENTICAL**
+  (`evidence/d635-contract-regression.json`).
+  **D-634 WAS RECOVERED AND COMMITTED FIRST (`a0619ee`, pushed).**  Its fourth
+  pair-sweep shard -- the three pour-owning nets -- was **still running** when
+  that session ended and its artifact had never been written, while the prose
+  already stated the sweep's verdict.  The shard's own process was still alive
+  under its original `timeout 7000` wrapper and original arguments, so it was
+  allowed to FINISH rather than re-run under arguments chosen after the fact.
+  The claim then verified over all four shards: **21 open retained nets, 85
+  pairs -- 1 CLOSED, 64 `NO_PATH`, 20 `NO_LEGAL_ESCAPE`**, every shard
+  `authoritative_unchanged`.
+  **THE AUDIT -- new tracked `screen_via_field.py`**
+  (`evidence/d635-via-field-in2.json`).  All 790 barrels classified twice.  By
+  ATTACHMENT: 460 `LAYER_CHANGE`, 324 `TERMINAL_DROP`, 2 `PAD_ONLY` and
+  **4 `FREE_STITCH`** -- four barrels on the whole board carry no copper of
+  their own, so the retirable-stitching hypothesis has four candidates and no
+  more; 247 of the 250 `GND` barrels are terminal drops and retiring one
+  orphans a land.  By ROLE against `In2.Cu`: **222 SERVE it, 524 TRANSIT it
+  serving nothing, 44 AVOID it entirely** -- and all 250 `GND` and all 73
+  `+3V3` barrels are transits.
+  **THE COUNTERFACTUAL, AND IT CLOSES TWO OF D-634's OWN NEXT ITEMS.**  The
+  same partition measurement with named subsets withheld (an arm is a fresh
+  `QBoard` with only its own subset injected, which is exact because
+  `qrouter._scan` skips `PCB_VIA`): as-built 790 barrels **6524.6 mm2 free,
+  223 pieces, largest 52.5%** -- reproducing D-634's published row field for
+  field, which is the control; minus the 44 that avoid `In2.Cu` (**buildable
+  today** with blind/buried) 6572.2 / 207 / **52.4%**; minus every transit
+  7207.9 / 108 / **56.1%**; **minus ALL 790 -- the absolute physical ceiling --
+  7272.3 mm2, 94 pieces, 56.1%.**  **No via campaign and no blind/buried
+  stack-up changes what `In2.Cu` can carry.**  What partitions it is named:
+  with every barrel withheld the layer still carries **422 obstacles -- 305
+  foreign track segments totalling 2403.9 mm of copper and 56 through-hole
+  lands.**  `In2.Cu` is not a spare lane the vias ruined; it is a signal layer
+  that is already full, and D-634 read its own measurement the wrong way round.
+  **THE MEASUREMENT THAT WAS WORTH MAKING**
+  (`evidence/d635-via-field-planes.json`).  The same instrument on the layers
+  nobody had asked, with the whole 790-barrel field in place: **`In1.Cu`
+  8635.9 mm2 free in 8 pieces, largest 100.0%; `In4.Cu` identical; `In3.Cu`
+  7840.9 / 78 / 93.4%; `In2.Cu` 6524.6 / 223 / 52.5%.**  The stack-up is
+  `F / In1 GND / In2 SIGNAL / In3 +3V3 / In4 GND / B`, and **each GND plane has
+  32% more free area than the signal layer and holds effectively all of it in
+  ONE connected piece.**
+  **WHAT OFFERING A PLANE BUYS -- new tracked `checks/pair_sweep_diff.py`**
+  (`evidence/d635-plane-pairs-{A,B,C,D}.json`, `...-in4-only.json`,
+  `...-plane-licence-diff.json`).  D-634's own sweep re-run with ONE thing
+  changed -- `--far` gains `I1,I4` -- and diffed pair by pair by a tracked
+  driver that refuses two arms disagreeing on `board_sha256`.  Over all 85
+  pairs: **GAINED 3, LOST 0, SAME 82.**  `/I2C_SCL_INT` `U1.38 <-> TP5.1`,
+  13.286 mm, `NO_PATH` -> **CLOSES at the FULL 0.200 mm netclass trunk**, two
+  barrels, `F -> In1.Cu -> F`, `licensed_unconditionally: true` -- **no width
+  licence of any kind**; plus `/USB_D_MCU_N` and `/USB_D_MCU_P` at 0.250 mm.
+  **The choice of plane is FREE** -- offering only `In4.Cu` closes all three on
+  `F -> In4.Cu -> F` at the same widths.  And **82 of 85 do not move**: the
+  plane is capacity, and the wall is not only capacity.
+  **WHAT IT COSTS -- new tracked `screen_plane_slot.py`**
+  (`evidence/d635-plane-slot-{i2c,usb,usb-in4,all}.json`).  A signal track on a
+  plane is a SLOT and KiCad re-pours around it, so the geometric half is
+  answerable now: the plane's own filled polygon minus the run stroked at
+  `width/2 + clearance`, then every same-net barrel and land re-located by
+  outline.  `/I2C_SCL_INT` alone on `In1.Cu`: **1 outline -> 1, 9429.5 ->
+  9423.8 mm2, 0 of 268 anchors off the main body -- SURVIVES**, and it survives
+  the WORST-CASE straight cut.  The USB pair alone **SEVERS on both planes
+  identically** and drops the MCU `GND` land `U1.41` off the main body --
+  a warning about where those endpoints sit rather than a verdict on a routed
+  haul, and beside the point anyway: `USB_D_MCU_P/N` are the one differential
+  pair whose integrity depends on an unbroken reference plane.
+  **SO THE LICENCE CANDIDATE IS EXACTLY ONE EDGE AND WHAT BLOCKS IT IS A
+  MODEL.**  `reserved_inner_planes` reserves `In1.Cu`/`In4.Cu` to `GND` and no
+  `.kicad_dru` rule area names a corridor in either; authoring that licence
+  before the return path is priced would be the unpriced severance D-627
+  refused and D-628 accepted only once the bond was measured.  **The `GND`
+  return-path price is now the ONLY thing between a measured closure at full
+  trunk width and copper.**
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **PRICE THE `GND` RETURN PATH** -- for a
+  slot of a given length and position in `In1.Cu`/`In4.Cu`, which `F.Cu`/`B.Cu`
+  runs cross it, how far their return current must detour, and what that costs
+  at the frequencies those nets carry; `PP2` is the clause and
+  `screen_plane_slot.py` already produces the geometry it would price.  (2) the
+  **82 that did not move are not a layer problem** -- a fresh 8635 mm2
+  connected surface changed three refusals out of eighty-five, so the rest are
+  pad pockets and local congestion and the only lever left is PLACEMENT (PM-3).
+  (3) the **barrel-search corrections still belong in the promoting
+  instruments**, carried unchanged from D-634 item 2.  (4) **D-634's item 1 and
+  item 4 are CLOSED BY MEASUREMENT** and recorded closed so no future iteration
+  re-opens them.
+  No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3
+  remains an open PLACEMENT finding.
 - **Demo D-634 (THE OFF-CENTRE HOP EXISTS AND IS *PROVED BY A POSITIVE
   CONTROL*, AND IT MOVES THE WALL OFF THE LAND ONTO THE CORRIDOR ON *EVERY
   LAYER* -- THE INNER "SPARE LANE" IS A FIELD OF *790 THROUGH BARRELS* CUT INTO

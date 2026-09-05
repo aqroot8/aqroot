@@ -1,0 +1,33 @@
+{
+ "anchors": 268,
+ "anchors_off_body": 0,
+ "area_after_mm2": 9423.816,
+ "area_before_mm2": 9429.543,
+ "area_lost_mm2": 5.727,
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "clearance": 200000,
+ "layer": "In1",
+ "main_outline": 0,
+ "method": "read-only; the plane's own filled polygon set from KiCad, minus the proposed run stroked at width/2 + clearance with a disc at each end; anchors are re-located by outline afterwards.  The board is not written and no zone is refilled -- the promotion gate's pour_partition and pour_bond remain the only things that certify a fill",
+ "net": "GND",
+ "off_body": [],
+ "outlines_after": 1,
+ "outlines_before": 1,
+ "question": "does a signal SLOT on a reserved inner plane leave the plane one piece and every barrel still bonded to its main body",
+ "schema": 1,
+ "segments": [
+  {
+   "closed_at": 200000,
+   "mm": 11.3172,
+   "source": "/I2C_SCL_INT U1.38<->TP5.1",
+   "x0": 60.2,
+   "x1": 52.0,
+   "y0": 138.0,
+   "y1": 145.8
+  }
+ ],
+ "verdict": "SURVIVES",
+ "width": 200000
+}
